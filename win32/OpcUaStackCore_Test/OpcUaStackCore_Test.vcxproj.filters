@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="OpcUaStackCore_Test.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\OpcUaStringBase.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="..\..\src\OpcUaStackCore\BuildInTypes.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\OpcUaStackCore\OpcUaStringBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{324e26dd-31c2-4b84-967e-320287823480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest">
+      <UniqueIdentifier>{d37bc34a-24da-487c-9ea8-0e61aacb6fe7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
