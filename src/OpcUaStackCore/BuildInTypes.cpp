@@ -47,7 +47,7 @@ template <typename T>
   void opcUaBinaryEncodeNumber(std::ostream& os, T& value)
   {
 	  if (LITTLE_ENDIAN) {
-		  os.write((char*)&value, 2);
+		  os.write((char*)&value, sizeof(T));
 	  }
 	  else {
 		  for (uint32_t size=sizeof(T); size>0; size++) {
@@ -60,7 +60,7 @@ template <typename T>
   void opcUaBinaryDecodeNumber(std::istream& is, T& value)
   {
 	  if (LITTLE_ENDIAN) {
-		  is.read((char*)&value, 2);
+		  is.read((char*)&value, sizeof(T));
 	  }
 	  else {
 		  for (uint32_t size=sizeof(T); size>0; size++) {
@@ -183,6 +183,7 @@ void opcUaBinaryDecode(std::istream& is, OpcUaString& value)
 	}
 
 	if (length == 0) {
+		value.value("");
 		return;
 	}
 

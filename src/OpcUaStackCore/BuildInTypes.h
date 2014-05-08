@@ -62,6 +62,7 @@ namespace OpcUaStackCore
 	void opcUaBinaryEncode(std::ostream& os, OpcUaDouble& value);
 	void opcUaBinaryDecode(std::istream& is, OpcUaDouble& value);
 
+
 	typedef OpcUaStringBase OpcUaString;
 	void opcUaBinaryEncode(std::ostream& os, OpcUaString& value);
 	void opcUaBinaryDecode(std::istream& is, OpcUaString& value);
