@@ -51,10 +51,50 @@ namespace OpcUaStackCore
 		OpcUaDateTime,
 		OpcUaStatusCode,
 		OpcUaVariantSPtr
-	> OpcUaVariantValue;
+	> OpcUaVariantValueType;
 
-	typedef std::vector<OpcUaVariantValue> OpcUaVariantValueVec;
+	typedef std::vector<OpcUaVariantValueType> OpcUaVariantValueVec;
 	typedef std::vector<OpcUaUInt32> ArrayDimensionsVec;
+
+	class DLLEXPORT OpcUaVariantValue
+	{
+	  public:
+		OpcUaVariantValue(void);
+		~OpcUaVariantValue(void);
+
+		OpcUaBuildInType variantType(void) const;
+
+		template<typename VAL>
+		  void variant(const VAL& val) {
+			  variantValue_ = val;
+		  }
+		void variant(const OpcUaGuid::SPtr valSPtr);
+		void variant(const OpcUaXmlElement::SPtr valSPtr);
+		void variant(const OpcUaNodeId::SPtr valSPtr);
+		void variant(const OpcUaExpandedNodeId::SPtr valSPtr);
+		void variant(const OpcUaQualifiedName::SPtr valSPtr);
+		void variant(const OpcUaLocalizedText::SPtr valSPtr);
+		void variant(const OpcUaExtensionObject::SPtr valSPtr);
+
+		template<typename VAL> 
+		  VAL variant(void) const
+		  {
+		      return boost::get<VAL>(variantValue_);
+		  }
+		template<typename VAL>
+		  typename VAL::SPtr variantSPtr(void) const
+		  {
+		      OpcUaVariantSPtr val = boost::get<OpcUaVariantSPtr>(variantValue_);
+			  return boost::static_pointer_cast<VAL>(val.objectSPtr_);
+		  }
+
+		  void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
+		  void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
+
+	  private:
+		OpcUaVariantValueType variantValue_;
+	};
+
 
 	class DLLEXPORT OpcUaVariant : public ObjectPool<OpcUaVariant>
 	{
@@ -70,36 +110,19 @@ namespace OpcUaStackCore
 		OpcUaBuildInType variantType(void) const;
 		template<typename VAL>
 		  void variant(const VAL& val) {
-			  OpcUaVariantValue opcUaVariantValue;
-			  opcUaVariantValue = val;
 			  arrayLength_ = -1;
-			  opcUaVariantValueVec_.clear();
-			  opcUaVariantValueVec_.push_back(opcUaVariantValue);
+			  variantValue_.variant(val);
 		  }
-		void variant(const OpcUaGuid::SPtr valSPtr);
-		void variant(const OpcUaXmlElement::SPtr valSPtr);
-		void variant(const OpcUaNodeId::SPtr valSPtr);
-		void variant(const OpcUaExpandedNodeId::SPtr valSPtr);
-		void variant(const OpcUaQualifiedName::SPtr valSPtr);
-		void variant(const OpcUaLocalizedText::SPtr valSPtr);
-		void variant(const OpcUaExtensionObject::SPtr valSPtr);
 
 		template<typename VAL> 
 		  VAL variant(void) const
 		  {
-			  if (opcUaVariantValueVec_.size() < 1) {
-				  return VAL();
-			  }
-		      return boost::get<VAL>(opcUaVariantValueVec_[0]);
+			  return variantValue_.variant<VAL>();
 		  }
 		template<typename VAL>
 		  typename VAL::SPtr variantSPtr(void) const
 		  {
-			  if (opcUaVariantValueVec_.size() < 1) {
-				  return VAL::SPtr();
-			  }
-		      OpcUaVariantSPtr val = boost::get<OpcUaVariantSPtr>(opcUaVariantValueVec_[0]);
-			  return boost::static_pointer_cast<VAL>(val.objectSPtr_);
+			  return variantValue_.variantSPtr<VAL>();
 		  }
 
 		void opcUaBinaryEncode(std::ostream& os) const;
@@ -108,7 +131,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaInt32 arrayLength_;
 		ArrayDimensionsVec arrayDimensionsVec_;
-		OpcUaVariantValueVec opcUaVariantValueVec_;
+		OpcUaVariantValue variantValue_;
 	};
 
 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaVariant& value);
