@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>OpcUaStackCore_dll</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetName>OpcUastackCore</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;OPCUASTACKCORE_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..\inc;C:\local\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;OPCUASTACKCORE_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ObjectPool.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\os.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\BuildInTypes.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaByteString.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDataValue.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDateTime.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDiagnosticInfo.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaGuid.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeId.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNumber.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaString.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaType.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaVariant.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaByteString.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDataValue.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDateTime.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDiagnosticInfo.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaGuid.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeId.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNumber.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaString.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaVariant.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.cpp" />
+    <ClCompile Include="dllmain.cpp">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="OpcUaStackCore_dll.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

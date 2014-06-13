@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_Test", "OpcUaStackCore_Test\OpcUaStackCore_Test.vcxproj", "{F79E2F99-1E22-4449-BEC1-7CAD7B1F6EB0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523} = {87C59DD2-63A7-4481-8D8F-ACAD1B55B523}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_dll", "OpcUaStackCore_dll\OpcUaStackCore_dll.vcxproj", "{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +18,10 @@ Global
 		{F79E2F99-1E22-4449-BEC1-7CAD7B1F6EB0}.Debug|Win32.Build.0 = Debug|Win32
 		{F79E2F99-1E22-4449-BEC1-7CAD7B1F6EB0}.Release|Win32.ActiveCfg = Release|Win32
 		{F79E2F99-1E22-4449-BEC1-7CAD7B1F6EB0}.Release|Win32.Build.0 = Release|Win32
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Debug|Win32.ActiveCfg = Debug|Win32
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Debug|Win32.Build.0 = Debug|Win32
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Release|Win32.ActiveCfg = Release|Win32
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

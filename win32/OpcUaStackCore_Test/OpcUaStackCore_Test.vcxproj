@@ -52,12 +52,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\..\src;C:\local\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\tst;..\..\inc;C:\local\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0;..\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpcUaStackCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -78,16 +79,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\OpcUaStackCore\BuildInTypes.h" />
-    <ClInclude Include="..\..\src\OpcUaStackCore\OpcUaStringBase.h" />
-    <ClInclude Include="..\..\tst\OpcUaStackCore\os.h" />
-    <ClInclude Include="..\..\tst\OpcUaStackCore\unittest.h" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\BuildInTypes_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaByteString_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDataValue_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDateTime_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaGuid_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaNodeId_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaNumber_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaStatusCode_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaString_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaVariant_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaXmlElement_t.cpp" />
+    <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\OpcUaStringBase.cpp" />
-    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes_t.cpp" />
-    <ClCompile Include="..\..\tst\OpcUaStackCore\unittest.cpp" />
+    <ClInclude Include="..\..\tst\os.h" />
+    <ClInclude Include="..\..\tst\unittest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

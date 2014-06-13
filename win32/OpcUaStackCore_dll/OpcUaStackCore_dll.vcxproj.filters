@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Ressourcendateien">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="sc">
+      <UniqueIdentifier>{72f66d32-3614-4ef6-88d0-38841a400f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sc\Base">
+      <UniqueIdentifier>{10d69ae7-1fa4-4f24-8c67-4d1eab59651f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sc\BuildInTypes">
+      <UniqueIdentifier>{0ec550f5-51db-4f91-8477-0453e364cf6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dll">
+      <UniqueIdentifier>{43a3b7e2-8d30-4c03-adbe-343ae410ba70}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ObjectPool.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\BuildInTypes.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaByteString.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDateTime.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaGuid.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeId.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNumber.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaString.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaType.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaVariant.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDataValue.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDiagnosticInfo.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\os.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>dll</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaByteString.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDateTime.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaGuid.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeId.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNumber.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaString.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaVariant.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDataValue.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDiagnosticInfo.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="OpcUaStackCore_dll.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp">
+      <Filter>sc\Base</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

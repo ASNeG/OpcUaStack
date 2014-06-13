@@ -1,39 +1,69 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaNodeId_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\OpcUaStringBase.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\BuildInTypes_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\unittest.cpp">
+    <ClCompile Include="..\..\tst\unittest.cpp">
       <Filter>unittest</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes_t.cpp">
-      <Filter>unittest</Filter>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaNumber_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaString_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaGuid_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaByteString_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaXmlElement_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDateTime_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaVariant_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaStatusCode_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDataValue_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\OpcUaStackCore\BuildInTypes.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\OpcUaStackCore\OpcUaStringBase.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\tst\OpcUaStackCore\os.h">
-      <Filter>unittest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\tst\OpcUaStackCore\unittest.h">
-      <Filter>unittest</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{324e26dd-31c2-4b84-967e-320287823480}</UniqueIdentifier>
-    </Filter>
     <Filter Include="unittest">
       <UniqueIdentifier>{d37bc34a-24da-487c-9ea8-0e61aacb6fe7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="unittest\BuildInTypes">
+      <UniqueIdentifier>{7f5fd84a-a7fe-411a-8eba-0fd2023b057b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\tst\os.h">
+      <Filter>unittest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tst\unittest.h">
+      <Filter>unittest</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
