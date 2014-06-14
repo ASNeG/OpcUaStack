@@ -468,14 +468,26 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	OpcUaVariant::OpcUaVariant(void)
 	:  ObjectPool<OpcUaVariant>()
-	, variantValue_()
+	, variantValueVec_()
 	, arrayLength_(-1)
 	, arrayDimensionsVec_()
 	{
+		clear();
 	}
 		
 	OpcUaVariant::~OpcUaVariant(void)
 	{
+	}
+
+	void 
+	OpcUaVariant::clear(void)
+	{
+		OpcUaVariantValue variantValue;
+		variantValueVec_.clear();
+		variantValueVec_.push_back(variantValue);
+
+		arrayLength_ = -1;
+		arrayDimensionsVec_.clear();
 	}
 
 	void 
@@ -491,25 +503,60 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaVariant::arrayDimension(const OpcUaInt32& arrayDimensions)
+	OpcUaVariant::arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec)
 	{
+		if (arrayLength_ < 2) {
+			return;
+		}
+		if (arrayDimensionsVec.size() == 0) {
+			return;
+		}
+
+		uint32_t count = 0;
+		OpcUaArrayDimensionsVec::const_iterator it;
+		for (it = arrayDimensionsVec.begin(); it != arrayDimensionsVec.end(); it++) {
+			if (it == arrayDimensionsVec.begin()) {
+				count = *it;
+			}
+			else {
+				count *= *it;
+			}
+		}
+
+		if (arrayLength_ != count) {
+			return;
+		}
+
 		arrayDimensionsVec_.clear();
-		arrayDimensionsVec_[0] = arrayDimensions;
+		arrayDimensionsVec_ = arrayDimensionsVec;
 	}
 	
-	OpcUaInt32 
+	OpcUaArrayDimensionsVec 
 	OpcUaVariant::arrayDimension(void)
 	{
-		if (arrayDimensionsVec_.size() == 0) {
-			return -1;
-		}
-		return arrayDimensionsVec_[0];
+		return arrayDimensionsVec_;
+	}
+
+	void 
+	OpcUaVariant::variant(const OpcUaVariantValue::Vec& variantValueVec)
+	{
+		variantValueVec_ = variantValueVec;
+		arrayLength_ = variantValueVec_.size();
+	}
+
+	OpcUaVariantValue::Vec& 
+	OpcUaVariant::variant(void)
+	{
+		return variantValueVec_;
 	}
 
 	OpcUaBuildInType 
 	OpcUaVariant::variantType(void) const
 	{
-		return variantValue_.variantType();
+		if (variantValueVec_.size() == 0) {
+			return OpcUaBuildInType::OpcUaBuildInType_Unknown;
+		}
+		return variantValueVec_[0].variantType();
 	}
 
 	void 
@@ -518,7 +565,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType variantType = this->variantType();
 		OpcUaByte encodingMask = (OpcUaByte)variantType;
 
-		if (variantType == OpcUaBuildInType::OpcUaBuildInType_Unknown) {
+		if (variantType == OpcUaBuildInType::OpcUaBuildInType_Unknown && variantValueVec_.size() != 0) {
 			return;
 		}
 			 
@@ -535,10 +582,23 @@ namespace OpcUaStackCore
 			OpcUaStackCore::opcUaBinaryEncode(os, arrayLength_);
 		}
 
-		variantValue_.opcUaBinaryEncode(os, variantType);
+		if (arrayLength_ == -1) {
+		    variantValueVec_[0].opcUaBinaryEncode(os, variantType);
+		}
+		else if (arrayLength_ == 0) {
+		} 
+		else {
+			OpcUaVariantValue::Vec::const_iterator it;
+			for (it = variantValueVec_.begin(); it != variantValueVec_.end(); it++) {
+				it->opcUaBinaryEncode(os, variantType);
+			}
+		}
 
 		if (arrayDimensionsVec_.size() > 0) {
-			OpcUaStackCore::opcUaBinaryEncode(os, arrayDimensionsVec_[0]);
+			OpcUaArrayDimensionsVec::const_iterator it;
+			for (it = arrayDimensionsVec_.begin(); it != arrayDimensionsVec_.end(); it++) {
+				OpcUaStackCore::opcUaBinaryEncode(os, *it);
+			}
 		}
 	}
 		
@@ -554,21 +614,40 @@ namespace OpcUaStackCore
 			OpcUaStackCore::opcUaBinaryDecode(is, arrayLength_);
 		}
 
-		if ((encodingMask & 128) == 128) {
-			arrayDimensionsVec_.clear();
+		OpcUaByte encodingMaskTmp = encodingMask & 0x3F;
+
+		if (arrayLength_ == -1) {
+		    variantValueVec_[0].opcUaBinaryDecode(is, (OpcUaBuildInType)encodingMaskTmp);
+		}
+		else if (arrayLength_ == 0) {
+			variantValueVec_.clear();
 		}
 		else {
-			arrayDimensionsVec_.clear();
+			variantValueVec_.clear();
+			for (uint32_t idx=0; idx<(uint32_t)arrayLength_; idx++) {
+				OpcUaVariantValue variantValue;
+				variantValue.opcUaBinaryDecode(is, (OpcUaBuildInType)encodingMaskTmp);
+				variantValueVec_.push_back(variantValue);
+			}
 		}
 
-		encodingMask = encodingMask & 0x3F;
+		arrayDimensionsVec_.clear();
 
-		variantValue_.opcUaBinaryDecode(is, (OpcUaBuildInType)encodingMask);
+		if (arrayLength_ < 2) {
+			return;
+		}
 
-		if (arrayDimensionsVec_.size() > 0) {
+		if ((encodingMask & 128) == 128) {
 			OpcUaUInt32 arrayDimensions;
 			OpcUaStackCore::opcUaBinaryDecode(is, arrayDimensions);
-			arrayDimensionsVec_.clear();
+			arrayDimensionsVec_.push_back(arrayDimensions);
+			OpcUaUInt32 count = arrayDimensions;
+
+			while (count < (uint32_t)arrayLength_) {
+				OpcUaStackCore::opcUaBinaryDecode(is, arrayDimensions);
+				arrayDimensionsVec_.push_back(arrayDimensions);
+				count = count * arrayDimensions;
+			}
 		}
 	}
 

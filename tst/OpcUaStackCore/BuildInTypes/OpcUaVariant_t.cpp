@@ -20,6 +20,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_encode_decode)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_Unknown);
 }
 
@@ -33,6 +34,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaBoolean)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaBoolean);
 	BOOST_REQUIRE(value2.variant<OpcUaBoolean>() == true);
 }
@@ -47,6 +49,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaSByte)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaSByte);
 	BOOST_REQUIRE(value2.variant<OpcUaSByte>() == 0x12);
 }
@@ -61,6 +64,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaByte)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaByte);
 	BOOST_REQUIRE(value2.variant<OpcUaByte>() == 0x12);
 }
@@ -75,6 +79,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaInt16)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaInt16);
 	BOOST_REQUIRE(value2.variant<OpcUaInt16>() == 123);
 }
@@ -89,6 +94,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaUInt16)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaUInt16);
 	BOOST_REQUIRE(value2.variant<OpcUaUInt16>() == 0x123);
 }
@@ -103,6 +109,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaInt32)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaInt32);
 	BOOST_REQUIRE(value2.variant<OpcUaInt32>() == 0x1234);
 }
@@ -117,6 +124,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaUInt32)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaUInt32);
 	BOOST_REQUIRE(value2.variant<OpcUaUInt32>() == 0x1234);
 }
@@ -131,6 +139,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaInt64)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaInt64);
 	BOOST_REQUIRE(value2.variant<OpcUaInt64>() == 0x123456);
 }
@@ -145,6 +154,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaUInt64)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaUInt64);
 	BOOST_REQUIRE(value2.variant<OpcUaUInt64>() == 0x123456);
 }
@@ -159,6 +169,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaFloat)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaFloat);
 	BOOST_REQUIRE(value2.variant<OpcUaFloat>() == 123);
 }
@@ -173,6 +184,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaDouble)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaDouble);
 	BOOST_REQUIRE(value2.variant<OpcUaDouble>() == 123);
 }
@@ -193,6 +205,8 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaDateTime)
 
 	dateTime2 = value1.variant<OpcUaDateTime>();
 	ptime2 = dateTime2.dateTime();
+
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaDateTime);
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "16010101T120000");
 }
@@ -207,6 +221,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaStatusCode)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaStatusCode);
 	BOOST_REQUIRE(value2.variant<OpcUaStatusCode>() == (OpcUaStatusCode)123);
 }
@@ -223,6 +238,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaGuid)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaGuid);
 	std::string  str = *(value2.variantSPtr<OpcUaGuid>());
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
@@ -239,6 +255,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaXmlElement)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaXmlElement);
 }
 
@@ -258,6 +275,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaNodeId)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaNodeId);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaNodeId>()->namespaceIndex() == 123);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaNodeId>()->nodeId<OpcUaString::SPtr>()->value() == "ABC");
@@ -279,6 +297,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExpandedNodeId)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaExpandedNodeId);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaExpandedNodeId>()->namespaceIndex() == 123);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaExpandedNodeId>()->nodeId<OpcUaString::SPtr>()->value() == "ABC");
@@ -300,6 +319,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaQualifiedName)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaQualifiedName);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaQualifiedName>()->namespaceIndex() == 1);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaQualifiedName>()->name().value() == "ABC");
@@ -323,6 +343,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaLocalizedText)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaLocalizedText);
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaLocalizedText>()->locale().value() == "de");
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaLocalizedText>()->text().value() == "text");
@@ -339,7 +360,141 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExtensionObject)
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
+	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaExtensionObject);
 }
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_0)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	
+	value1.variant(variantVec1);
+	opcUaBinaryEncode(ss, value1); 
+	opcUaBinaryDecode(ss, value2);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 0);
+    BOOST_REQUIRE(variantVec2.size() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_1)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	
+	OpcUaVariantValue variantValue;
+	variantValue.variant((OpcUaUInt32)1);
+	variantVec1.push_back(variantValue);
+
+	value1.variant(variantVec1);
+	opcUaBinaryEncode(ss, value1); 
+	opcUaBinaryDecode(ss, value2);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 1);
+    BOOST_REQUIRE(variantVec2.size() == 1);
+	BOOST_REQUIRE(variantVec2[0].variant<OpcUaUInt32>() == 1);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_2)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	
+	OpcUaVariantValue variantValue;
+	variantValue.variant((OpcUaUInt32)1);
+	variantVec1.push_back(variantValue);
+	variantValue.variant((OpcUaUInt32)2);
+	variantVec1.push_back(variantValue);
+
+	value1.variant(variantVec1);
+	opcUaBinaryEncode(ss, value1); 
+	opcUaBinaryDecode(ss, value2);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 2);
+    BOOST_REQUIRE(variantVec2.size() == 2);
+	BOOST_REQUIRE(variantVec2[0].variant<OpcUaUInt32>() == 1);
+	BOOST_REQUIRE(variantVec2[1].variant<OpcUaUInt32>() == 2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_dimensions_2_2)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	
+	OpcUaVariantValue variantValue;
+	for (uint32_t idx=0; idx<4; idx++) {
+		variantValue.variant((OpcUaUInt32)idx);
+		variantVec1.push_back(variantValue);
+	}
+
+	OpcUaArrayDimensionsVec arrayDimensionsVec;
+	arrayDimensionsVec.push_back(2);
+	arrayDimensionsVec.push_back(2);
+
+
+	value1.variant(variantVec1);
+	value1.arrayDimension(arrayDimensionsVec);
+	opcUaBinaryEncode(ss, value1); 
+	opcUaBinaryDecode(ss, value2);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 4);
+    BOOST_REQUIRE(variantVec2.size() == 4);
+	for (uint32_t idx=0; idx<4; idx++) {
+		BOOST_REQUIRE(variantVec2[idx].variant<OpcUaUInt32>() == idx);
+	}
+
+	std::cout << "len=" << value2.arrayDimension().size() << std::endl;
+	BOOST_REQUIRE(value2.arrayDimension().size() == 2);
+	BOOST_REQUIRE(value2.arrayDimension()[0] == 2);
+	BOOST_REQUIRE(value2.arrayDimension()[1] == 2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_dimensions_2_3)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	
+	OpcUaVariantValue variantValue;
+	for (uint32_t idx=0; idx<6; idx++) {
+		variantValue.variant((OpcUaUInt32)idx);
+		variantVec1.push_back(variantValue);
+	}
+
+	OpcUaArrayDimensionsVec arrayDimensionsVec;
+	arrayDimensionsVec.push_back(2);
+	arrayDimensionsVec.push_back(3);
+
+
+	value1.variant(variantVec1);
+	value1.arrayDimension(arrayDimensionsVec);
+	opcUaBinaryEncode(ss, value1); 
+	opcUaBinaryDecode(ss, value2);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 6);
+    BOOST_REQUIRE(variantVec2.size() == 6);
+	for (uint32_t idx=0; idx<6; idx++) {
+		BOOST_REQUIRE(variantVec2[idx].variant<OpcUaUInt32>() == idx);
+	}
+
+	BOOST_REQUIRE(value2.arrayDimension().size() == 2);
+	BOOST_REQUIRE(value2.arrayDimension()[0] == 2);
+	BOOST_REQUIRE(value2.arrayDimension()[1] == 3);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -53,12 +53,13 @@ namespace OpcUaStackCore
 		OpcUaVariantSPtr
 	> OpcUaVariantValueType;
 
-	typedef std::vector<OpcUaVariantValueType> OpcUaVariantValueVec;
-	typedef std::vector<OpcUaUInt32> ArrayDimensionsVec;
+	typedef std::vector<OpcUaUInt32> OpcUaArrayDimensionsVec;
 
 	class DLLEXPORT OpcUaVariantValue
 	{
 	  public:
+		typedef std::vector<OpcUaVariantValue> Vec;
+
 		OpcUaVariantValue(void);
 		~OpcUaVariantValue(void);
 
@@ -102,27 +103,32 @@ namespace OpcUaStackCore
 	    OpcUaVariant(void);
 		virtual ~OpcUaVariant(void);
 
+		void clear(void);
+
 		void arrayLength(const OpcUaInt32& arrayLength);
 		OpcUaInt32 arrayLength(void);
-		void arrayDimension(const OpcUaInt32& arrayDimensions);
-		OpcUaInt32 arrayDimension(void);
+		void arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec);
+		OpcUaArrayDimensionsVec arrayDimension(void);
+		void variant(const OpcUaVariantValue::Vec& variantValueVec);
+		void variant(const OpcUaBuildInType& opcUaBuildInType);
+		OpcUaVariantValue::Vec& variant(void);
 
 		OpcUaBuildInType variantType(void) const;
 		template<typename VAL>
 		  void variant(const VAL& val) {
-			  arrayLength_ = -1;
-			  variantValue_.variant(val);
+			  clear();
+			  variantValueVec_[0].variant(val);
 		  }
 
 		template<typename VAL> 
 		  VAL variant(void) const
 		  {
-			  return variantValue_.variant<VAL>();
+			  return variantValueVec_[0].variant<VAL>();
 		  }
 		template<typename VAL>
 		  typename VAL::SPtr variantSPtr(void) const
 		  {
-			  return variantValue_.variantSPtr<VAL>();
+			  return variantValueVec_[0].variantSPtr<VAL>();
 		  }
 
 		void opcUaBinaryEncode(std::ostream& os) const;
@@ -130,8 +136,8 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaInt32 arrayLength_;
-		ArrayDimensionsVec arrayDimensionsVec_;
-		OpcUaVariantValue variantValue_;
+		OpcUaArrayDimensionsVec arrayDimensionsVec_;
+		OpcUaVariantValue::Vec variantValueVec_;
 	};
 
 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaVariant& value);
