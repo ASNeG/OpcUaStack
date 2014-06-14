@@ -17,6 +17,9 @@
     <Filter Include="dll">
       <UniqueIdentifier>{43a3b7e2-8d30-4c03-adbe-343ae410ba70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sc\SecureChannel">
+      <UniqueIdentifier>{397db13f-f15b-4ba9-8ed3-540351dca1e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -94,6 +97,27 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\MessageHeader.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\HelloMessage.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\AcknowledgeMessage.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\MessageDefaults.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ErrorMessage.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityHeader.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SequenceHeader.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -158,6 +182,27 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp">
       <Filter>sc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\MessageHeader.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\HelloMessage.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\AcknowledgeMessage.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\MessageDefaults.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ErrorMessage.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityHeader.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SequenceHeader.cpp">
+      <Filter>sc\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
