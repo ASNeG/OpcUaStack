@@ -14,8 +14,8 @@ namespace OpcUaStackCore
 	    OpcUaByteString(void);
 		~OpcUaByteString(void);
 
-		void value(OpcUaByte** value, OpcUaInt32* lenth);
-		void value(char** value, OpcUaInt32* lenth);
+		void value(OpcUaByte** value, OpcUaInt32* lenth) const;
+		void value(char** value, OpcUaInt32* lenth) const;
 		void value(const OpcUaByte* value, OpcUaInt32 length);
 		void value(const char* value, OpcUaInt32 length);
 		void value(const std::string& value);

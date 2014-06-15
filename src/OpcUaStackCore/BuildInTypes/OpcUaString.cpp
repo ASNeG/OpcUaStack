@@ -17,8 +17,8 @@ namespace OpcUaStackCore
 	{
 	}
 
-	std::string& 
-	OpcUaString::value(void)
+	std::string
+	OpcUaString::value(void) const
 	{
 		return value_;
 	}

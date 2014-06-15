@@ -118,6 +118,18 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SequenceHeader.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\OpenSecureChannelRequest.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\OpenSecureChannelResponse.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\RequestHeader.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ResponseHeader.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -202,6 +214,18 @@
       <Filter>sc\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SequenceHeader.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\OpenSecureChannelRequest.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\OpenSecureChannelResponse.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\RequestHeader.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ResponseHeader.cpp">
       <Filter>sc\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>

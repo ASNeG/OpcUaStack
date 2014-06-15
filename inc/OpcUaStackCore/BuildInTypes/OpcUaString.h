@@ -15,7 +15,7 @@ namespace OpcUaStackCore
 	    OpcUaString(void);
 		~OpcUaString(void);
 
-		std::string& value(void);
+		std::string value(void) const;
 		void value(const std::string& value);
 		uint32_t size(void) const;
 		void reset(void);

@@ -16,14 +16,14 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaByteString::value(OpcUaByte** value, OpcUaInt32* length)
+	OpcUaByteString::value(OpcUaByte** value, OpcUaInt32* length) const
 	{
 		*value = value_;
 		*length = length_;
 	}
 
 	void 
-	OpcUaByteString::value(char** value, OpcUaInt32* length)
+	OpcUaByteString::value(char** value, OpcUaInt32* length) const
 	{
 		this->value((OpcUaByte**)value, length);
 	}

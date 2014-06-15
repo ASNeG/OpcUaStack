@@ -15,12 +15,16 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
-
-
 // OpcUaDiagnosticInfo
+
 
 namespace OpcUaStackCore
 {
+
+	typedef OpcUaDateTime UtcTime;
+	typedef OpcUaUInt32 IntegerId;
+	typedef OpcUaDouble Duration;
+
 };
 
 #endif
