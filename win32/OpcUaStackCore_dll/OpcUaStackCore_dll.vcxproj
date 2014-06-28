@@ -82,11 +82,14 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\IOService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ObjectPool.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\os.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\BuildInTypes.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaArray.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaByteString.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDataValue.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDateTime.h" />
@@ -105,6 +108,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaVariant.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\AcknowledgeMessage.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ErrorMessage.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\HelloMessage.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\MessageHeader.h" />
@@ -114,13 +119,20 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\RequestHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ResponseHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityHeader.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SequenceHeader.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPAcceptor.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnection.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\IOService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaArray.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaByteString.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDataValue.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDateTime.cpp" />
@@ -138,6 +150,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaVariant.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\AcknowledgeMessage.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ErrorMessage.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\HelloMessage.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\MessageDefaults.cpp" />
@@ -147,7 +161,11 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\RequestHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ResponseHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityHeader.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SequenceHeader.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPAcceptor.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnection.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnector.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

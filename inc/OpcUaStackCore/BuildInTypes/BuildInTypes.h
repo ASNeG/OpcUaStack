@@ -15,7 +15,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
-// OpcUaDiagnosticInfo
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
 
 
 namespace OpcUaStackCore

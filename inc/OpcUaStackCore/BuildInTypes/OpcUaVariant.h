@@ -2,7 +2,7 @@
 #define __OpcUaStackCore_OpcUaVariant__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaGuid.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
@@ -143,6 +143,13 @@ namespace OpcUaStackCore
 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaVariant& value);
 	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaVariant& value);
 
+
+	class OpcUaVariantArray : public OpcUaArray<OpcUaVariant::SPtr>, public ObjectPool<OpcUaVariantArray> {};
+
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaVariantArray& value);
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaVariantArray::SPtr& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaVariantArray& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaVariantArray::SPtr& value);
 
 };
 

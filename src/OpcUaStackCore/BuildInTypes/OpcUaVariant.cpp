@@ -663,4 +663,32 @@ namespace OpcUaStackCore
 		value.opcUaBinaryDecode(is);
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaVariantArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaVariantArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaVariantArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaVariantArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaVariantArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
+	}
+
 };

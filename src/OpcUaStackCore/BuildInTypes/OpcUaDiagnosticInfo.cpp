@@ -3,6 +3,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaDiagnosticInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaDiagnosticInfo::OpcUaDiagnosticInfo(void)
 	:  ObjectPool<OpcUaDiagnosticInfo>()
 	, symbolicId_(-1)
@@ -96,9 +103,49 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfo::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void 
 	opcUaBinaryDecode(std::istream& is, OpcUaDiagnosticInfo& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaDiagnosticInfo::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaDiagnosticInfoArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfoArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfoArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is,OpcUaDiagnosticInfoArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is,OpcUaDiagnosticInfoArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 };

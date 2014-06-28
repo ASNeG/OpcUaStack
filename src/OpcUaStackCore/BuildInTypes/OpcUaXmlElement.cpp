@@ -3,6 +3,13 @@
 namespace OpcUaStackCore
 {
 
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	//
+	// OpcUaXmlElement
+	//
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
 	OpcUaXmlElement::OpcUaXmlElement(void)
 	: ObjectPool<OpcUaXmlElement>()
 	{
@@ -30,6 +37,34 @@ namespace OpcUaStackCore
 	void 
 	opcUaBinaryDecode(std::istream& is, OpcUaXmlElement& value)
 	{
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaXmlElementArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaXmlElementArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaXmlElementArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaXmlElementArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaXmlElementArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 }

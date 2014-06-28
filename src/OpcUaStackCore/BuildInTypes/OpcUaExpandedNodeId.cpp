@@ -3,6 +3,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaExpandedNodeId
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaExpandedNodeId::OpcUaExpandedNodeId(void)
 	: ObjectPool<OpcUaExpandedNodeId>()
 	, OpcUaNodeIdBase()
@@ -90,6 +97,34 @@ namespace OpcUaStackCore
 	void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeId& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaExpandedNodeIdArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeIdArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeIdArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeIdArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeIdArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 }

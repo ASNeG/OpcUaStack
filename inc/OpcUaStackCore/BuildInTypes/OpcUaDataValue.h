@@ -44,6 +44,15 @@ namespace OpcUaStackCore
 
 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValue& value);
 	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDataValue& value);
+
+
+	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr>, public ObjectPool<OpcUaDataValueArray> {};
+
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray& value);
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray::SPtr& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray::SPtr& value);
+
 }
 
 #endif

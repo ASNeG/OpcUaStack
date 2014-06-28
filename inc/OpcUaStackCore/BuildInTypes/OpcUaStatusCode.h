@@ -3,9 +3,19 @@
 
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
+
+#if 0
+	class OpcUaStatusCode
+	{
+	  public:
+		OpcUaStatusCode(void);
+		~OpcUaStatusCode(void);
+	};
+#endif
 
 	typedef enum {
 		x = 0
@@ -233,6 +243,14 @@ BadMaxConnectionsReached,0x80B70000,The operation could not be finished because 
 
 	DLLEXPORT  void opcUaBinaryEncode(std::ostream& os, const OpcUaStatusCode& value);
 	DLLEXPORT  void opcUaBinaryDecode(std::istream& is, OpcUaStatusCode& value);
+
+
+	class OpcUaStatusCodeArray : public OpcUaArray<OpcUaStatusCode>, public ObjectPool<OpcUaStatusCodeArray> {};
+
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaStatusCodeArray& value);
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaStatusCodeArray::SPtr& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaStatusCodeArray& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaStatusCodeArray::SPtr& value);
 
 };
 

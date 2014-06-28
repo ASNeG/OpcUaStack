@@ -18,6 +18,12 @@ namespace OpcUaStackCore
 		return socket_;
 	}
 
+	void
+	TCPConnection::close(void)
+	{
+		socket_.close();
+	}
+
 }
 
 

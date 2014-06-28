@@ -3,6 +3,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// 
+	// OPcUaByteString
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaByteString::OpcUaByteString(void)
 	:  ObjectPool<OpcUaByteString>()
 	, length_(-1)
@@ -116,9 +123,61 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaByteString::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void 
 	opcUaBinaryDecode(std::istream& is, OpcUaByteString& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaByteString::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
+	}
+
+
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	//
+	// OpcUaByteStringArray
+	//
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	OpcUaByteStringArray::OpcUaByteStringArray(void)
+	{
+	}
+
+	OpcUaByteStringArray::~OpcUaByteStringArray(void)
+	{
+	}
+
+	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaByteStringArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaByteStringArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaByteStringArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaByteStringArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 };

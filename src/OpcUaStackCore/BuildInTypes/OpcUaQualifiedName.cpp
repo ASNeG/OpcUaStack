@@ -3,6 +3,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaQualifiedName
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaQualifiedName::OpcUaQualifiedName(void)
 	: ObjectPool<OpcUaQualifiedName>()
 	, namespaceIndex_(0)
@@ -84,6 +91,34 @@ namespace OpcUaStackCore
 	void opcUaBinaryDecode(std::istream& is, OpcUaQualifiedName& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaQualifiedNameArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaQualifiedNameArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaQualifiedNameArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaQualifiedNameArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaQualifiedNameArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 }

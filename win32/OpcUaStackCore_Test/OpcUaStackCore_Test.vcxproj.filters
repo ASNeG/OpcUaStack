@@ -49,6 +49,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDataValue_t.cpp">
       <Filter>unittest\BuildInTypes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaArray_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPChannel_t.cpp">
+      <Filter>unittest\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\IOService_t.cpp">
+      <Filter>unittest\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -56,6 +65,15 @@
     </Filter>
     <Filter Include="unittest\BuildInTypes">
       <UniqueIdentifier>{7f5fd84a-a7fe-411a-8eba-0fd2023b057b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\TCPChannel">
+      <UniqueIdentifier>{ccd531c3-ff3a-4a42-9af9-d045420e78dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\SecureChannel">
+      <UniqueIdentifier>{a2b0481d-4944-4cbc-9ee5-c0d5f81362b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\Base">
+      <UniqueIdentifier>{aba8f335-b796-47c3-99ab-c5bcc3b051bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@
 namespace OpcUaStackCore
 {
 
-	class TCPConnection
+	class DLLEXPORT TCPConnection
 	{
 	  public:
 	    typedef boost::shared_ptr<TCPConnection> SPtr;
@@ -20,6 +20,7 @@ namespace OpcUaStackCore
 		~TCPConnection(void);
 
 		boost::asio::ip::tcp::socket& socket(void);
+		void close(void);
 
 		template<typename BUFFER, typename HANDLER>
 		  void async_read_atLeast(BUFFER& buffer, HANDLER handler, uint32_t atLeast=0)

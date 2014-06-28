@@ -79,7 +79,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\IOService_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\BuildInTypes_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaArray_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaByteString_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDataValue_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaDateTime_t.cpp" />
@@ -94,6 +96,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaString_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaVariant_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaXmlElement_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPChannel_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <ItemGroup>

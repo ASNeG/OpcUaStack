@@ -3,6 +3,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaExtensionObject
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaExtensionObject::OpcUaExtensionObject(void)
 	: ObjectPool<OpcUaExtensionObject>()
 	, typeId_()
@@ -80,6 +87,34 @@ namespace OpcUaStackCore
 	opcUaBinaryDecode(std::istream& is, OpcUaExtensionObject& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// 
+	// OpcUaExtensionObjectArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaExtensionObjectArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaExtensionObjectArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaExtensionObjectArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaExtensionObjectArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 };

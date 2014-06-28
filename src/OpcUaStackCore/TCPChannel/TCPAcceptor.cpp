@@ -37,6 +37,12 @@ namespace OpcUaStackCore
 		acceptor_.cancel();
 	}
 
+	void
+	TCPAcceptor::close(void)
+	{
+		acceptor_.close();
+	}
+
 }
 
 /*--------[ END OF FILE ISOonTCPAcceptor.cxx ]---------------------------------------*/

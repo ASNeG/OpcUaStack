@@ -26,6 +26,7 @@ namespace OpcUaStackCore
 			  acceptor_.async_accept(socket,handler);
 		  }
 		void cancel(void);
+		void close(void);
 
 	  private:
 		boost::asio::ip::tcp::endpoint endpoint_;

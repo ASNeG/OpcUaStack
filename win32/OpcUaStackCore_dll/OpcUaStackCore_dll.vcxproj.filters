@@ -20,6 +20,9 @@
     <Filter Include="sc\SecureChannel">
       <UniqueIdentifier>{397db13f-f15b-4ba9-8ed3-540351dca1e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sc\TCPChannel">
+      <UniqueIdentifier>{0b91a7a9-118a-4bfe-a67e-8194a5d3608a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -130,6 +133,33 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ResponseHeader.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaArray.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityToken.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPAcceptor.h">
+      <Filter>sc\TCPChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnection.h">
+      <Filter>sc\TCPChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnector.h">
+      <Filter>sc\TCPChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\IOService.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -227,6 +257,33 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ResponseHeader.cpp">
       <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaArray.cpp">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityToken.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPAcceptor.cpp">
+      <Filter>sc\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnection.cpp">
+      <Filter>sc\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnector.cpp">
+      <Filter>sc\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\IOService.cpp">
+      <Filter>sc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp">
+      <Filter>sc\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

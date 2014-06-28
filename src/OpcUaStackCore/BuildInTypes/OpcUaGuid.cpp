@@ -4,6 +4,13 @@
 namespace OpcUaStackCore
 {
 	
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaGuid
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaGuid::OpcUaGuid(void)
 	: ObjectPool<OpcUaGuid>()
 	, data1_(0)
@@ -120,4 +127,33 @@ namespace OpcUaStackCore
 	{
 		value.opcUaBinaryDecode(is);
 	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcGuidArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaGuidArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaGuidArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaGuidArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaGuidArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
+	}
+
 }

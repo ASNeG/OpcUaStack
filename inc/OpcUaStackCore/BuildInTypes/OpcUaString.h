@@ -5,6 +5,7 @@
 #include <string>
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
@@ -33,7 +34,17 @@ namespace OpcUaStackCore
 	};
 
 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaString& value);
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaString::SPtr& valueSPtr);
 	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaString& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaString::SPtr& valueSPtr);
+
+
+	class OpcUaStringArray : public OpcUaArray<OpcUaString::SPtr>, public ObjectPool<OpcUaStringArray> {};
+
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaStringArray& value);
+	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaStringArray::SPtr& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaStringArray& value);
+	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaStringArray::SPtr& value);
 
 }
 

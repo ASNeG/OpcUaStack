@@ -6,6 +6,13 @@ namespace OpcUaStackCore
 
 	#define MAX_STREAMBUF_SIZE	1000000
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaString
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaString::OpcUaString(void)
 	: ObjectPool<OpcUaString>()
 	, exist_(false)
@@ -118,9 +125,53 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaString::SPtr& value) 
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void 
 	opcUaBinaryDecode(std::istream& is, OpcUaString& value)
 	{	
 		value.opcUaBinaryDecode(is);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaString::SPtr& value)
+	{	
+		value->opcUaBinaryDecode(is);
+	}
+
+
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	// 
+	// OpcUaStringArray
+	//
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaStringArray& value) 
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaStringArray::SPtr& value) 
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaStringArray& value)
+	{	
+		value.opcUaBinaryDecode(is);
+	}
+
+	void 
+	opcUaBinaryDecode(std::istream& is, OpcUaStringArray::SPtr& value)
+	{	
+		value->opcUaBinaryDecode(is);
 	}
 
 }

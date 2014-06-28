@@ -3,7 +3,15 @@
 namespace OpcUaStackCore
 {
 
-	 boost::posix_time::ptime OpcUaDateTime::nullTime_ = boost::posix_time::from_iso_string("16010101T120000.000000000");
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaDateTime
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	boost::posix_time::ptime OpcUaDateTime::nullTime_ = boost::posix_time::from_iso_string("16010101T120000.000000000");
 
 	OpcUaDateTime::OpcUaDateTime(void)
 	: dateTime_(0)
@@ -77,6 +85,36 @@ namespace OpcUaStackCore
 	opcUaBinaryDecode(std::istream& is, OpcUaDateTime& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaDateTimeArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaDateTimeArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void 
+	opcUaBinaryEncode(std::ostream& os, const OpcUaDateTimeArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaDateTimeArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaDateTimeArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 }

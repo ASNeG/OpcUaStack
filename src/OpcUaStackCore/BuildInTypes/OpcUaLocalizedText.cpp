@@ -4,6 +4,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// 
+	// OpcUaLocalizedText
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaLocalizedText::OpcUaLocalizedText(void)
 	: ObjectPool<OpcUaLocalizedText>()
 	, locale_()
@@ -95,6 +102,34 @@ namespace OpcUaStackCore
 	opcUaBinaryDecode(std::istream& is, OpcUaLocalizedText& value)
 	{
 		value.opcUaBinaryDecode(is);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaLocalizedTextArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaLocalizedTextArray& value)
+	{
+		value.opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaLocalizedTextArray::SPtr& value)
+	{
+		value->opcUaBinaryEncode(os);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaLocalizedTextArray& value)
+	{
+		value.opcUaBinaryDecode(is);
+	}
+
+	void opcUaBinaryDecode(std::istream& is, OpcUaLocalizedTextArray::SPtr& value)
+	{
+		value->opcUaBinaryDecode(is);
 	}
 
 };
