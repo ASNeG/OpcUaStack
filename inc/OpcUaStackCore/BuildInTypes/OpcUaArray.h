@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 
 namespace OpcUaStackCore
 {
@@ -172,9 +173,9 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T>::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaUInt32 actArrayLen;
+		int32_t actArrayLen;
 		actArrayLen = actArrayLen_;
-		OpcUaStackCore::opcUaBinaryEncode(os, actArrayLen_);
+		OpcUaStackCore::opcUaBinaryEncodeNumber(os, actArrayLen_);
 
 		if (actArrayLen_ <= 0) {
 			return;
@@ -189,8 +190,8 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T>::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaUInt32 arrayLength;
-		OpcUaStackCore::opcUaBinaryDecode(is, arrayLength);
+		int32_t arrayLength;
+		OpcUaStackCore::opcUaBinaryDecodeNumber(is, arrayLength);
 		if (arrayLength <= 0) {
 			return;
 		}
@@ -226,7 +227,7 @@ namespace OpcUaStackCore
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	template<typename T>
-	class OpcUaArray<boost::shared_ptr<T>>
+	class OpcUaArray<boost::shared_ptr<T> >
 	{
 	  public:
 		OpcUaArray(uint32_t maxArrayLen = 1);
@@ -258,7 +259,7 @@ namespace OpcUaStackCore
 	};
 
 	template<typename T>
-	OpcUaArray<boost::shared_ptr<T>>::OpcUaArray(uint32_t maxArrayLen)
+	OpcUaArray<boost::shared_ptr<T> >::OpcUaArray(uint32_t maxArrayLen)
 	: maxArrayLen_(maxArrayLen)
 	, actArrayLen_(0)
 	{
@@ -266,14 +267,14 @@ namespace OpcUaStackCore
 	}
 
 	template<typename T>
-	OpcUaArray<boost::shared_ptr<T>>::~OpcUaArray(void)
+	OpcUaArray<boost::shared_ptr<T> >::~OpcUaArray(void)
 	{
 		clearArray();
 	}
 
 	template<typename T>
 	void
-	OpcUaArray<boost::shared_ptr<T>>::initArray(void)
+	OpcUaArray<boost::shared_ptr<T> >::initArray(void)
 	{
 		if (maxArrayLen_ == 1) {
 			valueArray_ = &value_;
@@ -286,7 +287,7 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	void
-	OpcUaArray<boost::shared_ptr<T>>::clearArray(void)
+	OpcUaArray<boost::shared_ptr<T> >::clearArray(void)
 	{
 		if (maxArrayLen_ != 1) {
 			delete [] valueArray_;
@@ -299,7 +300,7 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	void
-	OpcUaArray<boost::shared_ptr<T>>::resize(uint32_t maxArrayLen)
+	OpcUaArray<boost::shared_ptr<T> >::resize(uint32_t maxArrayLen)
 	{
 		clearArray();
 		maxArrayLen_ = maxArrayLen;
@@ -308,21 +309,21 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	uint32_t
-	OpcUaArray<boost::shared_ptr<T>>::size(void)
+	OpcUaArray<boost::shared_ptr<T> >::size(void)
 	{
 		return actArrayLen_;
 	}
 
 	template<typename T>
 	uint32_t
-	OpcUaArray<boost::shared_ptr<T>>::maxSize(void)
+	OpcUaArray<boost::shared_ptr<T> >::maxSize(void)
 	{
 		return maxArrayLen_;
 	}
 
 	template<typename T>
 	void
-	OpcUaArray<boost::shared_ptr<T>>::clear(void)
+	OpcUaArray<boost::shared_ptr<T> >::clear(void)
 	{
 		clearArray();
 		initArray();
@@ -330,7 +331,7 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	bool
-	OpcUaArray<boost::shared_ptr<T>>::set(uint32_t pos, const boost::shared_ptr<T> value)
+	OpcUaArray<boost::shared_ptr<T> >::set(uint32_t pos, const boost::shared_ptr<T> value)
 	{
 		if (pos >= maxArrayLen_) {
 			return false;
@@ -345,21 +346,21 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	bool
-	OpcUaArray<boost::shared_ptr<T>>::set(const boost::shared_ptr<T> value)
+	OpcUaArray<boost::shared_ptr<T> >::set(const boost::shared_ptr<T> value)
 	{
 		return set(0, value);
 	}
 
 	template<typename T>
 	bool
-	OpcUaArray<boost::shared_ptr<T>>::push_back(const boost::shared_ptr<T> value)
+	OpcUaArray<boost::shared_ptr<T> >::push_back(const boost::shared_ptr<T> value)
 	{
 		return set(actArrayLen_, value);
 	}
 
 	template<typename T>
 	bool 
-	OpcUaArray<boost::shared_ptr<T>>::get(uint32_t pos, boost::shared_ptr<T>& value)
+	OpcUaArray<boost::shared_ptr<T> >::get(uint32_t pos, boost::shared_ptr<T>& value)
 	{
 		if (pos >= actArrayLen_) {
 			return false;
@@ -371,18 +372,18 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	bool 
-	OpcUaArray<boost::shared_ptr<T>>::get(boost::shared_ptr<T>& value)
+	OpcUaArray<boost::shared_ptr<T> >::get(boost::shared_ptr<T>& value)
 	{
 		return get(0, value);
 	}
 		
 	template<typename T>
 	void 
-	OpcUaArray<boost::shared_ptr<T>>::opcUaBinaryEncode(std::ostream& os) const
+	OpcUaArray<boost::shared_ptr<T> >::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaUInt32 actArrayLen;
+		int32_t actArrayLen;
 		actArrayLen = actArrayLen_;
-		OpcUaStackCore::opcUaBinaryEncode(os, actArrayLen_);
+		OpcUaStackCore::opcUaBinaryEncodeNumber(os, actArrayLen_);
 
 		if (actArrayLen_ <= 0) {
 			return;
@@ -395,10 +396,10 @@ namespace OpcUaStackCore
 	
 	template<typename T>
 	void 
-	OpcUaArray<boost::shared_ptr<T>>::opcUaBinaryDecode(std::istream& is)
+	OpcUaArray<boost::shared_ptr<T> >::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaUInt32 arrayLength;
-		OpcUaStackCore::opcUaBinaryDecode(is, arrayLength);
+		int32_t arrayLength;
+		OpcUaStackCore::opcUaBinaryDecodeNumber(is, arrayLength);
 		if (arrayLength <= 0) {
 			return;
 		}
@@ -414,13 +415,13 @@ namespace OpcUaStackCore
 
 
 	template<typename T>
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaArray<boost::shared_ptr<T>>& value)
+	void opcUaBinaryEncode(std::ostream& os, const OpcUaArray<boost::shared_ptr<T> >& value)
 	{
 		value.opcUaBinaryEncode(os);
 	}
 
 	template<typename T>
-    void opcUaBinaryDecode(std::istream& is, OpcUaArray<boost::shared_ptr<T>>& value)
+    void opcUaBinaryDecode(std::istream& is, OpcUaArray<boost::shared_ptr<T> >& value)
 	{
 		value.opcUaBinaryDecode(is);
 	}
