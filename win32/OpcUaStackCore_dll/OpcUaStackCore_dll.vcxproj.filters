@@ -214,6 +214,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelResponse.h">
       <Filter>sc\ServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\ByteOrder.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -389,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelResponse.cpp">
       <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\ByteOrder.cpp">
+      <Filter>sc\BuildInTypes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -89,6 +89,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ObjectPool.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\os.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\BuildInTypes.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\ByteOrder.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaArray.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaByteString.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDataValue.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\IOService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\ByteOrder.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaArray.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaByteString.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDataValue.cpp" />
