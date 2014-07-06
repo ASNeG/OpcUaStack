@@ -6,20 +6,20 @@ namespace OpcUaStackCore
 	class OpcUaVariantTypeVisitor : public boost::static_visitor<>
 	{
 	  public:
-		void operator()(OpcUaVariantNullType) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_Unknown; }
-		void operator()(OpcUaBoolean) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaBoolean; }
-		void operator()(OpcUaSByte) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaSByte; }
-		void operator()(OpcUaByte) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaByte; }
-		void operator()(OpcUaInt16) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaInt16; }
-		void operator()(OpcUaUInt16) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt16; }
-		void operator()(OpcUaInt32) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaInt32; }
-		void operator()(OpcUaUInt32) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32; }
-		void operator()(OpcUaInt64) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaInt64; }
-		void operator()(OpcUaUInt64) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt64; }
-		void operator()(OpcUaFloat) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaFloat; }
-		void operator()(OpcUaDouble) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaDouble; }
-		void operator()(OpcUaDateTime) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaDateTime; }
-		void operator()(OpcUaStatusCode) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaStatusCode; }
+		void operator()(OpcUaVariantNullType) { opcUaBuildInType_ = OpcUaBuildInType_Unknown; }
+		void operator()(OpcUaBoolean) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaBoolean; }
+		void operator()(OpcUaSByte) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaSByte; }
+		void operator()(OpcUaByte) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaByte; }
+		void operator()(OpcUaInt16) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaInt16; }
+		void operator()(OpcUaUInt16) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaUInt16; }
+		void operator()(OpcUaInt32) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaInt32; }
+		void operator()(OpcUaUInt32) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaUInt32; }
+		void operator()(OpcUaInt64) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaInt64; }
+		void operator()(OpcUaUInt64) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaUInt64; }
+		void operator()(OpcUaFloat) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaFloat; }
+		void operator()(OpcUaDouble) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaDouble; }
+		void operator()(OpcUaDateTime) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaDateTime; }
+		void operator()(OpcUaStatusCode) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaStatusCode; }
 		void operator()(OpcUaVariantSPtr opcUaVariantSPtr) {  opcUaBuildInType_ = opcUaVariantSPtr.opcUaBuildInType_; }
 		
 		OpcUaBuildInType opcUaBuildInType_;
@@ -133,121 +133,121 @@ namespace OpcUaStackCore
 	{
 		switch (variantType) 
 		{
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaBoolean:
+			case  OpcUaBuildInType_OpcUaBoolean:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaBoolean>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaSByte:
+			case  OpcUaBuildInType_OpcUaSByte:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaSByte>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaByte:
+			case  OpcUaBuildInType_OpcUaByte:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaByte>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaInt16:
+			case  OpcUaBuildInType_OpcUaInt16:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaInt16>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt16:
+			case  OpcUaBuildInType_OpcUaUInt16:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaUInt16>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaInt32:
+			case  OpcUaBuildInType_OpcUaInt32:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaInt32>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32:
+			case  OpcUaBuildInType_OpcUaUInt32:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaUInt32>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaInt64:
+			case  OpcUaBuildInType_OpcUaInt64:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaInt64>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt64:
+			case  OpcUaBuildInType_OpcUaUInt64:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaUInt64>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaFloat:
+			case  OpcUaBuildInType_OpcUaFloat:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaFloat>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaDouble:
+			case  OpcUaBuildInType_OpcUaDouble:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaDouble>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaDateTime:
+			case  OpcUaBuildInType_OpcUaDateTime:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaDateTime>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaStatusCode:
+			case  OpcUaBuildInType_OpcUaStatusCode:
 			{
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaStatusCode>(variantValue_));
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaGuid:
+			case  OpcUaBuildInType_OpcUaGuid:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaGuid::SPtr opcUaGuidSPtr = boost::static_pointer_cast<OpcUaGuid>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaGuidSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaByteString:
+			case  OpcUaBuildInType_OpcUaByteString:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaByteString::SPtr opcUaByteStringSPtr = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaByteStringSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaXmlElement:
+			case  OpcUaBuildInType_OpcUaXmlElement:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = boost::static_pointer_cast<OpcUaXmlElement>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaXmlElementSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaNodeId:
+			case  OpcUaBuildInType_OpcUaNodeId:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaNodeId::SPtr opcUaNodeIdSPtr = boost::static_pointer_cast<OpcUaNodeId>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaNodeIdSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaExpandedNodeId:
+			case  OpcUaBuildInType_OpcUaExpandedNodeId:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = boost::static_pointer_cast<OpcUaExpandedNodeId>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaExpandedNodeIdSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaQualifiedName:
+			case  OpcUaBuildInType_OpcUaQualifiedName:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = boost::static_pointer_cast<OpcUaQualifiedName>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaQualifiedNameSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaLocalizedText:
+			case  OpcUaBuildInType_OpcUaLocalizedText:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = boost::static_pointer_cast<OpcUaLocalizedText>(opcUaVariantSPtr.objectSPtr_);
 				OpcUaStackCore::opcUaBinaryEncode(os,*opcUaLocalizedTextSPtr);
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaExtensionObject:
+			case  OpcUaBuildInType_OpcUaExtensionObject:
 			{
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = boost::static_pointer_cast<OpcUaExtensionObject>(opcUaVariantSPtr.objectSPtr_);
@@ -263,7 +263,7 @@ namespace OpcUaStackCore
 		OpcUaVariantValueType opcUaVariantValue;
 		switch (variantType) 
 		{
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaBoolean:
+			case  OpcUaBuildInType_OpcUaBoolean:
 			{
 				OpcUaBoolean opcUaBoolean;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaBoolean);
@@ -271,7 +271,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaSByte:
+			case  OpcUaBuildInType_OpcUaSByte:
 			{
 				OpcUaSByte opcUaSByte;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaSByte);
@@ -279,7 +279,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaByte:
+			case  OpcUaBuildInType_OpcUaByte:
 			{
 				OpcUaByte opcUaByte;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaByte);
@@ -287,7 +287,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaInt16:
+			case  OpcUaBuildInType_OpcUaInt16:
 			{
 				OpcUaInt16 opcUaInt16;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaInt16);
@@ -295,7 +295,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt16:
+			case  OpcUaBuildInType_OpcUaUInt16:
 			{
 				OpcUaUInt16 opcUaUInt16;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaUInt16);
@@ -303,7 +303,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaInt32:
+			case  OpcUaBuildInType_OpcUaInt32:
 			{
 				OpcUaInt32 opcUaInt32;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaInt32);
@@ -311,7 +311,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32:
+			case  OpcUaBuildInType_OpcUaUInt32:
 			{
 				OpcUaUInt32 opcUaUInt32;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaUInt32);
@@ -319,7 +319,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaInt64:
+			case  OpcUaBuildInType_OpcUaInt64:
 			{
 				OpcUaInt64 opcUaInt64;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaInt64);
@@ -327,7 +327,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt64:
+			case  OpcUaBuildInType_OpcUaUInt64:
 			{
 				OpcUaUInt64 opcUaUInt64;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaUInt64);
@@ -335,7 +335,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaFloat:
+			case  OpcUaBuildInType_OpcUaFloat:
 			{
 				OpcUaFloat opcUaFloat;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaFloat);
@@ -343,7 +343,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaDouble:
+			case  OpcUaBuildInType_OpcUaDouble:
 			{
 				OpcUaDouble opcUaDouble;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaDouble);
@@ -351,7 +351,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaDateTime:
+			case  OpcUaBuildInType_OpcUaDateTime:
 			{
 				OpcUaDateTime opcUaDateTime;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaDateTime);
@@ -359,7 +359,7 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaStatusCode:
+			case  OpcUaBuildInType_OpcUaStatusCode:
 			{
 				OpcUaStatusCode opcUaStatusCode;
 				OpcUaStackCore::opcUaBinaryDecode(is, opcUaStatusCode);
@@ -367,91 +367,91 @@ namespace OpcUaStackCore
 				variantValue_ = opcUaVariantValue;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaGuid:
+			case  OpcUaBuildInType_OpcUaGuid:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaGuidSPtr);
 				val.objectSPtr_ = opcUaGuidSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaGuid;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaGuid;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaByteString:
+			case  OpcUaBuildInType_OpcUaByteString:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaByteStringSPtr);
 				val.objectSPtr_ = opcUaByteStringSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaByteString;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaByteString;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaXmlElement:
+			case  OpcUaBuildInType_OpcUaXmlElement:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = OpcUaXmlElement::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaXmlElementSPtr);
 				val.objectSPtr_ = opcUaXmlElementSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaXmlElement;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaXmlElement;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaNodeId:
+			case  OpcUaBuildInType_OpcUaNodeId:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaNodeId::SPtr opcUaNodeIdSPtr = OpcUaNodeId::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaNodeIdSPtr);
 				val.objectSPtr_ = opcUaNodeIdSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaNodeId;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaNodeId;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaExpandedNodeId:
+			case  OpcUaBuildInType_OpcUaExpandedNodeId:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = OpcUaExpandedNodeId::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaExpandedNodeIdSPtr);
 				val.objectSPtr_ = opcUaExpandedNodeIdSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaExpandedNodeId;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExpandedNodeId;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaQualifiedName:
+			case  OpcUaBuildInType_OpcUaQualifiedName:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = OpcUaQualifiedName::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaQualifiedNameSPtr);
 				val.objectSPtr_ = opcUaQualifiedNameSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaQualifiedName;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaQualifiedName;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaLocalizedText:
+			case  OpcUaBuildInType_OpcUaLocalizedText:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = OpcUaLocalizedText::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaLocalizedTextSPtr);
 				val.objectSPtr_ = opcUaLocalizedTextSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaLocalizedText;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaLocalizedText;
 				variantValue_ = val;
 				break;
 			}
-			case  OpcUaBuildInType::OpcUaBuildInType_OpcUaExtensionObject:
+			case  OpcUaBuildInType_OpcUaExtensionObject:
 			{
 				OpcUaVariantSPtr val;
 
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = OpcUaExtensionObject::construct();
 				OpcUaStackCore::opcUaBinaryDecode(is, *opcUaExtensionObjectSPtr);
 				val.objectSPtr_ = opcUaExtensionObjectSPtr;
-				val.opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaExtensionObject;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExtensionObject;
 				variantValue_ = val;
 				break;
 			}
@@ -554,7 +554,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::variantType(void) const
 	{
 		if (variantValueVec_.size() == 0) {
-			return OpcUaBuildInType::OpcUaBuildInType_Unknown;
+			return OpcUaBuildInType_Unknown;
 		}
 		return variantValueVec_[0].variantType();
 	}
@@ -565,7 +565,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType variantType = this->variantType();
 		OpcUaByte encodingMask = (OpcUaByte)variantType;
 
-		if (variantType == OpcUaBuildInType::OpcUaBuildInType_Unknown && variantValueVec_.size() != 0) {
+		if (variantType == OpcUaBuildInType_Unknown && variantValueVec_.size() != 0) {
 			return;
 		}
 			 

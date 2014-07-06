@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
+#include <string.h>
 
 namespace OpcUaStackCore
 {

@@ -3,7 +3,7 @@
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OPcUaNumber.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 
 
 namespace OpcUaStackCore

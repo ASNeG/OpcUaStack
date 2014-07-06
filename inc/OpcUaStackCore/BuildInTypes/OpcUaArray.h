@@ -19,16 +19,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	template<typename T>
-	  void opcUaBinaryEncode(std::ostream& os, const T& value)
-	  {
-		  os << value;
-	  }
+	  void opcUaBinaryEncode(std::ostream& os, const T& value);
 
 	template<typename T>
-	  void opcUaBinaryDecode(std::istream& is, T& value)
-	  {
-		  is >> value;
-	  }
+	  void opcUaBinaryDecode(std::istream& is, T& value);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

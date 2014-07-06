@@ -2,7 +2,7 @@
 #define __OpcUaStackCore_OpcUaDiagnosticInfo_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "opcUaStackCore/BuildInTypes/OpcUaString.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"

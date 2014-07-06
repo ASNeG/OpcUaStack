@@ -12,7 +12,7 @@ namespace OpcUaStackCore
 	// ---------------------------------------------------------------------------
 	UserTokenPolicy::UserTokenPolicy(void)
 	: policyId_()
-	, tokenType_(UserIdentityTokenType::UserIdentityTokenType_Anonymous)
+	, tokenType_(UserIdentityTokenType_Anonymous)
 	, issuedTokenType_()
 	, issuerEndpointUrl_()
 	, securityPolicyUri_()

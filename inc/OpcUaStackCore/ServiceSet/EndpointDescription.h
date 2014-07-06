@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
-#include "OPcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 #include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
 #include "OpcUaStackCore/ServiceSet/UserTokenPolicy.h"

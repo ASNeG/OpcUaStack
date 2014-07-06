@@ -2,7 +2,7 @@
 #define __OpcUaStackCore_OpcUaDataValue_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackCOre/BuildInTypes/OpcUaVariant.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"

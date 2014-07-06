@@ -6,11 +6,11 @@ namespace OpcUaStackCore
 	class OpcUaTypeVisitor : public boost::static_visitor<>
 	{
 	  public:
-		void operator()(OpcUaNodeIdNullType) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_Unknown; }
-		void operator()(OpcUaUInt32) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32; }
-		void operator()(OpcUaString::SPtr) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaString; }
-		void operator()(OpcUaGuid::SPtr) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaGuid; }
-		void operator()(OpcUaByteString::SPtr) { opcUaBuildInType_ = OpcUaBuildInType::OpcUaBuildInType_OpcUaByteString; }
+		void operator()(OpcUaNodeIdNullType) { opcUaBuildInType_ = OpcUaBuildInType_Unknown; }
+		void operator()(OpcUaUInt32) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaUInt32; }
+		void operator()(OpcUaString::SPtr) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaString; }
+		void operator()(OpcUaGuid::SPtr) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaGuid; }
+		void operator()(OpcUaByteString::SPtr) { opcUaBuildInType_ = OpcUaBuildInType_OpcUaByteString; }
 
 		OpcUaBuildInType opcUaBuildInType_;
 	};
@@ -64,11 +64,11 @@ namespace OpcUaStackCore
 		OpcUaBuildInType type =  nodeIdType();
 		OpcUaByte ef = encodingFlag();
 
-		if (type == OpcUaBuildInType::OpcUaBuildInType_Unknown) {
+		if (type == OpcUaBuildInType_Unknown) {
 			return;
 		}
 
-		if (namespaceIndex_ == 0 && type == OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32) {
+		if (namespaceIndex_ == 0 && type == OpcUaBuildInType_OpcUaUInt32) {
 			OpcUaUInt32 identifier = boost::get<OpcUaUInt32>(nodeIdValue_);
 			if (identifier <= 0xFF) {
 				OpcUaByte encodingMask = 0x00+ef;
@@ -78,7 +78,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		if (namespaceIndex_ <= 0xFF && type == OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32) {
+		if (namespaceIndex_ <= 0xFF && type == OpcUaBuildInType_OpcUaUInt32) {
 			OpcUaUInt32 identifier = boost::get<OpcUaUInt32>(nodeIdValue_);
 			if (identifier <= 0xFFFF) {
 				OpcUaByte encodingMask = 0x01+ef;
@@ -91,7 +91,7 @@ namespace OpcUaStackCore
 
 		switch(type)
 		{
-			case OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32:
+			case OpcUaBuildInType_OpcUaUInt32:
 			{
 				OpcUaByte encodingMask = 0x02+ef;
 				OpcUaStackCore::opcUaBinaryEncode(os, encodingMask);
@@ -99,7 +99,7 @@ namespace OpcUaStackCore
 				OpcUaStackCore::opcUaBinaryEncode(os, boost::get<OpcUaUInt32>(nodeIdValue_));
 				break;
 			}
-			case OpcUaBuildInType::OpcUaBuildInType_OpcUaString:
+			case OpcUaBuildInType_OpcUaString:
 			{
 				OpcUaByte encodingMask = 0x03+ef;
 				OpcUaStackCore::opcUaBinaryEncode(os, encodingMask);
@@ -107,7 +107,7 @@ namespace OpcUaStackCore
 				OpcUaStackCore::opcUaBinaryEncode(os, *boost::get<OpcUaString::SPtr>(nodeIdValue_));
 				break;
 			}
-			case OpcUaBuildInType::OpcUaBuildInType_OpcUaGuid:
+			case OpcUaBuildInType_OpcUaGuid:
 			{
 				OpcUaByte encodingMask = 0x04+ef;
 				OpcUaStackCore::opcUaBinaryEncode(os, encodingMask);
@@ -115,7 +115,7 @@ namespace OpcUaStackCore
 				OpcUaStackCore::opcUaBinaryEncode(os, *boost::get<OpcUaGuid::SPtr>(nodeIdValue_));
 				break;
 			}
-			case OpcUaBuildInType::OpcUaBuildInType_OpcUaByteString:
+			case OpcUaBuildInType_OpcUaByteString:
 			{
 				OpcUaByte encodingMask = 0x05+ef;
 				OpcUaStackCore::opcUaBinaryEncode(os, encodingMask);

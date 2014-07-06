@@ -7,7 +7,7 @@ namespace OpcUaStackCore
 	ApplicationDescription::ApplicationDescription(void)
 	: applicationUri_()
 	, productUri_()
-	, applicationType_(ApplicationType::ApplicationType_Server)
+	, applicationType_(ApplicationType_Server)
 	, gatewayServerUri_()
 	, discoveryProfileUri_()
 	, discoveryUrls_()

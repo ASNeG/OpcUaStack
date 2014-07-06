@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include <string.h>
 
 namespace OpcUaStackCore
 {
