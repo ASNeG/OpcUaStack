@@ -60,12 +60,28 @@ namespace OpcUaStackCore
 		return count;
 	}
 
+	uint32_t count(boost::asio::streambuf& sb)
+	{
+		uint32_t size = 0;
+		boost::asio::streambuf::const_buffers_type data = sb.data();
+		boost::asio::streambuf::const_buffers_type::const_iterator it;
+		for (it=data.begin(); it!=data.end(); it++) {
+			size += boost::asio::buffer_size(*it);
+		}
+		return size;
+	}
+
+	void dumpHex(std::streambuf& sb, std::ostream& os)
+	{
+		std::iostream ios(&sb);
+		dumpHex(ios, os);
+	}
+
 
 	void dumpHex(std::iostream& ios, std::ostream& os)
 	{
 		std::stringstream ss;
 		duplicate(ios, ss);
-
 		unsigned int long address = 0;
 
 		os << std::hex << std::setfill('0');
@@ -81,7 +97,7 @@ namespace OpcUaStackCore
 			for (int i=0; i<16; i++) {
 				if (i % 8 == 0) os << ' ';
 				if (i < nread) {
-					os << ' ' << std::setw(2) << (unsigned)buf[i];
+					os << ' ' << std::setw(2) << (unsigned)(buf[i] & 0xFF);
 				}
 				else {
 					os << "   ";

@@ -4,25 +4,10 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/SecureChannel/SessionAuthenticationToken.h"
 
 namespace OpcUaStackCore
 {
-	class DLLEXPORT SessionAuthenticationToken : public ObjectPool<SessionAuthenticationToken>
-	{
-	  public:
-		SessionAuthenticationToken(void);
-		virtual ~SessionAuthenticationToken(void);
-
-		void value(const OpcUaUInt32& value);
-		OpcUaUInt32 value(void) const;
-
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-
-	  private:
-		OpcUaUInt32 value_;
-	};
-
 	class DLLEXPORT RequestHeader : public  ObjectPool<RequestHeader>
 	{
 	  public:

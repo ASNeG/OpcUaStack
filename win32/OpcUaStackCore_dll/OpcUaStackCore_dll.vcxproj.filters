@@ -23,6 +23,9 @@
     <Filter Include="sc\TCPChannel">
       <UniqueIdentifier>{0b91a7a9-118a-4bfe-a67e-8194a5d3608a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sc\ServiceSet">
+      <UniqueIdentifier>{77e2aa62-4826-4453-a421-b828c982de93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -139,12 +142,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityToken.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.h">
-      <Filter>sc\SecureChannel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.h">
-      <Filter>sc\SecureChannel</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPAcceptor.h">
       <Filter>sc\TCPChannel</Filter>
     </ClInclude>
@@ -159,6 +156,63 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h">
       <Filter>sc\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPTestHandler.h">
+      <Filter>sc\TCPChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionRequest.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ApplicationInstanceCertificate.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionResponse.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SessionAuthenticationToken.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserTokenPolicy.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionRequest.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserIdentityToken.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionResponse.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CloseSessionRequest.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CloseSessionResponse.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelRequest.h">
+      <Filter>sc\ServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelResponse.h">
+      <Filter>sc\ServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -264,12 +318,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityToken.cpp">
       <Filter>sc\SecureChannel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.cpp">
-      <Filter>sc\SecureChannel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.cpp">
-      <Filter>sc\SecureChannel</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPAcceptor.cpp">
       <Filter>sc\TCPChannel</Filter>
     </ClCompile>
@@ -284,6 +332,63 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp">
       <Filter>sc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPTestHandler.cpp">
+      <Filter>sc\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionRequest.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ApplicationDescription.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ApplicationInstanceCertificate.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionResponse.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SessionAuthenticationToken.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserTokenPolicy.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionRequest.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserIdentityToken.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionResponse.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CloseSessionRequest.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CloseSessionResponse.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelRequest.cpp">
+      <Filter>sc\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelResponse.cpp">
+      <Filter>sc\ServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

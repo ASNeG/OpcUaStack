@@ -19,6 +19,12 @@ namespace OpcUaStackCore
 	}
 
 	void
+	TCPConnection::cancel(void)
+	{
+		socket_.close();
+	}
+
+	void
 	TCPConnection::close(void)
 	{
 		socket_.close();

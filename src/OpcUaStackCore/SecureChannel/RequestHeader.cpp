@@ -6,47 +6,6 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	//
-	// 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	SessionAuthenticationToken::SessionAuthenticationToken(void)
-	: value_(0)
-	{
-	}
-		
-	SessionAuthenticationToken::~SessionAuthenticationToken(void)
-	{
-	}
-
-	void 
-	SessionAuthenticationToken::value(const OpcUaUInt32& value)
-	{
-		value_ = value;
-	}
-
-	OpcUaUInt32 
-	SessionAuthenticationToken::value(void) const
-	{
-		return value_;
-	}
-
-	void 
-	SessionAuthenticationToken::opcUaBinaryEncode(std::ostream& os) const
-	{
-		OpcUaStackCore::opcUaBinaryEncode(os, value_);
-	}
-
-	void 
-	SessionAuthenticationToken::opcUaBinaryDecode(std::istream& is)
-	{
-		OpcUaStackCore::opcUaBinaryDecode(is, value_);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// RequestHeader
 	//
 	// ------------------------------------------------------------------------

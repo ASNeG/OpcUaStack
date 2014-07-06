@@ -91,6 +91,7 @@ namespace OpcUaStackCore
 		mutex_.lock();
 		while (conditionValue_ != conditionValueTrue_) {
 			if (!condition_.timed_wait(mutex_, timeout)) {
+				mutex_.unlock();
 				return false;
 			}
 		}

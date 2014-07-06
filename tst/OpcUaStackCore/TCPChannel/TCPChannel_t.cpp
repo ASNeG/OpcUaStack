@@ -5,82 +5,28 @@
 #include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
+#include "OpcUaStackCore/TCPChannel/TCPTestHandler.h"
+
+#include <boost/asio/error.hpp>
 
 #define SOCKET_ADDRESS	"127.0.0.1"
 #define SOCKET_PORT		3456
 
 using namespace OpcUaStackCore;
 
-class TCPChannelHandler
+BOOST_AUTO_TEST_SUITE(TCPChannel_)
+
+BOOST_AUTO_TEST_CASE(TCPChannel_)
 {
-  public:
-	TCPChannelHandler(void)
-	: handleAcceptCount_(0)
-	, handleConnectCount_(0)
-	, handleReadClientCount_(0)
-	, handleReadServerCount_(0)
-	{
-	}
-
-	void handleAccept(const boost::system::error_code& error) 
-	{
-		std::cout << "handleAccept" << std::endl;
-		handleAcceptCount_++;
-		handleAcceptError_ = error;
-		handleAcceptCondition_.conditionValueInc();
-	}
-
-	void handleConnect(const boost::system::error_code& error)
-	{
-		std::cout << "handleConnect" << std::endl;
-		handleConnectCount_++;
-		handleConnectError_ = error;
-		handleConnectCondition_.conditionValueInc();
-	}
-
-	void handleReadClient(const boost::system::error_code& error, std::size_t bytes_transfered)
-	{
-		std::cout << "handleReadClient" << std::endl;
-		handleReadClientCount_++;
-		handleReadClientError_ = error;
-		std::size_t bytes_transfered_client_ = bytes_transfered;
-		handleReadClientCondition_.conditionValueInc();
-	}
-
-	void handleReadServer(const boost::system::error_code& error, std::size_t bytes_transfered)
-	{
-		std::cout << "handleReadServer" << std::endl;
-		handleReadServerCount_++;
-		handleReadServerError_ = error;
-		std::size_t bytes_transfered_server_ = bytes_transfered;
-		handleReadServerCondition_.conditionValueInc();
-	}
-
-	uint32_t handleAcceptCount_;
-	uint32_t handleConnectCount_;
-	uint32_t handleReadClientCount_;
-	uint32_t handleReadServerCount_;
-
-	boost::system::error_code handleAcceptError_;
-	boost::system::error_code handleConnectError_;
-	boost::system::error_code handleReadClientError_;
-	boost::system::error_code handleReadServerError_;
-
-	Condition handleAcceptCondition_;
-	Condition handleConnectCondition_;
-	Condition handleReadClientCondition_;
-	Condition handleReadServerCondition_;
-
-	std::size_t bytes_transfered_client_;
-	std::size_t bytes_transfered_server_;
-};
-
-BOOST_AUTO_TEST_SUITE(TCPChannel_t)
-
+	std::cout << "TCPChannel_t" << std::endl;
+}
 
 BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 {
-	TCPChannelHandler tcpChannelHandler;
+	boost::asio::streambuf isClient;
+	boost::asio::streambuf isServer;
+
+	TCPTestHandler tcpTestHandler;
 
 	IOService ioService;
 	TCPConnection tcpConnectionClient(ioService.io_service());
@@ -92,60 +38,486 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 	//
 	// open channel
 	//
-	tcpChannelHandler.handleAcceptCondition_.condition(0, 1);
-	tcpChannelHandler.handleConnectCondition_.condition(0, 1);
+	tcpTestHandler.handleAcceptCondition_.condition(0, 1);
+	tcpTestHandler.handleConnectCondition_.condition(0, 1);
 
 	tcpAcceptor.listen();
 	tcpAcceptor.async_accept(
 		tcpConnectionServer.socket(),
-		boost::bind(&TCPChannelHandler::handleAccept, &tcpChannelHandler, boost::asio::placeholders::error)
+		boost::bind(&TCPTestHandler::handleAccept, &tcpTestHandler, boost::asio::placeholders::error)
 	);
 	tcpConnector.async_connect(
 		tcpConnectionClient.socket(),
 		SOCKET_ADDRESS,
 		SOCKET_PORT,
-		boost::bind(&TCPChannelHandler::handleConnect, &tcpChannelHandler, boost::asio::placeholders::error)
+		boost::bind(&TCPTestHandler::handleConnect, &tcpTestHandler, boost::asio::placeholders::error)
 	);
 
-	BOOST_REQUIRE(tcpChannelHandler.handleAcceptCondition_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(tcpChannelHandler.handleConnectCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCondition_.waitForCondition(1000) == true);
 
-	BOOST_REQUIRE(tcpChannelHandler.handleAcceptCount_ == 1);
-	BOOST_REQUIRE(tcpChannelHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpChannelHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpChannelHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
 
 	//
 	// close channel by client
 	//
-	tcpChannelHandler.handleReadClientCondition_.condition(0, 1);
-	tcpChannelHandler.handleReadServerCondition_.condition(0, 1);
+	tcpTestHandler.handleReadClientCondition_.condition(0, 1);
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
 
 	tcpConnectionClient.async_read_atLeast(
-		tcpConnectionClient.inputStreamBuf_,
-		boost::bind(&TCPChannelHandler::handleReadClient, &tcpChannelHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		isClient,
+		boost::bind(&TCPTestHandler::handleReadClient, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
 		1
 	);
 	tcpConnectionServer.async_read_atLeast(
-		tcpConnectionServer.inputStreamBuf_,
-		boost::bind(&TCPChannelHandler::handleReadServer, &tcpChannelHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		isServer,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
 		1
 	);
 	tcpConnectionClient.close();
 
-	BOOST_REQUIRE(tcpChannelHandler.handleReadClientCondition_.waitForCondition(10000) == true);
-	BOOST_REQUIRE(tcpChannelHandler.handleReadServerCondition_.waitForCondition(10000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientCondition_.waitForCondition(10000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(10000) == true);
 
-	std::cout << "handleRead= " << tcpChannelHandler.handleReadClientCount_ << std::endl;
-	std::cout << "handleWrite=" << tcpChannelHandler.handleReadServerCount_ << std::endl;
-	std::cout << "handleReadClientError= " << tcpChannelHandler.handleReadClientError_ << std::endl;
-	std::cout << "handleReadClientError=" << tcpChannelHandler.handleReadServerError_ << std::endl;
-
-	std::cout << "handleReadClientSize=" << (int32_t)tcpChannelHandler.bytes_transfered_client_<< std::endl;
-	std::cout << "handleReadServerSize=" << (int32_t)tcpChannelHandler.bytes_transfered_server_<< std::endl;
-
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  boost::asio::error::connection_reset);
+	
 	ioService.stop();
 }
 
+BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
+{
+	boost::asio::streambuf isClient;
+	boost::asio::streambuf isServer1;
+	boost::asio::streambuf isServer2;
+	boost::asio::streambuf isServer3;
+
+	boost::asio::streambuf osbuffer;
+	std::ostream os(&osbuffer);
+
+	TCPTestHandler tcpTestHandler;
+
+	IOService ioService;
+	TCPConnection tcpConnectionClient(ioService.io_service());
+	TCPConnection tcpConnectionServer(ioService.io_service());
+	TCPConnector tcpConnector;
+	TCPAcceptor tcpAcceptor(ioService.io_service(), SOCKET_ADDRESS, SOCKET_PORT);
+	ioService.start();
+
+	//
+	// open channel
+	//
+	tcpTestHandler.handleAcceptCondition_.condition(0, 1);
+	tcpTestHandler.handleConnectCondition_.condition(0, 1);
+
+	tcpAcceptor.listen();
+	tcpAcceptor.async_accept(
+		tcpConnectionServer.socket(),
+		boost::bind(&TCPTestHandler::handleAccept, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+	tcpConnector.async_connect(
+		tcpConnectionClient.socket(),
+		SOCKET_ADDRESS,
+		SOCKET_PORT,
+		boost::bind(&TCPTestHandler::handleConnect, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCondition_.waitForCondition(1000) == true);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+
+	//
+	// send 20 byte from client to server  
+	//
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	for (uint32_t idx=0; idx<20; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(10000) == true);
+
+	//
+	// close channel by client
+	//
+	tcpTestHandler.handleReadClientCondition_.condition(0, 1);
+	tcpConnectionClient.async_read_exactly(
+		isClient,
+		boost::bind(&TCPTestHandler::handleReadClient, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		10
+	);
+
+	//
+	// receive byte 0-9
+	//
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
+	tcpConnectionServer.async_read_exactly(
+		isServer1,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		10
+	);
+	tcpConnectionClient.close();
+
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientCondition_.waitForCondition(10000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(10000) == true);
+
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
+	//BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
+	
+	//
+	// connection reset (byte 10-19 will not be read)
+	//
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
+	tcpConnectionServer.async_read_exactly(
+		isServer2,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		10
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(10000) == true);
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 2);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  boost::asio::error::connection_reset);
+	
+	ioService.stop();
+}
+
+BOOST_AUTO_TEST_CASE(TCPChannel_readAtLeast)
+{
+	TCPTestHandler tcpTestHandler;
+
+	boost::asio::streambuf isClient;
+	boost::asio::streambuf isServer;
+
+	boost::asio::streambuf osbuffer;
+	std::ostream os(&osbuffer);
+
+	IOService ioService;
+	TCPConnection tcpConnectionClient(ioService.io_service());
+	TCPConnection tcpConnectionServer(ioService.io_service());
+	TCPConnector tcpConnector;
+	TCPAcceptor tcpAcceptor(ioService.io_service(), SOCKET_ADDRESS, SOCKET_PORT);
+	ioService.start();
+
+	//
+	// open channel
+	//
+	tcpTestHandler.handleAcceptCondition_.condition(0, 1);
+	tcpTestHandler.handleConnectCondition_.condition(0, 1);
+
+	tcpAcceptor.listen();
+	tcpAcceptor.async_accept(
+		tcpConnectionServer.socket(),
+		boost::bind(&TCPTestHandler::handleAccept, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+	tcpConnector.async_connect(
+		tcpConnectionClient.socket(),
+		SOCKET_ADDRESS,
+		SOCKET_PORT,
+		boost::bind(&TCPTestHandler::handleConnect, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCondition_.waitForCondition(1000) == true);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	tcpConnectionServer.async_read_atLeast(
+		isServer,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		50
+	);
+
+	for (uint32_t idx=0; idx<30; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(100) == false);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 1);
+
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	for (uint32_t idx=0; idx<30; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 2);
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ >= 50);
+
+	tcpConnectionClient.close();
+	tcpConnectionServer.close();
+
+	ioService.stop();
+}	
+
+BOOST_AUTO_TEST_CASE(TCPChannel_readExactly)
+{
+	TCPTestHandler tcpTestHandler;
+
+	boost::asio::streambuf isClient;
+	boost::asio::streambuf isServer;
+
+	boost::asio::streambuf osbuffer;
+	std::ostream os(&osbuffer);
+
+	IOService ioService;
+	TCPConnection tcpConnectionClient(ioService.io_service());
+	TCPConnection tcpConnectionServer(ioService.io_service());
+	TCPConnector tcpConnector;
+	TCPAcceptor tcpAcceptor(ioService.io_service(), SOCKET_ADDRESS, SOCKET_PORT);
+	ioService.start();
+
+	//
+	// open channel
+	//
+	tcpTestHandler.handleAcceptCondition_.condition(0, 1);
+	tcpTestHandler.handleConnectCondition_.condition(0, 1);
+
+	tcpAcceptor.listen();
+	tcpAcceptor.async_accept(
+		tcpConnectionServer.socket(),
+		boost::bind(&TCPTestHandler::handleAccept, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+	tcpConnector.async_connect(
+		tcpConnectionClient.socket(),
+		SOCKET_ADDRESS,
+		SOCKET_PORT,
+		boost::bind(&TCPTestHandler::handleConnect, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCondition_.waitForCondition(1000) == true);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	tcpConnectionServer.async_read_exactly(
+		isServer,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		50
+	);
+
+	for (uint32_t idx=0; idx<30; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(100) == false);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 1);
+
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	for (uint32_t idx=0; idx<30; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 2);
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 50);
+
+	tcpConnectionClient.close();
+	tcpConnectionServer.close();
+
+	ioService.stop();
+}	
+
+BOOST_AUTO_TEST_CASE(TCPChannel_all)
+{
+	TCPTestHandler tcpTestHandler;
+
+	boost::asio::streambuf isClient;
+	boost::asio::streambuf isServer(51);
+
+	boost::asio::streambuf osbuffer;
+	std::ostream os(&osbuffer);
+
+	IOService ioService;
+	TCPConnection tcpConnectionClient(ioService.io_service());
+	TCPConnection tcpConnectionServer(ioService.io_service());
+	TCPConnector tcpConnector;
+	TCPAcceptor tcpAcceptor(ioService.io_service(), SOCKET_ADDRESS, SOCKET_PORT);
+	ioService.start();
+
+	//
+	// open channel
+	//
+	tcpTestHandler.handleAcceptCondition_.condition(0, 1);
+	tcpTestHandler.handleConnectCondition_.condition(0, 1);
+
+	tcpAcceptor.listen();
+	tcpAcceptor.async_accept(
+		tcpConnectionServer.socket(),
+		boost::bind(&TCPTestHandler::handleAccept, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+	tcpConnector.async_connect(
+		tcpConnectionClient.socket(),
+		SOCKET_ADDRESS,
+		SOCKET_PORT,
+		boost::bind(&TCPTestHandler::handleConnect, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCondition_.waitForCondition(1000) == true);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	tcpConnectionServer.async_read_all(
+		isServer,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred)
+	);
+
+	for (uint32_t idx=0; idx<30; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(100) == false);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 1);
+
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	for (uint32_t idx=0; idx<30; idx++) os << 'A';
+	tcpConnectionClient.async_write(
+		osbuffer,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 2);
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 51);
+
+	tcpConnectionClient.close();
+	tcpConnectionServer.close();
+
+	ioService.stop();
+}	
+
+BOOST_AUTO_TEST_CASE(TCPChannel_send_stream_vector)
+{
+	TCPTestHandler tcpTestHandler;
+
+	boost::asio::streambuf isServer;
+
+	boost::asio::streambuf osbuffer1;
+	boost::asio::streambuf osbuffer2;
+	std::ostream os1(&osbuffer1);
+	std::ostream os2(&osbuffer2);
+	std::vector<boost::asio::streambuf::const_buffers_type> sbvec;
+
+	IOService ioService;
+	TCPConnection tcpConnectionClient(ioService.io_service());
+	TCPConnection tcpConnectionServer(ioService.io_service());
+	TCPConnector tcpConnector;
+	TCPAcceptor tcpAcceptor(ioService.io_service(), SOCKET_ADDRESS, SOCKET_PORT);
+	ioService.start();
+
+	//
+	// open channel
+	//
+	tcpTestHandler.handleAcceptCondition_.condition(0, 1);
+	tcpTestHandler.handleConnectCondition_.condition(0, 1);
+
+	tcpAcceptor.listen();
+	tcpAcceptor.async_accept(
+		tcpConnectionServer.socket(),
+		boost::bind(&TCPTestHandler::handleAccept, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+	tcpConnector.async_connect(
+		tcpConnectionClient.socket(),
+		SOCKET_ADDRESS,
+		SOCKET_PORT,
+		boost::bind(&TCPTestHandler::handleConnect, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCondition_.waitForCondition(1000) == true);
+
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+
+	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
+	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
+
+	tcpConnectionServer.async_read_exactly(
+		isServer,
+		boost::bind(&TCPTestHandler::handleReadServer, &tcpTestHandler, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+		30
+	);
+
+	for (uint32_t idx=0; idx<15; idx++) os1 << 'A';
+	for (uint32_t idx=0; idx<15; idx++) os2 << 'A';
+	
+	sbvec.push_back(osbuffer1.data());
+	sbvec.push_back(osbuffer2.data());
+	
+	tcpConnectionClient.async_write(
+		sbvec,
+		boost::bind(&TCPTestHandler::handleWriteClient, &tcpTestHandler, boost::asio::placeholders::error)
+	);
+
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.handleWriteClientCount_ == 1);
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 30);
+
+	tcpConnectionClient.close();
+	tcpConnectionServer.close();
+
+	ioService.stop();
+}	
 
 BOOST_AUTO_TEST_SUITE_END()

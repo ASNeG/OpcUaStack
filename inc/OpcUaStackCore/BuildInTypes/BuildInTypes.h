@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	typedef OpcUaDateTime UtcTime;
 	typedef OpcUaUInt32 IntegerId;
 	typedef OpcUaDouble Duration;
+	typedef OpcUaStringArray LocaleIdArray;
 
 };
 

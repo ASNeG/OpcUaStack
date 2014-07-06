@@ -6,31 +6,6 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// ApplicationInstanceCertificate
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ApplicationInstanceCertificate::ApplicationInstanceCertificate(void)
-	{
-	}
-
-	ApplicationInstanceCertificate::~ApplicationInstanceCertificate(void)
-	{
-	}
-
-	void 
-	ApplicationInstanceCertificate::opcUaBinaryEncode(std::ostream& os) const
-	{
-	}
-
-	void 
-	ApplicationInstanceCertificate::opcUaBinaryDecode(std::istream& is)
-	{
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// OpenSecureChannelRequest
 	//
 	// ------------------------------------------------------------------------
@@ -120,9 +95,7 @@ namespace OpcUaStackCore
 	std::string  
 	OpenSecureChannelRequest::securityPolicyUri(void) const
 	{
-		std::string str;
-		//str = securityPolicyUri_;
-		return str;
+		return securityPolicyUri_.value();
 	}
 
 	void  

@@ -14,6 +14,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_)
 	std::cout << "OpcUaArray_t" << std::endl;
 }
 
+
 BOOST_AUTO_TEST_CASE(OpcUaArray_empty)
 {
 	std::stringstream ss;

@@ -20,6 +20,7 @@ namespace OpcUaStackCore
 		~TCPConnection(void);
 
 		boost::asio::ip::tcp::socket& socket(void);
+		void cancel(void);
 		void close(void);
 
 		template<typename BUFFER, typename HANDLER>
@@ -45,12 +46,12 @@ namespace OpcUaStackCore
 		  }
 
 		template<typename BUFFER, typename HANDLER>
-		  void async_read_all(BUFFER& buffer, HANDLER handler, uint32_t exactly)
+		  void async_read_all(BUFFER& buffer, HANDLER handler)
 		  {
 			  boost::asio::async_read(
 				  socket_,
 				  buffer,
-				  boost::asio::transfer_all,
+				  boost::asio::transfer_all(),
 				  handler
 			  );
 		  }
@@ -64,8 +65,6 @@ namespace OpcUaStackCore
 				  handler
 			  );
 		  }
-
-		boost::asio::streambuf inputStreamBuf_;	
 
 	  private:
 		boost::asio::ip::tcp::socket socket_;

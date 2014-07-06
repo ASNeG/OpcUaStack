@@ -6,7 +6,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-
+#include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -20,20 +20,6 @@ namespace OpcUaStackCore
 	{
 		xxxx = 0
 	} SecurityMode;
-
-
-	class ApplicationInstanceCertificate : public ObjectPool<ApplicationInstanceCertificate>
-	{
-	  public:
-		ApplicationInstanceCertificate(void);
-		virtual ~ApplicationInstanceCertificate(void);
-
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-
-	  private:
-	};
-
 
 	class DLLEXPORT OpenSecureChannelRequest : public  ObjectPool<OpenSecureChannelRequest>
 	{

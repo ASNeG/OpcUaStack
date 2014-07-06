@@ -58,6 +58,18 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\IOService_t.cpp">
       <Filter>unittest\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPAcceptor_t.cpp">
+      <Filter>unittest\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPConnector_t.cpp">
+      <Filter>unittest\TCPChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\HelloMessage_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\AcknowledgeMessage_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

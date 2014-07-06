@@ -90,5 +90,4 @@ BOOST_AUTO_TEST_CASE(IOService_10_thread_10_run)
 	ioService.stop();
 }
 
-
 BOOST_AUTO_TEST_SUITE_END()

@@ -68,6 +68,8 @@ namespace OpcUaStackCore
 		// delete all thread instances
 		ThreadVec::iterator it;
 		for (it=threadVec_.begin(); it!= threadVec_.end(); it++) {
+            boost::thread *t = *it;
+			t->join();
 			delete *it;
 		}
 		threadVec_.clear();
