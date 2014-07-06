@@ -29,11 +29,11 @@ namespace OpcUaStackCore
 		uint32_t maxSize(void);
 		void clear(void);
 
-		bool set(uint32_t pos, const typename T& value);
-		bool set(const typename T& valueSPtr);
-		bool push_back(const typename T& value);
-		bool get(uint32_t pos, typename T& value);
-		bool get(typename T& value);
+		bool set(uint32_t pos, const T& value);
+		bool set(const T& valueSPtr);
+		bool push_back(const T& value);
+		bool get(uint32_t pos, T& value);
+		bool get(T& value);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 		uint32_t maxArrayLen_;
 		uint32_t actArrayLen_;
 
-		typename T* valueArray_;
-		typename T value_;
+		T* valueArray_;
+		T value_;
 	};
 
 	template<typename T>
@@ -122,7 +122,7 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	bool
-	OpcUaArray<T>::set(uint32_t pos, const typename T& value)
+	OpcUaArray<T>::set(uint32_t pos, const T& value)
 	{
 		if (pos >= maxArrayLen_) {
 			return false;
@@ -137,21 +137,21 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	bool
-	OpcUaArray<T>::set(const typename T& value)
+	OpcUaArray<T>::set(const T& value)
 	{
 		return set(0, value);
 	}
 
 	template<typename T>
 	bool
-	OpcUaArray<T>::push_back(const typename T& value)
+	OpcUaArray<T>::push_back(const T& value)
 	{
 		return set(actArrayLen_, value);
 	}
 
 	template<typename T>
 	bool 
-	OpcUaArray<T>::get(uint32_t pos, typename T& value)
+	OpcUaArray<T>::get(uint32_t pos, T& value)
 	{
 		if (pos >= actArrayLen_) {
 			return false;
@@ -163,7 +163,7 @@ namespace OpcUaStackCore
 
 	template<typename T>
 	bool 
-	OpcUaArray<T>::get(typename T& value)
+	OpcUaArray<T>::get(T& value)
 	{
 		return get(0, value);
 	}

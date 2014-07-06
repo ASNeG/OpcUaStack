@@ -1,7 +1,11 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 
-#define BIG_ENDIAN ((*(char*)&number) != 1)
-#define LITTLE_ENDIAN ((*(char*)&number) == 1)
+#ifdef WIN32
+
+	#define BIG_ENDIAN ((*(char*)&number) != 1)
+	#define LITTLE_ENDIAN ((*(char*)&number) == 1)
+
+#endif
 
 namespace OpcUaStackCore
 {
