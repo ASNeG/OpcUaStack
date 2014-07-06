@@ -1,8 +1,12 @@
 #ifndef __OpcUaStackCore_ByteOrder_h__
 #define __OpcUaStackCore_ByteOrder_h__
 
+#include <stdint.h>
+#include <iostream>
+
 #ifdef WIN32
 
+	static uint32_t number;
 	#define BIG_ENDIAN ((*(char*)&number) != 1)
 	#define LITTLE_ENDIAN ((*(char*)&number) == 1)
 

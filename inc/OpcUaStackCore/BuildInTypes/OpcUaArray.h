@@ -11,13 +11,32 @@
 namespace OpcUaStackCore
 {
 
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// global functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	template<typename T>
+	  void opcUaBinaryEncode(std::ostream& os, const T& value)
+	  {
+		  os << value;
+	  }
+
+	template<typename T>
+	  void opcUaBinaryDecode(std::istream& is, T& value)
+	  {
+		  is >> value;
+	  }
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	//
 	// class OpcUaArray
 	//
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	template<typename T>
 	class OpcUaArray 
 	{
@@ -197,7 +216,7 @@ namespace OpcUaStackCore
 		}
 
 		resize(arrayLength);
-		for (uint32_t idx=0; idx<arrayLength; idx++) {
+		for (int32_t idx=0; idx<arrayLength; idx++) {
 			T value;
 			OpcUaStackCore::opcUaBinaryDecode(is, value);
 			push_back(value);
@@ -405,7 +424,7 @@ namespace OpcUaStackCore
 		}
 
 		resize(arrayLength);
-		for (uint32_t idx=0; idx<arrayLength; idx++) {
+		for (int32_t idx=0; idx<arrayLength; idx++) {
 			boost::shared_ptr<T> value;
 			value = T::construct();
 			OpcUaStackCore::opcUaBinaryDecode(is, *value.get());
