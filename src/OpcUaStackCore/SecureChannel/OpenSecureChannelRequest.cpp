@@ -127,9 +127,9 @@ namespace OpcUaStackCore
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		clientCertificate_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestType_);
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)requestType_);
 		OpcUaStackCore::opcUaBinaryEncode(os, secureChannelId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, securityMode_);
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)securityMode_);
 		OpcUaStackCore::opcUaBinaryEncode(os, securityPolicyUri_);
 		OpcUaStackCore::opcUaBinaryEncode(os, clientNonce_);
 		OpcUaStackCore::opcUaBinaryEncode(os, requestedLifetime_);
