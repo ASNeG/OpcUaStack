@@ -50,6 +50,7 @@ namespace OpcUaStackCore
 		if (mapExist_) return;
 		mapExist_ = true;
 
+		insert(Success,											"Success",										"Success");
 		insert(BadUnexpectedError,								"BadUnexpectedError",							"An unexpected error occurred");
 		insert(BadInternalError,								"BadInternalError",								"An internal error occurred as a result of a programming or configuration error");
 		insert(BadOutOfMemory,									"BadOutOfMemory",								"Not enough memory to complete the operation");
