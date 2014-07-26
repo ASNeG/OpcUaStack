@@ -73,6 +73,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\OpenSecureChannel_t.cpp">
       <Filter>unittest\SecureChannel</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\RequestHeader_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

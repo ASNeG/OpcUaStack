@@ -15,22 +15,40 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaByteString& 
-	SecurityHeader::securityPolicyUri(void)
+	void 
+	SecurityHeader::securityPolicyUri(OpcUaByte *buf, OpcUaInt32 bufLen)
 	{
-		return securityPolicyUri_;
+		securityPolicyUri_.value(buf, bufLen);
 	}
-	
-	OpcUaByteString& 
-	SecurityHeader::senderCertificate(void)
+
+	void 
+	SecurityHeader::securityPolicyUri(OpcUaByte **buf, OpcUaInt32* bufLen) const
 	{
-		return senderCertificate_;
+		securityPolicyUri_.value(buf, bufLen);
 	}
-		
-	OpcUaByteString& 
-	SecurityHeader::receiverCertificateThumbprint(void)
+
+	void 
+	SecurityHeader::senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen)
 	{
-		return receiverCertificateThumbprint_;
+		senderCertificate_.value(buf, bufLen);
+	}
+
+	void 
+	SecurityHeader::senderCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const
+	{
+		senderCertificate_.value(buf, bufLen);
+	}
+
+	void 
+	SecurityHeader::receiverCertificateThumbprint(OpcUaByte *buf, OpcUaInt32 bufLen)
+	{
+		receiverCertificateThumbprint_.value(buf, bufLen);
+	}
+
+	void 
+	SecurityHeader::receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const
+	{
+		receiverCertificateThumbprint_.value(buf, bufLen);
 	}
 
 	void 

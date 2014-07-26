@@ -19,18 +19,18 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_)
 	std::cout << "OpenSecureChannel_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 {
-	OpenSecureChannelRequest::SPtr OpenSecureChannelRequestSPtr;
+	OpenSecureChannelRequest::SPtr openSecureChannelRequestSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	SecurityHeader::SPtr securityHeaderSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
+	RequestHeader::SPtr requestHeaderSPtr;
 
 	// OpenSecureChannel
 	boost::asio::streambuf sb1;
 	std::iostream ios1(&sb1);
-	OpenSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
-	OpenSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// channel id
 	OpcUaUInt32 channelId;
@@ -39,13 +39,24 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 
 	// security header
 	securityHeaderSPtr = SecurityHeader::construct();
-	securityHeaderSPtr->securityPolicyUri("http://opcfoundation.org/UA/SecurityPolicy#None");
+	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
 	securityHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// sequence header
 	sequenceHeaderSPtr->sequenceNumber(51);
 	sequenceHeaderSPtr->requestId(1);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
+
+	// message type id
+	OpcUaNodeId typeId;
+	typeId.nodeId(446);
+	typeId.opcUaBinaryEncode(ios1);
+
+	// RequestHeader
+	requestHeaderSPtr = RequestHeader::construct();
+
+	// OpenSecureChannel
+	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
 
 	// MessageHeader
 	boost::asio::streambuf sb2;
@@ -70,5 +81,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 	OpenSecureChannelRequestSPtr->opcUaBinaryDecode(ios3);
 #endif
 }
+
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
