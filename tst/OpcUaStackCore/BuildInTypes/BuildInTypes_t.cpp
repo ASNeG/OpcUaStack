@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(BuildInTypes_OpcUaExpandedNodeId)
 	opcUaBinaryEncode(ss, OpcUaExpandedNodeId1);
 	opcUaBinaryDecode(ss, OpcUaExpandedNodeId2);
 	BOOST_REQUIRE(OpcUaExpandedNodeId2.namespaceIndex() == 0);
-	BOOST_REQUIRE(OpcUaExpandedNodeId2.nodeIdType() == OpcUaBuildInType::OpcUaBuildInType_OpcUaUInt32);
+	BOOST_REQUIRE(OpcUaExpandedNodeId2.nodeIdType() == OpcUaBuildInType_OpcUaUInt32);
 	BOOST_REQUIRE(OpcUaExpandedNodeId2.nodeId<OpcUaUInt32>() == 1);
 }
 

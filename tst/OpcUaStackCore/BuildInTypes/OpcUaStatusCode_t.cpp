@@ -17,12 +17,12 @@ BOOST_AUTO_TEST_CASE(OpcUaStatusCode_encode_decode)
 	std::stringstream ss;
 	OpcUaStatusCode value1, value2;
 
-	value1 = OpcUaStatusCode::BadUnexpectedError;
+	value1 = BadUnexpectedError;
 	
 	opcUaBinaryEncode(ss, value1);
 	opcUaBinaryDecode(ss, value2);
 
-	BOOST_REQUIRE(value2 == OpcUaStatusCode::BadUnexpectedError);
+	BOOST_REQUIRE(value2 == BadUnexpectedError);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

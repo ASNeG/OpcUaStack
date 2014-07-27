@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(AcknowledgeMessage_encode_decode)
 	boost::asio::streambuf sb2;
 	std::iostream ios2(&sb2);
 	messageHeaderSPtr = MessageHeader::construct();
-	messageHeaderSPtr->messageType(MessageType::MessageType_Acknowledge);
+	messageHeaderSPtr->messageType(MessageType_Acknowledge);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
 

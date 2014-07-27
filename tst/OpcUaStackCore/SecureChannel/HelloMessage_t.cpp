@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(HelloMessage_encode_decode)
 	boost::asio::streambuf sb2;
 	std::iostream ios2(&sb2);
 	messageHeaderSPtr = MessageHeader::construct();
-	messageHeaderSPtr->messageType(MessageType::MessageType_Hello);
+	messageHeaderSPtr->messageType(MessageType_Hello);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
 

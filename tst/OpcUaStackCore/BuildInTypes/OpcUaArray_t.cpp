@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_)
 BOOST_AUTO_TEST_CASE(OpcUaArray_empty)
 {
 	std::stringstream ss;
-	OpcUaArray<OpcUaInt32> value1, value2;
+	OpcUaInt32Array value1, value2;
 
 	BOOST_REQUIRE(value1.size() == 0);
 	opcUaBinaryEncode(ss, value1);
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_empty)
 BOOST_AUTO_TEST_CASE(OpcUaArray_1_element)
 {
 	std::stringstream ss;
-	OpcUaArray<OpcUaUInt32> value1, value2;
+	OpcUaUInt32Array value1, value2;
 
 	value1.set(4711);
 
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_1_element)
 BOOST_AUTO_TEST_CASE(OpcUaArray_10_element)
 {
 	std::stringstream ss;
-	OpcUaArray<OpcUaUInt32> value1, value2;
+	OpcUaUInt32Array value1, value2;
 
 	value1.resize(10);
 	for (uint32_t idx=0; idx<10; idx++) {
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_10_element)
 BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_empty)
 {
 	std::stringstream ss;
-	OpcUaArray<OpcUaString::SPtr> value1, value2;
+	OpcUaStringArray value1, value2;
 
 	BOOST_REQUIRE(value1.size() == 0);
 	opcUaBinaryEncode(ss, value1);
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_empty)
 BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_1_element)
 {
 	std::stringstream ss;
-	OpcUaArray<OpcUaString::SPtr> value1, value2;
+	OpcUaStringArray value1, value2;
 
 	OpcUaString::SPtr value1SPtr;
 	value1SPtr = OpcUaString::construct();
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_1_element)
 BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_10_element)
 {
 	std::stringstream ss;
-	OpcUaArray<OpcUaString::SPtr> value1, value2;
+	OpcUaStringArray value1, value2;
 
 	value1.resize(10);
 	OpcUaString::SPtr value1SPtr;

@@ -3,12 +3,12 @@
 
 #ifdef WIN32
 
-#define DLLEXPORT __declspec(dllexport)
-#pragma warning(disable:4251)
+	#define DLLEXPORT __declspec(dllexport)
+	#pragma warning(disable:4251)
 
 #else
 
-#define DLLEXPORT
+	#define DLLEXPORT
 
 #endif
 
