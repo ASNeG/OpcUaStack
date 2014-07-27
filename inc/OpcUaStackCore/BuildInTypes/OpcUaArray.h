@@ -186,14 +186,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T>::opcUaBinaryEncode(std::ostream& os) const
 	{
-		int32_t actArrayLen;
-		actArrayLen = actArrayLen_;
 		OpcUaStackCore::opcUaBinaryEncodeNumber(os, actArrayLen_);
-
-		if (actArrayLen_ <= 0) {
-			return;
-		}
-
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			OpcUaStackCore::opcUaBinaryEncode(os, valueArray_[idx]);
 		}

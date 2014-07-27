@@ -11,29 +11,28 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	RequestHeader::RequestHeader(void)
-	: SessionAuthenticationTokenSPtr_()
+	: sessionAuthenticationToken_()
 	, time_()
 	, requestHandle_()
 	, returnDisagnostics_()
 	, auditEntryId_()
 	, timeoutHint_()
 	{
+		sessionAuthenticationToken_.nodeId((OpcUaInt32)0);
+		time_.dateTime(boost::posix_time::microsec_clock::local_time());
+		requestHandle_ = 0;
+		returnDisagnostics_ = 0;
+		timeoutHint_ = 0;
 	}
 		
 	RequestHeader::~RequestHeader(void)
 	{
 	}
 
-	void 
-	RequestHeader::sessionAuthenticationToken(const SessionAuthenticationToken::SPtr& SessionAuthenticationTokenSPtr)
+	OpcUaNodeId&
+	RequestHeader::sessionAuthenticationToken(void)
 	{
-		SessionAuthenticationTokenSPtr_ = SessionAuthenticationTokenSPtr;
-	}
-
-	SessionAuthenticationToken::SPtr  
-	RequestHeader::sessionAuthenticationToken(void) const
-	{
-		return SessionAuthenticationTokenSPtr_;
+		return sessionAuthenticationToken_;
 	}
 
 	void  
@@ -42,7 +41,13 @@ namespace OpcUaStackCore
 		time_ = time;
 	}
 
-	UtcTime  
+	void 
+	RequestHeader::time(const boost::posix_time::ptime& time)
+	{
+		time_.dateTime(time);
+	}
+
+	UtcTime 
 	RequestHeader::time(void) const
 	{
 		return time_;
@@ -100,23 +105,34 @@ namespace OpcUaStackCore
 	void 
 	RequestHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		SessionAuthenticationTokenSPtr_->opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, sessionAuthenticationToken_);
 		OpcUaStackCore::opcUaBinaryEncode(os, time_);
 		OpcUaStackCore::opcUaBinaryEncode(os, requestHandle_);
 		OpcUaStackCore::opcUaBinaryEncode(os, returnDisagnostics_);
 		OpcUaStackCore::opcUaBinaryEncode(os, auditEntryId_);
 		OpcUaStackCore::opcUaBinaryEncode(os, timeoutHint_);
+
+		// FIXME: additional header
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 	}
 
 	void 
 	RequestHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		SessionAuthenticationTokenSPtr_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, sessionAuthenticationToken_);
 		OpcUaStackCore::opcUaBinaryDecode(is, time_);
 		OpcUaStackCore::opcUaBinaryDecode(is, requestHandle_);
 		OpcUaStackCore::opcUaBinaryDecode(is, returnDisagnostics_);
 		OpcUaStackCore::opcUaBinaryDecode(is, auditEntryId_);
 		OpcUaStackCore::opcUaBinaryDecode(is, timeoutHint_);
+
+		// FIXME: additional header
+		OpcUaByte tmp;
+		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
+		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
+		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
 	}
 
 }

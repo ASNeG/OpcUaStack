@@ -57,6 +57,11 @@ namespace OpcUaStackCore
 				os.write("ERR",3);
 				break;
 			}
+			case MessageType_OpenSecureChannel:
+			{
+				os.write("OPN", 3);
+				break;
+			}
 			default:
 			{
 				os.write("XXX", 3);
@@ -79,6 +84,9 @@ namespace OpcUaStackCore
 		}
 		else if (strcmp(messageType, "ACK") == 0) {
 			messageType_ = MessageType_Error;
+		}
+		else if (strcmp(messageType, "OPN") == 0) {
+			messageType_ = MessageType_OpenSecureChannel;
 		}
 		else {
 			messageType_ = MessageType_Hello;

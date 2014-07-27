@@ -15,8 +15,9 @@ namespace OpcUaStackCore
 		ResponseHeader(void);
 		virtual ~ResponseHeader(void);
 
-		void timestamp(const UtcTime& timestamp);
-		UtcTime timestamp(void) const;
+		void time(const UtcTime& time);
+		void time(const boost::posix_time::ptime& time);
+		UtcTime time(void) const;
 		void requestHandle(const IntegerId& requestHandle);
 		IntegerId requestHandle(void) const;
 		void serviceResult(const OpcUaStatusCode& serviceResult);
@@ -30,7 +31,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		UtcTime timestamp_;
+		UtcTime time_;
 		IntegerId requestHandle_;
 		OpcUaStatusCode serviceResult_;
 		OpcUaDiagnosticInfo::SPtr diagnosticInfoSPtr_;

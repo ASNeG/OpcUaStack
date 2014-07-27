@@ -29,16 +29,12 @@ namespace OpcUaStackCore
 
 		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
 		RequestHeader::SPtr requestHeader(void) const;
-		void clientCertificate(const ApplicationInstanceCertificate::SPtr clientCertificate);
-		ApplicationInstanceCertificate::SPtr clientCertificate(void) const;
+		void clientProtocolVersion(const OpcUaInt32& clientProtocolVersion);
+		OpcUaInt32 clientProtocolVersion(void);
 		void requestType(const RequestType& requestType);
 		RequestType requestType(void);
-		void secureChannelId(const OpcUaByte *buf, OpcUaInt32 bufLen);
-		void secureChannelId(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void securityMode(const SecurityMode& securityMode);
 		SecurityMode securityMode(void) const;
-		void securityPolicyUri(const std::string& securityPolicyUri);
-		std::string securityPolicyUri(void) const;
 		void clientNonce(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void clientNonce(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void requestedLifetime(const Duration& requestedLifetime);
@@ -49,11 +45,9 @@ namespace OpcUaStackCore
 
 	  private:
 		RequestHeader::SPtr requestHeaderSPtr_;
-		ApplicationInstanceCertificate::SPtr clientCertificate_;
+		OpcUaInt32 clientProtocolVersion_;
 		RequestType requestType_;
-		OpcUaByteString secureChannelId_;
 		SecurityMode securityMode_;
-		OpcUaString securityPolicyUri_;
 		OpcUaByteString clientNonce_;
 		Duration requestedLifetime_;
 	};

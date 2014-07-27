@@ -84,8 +84,14 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
+#if 0
 //	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == boost::asio::error::connection_reset);
+=======
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
+	//BOOST_REQUIRE(tcpTestHandler.handleReadClientError_ == boost::asio::error::connection_aborted);
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  boost::asio::error::connection_reset);
+#endif
 	
 	ioService.stop();
 }

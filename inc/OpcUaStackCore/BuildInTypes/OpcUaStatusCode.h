@@ -10,6 +10,7 @@ namespace OpcUaStackCore
 {
 
 	typedef enum {
+		Success =								0x00000000,
 		BadUnexpectedError =					0x80010000,
 		BadInternalError =						0x80020000,
 		BadOutOfMemory =						0x80030000,

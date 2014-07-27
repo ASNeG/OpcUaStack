@@ -12,11 +12,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	OpenSecureChannelRequest::OpenSecureChannelRequest(void)
 	: requestHeaderSPtr_()
-	, clientCertificate_()
+	, clientProtocolVersion_(0)
 	, requestType_()
-	, secureChannelId_()
 	, securityMode_()
-	, securityPolicyUri_()
 	, clientNonce_()
 	, requestedLifetime_()
 	{
@@ -38,16 +36,16 @@ namespace OpcUaStackCore
 		return requestHeaderSPtr_;
 	}
 
-	void  
-	OpenSecureChannelRequest::clientCertificate(const ApplicationInstanceCertificate::SPtr clientCertificate)
+	void 
+	OpenSecureChannelRequest::clientProtocolVersion(const OpcUaInt32& clientProtocolVersion)
 	{
-		clientCertificate_ = clientCertificate;
+		clientProtocolVersion_ = clientProtocolVersion;
 	}
-
-	ApplicationInstanceCertificate::SPtr  
-	OpenSecureChannelRequest::clientCertificate(void) const
+		
+	OpcUaInt32 
+	OpenSecureChannelRequest::clientProtocolVersion(void)
 	{
-		return clientCertificate_;
+		return clientProtocolVersion_;
 	}
 
 	void  
@@ -63,18 +61,6 @@ namespace OpcUaStackCore
 	}
 
 	void  
-	OpenSecureChannelRequest::secureChannelId(const OpcUaByte *buf, OpcUaInt32 bufLen)
-	{
-		secureChannelId_.value(buf, bufLen);
-	}
-
-	void  
-	OpenSecureChannelRequest::secureChannelId(OpcUaByte **buf, OpcUaInt32* bufLen) const
-	{
-		secureChannelId_.value(buf, bufLen);
-	}
-
-	void  
 	OpenSecureChannelRequest::securityMode(const SecurityMode& securityMode)
 	{
 		securityMode_ = securityMode;
@@ -84,18 +70,6 @@ namespace OpcUaStackCore
 	OpenSecureChannelRequest::securityMode(void) const
 	{
 		return securityMode_;
-	}
-
-	void  
-	OpenSecureChannelRequest::securityPolicyUri(const std::string& securityPolicyUri)
-	{
-		securityPolicyUri_ = securityPolicyUri;
-	}
-
-	std::string  
-	OpenSecureChannelRequest::securityPolicyUri(void) const
-	{
-		return securityPolicyUri_.value();
 	}
 
 	void  
@@ -126,11 +100,9 @@ namespace OpcUaStackCore
 	OpenSecureChannelRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
-		clientCertificate_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestType_);
-		OpcUaStackCore::opcUaBinaryEncode(os, secureChannelId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, securityMode_);
-		OpcUaStackCore::opcUaBinaryEncode(os, securityPolicyUri_);
+		OpcUaStackCore::opcUaBinaryEncode(os, clientProtocolVersion_);
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)requestType_);
+		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)securityMode_);
 		OpcUaStackCore::opcUaBinaryEncode(os, clientNonce_);
 		OpcUaStackCore::opcUaBinaryEncode(os, requestedLifetime_);
 	}
@@ -140,11 +112,9 @@ namespace OpcUaStackCore
 	{
 		OpcUaUInt32 tmp;
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
-		clientCertificate_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, clientProtocolVersion_);
 		OpcUaStackCore::opcUaBinaryDecode(is, tmp); requestType_ = (RequestType)tmp;
-		OpcUaStackCore::opcUaBinaryDecode(is, secureChannelId_);
 		OpcUaStackCore::opcUaBinaryDecode(is, tmp); securityMode_ = (SecurityMode)tmp;
-		OpcUaStackCore::opcUaBinaryDecode(is, securityPolicyUri_);
 		OpcUaStackCore::opcUaBinaryDecode(is, clientNonce_);
 		OpcUaStackCore::opcUaBinaryDecode(is, requestedLifetime_);
 	}

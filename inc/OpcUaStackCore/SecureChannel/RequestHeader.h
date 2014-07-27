@@ -14,9 +14,9 @@ namespace OpcUaStackCore
 		RequestHeader(void);
 		virtual ~RequestHeader(void);
 
-		void sessionAuthenticationToken(const SessionAuthenticationToken::SPtr& SessionAuthenticationTokenSPtr);
-		SessionAuthenticationToken::SPtr sessionAuthenticationToken(void) const;
+		OpcUaNodeId& sessionAuthenticationToken(void);
 		void time(const UtcTime& time);
+		void time(const boost::posix_time::ptime& time);
 		UtcTime time(void) const;
 		void requestHandle(const IntegerId& requestHandle);
 		IntegerId requestHandle(void) const;
@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		SessionAuthenticationToken::SPtr SessionAuthenticationTokenSPtr_;
+		OpcUaNodeId sessionAuthenticationToken_;
 		UtcTime time_;
 		IntegerId requestHandle_;
 		OpcUaUInt32 returnDisagnostics_;
