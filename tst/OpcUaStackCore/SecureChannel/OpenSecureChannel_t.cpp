@@ -1,6 +1,7 @@
 #include "unittest.h"
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
@@ -19,7 +20,6 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_)
 	std::cout << "OpenSecureChannel_t" << std::endl;
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 {
 	OpenSecureChannelRequest::SPtr openSecureChannelRequestSPtr;
@@ -28,9 +28,11 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	RequestHeader::SPtr requestHeaderSPtr;
 
-	// OpenSecureChannel
+	// stream
 	boost::asio::streambuf sb1;
 	std::iostream ios1(&sb1);
+	boost::asio::streambuf sb2;
+	std::iostream ios2(&sb2);
 
 	// channel id
 	OpcUaUInt32 channelId;
@@ -43,29 +45,34 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 	securityHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// sequence header
+	sequenceHeaderSPtr = SequenceHeader::construct();
 	sequenceHeaderSPtr->sequenceNumber(51);
 	sequenceHeaderSPtr->requestId(1);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// message type id
 	OpcUaNodeId typeId;
-	typeId.nodeId(446);
+	typeId.nodeId(OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
 
 	// RequestHeader
 	requestHeaderSPtr = RequestHeader::construct();
 
 	// OpenSecureChannel
+	OpcUaByte clientNonce[1];
+	clientNonce[0] = 0x00;
 	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
+	openSecureChannelRequestSPtr->requestHeader(requestHeaderSPtr);
+	openSecureChannelRequestSPtr->securityMode(SecurityMode::None);
+	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
+	openSecureChannelRequestSPtr->requestedLifetime(300000);
+	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// MessageHeader
-	boost::asio::streambuf sb2;
-	std::iostream ios2(&sb2);
 	messageHeaderSPtr = MessageHeader::construct();
-	messageHeaderSPtr->messageType(MessageType::MessageType_Hello);
+	messageHeaderSPtr->messageType(MessageType::MessageType_OpenSecureChannel);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
-
 
 	// stream
 	boost::asio::streambuf sb3;
@@ -81,7 +88,5 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_encode_decode)
 	OpenSecureChannelRequestSPtr->opcUaBinaryDecode(ios3);
 #endif
 }
-
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()

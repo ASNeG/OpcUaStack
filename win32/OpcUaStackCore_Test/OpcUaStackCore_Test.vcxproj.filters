@@ -96,6 +96,9 @@
     <Filter Include="unittest\Base">
       <UniqueIdentifier>{aba8f335-b796-47c3-99ab-c5bcc3b051bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="unittest\ServiceSet">
+      <UniqueIdentifier>{960a8bad-8b38-4e21-9ae4-8ad71dcb0709}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tst\os.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="..\..\tst\unittest.h">
       <Filter>unittest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h">
+      <Filter>unittest\BuildInTypes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

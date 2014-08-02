@@ -85,12 +85,12 @@ namespace OpcUaStackCore
 	}
 
 	void  
-	OpenSecureChannelRequest::requestedLifetime(const Duration& requestedLifetime)
+	OpenSecureChannelRequest::requestedLifetime(const OpcUaInt32& requestedLifetime)
 	{
 		requestedLifetime_ = requestedLifetime;
 	}
 
-	Duration  
+	OpcUaInt32  
 	OpenSecureChannelRequest::requestedLifetime(void) const
 	{
 		return requestedLifetime_;
