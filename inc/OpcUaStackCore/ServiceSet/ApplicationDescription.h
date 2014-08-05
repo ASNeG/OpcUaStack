@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedtext.h"
 
 
 namespace OpcUaStackCore
@@ -26,6 +27,7 @@ namespace OpcUaStackCore
 		std::string applicationUri(void) const;
 		void productUri(const std::string& productUri);
 		std::string productUri(void) const;
+		OpcUaLocalizedText& applicationName(void);
 		void applicationType(ApplicationType applicationType);
 		ApplicationType applicationType(void) const;
 		void gatewayServerUri(const std::string& gatewayServerUri);
@@ -41,6 +43,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaString applicationUri_;
 		OpcUaString productUri_;
+		OpcUaLocalizedText applicationName_;
 		ApplicationType applicationType_;
 		OpcUaString gatewayServerUri_;
 		OpcUaString discoveryProfileUri_;

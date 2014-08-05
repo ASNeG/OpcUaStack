@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 		std::string endpointUrl(void) const;
 		void sessionName(const std::string& sessionName);
 		std::string sessionName(void) const;
-		void clientNonce(const OpcUaByte *buf, OpcUaInt32 bufLen);
 		void clientNonce(OpcUaByte **buf, OpcUaInt32* bufLen) const;
-		void clientCertificate(const ApplicationInstanceCertificate::SPtr clientCertificateSPtr);
-		ApplicationInstanceCertificate::SPtr clientCertificate(void) const;
+		void clientNonce(const OpcUaByte *buf, OpcUaInt32 bufLen);
+		void clientCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const;
+		void clientCertificate(const OpcUaByte *buf, OpcUaInt32 bufLen);
 		void requestSessionTimeout(const Duration requestSessionTimeout);
 		Duration requestSessionTimeout(void) const;
 		void maxResponseMessageSize(const OpcUaUInt32& maxResponseMessageSize);
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 		OpcUaString endpointUrl_;
 		OpcUaString sessionName_;
 		OpcUaByteString clientNonce_;
-		ApplicationInstanceCertificate::SPtr clientCertificateSPtr_;
+		OpcUaByteString clientCertificate_;
 		Duration requestSessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
 	};

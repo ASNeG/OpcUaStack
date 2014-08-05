@@ -101,6 +101,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\OpenSecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\RequestHeader_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\ResponseHeader_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPAcceptor_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPConnector_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPChannel_t.cpp" />

@@ -113,6 +113,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 tmp;
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaStackCore::opcUaBinaryDecode(is, clientProtocolVersion_);
+
 		OpcUaStackCore::opcUaBinaryDecode(is, tmp); requestType_ = (RequestType)tmp;
 		OpcUaStackCore::opcUaBinaryDecode(is, tmp); securityMode_ = (SecurityMode)tmp;
 		OpcUaStackCore::opcUaBinaryDecode(is, clientNonce_);

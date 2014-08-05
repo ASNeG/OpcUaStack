@@ -14,10 +14,10 @@ namespace OpcUaStackCore
 		SecurityHeader(void);
 		virtual ~SecurityHeader(void);
 
-		void securityPolicyUri(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void securityPolicyUri(OpcUaByte **buf, OpcUaInt32* bufLen) const;
-		void senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen);
+		void securityPolicyUri(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void senderCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const;
+		void senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void receiverCertificateThumbprint(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 
