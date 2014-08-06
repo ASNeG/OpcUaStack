@@ -1,6 +1,6 @@
 #include "unittest.h"
 #include "boost/asio.hpp"
-#include "OpcUaStackCore/Securechannel/ResponseHeader.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 #include <streambuf>

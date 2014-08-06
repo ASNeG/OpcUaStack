@@ -12,7 +12,7 @@ namespace OpcUaStackCore
 	{
 		time_.dateTime(boost::posix_time::microsec_clock::local_time());
 		requestHandle_ = 0;
-		serviceResult_ = OpcUaStatusCode::Success;
+		serviceResult_ = Success;
 	}
 		
 	ResponseHeader::~ResponseHeader(void)

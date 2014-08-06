@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 
 	createSessionResponseSPtr->responseHeader()->time(ptime);
 	createSessionResponseSPtr->responseHeader()->requestHandle(1);
-	createSessionResponseSPtr->responseHeader()->serviceResult(OpcUaStatusCode::Success);
+	createSessionResponseSPtr->responseHeader()->serviceResult(Success);
 
 	createSessionResponseSPtr->sessionId().namespaceIndex(1);
 	createSessionResponseSPtr->sessionId().nodeId(1);

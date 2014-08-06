@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
 	openSecureChannelRequestSPtr->requestHeader(RequestHeader::construct());
 	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
-	openSecureChannelRequestSPtr->securityMode(SecurityMode::None);
+	openSecureChannelRequestSPtr->securityMode(None);
 	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
 	openSecureChannelRequestSPtr->requestedLifetime(300000);
 	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
@@ -127,8 +127,8 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	openSecureChannelRequestSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestType() == RequestType::ISSUE);
-	BOOST_REQUIRE(openSecureChannelRequestSPtr->securityMode() == SecurityMode::None);
+	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestType() == ISSUE);
+	BOOST_REQUIRE(openSecureChannelRequestSPtr->securityMode() == None);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestedLifetime() == 300000);
 	BOOST_REQUIRE(opcUaByteLen == 1);
 	BOOST_REQUIRE(opcUaByte[0] == 0x00);

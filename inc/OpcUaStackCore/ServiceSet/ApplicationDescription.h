@@ -4,7 +4,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedtext.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 
 
 namespace OpcUaStackCore
