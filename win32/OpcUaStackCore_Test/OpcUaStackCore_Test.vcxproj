@@ -101,12 +101,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\OpenSecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\RequestHeader_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\ResponseHeader_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPAcceptor_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPConnector_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPChannel_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h" />
     <ClInclude Include="..\..\tst\os.h" />
     <ClInclude Include="..\..\tst\unittest.h" />
   </ItemGroup>

@@ -13,7 +13,8 @@ namespace OpcUaStackCore
 		MessageType_Hello,
 		MessageType_Acknowledge,
 		MessageType_OpenSecureChannel,
-		MessageType_Error
+		MessageType_Error,
+		MessageType_Message
 	} MessageType;
 
 	class DLLEXPORT MessageHeader : public  ObjectPool<MessageHeader>

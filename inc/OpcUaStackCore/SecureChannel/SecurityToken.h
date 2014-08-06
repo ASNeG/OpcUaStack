@@ -11,23 +11,23 @@ namespace OpcUaStackCore
 		SecurityToken(void);
 		virtual ~SecurityToken(void);
 
-		void channelId(const OpcUaByte* buf, OpcUaInt32 bufLen);
-		void channelId(OpcUaByte** buf, OpcUaInt32* bufLen) const;
-		void tokenId(const OpcUaByte* nuf, OpcUaInt32 bufLen);
-		void tokenId(OpcUaByte** buf, OpcUaInt32 *bufLen) const;
+		void channelId(const OpcUaUInt32& channelId);
+		OpcUaUInt32 channelId(void) const;
+		void tokenId(const OpcUaUInt32& tokenId);
+		OpcUaUInt32 tokenId(void) const;
 		void createAt(const UtcTime& createAt);
 		UtcTime createAt(void) const;
-		void revisedLifetime(const Duration& revisedLifetime);
-		Duration revisedLiefetime(void) const;
+		void revisedLifetime(const OpcUaInt32& revisedLifetime);
+		OpcUaInt32 revisedLifetime(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaByteString channelId_;
-		OpcUaByteString tokenId_;
+		OpcUaUInt32 channelId_;
+		OpcUaUInt32 tokenId_;
 		UtcTime createAt_;
-		Duration revisedLifetime_;
+		OpcUaInt32 revisedLifetime_;
 	};
 
 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SecurityToken& value);

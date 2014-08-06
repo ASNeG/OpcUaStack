@@ -4,6 +4,7 @@ namespace OpcUaStackCore
 {
 
 	OpenSecureChannelResponse::OpenSecureChannelResponse(void)
+	: serverProtocolVersion_(0)
 	{
 	}
 		
@@ -21,6 +22,18 @@ namespace OpcUaStackCore
 	OpenSecureChannelResponse::responseHeader(void) const
 	{
 		return responseHeaderSPtr_;
+	}
+
+	void 
+	OpenSecureChannelResponse::serverProtocolVersion(const OpcUaInt32& serverProtocolVersion)
+	{
+		serverProtocolVersion_ = serverProtocolVersion;
+	}
+		
+	OpcUaInt32 
+	OpenSecureChannelResponse::serverProtocolVersion(void) const
+	{
+		return serverProtocolVersion_;
 	}
 
 	void  
@@ -51,6 +64,7 @@ namespace OpcUaStackCore
 	OpenSecureChannelResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		responseHeaderSPtr_->opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, serverProtocolVersion_);
 		securityTokenSPtr_->opcUaBinaryEncode(os);
 		OpcUaStackCore::opcUaBinaryEncode(os, serverNonce_);
 	}
@@ -59,6 +73,7 @@ namespace OpcUaStackCore
 	OpenSecureChannelResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		responseHeaderSPtr_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, serverProtocolVersion_);
 		securityTokenSPtr_->opcUaBinaryDecode(is);
 		OpcUaStackCore::opcUaBinaryDecode(is, serverNonce_);
 	}

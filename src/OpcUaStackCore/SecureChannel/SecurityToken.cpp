@@ -23,27 +23,27 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SecurityToken::channelId(const OpcUaByte* buf, OpcUaInt32 bufLen)
+	SecurityToken::channelId(const OpcUaUInt32& channelId)
 	{
-		channelId_.value(buf, bufLen);
+		channelId_ = channelId;
+	}
+		
+	OpcUaUInt32 
+	SecurityToken::channelId(void) const
+	{
+		return channelId_;
 	}
 
 	void 
-	SecurityToken::channelId(OpcUaByte** buf, OpcUaInt32* bufLen) const
+	SecurityToken::tokenId(const OpcUaUInt32& tokenId)
 	{
-		channelId_.value(buf, bufLen);
+		tokenId_ = tokenId;
 	}
-
-	void 
-	SecurityToken::tokenId(const OpcUaByte* buf, OpcUaInt32 bufLen)
+		
+	OpcUaUInt32 
+	SecurityToken::tokenId(void) const
 	{
-		tokenId_.value(buf, bufLen);
-	}
-
-	void 
-	SecurityToken::tokenId(OpcUaByte** buf, OpcUaInt32 *bufLen) const
-	{
-		tokenId_.value(buf, bufLen);
+		return tokenId_;
 	}
 
 	void 
@@ -58,13 +58,13 @@ namespace OpcUaStackCore
 		return createAt_;
 	}
 	void 
-	SecurityToken::revisedLifetime(const Duration& revisedLifetime)
+	SecurityToken::revisedLifetime(const OpcUaInt32& revisedLifetime)
 	{
 		revisedLifetime_ = revisedLifetime;
 	}
 
-	Duration 
-	SecurityToken::revisedLiefetime(void) const
+	OpcUaInt32 
+	SecurityToken::revisedLifetime(void) const
 	{
 		return revisedLifetime_;
 	}
@@ -72,8 +72,8 @@ namespace OpcUaStackCore
 	void 
 	SecurityToken::opcUaBinaryEncode(std::ostream& os) const
 	{
-		channelId_.opcUaBinaryEncode(os);
-		tokenId_.opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, channelId_);
+		OpcUaStackCore::opcUaBinaryEncode(os, tokenId_);
 		OpcUaStackCore::opcUaBinaryEncode(os, createAt_);
 		OpcUaStackCore::opcUaBinaryEncode(os, revisedLifetime_);
 	}
@@ -81,8 +81,8 @@ namespace OpcUaStackCore
 	void 
 	SecurityToken::opcUaBinaryDecode(std::istream& is)
 	{
-		channelId_.opcUaBinaryDecode(is);
-		tokenId_.opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, channelId_);
+		OpcUaStackCore::opcUaBinaryDecode(is, tokenId_);
 		OpcUaStackCore::opcUaBinaryDecode(is, createAt_);
 		OpcUaStackCore::opcUaBinaryDecode(is, revisedLifetime_);
 	}

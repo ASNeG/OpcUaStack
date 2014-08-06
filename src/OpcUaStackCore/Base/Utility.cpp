@@ -171,6 +171,21 @@ namespace OpcUaStackCore
 		}
 	}
 
+	void hexStringToStream(const std::string& hexString, std::iostream& ios)
+	{
+		uint32_t hexStringLength = hexString.length();
+
+		for (uint32_t idx=0; idx<hexStringLength; idx+=2) {
+			uint8_t n1 = hexToByte(hexString[idx]);
+			uint8_t n2 = 0;
+			if (idx + 1 < hexStringLength) {
+				n2 = hexToByte(hexString[idx+1]);
+			}
+
+			ios << (uint8_t)((n1<<4)+n2);
+		}
+	}
+
 	void byteSequenceToHexString(const uint8_t* byteSequence, uint32_t byteSequenceLength, std::string& hexString)
 	{
 		hexString = "";
@@ -180,6 +195,43 @@ namespace OpcUaStackCore
 			c[1] = byteToHex(byteSequence[idx] & 0x0F);
 			hexString.append(1, c[0]).append(1, c[1]);
 		}
+	}
+
+	bool compare(std::iostream& ios, const std::string& string, uint32_t& pos)
+	{
+		uint32_t ct = count(ios);
+		std::stringstream ss1;
+		duplicate(ios, ss1);
+		bool first = true;
+
+		std::string buffer = "";
+		for (uint32_t idx=0; idx < string.length(); idx++) {
+			if (string[idx] == ' ') {
+				continue;
+			}
+			buffer += string[idx];
+		}
+
+		if (buffer.length() != (ct*2)) {
+			pos = 0;
+			return false;
+		}
+
+		std::stringstream ss2;
+		hexStringToStream(buffer, ss2);
+
+		for (uint32_t idx=0; idx<ct; idx++) {
+			uint8_t i1, i2;
+			ss1 >> i1;
+			ss2 >> i2;
+
+			if (i1 != i2) {
+				pos = idx; 
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

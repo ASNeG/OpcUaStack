@@ -7,8 +7,8 @@ namespace OpcUaStackCore
 	: time_()
 	, requestHandle_()
 	, serviceResult_()
-	, diagnosticInfoSPtr_(OpcUaDiagnosticInfo::construct())
-	, stringTableSPtr_(OpcUaStringArray::construct())
+	, diagnosticInfoSPtr_()
+	, stringTableSPtr_()
 	{
 		time_.dateTime(boost::posix_time::microsec_clock::local_time());
 		requestHandle_ = 0;

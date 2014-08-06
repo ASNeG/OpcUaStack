@@ -32,27 +32,15 @@ namespace OpcUaStackCore
 	{
 		return responseHeader_;
 	}
-
-	void 
-	CreateSessionResponse::sessionId(const OpcUaNodeId::SPtr sessionId)
-	{
-		sessionId_ = sessionId;
-	}
-
-	OpcUaNodeId::SPtr 
-	CreateSessionResponse::sessionId(void) const
+	
+	OpcUaNodeId&
+	CreateSessionResponse::sessionId(void) 
 	{
 		return sessionId_;
 	}
 
-	void 
-	CreateSessionResponse::authenticationToken(const SessionAuthenticationToken::SPtr authenticationToken)
-	{
-		authenticationToken_ = authenticationToken;
-	}
-
-	SessionAuthenticationToken::SPtr 
-	CreateSessionResponse::authenticationToken(void) const
+	OpcUaNodeId& 
+	CreateSessionResponse::authenticationToken(void) 
 	{
 		return authenticationToken_;
 	}
@@ -80,15 +68,15 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	CreateSessionResponse::serverCertificate(const ApplicationInstanceCertificate::SPtr serverCertificate)
+	CreateSessionResponse::serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const
 	{
-		serverCertificate_ = serverCertificate;
+		serverCertificate_.value(buf, bufLen);
 	}
 
-	ApplicationInstanceCertificate::SPtr 
-	CreateSessionResponse::serverCertificate(void) const
+	void 
+	CreateSessionResponse::serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{
-		return serverCertificate_;
+		serverCertificate_.value(buf, bufLen);
 	}
 
 	void 
@@ -143,11 +131,11 @@ namespace OpcUaStackCore
 	CreateSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		responseHeader_->opcUaBinaryEncode(os);
-		sessionId_->opcUaBinaryEncode(os);
-		authenticationToken_->opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, sessionId_);
+		OpcUaStackCore::opcUaBinaryEncode(os, authenticationToken_);
 		OpcUaStackCore::opcUaBinaryEncode(os, receivedSessionTimeout_);
 		OpcUaStackCore::opcUaBinaryEncode(os, serverNonce_);
-		serverCertificate_->opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, serverCertificate_);
 		serverEndpoints_->opcUaBinaryEncode(os);
 		serverSoftwareCertificate_->opcUaBinaryEncode(os);
 		signatureData_->opcUaBinaryEncode(os);
@@ -158,11 +146,11 @@ namespace OpcUaStackCore
 	CreateSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		responseHeader_->opcUaBinaryDecode(is);
-		sessionId_->opcUaBinaryDecode(is);
-		authenticationToken_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, sessionId_);
+		OpcUaStackCore::opcUaBinaryDecode(is, authenticationToken_);
 		OpcUaStackCore::opcUaBinaryDecode(is, receivedSessionTimeout_);
 		OpcUaStackCore::opcUaBinaryDecode(is, serverNonce_);
-		serverCertificate_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, serverCertificate_);
 		serverEndpoints_->opcUaBinaryDecode(is);
 		serverSoftwareCertificate_->opcUaBinaryDecode(is);
 		signatureData_->opcUaBinaryDecode(is);

@@ -45,15 +45,27 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	EndpointDescription::serverCertificate(const ApplicationInstanceCertificate::SPtr serverCertificate)
+	EndpointDescription::serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{
-		serverCertificate_ = serverCertificate;
+		serverCertificate_.value(buf, bufLen);
 	}
 
-	ApplicationInstanceCertificate::SPtr 
-	EndpointDescription::serverCertificate(void) const
+	void 
+	EndpointDescription::serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const
 	{
-		return serverCertificate_;
+		serverCertificate_.value(buf, bufLen);
+	}
+
+	void 
+	EndpointDescription::securityPolicyUri(const std::string& securityPolicyUri)
+	{
+		securityPolicyUri_ = securityPolicyUri;
+	}
+		
+	std::string 
+	EndpointDescription::securityPolicyUri(void) const
+	{
+		return securityPolicyUri_.value();
 	}
 
 	void 
@@ -109,7 +121,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStackCore::opcUaBinaryEncode(os, endpointUrl_);
 		applicationDescription_->opcUaBinaryEncode(os);
-		serverCertificate_->opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, serverCertificate_);
 		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)messageSecurityMode_);
 		OpcUaStackCore::opcUaBinaryEncode(os, securityPolicyUri_);
 		userIdentityTokens_->opcUaBinaryEncode(os);
@@ -122,7 +134,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 messageSecurityMode;
 		OpcUaStackCore::opcUaBinaryDecode(is, endpointUrl_);
 		applicationDescription_->opcUaBinaryDecode(is);
-		serverCertificate_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is,serverCertificate_);
 		OpcUaStackCore::opcUaBinaryDecode(is, messageSecurityMode);
 		OpcUaStackCore::opcUaBinaryDecode(is, securityPolicyUri_);
 		userIdentityTokens_->opcUaBinaryDecode(is);

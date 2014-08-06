@@ -10,7 +10,7 @@ namespace OpcUaStackCore
 	, endpointUrl_()
 	, sessionName_()
 	, clientNonce_()
-	, clientCertificateSPtr_()
+	, clientCertificate_()
 	, requestSessionTimeout_()
 	, maxResponseMessageSize_()
 	{
@@ -93,15 +93,15 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	CreateSessionRequest::clientCertificate(const ApplicationInstanceCertificate::SPtr clientCertificateSPtr)
+	CreateSessionRequest::clientCertificate(const OpcUaByte *buf, OpcUaInt32 bufLen)
 	{
-		clientCertificateSPtr_ = clientCertificateSPtr;
+		clientCertificate_.value(buf, bufLen);
 	}
 
-	ApplicationInstanceCertificate::SPtr 
-	CreateSessionRequest::clientCertificate(void) const
+	void 
+	CreateSessionRequest::clientCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const
 	{
-		return clientCertificateSPtr_;
+		clientCertificate_.value(buf, bufLen);
 	}
 
 	void 
@@ -134,8 +134,9 @@ namespace OpcUaStackCore
 		clientDescriptionSPtr_->opcUaBinaryEncode(os);
 		OpcUaStackCore::opcUaBinaryEncode(os, serverUri_);
 		OpcUaStackCore::opcUaBinaryEncode(os, endpointUrl_);
+		OpcUaStackCore::opcUaBinaryEncode(os, sessionName_);
 		OpcUaStackCore::opcUaBinaryEncode(os, clientNonce_);
-		clientCertificateSPtr_->opcUaBinaryEncode(os);
+		OpcUaStackCore::opcUaBinaryEncode(os, clientCertificate_);
 		OpcUaStackCore::opcUaBinaryEncode(os, requestSessionTimeout_);
 		OpcUaStackCore::opcUaBinaryEncode(os, maxResponseMessageSize_);
 	}
@@ -147,8 +148,9 @@ namespace OpcUaStackCore
 		clientDescriptionSPtr_->opcUaBinaryDecode(is);
 		OpcUaStackCore::opcUaBinaryDecode(is, serverUri_);
 		OpcUaStackCore::opcUaBinaryDecode(is, endpointUrl_);
+		OpcUaStackCore::opcUaBinaryDecode(is, sessionName_);
 		OpcUaStackCore::opcUaBinaryDecode(is, clientNonce_);
-		clientCertificateSPtr_->opcUaBinaryDecode(is);
+		OpcUaStackCore::opcUaBinaryDecode(is, clientCertificate_);
 		OpcUaStackCore::opcUaBinaryDecode(is, requestSessionTimeout_);
 		OpcUaStackCore::opcUaBinaryDecode(is, maxResponseMessageSize_);
 	}

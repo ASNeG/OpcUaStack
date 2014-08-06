@@ -85,12 +85,12 @@ namespace OpcUaStackCore
 	}
 
 	void  
-	OpenSecureChannelRequest::requestedLifetime(const Duration& requestedLifetime)
+	OpenSecureChannelRequest::requestedLifetime(const OpcUaInt32& requestedLifetime)
 	{
 		requestedLifetime_ = requestedLifetime;
 	}
 
-	Duration  
+	OpcUaInt32  
 	OpenSecureChannelRequest::requestedLifetime(void) const
 	{
 		return requestedLifetime_;
@@ -113,6 +113,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 tmp;
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaStackCore::opcUaBinaryDecode(is, clientProtocolVersion_);
+
 		OpcUaStackCore::opcUaBinaryDecode(is, tmp); requestType_ = (RequestType)tmp;
 		OpcUaStackCore::opcUaBinaryDecode(is, tmp); securityMode_ = (SecurityMode)tmp;
 		OpcUaStackCore::opcUaBinaryDecode(is, clientNonce_);

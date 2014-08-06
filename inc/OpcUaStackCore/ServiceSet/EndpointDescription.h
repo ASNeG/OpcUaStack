@@ -13,6 +13,7 @@ namespace OpcUaStackCore
 {
 
 	typedef enum {
+		MessageSecurityMode_None = 0
 	} MessageSecurityMode;
 
 	class DLLEXPORT EndpointDescription : public  ObjectPool<EndpointDescription>
@@ -25,10 +26,15 @@ namespace OpcUaStackCore
 		std::string endpointUrl(void) const;
 		void applicationDescription(const ApplicationDescription::SPtr applicationDescription);
 		ApplicationDescription::SPtr applicationDescription(void) const;
-		void serverCertificate(const ApplicationInstanceCertificate::SPtr serverCertificate);
-		ApplicationInstanceCertificate::SPtr serverCertificate(void) const;
+		void serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
+		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		void messageSecurityMode(const MessageSecurityMode messageSecurityMode);
 		MessageSecurityMode messageSecurityMode(void) const;
+		void securityPolicyUri(const std::string& securityPolicyUri);
+		std::string securityPolicyUri(void) const;
+
+
+
 		void userIdentityTokens(const UserTokenPolicyArray::SPtr userIdentityTokens);
 		UserTokenPolicyArray::SPtr userIdentityTokens(void) const;
 		void transportProfileUri(const std::string& transportProfileUri);
@@ -42,7 +48,8 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaString endpointUrl_;
 		ApplicationDescription::SPtr applicationDescription_;
-		ApplicationInstanceCertificate::SPtr serverCertificate_;
+		OpcUaByteString serverCertificate_;
+
 		MessageSecurityMode messageSecurityMode_;
 		OpcUaString securityPolicyUri_;
 		UserTokenPolicyArray::SPtr userIdentityTokens_;

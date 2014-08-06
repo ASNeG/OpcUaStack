@@ -42,6 +42,12 @@ namespace OpcUaStackCore
 		return productUri_.value();
 	}
 
+	OpcUaLocalizedText& 
+	ApplicationDescription::applicationName(void)
+	{
+		return applicationName_;
+	}
+
 	void 
 	ApplicationDescription::applicationType(ApplicationType applicationType)
 	{
@@ -95,6 +101,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStackCore::opcUaBinaryEncode(os, applicationUri_);
 		OpcUaStackCore::opcUaBinaryEncode(os, productUri_);
+		OpcUaStackCore::opcUaBinaryEncode(os, applicationName_);
 		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)applicationType_);
 		OpcUaStackCore::opcUaBinaryEncode(os, gatewayServerUri_);
 		OpcUaStackCore::opcUaBinaryEncode(os, discoveryProfileUri_);
@@ -107,6 +114,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 applicationType;
 		OpcUaStackCore::opcUaBinaryDecode(is, applicationUri_);
 		OpcUaStackCore::opcUaBinaryDecode(is, productUri_);
+		OpcUaStackCore::opcUaBinaryDecode(is, applicationName_);
 		OpcUaStackCore::opcUaBinaryDecode(is, applicationType);
 		OpcUaStackCore::opcUaBinaryDecode(is, gatewayServerUri_);
 		OpcUaStackCore::opcUaBinaryDecode(is, discoveryProfileUri_);

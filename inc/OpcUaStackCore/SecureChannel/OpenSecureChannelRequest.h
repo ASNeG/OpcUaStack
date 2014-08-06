@@ -18,7 +18,7 @@ namespace OpcUaStackCore
 
 	typedef enum
 	{
-		xxxx = 0
+		None = 1
 	} SecurityMode;
 
 	class DLLEXPORT OpenSecureChannelRequest : public  ObjectPool<OpenSecureChannelRequest>
@@ -35,10 +35,10 @@ namespace OpcUaStackCore
 		RequestType requestType(void);
 		void securityMode(const SecurityMode& securityMode);
 		SecurityMode securityMode(void) const;
-		void clientNonce(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void clientNonce(OpcUaByte **buf, OpcUaInt32* bufLen) const;
-		void requestedLifetime(const Duration& requestedLifetime);
-		Duration requestedLifetime(void) const;
+		void clientNonce(OpcUaByte *buf, OpcUaInt32 bufLen);
+		void requestedLifetime(const OpcUaInt32& requestedLifetime);
+		OpcUaInt32 requestedLifetime(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		RequestType requestType_;
 		SecurityMode securityMode_;
 		OpcUaByteString clientNonce_;
-		Duration requestedLifetime_;
+		OpcUaInt32 requestedLifetime_;
 	};
 
 }
