@@ -223,14 +223,27 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CreateSessionResponse
+	opcUaGuidSPtr = OpcUaGuid::construct();
+	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+
 	createSessionResponseSPtr = CreateSessionResponse::construct();
 	createSessionResponseSPtr->responseHeader(ResponseHeader::construct());
+	createSessionResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
+	createSessionResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
 
 	createSessionResponseSPtr->responseHeader()->time(ptime);
 	createSessionResponseSPtr->responseHeader()->requestHandle(1);
-	createSessionResponseSPtr->responseHeader()->serviceResult(0);
+	createSessionResponseSPtr->responseHeader()->serviceResult(OpcUaStatusCode::Success);
 
-	// FIXME
+	createSessionResponseSPtr->sessionId().namespaceIndex(1);
+	createSessionResponseSPtr->sessionId().nodeId(1);
+	createSessionResponseSPtr->authenticationToken().namespaceIndex(1);
+	createSessionResponseSPtr->authenticationToken().nodeId(opcUaGuidSPtr);
+	createSessionResponseSPtr->receivedSessionTimeout(120000);
+	createSessionResponseSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
+
+	//createSessionResponseSPtr->serverEndpoints()->resize(3);
+
 
 	// encode MessageHeader
 	messageHeaderSPtr = MessageHeader::construct();

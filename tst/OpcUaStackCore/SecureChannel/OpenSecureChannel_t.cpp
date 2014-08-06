@@ -188,6 +188,8 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	clientNonce[0] = 0x01;
 	openSecureChannelResponseSPtr = OpenSecureChannelResponse::construct();
 	openSecureChannelResponseSPtr->responseHeader(ResponseHeader::construct());
+	openSecureChannelResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
+	openSecureChannelResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
 	openSecureChannelResponseSPtr->securityToken(securityTokenSPtr);
 	openSecureChannelResponseSPtr->responseHeader()->time(ptime);
 	openSecureChannelResponseSPtr->serverNonce( clientNonce, 1);
@@ -245,6 +247,8 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	// decode OpenSecureChannel
 	openSecureChannelResponseSPtr = OpenSecureChannelResponse::construct();
 	openSecureChannelResponseSPtr->responseHeader(ResponseHeader::construct());
+	openSecureChannelResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
+	openSecureChannelResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
 	openSecureChannelResponseSPtr->securityToken(SecurityToken::construct());
 	openSecureChannelResponseSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelResponseSPtr->serverNonce(&opcUaByte, &opcUaByteLen);

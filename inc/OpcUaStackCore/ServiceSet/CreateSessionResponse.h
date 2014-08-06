@@ -23,16 +23,14 @@ namespace OpcUaStackCore
 
 		void responseHeader(const ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void) const;
-		void sessionId(const OpcUaNodeId::SPtr sessionId);
-		OpcUaNodeId::SPtr sessionId(void) const;
-		void authenticationToken(const SessionAuthenticationToken::SPtr authenticationToken);
-		SessionAuthenticationToken::SPtr authenticationToken(void) const;
+		OpcUaNodeId& sessionId(void);
+		OpcUaNodeId& authenticationToken(void);
 		void receivedSessionTimeout(const Duration receivedSessionTimeout);
 		Duration receivedSessionTimeout(void) const;
-		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverNonce(OpcUaByte** buf, OpcUaInt32* bufLen) const;
-		void serverCertificate(const ApplicationInstanceCertificate::SPtr serverCertificate);
-		ApplicationInstanceCertificate::SPtr serverCertificate(void) const;
+		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
+		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		void serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverEndpoints(const EndpointDescriptionArray::SPtr serverEndpoints);
 		EndpointDescriptionArray::SPtr serverEndpoints(void) const;
 		void serverSoftwareCertificate(const SignedSoftwareCertificateArray::SPtr serverSoftwareCertificate);
@@ -47,11 +45,11 @@ namespace OpcUaStackCore
 
 	  private:
 		ResponseHeader::SPtr responseHeader_;
-		OpcUaNodeId::SPtr sessionId_;
-		SessionAuthenticationToken::SPtr authenticationToken_;
+		OpcUaNodeId sessionId_;
+		OpcUaNodeId authenticationToken_;
 		Duration receivedSessionTimeout_;
 		OpcUaByteString serverNonce_;
-		ApplicationInstanceCertificate::SPtr serverCertificate_;
+		OpcUaByteString serverCertificate_;
 		EndpointDescriptionArray::SPtr serverEndpoints_;
 		SignedSoftwareCertificateArray::SPtr serverSoftwareCertificate_;
 		SignatureData::SPtr signatureData_;
