@@ -209,4 +209,4 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
-};
+}
