@@ -6,7 +6,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 #include "OpcUaStackCore/ServiceSet/AddNodesItem.h"
 
 
