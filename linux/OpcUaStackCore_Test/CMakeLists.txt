@@ -8,7 +8,7 @@ set (Boost_USE_STATIC_RUNTIME    OFF)
 find_package(
     Boost 
     REQUIRED
-    COMPONENTS system unit_test_framework thread
+    COMPONENTS system unit_test_framework thread timer 
 )
 
 find_library(
