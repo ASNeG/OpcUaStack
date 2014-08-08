@@ -48,14 +48,14 @@ namespace OpcUaStackCore
 	void 
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, typeId_);
+		typeId_.opcUaBinaryEncode(os);
 		if (!body_.exist()) {
-			OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-			OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaInt32)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)0x00);
 		}
 		else {
-			OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x01);
-			OpcUaStackCore::opcUaBinaryEncode(os, body_);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+			body_.opcUaBinaryEncode(os);
 		}
 	}
 		
@@ -63,58 +63,19 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte encodingByte;
-		OpcUaStackCore::opcUaBinaryDecode(is, typeId_);
-		OpcUaStackCore::opcUaBinaryDecode(is, encodingByte);
+		typeId_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, encodingByte);
 		if (encodingByte == 0x00) {
 			OpcUaInt32 length;
-			OpcUaStackCore::opcUaBinaryDecode(is, length);
+			OpcUaNumber::opcUaBinaryDecode(is, length);
 		}
 		else if (encodingByte == 0x01) {
-			OpcUaStackCore::opcUaBinaryDecode(is, body_);
+			body_.opcUaBinaryDecode(is);
 		}
 		else {
 			// FIXME: todo
 		}
 	}
 
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaExtensionObject& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaExtensionObject& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	// 
-	// OpcUaExtensionObjectArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaExtensionObjectArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaExtensionObjectArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaExtensionObjectArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaExtensionObjectArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
-
+	
 };

@@ -10,20 +10,6 @@
 
 namespace OpcUaStackCore
 {
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// global functions
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	template<typename T>
-	  void opcUaBinaryEncode(std::ostream& os, const T& value);
-
-	template<typename T>
-	  void opcUaBinaryDecode(std::istream& is, T& value);
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -186,9 +172,10 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T>::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncodeNumber(os, actArrayLen_);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(os, actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			OpcUaStackCore::opcUaBinaryEncode(os, valueArray_[idx]);
+			// FIXME
+			//valueArray_[idx].opcUaBinaryEncode(os);
 		}
 	}
 	
@@ -196,8 +183,8 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T>::opcUaBinaryDecode(std::istream& is)
 	{
-		int32_t arrayLength;
-		OpcUaStackCore::opcUaBinaryDecodeNumber(is, arrayLength);
+		int32_t arrayLength = 0;
+		ByteOrder<int32_t>::opcUaBinaryDecodeNumber(is, arrayLength);
 		if (arrayLength <= 0) {
 			return;
 		}
@@ -205,25 +192,11 @@ namespace OpcUaStackCore
 		resize(arrayLength);
 		for (int32_t idx=0; idx<arrayLength; idx++) {
 			T value;
-			OpcUaStackCore::opcUaBinaryDecode(is, value);
+			// FIXME:
+			//value.opcUaBinaryDecode(is);
 			push_back(value);
 		}
 	}
-
-
-
-	template<typename T>
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaArray<T>& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	template<typename T>
-    void opcUaBinaryDecode(std::istream& is, OpcUaArray<T>& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
 
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
@@ -389,14 +362,14 @@ namespace OpcUaStackCore
 	{
 		int32_t actArrayLen;
 		actArrayLen = actArrayLen_;
-		OpcUaStackCore::opcUaBinaryEncodeNumber(os, actArrayLen_);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(os, actArrayLen_);
 
 		if (actArrayLen_ <= 0) {
 			return;
 		}
 
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			OpcUaStackCore::opcUaBinaryEncode(os, *valueArray_[idx].get());
+			valueArray_[idx]->opcUaBinaryEncode(os);
 		}
 	}
 	
@@ -404,8 +377,8 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<boost::shared_ptr<T> >::opcUaBinaryDecode(std::istream& is)
 	{
-		int32_t arrayLength;
-		OpcUaStackCore::opcUaBinaryDecodeNumber(is, arrayLength);
+		int32_t arrayLength = 0;
+		ByteOrder<uint32_t>::opcUaBinaryDecodeNumber(is, arrayLength);
 		if (arrayLength <= 0) {
 			return;
 		}
@@ -414,24 +387,10 @@ namespace OpcUaStackCore
 		for (int32_t idx=0; idx<arrayLength; idx++) {
 			boost::shared_ptr<T> value;
 			value = T::construct();
-			OpcUaStackCore::opcUaBinaryDecode(is, *value.get());
+			value->opcUaBinaryDecode(is);
 			push_back(value);
 		}
 	}
-
-
-	template<typename T>
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaArray<boost::shared_ptr<T> >& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	template<typename T>
-    void opcUaBinaryDecode(std::istream& is, OpcUaArray<boost::shared_ptr<T> >& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
 
 }
 

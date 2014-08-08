@@ -89,33 +89,33 @@ namespace OpcUaStackCore
 	void 
 	ResponseHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, time_);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestHandle_);
-		OpcUaStackCore::opcUaBinaryEncode(os, serviceResult_);
-		OpcUaStackCore::opcUaBinaryEncode(os, diagnosticInfoSPtr_);
-		OpcUaStackCore::opcUaBinaryEncode(os, stringTableSPtr_);
+		time_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, requestHandle_);
+		OpcUaNumber::opcUaBinaryEncode(os, serviceResult_);
+		diagnosticInfoSPtr_->opcUaBinaryEncode(os);
+		stringTableSPtr_->opcUaBinaryEncode(os);
 
 		// FIXME: additional header
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 	}
 		
 	void 
 	ResponseHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, time_);
-		OpcUaStackCore::opcUaBinaryDecode(is, requestHandle_);
-		OpcUaStackCore::opcUaBinaryDecode(is, serviceResult_);
-		OpcUaStackCore::opcUaBinaryDecode(is, diagnosticInfoSPtr_);
-		OpcUaStackCore::opcUaBinaryDecode(is, stringTableSPtr_);
+		OpcUaInt32 tmp1;
+		time_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, requestHandle_);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp1); serviceResult_ = (OpcUaStatusCode)tmp1;
+		diagnosticInfoSPtr_->opcUaBinaryDecode(is);
+		stringTableSPtr_->opcUaBinaryDecode(is);
 
 		// FIXME: additional header
-		OpcUaByte tmp;
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
+		OpcUaByte tmp2;
+		OpcUaNumber::opcUaBinaryDecode(is, tmp2);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp2);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp2);
 	}
 
 }

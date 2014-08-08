@@ -57,17 +57,7 @@ namespace OpcUaStackCore
 		OpcUaByte securityLevel_;
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const EndpointDescription& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, EndpointDescription& value);
-
-
-
 	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr>, public ObjectPool<EndpointDescriptionArray> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const EndpointDescriptionArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const EndpointDescriptionArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, EndpointDescriptionArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, EndpointDescriptionArray::SPtr& value);
 
 }
 

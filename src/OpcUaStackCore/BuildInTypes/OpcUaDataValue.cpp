@@ -121,24 +121,24 @@ namespace OpcUaStackCore
 			encodingMask += 0x20;
 		}
 
-		OpcUaStackCore::opcUaBinaryEncode(os,encodingMask);
+		OpcUaNumber::opcUaBinaryEncode(os,encodingMask);
 		if (opcUaVariantSPtr_.get() != NULL) {
-			OpcUaStackCore::opcUaBinaryEncode(os,*opcUaVariantSPtr_);
+			opcUaVariantSPtr_->opcUaBinaryEncode(os);
 		}
 		if (opcUaStatusCode_ != 0) {
-			OpcUaStackCore::opcUaBinaryEncode(os,opcUaStatusCode_);
+			OpcUaNumber::opcUaBinaryEncode(os,opcUaStatusCode_);
 		}
 		if (sourceTimestamp_.exist()) {
-			OpcUaStackCore::opcUaBinaryEncode(os,sourceTimestamp_);
+			sourceTimestamp_.opcUaBinaryEncode(os);
 		}
 		if (sourcePicoseconds_ != 0) {
-			OpcUaStackCore::opcUaBinaryEncode(os,sourcePicoseconds_);
+			OpcUaNumber::opcUaBinaryEncode(os,sourcePicoseconds_);
 		}
 		if (serverTimestamp_.exist()) {
-			OpcUaStackCore::opcUaBinaryEncode(os,serverTimestamp_);
+			serverTimestamp_.opcUaBinaryEncode(os);
 		}
 		if (serverPicoseconds_ != 0) {
-			OpcUaStackCore::opcUaBinaryEncode(os,serverPicoseconds_);
+			OpcUaNumber::opcUaBinaryEncode(os,serverPicoseconds_);
 		}
 	}
 		
@@ -146,67 +146,29 @@ namespace OpcUaStackCore
 	OpcUaDataValue::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte encodingMask;
-		OpcUaStackCore::opcUaBinaryDecode(is,encodingMask);
+		OpcUaNumber::opcUaBinaryDecode(is,encodingMask);
 
 		if ((encodingMask & 0x01) == 0x01) {
 			opcUaVariantSPtr_ = OpcUaVariant::construct();
-			OpcUaStackCore::opcUaBinaryDecode(is,*opcUaVariantSPtr_);
+			opcUaVariantSPtr_->opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x02) == 0x02) {
-			OpcUaStackCore::opcUaBinaryDecode(is,opcUaStatusCode_);
+			OpcUaInt32 tmp;
+			OpcUaNumber::opcUaBinaryDecode(is,tmp); opcUaStatusCode_ = (OpcUaStatusCode)tmp;
 		}
 		if ((encodingMask & 0x04) == 0x04) {
-			OpcUaStackCore::opcUaBinaryDecode(is,sourceTimestamp_);
+			sourceTimestamp_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x08) == 0x08) {
-			OpcUaStackCore::opcUaBinaryDecode(is,sourcePicoseconds_);
+			OpcUaNumber::opcUaBinaryDecode(is,sourcePicoseconds_);
 		}
 		if ((encodingMask & 0x10) == 0x10) {
-			OpcUaStackCore::opcUaBinaryDecode(is,serverTimestamp_);
+			serverTimestamp_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x20) == 0x20) {
-			OpcUaStackCore::opcUaBinaryDecode(is,serverPicoseconds_);
+			OpcUaNumber::opcUaBinaryDecode(is,serverPicoseconds_);
 		}
 	}
 
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaDataValue& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaDataValue& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// OpcUaDataValueArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
 
 };

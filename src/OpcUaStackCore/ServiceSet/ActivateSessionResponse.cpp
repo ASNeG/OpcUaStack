@@ -67,7 +67,7 @@ namespace OpcUaStackCore
 	ActivateSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		responseHeader_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverNonce_);
+		serverNonce_.opcUaBinaryEncode(os);
 		results_->opcUaBinaryEncode(os);
 		diagnosticInfos_->opcUaBinaryEncode(os);
 	}
@@ -76,7 +76,7 @@ namespace OpcUaStackCore
 	ActivateSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		responseHeader_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, serverNonce_);
+		serverNonce_.opcUaBinaryDecode(is);
 		results_->opcUaBinaryDecode(is);
 		diagnosticInfos_->opcUaBinaryDecode(is);
 	}

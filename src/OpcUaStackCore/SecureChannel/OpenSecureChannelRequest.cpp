@@ -100,11 +100,11 @@ namespace OpcUaStackCore
 	OpenSecureChannelRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, clientProtocolVersion_);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)requestType_);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)securityMode_);
-		OpcUaStackCore::opcUaBinaryEncode(os, clientNonce_);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestedLifetime_);
+		OpcUaNumber::opcUaBinaryEncode(os, clientProtocolVersion_);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)requestType_);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)securityMode_);
+		clientNonce_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, requestedLifetime_);
 	}
 
 	void 
@@ -112,12 +112,11 @@ namespace OpcUaStackCore
 	{
 		OpcUaUInt32 tmp;
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, clientProtocolVersion_);
-
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp); requestType_ = (RequestType)tmp;
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp); securityMode_ = (SecurityMode)tmp;
-		OpcUaStackCore::opcUaBinaryDecode(is, clientNonce_);
-		OpcUaStackCore::opcUaBinaryDecode(is, requestedLifetime_);
+		OpcUaNumber::opcUaBinaryDecode(is, clientProtocolVersion_);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp); requestType_ = (RequestType)tmp;
+		OpcUaNumber::opcUaBinaryDecode(is, tmp); securityMode_ = (SecurityMode)tmp;
+		clientNonce_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, requestedLifetime_);
 	}
 
 }

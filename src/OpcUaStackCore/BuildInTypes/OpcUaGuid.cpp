@@ -101,59 +101,18 @@ namespace OpcUaStackCore
 	void 
 	OpcUaGuid::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, data1_);
-		OpcUaStackCore::opcUaBinaryEncode(os, data2_);
-		OpcUaStackCore::opcUaBinaryEncode(os, data3_);
+		OpcUaNumber::opcUaBinaryEncode(os, data1_);
+		OpcUaNumber::opcUaBinaryEncode(os, data2_);
+		OpcUaNumber::opcUaBinaryEncode(os, data3_);
 		os.write((char*)data4_, sizeof(data4_));
 	}
 		
 	void 
 	OpcUaGuid::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, data1_);
-		OpcUaStackCore::opcUaBinaryDecode(is, data2_);
-		OpcUaStackCore::opcUaBinaryDecode(is, data3_);
+		OpcUaNumber::opcUaBinaryDecode(is, data1_);
+		OpcUaNumber::opcUaBinaryDecode(is, data2_);
+		OpcUaNumber::opcUaBinaryDecode(is, data3_);
 		is.read((char*)data4_, sizeof(data4_));
 	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaGuid& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-	
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaGuid& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// OpcGuidArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaGuidArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaGuidArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaGuidArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaGuidArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
-
 }

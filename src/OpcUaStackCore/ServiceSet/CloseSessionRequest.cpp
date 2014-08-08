@@ -35,14 +35,14 @@ namespace OpcUaStackCore
 	CloseSessionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, deleteSubscriptions_);
+		OpcUaNumber::opcUaBinaryEncode(os, deleteSubscriptions_);
 	}
 
 	void 
 	CloseSessionRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, deleteSubscriptions_);
+		OpcUaNumber::opcUaBinaryDecode(is, deleteSubscriptions_);
 	}
 
 }

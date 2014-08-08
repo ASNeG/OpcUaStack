@@ -86,7 +86,7 @@ namespace OpcUaStackCore
 	UserTokenPolicy::opcUaBinaryEncode(std::ostream& os) const
 	{
 		policyId_.opcUaBinaryEncode(os);
-		OpcUaStackCore::OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)tokenType_);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)tokenType_);
 		issuedTokenType_.opcUaBinaryEncode(os);
 		issuerEndpointUrl_.opcUaBinaryEncode(os);
 		securityPolicyUri_.opcUaBinaryEncode(os);
@@ -97,7 +97,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaUInt32 tokenType;
 		policyId_.opcUaBinaryDecode(is);
-		OpcUaStackCore::OpcUaNumber::opcUaBinaryDecode(is, tokenType);
+		OpcUaNumber::opcUaBinaryDecode(is, tokenType);
 		issuedTokenType_.opcUaBinaryDecode(is);
 		issuerEndpointUrl_.opcUaBinaryDecode(is);
 		securityPolicyUri_.opcUaBinaryDecode(is);

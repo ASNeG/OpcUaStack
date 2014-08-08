@@ -79,21 +79,21 @@ namespace OpcUaStackCore
 	void 
 	AcknowledgeMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, protocolVersion_);
-		OpcUaStackCore::opcUaBinaryEncode(os, receivedBufferSize_);
-		OpcUaStackCore::opcUaBinaryEncode(os, sendBufferSize_);
-		OpcUaStackCore::opcUaBinaryEncode(os, maxMessageSize_);
-		OpcUaStackCore::opcUaBinaryEncode(os, maxChunkCount_);
+		OpcUaNumber::opcUaBinaryEncode(os, protocolVersion_);
+		OpcUaNumber::opcUaBinaryEncode(os, receivedBufferSize_);
+		OpcUaNumber::opcUaBinaryEncode(os, sendBufferSize_);
+		OpcUaNumber::opcUaBinaryEncode(os, maxMessageSize_);
+		OpcUaNumber::opcUaBinaryEncode(os, maxChunkCount_);
 	}
 
 	void 
 	AcknowledgeMessage::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, protocolVersion_);
-		OpcUaStackCore::opcUaBinaryDecode(is, receivedBufferSize_);
-		OpcUaStackCore::opcUaBinaryDecode(is, sendBufferSize_);
-		OpcUaStackCore::opcUaBinaryDecode(is, maxMessageSize_);
-		OpcUaStackCore::opcUaBinaryDecode(is, maxChunkCount_);
+		OpcUaNumber::opcUaBinaryDecode(is, protocolVersion_);
+		OpcUaNumber::opcUaBinaryDecode(is, receivedBufferSize_);
+		OpcUaNumber::opcUaBinaryDecode(is, sendBufferSize_);
+		OpcUaNumber::opcUaBinaryDecode(is, maxMessageSize_);
+		OpcUaNumber::opcUaBinaryDecode(is, maxChunkCount_);
 	}
 
 }

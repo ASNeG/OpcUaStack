@@ -72,40 +72,20 @@ namespace OpcUaStackCore
 	void 
 	SecurityToken::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, channelId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, tokenId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, createAt_);
-		OpcUaStackCore::opcUaBinaryEncode(os, revisedLifetime_);
+		OpcUaNumber::opcUaBinaryEncode(os, channelId_);
+		OpcUaNumber::opcUaBinaryEncode(os, tokenId_);
+		createAt_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, revisedLifetime_);
 	}
 
 	void 
 	SecurityToken::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, channelId_);
-		OpcUaStackCore::opcUaBinaryDecode(is, tokenId_);
-		OpcUaStackCore::opcUaBinaryDecode(is, createAt_);
-		OpcUaStackCore::opcUaBinaryDecode(is, revisedLifetime_);
+		OpcUaNumber::opcUaBinaryDecode(is, channelId_);
+		OpcUaNumber::opcUaBinaryDecode(is, tokenId_);
+		createAt_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, revisedLifetime_);
 	}
 
-
-	void opcUaBinaryEncode(std::ostream& os, const SecurityToken& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const SecurityToken::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, SecurityToken& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, SecurityToken::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
 
 }

@@ -17,9 +17,9 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_encode_decode)
 	std::stringstream ss;
 	OpcUaDataValue value1, value2;
 
-	opcUaBinaryEncode(ss, value1);
+	value1.opcUaBinaryEncode(ss);
 	BOOST_REQUIRE(count(ss) == 1);
-	opcUaBinaryDecode(ss, value2);
+	value2.opcUaBinaryDecode(ss);
 }
 
 BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
 	value1.serverTimestamp(serverTimestamp);
 	value1.serverPicoseconds(5678);
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value1.variant()->variant<OpcUaUInt16>() == 1234);
 	BOOST_REQUIRE(value1.statusCode() == (OpcUaStatusCode)12);

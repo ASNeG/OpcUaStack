@@ -41,15 +41,15 @@ namespace OpcUaStackCore
 	void 
 	ErrorMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, error_);
-		OpcUaStackCore::opcUaBinaryEncode(os, reason_);
+		OpcUaNumber::opcUaBinaryEncode(os, error_);
+		reason_.opcUaBinaryEncode(os);
 	}
 
 	void 
 	ErrorMessage::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, error_);
-		OpcUaStackCore::opcUaBinaryDecode(is, reason_);
+		OpcUaNumber::opcUaBinaryDecode(is, error_);
+		reason_.opcUaBinaryDecode(is);
 	}
 
 }

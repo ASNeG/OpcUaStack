@@ -30,11 +30,6 @@ namespace OpcUaStackCore
 		OpcUaInt32 revisedLifetime_;
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SecurityToken& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SecurityToken::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, SecurityToken& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, SecurityToken::SPtr& value);
-
 }
 
 #endif

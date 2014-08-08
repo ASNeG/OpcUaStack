@@ -49,24 +49,24 @@ namespace OpcUaStackCore
 			encodingMask += 0x20;
 		}
 
-		OpcUaStackCore::opcUaBinaryEncode(os,encodingMask);
+		OpcUaNumber::opcUaBinaryEncode(os,encodingMask);
 		if (symbolicId_ != -1) {
-			OpcUaStackCore::opcUaBinaryEncode(os,symbolicId_);
+			OpcUaNumber::opcUaBinaryEncode(os,symbolicId_);
 		}
 		if (namespaceUri_ != -1) {
-			OpcUaStackCore::opcUaBinaryEncode(os,namespaceUri_);
+			OpcUaNumber::opcUaBinaryEncode(os,namespaceUri_);
 		}
 		if (localizedText_ != -1) {
-			OpcUaStackCore::opcUaBinaryEncode(os,localizedText_);
+			OpcUaNumber::opcUaBinaryEncode(os,localizedText_);
 		}
 		if (locale_ != -1) {
-			OpcUaStackCore::opcUaBinaryEncode(os,locale_);
+			OpcUaNumber::opcUaBinaryEncode(os,locale_);
 		}
 		if (additionalInfo_.exist()) {
-			OpcUaStackCore::opcUaBinaryEncode(os,additionalInfo_);
+			additionalInfo_.opcUaBinaryEncode(os);
 		}
 		if (innerStatusCode_ != 0) {
-			OpcUaStackCore::opcUaBinaryEncode(os,innerStatusCode_);
+			OpcUaNumber::opcUaBinaryEncode(os, innerStatusCode_);
 		}
 	}
 		
@@ -74,78 +74,27 @@ namespace OpcUaStackCore
 	OpcUaDiagnosticInfo::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte encodingMask;
-		OpcUaStackCore::opcUaBinaryDecode(is,encodingMask);
+		OpcUaNumber::opcUaBinaryDecode(is,encodingMask);
 
 		if ((encodingMask & 0x01) == 0x01) {
-			OpcUaStackCore::opcUaBinaryDecode(is,symbolicId_);
+			OpcUaNumber::opcUaBinaryDecode(is,symbolicId_);
 		}
 		if ((encodingMask & 0x02) == 0x02) {
-			OpcUaStackCore::opcUaBinaryDecode(is,namespaceUri_);
+			OpcUaNumber::opcUaBinaryDecode(is,namespaceUri_);
 		}
 		if ((encodingMask & 0x04) == 0x04) {
-			OpcUaStackCore::opcUaBinaryDecode(is,localizedText_);
+			OpcUaNumber::opcUaBinaryDecode(is,localizedText_);
 		}
 		if ((encodingMask & 0x08) == 0x08) {
-			OpcUaStackCore::opcUaBinaryDecode(is,locale_);
+			OpcUaNumber::opcUaBinaryDecode(is,locale_);
 		}
 		if ((encodingMask & 0x10) == 0x10) {
-			OpcUaStackCore::opcUaBinaryDecode(is,additionalInfo_);
+			additionalInfo_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x20) == 0x20) {
-			OpcUaStackCore::opcUaBinaryDecode(is,innerStatusCode_);
+			OpcUaInt32 tmp;
+			OpcUaNumber::opcUaBinaryDecode(is, tmp); innerStatusCode_ = (OpcUaStatusCode)tmp;
 		}
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfo& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfo::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaDiagnosticInfo& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaDiagnosticInfo::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// OpcUaDiagnosticInfoArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfoArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfoArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is,OpcUaDiagnosticInfoArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is,OpcUaDiagnosticInfoArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
 	}
 
 };

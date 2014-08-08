@@ -69,12 +69,12 @@ namespace OpcUaStackCore
 			encodingMask += 0x02;
 		}
 
-		OpcUaStackCore::opcUaBinaryEncode(os, encodingMask);
+		OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
 		if (locale_.exist()) {
-			OpcUaStackCore::opcUaBinaryEncode(os, locale_);
+			locale_.opcUaBinaryEncode(os);
 		}
 		if (text_.exist()) {
-			OpcUaStackCore::opcUaBinaryEncode(os, text_);
+			text_.opcUaBinaryEncode(os);
 		}
 	}
 		
@@ -82,54 +82,14 @@ namespace OpcUaStackCore
 	OpcUaLocalizedText::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte encodingMask;
-		OpcUaStackCore::opcUaBinaryDecode(is, encodingMask);
+		OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
 
 		if ((encodingMask & 0x01) == 0x01) {
-			OpcUaStackCore::opcUaBinaryDecode(is, locale_);
+			locale_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x02) == 0x02) {
-			OpcUaStackCore::opcUaBinaryDecode(is, text_);
+			text_.opcUaBinaryDecode(is);
 		}
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaLocalizedText& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaLocalizedText& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// OpcUaLocalizedTextArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaLocalizedTextArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaLocalizedTextArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaLocalizedTextArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaLocalizedTextArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
 	}
 
 };

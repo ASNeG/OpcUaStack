@@ -17,8 +17,8 @@ BOOST_AUTO_TEST_CASE(OpcUaXmlElement_null)
 	std::stringstream ss;
 	OpcUaXmlElement value1, value2;
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

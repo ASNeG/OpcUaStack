@@ -21,9 +21,9 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_empty)
 	OpcUaInt32Array value1, value2;
 
 	BOOST_REQUIRE(value1.size() == 0);
-	opcUaBinaryEncode(ss, value1);
+	value1.opcUaBinaryEncode(ss);
 	BOOST_REQUIRE(OpcUaStackCore::count(ss) == 4);
-	opcUaBinaryDecode(ss, value2);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.size() == 0);
 }
 
@@ -35,8 +35,8 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_1_element)
 	value1.set(4711);
 
 	BOOST_REQUIRE(value1.size() == 1);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.size() == 1);
 
 	OpcUaUInt32 v;
@@ -55,8 +55,8 @@ BOOST_AUTO_TEST_CASE(OpcUaArray_10_element)
 	}
 
 	BOOST_REQUIRE(value1.size() == 10);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.size() == 10);
 
 	for (uint32_t idx=0; idx<10; idx++) {
@@ -72,9 +72,9 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_empty)
 	OpcUaStringArray value1, value2;
 
 	BOOST_REQUIRE(value1.size() == 0);
-	opcUaBinaryEncode(ss, value1);
+	value1.opcUaBinaryEncode(ss);
 	BOOST_REQUIRE(OpcUaStackCore::count(ss) == 4);
-	opcUaBinaryDecode(ss, value2);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.size() == 0);
 }
 
@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_1_element)
 	value1.set(value1SPtr);
 
 	BOOST_REQUIRE(value1.size() == 1);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.size() == 1);
 
 	OpcUaString::SPtr value2SPtr;
@@ -112,8 +112,8 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_10_element)
 	}
 
 	BOOST_REQUIRE(value1.size() == 10);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.size() == 10);
 
 	for (uint32_t idx=0; idx<10; idx++) {

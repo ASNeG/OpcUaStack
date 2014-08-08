@@ -131,30 +131,30 @@ namespace OpcUaStackCore
 	CreateSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		responseHeader_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, sessionId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, authenticationToken_);
-		OpcUaStackCore::opcUaBinaryEncode(os, receivedSessionTimeout_);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverNonce_);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverCertificate_);
+		sessionId_.opcUaBinaryEncode(os);
+		authenticationToken_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, receivedSessionTimeout_);
+		serverNonce_.opcUaBinaryEncode(os);
+		serverCertificate_.opcUaBinaryEncode(os);
 		serverEndpoints_->opcUaBinaryEncode(os);
 		serverSoftwareCertificate_->opcUaBinaryEncode(os);
 		signatureData_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, maxRequestMessageSize_);
+		OpcUaNumber::opcUaBinaryEncode(os, maxRequestMessageSize_);
 	}
 
 	void 
 	CreateSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		responseHeader_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, sessionId_);
-		OpcUaStackCore::opcUaBinaryDecode(is, authenticationToken_);
-		OpcUaStackCore::opcUaBinaryDecode(is, receivedSessionTimeout_);
-		OpcUaStackCore::opcUaBinaryDecode(is, serverNonce_);
-		OpcUaStackCore::opcUaBinaryDecode(is, serverCertificate_);
+		sessionId_.opcUaBinaryDecode(is);
+		authenticationToken_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, receivedSessionTimeout_);
+		serverNonce_.opcUaBinaryDecode(is);
+		serverCertificate_.opcUaBinaryDecode(is);
 		serverEndpoints_->opcUaBinaryDecode(is);
 		serverSoftwareCertificate_->opcUaBinaryDecode(is);
 		signatureData_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, maxRequestMessageSize_);
+		OpcUaNumber::opcUaBinaryDecode(is, maxRequestMessageSize_);
 	}
 
 }

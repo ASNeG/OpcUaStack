@@ -167,13 +167,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt16& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaInt16>::opcUaBinaryEncodeNumber(os, value);
 	}
 	
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt16& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaInt16>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -218,13 +218,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaUInt16>::opcUaBinaryEncodeNumber(os, value);
 	}
 
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaUInt16>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -269,13 +269,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt32& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaInt32>::opcUaBinaryEncodeNumber(os, value);
 	}
 	
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt32& value)
 	{
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaInt32>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -320,13 +320,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(os, value);
 	}
 
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaUInt32>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -371,13 +371,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaInt64& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaInt64>::opcUaBinaryEncodeNumber(os, value);
 	}
 	
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt64& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaInt64>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -422,13 +422,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaUInt64>::opcUaBinaryEncodeNumber(os, value);
 	}
 
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt64& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaUInt64>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -473,13 +473,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaFloat& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaFloat>::opcUaBinaryEncodeNumber(os, value);
 	}
 
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaFloat& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaFloat>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -524,13 +524,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNumber::opcUaBinaryEncode(std::ostream& os, const OpcUaDouble& value)
 	{	
-		opcUaBinaryEncodeNumber(os, value);
+		ByteOrder<OpcUaDouble>::opcUaBinaryEncodeNumber(os, value);
 	}
 
 	void 
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaDouble& value)
 	{	
-		opcUaBinaryDecodeNumber(is, value);
+		ByteOrder<OpcUaDouble>::opcUaBinaryDecodeNumber(is, value);
 	}
 
 	// ------------------------------------------------------------------------

@@ -119,65 +119,27 @@ namespace OpcUaStackCore
 	void 
 	EndpointDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, endpointUrl_);
+		endpointUrl_.opcUaBinaryEncode(os);
 		applicationDescription_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverCertificate_);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)messageSecurityMode_);
-		OpcUaStackCore::opcUaBinaryEncode(os, securityPolicyUri_);
+		serverCertificate_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)messageSecurityMode_);
+		securityPolicyUri_.opcUaBinaryEncode(os);
 		userIdentityTokens_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, securityLevel_);
+		OpcUaNumber::opcUaBinaryEncode(os, securityLevel_);
 	}
 	
 	void 
 	EndpointDescription::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaUInt32 messageSecurityMode;
-		OpcUaStackCore::opcUaBinaryDecode(is, endpointUrl_);
+		endpointUrl_.opcUaBinaryDecode(is);
 		applicationDescription_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is,serverCertificate_);
-		OpcUaStackCore::opcUaBinaryDecode(is, messageSecurityMode);
-		OpcUaStackCore::opcUaBinaryDecode(is, securityPolicyUri_);
+		serverCertificate_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, messageSecurityMode);
+		securityPolicyUri_.opcUaBinaryDecode(is);
 		userIdentityTokens_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, securityLevel_);
+		OpcUaNumber::opcUaBinaryDecode(is, securityLevel_);
 		messageSecurityMode_ = (MessageSecurityMode)messageSecurityMode;
-	}
-
-
-	void opcUaBinaryEncode(std::ostream& os, const EndpointDescription& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, EndpointDescription& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// EndpointDescriptionArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const EndpointDescriptionArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const EndpointDescriptionArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, EndpointDescriptionArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, EndpointDescriptionArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
 	}
 
 }

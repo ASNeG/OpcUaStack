@@ -19,9 +19,9 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_two_byte_representation)
 
 	value1.nodeId((OpcUaInt32)11);
 	
-	opcUaBinaryEncode(ss, value1);
+	value1.opcUaBinaryEncode(ss);
 	BOOST_REQUIRE(count(ss) == 2);
-	opcUaBinaryDecode(ss, value2);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 0);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
@@ -38,8 +38,8 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_no)
 	value1.nodeId((OpcUaInt32)11);
 	value1.namespaceUri("URI");
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 0);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
@@ -57,8 +57,8 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_no_ServerIndex_yes)
 	value1.nodeId((OpcUaInt32)11);
 	value1.serverIndex(4711);
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 345);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
@@ -76,8 +76,8 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_yes)
 	value1.namespaceUri("URI");
 	value1.serverIndex(4711);
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 0);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);

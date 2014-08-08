@@ -97,7 +97,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaByteString::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, length_);
+		OpcUaNumber::opcUaBinaryEncode(os, length_);
 		if (length_ < 1) {
 			return;
 		}
@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 	OpcUaByteString::opcUaBinaryDecode(std::istream& is)
 	{
 		reset();
-		OpcUaStackCore::opcUaBinaryDecode(is, length_);
+		OpcUaNumber::opcUaBinaryDecode(is, length_);
 		if (length_ < 1) {
 			return;
 		}
@@ -129,19 +129,6 @@ namespace OpcUaStackCore
 		value->opcUaBinaryEncode(os);
 	}
 
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaByteString& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaByteString::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
-
-
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	//
@@ -155,30 +142,6 @@ namespace OpcUaStackCore
 
 	OpcUaByteStringArray::~OpcUaByteStringArray(void)
 	{
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaByteStringArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaByteStringArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaByteStringArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaByteStringArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
 	}
 
 };

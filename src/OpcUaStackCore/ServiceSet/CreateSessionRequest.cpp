@@ -132,13 +132,13 @@ namespace OpcUaStackCore
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		clientDescriptionSPtr_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverUri_);
-		OpcUaStackCore::opcUaBinaryEncode(os, endpointUrl_);
-		OpcUaStackCore::opcUaBinaryEncode(os, sessionName_);
-		OpcUaStackCore::opcUaBinaryEncode(os, clientNonce_);
-		OpcUaStackCore::opcUaBinaryEncode(os, clientCertificate_);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestSessionTimeout_);
-		OpcUaStackCore::opcUaBinaryEncode(os, maxResponseMessageSize_);
+		serverUri_.opcUaBinaryEncode(os);
+		endpointUrl_.opcUaBinaryEncode(os);
+		sessionName_.opcUaBinaryEncode(os);
+		clientNonce_.opcUaBinaryEncode(os);
+		clientCertificate_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, requestSessionTimeout_);
+		OpcUaNumber::opcUaBinaryEncode(os, maxResponseMessageSize_);
 	}
 
 	void 
@@ -146,13 +146,13 @@ namespace OpcUaStackCore
 	{
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		clientDescriptionSPtr_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, serverUri_);
-		OpcUaStackCore::opcUaBinaryDecode(is, endpointUrl_);
-		OpcUaStackCore::opcUaBinaryDecode(is, sessionName_);
-		OpcUaStackCore::opcUaBinaryDecode(is, clientNonce_);
-		OpcUaStackCore::opcUaBinaryDecode(is, clientCertificate_);
-		OpcUaStackCore::opcUaBinaryDecode(is, requestSessionTimeout_);
-		OpcUaStackCore::opcUaBinaryDecode(is, maxResponseMessageSize_);
+		serverUri_.opcUaBinaryDecode(is);
+		endpointUrl_.opcUaBinaryDecode(is);
+		sessionName_.opcUaBinaryDecode(is);
+		clientNonce_.opcUaBinaryDecode(is);
+		clientCertificate_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, requestSessionTimeout_);
+		OpcUaNumber::opcUaBinaryDecode(is, maxResponseMessageSize_);
 	}
 
 }

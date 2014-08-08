@@ -99,26 +99,26 @@ namespace OpcUaStackCore
 	void 
 	ApplicationDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, applicationUri_);
-		OpcUaStackCore::opcUaBinaryEncode(os, productUri_);
-		OpcUaStackCore::opcUaBinaryEncode(os, applicationName_);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)applicationType_);
-		OpcUaStackCore::opcUaBinaryEncode(os, gatewayServerUri_);
-		OpcUaStackCore::opcUaBinaryEncode(os, discoveryProfileUri_);
-		OpcUaStackCore::opcUaBinaryEncode(os, discoveryUrls_);
+		applicationUri_.opcUaBinaryEncode(os);
+		productUri_.opcUaBinaryEncode(os);
+		applicationName_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)applicationType_);
+		gatewayServerUri_.opcUaBinaryEncode(os);
+		discoveryProfileUri_.opcUaBinaryEncode(os);
+		discoveryUrls_->opcUaBinaryEncode(os);
 	}
 
 	void 
 	ApplicationDescription::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaUInt32 applicationType;
-		OpcUaStackCore::opcUaBinaryDecode(is, applicationUri_);
-		OpcUaStackCore::opcUaBinaryDecode(is, productUri_);
-		OpcUaStackCore::opcUaBinaryDecode(is, applicationName_);
-		OpcUaStackCore::opcUaBinaryDecode(is, applicationType);
-		OpcUaStackCore::opcUaBinaryDecode(is, gatewayServerUri_);
-		OpcUaStackCore::opcUaBinaryDecode(is, discoveryProfileUri_);
-		OpcUaStackCore::opcUaBinaryDecode(is, discoveryUrls_);
+		applicationUri_.opcUaBinaryDecode(is);
+		productUri_.opcUaBinaryDecode(is);
+		applicationName_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, applicationType);
+		gatewayServerUri_.opcUaBinaryDecode(is);
+		discoveryProfileUri_.opcUaBinaryDecode(is);
+		discoveryUrls_->opcUaBinaryDecode(is);
 		applicationType_ = (ApplicationType)applicationType;
 	}
 

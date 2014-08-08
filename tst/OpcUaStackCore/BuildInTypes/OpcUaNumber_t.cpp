@@ -18,12 +18,12 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBoolean)
 	OpcUaBoolean value1, value2;
 
 	value1 = true;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == true);
 
-	opcUaBinaryEncode(ss, false);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, false);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == false);
 }
 
@@ -37,8 +37,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArray)
 	value1.set(1, false);
 	value1.set(2, true);
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 
 	bool result;
 	BOOST_REQUIRE(value2.get(0, result) == true); 
@@ -63,8 +63,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArraySPtr)
 	value1->set(1, false);
 	value1->set(2, true);
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 
 	bool result;
 	BOOST_REQUIRE(value2->get(0, result) == true); 
@@ -82,28 +82,28 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaSByte)
 	OpcUaSByte value1, value2;
 		
 	value1 = -128;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -128);
 
 	value1 = -1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1);
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 127;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 127);
 }
 
@@ -113,18 +113,18 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaByte)
 	OpcUaByte value1, value2;
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 255;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 255);
 
 }
@@ -135,28 +135,28 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaInt16)
 	OpcUaInt16 value1, value2;
 		
 	value1 = -0x7FFF;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -0x7FFF);
 
 	value1 = -1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1);
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 0x7FFE;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0x7FFE);
 }
 
@@ -166,18 +166,18 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaUInt16)
 	OpcUaUInt16 value1, value2;
 		
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 0xFFFF;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0xFFFF);
 }
 
@@ -187,28 +187,28 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaInt32)
 	OpcUaInt32 value1, value2;
 		
 	value1 = -0x7FFFFFFF;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -0x7FFFFFFF);
 
 	value1 = -1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1);
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 0x7FFFFFFE;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0x7FFFFFFE);
 }
 
@@ -218,18 +218,18 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaUInt32)
 	OpcUaUInt32 value1, value2;
 		
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 0xFFFFFFFF;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0xFFFFFFFF);
 }
 
@@ -239,28 +239,28 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaInt64)
 	OpcUaInt64 value1, value2;
 		
 	value1 = -0x7FFFFFFFFFFFFFFF;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -0x7FFFFFFFFFFFFFFF);
 
 	value1 = -1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1);
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 0x7FFFFFFE;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0x7FFFFFFE);
 }
 
@@ -270,18 +270,18 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaUInt64)
 	OpcUaUInt64 value1, value2;
 		
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 0xFFFFFFFFFFFFFFFF;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0xFFFFFFFFFFFFFFFF);
 }
 
@@ -291,28 +291,28 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaFloat)
 	OpcUaFloat value1, value2;
 		
 	value1 = (float)-1234.56;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE((float)value2 == (float)-1234.56);
 
 	value1 = -1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1);
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = (float)1234.56;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE((float)value2 == (float)1234.56);
 }
 
@@ -322,28 +322,28 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaDouble)
 	OpcUaDouble value1, value2;
 		
 	value1 = -1234.56;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1234.56);
 
 	value1 = -1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == -1);
 
 	value1 = 0;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 0);
 
 	value1 = 1;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1);
 
 	value1 = 1234.56;
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, value2);
 	BOOST_REQUIRE(value2 == 1234.56);
 }
 
