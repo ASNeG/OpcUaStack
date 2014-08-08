@@ -10,6 +10,56 @@
 
 namespace OpcUaStackCore
 {
+
+	template <typename T>
+	class NumberTypeCoder
+	{
+	  public:
+		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
+		  {
+			  ByteOrder<T>::opcUaBinaryEncodeNumber(os, value);
+		  }
+
+		  static void opcUaBinaryDecode(std::istream& is, T& value) 
+		  {
+			  ByteOrder<T>::opcUaBinaryDecodeNumber(is, value);
+		  }
+	};
+
+	template <typename T>
+	class ClassTypeCoder
+	{
+	  public:
+		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
+		  {
+			  value.opcUaBinaryEncode(os);
+		  }
+
+		  static void opcUaBinaryDecode(std::istream& is, T& value)
+		  {
+			  value.opcUaBinaryDecode(is);
+		  }
+	};
+
+	template <typename T>
+	class EnumTypeCoder
+	{
+	  public:
+		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
+		  {
+			  int32_t v = value;
+			  ByteOrder<int32_t>::opcUaBinaryEncodeNumber(os, v);
+		  }
+
+		  static void opcUaBinaryDecode(std::istream& is, T& value)
+		  {
+			  int32_t v = 0;
+			  ByteOrder<int32_t>::opcUaBinaryDecodeNumber(is, v);
+			  value = (T)v;
+		  }
+	};
+
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -17,7 +67,7 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	template<typename T>
+	template<typename T, typename CODER = ClassTypeCoder<T> >
 	class OpcUaArray 
 	{
 	  public:
@@ -49,23 +99,23 @@ namespace OpcUaStackCore
 		T value_;
 	};
 
-	template<typename T>
-	OpcUaArray<T>::OpcUaArray(uint32_t maxArrayLen)
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>::OpcUaArray(uint32_t maxArrayLen)
 	: maxArrayLen_(maxArrayLen)
 	, actArrayLen_(0)
 	{
 		initArray();
 	}
 
-	template<typename T>
-	OpcUaArray<T>::~OpcUaArray(void)
+	template<typename T, typename CODER>
+	OpcUaArray<T, CODER>::~OpcUaArray(void)
 	{
 		clearArray();
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	void
-	OpcUaArray<T>::initArray(void)
+	OpcUaArray<T, CODER>::initArray(void)
 	{
 		if (maxArrayLen_ == 1) {
 			valueArray_ = &value_;
@@ -76,9 +126,9 @@ namespace OpcUaStackCore
 		actArrayLen_ = 0;
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	void
-	OpcUaArray<T>::clearArray(void)
+	OpcUaArray<T, CODER>::clearArray(void)
 	{
 		if (maxArrayLen_ != 1) {
 			delete [] valueArray_;
@@ -89,40 +139,40 @@ namespace OpcUaStackCore
 		maxArrayLen_ = 1;
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	void
-	OpcUaArray<T>::resize(uint32_t maxArrayLen)
+	OpcUaArray<T, CODER>::resize(uint32_t maxArrayLen)
 	{
 		clearArray();
 		maxArrayLen_ = maxArrayLen;
 		initArray();
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	uint32_t
-	OpcUaArray<T>::size(void)
+	OpcUaArray<T, CODER>::size(void)
 	{
 		return actArrayLen_;
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	uint32_t
-	OpcUaArray<T>::maxSize(void)
+	OpcUaArray<T, CODER>::maxSize(void)
 	{
 		return maxArrayLen_;
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	void
-	OpcUaArray<T>::clear(void)
+	OpcUaArray<T, CODER>::clear(void)
 	{
 		clearArray();
 		initArray();
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T>::set(uint32_t pos, const T& value)
+	OpcUaArray<T, CODER>::set(uint32_t pos, const T& value)
 	{
 		if (pos >= maxArrayLen_) {
 			return false;
@@ -135,23 +185,23 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T>::set(const T& value)
+	OpcUaArray<T, CODER>::set(const T& value)
 	{
 		return set(0, value);
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	bool
-	OpcUaArray<T>::push_back(const T& value)
+	OpcUaArray<T, CODER>::push_back(const T& value)
 	{
 		return set(actArrayLen_, value);
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	bool 
-	OpcUaArray<T>::get(uint32_t pos, T& value)
+	OpcUaArray<T, CODER>::get(uint32_t pos, T& value)
 	{
 		if (pos >= actArrayLen_) {
 			return false;
@@ -161,27 +211,26 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	template<typename T>
+	template<typename T, typename CODER>
 	bool 
-	OpcUaArray<T>::get(T& value)
+	OpcUaArray<T, CODER>::get(T& value)
 	{
 		return get(0, value);
 	}
 		
-	template<typename T>
+	template<typename T, typename CODER>
 	void 
-	OpcUaArray<T>::opcUaBinaryEncode(std::ostream& os) const
+	OpcUaArray<T, CODER>::opcUaBinaryEncode(std::ostream& os) const
 	{
 		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(os, actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			// FIXME
-			//valueArray_[idx].opcUaBinaryEncode(os);
+			CODER::opcUaBinaryEncode(os, valueArray_[idx]);
 		}
 	}
 	
-	template<typename T>
+	template<typename T, typename CODER>
 	void 
-	OpcUaArray<T>::opcUaBinaryDecode(std::istream& is)
+	OpcUaArray<T, CODER>::opcUaBinaryDecode(std::istream& is)
 	{
 		int32_t arrayLength = 0;
 		ByteOrder<int32_t>::opcUaBinaryDecodeNumber(is, arrayLength);
@@ -192,8 +241,7 @@ namespace OpcUaStackCore
 		resize(arrayLength);
 		for (int32_t idx=0; idx<arrayLength; idx++) {
 			T value;
-			// FIXME:
-			//value.opcUaBinaryDecode(is);
+			CODER::opcUaBinaryDecode(is, value);
 			push_back(value);
 		}
 	}

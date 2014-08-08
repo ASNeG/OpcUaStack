@@ -249,7 +249,7 @@ namespace OpcUaStackCore
 		~OpcUaStatusCodeMap(void);
 	};
 
-	class OpcUaStatusCodeArray : public OpcUaArray<OpcUaStatusCode>, public ObjectPool<OpcUaStatusCodeArray> {};
+	class OpcUaStatusCodeArray : public OpcUaArray<OpcUaStatusCode, EnumTypeCoder<OpcUaStatusCode> >, public ObjectPool<OpcUaStatusCodeArray> {};
 
 };
 
