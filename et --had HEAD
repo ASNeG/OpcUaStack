@@ -1,0 +1,128 @@
+diff --git a/inc/OpcUaStackCore/BuildInTypes/OpcUaDataValue.h b/inc/OpcUaStackCore/BuildInTypes/OpcUaDataValue.h
+index eab14d4..4923cca 100644
+--- a/inc/OpcUaStackCore/BuildInTypes/OpcUaDataValue.h
++++ b/inc/OpcUaStackCore/BuildInTypes/OpcUaDataValue.h
+@@ -42,16 +42,9 @@ namespace OpcUaStackCore
+ 		OpcUaInt16 serverPicoseconds_;
+ 	};
+ 
+-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValue& value);
+-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDataValue& value);
+-
+ 
+ 	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr>, public ObjectPool<OpcUaDataValueArray> {};
+ 
+-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray& value);
+-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray::SPtr& value);
+-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray& value);
+-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray::SPtr& value);
+ 
+ }
+ 
+diff --git a/inc/OpcUaStackCore/BuildInTypes/OpcUaNumber.h b/inc/OpcUaStackCore/BuildInTypes/OpcUaNumber.h
+index c7abfe0..3fab79c 100644
+--- a/inc/OpcUaStackCore/BuildInTypes/OpcUaNumber.h
++++ b/inc/OpcUaStackCore/BuildInTypes/OpcUaNumber.h
+@@ -7,8 +7,8 @@
+ #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+ #include "OpcUaStackCore/Base/ObjectPool.h"
+ 
+-namespace OpcUaStackCore
+-{
++NAMESPACE_BEGIN( OpcUaStackCore )
++	
+ 	typedef bool OpcUaBoolean;
+ 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaBoolean& value);
+ 	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value);
+@@ -138,6 +138,7 @@ namespace OpcUaStackCore
+ 	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray& value);
+ 	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDoubleArray::SPtr& value);
+ 	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray::SPtr& value);
+-};
++
++NAMESPACE_END
+ 
+ #endif
+diff --git a/linux/OpcUaStackCore_Test/CMakeLists.txt b/linux/OpcUaStackCore_Test/CMakeLists.txt
+index b6f800b..ca2c1dc 100644
+--- a/linux/OpcUaStackCore_Test/CMakeLists.txt
++++ b/linux/OpcUaStackCore_Test/CMakeLists.txt
+@@ -8,7 +8,7 @@ set (Boost_USE_STATIC_RUNTIME    OFF)
+ find_package(
+     Boost 
+     REQUIRED
+-    COMPONENTS system unit_test_framework thread
++    COMPONENTS thread system unit_test_framework date_time 
+ )
+ 
+ find_library(
+diff --git a/src/OpcUaStackCore/BuildInTypes/OpcUaDataValue.cpp b/src/OpcUaStackCore/BuildInTypes/OpcUaDataValue.cpp
+index e06c404..b6a83fd 100644
+--- a/src/OpcUaStackCore/BuildInTypes/OpcUaDataValue.cpp
++++ b/src/OpcUaStackCore/BuildInTypes/OpcUaDataValue.cpp
+@@ -182,31 +182,4 @@ namespace OpcUaStackCore
+ 	}
+ 
+ 
+-	// ------------------------------------------------------------------------
+-	// ------------------------------------------------------------------------
+-	//
+-	// OpcUaDataValueArray
+-	//
+-	// ------------------------------------------------------------------------
+-	// ------------------------------------------------------------------------
+-	void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray& value)
+-	{
+-		value.opcUaBinaryEncode(os);
+-	}
+-
+-	void opcUaBinaryEncode(std::ostream& os, const OpcUaDataValueArray::SPtr& value)
+-	{
+-		value->opcUaBinaryEncode(os);
+-	}
+-
+-	void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray& value)
+-	{
+-		value.opcUaBinaryDecode(is);
+-	}
+-
+-	void opcUaBinaryDecode(std::istream& is, OpcUaDataValueArray::SPtr& value)
+-	{
+-		value->opcUaBinaryDecode(is);
+-	}
+-
+ }
+diff --git a/tst/OpcUaStackCore/BuildInTypes/OpcUaDataValue_t.cpp b/tst/OpcUaStackCore/BuildInTypes/OpcUaDataValue_t.cpp
+index 90dbb4b..4cff9d2 100644
+--- a/tst/OpcUaStackCore/BuildInTypes/OpcUaDataValue_t.cpp
++++ b/tst/OpcUaStackCore/BuildInTypes/OpcUaDataValue_t.cpp
+@@ -17,9 +17,9 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_encode_decode)
+ 	std::stringstream ss;
+ 	OpcUaDataValue value1, value2;
+ 
+-	opcUaBinaryEncode(ss, value1);
++	value1.opcUaBinaryEncode(ss);
+ 	BOOST_REQUIRE(count(ss) == 1);
+-	opcUaBinaryDecode(ss, value2);
++	value2.opcUaBinaryDecode(ss);
+ }
+ 
+ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
+@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
+ 	value1.serverTimestamp(serverTimestamp);
+ 	value1.serverPicoseconds(5678);
+ 
+-	opcUaBinaryEncode(ss, value1);
+-	opcUaBinaryDecode(ss, value2);
++	value1.opcUaBinaryEncode(ss);
++	value2.opcUaBinaryDecode(ss);
+ 
+ 	BOOST_REQUIRE(value1.variant()->variant<OpcUaUInt16>() == 1234);
+ 	BOOST_REQUIRE(value1.statusCode() == (OpcUaStatusCode)12);
+@@ -54,4 +54,4 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
+ 	BOOST_REQUIRE(value1.serverPicoseconds() == 5678);
+ }
+ 
+-BOOST_AUTO_TEST_SUITE_END()
+\ No newline at end of file
++BOOST_AUTO_TEST_SUITE_END()
