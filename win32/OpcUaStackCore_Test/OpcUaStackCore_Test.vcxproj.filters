@@ -113,8 +113,5 @@
     <ClInclude Include="..\..\tst\unittest.h">
       <Filter>unittest</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h">
-      <Filter>unittest\BuildInTypes</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

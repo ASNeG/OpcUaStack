@@ -22,17 +22,7 @@ namespace OpcUaStackCore
 		
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SignedSoftwareCertificate& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, SignedSoftwareCertificate& value);
-
-
 	class SignedSoftwareCertificateArray : public OpcUaArray<SignedSoftwareCertificate::SPtr>, public ObjectPool<SignedSoftwareCertificateArray> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SignedSoftwareCertificateArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SignedSoftwareCertificateArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, SignedSoftwareCertificateArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, SignedSoftwareCertificateArray::SPtr& value);
-
 }
 
 #endif
