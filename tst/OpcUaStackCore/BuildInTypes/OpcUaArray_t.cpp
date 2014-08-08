@@ -9,7 +9,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(OpcUaArray_)
 
-BOOST_AUTO_TEST_CASE(OpcUaArray_)
+BOOST_AUTO_TEST_CASE(OpcUaArray__)
 {
 	std::cout << "OpcUaArray_t" << std::endl;
 }
