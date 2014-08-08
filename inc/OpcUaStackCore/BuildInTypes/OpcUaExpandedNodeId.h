@@ -35,7 +35,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaExpandedNodeIdArray : public OpcUaArray<OpcUaExpandedNodeId::SPtr>, public ObjectPool<OpcUaExpandedNodeId> {};
+	class OpcUaExpandedNodeIdArray : public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >, public ObjectPool<OpcUaExpandedNodeId> {};
 
 }
 

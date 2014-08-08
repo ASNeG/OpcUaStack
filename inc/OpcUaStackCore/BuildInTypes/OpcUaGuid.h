@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		OpcUaByte data4_[8];
 	};
 
-	class OpcUaGuidArray : public OpcUaArray<OpcUaGuid::SPtr>, public ObjectPool<OpcUaGuidArray> {};
+	class OpcUaGuidArray : public OpcUaArray<OpcUaGuid::SPtr, SPtrTypeCoder<OpcUaGuid> >, public ObjectPool<OpcUaGuidArray> {};
 
 }
 

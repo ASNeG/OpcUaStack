@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr>, public ObjectPool<OpcUaDataValueArray> {};
+	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >, public ObjectPool<OpcUaDataValueArray> {};
 
 }
 

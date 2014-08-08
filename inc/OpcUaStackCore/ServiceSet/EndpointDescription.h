@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 		OpcUaByte securityLevel_;
 	};
 
-	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr>, public ObjectPool<EndpointDescriptionArray> {};
+	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr, SPtrTypeCoder<EndpointDescription>>, public ObjectPool<EndpointDescriptionArray> {};
 
 }
 

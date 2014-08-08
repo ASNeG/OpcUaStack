@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 		OpcUaByteString body_;
 	};
 
-	class OpcUaExtensionObjectArray : public OpcUaArray<OpcUaExtensionObject::SPtr>, public ObjectPool<OpcUaExtensionObjectArray> {};
+	class OpcUaExtensionObjectArray : public OpcUaArray<OpcUaExtensionObject::SPtr, SPtrTypeCoder<OpcUaExtensionObject> >, public ObjectPool<OpcUaExtensionObjectArray> {};
 
 }
 

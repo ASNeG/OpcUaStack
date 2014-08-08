@@ -44,7 +44,7 @@ namespace OpcUaStackCore
 		OpcUaString securityPolicyUri_;
 	};
 
-	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr>, public ObjectPool<UserTokenPolicyArray> {};
+	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >, public ObjectPool<UserTokenPolicyArray> {};
 
 }
 

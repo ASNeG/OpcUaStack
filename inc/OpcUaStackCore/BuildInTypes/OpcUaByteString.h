@@ -35,7 +35,7 @@ namespace OpcUaStackCore
 		OpcUaByte* value_; 
 	};
 
-	class OpcUaByteStringArray : public ObjectPool<OpcUaByteStringArray>, public OpcUaArray<OpcUaByteString::SPtr>
+	class OpcUaByteStringArray : public ObjectPool<OpcUaByteStringArray>, public OpcUaArray<OpcUaByteString::SPtr, SPtrTypeCoder<OpcUaByteString> >
 	{
 	  public:
 		OpcUaByteStringArray(void);

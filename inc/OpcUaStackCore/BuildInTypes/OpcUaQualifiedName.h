@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 		OpcUaString name_;
 	};
 
-	class OpcUaQualifiedNameArray : public OpcUaArray<OpcUaQualifiedName::SPtr>, public ObjectPool<OpcUaQualifiedNameArray> {};
+	class OpcUaQualifiedNameArray : public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >, public ObjectPool<OpcUaQualifiedNameArray> {};
 };
 
 #endif

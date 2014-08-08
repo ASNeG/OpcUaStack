@@ -22,7 +22,7 @@ namespace OpcUaStackCore
 		
 	};
 
-	class SignedSoftwareCertificateArray : public OpcUaArray<SignedSoftwareCertificate::SPtr>, public ObjectPool<SignedSoftwareCertificateArray> {};
+	class SignedSoftwareCertificateArray : public OpcUaArray<SignedSoftwareCertificate::SPtr, SPtrTypeCoder<SignedSoftwareCertificate> >, public ObjectPool<SignedSoftwareCertificateArray> {};
 }
 
 #endif

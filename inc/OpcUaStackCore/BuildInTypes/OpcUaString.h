@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 		std::string value_; 
 	};
 
-	class OpcUaStringArray : public OpcUaArray<OpcUaString::SPtr>, public ObjectPool<OpcUaStringArray> {};
+	class OpcUaStringArray : public OpcUaArray<OpcUaString::SPtr, SPtrTypeCoder<OpcUaString> >, public ObjectPool<OpcUaStringArray> {};
 
 }
 

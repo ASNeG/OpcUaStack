@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 		
 	};
 
-	class OpcUaXmlElementArray : public OpcUaArray<OpcUaXmlElement::SPtr>, public ObjectPool<OpcUaXmlElementArray> {};
+	class OpcUaXmlElementArray : public OpcUaArray<OpcUaXmlElement::SPtr, SPtrTypeCoder<OpcUaXmlElement> >, public ObjectPool<OpcUaXmlElementArray> {};
 
 }
 
