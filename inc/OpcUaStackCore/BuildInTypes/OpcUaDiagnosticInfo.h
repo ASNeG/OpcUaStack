@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 		// FIXME: DiagnosticInfo
 	};
 
-	class OpcUaDiagnosticInfoArray : public OpcUaArray<OpcUaDiagnosticInfo::SPtr>, public ObjectPool<OpcUaDiagnosticInfoArray> {};
+	class OpcUaDiagnosticInfoArray : public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >, public ObjectPool<OpcUaDiagnosticInfoArray> {};
 
 }
 

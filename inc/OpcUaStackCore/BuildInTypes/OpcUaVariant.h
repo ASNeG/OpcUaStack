@@ -141,7 +141,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaVariantArray : public OpcUaArray<OpcUaVariant::SPtr>, public ObjectPool<OpcUaVariantArray> {};
+	class OpcUaVariantArray : public OpcUaArray<OpcUaVariant::SPtr, SPtrTypeCoder<OpcUaVariant> >, public ObjectPool<OpcUaVariantArray> {};
 
 };
 

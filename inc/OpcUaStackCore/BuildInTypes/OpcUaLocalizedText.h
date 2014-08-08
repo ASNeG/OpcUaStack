@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaLocalizedTextArray : public OpcUaArray<OpcUaLocalizedText::SPtr>, public ObjectPool<OpcUaLocalizedTextArray> {};
+	class OpcUaLocalizedTextArray : public OpcUaArray<OpcUaLocalizedText::SPtr, SPtrTypeCoder<OpcUaLocalizedText> >, public ObjectPool<OpcUaLocalizedTextArray> {};
 
 }
 
