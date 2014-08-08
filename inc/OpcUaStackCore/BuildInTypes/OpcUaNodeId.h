@@ -14,7 +14,7 @@ namespace OpcUaStackCore
 		virtual ~OpcUaNodeId(void);
 	};
 
-	class OpcUaNodeIdArray : public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId>>, public ObjectPool<OpcUaNodeIdArray> {};
+	class OpcUaNodeIdArray : public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >, public ObjectPool<OpcUaNodeIdArray> {};
 
 }
 
