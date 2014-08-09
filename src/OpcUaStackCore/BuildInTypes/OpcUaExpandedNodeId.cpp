@@ -74,8 +74,8 @@ namespace OpcUaStackCore
 	OpcUaExpandedNodeId::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNodeIdBase::opcUaBinaryEncode(os);
-		if (namespaceUri_.size() > 0) OpcUaStackCore::opcUaBinaryEncode(os, namespaceUri_);
-		if (serverIndex_ != 0) OpcUaStackCore::opcUaBinaryEncode(os, serverIndex_);
+		if (namespaceUri_.size() > 0) namespaceUri_.opcUaBinaryEncode(os);
+		if (serverIndex_ != 0) OpcUaNumber::opcUaBinaryEncode(os, serverIndex_);
 	}
 
 	void 
@@ -84,47 +84,9 @@ namespace OpcUaStackCore
 		OpcUaNodeIdBase::opcUaBinaryDecode(is);
 		if ((expandedEncodingFlag_ & 0x80) == 0x80) {
 			namespaceIndex(0);
-			OpcUaStackCore::opcUaBinaryDecode(is, namespaceUri_);
+			namespaceUri_.opcUaBinaryDecode(is);
 		}
-		if ((expandedEncodingFlag_ & 0x40) == 0x40) OpcUaStackCore::opcUaBinaryDecode(is, serverIndex_);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeId& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeId& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// OpcUaExpandedNodeIdArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeIdArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeIdArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeIdArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeIdArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
+		if ((expandedEncodingFlag_ & 0x40) == 0x40) OpcUaNumber::opcUaBinaryDecode(is, serverIndex_);
 	}
 
 }

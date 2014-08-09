@@ -29,15 +29,7 @@ namespace OpcUaStackCore
 		OpcUaUInt64 dateTime_;
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDateTime& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDateTime& value);
-
 	class OpcUaDateTimeArray : public OpcUaArray<OpcUaDateTime>, public ObjectPool<OpcUaDateTimeArray> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDateTimeArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDateTimeArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDateTimeArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDateTimeArray::SPtr& value);
 	
 };
 

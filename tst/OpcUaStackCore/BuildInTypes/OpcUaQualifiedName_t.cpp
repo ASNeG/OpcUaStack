@@ -20,8 +20,8 @@ BOOST_AUTO_TEST_CASE(OpcUaQualifiedName_encode_decode)
 	value1 = "ABC";			// name
 	value1 = 12;			// namespaceIndex
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2.name().value() == "ABC");
 	BOOST_REQUIRE(value2.namespaceIndex() == 12);

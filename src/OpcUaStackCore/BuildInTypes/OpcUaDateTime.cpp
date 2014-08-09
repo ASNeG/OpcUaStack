@@ -66,55 +66,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaDateTime::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, dateTime_);
+		OpcUaNumber::opcUaBinaryEncode(os, dateTime_);
 	}
 
 	void 
 	OpcUaDateTime::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, dateTime_);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaDateTime& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaDateTime& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// OpcUaDateTimeArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaDateTimeArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaDateTimeArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaDateTimeArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, OpcUaDateTimeArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, dateTime_);
 	}
 
 }

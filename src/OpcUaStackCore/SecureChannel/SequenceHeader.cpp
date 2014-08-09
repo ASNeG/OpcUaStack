@@ -40,15 +40,15 @@ namespace OpcUaStackCore
 	void 
 	SequenceHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, sequenceNumber_);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestId_);
+		OpcUaNumber::opcUaBinaryEncode(os, sequenceNumber_);
+		OpcUaNumber::opcUaBinaryEncode(os, requestId_);
 	}
 
 	void 
 	SequenceHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, sequenceNumber_);
-		OpcUaStackCore::opcUaBinaryDecode(is, requestId_);
+		OpcUaNumber::opcUaBinaryDecode(is, sequenceNumber_);
+		OpcUaNumber::opcUaBinaryDecode(is, requestId_);
 	}
 
 }

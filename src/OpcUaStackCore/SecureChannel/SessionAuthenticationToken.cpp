@@ -27,12 +27,12 @@ namespace OpcUaStackCore
 	void 
 	SessionAuthenticationToken::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, token_);
+		OpcUaNumber::opcUaBinaryEncode(os, token_);
 	}
 
 	void 
 	SessionAuthenticationToken::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, token_);
+		OpcUaNumber::opcUaBinaryDecode(is, token_);
 	}
 }

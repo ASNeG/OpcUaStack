@@ -40,27 +40,15 @@ namespace OpcUaStackCore
 	void 
 	SignatureData::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, signature_);
-		OpcUaStackCore::opcUaBinaryEncode(os, algorithm_);
+		signature_.opcUaBinaryEncode(os);
+		algorithm_.opcUaBinaryEncode(os);
 	}
 
 	void 
 	SignatureData::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, signature_);
-		OpcUaStackCore::opcUaBinaryDecode(is, algorithm_);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const SignatureData& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, SignatureData& value)
-	{
-		value.opcUaBinaryDecode(is);
+		signature_.opcUaBinaryDecode(is);
+		algorithm_.opcUaBinaryDecode(is);
 	}
 
 }

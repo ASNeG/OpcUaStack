@@ -85,60 +85,23 @@ namespace OpcUaStackCore
 	void 
 	UserTokenPolicy::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, policyId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaUInt32)tokenType_);
-		OpcUaStackCore::opcUaBinaryEncode(os, issuedTokenType_);
-		OpcUaStackCore::opcUaBinaryEncode(os, issuerEndpointUrl_);
-		OpcUaStackCore::opcUaBinaryEncode(os, securityPolicyUri_);
+		policyId_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)tokenType_);
+		issuedTokenType_.opcUaBinaryEncode(os);
+		issuerEndpointUrl_.opcUaBinaryEncode(os);
+		securityPolicyUri_.opcUaBinaryEncode(os);
 	}
 
 	void 
 	UserTokenPolicy::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaUInt32 tokenType;
-		OpcUaStackCore::opcUaBinaryDecode(is, policyId_);
-		OpcUaStackCore::opcUaBinaryDecode(is, tokenType);
-		OpcUaStackCore::opcUaBinaryDecode(is, issuedTokenType_);
-		OpcUaStackCore::opcUaBinaryDecode(is, issuerEndpointUrl_);
-		OpcUaStackCore::opcUaBinaryDecode(is, securityPolicyUri_);
+		policyId_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, tokenType);
+		issuedTokenType_.opcUaBinaryDecode(is);
+		issuerEndpointUrl_.opcUaBinaryDecode(is);
+		securityPolicyUri_.opcUaBinaryDecode(is);
 		tokenType_ = (UserIdentityTokenType)tokenType;
 	}
 
-	void opcUaBinaryEncode(std::ostream& os, const UserTokenPolicy& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, UserTokenPolicy& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// UserTokenPolicyArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void opcUaBinaryEncode(std::ostream& os, const UserTokenPolicyArray& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void opcUaBinaryEncode(std::ostream& os, const UserTokenPolicyArray::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-	
-	void opcUaBinaryDecode(std::istream& is, UserTokenPolicyArray& value)
-	{
-		value.opcUaBinaryDecode(is);
-	}
-
-	void opcUaBinaryDecode(std::istream& is, UserTokenPolicyArray::SPtr& value)
-	{
-		value->opcUaBinaryDecode(is);
-	}
 }

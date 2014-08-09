@@ -29,18 +29,7 @@ namespace OpcUaStackCore
 		// FIXME: DiagnosticInfo
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfo& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfo::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDiagnosticInfo& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaDiagnosticInfo::SPtr& value);
-
-
-	class OpcUaDiagnosticInfoArray : public OpcUaArray<OpcUaDiagnosticInfo::SPtr>, public ObjectPool<OpcUaDiagnosticInfoArray> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfoArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaDiagnosticInfoArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is,OpcUaDiagnosticInfoArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is,OpcUaDiagnosticInfoArray::SPtr& value);
+	class OpcUaDiagnosticInfoArray : public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >, public ObjectPool<OpcUaDiagnosticInfoArray> {};
 
 }
 

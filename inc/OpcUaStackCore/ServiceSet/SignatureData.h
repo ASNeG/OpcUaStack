@@ -28,10 +28,6 @@ namespace OpcUaStackCore
 		OpcUaString algorithm_;
 		
 	};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const SignatureData& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, SignatureData& value);
-
 }
 
 #endif

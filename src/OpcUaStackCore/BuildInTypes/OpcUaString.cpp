@@ -73,11 +73,11 @@ namespace OpcUaStackCore
 	OpcUaString::opcUaBinaryEncode(std::ostream& os) const
 	{
 		if (!exist_) {
-			OpcUaStackCore::opcUaBinaryEncode(os, (const OpcUaInt32)-1);
+			OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)-1);
 			return;
 		}
 
-		OpcUaStackCore::opcUaBinaryEncode(os, (const OpcUaInt32)value_.size());
+		OpcUaNumber::opcUaBinaryEncode(os, (const OpcUaInt32)value_.size());
 		os.write(value_.c_str(), value_.size());
 	}
 		
@@ -85,7 +85,7 @@ namespace OpcUaStackCore
 	OpcUaString::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaInt32 length = 0;
-		OpcUaStackCore::opcUaBinaryDecode(is, length);
+		OpcUaNumber::opcUaBinaryDecode(is, length);
 
 		if (length < 0) {
 			value_ = "";
@@ -116,62 +116,6 @@ namespace OpcUaStackCore
 
 			length -= sizeToRead;
 		} while (length > 0);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaString& value) 
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaString::SPtr& value) 
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaString& value)
-	{	
-		value.opcUaBinaryDecode(is);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaString::SPtr& value)
-	{	
-		value->opcUaBinaryDecode(is);
-	}
-
-
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
-	// 
-	// OpcUaStringArray
-	//
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaStringArray& value) 
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaStringArray::SPtr& value) 
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaStringArray& value)
-	{	
-		value.opcUaBinaryDecode(is);
-	}
-
-	void 
-	opcUaBinaryDecode(std::istream& is, OpcUaStringArray::SPtr& value)
-	{	
-		value->opcUaBinaryDecode(is);
 	}
 
 }

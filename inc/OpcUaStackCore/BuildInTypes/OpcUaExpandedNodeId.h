@@ -34,16 +34,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 serverIndex_; 
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeId& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeId& value);
 
-
-	class OpcUaExpandedNodeIdArray : public OpcUaArray<OpcUaExpandedNodeId::SPtr>, public ObjectPool<OpcUaExpandedNodeId> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeIdArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const OpcUaExpandedNodeIdArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeIdArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, OpcUaExpandedNodeIdArray::SPtr& value);
+	class OpcUaExpandedNodeIdArray : public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >, public ObjectPool<OpcUaExpandedNodeId> {};
 
 }
 

@@ -17,8 +17,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDateTime_encode_decode)
 	std::stringstream ss;
 	OpcUaDateTime value1, value2;
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2 == 0);
 }
@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDateTime_lower_limit)
 	OpcUaDateTime value1, value2;
 
 	value1.dateTime(ptime1);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	ptime2 = value2.dateTime();
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "16010101T120000");
@@ -48,8 +48,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDateTime_upper_limit)
 	OpcUaDateTime value1, value2;
 
 	value1.dateTime(ptime1);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	ptime2 = value2.dateTime();
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "99990101T235959");
@@ -64,8 +64,8 @@ BOOST_AUTO_TEST_CASE(OpcUaDateTime_in_range)
 	OpcUaDateTime value1, value2;
 
 	value1.dateTime(ptime1);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	ptime2 = value2.dateTime();
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "20140506T102013.123456");

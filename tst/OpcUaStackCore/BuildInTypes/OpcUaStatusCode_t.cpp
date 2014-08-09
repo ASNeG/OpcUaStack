@@ -1,5 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 
@@ -14,13 +15,14 @@ BOOST_AUTO_TEST_CASE(OpcUaStatusCode_)
 
 BOOST_AUTO_TEST_CASE(OpcUaStatusCode_encode_decode)
 {
+	OpcUaInt32 tmp;
 	std::stringstream ss;
 	OpcUaStatusCode value1, value2;
 
 	value1 = BadUnexpectedError;
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	OpcUaNumber::opcUaBinaryEncode(ss, value1);
+	OpcUaNumber::opcUaBinaryDecode(ss, tmp); value2 = (OpcUaStatusCode)tmp;
 
 	BOOST_REQUIRE(value2 == BadUnexpectedError);
 }

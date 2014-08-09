@@ -24,8 +24,8 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_body_no)
 	value1.typeId().namespaceIndex(123);
 	value1.typeId().nodeId(opcUaStringSPtr);
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	BOOST_REQUIRE(value2.typeId().namespaceIndex() == 123);
 	BOOST_REQUIRE(value2.typeId().nodeId<OpcUaString::SPtr>()->value() == "Dies ist ein String");
@@ -49,8 +49,8 @@ BOOST_AUTO_TEST_CASE(OpcUaExtensionObject_body_yes)
 	value1.body().value(buf1, 5);
 	BOOST_REQUIRE(value1.body().exist() == true);
 	
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 
 	value2.body().value(&buf2, &bufLen2);
 	BOOST_REQUIRE(value2.typeId().namespaceIndex() == 123);

@@ -43,12 +43,12 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	// encode channel id
 	OpcUaUInt32 channelId;
 	channelId = 153451225;
-	OpcUaStackCore::opcUaBinaryEncode(ios1, channelId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode token id
 	OpcUaInt32 tokenId;
 	tokenId = 1;
-	OpcUaStackCore::opcUaBinaryEncode(ios1, tokenId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
 	sequenceHeaderSPtr = SequenceHeader::construct();
@@ -129,11 +129,11 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
 	// decode channel id
-	OpcUaStackCore::opcUaBinaryDecode(ios, channelId);
+	OpcUaNumber::opcUaBinaryDecode(ios, channelId);
 	BOOST_REQUIRE(channelId == 153451225);
 
 	// decode token id
-	OpcUaStackCore::opcUaBinaryDecode(ios, tokenId);
+	OpcUaNumber::opcUaBinaryDecode(ios, tokenId);
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
@@ -205,12 +205,12 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	// encode channel id
 	OpcUaUInt32 channelId;
 	channelId = 153451225;
-	OpcUaStackCore::opcUaBinaryEncode(ios1, channelId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode token id
 	OpcUaInt32 tokenId;
 	tokenId = 1;
-	OpcUaStackCore::opcUaBinaryEncode(ios1, tokenId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
 	sequenceHeaderSPtr = SequenceHeader::construct();
@@ -284,11 +284,11 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
 	// decode channel id
-	OpcUaStackCore::opcUaBinaryDecode(ios, channelId);
+	OpcUaNumber::opcUaBinaryDecode(ios, channelId);
 	BOOST_REQUIRE(channelId == 153451225);
 
 	// decode token id
-	OpcUaStackCore::opcUaBinaryDecode(ios, tokenId);
+	OpcUaNumber::opcUaBinaryDecode(ios, tokenId);
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header

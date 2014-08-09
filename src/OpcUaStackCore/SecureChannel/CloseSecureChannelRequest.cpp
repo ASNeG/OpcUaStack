@@ -48,14 +48,14 @@ namespace OpcUaStackCore
 	CloseSecureChannelRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, secureChannelId_);
+		secureChannelId_.opcUaBinaryEncode(os);
 	}
 
 	void 
 	CloseSecureChannelRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, secureChannelId_);
+		secureChannelId_.opcUaBinaryDecode(is);
 	}
 
 }

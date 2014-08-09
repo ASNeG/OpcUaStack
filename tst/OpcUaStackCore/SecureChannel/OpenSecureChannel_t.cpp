@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	// encode channel id
 	OpcUaUInt32 channelId;
 	channelId = 0;
-	OpcUaStackCore::opcUaBinaryEncode(ios1, channelId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode security header
 	securityHeaderSPtr = SecurityHeader::construct();
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_OpenSecureChannel);
 	
 	// decode channel id
-	OpcUaStackCore::opcUaBinaryDecode(ios, channelId);
+	OpcUaNumber::opcUaBinaryDecode(ios, channelId);
 	BOOST_REQUIRE(channelId == 0);
 
 	// decode security header
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	// encode channel id
 	OpcUaUInt32 channelId;
 	channelId = 153451225;
-	OpcUaStackCore::opcUaBinaryEncode(ios1, channelId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode security header
 	securityHeaderSPtr = SecurityHeader::construct();
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_OpenSecureChannel);
 	
 	// decode channel id
-	OpcUaStackCore::opcUaBinaryDecode(ios, channelId);
+	OpcUaNumber::opcUaBinaryDecode(ios, channelId);
 	BOOST_REQUIRE(channelId == 153451225);
 
 	// decode security header

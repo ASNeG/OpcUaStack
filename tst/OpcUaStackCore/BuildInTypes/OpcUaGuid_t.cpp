@@ -17,8 +17,8 @@ BOOST_AUTO_TEST_CASE(OpcUaGuid_null)
 	std::stringstream ss;
 	OpcUaGuid value1, value2;
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	std::string str = value2;
 	BOOST_REQUIRE(str == "00000000-0000-0000-0000-000000000000");
 }
@@ -30,14 +30,14 @@ BOOST_AUTO_TEST_CASE(OpcUaGuid_string)
 	OpcUaGuid value1, value2;
 
 	value1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	str = value2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 
 	value1 = "12345678-9abc-def0-1234-56789abcdef0";
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	str = value2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
@@ -53,8 +53,8 @@ BOOST_AUTO_TEST_CASE(OpcUaGuid_binary)
 	value1.data2(0x9ABC);
 	value1.data3(0xDEF0);
 	value1.data4(data4);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	str = value2;
 	// FIXME:
 	//BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");

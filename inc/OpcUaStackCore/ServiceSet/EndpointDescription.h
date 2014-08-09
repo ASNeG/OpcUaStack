@@ -32,9 +32,6 @@ namespace OpcUaStackCore
 		MessageSecurityMode messageSecurityMode(void) const;
 		void securityPolicyUri(const std::string& securityPolicyUri);
 		std::string securityPolicyUri(void) const;
-
-
-
 		void userIdentityTokens(const UserTokenPolicyArray::SPtr userIdentityTokens);
 		UserTokenPolicyArray::SPtr userIdentityTokens(void) const;
 		void transportProfileUri(const std::string& transportProfileUri);
@@ -49,7 +46,6 @@ namespace OpcUaStackCore
 		OpcUaString endpointUrl_;
 		ApplicationDescription::SPtr applicationDescription_;
 		OpcUaByteString serverCertificate_;
-
 		MessageSecurityMode messageSecurityMode_;
 		OpcUaString securityPolicyUri_;
 		UserTokenPolicyArray::SPtr userIdentityTokens_;
@@ -57,17 +53,7 @@ namespace OpcUaStackCore
 		OpcUaByte securityLevel_;
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const EndpointDescription& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, EndpointDescription& value);
-
-
-
-	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr>, public ObjectPool<EndpointDescriptionArray> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const EndpointDescriptionArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const EndpointDescriptionArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, EndpointDescriptionArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, EndpointDescriptionArray::SPtr& value);
+	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr, SPtrTypeCoder<EndpointDescription> >, public ObjectPool<EndpointDescriptionArray> {};
 
 }
 

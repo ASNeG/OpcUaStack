@@ -17,8 +17,8 @@ BOOST_AUTO_TEST_CASE(OpcUaByteString_null)
 	std::stringstream ss;
 	OpcUaByteString value1, value2;
 
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.exist() == false);
 }
 
@@ -28,8 +28,8 @@ BOOST_AUTO_TEST_CASE(OpcUaString_empty)
 	OpcUaByteString value1, value2;
 
 	value1.value("", 0);
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.exist() == true);
 	BOOST_REQUIRE(value2.size() == 0);
 }
@@ -41,8 +41,8 @@ BOOST_AUTO_TEST_CASE(OpcUaString_string)
 	OpcUaByteString value1, value2;
 
 	value1 = "ABC";
-	opcUaBinaryEncode(ss, value1);
-	opcUaBinaryDecode(ss, value2);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.exist() == true);
 	str = value2;
 	BOOST_REQUIRE(str == "ABC");

@@ -64,18 +64,18 @@ namespace OpcUaStackCore
 	OpenSecureChannelResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		responseHeaderSPtr_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverProtocolVersion_);
+		OpcUaNumber::opcUaBinaryEncode(os, serverProtocolVersion_);
 		securityTokenSPtr_->opcUaBinaryEncode(os);
-		OpcUaStackCore::opcUaBinaryEncode(os, serverNonce_);
+		serverNonce_.opcUaBinaryEncode(os);
 	}
 
 	void 
 	OpenSecureChannelResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		responseHeaderSPtr_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, serverProtocolVersion_);
+		OpcUaNumber::opcUaBinaryDecode(is, serverProtocolVersion_);
 		securityTokenSPtr_->opcUaBinaryDecode(is);
-		OpcUaStackCore::opcUaBinaryDecode(is, serverNonce_);
+		serverNonce_.opcUaBinaryDecode(is);
 	}
 
 }

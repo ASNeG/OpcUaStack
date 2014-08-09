@@ -54,17 +54,17 @@ namespace OpcUaStackCore
 	void 
 	SecurityHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, securityPolicyUri_);
-		OpcUaStackCore::opcUaBinaryEncode(os, senderCertificate_);
-		OpcUaStackCore::opcUaBinaryEncode(os, receiverCertificateThumbprint_);
+		securityPolicyUri_.opcUaBinaryEncode(os);
+		senderCertificate_.opcUaBinaryEncode(os);
+		receiverCertificateThumbprint_.opcUaBinaryEncode(os);
 	}
 
 	void 
 	SecurityHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, securityPolicyUri_);
-		OpcUaStackCore::opcUaBinaryDecode(is, senderCertificate_);
-		OpcUaStackCore::opcUaBinaryDecode(is, receiverCertificateThumbprint_);
+		securityPolicyUri_.opcUaBinaryDecode(is);
+		senderCertificate_.opcUaBinaryDecode(is);
+		receiverCertificateThumbprint_.opcUaBinaryDecode(is);
 	}
 
 }	

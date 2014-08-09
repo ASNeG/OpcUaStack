@@ -73,7 +73,7 @@ namespace OpcUaStackCore
 			}
 		}
 		os.write("F", 1);
-		OpcUaStackCore::opcUaBinaryEncode(os, messageSize_);
+		OpcUaNumber::opcUaBinaryEncode(os, messageSize_);
 	}
 		
 	void 
@@ -104,6 +104,6 @@ namespace OpcUaStackCore
 		char buf;
 		is.read(&buf, 1);
 
-		OpcUaStackCore::opcUaBinaryDecode(is, messageSize_);
+		OpcUaNumber::opcUaBinaryDecode(is, messageSize_);
 	}
 }

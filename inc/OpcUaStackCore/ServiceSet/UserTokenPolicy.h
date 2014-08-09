@@ -44,17 +44,7 @@ namespace OpcUaStackCore
 		OpcUaString securityPolicyUri_;
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const UserTokenPolicy& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, UserTokenPolicy& value);
-
-
-
-	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr>, public ObjectPool<UserTokenPolicyArray> {};
-
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const UserTokenPolicyArray& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const UserTokenPolicyArray::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, UserTokenPolicyArray& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, UserTokenPolicyArray::SPtr& value);
+	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >, public ObjectPool<UserTokenPolicyArray> {};
 
 }
 

@@ -109,7 +109,6 @@
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h" />
     <ClInclude Include="..\..\tst\os.h" />
     <ClInclude Include="..\..\tst\unittest.h" />
   </ItemGroup>

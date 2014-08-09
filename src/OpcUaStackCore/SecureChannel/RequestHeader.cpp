@@ -105,34 +105,34 @@ namespace OpcUaStackCore
 	void 
 	RequestHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaStackCore::opcUaBinaryEncode(os, sessionAuthenticationToken_);
-		OpcUaStackCore::opcUaBinaryEncode(os, time_);
-		OpcUaStackCore::opcUaBinaryEncode(os, requestHandle_);
-		OpcUaStackCore::opcUaBinaryEncode(os, returnDisagnostics_);
-		OpcUaStackCore::opcUaBinaryEncode(os, auditEntryId_);
-		OpcUaStackCore::opcUaBinaryEncode(os, timeoutHint_);
+		sessionAuthenticationToken_.opcUaBinaryEncode(os);
+		time_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, requestHandle_);
+		OpcUaNumber::opcUaBinaryEncode(os, returnDisagnostics_);
+		auditEntryId_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, timeoutHint_);
 
 		// FIXME: additional header
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-		OpcUaStackCore::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 	}
 
 	void 
 	RequestHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaStackCore::opcUaBinaryDecode(is, sessionAuthenticationToken_);
-		OpcUaStackCore::opcUaBinaryDecode(is, time_);
-		OpcUaStackCore::opcUaBinaryDecode(is, requestHandle_);
-		OpcUaStackCore::opcUaBinaryDecode(is, returnDisagnostics_);
-		OpcUaStackCore::opcUaBinaryDecode(is, auditEntryId_);
-		OpcUaStackCore::opcUaBinaryDecode(is, timeoutHint_);
+		sessionAuthenticationToken_.opcUaBinaryDecode(is);
+		time_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, requestHandle_);
+		OpcUaNumber::opcUaBinaryDecode(is, returnDisagnostics_);
+		auditEntryId_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, timeoutHint_);
 
 		// FIXME: additional header
 		OpcUaByte tmp;
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
-		OpcUaStackCore::opcUaBinaryDecode(is, tmp);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 	}
 
 }
