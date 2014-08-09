@@ -32,9 +32,6 @@ namespace OpcUaStackCore
 		MessageSecurityMode messageSecurityMode(void) const;
 		void securityPolicyUri(const std::string& securityPolicyUri);
 		std::string securityPolicyUri(void) const;
-
-
-
 		void userIdentityTokens(const UserTokenPolicyArray::SPtr userIdentityTokens);
 		UserTokenPolicyArray::SPtr userIdentityTokens(void) const;
 		void transportProfileUri(const std::string& transportProfileUri);
@@ -49,7 +46,6 @@ namespace OpcUaStackCore
 		OpcUaString endpointUrl_;
 		ApplicationDescription::SPtr applicationDescription_;
 		OpcUaByteString serverCertificate_;
-
 		MessageSecurityMode messageSecurityMode_;
 		OpcUaString securityPolicyUri_;
 		UserTokenPolicyArray::SPtr userIdentityTokens_;

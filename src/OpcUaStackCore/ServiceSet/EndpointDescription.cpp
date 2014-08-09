@@ -57,18 +57,6 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	EndpointDescription::securityPolicyUri(const std::string& securityPolicyUri)
-	{
-		securityPolicyUri_ = securityPolicyUri;
-	}
-		
-	std::string 
-	EndpointDescription::securityPolicyUri(void) const
-	{
-		return securityPolicyUri_.value();
-	}
-
-	void 
 	EndpointDescription::messageSecurityMode(const MessageSecurityMode messageSecurityMode)
 	{
 		messageSecurityMode_ = messageSecurityMode;
@@ -78,6 +66,18 @@ namespace OpcUaStackCore
 	EndpointDescription::messageSecurityMode(void) const
 	{
 		return messageSecurityMode_;
+	}
+
+	void 
+	EndpointDescription::securityPolicyUri(const std::string& securityPolicyUri)
+	{
+		securityPolicyUri_ = securityPolicyUri;
+	}
+
+	std::string 
+	EndpointDescription::securityPolicyUri(void) const
+	{
+		return securityPolicyUri_.value();
 	}
 
 	void 
@@ -125,6 +125,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)messageSecurityMode_);
 		securityPolicyUri_.opcUaBinaryEncode(os);
 		userIdentityTokens_->opcUaBinaryEncode(os);
+		transportProfileUri_.opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, securityLevel_);
 	}
 	
@@ -138,6 +139,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, messageSecurityMode);
 		securityPolicyUri_.opcUaBinaryDecode(is);
 		userIdentityTokens_->opcUaBinaryDecode(is);
+		transportProfileUri_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, securityLevel_);
 		messageSecurityMode_ = (MessageSecurityMode)messageSecurityMode;
 	}
