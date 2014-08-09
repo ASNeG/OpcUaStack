@@ -96,6 +96,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 	ioService.stop();
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 {
 	boost::asio::streambuf isClient;
@@ -200,6 +201,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 	
 	ioService.stop();
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(TCPChannel_readAtLeast)
 {
