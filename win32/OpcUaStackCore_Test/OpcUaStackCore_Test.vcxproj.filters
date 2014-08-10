@@ -88,6 +88,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
