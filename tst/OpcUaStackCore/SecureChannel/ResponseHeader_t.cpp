@@ -25,8 +25,6 @@ BOOST_AUTO_TEST_CASE(ResponseHeader_encode_decode)
 
 	ptime1 = boost::posix_time::from_iso_string("20140629T200209.111000000");
 	responseHeaderSPtr = ResponseHeader::construct();
-	responseHeaderSPtr->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	responseHeaderSPtr->stringTable(OpcUaStringArray::construct());
 	responseHeaderSPtr->time(ptime1);
 	responseHeaderSPtr->opcUaBinaryEncode(ios1);
 
@@ -34,8 +32,6 @@ BOOST_AUTO_TEST_CASE(ResponseHeader_encode_decode)
 	OpcUaStackCore::dumpHex(ios1);
 
 	responseHeaderSPtr = ResponseHeader::construct();
-	responseHeaderSPtr->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	responseHeaderSPtr->stringTable(OpcUaStringArray::construct());
 	responseHeaderSPtr->opcUaBinaryDecode(ios1);
 	ptime2 = responseHeaderSPtr->time().dateTime();
 	BOOST_REQUIRE(ptime1 == ptime2);

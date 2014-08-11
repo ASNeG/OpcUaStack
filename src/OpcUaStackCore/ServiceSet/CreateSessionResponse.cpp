@@ -4,15 +4,15 @@ namespace OpcUaStackCore
 {
 
 	CreateSessionResponse::CreateSessionResponse(void)
-	: responseHeader_()
+	: responseHeader_(ResponseHeader::construct())
 	, sessionId_()
 	, authenticationToken_()
 	, receivedSessionTimeout_()
 	, serverNonce_()
 	, serverCertificate_()
-	, serverEndpoints_()
+	, serverEndpoints_(EndpointDescriptionArray::construct())
 	, serverSoftwareCertificate_()
-	, signatureData_()
+	, signatureData_(SignatureData::construct())
 	, maxRequestMessageSize_()
 	{
 	}

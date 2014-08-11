@@ -67,9 +67,6 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
 	createSessionRequestSPtr = CreateSessionRequest::construct();
-	createSessionRequestSPtr->requestHeader(RequestHeader::construct());
-	createSessionRequestSPtr->clientDescription(ApplicationDescription::construct());
-	createSessionRequestSPtr->clientDescription()->discoveryUrls(OpcUaStringArray::construct());
 
 	createSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
 	createSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -149,9 +146,6 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 
 	// decode CreateSessionRequest
 	createSessionRequestSPtr = CreateSessionRequest::construct();
-	createSessionRequestSPtr->requestHeader(RequestHeader::construct());
-	createSessionRequestSPtr->clientDescription(ApplicationDescription::construct());
-	createSessionRequestSPtr->clientDescription()->discoveryUrls(OpcUaStringArray::construct());
 	createSessionRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
@@ -230,12 +224,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	createSessionResponseSPtr = CreateSessionResponse::construct();
-	createSessionResponseSPtr->responseHeader(ResponseHeader::construct());
-	createSessionResponseSPtr->serverEndpoints(EndpointDescriptionArray::construct());
-	createSessionResponseSPtr->signatureData(SignatureData::construct());
 
-	createSessionResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	createSessionResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
 	createSessionResponseSPtr->responseHeader()->time(ptime);
 	createSessionResponseSPtr->responseHeader()->requestHandle(1);
 	createSessionResponseSPtr->responseHeader()->serviceResult(Success);
@@ -251,10 +240,6 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 
 
 	endpointDescriptionSPtr = EndpointDescription::construct();
-	endpointDescriptionSPtr->applicationDescription(ApplicationDescription::construct());
-	endpointDescriptionSPtr->applicationDescription()->discoveryUrls(OpcUaStringArray::construct());
-	endpointDescriptionSPtr->userIdentityTokens(UserTokenPolicyArray::construct());
-	
 	endpointDescriptionSPtr->endpointUrl("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->applicationDescription()->productUri("urn:company:Unittest");
@@ -281,10 +266,6 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 
 
 	endpointDescriptionSPtr = EndpointDescription::construct();
-	endpointDescriptionSPtr->applicationDescription(ApplicationDescription::construct());
-	endpointDescriptionSPtr->applicationDescription()->discoveryUrls(OpcUaStringArray::construct());
-	endpointDescriptionSPtr->userIdentityTokens(UserTokenPolicyArray::construct());
-	
 	endpointDescriptionSPtr->endpointUrl("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->applicationDescription()->productUri("urn:company:Unittest");
@@ -310,11 +291,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	createSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
 
 
-	endpointDescriptionSPtr = EndpointDescription::construct();
-	endpointDescriptionSPtr->applicationDescription(ApplicationDescription::construct());
-	endpointDescriptionSPtr->applicationDescription()->discoveryUrls(OpcUaStringArray::construct());
-	endpointDescriptionSPtr->userIdentityTokens(UserTokenPolicyArray::construct());
-	
+	endpointDescriptionSPtr = EndpointDescription::construct();	
 	endpointDescriptionSPtr->endpointUrl("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->applicationDescription()->productUri("urn:company:Unittest");
@@ -456,11 +433,6 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 
 	//decode CreateSessionResponse
 	createSessionResponseSPtr = CreateSessionResponse::construct();
-	createSessionResponseSPtr->responseHeader(ResponseHeader::construct());
-	createSessionResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	createSessionResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
-	createSessionResponseSPtr->serverEndpoints(EndpointDescriptionArray::construct());
-	createSessionResponseSPtr->signatureData(SignatureData::construct());
 	createSessionResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(createSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);
