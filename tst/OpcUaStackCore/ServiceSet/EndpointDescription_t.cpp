@@ -27,9 +27,6 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 
 	// encode EndpointDescription
 	endpointDescriptionSPtr = EndpointDescription::construct();
-	endpointDescriptionSPtr->applicationDescription(ApplicationDescription::construct());
-	endpointDescriptionSPtr->applicationDescription()->discoveryUrls(OpcUaStringArray::construct());
-	endpointDescriptionSPtr->userIdentityTokens(UserTokenPolicyArray::construct());
 	
 	endpointDescriptionSPtr->endpointUrl("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
@@ -83,9 +80,6 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 
 	// decode EndpointDescription
 	endpointDescriptionSPtr = EndpointDescription::construct();
-	endpointDescriptionSPtr->applicationDescription(ApplicationDescription::construct());
-	endpointDescriptionSPtr->applicationDescription()->discoveryUrls(OpcUaStringArray::construct());
-	endpointDescriptionSPtr->userIdentityTokens(UserTokenPolicyArray::construct());
 	endpointDescriptionSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl() == "opt.tcp://localhost:481/0.0.0.0");

@@ -92,15 +92,15 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	CreateSessionResponse::serverSoftwareCertificate(const SignedSoftwareCertificateArray::SPtr serverSoftwareCertificate)
+	CreateSessionResponse::serverSoftwareCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const
 	{
-		serverSoftwareCertificate_ = serverSoftwareCertificate;
+		serverSoftwareCertificate_.value(buf, bufLen);
 	}
 
-	SignedSoftwareCertificateArray::SPtr 
-	CreateSessionResponse::serverSoftwareCertificate(void) const
+	void 
+	CreateSessionResponse::serverSoftwareCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{
-		return serverSoftwareCertificate_;
+		serverSoftwareCertificate_.value(buf, bufLen);
 	}
 
 	void 
@@ -137,7 +137,7 @@ namespace OpcUaStackCore
 		serverNonce_.opcUaBinaryEncode(os);
 		serverCertificate_.opcUaBinaryEncode(os);
 		serverEndpoints_->opcUaBinaryEncode(os);
-		serverSoftwareCertificate_->opcUaBinaryEncode(os);
+		serverSoftwareCertificate_.opcUaBinaryEncode(os);
 		signatureData_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, maxRequestMessageSize_);
 	}
@@ -152,7 +152,7 @@ namespace OpcUaStackCore
 		serverNonce_.opcUaBinaryDecode(is);
 		serverCertificate_.opcUaBinaryDecode(is);
 		serverEndpoints_->opcUaBinaryDecode(is);
-		serverSoftwareCertificate_->opcUaBinaryDecode(is);
+		serverSoftwareCertificate_.opcUaBinaryDecode(is);
 		signatureData_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, maxRequestMessageSize_);
 	}

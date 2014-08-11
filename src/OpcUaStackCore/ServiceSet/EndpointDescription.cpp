@@ -5,11 +5,11 @@ namespace OpcUaStackCore
 
 	EndpointDescription::EndpointDescription(void)
 	: endpointUrl_()
-	, applicationDescription_()
+	, applicationDescription_(ApplicationDescription::construct())
 	, serverCertificate_()
 	, messageSecurityMode_()
 	, securityPolicyUri_()
-	, userIdentityTokens_()
+	, userIdentityTokens_(UserTokenPolicyArray::construct())
 	, transportProfileUri_()
 	, securityLevel_()
 	{

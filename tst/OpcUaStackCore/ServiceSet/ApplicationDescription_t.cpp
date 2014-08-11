@@ -25,7 +25,6 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 
 	// encode ApplicationDescription
 	applicationDescriptionSPtr = ApplicationDescription::construct();
-	applicationDescriptionSPtr->discoveryUrls(OpcUaStringArray::construct());
 	applicationDescriptionSPtr->applicationUri("urn:localhost:compyny:Unittest");
 	applicationDescriptionSPtr->productUri("urn:company:Unittest");
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
@@ -51,7 +50,6 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 
 	// decode ApplicationDescription
 	applicationDescriptionSPtr = ApplicationDescription::construct();
-	applicationDescriptionSPtr->discoveryUrls(OpcUaStringArray::construct());
 	applicationDescriptionSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(applicationDescriptionSPtr->productUri() == "urn:company:Unittest");
