@@ -41,6 +41,8 @@ namespace OpcUaStackCore
 		      return boost::get<VAL>(nodeIdValue_);
 		  }
 
+		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
+
 		virtual OpcUaByte encodingFlag(void) const;
 		virtual void encodingFlag(OpcUaByte expandedEncodingFlag);
 

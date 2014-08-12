@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 		OpcUaGuid& operator=(const std::string& string); 
 		operator std::string const (void); 
 
+		void copyTo(OpcUaGuid& opcUaGuid);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

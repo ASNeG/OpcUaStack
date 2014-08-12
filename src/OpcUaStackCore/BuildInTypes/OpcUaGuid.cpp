@@ -72,6 +72,15 @@ namespace OpcUaStackCore
 		return data4_;
 	}
 
+	void 
+	OpcUaGuid::copyTo(OpcUaGuid& opcUaGuid)
+	{
+		opcUaGuid.data1(data1());
+		opcUaGuid.data2(data2());
+		opcUaGuid.data3(data3());
+		opcUaGuid.data4(data4());
+	}
+
 	OpcUaGuid& 
 	OpcUaGuid::operator=(const std::string& string)
 	{

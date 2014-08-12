@@ -46,6 +46,46 @@ namespace OpcUaStackCore
 		return opcUaTypeVisitor.opcUaBuildInType_;
 	}
 
+	void 
+	OpcUaNodeIdBase::copyTo(OpcUaNodeIdBase& opcUaNodeIdBase)
+	{
+		opcUaNodeIdBase.namespaceIndex(namespaceIndex_);
+
+		OpcUaBuildInType type =  nodeIdType();
+		switch(type)
+		{
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value = boost::get<OpcUaUInt32>(nodeIdValue_);
+				opcUaNodeIdBase.nodeId(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = boost::get<OpcUaString::SPtr>(nodeIdValue_);
+				OpcUaString::SPtr newValue = OpcUaString::construct();
+				value->copyTo(*newValue);
+				opcUaNodeIdBase.nodeId(newValue);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = boost::get<OpcUaGuid::SPtr>(nodeIdValue_);
+				OpcUaGuid::SPtr newValue = OpcUaGuid::construct();
+				value->copyTo(*newValue);
+				opcUaNodeIdBase.nodeId(newValue);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr value = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+				OpcUaByteString::SPtr newValue = OpcUaByteString::construct();
+				value->copyTo(*newValue);
+				opcUaNodeIdBase.nodeId(newValue);
+				break;
+			}
+		}
+	}
 
 	OpcUaByte 
 	OpcUaNodeIdBase::encodingFlag(void) const

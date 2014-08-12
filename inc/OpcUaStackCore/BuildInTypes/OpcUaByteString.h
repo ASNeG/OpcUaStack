@@ -27,6 +27,8 @@ namespace OpcUaStackCore
 		OpcUaByteString& operator=(const std::string& string); 
 		operator std::string const (void); 
 
+		void copyTo(OpcUaByteString& opcUaByteString);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
@@ -35,12 +37,7 @@ namespace OpcUaStackCore
 		OpcUaByte* value_; 
 	};
 
-	class OpcUaByteStringArray : public ObjectPool<OpcUaByteStringArray>, public OpcUaArray<OpcUaByteString::SPtr, SPtrTypeCoder<OpcUaByteString> >
-	{
-	  public:
-		OpcUaByteStringArray(void);
-		virtual ~OpcUaByteStringArray(void);
-	};
+	class OpcUaByteStringArray : public ObjectPool<OpcUaByteStringArray>, public OpcUaArray<OpcUaByteString::SPtr, SPtrTypeCoder<OpcUaByteString> > {};
 
 }
 

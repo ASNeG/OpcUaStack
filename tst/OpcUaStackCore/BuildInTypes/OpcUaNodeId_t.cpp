@@ -155,4 +155,37 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaByteString_SPtr)
 	BOOST_REQUIRE(memcmp(buf, "0123456789", 10) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_copyTo1)
+{
+	OpcUaNodeId opcUaNodeId1, opcUaNodeId2;
+
+	opcUaNodeId1.namespaceIndex(4711);
+	opcUaNodeId1.nodeId(4712);
+
+	opcUaNodeId1.copyTo(opcUaNodeId2);
+
+	BOOST_REQUIRE(opcUaNodeId2.namespaceIndex() == 4711);
+	OpcUaUInt32 nodeId = opcUaNodeId2.nodeId<OpcUaUInt32>(); 
+	BOOST_REQUIRE(nodeId == 4712);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_copyTo2)
+{
+	OpcUaNodeId opcUaNodeId1, opcUaNodeId2;
+	OpcUaString::SPtr opcUaString1, opcUaString2;
+
+	opcUaString1 = OpcUaString::construct();
+	opcUaString1->value("ABC");
+
+	opcUaNodeId1.namespaceIndex(4711);
+	opcUaNodeId1.nodeId(opcUaString1);
+
+	opcUaNodeId1.copyTo(opcUaNodeId2);
+
+	BOOST_REQUIRE(opcUaNodeId2.namespaceIndex() == 4711);
+	opcUaString2 = opcUaNodeId2.nodeId<OpcUaString::SPtr>(); 
+	std::string nodeId = opcUaString2->value();
+	BOOST_REQUIRE(nodeId == "ABC");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

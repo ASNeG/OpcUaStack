@@ -70,6 +70,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaString::copyTo(OpcUaString& opcUaString)
+	{
+		opcUaString.value(value());
+	}
+
+	void 
 	OpcUaString::opcUaBinaryEncode(std::ostream& os) const
 	{
 		if (!exist_) {
