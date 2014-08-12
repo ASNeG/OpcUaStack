@@ -134,7 +134,7 @@ namespace OpcUaStackCore
 				if (value1.get() == NULL && value2.get() == NULL) return false;
 				if (value1.get() != NULL && value2.get() == NULL) return false;
 				if (value1.get() == NULL && value2.get() != NULL) return true;
-				//return *value1 < *value2;
+				return *value1 < *value2;
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByteString:

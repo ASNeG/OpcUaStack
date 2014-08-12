@@ -17,18 +17,19 @@ namespace OpcUaStackCore
 		~OpcUaGuid(void);
 
 		void data1(OpcUaUInt32 value);
-		OpcUaUInt32 data1(void);
+		OpcUaUInt32 data1(void) const;
 		void data2(OpcUaUInt16 value);
-		OpcUaUInt16 data2(void);
+		OpcUaUInt16 data2(void) const;
 		void data3(OpcUaUInt16 value);
-		OpcUaUInt16 data3(void);
+		OpcUaUInt16 data3(void) const;
 		void data4(OpcUaByte value[8]);
-		OpcUaByte* data4(void);
+		OpcUaByte* data4(void) const;
 
 		OpcUaGuid& operator=(const std::string& string); 
 		operator std::string const (void); 
 
 		void copyTo(OpcUaGuid& opcUaGuid);
+		bool operator<(const OpcUaGuid& opcUaGuid) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaUInt32 
-	OpcUaGuid::data1(void)
+	OpcUaGuid::data1(void) const
 	{
 		return data1_;
 	}
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaUInt16 
-	OpcUaGuid::data2(void)
+	OpcUaGuid::data2(void) const
 	{
 		return data2_;
 	}
@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaUInt16 
-	OpcUaGuid::data3(void)
+	OpcUaGuid::data3(void) const
 	{
 		return data3_;
 	}
@@ -67,18 +67,9 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaByte* 
-	OpcUaGuid::data4(void)
+	OpcUaGuid::data4(void) const
 	{
-		return data4_;
-	}
-
-	void 
-	OpcUaGuid::copyTo(OpcUaGuid& opcUaGuid)
-	{
-		opcUaGuid.data1(data1());
-		opcUaGuid.data2(data2());
-		opcUaGuid.data3(data3());
-		opcUaGuid.data4(data4());
+		return (OpcUaByte*)data4_;
 	}
 
 	OpcUaGuid& 
@@ -106,6 +97,40 @@ namespace OpcUaStackCore
 		return str1.append("-").append(str2).append("-").append(str3)
 				.append("-").append(str4).append("-").append(str5);
 	}
+
+	void 
+	OpcUaGuid::copyTo(OpcUaGuid& opcUaGuid)
+	{
+		opcUaGuid.data1(data1());
+		opcUaGuid.data2(data2());
+		opcUaGuid.data3(data3());
+		opcUaGuid.data4(data4());
+	}
+
+	bool 
+	OpcUaGuid::operator<(const OpcUaGuid& opcUaGuid) const
+	{
+		if (data1_ < opcUaGuid.data1()) return true;
+		if (data1_ > opcUaGuid.data1()) return false;
+
+		if (data2_ < opcUaGuid.data2()) return true;
+		if (data2_ > opcUaGuid.data2()) return false;
+
+		if (data3_ < opcUaGuid.data3()) return true;
+		if (data3_ > opcUaGuid.data3()) return false;
+
+		if (strncmp((char*)data4_, (char*)opcUaGuid.data4(), 8) < 0) {
+			return true;
+		}
+		return false;
+	}
+
+#if 0
+	OpcUaUInt32 data1_;
+		OpcUaUInt16 data2_;
+		OpcUaUInt16 data3_;
+		OpcUaByte data4_[8];
+#endif
 
 	void 
 	OpcUaGuid::opcUaBinaryEncode(std::ostream& os) const

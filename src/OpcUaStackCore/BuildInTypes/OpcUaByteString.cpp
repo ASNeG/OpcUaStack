@@ -118,7 +118,10 @@ namespace OpcUaStackCore
 		OpcUaInt32 bufLen;
 		opcUaByteString.value(&buf, &bufLen);
 
-		return strncmp((char*)value_, (char*)buf, bufLen);
+		if (strncmp((char*)value_, (char*)buf, bufLen) < 0) {
+			return true;
+		}
+		return false;
 	}
 
 	void 

@@ -188,17 +188,90 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_copyTo2)
 	BOOST_REQUIRE(nodeId == "ABC");
 }
 
-BOOST_AUTO_TEST_CASE(OpcUaNodeId_map)
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)
 {
 	typedef std::map<OpcUaNodeId, uint32_t> OpcUaNodeIdMap;
 	OpcUaNodeIdMap opcUaNodeIdMap;
+	OpcUaNodeIdMap::iterator it;
+	OpcUaByte* buf;
+	OpcUaInt32 bufLen;
 
-	OpcUaNodeId opcUaNodeId1;
+	OpcUaNodeId opcUaNodeId1, opcUaNodeId2;
+	OpcUaString::SPtr opcUaString1, opcUaString2;
+	OpcUaByteString::SPtr opcUaByteString1, opcUaByteString2;
+	OpcUaGuid::SPtr opcUaGuid1, opcUaGuid2;
 
+	// insert: OpcUaUInt32
 	opcUaNodeId1.namespaceIndex(4711);
 	opcUaNodeId1.nodeId(4712);
-
 	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 34567));
+	
+	// insert: opcUaString
+	opcUaString1 = OpcUaString::construct();
+	opcUaString1->value("ABC");
+	opcUaNodeId1.namespaceIndex(4712);
+	opcUaNodeId1.nodeId(opcUaString1);
+	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 45678));
+
+	// insert: opcUaByteString
+	opcUaByteString1 = OpcUaByteString::construct();
+	opcUaByteString1->value("0123456789", 10);
+	opcUaNodeId1.namespaceIndex(4713);
+	opcUaNodeId1.nodeId(opcUaByteString1);
+	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 5678));
+
+	// insert: opcUaGuid
+	opcUaGuid1 = OpcUaGuid::construct();
+	*opcUaGuid1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+	opcUaNodeId1.namespaceIndex(4714);
+	opcUaNodeId1.nodeId(opcUaGuid1);
+	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 678));
+
+
+	// find: OpcUaUInt32
+	opcUaNodeId2.namespaceIndex(4711);
+	opcUaNodeId2.nodeId(4712);
+	it = opcUaNodeIdMap.find(opcUaNodeId2);
+	BOOST_REQUIRE(it != opcUaNodeIdMap.end());
+	BOOST_REQUIRE(it->first.namespaceIndex() == 4711);
+	BOOST_REQUIRE(it->first.nodeId<OpcUaUInt32>() == 4712);
+	BOOST_REQUIRE(it->second == 34567);
+
+	// find: opcUaString
+	opcUaString2 = OpcUaString::construct();
+	opcUaString2->value("ABC");
+	opcUaNodeId2.namespaceIndex(4712);
+	opcUaNodeId2.nodeId(opcUaString1);
+	it = opcUaNodeIdMap.find(opcUaNodeId2);
+	BOOST_REQUIRE(it != opcUaNodeIdMap.end());
+	BOOST_REQUIRE(it->first.namespaceIndex() == 4712);
+	BOOST_REQUIRE(it->first.nodeId<OpcUaString::SPtr>()->value() == "ABC");
+	BOOST_REQUIRE(it->second == 45678);
+
+	// find: opcUaByteString
+	opcUaByteString2 = OpcUaByteString::construct();
+	opcUaByteString2->value("0123456789", 10);
+	opcUaNodeId2.namespaceIndex(4713);
+	opcUaNodeId2.nodeId(opcUaByteString2);
+	it = opcUaNodeIdMap.find(opcUaNodeId2);
+	opcUaByteString2 = it->first.nodeId<OpcUaByteString::SPtr>();
+	opcUaByteString2->value(&buf, &bufLen);
+	BOOST_REQUIRE(it != opcUaNodeIdMap.end());
+	BOOST_REQUIRE(bufLen == 10);
+	BOOST_REQUIRE(strncmp((char*)buf, "0123456789", 10) == 0);
+	BOOST_REQUIRE(it->second == 5678);
+
+	// find: opcUaGuid
+	opcUaGuid2 = OpcUaGuid::construct();
+	*opcUaGuid2 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+	opcUaNodeId2.namespaceIndex(4714);
+	opcUaNodeId2.nodeId(opcUaGuid2);
+	it = opcUaNodeIdMap.find(opcUaNodeId2);
+	opcUaGuid2 = it->first.nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(it != opcUaNodeIdMap.end());
+	std::string str = *opcUaGuid2;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	BOOST_REQUIRE(it->second == 678);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
