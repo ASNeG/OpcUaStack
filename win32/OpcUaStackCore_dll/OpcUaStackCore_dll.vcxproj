@@ -103,6 +103,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNumber.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaReadValueId.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaString.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaType.h" />
@@ -135,6 +136,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserIdentityToken.h" />
@@ -165,6 +168,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNumber.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaReadValueId.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaString.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaVariant.cpp" />
@@ -196,6 +200,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserIdentityToken.cpp" />

@@ -94,6 +94,12 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp">
       <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaReadValueId_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadService_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -119,6 +125,9 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\SessionServiceSet">
       <UniqueIdentifier>{23fc6cbf-a8ab-4976-9151-b82e36829510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\AttributeServiceSet">
+      <UniqueIdentifier>{3d62f9b5-d58a-4f21-a12c-5d30337fe8d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
