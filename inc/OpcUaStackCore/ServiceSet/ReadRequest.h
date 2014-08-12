@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_CreateSessionRequest_h__
-#define __OpcUaStackCore_CreateSessionRequest_h__
+#ifndef __OpcUaStackCore_ReadRequest_h__
+#define __OpcUaStackCore_ReadRequest_h__
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
