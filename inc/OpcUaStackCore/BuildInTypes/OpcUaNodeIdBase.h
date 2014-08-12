@@ -42,6 +42,8 @@ namespace OpcUaStackCore
 		  }
 
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
+		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
+
 
 		virtual OpcUaByte encodingFlag(void) const;
 		virtual void encodingFlag(OpcUaByte expandedEncodingFlag);

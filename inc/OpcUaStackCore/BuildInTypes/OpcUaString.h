@@ -26,6 +26,7 @@ namespace OpcUaStackCore
 		operator std::string const (void); 
 
 		void copyTo(OpcUaString& opcUaString);
+		bool operator<(const OpcUaString& opcUaString) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

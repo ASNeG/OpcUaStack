@@ -87,6 +87,72 @@ namespace OpcUaStackCore
 		}
 	}
 
+	bool 
+	OpcUaNodeIdBase::operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const
+	{
+		if (namespaceIndex() < opcUaNodeIdBase.namespaceIndex()) {
+			return true;
+		}
+
+		if (opcUaNodeIdBase.namespaceIndex() < namespaceIndex()) {
+			return false;
+		}
+
+		if (nodeIdType() < opcUaNodeIdBase.nodeIdType()) {
+			return true;
+		}
+
+		if (opcUaNodeIdBase.nodeIdType() < nodeIdType()) {
+			return false;
+		}
+
+		switch(nodeIdType())
+		{
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value1 = boost::get<OpcUaUInt32>(nodeIdValue_);
+				OpcUaUInt32 value2 = opcUaNodeIdBase.nodeId<OpcUaUInt32>();
+				return value1 < value2;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value1 = boost::get<OpcUaString::SPtr>(nodeIdValue_);
+				OpcUaString::SPtr value2 = opcUaNodeIdBase.nodeId<OpcUaString::SPtr>();
+
+				if (value1.get() == NULL && value2.get() == NULL) return false;
+				if (value1.get() != NULL && value2.get() == NULL) return false;
+				if (value1.get() == NULL && value2.get() != NULL) return true;
+				return *value1 < *value2;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value1 = boost::get<OpcUaGuid::SPtr>(nodeIdValue_);
+				OpcUaGuid::SPtr value2 = opcUaNodeIdBase.nodeId<OpcUaGuid::SPtr>();
+
+				if (value1.get() == NULL && value2.get() == NULL) return false;
+				if (value1.get() != NULL && value2.get() == NULL) return false;
+				if (value1.get() == NULL && value2.get() != NULL) return true;
+				//return *value1 < *value2;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr value1 = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+				OpcUaByteString::SPtr value2 = opcUaNodeIdBase.nodeId<OpcUaByteString::SPtr>();
+
+				if (value1.get() == NULL && value2.get() == NULL) return false;
+				if (value1.get() != NULL && value2.get() == NULL) return false;
+				if (value1.get() == NULL && value2.get() != NULL) return true;
+				return *value1 < *value2;
+				break;
+			}
+		}
+
+		return false;
+	}
+
 	OpcUaByte 
 	OpcUaNodeIdBase::encodingFlag(void) const
 	{

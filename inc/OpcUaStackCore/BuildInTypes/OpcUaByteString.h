@@ -20,7 +20,7 @@ namespace OpcUaStackCore
 		void value(const OpcUaByte* value, OpcUaInt32 length);
 		void value(const char* value, OpcUaInt32 length);
 		void value(const std::string& value);
-		uint32_t size(void) const;
+		OpcUaInt32 size(void) const;
 		void reset(void);
 		bool exist(void) const;
 
@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 		operator std::string const (void); 
 
 		void copyTo(OpcUaByteString& opcUaByteString);
+		bool operator<(const OpcUaByteString& opcUaByteString) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

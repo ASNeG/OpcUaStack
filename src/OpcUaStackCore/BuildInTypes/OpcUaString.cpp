@@ -75,6 +75,15 @@ namespace OpcUaStackCore
 		opcUaString.value(value());
 	}
 
+	bool 
+	OpcUaString::operator<(const OpcUaString& opcUaString) const
+	{
+		if (!exist_ && !opcUaString.exist()) return false;
+		if (exist_ && !opcUaString.exist()) return false;
+		if (!exist_ && opcUaString.exist()) return true;
+		return value_  < opcUaString.value();
+	}
+
 	void 
 	OpcUaString::opcUaBinaryEncode(std::ostream& os) const
 	{

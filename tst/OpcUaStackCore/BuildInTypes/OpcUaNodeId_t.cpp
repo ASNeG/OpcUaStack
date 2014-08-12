@@ -188,4 +188,17 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_copyTo2)
 	BOOST_REQUIRE(nodeId == "ABC");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_map)
+{
+	typedef std::map<OpcUaNodeId, uint32_t> OpcUaNodeIdMap;
+	OpcUaNodeIdMap opcUaNodeIdMap;
+
+	OpcUaNodeId opcUaNodeId1;
+
+	opcUaNodeId1.namespaceIndex(4711);
+	opcUaNodeId1.nodeId(4712);
+
+	opcUaNodeIdMap.insert(std::make_pair(opcUaNodeId1, 34567));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 		this->value((const OpcUaByte*)(value.c_str()), (OpcUaInt32)value.length());
 	}
 
-	OpcUaUInt32 
+	OpcUaInt32 
 	OpcUaByteString::size(void) const
 	{
 		return length_;
@@ -101,6 +101,24 @@ namespace OpcUaStackCore
 		OpcUaInt32 bufLen;
 		value(&buf, &bufLen);
 		opcUaByteString.value(buf, bufLen);
+	}
+
+	bool 
+	OpcUaByteString::operator<(const OpcUaByteString& opcUaByteString) const
+	{
+		if (!exist() && !opcUaByteString.exist()) return false;
+		if (exist() && !opcUaByteString.exist()) return false;
+		if (!exist() && opcUaByteString.exist()) return true;
+
+
+		if (size() < opcUaByteString.size()) return true;
+		if ( opcUaByteString.size() < size()) return false;
+
+		OpcUaByte* buf;
+		OpcUaInt32 bufLen;
+		opcUaByteString.value(&buf, &bufLen);
+
+		return strncmp((char*)value_, (char*)buf, bufLen);
 	}
 
 	void 
