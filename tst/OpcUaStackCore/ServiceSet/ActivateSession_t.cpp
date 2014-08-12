@@ -4,8 +4,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
-#include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
-#include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 #include <streambuf>
@@ -13,20 +13,21 @@
 
 using namespace OpcUaStackCore;
 
-BOOST_AUTO_TEST_SUITE(CreateSession_)
+BOOST_AUTO_TEST_SUITE(ActivateSession_)
 
-BOOST_AUTO_TEST_CASE(CreateSession_)
+BOOST_AUTO_TEST_CASE(ActivateSession_)
 {
-	std::cout << "CreateSession_t" << std::endl;
+	std::cout << "ActivateSession_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(CreateSession_Request)
+BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 {
 	uint32_t pos;
+	OpcUaString::SPtr localeIdSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
-	CreateSessionRequest::SPtr createSessionRequestSPtr;
+	ActivateSessionRequest::SPtr activateSessionRequestSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	OpcUaNodeId typeId;
 	OpcUaByte* opcUaByte;
@@ -52,42 +53,41 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 
 	// encode sequence header
 	sequenceHeaderSPtr = SequenceHeader::construct();
-	sequenceHeaderSPtr->sequenceNumber(52);
-	sequenceHeaderSPtr->requestId(2);
+	sequenceHeaderSPtr->sequenceNumber(53);
+	sequenceHeaderSPtr->requestId(3);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode message type id
-	typeId.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+	typeId.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
 
-	// encode CreateSessionRequest
+	// encode ActivateSessionRequest
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
+#if 0
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	createSessionRequestSPtr = CreateSessionRequest::construct();
+#endif
+	activateSessionRequestSPtr = ActivateSessionRequest::construct();
 
-	createSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	createSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	createSessionRequestSPtr->requestHeader()->time(ptime);
-	createSessionRequestSPtr->requestHeader()->requestHandle(1);
-	createSessionRequestSPtr->requestHeader()->returnDisagnostics(0);
-	createSessionRequestSPtr->requestHeader()->timeoutHint(10000);
+	activateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
+	activateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	activateSessionRequestSPtr->requestHeader()->time(ptime);
+	activateSessionRequestSPtr->requestHeader()->requestHandle(2);
+	activateSessionRequestSPtr->requestHeader()->returnDisagnostics(0);
+	activateSessionRequestSPtr->requestHeader()->timeoutHint(10000);
 
-	createSessionRequestSPtr->clientDescription()->applicationUri("urn:localhost:compyny:Unittest");
-	createSessionRequestSPtr->clientDescription()->productUri("urn:company:Unittest");
-	createSessionRequestSPtr->clientDescription()->applicationName().text("company Unittest");
-	createSessionRequestSPtr->clientDescription()->applicationType(ApplicationType_Client);
+	activateSessionRequestSPtr->localeIds()->resize(1);
+	localeIdSPtr = OpcUaString::construct();
+	*localeIdSPtr = "en";
+	activateSessionRequestSPtr->localeIds()->push_back(localeIdSPtr);
 
-	createSessionRequestSPtr->endpointUrl("opc.tcp://localhost:4841");
-	createSessionRequestSPtr->sessionName("urn:localhost:company:Unittest");
-	createSessionRequestSPtr->clientNonce((OpcUaByte*)"0123456789", 10);
-	createSessionRequestSPtr->clientCertificate((OpcUaByte*)"0123456789", 10);
-	createSessionRequestSPtr->requestSessionTimeout(1200000);
-	createSessionRequestSPtr->maxResponseMessageSize(0);
 
-	createSessionRequestSPtr->opcUaBinaryEncode(ios1);
+#if 0
+
+
+	activateSessionRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
 	messageHeaderSPtr = MessageHeader::construct();
@@ -142,47 +142,50 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	// decode message type id
 	typeId.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(typeId.namespaceIndex() == 0);
-	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 
-	// decode CreateSessionRequest
-	createSessionRequestSPtr = CreateSessionRequest::construct();
-	createSessionRequestSPtr->opcUaBinaryDecode(ios);
+	// decode ActivateSessionRequest
+	ActivateSessionRequestSPtr = ActivateSessionRequest::construct();
+	ActivateSessionRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *createSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(createSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *ActivateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
-	BOOST_REQUIRE(createSessionRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(createSessionRequestSPtr->requestHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(createSessionRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(createSessionRequestSPtr->requestHeader()->timeoutHint() == 10000);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->time().dateTime() == ptime);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->requestHandle() == 1);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->returnDisagnostics() == 0);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->timeoutHint() == 10000);
 
-	BOOST_REQUIRE(createSessionRequestSPtr->clientDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
-	BOOST_REQUIRE(createSessionRequestSPtr->clientDescription()->productUri() == "urn:company:Unittest");
-	BOOST_REQUIRE(createSessionRequestSPtr->clientDescription()->applicationName().text().value() == "company Unittest");
-	BOOST_REQUIRE(createSessionRequestSPtr->clientDescription()->applicationType() == ApplicationType_Client);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->productUri() == "urn:company:Unittest");
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->applicationName().text().value() == "company Unittest");
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->applicationType() == ApplicationType_Client);
 
 
-	BOOST_REQUIRE(createSessionRequestSPtr->endpointUrl() == "opc.tcp://localhost:4841");
-	BOOST_REQUIRE(createSessionRequestSPtr->sessionName() == "urn:localhost:company:Unittest");
-	createSessionRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->endpointUrl() == "opc.tcp://localhost:4841");
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->sessionName() == "urn:localhost:company:Unittest");
+	ActivateSessionRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(opcUaByteLen == 10);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
-	createSessionRequestSPtr->clientCertificate(&opcUaByte, &opcUaByteLen);
+	ActivateSessionRequestSPtr->clientCertificate(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(opcUaByteLen == 10);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
-	BOOST_REQUIRE(createSessionRequestSPtr->requestSessionTimeout() == 1200000);
-	BOOST_REQUIRE(createSessionRequestSPtr->maxResponseMessageSize() == 0);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestSessionTimeout() == 1200000);
+	BOOST_REQUIRE(ActivateSessionRequestSPtr->maxResponseMessageSize() == 0);
+#endif
+
 }
 
 
-BOOST_AUTO_TEST_CASE(CreateSession_Response)
+BOOST_AUTO_TEST_CASE(ActivateSession_Response)
 {
+#if 0
 	uint32_t pos;
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
-	CreateSessionResponse::SPtr createSessionResponseSPtr;
+	ActivateSessionResponse::SPtr ActivateSessionResponseSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	EndpointDescription::SPtr endpointDescriptionSPtr;
 	UserTokenPolicy::SPtr userTokenPolicySPtr;
@@ -216,27 +219,27 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode message type id
-	typeId.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
+	typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
 
-	// encode CreateSessionResponse
+	// encode ActivateSessionResponse
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
-	createSessionResponseSPtr = CreateSessionResponse::construct();
+	ActivateSessionResponseSPtr = ActivateSessionResponse::construct();
 
-	createSessionResponseSPtr->responseHeader()->time(ptime);
-	createSessionResponseSPtr->responseHeader()->requestHandle(1);
-	createSessionResponseSPtr->responseHeader()->serviceResult(Success);
+	ActivateSessionResponseSPtr->responseHeader()->time(ptime);
+	ActivateSessionResponseSPtr->responseHeader()->requestHandle(1);
+	ActivateSessionResponseSPtr->responseHeader()->serviceResult(Success);
 
-	createSessionResponseSPtr->sessionId().namespaceIndex(1);
-	createSessionResponseSPtr->sessionId().nodeId(1);
-	createSessionResponseSPtr->authenticationToken().namespaceIndex(1);
-	createSessionResponseSPtr->authenticationToken().nodeId(opcUaGuidSPtr);
-	createSessionResponseSPtr->receivedSessionTimeout(120000);
-	createSessionResponseSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
+	ActivateSessionResponseSPtr->sessionId().namespaceIndex(1);
+	ActivateSessionResponseSPtr->sessionId().nodeId(1);
+	ActivateSessionResponseSPtr->authenticationToken().namespaceIndex(1);
+	ActivateSessionResponseSPtr->authenticationToken().nodeId(opcUaGuidSPtr);
+	ActivateSessionResponseSPtr->receivedSessionTimeout(120000);
+	ActivateSessionResponseSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
 
-	createSessionResponseSPtr->serverEndpoints()->resize(3);
+	ActivateSessionResponseSPtr->serverEndpoints()->resize(3);
 
 
 	endpointDescriptionSPtr = EndpointDescription::construct();
@@ -262,7 +265,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->transportProfileUri("http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	endpointDescriptionSPtr->securityLevel(0);
 
-	createSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
+	ActivateSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
 
 
 	endpointDescriptionSPtr = EndpointDescription::construct();
@@ -288,7 +291,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->transportProfileUri("http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	endpointDescriptionSPtr->securityLevel(1);
 
-	createSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
+	ActivateSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
 
 
 	endpointDescriptionSPtr = EndpointDescription::construct();	
@@ -314,11 +317,11 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->transportProfileUri("http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	endpointDescriptionSPtr->securityLevel(2);
 
-	createSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
+	ActivateSessionResponseSPtr->serverEndpoints()->push_back(endpointDescriptionSPtr);
 
-	createSessionResponseSPtr->maxRequestMessageSize(0);
+	ActivateSessionResponseSPtr->maxRequestMessageSize(0);
 
-	createSessionResponseSPtr->opcUaBinaryEncode(ios1);
+	ActivateSessionResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
 	messageHeaderSPtr = MessageHeader::construct();
@@ -429,31 +432,31 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	// decode message type id
 	typeId.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(typeId.namespaceIndex() == 0);
-	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
+	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
 
-	//decode CreateSessionResponse
-	createSessionResponseSPtr = CreateSessionResponse::construct();
-	createSessionResponseSPtr->opcUaBinaryDecode(ios);
+	//decode ActivateSessionResponse
+	ActivateSessionResponseSPtr = ActivateSessionResponse::construct();
+	ActivateSessionResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(createSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(createSessionResponseSPtr->responseHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(createSessionResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->responseHeader()->requestHandle() == 1);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->responseHeader()->serviceResult() == Success);
 
-	BOOST_REQUIRE(createSessionResponseSPtr->sessionId().namespaceIndex() == 1);
-	BOOST_REQUIRE(createSessionResponseSPtr->sessionId().nodeId<OpcUaUInt32>() == 1);
-	BOOST_REQUIRE(createSessionResponseSPtr->authenticationToken().namespaceIndex() == 1);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->sessionId().namespaceIndex() == 1);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->sessionId().nodeId<OpcUaUInt32>() == 1);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->authenticationToken().namespaceIndex() == 1);
 
-	std::string  str = *createSessionResponseSPtr->authenticationToken().nodeId<OpcUaGuid::SPtr>();
+	std::string  str = *ActivateSessionResponseSPtr->authenticationToken().nodeId<OpcUaGuid::SPtr>();
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 
-	BOOST_REQUIRE(createSessionResponseSPtr->receivedSessionTimeout() == 120000);
-	createSessionResponseSPtr->serverCertificate(&opcUaByte, &opcUaByteLen);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->receivedSessionTimeout() == 120000);
+	ActivateSessionResponseSPtr->serverCertificate(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(opcUaByteLen == 10);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
 
-	BOOST_REQUIRE(createSessionResponseSPtr->serverEndpoints()->size() == 3);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->serverEndpoints()->size() == 3);
 
-	createSessionResponseSPtr->serverEndpoints()->get(0, endpointDescriptionSPtr);
+	ActivateSessionResponseSPtr->serverEndpoints()->get(0, endpointDescriptionSPtr);
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl() == "opt.tcp://localhost:481/0.0.0.0");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->productUri() == "urn:company:Unittest");
@@ -474,7 +477,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(endpointDescriptionSPtr->transportProfileUri() == "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	BOOST_REQUIRE(endpointDescriptionSPtr->securityLevel() == 0);
 
-	createSessionResponseSPtr->serverEndpoints()->get(1, endpointDescriptionSPtr);
+	ActivateSessionResponseSPtr->serverEndpoints()->get(1, endpointDescriptionSPtr);
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl() == "opt.tcp://localhost:481/0.0.0.0");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->productUri() == "urn:company:Unittest");
@@ -495,7 +498,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(endpointDescriptionSPtr->transportProfileUri() == "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	BOOST_REQUIRE(endpointDescriptionSPtr->securityLevel() == 1);
 
-	createSessionResponseSPtr->serverEndpoints()->get(2, endpointDescriptionSPtr);
+	ActivateSessionResponseSPtr->serverEndpoints()->get(2, endpointDescriptionSPtr);
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl() == "opt.tcp://localhost:481/0.0.0.0");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->productUri() == "urn:company:Unittest");
@@ -516,7 +519,8 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(endpointDescriptionSPtr->transportProfileUri() == "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
 	BOOST_REQUIRE(endpointDescriptionSPtr->securityLevel() == 2);
 
-	BOOST_REQUIRE(createSessionResponseSPtr->maxRequestMessageSize() == 0);
+	BOOST_REQUIRE(ActivateSessionResponseSPtr->maxRequestMessageSize() == 0);
+#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()

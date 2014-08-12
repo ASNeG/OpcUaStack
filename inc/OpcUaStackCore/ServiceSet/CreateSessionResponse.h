@@ -33,8 +33,8 @@ namespace OpcUaStackCore
 		void serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverEndpoints(const EndpointDescriptionArray::SPtr serverEndpoints);
 		EndpointDescriptionArray::SPtr serverEndpoints(void) const;
-		void serverSoftwareCertificate(const SignedSoftwareCertificateArray::SPtr serverSoftwareCertificate);
-		SignedSoftwareCertificateArray::SPtr serverSoftwareCertificate(void) const;
+		void serverSoftwareCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		void serverSoftwareCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void signatureData(const SignatureData::SPtr signatureData);
 		SignatureData::SPtr signatureData(void) const;
 		void maxRequestMessageSize(const OpcUaUInt32 maxRequestMessageSize);
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 		OpcUaByteString serverNonce_;
 		OpcUaByteString serverCertificate_;
 		EndpointDescriptionArray::SPtr serverEndpoints_;
-		SignedSoftwareCertificateArray::SPtr serverSoftwareCertificate_;
+		OpcUaByteString serverSoftwareCertificate_;
 		SignatureData::SPtr signatureData_;
 		OpcUaUInt32 maxRequestMessageSize_;
 		

@@ -244,6 +244,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserTokenPolicy.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -421,6 +424,9 @@
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserTokenPolicy.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,7 +10,7 @@ namespace OpcUaStackCore
 	, applicationType_(ApplicationType_Server)
 	, gatewayServerUri_()
 	, discoveryProfileUri_()
-	, discoveryUrls_()
+	, discoveryUrls_(OpcUaStringArray::construct())
 	{
 	}
 

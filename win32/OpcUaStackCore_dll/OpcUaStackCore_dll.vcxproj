@@ -134,6 +134,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserIdentityToken.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserIdentityToken.cpp" />
