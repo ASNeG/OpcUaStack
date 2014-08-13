@@ -146,6 +146,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool ExtensibleParameter::init_ = false;
+	ExtensibleParameter::ExtensibleParameterMap ExtensibleParameter::extensibleParameterMap_;
 
 	ExtensibleParameter::ExtensibleParameter(void)
 	{

@@ -66,18 +66,32 @@ namespace OpcUaStackCore
 		OpcUaString encryptionAlgorithm_;
 	};
 
+	
 	class DLLEXPORT ExtensibleParameter : public  ObjectPool<ExtensibleParameter>
 	{
 	  public:
+		typedef std::map<uint32_t,ExtensibleParameterBase::SPtr> ExtensibleParameterMap;
+
 		ExtensibleParameter(void);
 		~ExtensibleParameter(void);
+
+		OpcUaNodeId& parameterTypeId(void);
+
+#if 0
+		template<typename T>
+		   T::SPtr parameter(void) {
+		   }
+#endif
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		static bool init_;
+		static ExtensibleParameterMap extensibleParameterMap_;
+
 		OpcUaNodeId parameterTypeId_;
+
 	};
 
 }
