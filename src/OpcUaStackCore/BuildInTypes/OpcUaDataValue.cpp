@@ -111,10 +111,10 @@ namespace OpcUaStackCore
 		if (sourceTimestamp_.exist()) {
 			encodingMask += 0x04;
 		}
-		if (sourcePicoseconds_ != 0) {
+		if (serverTimestamp_.exist()) {
 			encodingMask += 0x08;
 		}
-		if (serverTimestamp_.exist()) {
+		if (sourcePicoseconds_ != 0) {
 			encodingMask += 0x10;
 		}
 		if (serverPicoseconds_ != 0) {
@@ -160,11 +160,11 @@ namespace OpcUaStackCore
 			sourceTimestamp_.opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x08) == 0x08) {
-			OpcUaNumber::opcUaBinaryDecode(is,sourcePicoseconds_);
-		}
-		if ((encodingMask & 0x10) == 0x10) {
 			serverTimestamp_.opcUaBinaryDecode(is);
 		}
+		if ((encodingMask & 0x10) == 0x10) {
+			OpcUaNumber::opcUaBinaryDecode(is,sourcePicoseconds_);
+		}	
 		if ((encodingMask & 0x20) == 0x20) {
 			OpcUaNumber::opcUaBinaryDecode(is,serverPicoseconds_);
 		}
