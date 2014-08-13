@@ -100,6 +100,12 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadService_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaWriteValue_t.cpp">
+      <Filter>unittest\BuildInTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteService_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

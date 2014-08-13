@@ -96,6 +96,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaStatusCode_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaString_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaVariant_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaWriteValue_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaXmlElement_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\AcknowledgeMessage_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\HelloMessage_t.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadService_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteService_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPAcceptor_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPConnector_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPChannel_t.cpp" />
