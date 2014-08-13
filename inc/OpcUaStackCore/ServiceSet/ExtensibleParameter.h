@@ -18,6 +18,40 @@ namespace OpcUaStackCore
 		~ExtensibleParameter(void);
 
 		template<typename T>
+		  void registerParameter(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  opcUaNodeId.nodeId(nodeId);
+			  registerParameter<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  void registerParameter(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+
+			  if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
+				  OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+				  *opcUaGuidSPtr = nodeId;
+				  opcUaNodeId.nodeId(opcUaGuidSPtr);
+			  }
+			  else {
+				  opcUaNodeId.nodeId(nodeId);
+			  }
+			  opcUaNodeId.namespaceIndex(namepsaceIndex);
+			  registerParameter<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  void registerParameter(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
+			  opcUaByteStringSPtr->value(buf, bufLen);
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  opcUaNodeId.nodeId(opcUaNodeId);
+			  registerParameter<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
 		  void registerParameter(OpcUaNodeId& opcUaNodeId) {
 			  typename T::SPtr epSPtr = T::construct();
 			  extensibleParameterMap_.insert(make_pair(opcUaNodeId, epSPtr));

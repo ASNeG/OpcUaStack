@@ -94,6 +94,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp">
       <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
