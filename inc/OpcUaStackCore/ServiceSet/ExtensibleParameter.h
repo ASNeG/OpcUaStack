@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 			  else {
 				  opcUaNodeId.nodeId(nodeId);
 			  }
-			  opcUaNodeId.namespaceIndex(namepsaceIndex);
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
 			  registerParameter<T>(opcUaNodeId);
 		  }
 
