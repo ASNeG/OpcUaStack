@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaReadValueId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaWriteValue.h"
 
 
 namespace OpcUaStackCore
