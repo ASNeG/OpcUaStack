@@ -18,7 +18,15 @@ namespace OpcUaStackCore
 			return boost::shared_ptr<OBJ>(new OBJ());
 		}
 
+		SPtr constructMember(void) {
+			return boost::shared_ptr<OBJ>(new OBJ());
+		}
+
 		static void destruct(OBJ* obj) {
+			delete obj;
+		}
+
+		void destructMember(OBJ* obj) {
 			delete obj;
 		}
 

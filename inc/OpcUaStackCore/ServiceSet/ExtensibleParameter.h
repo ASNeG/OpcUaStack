@@ -4,84 +4,42 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-
+#include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ExtensibleParameterBase
-	{
-	  public:
-		typedef boost::shared_ptr<ExtensibleParameterBase> SPtr;
-
-		virtual SPtr factory(void) = 0;
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
-	};
-
-	class DLLEXPORT AnonymousIdentityToken : public  ObjectPool<AnonymousIdentityToken>, public ExtensibleParameterBase
-	{
-	  public:
-		AnonymousIdentityToken(void);
-		~AnonymousIdentityToken(void);
-
-		void policyId(const std::string& policyId);
-		std::string policyId(void) const;
-
-		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
-		virtual void opcUaBinaryEncode(std::ostream& os) const;
-		virtual void opcUaBinaryDecode(std::istream& is);
-		//- ExtensibleParameterBase -------------------------------------------
-
-	  private:
-		OpcUaString policyId_;
-	};
-
-	class DLLEXPORT UserNameIdentityToken : public  ObjectPool<UserNameIdentityToken>, public ExtensibleParameterBase
-	{
-	  public:
-		UserNameIdentityToken(void);
-		~UserNameIdentityToken(void);
-
-		void policyId(const std::string& policyId);
-		std::string policyId(void) const;
-		void userName(const std::string& userName);
-		std::string userName(void) const;
-		void password(const OpcUaByte* buf, OpcUaInt32 bufLen);
-		void password(OpcUaByte** buf, OpcUaInt32* bufLen) const;
-		void encryptionAlgorithm(const std::string& encryptionAlgorithm);
-		std::string encryptionAlgorithm(void) const;
-
-		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
-		virtual void opcUaBinaryEncode(std::ostream& os) const;
-		virtual void opcUaBinaryDecode(std::istream& is);
-		//- ExtensibleParameterBase -------------------------------------------
-
-	  private:
-		OpcUaString policyId_;
-		OpcUaString userName_;
-		OpcUaByteString password_;
-		OpcUaString encryptionAlgorithm_;
-	};
-
-	
 	class DLLEXPORT ExtensibleParameter : public  ObjectPool<ExtensibleParameter>
 	{
 	  public:
-		typedef std::map<uint32_t,ExtensibleParameterBase::SPtr> ExtensibleParameterMap;
+		typedef std::map<OpcUaNodeId,ExtensibleParameterBase::SPtr> ExtensibleParameterMap;
 
 		ExtensibleParameter(void);
 		~ExtensibleParameter(void);
 
-		OpcUaNodeId& parameterTypeId(void);
-
-#if 0
 		template<typename T>
-		   T::SPtr parameter(void) {
+		  void registerParameter(OpcUaNodeId& opcUaNodeId) {
+			  typename T::SPtr epSPtr = T::construct();
+			  extensibleParameterMap_.insert(make_pair(opcUaNodeId, epSPtr));
+		  }
+
+		OpcUaNodeId& parameterTypeId(void);
+		bool exist(void);
+
+		template<typename T>
+		   typename T::SPtr parameter(void) {
+			   if (epSPtr_.get() != NULL) {
+				   return boost::static_pointer_cast<T>(epSPtr_);
+			   }
+
+			   ExtensibleParameterMap::iterator it = extensibleParameterMap_.find(parameterTypeId_);
+			   if (it == extensibleParameterMap_.end()) {
+				   return epSPtr_;
+			   }
+			   typename T::SPtr epSPtr = T::construct();
+			   epSPtr_ = epSPtr;
+			   return epSPtr;
 		   }
-#endif
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -91,7 +49,7 @@ namespace OpcUaStackCore
 		static ExtensibleParameterMap extensibleParameterMap_;
 
 		OpcUaNodeId parameterTypeId_;
-
+		ExtensibleParameterBase::SPtr epSPtr_;
 	};
 
 }
