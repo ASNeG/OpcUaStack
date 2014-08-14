@@ -126,6 +126,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SessionAuthenticationToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelResponse.h" />
@@ -136,12 +137,13 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserIdentityToken.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserNameIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserTokenPolicy.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteResponse.h" />
@@ -194,6 +196,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SessionAuthenticationToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ApplicationDescription.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelResponse.cpp" />
@@ -210,6 +213,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserIdentityToken.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserNameIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserTokenPolicy.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteResponse.cpp" />

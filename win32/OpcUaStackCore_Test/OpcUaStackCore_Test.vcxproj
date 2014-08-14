@@ -104,9 +104,10 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
-    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp" />

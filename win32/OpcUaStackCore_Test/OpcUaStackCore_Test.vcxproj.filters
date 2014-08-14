@@ -97,6 +97,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+	</ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>

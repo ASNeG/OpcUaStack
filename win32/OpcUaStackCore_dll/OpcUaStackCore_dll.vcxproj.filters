@@ -247,6 +247,15 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserNameIdentityToken.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
@@ -450,6 +459,12 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserNameIdentityToken.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+	</ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
