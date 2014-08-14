@@ -247,23 +247,26 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaReadValueId.h">
-      <Filter>sc\BuildInTypes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaWriteValue.h">
-      <Filter>sc\BuildInTypes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteResponse.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteRequest.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.h">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h">
+      <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -447,9 +450,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaReadValueId.cpp">
-      <Filter>sc\BuildInTypes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
@@ -462,8 +462,14 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteResponse.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaWriteValue.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.cpp">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteValue.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
