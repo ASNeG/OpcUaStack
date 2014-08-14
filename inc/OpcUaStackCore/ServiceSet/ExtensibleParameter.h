@@ -24,70 +24,42 @@ namespace OpcUaStackCore
 		template<typename T>
 		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  opcUaNodeId.nodeId(nodeId);
+			  opcUaNodeId.set(nodeId, namespaceIndex);
 			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  bool deregisterFactoryElement(OpcUaUInt32 nodeId) {
+		  bool deregisterFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  opcUaNodeId.nodeId(nodeId);
+			  opcUaNodeId.set(nodeId, namespaceIndex);
 			  return deregisterFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
 		  bool registerFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
-				  OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
-				  *opcUaGuidSPtr = nodeId;
-				  opcUaNodeId.nodeId(opcUaGuidSPtr);
-			  }
-			  else {
-				  OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
-				  *opcUaStringSPtr = nodeId;
-				  opcUaNodeId.nodeId(opcUaStringSPtr);
-			  }
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  opcUaNodeId.set(nodeId, namespaceIndex);
 			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
 		  bool factoryElementParameter(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
-				  OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
-				  *opcUaGuidSPtr = nodeId;
-				  opcUaNodeId.nodeId(opcUaGuidSPtr);
-			  }
-			  else {
-				  OpcUaString::SPtr opcUaStringSPtr = OpcUaString:::construct();
-				  *opcUaStringSPtr = nodeId;
-				  opcUaNodeId.nodeId(opcUaStringSPtr);
-			  }
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  opcUaNodeId.set(nodeId, namespaceIndex);
 			  return deregisterFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
 		  bool registerFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
-			  opcUaByteStringSPtr->value(buf, bufLen);
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  opcUaNodeId.nodeId(opcUaNodeId);
+			  opcUaNodeId.set(buf, bufLen, namespaceIndex);
 			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
 		  bool deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
-			  opcUaByteStringSPtr->value(buf, bufLen);
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  opcUaNodeId.nodeId(opcUaNodeId);
+			  opcUaNodeId.set(buf, bufLen, namespaceIndex);
 			  return deregisterFactoryElement<T>(opcUaNodeId);
 		  }
 

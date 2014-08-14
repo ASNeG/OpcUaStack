@@ -41,6 +41,13 @@ namespace OpcUaStackCore
 		      return boost::get<VAL>(nodeIdValue_);
 		  }
 
+		void set(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		void set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
+		bool get(OpcUaUInt32& nodeId, OpcUaUInt16& namespaceIndex);
+		bool get(std::string& nodeId, OpcUaUInt16& namespaceIndex);
+		bool get(OpcUaByte** buf, OpcUaInt32* bufLen, OpcUaUInt16& namespaceIndex);
+
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
 		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 
