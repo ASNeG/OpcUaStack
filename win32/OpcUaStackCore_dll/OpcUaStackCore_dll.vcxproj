@@ -136,6 +136,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h" />
@@ -207,6 +209,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp" />

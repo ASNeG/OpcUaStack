@@ -105,6 +105,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSubscription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteSubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />

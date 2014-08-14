@@ -277,6 +277,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.h">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -487,6 +493,12 @@
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.cpp">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
