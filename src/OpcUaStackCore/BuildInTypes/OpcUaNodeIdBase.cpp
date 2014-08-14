@@ -81,31 +81,46 @@ namespace OpcUaStackCore
 	bool 
 	OpcUaNodeIdBase::get(OpcUaUInt32& nodeId, OpcUaUInt16& namespaceIndex)
 	{
-		// FIXME TODO
-#if 0
+		if (nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
+			return false;
+		}
+
 		namespaceIndex = namespaceIndex_;
 		nodeId = boost::get<OpcUaUInt32>(nodeIdValue_);
-#endif
 		return true;
 	}
 
 	bool 
 	OpcUaNodeIdBase::get(std::string& nodeId, OpcUaUInt16& namespaceIndex)
 	{
-		// FIXME: TODO
-#if 0
 		namespaceIndex = namespaceIndex_;
-		OpcUaString::SPtr opcUaStringSPtr;
-		opcUaStringSPtr = boost::get<OpcUaString::SPtr>(nodeIdValue_);
-		nodeId = opcUaStringSPtr->value();
-#endif
+		if (nodeIdType() == OpcUaBuildInType_OpcUaString) {
+			OpcUaString::SPtr opcUaStringSPtr;
+			opcUaStringSPtr = boost::get<OpcUaString::SPtr>(nodeIdValue_);
+			nodeId = opcUaStringSPtr->value();
+		}
+		else if (nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
+			OpcUaGuid::SPtr opcUaGuidSPtr;
+			opcUaGuidSPtr = boost::get<OpcUaGuid::SPtr>(nodeIdValue_); 
+			nodeId = *opcUaGuidSPtr;
+		}
+		else {
+			return false;
+		}
 		return true;
 	}
 
 	bool 
 	OpcUaNodeIdBase::get(OpcUaByte** buf, OpcUaInt32* bufLen, OpcUaUInt16& namespaceIndex)
 	{
-		// FIXME: TODO
+		if (nodeIdType() != OpcUaBuildInType_OpcUaByteString) {
+			return false;
+		}
+
+		namespaceIndex = namespaceIndex_;
+		OpcUaByteString::SPtr opcUaByteStringSPtr;
+		opcUaByteStringSPtr = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+		opcUaByteStringSPtr->value(buf, bufLen);
 		return true;
 	}
 

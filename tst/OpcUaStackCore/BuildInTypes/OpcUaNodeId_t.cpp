@@ -274,4 +274,40 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)
 	BOOST_REQUIRE(it->second == 678);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_access_helper)
+{
+	OpcUaNodeId opcUaNodeId;
+
+	OpcUaUInt16 namespaceIndex;
+	OpcUaUInt32 nodeId1;
+	std::string nodeId2;
+	OpcUaByte* buf;
+	OpcUaInt32 bufLen;
+
+	opcUaNodeId.set(4711);
+	BOOST_REQUIRE(opcUaNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32);
+	BOOST_REQUIRE(opcUaNodeId.get(nodeId1, namespaceIndex) == true);
+	BOOST_REQUIRE(namespaceIndex == 0);
+	BOOST_REQUIRE(nodeId1 == 4711);
+
+	opcUaNodeId.set("string");
+	BOOST_REQUIRE(opcUaNodeId.nodeIdType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(opcUaNodeId.get(nodeId2, namespaceIndex) == true);
+	BOOST_REQUIRE(namespaceIndex == 0);
+	BOOST_REQUIRE(nodeId2 == "string");
+
+	opcUaNodeId.set("12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	BOOST_REQUIRE(opcUaNodeId.nodeIdType() == OpcUaBuildInType_OpcUaGuid);
+	BOOST_REQUIRE(opcUaNodeId.get(nodeId2, namespaceIndex) == true);
+	BOOST_REQUIRE(namespaceIndex == 0);
+	BOOST_REQUIRE(nodeId2 == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+
+	opcUaNodeId.set((OpcUaByte*)"0123456789", 10);
+	BOOST_REQUIRE(opcUaNodeId.nodeIdType() == OpcUaBuildInType_OpcUaByteString);
+	BOOST_REQUIRE(namespaceIndex == 0);
+	BOOST_REQUIRE(opcUaNodeId.get(&buf, &bufLen, namespaceIndex) == true);
+	BOOST_REQUIRE(bufLen == 10);
+	BOOST_REQUIRE(strncmp((char*)buf, "0123456789", 10) == 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
