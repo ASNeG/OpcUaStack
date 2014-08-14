@@ -255,7 +255,7 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserNameIdentityToken.h">
       <Filter>sc\ServiceSet\Common</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
@@ -268,13 +268,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteRequest.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
-      <Filter>sc\ServiceSet\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
   </ItemGroup>
@@ -464,7 +458,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserNameIdentityToken.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
@@ -476,9 +470,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteResponse.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
