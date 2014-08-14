@@ -13,10 +13,11 @@ namespace OpcUaStackCore
 
 	WriteRequest::WriteRequest(void)
 	: ObjectPool<WriteRequest>()
-	, requestHeaderSPtr_()
-	, writeValueArraySPtr_()
+	, requestHeaderSPtr_(RequestHeader::construct())
+	, writeValueArraySPtr_(WriteValueArray::construct())
 	{
 	}
+
 
 	WriteRequest::~WriteRequest(void)
 	{
@@ -35,12 +36,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	WriteRequest::writeValueArray(const OpcUaWriteValueArray::SPtr writeValueArray)
+	WriteRequest::writeValueArray(const WriteValueArray::SPtr writeValueArray)
 	{
 		writeValueArraySPtr_ = writeValueArray;
 	}
 
-	OpcUaWriteValueArray::SPtr 
+	WriteValueArray::SPtr 
 	WriteRequest::writeValueArray(void) const
 	{
 		return writeValueArraySPtr_;

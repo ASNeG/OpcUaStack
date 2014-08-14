@@ -12,18 +12,19 @@
 
 using namespace OpcUaStackCore;
 
-BOOST_AUTO_TEST_SUITE(ReadService_)
+BOOST_AUTO_TEST_SUITE(Read_)
 
-BOOST_AUTO_TEST_CASE(ReadService_)
+BOOST_AUTO_TEST_CASE(Read_)
 {
-	std::cout << "ReadService_t" << std::endl;
+	std::cout << "Read_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ReadService_Request)
+BOOST_AUTO_TEST_CASE(Read_Request)
 {
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
+	ReadValueId::SPtr readValueIdSPtr;
 	ReadRequest::SPtr readRequestSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
@@ -41,7 +42,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 	OpcUaInt32 secureChannelId;
 	OpcUaInt32 secureTokenId;
 
-	secureChannelId = 2967593273;
+	secureChannelId = 153451225;
 	secureTokenId = 1;
 
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelId);
@@ -64,7 +65,6 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	readRequestSPtr->requestHeader(RequestHeader::construct());
 	readRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
 	readRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
 	readRequestSPtr->requestHeader()->time(ptime);
@@ -79,13 +79,11 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 	readRequestSPtr->timestampsToReturn(2);
 
 	// encode ReadValueId
-	OpcUaReadValueId::SPtr readValueIdSPtr;
-	readValueIdSPtr = OpcUaReadValueId::construct();
+	readValueIdSPtr = ReadValueId::construct();
 	readValueIdSPtr->nodeId((OpcUaInt16) 2, (OpcUaInt32) 9);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 
-	readRequestSPtr->readValueIdArray(OpcUaReadValueIdArray::construct());
 	readRequestSPtr->readValueIdArray()->set(readValueIdSPtr);
 
 	// encode ReadRequest
@@ -102,7 +100,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 	OpcUaStackCore::dumpHex(ios);
 	
 	std::stringstream ss;
-	ss << "4d 53 47 46 6c 00 00 00  39 e1 e1 b0 01 00 00 00"
+	ss << "4d 53 47 46 6c 00 00 00  d9 7a 25 09 01 00 00 00" 
 	   << "36 00 00 00 04 00 00 00  01 00 77 02 04 01 00 0d"
 	   << "44 55 b2 8d 2f b7 4f 86  4f 0a f5 94 5d d8 33 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 ff"
@@ -119,7 +117,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 
 	// decode security header
 	OpcUaNumber::opcUaBinaryDecode(ios, secureChannelId);
-	BOOST_REQUIRE(secureChannelId == 2967593273);
+	BOOST_REQUIRE(secureChannelId == 153451225);
 	OpcUaNumber::opcUaBinaryDecode(ios, secureTokenId);
 	BOOST_REQUIRE(secureTokenId == 1);
 
@@ -136,8 +134,6 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 
 	// decode ReadRequest
 	readRequestSPtr = ReadRequest::construct();
-	readRequestSPtr->requestHeader(RequestHeader::construct());
-	readRequestSPtr->readValueIdArray(OpcUaReadValueIdArray::construct());
 	readRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
@@ -153,15 +149,15 @@ BOOST_AUTO_TEST_CASE(ReadService_Request)
 
 	BOOST_REQUIRE(readRequestSPtr->readValueIdArray()->size() == 1);
 
-	OpcUaReadValueId::SPtr readValueIdSPtr2;
-	readRequestSPtr->readValueIdArray()->get(readValueIdSPtr2);
-	BOOST_REQUIRE(readValueIdSPtr2->nodeId().namespaceIndex() == 2);
-	BOOST_REQUIRE(readValueIdSPtr2->nodeId().nodeId<OpcUaUInt32>() == 9);
-	BOOST_REQUIRE(readValueIdSPtr2->dataEncoding().namespaceIndex() == 0);
+	readValueIdSPtr = ReadValueId::construct(); 
+	readRequestSPtr->readValueIdArray()->get(readValueIdSPtr);
+	BOOST_REQUIRE(readValueIdSPtr->nodeId()->namespaceIndex() == 2);
+	BOOST_REQUIRE(readValueIdSPtr->nodeId()->nodeId<OpcUaUInt32>() == 9);
+	BOOST_REQUIRE(readValueIdSPtr->dataEncoding().namespaceIndex() == 0);
 }
 
 
-BOOST_AUTO_TEST_CASE(ReadService_Response)
+BOOST_AUTO_TEST_CASE(Read_Response)
 {
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -191,7 +187,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Response)
 	OpcUaInt32 secureChannelId;
 	OpcUaInt32 secureTokenId;
 
-	secureChannelId = 2967593273;
+	secureChannelId = 153451225;
 	secureTokenId = 1;
 
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelId);
@@ -212,12 +208,9 @@ BOOST_AUTO_TEST_CASE(ReadService_Response)
 
 	// encode ResponseHeader
 	statusCode = Success;
-	readResponseSPtr->responseHeader(ResponseHeader::construct());
 	readResponseSPtr->responseHeader()->time(ptime);
 	readResponseSPtr->responseHeader()->requestHandle(0);
 	readResponseSPtr->responseHeader()->serviceResult(statusCode);
-	readResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	readResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
 	
 	// encode DataValue
 	sourceTimestamp.dateTime(ptime1);
@@ -231,11 +224,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Response)
 	dataValueSPtr->sourceTimestamp(sourceTimestamp);
 	dataValueSPtr->serverTimestamp(serverTimestamp);
 
-	readResponseSPtr->dataValueArray(OpcUaDataValueArray::construct());
 	readResponseSPtr->dataValueArray()->set(dataValueSPtr);
-
-	// encode DiagnosticInfos
-	readResponseSPtr->diagnosticInfos(OpcUaDiagnosticInfoArray::construct());
 
 	// encode ReadRequest
 	readResponseSPtr->opcUaBinaryEncode(ios1);
@@ -251,7 +240,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 52 00 00 00  39 e1 e1 b0 01 00 00 00"
+	ss << "4d 53 47 46 52 00 00 00  d9 7a 25 09 01 00 00 00"
 	   << "36 00 00 00 04 00 00 00  01 00 7a 02 00 00 00 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
 	   << "00 00 00 00 01 00 00 00  0d 0a 00 80 a0 43 00 9d"
@@ -267,7 +256,7 @@ BOOST_AUTO_TEST_CASE(ReadService_Response)
 
 	// decode security header
 	OpcUaNumber::opcUaBinaryDecode(ios, secureChannelId);
-	BOOST_REQUIRE(secureChannelId == 2967593273);
+	BOOST_REQUIRE(secureChannelId == 153451225);
 	OpcUaNumber::opcUaBinaryDecode(ios, secureTokenId);
 	BOOST_REQUIRE(secureTokenId == 1);
 
@@ -284,11 +273,6 @@ BOOST_AUTO_TEST_CASE(ReadService_Response)
 
 	// decode ReadResponse
 	readResponseSPtr = ReadResponse::construct();
-	readResponseSPtr->responseHeader(ResponseHeader::construct());
-	readResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	readResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
-	readResponseSPtr->dataValueArray(OpcUaDataValueArray::construct());
-	readResponseSPtr->diagnosticInfos(OpcUaDiagnosticInfoArray::construct());
 	readResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(readResponseSPtr->responseHeader()->time().dateTime() == ptime);
