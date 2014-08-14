@@ -14,47 +14,92 @@ namespace OpcUaStackCore
 	  public:
 		typedef std::map<OpcUaNodeId,ExtensibleParameterBase::SPtr> ExtensibleParameterMap;
 
+		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::SPtr epSPtr);
+		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
+		static ExtensibleParameterBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
+
 		ExtensibleParameter(void);
 		~ExtensibleParameter(void);
 
 		template<typename T>
-		  void registerParameter(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
+		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
 			  opcUaNodeId.namespaceIndex(namespaceIndex);
 			  opcUaNodeId.nodeId(nodeId);
-			  registerParameter<T>(opcUaNodeId);
+			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  void registerParameter(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+		  bool deregisterFactoryElement(OpcUaUInt32 nodeId) {
 			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  opcUaNodeId.nodeId(nodeId);
+			  return deregisterFactoryElement<T>(opcUaNodeId);
+		  }
 
+		template<typename T>
+		  bool registerFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
 			  if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
 				  OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
 				  *opcUaGuidSPtr = nodeId;
 				  opcUaNodeId.nodeId(opcUaGuidSPtr);
 			  }
 			  else {
-				  opcUaNodeId.nodeId(nodeId);
+				  OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+				  *opcUaStringSPtr = nodeId;
+				  opcUaNodeId.nodeId(opcUaStringSPtr);
 			  }
-			  opcUaNodeId.namespaceIndex(namepsaceIndex);
-			  registerParameter<T>(opcUaNodeId);
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  void registerParameter(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
+		  bool factoryElementParameter(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
+				  OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+				  *opcUaGuidSPtr = nodeId;
+				  opcUaNodeId.nodeId(opcUaGuidSPtr);
+			  }
+			  else {
+				  OpcUaString::SPtr opcUaStringSPtr = OpcUaString:::construct();
+				  *opcUaStringSPtr = nodeId;
+				  opcUaNodeId.nodeId(opcUaStringSPtr);
+			  }
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  return deregisterFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool registerFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
 			  OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
 			  opcUaByteStringSPtr->value(buf, bufLen);
 			  opcUaNodeId.namespaceIndex(namespaceIndex);
 			  opcUaNodeId.nodeId(opcUaNodeId);
-			  registerParameter<T>(opcUaNodeId);
+			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  void registerParameter(OpcUaNodeId& opcUaNodeId) {
-			  typename T::SPtr epSPtr = T::construct();
-			  extensibleParameterMap_.insert(make_pair(opcUaNodeId, epSPtr));
+		  bool deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
+			  opcUaByteStringSPtr->value(buf, bufLen);
+			  opcUaNodeId.namespaceIndex(namespaceIndex);
+			  opcUaNodeId.nodeId(opcUaNodeId);
+			  return deregisterFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
+			  ExtensibleParameterBase::SPtr epSPtr(T::construct());
+			  return ExtensibleParameter::insertElement(opcUaNodeId, epSPtr);
+		  }
+
+		template<typename T>
+		  bool deregisterFactoryElement(OpcUaNodeId& opcUaNodeId) {
+			  return ExtensibleParameter::deleteElement(opcUaNodeId);
 		  }
 
 		OpcUaNodeId& parameterTypeId(void);

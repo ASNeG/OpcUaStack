@@ -3,6 +3,8 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
 
 #include <streambuf>
 #include <iostream>
@@ -14,8 +16,12 @@ BOOST_AUTO_TEST_SUITE(ExtensibleParameter_)
 BOOST_AUTO_TEST_CASE(ExtensibleParameter_Factory)
 {
 	ExtensibleParameter ep;
+	BOOST_REQUIRE(ep.registerFactoryElement<AnonymousIdentityToken>((OpcUaUInt32)12345) == true);
+	BOOST_REQUIRE(ep.registerFactoryElement<AnonymousIdentityToken>("0123456789", 10) == true);
+	BOOST_REQUIRE(ep.registerFactoryElement<AnonymousIdentityToken>("AnonymousIdentityToken") == true);
+	BOOST_REQUIRE(ep.registerFactoryElement<AnonymousIdentityToken>("12345678-9ABC-DEF0-1234-56789ABCDEF0") == true);
 
-
+	ExtensibleParameter ep1, ep2, ep3, ep4;
 }
 
 BOOST_AUTO_TEST_CASE(ExtensibleParameter_)
