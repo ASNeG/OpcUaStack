@@ -1,5 +1,5 @@
 #include "unittest.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaWriteValue.h"
+#include "OpcUaStackCore/ServiceSet/WriteValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -7,20 +7,20 @@
 
 using namespace OpcUaStackCore;
 
-BOOST_AUTO_TEST_SUITE(OpcUaWriteValue_)
+BOOST_AUTO_TEST_SUITE(WriteValue_)
 
-BOOST_AUTO_TEST_CASE(OpcUaWriteValue_)
+BOOST_AUTO_TEST_CASE(WriteValue_)
 {
-	std::cout << "OpcUaWriteValue_t" << std::endl;
+	std::cout << "WriteValue_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(OpcUaWriteValue_encode_decode)
+BOOST_AUTO_TEST_CASE(WriteValue_encode_decode)
 {
 	std::stringstream ss;
 	
 	OpcUaDataValue dataValue;
 	OpcUaVariant::SPtr variantSPtr;
-	OpcUaWriteValue value1, value2;
+	WriteValue value1, value2;
 
 	// Variant
 	variantSPtr = OpcUaVariant::construct();
@@ -39,10 +39,10 @@ BOOST_AUTO_TEST_CASE(OpcUaWriteValue_encode_decode)
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
 	
-	BOOST_REQUIRE(value2.nodeId().namespaceIndex() == 2);
-	BOOST_REQUIRE(value2.nodeId().nodeId<OpcUaUInt32>() == 9);
+	BOOST_REQUIRE(value2.nodeId()->namespaceIndex() == 2);
+	BOOST_REQUIRE(value2.nodeId()->nodeId<OpcUaUInt32>() == 9);
 	BOOST_REQUIRE(value2.attributeId() == 13);
-	BOOST_REQUIRE(value2.indexRange().value() == "TestString");
+	BOOST_REQUIRE(value2.indexRange() == "TestString");
 	
 	variantSPtr = OpcUaVariant::construct();
 	variantSPtr = value2.dataValue().variant();

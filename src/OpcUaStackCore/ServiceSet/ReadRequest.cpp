@@ -13,10 +13,10 @@ namespace OpcUaStackCore
 
 	ReadRequest::ReadRequest(void)
 	: ObjectPool<ReadRequest>()
-	, requestHeaderSPtr_()
+	, requestHeaderSPtr_(RequestHeader::construct())
 	, maxAge_()
 	, timestampsToReturn_()
-	, readValueIdArraySPtr_()
+	, readValueIdArraySPtr_(ReadValueIdArray::construct())
 	{
 	}
 
@@ -37,12 +37,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ReadRequest::maxAge(const OpcUaInt64& maxAge)
+	ReadRequest::maxAge(const OpcUaDouble& maxAge)
 	{
 		maxAge_ = maxAge;
 	}
 	
-	OpcUaInt64 
+	OpcUaDouble 
 	ReadRequest::maxAge(void) const
 	{
 		return maxAge_;
@@ -61,12 +61,12 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	ReadRequest::readValueIdArray(const OpcUaReadValueIdArray::SPtr readValueIdArraySPtr)
+	ReadRequest::readValueIdArray(const ReadValueIdArray::SPtr readValueIdArraySPtr)
 	{
 		readValueIdArraySPtr_ = readValueIdArraySPtr;
 	}
 	
-	OpcUaReadValueIdArray::SPtr 
+	ReadValueIdArray::SPtr 
 	ReadRequest::readValueIdArray(void) const
 	{
 		return readValueIdArraySPtr_;

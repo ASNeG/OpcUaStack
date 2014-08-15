@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_OpcUaReadValueId_h__
-#define __OpcUaStackCore_OpcUaReadValueId_h__
+#ifndef __OpcUaStackCore_ReadValueId_h__
+#define __OpcUaStackCore_ReadValueId_h__
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -10,37 +10,38 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaReadValueId : public  ObjectPool<OpcUaReadValueId>
+	class DLLEXPORT ReadValueId : public  ObjectPool<ReadValueId>
 	{
 	  public:
-		OpcUaReadValueId(void);
-		virtual ~OpcUaReadValueId(void);
+		ReadValueId(void);
+		virtual ~ReadValueId(void);
 
-		void nodeId(const OpcUaNodeId& nodeId);
-		OpcUaNodeId nodeId(void) const;
+		void nodeId(const OpcUaNodeId::SPtr nodeId);
+		OpcUaNodeId::SPtr nodeId(void);
 		void attributeId(const OpcUaUInt32& attributeId);
 		OpcUaUInt32 attributeId(void) const;
 		void indexRange(const OpcUaString& indexRange);
-		OpcUaString indexRange(void) const;
+		std::string indexRange(void) const;
 		void dataEncoding(const OpcUaQualifiedName& dataEncoding);
-		OpcUaQualifiedName dataEncoding(void) const;
+		OpcUaQualifiedName& dataEncoding(void);
 
 		void nodeId(const OpcUaInt16& namespaceId, const OpcUaInt32& identifier);
-		void indexRange(const std::string value);
-		void dataEncoding(const OpcUaInt16& namespaceIndex, const std::string name);
+		void indexRange(const std::string& value);
+		void dataEncoding(const OpcUaInt16& namespaceIndex, const std::string& name);
+		void dataEncoding(const std::string& name);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaNodeId nodeId_;
+		OpcUaNodeId::SPtr nodeIdSPtr_;
 		OpcUaInt32 attributeId_;
 		OpcUaString indexRange_;
 		OpcUaQualifiedName dataEncoding_;
 
 	};
 
-	class OpcUaReadValueIdArray : public OpcUaArray<OpcUaReadValueId::SPtr, SPtrTypeCoder<OpcUaReadValueId> >, public ObjectPool<OpcUaReadValueIdArray> {};
+	class ReadValueIdArray : public OpcUaArray<ReadValueId::SPtr, SPtrTypeCoder<ReadValueId> >, public ObjectPool<ReadValueIdArray> {};
 
 }
 

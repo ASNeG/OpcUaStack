@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_OpcUaWriteValue_h__
-#define __OpcUaStackCore_OpcUaWriteValue_h__
+#ifndef __OpcUaStackCore_WriteValue_h__
+#define __OpcUaStackCore_WriteValue_h__
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -10,36 +10,35 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaWriteValue : public  ObjectPool<OpcUaWriteValue>
+	class DLLEXPORT WriteValue : public  ObjectPool<WriteValue>
 	{
 	  public:
-		OpcUaWriteValue(void);
-		virtual ~OpcUaWriteValue(void);
+		WriteValue(void);
+		virtual ~WriteValue(void);
 
-		void nodeId(const OpcUaNodeId& nodeId);
-		OpcUaNodeId nodeId(void) const;
+		void nodeId(const OpcUaNodeId::SPtr nodeIdSPtr);
+		OpcUaNodeId::SPtr nodeId(void);
 		void attributeId(const OpcUaUInt32& attributeId);
 		OpcUaUInt32 attributeId(void) const;
-		void indexRange(const OpcUaString& indexRange);
-		OpcUaString indexRange(void) const;
+		void indexRange(const std::string& indexRange);
+		std::string indexRange(void) const;
 		void dataValue(const OpcUaDataValue& dataValue);
-		OpcUaDataValue dataValue(void) const;
+		OpcUaDataValue& dataValue(void);
 
 		void nodeId(const OpcUaInt16& namespaceId, const OpcUaInt32& identifier);
-		void indexRange(const std::string value);
 		
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaNodeId nodeId_;
+		OpcUaNodeId::SPtr nodeIdSPtr_;
 		OpcUaInt32 attributeId_;
 		OpcUaString indexRange_;
 		OpcUaDataValue dataValue_;
 
 	};
 
-	class OpcUaWriteValueArray : public OpcUaArray<OpcUaWriteValue::SPtr, SPtrTypeCoder<OpcUaWriteValue> >, public ObjectPool<OpcUaWriteValueArray> {};
+	class WriteValueArray : public OpcUaArray<WriteValue::SPtr, SPtrTypeCoder<WriteValue> >, public ObjectPool<WriteValueArray> {};
 
 }
 

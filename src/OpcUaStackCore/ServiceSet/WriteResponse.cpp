@@ -13,9 +13,9 @@ namespace OpcUaStackCore
 
 	WriteResponse::WriteResponse(void)
 	: ObjectPool<WriteResponse>()
-	, responseHeaderSPtr_()
-	, statusCodeArraySPtr_()
-	, diagnosticInfoArraySPtr_()
+	, responseHeaderSPtr_(ResponseHeader::construct())
+	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
+	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 

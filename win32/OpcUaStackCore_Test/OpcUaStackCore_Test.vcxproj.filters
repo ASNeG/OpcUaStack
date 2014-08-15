@@ -94,19 +94,19 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp">
       <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
 	</ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaReadValueId_t.cpp">
-      <Filter>unittest\BuildInTypes</Filter>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadService_t.cpp">
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaWriteValue_t.cpp">
-      <Filter>unittest\BuildInTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteService_t.cpp">
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
