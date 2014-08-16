@@ -23,7 +23,6 @@ namespace OpcUaStackCore
 		void nodesToAdd(const AddNodesItemArray::SPtr addNodesItemArraySPtr);
 		AddNodesItemArray::SPtr nodesToAdd() const;
 
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

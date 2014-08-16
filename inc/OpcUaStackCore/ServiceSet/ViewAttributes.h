@@ -1,40 +1,29 @@
-#ifndef __OpcUaStackCore_ObjectAttributes_h__
-#define __OpcUaStackCore_ObjectAttributes_h__
+#ifndef __OpcUaStackCore_ViewAttributes_h__
+#define __OpcUaStackCore_ViewAttributes_h__
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
-
-// Unitittest : Vor der ersten Instanz...
-// ExtensibleParameter ep;
-// BOOST_REQUIRE(ep.registerFactoryElement<ObjectAttributes>((OpcUaUInt32)12345) == true);
-
-// ep.ObjectAttributes().nodeId((OpcUaUInt32)12345);
-// ObjectAttributes_::SPtr attr = ep.parameter<ObjectAttributes>();
-// atrr->dislayName("ABC"),
-
-
-// ep.opcUaBinaryEncode(..)
-
-
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ObjectAttributes : public  ObjectPool<ObjectAttributes>, public ExtensibleParameterBase
+	class DLLEXPORT ViewAttributes : public  ObjectPool<ViewAttributes>, public ExtensibleParameterBase
 	{
 	  public:
-		ObjectAttributes(void);
-		virtual ~ObjectAttributes(void);
+		ViewAttributes(void);
+		virtual ~ViewAttributes(void);
 
-        ExtensibleParameterBase::SPtr factory(void) { return ObjectAttributes::construct();  }
+        ExtensibleParameterBase::SPtr factory(void) { return ViewAttributes::construct();  }
 
         OpcUaUInt32 specifiedAttributes(void) const;
         void displayName(const OpcUaLocalizedText::SPtr displayNameSPtr);
         OpcUaLocalizedText::SPtr displayName(void) const;
         void description(const OpcUaLocalizedText::SPtr descriptionSPtr);
         OpcUaLocalizedText::SPtr description(void) const;
+		void containsNoLoops(const OpcUaBoolean containsNoLoops);
+        OpcUaBoolean containsNoLoops(void) const;
         void eventNotifier(const OpcUaByte eventNotifier);
         OpcUaByte eventNotifier(void) const;
         void writeMask(const OpcUaUInt32 writeMask);
@@ -49,6 +38,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 specifiedAttributes_;
 		OpcUaLocalizedText::SPtr displayName_;
 		OpcUaLocalizedText::SPtr description_;
+		OpcUaBoolean containsNoLoops_;
 		OpcUaByte eventNotifier_;
 		OpcUaUInt32 writeMask_;
 		OpcUaUInt32 userWriteMask_;

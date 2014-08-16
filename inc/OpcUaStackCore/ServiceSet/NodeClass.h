@@ -2,21 +2,20 @@
 #define __OpcUaStackCore_NodeClass_h__
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/os.h"
-
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
 	typedef enum {
-		NodeClass_Object = 1,
-		NodeClass_Variable = 2,
-		NodeClass_Method = 4,
-		NodeClass_ObjectType = 8,
-		NodeClass_VariableType = 16,
-		NodeClass_ReferenceType = 32,
-		NodeClass_DataType = 64,
-		NodeClass_View = 128,
+		NodeClassType_Object = 1,
+		NodeClassType_Variable = 2,
+		NodeClassType_Method = 4,
+		NodeClassType_ObjectType = 8,
+		NodeClassType_VariableType = 16,
+		NodeClassType_ReferenceType = 32,
+		NodeClassType_DataType = 64,
+		NodeClassType_View = 128,
 	} NodeClassType;
 
 
@@ -36,10 +35,6 @@ namespace OpcUaStackCore
 		NodeClassType nodeClassType_;
 	};
 
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const NodeClass& value);
-	DLLEXPORT void opcUaBinaryEncode(std::ostream& os, const NodeClass::SPtr& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, NodeClass& value);
-	DLLEXPORT void opcUaBinaryDecode(std::istream& is, NodeClass::SPtr& value);
 }
 
 #endif
