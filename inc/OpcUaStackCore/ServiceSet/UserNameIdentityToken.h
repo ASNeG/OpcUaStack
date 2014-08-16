@@ -25,7 +25,7 @@ namespace OpcUaStackCore
 		std::string encryptionAlgorithm(void) const;
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::SPtr factory(void);
+		virtual ExtensibleParameterBase::BSPtr factory(void);
 		virtual void opcUaBinaryEncode(std::ostream& os) const;
 		virtual void opcUaBinaryDecode(std::istream& is);
 		//- ExtensibleParameterBase -------------------------------------------

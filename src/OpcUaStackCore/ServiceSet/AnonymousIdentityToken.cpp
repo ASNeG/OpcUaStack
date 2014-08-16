@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 		return policyId_.value();
 	}
 
-	ExtensibleParameterBase::SPtr 
+	ExtensibleParameterBase::BSPtr 
 	AnonymousIdentityToken::factory(void)
 	{
 		return AnonymousIdentityToken::construct();

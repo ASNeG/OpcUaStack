@@ -4,10 +4,36 @@ namespace OpcUaStackCore
 {
 	
 	bool ExtensibleParameter::init_ = false;
-	ExtensibleParameter::ExtensibleParameterMap ExtensibleParameter::extensibleParameterMap_;
+	ExtensibleParameterMap ExtensibleParameter::extensibleParameterMap_;
 
 	bool 
-	ExtensibleParameter::insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::SPtr epSPtr)
+	ExtensibleParameter::deregisterFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex) {
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(nodeId, namespaceIndex);
+		return deregisterFactoryElement(opcUaNodeId);
+	}
+
+	bool 
+	ExtensibleParameter::deregisterFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex) {
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(nodeId, namespaceIndex);
+		return deregisterFactoryElement(opcUaNodeId);
+	}
+
+	bool 
+	ExtensibleParameter::deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex) {
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(buf, bufLen, namespaceIndex);
+		return deregisterFactoryElement(opcUaNodeId);
+	}
+
+	bool 
+	ExtensibleParameter::deregisterFactoryElement(OpcUaNodeId& opcUaNodeId) {
+		return ExtensibleParameter::deleteElement(opcUaNodeId);
+	}
+
+	bool 
+	ExtensibleParameter::insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::BSPtr epSPtr)
 	{
 		ExtensibleParameterMap::iterator it;
 		it = extensibleParameterMap_.find(opcUaNodeId);
@@ -30,10 +56,10 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	ExtensibleParameterBase::SPtr 
+	ExtensibleParameterBase::BSPtr 
 	ExtensibleParameter::findElement(OpcUaNodeId& opcUaNodeId)
 	{
-		ExtensibleParameterBase::SPtr epSPtr;
+		ExtensibleParameterBase::BSPtr epSPtr;
 		ExtensibleParameterMap::iterator it;
 		it = extensibleParameterMap_.find(opcUaNodeId);
 		if (it != extensibleParameterMap_.end()) {
@@ -48,6 +74,12 @@ namespace OpcUaStackCore
 
 	ExtensibleParameter::~ExtensibleParameter(void)
 	{
+	}
+
+	OpcUaNodeId& 
+	ExtensibleParameter::parameterTypeId(void)
+	{
+		return parameterTypeId_;
 	}
 
 	bool 

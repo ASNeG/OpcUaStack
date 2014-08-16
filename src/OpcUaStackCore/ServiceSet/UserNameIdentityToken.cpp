@@ -67,7 +67,7 @@ namespace OpcUaStackCore
 	}
 
 	
-	ExtensibleParameterBase::SPtr 
+	ExtensibleParameterBase::BSPtr 
 	UserNameIdentityToken::factory(void)
 	{
 		return UserNameIdentityToken::construct();
