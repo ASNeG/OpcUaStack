@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
+#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -22,6 +23,9 @@ BOOST_AUTO_TEST_CASE(ActivateSession_)
 
 BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 {
+	ExtensibleParameter ep;
+	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+
 	uint32_t pos;
 	OpcUaString::SPtr localeIdSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
@@ -30,8 +34,6 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	ActivateSessionRequest::SPtr activateSessionRequestSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	OpcUaNodeId typeId;
-	OpcUaByte* opcUaByte;
-	OpcUaInt32 opcUaByteLen;
 
 	// stream
 	boost::asio::streambuf sb1;
@@ -64,11 +66,6 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	// encode ActivateSessionRequest
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-
-#if 0
-	OpcUaByte clientNonce[1];
-	clientNonce[0] = 0x00;
-#endif
 	activateSessionRequestSPtr = ActivateSessionRequest::construct();
 
 	activateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
@@ -83,9 +80,9 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	*localeIdSPtr = "en";
 	activateSessionRequestSPtr->localeIds()->push_back(localeIdSPtr);
 
-
-#if 0
-
+	activateSessionRequestSPtr->userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+	AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequestSPtr->userIdentityToken()->parameter<AnonymousIdentityToken>();
+	anonymousIdentityToken->policyId("OpcUaStack");
 
 	activateSessionRequestSPtr->opcUaBinaryEncode(ios1);
 
@@ -100,25 +97,15 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 13 01 00 00  d9 7a 25 09 01 00 00 00"
-		<< "34 00 00 00 02 00 00 00  01 00 cd 01 04 01 00 12"
+	ss	<< "4d 53 47 46 7b 00 00 00  d9 7a 25 09 01 00 00 00"
+		<< "35 00 00 00 03 00 00 00  01 00 d3 01 04 01 00 12"
 		<< "34 56 78 9a bc de f0 12  34 56 78 9a bc de f0 00"
-		<< "00 00 00 00 00 00 00 01  00 00 00 00 00 00 00 ff"
-		<< "ff ff ff 10 27 00 00 00  00 00 1e 00 00 00 75 72"
-		<< "6e 3a 6c 6f 63 61 6c 68  6f 73 74 3a 63 6f 6d 70"
-		<< "79 6e 79 3a 55 6e 69 74  74 65 73 74 14 00 00 00"
-		<< "75 72 6e 3a 63 6f 6d 70  61 6e 79 3a 55 6e 69 74"
-		<< "74 65 73 74 02 10 00 00  00 63 6f 6d 70 61 6e 79"
-		<< "20 55 6e 69 74 74 65 73  74 01 00 00 00 ff ff ff"
-		<< "ff ff ff ff ff 00 00 00  00 ff ff ff ff 18 00 00"
-		<< "00 6f 70 63 2e 74 63 70  3a 2f 2f 6c 6f 63 61 6c"
-		<< "68 6f 73 74 3a 34 38 34  31 1e 00 00 00 75 72 6e"
-		<< "3a 6c 6f 63 61 6c 68 6f  73 74 3a 63 6f 6d 70 61"
-		<< "6e 79 3a 55 6e 69 74 74  65 73 74 0a 00 00 00 30"
-		<< "31 32 33 34 35 36 37 38  39 0a 00 00 00 30 31 32"
-		<< "33 34 35 36 37 38 39 00  00 00 00 80 4f 32 41 00"
-		<< "00 00 00";
-		BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
+		<< "00 00 00 00 00 00 00 02  00 00 00 00 00 00 00 ff"
+		<< "ff ff ff 10 27 00 00 00  00 00 ff ff ff ff ff ff"
+		<< "ff ff 00 00 00 00 01 00  00 00 02 00 00 00 65 6e"
+		<< "01 00 41 01 01 0a 00 00  00 4f 70 63 55 61 53 74"
+		<< "61 63 6b ff ff ff ff ff  ff ff ff";
+	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
 	messageHeaderSPtr = MessageHeader::construct();
@@ -136,8 +123,8 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	// decode sequence header
 	sequenceHeaderSPtr = SequenceHeader::construct();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
-	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
+	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
+	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);
 
 	// decode message type id
 	typeId.opcUaBinaryDecode(ios);
@@ -145,36 +132,24 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 
 	// decode ActivateSessionRequest
-	ActivateSessionRequestSPtr = ActivateSessionRequest::construct();
-	ActivateSessionRequestSPtr->opcUaBinaryDecode(ios);
+	activateSessionRequestSPtr = ActivateSessionRequest::construct();
+	activateSessionRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *ActivateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *activateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(activateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestHeader()->timeoutHint() == 10000);
-
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->productUri() == "urn:company:Unittest");
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->applicationName().text().value() == "company Unittest");
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->clientDescription()->applicationType() == ApplicationType_Client);
-
-
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->endpointUrl() == "opc.tcp://localhost:4841");
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->sessionName() == "urn:localhost:company:Unittest");
-	ActivateSessionRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
-	BOOST_REQUIRE(opcUaByteLen == 10);
-	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
-	ActivateSessionRequestSPtr->clientCertificate(&opcUaByte, &opcUaByteLen);
-	BOOST_REQUIRE(opcUaByteLen == 10);
-	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->requestSessionTimeout() == 1200000);
-	BOOST_REQUIRE(ActivateSessionRequestSPtr->maxResponseMessageSize() == 0);
-#endif
-
+	BOOST_REQUIRE(activateSessionRequestSPtr->requestHeader()->time().dateTime() == ptime);
+	BOOST_REQUIRE(activateSessionRequestSPtr->requestHeader()->requestHandle() == 2);
+	BOOST_REQUIRE(activateSessionRequestSPtr->requestHeader()->returnDisagnostics() == 0);
+	BOOST_REQUIRE(activateSessionRequestSPtr->requestHeader()->timeoutHint() == 10000);
+	BOOST_REQUIRE(activateSessionRequestSPtr->localeIds()->size() == 1);
+	BOOST_REQUIRE(activateSessionRequestSPtr->localeIds()->get(0, localeIdSPtr) == true);
+	str = *localeIdSPtr;
+	BOOST_REQUIRE(str == "en");
+	BOOST_REQUIRE(activateSessionRequestSPtr->userIdentityToken()->parameterTypeId().nodeId<OpcUaUInt32>() == OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+	anonymousIdentityToken = activateSessionRequestSPtr->userIdentityToken()->parameter<AnonymousIdentityToken>();
+	BOOST_REQUIRE(anonymousIdentityToken->policyId() == "OpcUaStack");
 }
 
 

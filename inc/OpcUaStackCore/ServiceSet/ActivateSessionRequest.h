@@ -9,6 +9,7 @@
 #include "OpcUaStackCore/ServiceSet/SignatureData.h"
 #include "OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.h"
 #include "OpcUaStackCore/ServiceSet/UserIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -27,8 +28,8 @@ namespace OpcUaStackCore
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate(void) const;
 		void localeIds(const LocaleIdArray::SPtr localeIds);
 		LocaleIdArray::SPtr localeIds(void) const;
-		void userIdentityToken(const UserIdentityToken::SPtr userIdentityToken);
-		UserIdentityToken::SPtr userIdentityToken(void) const;
+		void userIdentityToken(const ExtensibleParameter::SPtr userIdentityToken);
+		ExtensibleParameter::SPtr userIdentityToken(void) const;
 		void userTokenSignature(SignatureData::SPtr userTokenSignature);
 		SignatureData::SPtr userTokenSignature(void) const;
 
@@ -40,7 +41,7 @@ namespace OpcUaStackCore
 		SignatureData::SPtr clientSignature_;
 		SignedSoftwareCertificateArray::SPtr signedSoftwareCertificate_;
 		LocaleIdArray::SPtr localeIds_;
-		UserIdentityToken::SPtr userIdentityToken_;
+		ExtensibleParameter::SPtr userIdentityToken_;
 		SignatureData::SPtr userTokenSignature_;
 	};
 
