@@ -4,10 +4,10 @@ namespace OpcUaStackCore
 {
 
 	ActivateSessionResponse::ActivateSessionResponse(void)
-	: responseHeader_()
+	: responseHeader_(ResponseHeader::construct())
 	, serverNonce_()
-	, results_()
-	, diagnosticInfos_()
+	, results_(OpcUaStatusCodeArray::construct())
+	, diagnosticInfos_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
