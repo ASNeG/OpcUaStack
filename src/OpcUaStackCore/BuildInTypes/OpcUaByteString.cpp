@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 		this->value((const OpcUaByte*)(value.c_str()), (OpcUaInt32)value.length());
 	}
 
-	OpcUaUInt32 
+	OpcUaInt32 
 	OpcUaByteString::size(void) const
 	{
 		return length_;
@@ -95,6 +95,36 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaByteString::copyTo(OpcUaByteString& opcUaByteString)
+	{
+		OpcUaByte* buf;
+		OpcUaInt32 bufLen;
+		value(&buf, &bufLen);
+		opcUaByteString.value(buf, bufLen);
+	}
+
+	bool 
+	OpcUaByteString::operator<(const OpcUaByteString& opcUaByteString) const
+	{
+		if (!exist() && !opcUaByteString.exist()) return false;
+		if (exist() && !opcUaByteString.exist()) return false;
+		if (!exist() && opcUaByteString.exist()) return true;
+
+
+		if (size() < opcUaByteString.size()) return true;
+		if ( opcUaByteString.size() < size()) return false;
+
+		OpcUaByte* buf;
+		OpcUaInt32 bufLen;
+		opcUaByteString.value(&buf, &bufLen);
+
+		if (strncmp((char*)value_, (char*)buf, bufLen) < 0) {
+			return true;
+		}
+		return false;
+	}
+
+	void 
 	OpcUaByteString::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, length_);
@@ -115,33 +145,6 @@ namespace OpcUaStackCore
 		
 		value_ = (OpcUaByte*)malloc(length_);
 		is.read((char*)value_, length_);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaByteString& value)
-	{
-		value.opcUaBinaryEncode(os);
-	}
-
-	void 
-	opcUaBinaryEncode(std::ostream& os, const OpcUaByteString::SPtr& value)
-	{
-		value->opcUaBinaryEncode(os);
-	}
-
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
-	//
-	// OpcUaByteStringArray
-	//
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
-	OpcUaByteStringArray::OpcUaByteStringArray(void)
-	{
-	}
-
-	OpcUaByteStringArray::~OpcUaByteStringArray(void)
-	{
 	}
 
 };

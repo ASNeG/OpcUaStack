@@ -80,10 +80,34 @@
       <Filter>unittest\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp">
-      <Filter>unittest\ServiceSet</Filter>
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp">
-      <Filter>unittest\ServiceSet</Filter>
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+	</ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +128,15 @@
     </Filter>
     <Filter Include="unittest\ServiceSet">
       <UniqueIdentifier>{960a8bad-8b38-4e21-9ae4-8ad71dcb0709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\Common">
+      <UniqueIdentifier>{d5d2bfe6-bd08-43da-85f1-00f207ed0575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\SessionServiceSet">
+      <UniqueIdentifier>{23fc6cbf-a8ab-4976-9151-b82e36829510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\AttributeServiceSet">
+      <UniqueIdentifier>{3d62f9b5-d58a-4f21-a12c-5d30337fe8d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
