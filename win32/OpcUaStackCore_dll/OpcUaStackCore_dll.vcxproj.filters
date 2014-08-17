@@ -274,6 +274,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClient.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -481,6 +487,12 @@
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClient.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp">
       <Filter>sc\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
