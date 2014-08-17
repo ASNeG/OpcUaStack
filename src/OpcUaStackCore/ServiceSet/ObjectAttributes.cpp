@@ -12,8 +12,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	ObjectAttributes::ObjectAttributes(void)
 		: specifiedAttributes_(),
-		displayName_(),
-		description_(),
+		displayName_(OpcUaLocalizedText::construct()),
+		description_(OpcUaLocalizedText::construct()),
 		eventNotifier_(),
 		writeMask_(),
 		userWriteMask_()

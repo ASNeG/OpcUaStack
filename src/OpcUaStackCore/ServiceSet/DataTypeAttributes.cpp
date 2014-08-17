@@ -12,8 +12,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	DataTypeAttributes::DataTypeAttributes(void)
 		: specifiedAttributes_(),
-		displayName_(),
-		description_(),
+		displayName_(OpcUaLocalizedText::construct()),
+		description_(OpcUaLocalizedText::construct()),
 		isAbstract_(false),
 		writeMask_(),
 		userWriteMask_()

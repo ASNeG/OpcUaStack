@@ -11,13 +11,13 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesItem::AddNodesItem(void)
-		: parentNodeId_(),
-		referenceTypeId_(),
-		requestedNewNodeId_(),
-		browseName_(),
-		nodeClass_(),
+		: parentNodeId_(OpcUaExpandedNodeId::construct()),
+		referenceTypeId_(OpcUaNodeId::construct()),
+		requestedNewNodeId_(OpcUaExpandedNodeId::construct()),
+		browseName_(OpcUaQualifiedName::construct()),
+		nodeClass_(NodeClass::construct()),
 		nodeAttributes_(),
-		typeDefinition_()
+		typeDefinition_(OpcUaExpandedNodeId::construct())
 	{
 	}
 

@@ -12,12 +12,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	VariableTypeAttributes::VariableTypeAttributes(void)
 		: specifiedAttributes_(),
-		displayName_(),
-		description_(),
-		value_(),
-		dataType_(),
+		displayName_(OpcUaLocalizedText::construct()),
+		description_(OpcUaLocalizedText::construct()),
+		value_(OpcUaDataValue::construct()),
+		dataType_(OpcUaNodeId::construct()),
 		valueRank_(-1),
-		arrayDimensions_(),
+		arrayDimensions_(OpcUaUInt32Array::construct()),
 		isAbstract_(false),
 		writeMask_(),
 		userWriteMask_()

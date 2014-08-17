@@ -12,8 +12,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	ViewAttributes::ViewAttributes(void)
 		: specifiedAttributes_(),
-		displayName_(),
-		description_(),
+		displayName_(OpcUaLocalizedText::construct()),
+		description_(OpcUaLocalizedText::construct()),
 		containsNoLoops_(false),
 		eventNotifier_(),
 		writeMask_(),

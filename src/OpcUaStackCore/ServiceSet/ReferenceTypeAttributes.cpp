@@ -12,10 +12,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	ReferenceTypeAttributes::ReferenceTypeAttributes(void)
 		: specifiedAttributes_(),
-		displayName_(),
-		description_(),
+		displayName_(OpcUaLocalizedText::construct()),
+		description_(OpcUaLocalizedText::construct()),
 		isAbstract_(false),
-		inverseName_(),
+		inverseName_(OpcUaLocalizedText::construct()),
 		symmetric_(false),
 		writeMask_(),
 		userWriteMask_()
