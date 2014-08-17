@@ -84,19 +84,12 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
-#if 0
-//	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
-	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == boost::asio::error::connection_reset);
-=======
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
-	//BOOST_REQUIRE(tcpTestHandler.handleReadClientError_ == boost::asio::error::connection_aborted);
-	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  boost::asio::error::connection_reset);
-#endif
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == boost::asio::error::connection_reset);
 	
 	ioService.stop();
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 {
 	boost::asio::streambuf isClient;
@@ -181,8 +174,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
-//	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
-	//BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
+	BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == ERROR_CONNECTION_ABORTED);
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
 	
 	//
 	// connection reset (byte 10-19 will not be read)
@@ -201,7 +194,6 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 	
 	ioService.stop();
 }
-#endif
 
 BOOST_AUTO_TEST_CASE(TCPChannel_readAtLeast)
 {

@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(TCPAcceptor_cancel)
 
 	tcpAcceptor.cancel();
 	tcpTestHandler.handleAcceptCondition_.waitForCondition();
-//	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == ERROR_OPERATION_ABORTED);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == ERROR_OPERATION_ABORTED);
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 
 	ioService.stop();
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(TCPAcceptor_close)
 
 	tcpAcceptor.close();
 	tcpTestHandler.handleAcceptCondition_.waitForCondition();
-//	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == ERROR_OPERATION_ABORTED);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == ERROR_OPERATION_ABORTED);
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 
 	ioService.stop();
