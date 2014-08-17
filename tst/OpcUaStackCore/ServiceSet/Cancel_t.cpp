@@ -134,7 +134,6 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 
 BOOST_AUTO_TEST_CASE(Cancel_Response)
 {
-#if 0
 	uint32_t pos;
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
@@ -177,6 +176,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	cancelResponseSPtr->responseHeader()->time(ptime);
 	cancelResponseSPtr->responseHeader()->requestHandle(1);
 	cancelResponseSPtr->responseHeader()->serviceResult(Success);
+	cancelResponseSPtr->cancelCount(1);
 
 	cancelResponseSPtr->opcUaBinaryEncode(ios1);
 
@@ -191,10 +191,10 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 34 00 00 00  d9 7a 25 09 01 00 00 00"
-		<< "8c 00 00 00 5a 00 00 00  01 00 dc 01 00 00 00 00"
+	ss	<< "4d 53 47 46 38 00 00 00  d9 7a 25 09 01 00 00 00"
+		<< "8c 00 00 00 5a 00 00 00  01 00 e2 01 00 00 00 00"
 		<< "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
-		<< "00 00 00 00";
+		<< "00 00 00 00 01 00 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(cancelResponseSPtr->responseHeader()->time().dateTime() == ptime);
 	BOOST_REQUIRE(cancelResponseSPtr->responseHeader()->requestHandle() == 1);
 	BOOST_REQUIRE(cancelResponseSPtr->responseHeader()->serviceResult() == Success);
-#endif
+	BOOST_REQUIRE(cancelResponseSPtr->cancelCount() == 1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
