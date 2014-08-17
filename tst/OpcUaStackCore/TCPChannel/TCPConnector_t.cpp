@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(TCPAcceptor_cancel)
 	tcpConnectionClient.cancel();
 
 	tcpTestHandler.handleConnectCondition_.waitForCondition();
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == CONNECTION_CLOSE_LOCAL);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == CONNECTION_OPERATION_ABORTED);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
 
 	ioService.stop();
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(TCPAcceptor_close)
 	tcpConnectionClient.close();
 
 	tcpTestHandler.handleConnectCondition_.waitForCondition();
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == CONNECTION_CLOSE_LOCAL);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == CONNECTION_OPERATION_ABORTED);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
 
 	ioService.stop();

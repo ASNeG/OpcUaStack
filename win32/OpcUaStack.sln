@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_Test", "OpcU
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_dll", "OpcUaStackCore_dll\OpcUaStackCore_dll.vcxproj", "{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewFolder1", "NewFolder1", "{7DE3B40D-9325-42A8-BE13-C2D2A4908862}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

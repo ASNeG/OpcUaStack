@@ -271,6 +271,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -476,6 +479,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteValue.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp">
+      <Filter>sc\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
