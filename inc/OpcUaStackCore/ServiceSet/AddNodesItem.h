@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr typeDefinition_;
 	};
 
-	class AddNodesItemArray : public OpcUaArray<AddNodesItem::SPtr, SPtrTypeCoder<AddNodesItem>>, public ObjectPool<AddNodesItemArray> {};
+	class AddNodesItemArray : public OpcUaArray<AddNodesItem::SPtr, SPtrTypeCoder<AddNodesItem> >, public ObjectPool<AddNodesItemArray> {};
 }
 
 #endif
