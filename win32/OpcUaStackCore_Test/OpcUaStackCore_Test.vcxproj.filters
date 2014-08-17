@@ -112,6 +112,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp">
       <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
