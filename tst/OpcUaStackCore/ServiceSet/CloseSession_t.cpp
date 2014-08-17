@@ -134,7 +134,6 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 
 BOOST_AUTO_TEST_CASE(CloseSession_Response)
 {
-#if 0
 	uint32_t pos;
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
@@ -163,8 +162,8 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 
 	// encode sequence header
 	sequenceHeaderSPtr = SequenceHeader::construct();
-	sequenceHeaderSPtr->sequenceNumber(53);
-	sequenceHeaderSPtr->requestId(3);
+	sequenceHeaderSPtr->sequenceNumber(140);
+	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode message type id
@@ -191,10 +190,10 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 40 00 00 00  d9 7a 25 09 01 00 00 00"
-		<< "35 00 00 00 03 00 00 00  01 00 d6 01 00 00 00 00"
+	ss	<< "4d 53 47 46 34 00 00 00  d9 7a 25 09 01 00 00 00"
+		<< "8c 00 00 00 5a 00 00 00  01 00 dc 01 00 00 00 00"
 		<< "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
-		<< "00 00 00 00 ff ff ff ff  00 00 00 00 00 00 00 00";
+		<< "00 00 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -213,8 +212,8 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	// decode sequence header
 	sequenceHeaderSPtr = SequenceHeader::construct();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
-	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
-	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);
+	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
+	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);
 
 	// decode message type id
 	typeId.opcUaBinaryDecode(ios);
@@ -228,9 +227,6 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);
 	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->requestHandle() == 1);
 	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->serviceResult() == Success);
-	BOOST_REQUIRE(closeSessionResponseSPtr->results()->size() == 0);
-	BOOST_REQUIRE(closeSessionResponseSPtr->diagnosticInfos()->size() == 0);
-#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()
