@@ -99,7 +99,7 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
@@ -108,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
