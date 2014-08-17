@@ -8,6 +8,7 @@
 namespace OpcUaStackCore
 {
 	typedef enum {
+		NodeClassType_Unspecified = 0,
 		NodeClassType_Object = 1,
 		NodeClassType_Variable = 2,
 		NodeClassType_Method = 4,
@@ -25,7 +26,7 @@ namespace OpcUaStackCore
 		NodeClass(void);
 		virtual ~NodeClass(void);
 
-		void nodeClassType(NodeClassType nodeClassType);
+		void nodeClassType(const NodeClassType nodeClassType);
 		NodeClassType nodeClassType(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;

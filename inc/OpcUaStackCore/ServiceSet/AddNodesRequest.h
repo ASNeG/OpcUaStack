@@ -20,15 +20,15 @@ namespace OpcUaStackCore
 
 		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
 		RequestHeader::SPtr requestHeader(void) const;
-		void nodesToAdd(const AddNodesItemArray::SPtr addNodesItemArraySPtr);
+		void nodesToAdd(const AddNodesItemArray::SPtr addNodesItemArray);
 		AddNodesItemArray::SPtr nodesToAdd() const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
-		AddNodesItemArray::SPtr addNodesItemArraySPtr_;
+		RequestHeader::SPtr requestHeader_;
+		AddNodesItemArray::SPtr addNodesItemArray_;
 	};
 
 }

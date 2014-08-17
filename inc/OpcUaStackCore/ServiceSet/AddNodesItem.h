@@ -37,9 +37,9 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr requestedNewNodeId(void) const;
 		void browseName(const OpcUaQualifiedName::SPtr browseNameSPtr);
 		OpcUaQualifiedName::SPtr browseName(void) const;
-		void nodeClass(const NodeClass value);
-		NodeClass nodeClass(void) const;
-		ExtensibleParameter& nodeAttributes(void) const;
+		void nodeClass(const NodeClass::SPtr nodeClassSPtr);
+		NodeClass::SPtr nodeClass(void) const;
+		const ExtensibleParameter& nodeAttributes(void) const;
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinitionSPtr);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr typeDefinition_;
 	};
 
-	class AddNodesItemArray : public OpcUaArray<AddNodesItem, SPtrTypeCoder<AddNodesItem>>, public ObjectPool<AddNodesItemArray> {};
+	class AddNodesItemArray : public OpcUaArray<AddNodesItem::SPtr, SPtrTypeCoder<AddNodesItem>>, public ObjectPool<AddNodesItemArray> {};
 }
 
 #endif

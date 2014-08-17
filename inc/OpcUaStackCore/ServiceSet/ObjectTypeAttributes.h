@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/ServiceSet/AttributesDescription.h"
 
 
 namespace OpcUaStackCore
@@ -15,9 +16,13 @@ namespace OpcUaStackCore
 	  public:
 		ObjectTypeAttributes(void);
 		virtual ~ObjectTypeAttributes(void);
-
-        ExtensibleParameterBase::SPtr factory(void) { return ObjectTypeAttributes::construct();  }
-
+		
+		//- ExtensibleParameterBase -------------------------------------------
+		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual void opcUaBinaryEncode(std::ostream& os) const;
+		virtual void opcUaBinaryDecode(std::istream& is);
+		//- ExtensibleParameterBase -------------------------------------------
+ 
         OpcUaUInt32 specifiedAttributes(void) const;
         void displayName(const OpcUaLocalizedText::SPtr displayNameSPtr);
         OpcUaLocalizedText::SPtr displayName(void) const;
@@ -25,13 +30,10 @@ namespace OpcUaStackCore
         OpcUaLocalizedText::SPtr description(void) const;        
 		void isAbstract(const OpcUaBoolean executable);
         OpcUaBoolean isAbstract(void) const;        
-		void writeMask(const OpcUaUInt32 writeMask);
+		void writeMask(const WriteableAttribute writeMask);
         OpcUaUInt32 writeMask(void) const;
-        void userWriteMask(const OpcUaUInt32 userWriteMask);
+        void userWriteMask(const WriteableAttribute userWriteMask);
         OpcUaUInt32 userWriteMask(void) const;
-
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
 		
 	  private:
 		OpcUaUInt32 specifiedAttributes_;
