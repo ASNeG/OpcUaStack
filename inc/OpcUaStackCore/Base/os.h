@@ -21,7 +21,7 @@
 	#define NAMESPACE_BEGIN(name) extern "C" { namespace  name {
  	#define NAMESPACE_END } }
 
-	#define CONNECTION_OPERATION_ABORTED	boost::asio::error::operation_aborted
+	#define CONNECTION_OPERATION_ABORTED 		boost::asio::error::operation_aborted	
     #define CONNECTION_CLOSE_LOCAL	  		boost::asio::error::operation_aborted	
     #define CONNECTION_CLOSE_REMOTE			boost::asio::error::eof
 
