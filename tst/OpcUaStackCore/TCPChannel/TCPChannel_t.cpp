@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
-        BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);	
+    BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);	
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_.value() == CONNECTION_CLOSE_REMOTE);
 	ioService.stop();
 }
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
-        BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);
+    BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);
 	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
 	
 	//
