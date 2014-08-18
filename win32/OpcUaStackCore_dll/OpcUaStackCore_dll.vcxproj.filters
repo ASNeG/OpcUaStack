@@ -309,6 +309,7 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
