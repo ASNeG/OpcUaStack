@@ -120,6 +120,14 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Publish_t.cpp">
       <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\CloseSecureChannel_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

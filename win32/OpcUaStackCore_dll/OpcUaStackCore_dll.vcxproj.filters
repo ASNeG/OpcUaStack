@@ -309,6 +309,14 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClient.h">
+      <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h">
+      <Filter>sc\SecureChannel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -551,6 +559,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteValue.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClient.cpp">
+      <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp">
+      <Filter>sc\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

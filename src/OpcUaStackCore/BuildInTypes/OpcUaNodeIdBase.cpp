@@ -47,6 +47,84 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaNodeIdBase::set(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		namespaceIndex_ = namespaceIndex;
+		nodeIdValue_ = nodeId;
+	}
+
+	void 
+	OpcUaNodeIdBase::set(const std::string& nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
+			OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+			*opcUaGuidSPtr = nodeId;
+			nodeIdValue_ = opcUaGuidSPtr;
+		}
+		else {
+			OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+			*opcUaStringSPtr = nodeId;
+			nodeIdValue_ = opcUaStringSPtr;
+		}
+		namespaceIndex_ = namespaceIndex;
+	}
+
+	void 
+	OpcUaNodeIdBase::set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex)
+	{
+		OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
+		opcUaByteStringSPtr->value(buf, bufLen);
+		namespaceIndex_ = namespaceIndex;
+		nodeIdValue_ = opcUaByteStringSPtr;
+	}
+
+	bool 
+	OpcUaNodeIdBase::get(OpcUaUInt32& nodeId, OpcUaUInt16& namespaceIndex)
+	{
+		if (nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
+			return false;
+		}
+
+		namespaceIndex = namespaceIndex_;
+		nodeId = boost::get<OpcUaUInt32>(nodeIdValue_);
+		return true;
+	}
+
+	bool 
+	OpcUaNodeIdBase::get(std::string& nodeId, OpcUaUInt16& namespaceIndex)
+	{
+		namespaceIndex = namespaceIndex_;
+		if (nodeIdType() == OpcUaBuildInType_OpcUaString) {
+			OpcUaString::SPtr opcUaStringSPtr;
+			opcUaStringSPtr = boost::get<OpcUaString::SPtr>(nodeIdValue_);
+			nodeId = opcUaStringSPtr->value();
+		}
+		else if (nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
+			OpcUaGuid::SPtr opcUaGuidSPtr;
+			opcUaGuidSPtr = boost::get<OpcUaGuid::SPtr>(nodeIdValue_); 
+			nodeId = *opcUaGuidSPtr;
+		}
+		else {
+			return false;
+		}
+		return true;
+	}
+
+	bool 
+	OpcUaNodeIdBase::get(OpcUaByte** buf, OpcUaInt32* bufLen, OpcUaUInt16& namespaceIndex)
+	{
+		if (nodeIdType() != OpcUaBuildInType_OpcUaByteString) {
+			return false;
+		}
+
+		namespaceIndex = namespaceIndex_;
+		OpcUaByteString::SPtr opcUaByteStringSPtr;
+		opcUaByteStringSPtr = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+		opcUaByteStringSPtr->value(buf, bufLen);
+		return true;
+	}
+
+	void 
 	OpcUaNodeIdBase::copyTo(OpcUaNodeIdBase& opcUaNodeIdBase)
 	{
 		opcUaNodeIdBase.namespaceIndex(namespaceIndex_);

@@ -120,6 +120,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\OpenSecureChannelResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\RequestHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ResponseHeader.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClient.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SequenceHeader.h" />
@@ -202,6 +205,9 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\OpenSecureChannelResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\RequestHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ResponseHeader.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClient.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SequenceHeader.cpp" />

@@ -97,12 +97,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaVariant_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaXmlElement_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\AcknowledgeMessage_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\CloseSecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\HelloMessage_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\OpenSecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\RequestHeader_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\ResponseHeader_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteSubscription_t.cpp" />

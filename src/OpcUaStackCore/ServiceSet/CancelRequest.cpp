@@ -4,7 +4,7 @@ namespace OpcUaStackCore
 {
 
 	CancelRequest::CancelRequest(void)
-	: requestHeaderSPtr_()
+	: requestHeaderSPtr_(RequestHeader::construct())
 	, requestHandle_()
 	{
 	}
@@ -17,6 +17,12 @@ namespace OpcUaStackCore
 	CancelRequest::requestHeader(const RequestHeader::SPtr requestHeaderSPtr)
 	{
 		requestHeaderSPtr_ = requestHeaderSPtr;
+	}
+
+	RequestHeader::SPtr
+	CancelRequest::requestHeader(void) const
+	{
+		return requestHeaderSPtr_;
 	}
 
 	void 
