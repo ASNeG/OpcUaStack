@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/Log.h"
 
@@ -35,6 +36,28 @@ namespace OpcUaStackCore
 	SecureChannelClient::disconnect(void)
 	{
 		return true;
+	}
+
+	void
+	SecureChannelClient::startReconnectTimer(void)
+	{
+		secureChannelClientState_ = SecureChannelClientState_Reconnecting;
+		reconnectTimer_ = new boost::asio::deadline_timer(ioService_->io_service(), boost::posix_time::seconds(1));
+		reconnectTimer_->expires_from_now(boost::posix_time::seconds(reconnectTimeout_));
+		reconnectTimer_->async_wait(boost::bind(&SecureChannelClient::handleReconnectTimeout, this, _1));
+	}
+
+	void 
+	SecureChannelClient::handleReconnectTimeout(const boost::system::error_code& error)
+	{
+		delete reconnectTimer_;
+		reconnectTimer_ = nullptr;
+
+		if (error) {
+			Log(Error, "reconnect timeout");
+			return;
+		}
+		connectToServer();
 	}
 
 	void
@@ -91,28 +114,6 @@ namespace OpcUaStackCore
 
 	}
 
-	void
-	SecureChannelClient::startReconnectTimer(void)
-	{
-		secureChannelClientState_ = SecureChannelClientState_Reconnecting;
-		reconnectTimer_ = new boost::asio::deadline_timer(ioService_->io_service(), boost::posix_time::seconds(1));
-		reconnectTimer_->expires_from_now(boost::posix_time::seconds(reconnectTimeout_));
-		reconnectTimer_->async_wait(boost::bind(&SecureChannelClient::handleReconnectTimeout, this, _1));
-	}
-
-	void 
-	SecureChannelClient::handleReconnectTimeout(const boost::system::error_code& error)
-	{
-		delete reconnectTimer_;
-		reconnectTimer_ = nullptr;
-
-		if (error) {
-			Log(Error, "reconnect timeout");
-			return;
-		}
-		connectToServer();
-	}
-
 	void 
 	SecureChannelClient::handleWriteHelloComplete(const boost::system::error_code& error)
 	{
@@ -125,7 +126,6 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// receive message header
 		asyncReadMessageHeader();
 	}
 
@@ -143,6 +143,43 @@ namespace OpcUaStackCore
 	void 
 	SecureChannelClient::handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader)
 	{
+		if (secureChannelClientState_ != SecureChannelClientState_Hello) {
+			Log(Error, "cannot read acknowledge, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		tcpConnection_.async_read_exactly(
+			is_,
+			boost::bind(&SecureChannelClient::handleReadAcknowledge, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+			messageHeader.messageSize() - 8
+		);
+	}
+
+	void 
+	SecureChannelClient::handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered)
+	{
+		if (secureChannelClientState_ != SecureChannelClientState_Hello) {
+			Log(Error, "cannot read acknowledge, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		std::iostream is(&is_);
+		AcknowledgeMessage acknowledge;
+		acknowledge.opcUaBinaryDecode(is);
+
+		// FIXME: handle acknowledge...
+
+		std::cout << "alles ok..." << std::endl;
 	}
 
 }

@@ -26,23 +26,24 @@ namespace OpcUaStackCore
 		bool disconnect(void);
 
 	  private:
-		void connectToServer(void);
 
 		void startReconnectTimer(void);
-		void handleConnect(const boost::system::error_code& error);
 		void handleReconnectTimeout(const boost::system::error_code& error);
+		void connectToServer(void);
+
+		void handleConnect(const boost::system::error_code& error);
 		void handleWriteHelloComplete(const boost::system::error_code& error);
 		
 		void handleReadMessageHeaderError(void);
 		void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
-
 		//void handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeHello(MessageHeader& messageHeader);
-		//void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeError(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
+
+		void handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered);
 
 		TCPConnector tcpConnector_;
 		SecureChannelClientState secureChannelClientState_;
