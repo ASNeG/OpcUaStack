@@ -178,8 +178,10 @@ namespace OpcUaStackCore
 		acknowledge.opcUaBinaryDecode(is);
 
 		// FIXME: handle acknowledge...
+		
 
-		std::cout << "alles ok..." << std::endl;
+		// send opcen secure channel message
+		secureChannelClientState_ = SecureChannelClientState_OpenSecureChannelMessage;
 	}
 
 }

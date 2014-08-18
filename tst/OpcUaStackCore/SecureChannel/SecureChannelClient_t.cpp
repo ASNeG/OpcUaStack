@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(TCPAcceptor_cancel)
 	secureChannelClient.helloMessage()->endpointUrl("opc.tcp://127.0.0.1:4841");
 	secureChannelClient.connect();
 
-	IOService::msecSleep(10000000);
+//	IOService::msecSleep(10000000);
 
 	ioService.stop();
 }
