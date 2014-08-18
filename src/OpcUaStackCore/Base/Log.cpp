@@ -79,7 +79,7 @@ namespace OpcUaStackCore
 			parameter_.append(", ");
 		}
 		parameter_.append(parameterName);
-		parameter_.append(" = <");
+		parameter_.append("=<");
 		parameter_.append(parameterValue);
 		parameter_.append(">");
 	}

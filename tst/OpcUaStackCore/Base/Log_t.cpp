@@ -31,6 +31,8 @@ BOOST_AUTO_TEST_CASE(Log_MyLogger)
 	Log(Error, "This is a message")
 		.parameter("ParameterName1", "ParameterValue")
 		.parameter("ParameterName2", 1234);
+
+	Log::logIf(nullptr);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

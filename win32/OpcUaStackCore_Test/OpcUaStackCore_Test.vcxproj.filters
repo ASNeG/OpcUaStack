@@ -121,6 +121,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Log_t.cpp">
       <Filter>unittest\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannelClient_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

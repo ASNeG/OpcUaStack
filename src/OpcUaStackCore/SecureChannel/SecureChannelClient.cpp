@@ -74,6 +74,7 @@ namespace OpcUaStackCore
 
 
 		// send hello message
+		secureChannelClientState_ = SecureChannelClientState_Hello;
 	}
 
 	void 
