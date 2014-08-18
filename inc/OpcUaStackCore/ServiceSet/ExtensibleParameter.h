@@ -9,53 +9,49 @@
 namespace OpcUaStackCore
 {
 
+	typedef std::map<OpcUaNodeId,ExtensibleParameterBase::BSPtr> ExtensibleParameterMap;
+
 	class DLLEXPORT ExtensibleParameter : public  ObjectPool<ExtensibleParameter>
 	{
 	  public:
-		typedef std::map<OpcUaNodeId,ExtensibleParameterBase::SPtr> ExtensibleParameterMap;
+		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::BSPtr epSPtr);
+		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
+		static ExtensibleParameterBase::BSPtr findElement(OpcUaNodeId& opcUaNodeId);
 
 		ExtensibleParameter(void);
 		~ExtensibleParameter(void);
 
 		template<typename T>
-		  void registerParameter(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
+		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  opcUaNodeId.nodeId(nodeId);
-			  registerParameter<T>(opcUaNodeId);
+			  opcUaNodeId.set(nodeId, namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  void registerParameter(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+		  bool registerFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-
-			  if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
-				  OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
-				  *opcUaGuidSPtr = nodeId;
-				  opcUaNodeId.nodeId(opcUaGuidSPtr);
-			  }
-			  else {
-				  opcUaNodeId.nodeId(nodeId);
-			  }
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  registerParameter<T>(opcUaNodeId);
+			  opcUaNodeId.set(nodeId, namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  void registerParameter(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
+		  bool registerFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
-			  OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
-			  opcUaByteStringSPtr->value(buf, bufLen);
-			  opcUaNodeId.namespaceIndex(namespaceIndex);
-			  opcUaNodeId.nodeId(opcUaNodeId);
-			  registerParameter<T>(opcUaNodeId);
+			  opcUaNodeId.set(buf, bufLen, namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
 		  }
 
 		template<typename T>
-		  void registerParameter(OpcUaNodeId& opcUaNodeId) {
-			  typename T::SPtr epSPtr = T::construct();
-			  extensibleParameterMap_.insert(make_pair(opcUaNodeId, epSPtr));
+		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
+			  ExtensibleParameterBase::BSPtr epSPtr(T::construct());
+			  return ExtensibleParameter::insertElement(opcUaNodeId, epSPtr);
 		  }
+
+		bool deregisterFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
+		bool deregisterFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		bool deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
+		bool deregisterFactoryElement(OpcUaNodeId& opcUaNodeId);
 
 		OpcUaNodeId& parameterTypeId(void);
 		bool exist(void);
@@ -66,10 +62,12 @@ namespace OpcUaStackCore
 				   return boost::static_pointer_cast<T>(epSPtr_);
 			   }
 
-			   ExtensibleParameterMap::iterator it = extensibleParameterMap_.find(parameterTypeId_);
-			   if (it == extensibleParameterMap_.end()) {
-				   return epSPtr_;
+			   epSPtr_ = findElement(parameterTypeId_);
+			   if (epSPtr_.get() == NULL) {
+				   typename T::SPtr epSPtr;
+				   return epSPtr;
 			   }
+
 			   typename T::SPtr epSPtr = T::construct();
 			   epSPtr_ = epSPtr;
 			   return epSPtr;
@@ -79,11 +77,11 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		static bool init_;
 		static ExtensibleParameterMap extensibleParameterMap_;
+		static bool init_;
 
 		OpcUaNodeId parameterTypeId_;
-		ExtensibleParameterBase::SPtr epSPtr_;
+		ExtensibleParameterBase::BSPtr epSPtr_;
 	};
 
 }
