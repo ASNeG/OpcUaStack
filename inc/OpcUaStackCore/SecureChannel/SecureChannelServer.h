@@ -9,7 +9,7 @@ namespace OpcUaStackCore
 	class SecureChannelServer : public SecureChannel
 	{
 	  public:
-		SecureChannelServer(void);
+		SecureChannelServer(IOService& ioService);
 		~SecureChannelServer(void);
 	};
 

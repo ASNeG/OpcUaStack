@@ -3,7 +3,9 @@
 namespace OpcUaStackCore
 {
 
-	SecureChannel::SecureChannel(void)
+	SecureChannel::SecureChannel(IOService& ioService)
+	: ioService_(&ioService) 
+	, tcpConnection_(ioService.io_service())
 	{
 	}
 

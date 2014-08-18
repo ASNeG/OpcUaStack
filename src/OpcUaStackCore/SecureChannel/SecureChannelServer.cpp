@@ -3,8 +3,8 @@
 namespace OpcUaStackCore
 {
 
-	SecureChannelServer::SecureChannelServer(void)
-	: SecureChannel()
+	SecureChannelServer::SecureChannelServer(IOService& ioService)
+	: SecureChannel(ioService)
 	{
 	}
 

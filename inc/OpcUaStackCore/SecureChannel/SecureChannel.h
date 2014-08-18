@@ -1,14 +1,25 @@
 #ifndef __OpcUaStackCore_SecureChannel_h__
 #define __OpcUaStackCore_SecureChannel_h__
+#include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 
 namespace OpcUaStackCore
 {
 
-	class SecureChannel
+	class DLLEXPORT SecureChannel
 	{
 	  public:
-		SecureChannel(void);
+		SecureChannel(IOService& ioService);
 		~SecureChannel(void);
+
+	  private:
+		IOService* ioService_;
+
+	  protected:
+		TCPConnection tcpConnection_;
+		boost::asio::ip::address partnerAddress_;
+		uint32_t partnerPort_;
+
 	};
 
 }
