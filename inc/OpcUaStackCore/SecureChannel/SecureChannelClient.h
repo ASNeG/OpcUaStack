@@ -12,6 +12,7 @@ namespace OpcUaStackCore
 	{
 		SecureChannelClientState_Close,
 		SecureChannelClientState_Connecting,
+		SecureChannelClientState_Reconnecting,
 		SecureChannelClientState_Hello,
 	} SecureChannelClientState;
 
@@ -27,14 +28,27 @@ namespace OpcUaStackCore
 	  private:
 		void connectToServer(void);
 
+		void startReconnectTimer(void);
 		void handleConnect(const boost::system::error_code& error);
-		void handleReconnectTimeout(const boost::system::error_code& ec);
+		void handleReconnectTimeout(const boost::system::error_code& error);
+		void handleWriteHelloComplete(const boost::system::error_code& error);
+		
+		void handleReadMessageHeaderError(void);
+		void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
+
+		//void handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader);
+		//void handleReadMessageHeaderTypeHello(MessageHeader& messageHeader);
+		//void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
+		//void handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader);
+		//void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
+		//void handleReadMessageHeaderTypeError(MessageHeader& messageHeader);
+		//void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 
 		TCPConnector tcpConnector_;
 		SecureChannelClientState secureChannelClientState_;
 		uint32_t reconnectTimeout_;
 		uint32_t maxReconnectTimeout_;
-		 boost::asio::deadline_timer* reconnectTimer_;
+		boost::asio::deadline_timer* reconnectTimer_;
 	};
 
 }
