@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\IOService.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Log.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ObjectPool.h" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\IOService.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Log.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\ByteOrder.cpp" />

@@ -280,6 +280,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Log.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -494,6 +497,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp">
       <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Log.cpp">
+      <Filter>sc\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
