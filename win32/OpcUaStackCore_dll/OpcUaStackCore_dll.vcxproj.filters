@@ -292,9 +292,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationMessage.h">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationData.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataChangeNotification.h">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
@@ -309,7 +306,7 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
@@ -318,6 +315,15 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h">
       <Filter>sc\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventField.h">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventFieldList.h">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -543,9 +549,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationMessage.cpp">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationData.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataChangeNotification.cpp">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
@@ -569,6 +572,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp">
       <Filter>sc\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="EventNotificationList.cpp">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventField.cpp">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFieldList.cpp">
+      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

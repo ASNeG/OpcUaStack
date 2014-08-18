@@ -143,10 +143,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventField.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventFieldList.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemNotification.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationData.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationMessage.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishResponse.h" />
@@ -228,9 +230,10 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventField.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFieldList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemNotification.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationData.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationMessage.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishResponse.cpp" />
@@ -259,6 +262,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="EventNotificationList.cpp" />
     <ClCompile Include="OpcUaStackCore_dll.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
