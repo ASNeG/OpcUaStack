@@ -25,6 +25,8 @@
     #define CONNECTION_CLOSE_LOCAL	  		boost::asio::error::operation_aborted	
     #define CONNECTION_CLOSE_REMOTE			boost::asio::error::eof
 
+	#define nullptr 				NULL
+
 
 #endif
 

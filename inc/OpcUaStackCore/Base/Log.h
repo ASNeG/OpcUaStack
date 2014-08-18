@@ -4,6 +4,7 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include <vector>
+#include <sstream>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -45,7 +46,7 @@ namespace OpcUaStackCore
 		template<typename T>
 		  Log& parameter(const std::string& parameterName, boost::shared_ptr<T> parameterValueSPtr) {
 			  std::stringstream ss;
-			  if (parameterValueSPtr.get() != nullptr) ss << parameterValue;
+			  if (parameterValueSPtr.get() != nullptr) ss << *parameterValueSPtr;
 			  format(parameterName, ss.str());
 			  return *this;
 		  }

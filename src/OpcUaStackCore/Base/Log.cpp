@@ -42,9 +42,9 @@ namespace OpcUaStackCore
 	Log::~Log(void)
 	{
 		if (logIf() != nullptr) {
-			std::string message = message;
+			std::string message = message_;
 			if (parameter_ != "") {
-				message += message_ + " : " + parameter_;
+				message += " : " + parameter_;
 			}
 			if (logIf_->logout(logLevel_, message)) {
 				return;
