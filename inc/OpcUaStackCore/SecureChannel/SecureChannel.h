@@ -12,10 +12,8 @@ namespace OpcUaStackCore
 		SecureChannel(IOService& ioService);
 		~SecureChannel(void);
 
-	  private:
-		IOService* ioService_;
-
 	  protected:
+		IOService* ioService_;
 		TCPConnection tcpConnection_;
 		boost::asio::ip::address partnerAddress_;
 		uint32_t partnerPort_;
