@@ -5,7 +5,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/NotificationData.h"
+#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -18,10 +18,10 @@ namespace OpcUaStackCore
 
 		void sequenceNumber(const OpcUaUInt32& sequenceNumber);
 		OpcUaUInt32 sequenceNumber(void);
-		void publishTime(const UtcTime& publishTime);
-		UtcTime& publishTime(void);
-		void notificationData(const NotificationDataArray::SPtr notificationData);
-		NotificationDataArray::SPtr notificationData(void) const;
+		void publishTime(const boost::posix_time::ptime& time);
+		UtcTime publishTime(void);
+		void notificationData(const ExtensibleParameterArray::SPtr notificationData);
+		ExtensibleParameterArray::SPtr notificationData(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaUInt32 sequenceNumber_;
 		UtcTime publishTime_;
-		NotificationDataArray::SPtr notificationDataArraySPtr_;
+		ExtensibleParameterArray::SPtr notificationDataArraySPtr_;
 	};
 }
 

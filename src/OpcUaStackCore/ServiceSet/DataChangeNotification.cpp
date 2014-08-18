@@ -46,9 +46,18 @@ namespace OpcUaStackCore
 		return diagnosticInfoArraySPtr_;
 	}
 
+	ExtensibleParameterBase::BSPtr 
+	DataChangeNotification::factory(void)
+	{
+		return DataChangeNotification::construct();
+	}
+
 	void 
 	DataChangeNotification::opcUaBinaryEncode(std::ostream& os) const
 	{
+		OpcUaInt32 magic;
+		magic = 34;
+		OpcUaNumber::opcUaBinaryEncode(os, magic);
 		monitoredItemNotificationArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -56,6 +65,8 @@ namespace OpcUaStackCore
 	void 
 	DataChangeNotification::opcUaBinaryDecode(std::istream& is)
 	{
+		OpcUaInt32 magic;
+		OpcUaNumber::opcUaBinaryDecode(is, magic);
 		monitoredItemNotificationArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

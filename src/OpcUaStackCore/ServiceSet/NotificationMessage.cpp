@@ -15,7 +15,7 @@ namespace OpcUaStackCore
 	: ObjectPool<NotificationMessage>()
 	, sequenceNumber_()
 	, publishTime_()
-	, notificationDataArraySPtr_(NotificationDataArray::construct())
+	, notificationDataArraySPtr_(ExtensibleParameterArray::construct())
 	{
 	}
 
@@ -36,24 +36,24 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	NotificationMessage::publishTime(const UtcTime& publishTime)
+	NotificationMessage::publishTime(const boost::posix_time::ptime& time)
 	{
-		publishTime_ = publishTime;
+		publishTime_.dateTime(time);
 	}
 
-	UtcTime& 
+	UtcTime
 	NotificationMessage::publishTime(void)
 	{
 		return publishTime_;
 	}
 
 	void 
-	NotificationMessage::notificationData(const NotificationDataArray::SPtr notificationData)
+	NotificationMessage::notificationData(const ExtensibleParameterArray::SPtr notificationData)
 	{
 		notificationDataArraySPtr_ = notificationData;
 	}
 	
-	NotificationDataArray::SPtr 
+	ExtensibleParameterArray::SPtr 
 	NotificationMessage::notificationData(void) const
 	{
 		return notificationDataArraySPtr_;
