@@ -133,6 +133,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp">
       <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifySubscription_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

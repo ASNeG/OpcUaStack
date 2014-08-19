@@ -148,6 +148,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifySubscriptionRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifySubscriptionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemNotification.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationMessage.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishRequest.h" />
@@ -234,6 +236,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFieldList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventNotificationList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifySubscriptionRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifySubscriptionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemNotification.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationMessage.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishRequest.cpp" />
