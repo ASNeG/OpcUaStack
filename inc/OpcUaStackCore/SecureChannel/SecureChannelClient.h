@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
 
 namespace OpcUaStackCore
@@ -22,6 +23,8 @@ namespace OpcUaStackCore
 	  public:
 		SecureChannelClient(IOService& ioService);
 		~SecureChannelClient(void);
+
+		void securityHeader(SecurityHeader::SPtr securityHeader);
 
 		bool connect(void);
 		bool disconnect(void);
@@ -51,6 +54,8 @@ namespace OpcUaStackCore
 		uint32_t reconnectTimeout_;
 		uint32_t maxReconnectTimeout_;
 		boost::asio::deadline_timer* reconnectTimer_;
+
+		SecurityHeader::SPtr securityHeaderSPtr_;
 	};
 
 }

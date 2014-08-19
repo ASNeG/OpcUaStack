@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
+#include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 
 namespace OpcUaStackCore
 {
@@ -35,6 +36,9 @@ namespace OpcUaStackCore
 
 		boost::asio::streambuf is_;
 		HelloMessage::SPtr helloMessageSPtr_;
+
+		OpcUaUInt32 channelId_;
+		SequenceHeader sequenceHeader_;
 	};
 
 }

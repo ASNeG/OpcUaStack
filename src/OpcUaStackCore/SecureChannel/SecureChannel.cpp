@@ -10,6 +10,7 @@ namespace OpcUaStackCore
 	, partnerAddress_(boost::asio::ip::address::from_string("127.0.0.1"))
 	, partnerPort_(4841)
 	, helloMessageSPtr_(HelloMessage::construct())
+	, channelId_(0)
 	{
 	}
 

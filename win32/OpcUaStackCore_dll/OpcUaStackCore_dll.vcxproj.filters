@@ -283,6 +283,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Log.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h">
+      <Filter>sc\BuildInTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Config.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -499,6 +505,9 @@
       <Filter>sc\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Log.cpp">
+      <Filter>sc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Config.cpp">
       <Filter>sc\Base</Filter>
     </ClCompile>
   </ItemGroup>

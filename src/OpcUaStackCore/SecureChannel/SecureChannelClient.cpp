@@ -1,7 +1,11 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
+#include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
+#include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
 namespace OpcUaStackCore
 {
@@ -18,6 +22,12 @@ namespace OpcUaStackCore
 
 	SecureChannelClient::~SecureChannelClient(void)
 	{
+	}
+
+	void 
+	SecureChannelClient::securityHeader(SecurityHeader::SPtr securityHeaderSPtr)
+	{
+		securityHeaderSPtr_ = securityHeaderSPtr;
 	}
 
 	bool
@@ -182,6 +192,53 @@ namespace OpcUaStackCore
 
 		// send opcen secure channel message
 		secureChannelClientState_ = SecureChannelClientState_OpenSecureChannelMessage;
+
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+
+		OpcUaNumber::opcUaBinaryEncode(ios1, channelId_);
+
+		securityHeaderSPtr_->opcUaBinaryEncode(ios1);
+
+		sequenceHeader_.incSequenceNumber();
+		sequenceHeader_.incRequestId();
+		sequenceHeader_.opcUaBinaryEncode(ios1);
+
+		OpcUaNodeId typeId;
+		typeId.nodeId(OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
+		typeId.opcUaBinaryEncode(ios1);
+
+		OpenSecureChannelRequest openSecureChannelRequest;
+		openSecureChannelRequest.requestHeader(RequestHeader::construct());
+		//openSecureChannelRequest.requestHeader()->time(ptime);
+		//openSecureChannelRequest.securityMode(None);
+		//openSecureChannelRequest.clientNonce( clientNonce, 1);
+		//openSecureChannelRequest.requestedLifetime(300000);
+		//openSecureChannelRequest.opcUaBinaryEncode(ios1);
+
+#if 0
+
+
+
+	// encode OpenSecureChannel
+	OpcUaByte clientNonce[1];
+	clientNonce[0] = 0x00;
+	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
+	openSecureChannelRequestSPtr->requestHeader(RequestHeader::construct());
+	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
+	openSecureChannelRequestSPtr->securityMode(None);
+	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
+	openSecureChannelRequestSPtr->requestedLifetime(300000);
+	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
+
+	// encode MessageHeader
+	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
+	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
+	messageHeaderSPtr->opcUaBinaryEncode(ios2);
+#endif
 	}
 
 }

@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Config.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\IOService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Log.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h" />
@@ -99,6 +100,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaGuid.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeId.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.h" />
@@ -160,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Config.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\IOService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Log.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp" />
