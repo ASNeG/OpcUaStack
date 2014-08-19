@@ -232,6 +232,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventField.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFieldList.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventNotificationList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemNotification.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationMessage.cpp" />
@@ -262,7 +263,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="EventNotificationList.cpp" />
     <ClCompile Include="OpcUaStackCore_dll.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
