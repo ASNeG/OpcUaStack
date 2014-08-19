@@ -116,6 +116,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Republish_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetPublishingMode_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp" />

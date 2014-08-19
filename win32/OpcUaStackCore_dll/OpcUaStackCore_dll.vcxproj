@@ -157,6 +157,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h" />
@@ -247,6 +249,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp" />
