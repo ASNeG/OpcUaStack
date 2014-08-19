@@ -14,7 +14,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(CreateSubscription_)
 
-BOOST_AUTO_TEST_CASE(CreateSubscription_)
+BOOST_AUTO_TEST_CASE(CreateSubscription_Title)
 {
 	std::cout << "CreateSubscription_t" << std::endl;
 }
