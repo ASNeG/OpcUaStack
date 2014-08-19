@@ -16,6 +16,11 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(Log_t)
 
+BOOST_AUTO_TEST_CASE(Log_)
+{
+	std::cout << "Log_t" << std::endl;
+}
+
 BOOST_AUTO_TEST_CASE(Log_stdout)
 {
 	Log(Error, "This is a message")

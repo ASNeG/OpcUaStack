@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(TCPAcceptor_cancel)
 	secureChannelClient.securityHeader(securityHeaderSPtr);
 	secureChannelClient.connect();
 
-	IOService::msecSleep(10000000);
+	//IOService::msecSleep(10000000);
 
 	ioService.stop();
 }

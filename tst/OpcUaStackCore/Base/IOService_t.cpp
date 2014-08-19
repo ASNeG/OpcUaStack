@@ -25,6 +25,11 @@ class TestIOService
     uint32_t count_;
 };
 
+BOOST_AUTO_TEST_CASE(IOSerice_)
+{
+	std::cout << "IOService_t" << std::endl;
+}
+
 BOOST_AUTO_TEST_CASE(IOService_construct_destruct)
 {
 	IOService ioService_;

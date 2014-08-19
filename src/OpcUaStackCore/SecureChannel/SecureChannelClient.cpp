@@ -213,7 +213,6 @@ namespace OpcUaStackCore
 		OpcUaByte clientNonce[1];
 		clientNonce[0] = 0x00;
 		OpenSecureChannelRequest openSecureChannelRequest;
-		openSecureChannelRequest.requestHeader(RequestHeader::construct());
 		openSecureChannelRequest.securityMode(None);
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(300000);
@@ -296,6 +295,8 @@ namespace OpcUaStackCore
 
 		secureChannelClientState_ = SecureChannelClientState_Ready;
 		std::cout << "serviceResult=" << openSecureChannelResponse.responseHeader()->serviceResult() << std::endl;
+
+		asyncReadMessageHeader();
 	}
 
 }
