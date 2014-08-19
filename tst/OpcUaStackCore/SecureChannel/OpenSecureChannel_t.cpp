@@ -66,7 +66,6 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
 	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
-	openSecureChannelRequestSPtr->requestHeader(RequestHeader::construct());
 	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
 	openSecureChannelRequestSPtr->securityMode(None);
 	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
@@ -123,7 +122,6 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 
 	// decode OpenSecureChannel
 	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
-	openSecureChannelRequestSPtr->requestHeader(RequestHeader::construct());
 	openSecureChannelRequestSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestHeader()->time().dateTime() == ptime);
@@ -187,9 +185,6 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x01;
 	openSecureChannelResponseSPtr = OpenSecureChannelResponse::construct();
-	openSecureChannelResponseSPtr->responseHeader(ResponseHeader::construct());
-	openSecureChannelResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	openSecureChannelResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
 	openSecureChannelResponseSPtr->securityToken(securityTokenSPtr);
 	openSecureChannelResponseSPtr->responseHeader()->time(ptime);
 	openSecureChannelResponseSPtr->serverNonce( clientNonce, 1);
@@ -246,10 +241,6 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 
 	// decode OpenSecureChannel
 	openSecureChannelResponseSPtr = OpenSecureChannelResponse::construct();
-	openSecureChannelResponseSPtr->responseHeader(ResponseHeader::construct());
-	openSecureChannelResponseSPtr->responseHeader()->diagnosticInfo(OpcUaDiagnosticInfo::construct());
-	openSecureChannelResponseSPtr->responseHeader()->stringTable(OpcUaStringArray::construct());
-	openSecureChannelResponseSPtr->securityToken(SecurityToken::construct());
 	openSecureChannelResponseSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelResponseSPtr->serverNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelResponseSPtr->securityToken()->channelId() == 153451225);

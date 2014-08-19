@@ -210,35 +210,91 @@ namespace OpcUaStackCore
 		typeId.nodeId(OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
 		typeId.opcUaBinaryEncode(ios1);
 
+		OpcUaByte clientNonce[1];
+		clientNonce[0] = 0x00;
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.requestHeader(RequestHeader::construct());
-		//openSecureChannelRequest.requestHeader()->time(ptime);
-		//openSecureChannelRequest.securityMode(None);
-		//openSecureChannelRequest.clientNonce( clientNonce, 1);
-		//openSecureChannelRequest.requestedLifetime(300000);
-		//openSecureChannelRequest.opcUaBinaryEncode(ios1);
+		openSecureChannelRequest.securityMode(None);
+		openSecureChannelRequest.clientNonce(clientNonce, 1);
+		openSecureChannelRequest.requestedLifetime(300000);
+		openSecureChannelRequest.opcUaBinaryEncode(ios1);
 
-#if 0
+		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
+		messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
+		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
+		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
+		tcpConnection_.async_write(
+			sb2, sb1, boost::bind(&SecureChannelClient::handleWriteOpenSecureChannelComplete, this, boost::asio::placeholders::error)
+		);
+	}
 
+	void 
+	SecureChannelClient::handleWriteOpenSecureChannelComplete(const boost::system::error_code& error)
+	{
+		if (error) {
+			Log(Error, "send open secure message error")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_);
 
-	// encode OpenSecureChannel
-	OpcUaByte clientNonce[1];
-	clientNonce[0] = 0x00;
-	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
-	openSecureChannelRequestSPtr->requestHeader(RequestHeader::construct());
-	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
-	openSecureChannelRequestSPtr->securityMode(None);
-	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
-	openSecureChannelRequestSPtr->requestedLifetime(300000);
-	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
+			startReconnectTimer();
+			return;
+		}
 
-	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
-	messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
-	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
-	messageHeaderSPtr->opcUaBinaryEncode(ios2);
-#endif
+		asyncReadMessageHeader();
+	}
+
+	void 
+	SecureChannelClient::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
+	{
+		if (secureChannelClientState_ != SecureChannelClientState_OpenSecureChannelMessage) {
+			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		tcpConnection_.async_read_exactly(
+			is_,
+			boost::bind(&SecureChannelClient::handleReadOpenSecureChannelResponse, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+			messageHeader.messageSize() - 8
+		);
+	}
+
+	void 
+	SecureChannelClient::handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered)
+	{
+		if (secureChannelClientState_ != SecureChannelClientState_OpenSecureChannelMessage) {
+			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		std::iostream is(&is_);
+		
+		OpcUaUInt32 channelId;
+		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+
+		SecurityHeader securityHeader;
+		securityHeader.opcUaBinaryDecode(is);
+
+		SequenceHeader sequenceHeader;
+		sequenceHeader.opcUaBinaryDecode(is);
+
+		OpcUaNodeId typeId;
+		typeId.opcUaBinaryDecode(is);
+
+		OpenSecureChannelResponse openSecureChannelResponse;
+		openSecureChannelResponse.opcUaBinaryDecode(is);
+
+		std::cout << "serviceResult=" << openSecureChannelResponse.responseHeader()->serviceResult() << std::endl;
 	}
 
 }

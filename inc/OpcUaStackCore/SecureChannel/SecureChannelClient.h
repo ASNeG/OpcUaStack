@@ -40,14 +40,16 @@ namespace OpcUaStackCore
 		
 		void handleReadMessageHeaderError(void);
 		void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
+		void handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeHello(MessageHeader& messageHeader);
-		//void handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeError(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 
 		void handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered);
+		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
+		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered);
 
 		TCPConnector tcpConnector_;
 		SecureChannelClientState secureChannelClientState_;
