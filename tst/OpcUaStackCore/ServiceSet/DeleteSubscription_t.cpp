@@ -14,7 +14,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(DeleteSubscription_)
 
-BOOST_AUTO_TEST_CASE(DeleteSubscription_)
+BOOST_AUTO_TEST_CASE(DeleteSubscription_Title)
 {
 	std::cout << "DeleteSubscription_t" << std::endl;
 }

@@ -14,7 +14,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(Read_)
 
-BOOST_AUTO_TEST_CASE(Read_)
+BOOST_AUTO_TEST_CASE(Read_Title)
 {
 	std::cout << "Read_t" << std::endl;
 }
