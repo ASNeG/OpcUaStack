@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/ServiceSet/PublishRequest.h"
-//#include "OpcUaStackCore/ServiceSet/PublishResponse.h"
+#include "OpcUaStackCore/ServiceSet/PublishResponse.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -14,7 +14,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(Publish_)
 
-BOOST_AUTO_TEST_CASE(Publish_)
+BOOST_AUTO_TEST_CASE(Publish_Title)
 {
 	std::cout << "Publish_t" << std::endl;
 }
@@ -147,7 +147,117 @@ BOOST_AUTO_TEST_CASE(Publish_Request)
 
 BOOST_AUTO_TEST_CASE(Publish_Response)
 {
+	uint32_t pos;
+	OpcUaNodeId typeId;
+	MessageHeader::SPtr messageHeaderSPtr;
+	SequenceHeader::SPtr sequenceHeaderSPtr;
+	PublishResponse::SPtr publishResponseSPtr;
+	NotificationMessage::SPtr notificationMessageSPtr;
 
+	boost::posix_time::ptime ptime;
+	
+	// test-time
+	ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+
+	// stream
+	boost::asio::streambuf sb1;
+	std::iostream ios1(&sb1);
+	boost::asio::streambuf sb2;
+	std::iostream ios2(&sb2);
+	boost::asio::streambuf sb;
+	std::iostream ios(&sb);
+
+	// encode security header
+	OpcUaInt32 secureChannelId;
+	OpcUaInt32 secureTokenId;
+
+	secureChannelId = 153451225;
+	secureTokenId = 1;
+
+	OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelId);
+	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
+
+	// encode sequence header
+	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr->sequenceNumber(54);
+	sequenceHeaderSPtr->requestId(4);
+	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
+
+	// encode TypeId
+	typeId.nodeId(OpcUaId_PublishResponse_Encoding_DefaultBinary);
+	typeId.opcUaBinaryEncode(ios1);
+
+	// build PublishResponse
+	publishResponseSPtr = PublishResponse::construct();
+	publishResponseSPtr->responseHeader()->time(ptime);
+	publishResponseSPtr->responseHeader()->requestHandle(133);
+	publishResponseSPtr->responseHeader()->serviceResult((OpcUaStatusCode)Success);
+	publishResponseSPtr->subscriptionId(1);
+	publishResponseSPtr->moreNotifications(false);
+
+	// build NotificationMessage (empty NotificationData)
+	notificationMessageSPtr = publishResponseSPtr->notificationMessage();
+	notificationMessageSPtr->sequenceNumber(1);
+	notificationMessageSPtr->publishTime(ptime);
+
+	// encode PublishResponse
+	publishResponseSPtr->opcUaBinaryEncode(ios1);
+
+	// encode MessageHeader
+	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr->messageType(MessageType_Message);
+	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
+	messageHeaderSPtr->opcUaBinaryEncode(ios2);
+
+	// stream
+	ios << ios2.rdbuf() << ios1.rdbuf();
+	OpcUaStackCore::dumpHex(ios);
+
+	std::stringstream ss;
+	ss << "4d 53 47 46 55 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "36 00 00 00 04 00 00 00  01 00 3d 03 00 00 00 00"
+	   << "00 00 00 00 85 00 00 00  00 00 00 00 00 00 00 00"
+	   << "00 00 00 00 01 00 00 00  00 00 00 00 00 01 00 00"
+	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
+	   << "00 00 00 00 00";
+
+	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
+
+	// decode MessageHeader
+	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr->opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
+
+	// decode security header
+	OpcUaNumber::opcUaBinaryDecode(ios, secureChannelId);
+	BOOST_REQUIRE(secureChannelId == 153451225);
+	OpcUaNumber::opcUaBinaryDecode(ios, secureTokenId);
+	BOOST_REQUIRE(secureTokenId == 1);
+
+	// decode sequence header
+	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
+	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
+
+	// decode message type id
+	typeId.opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(typeId.namespaceIndex() == 0);
+	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_PublishResponse_Encoding_DefaultBinary);
+
+	// decode PublishResponse
+	publishResponseSPtr = PublishResponse::construct();
+	publishResponseSPtr->opcUaBinaryDecode(ios);
+
+	BOOST_REQUIRE(publishResponseSPtr->responseHeader()->time().dateTime() == ptime);
+	BOOST_REQUIRE(publishResponseSPtr->responseHeader()->requestHandle() == 133);
+	BOOST_REQUIRE(publishResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(publishResponseSPtr->subscriptionId() == 1);
+	BOOST_REQUIRE(publishResponseSPtr->moreNotifications() == false);
+
+	notificationMessageSPtr = publishResponseSPtr->notificationMessage();
+	BOOST_REQUIRE(notificationMessageSPtr->sequenceNumber() == 1);
+	BOOST_REQUIRE(notificationMessageSPtr->publishTime().dateTime() == ptime);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

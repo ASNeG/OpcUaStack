@@ -17,7 +17,7 @@ namespace OpcUaStackCore
 	, subscriptionId_()
 	, availableSequenceNumberArraySPtr_(OpcUaUInt32Array::construct())
 	, moreNotifications_()
-	, notficiationMessage_()
+	, notficiationMessageSPtr_(NotificationMessage::construct())
 	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -76,15 +76,15 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	PublishResponse::notificationMessage(const NotificationMessage& notificationMessage)
+	PublishResponse::notificationMessage(const NotificationMessage::SPtr notificationMessage)
 	{
-		notficiationMessage_ = notificationMessage;
+		notficiationMessageSPtr_ = notificationMessage;
 	}
 	
-	NotificationMessage& 
+	NotificationMessage::SPtr
 	PublishResponse::notificationMessage(void)
 	{
-		return notficiationMessage_;
+		return notficiationMessageSPtr_;
 	}
 
 	void 
@@ -118,7 +118,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		availableSequenceNumberArraySPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, moreNotifications_);
-		notficiationMessage_.opcUaBinaryEncode(os);
+		notficiationMessageSPtr_->opcUaBinaryEncode(os);
 		statusCodeArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -130,7 +130,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		availableSequenceNumberArraySPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, moreNotifications_);
-		notficiationMessage_.opcUaBinaryDecode(is);
+		notficiationMessageSPtr_->opcUaBinaryDecode(is);
 		statusCodeArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

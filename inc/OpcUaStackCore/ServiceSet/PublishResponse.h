@@ -25,8 +25,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32Array::SPtr availableSequenceNumbers(void) const;
 		void moreNotifications(const OpcUaBoolean& moreNotifications);
 		OpcUaBoolean moreNotifications(void) const;
-		void notificationMessage(const NotificationMessage& notificationMessage);
-		NotificationMessage& notificationMessage(void);
+		void notificationMessage(const NotificationMessage::SPtr notificationMessage);
+		NotificationMessage::SPtr notificationMessage(void);
 		void results(const OpcUaStatusCodeArray::SPtr results);
 		OpcUaStatusCodeArray::SPtr results(void) const;
 		void diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfos);
@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 subscriptionId_;
 		OpcUaUInt32Array::SPtr availableSequenceNumberArraySPtr_;
 		OpcUaBoolean moreNotifications_;
-		NotificationMessage notficiationMessage_;
+		NotificationMessage::SPtr notficiationMessageSPtr_;
 		OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};
