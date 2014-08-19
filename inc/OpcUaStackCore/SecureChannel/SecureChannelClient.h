@@ -16,6 +16,7 @@ namespace OpcUaStackCore
 		SecureChannelClientState_Reconnecting,
 		SecureChannelClientState_Hello,
 		SecureChannelClientState_OpenSecureChannelMessage,
+		SecureChannelClientState_Ready,
 	} SecureChannelClientState;
 
 	class DLLEXPORT SecureChannelClient : public SecureChannel

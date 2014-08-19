@@ -294,6 +294,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelResponse openSecureChannelResponse;
 		openSecureChannelResponse.opcUaBinaryDecode(is);
 
+		secureChannelClientState_ = SecureChannelClientState_Ready;
 		std::cout << "serviceResult=" << openSecureChannelResponse.responseHeader()->serviceResult() << std::endl;
 	}
 
