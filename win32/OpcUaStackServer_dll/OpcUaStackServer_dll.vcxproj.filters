@@ -6,7 +6,11 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="dll">
-      <UniqueIdentifier>{02b263e8-136a-42dd-afd7-16b111eaad55}</UniqueIdentifier>
+      <UniqueIdentifier>{81829682-c900-4589-a4fe-574d063959d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,7 +28,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>dll</Filter>
     </ClCompile>
-    <ClCompile Include="OpcUaStackClient_dll.cpp">
+    <ClCompile Include="OpcUaStackServer_dll.cpp">
       <Filter>dll</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
