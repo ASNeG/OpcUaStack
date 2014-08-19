@@ -165,6 +165,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\StatusChangeNotification.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferResult.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserNameIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserTokenPolicy.h" />
@@ -257,6 +260,9 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\StatusChangeNotification.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferResult.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferSubscriptionsRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserNameIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserTokenPolicy.cpp" />

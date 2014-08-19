@@ -142,6 +142,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Republish_t.cpp">
       <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TransferSubscriptions_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
