@@ -157,6 +157,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\StatusChangeNotification.h" />
@@ -245,6 +247,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\StatusChangeNotification.cpp" />
