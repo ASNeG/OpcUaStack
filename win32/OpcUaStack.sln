@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_Test", "OpcU
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_dll", "OpcUaStackCore_dll\OpcUaStackCore_dll.vcxproj", "{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackClient_dll", "OpcUaStackClient_dll\OpcUaStackClient_dll.vcxproj", "{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +24,10 @@ Global
 		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Debug|Win32.Build.0 = Debug|Win32
 		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Release|Win32.ActiveCfg = Release|Win32
 		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}.Release|Win32.Build.0 = Release|Win32
+		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}.Debug|Win32.Build.0 = Debug|Win32
+		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}.Release|Win32.ActiveCfg = Release|Win32
+		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
