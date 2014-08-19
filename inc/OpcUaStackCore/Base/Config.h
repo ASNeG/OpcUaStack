@@ -13,9 +13,9 @@ namespace OpcUaStackCore
 		Config(void);
 		~Config(void);
 
-		bool set(const std::string& path, const std::string& value);
-		boost::optional<std::string> get(const std::string& path);
-		std::string get(const std::string& path, const std::string& defaultValue);
+		bool setValue(const std::string& path, const std::string& value);
+		boost::optional<std::string> getValue(const std::string& path);
+		std::string getValue(const std::string& path, const std::string& defaultValue);
 
 	  private:
 		boost::property_tree::ptree cfg_;
