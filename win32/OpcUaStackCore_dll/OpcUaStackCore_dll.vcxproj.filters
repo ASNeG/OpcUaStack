@@ -289,6 +289,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Config.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ConfigXml.h">
+      <Filter>sc\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -508,6 +511,9 @@
       <Filter>sc\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Config.cpp">
+      <Filter>sc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\ConfigXml.cpp">
       <Filter>sc\Base</Filter>
     </ClCompile>
   </ItemGroup>
