@@ -194,6 +194,10 @@ BOOST_AUTO_TEST_CASE(Config_getConfigParameter)
 	BOOST_REQUIRE(cfg1.getConfigParameter("p2.p21", stringValue, "1234") == true);
 	BOOST_REQUIRE(stringValue == "123");
 	
+	cfg2 = cfg1.getChild("p1");
+	BOOST_REQUIRE(cfg2->getConfigParameter(stringValue) == true);
+	BOOST_REQUIRE(stringValue == "v1");
+	BOOST_REQUIRE(cfg2->getConfigParameter(numberValue) == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
