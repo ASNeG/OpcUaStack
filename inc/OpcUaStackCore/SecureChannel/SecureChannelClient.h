@@ -20,16 +20,14 @@ namespace OpcUaStackCore
 		SecureChannelClientState_Ready,
 	} SecureChannelClientState;
 
-	class DLLEXPORT SecureChannelClient : public SecureChannel //, public  ObjectPool<SecureChannelClient>
+	class DLLEXPORT SecureChannelClient : public SecureChannel, public  ObjectPool<SecureChannelClient>
 	{
 	  public:
-		  // FIXME:
-		  typedef boost::shared_ptr<SecureChannelClient> SPtr;
-
 		SecureChannelClient(IOService& ioService);
 		~SecureChannelClient(void);
 
 		void securityHeader(SecurityHeader::SPtr securityHeader);
+		SecurityHeader::SPtr securityHeader(void) const;
 
 		bool connect(void);
 		bool disconnect(void);

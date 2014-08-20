@@ -13,6 +13,7 @@ namespace OpcUaStackCore
 	  public:
 		static Config* instance_;
 		static Config* instance(void);
+		static void destroy(void);
 
 		Config(void);
 		Config(boost::property_tree::ptree& child);
@@ -106,6 +107,7 @@ namespace OpcUaStackCore
 		  
 		bool exist(const std::string& path);
 		bool erase(const std::string& path);
+		void clear(void);
 
 	  private:
 		boost::property_tree::ptree child_;

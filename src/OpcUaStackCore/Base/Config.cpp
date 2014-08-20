@@ -14,6 +14,16 @@ namespace OpcUaStackCore
 		return instance_;
 	}
 
+	void
+	Config::destroy(void)
+	{
+		if (instance_ != nullptr) {
+			instance_->clear();
+			delete instance_;
+			instance_ = nullptr;
+		}
+	}
+
 	Config::Config(void)
 	: child_()
 	{
@@ -103,6 +113,12 @@ namespace OpcUaStackCore
 		if (!child) return false;
 		child_.erase(path);
 		return true;
+	}
+
+    void
+	Config::clear(void)
+	{
+		child_.clear();
 	}
 
 }

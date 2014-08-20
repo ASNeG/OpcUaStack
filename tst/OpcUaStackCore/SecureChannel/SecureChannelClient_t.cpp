@@ -20,20 +20,17 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 	ioService.start(1);
 
 	Config* config = Config::instance();
-	//config->reset();
-	config->setValue("TestConfig", "opc.tcp://127.0.0.1:4841");
+	config->clear();
+	config->setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
+	config->setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
-	SecureChannelClient::SPtr secureChannelClient(new SecureChannelClient(ioService));
+	SecureChannelClient::SPtr secureChannelClient = SecureChannelClient::construct(ioService);
 	SecureChannelClientConfig::create(secureChannelClient, "TestConfig");
-
-	SecurityHeader::SPtr securityHeaderSPtr = SecurityHeader::construct();
-	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
-
-	secureChannelClient->securityHeader(securityHeaderSPtr);
 	secureChannelClient->connect();
 
-	IOService::msecSleep(10000000);
+	//IOService::msecSleep(10000000);
 
+	Config::destroy();
 	ioService.stop();
 }
 

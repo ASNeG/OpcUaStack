@@ -21,8 +21,15 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		HelloMessage::SPtr helloSPtr = secureChannelClientSPtr->helloMessage();
+		SecurityHeader::SPtr securityHeaderSPtr = secureChannelClientSPtr->securityHeader();
+
+		// -------------------------------------------------------------------------
+		// -------------------------------------------------------------------------
 		//
-		// hello message parameter
+		// general channel parameter
+		//
+		// --------------------------------------------------------------------------
 		//
 		// ProtocolVersion (optional) 
 		// ReceivedBufferSize (optional)
@@ -31,8 +38,8 @@ namespace OpcUaStackCore
 		// MaxChunkCount (optional)
 		// EndpointUrl (mandatory)
 		//
-		HelloMessage::SPtr helloSPtr = secureChannelClientSPtr->helloMessage();
-
+		// --------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
 		childConfig->getConfigParameter("ProtocolVersion", uint32Value, "0");
 		helloSPtr->protocolVersion(uint32Value);
 
@@ -56,6 +63,35 @@ namespace OpcUaStackCore
 			return false;
 		}
 		helloSPtr->endpointUrl(stringValue);
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// security parameter
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// SecurityPolicyUri (mandatory)
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		if (childConfig->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "SecurityPolicyUri");
+			return false;
+		}
+		securityHeaderSPtr->securityPolicyUri((OpcUaByte*)stringValue.c_str(), stringValue.length());
+		if (stringValue != "http://opcfoundation.org/UA/SecurityPolicy#None") {
+			Log(Error, "invalid parameter in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "SecurityPolicyUri")
+				.parameter("ParameterValue", stringValue);
+			return false;
+		}
 
 		return true;
 	}

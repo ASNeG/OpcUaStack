@@ -18,6 +18,11 @@ namespace OpcUaStackCore
 			return boost::shared_ptr<OBJ>(new OBJ());
 		}
 
+		template<typename T>
+		  static SPtr construct(T& p) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p));
+		  }
+
 		SPtr constructMember(void) {
 			return boost::shared_ptr<OBJ>(new OBJ());
 		}
@@ -43,6 +48,6 @@ namespace OpcUaStackCore
 		}
 	};
 
-};
+}
 
 #endif

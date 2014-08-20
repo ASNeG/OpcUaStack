@@ -17,6 +17,7 @@ namespace OpcUaStackCore
 	, reconnectTimeout_(0)
 	, maxReconnectTimeout_(120)
 	, reconnectTimer_(nullptr)
+	, securityHeaderSPtr_(SecurityHeader::construct())
 	{
 	}
 
@@ -28,6 +29,12 @@ namespace OpcUaStackCore
 	SecureChannelClient::securityHeader(SecurityHeader::SPtr securityHeaderSPtr)
 	{
 		securityHeaderSPtr_ = securityHeaderSPtr;
+	}
+
+	SecurityHeader::SPtr 
+	SecureChannelClient::securityHeader(void) const
+	{
+		return securityHeaderSPtr_;
 	}
 
 	bool
