@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 	}
 
 	std::string 
-	Config::get(void)
+	Config::getValue(void)
 	{
 		return child_.data();
 	}

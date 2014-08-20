@@ -61,14 +61,14 @@ BOOST_AUTO_TEST_CASE(Config_getChild)
 	BOOST_REQUIRE(!cfg1.getChild("p2.p3") == false);
 
 	cfg2 = cfg1.getChild("p1");
-	BOOST_REQUIRE(cfg2->get() == "v1");
+	BOOST_REQUIRE(cfg2->getValue() == "v1");
 
 	cfg2 = cfg1.getChild("p2");
 	BOOST_REQUIRE(*cfg2->getValue("p3.p1") == "v231");
 	BOOST_REQUIRE(*cfg2->getValue("p3.p2") == "v232");
 
 	cfg2 = cfg1.getChild("p2.p3.p1");
-	BOOST_REQUIRE(cfg2->get() == "v231");
+	BOOST_REQUIRE(cfg2->getValue() == "v231");
 
 	cfg2 = cfg1.getChild("p2.p3");
 	BOOST_REQUIRE(*cfg2->getValue("p1") == "v231");
@@ -148,6 +148,52 @@ BOOST_AUTO_TEST_CASE(Config_erase)
 
 	BOOST_REQUIRE(cfg.erase("p1") == false);
 	BOOST_REQUIRE(cfg.erase("p2") == false);
+}
+
+BOOST_AUTO_TEST_CASE(Config_getConfigParameter)
+{
+	Config cfg1;
+	boost::optional<Config> cfg2;
+
+	uint32_t numberValue;
+	std::string stringValue;
+	
+	BOOST_REQUIRE(cfg1.setValue("p1", "v1") == true);
+	BOOST_REQUIRE(cfg1.setValue("p2.p21", "123") == true);
+	BOOST_REQUIRE(cfg1.setValue("p2.p22", "v22") == true);
+
+	BOOST_REQUIRE(cfg1.getConfigParameter("value.gibts.nicht", stringValue) == false);
+	BOOST_REQUIRE(cfg1.getConfigParameter("p1", numberValue) == false);
+	BOOST_REQUIRE(cfg1.getConfigParameter("p1", stringValue) == true);
+	BOOST_REQUIRE(stringValue == "v1");
+	BOOST_REQUIRE(cfg1.getConfigParameter("p2.p21", numberValue) == true);
+	BOOST_REQUIRE(numberValue == 123);
+
+	BOOST_REQUIRE(cfg1.getConfigParameter("value.gibts.nicht", numberValue, "defaultValue") == false);
+	BOOST_REQUIRE(cfg1.getConfigParameter("value.gibts.nicht", stringValue, "defaultValue") == true);
+	BOOST_REQUIRE(stringValue == "defaultValue");
+	BOOST_REQUIRE(cfg1.getConfigParameter("value.gibts.nicht", numberValue, "123") == true);
+	BOOST_REQUIRE(numberValue == 123);
+	BOOST_REQUIRE(cfg1.getConfigParameter("value.gibts.nicht", stringValue, "123") == true);
+	BOOST_REQUIRE(stringValue == "123");
+
+	BOOST_REQUIRE(cfg1.getConfigParameter("p1", numberValue, "defaultValue") == false);
+	BOOST_REQUIRE(cfg1.getConfigParameter("p1", stringValue, "defaultValue") == true);
+	BOOST_REQUIRE(stringValue == "v1");
+	BOOST_REQUIRE(cfg1.getConfigParameter("p1", numberValue, "123") == true);
+	BOOST_REQUIRE(numberValue == 123);
+	BOOST_REQUIRE(cfg1.getConfigParameter("p1", stringValue, "123") == true);
+	BOOST_REQUIRE(stringValue == "v1");
+
+	BOOST_REQUIRE(cfg1.getConfigParameter("p2.p21", numberValue, "defaultValue") == true);
+	BOOST_REQUIRE(numberValue == 123);
+	BOOST_REQUIRE(cfg1.getConfigParameter("p2.p21", stringValue, "defaultValue") == true);
+	BOOST_REQUIRE(stringValue == "123");
+	BOOST_REQUIRE(cfg1.getConfigParameter("p2.p21", numberValue, "1234") == true);
+	BOOST_REQUIRE(numberValue == 123);
+	BOOST_REQUIRE(cfg1.getConfigParameter("p2.p21", stringValue, "1234") == true);
+	BOOST_REQUIRE(stringValue == "123");
+	
 }
 
 BOOST_AUTO_TEST_SUITE_END()
