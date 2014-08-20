@@ -104,6 +104,8 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\ResponseHeader_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CallMethod_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />

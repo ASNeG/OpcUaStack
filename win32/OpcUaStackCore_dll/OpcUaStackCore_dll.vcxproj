@@ -131,6 +131,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodResult.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CloseSessionRequest.h" />
@@ -227,6 +231,10 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ApplicationDescription.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallMethodRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallMethodResult.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CloseSessionRequest.cpp" />

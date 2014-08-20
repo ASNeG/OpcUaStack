@@ -352,6 +352,18 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.h">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallRequest.h">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallResponse.h">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodResult.h">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodRequest.h">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -635,6 +647,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferResult.cpp">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallRequest.cpp">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallResponse.cpp">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallMethodResult.cpp">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallMethodRequest.cpp">
+      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

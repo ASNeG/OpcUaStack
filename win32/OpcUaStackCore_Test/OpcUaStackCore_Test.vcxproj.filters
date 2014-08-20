@@ -145,6 +145,12 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TransferSubscriptions_t.cpp">
       <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CallMethod_t.cpp">
+      <Filter>unittest\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp">
+      <Filter>unittest\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -176,6 +182,9 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\SubscriptionServiceSet">
       <UniqueIdentifier>{e4b79712-69b7-4232-8c67-22b7e64c25cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\MethodServiceSet">
+      <UniqueIdentifier>{e1292169-6855-4f20-909c-7ca492d23d02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
