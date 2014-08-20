@@ -3,6 +3,17 @@
 namespace OpcUaStackCore
 {
 
+	Config* Config::instance_ = nullptr;
+		
+	Config* 
+	Config::instance(void)
+	{
+		if (instance_ == nullptr) {
+			instance_ = new Config();
+		}
+		return instance_;
+	}
+
 	Config::Config(void)
 	: child_()
 	{

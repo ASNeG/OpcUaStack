@@ -1,5 +1,5 @@
 #ifndef __OpcUaStackCore_Config_h__
-#define __OpcUaStackCore_Config_h_
+#define __OpcUaStackCore_Config_h__
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>
@@ -11,6 +11,9 @@ namespace OpcUaStackCore
 	class DLLEXPORT Config 
 	{
 	  public:
+		static Config* instance_;
+		static Config* instance(void);
+
 		Config(void);
 		Config(boost::property_tree::ptree& child);
 		~Config(void);

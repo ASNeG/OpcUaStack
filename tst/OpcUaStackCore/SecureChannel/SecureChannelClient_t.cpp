@@ -1,5 +1,7 @@
 #include "unittest.h"
+#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 
 #include <boost/asio/error.hpp>
 
@@ -12,20 +14,25 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_)
 	std::cout << "SecureChannelClient_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(TCPAcceptor_cancel)
+BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 {
 	IOService ioService;
 	ioService.start(1);
 
+	Config* config = Config::instance();
+	//config->reset();
+	config->setValue("TestConfig", "opc.tcp://127.0.0.1:4841");
+
+	SecureChannelClient::SPtr secureChannelClient(new SecureChannelClient(ioService));
+	SecureChannelClientConfig::create(secureChannelClient, "TestConfig");
+
 	SecurityHeader::SPtr securityHeaderSPtr = SecurityHeader::construct();
 	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
 
-	SecureChannelClient secureChannelClient(ioService);
-	secureChannelClient.helloMessage()->endpointUrl("opc.tcp://127.0.0.1:4841");
-	secureChannelClient.securityHeader(securityHeaderSPtr);
-	secureChannelClient.connect();
+	secureChannelClient->securityHeader(securityHeaderSPtr);
+	secureChannelClient->connect();
 
-	//IOService::msecSleep(10000000);
+	IOService::msecSleep(10000000);
 
 	ioService.stop();
 }

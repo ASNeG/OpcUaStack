@@ -2,6 +2,7 @@
 #define __OpcUaStackCore_SecureChannelClient_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
@@ -19,9 +20,12 @@ namespace OpcUaStackCore
 		SecureChannelClientState_Ready,
 	} SecureChannelClientState;
 
-	class DLLEXPORT SecureChannelClient : public SecureChannel
+	class DLLEXPORT SecureChannelClient : public SecureChannel //, public  ObjectPool<SecureChannelClient>
 	{
 	  public:
+		  // FIXME:
+		  typedef boost::shared_ptr<SecureChannelClient> SPtr;
+
 		SecureChannelClient(IOService& ioService);
 		~SecureChannelClient(void);
 
