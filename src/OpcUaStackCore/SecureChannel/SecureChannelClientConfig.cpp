@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		HelloMessage::SPtr helloSPtr = secureChannelClientSPtr->helloMessage();
+		ChannelDataBase::SPtr channelDataBasePtr = secureChannelClientSPtr->channelDataBase();
 		SecurityHeader::SPtr securityHeaderSPtr = secureChannelClientSPtr->securityHeader();
 
 		// -------------------------------------------------------------------------
@@ -41,19 +41,19 @@ namespace OpcUaStackCore
 		// --------------------------------------------------------------------------
 		// --------------------------------------------------------------------------
 		childConfig->getConfigParameter("ProtocolVersion", uint32Value, "0");
-		helloSPtr->protocolVersion(uint32Value);
+		channelDataBasePtr->protocolVersion(uint32Value);
 
 		childConfig->getConfigParameter("ReceivedBufferSize", uint32Value, "65536");
-		helloSPtr->receivedBufferSize(uint32Value);
+		channelDataBasePtr->receivedBufferSize(uint32Value);
 
 		childConfig->getConfigParameter("SendBufferSize", uint32Value, "65536");
-		helloSPtr->sendBufferSize(uint32Value);
+		channelDataBasePtr->sendBufferSize(uint32Value);
 
 		childConfig->getConfigParameter("MaxMessageSize", uint32Value, "16777216");
-		helloSPtr->maxMessageSize(uint32Value);
+		channelDataBasePtr->maxMessageSize(uint32Value);
 		
 		childConfig->getConfigParameter("MaxChunkCount", uint32Value, "5000");
-		helloSPtr->maxChunkCount(uint32Value);
+		channelDataBasePtr->maxChunkCount(uint32Value);
 		
 		if (childConfig->getConfigParameter("EndpointUrl", stringValue) == false) {
 			Log(Error, "mandatory parameter not found in configuration")
@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 				.parameter("ParameterName", "EndpointUrl");
 			return false;
 		}
-		helloSPtr->endpointUrl(stringValue);
+		channelDataBasePtr->endpointUrl(stringValue);
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------

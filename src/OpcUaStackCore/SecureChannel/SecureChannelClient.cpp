@@ -116,7 +116,14 @@ namespace OpcUaStackCore
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
-		helloMessageSPtr_->opcUaBinaryEncode(ios1);
+		HelloMessage::SPtr helloMessageSPtr(HelloMessage::construct());
+		helloMessageSPtr->protocolVersion(channelDataBase()->protocolVersion());
+		helloMessageSPtr->receivedBufferSize(channelDataBase()->receivedBufferSize());
+		helloMessageSPtr->sendBufferSize(channelDataBase()->sendBufferSize());
+		helloMessageSPtr->maxMessageSize(channelDataBase()->maxMessageSize());
+		helloMessageSPtr->maxChunkCount(channelDataBase()->maxChunkCount());
+		helloMessageSPtr->endpointUrl(channelDataBase()->endpointUrl());
+		helloMessageSPtr->opcUaBinaryEncode(ios1);
 
 		boost::asio::streambuf sb2;
 		std::iostream ios2(&sb2);

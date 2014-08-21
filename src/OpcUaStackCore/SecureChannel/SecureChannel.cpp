@@ -9,7 +9,7 @@ namespace OpcUaStackCore
 	, tcpConnection_(ioService.io_service())
 	, partnerAddress_(boost::asio::ip::address::from_string("127.0.0.1"))
 	, partnerPort_(4841)
-	, helloMessageSPtr_(HelloMessage::construct())
+	, channelDataBaseSPtr_(ChannelDataBase::construct())
 	, channelId_(0)
 	{
 	}
@@ -18,10 +18,16 @@ namespace OpcUaStackCore
 	{
 	}
 
-	HelloMessage::SPtr 
-	SecureChannel::helloMessage(void)
+	ChannelDataBase::SPtr 
+	SecureChannel::channelDataBase(void)
 	{
-		return helloMessageSPtr_;
+		return channelDataBaseSPtr_;
+	}
+
+	TCPConnection& 
+	SecureChannel::tcpConnection(void)
+	{
+		return tcpConnection_;
 	}
 
 	void 

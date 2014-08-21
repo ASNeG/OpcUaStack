@@ -8,6 +8,7 @@
 
 namespace OpcUaStackCore
 {
+	typedef HelloMessage ChannelDataBase;
 
 	class DLLEXPORT SecureChannel
 	{
@@ -15,7 +16,8 @@ namespace OpcUaStackCore
 		SecureChannel(IOService& ioService);
 		~SecureChannel(void);
 
-		HelloMessage::SPtr helloMessage(void);
+		ChannelDataBase::SPtr channelDataBase(void);
+		TCPConnection& tcpConnection(void);
 
 		void asyncReadMessageHeader(void);
 		void handleReadMessageHeader(const boost::system::error_code& error, std::size_t bytes_transfered);
@@ -35,7 +37,7 @@ namespace OpcUaStackCore
 		uint32_t partnerPort_;
 
 		boost::asio::streambuf is_;
-		HelloMessage::SPtr helloMessageSPtr_;
+		ChannelDataBase::SPtr channelDataBaseSPtr_;
 
 		OpcUaUInt32 channelId_;
 		SequenceHeader sequenceHeader_;
