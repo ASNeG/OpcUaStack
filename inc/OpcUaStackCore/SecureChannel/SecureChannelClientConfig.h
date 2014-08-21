@@ -11,7 +11,7 @@ namespace OpcUaStackCore
 	class DLLEXPORT SecureChannelClientConfig
 	{
 	  public:
-		static bool create(SecureChannelClient::SPtr secureChannelClientSPtr, const std::string& configPrefix);
+		static bool initial(SecureChannelClient::SPtr secureChannelClientSPtr, const std::string& configPrefix);
 	};
 
 }

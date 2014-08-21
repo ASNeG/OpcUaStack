@@ -11,11 +11,12 @@ BOOST_AUTO_TEST_SUITE(SecureChannelClient_)
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_)
 {
-	std::cout << "SecureChannelClient_t" << std::endl;
+	std::cout << "SecureChannel_t" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 {
+#if 0
 	IOService ioService;
 	ioService.start(1);
 
@@ -32,6 +33,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 
 	Config::destroy();
 	ioService.stop();
+#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()

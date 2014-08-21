@@ -106,7 +106,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		Log(Info, "connect to server")
+		Log(Info, "open connection to server")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
 			.parameter("PartnerPort", partnerPort_);
 

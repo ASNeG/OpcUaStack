@@ -1,7 +1,11 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
+#include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
+#include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
+#include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
 namespace OpcUaStackCore
 {
@@ -129,4 +133,114 @@ namespace OpcUaStackCore
 		asyncReadMessageHeader();
 	}
 
+	void 
+	SecureChannelServer::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
+	{
+		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
+			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelServerState_);
+			tcpConnection_.close();
+			secureChannelServerState_ = SecureChannelServerState_Close;
+			// FIXME: signal application
+			return;
+		}
+
+		tcpConnection_.async_read_exactly(
+			is_,
+			boost::bind(&SecureChannelServer::handleReadOpenSecureChannelRequest, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+			messageHeader.messageSize() - 8
+		);
+	}
+
+	void 
+	SecureChannelServer::handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered)
+	{
+		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
+			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelServerState_);
+			tcpConnection_.close();
+			secureChannelServerState_ = SecureChannelServerState_Close;
+			// FIXME: signal application
+			return;
+		}
+
+		std::iostream is(&is_);
+		
+		OpcUaUInt32 channelId;
+		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+
+		SecurityHeader securityHeader;
+		securityHeader.opcUaBinaryDecode(is);
+
+		SequenceHeader sequenceHeader;
+		sequenceHeader.opcUaBinaryDecode(is);
+
+		OpcUaNodeId typeIdRequest;
+		typeIdRequest.opcUaBinaryDecode(is);
+
+		OpenSecureChannelRequest openSecureChannelRequest;
+		openSecureChannelRequest.opcUaBinaryDecode(is);
+
+
+		// send open secure channel response message
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+
+		OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
+		securityHeader.opcUaBinaryEncode(ios1);
+		sequenceHeader.opcUaBinaryEncode(ios1);
+
+		OpcUaNodeId typeIdResponse;
+		typeIdResponse.nodeId(OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
+		typeIdResponse.opcUaBinaryEncode(ios1);
+
+		OpcUaByte serverNonce[1];
+		serverNonce[0] = 0x01;
+		OpenSecureChannelResponse openSecureChannelResponse;
+		openSecureChannelResponse.securityToken()->channelId(channelId);
+		openSecureChannelResponse.securityToken()->tokenId(1);
+		openSecureChannelResponse.securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
+		openSecureChannelResponse.securityToken()->revisedLifetime(600000);
+		openSecureChannelResponse.responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
+		openSecureChannelResponse.serverNonce(serverNonce, 1);
+		openSecureChannelResponse.opcUaBinaryEncode(ios1);
+
+		MessageHeader messageHeader;
+		messageHeader.messageType(MessageType_OpenSecureChannel);
+		messageHeader.messageSize(OpcUaStackCore::count(sb1)+8);
+		messageHeader.opcUaBinaryEncode(ios2);
+		
+		secureChannelServerState_ = SecureChannelServerState_Ready;
+
+		Log(Info, "accept connection from client")
+			.parameter("PartnerAddress", partnerAddress_.to_string())
+			.parameter("PartnerPort", partnerPort_);
+
+		tcpConnection_.async_write(
+			sb2, sb1, boost::bind(&SecureChannelServer::handleWriteOpenSecureChannelComplete, this, boost::asio::placeholders::error)
+		);
+	}
+
+	void 
+	SecureChannelServer::handleWriteOpenSecureChannelComplete(const boost::system::error_code& error)
+	{
+		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
+			Log(Error, "cannot read open message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelServerState_);
+			tcpConnection_.close();
+			secureChannelServerState_ = SecureChannelClientState_WaitOpenSecureChannel;
+			// FIXME: signal application
+			return;
+		}
+
+		asyncReadMessageHeader();
+	}
 }
