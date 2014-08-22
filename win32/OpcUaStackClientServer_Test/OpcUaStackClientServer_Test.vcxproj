@@ -10,6 +10,14 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\tst\os.h" />
+    <ClInclude Include="..\..\tst\unittest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\tst\OpcUaStackClientServer\SecureChannel\SecureChannel_t.cpp" />
+    <ClCompile Include="..\..\tst\unittest.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6B07565E-D5E9-4D1C-B759-A5A90729C823}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -53,10 +61,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\..\tst;..\..\inc;C:\local\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0;..\Debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpcUaStackCore.lib;OpcUaStackClient.lib;OpcUaStackServer.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

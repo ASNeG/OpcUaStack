@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
@@ -7,7 +7,9 @@
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	SecureChannelServer::SecureChannelServer(IOService& ioService)

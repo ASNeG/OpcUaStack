@@ -1,7 +1,9 @@
-#include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackClient
 {
 
 	bool 

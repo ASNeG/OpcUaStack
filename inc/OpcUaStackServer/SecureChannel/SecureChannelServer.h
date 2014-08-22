@@ -1,11 +1,13 @@
-#ifndef __OpcUaStackCore_SecureChannelServer_h__
-#define __OpcUaStackCore_SecureChannelServer_h__
+#ifndef __OpcUaStackServer_SecureChannelServer_h__
+#define __OpcUaStackServer_SecureChannelServer_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	typedef enum

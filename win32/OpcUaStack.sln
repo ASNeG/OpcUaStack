@@ -9,18 +9,37 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackCore_dll", "OpcUaStackCore_dll\OpcUaStackCore_dll.vcxproj", "{87C59DD2-63A7-4481-8D8F-ACAD1B55B523}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackClient_dll", "OpcUaStackClient_dll\OpcUaStackClient_dll.vcxproj", "{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523} = {87C59DD2-63A7-4481-8D8F-ACAD1B55B523}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackServer_dll", "OpcUaStackServer_dll\OpcUaStackServer_dll.vcxproj", "{C857FCD8-A591-4100-9F3C-2D4B9A8D2F4D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523} = {87C59DD2-63A7-4481-8D8F-ACAD1B55B523}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dll", "dll", "{21747091-4ED0-4433-A98E-D858D24BD822}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C586AA26-E975-42BB-A236-68E78B5EB34A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackClient_Test", "OpcUaStackClient_Test\OpcUaStackClient_Test.vcxproj", "{5656B250-5427-4B96-82F1-CED188B24775}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523} = {87C59DD2-63A7-4481-8D8F-ACAD1B55B523}
+		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394} = {1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackServer_Test", "OpcUaStackServer_Test\OpcUaStackServer_Test.vcxproj", "{2BAB6857-457C-4933-99B5-3900AFD9BC1E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523} = {87C59DD2-63A7-4481-8D8F-ACAD1B55B523}
+		{C857FCD8-A591-4100-9F3C-2D4B9A8D2F4D} = {C857FCD8-A591-4100-9F3C-2D4B9A8D2F4D}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackClientServer_Test", "OpcUaStackClientServer_Test\OpcUaStackClientServer_Test.vcxproj", "{6B07565E-D5E9-4D1C-B759-A5A90729C823}"
+	ProjectSection(ProjectDependencies) = postProject
+		{87C59DD2-63A7-4481-8D8F-ACAD1B55B523} = {87C59DD2-63A7-4481-8D8F-ACAD1B55B523}
+		{C857FCD8-A591-4100-9F3C-2D4B9A8D2F4D} = {C857FCD8-A591-4100-9F3C-2D4B9A8D2F4D}
+		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394} = {1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

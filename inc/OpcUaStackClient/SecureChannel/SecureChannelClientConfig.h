@@ -1,11 +1,13 @@
-#ifndef __OpcUaStackCore_SecureChannelClientConfig_h__
-#define __OpcUaStackCore_SecureChannelClientConfig_h__
+#ifndef __OpcUaStackClient_SecureChannelClientConfig_h__
+#define __OpcUaStackClient_SecureChannelClientConfig_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackClient
 {
 
 	class DLLEXPORT SecureChannelClientConfig

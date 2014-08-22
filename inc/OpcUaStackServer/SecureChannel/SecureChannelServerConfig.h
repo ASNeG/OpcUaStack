@@ -1,11 +1,13 @@
-#ifndef __OpcUaStackCore_SecureChannelServerConfig_h__
-#define __OpcUaStackCore_SecureChannelServerConfig_h__
+#ifndef __OpcUaStackServer_SecureChannelServerConfig_h__
+#define __OpcUaStackServer_SecureChannelServerConfig_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelServer.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT SecureChannelServerConfig
