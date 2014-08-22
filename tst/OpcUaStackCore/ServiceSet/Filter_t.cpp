@@ -4,13 +4,13 @@
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/ServiceSet/AggregateFilterResult.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 
 #include <streambuf>
 #include <iostream>
-
-// TODO: AggregateFilter
 
 using namespace OpcUaStackCore;
 
@@ -109,10 +109,60 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	BOOST_REQUIRE(elementOperandSPtr->index() == 123);
 }
 
+BOOST_AUTO_TEST_CASE(Filter_EventResult)
+{
+	std::cout << "EventFilterResult_t" << std::endl;
+
+	boost::asio::streambuf sb;
+	std::iostream ios(&sb);
+
+	OpcUaStatusCode statusCode1, statusCode2;
+	EventFilterResult eventFilterResult1, eventFilterResult2;
+
+	// encode
+	eventFilterResult1.selectClauseResults()->set((OpcUaStatusCode)Success);
+	eventFilterResult1.whereClauseResult().elementResults().statusCode((OpcUaStatusCode)Success);
+	eventFilterResult1.whereClauseResult().elementResults().operandStatusCodes()->set((OpcUaStatusCode)Success);
+	eventFilterResult1.opcUaBinaryEncode(ios);
+
+	// decode
+	eventFilterResult2.opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(eventFilterResult2.selectClauseResults()->size() == 1);
+	eventFilterResult2.selectClauseResults()->get(statusCode1);
+	BOOST_REQUIRE(statusCode1 == Success);
+
+	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults().statusCode() == Success);
+	
+	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults().operandStatusCodes()->size() == 1);
+	eventFilterResult2.whereClauseResult().elementResults().operandStatusCodes()->get(statusCode2);
+	BOOST_REQUIRE(statusCode2 == Success);
+}
+
 BOOST_AUTO_TEST_CASE(Filter_Aggregate)
 {
 //  TODO
 //	std::cout << "AggregateFilter_t" << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(Filter_AggregateResult)
+{
+	std::cout << "AggregateFilterResult_t" << std::endl;
+
+	boost::asio::streambuf sb;
+	std::iostream ios(&sb);
+
+	AggregateFilterResult filter1, filter2; 
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	
+	// encode
+	filter1.revisedStartTime(ptime);
+	filter1.revisedProcessingInterval((OpcUaDouble)123);
+	filter1.opcUaBinaryEncode(ios);
+
+	// decode
+	filter2.opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(filter2.revisedStartTime().dateTime() == ptime);
+	BOOST_REQUIRE(filter2.revisedProcessingInterval() == 123);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
