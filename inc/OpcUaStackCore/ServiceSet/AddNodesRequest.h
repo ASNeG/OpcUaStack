@@ -7,7 +7,14 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/AddNodesItem.h"
-
+#include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
+#include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
+#include "OpcUaStackCore/ServiceSet/ObjectAttributes.h"
+#include "OpcUaStackCore/ServiceSet/ObjectTypeAttributes.h"
+#include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
+#include "OpcUaStackCore/ServiceSet/VariableAttributes.h"
+#include "OpcUaStackCore/ServiceSet/VariableTypeAttributes.h"
+#include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
 
 namespace OpcUaStackCore
 {

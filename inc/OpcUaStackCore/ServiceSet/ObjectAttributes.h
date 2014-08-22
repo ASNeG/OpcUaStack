@@ -8,19 +8,6 @@
 #include "OpcUaStackCore/ServiceSet/AttributesDescription.h"
 
 
-
-// Unitittest : Vor der ersten Instanz...
-// ExtensibleParameter ep;
-// BOOST_REQUIRE(ep.registerFactoryElement<ObjectAttributes>((OpcUaUInt32)12345) == true);
-
-// ep.ObjectAttributes().nodeId((OpcUaUInt32)12345);
-// ObjectAttributes_::SPtr attr = ep.parameter<ObjectAttributes>();
-// atrr->dislayName("ABC"),
-
-
-// ep.opcUaBinaryEncode(..)
-
-
 namespace OpcUaStackCore
 {
 

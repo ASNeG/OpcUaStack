@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName::SPtr browseName(void) const;
 		void nodeClass(const NodeClass::SPtr nodeClassSPtr);
 		NodeClass::SPtr nodeClass(void) const;
-		const ExtensibleParameter& nodeAttributes(void) const;
+		ExtensibleParameter& nodeAttributes(void);
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinitionSPtr);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 

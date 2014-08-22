@@ -99,7 +99,7 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
@@ -108,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +140,9 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\AttributeServiceSet">
       <UniqueIdentifier>{3d62f9b5-d58a-4f21-a12c-5d30337fe8d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\NodeManagementServiceSet">
+      <UniqueIdentifier>{5ce82e8b-154e-4d6a-bf98-8b73af7697d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

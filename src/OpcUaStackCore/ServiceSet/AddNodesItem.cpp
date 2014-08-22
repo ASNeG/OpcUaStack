@@ -89,8 +89,8 @@ namespace OpcUaStackCore
 		return nodeClass_;
 	}
 
-	const ExtensibleParameter&
-	AddNodesItem::nodeAttributes(void) const
+	ExtensibleParameter&
+	AddNodesItem::nodeAttributes(void)
 	{
 		return nodeAttributes_;
 	}
