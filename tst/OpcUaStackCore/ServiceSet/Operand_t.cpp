@@ -93,7 +93,6 @@ BOOST_AUTO_TEST_CASE(Operand_SimpleAttribute)
 
 	BOOST_REQUIRE(simpleAttributeOperand2.attributeId() == 123);
 	BOOST_REQUIRE(simpleAttributeOperand2.indexRange().value() == "1:2");
-	std::cout << "## 4" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(Operand_Attribute)

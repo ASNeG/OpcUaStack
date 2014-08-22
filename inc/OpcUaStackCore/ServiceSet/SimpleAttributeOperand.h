@@ -6,6 +6,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
@@ -38,6 +39,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 attributeId_;
 		OpcUaString indexRange_;
 	};
+
+	class SimpleAttributeOperandArray : public OpcUaArray<SimpleAttributeOperand::SPtr, SPtrTypeCoder<SimpleAttributeOperand> >, public ObjectPool<SimpleAttributeOperandArray> {};
 
 }
 
