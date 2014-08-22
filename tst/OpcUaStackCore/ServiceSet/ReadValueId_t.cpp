@@ -7,7 +7,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(ReadValueId_)
 
-BOOST_AUTO_TEST_CASE(ReadValueId_)
+BOOST_AUTO_TEST_CASE(ReadValueId_Title)
 {
 	std::cout << "ReadValueId_t" << std::endl;
 }

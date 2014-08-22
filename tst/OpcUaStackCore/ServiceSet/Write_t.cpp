@@ -14,7 +14,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(Write_)
 
-BOOST_AUTO_TEST_CASE(Write_)
+BOOST_AUTO_TEST_CASE(Write_Title)
 {
 	std::cout << "Write_t" << std::endl;
 }
