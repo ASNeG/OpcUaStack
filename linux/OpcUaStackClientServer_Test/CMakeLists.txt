@@ -19,12 +19,24 @@ find_library(
     PATHS ../OpcUaStackCore_lib
 )
 
+find_library(
+    OPCUA_STACK_CLIENT 
+    NAMES OpcUaStackClient
+    PATHS ../OpcUaStackClient_lib
+)
+
+find_library(
+    OPCUA_STACK_SERVER 
+    NAMES OpcUaStackServer
+    PATHS ../OpcUaStackServer_lib
+)
+
 
 file(
     GLOB_RECURSE
     OpcUaStackCore_SRCS
     ../../tst/unittest.cpp
-    ../../tst/OpcUaStackCore/*
+    ../../tst/OpcUaStackClientServer/*
 )
 
 include_directories(
@@ -45,6 +57,8 @@ target_link_libraries(
     boost_unit_test_framework 
     boost_date_time 
     ${OPCUA_STACK_CORE}
+    ${OPCUA_STACK_CLIENT}
+    ${OPCUA_STACK_SERVER}
 )
 
 

@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_open)
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCondition_.waitForCondition(1000) == true);
 	secureChannelServer->connect();
 
-	IOService::msecSleep(10000000);
+	//IOService::msecSleep(10000000);
 
 	Config::destroy();
 	ioService.stop();
