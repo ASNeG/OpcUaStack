@@ -97,9 +97,6 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp">
-      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
@@ -124,12 +121,6 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\CloseSecureChannel_t.cpp">
       <Filter>unittest\SecureChannel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp">
-      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
-      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp">
       <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
@@ -150,6 +141,27 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp">
       <Filter>unittest\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Operand_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Filter_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateMonitoredItems_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +197,9 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\MethodServiceSet">
       <UniqueIdentifier>{e1292169-6855-4f20-909c-7ca492d23d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\MonitoredItemServiceSet">
+      <UniqueIdentifier>{766410b2-b5a4-4cd9-bbed-9593b7af891d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -108,11 +108,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteSubscription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Filter_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifySubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Operand_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Publish_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp" />
