@@ -433,6 +433,24 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsResponse.h">
       <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetTriggeringRequest.h">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.h">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.h">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.h">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.h">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetTriggeringResponse.h">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -796,6 +814,24 @@
       <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsResponse.cpp">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.cpp">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.cpp">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetTriggeringRequest.cpp">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.cpp">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetTriggeringResponse.cpp">
+      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.cpp">
       <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
   </ItemGroup>

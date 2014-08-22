@@ -163,6 +163,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp">
       <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteMonitoredItems_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetTriggering_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetMonitoringMode_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

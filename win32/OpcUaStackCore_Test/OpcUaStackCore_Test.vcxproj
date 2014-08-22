@@ -111,6 +111,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSubscription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteSubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Filter_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp" />
@@ -123,7 +124,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Republish_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetMonitoringMode_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetPublishingMode_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetTriggering_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TransferSubscriptions_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp" />
