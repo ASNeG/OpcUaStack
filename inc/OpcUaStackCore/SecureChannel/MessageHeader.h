@@ -13,6 +13,7 @@ namespace OpcUaStackCore
 		MessageType_Hello,
 		MessageType_Acknowledge,
 		MessageType_OpenSecureChannel,
+		MessageType_CloseSecureChannel,
 		MessageType_Error,
 		MessageType_Message
 	} MessageType;

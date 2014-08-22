@@ -12,6 +12,7 @@ namespace OpcUaStackCore
 	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
 	, endpointUrl_()
 	{
+		endpointUrl_ = "opc.tcp://127.0.0.1:4841";
 	}
 		
 	HelloMessage::~HelloMessage(void)

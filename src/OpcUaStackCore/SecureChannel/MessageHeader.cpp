@@ -62,6 +62,11 @@ namespace OpcUaStackCore
 				os.write("OPN", 3);
 				break;
 			}
+			case MessageType_CloseSecureChannel:
+			{
+				os.write("CLO", 3);
+				break;
+			}
 			case MessageType_Message:
 			{
 				os.write("MSG", 3);
@@ -93,6 +98,9 @@ namespace OpcUaStackCore
 		}
 		else if (strncmp(messageType, "OPN", 3) == 0) {
 			messageType_ = MessageType_OpenSecureChannel;
+		}
+		else if (strncmp(messageType, "CLO", 3) == 0) {
+			messageType_ = MessageType_CloseSecureChannel;
 		}
 		else if (strncmp(messageType, "MSG", 3) == 0) {
 			messageType_ = MessageType_Message;

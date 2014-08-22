@@ -100,7 +100,76 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateSubscription_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteSubscription_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Publish_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CloseSession_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp">
+      <Filter>unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\CloseSecureChannel_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Log_t.cpp">
+      <Filter>unittest\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannelClient_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Config_t.cpp">
+      <Filter>unittest\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannel_t.cpp">
+      <Filter>unittest\SecureChannel</Filter>
+	 </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifySubscription_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetPublishingMode_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Republish_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TransferSubscriptions_t.cpp">
+      <Filter>unittest\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CallMethod_t.cpp">
+      <Filter>unittest\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp">
+      <Filter>unittest\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Operand_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Filter_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CreateMonitoredItems_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp">
+      <Filter>unittest\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp">
       <Filter>unittest\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp">
@@ -111,6 +180,17 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp">
       <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteMonitoredItems_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetTriggering_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetMonitoringMode_t.cpp">
+      <Filter>unittest\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +223,14 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\NodeManagementServiceSet">
       <UniqueIdentifier>{5ce82e8b-154e-4d6a-bf98-8b73af7697d4}</UniqueIdentifier>
+    <Filter Include="unittest\ServiceSet\SubscriptionServiceSet">
+      <UniqueIdentifier>{e4b79712-69b7-4232-8c67-22b7e64c25cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\MethodServiceSet">
+      <UniqueIdentifier>{e1292169-6855-4f20-909c-7ca492d23d02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\MonitoredItemServiceSet">
+      <UniqueIdentifier>{766410b2-b5a4-4cd9-bbed-9593b7af891d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

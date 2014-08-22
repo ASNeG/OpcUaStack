@@ -4,7 +4,7 @@ namespace OpcUaStackCore
 {
 
 	CloseSessionRequest::CloseSessionRequest(void)
-	: requestHeaderSPtr_()
+	: requestHeaderSPtr_(RequestHeader::construct())
 	, deleteSubscriptions_()
 	{
 	}
@@ -17,6 +17,12 @@ namespace OpcUaStackCore
 	CloseSessionRequest::requestHeader(const RequestHeader::SPtr requestHeaderSPtr)
 	{
 		requestHeaderSPtr_ = requestHeaderSPtr;
+	}
+
+	RequestHeader::SPtr
+	CloseSessionRequest::requestHeader(void) const
+	{
+		return requestHeaderSPtr_;
 	}
 
 	void 

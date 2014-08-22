@@ -4,7 +4,7 @@ namespace OpcUaStackCore
 {
 
 	CancelResponse::CancelResponse(void)
-	: responseHeader_()
+	: responseHeader_(ResponseHeader::construct())
 	{
 	}
 

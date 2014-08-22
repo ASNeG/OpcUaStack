@@ -4,7 +4,10 @@ namespace OpcUaStackCore
 {
 
 	OpenSecureChannelResponse::OpenSecureChannelResponse(void)
-	: serverProtocolVersion_(0)
+	: responseHeaderSPtr_(ResponseHeader::construct())
+	, serverProtocolVersion_(0)
+	, securityTokenSPtr_(SecurityToken::construct())
+	, serverNonce_()
 	{
 	}
 		

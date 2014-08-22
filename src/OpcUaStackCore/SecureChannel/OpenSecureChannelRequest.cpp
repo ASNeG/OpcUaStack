@@ -11,7 +11,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpenSecureChannelRequest::OpenSecureChannelRequest(void)
-	: requestHeaderSPtr_()
+	: requestHeaderSPtr_(RequestHeader::construct())
 	, clientProtocolVersion_(0)
 	, requestType_()
 	, securityMode_()

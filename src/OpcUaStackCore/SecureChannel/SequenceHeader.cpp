@@ -4,8 +4,8 @@ namespace OpcUaStackCore
 {
 
 	SequenceHeader::SequenceHeader(void)
-	: sequenceNumber_()
-	, requestId_()
+	: sequenceNumber_(0)
+	, requestId_(0)
 	{
 	}
 		
@@ -24,6 +24,12 @@ namespace OpcUaStackCore
 	{
 		return sequenceNumber_;
 	}
+
+	void
+	SequenceHeader::incSequenceNumber(void)
+	{
+		sequenceNumber_++;
+	}
 		
 	void  
 	SequenceHeader::requestId(const OpcUaUInt32& requestId)
@@ -35,6 +41,12 @@ namespace OpcUaStackCore
 	SequenceHeader::requestId(void) const
 	{
 		return requestId_;
+	}
+
+	void
+	SequenceHeader::incRequestId(void)
+	{
+		requestId_++;
 	}
 
 	void 

@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
@@ -83,6 +84,8 @@ namespace OpcUaStackCore
 		OpcUaNodeId parameterTypeId_;
 		ExtensibleParameterBase::BSPtr epSPtr_;
 	};
+
+	class ExtensibleParameterArray : public OpcUaArray<ExtensibleParameter::SPtr, SPtrTypeCoder<ExtensibleParameter> >, public ObjectPool<ExtensibleParameterArray> {};
 
 }
 

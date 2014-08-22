@@ -8,7 +8,7 @@ namespace OpcUaStackCore
 	, clientSignature_(SignatureData::construct())
 	, signedSoftwareCertificate_(SignedSoftwareCertificateArray::construct())
 	, localeIds_(LocaleIdArray::construct())
-	, userIdentityToken_()
+	, userIdentityToken_(ExtensibleParameter::construct())
 	, userTokenSignature_(SignatureData::construct())
 	{
 	}
@@ -66,12 +66,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ActivateSessionRequest::userIdentityToken(const UserIdentityToken::SPtr userIdentityToken)
+	ActivateSessionRequest::userIdentityToken(const ExtensibleParameter::SPtr userIdentityToken)
 	{
 		userIdentityToken_ = userIdentityToken;
 	}
 
-	UserIdentityToken::SPtr 
+	ExtensibleParameter::SPtr 
 	ActivateSessionRequest::userIdentityToken(void) const
 	{
 		return userIdentityToken_;

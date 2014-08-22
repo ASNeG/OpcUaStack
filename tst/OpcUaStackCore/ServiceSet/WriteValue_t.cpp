@@ -9,7 +9,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(WriteValue_)
 
-BOOST_AUTO_TEST_CASE(WriteValue_)
+BOOST_AUTO_TEST_CASE(WriteValue_Title)
 {
 	std::cout << "WriteValue_t" << std::endl;
 }

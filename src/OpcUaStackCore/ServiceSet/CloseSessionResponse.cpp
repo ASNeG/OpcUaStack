@@ -4,7 +4,7 @@ namespace OpcUaStackCore
 {
 
 	CloseSessionResponse::CloseSessionResponse(void)
-	: responseHeader_()
+	: responseHeader_(ResponseHeader::construct())
 	{
 	}
 

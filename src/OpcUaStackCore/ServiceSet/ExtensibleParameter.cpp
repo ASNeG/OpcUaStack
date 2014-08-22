@@ -94,9 +94,16 @@ namespace OpcUaStackCore
 	void 
 	ExtensibleParameter::opcUaBinaryEncode(std::ostream& os) const
 	{
-		parameterTypeId_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
-		epSPtr_->opcUaBinaryEncode(os);
+		if(epSPtr_.get() == NULL)
+		{
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		} else {
+			parameterTypeId_.opcUaBinaryEncode(os);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+			epSPtr_->opcUaBinaryEncode(os);
+		}
 	}
 
 	void 

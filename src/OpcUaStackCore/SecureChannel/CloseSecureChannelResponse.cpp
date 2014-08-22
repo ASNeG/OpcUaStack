@@ -4,6 +4,7 @@ namespace OpcUaStackCore
 {
 
 	CloseSecureChannelResponse::CloseSecureChannelResponse(void)
+	: responseHeaderSPtr_(ResponseHeader::construct())
 	{
 	}
 		

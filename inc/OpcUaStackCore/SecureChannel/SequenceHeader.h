@@ -16,8 +16,10 @@ namespace OpcUaStackCore
 
 		void sequenceNumber(const OpcUaUInt32& sequenceNumber);
 		OpcUaUInt32 sequenceNumber(void) const;
+		void incSequenceNumber(void);
 		void requestId(const OpcUaUInt32& requestId);
 		OpcUaUInt32 requestId(void) const;
+		void incRequestId(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
