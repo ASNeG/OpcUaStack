@@ -86,27 +86,30 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	addNodesRequestSPtr->requestHeader()->returnDisagnostics(0);
 	addNodesRequestSPtr->requestHeader()->timeoutHint(10000);
 
-	AddNodesItemArray::SPtr addNodesItemArray = AddNodesItemArray::construct();
 
-	// create a AddNodesItem with a referenceTypeId(namespaceIndex=130, nodeId=11) and a ObjectAttributes instance 
+	addNodesRequestSPtr->nodesToAdd()->resize(1);
 	AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+	addNodesItemSPtr->parentNodeId()->set(12,130);
+	addNodesItemSPtr->referenceTypeId()->set(11, 130);
+	addNodesItemSPtr->requestedNewNodeId()->set(13,130);
+	addNodesItemSPtr->typeDefinition()->set(14, 130);
+	*addNodesItemSPtr->browseName() = "browsename";
 
-	OpcUaNodeId::SPtr objectIdSPtr = OpcUaNodeId::construct();
-	objectIdSPtr->namespaceIndex(130);
-	objectIdSPtr->nodeId((OpcUaUInt32)11);
-	addNodesItemSPtr->referenceTypeId(objectIdSPtr);
-	ExtensibleParameter &nodeAttributes = addNodesItemSPtr->nodeAttributes();
-	
-	nodeAttributes.parameterTypeId().set((OpcUaUInt32)12345);
-	ObjectAttributes::SPtr objectAttributes = nodeAttributes.parameter<ObjectAttributes>();
+	ObjectAttributes::SPtr objectAttributes;
+	addNodesItemSPtr->nodeAttributes().parameterTypeId().set((OpcUaUInt32)12347);
+	objectAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectAttributes>();
 	BOOST_REQUIRE(objectAttributes.get() != NULL);
-		
-	OpcUaLocalizedText::SPtr opcUaLocalizedText = OpcUaLocalizedText::construct();
-	opcUaLocalizedText->text("Mein Haus");
-	objectAttributes->displayName(opcUaLocalizedText);
-	addNodesItemArray->push_back(addNodesItemSPtr);
+	objectAttributes->displayName()->locale("de");
+	objectAttributes->displayName()->text("Mein Haus");
+	objectAttributes->description()->locale("de");
+	objectAttributes->description()->text("Mein Auto");
 
-	addNodesRequestSPtr->nodesToAdd(addNodesItemArray);
+#if 0
+		NodeClass::SPtr nodeClass_;
+#endif
+
+	addNodesRequestSPtr->nodesToAdd()->set(0, addNodesItemSPtr);
+
 	addNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -178,22 +181,26 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->requestHandle() == 1);
 	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->returnDisagnostics() == 0);
 	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->timeoutHint() == 10000);
-	addNodesItemArray = addNodesRequestSPtr->nodesToAdd();
-	BOOST_REQUIRE(addNodesItemArray.get() != 0);
 
-	BOOST_REQUIRE(addNodesItemArray->size() == 1);
-	BOOST_REQUIRE(addNodesItemArray->get(0, addNodesItemSPtr));
+	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd().get() != 0);
+	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd()->size() == 1);
+	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd()->get(0, addNodesItemSPtr));
 	BOOST_REQUIRE(addNodesItemSPtr.get() != 0);
 
+	BOOST_REQUIRE(addNodesItemSPtr->parentNodeId().get() != NULL);
 	BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId().get() != NULL);
-	std::cout << "Hier geht schon was schief, referenceTypeId.namespaceIndex=" << addNodesItemSPtr->referenceTypeId()->namespaceIndex() << " !!!" << std::endl;
+	BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->namespaceIndex() == 130);
+	BOOST_REQUIRE(addNodesItemSPtr->parentNodeId()->nodeId<OpcUaUInt32>() == 12);
 	BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
+	BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
 
 	{
-		ExtensibleParameter &nodeAttributes = addNodesItemSPtr->nodeAttributes();
-		objectAttributes = nodeAttributes.parameter<ObjectAttributes>();
+		objectAttributes = addNodesItemSPtr->nodeAttributes().parameter<ObjectAttributes>();
 		BOOST_REQUIRE(objectAttributes.get() != NULL);
+		BOOST_REQUIRE(objectAttributes->displayName()->locale().value() == "de");
 		BOOST_REQUIRE(objectAttributes->displayName()->text().value() == "Mein Haus");
+		BOOST_REQUIRE(objectAttributes->description()->locale().value() == "de");
+		BOOST_REQUIRE(objectAttributes->description()->text().value() == "Mein Auto");
 	}
 
 	
