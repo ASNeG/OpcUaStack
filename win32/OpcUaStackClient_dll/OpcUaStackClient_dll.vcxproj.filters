@@ -10,6 +10,12 @@
     <Filter Include="src\SecureChannel">
       <UniqueIdentifier>{48f712c7-596a-4824-a5e3-4767ae97d440}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet">
+      <UniqueIdentifier>{15f6144d-515d-43dd-b5ef-8bd385176f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\SessionServuceSet">
+      <UniqueIdentifier>{1666fe4f-2e21-445b-8b54-949a4d804ff0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -23,6 +29,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h">
       <Filter>src\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h">
+      <Filter>src\ServiceSet\SessionServuceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +49,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp">
       <Filter>src\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\Quelle.cpp">
+      <Filter>src\ServiceSet\SessionServuceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

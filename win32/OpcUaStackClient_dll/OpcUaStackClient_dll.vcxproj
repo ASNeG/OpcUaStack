@@ -82,12 +82,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClient.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClient.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\Quelle.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

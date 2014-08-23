@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackClient_SecureChannelClient_h__
-#define __OpcUaStackClient_SecureChannelClient_h__
+#ifndef __OpcUaStackClient_SessionClient_h__
+#define __OpcUaStackClient_SessionClient_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"

@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(SecureChannelClient_)
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_)
 {
-	std::cout << "SecureChannel_t" << std::endl;
+	std::cout << "SecureChanneClientl_t" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 	SecureChannelClientConfig::initial(secureChannelClient, "TestConfig");
 	secureChannelClient->connect();
 
-	IOService::msecSleep(10000000);
+	IOService::msecSleep(2000);
 
 	Config::destroy();
 	ioService.stop();
