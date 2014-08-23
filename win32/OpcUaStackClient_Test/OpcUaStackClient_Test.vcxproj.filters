@@ -4,5 +4,16 @@
     <Filter Include="Unittest">
       <UniqueIdentifier>{613fe2b8-6156-4e64-9eac-a86cb7cc8462}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unittest\SecureChannel">
+      <UniqueIdentifier>{0fec6678-5bd0-4eeb-a45a-b4c803d5ab42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\tst\OpcUaStackClient\SecureChannel\SecureChannelClient_t.cpp">
+      <Filter>Unittest\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\unittest.cpp">
+      <Filter>Unittest</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

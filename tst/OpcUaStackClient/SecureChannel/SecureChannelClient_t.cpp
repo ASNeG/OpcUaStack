@@ -1,4 +1,3 @@
-#if 0
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
@@ -7,6 +6,7 @@
 #include <boost/asio/error.hpp>
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(SecureChannelClient_)
 
@@ -26,14 +26,13 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 	config->setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	SecureChannelClient::SPtr secureChannelClient = SecureChannelClient::construct(ioService);
-	SecureChannelClientConfig::create(secureChannelClient, "TestConfig");
+	SecureChannelClientConfig::initial(secureChannelClient, "TestConfig");
 	secureChannelClient->connect();
 
-	//IOService::msecSleep(10000000);
+	IOService::msecSleep(10000000);
 
 	Config::destroy();
 	ioService.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-#endif
