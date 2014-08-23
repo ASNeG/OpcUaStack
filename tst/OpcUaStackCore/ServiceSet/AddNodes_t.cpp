@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	typeId.nodeId(OpcUaId_AddNodesRequest_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
 
-	// encode CreateSessionRequest
+	// encode AddNodesRequest
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
@@ -87,7 +87,14 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	addNodesRequestSPtr->requestHeader()->timeoutHint(10000);
 
 	AddNodesItemArray::SPtr addNodesItemArray = AddNodesItemArray::construct();
+
+	// create a AddNodesItem with a referenceTypeId(namespaceIndex=130, nodeId=11) and a ObjectAttributes instance 
 	AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+
+	OpcUaNodeId::SPtr objectIdSPtr = OpcUaNodeId::construct();
+	objectIdSPtr->namespaceIndex(130);
+	objectIdSPtr->nodeId((OpcUaUInt32)11);
+	addNodesItemSPtr->referenceTypeId(objectIdSPtr);
 	ExtensibleParameter &nodeAttributes = addNodesItemSPtr->nodeAttributes();
 	
 	nodeAttributes.parameterTypeId().set((OpcUaUInt32)12345);
@@ -95,7 +102,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(objectAttributes.get() != NULL);
 		
 	OpcUaLocalizedText::SPtr opcUaLocalizedText = OpcUaLocalizedText::construct();
-	opcUaLocalizedText->text("Roby Villwock");
+	opcUaLocalizedText->text("Mein Haus");
 	objectAttributes->displayName(opcUaLocalizedText);
 	addNodesItemArray->push_back(addNodesItemSPtr);
 
@@ -176,17 +183,20 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	BOOST_REQUIRE(addNodesItemArray->size() == 1);
 	BOOST_REQUIRE(addNodesItemArray->get(0, addNodesItemSPtr));
-	
-	/*
-	Kai das funktioniert nicht!
-	BOOST_REQUIRE(addNodesItemArray->get(0, addNodesItemSPtr));
 	BOOST_REQUIRE(addNodesItemSPtr.get() != 0);
 
-	nodeAttributes = addNodesItemSPtr->nodeAttributes();
-	objectAttributes = nodeAttributes.parameter<ObjectAttributes>();
-	BOOST_REQUIRE(objectAttributes.get() != NULL);
-	*/
+	BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId().get() != NULL);
+	std::cout << "Hier geht schon was schief, referenceTypeId.namespaceIndex=" << addNodesItemSPtr->referenceTypeId()->namespaceIndex() << " !!!" << std::endl;
+	BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->namespaceIndex() == 130);
 
+	{
+		ExtensibleParameter &nodeAttributes = addNodesItemSPtr->nodeAttributes();
+		objectAttributes = nodeAttributes.parameter<ObjectAttributes>();
+		BOOST_REQUIRE(objectAttributes.get() != NULL);
+		BOOST_REQUIRE(objectAttributes->displayName()->text().value() == "Mein Haus");
+	}
+
+	
 	BOOST_REQUIRE(ep.deregisterFactoryElement((OpcUaUInt32)12345));
 	BOOST_REQUIRE(ep.deregisterFactoryElement((OpcUaUInt32)12346));
 	BOOST_REQUIRE(ep.deregisterFactoryElement((OpcUaUInt32)12347));

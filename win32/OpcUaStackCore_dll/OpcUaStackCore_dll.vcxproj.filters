@@ -391,41 +391,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesItem.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesRequest.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributesDescription.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClInclude>
@@ -503,6 +468,42 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetTriggeringResponse.h">
       <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesItem.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributesDescription.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataTypeAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableTypeAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesRequest.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -824,38 +825,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteValue.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ViewAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\VariableAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\VariableTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesItem.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesRequest.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp">
       <Filter>sc\ServiceSet\Common</Filter>
     </ClCompile>
@@ -933,6 +902,39 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.cpp">
       <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesItem.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesRequest.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataTypeAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\VariableAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\VariableTypeAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ViewAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

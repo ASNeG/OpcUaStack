@@ -54,6 +54,7 @@
       <PreprocessorDefinitions>_WIN32_WINNT=0x0501;WIN32;_DEBUG;_WINDOWS;_USRDLL;OPCUASTACKCORE_DLL_EXPORTS;BOOST_ALL_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\inc;C:\local\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,12 +137,11 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesItem.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesRequest.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributesDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateFilterResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeOperand.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributesDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallRequest.h" />
@@ -158,11 +158,11 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateMonitoredItemsResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionResponse.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataChangeFilter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataChangeNotification.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
@@ -176,14 +176,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectAttributes.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\LiteralOperand.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifySubscriptionRequest.h" />
@@ -194,12 +188,16 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemModifyResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemNotification.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoringParameters.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationMessage.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectAttributes.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePath.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePathElement.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishRequest.h" />
@@ -308,11 +306,11 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateMonitoredItemsResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionResponse.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataTypeAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataChangeFilter.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataChangeNotification.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataTypeAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp" />
@@ -325,15 +323,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFilterResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventNotificationList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectAttributes.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\LiteralOperand.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifySubscriptionRequest.cpp" />
@@ -344,12 +335,16 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemModifyResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemNotification.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoringParameters.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationMessage.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectAttributes.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePath.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePathElement.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishRequest.cpp" />

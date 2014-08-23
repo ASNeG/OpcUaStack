@@ -53,6 +53,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\..\tst;..\..\inc;C:\local\boost_1_54_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,6 +108,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannelClient_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CallMethod_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp" />
