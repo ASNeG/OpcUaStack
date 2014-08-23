@@ -1,3 +1,4 @@
+#if 0
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
@@ -16,7 +17,6 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_)
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 {
-#if 0
 	IOService ioService;
 	ioService.start(1);
 
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 
 	Config::destroy();
 	ioService.stop();
-#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif

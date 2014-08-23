@@ -1,19 +1,123 @@
 #!/usr/bin/sh
 
-cd OpcUaStackCore_lib
-cmake CMakeLists.txt
-make
-cd ..
+OpcUaStackCore_lib() {
+    cd OpcUaStackCore_lib
+    cmake CMakeLists.txt
+    make
+    cd ..
+}
+
+OpcUaStackClient_lib() {
+    cd OpcUaStackClient_lib
+    cmake CMakeLists.txt
+    make
+    cd ..
+}
+
+OpcUaStackServer_lib() {
+    cd OpcUaStackServer_lib
+    cmake CMakeLists.txt
+    make
+    cd ..
+}
 
 
-cd OpcUaStackCore_Test
-cmake CMakeLists.txt
-make
-cd ..
+OpcUaStackCore_Test() {
+    cd OpcUaStackCore_Test
+    cmake CMakeLists.txt
+    make
+    cd ..
+}
 
-if [ $1 = "run" ] ;
-then
+OpcUaStackClientServer_Test() {
+    cd OpcUaStackClientServer_Test
+    cmake CMakeLists.txt
+    make
+    cd ..
+}
+
+OpcUaStackCore_Test_run() {
     cd OpcUaStackCore_Test
     ./Unittest
-    cd ..
+    cd .. 
+}
+
+OpcUaStackClientServer_Test_run() {
+    cd OpcUaStackClientServer_Test
+    ./Unittest
+    cd .. 
+}
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+#  all
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+if [ $1 = "all" ] ;
+then
+    OpcUaStackCore_lib
+    OpcUaStackClient_lib
+    OpcUaStackServer_lib
+    OpcUaStackCore_Test
+    OpcUaStackClientServer_Test
+    OpcUaStackCore_Test_run
+    OpcUaStackClientServer_Test_run
+fi
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# build
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+if [ $1 = "build-all" ] ;
+then
+    OpcUaStackCore_lib
+    OpcUaStackClient_lib
+    OpcUaStackServer_lib
+    OpcUaStackCore_Test
+    OpcUaStackClientServer_Test
+fi
+
+if [ $1 = "build-lib" ] ;
+then
+    OpcUaStackCore_lib
+    OpcUaStackClient_lib
+    OpcUaStackServer_lib
+fi
+
+if [ $1 = "build-test" ] ;
+then
+    OpcUaStackCore_Test
+    OpcUaStackClientServer_Test
+fi
+
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# test 
+# 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+if [ $1 = "test-all" ] ;
+then
+    OpcUaStackCore_Test_run
+    OpcUaStackClientServer_Test_run
+fi
+
+if [ $1 = "test-core" ] ;
+then
+    OpcUaStackCore_Test_run
+fi
+
+if [ $1 = "test-clientserver" ] ;
+then
+    OpcUaStackClientServer_Test_run
 fi
