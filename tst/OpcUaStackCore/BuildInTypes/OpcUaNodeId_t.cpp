@@ -12,6 +12,19 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_)
 	std::cout << "OpcUaNodeId_t" << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_null)
+{
+	std::stringstream ss;
+	OpcUaNodeId value1, value2;
+	
+	value1.opcUaBinaryEncode(ss);
+	BOOST_REQUIRE(count(ss) == 2);
+	value2.opcUaBinaryDecode(ss);
+
+	BOOST_REQUIRE(value2.namespaceIndex() == 0);
+	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 0);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaNodeId_two_byte_representation)
 {
 	std::stringstream ss;

@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
 
 #include <boost/asio/error.hpp>
 
