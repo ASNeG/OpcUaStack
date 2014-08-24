@@ -38,13 +38,9 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 	std::iostream ios(&sb);
 
 	// build MonitoredItemNotification
-	variantSPtr = OpcUaVariant::construct();
-	variantSPtr->variant((OpcUaInt32)123);
-	dataValue.variant(variantSPtr);
-
 	monitoredItemNotificationSPtr = MonitoredItemNotification::construct();
 	monitoredItemNotificationSPtr->clientHandle(2);
-	monitoredItemNotificationSPtr->dataValue(dataValue);
+	monitoredItemNotificationSPtr->dataValue().variant()->variant((OpcUaInt32)123);
 
 	// build NotificationData, DataChangeNotification
 	notificationDataSPtr = ExtensibleParameter::construct();

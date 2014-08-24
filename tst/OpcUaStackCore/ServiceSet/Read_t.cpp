@@ -216,11 +216,8 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 	sourceTimestamp.dateTime(ptime1);
 	serverTimestamp.dateTime(ptime2);
 
-	variantSPtr = OpcUaVariant::construct();
-	variantSPtr->variant((OpcUaFloat)321);
-
 	dataValueSPtr = OpcUaDataValue::construct();
-	dataValueSPtr->variant(variantSPtr);
+	dataValueSPtr->variant()->variant((OpcUaFloat)321);
 	dataValueSPtr->sourceTimestamp(sourceTimestamp);
 	dataValueSPtr->serverTimestamp(serverTimestamp);
 

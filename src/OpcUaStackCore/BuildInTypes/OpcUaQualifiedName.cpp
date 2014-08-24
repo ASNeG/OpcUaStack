@@ -26,6 +26,12 @@ namespace OpcUaStackCore
 	{
 		namespaceIndex_ = namespaceIndex;
 	}
+
+	void 
+	OpcUaQualifiedName::name(const std::string& name)
+	{
+		name_ = name;
+	}
 		
 	OpcUaUInt16 
 	OpcUaQualifiedName::namespaceIndex(void)
