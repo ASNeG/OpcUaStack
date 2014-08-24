@@ -17,6 +17,7 @@ namespace OpcUaStackCore
 
 		void namespaceIndex(const OpcUaUInt16& namespaceIndex);
 		OpcUaUInt16 namespaceIndex(void);
+		void name(const std::string& name);
 		void name(const OpcUaString& name);
 		OpcUaString& name(void);
 		OpcUaQualifiedName& operator=(const std::string& name);

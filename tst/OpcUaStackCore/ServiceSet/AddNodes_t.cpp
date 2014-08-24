@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_DataType);
 
 		DataTypeAttributes::SPtr dataTypeAttributes;
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_Object);
 
 		ObjectAttributes::SPtr objectAttributes;
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_Method);
 
 		MethodAttributes::SPtr methodAttributes;
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_ObjectType);
 
 		ObjectTypeAttributes::SPtr objectTypeAttributes;
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_ReferenceType);
 
 		ReferenceTypeAttributes::SPtr referenceTypeAttributes;
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_View);
 
 		ViewAttributes::SPtr viewAttributes;
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(14, 130);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_Variable);
 
 		VariableAttributes::SPtr variableAttributes;
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
 		addNodesItemSPtr->typeDefinition()->set(1, 1);
-		*addNodesItemSPtr->browseName() = "browsename";
+		addNodesItemSPtr->browseName()->name("browsename");
 		addNodesItemSPtr->nodeClass()->nodeClassType(NodeClassType_VariableType);
 
 		VariableTypeAttributes::SPtr variableTypeAttributes;
