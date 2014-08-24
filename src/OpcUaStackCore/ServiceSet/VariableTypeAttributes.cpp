@@ -11,7 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VariableTypeAttributes::VariableTypeAttributes(void)
-		: specifiedAttributes_(),
+		: ExtensibleParameterBase()
+		, specifiedAttributes_(),
 		displayName_(OpcUaLocalizedText::construct()),
 		description_(OpcUaLocalizedText::construct()),
 		value_(OpcUaDataValue::construct()),

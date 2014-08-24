@@ -2,6 +2,7 @@
 #define __OpcUaStackCore_ConfigXml_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include <string>
 
 namespace OpcUaStackCore
 {
@@ -11,6 +12,8 @@ namespace OpcUaStackCore
 	  public:
 		ConfigXml(void);
 		~ConfigXml(void);
+
+		bool parse(const std::string& configFileName);
 	};
 
 }

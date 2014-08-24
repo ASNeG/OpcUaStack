@@ -11,7 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ObjectAttributes::ObjectAttributes(void)
-		: specifiedAttributes_(),
+		: ExtensibleParameterBase(),
+		specifiedAttributes_(),
 		displayName_(OpcUaLocalizedText::construct()),
 		description_(OpcUaLocalizedText::construct()),
 		eventNotifier_(),
