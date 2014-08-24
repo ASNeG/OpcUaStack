@@ -594,7 +594,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
 		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClassType_VariableType);
 
-#if 0
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().namespaceIndex() == 0);
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().nodeId<OpcUaUInt32>() == 12351);
 		VariableTypeAttributes::SPtr variableTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableTypeAttributes>();
@@ -616,7 +615,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(variableTypeAttributes->isAbstract() == false);
 		BOOST_REQUIRE(variableTypeAttributes->writeMask() == WriteableAttribute_DataType);
 		BOOST_REQUIRE(variableTypeAttributes->userWriteMask() == WriteableAttribute_DataType);
-#endif
 	}
 
 	BOOST_REQUIRE(ep.deregisterFactoryElement((OpcUaUInt32)12345));
