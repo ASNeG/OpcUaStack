@@ -1,4 +1,4 @@
-#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Config.h"
 
@@ -8,7 +8,7 @@ namespace OpcUaStackClient
 {
 
 	bool 
-	SecureChannelClientConfig::initial(SecureChannelClient::SPtr secureChannelClientSPtr, const std::string& configPrefix)
+	SessionConfig::initial(Session::SPtr sessionSPtr, const std::string& configPrefix)
 	{
 		uint32_t uint32Value;
 		std::string stringValue;
@@ -18,12 +18,13 @@ namespace OpcUaStackClient
 
 		boost::optional<Config> childConfig = config->getChild(configPrefix);
 		if (!childConfig) {
-			Log(Error, "secure channel client configuration not found")
+			Log(Error, "session client configuration not found")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix);
 			return false;
 		}
 
+#if 0
 		ChannelDataBase::SPtr channelDataBasePtr = secureChannelClientSPtr->channelDataBase();
 		SecurityHeader::SPtr securityHeaderSPtr = secureChannelClientSPtr->securityHeader();
 
@@ -95,6 +96,7 @@ namespace OpcUaStackClient
 				.parameter("ParameterValue", stringValue);
 			return false;
 		}
+#endif
 
 		return true;
 	}

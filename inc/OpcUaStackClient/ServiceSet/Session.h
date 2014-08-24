@@ -4,9 +4,9 @@
 #include <stdint.h>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
-#include "OpcUaStackCore/SecureChannel/MessageHeader.h";
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 
@@ -29,7 +29,7 @@ namespace OpcUaStackClient
 		uint32_t maxResponseMessageSize_;
 	};
 
-	class DLLEXPORT Session
+	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>
 	{
 	  public:
 		Session(void);
