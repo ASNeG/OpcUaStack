@@ -137,6 +137,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesItem.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateFilterResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
@@ -286,6 +288,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesItem.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AggregateFilterResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ApplicationDescription.cpp" />

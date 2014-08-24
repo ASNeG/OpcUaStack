@@ -505,6 +505,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h">
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResponse.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResult.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -934,6 +940,12 @@
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResult.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResponse.cpp">
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>

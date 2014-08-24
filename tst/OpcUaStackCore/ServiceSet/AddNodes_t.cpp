@@ -13,7 +13,7 @@
 #include <streambuf>
 #include <iostream>
 
-#define WITH_VariableTypeAttributes_Test
+// #define WITH_VariableTypeAttributes_Test
 
 using namespace OpcUaStackCore;
 
@@ -89,7 +89,14 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	addNodesRequestSPtr->requestHeader()->timeoutHint(10000);
 
 
+#ifdef WITH_VariableTypeAttributes_Test
+	addNodesRequestSPtr->nodesToAdd()->resize(8);
+#endif
+
+	
+#ifndef WITH_VariableTypeAttributes_Test
 	addNodesRequestSPtr->nodesToAdd()->resize(7);
+#endif
 
 	// add DataTypeAttributes node
 	{
@@ -245,7 +252,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesRequestSPtr->nodesToAdd()->set(5, addNodesItemSPtr);
 	}
 
-			
 	// add VariableAttributes node
 	{
 		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
@@ -284,7 +290,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 		addNodesRequestSPtr->nodesToAdd()->set(6, addNodesItemSPtr);
 	}
-
 			
 	// add VariableTypeAttributes node
 #ifdef WITH_VariableTypeAttributes_Test
@@ -323,8 +328,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesRequestSPtr->nodesToAdd()->set(7, addNodesItemSPtr);
 	}
 #endif
-
-
+	
 
 	addNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
@@ -399,7 +403,14 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->timeoutHint() == 10000);
 
 	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd().get() != 0);
+
+#ifdef WITH_VariableTypeAttributes_Test
+	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd()->size() == 8);
+#endif
+
+#ifndef WITH_VariableTypeAttributes_Test
 	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd()->size() == 7);
+#endif
 
 	// verify DataTypeAttributes node
 	{
@@ -558,7 +569,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(viewAttributes->userWriteMask() == WriteableAttribute_DataType);
 	}
 
-	
 	// verify VariableAttributes node
 	{
 		AddNodesItem::SPtr addNodesItemSPtr;
@@ -597,7 +607,6 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(variableAttributes->writeMask() == WriteableAttribute_DataType);
 		BOOST_REQUIRE(variableAttributes->userWriteMask() == WriteableAttribute_DataType);
 	}
-
 	
 	// verify VariableTypeAttributes node
 #ifdef WITH_VariableTypeAttributes_Test
