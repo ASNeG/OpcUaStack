@@ -594,11 +594,11 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		BOOST_REQUIRE(addNodesItemSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 11);
 		BOOST_REQUIRE(addNodesItemSPtr->nodeClass()->nodeClassType() == NodeClassType_VariableType);
 
+#if 0
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().namespaceIndex() == 0);
 		BOOST_REQUIRE(addNodesItemSPtr->nodeAttributes().parameterTypeId().nodeId<OpcUaUInt32>() == 12351);
 		VariableTypeAttributes::SPtr variableTypeAttributes = addNodesItemSPtr->nodeAttributes().parameter<VariableTypeAttributes>();
 		BOOST_REQUIRE(variableTypeAttributes.get() != NULL);
-#if 0
 		BOOST_REQUIRE(variableTypeAttributes->displayName()->locale().value() == "de");
 		BOOST_REQUIRE(variableTypeAttributes->displayName()->text().value() == "resInfo");
 		BOOST_REQUIRE(variableTypeAttributes->description()->locale().value() == "de");
