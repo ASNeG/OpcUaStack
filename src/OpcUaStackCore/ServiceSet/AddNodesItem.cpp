@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/ServiceSet/AddNodesItem.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -125,13 +126,21 @@ namespace OpcUaStackCore
 	AddNodesItem::opcUaBinaryDecode(
 		std::istream& is)
 	{
+		std::cout << "AAA1" << std::endl;
 		parentNodeId_->opcUaBinaryDecode(is);
+		std::cout << "AAA2" << std::endl;
 		referenceTypeId_->opcUaBinaryDecode(is);
+		std::cout << "AAA3" << std::endl;
 		requestedNewNodeId_->opcUaBinaryDecode(is);
+		std::cout << "AAA4" << std::endl;
 		browseName_->opcUaBinaryDecode(is);
+		std::cout << "AAA5" << std::endl;
 		nodeClass_->opcUaBinaryDecode(is);
+		std::cout << "AAA6" << std::endl;
 		nodeAttributes_.opcUaBinaryDecode(is);
+		std::cout << "AAA7" << std::endl;
 		typeDefinition_->opcUaBinaryDecode(is);
+		std::cout << "AAA8" << std::endl;
 	}
 
 }

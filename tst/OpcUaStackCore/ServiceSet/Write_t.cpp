@@ -73,20 +73,12 @@ BOOST_AUTO_TEST_CASE(Write_Request)
 	writeRequestSPtr->requestHeader()->timeoutHint(300000);
 
 	// build NodesToWrite
-	// Variant
-	OpcUaVariant::SPtr variantSPtr;
-	variantSPtr = OpcUaVariant::construct();
-	variantSPtr->variant((OpcUaFloat)321);
-
-	// Data Value
-	OpcUaDataValue dataValue;
-	dataValue.variant(variantSPtr);
 
 	// WriteValue
 	writeValueSPtr = WriteValue::construct();
 	writeValueSPtr->nodeId((OpcUaInt16) 2, (OpcUaInt32) 9);
 	writeValueSPtr->attributeId((OpcUaInt32) 13);
-	writeValueSPtr->dataValue(dataValue);
+	writeValueSPtr->dataValue().variant()->variant((OpcUaFloat)321);
 
 	// WriteValueArray
 	writeRequestSPtr->writeValueArray()->set(writeValueSPtr);

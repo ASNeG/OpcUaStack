@@ -254,6 +254,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		std::cout << "XXXXXXXXXXX" << arrayLength << std::endl;
 		resize(arrayLength);
 		for (int32_t idx=0; idx<arrayLength; idx++) {
 			T value;

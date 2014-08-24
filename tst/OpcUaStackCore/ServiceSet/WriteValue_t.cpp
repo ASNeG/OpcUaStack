@@ -22,18 +22,11 @@ BOOST_AUTO_TEST_CASE(WriteValue_encode_decode)
 	OpcUaVariant::SPtr variantSPtr;
 	WriteValue value1, value2;
 
-	// Variant
-	variantSPtr = OpcUaVariant::construct();
-	variantSPtr->variant((OpcUaInt16)123);
-
-	// Data Value
-	dataValue.variant(variantSPtr);
-
 	// WriteValue
 	value1.nodeId((OpcUaInt16) 2, (OpcUaInt32) 9);
 	value1.attributeId((OpcUaInt32) 13);
 	value1.indexRange("TestString");
-	value1.dataValue(dataValue);
+	value1.dataValue().variant()->variant((OpcUaInt16)123);
 	
 	// Test
 	value1.opcUaBinaryEncode(ss);

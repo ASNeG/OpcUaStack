@@ -22,6 +22,19 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void OpcUaLocalizedText::set(const std::string& locale, const std::string& text)
+	{
+		locale_ = locale;
+		text_ = text;
+	}
+
+	void 
+	OpcUaLocalizedText::get(std::string& locale, std::string& text)
+	{
+		locale = locale_;
+		text = text_;
+	}
+
 	void 
 	OpcUaLocalizedText::locale(const OpcUaString& locale)
 	{
