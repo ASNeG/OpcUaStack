@@ -181,6 +181,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp">
       <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\FindServers_t.cpp">
+      <Filter>unittest\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\GetEndpoints_t.cpp">
+      <Filter>unittest\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\RegisterServer_t.cpp">
+      <Filter>unittest\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -221,6 +230,9 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\NodeManagementServiceSet">
       <UniqueIdentifier>{d364070e-fc5f-479b-b899-95ab9dce5a28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\DiscoveryServiceSet">
+      <UniqueIdentifier>{90e5e5e1-24d2-425f-a7e9-8f8069b22bb1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

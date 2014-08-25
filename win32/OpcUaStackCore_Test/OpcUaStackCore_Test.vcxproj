@@ -122,6 +122,8 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteSubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Filter_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\FindServers_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\GetEndpoints_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifySubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp" />
@@ -131,6 +133,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\RegisterServer_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Republish_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetMonitoringMode_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetPublishingMode_t.cpp" />

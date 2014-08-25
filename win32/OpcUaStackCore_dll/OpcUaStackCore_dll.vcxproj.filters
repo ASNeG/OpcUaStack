@@ -49,6 +49,9 @@
     <Filter Include="sc\ServiceSet\Common">
       <UniqueIdentifier>{071d92a3-eca9-45b9-a64e-a85bb96a2cd3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sc\ServiceSet\DiscoveryServiceSet">
+      <UniqueIdentifier>{9634c459-fcd1-4910-8ffd-d2ce6e8c113a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
@@ -309,12 +312,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ConfigXml.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClientConfig.h">
-      <Filter>sc\SecureChannel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServerConfig.h">
-      <Filter>sc\SecureChannel</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
@@ -491,6 +488,27 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h">
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsRequest.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsResponse.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\FindServersRequest.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\FindServersResponse.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisteredServer.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterServerRequest.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterServerResponse.h">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -737,12 +755,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\ConfigXml.cpp">
       <Filter>sc\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClientConfig.cpp">
-      <Filter>sc\SecureChannel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServerConfig.cpp">
-      <Filter>sc\SecureChannel</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventField.cpp">
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
@@ -916,6 +928,27 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp">
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerRequest.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerResponse.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisteredServer.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\FindServersRequest.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\FindServersResponse.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\GetEndpointsRequest.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\GetEndpointsResponse.cpp">
+      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

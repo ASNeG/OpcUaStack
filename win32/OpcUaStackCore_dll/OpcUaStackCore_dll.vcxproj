@@ -170,6 +170,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\FindServersRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\FindServersResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\LiteralOperand.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsRequest.h" />
@@ -192,6 +196,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisteredServer.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterServerRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterServerResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePath.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePathElement.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishRequest.h" />
@@ -310,6 +317,10 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFilterResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventNotificationList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\FindServersRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\FindServersResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\GetEndpointsRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\GetEndpointsResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\LiteralOperand.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsRequest.cpp" />
@@ -332,6 +343,9 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisteredServer.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePath.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePathElement.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishRequest.cpp" />
