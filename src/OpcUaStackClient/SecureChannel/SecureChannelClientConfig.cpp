@@ -1,11 +1,14 @@
-#include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Config.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackClient
 {
 
 	bool 
-	SecureChannelServerConfig::initial(SecureChannelServer::SPtr secureChannelServerSPtr, const std::string& configPrefix)
+	SecureChannelClientConfig::initial(SecureChannelClient::SPtr secureChannelClientSPtr, const std::string& configPrefix)
 	{
 		uint32_t uint32Value;
 		std::string stringValue;
@@ -15,13 +18,14 @@ namespace OpcUaStackCore
 
 		boost::optional<Config> childConfig = config->getChild(configPrefix);
 		if (!childConfig) {
-			Log(Error, "secure channel server configuration not found")
+			Log(Error, "secure channel client configuration not found")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix);
 			return false;
 		}
 
-		ChannelDataBase::SPtr channelDataBasePtr = secureChannelServerSPtr->channelDataBase();
+		ChannelDataBase::SPtr channelDataBasePtr = secureChannelClientSPtr->channelDataBase();
+		SecurityHeader::SPtr securityHeaderSPtr = secureChannelClientSPtr->securityHeader();
 
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
@@ -62,6 +66,35 @@ namespace OpcUaStackCore
 			return false;
 		}
 		channelDataBasePtr->endpointUrl(stringValue);
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// security parameter
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// SecurityPolicyUri (mandatory)
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		if (childConfig->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "SecurityPolicyUri");
+			return false;
+		}
+		securityHeaderSPtr->securityPolicyUri((OpcUaByte*)stringValue.c_str(), stringValue.length());
+		if (stringValue != "http://opcfoundation.org/UA/SecurityPolicy#None") {
+			Log(Error, "invalid parameter in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "SecurityPolicyUri")
+				.parameter("ParameterValue", stringValue);
+			return false;
+		}
 
 		return true;
 	}

@@ -1,0 +1,3 @@
+Debug\OpcUaStackClientServer_Test.exe
+
+pause

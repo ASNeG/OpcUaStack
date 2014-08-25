@@ -1,16 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="dll">
       <UniqueIdentifier>{02b263e8-136a-42dd-afd7-16b111eaad55}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <Filter Include="src">
+      <UniqueIdentifier>{1585b797-295e-456a-ad70-f1a007704b68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\SecureChannel">
+      <UniqueIdentifier>{48f712c7-596a-4824-a5e3-4767ae97d440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet">
+      <UniqueIdentifier>{15f6144d-515d-43dd-b5ef-8bd385176f05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\SessionServiceSet">
+      <UniqueIdentifier>{1666fe4f-2e21-445b-8b54-949a4d804ff0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -18,6 +23,21 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClient.h">
+      <Filter>src\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h">
+      <Filter>src\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionIf.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionConfig.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +49,18 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClient.cpp">
+      <Filter>src\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp">
+      <Filter>src\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\Session.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionConfig.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

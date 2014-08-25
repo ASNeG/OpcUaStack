@@ -33,10 +33,7 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
 	sourceTimestamp.dateTime(ptime1);
 	serverTimestamp.dateTime(ptime2);
 
-	OpcUaVariant::SPtr variantSPtr = OpcUaVariant::construct();
-	variantSPtr->variant((OpcUaUInt16)1234);
-
-	value1.variant(variantSPtr);
+	value1.variant()->variant((OpcUaUInt16)1234);
 	value1.statusCode((OpcUaStatusCode)12);
 	value1.sourceTimestamp(sourceTimestamp);
 	value1.sourcePicoseconds(1234);

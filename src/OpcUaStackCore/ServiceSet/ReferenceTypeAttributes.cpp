@@ -11,7 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ReferenceTypeAttributes::ReferenceTypeAttributes(void)
-		: specifiedAttributes_(),
+		: ExtensibleParameterBase(),
+		specifiedAttributes_(),
 		displayName_(OpcUaLocalizedText::construct()),
 		description_(OpcUaLocalizedText::construct()),
 		isAbstract_(false),

@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Ressourcendateien">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="sc">
       <UniqueIdentifier>{72f66d32-3614-4ef6-88d0-38841a400f68}</UniqueIdentifier>
     </Filter>
@@ -53,9 +49,6 @@
     <Filter Include="sc\ServiceSet\Common">
       <UniqueIdentifier>{071d92a3-eca9-45b9-a64e-a85bb96a2cd3}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
@@ -302,12 +295,6 @@
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
-      <Filter>sc\SecureChannel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClient.h">
-      <Filter>sc\SecureChannel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h">
       <Filter>sc\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Log.h">
@@ -745,12 +732,6 @@
       <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp">
-      <Filter>sc\SecureChannel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClient.cpp">
-      <Filter>sc\SecureChannel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp">
       <Filter>sc\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Log.cpp">

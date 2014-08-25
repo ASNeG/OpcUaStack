@@ -25,15 +25,12 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void 
-	OpcUaDataValue::variant(const OpcUaVariant::SPtr& opcUaVariantSPtr)
-	{
-		opcUaVariantSPtr_ = opcUaVariantSPtr;
-	}
-
 	OpcUaVariant::SPtr 
 	OpcUaDataValue::variant(void)
 	{
+		if (opcUaVariantSPtr_.get() == nullptr) {
+			opcUaVariantSPtr_ = OpcUaVariant::construct();
+		}
 		return opcUaVariantSPtr_;
 	}
 

@@ -80,9 +80,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Config.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ConfigXml.h" />
@@ -126,9 +123,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\RequestHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ResponseHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClient.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServer.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelServerConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityHeader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SequenceHeader.h" />
@@ -235,9 +229,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannelClientConfig.h">
-      <FileType>CppCode</FileType>
-    </ClInclude>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Config.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\ConfigXml.cpp" />
@@ -276,10 +267,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\RequestHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ResponseHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClient.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelClientConfig.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServer.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannelServerConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityHeader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SequenceHeader.cpp" />

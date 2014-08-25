@@ -60,6 +60,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0;..\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>OpcUaStackCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <HeapReserveSize>100000000</HeapReserveSize>
+      <HeapCommitSize>100000000</HeapCommitSize>
+      <StackReserveSize>100000000</StackReserveSize>
+      <StackCommitSize>100000000</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -105,8 +109,6 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\OpenSecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\RequestHeader_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\ResponseHeader_t.cpp" />
-    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannelClient_t.cpp" />
-    <ClCompile Include="..\..\tst\OpcUaStackCore\SecureChannel\SecureChannel_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />

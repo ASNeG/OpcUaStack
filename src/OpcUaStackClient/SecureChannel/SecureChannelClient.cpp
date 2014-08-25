@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
@@ -7,7 +7,9 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackClient
 {
 
 	SecureChannelClient::SecureChannelClient(IOService& ioService)

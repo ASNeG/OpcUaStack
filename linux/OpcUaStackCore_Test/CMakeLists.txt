@@ -23,7 +23,8 @@ find_library(
 file(
     GLOB_RECURSE
     OpcUaStackCore_SRCS
-    ../../tst/*
+    ../../tst/unittest.cpp
+    ../../tst/OpcUaStackCore/*
 )
 
 include_directories(

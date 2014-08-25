@@ -11,7 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MethodAttributes::MethodAttributes(void)
-		: specifiedAttributes_(),
+		: ExtensibleParameterBase()
+		, specifiedAttributes_(),
 		displayName_(OpcUaLocalizedText::construct()),
 		description_(OpcUaLocalizedText::construct()),
 		executable_(false),

@@ -1,22 +1,22 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
 
 #include <boost/asio/error.hpp>
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE(SecureChannelClient_)
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_)
 {
-	std::cout << "SecureChannel_t" << std::endl;
+	std::cout << "SecureChanneClientl_t" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 {
-#if 0
 	IOService ioService;
 	ioService.start(1);
 
@@ -26,14 +26,13 @@ BOOST_AUTO_TEST_CASE(SecureChannelClient_open)
 	config->setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	SecureChannelClient::SPtr secureChannelClient = SecureChannelClient::construct(ioService);
-	SecureChannelClientConfig::create(secureChannelClient, "TestConfig");
+	SecureChannelClientConfig::initial(secureChannelClient, "TestConfig");
 	secureChannelClient->connect();
 
-	//IOService::msecSleep(10000000);
+	IOService::msecSleep(2000);
 
 	Config::destroy();
 	ioService.stop();
-#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()

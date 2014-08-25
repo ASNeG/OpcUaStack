@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/ServiceSet/AddNodesItem.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {

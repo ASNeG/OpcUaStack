@@ -14,6 +14,9 @@ namespace OpcUaStackCore
 	    OpcUaLocalizedText(void);
 		~OpcUaLocalizedText(void);
 
+		void set(const std::string& locale, const std::string& text);
+		void get(std::string& locale, std::string& text);
+
 		void locale(const OpcUaString& locale);
 		void locale(const std::string& locale);
 		OpcUaString& locale(void);

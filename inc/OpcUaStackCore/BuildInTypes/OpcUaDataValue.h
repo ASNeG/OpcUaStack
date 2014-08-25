@@ -17,7 +17,6 @@ namespace OpcUaStackCore
 	    OpcUaDataValue(void);
 		~OpcUaDataValue(void);
 
-		void variant(const OpcUaVariant::SPtr& opcUaVariantSPtr);
 		OpcUaVariant::SPtr variant(void);
 		void statusCode(const OpcUaStatusCode& opcUaStatusCode);
 		OpcUaStatusCode statusCode(void);

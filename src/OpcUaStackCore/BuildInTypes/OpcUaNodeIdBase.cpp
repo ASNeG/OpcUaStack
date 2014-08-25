@@ -249,7 +249,10 @@ namespace OpcUaStackCore
 		OpcUaByte ef = encodingFlag();
 
 		if (type == OpcUaBuildInType_Unknown) {
-			return;
+			OpcUaUInt32 nodeId = 0;
+			OpcUaUInt16 namespaceIndex = 0;
+			const_cast<OpcUaNodeIdBase*>(this)->set(nodeId, namespaceIndex);
+			type =  nodeIdType();
 		}
 
 		if (namespaceIndex_ == 0 && type == OpcUaBuildInType_OpcUaUInt32) {

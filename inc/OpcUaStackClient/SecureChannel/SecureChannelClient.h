@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_SecureChannelClient_h__
-#define __OpcUaStackCore_SecureChannelClient_h__
+#ifndef __OpcUaStackClient_SessionClient_h__
+#define __OpcUaStackClient_SessionClient_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -7,7 +7,9 @@
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackClient
 {
 
 	typedef enum

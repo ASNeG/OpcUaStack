@@ -1,9 +1,9 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackCore/TCPChannel/TCPTestHandler.h"
 #include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 
@@ -13,6 +13,8 @@
 #define SOCKET_PORT		4841
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
+using namespace OpcUaStackServer;
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
 
