@@ -15,6 +15,9 @@
     <Filter Include="src\SecureChannel">
       <UniqueIdentifier>{ea33769a-380d-41ab-9c8b-5a7fc410f0e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\AddressSpaceModell">
+      <UniqueIdentifier>{111d809e-d6a2-459f-899e-ee5bb124e4ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -28,6 +31,18 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h">
       <Filter>src\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\BaseNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ReferenceTypeNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ViewNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ObjectNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +60,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp">
       <Filter>src\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\BaseNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ReferenceTypeNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ViewNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ObjectNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
