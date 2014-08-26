@@ -1,4 +1,4 @@
-#include "OpcUaStackServer/AddressSpaceModell/VariableNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
 namespace OpcUaStackServer
 {

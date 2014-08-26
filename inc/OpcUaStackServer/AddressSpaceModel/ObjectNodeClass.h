@@ -1,7 +1,7 @@
 #ifndef __OpcUaStackServer_ObjectNodeClass_h__
 #define __OpcUaStackServer_ObjectNodeClass_h__
 
-#include "OpcUaStackServer/AddressSpaceModell/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
 {
@@ -28,7 +28,7 @@ namespace OpcUaStackServer
 		OpcUaNodeIdList hasDescription_;
 
 		// standard properties
-		OpcUaString nodeVersion_;  // optional
+		OpcUaString::SPtr nodeVersion_;  // optional
 		// FIXME: Image icon_;	// optional
 		// FIXME: NamingRuleType nameingRule_;	// optional 
 	};

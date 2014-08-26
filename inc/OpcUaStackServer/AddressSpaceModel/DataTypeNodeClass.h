@@ -1,7 +1,7 @@
 #ifndef __OpcUaStackServer_DataTypeNodeClass_h__
 #define __OpcUaStackServer_DataTypeNodeClass_h__
 
-#include "OpcUaStackServer/AddressSpaceModell/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
 {

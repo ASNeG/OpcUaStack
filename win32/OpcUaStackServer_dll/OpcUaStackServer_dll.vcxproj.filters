@@ -15,8 +15,35 @@
     <Filter Include="src\SecureChannel">
       <UniqueIdentifier>{ea33769a-380d-41ab-9c8b-5a7fc410f0e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\AddressSpaceModell">
+    <Filter Include="src\InformationModel">
+      <UniqueIdentifier>{f02de807-d12b-4494-b918-2206713a5662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\AddressSpaceModel">
       <UniqueIdentifier>{111d809e-d6a2-459f-899e-ee5bb124e4ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\ObjectTypes">
+      <UniqueIdentifier>{ed713048-1959-487f-a2d4-e476d281ba7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\VariableTypes">
+      <UniqueIdentifier>{2e0eb743-f6a1-4663-a6e2-5406676af4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\ObjectAndVariables">
+      <UniqueIdentifier>{ac717e98-7135-487a-bef5-1f237122848d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\Methods">
+      <UniqueIdentifier>{a9294494-ad92-4c83-91e1-bdd5d0eeb3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\Views">
+      <UniqueIdentifier>{8166012b-c0fe-420b-b927-4037b527bfff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\ReferenceTypes">
+      <UniqueIdentifier>{6f2de133-9b2e-43dd-9924-85bdb2b4720e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\DataTypes">
+      <UniqueIdentifier>{2ce82e0d-7c63-4144-9ac4-b47398d2aeb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\InformationModel\Base">
+      <UniqueIdentifier>{bcab815b-4a9a-4e94-9c7a-2949d13b7af9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -32,26 +59,35 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\BaseNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h">
+      <Filter>src\InformationModel\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ReferenceTypeNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ViewNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ObjectNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\MethodNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\DataTypeNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceTypeNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\VariableNodeClass.h">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\BaseObjectType.h">
+      <Filter>src\InformationModel\ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -70,26 +106,35 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp">
       <Filter>src\SecureChannel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\BaseNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp">
+      <Filter>src\InformationModel\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ReferenceTypeNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ViewNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ObjectNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\VariableNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\MethodNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceTypeNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\DataTypeNodeClass.cpp">
-      <Filter>src\AddressSpaceModell</Filter>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\BaseObjectType.cpp">
+      <Filter>src\InformationModel\ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

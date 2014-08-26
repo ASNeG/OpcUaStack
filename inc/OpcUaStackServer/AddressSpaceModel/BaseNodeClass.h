@@ -26,15 +26,22 @@ namespace OpcUaStackServer
 		BaseNodeClass(void);
 		~BaseNodeClass(void);
 
+		OpcUaNodeId& nodeId(void);
+		NodeClass& nodeClass(void);
+		OpcUaQualifiedName& browseName(void);
+		OpcUaLocalizedText& displayName(void);
+
+	  protected:
+		NodeClass nodeClass_;
+
 	  private:
 		// attributes mandatorry
 		OpcUaNodeId nodeId_;
-		NodeClass nodeClass_;
 		OpcUaQualifiedName browseName_;
 		OpcUaLocalizedText displayName_;
 
 		// attributes optional
-		OpcUaLocalizedText description_;
+		OpcUaLocalizedText::SPtr description_;
 		OpcUaUInt32 writeMask_;
 		OpcUaUInt32 UserWriteMask_;
 	};

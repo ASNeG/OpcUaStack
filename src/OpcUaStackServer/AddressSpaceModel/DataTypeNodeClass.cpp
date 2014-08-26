@@ -1,4 +1,4 @@
-#include "OpcUaStackServer/AddressSpaceModell/DataTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 
 namespace OpcUaStackServer
 {

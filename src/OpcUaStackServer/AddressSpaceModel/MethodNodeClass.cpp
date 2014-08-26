@@ -1,4 +1,4 @@
-#include "OpcUaStackServer/AddressSpaceModell/MethodNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 
 namespace OpcUaStackServer
 {
