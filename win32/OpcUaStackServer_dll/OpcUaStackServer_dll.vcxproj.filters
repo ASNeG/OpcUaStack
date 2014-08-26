@@ -44,6 +44,15 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\ObjectNodeClass.h">
       <Filter>src\AddressSpaceModell</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\MethodNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\DataTypeNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModell\VariableNodeClass.h">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -71,6 +80,15 @@
       <Filter>src\AddressSpaceModell</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\ObjectNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\VariableNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\MethodNodeClass.cpp">
+      <Filter>src\AddressSpaceModell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModell\DataTypeNodeClass.cpp">
       <Filter>src\AddressSpaceModell</Filter>
     </ClCompile>
   </ItemGroup>
