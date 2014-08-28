@@ -190,6 +190,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\RegisterServer_t.cpp">
       <Filter>unittest\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryReadDetails_t.cpp">
+      <Filter>unittest\ServiceSet\HistoryAccessServices</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryData_t.cpp">
+      <Filter>unittest\ServiceSet\HistoryAccessServices</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryUpdateDetails_t.cpp">
+      <Filter>unittest\ServiceSet\HistoryAccessServices</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -233,6 +242,9 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\DiscoveryServiceSet">
       <UniqueIdentifier>{90e5e5e1-24d2-425f-a7e9-8f8069b22bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\HistoryAccessServices">
+      <UniqueIdentifier>{4d4fdf09-2d85-45a6-bb09-3541223d03cd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

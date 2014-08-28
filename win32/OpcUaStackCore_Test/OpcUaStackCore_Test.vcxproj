@@ -124,6 +124,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Filter_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\FindServers_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\GetEndpoints_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryData_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryReadDetails_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryUpdateDetails_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifyMonitoredItems_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ModifySubscription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp" />
