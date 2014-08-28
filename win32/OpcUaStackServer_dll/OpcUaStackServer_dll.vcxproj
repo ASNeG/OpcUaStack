@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\Attribute.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.h" />
@@ -96,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\BaseObjectType.h" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\Attribute.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.cpp" />
