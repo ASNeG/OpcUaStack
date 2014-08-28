@@ -105,7 +105,7 @@ namespace OpcUaStackServer
 
 
     template<typename DATATYPE, OpcUaUInt32 id_, OpcUaBuildInType type_>
-	  class AttributeMeta
+	  class AttributeMeta : public AttributeData<DATATYPE>
 	  {
 	    public:
 			AttributeMeta(void) 

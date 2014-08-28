@@ -4,12 +4,19 @@ namespace OpcUaStackServer
 {
 
 	DataTypeNodeClass::DataTypeNodeClass(void)
-	: BaseNodeClass()
+		: BaseNodeClass(NodeClass_DataType)
+	, isAbstract_()
 	{
 	}
 
 	DataTypeNodeClass::~DataTypeNodeClass(void)
 	{
+	}
+
+	IsAbstractAttribute& 
+	DataTypeNodeClass::isAbstract(void)
+	{
+		return isAbstract_;
 	}
 
 }

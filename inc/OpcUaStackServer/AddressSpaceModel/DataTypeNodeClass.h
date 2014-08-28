@@ -12,9 +12,11 @@ namespace OpcUaStackServer
 		DataTypeNodeClass(void);
 		~DataTypeNodeClass(void);
 
+		IsAbstractAttribute& isAbstract(void);
+
 	  private:
 		// attributes mandatory
-		OpcUaBoolean isAbstract_;
+		IsAbstractAttribute isAbstract_;
 
 		// references
 		OpcUaNodeIdList hasProperty_;

@@ -12,9 +12,11 @@ namespace OpcUaStackServer
 		ObjectNodeClass(void);
 		~ObjectNodeClass(void);
 
+		EventNotifierAttribute& eventNotifier(void);
+
 	  private:
 		// attributes mandatory
-		OpcUaBoolean eventNotifier_;
+		EventNotifierAttribute eventNotifier_;
 
 		// references
 		OpcUaNodeIdList hasComponent_;

@@ -12,18 +12,27 @@ namespace OpcUaStackServer
 		VariableNodeClass(void);
 		~VariableNodeClass(void);
 
+		ValueAttribute& value(void);
+		DataTypeAttribute& dataType(void);
+		ValueRanklAttribute& valueRank(void);
+		AccessLevelAttribute& accessLevel(void);
+		UserAccessLevelAttribute& userAccessLevel(void);
+		HistorizingAttribute& historizing(void);
+		ArrayDimensionsAttribute& arrayDimensions(void);
+		MinimumSamplingIntervalAttribute& minimumSamplingInterval(void);
+
 	  private:
 		// attributes mandatory
-		OpcUaDataValue value_;
-		OpcUaNodeId dataType_;
-		OpcUaInt32 valueRank_;
-		OpcUaByte accessLevel_;
-		OpcUaByte userAccessLevel_;
-		OpcUaBoolean historizing_;
+		ValueAttribute value_;
+		DataTypeAttribute dataType_;
+		ValueRanklAttribute valueRank_;
+		AccessLevelAttribute accessLevel_;
+		UserAccessLevelAttribute userAccessLevel_;
+		HistorizingAttribute historizing_;
 
 		// attributes optional
-		OpcUaUInt32Array arrayDimension_;
-		Duration minimumSamplingInterval_;
+		ArrayDimensionsAttribute arrayDimensions_;
+		MinimumSamplingIntervalAttribute minimumSamplingInterval_;
 
 		// references
 		OpcUaNodeIdList hasModellingRule_; 

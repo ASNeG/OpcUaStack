@@ -88,6 +88,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
@@ -104,6 +105,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceTypeNodeClass.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp" />

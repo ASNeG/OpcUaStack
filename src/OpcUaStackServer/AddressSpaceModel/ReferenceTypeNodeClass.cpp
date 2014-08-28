@@ -4,12 +4,33 @@ namespace OpcUaStackServer
 {
 
 	ReferenceTypeNodeClass::ReferenceTypeNodeClass(void)
-	: BaseNodeClass()
+	: BaseNodeClass(NodeClass_ReferenceType)
+	, isAbstract_()
+	, symmetric_()
+	, inverseName_()
 	{
 	}
 
 	ReferenceTypeNodeClass::~ReferenceTypeNodeClass(void)
 	{
+	}
+
+	IsAbstractAttribute& 
+	ReferenceTypeNodeClass::isAbstract(void)
+	{
+		return isAbstract_;
+	}
+
+	SymmetricAttribute& 
+	ReferenceTypeNodeClass::symmetric(void)
+	{
+		return symmetric_;
+	}
+
+	InverseNameAttribute& 
+	ReferenceTypeNodeClass::inverseName(void)
+	{
+		return inverseName_;
 	}
 
 }

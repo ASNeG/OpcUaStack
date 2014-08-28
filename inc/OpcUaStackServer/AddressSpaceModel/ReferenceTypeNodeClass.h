@@ -12,13 +12,17 @@ namespace OpcUaStackServer
 		ReferenceTypeNodeClass(void);
 		~ReferenceTypeNodeClass(void);
 
+		IsAbstractAttribute& isAbstract(void);
+		SymmetricAttribute& symmetric(void);
+		InverseNameAttribute& inverseName(void);
+
 	  private:
 		// attributes mandatory
-		OpcUaBoolean isAbstract_;
-		OpcUaBoolean symmetric_;
-
+		IsAbstractAttribute isAbstract_;
+		SymmetricAttribute symmetric_;
+	
 		// attributes optional
-		OpcUaLocalizedText inverseName_;
+		InverseNameAttribute inverseName_;
 
 		// references
 		OpcUaNodeIdList hasProperty_;

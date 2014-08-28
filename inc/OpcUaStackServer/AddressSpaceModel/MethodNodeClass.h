@@ -12,10 +12,13 @@ namespace OpcUaStackServer
 		MethodNodeClass(void);
 		~MethodNodeClass(void);
 
+		ExecutableAttribute& executable(void);
+		UserExecutableAttribute& userExecutable(void);
+
 	  private:
 		// attributes mandatory
-		OpcUaBoolean executable_;
-		OpcUaBoolean userExecutable_;
+		ExecutableAttribute executable_;
+		UserExecutableAttribute userExecutable_;
 
 		// references
 		OpcUaNodeIdList hasProperty_;

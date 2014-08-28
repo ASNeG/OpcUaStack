@@ -12,7 +12,7 @@ namespace OpcUaStackServer
 		ObjectTypeNodeClass(void);
 		~ObjectTypeNodeClass(void);
 
-		OpcUaBoolean& isAbstract(void);
+		IsAbstractAttribute& isAbstract(void);
 
 		OpcUaNodeIdList& hasComponent(void);
 		OpcUaNodeIdList& hasProperty(void);
@@ -21,7 +21,7 @@ namespace OpcUaStackServer
 
 	  private:
 		// attributes mandatory
-		OpcUaBoolean isAbstract_;
+		  IsAbstractAttribute isAbstract_;
 
 		// references
 		OpcUaNodeIdList hasComponent_;

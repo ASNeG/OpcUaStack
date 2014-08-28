@@ -4,15 +4,20 @@ namespace OpcUaStackServer
 {
 
 	ObjectNodeClass::ObjectNodeClass(void)
-	: BaseNodeClass()
-	, eventNotifier_(false)
+	: BaseNodeClass(NodeClass_Object)
+	, eventNotifier_()
 	, nodeVersion_()
 	{
-		nodeClass_ = NodeClass_Object;
 	}
 
 	ObjectNodeClass::~ObjectNodeClass(void)
 	{
+	}
+
+	EventNotifierAttribute& 
+	ObjectNodeClass::eventNotifier(void)
+	{
+		return eventNotifier_;
 	}
 
 }

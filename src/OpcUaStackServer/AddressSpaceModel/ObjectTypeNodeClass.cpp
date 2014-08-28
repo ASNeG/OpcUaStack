@@ -4,17 +4,16 @@ namespace OpcUaStackServer
 {
 
 	ObjectTypeNodeClass::ObjectTypeNodeClass(void)
-	: BaseNodeClass()
-	, isAbstract_(false)
+	: BaseNodeClass(NodeClass_ObjectType)
+	, isAbstract_()
 	{
-		nodeClass_ = NodeClass_ObjectType;
 	}
 
 	ObjectTypeNodeClass::~ObjectTypeNodeClass(void)
 	{
 	}
 
-	OpcUaBoolean& 
+	IsAbstractAttribute& 
 	ObjectTypeNodeClass::isAbstract(void)
 	{
 		return isAbstract_;

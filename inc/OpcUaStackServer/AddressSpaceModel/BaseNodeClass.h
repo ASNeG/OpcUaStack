@@ -2,7 +2,7 @@
 #define __OpcUaStackServer_BaseNodeClass_h__
 
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/AddressSpaceModel/NodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 
 using namespace OpcUaStackCore;
 
@@ -13,26 +13,25 @@ namespace OpcUaStackServer
 	{
 	  public: 
 		BaseNodeClass(void);
+		BaseNodeClass(NodeClass nodeClass);
 		~BaseNodeClass(void);
 
-		OpcUaNodeId& nodeId(void);
-		NodeClass& nodeClass(void);
-		OpcUaQualifiedName& browseName(void);
-		OpcUaLocalizedText& displayName(void);
-
-	  protected:
-		NodeClass nodeClass_;
+		NodeIdAttribute& nodeId(void);
+		NodeClassAttribute& nodeClass(void);
+		BrowseNameAttribute& browseName(void);
+		DisplayNameAttribute& displayName(void);
+		DescriptionAttribute& description(void);
+		WriteMaskAttribute& writeMask(void);
+		UserWriteMaskAttribute& userWriteMask(void);
 
 	  private:
-		// attributes mandatorry
-		OpcUaNodeId nodeId_;
-		OpcUaQualifiedName browseName_;
-		OpcUaLocalizedText displayName_;
-
-		// attributes optional
-		OpcUaLocalizedText::SPtr description_;
-		OpcUaUInt32 writeMask_;
-		OpcUaUInt32 UserWriteMask_;
+		NodeIdAttribute nodeId_;
+		NodeClassAttribute nodeClass_;
+		BrowseNameAttribute browseName_;
+		DisplayNameAttribute displayName_;
+		DescriptionAttribute description_;
+		WriteMaskAttribute writeMask_;
+		UserWriteMaskAttribute userWriteMask_;
 	};
 
 }

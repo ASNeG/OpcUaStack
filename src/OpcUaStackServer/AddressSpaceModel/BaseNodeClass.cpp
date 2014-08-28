@@ -9,8 +9,19 @@ namespace OpcUaStackServer
 	, browseName_()
 	, displayName_()
 	, description_()
-	, writeMask_(0)
-	, UserWriteMask_(0)
+	, writeMask_()
+	, userWriteMask_()
+	{
+	}
+
+	BaseNodeClass::BaseNodeClass(NodeClass nodeClass)
+	: nodeId_()
+	, nodeClass_(nodeClass)
+	, browseName_()
+	, displayName_()
+	, description_()
+	, writeMask_()
+	, userWriteMask_()
 	{
 	}
 
@@ -18,28 +29,46 @@ namespace OpcUaStackServer
 	{
 	}
 
-	OpcUaNodeId& 
+	NodeIdAttribute& 
 	BaseNodeClass::nodeId(void)
 	{
 		return nodeId_;
 	}
-
-	NodeClass&
+		
+	NodeClassAttribute& 
 	BaseNodeClass::nodeClass(void)
 	{
 		return nodeClass_;
 	}
-	
-	OpcUaQualifiedName& 
+		
+	BrowseNameAttribute& 
 	BaseNodeClass::browseName(void)
 	{
 		return browseName_;
 	}
-	
-	OpcUaLocalizedText& 
+		
+	DisplayNameAttribute& 
 	BaseNodeClass::displayName(void)
 	{
 		return displayName_;
+	}
+		
+	DescriptionAttribute& 
+	BaseNodeClass::description(void)
+	{
+		return description_;
+	}
+		
+	WriteMaskAttribute& 
+	BaseNodeClass::writeMask(void)
+	{
+		return writeMask_;
+	}
+		
+	UserWriteMaskAttribute& 
+	BaseNodeClass::userWriteMask(void)
+	{
+		return userWriteMask_;
 	}
 
 }

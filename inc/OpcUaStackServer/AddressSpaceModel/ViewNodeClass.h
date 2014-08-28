@@ -12,10 +12,13 @@ namespace OpcUaStackServer
 		ViewNodeClass(void);
 		~ViewNodeClass(void);
 
+		ContainsNoLoopsAttribute& containsNoLoops(void);
+		EventNotifierAttribute& eventNotifier(void);
+
 	  private:
 		// attributes mandatory
-		OpcUaBoolean containsNoLoops_;
-		OpcUaByte eventNotifier_;
+		ContainsNoLoopsAttribute containsNoLoops_;
+		EventNotifierAttribute eventNotifier_;
 
 		// references
 		OpcUaNodeIdList hierarchicalReferences_;

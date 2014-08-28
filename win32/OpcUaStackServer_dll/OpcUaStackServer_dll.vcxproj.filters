@@ -92,6 +92,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\Attribute.h">
       <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -140,6 +143,9 @@
       <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\Attribute.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.cpp">
       <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
   </ItemGroup>
