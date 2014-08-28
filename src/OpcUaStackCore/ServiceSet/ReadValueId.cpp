@@ -24,13 +24,11 @@ namespace OpcUaStackCore
 	{
 	}
 
-
 	void 
 	ReadValueId::nodeId(const OpcUaNodeId::SPtr nodeId)
 	{
 		nodeIdSPtr_ = nodeId;
 	}
-
 
 	OpcUaNodeId::SPtr
 	ReadValueId::nodeId(void)
