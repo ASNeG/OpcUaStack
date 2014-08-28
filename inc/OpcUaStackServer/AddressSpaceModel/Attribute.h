@@ -89,7 +89,7 @@ namespace OpcUaStackServer
 			  data_ = data;
 		  }
 
-		  DATATYPE& data(void) const {
+		  DATATYPE& data(void) {
 			  return data_;
 		  }
 

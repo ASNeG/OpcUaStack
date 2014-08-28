@@ -91,6 +91,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerCapabilitiesType.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerType.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h" />
     <ClInclude Include="stdafx.h" />
@@ -110,6 +112,8 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\BaseObjectType.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerCapabilitiesType.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerType.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />
     <ClCompile Include="dllmain.cpp">

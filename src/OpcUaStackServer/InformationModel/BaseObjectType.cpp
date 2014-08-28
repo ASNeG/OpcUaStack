@@ -7,12 +7,13 @@ namespace OpcUaStackServer
 	BaseObjectType::BaseObjectType(void)
 	: ObjectTypeNodeClass()
 	{
-#if 0
-		nodeId().set(OpcUaId_BaseObjectType);
-		browseName().set("BaseObjectType");
-		displayName().set("en", "BaseObjectType");
+		// BaseNodeClass
+		nodeId().data().set(OpcUaId_BaseObjectType);
+		browseName().data().set("BaseObjectType");
+		displayName().data().set("en", "BaseObjectType");
 
-		isAbstract() = false;
+		// ObjectTypeNodeClass
+		isAbstract().data() = false;
 
 		OpcUaNodeId nodeId;
 		nodeId.set(OpcUaId_ServerType); hasSubtypes().push_back(nodeId);
@@ -27,7 +28,6 @@ namespace OpcUaStackServer
 		nodeId.set(OpcUaId_FolderType); hasSubtypes().push_back(nodeId);
 		nodeId.set(OpcUaId_DataTypeEncodingType); hasSubtypes().push_back(nodeId);
 		nodeId.set(OpcUaId_DataTypeSystemType); hasSubtypes().push_back(nodeId);
-#endif
 	}
 
 
