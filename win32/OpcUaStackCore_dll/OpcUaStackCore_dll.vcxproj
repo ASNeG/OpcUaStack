@@ -183,6 +183,13 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryEvent.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryEventFieldList.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryModifiedData.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResult.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadValueId.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModificationInfo.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PerformUpdateEnumeration.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadAtTimeDetails.h" />
@@ -348,6 +355,13 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryEvent.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryEventFieldList.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryModifiedData.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResult.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadValueId.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\LiteralOperand.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModificationInfo.cpp" />

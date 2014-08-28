@@ -199,6 +199,12 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryUpdateDetails_t.cpp">
       <Filter>unittest\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryUpdate_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryRead_t.cpp">
+      <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">

@@ -567,6 +567,27 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PerformUpdateEnumeration.h">
       <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResult.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadValueId.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadRequest.h">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResponse.h">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResult.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.h">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.h">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1057,6 +1078,27 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteEventDetails.cpp">
       <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResult.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadValueId.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadRequest.cpp">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResponse.cpp">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResult.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.cpp">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.cpp">
+      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
