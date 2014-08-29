@@ -28,7 +28,7 @@ namespace OpcUaStackServer
 		AttributeId_DataType = 14,
 		AttributeId_ValueRank = 15,
 		AttributeId_ArrayDimensions = 16,
-		AttributeId_AccessLevel´= 17,
+		AttributeId_AccessLevel = 17,
 		AttributeId_UserAccessLevel = 18,
 		AttributeId_MinimumSamplingInterval = 19,
 		AttributeId_Historizing = 20,
