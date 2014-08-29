@@ -27,12 +27,14 @@ namespace OpcUaStackCore
 		bool setChild(const std::string& path, Config& config);
 
 		bool addValue(const std::string& path, const std::string& value);
+		bool addChild(const std::string& path, Config& config);
 
 		std::string getValue(void);
 		boost::optional<std::string> getValue(const std::string& path);
 		std::string getValue(const std::string& path, const std::string& defaultValue);
-		void getValues(const std::string& valueName, std::vector<std::string>& valueVec);
+		void getValues(const std::string& path, std::vector<std::string>& valueVec);
 		boost::optional<Config> getChild(const std::string& path);
+		void getChilds(const std::string& path, std::vector<Config>& configVec);
 
 		template<typename T>
 		  bool getConfigParameter(T& value)
@@ -115,6 +117,7 @@ namespace OpcUaStackCore
 
 	  private:
 		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
+		void getChildFromName(const std::string& valueName, std::vector<Config>& valueVec);
 
 		boost::property_tree::ptree child_;
 	};

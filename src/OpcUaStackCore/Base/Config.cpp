@@ -76,6 +76,14 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool 
+	Config::addChild(const std::string& path, Config& config)
+	{
+		boost::property_tree::ptree child = config.child();
+		child_.add_child(path, child);
+		return true;
+	}
+
 	std::string 
 	Config::getValue(void)
 	{
@@ -121,6 +129,22 @@ namespace OpcUaStackCore
 		return config;
 	}
 
+	void 
+	Config::getChilds(const std::string& path, std::vector<Config>& configVec)
+	{
+		std::string valueName = path;
+		size_t pos = path.find_last_of(".");
+		if (pos == std::string::npos) {
+			return getChildFromName(valueName, configVec);
+		}
+
+		valueName = path.substr(pos+1);
+		std::string prefixPath = path.substr(0, pos);
+		boost::optional<Config> cfg = getChild(prefixPath);
+		if (!cfg) return;
+		return cfg->getChilds(valueName, configVec);
+	}
+
 	bool 
 	Config::exist(const std::string& path)
 	{
@@ -150,9 +174,25 @@ namespace OpcUaStackCore
 		boost::property_tree::ptree::iterator it;
 		for (it = child_.begin(); it !=  child_.end(); it++) {
 			if (it->first == valueName) {
+				if (it->second.begin() != it->second.end()) continue;
+
 				boost::optional<std::string> value = it->second.data();
 				if (!value) continue;
 				valueVec.push_back(*value);
+			}
+		}
+	}
+
+	void 
+	Config::getChildFromName(const std::string& valueName, std::vector<Config>& valueVec)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = child_.begin(); it != child_.end(); it++) {
+			if (it->first == valueName) {
+				if (it->second.begin() == it->second.end()) continue;
+
+				Config cfg(it->second);
+				valueVec.push_back(cfg);
 			}
 		}
 	}
