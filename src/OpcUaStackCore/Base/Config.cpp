@@ -69,6 +69,13 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool 
+	Config::addValue(const std::string& path, const std::string& value)
+	{
+		child_.add(path, value);
+		return true;
+	}
+
 	std::string 
 	Config::getValue(void)
 	{
@@ -87,6 +94,22 @@ namespace OpcUaStackCore
 		boost::optional<std::string> value = getValue(path);
 		if (value) return *value;
 		return defaultValue;
+	}
+
+	void 
+	Config::getValues(const std::string& path, std::vector<std::string>& valueVec)
+	{
+		std::string valueName = path;
+		size_t pos = path.find_last_of(".");
+		if (pos == std::string::npos) {
+			return getValuesFromName(valueName, valueVec);
+		}
+
+		valueName = path.substr(pos+1);
+		std::string prefixPath = path.substr(0, pos);
+		boost::optional<Config> cfg = getChild(prefixPath);
+		if (!cfg) return;
+		return cfg->getValues(valueName, valueVec);
 	}
 
 	boost::optional<Config>
@@ -119,6 +142,19 @@ namespace OpcUaStackCore
 	Config::clear(void)
 	{
 		child_.clear();
+	}
+
+	void 
+	Config::getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = child_.begin(); it !=  child_.end(); it++) {
+			if (it->first == valueName) {
+				boost::optional<std::string> value = it->second.data();
+				if (!value) continue;
+				valueVec.push_back(*value);
+			}
+		}
 	}
 
 }

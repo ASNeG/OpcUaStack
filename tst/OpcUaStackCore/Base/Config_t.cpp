@@ -200,4 +200,41 @@ BOOST_AUTO_TEST_CASE(Config_getConfigParameter)
 	BOOST_REQUIRE(cfg2->getConfigParameter(numberValue) == false);
 }
 
+BOOST_AUTO_TEST_CASE(Config_value_array)
+{
+	Config cfg;
+
+	BOOST_REQUIRE(cfg.setValue("p1", "v1") == true);
+	BOOST_REQUIRE(cfg.setValue("p1", "v2") == false);
+
+	BOOST_REQUIRE(cfg.addValue("p2", "v1") == true);
+	BOOST_REQUIRE(cfg.addValue("p2", "v2") == true);
+
+	BOOST_REQUIRE(cfg.addValue("p3.p1", "v1") == true);
+	BOOST_REQUIRE(cfg.addValue("p3.p1", "v2") == true);
+
+	BOOST_REQUIRE(cfg.addValue("p3.p2.p3", "v1") == true);
+	BOOST_REQUIRE(cfg.addValue("p3.p2.p3", "v2") == true);
+
+	std::vector<std::string> valueVec;
+
+	valueVec.clear();
+	cfg.getValues("p2", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 2);
+	BOOST_REQUIRE(valueVec[0] == "v1");
+	BOOST_REQUIRE(valueVec[1] == "v2");
+
+	valueVec.clear();
+	cfg.getValues("p3.p1", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 2);
+	BOOST_REQUIRE(valueVec[0] == "v1");
+	BOOST_REQUIRE(valueVec[1] == "v2");
+
+	valueVec.clear();
+	cfg.getValues("p3.p2.p3", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 2);
+	BOOST_REQUIRE(valueVec[0] == "v1");
+	BOOST_REQUIRE(valueVec[1] == "v2");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

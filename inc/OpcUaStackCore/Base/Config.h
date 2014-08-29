@@ -3,6 +3,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -25,9 +26,12 @@ namespace OpcUaStackCore
 		bool setValue(const std::string& path, const std::string& value);
 		bool setChild(const std::string& path, Config& config);
 
+		bool addValue(const std::string& path, const std::string& value);
+
 		std::string getValue(void);
 		boost::optional<std::string> getValue(const std::string& path);
 		std::string getValue(const std::string& path, const std::string& defaultValue);
+		void getValues(const std::string& valueName, std::vector<std::string>& valueVec);
 		boost::optional<Config> getChild(const std::string& path);
 
 		template<typename T>
@@ -110,6 +114,8 @@ namespace OpcUaStackCore
 		void clear(void);
 
 	  private:
+		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
+
 		boost::property_tree::ptree child_;
 	};
 
