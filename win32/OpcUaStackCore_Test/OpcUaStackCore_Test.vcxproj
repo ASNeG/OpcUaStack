@@ -87,6 +87,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Config_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\IOService_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Log_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Url_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\BuildInTypes_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaArray_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaByteString_t.cpp" />
