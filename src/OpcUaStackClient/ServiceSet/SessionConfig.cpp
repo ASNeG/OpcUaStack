@@ -24,41 +24,22 @@ namespace OpcUaStackClient
 			return false;
 		}
 
-#if 0
-		ChannelDataBase::SPtr channelDataBasePtr = secureChannelClientSPtr->channelDataBase();
-		SecurityHeader::SPtr securityHeaderSPtr = secureChannelClientSPtr->securityHeader();
 
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------
 		//
-		// general channel parameter
+		// create session
 		//
 		// --------------------------------------------------------------------------
 		//
-		// ProtocolVersion (optional) 
-		// ReceivedBufferSize (optional)
-		// SendBufferSize (optional)
-		// MaxMessageSize (optional)
-		// MaxChunkCount (optional)
 		// EndpointUrl (mandatory)
+		// SessionName (mandatory)
+		// RequestedSessionTimeout (optional)
+		// MaxResponseMessageSize (optional)
 		//
 		// --------------------------------------------------------------------------
 		// --------------------------------------------------------------------------
-		childConfig->getConfigParameter("ProtocolVersion", uint32Value, "0");
-		channelDataBasePtr->protocolVersion(uint32Value);
-
-		childConfig->getConfigParameter("ReceivedBufferSize", uint32Value, "65536");
-		channelDataBasePtr->receivedBufferSize(uint32Value);
-
-		childConfig->getConfigParameter("SendBufferSize", uint32Value, "65536");
-		channelDataBasePtr->sendBufferSize(uint32Value);
-
-		childConfig->getConfigParameter("MaxMessageSize", uint32Value, "16777216");
-		channelDataBasePtr->maxMessageSize(uint32Value);
-		
-		childConfig->getConfigParameter("MaxChunkCount", uint32Value, "5000");
-		channelDataBasePtr->maxChunkCount(uint32Value);
-		
+		CreateSessionParameter& createSessionParameter = sessionSPtr->createSessionParameter();
 		if (childConfig->getConfigParameter("EndpointUrl", stringValue) == false) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
@@ -66,37 +47,79 @@ namespace OpcUaStackClient
 				.parameter("ParameterName", "EndpointUrl");
 			return false;
 		}
-		channelDataBasePtr->endpointUrl(stringValue);
+		createSessionParameter.endpointUrl_ = stringValue;
 
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// security parameter
-		//
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// SecurityPolicyUri (mandatory)
-		//
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		if (childConfig->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+		if (childConfig->getConfigParameter("SessionName", stringValue) == false) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix)
-				.parameter("ParameterName", "SecurityPolicyUri");
+				.parameter("ParameterName", "SessionName");
 			return false;
 		}
-		securityHeaderSPtr->securityPolicyUri((OpcUaByte*)stringValue.c_str(), stringValue.length());
-		if (stringValue != "http://opcfoundation.org/UA/SecurityPolicy#None") {
-			Log(Error, "invalid parameter in configuration")
+		createSessionParameter.sessionName_ = stringValue;
+
+		childConfig->getConfigParameter("RequestedSessiontimeout", uint32Value, "120000");
+		createSessionParameter.requestedSessionTimeout_ = uint32Value;
+
+		childConfig->getConfigParameter("MaxResponseMessageSize", uint32Value, "0");
+		createSessionParameter.maxResponseMessageSize_ = uint32Value;
+	
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// application description
+		//
+		// --------------------------------------------------------------------
+		// 
+		// ApplicationDescription.ApplicationUri (mandatory)
+		// ApplicationDescription.ProductUri (mandatory)
+		// ApplicationDescription.ApplicationName.Locale (mandatory)
+		// ApplicationDescription.ApplicationName.Text (mandatory)
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		ApplicationDescription::SPtr applicationDescriptionSPtr = sessionSPtr->applicationDescription();
+
+		if (childConfig->getConfigParameter("ApplicationDescription.ApplicationUri", stringValue) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix)
-				.parameter("ParameterName", "SecurityPolicyUri")
-				.parameter("ParameterValue", stringValue);
+				.parameter("ParameterName", "ApplicationDescription.ApplicationUri");
 			return false;
 		}
-#endif
+		applicationDescriptionSPtr->applicationUri(stringValue);
+
+		if (childConfig->getConfigParameter("ApplicationDescription.ProductUri", stringValue) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "ApplicationDescription.ProductUri");
+			return false;
+		}
+		applicationDescriptionSPtr->productUri(stringValue);
+
+		std::string applicationNameLocale;
+		std::string applicationNameText;
+
+		if (childConfig->getConfigParameter("ApplicationDescription.ApplicationName.Locale", applicationNameLocale) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "ApplicationDescription.ApplicationName.Locale");
+			return false;
+		}
+
+		if (childConfig->getConfigParameter("ApplicationDescription.ApplicationName.Text", applicationNameText) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "ApplicationDescription.ApplicationName.Text");
+			return false;
+		}
+
+		applicationDescriptionSPtr->applicationName().set(applicationNameLocale, applicationNameText);
+
+		applicationDescriptionSPtr->applicationType(ApplicationType_Client);
 
 		return true;
 	}
