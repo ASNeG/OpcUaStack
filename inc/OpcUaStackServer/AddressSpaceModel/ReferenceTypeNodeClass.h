@@ -1,12 +1,14 @@
 #ifndef __OpcUaStackServer_ReferenceTypeNodeClass_h__
 #define __OpcUaStackServer_ReferenceTypeNodeClass_h__
 
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
 {
 
-	class ReferenceTypeNodeClass : public BaseNodeClass
+	class DLLEXPORT ReferenceTypeNodeClass : public BaseNodeClass, public ObjectPool<ReferenceTypeNodeClass>
 	{
 	  public:
 		ReferenceTypeNodeClass(void);

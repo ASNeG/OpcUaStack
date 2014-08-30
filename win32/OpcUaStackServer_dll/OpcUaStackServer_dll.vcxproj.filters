@@ -45,6 +45,9 @@
     <Filter Include="src\InformationModel\Base">
       <UniqueIdentifier>{bcab815b-4a9a-4e94-9c7a-2949d13b7af9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\NodeSet">
+      <UniqueIdentifier>{5f6e8c63-f2b3-48c2-a546-72bf09b8956b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerCapabilitiesType.h">
       <Filter>src\InformationModel\ObjectTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetParser.h">
+      <Filter>src\NodeSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +165,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerCapabilitiesType.cpp">
       <Filter>src\InformationModel\ObjectTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetParser.cpp">
+      <Filter>src\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

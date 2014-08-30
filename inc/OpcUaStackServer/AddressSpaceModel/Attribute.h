@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_Attribute_h__
 
 #include <boost/optional.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/AddressSpaceModel/NodeClass.h"
 
@@ -44,7 +45,7 @@ namespace OpcUaStackServer
 	} AttributeModel;
 
 
-	class Attribute
+	class DLLEXPORT Attribute
 	{
 	  public:
 		Attribute(void);
@@ -60,7 +61,7 @@ namespace OpcUaStackServer
 
 	
 	template<typename DATATYPE>
-	  class AttributeData : public Attribute
+	  class DLLEXPORT AttributeData : public Attribute
 	  {
 	    public:
 		  AttributeData(void) 
@@ -105,7 +106,7 @@ namespace OpcUaStackServer
 
 
     template<typename DATATYPE, OpcUaUInt32 id_, OpcUaBuildInType type_>
-	  class AttributeMeta : public AttributeData<DATATYPE>
+	  class DLLEXPORT AttributeMeta : public AttributeData<DATATYPE>
 	  {
 	    public:
 			AttributeMeta(void) 

@@ -1,12 +1,14 @@
 #ifndef __OpcUaStackServer_MethodNodeClass_h__
 #define __OpcUaStackServer_MethodNodeClass_h__
 
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
 {
 
-	class MethodNodeClass : public BaseNodeClass
+	class DLLEXPORT MethodNodeClass : public BaseNodeClass, public ObjectPool<MethodNodeClass>
 	{
 	  public:
 		MethodNodeClass(void);

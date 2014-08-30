@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackServer_BaseNodeClass_h__
 #define __OpcUaStackServer_BaseNodeClass_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 
@@ -9,7 +10,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class BaseNodeClass
+	class DLLEXPORT BaseNodeClass
 	{
 	  public: 
 		BaseNodeClass(void);

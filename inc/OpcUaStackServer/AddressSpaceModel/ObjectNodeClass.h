@@ -1,12 +1,14 @@
 #ifndef __OpcUaStackServer_ObjectNodeClass_h__
 #define __OpcUaStackServer_ObjectNodeClass_h__
 
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 namespace OpcUaStackServer
 {
 
-	class ObjectNodeClass : public BaseNodeClass
+	class DLLEXPORT ObjectNodeClass : public BaseNodeClass, public ObjectPool<ObjectNodeClass>
 	{
 	  public:
 		ObjectNodeClass(void);
