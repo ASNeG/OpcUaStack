@@ -10,7 +10,7 @@ namespace OpcUaStackClient
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
-	, sessionSecureChannelIf_(nullptr)
+	, sessionIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	{
 	}
@@ -49,7 +49,7 @@ namespace OpcUaStackClient
 		createSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendCreateSession;
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->createSessionRequest(sb);
+		if (sessionIf_ != nullptr) sessionIf_->createSessionRequest(sb);
 	}
 
 	void 
@@ -78,9 +78,9 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
+	Session::sessionIf(SessionIf* sessionIf)
 	{
-		sessionSecureChannelIf_ = sessionSecureChannelIf;
+		sessionIf_ = sessionIf;
 	}
 
 }

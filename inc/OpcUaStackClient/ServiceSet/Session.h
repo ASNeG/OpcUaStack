@@ -39,7 +39,7 @@ namespace OpcUaStackClient
 		void activateSession(void);
 
 		OpcUaStackCore::ApplicationDescription::SPtr applicationDescription(void);
-		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
+		void sessionIf(SessionIf* sessionIf);
 
 		void receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
@@ -51,7 +51,7 @@ namespace OpcUaStackClient
 		  uint32_t requestHandle_;
 		  OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;
 		  CreateSessionParameter createSessionParameter_;
-		  SessionSecureChannelIf *sessionSecureChannelIf_;
+		  SessionIf* sessionIf_;
 		  OpcUaStackCore::CreateSessionResponse::SPtr createSessionResponseSPtr_;
 	};
 

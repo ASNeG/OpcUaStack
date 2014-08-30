@@ -21,8 +21,13 @@
     <ClCompile Include="..\..\tst\unittest.cpp">
       <Filter>Unittest</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackClient\ServiceSet\SessionClient_t.cpp">
+    <ClCompile Include="..\..\tst\OpcUaStackClient\ServiceSet\Session_t.cpp">
       <Filter>Unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\tst\OpcUaStackClient\ServiceSet\SessionTestHandler.h">
+      <Filter>Unittest\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 namespace OpcUaStackClient
 {
 
-	class SessionSecureChannelIf
+	class SessionIf
 	{
 	  public:
 	    virtual void createSessionRequest(boost::asio::streambuf& sb) = 0;
