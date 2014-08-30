@@ -25,6 +25,85 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	OpcUaDiagnosticInfo::setSymbolicId(
+		const OpcUaInt32 symbolicId)
+	{
+		symbolicId_ = symbolicId;
+	}
+
+	OpcUaInt32
+	OpcUaDiagnosticInfo::getSymbolicId() const
+	{
+		return symbolicId_;
+	}
+
+	void
+	OpcUaDiagnosticInfo::setNamespaceUri(
+		const OpcUaInt32 namespaceUri)
+	{
+		namespaceUri_ = namespaceUri;
+	}
+
+	OpcUaInt32
+	OpcUaDiagnosticInfo::getNamespaceUri() const
+	{
+		return namespaceUri_;
+	}
+
+	void
+	OpcUaDiagnosticInfo::setLocalizedText(
+		const OpcUaInt32 localizedText)
+	{
+		localizedText_ = localizedText;
+	}
+
+	OpcUaInt32
+	OpcUaDiagnosticInfo::getLocalizedText() const
+	{
+		return localizedText_;
+	}
+
+	void
+	OpcUaDiagnosticInfo::setLocale(
+			const OpcUaInt32 locale)
+	{
+		locale_ = locale;
+	}
+
+	OpcUaInt32
+	OpcUaDiagnosticInfo::getLocale() const
+	{
+		return locale_;
+	}
+
+	void
+	OpcUaDiagnosticInfo::setAdditionalInfo(
+		const OpcUaString& additionalInfo)
+	{
+		additionalInfo_ = additionalInfo;
+	}
+
+	const OpcUaString&
+	OpcUaDiagnosticInfo::getAdditionalInfo() const
+	{
+		return additionalInfo_;
+	}
+
+	void
+	OpcUaDiagnosticInfo::setInnerStatusCode(
+		const OpcUaStatusCode innerStatusCode)
+	{
+		innerStatusCode_ = innerStatusCode;
+	}
+
+	OpcUaStatusCode
+	OpcUaDiagnosticInfo::getInnerStatusCode() const
+	{
+		return innerStatusCode_;
+	}
+
+
 	void 
 	OpcUaDiagnosticInfo::opcUaBinaryEncode(std::ostream& os) const
 	{

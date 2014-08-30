@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/AddNodesResponse.h"
+#include "OpcUaStackCore/ServiceSet/AddReferencesResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -10,74 +10,74 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	AddNodesResponse::AddNodesResponse(void)
+	AddReferencesResponse::AddReferencesResponse(void)
 		: responseHeaderSPtr_(ResponseHeader::construct()),
-		addNodesResultArraySPtr_(AddNodesResultArray::construct()),
+		addReferencesResultArraySPtr_(AddReferencesResultArray::construct()),
 		diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
-	AddNodesResponse::~AddNodesResponse(void)
+	AddReferencesResponse::~AddReferencesResponse(void)
 	{
 	}
 
 	void
-	AddNodesResponse::responseHeader(
+	AddReferencesResponse::responseHeader(
 		const ResponseHeader::SPtr responseHeaderSPtr)
 	{
 		responseHeaderSPtr_ = responseHeaderSPtr;
 	}
 
 	ResponseHeader::SPtr
-	AddNodesResponse::responseHeader(void) const
+	AddReferencesResponse::responseHeader(void) const
 	{
 		return responseHeaderSPtr_;
 	}
 
 
 	void
-	AddNodesResponse::results(
-		const AddNodesResultArray::SPtr addNodesResultArraySPtr)
+	AddReferencesResponse::results(
+		const AddReferencesResultArray::SPtr addReferencesResultArraySPtr)
 	{
-		addNodesResultArraySPtr_ = addNodesResultArraySPtr;
+		addReferencesResultArraySPtr_ = addReferencesResultArraySPtr;
 	}
 
-	AddNodesResultArray::SPtr
-	AddNodesResponse::results() const
+	AddReferencesResultArray::SPtr
+	AddReferencesResponse::results() const
 	{
-		return addNodesResultArraySPtr_;
+		return addReferencesResultArraySPtr_;
 	}
 
 
 	void
-	AddNodesResponse::diagnosticInfos(
+	AddReferencesResponse::diagnosticInfos(
 		const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
 	{
 		diagnosticInfoArraySPtr_ = diagnosticInfosSPtr;
 	}
 
 	OpcUaDiagnosticInfoArray::SPtr
-	AddNodesResponse::diagnosticInfos(void) const
+	AddReferencesResponse::diagnosticInfos(void) const
 	{
 		return diagnosticInfoArraySPtr_;
 	}
 		
 
 	void 
-	AddNodesResponse::opcUaBinaryEncode(
+	AddReferencesResponse::opcUaBinaryEncode(
 		std::ostream& os) const
 	{
 		responseHeaderSPtr_->opcUaBinaryEncode(os);
-		addNodesResultArraySPtr_->opcUaBinaryEncode(os);
+		addReferencesResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	AddNodesResponse::opcUaBinaryDecode(
+	AddReferencesResponse::opcUaBinaryDecode(
 		std::istream& is)
 	{
 		responseHeaderSPtr_->opcUaBinaryDecode(is);
-		addNodesResultArraySPtr_->opcUaBinaryDecode(is);
+		addReferencesResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}
 

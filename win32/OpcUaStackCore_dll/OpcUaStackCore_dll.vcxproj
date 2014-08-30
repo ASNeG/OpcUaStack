@@ -133,6 +133,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResult.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesItem.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateFilterResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
@@ -161,6 +165,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesItem.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ElementOperand.h" />
@@ -277,6 +285,10 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResult.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesItem.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AggregateFilterResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ApplicationDescription.cpp" />
@@ -304,6 +316,10 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataTypeAttributes.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesItem.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ElementOperand.cpp" />

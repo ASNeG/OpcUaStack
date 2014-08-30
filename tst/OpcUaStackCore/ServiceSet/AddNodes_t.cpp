@@ -9,6 +9,7 @@
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/ServiceSet/AddNodesResponse.h"
 
 #include <streambuf>
 #include <iostream>
@@ -627,5 +628,130 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(ep.deregisterFactoryElement((OpcUaUInt32)12352));
 }
 
+
+BOOST_AUTO_TEST_CASE(AddNodes_Response)
+{
+	// uint32_t pos;
+	MessageHeader::SPtr messageHeaderSPtr;
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	OpcUaGuid::SPtr opcUaGuidSPtr;
+	AddNodesResponse::SPtr addNodesResponseSPtr;
+	SequenceHeader::SPtr sequenceHeaderSPtr;
+	OpcUaNodeId typeId;
+
+	// stream
+	boost::asio::streambuf sb1;
+	std::iostream ios1(&sb1);
+	boost::asio::streambuf sb2;
+	std::iostream ios2(&sb2);
+	boost::asio::streambuf sb;
+	std::iostream ios(&sb);
+
+	// encode channel id
+	OpcUaUInt32 channelId;
+	channelId = 153451225;
+	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
+
+	// encode token id
+	OpcUaInt32 tokenId;
+	tokenId = 1;
+	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
+
+	// encode sequence header
+	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr->sequenceNumber(53);
+	sequenceHeaderSPtr->requestId(3);
+	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
+
+	// encode message type id
+	typeId.nodeId(OpcUaId_AddNodesResponse_Encoding_DefaultBinary);
+	typeId.opcUaBinaryEncode(ios1);
+
+	// encode AddNodesResponseResponse
+	addNodesResponseSPtr = AddNodesResponse::construct();
+
+	addNodesResponseSPtr->responseHeader()->time(ptime);
+	addNodesResponseSPtr->responseHeader()->requestHandle(1);
+	addNodesResponseSPtr->responseHeader()->serviceResult(Success);
+
+	AddNodesResultArray::SPtr addNodesResultArraySPtr = AddNodesResultArray::construct();
+	addNodesResultArraySPtr->resize(1);
+	{
+		AddNodesResult::SPtr addNodesResultSPtr = AddNodesResult::construct();
+		addNodesResultSPtr->statusCode(Success);
+		OpcUaNodeId::SPtr addedNodeIdSPtr = OpcUaNodeId::construct(); 
+		addedNodeIdSPtr->set(11, 130);
+		addNodesResultSPtr->addedNodeId(addedNodeIdSPtr);
+		addNodesResultArraySPtr->set(0, addNodesResultSPtr);		
+	}
+
+	addNodesResponseSPtr->results(addNodesResultArraySPtr);
+
+	addNodesResponseSPtr->opcUaBinaryEncode(ios1);
+
+	// encode MessageHeader
+	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr->messageType(MessageType_Message);
+	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
+	messageHeaderSPtr->opcUaBinaryEncode(ios2);
+
+	// stream
+	ios << ios2.rdbuf() << ios1.rdbuf();
+	OpcUaStackCore::dumpHex(ios);
+
+	/*
+	std::stringstream ss;
+	ss	<< "4d 53 47 46 40 00 00 00  d9 7a 25 09 01 00 00 00"
+		<< "35 00 00 00 03 00 00 00  01 00 d6 01 00 00 00 00"
+		<< "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
+		<< "00 00 00 00 ff ff ff ff  00 00 00 00 00 00 00 00";
+	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
+	*/
+
+	
+	// decode MessageHeader
+	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr->opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
+	
+	// decode channel id
+	OpcUaNumber::opcUaBinaryDecode(ios, channelId);
+	BOOST_REQUIRE(channelId == 153451225);
+
+	// decode token id
+	OpcUaNumber::opcUaBinaryDecode(ios, tokenId);
+	BOOST_REQUIRE(tokenId == 1);
+	
+	// decode sequence header
+	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
+	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);
+
+	// decode message type id
+	typeId.opcUaBinaryDecode(ios);
+	BOOST_REQUIRE(typeId.namespaceIndex() == 0);
+	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_AddNodesResponse_Encoding_DefaultBinary);
+
+	//decode AddNodesResponse
+	addNodesResponseSPtr = AddNodesResponse::construct();
+	addNodesResponseSPtr->opcUaBinaryDecode(ios);
+
+	BOOST_REQUIRE(addNodesResponseSPtr->responseHeader()->time().dateTime() == ptime);
+	BOOST_REQUIRE(addNodesResponseSPtr->responseHeader()->requestHandle() == 1);
+	BOOST_REQUIRE(addNodesResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(addNodesResponseSPtr->results()->size() == 1);
+	BOOST_REQUIRE(addNodesResponseSPtr->diagnosticInfos()->size() == 0);
+
+	{
+		AddNodesResult::SPtr addNodesResultSPtr;
+		BOOST_REQUIRE(addNodesResponseSPtr->results()->get(0, addNodesResultSPtr));
+		BOOST_REQUIRE(addNodesResultSPtr.get() != 0);
+		BOOST_REQUIRE(addNodesResultSPtr->statusCode() == Success);
+		BOOST_REQUIRE(addNodesResultSPtr->addedNodeId()->namespaceIndex() == 130);
+		BOOST_REQUIRE(addNodesResultSPtr->addedNodeId()->nodeId<OpcUaUInt32>() == 11);
+	}
+
+}
 
 BOOST_AUTO_TEST_SUITE_END()

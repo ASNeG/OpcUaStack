@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/AddNodesResponse.h"
+#include "OpcUaStackCore/ServiceSet/DeleteNodesResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -6,78 +6,78 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// AddNodesResponse
+	// DeleteNodesResponse
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	AddNodesResponse::AddNodesResponse(void)
+	DeleteNodesResponse::DeleteNodesResponse(void)
 		: responseHeaderSPtr_(ResponseHeader::construct()),
-		addNodesResultArraySPtr_(AddNodesResultArray::construct()),
+		deleteNodesResultArraySPtr_(DeleteNodesResultArray::construct()),
 		diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
-	AddNodesResponse::~AddNodesResponse(void)
+	DeleteNodesResponse::~DeleteNodesResponse(void)
 	{
 	}
 
 	void
-	AddNodesResponse::responseHeader(
+	DeleteNodesResponse::responseHeader(
 		const ResponseHeader::SPtr responseHeaderSPtr)
 	{
 		responseHeaderSPtr_ = responseHeaderSPtr;
 	}
 
 	ResponseHeader::SPtr
-	AddNodesResponse::responseHeader(void) const
+	DeleteNodesResponse::responseHeader(void) const
 	{
 		return responseHeaderSPtr_;
 	}
 
 
 	void
-	AddNodesResponse::results(
-		const AddNodesResultArray::SPtr addNodesResultArraySPtr)
+	DeleteNodesResponse::results(
+		const DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr)
 	{
-		addNodesResultArraySPtr_ = addNodesResultArraySPtr;
+		deleteNodesResultArraySPtr_ = deleteNodesResultArraySPtr;
 	}
 
-	AddNodesResultArray::SPtr
-	AddNodesResponse::results() const
+	DeleteNodesResultArray::SPtr
+	DeleteNodesResponse::results() const
 	{
-		return addNodesResultArraySPtr_;
+		return deleteNodesResultArraySPtr_;
 	}
 
 
 	void
-	AddNodesResponse::diagnosticInfos(
+	DeleteNodesResponse::diagnosticInfos(
 		const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
 	{
 		diagnosticInfoArraySPtr_ = diagnosticInfosSPtr;
 	}
 
 	OpcUaDiagnosticInfoArray::SPtr
-	AddNodesResponse::diagnosticInfos(void) const
+	DeleteNodesResponse::diagnosticInfos(void) const
 	{
 		return diagnosticInfoArraySPtr_;
 	}
 		
 
 	void 
-	AddNodesResponse::opcUaBinaryEncode(
+	DeleteNodesResponse::opcUaBinaryEncode(
 		std::ostream& os) const
 	{
 		responseHeaderSPtr_->opcUaBinaryEncode(os);
-		addNodesResultArraySPtr_->opcUaBinaryEncode(os);
+		deleteNodesResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	AddNodesResponse::opcUaBinaryDecode(
+	DeleteNodesResponse::opcUaBinaryDecode(
 		std::istream& is)
 	{
 		responseHeaderSPtr_->opcUaBinaryDecode(is);
-		addNodesResultArraySPtr_->opcUaBinaryDecode(is);
+		deleteNodesResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}
 
