@@ -1,6 +1,8 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackClient/ServiceSet/SessionTestHandler.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
@@ -21,6 +23,7 @@ BOOST_AUTO_TEST_CASE(Session_)
 
 BOOST_AUTO_TEST_CASE(Session_open)
 {
+#if 0
 	SessionTestHandler sessionTestHandler;
 	SecureChannelTestHandler secureChannelTestHandler;
 	IOService ioService;
@@ -58,10 +61,19 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	session->createSession();
 	BOOST_REQUIRE(sessionTestHandler.createSessionRequestCount_ == 1);
 
-	IOService::msecSleep(2000);
+	OpcUaNodeId nodeId;
+	nodeId.set(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+
+	secureChannelTestHandler.receiveCondition_.condition(1, 0);
+	secureChannel->send(nodeId, sessionTestHandler.sb_);
+	BOOST_REQUIRE(secureChannelTestHandler.receiveCondition_.waitForCondition(1000) == true);
+	session->receive(secureChannelTestHandler.nodeId_, secureChannelTestHandler.sb_); 
+
+	IOService::msecSleep(200000);
 
 	Config::destroy();
 	ioService.stop();
+#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()

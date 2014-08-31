@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 		MessageHeader(void);
 		virtual ~MessageHeader(void);
 
+		const char* messageTypeString(void); 
 		void messageType(const MessageType& messageType);
 		MessageType messageType(void) const;
 		void messageSize(const OpcUaUInt32& messageSize);
@@ -33,6 +34,8 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		char messageTypeString_[3];
+
 		MessageType messageType_;
 		OpcUaUInt32 messageSize_;
 	};

@@ -3,8 +3,10 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
+#include "OpcUaStackCore/SecureChannel/SecurityToken.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelIf.h"
 
@@ -35,6 +37,7 @@ namespace OpcUaStackClient
 
 		bool connect(void);
 		bool disconnect(void);
+		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1);
 
 	  private:
 
@@ -44,6 +47,7 @@ namespace OpcUaStackClient
 
 		void handleConnect(const boost::system::error_code& error);
 		void handleWriteHelloComplete(const boost::system::error_code& error);
+		void handleWriteSendComplete(const boost::system::error_code& error);
 		
 		void handleReadMessageHeaderError(void);
 		void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
@@ -52,8 +56,9 @@ namespace OpcUaStackClient
 		//void handleReadMessageHeaderTypeHello(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeError(MessageHeader& messageHeader);
-		//void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
+		void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 
+		void handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
 		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered);
@@ -67,6 +72,7 @@ namespace OpcUaStackClient
 		boost::asio::deadline_timer* reconnectTimer_;
 
 		SecurityHeader::SPtr securityHeaderSPtr_;
+		SecurityToken::SPtr securityTokenSPtr_;
 	};
 
 }

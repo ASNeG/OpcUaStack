@@ -1,5 +1,6 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -53,6 +54,15 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		if (bytes_transfered == 0) {
+			Log(Error, "connection is closed by partner")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_);
+
+			handleReadMessageHeaderError();
+			return;
+		}
+
 		// decode message header
 		std::iostream is(&is_);
 		MessageHeader messageHeader;
@@ -101,10 +111,13 @@ namespace OpcUaStackCore
 	void 
 	SecureChannel::handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader)
 	{
+		std::string messageTypeHexString;
+		OpcUaStackCore::byteSequenceToHexString((uint8_t*)messageHeader.messageTypeString(), 3, messageTypeHexString);
+
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
 			.parameter("PartnerPort", partnerPort_)
-			.parameter("MessageType", "---");
+			.parameter("MessageType", messageTypeHexString);
 		handleReadMessageHeaderError();
 	}
 		

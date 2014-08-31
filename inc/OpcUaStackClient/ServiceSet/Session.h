@@ -45,7 +45,7 @@ namespace OpcUaStackClient
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
 		void sessionApplicationIf(SessionApplicationIf* sessionApplicationIf);
 
-		void receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		void receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
 
  	  private:

@@ -18,6 +18,8 @@ namespace OpcUaStackClient
 		, connectCondition_()
 		, disconnectCount_(0)
 		, disconnectConndition_()
+		, receiveCount_(0)
+		, receiveCondition_()
 		{
 		}
 
@@ -33,11 +35,27 @@ namespace OpcUaStackClient
 			disconnectCount_++;
 		}
 
+		void receive(OpcUaNodeId& nodeId, boost::asio::streambuf& sb)
+		{
+			std::iostream sbs(&sb);
+			std::iostream sbt(&sb_);
+			OpcUaStackCore::duplicate(sbs, sbt);
+			receiveCondition_.conditionValueDec();
+			nodeId.copyTo(nodeId_);
+			receiveCount_++;
+
+		}
+
 		uint32_t connectCount_;
 		Condition connectCondition_;
 
 		uint32_t disconnectCount_;
 		Condition disconnectConndition_;
+
+		uint32_t receiveCount_;
+		Condition receiveCondition_;
+		OpcUaNodeId nodeId_;
+		boost::asio::streambuf sb_;
 	};
 
 }

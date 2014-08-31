@@ -2,6 +2,7 @@
 #define __OPcUaStackClient_SessionTestHandler_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include <iostream>
 
@@ -37,7 +38,7 @@ namespace OpcUaStackClient
 		void createSessionRequest(boost::asio::streambuf& sb) {
 			std::iostream sbs(&sb);
 			std::iostream sbt(&sb_);
-			sbt << sbs;
+			OpcUaStackCore::duplicate(sbs, sbt);
 			createSessionRequestCount_++;
 		}
 

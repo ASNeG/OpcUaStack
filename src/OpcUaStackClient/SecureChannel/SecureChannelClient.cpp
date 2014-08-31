@@ -63,6 +63,143 @@ namespace OpcUaStackClient
 		return true;
 	}
 
+	void 
+	SecureChannelClient::send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb)
+	{
+		if (secureChannelClientState_ != SecureChannelClientState_Ready) {
+			Log(Error, "cannot send message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecurechannelState", secureChannelClientState_);
+			return;
+		}
+
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+
+		// encode channel id
+		OpcUaNumber::opcUaBinaryEncode(ios1, securityTokenSPtr_->channelId());
+
+		// encode token id
+		OpcUaNumber::opcUaBinaryEncode(ios1, securityTokenSPtr_->tokenId());
+
+		// encode sequence header
+		sequenceHeader_.incSequenceNumber();
+		sequenceHeader_.incRequestId();
+		sequenceHeader_.opcUaBinaryEncode(ios1);
+
+		// encode message type id
+		nodeId.opcUaBinaryEncode(ios1);
+
+		// encode MessageHeader
+		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
+		messageHeaderSPtr->messageType(MessageType_Message);
+		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(sb)+8);
+		messageHeaderSPtr->opcUaBinaryEncode(ios2);
+
+		tcpConnection_.async_write(
+			sb2, sb1, sb, boost::bind(&SecureChannelClient::handleWriteSendComplete, this, boost::asio::placeholders::error)
+		);
+	}
+
+	void 
+	SecureChannelClient::handleWriteSendComplete(const boost::system::error_code& error)
+	{
+		if (error) {
+			Log(Error, "send message error")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		if (secureChannelClientState_ != SecureChannelClientState_Ready) {
+			Log(Error, "cannot receive message, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			startReconnectTimer();
+			return;
+		}
+	}
+
+	void 
+	SecureChannelClient::handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader)
+	{
+		if (secureChannelClientState_ != SecureChannelClientState_Ready) {
+			Log(Error, "cannot read message header, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		tcpConnection_.async_read_exactly(
+			is_,
+			boost::bind(&SecureChannelClient::handleReadMessage, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+			messageHeader.messageSize() - 8
+		);
+		
+	}
+
+	void 
+	SecureChannelClient::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
+	{
+		if (error) {
+			Log(Error, "cannot read message body")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("ReconnectTimeout", reconnectTimeout_)
+				.parameter("ErrorMessage", error.message());
+
+			startReconnectTimer();
+			return;
+		}
+
+		if (bytes_transfered == 0) {
+			Log(Error, "cannot read message body, because secure channel is closed by partner")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("ReconnectTimeout", reconnectTimeout_);
+
+			startReconnectTimer();
+			return;
+		}
+
+		if (secureChannelClientState_ != SecureChannelClientState_Ready) {
+			Log(Error, "cannot read message body, because secure channel is in invalid state")
+				.parameter("PartnerAddress", partnerAddress_.to_string())
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("SecureChannelState", secureChannelClientState_);
+			tcpConnection_.close();
+			startReconnectTimer();
+			return;
+		}
+
+		std::iostream is(&is_);
+
+		OpcUaUInt32 channelId;
+		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+
+		OpcUaUInt32 securityTokenId;
+		OpcUaNumber::opcUaBinaryDecode(is, securityTokenId);
+
+		SequenceHeader sequenceHeader;
+		sequenceHeader.opcUaBinaryDecode(is);
+
+		OpcUaNodeId nodeId;
+		nodeId.opcUaBinaryDecode(is);
+
+		if (secureChannelIf_ != nullptr) secureChannelIf_->receive(nodeId, is_);
+
+		asyncReadMessageHeader();
+	}
+
 	void
 	SecureChannelClient::startReconnectTimer(void)
 	{
@@ -108,7 +245,8 @@ namespace OpcUaStackClient
 			Log(Error, "cannot open secure channel")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
 				.parameter("PartnerPort", partnerPort_)
-				.parameter("ReconnectTimeout", reconnectTimeout_);
+				.parameter("ReconnectTimeout", reconnectTimeout_)
+				.parameter("ErrorMessage", error.message());
 
 			startReconnectTimer();
 			return;
@@ -152,7 +290,8 @@ namespace OpcUaStackClient
 		if (error) {
 			Log(Error, "send hello message error")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_);
+				.parameter("PartnerPort", partnerPort_)
+				.parameter("ErrorMessage", error.message());
 
 			startReconnectTimer();
 			return;
@@ -314,6 +453,7 @@ namespace OpcUaStackClient
 
 		OpenSecureChannelResponse openSecureChannelResponse;
 		openSecureChannelResponse.opcUaBinaryDecode(is);
+		securityTokenSPtr_ = openSecureChannelResponse.securityToken();
 
 		secureChannelClientState_ = SecureChannelClientState_Ready;
 		if (secureChannelIf_ != nullptr) secureChannelIf_->connect();

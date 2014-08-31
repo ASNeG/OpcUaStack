@@ -13,6 +13,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	const char* 
+	MessageHeader::messageTypeString(void)
+	{
+		return messageTypeString_;
+	}
+
 	void 
 	MessageHeader::messageType(const MessageType& messageType) 
 	{
@@ -84,29 +90,28 @@ namespace OpcUaStackCore
 	void 
 	MessageHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		char messageType[3];
-		is.read(messageType, 3);
+		is.read(messageTypeString_, 3);
 
-		if (strncmp(messageType, "HEL", 3) == 0) {
+		if (strncmp(messageTypeString_, "HEL", 3) == 0) {
 			messageType_ = MessageType_Hello;
 		}
-		else if (strncmp(messageType, "ACK", 3) == 0) {
+		else if (strncmp(messageTypeString_, "ACK", 3) == 0) {
 			messageType_ = MessageType_Acknowledge;
 		}
-		else if (strncmp(messageType, "ACK", 3) == 0) {
+		else if (strncmp(messageTypeString_, "ACK", 3) == 0) {
 			messageType_ = MessageType_Error;
 		}
-		else if (strncmp(messageType, "OPN", 3) == 0) {
+		else if (strncmp(messageTypeString_, "OPN", 3) == 0) {
 			messageType_ = MessageType_OpenSecureChannel;
 		}
-		else if (strncmp(messageType, "CLO", 3) == 0) {
+		else if (strncmp(messageTypeString_, "CLO", 3) == 0) {
 			messageType_ = MessageType_CloseSecureChannel;
 		}
-		else if (strncmp(messageType, "MSG", 3) == 0) {
+		else if (strncmp(messageTypeString_, "MSG", 3) == 0) {
 			messageType_ = MessageType_Message;
 		}
 		else {
-			messageType_ = MessageType_Hello;
+			messageType_ = MessageType_Unknown;
 		}
 			
 		char buf;

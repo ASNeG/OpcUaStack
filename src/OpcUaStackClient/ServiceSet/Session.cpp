@@ -24,7 +24,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
 		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
@@ -77,6 +77,8 @@ namespace OpcUaStackClient
 		std::iostream ios(&sb);
 		createSessionResponseSPtr_->opcUaBinaryDecode(ios);
 		sessionState_ = SessionState_ReceiveCreateSession;
+
+		std::cout << "receive create session response..." << std::endl;
 	}
 		
 	void 
