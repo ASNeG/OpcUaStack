@@ -82,9 +82,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClient.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelIf.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelTestHandler.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionIf.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionTestHandler.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>

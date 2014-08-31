@@ -28,6 +28,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	SecureChannelClient::secureChannelIf(SecureChannelIf* secureChannelIf)
+	{
+		secureChannelIf_ = secureChannelIf;
+	}
+
+	void 
 	SecureChannelClient::securityHeader(SecurityHeader::SPtr securityHeaderSPtr)
 	{
 		securityHeaderSPtr_ = securityHeaderSPtr;
@@ -310,7 +316,7 @@ namespace OpcUaStackClient
 		openSecureChannelResponse.opcUaBinaryDecode(is);
 
 		secureChannelClientState_ = SecureChannelClientState_Ready;
-		std::cout << "serviceResult=" << openSecureChannelResponse.responseHeader()->serviceResult() << std::endl;
+		if (secureChannelIf_ != nullptr) secureChannelIf_->connect();
 
 		asyncReadMessageHeader();
 	}

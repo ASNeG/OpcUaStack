@@ -8,12 +8,12 @@ namespace OpcUaStackClient
 {
 
 	bool 
-	SecureChannelClientConfig::initial(SecureChannelClient::SPtr secureChannelClientSPtr, const std::string& configPrefix)
+	SecureChannelClientConfig::initial(SecureChannelClient::SPtr secureChannelClientSPtr, const std::string& configPrefix, Config* config)
 	{
 		uint32_t uint32Value;
 		std::string stringValue;
 
-		Config* config = Config::instance();
+		if (config == nullptr) config = Config::instance();
 		std::string configurationFileName = config->getValue("Global.ConfigurationFileName", "Unknown");
 
 		boost::optional<Config> childConfig = config->getChild(configPrefix);

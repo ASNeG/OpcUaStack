@@ -6,6 +6,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -28,6 +29,7 @@ namespace OpcUaStackClient
 		SecureChannelClient(IOService& ioService);
 		~SecureChannelClient(void);
 
+		void secureChannelIf(SecureChannelIf* secureChannelIf);
 		void securityHeader(SecurityHeader::SPtr securityHeader);
 		SecurityHeader::SPtr securityHeader(void) const;
 
@@ -55,6 +57,8 @@ namespace OpcUaStackClient
 		void handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
 		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered);
+
+		SecureChannelIf* secureChannelIf_;
 
 		TCPConnector tcpConnector_;
 		SecureChannelClientState secureChannelClientState_;

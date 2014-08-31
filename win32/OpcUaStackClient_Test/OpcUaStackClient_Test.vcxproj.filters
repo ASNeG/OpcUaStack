@@ -25,9 +25,4 @@
       <Filter>Unittest\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\tst\OpcUaStackClient\ServiceSet\SessionTestHandler.h">
-      <Filter>Unittest\ServiceSet\SessionServiceSet</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>

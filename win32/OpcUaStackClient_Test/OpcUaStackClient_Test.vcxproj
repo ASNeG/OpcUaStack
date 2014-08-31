@@ -15,9 +15,6 @@
     <ClCompile Include="..\..\tst\OpcUaStackClient\ServiceSet\Session_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\tst\OpcUaStackClient\ServiceSet\SessionTestHandler.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5656B250-5427-4B96-82F1-CED188B24775}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

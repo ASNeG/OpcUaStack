@@ -16,6 +16,7 @@ namespace OpcUaStackClient
 	typedef enum
 	{
 		SessionState_Close,
+		SessionState_ConnectingToSecureChannel,
 		SessionState_SendCreateSession,
 		SessionState_ReceiveCreateSession,
 	} SessionState;
@@ -35,11 +36,14 @@ namespace OpcUaStackClient
 		Session(void);
 		~Session(void);
 
+		void connect(void);
 		void createSession(void);
 		void activateSession(void);
 
 		OpcUaStackCore::ApplicationDescription::SPtr applicationDescription(void);
 		void sessionIf(SessionIf* sessionIf);
+		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
+		void sessionApplicationIf(SessionApplicationIf* sessionApplicationIf);
 
 		void receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
@@ -52,6 +56,8 @@ namespace OpcUaStackClient
 		  OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;
 		  CreateSessionParameter createSessionParameter_;
 		  SessionIf* sessionIf_;
+		  SessionSecureChannelIf* sessionSecureChannelIf_;
+		  SessionApplicationIf* sessionApplicationIf_;
 		  OpcUaStackCore::CreateSessionResponse::SPtr createSessionResponseSPtr_;
 	};
 

@@ -1,6 +1,9 @@
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/Base/Log.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -10,7 +13,8 @@ namespace OpcUaStackClient
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
-	, sessionIf_(nullptr)
+	, sessionSecureChannelIf_(nullptr)
+	, sessionApplicationIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	{
 	}
@@ -33,6 +37,21 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	Session::connect(void)
+	{
+		if (sessionState_ != SessionState_Close) {
+			Log(Error, "cannot connect, because session is in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
+		sessionState_ = SessionState_ConnectingToSecureChannel;
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->connectToSecureChannel();
+	}
+
+	void 
 	Session::createSession(void)
 	{
 		boost::asio::streambuf sb;
@@ -49,7 +68,7 @@ namespace OpcUaStackClient
 		createSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendCreateSession;
-		if (sessionIf_ != nullptr) sessionIf_->createSessionRequest(sb);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->createSessionRequest(sb);
 	}
 
 	void 
@@ -78,9 +97,21 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::sessionIf(SessionIf* sessionIf)
+	Session::sessionIf(SessionIf *sessionIf) 
 	{
 		sessionIf_ = sessionIf;
+	}
+
+	void 
+	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
+	{
+		sessionSecureChannelIf_ = sessionSecureChannelIf;
+	}
+
+	void
+	Session::sessionApplicationIf(SessionApplicationIf* sessionApplicationIf)
+	{
+		sessionApplicationIf_ = sessionApplicationIf;
 	}
 
 }
