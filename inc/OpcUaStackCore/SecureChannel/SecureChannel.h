@@ -16,6 +16,7 @@ namespace OpcUaStackCore
 		SecureChannel(IOService& ioService);
 		~SecureChannel(void);
 
+		void debugMode(bool debugMode);
 		ChannelDataBase::SPtr channelDataBase(void);
 		TCPConnection& tcpConnection(void);
 
@@ -31,6 +32,8 @@ namespace OpcUaStackCore
 		virtual void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 
 	  protected:
+		bool debugMode_;
+
 		IOService* ioService_;
 		TCPConnection tcpConnection_;
 		boost::asio::ip::address partnerAddress_;

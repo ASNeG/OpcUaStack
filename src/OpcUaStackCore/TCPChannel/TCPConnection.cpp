@@ -98,6 +98,16 @@ TCPConnection::isStoped(void)
 	return state_ == CS_STOPED;
 }
 
+#if 0
+boost::array<mutable_buffer, 3> bufs1 = {
+  boost::asio::buffer(d1),
+  boost::asio::buffer(d2),
+  boost::asio::buffer(d3) };
+bytes_transferred = sock.receive(bufs1);
+
+std
+#endif
+
 void 
 TCPConnection::sendMessage(CDAMessage::SPtr cdaMessageSPtr)
 {

@@ -16,6 +16,7 @@ namespace OpcUaStackClient
 		SessionTestHandler(void)
 		: connectToSecureChannelCount_(0)
 		, createSessionRequestCount_(0)
+		, activateSessionRequestCount_(0)
 		{}
 
 		// ------------------------------------------------------------------------
@@ -38,8 +39,17 @@ namespace OpcUaStackClient
 		void createSessionRequest(boost::asio::streambuf& sb) {
 			std::iostream sbs(&sb);
 			std::iostream sbt(&sb_);
+			OpcUaStackCore::clear(sbt);
 			OpcUaStackCore::duplicate(sbs, sbt);
 			createSessionRequestCount_++;
+		}
+
+		void activateSessionRequest(boost::asio::streambuf& sb) {
+			std::iostream sbs(&sb);
+			std::iostream sbt(&sb_);
+			OpcUaStackCore::clear(sbt);
+			OpcUaStackCore::duplicate(sbs, sbt);
+			activateSessionRequestCount_++;
 		}
 
 		void connectToSecureChannel(void) {
@@ -48,6 +58,7 @@ namespace OpcUaStackClient
 
 		boost::asio::streambuf sb_;
 		uint32_t createSessionRequestCount_;
+		uint32_t activateSessionRequestCount_;
 		uint32_t connectToSecureChannelCount_;
 
 		// ------------------------------------------------------------------------

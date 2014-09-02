@@ -31,6 +31,7 @@ namespace OpcUaStackClient
 		SecureChannelClient(IOService& ioService);
 		~SecureChannelClient(void);
 
+		void debugMode(bool debugMode);
 		void secureChannelIf(SecureChannelIf* secureChannelIf);
 		void securityHeader(SecurityHeader::SPtr securityHeader);
 		SecurityHeader::SPtr securityHeader(void) const;
@@ -63,6 +64,7 @@ namespace OpcUaStackClient
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
 		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered);
 
+		bool debugMode_;
 		SecureChannelIf* secureChannelIf_;
 
 		TCPConnector tcpConnector_;

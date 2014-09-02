@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionTestHandler.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionManager.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -69,6 +72,9 @@
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionConfig.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionManager.cpp">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>

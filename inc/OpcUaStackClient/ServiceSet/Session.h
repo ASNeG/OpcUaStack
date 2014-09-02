@@ -7,6 +7,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 
@@ -19,6 +20,8 @@ namespace OpcUaStackClient
 		SessionState_ConnectingToSecureChannel,
 		SessionState_SendCreateSession,
 		SessionState_ReceiveCreateSession,
+		SessionState_SendActivateSession,
+		SessionState_ReceiveActivateSession,
 	} SessionState;
 
 	class CreateSessionParameter
@@ -49,7 +52,8 @@ namespace OpcUaStackClient
 		CreateSessionParameter& createSessionParameter(void);
 
  	  private:
-		  void receiveSessionCreateResponse(boost::asio::streambuf& sb);
+		  void receiveCreateSessionResponse(boost::asio::streambuf& sb);
+		  void receiveActivateSessionResponse(boost::asio::streambuf& sb);
 
 		  SessionState sessionState_;
 		  uint32_t requestHandle_;
@@ -58,7 +62,9 @@ namespace OpcUaStackClient
 		  SessionIf* sessionIf_;
 		  SessionSecureChannelIf* sessionSecureChannelIf_;
 		  SessionApplicationIf* sessionApplicationIf_;
+
 		  OpcUaStackCore::CreateSessionResponse::SPtr createSessionResponseSPtr_;
+		  OpcUaStackCore::ActivateSessionResponse::SPtr activateSessionResponseSPtr_;
 	};
 
 };

@@ -6,6 +6,8 @@
 namespace OpcUaStackCore
 {
 
+	// const char* bufPtr=boost::asio::buffer_cast<const char*>(message.data());
+
 	char byteToHex(uint8_t c)
 	{
 		assert(c < 16);
@@ -69,6 +71,12 @@ namespace OpcUaStackCore
 			size += boost::asio::buffer_size(*it);
 		}
 		return size;
+	}
+
+	void clear(std::iostream& ios)
+	{
+		char c;
+		while (ios.get(c));
 	}
 
 	void dumpHex(std::streambuf& sb, std::ostream& os)
