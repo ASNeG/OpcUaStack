@@ -116,13 +116,18 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 
+	ContentFilterElementResult::SPtr elementResultSPtr;
 	OpcUaStatusCode statusCode1, statusCode2;
 	EventFilterResult eventFilterResult1, eventFilterResult2;
 
 	// encode
 	eventFilterResult1.selectClauseResults()->set((OpcUaStatusCode)Success);
-	eventFilterResult1.whereClauseResult().elementResults().statusCode((OpcUaStatusCode)Success);
-	eventFilterResult1.whereClauseResult().elementResults().operandStatusCodes()->set((OpcUaStatusCode)Success);
+	
+	elementResultSPtr = ContentFilterElementResult::construct();
+	elementResultSPtr->statusCode((OpcUaStatusCode)Success);
+	elementResultSPtr->operandStatusCodes()->set((OpcUaStatusCode)Success);
+	eventFilterResult1.whereClauseResult().elementResults()->set(elementResultSPtr);
+	
 	eventFilterResult1.opcUaBinaryEncode(ios);
 
 	// decode
@@ -131,10 +136,13 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	eventFilterResult2.selectClauseResults()->get(statusCode1);
 	BOOST_REQUIRE(statusCode1 == Success);
 
-	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults().statusCode() == Success);
-	
-	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults().operandStatusCodes()->size() == 1);
-	eventFilterResult2.whereClauseResult().elementResults().operandStatusCodes()->get(statusCode2);
+	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults()->size() == 1);
+	elementResultSPtr = ContentFilterElementResult::construct();
+	eventFilterResult2.whereClauseResult().elementResults()->get(elementResultSPtr);
+	BOOST_REQUIRE(elementResultSPtr->statusCode() == Success);
+
+	BOOST_REQUIRE(elementResultSPtr->operandStatusCodes()->size() == 1);
+	elementResultSPtr->operandStatusCodes()->get(statusCode2);
 	BOOST_REQUIRE(statusCode2 == Success);
 }
 
