@@ -2,7 +2,7 @@
 #define __OpcUaStackClient_ServiceTransactionRead_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OPcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/ReadResponse.h"
 #include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"

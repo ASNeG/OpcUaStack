@@ -2,7 +2,7 @@
 #define __OpcUaStackClient_SessionIf_h__
 
 #include "boost/asio.hpp"
-#include "OpcUaStackCore/BuildInTypes/BuildinTypes.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 using namespace OpcUaStackCore;
 
