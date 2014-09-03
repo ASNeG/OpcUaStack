@@ -112,6 +112,8 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ActivateSession_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ApplicationDescription_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\BrowseNext_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Browse_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\CallMethod_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Call_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Cancel_t.cpp" />
@@ -134,10 +136,13 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\NotfificationMessage_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Operand_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Publish_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\QueryFirst_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\QueryNext.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Read_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ReadValueId_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\EndpointDescription_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\ExtensibleParameter_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\RegisterNodes_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\RegisterServer_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Republish_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetMonitoringMode_t.cpp" />
@@ -145,6 +150,8 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SetTriggering_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TransferSubscriptions_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIds_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UnregisterNodes_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UserTokenPolicy_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Write_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\WriteValue_t.cpp" />

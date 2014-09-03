@@ -205,6 +205,27 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\HistoryRead_t.cpp">
       <Filter>unittest\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\Browse_t.cpp">
+      <Filter>unittest\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\BrowseNext_t.cpp">
+      <Filter>unittest\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIds_t.cpp">
+      <Filter>unittest\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\RegisterNodes_t.cpp">
+      <Filter>unittest\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\UnregisterNodes_t.cpp">
+      <Filter>unittest\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\QueryFirst_t.cpp">
+      <Filter>unittest\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\QueryNext.cpp">
+      <Filter>unittest\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -251,6 +272,12 @@
     </Filter>
     <Filter Include="unittest\ServiceSet\HistoryAccessServices">
       <UniqueIdentifier>{4d4fdf09-2d85-45a6-bb09-3541223d03cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\QueryServiceSet">
+      <UniqueIdentifier>{196bff9d-7ebc-4d44-aa03-4efd6366367c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\ServiceSet\ViewServiceSet">
+      <UniqueIdentifier>{e44f3a1a-4808-44bf-b28d-0ca0b5baa36c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

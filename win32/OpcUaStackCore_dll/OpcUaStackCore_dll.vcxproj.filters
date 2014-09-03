@@ -588,6 +588,78 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.h">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseDescription.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceDescription.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseResult.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseRequest.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseResponse.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseNextRequest.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseNextResponse.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowsePath.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowsePathResult.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsRequest.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsResponse.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterNodesRequest.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterNodesResponse.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UnregisterNodesRequest.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UnregisterNodesResponse.h">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewDescription.h">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryDataDescription.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeTypeDescription.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ParsingResult.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryDataSet.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryFirstRequest.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryFirstResponse.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextRequest.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1099,6 +1171,78 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.cpp">
       <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseDescription.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceDescription.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseResult.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseRequest.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseResponse.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseNextRequest.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseNextResponse.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowsePath.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowsePathResult.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsRequest.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsResponse.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterNodesRequest.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterNodesResponse.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UnregisterNodesRequest.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UnregisterNodesResponse.cpp">
+      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ViewDescription.cpp">
+      <Filter>sc\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryDataDescription.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeTypeDescription.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ParsingResult.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryDataSet.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryFirstRequest.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryFirstResponse.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryNextRequest.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryNextResponse.cpp">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
