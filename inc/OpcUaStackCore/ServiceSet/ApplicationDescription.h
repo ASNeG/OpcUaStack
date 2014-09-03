@@ -5,7 +5,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
-
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
@@ -49,6 +49,8 @@ namespace OpcUaStackCore
 		OpcUaString discoveryProfileUri_;
 		OpcUaStringArray::SPtr discoveryUrls_;
 	};
+
+	class ApplicationDescriptionArray : public OpcUaArray<ApplicationDescription::SPtr, SPtrTypeCoder<ApplicationDescription> >, public ObjectPool<ApplicationDescriptionArray> {};
 
 }
 

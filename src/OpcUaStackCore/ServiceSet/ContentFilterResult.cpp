@@ -13,7 +13,7 @@ namespace OpcUaStackCore
 
 	ContentFilterResult::ContentFilterResult(void)
 	: ObjectPool<ContentFilterResult>()
-	, elementResults_()
+	, elementResultArraySPtr_(ContentFilterElementResultArray::construct())
 	{
 	}
 
@@ -22,26 +22,26 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ContentFilterResult::elementResults(const ContentFilterElementResult& elementResults)
+	ContentFilterResult::elementResults(const ContentFilterElementResultArray::SPtr elementResultArraySPtr)
 	{
-		elementResults_ = elementResults;
+		elementResultArraySPtr_ = elementResultArraySPtr;
 	}
 
-	ContentFilterElementResult& 
+	ContentFilterElementResultArray::SPtr 
 	ContentFilterResult::elementResults(void)
 	{
-		return elementResults_;
+		return elementResultArraySPtr_;
 	}
 
 	void 
 	ContentFilterResult::opcUaBinaryEncode(std::ostream& os) const
 	{
-		elementResults_.opcUaBinaryEncode(os);
+		elementResultArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	ContentFilterResult::opcUaBinaryDecode(std::istream& is)
 	{
-		elementResults_.opcUaBinaryDecode(is);
+		elementResultArraySPtr_->opcUaBinaryDecode(is);
 	}
 }

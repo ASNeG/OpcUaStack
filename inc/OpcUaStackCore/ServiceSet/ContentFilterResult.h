@@ -16,14 +16,14 @@ namespace OpcUaStackCore
 		ContentFilterResult(void);
 		virtual ~ContentFilterResult(void);
 
-		void elementResults(const ContentFilterElementResult& elements);
-		ContentFilterElementResult& elementResults(void);
+		void elementResults(const ContentFilterElementResultArray::SPtr elements);
+		ContentFilterElementResultArray::SPtr elementResults(void);
 		
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ContentFilterElementResult elementResults_;
+		ContentFilterElementResultArray::SPtr elementResultArraySPtr_;
 	};
 
 }
