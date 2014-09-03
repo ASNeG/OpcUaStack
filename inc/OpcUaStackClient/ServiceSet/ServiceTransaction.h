@@ -14,10 +14,12 @@ namespace OpcUaStackClient
 	class DLLEXPORT ServiceTransaction
 	{
 	  public:
-		ServiceTransaction(void);
+		ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse);
 		virtual ~ServiceTransaction(void);
 
 		uint32_t transactionId(void);
+		OpcUaNodeId& nodeTypeRequest(void);
+		OpcUaNodeId& nodeTypeResponse(void);
 
 		virtual RequestHeader::SPtr getRequestHeader(void) = 0;
 		virtual ResponseHeader::SPtr getResponseHeader(void) = 0;
@@ -33,6 +35,8 @@ namespace OpcUaStackClient
 		static uint32_t getUniqueTransactionId(void);
 
 		uint32_t transactionId_;
+		OpcUaNodeId nodeTypeRequest_;
+		OpcUaNodeId nodeTypeResponse_;
 	};
 
 }

@@ -87,6 +87,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\AttributeService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceBase.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransaction.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransactionRead.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionIf.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\AttributeService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceBase.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceTransaction.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceTransactionRead.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\Session.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionManager.cpp" />

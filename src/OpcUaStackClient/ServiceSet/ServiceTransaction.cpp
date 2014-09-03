@@ -17,8 +17,10 @@ namespace OpcUaStackClient
 		return transactionId;
 	}
 
-	ServiceTransaction::ServiceTransaction(void)
+	ServiceTransaction::ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse)
 	{
+		nodeTypeRequest_.set(nodeTypeRequest);
+		nodeTypeResponse_.set(nodeTypeResponse);
 		transactionId_ = getUniqueTransactionId();
 	}
 	
@@ -30,6 +32,18 @@ namespace OpcUaStackClient
 	ServiceTransaction::transactionId(void)
 	{
 		return transactionId_;
+	}
+
+	OpcUaNodeId& 
+	ServiceTransaction::nodeTypeRequest(void)
+	{
+		return nodeTypeRequest_;
+	}
+
+	OpcUaNodeId&
+	ServiceTransaction::nodeTypeResponse(void)
+	{
+		return nodeTypeResponse_;
 	}
 
 }
