@@ -6,6 +6,8 @@ namespace OpcUaStackClient
 
 	ServiceTransactionRead::ServiceTransactionRead(void)
 	: ServiceTransaction(OpcUaId_ReadRequest_Encoding_DefaultBinary, OpcUaId_ReadResponse_Encoding_DefaultBinary)
+	, readRequest_(ReadRequest::construct())
+	, readResponse_(ReadResponse::construct())
 	{
 	}
 
@@ -23,6 +25,18 @@ namespace OpcUaStackClient
 	ServiceTransactionRead::getResponseHeader(void)
 	{
 		return readResponse_->responseHeader();
+	}
+
+	ReadRequest::SPtr 
+	ServiceTransactionRead::request(void)
+	{
+		return readRequest_;
+	}
+		
+	ReadResponse::SPtr 
+	ServiceTransactionRead::response(void)
+	{
+		return readResponse_;
 	}
 
 	void 

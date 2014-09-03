@@ -77,6 +77,29 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	Session::send(ServiceTransaction::BSPtr serviceTransaction)
+	{
+		if (sessionState_ != SessionState_ReceiveActivateSession) {
+			Log(Error, "cannot send a message, because session is in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
+		boost::asio::streambuf sb;
+		std::iostream ios(&sb);
+
+		RequestHeader::SPtr requestHeader = serviceTransaction->getRequestHeader();
+		requestHeader->requestHandle(serviceTransaction->transactionId());
+		requestHeader->sessionAuthenticationToken() = createSessionResponseSPtr_->authenticationToken();
+		serviceTransaction->opcUaBinaryEncodeRequest(ios);
+
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(serviceTransaction->nodeTypeRequest(), sb);
+	}
+
+	void 
 	Session::handleSecureChannelConnect(void)
 	{
 		if (sessionState_ != SessionState_ConnectingToSecureChannel) {

@@ -11,9 +11,11 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT ServiceTransaction
+	class DLLEXPORT ServiceTransaction 
 	{
 	  public:
+		typedef boost::shared_ptr<ServiceTransaction> BSPtr;
+
 		ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse);
 		virtual ~ServiceTransaction(void);
 

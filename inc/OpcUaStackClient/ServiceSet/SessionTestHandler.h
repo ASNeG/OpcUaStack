@@ -44,6 +44,10 @@ namespace OpcUaStackClient
 			activateSessionCompleteCondition_.conditionValueDec();
 		}
 
+		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb) {
+			// FIXME
+		}
+
 		OpcUaStatusCode opcUaStatusCode_;
 		Condition createSessionCompleteCondition_;
 		Condition activateSessionCompleteCondition_;

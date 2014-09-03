@@ -17,4 +17,10 @@ namespace OpcUaStackClient
 		session_ = session;
 	}
 
+	void 
+	AttributeService::send(ServiceTransactionRead::SPtr serviceTransactionRead)
+	{
+		session_->send(serviceTransactionRead);
+	}
+
 }

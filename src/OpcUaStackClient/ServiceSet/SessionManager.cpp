@@ -100,6 +100,12 @@ namespace OpcUaStackClient
 		secureChannel_->send(typeId, sb);
 	}
 
+	void 
+	SessionManager::send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb)
+	{
+		secureChannel_->send(opcUaNodeId, sb);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

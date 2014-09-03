@@ -23,6 +23,7 @@ namespace OpcUaStackClient
 		virtual void connectToSecureChannel(void) = 0; 
 	    virtual void createSessionRequest(boost::asio::streambuf& sb) = 0;
 		virtual void activateSessionRequest(boost::asio::streambuf& sb) = 0;
+		virtual void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb) = 0;
 	};
 
 }

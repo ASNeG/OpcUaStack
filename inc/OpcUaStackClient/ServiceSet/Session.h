@@ -10,6 +10,7 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
 
 namespace OpcUaStackClient
 {
@@ -42,6 +43,7 @@ namespace OpcUaStackClient
 
 		void createSession(void);
 		void activateSession(void);
+		void send(ServiceTransaction::BSPtr serviceTransaction);
 	
 		void handleSecureChannelConnect(void);
 		void handleSecureChannelDisconnect(void);

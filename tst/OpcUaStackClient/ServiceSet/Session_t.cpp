@@ -8,6 +8,7 @@
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackClient/ServiceSet/SessionManager.h"
 #include "OpcUaStackClient/ServiceSet/SessionTestHandler.h"
+#include "OpcUaStackClient/ServiceSet/AttributeService.h"
 #include <boost/asio/error.hpp>
 
 using namespace OpcUaStackCore;
@@ -28,6 +29,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 
 	SessionManager sessionManager;
+	AttributeService attributeService;
 	sessionManager.start();
 
 	Config sessionConfig; 
@@ -47,6 +49,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 		"TestConfig", secureChannelConfig,
 		&sessionTestHandler
 	);
+	attributeService.session(session);
 
 	// createSession
 	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
@@ -57,6 +60,21 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	sessionTestHandler.activateSessionCompleteCondition_.condition(1, 0);
 	session->activateSession();
 	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
+
+	// send read request
+	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
+	ReadRequest::SPtr req = readTrx->request();
+	req->maxAge(0);
+	req->timestampsToReturn(2);
+
+	ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+	readValueIdSPtr->nodeId((OpcUaInt16) 2, (OpcUaInt32) 9);
+	readValueIdSPtr->attributeId((OpcUaInt32) 13);
+	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
+
+	req->readValueIdArray()->set(readValueIdSPtr);
+
+	attributeService.send(readTrx);
 
 	IOService::secSleep(1000);
 	sessionManager.stop();

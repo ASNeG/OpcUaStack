@@ -3,17 +3,20 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/ServiceTransactionRead.h"
 
 namespace OpcUaStackClient
 {
 
-	class AttributeService
+	class DLLEXPORT AttributeService
 	{
 	  public:
 		AttributeService(void);
 		~AttributeService(void);
 
 		void session(Session::SPtr session);
+
+		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
 
 	  private:
 		Session::SPtr session_;
