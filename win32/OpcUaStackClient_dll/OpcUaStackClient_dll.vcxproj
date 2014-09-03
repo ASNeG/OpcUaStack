@@ -84,6 +84,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelTestHandler.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\AttributeService.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceBase.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionIf.h" />
@@ -95,6 +98,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClient.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\AttributeService.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceBase.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceTransaction.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\Session.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionManager.cpp" />

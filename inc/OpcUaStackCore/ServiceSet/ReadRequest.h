@@ -34,7 +34,6 @@ namespace OpcUaStackCore
 		OpcUaDouble maxAge_;
 		OpcUaInt32 timestampsToReturn_;
 		ReadValueIdArray::SPtr readValueIdArraySPtr_;
-
 	};
 
 }

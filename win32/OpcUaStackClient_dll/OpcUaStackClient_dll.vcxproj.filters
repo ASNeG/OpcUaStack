@@ -16,6 +16,12 @@
     <Filter Include="src\ServiceSet\SessionServiceSet">
       <UniqueIdentifier>{1666fe4f-2e21-445b-8b54-949a4d804ff0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet\AttributeService">
+      <UniqueIdentifier>{adb5da2a-4720-45d8-b688-23c2955f35c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\Common">
+      <UniqueIdentifier>{5c543bf9-1404-449a-92c4-2760b3669fe4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -51,6 +57,15 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionManager.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\AttributeService.h">
+      <Filter>src\ServiceSet\AttributeService</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceBase.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransaction.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -76,6 +91,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionManager.cpp">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\AttributeService.cpp">
+      <Filter>src\ServiceSet\AttributeService</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceBase.cpp">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceTransaction.cpp">
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
