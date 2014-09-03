@@ -3,13 +3,16 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include <iostream>
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionTestHandler : public SessionIf, public SessionSecureChannelIf, public SessionApplicationIf
+	class DLLEXPORT SessionTestHandler : public SessionIf, public SessionSecureChannelIf
 	{
 	  public:
 
@@ -17,6 +20,8 @@ namespace OpcUaStackClient
 		: connectToSecureChannelCount_(0)
 		, createSessionRequestCount_(0)
 		, activateSessionRequestCount_(0)
+		, createSessionCompleteCondition_()
+		, activateSessionCompleteCondition_()
 		{}
 
 		// ------------------------------------------------------------------------
@@ -28,6 +33,20 @@ namespace OpcUaStackClient
 		// ------------------------------------------------------------------------
 		void error(void) {
 		}
+
+		void createSessionComplete(OpcUaStatusCode opcUaStatusCode) {
+			opcUaStatusCode_ = opcUaStatusCode;
+			createSessionCompleteCondition_.conditionValueDec();
+		}
+
+		void activateSessionComplete(OpcUaStatusCode opcUaStatusCode) {
+			opcUaStatusCode_ = opcUaStatusCode;
+			activateSessionCompleteCondition_.conditionValueDec();
+		}
+
+		OpcUaStatusCode opcUaStatusCode_;
+		Condition createSessionCompleteCondition_;
+		Condition activateSessionCompleteCondition_;
 
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
@@ -61,13 +80,6 @@ namespace OpcUaStackClient
 		uint32_t activateSessionRequestCount_;
 		uint32_t connectToSecureChannelCount_;
 
-		// ------------------------------------------------------------------------
-		// ------------------------------------------------------------------------
-		//
-		// SessionApplicationIf
-		//
-		// ------------------------------------------------------------------------
-		// ------------------------------------------------------------------------
 	};
 
 }

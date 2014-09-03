@@ -18,7 +18,6 @@ namespace OpcUaStackClient
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
 	, sessionSecureChannelIf_(nullptr)
-	, sessionApplicationIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	, activateSessionResponseSPtr_(OpcUaStackCore::ActivateSessionResponse::construct())
 	{
@@ -29,72 +28,33 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
-	{
-		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
-		{
-			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
-			{
-				receiveCreateSessionResponse(sb);
-				break;
-			}
-			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
-			{
-				receiveActivateSessionResponse(sb);
-				break;
-			}
-		}
-	}
-
-	void 
-	Session::connect(void)
+	Session::createSession(void)
 	{
 		if (sessionState_ != SessionState_Close) {
 			Log(Error, "cannot connect, because session is in invalid state")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
-				.parameter("SessionName", createSessionParameter_.sessionName_);
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
 			if (sessionIf_ != nullptr) sessionIf_->error();
 			return;
 		}
-
+		
 		sessionState_ = SessionState_ConnectingToSecureChannel;
 		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->connectToSecureChannel();
 	}
 
 	void 
-	Session::createSession(void)
-	{
-		boost::asio::streambuf sb;
-		std::iostream ios(&sb);
-
-		OpcUaStackCore::CreateSessionRequest::SPtr createSessionRequestSPtr = OpcUaStackCore::CreateSessionRequest::construct();
-		createSessionRequestSPtr->requestHeader()->requestHandle(++requestHandle_);
-		createSessionRequestSPtr->clientDescription(applicatinDescriptionSPtr_);
-		createSessionRequestSPtr->endpointUrl(createSessionParameter_.endpointUrl_);
-		createSessionRequestSPtr->sessionName(createSessionParameter_.sessionName_);
-		createSessionRequestSPtr->clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
-		createSessionRequestSPtr->requestSessionTimeout(createSessionParameter_.requestedSessionTimeout_);
-		createSessionRequestSPtr->maxResponseMessageSize(createSessionParameter_.maxResponseMessageSize_);
-		createSessionRequestSPtr->opcUaBinaryEncode(ios);
-
-		sessionState_ = SessionState_SendCreateSession;
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->createSessionRequest(sb);
-	}
-
-	void 
-	Session::receiveCreateSessionResponse(boost::asio::streambuf& sb)
-	{
-		std::iostream ios(&sb);
-		createSessionResponseSPtr_->opcUaBinaryDecode(ios);
-		sessionState_ = SessionState_ReceiveCreateSession;
-
-		std::cout << "receive create session response..." << std::endl;
-		std::cout << "size=" << OpcUaStackCore::count(ios) << std::endl;
-	}
-		
-	void 
 	Session::activateSession(void)
 	{
+		if (sessionState_ != SessionState_ReceiveCreateSession) {
+			Log(Error, "cannot activate session, because session is in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
 		boost::asio::streambuf sb;
 		std::iostream ios(&sb);
 
@@ -117,14 +77,97 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	Session::handleSecureChannelConnect(void)
+	{
+		if (sessionState_ != SessionState_ConnectingToSecureChannel) {
+			Log(Error, "receive connect secure channel invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+		}
+		sessionState_ = SessionState_ConnectedToSecureChannel;
+
+		boost::asio::streambuf sb;
+		std::iostream ios(&sb);
+
+		OpcUaStackCore::CreateSessionRequest::SPtr createSessionRequestSPtr = OpcUaStackCore::CreateSessionRequest::construct();
+		createSessionRequestSPtr->requestHeader()->requestHandle(++requestHandle_);
+		createSessionRequestSPtr->clientDescription(applicatinDescriptionSPtr_);
+		createSessionRequestSPtr->endpointUrl(createSessionParameter_.endpointUrl_);
+		createSessionRequestSPtr->sessionName(createSessionParameter_.sessionName_);
+		createSessionRequestSPtr->clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
+		createSessionRequestSPtr->requestSessionTimeout(createSessionParameter_.requestedSessionTimeout_);
+		createSessionRequestSPtr->maxResponseMessageSize(createSessionParameter_.maxResponseMessageSize_);
+		createSessionRequestSPtr->opcUaBinaryEncode(ios);
+
+		sessionState_ = SessionState_SendCreateSession;
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->createSessionRequest(sb);
+	}
+
+	void 
+	Session::handleSecureChannelDisconnect(void)
+	{
+	}
+
+	void 
+	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	{
+		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
+		{
+			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
+			{
+				receiveCreateSessionResponse(sb);
+				break;
+			}
+			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
+			{
+				receiveActivateSessionResponse(sb);
+				break;
+			}
+		}
+	}
+
+	void 
+	Session::receiveCreateSessionResponse(boost::asio::streambuf& sb)
+	{
+		if (sessionState_ != SessionState_SendCreateSession) {
+			Log(Error, "receive create session response in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
+		std::iostream ios(&sb);
+		createSessionResponseSPtr_->opcUaBinaryDecode(ios);
+		sessionState_ = SessionState_ReceiveCreateSession;
+
+		std::cout << "receive create session response..." << std::endl;
+		std::cout << "size=" << OpcUaStackCore::count(ios) << std::endl;
+		if (sessionIf_ != nullptr) sessionIf_->createSessionComplete(Success);
+	}
+
+	void 
 	Session::receiveActivateSessionResponse(boost::asio::streambuf& sb)
 	{
+		if (sessionState_ != SessionState_SendActivateSession) {
+			Log(Error, "receive activate session response in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
 		std::iostream ios(&sb);
 		activateSessionResponseSPtr_->opcUaBinaryDecode(ios);
 		sessionState_ = SessionState_ReceiveActivateSession;
 
 		std::cout << "receive activate session response..." << std::endl;
 		std::cout << "size=" << OpcUaStackCore::count(ios) << std::endl;
+		if (sessionIf_ != nullptr) sessionIf_->activateSessionComplete(Success);
 	}
 
 	OpcUaStackCore::ApplicationDescription::SPtr 
@@ -149,12 +192,6 @@ namespace OpcUaStackClient
 	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
 	{
 		sessionSecureChannelIf_ = sessionSecureChannelIf;
-	}
-
-	void
-	Session::sessionApplicationIf(SessionApplicationIf* sessionApplicationIf)
-	{
-		sessionApplicationIf_ = sessionApplicationIf;
 	}
 
 }

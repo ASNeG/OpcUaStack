@@ -2,6 +2,9 @@
 #define __OpcUaStackClient_SessionIf_h__
 
 #include "boost/asio.hpp"
+#include "OpcUaStackCore/BuildInTypes/BuildinTypes.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -10,11 +13,8 @@ namespace OpcUaStackClient
 	{
 	  public:
 		virtual void error(void) = 0;
-	};
-
-	class SessionApplicationIf
-	{
-	  public:
+		virtual void createSessionComplete(OpcUaStatusCode opcUaStatusCode) = 0;
+		virtual void activateSessionComplete(OpcUaStatusCode opcUaStatusCode) = 0;
 	};
 
 	class SessionSecureChannelIf
