@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\tst\OpcUaStackClient\SecureChannel\SecureChannelClient_t.cpp" />
-    <ClCompile Include="..\..\tst\OpcUaStackClient\ServiceSet\SessionClient_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackClient\ServiceSet\Session_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -65,6 +65,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0;..\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>OpcUaStackCore.lib;OpcUaStackClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <HeapReserveSize>100000000</HeapReserveSize>
+      <HeapCommitSize>100000000</HeapCommitSize>
+      <StackReserveSize>100000000</StackReserveSize>
+      <StackCommitSize>100000000</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include "OpcUaStackCore/Base/os.h"
+#include <list>
 
 namespace OpcUaStackCore
 {
@@ -15,6 +16,8 @@ namespace OpcUaStackCore
 	};
 
 	class OpcUaNodeIdArray : public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >, public ObjectPool<OpcUaNodeIdArray> {};
+
+	typedef std::list<OpcUaNodeId> OpcUaNodeIdList;
 
 }
 

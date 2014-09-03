@@ -659,6 +659,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h">
       <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
+      <Filter>sc\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1243,6 +1246,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryNextResponse.cpp">
       <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
+      <Filter>sc\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

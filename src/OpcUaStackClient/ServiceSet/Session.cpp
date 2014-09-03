@@ -1,6 +1,9 @@
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/Base/Log.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -11,6 +14,7 @@ namespace OpcUaStackClient
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
 	, sessionSecureChannelIf_(nullptr)
+	, sessionApplicationIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	{
 	}
@@ -20,7 +24,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
 		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
@@ -30,6 +34,21 @@ namespace OpcUaStackClient
 				break;
 			}
 		}
+	}
+
+	void 
+	Session::connect(void)
+	{
+		if (sessionState_ != SessionState_Close) {
+			Log(Error, "cannot connect, because session is in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
+		sessionState_ = SessionState_ConnectingToSecureChannel;
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->connectToSecureChannel();
 	}
 
 	void 
@@ -58,6 +77,8 @@ namespace OpcUaStackClient
 		std::iostream ios(&sb);
 		createSessionResponseSPtr_->opcUaBinaryDecode(ios);
 		sessionState_ = SessionState_ReceiveCreateSession;
+
+		std::cout << "receive create session response..." << std::endl;
 	}
 		
 	void 
@@ -78,9 +99,21 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	Session::sessionIf(SessionIf *sessionIf) 
+	{
+		sessionIf_ = sessionIf;
+	}
+
+	void 
 	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
 	{
 		sessionSecureChannelIf_ = sessionSecureChannelIf;
+	}
+
+	void
+	Session::sessionApplicationIf(SessionApplicationIf* sessionApplicationIf)
+	{
+		sessionApplicationIf_ = sessionApplicationIf;
 	}
 
 }

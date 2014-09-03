@@ -200,4 +200,94 @@ BOOST_AUTO_TEST_CASE(Config_getConfigParameter)
 	BOOST_REQUIRE(cfg2->getConfigParameter(numberValue) == false);
 }
 
+BOOST_AUTO_TEST_CASE(Config_value_array)
+{
+	Config cfg;
+
+	BOOST_REQUIRE(cfg.setValue("p1", "v1") == true);
+	BOOST_REQUIRE(cfg.setValue("p1", "v2") == false);
+
+	BOOST_REQUIRE(cfg.addValue("p2", "v1") == true);
+	BOOST_REQUIRE(cfg.addValue("p2", "v2") == true);
+
+	BOOST_REQUIRE(cfg.addValue("p3.p1", "v1") == true);
+	BOOST_REQUIRE(cfg.addValue("p3.p1", "v2") == true);
+
+	BOOST_REQUIRE(cfg.addValue("p3.p2.p3", "v1") == true);
+	BOOST_REQUIRE(cfg.addValue("p3.p2.p3", "v2") == true);
+
+	std::vector<std::string> valueVec;
+
+	valueVec.clear();
+	cfg.getValues("p3", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 0);
+
+	valueVec.clear();
+	cfg.getValues("p2", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 2);
+	BOOST_REQUIRE(valueVec[0] == "v1");
+	BOOST_REQUIRE(valueVec[1] == "v2");
+
+	valueVec.clear();
+	cfg.getValues("p3.p1", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 2);
+	BOOST_REQUIRE(valueVec[0] == "v1");
+	BOOST_REQUIRE(valueVec[1] == "v2");
+
+	valueVec.clear();
+	cfg.getValues("p3.p2.p3", valueVec);
+	BOOST_REQUIRE(valueVec.size() == 2);
+	BOOST_REQUIRE(valueVec[0] == "v1");
+	BOOST_REQUIRE(valueVec[1] == "v2");
+}
+
+BOOST_AUTO_TEST_CASE(Config_child_array)
+{
+	Config cfg1, cfg2;
+
+	BOOST_REQUIRE(cfg1.setValue("p1", "v1") == true);
+	BOOST_REQUIRE(cfg1.setValue("p1", "v2") == false);
+
+	BOOST_REQUIRE(cfg1.addValue("p3.p1.p1", "v1") == true);
+	BOOST_REQUIRE(cfg1.addValue("p3.p1.p2", "v2") == true);
+	BOOST_REQUIRE(cfg1.addValue("p3.p1.p3", "v3") == true);
+	BOOST_REQUIRE(cfg1.addValue("p3.p1.p4", "v4") == true);
+
+
+	std::vector<Config> configVec;
+
+	configVec.clear();
+	cfg1.getChilds("p1", configVec);
+	BOOST_REQUIRE(configVec.size() == 0);
+
+	configVec.clear();
+	cfg1.getChilds("p3", configVec);
+	BOOST_REQUIRE(configVec.size() == 1);
+
+	configVec.clear();
+	cfg1.getChilds("p3.p1", configVec);
+	BOOST_REQUIRE(configVec.size() == 1);
+
+	BOOST_REQUIRE(cfg2.addValue("p1", "v11") == true);
+	BOOST_REQUIRE(cfg2.addValue("p2", "v22") == true);
+	BOOST_REQUIRE(cfg2.addValue("p3", "v33") == true);
+	BOOST_REQUIRE(cfg2.addValue("p4", "v44") == true);
+
+	BOOST_REQUIRE(cfg1.addChild("p3.p1", cfg2) == true);
+
+	configVec.clear();
+	cfg1.getChilds("p3.p1", configVec);
+	BOOST_REQUIRE(configVec.size() == 2);
+
+	BOOST_REQUIRE(*configVec[0].getValue("p1") == "v1");
+	BOOST_REQUIRE(*configVec[0].getValue("p2") == "v2");
+	BOOST_REQUIRE(*configVec[0].getValue("p3") == "v3");
+	BOOST_REQUIRE(*configVec[0].getValue("p4") == "v4");
+	BOOST_REQUIRE(*configVec[1].getValue("p1") == "v11");
+	BOOST_REQUIRE(*configVec[1].getValue("p2") == "v22");
+	BOOST_REQUIRE(*configVec[1].getValue("p3") == "v33");
+	BOOST_REQUIRE(*configVec[1].getValue("p4") == "v44");
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()
