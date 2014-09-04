@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Callback.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Config.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ConfigXml.h" />

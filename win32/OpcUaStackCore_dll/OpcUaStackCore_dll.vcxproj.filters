@@ -494,7 +494,7 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
       <Filter>sc\Base</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsRequest.h">
       <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
@@ -662,6 +662,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h">
       <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Callback.h">
+      <Filter>sc\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1084,7 +1087,7 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
       <Filter>sc\Base</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerRequest.cpp">
       <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
