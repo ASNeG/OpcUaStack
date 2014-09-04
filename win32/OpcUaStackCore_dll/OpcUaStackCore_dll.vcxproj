@@ -285,6 +285,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Callback.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Config.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\ConfigXml.cpp" />
@@ -490,6 +491,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

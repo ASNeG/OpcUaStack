@@ -1253,5 +1253,13 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryNextResponse.cpp">
       <Filter>sc\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Callback.cpp">
+      <Filter>sc\Base</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx">
+      <Filter>sc\Base</Filter>
+    </None>
   </ItemGroup>
 </Project>

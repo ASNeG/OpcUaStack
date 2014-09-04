@@ -84,6 +84,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Callback_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Config_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\IOService_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Log_t.cpp" />

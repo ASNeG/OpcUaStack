@@ -183,7 +183,7 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Url_t.cpp">
       <Filter>unittest\Base</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\FindServers_t.cpp">
       <Filter>unittest\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
@@ -228,6 +228,9 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\QueryNext.cpp">
       <Filter>unittest\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Callback_t.cpp">
+      <Filter>unittest\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
