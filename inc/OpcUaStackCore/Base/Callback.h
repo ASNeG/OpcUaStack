@@ -2,6 +2,7 @@
 #define __OpcUaStackCore_Callback_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/bind.hpp>
 
 namespace OpcUaStackCore
 {

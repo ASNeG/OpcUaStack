@@ -1,4 +1,4 @@
-namespace OPcUaStackCore
+namespace OpcUaStackCore
 {
 
 	// ------------------------------------------------------------------------
