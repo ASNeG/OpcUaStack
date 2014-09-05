@@ -84,8 +84,8 @@ BOOST_AUTO_TEST_CASE(ExtensibleParameter_encode_decode)
 
 	OpcUaStackCore::dumpHex(ios);
 	std::stringstream ss;
-	ss	<< "01 00 39 30 01 0a 00 00  00 4f 70 63 55 61 53 74"
-		<< "61 63 6b";
+	ss	<< "01 00 39 30 01 0e 00 00  00 0a 00 00 00 4f 70 63"
+		<< "55 61 53 74 61 63 6b";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	ep.opcUaBinaryDecode(ios);

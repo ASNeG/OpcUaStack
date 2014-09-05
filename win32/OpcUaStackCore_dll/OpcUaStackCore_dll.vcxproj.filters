@@ -55,6 +55,9 @@
     <Filter Include="sc\ServiceSet\HistoryAccessServices">
       <UniqueIdentifier>{14618791-859c-4ecc-a741-601433f461f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="sc\Utility">
+      <UniqueIdentifier>{6337ed5c-c7fd-422f-9262-f68bf882a0ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
@@ -666,6 +669,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Callback.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\PendingQueue.h">
+      <Filter>sc\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Timer.h">
+      <Filter>sc\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1255,6 +1264,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Callback.cpp">
       <Filter>sc\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Timer.cpp">
+      <Filter>sc\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
