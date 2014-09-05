@@ -234,6 +234,12 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\Timer_t.cpp">
       <Filter>unittest\Utility</Filter>
+	</ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\QueryNext.cpp">
+      <Filter>unittest\ServiceSet\QueryServiceSet</Filter>
+	</ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Url_t.cpp">
+      <Filter>unittest\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

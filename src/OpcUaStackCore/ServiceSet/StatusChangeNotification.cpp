@@ -55,7 +55,6 @@ namespace OpcUaStackCore
 	void 
 	StatusChangeNotification::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: magic (OpcUaInt32), see EventNotificationList or DataChangeNotification ???
 		OpcUaNumber::opcUaBinaryEncode(os, statusCode_);
 		diagnosticInfo_.opcUaBinaryEncode(os);
 	}
@@ -63,7 +62,6 @@ namespace OpcUaStackCore
 	void 
 	StatusChangeNotification::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: magic (OpcUaInt32), see EventNotificationList or DataChangeNotification ???
 		OpcUaInt32 tmp;
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		statusCode_ = (OpcUaStatusCode)tmp;

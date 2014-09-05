@@ -674,6 +674,12 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Timer.h">
       <Filter>sc\Utility</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h">
+      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+	</ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
+      <Filter>sc\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1276,5 +1282,8 @@
     <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx">
       <Filter>sc\Base</Filter>
     </None>
+	<ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
+      <Filter>sc\Base</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

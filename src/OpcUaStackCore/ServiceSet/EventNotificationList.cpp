@@ -43,17 +43,12 @@ namespace OpcUaStackCore
 	void 
 	EventNotificationList::opcUaBinaryEncode(std::ostream& os) const
 	{
-		OpcUaInt32 magic;
-		magic = 1490;
-		OpcUaNumber::opcUaBinaryEncode(os, magic);
 		eventFieldListArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	EventNotificationList::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaInt32 magic;
-		OpcUaNumber::opcUaBinaryDecode(is, magic);
 		eventFieldListArraySPtr_->opcUaBinaryDecode(is);
 	}
 }

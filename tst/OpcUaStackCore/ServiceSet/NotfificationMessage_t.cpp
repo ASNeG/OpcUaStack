@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 
 	std::stringstream ss;
 	ss << "01 00 00 00 00 00 00 00  00 00 00 00 01 00 00 00"
-	   << "01 00 2b 03 01 22 00 00  00 01 00 00 00 02 00 00"
+	   << "01 00 2b 03 01 12 00 00  00 01 00 00 00 02 00 00"
 	   << "00 01 06 7b 00 00 00 00  00 00 00";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 
 	std::stringstream ss;
 	ss << "02 00 00 00 00 00 00 00  00 00 00 00 01 00 00 00"
-	   << "01 00 94 03 01 d2 05 00  00 01 00 00 00 0c 00 00"
+	   << "01 00 94 03 01 11 00 00  00 01 00 00 00 0c 00 00"
 	   << "00 01 00 00 00 06 7b 00  00 00";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_StatusChangeNotficiation)
 
 	std::stringstream ss;
 	ss << "03 00 00 00 00 00 00 00  00 00 00 00 01 00 00 00"
-	   << "01 00 34 03 01 00 00 00  00 00";
+	   << "01 00 34 03 01 05 00 00  00 00 00 00 00 00";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 	
