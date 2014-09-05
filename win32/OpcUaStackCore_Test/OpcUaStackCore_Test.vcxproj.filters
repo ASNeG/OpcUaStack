@@ -232,6 +232,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Callback_t.cpp">
       <Filter>unittest\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\Timer_t.cpp">
+      <Filter>unittest\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
