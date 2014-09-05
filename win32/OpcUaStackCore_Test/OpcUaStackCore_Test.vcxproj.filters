@@ -285,6 +285,9 @@
     <Filter Include="unittest\ServiceSet\ViewServiceSet">
       <UniqueIdentifier>{e44f3a1a-4808-44bf-b28d-0ca0b5baa36c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="unittest\Utility">
+      <UniqueIdentifier>{30d46de6-2cbe-4867-b8ff-5ea306126cc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tst\os.h">
