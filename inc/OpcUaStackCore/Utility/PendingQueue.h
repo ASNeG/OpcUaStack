@@ -21,11 +21,11 @@ namespace OpcUaStackCore
 		void element(const Object::SPtr element);
 		Object::SPtr element(void);
 
-		Timer& timer(void);
+		Timer::SPtr timer(void);
 
 	  private:
 		uint32_t key_;
-		Timer timer_;
+		Timer::SPtr timer_;
 		Object::SPtr element_;
 	};
 

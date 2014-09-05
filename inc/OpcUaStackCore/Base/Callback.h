@@ -374,7 +374,7 @@ namespace OpcUaStackCore
 
 		~Callback(void);
 
-
+		void reset(void);
 		template<typename R, typename F>
 	      void reset(boost::_bi::bind_t<R,boost::_mfi::mf0<R,F>,boost::_bi::list1<boost::_bi::value<F*> > > handler);
 		template<typename R, typename F, typename V1>

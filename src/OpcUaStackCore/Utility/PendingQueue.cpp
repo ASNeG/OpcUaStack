@@ -11,12 +11,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	PendingQueueElement::PendingQueueElement(IOService& ioService)
-	: timer_(ioService)
+	: timer_(Timer::construct(ioService))
 	{
 	}
 	
 	PendingQueueElement::~PendingQueueElement(void)
 	{
+		timer_->callback().reset();
+		timer_.reset();
 	}
 
 	void 
@@ -31,7 +33,7 @@ namespace OpcUaStackCore
 		return element_;
 	}
 
-	Timer& 
+	Timer::SPtr
 	PendingQueueElement::timer(void)
 	{
 		return timer_;
@@ -64,6 +66,8 @@ namespace OpcUaStackCore
 
 	PendingQueue::~PendingQueue(void)
 	{
+		timeoutCallback_.reset();
+		pendingQueueMap_.clear();
 	}
 
 	Callback& 
@@ -83,27 +87,28 @@ namespace OpcUaStackCore
 
 		PendingQueueElement::SPtr pendingQueueElement = PendingQueueElement::construct(*ioService_);
 		pendingQueueElement->key(key);
-		pendingQueueElement->timer().callback().reset(boost::bind(&PendingQueue::onTimeout, this, pendingQueueElement));
 		pendingQueueElement->element(object);
+		pendingQueueElement->timer()->callback().reset(boost::bind(&PendingQueue::onTimeout, this, pendingQueueElement));
 		pendingQueueMap_.insert(std::make_pair(key, pendingQueueElement));
 
-		pendingQueueElement->timer().start(timeoutMSec);
+		pendingQueueElement->timer()->start(timeoutMSec);
 		return true;
 	}
 		
 	Object::SPtr 
 	PendingQueue::remove(uint32_t key)
 	{
-		Object::SPtr objectSPtr;
-
 		PendingQueueMap::iterator it;
 		it = pendingQueueMap_.find(key);
 		if (it == pendingQueueMap_.end()) {
+			Object::SPtr objectSPtr;
 			return objectSPtr;
 		}
 
 		PendingQueueElement::SPtr pendingQueueElement = it->second;
-		pendingQueueElement->timer().stop(/*FIXME selfPtr */);
+		Timer::SPtr timer = pendingQueueElement->timer();
+		timer->stop(timer);
+		timer->callback().reset();
 		pendingQueueMap_.erase(it);
 		return pendingQueueElement->element();
 	}
@@ -117,6 +122,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		pendingQueueElement->timer()->callback().reset();
 		pendingQueueMap_.erase(it);
 		timeoutCallback_(pendingQueueElement->element());
 	}

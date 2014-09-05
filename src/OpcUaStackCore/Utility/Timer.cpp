@@ -12,13 +12,7 @@ namespace OpcUaStackCore
 	
 	Timer::~Timer(void)
 	{
-	}
-
-	bool 
-	Timer::start(Callback& callback, uint32_t msec)
-	{
-		callback_ = callback;
-		return start(msec);
+		callback_.reset();
 	}
 
 	bool 

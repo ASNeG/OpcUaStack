@@ -32,6 +32,13 @@ namespace OpcUaStackCore
 
 	Callback::~Callback(void)
 	{
+		reset();
+	}
+
+	void
+	Callback::reset(void)
+	{
+		callbackBaseSPtr_.reset();
 	}
 
 	void Callback::operator()(void) const

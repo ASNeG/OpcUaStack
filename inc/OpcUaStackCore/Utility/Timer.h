@@ -16,7 +16,6 @@ namespace OpcUaStackCore
 	    Timer(IOService& ioService);
 		~Timer(void);
 
-		bool start(Callback& callback, uint32_t msec);
 		bool start(uint32_t msec);
 		void stop(SPtr selfObjectSPtr);
 		void stop(void);
