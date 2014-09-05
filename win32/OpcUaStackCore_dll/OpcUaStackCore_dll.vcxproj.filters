@@ -1268,6 +1268,9 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Timer.cpp">
       <Filter>sc\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Utility\PendingQueue.cpp">
+      <Filter>sc\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx">

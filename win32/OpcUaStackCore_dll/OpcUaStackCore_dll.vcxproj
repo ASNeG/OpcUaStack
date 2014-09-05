@@ -480,6 +480,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnection.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnector.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPTestHandler.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\Utility\PendingQueue.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Timer.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
