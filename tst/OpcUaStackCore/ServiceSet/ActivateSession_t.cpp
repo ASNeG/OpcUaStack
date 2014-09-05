@@ -97,14 +97,14 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 7b 00 00 00  d9 7a 25 09 01 00 00 00"
+	ss	<< "4d 53 47 46 7f 00 00 00  d9 7a 25 09 01 00 00 00"
 		<< "35 00 00 00 03 00 00 00  01 00 d3 01 04 01 00 12"
 		<< "34 56 78 9a bc de f0 12  34 56 78 9a bc de f0 00"
 		<< "00 00 00 00 00 00 00 02  00 00 00 00 00 00 00 ff"
 		<< "ff ff ff 10 27 00 00 00  00 00 ff ff ff ff ff ff"
 		<< "ff ff 00 00 00 00 01 00  00 00 02 00 00 00 65 6e"
-		<< "01 00 41 01 01 0a 00 00  00 4f 70 63 55 61 53 74"
-		<< "61 63 6b ff ff ff ff ff  ff ff ff";
+		<< "01 00 41 01 01 0e 00 00  00 0a 00 00 00 4f 70 63"
+		<< "55 61 53 74 61 63 6b ff  ff ff ff ff ff ff ff";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
