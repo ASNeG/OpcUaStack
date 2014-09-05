@@ -181,6 +181,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp">
       <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Base\Url_t.cpp">
+      <Filter>unittest\Base</Filter>
+	</ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\FindServers_t.cpp">
       <Filter>unittest\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>

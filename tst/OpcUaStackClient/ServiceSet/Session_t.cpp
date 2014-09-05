@@ -2,13 +2,13 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackClient/ServiceSet/SessionManager.h"
 #include "OpcUaStackClient/ServiceSet/SessionTestHandler.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
-#include "OpcUaStackClient/ServiceSet/SessionConfig.h"
-#include "opcUaStackClient/SecureChannel/SecureChannelTestHandler.h"
-#include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
-#include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackClient/ServiceSet/AttributeService.h"
 #include <boost/asio/error.hpp>
 
 using namespace OpcUaStackCore;
@@ -23,57 +23,61 @@ BOOST_AUTO_TEST_CASE(Session_)
 
 BOOST_AUTO_TEST_CASE(Session_open)
 {
-#if 0
 	SessionTestHandler sessionTestHandler;
-	SecureChannelTestHandler secureChannelTestHandler;
-	IOService ioService;
-	ioService.start(1);
 
-	Config configSession; 
-	configSession.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
-	configSession.setValue("TestConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
-	configSession.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
-	configSession.setValue("TestConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
-	configSession.setValue("TestConfig.ApplicationDescription.ApplicationName.Locale", "en");
-	configSession.setValue("TestConfig.ApplicationDescription.ApplicationName.Text", "MyAppl");
+	ExtensibleParameter ep;
+	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 
-	Config configSecureChannel;
-	configSecureChannel.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
-	configSecureChannel.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+	SessionManager sessionManager;
+	AttributeService attributeService;
+	sessionManager.start();
 
-	Session::SPtr session = Session::construct();
-	SessionConfig::initial(session, "TestConfig", &configSession);
-	session->sessionIf(&sessionTestHandler);
-	session->sessionSecureChannelIf(&sessionTestHandler);
-	session->sessionApplicationIf(&sessionTestHandler);
+	Config sessionConfig; 
+	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
+	sessionConfig.setValue("TestConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Locale", "en");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Text", "MyAppl");
 
-	SecureChannelClient::SPtr secureChannel = SecureChannelClient::construct(ioService);
-	SecureChannelClientConfig::initial(secureChannel, "TestConfig", &configSecureChannel);
-	secureChannel->secureChannelIf(&secureChannelTestHandler);
+	Config secureChannelConfig;
+	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
+	secureChannelConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
-	session->connect();
-	BOOST_REQUIRE(sessionTestHandler.connectToSecureChannelCount_ == 1);
+	Session::SPtr session = sessionManager.getNewSession(
+		"TestConfig", sessionConfig,
+		"TestConfig", secureChannelConfig,
+		&sessionTestHandler
+	);
+	attributeService.session(session);
 
-	secureChannelTestHandler.connectCondition_.condition(1, 0);
-	secureChannel->connect();
-	BOOST_REQUIRE(secureChannelTestHandler.connectCondition_.waitForCondition(1000) == true);
-
+	// createSession
+	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
 	session->createSession();
-	BOOST_REQUIRE(sessionTestHandler.createSessionRequestCount_ == 1);
+	BOOST_REQUIRE(sessionTestHandler.createSessionCompleteCondition_.waitForCondition(1000) == true);
 
-	OpcUaNodeId nodeId;
-	nodeId.set(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+	// activateSession
+	sessionTestHandler.activateSessionCompleteCondition_.condition(1, 0);
+	session->activateSession();
+	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
 
-	secureChannelTestHandler.receiveCondition_.condition(1, 0);
-	secureChannel->send(nodeId, sessionTestHandler.sb_);
-	BOOST_REQUIRE(secureChannelTestHandler.receiveCondition_.waitForCondition(1000) == true);
-	session->receive(secureChannelTestHandler.nodeId_, secureChannelTestHandler.sb_); 
+	// send read request
+	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
+	ReadRequest::SPtr req = readTrx->request();
+	req->maxAge(0);
+	req->timestampsToReturn(2);
 
-	IOService::msecSleep(200000);
+	ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+	readValueIdSPtr->nodeId((OpcUaInt16) 2, (OpcUaInt32) 9);
+	readValueIdSPtr->attributeId((OpcUaInt32) 13);
+	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 
-	Config::destroy();
-	ioService.stop();
-#endif
+	req->readValueIdArray()->set(readValueIdSPtr);
+
+	attributeService.send(readTrx);
+
+	IOService::secSleep(1000);
+	sessionManager.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

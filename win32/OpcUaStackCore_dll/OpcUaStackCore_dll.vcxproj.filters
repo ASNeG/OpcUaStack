@@ -492,6 +492,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h">
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
+      <Filter>sc\Base</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsRequest.h">
       <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
@@ -1082,6 +1085,9 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp">
       <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
+      <Filter>sc\Base</Filter>
+	</ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerRequest.cpp">
       <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>

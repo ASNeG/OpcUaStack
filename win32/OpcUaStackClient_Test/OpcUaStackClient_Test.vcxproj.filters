@@ -13,6 +13,9 @@
     <Filter Include="Unittest\ServiceSet\SessionServiceSet">
       <UniqueIdentifier>{9d827859-ba2f-4181-93f0-a90b1e8b36c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unittest\ServiceSet\AttributeServiceSet">
+      <UniqueIdentifier>{94a726bc-7027-4ea6-b44d-a4a5e6623406}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\tst\OpcUaStackClient\SecureChannel\SecureChannelClient_t.cpp">

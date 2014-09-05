@@ -40,6 +40,7 @@ namespace OpcUaStackClient
 			std::iostream sbs(&sb);
 			std::iostream sbt(&sb_);
 			OpcUaStackCore::duplicate(sbs, sbt);
+			OpcUaStackCore::clear(sbs);
 			receiveCondition_.conditionValueDec();
 			nodeId.copyTo(nodeId_);
 			receiveCount_++;

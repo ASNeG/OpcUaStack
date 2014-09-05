@@ -7,8 +7,10 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
 
 namespace OpcUaStackClient
 {
@@ -17,8 +19,11 @@ namespace OpcUaStackClient
 	{
 		SessionState_Close,
 		SessionState_ConnectingToSecureChannel,
+		SessionState_ConnectedToSecureChannel,
 		SessionState_SendCreateSession,
 		SessionState_ReceiveCreateSession,
+		SessionState_SendActivateSession,
+		SessionState_ReceiveActivateSession,
 	} SessionState;
 
 	class CreateSessionParameter
@@ -36,20 +41,23 @@ namespace OpcUaStackClient
 		Session(void);
 		~Session(void);
 
-		void connect(void);
 		void createSession(void);
 		void activateSession(void);
+		void send(ServiceTransaction::BSPtr serviceTransaction);
+	
+		void handleSecureChannelConnect(void);
+		void handleSecureChannelDisconnect(void);
 
 		OpcUaStackCore::ApplicationDescription::SPtr applicationDescription(void);
 		void sessionIf(SessionIf* sessionIf);
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
-		void sessionApplicationIf(SessionApplicationIf* sessionApplicationIf);
 
 		void receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
 
  	  private:
-		  void receiveSessionCreateResponse(boost::asio::streambuf& sb);
+		  void receiveCreateSessionResponse(boost::asio::streambuf& sb);
+		  void receiveActivateSessionResponse(boost::asio::streambuf& sb);
 
 		  SessionState sessionState_;
 		  uint32_t requestHandle_;
@@ -57,8 +65,9 @@ namespace OpcUaStackClient
 		  CreateSessionParameter createSessionParameter_;
 		  SessionIf* sessionIf_;
 		  SessionSecureChannelIf* sessionSecureChannelIf_;
-		  SessionApplicationIf* sessionApplicationIf_;
+
 		  OpcUaStackCore::CreateSessionResponse::SPtr createSessionResponseSPtr_;
+		  OpcUaStackCore::ActivateSessionResponse::SPtr activateSessionResponseSPtr_;
 	};
 
 };

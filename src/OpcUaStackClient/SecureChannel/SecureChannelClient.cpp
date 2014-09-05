@@ -20,11 +20,19 @@ namespace OpcUaStackClient
 	, maxReconnectTimeout_(120)
 	, reconnectTimer_(nullptr)
 	, securityHeaderSPtr_(SecurityHeader::construct())
+	, debugMode_(false)
 	{
 	}
 
 	SecureChannelClient::~SecureChannelClient(void)
 	{
+	}
+
+	void 
+	SecureChannelClient::debugMode(bool debugMode)
+	{
+		debugMode_ = debugMode;
+		SecureChannel::debugMode(debugMode);
 	}
 
 	void 
@@ -99,6 +107,15 @@ namespace OpcUaStackClient
 		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(sb)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
+		std::iostream ios(&sb);
+		Log(Debug, "send message")
+			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
+			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1));
+
+		if (debugMode_) {
+			OpcUaStackCore::dumpHex(ios2);
+		}
+
 		tcpConnection_.async_write(
 			sb2, sb1, sb, boost::bind(&SecureChannelClient::handleWriteSendComplete, this, boost::asio::placeholders::error)
 		);
@@ -124,6 +141,8 @@ namespace OpcUaStackClient
 			startReconnectTimer();
 			return;
 		}
+
+		std::cout << "SEND OK" << std::endl;
 	}
 
 	void 
@@ -150,6 +169,9 @@ namespace OpcUaStackClient
 	void 
 	SecureChannelClient::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		Log(Debug, "receive message body")
+			.parameter("BodySize", bytes_transfered);
+
 		if (error) {
 			Log(Error, "cannot read message body")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -195,7 +217,9 @@ namespace OpcUaStackClient
 		OpcUaNodeId nodeId;
 		nodeId.opcUaBinaryDecode(is);
 
-		if (secureChannelIf_ != nullptr) secureChannelIf_->receive(nodeId, is_);
+		if (secureChannelIf_ != nullptr) {
+			secureChannelIf_->receive(nodeId, is_);
+		}
 
 		asyncReadMessageHeader();
 	}
@@ -278,6 +302,15 @@ namespace OpcUaStackClient
 		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
+		Log(Debug, "send message")
+			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
+			.parameter("BodySize", OpcUaStackCore::count(ios1))
+			.parameter("Message", "Hello");
+
+		if (debugMode_) {
+			OpcUaStackCore::dumpHex(ios2);
+		}
+
 		tcpConnection_.async_write(
 			sb2, sb1, boost::bind(&SecureChannelClient::handleWriteHelloComplete, this, boost::asio::placeholders::error)
 		);
@@ -334,6 +367,10 @@ namespace OpcUaStackClient
 	void 
 	SecureChannelClient::handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		Log(Debug, "receive message body")
+			.parameter("BodySize", bytes_transfered)
+			.parameter("Message", "Acknowledge");
+
 		if (secureChannelClientState_ != SecureChannelClientState_Hello) {
 			Log(Error, "cannot read acknowledge, because secure channel is in invalid state")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -384,6 +421,15 @@ namespace OpcUaStackClient
 		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
+		Log(Debug, "send message")
+			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
+			.parameter("BodySize", OpcUaStackCore::count(ios1))
+			.parameter("Message", "OpenSecureChannelRequest");
+
+		if (debugMode_) {
+			OpcUaStackCore::dumpHex(ios2);
+		}
+
 		tcpConnection_.async_write(
 			sb2, sb1, boost::bind(&SecureChannelClient::handleWriteOpenSecureChannelComplete, this, boost::asio::placeholders::error)
 		);
@@ -427,6 +473,10 @@ namespace OpcUaStackClient
 	void 
 	SecureChannelClient::handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		Log(Debug, "receive message body")
+			.parameter("BodySize", bytes_transfered)
+			.parameter("Message", "OpenSecureChannelResponse");
+
 		if (secureChannelClientState_ != SecureChannelClientState_OpenSecureChannelMessage) {
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
 				.parameter("PartnerAddress", partnerAddress_.to_string())

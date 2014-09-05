@@ -1,4 +1,6 @@
+#include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -102,7 +104,14 @@ namespace OpcUaStackCore
 		} else {
 			parameterTypeId_.opcUaBinaryEncode(os);
 			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
-			epSPtr_->opcUaBinaryEncode(os);
+
+			boost::asio::streambuf sb;
+			std::ostream osb(&sb);
+			epSPtr_->opcUaBinaryEncode(osb);
+
+			OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
+			OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
+			os << osb.rdbuf();
 		}
 	}
 
@@ -119,6 +128,8 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		OpcUaUInt32 bufferLength;
+		OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
 		epSPtr_ = it->second->factory();
 		epSPtr_->opcUaBinaryDecode(is);
 	}

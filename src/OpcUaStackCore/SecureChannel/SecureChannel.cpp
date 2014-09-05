@@ -12,11 +12,18 @@ namespace OpcUaStackCore
 	, partnerPort_(4841)
 	, channelDataBaseSPtr_(ChannelDataBase::construct())
 	, channelId_(0)
+	, debugMode_(false)
 	{
 	}
 
 	SecureChannel::~SecureChannel(void)
 	{
+	}
+
+	void 
+	SecureChannel::debugMode(bool debugMode)
+	{
+		debugMode_ = debugMode;
 	}
 
 	ChannelDataBase::SPtr 
@@ -44,6 +51,14 @@ namespace OpcUaStackCore
 	void 
 	SecureChannel::handleReadMessageHeader(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		Log(Debug, "receive message header")
+			.parameter("MessageHeaderLength", bytes_transfered);
+
+		if (debugMode_) {
+			std::iostream debug_ios(&is_);
+			OpcUaStackCore::dumpHex(debug_ios);
+		}
+
 		if (error) {
 			Log(Error, "receive message header error")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
