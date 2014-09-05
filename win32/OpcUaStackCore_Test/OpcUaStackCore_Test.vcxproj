@@ -160,6 +160,7 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPAcceptor_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPConnector_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\TCPChannel\TCPChannel_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\PendingQueue_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\Timer_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>

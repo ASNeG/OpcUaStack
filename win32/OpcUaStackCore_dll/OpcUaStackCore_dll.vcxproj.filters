@@ -1,127 +1,127 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="sc">
-      <UniqueIdentifier>{72f66d32-3614-4ef6-88d0-38841a400f68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sc\Base">
-      <UniqueIdentifier>{10d69ae7-1fa4-4f24-8c67-4d1eab59651f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sc\BuildInTypes">
-      <UniqueIdentifier>{0ec550f5-51db-4f91-8477-0453e364cf6e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="dll">
       <UniqueIdentifier>{43a3b7e2-8d30-4c03-adbe-343ae410ba70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\SecureChannel">
+    <Filter Include="src">
+      <UniqueIdentifier>{72f66d32-3614-4ef6-88d0-38841a400f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Base">
+      <UniqueIdentifier>{10d69ae7-1fa4-4f24-8c67-4d1eab59651f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\BuildInTypes">
+      <UniqueIdentifier>{0ec550f5-51db-4f91-8477-0453e364cf6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\SecureChannel">
       <UniqueIdentifier>{397db13f-f15b-4ba9-8ed3-540351dca1e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\TCPChannel">
+    <Filter Include="src\TCPChannel">
       <UniqueIdentifier>{0b91a7a9-118a-4bfe-a67e-8194a5d3608a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet">
+    <Filter Include="src\ServiceSet">
       <UniqueIdentifier>{77e2aa62-4826-4453-a421-b828c982de93}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\SessionServiceSet">
+    <Filter Include="src\ServiceSet\SessionServiceSet">
       <UniqueIdentifier>{b12aff8c-e869-4bfb-bfc9-f63a1a125aa8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\NodeManagementServiceSet">
+    <Filter Include="src\ServiceSet\NodeManagementServiceSet">
       <UniqueIdentifier>{de9100e5-36d4-4e62-92e6-b01761d6da5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\ViewServiceSet">
+    <Filter Include="src\ServiceSet\ViewServiceSet">
       <UniqueIdentifier>{26d8dacb-6f56-4290-a6ce-fa517a65f555}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\QueryServiceSet">
+    <Filter Include="src\ServiceSet\QueryServiceSet">
       <UniqueIdentifier>{743cc34d-056e-456e-a080-b576eb4242d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\AttributeServiceSet">
+    <Filter Include="src\ServiceSet\AttributeServiceSet">
       <UniqueIdentifier>{86a84e31-9d75-4d5c-99d6-e585c52a6ace}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\MethodServiceSet">
+    <Filter Include="src\ServiceSet\MethodServiceSet">
       <UniqueIdentifier>{db8fbaf8-6acd-43bd-9c42-d2d5fe557d9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\MonitoredItemServiceSet">
+    <Filter Include="src\ServiceSet\MonitoredItemServiceSet">
       <UniqueIdentifier>{d6169e48-bb73-4a09-9e2d-c488cee71109}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\SubscriptionServiceSet">
+    <Filter Include="src\ServiceSet\SubscriptionServiceSet">
       <UniqueIdentifier>{1ab11d0e-2128-424c-807c-c0f52a3dc574}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\Common">
+    <Filter Include="src\ServiceSet\Common">
       <UniqueIdentifier>{071d92a3-eca9-45b9-a64e-a85bb96a2cd3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\DiscoveryServiceSet">
+    <Filter Include="src\ServiceSet\DiscoveryServiceSet">
       <UniqueIdentifier>{9634c459-fcd1-4910-8ffd-d2ce6e8c113a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\ServiceSet\HistoryAccessServices">
+    <Filter Include="src\ServiceSet\HistoryAccessServices">
       <UniqueIdentifier>{14618791-859c-4ecc-a741-601433f461f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="sc\Utility">
+    <Filter Include="src\Utility">
       <UniqueIdentifier>{6337ed5c-c7fd-422f-9262-f68bf882a0ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ObjectPool.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\BuildInTypes.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaByteString.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDateTime.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaGuid.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeId.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaNumber.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaString.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaType.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaVariant.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDataValue.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaDiagnosticInfo.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\os.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>dll</Filter>
@@ -130,609 +130,609 @@
       <Filter>dll</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Utility.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\MessageHeader.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\HelloMessage.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\AcknowledgeMessage.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\MessageDefaults.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ErrorMessage.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityHeader.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SequenceHeader.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\OpenSecureChannelRequest.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\OpenSecureChannelResponse.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\RequestHeader.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ResponseHeader.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaArray.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecurityToken.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPAcceptor.h">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnection.h">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnector.h">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\IOService.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Condition.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPTestHandler.h">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ApplicationInstanceCertificate.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SessionAuthenticationToken.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\ByteOrder.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionRequest.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ActivateSessionResponse.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionRequest.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSessionResponse.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelRequest.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CancelResponse.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CloseSessionRequest.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CloseSessionResponse.h">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignatureData.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserIdentityToken.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserTokenPolicy.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameter.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ExtensibleParameterBase.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UserNameIdentityToken.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRequest.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadResponse.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteResponse.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteRequest.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PublishResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NotificationMessage.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataChangeNotification.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemNotification.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\StatusChangeNotification.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\SecureChannel.h">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Log.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaIdentifier.h">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Config.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ConfigXml.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventNotificationList.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventField.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventFieldList.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifySubscriptionRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifySubscriptionResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferResult.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsRequest.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.h">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallRequest.h">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallResponse.h">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodResult.h">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CallMethodRequest.h">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemCreateRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemCreateResult.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemModifyRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemModifyResult.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadValueId.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ElementOperand.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\LiteralOperand.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeOperand.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SimpleAttributeOperand.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePath.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePathElement.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventFilter.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ContentFilter.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ContentFilterElement.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataChangeFilter.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoringParameters.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateMonitoredItemsRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ContentFilterElementResult.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ContentFilterResult.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventFilterResult.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateFilterResult.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\CreateMonitoredItemsResponse.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsResponse.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetTriggeringRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetTriggeringResponse.h">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesItem.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributesDescription.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DataTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesRequest.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.h">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsRequest.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\GetEndpointsResponse.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\FindServersRequest.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\FindServersResponse.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisteredServer.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterServerRequest.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterServerResponse.h">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadEventDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRawModifiedDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadProcessedDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadAtTimeDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateFilter.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateConfiguration.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryData.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryModifiedData.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModificationInfo.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryEventFieldList.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryEvent.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UpdateDataDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UpdateStructureDataDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UpdateEventDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteRawModifiedDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteAtTimeDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteEventDetails.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PerformUpdateEnumeration.h">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResult.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadValueId.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadRequest.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResponse.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResult.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.h">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseDescription.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReferenceDescription.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseResult.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseRequest.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseResponse.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseNextRequest.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseNextResponse.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowsePath.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowsePathResult.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsRequest.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsResponse.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterNodesRequest.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RegisterNodesResponse.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UnregisterNodesRequest.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UnregisterNodesResponse.h">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewDescription.h">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryDataDescription.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeTypeDescription.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ParsingResult.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryDataSet.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryFirstRequest.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryFirstResponse.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextRequest.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Callback.h">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\PendingQueue.h">
-      <Filter>sc\Utility</Filter>
+      <Filter>src\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Timer.h">
-      <Filter>sc\Utility</Filter>
-	</ClInclude>
+      <Filter>src\Utility</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h">
       <Filter>sc\ServiceSet\QueryServiceSet</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaByteString.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDateTime.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaExpandedNodeId.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaExtensionObject.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaGuid.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaLocalizedText.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeId.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNodeIdBase.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaNumber.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaQualifiedName.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaStatusCode.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaString.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaVariant.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDataValue.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaDiagnosticInfo.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>dll</Filter>
@@ -744,545 +744,545 @@
       <Filter>dll</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Utility.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\MessageHeader.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\HelloMessage.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\AcknowledgeMessage.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\MessageDefaults.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ErrorMessage.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityHeader.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SequenceHeader.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\OpenSecureChannelRequest.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\OpenSecureChannelResponse.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\RequestHeader.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ResponseHeader.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaArray.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecurityToken.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPAcceptor.cpp">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnection.cpp">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnector.cpp">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\IOService.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Condition.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPTestHandler.cpp">
-      <Filter>sc\TCPChannel</Filter>
+      <Filter>src\TCPChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ApplicationInstanceCertificate.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SessionAuthenticationToken.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelRequest.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\CloseSecureChannelResponse.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\ByteOrder.cpp">
-      <Filter>sc\BuildInTypes</Filter>
+      <Filter>src\BuildInTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionRequest.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ActivateSessionResponse.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionRequest.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSessionResponse.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelRequest.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CancelResponse.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CloseSessionRequest.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CloseSessionResponse.cpp">
-      <Filter>sc\ServiceSet\SessionServiceSet</Filter>
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ApplicationDescription.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignatureData.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SignedSoftwareCertificate.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserIdentityToken.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserTokenPolicy.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ExtensibleParameter.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AnonymousIdentityToken.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UserNameIdentityToken.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRequest.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadResponse.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteRequest.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteResponse.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateSubscriptionResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\PublishResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NotificationMessage.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataChangeNotification.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemNotification.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\StatusChangeNotification.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\SecureChannel.cpp">
-      <Filter>sc\SecureChannel</Filter>
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Log.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Config.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\ConfigXml.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventField.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFieldList.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventNotificationList.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifySubscriptionRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifySubscriptionResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferSubscriptionsRequest.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TransferResult.cpp">
-      <Filter>sc\ServiceSet\SubscriptionServiceSet</Filter>
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallRequest.cpp">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallResponse.cpp">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallMethodResult.cpp">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CallMethodRequest.cpp">
-      <Filter>sc\ServiceSet\MethodServiceSet</Filter>
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemCreateRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemCreateResult.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemModifyRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoredItemModifyResult.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\WriteValue.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadValueId.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SimpleAttributeOperand.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AttributeOperand.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\LiteralOperand.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ElementOperand.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePath.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePathElement.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFilter.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ContentFilter.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ContentFilterElement.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataChangeFilter.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MonitoringParameters.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateMonitoredItemsRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ContentFilterElementResult.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ContentFilterResult.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventFilterResult.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AggregateFilterResult.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\CreateMonitoredItemsResponse.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModifyMonitoredItemsResponse.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetTriggeringRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsRequest.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetTriggeringResponse.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteMonitoredItemsResponse.cpp">
-      <Filter>sc\ServiceSet\MonitoredItemServiceSet</Filter>
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesItem.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesRequest.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DataTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\VariableAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\VariableTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ViewAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceTypeAttributes.cpp">
-      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerRequest.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterServerResponse.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisteredServer.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\FindServersRequest.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\FindServersResponse.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\GetEndpointsRequest.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\GetEndpointsResponse.cpp">
-      <Filter>sc\ServiceSet\DiscoveryServiceSet</Filter>
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadEventDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRawModifiedDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadProcessedDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadAtTimeDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AggregateConfiguration.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AggregateFilter.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryData.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryModifiedData.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModificationInfo.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryEventFieldList.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryEvent.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UpdateDataDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UpdateStructureDataDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UpdateEventDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteRawModifiedDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteAtTimeDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteEventDetails.cpp">
-      <Filter>sc\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResult.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadValueId.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadRequest.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResponse.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResult.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.cpp">
-      <Filter>sc\ServiceSet\AttributeServiceSet</Filter>
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseDescription.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReferenceDescription.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseResult.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseRequest.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseResponse.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseNextRequest.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowseNextResponse.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowsePath.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\BrowsePathResult.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsRequest.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\TranslateBrowsePathsToNodeIdsResponse.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterNodesRequest.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RegisterNodesResponse.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UnregisterNodesRequest.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UnregisterNodesResponse.cpp">
-      <Filter>sc\ServiceSet\ViewServiceSet</Filter>
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ViewDescription.cpp">
-      <Filter>sc\ServiceSet\Common</Filter>
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryDataDescription.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeTypeDescription.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ParsingResult.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryDataSet.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryFirstRequest.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryFirstResponse.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryNextRequest.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\QueryNextResponse.cpp">
-      <Filter>sc\ServiceSet\QueryServiceSet</Filter>
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Callback.cpp">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Timer.cpp">
-      <Filter>sc\Utility</Filter>
+      <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\PendingQueue.cpp">
-      <Filter>sc\Utility</Filter>
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx">
-      <Filter>sc\Base</Filter>
+      <Filter>src\Base</Filter>
     </None>
-	<ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
       <Filter>sc\Base</Filter>
     </ClCompile>
   </ItemGroup>

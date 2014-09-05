@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	Timer::start(uint32_t msec)
 	{
 		if (running_) return false;
+		running_ = true;
 		timer_.expires_from_now(boost::posix_time::millisec(msec));
 		timer_.async_wait(boost::bind(&Timer::onTimeout, this, _1));
 		return true;
