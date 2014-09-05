@@ -44,9 +44,8 @@ namespace OpcUaStackCore
 	void 
 	TCPTestHandler::handleReadServer(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
-		// FIXME: only for testing
-		std::cout << "handleReadServer" << std::endl;
-		std::cout << "bytes_transfered: " << bytes_transfered << std::endl;
+		//std::cout << "handleReadServer" << std::endl;
+		//std::cout << "bytes_transfered: " << bytes_transfered << std::endl;
 		handleReadServerCount_++;
 		handleReadServerError_ = error;
 		bytes_transfered_server_ = bytes_transfered;

@@ -174,7 +174,14 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 	BOOST_REQUIRE(tcpTestHandler.handleReadClientCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 1);
     BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);
-	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 0);
+#if WIN32
+	if (tcpTestHandler.bytes_transfered_server_ == 0) {
+		BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  CONNECTION_CLOSE_REMOTE);
+		ioService.stop();
+		return;
+	}
+#endif
+	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
 
 	//
 	// connection reset 
@@ -191,18 +198,16 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCondition_.waitForCondition(10000) == true);
 
-
+	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 2);
 #if WIN32
-	// FIXME: results = 0...
-	std::cout << "size_t: byte_transfered_server:: " << tcpTestHandler.bytes_transfered_server_ << std::endl;
-	//BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
-	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 2);
-	BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  CONNECTION_CLOSE_REMOTE);
-#else
+	if (tcpTestHandler.bytes_transfered_server_ == 0) {
+		BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  CONNECTION_CLOSE_REMOTE);
+		ioService.stop();
+		return;
+	}
+#endif
 	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 10);
-	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 2);
 
-	
 	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
 	tcpConnectionServer.async_read_exactly(
 		isServer2,
@@ -214,8 +219,7 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.bytes_transfered_server_ == 0);
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 3);
-        BOOST_REQUIRE(tcpTestHandler.handleReadServerError_.value() == CONNECTION_CLOSE_REMOTE);
-#endif
+    BOOST_REQUIRE(tcpTestHandler.handleReadServerError_.value() == CONNECTION_CLOSE_REMOTE);
 	
 	ioService.stop();
 }
