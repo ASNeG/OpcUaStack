@@ -6,13 +6,21 @@ namespace OpcUaStackCore
 	Timer::Timer(IOService& ioService)
 	: running_(false)
 	, timer_(ioService.io_service())
-	, selfObjectSPtr_()
+	, selfObjectSPtr_(nullptr)
 	{
 	}
 	
 	Timer::~Timer(void)
 	{
 		callback_.reset();
+	}
+
+	bool 
+	Timer::start(SPtr selfObjectSPtr, uint32_t msec)
+	{
+		if (running_) return false;
+		selfObjectSPtr_ = selfObjectSPtr;
+		return start(msec);
 	}
 
 	bool 
@@ -51,15 +59,16 @@ namespace OpcUaStackCore
 	void 
 	Timer::onTimeout(const boost::system::error_code& ec)
 	{
-		running_ = false;
 		if (ec) {
 			selfObjectSPtr_.reset();
+			running_ = false;
 			return;
 		}
 
 		callback_();
 
 		selfObjectSPtr_.reset();
+		running_ = false;
 	}
 
 }

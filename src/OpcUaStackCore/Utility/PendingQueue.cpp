@@ -17,7 +17,6 @@ namespace OpcUaStackCore
 	
 	PendingQueueElement::~PendingQueueElement(void)
 	{
-		timer_->callback().reset();
 		timer_.reset();
 	}
 
@@ -88,10 +87,10 @@ namespace OpcUaStackCore
 		PendingQueueElement::SPtr pendingQueueElement = PendingQueueElement::construct(*ioService_);
 		pendingQueueElement->key(key);
 		pendingQueueElement->element(object);
-		pendingQueueElement->timer()->callback().reset(boost::bind(&PendingQueue::onTimeout, this, pendingQueueElement));
+		pendingQueueElement->timer()->callback().reset(boost::bind(&PendingQueue::onTimeout, this, key));
 		pendingQueueMap_.insert(std::make_pair(key, pendingQueueElement));
 
-		pendingQueueElement->timer()->start(timeoutMSec);
+		pendingQueueElement->timer()->start(pendingQueueElement->timer(), timeoutMSec);
 		return true;
 	}
 		
@@ -106,25 +105,23 @@ namespace OpcUaStackCore
 		}
 
 		PendingQueueElement::SPtr pendingQueueElement = it->second;
-		Timer::SPtr timer = pendingQueueElement->timer();
-		timer->stop(timer);
-		timer->callback().reset();
+		pendingQueueElement->timer()->stop(pendingQueueElement->timer());
 		pendingQueueMap_.erase(it);
 		return pendingQueueElement->element();
 	}
 
 	void 
-	PendingQueue::onTimeout(PendingQueueElement::SPtr pendingQueueElement)
+	PendingQueue::onTimeout(uint32_t key)
 	{
 		PendingQueueMap::iterator it;
-		it = pendingQueueMap_.find(pendingQueueElement->key());
+		it = pendingQueueMap_.find(key);
 		if (it == pendingQueueMap_.end()) {
 			return;
 		}
 
-		pendingQueueElement->timer()->callback().reset();
+		Object::SPtr element = it->second->element();
 		pendingQueueMap_.erase(it);
-		timeoutCallback_(pendingQueueElement->element());
+		timeoutCallback_(element);
 	}
 
 }
