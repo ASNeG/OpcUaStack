@@ -176,7 +176,9 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
     BOOST_REQUIRE(tcpTestHandler.handleReadClientError_.value() == CONNECTION_CLOSE_LOCAL);
 #if WIN32
 	if (tcpTestHandler.bytes_transfered_server_ == 0) {
-		BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  CONNECTION_CLOSE_REMOTE);
+		if(tcpTestHandler.handleReadServerError_ !=  CONNECTION_CLOSE_REMOTE) {
+			BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == boost::asio::error::eof);
+		}
 		ioService.stop();
 		return;
 	}
@@ -201,7 +203,9 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 	BOOST_REQUIRE(tcpTestHandler.handleReadServerCount_ == 2);
 #if WIN32
 	if (tcpTestHandler.bytes_transfered_server_ == 0) {
-		BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ ==  CONNECTION_CLOSE_REMOTE);
+		if(tcpTestHandler.handleReadServerError_ !=  CONNECTION_CLOSE_REMOTE) {
+			BOOST_REQUIRE(tcpTestHandler.handleReadServerError_ == boost::asio::error::eof);
+		}
 		ioService.stop();
 		return;
 	}
