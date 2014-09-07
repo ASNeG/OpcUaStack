@@ -31,6 +31,38 @@ namespace OpcUaStackClient
 	{
 	}
 
+	bool 
+	Session::registerService(OpcUaNodeId& typeId, ServiceSetIf* serviceSetIf)
+	{
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(typeId);
+		if (it != serviceSetMap_.end()) {
+			Log(Error, "cannot insert type id into service set map, because type id already exist")
+				.parameter("TypeId", typeId);
+			return false;
+		}
+
+		serviceSetMap_.insert(std::make_pair(typeId, serviceSetIf));
+
+		return true;
+	}
+
+	bool 
+	Session::deregisterService(OpcUaNodeId& typeId)
+	{
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(typeId);
+		if (it == serviceSetMap_.end()) {
+			Log(Error, "cannot remove type id into service map, because type id not exist")
+				.parameter("TypeId", typeId);
+			return false;
+		}
+
+		serviceSetMap_.erase(it);
+
+		return true;
+	}
+
 	void 
 	Session::createSession(void)
 	{
@@ -237,8 +269,27 @@ namespace OpcUaStackClient
 		}
 
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
+		serviceTransaction->opcUaBinaryDecodeResponse(ios);
 		
+		ServiceSetIf* serviceSetIf = serviceTransaction->serviceSetIf();
+		if (serviceSetIf != nullptr) {
+			serviceSetIf->serviceSetIf(typeId, serviceTransaction);
+			return;
+		}
 
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(typeId);
+		if (it == serviceSetMap_.end()) {
+			Log(Error, "type id not exist in service map")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("TypeId", typeId);
+			char c; while (ios.get(c));
+			return;
+		}
+
+		serviceSetIf = it->second;
+		serviceSetIf->serviceSetIf(typeId, serviceTransaction);
 	}
 
 	void 

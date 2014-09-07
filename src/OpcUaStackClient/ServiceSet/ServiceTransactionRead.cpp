@@ -8,11 +8,24 @@ namespace OpcUaStackClient
 	: ServiceTransaction(OpcUaId_ReadRequest_Encoding_DefaultBinary, OpcUaId_ReadResponse_Encoding_DefaultBinary)
 	, readRequest_(ReadRequest::construct())
 	, readResponse_(ReadResponse::construct())
+	, serviceSetIf_(nullptr)
 	{
 	}
 
 	ServiceTransactionRead::~ServiceTransactionRead(void)
 	{
+	}
+
+	ServiceSetIf* 
+	ServiceTransactionRead::serviceSetIf(void)
+	{
+		return serviceSetIf_;
+	}
+		
+	void 
+	ServiceTransactionRead::serviceSetIf(ServiceSetIf* serviceSetIf)
+	{
+		serviceSetIf_ = serviceSetIf;
 	}
 
 	ReadRequest::SPtr 

@@ -69,6 +69,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransactionRead.h">
       <Filter>src\ServiceSet\AttributeService</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceSetIf.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

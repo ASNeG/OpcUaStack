@@ -12,6 +12,7 @@
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
 
 namespace OpcUaStackClient
 {
@@ -41,6 +42,9 @@ namespace OpcUaStackClient
 	  public:
 		Session(IOService& ioService);
 		~Session(void);
+
+		bool registerService(OpcUaNodeId& typeId, ServiceSetIf* serviceSetIf);
+		bool deregisterService(OpcUaNodeId& typeId);
 
 		void createSession(void);
 		void activateSession(void);
@@ -73,6 +77,9 @@ namespace OpcUaStackClient
 
 		PendingQueue pendingQueue_;
 		void pendingQueueTimeout(Object::SPtr object);
+
+		typedef std::map<OpcUaNodeId, ServiceSetIf*> ServiceSetMap;
+		ServiceSetMap serviceSetMap_;
 	};
 
 };

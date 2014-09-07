@@ -86,6 +86,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelTestHandler.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\AttributeService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceBase.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceSetIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransactionRead.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\Session.h" />

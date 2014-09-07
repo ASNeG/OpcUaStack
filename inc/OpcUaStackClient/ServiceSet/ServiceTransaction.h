@@ -10,6 +10,7 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
+	class ServiceSetIf;
 
 	class DLLEXPORT ServiceTransaction : public Object 
 	{
@@ -27,6 +28,8 @@ namespace OpcUaStackClient
 		RequestHeader::SPtr requestHeader(void);
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
+
+		virtual ServiceSetIf* serviceSetIf(void) { return nullptr; }
 
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
