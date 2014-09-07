@@ -4,7 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackClient/ServiceSet/ServiceTransactionRead.h"
-#include "OpcuaStackClient/ServiceSet/ServiceSetIf.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
 
 namespace OpcUaStackClient
 {

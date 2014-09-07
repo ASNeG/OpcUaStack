@@ -6,7 +6,7 @@ namespace OpcUaStackCore
 	Timer::Timer(IOService& ioService)
 	: running_(false)
 	, timer_(ioService.io_service())
-	, selfObjectSPtr_(nullptr)
+	, selfObjectSPtr_()
 	{
 	}
 	
