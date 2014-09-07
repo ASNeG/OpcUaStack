@@ -17,15 +17,13 @@ namespace OpcUaStackCore
 		HistoryUpdateResponse(void);
 		virtual ~HistoryUpdateResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeaderSPtr);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void results(const HistoryUpdateResultArray::SPtr results);
 		HistoryUpdateResultArray::SPtr results(void) const;
 		void diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr);
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfos(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		ResponseHeader::SPtr responseHeaderSPtr_;

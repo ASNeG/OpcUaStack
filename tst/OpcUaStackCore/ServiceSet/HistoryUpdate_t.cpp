@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Title)
 
 BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -65,14 +66,15 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	historyUpdateRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	historyUpdateRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	historyUpdateRequestSPtr->requestHeader()->time(ptime);
-	historyUpdateRequestSPtr->requestHeader()->requestHandle(0);
-	historyUpdateRequestSPtr->requestHeader()->returnDisagnostics(0);
-	historyUpdateRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// encode 
+	requestHeader->opcUaBinaryEncode(ios1);
 	historyUpdateRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -118,20 +120,22 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 
 	// decode ReadRequest
 	historyUpdateRequestSPtr = HistoryUpdateRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	historyUpdateRequestSPtr->opcUaBinaryDecode(ios);
 
-	str = *historyUpdateRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(historyUpdateRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(historyUpdateRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(historyUpdateRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(historyUpdateRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(historyUpdateRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 }
 
 
 BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -178,9 +182,9 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	historyUpdateResponseSPtr->responseHeader()->time(ptime);
-	historyUpdateResponseSPtr->responseHeader()->requestHandle(0);
-	historyUpdateResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build HistoryUpdateResult
 	statusCode = Success;
@@ -191,6 +195,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	historyUpdateResponseSPtr->results()->set(historyUpdateResultSPtr);
 
 	// encode 
+	responseHeader->opcUaBinaryEncode(ios1);
 	historyUpdateResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -236,11 +241,12 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 
 	// decode 
 	historyUpdateResponseSPtr = HistoryUpdateResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	historyUpdateResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(historyUpdateResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(historyUpdateResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(historyUpdateResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(historyUpdateResponseSPtr->results()->size() == 1);
 	historyUpdateResultSPtr = HistoryUpdateResult::construct();

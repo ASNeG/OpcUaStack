@@ -18,6 +18,8 @@ namespace OpcUaStackClient
 	}
 
 	ServiceTransaction::ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse)
+	: requestHeader_()
+	, responseHeader_()
 	{
 		nodeTypeRequest_.set(nodeTypeRequest);
 		nodeTypeResponse_.set(nodeTypeResponse);
@@ -32,6 +34,36 @@ namespace OpcUaStackClient
 	ServiceTransaction::transactionId(void)
 	{
 		return transactionId_;
+	}
+
+	void 
+	ServiceTransaction::requestHeader(RequestHeader::SPtr requestHeader)
+	{
+		requestHeader_ = requestHeader;
+	}
+
+	RequestHeader::SPtr 
+	ServiceTransaction::requestHeader(void)
+	{
+		if (requestHeader_.get() == nullptr) {
+			requestHeader_ = RequestHeader::construct();
+		}
+		return requestHeader_;
+	}
+
+	void 
+	ServiceTransaction::responseHeader(ResponseHeader::SPtr responseHeader)
+	{
+		responseHeader_ = responseHeader;
+	}
+
+	ResponseHeader::SPtr 
+	ServiceTransaction::responseHeader(void)
+	{
+		if (responseHeader_.get() == nullptr) {
+			responseHeader_ = ResponseHeader::construct();
+		}
+		return responseHeader_;
 	}
 
 	OpcUaNodeId& 

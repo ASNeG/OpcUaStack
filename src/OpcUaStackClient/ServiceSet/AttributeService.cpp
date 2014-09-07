@@ -18,7 +18,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::send(ServiceTransactionRead::SPtr serviceTransactionRead)
+	AttributeService::send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead)
 	{
 		session_->send(serviceTransactionRead);
 	}

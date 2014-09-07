@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		ReadRequest(void);
 		virtual ~ReadRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
-		RequestHeader::SPtr requestHeader(void) const;
 		void maxAge(const OpcUaDouble& maxAge);
 		OpcUaDouble maxAge(void) const;
 		void timestampsToReturn(const OpcUaInt32& timestampsToReturn);
@@ -26,11 +24,10 @@ namespace OpcUaStackCore
 		void readValueIdArray(const ReadValueIdArray::SPtr readValueIdArray);
 		ReadValueIdArray::SPtr readValueIdArray(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaDouble maxAge_;
 		OpcUaInt32 timestampsToReturn_;
 		ReadValueIdArray::SPtr readValueIdArraySPtr_;

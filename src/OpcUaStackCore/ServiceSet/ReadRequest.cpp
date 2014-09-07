@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	ReadRequest::ReadRequest(void)
 	: ObjectPool<ReadRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, maxAge_()
 	, timestampsToReturn_()
 	, readValueIdArraySPtr_(ReadValueIdArray::construct())
@@ -22,18 +21,6 @@ namespace OpcUaStackCore
 
 	ReadRequest::~ReadRequest(void)
 	{
-	}
-
-	void 
-	ReadRequest::requestHeader(const RequestHeader::SPtr requestHeaderSPtr)
-	{
-		requestHeaderSPtr_ = requestHeaderSPtr;
-	}
-
-	RequestHeader::SPtr 
-	ReadRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -72,22 +59,22 @@ namespace OpcUaStackCore
 		return readValueIdArraySPtr_;
 	}
 
-	void 
+	bool
 	ReadRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, maxAge_);
 		OpcUaNumber::opcUaBinaryEncode(os, timestampsToReturn_);
 		readValueIdArraySPtr_->opcUaBinaryEncode(os);
+		return true;
 	}
 	
-	void 
+	bool 
 	ReadRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, maxAge_);
 		OpcUaNumber::opcUaBinaryDecode(is, timestampsToReturn_);
 		readValueIdArraySPtr_->opcUaBinaryDecode(is);
+		return true;
 	}
 
 }

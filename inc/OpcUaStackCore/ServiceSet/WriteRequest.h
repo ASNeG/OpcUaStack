@@ -17,13 +17,11 @@ namespace OpcUaStackCore
 		WriteRequest(void);
 		virtual ~WriteRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void writeValueArray(const WriteValueArray::SPtr writeValueArray);
 		WriteValueArray::SPtr writeValueArray(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		  RequestHeader::SPtr requestHeaderSPtr_;

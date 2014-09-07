@@ -55,6 +55,10 @@ namespace OpcUaStackCore
 		virtual OpcUaByte encodingFlag(void) const;
 		virtual void encodingFlag(OpcUaByte expandedEncodingFlag);
 
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaNodeIdBase& opcUaNodeId) {
+			return os;
+		}
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

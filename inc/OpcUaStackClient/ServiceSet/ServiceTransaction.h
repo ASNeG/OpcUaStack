@@ -11,10 +11,10 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT ServiceTransaction 
+	class DLLEXPORT ServiceTransaction : public Object 
 	{
 	  public:
-		typedef boost::shared_ptr<ServiceTransaction> BSPtr;
+		typedef boost::shared_ptr<ServiceTransaction> SPtr;
 
 		ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse);
 		virtual ~ServiceTransaction(void);
@@ -23,8 +23,10 @@ namespace OpcUaStackClient
 		OpcUaNodeId& nodeTypeRequest(void);
 		OpcUaNodeId& nodeTypeResponse(void);
 
-		virtual RequestHeader::SPtr getRequestHeader(void) = 0;
-		virtual ResponseHeader::SPtr getResponseHeader(void) = 0;
+		void requestHeader(RequestHeader::SPtr requestHeader);
+		RequestHeader::SPtr requestHeader(void);
+		void responseHeader(ResponseHeader::SPtr responseHeader);
+		ResponseHeader::SPtr responseHeader(void);
 
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
@@ -39,6 +41,9 @@ namespace OpcUaStackClient
 		uint32_t transactionId_;
 		OpcUaNodeId nodeTypeRequest_;
 		OpcUaNodeId nodeTypeResponse_;
+
+		RequestHeader::SPtr requestHeader_;
+		ResponseHeader::SPtr responseHeader_;
 	};
 
 }

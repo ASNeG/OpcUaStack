@@ -15,18 +15,6 @@ namespace OpcUaStackClient
 	{
 	}
 
-	RequestHeader::SPtr 
-	ServiceTransactionRead::getRequestHeader(void)
-	{
-		return readRequest_->requestHeader();
-	}
-
-	ResponseHeader::SPtr 
-	ServiceTransactionRead::getResponseHeader(void)
-	{
-		return readResponse_->responseHeader();
-	}
-
 	ReadRequest::SPtr 
 	ServiceTransactionRead::request(void)
 	{

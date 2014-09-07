@@ -16,7 +16,7 @@ namespace OpcUaStackClient
 
 		void session(Session::SPtr session);
 
-		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
+		void send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead);
 
 	  private:
 		Session::SPtr session_;
