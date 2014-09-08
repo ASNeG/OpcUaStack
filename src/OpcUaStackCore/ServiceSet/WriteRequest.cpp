@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	WriteRequest::WriteRequest(void)
 	: ObjectPool<WriteRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, writeValueArraySPtr_(WriteValueArray::construct())
 	{
 	}
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	WriteRequest::~WriteRequest(void)
 	{
-	}
-
-	void 
-	WriteRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	WriteRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -47,17 +34,17 @@ namespace OpcUaStackCore
 		return writeValueArraySPtr_;
 	}
 
-	void 
+	bool 
 	WriteRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		writeValueArraySPtr_->opcUaBinaryEncode(os);
+		return true;
 	}
 	
-	void 
+	bool
 	WriteRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		writeValueArraySPtr_->opcUaBinaryDecode(is);
+		return true;
 	}
 }

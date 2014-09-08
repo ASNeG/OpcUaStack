@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	WriteResponse::WriteResponse(void)
 	: ObjectPool<WriteResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	WriteResponse::~WriteResponse(void)
 	{
-	}
-
-	void 
-	WriteResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	WriteResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -59,19 +46,19 @@ namespace OpcUaStackCore
 		return diagnosticInfoArraySPtr_;
 	}
 
-	void 
+	bool
 	WriteResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		statusCodeArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		return true;
 	}
 	
-	void 
+	bool
 	WriteResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		statusCodeArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		return true;
 	}
 }

@@ -8,6 +8,7 @@ namespace OpcUaStackClient
 	: ServiceTransaction(OpcUaId_ReadRequest_Encoding_DefaultBinary, OpcUaId_ReadResponse_Encoding_DefaultBinary)
 	, readRequest_(ReadRequest::construct())
 	, readResponse_(ReadResponse::construct())
+	, serviceSetIf_(nullptr)
 	{
 	}
 
@@ -15,16 +16,16 @@ namespace OpcUaStackClient
 	{
 	}
 
-	RequestHeader::SPtr 
-	ServiceTransactionRead::getRequestHeader(void)
+	ServiceSetIf* 
+	ServiceTransactionRead::serviceSetIf(void)
 	{
-		return readRequest_->requestHeader();
+		return serviceSetIf_;
 	}
-
-	ResponseHeader::SPtr 
-	ServiceTransactionRead::getResponseHeader(void)
+		
+	void 
+	ServiceTransactionRead::serviceSetIf(ServiceSetIf* serviceSetIf)
 	{
-		return readResponse_->responseHeader();
+		serviceSetIf_ = serviceSetIf;
 	}
 
 	ReadRequest::SPtr 

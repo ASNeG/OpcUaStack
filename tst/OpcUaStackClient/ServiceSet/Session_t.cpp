@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
 
 	// send read request
-	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
+	boost::shared_ptr<ServiceTransactionRead> readTrx = ServiceTransactionRead::construct();
 	ReadRequest::SPtr req = readTrx->request();
 	req->maxAge(0);
 	req->timestampsToReturn(2);

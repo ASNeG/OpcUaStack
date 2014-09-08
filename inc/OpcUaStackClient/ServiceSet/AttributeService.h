@@ -4,11 +4,12 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackClient/ServiceSet/ServiceTransactionRead.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT AttributeService
+	class DLLEXPORT AttributeService : public ServiceSetIf
 	{
 	  public:
 		AttributeService(void);
@@ -16,7 +17,11 @@ namespace OpcUaStackClient
 
 		void session(Session::SPtr session);
 
-		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
+		void send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead);
+
+		//- ServiceSetIf ------------------------------------------------------
+		void serviceSetIf(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		//- ServiceSetIf ------------------------------------------------------
 
 	  private:
 		Session::SPtr session_;

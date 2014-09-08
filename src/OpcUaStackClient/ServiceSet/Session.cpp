@@ -12,8 +12,9 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	Session::Session(void)
-	: sessionState_(SessionState_Close)
+	Session::Session(IOService& ioService)
+	: pendingQueue_(ioService)
+	, sessionState_(SessionState_Close)
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
@@ -21,10 +22,45 @@ namespace OpcUaStackClient
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	, activateSessionResponseSPtr_(OpcUaStackCore::ActivateSessionResponse::construct())
 	{
+		pendingQueue_.timeoutCallback().reset(
+			boost::bind(&Session::pendingQueueTimeout, this, _1)
+		);
 	}
 
 	Session::~Session(void)
 	{
+	}
+
+	bool 
+	Session::registerService(OpcUaNodeId& typeId, ServiceSetIf* serviceSetIf)
+	{
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(typeId);
+		if (it != serviceSetMap_.end()) {
+			Log(Error, "cannot insert type id into service set map, because type id already exist")
+				.parameter("TypeId", typeId);
+			return false;
+		}
+
+		serviceSetMap_.insert(std::make_pair(typeId, serviceSetIf));
+
+		return true;
+	}
+
+	bool 
+	Session::deregisterService(OpcUaNodeId& typeId)
+	{
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(typeId);
+		if (it == serviceSetMap_.end()) {
+			Log(Error, "cannot remove type id into service map, because type id not exist")
+				.parameter("TypeId", typeId);
+			return false;
+		}
+
+		serviceSetMap_.erase(it);
+
+		return true;
 	}
 
 	void 
@@ -77,7 +113,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::send(ServiceTransaction::BSPtr serviceTransaction)
+	Session::send(ServiceTransaction::SPtr serviceTransaction)
 	{
 		if (sessionState_ != SessionState_ReceiveActivateSession) {
 			Log(Error, "cannot send a message, because session is in invalid state")
@@ -91,10 +127,17 @@ namespace OpcUaStackClient
 		boost::asio::streambuf sb;
 		std::iostream ios(&sb);
 
-		RequestHeader::SPtr requestHeader = serviceTransaction->getRequestHeader();
+		RequestHeader::SPtr requestHeader = serviceTransaction->requestHeader();
 		requestHeader->requestHandle(serviceTransaction->transactionId());
 		requestHeader->sessionAuthenticationToken() = createSessionResponseSPtr_->authenticationToken();
+		requestHeader->opcUaBinaryEncode(ios);
 		serviceTransaction->opcUaBinaryEncodeRequest(ios);
+
+		pendingQueue_.insert(
+			serviceTransaction->transactionId(),
+			serviceTransaction,
+			3000
+		);
 
 		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(serviceTransaction->nodeTypeRequest(), sb);
 	}
@@ -148,7 +191,13 @@ namespace OpcUaStackClient
 				receiveActivateSessionResponse(sb);
 				break;
 			}
+			default:
+			{
+				receiveMessage(typeId, sb);
+			}
 		}
+
+		
 	}
 
 	void 
@@ -191,6 +240,62 @@ namespace OpcUaStackClient
 		std::cout << "receive activate session response..." << std::endl;
 		std::cout << "size=" << OpcUaStackCore::count(ios) << std::endl;
 		if (sessionIf_ != nullptr) sessionIf_->activateSessionComplete(Success);
+	}
+
+	void 
+	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	{
+		if (sessionState_ != SessionState_ReceiveActivateSession) {
+			Log(Error, "receive message response in invalid state")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			if (sessionIf_ != nullptr) sessionIf_->error();
+			return;
+		}
+
+		std::iostream ios(&sb);
+		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+		responseHeader->opcUaBinaryDecode(ios);
+
+		Object::SPtr objectSPtr = pendingQueue_.remove(responseHeader->requestHandle());
+		if (objectSPtr.get() == nullptr) {
+			Log(Error, "element in pending queue not exist")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("TypeId", typeId);
+			char c; while (ios.get(c));
+			return;
+		}
+
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
+		serviceTransaction->opcUaBinaryDecodeResponse(ios);
+		
+		ServiceSetIf* serviceSetIf = serviceTransaction->serviceSetIf();
+		if (serviceSetIf != nullptr) {
+			serviceSetIf->serviceSetIf(typeId, serviceTransaction);
+			return;
+		}
+
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(typeId);
+		if (it == serviceSetMap_.end()) {
+			Log(Error, "type id not exist in service map")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("TypeId", typeId);
+			char c; while (ios.get(c));
+			return;
+		}
+
+		serviceSetIf = it->second;
+		serviceSetIf->serviceSetIf(typeId, serviceTransaction);
+	}
+
+	void 
+	Session::pendingQueueTimeout(Object::SPtr object)
+	{
+		// FIXME:
 	}
 
 	OpcUaStackCore::ApplicationDescription::SPtr 

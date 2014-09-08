@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(Write_Title)
 
 BOOST_AUTO_TEST_CASE(Write_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -65,12 +66,12 @@ BOOST_AUTO_TEST_CASE(Write_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 
-	writeRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	writeRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	writeRequestSPtr->requestHeader()->time(ptime);
-	writeRequestSPtr->requestHeader()->requestHandle(0);
-	writeRequestSPtr->requestHeader()->returnDisagnostics(0);
-	writeRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build NodesToWrite
 
@@ -84,6 +85,7 @@ BOOST_AUTO_TEST_CASE(Write_Request)
 	writeRequestSPtr->writeValueArray()->set(writeValueSPtr);
 
 	// encode WriteRequest
+	requestHeader->opcUaBinaryEncode(ios1);
 	writeRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -130,16 +132,17 @@ BOOST_AUTO_TEST_CASE(Write_Request)
 
 	// decode WriteRequest
 	writeRequestSPtr = WriteRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	writeRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *writeRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(writeRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(writeRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(writeRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(writeRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(writeRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 
 	BOOST_REQUIRE(writeRequestSPtr->writeValueArray()->size() == 1);
 
@@ -155,6 +158,7 @@ BOOST_AUTO_TEST_CASE(Write_Request)
 
 BOOST_AUTO_TEST_CASE(Write_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -202,15 +206,16 @@ BOOST_AUTO_TEST_CASE(Write_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	writeResponseSPtr->responseHeader()->time(ptime);
-	writeResponseSPtr->responseHeader()->requestHandle(0);
-	writeResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build Results
 	statusCode = Success;
 	writeResponseSPtr->results()->set(statusCode);
 
 	// encode WriteResponse
+	responseHeader->opcUaBinaryEncode(ios1);
 	writeResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -255,11 +260,12 @@ BOOST_AUTO_TEST_CASE(Write_Response)
 
 	// decode WriteResponse
 	writeResponseSPtr = WriteResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	writeResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(writeResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(writeResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(writeResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(writeResponseSPtr->results()->size() == 1);
 

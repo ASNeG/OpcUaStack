@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(Read_Title)
 
 BOOST_AUTO_TEST_CASE(Read_Request)
 {
+	RequestHeader::SPtr requestHeader(RequestHeader::construct());
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -65,12 +66,12 @@ BOOST_AUTO_TEST_CASE(Read_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	readRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	readRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	readRequestSPtr->requestHeader()->time(ptime);
-	readRequestSPtr->requestHeader()->requestHandle(0);
-	readRequestSPtr->requestHeader()->returnDisagnostics(0);
-	readRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// encode maxAge
 	readRequestSPtr->maxAge(0);
@@ -87,6 +88,7 @@ BOOST_AUTO_TEST_CASE(Read_Request)
 	readRequestSPtr->readValueIdArray()->set(readValueIdSPtr);
 
 	// encode ReadRequest
+	requestHeader->opcUaBinaryEncode(ios1);
 	readRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -134,16 +136,17 @@ BOOST_AUTO_TEST_CASE(Read_Request)
 
 	// decode ReadRequest
 	readRequestSPtr = ReadRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	readRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *readRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(readRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(readRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(readRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(readRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(readRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	BOOST_REQUIRE(readRequestSPtr->maxAge() == 0);
 	BOOST_REQUIRE(readRequestSPtr->timestampsToReturn() == 2);
 
@@ -159,6 +162,7 @@ BOOST_AUTO_TEST_CASE(Read_Request)
 
 BOOST_AUTO_TEST_CASE(Read_Response)
 {
+	ResponseHeader::SPtr responseHeader(ResponseHeader::construct());
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -208,9 +212,9 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 
 	// encode ResponseHeader
 	statusCode = Success;
-	readResponseSPtr->responseHeader()->time(ptime);
-	readResponseSPtr->responseHeader()->requestHandle(0);
-	readResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// encode DataValue
 	sourceTimestamp.dateTime(ptime1);
@@ -224,6 +228,7 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 	readResponseSPtr->dataValueArray()->set(dataValueSPtr);
 
 	// encode ReadRequest
+	responseHeader->opcUaBinaryEncode(ios1);
 	readResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -270,11 +275,12 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 
 	// decode ReadResponse
 	readResponseSPtr = ReadResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	readResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(readResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(readResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(readResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(readResponseSPtr->dataValueArray()->size() == 1);
 

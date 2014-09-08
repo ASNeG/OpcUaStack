@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	HistoryReadResponse::HistoryReadResponse(void)
 	: ObjectPool<HistoryReadResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, resultArraySPtr_(HistoryReadResultArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -23,18 +22,6 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void 
-	HistoryReadResponse::responseHeader(const ResponseHeader::SPtr responseHeaderSPtr)
-	{
-		responseHeaderSPtr_ = responseHeaderSPtr;
-	}
-
-	ResponseHeader::SPtr 
-	HistoryReadResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
-	}
-	
 	void 
 	HistoryReadResponse::results(const HistoryReadResultArray::SPtr results)
 	{
@@ -59,20 +46,20 @@ namespace OpcUaStackCore
 		return diagnosticInfoArraySPtr_;
 	}
 
-	void 
+	bool 
 	HistoryReadResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		resultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		return true;
 	}
 	
-	void 
+	bool 
 	HistoryReadResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		resultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		return true;
 	}
 
 }

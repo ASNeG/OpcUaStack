@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	ReadResponse::ReadResponse(void)
 	: ObjectPool<ReadResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, dataValueArraySPtr_(OpcUaDataValueArray::construct())
 	,  diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -23,18 +22,6 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void 
-	ReadResponse::responseHeader(const ResponseHeader::SPtr responseHeaderSPtr)
-	{
-		responseHeaderSPtr_ = responseHeaderSPtr;
-	}
-
-	ResponseHeader::SPtr 
-	ReadResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
-	}
-	
 	void 
 	ReadResponse::dataValueArray(const OpcUaDataValueArray::SPtr dataValueArraySPtr)
 	{
@@ -59,20 +46,20 @@ namespace OpcUaStackCore
 		return diagnosticInfoArraySPtr_;
 	}
 
-	void 
+	bool 
 	ReadResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		dataValueArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
+		return true;
 	}
 	
-	void 
+	bool 
 	ReadResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		dataValueArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
+		return true;
 	}
 
 }

@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Title)
 
 BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -66,12 +67,12 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	historyReadRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	historyReadRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	historyReadRequestSPtr->requestHeader()->time(ptime);
-	historyReadRequestSPtr->requestHeader()->requestHandle(0);
-	historyReadRequestSPtr->requestHeader()->returnDisagnostics(0);
-	historyReadRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build Parameter
 	historyReadRequestSPtr->timestampsToReturn(TimestampsToReturn_Both);
@@ -86,7 +87,8 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 
 	historyReadRequestSPtr->nodesToRead()->set(historyReadValueIdSPtr);
 
-	// encode 
+	// encode
+	requestHeader->opcUaBinaryEncode(ios1);
 	historyReadRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -134,15 +136,16 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 
 	// decode ReadRequest
 	historyReadRequestSPtr = HistoryReadRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	historyReadRequestSPtr->opcUaBinaryDecode(ios);
 
-	str = *historyReadRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(historyReadRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(historyReadRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(historyReadRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(historyReadRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(historyReadRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(historyReadRequestSPtr->timestampsToReturn() == TimestampsToReturn_Both);
 	BOOST_REQUIRE(historyReadRequestSPtr->releaseContinuationPoints() == true);
@@ -161,6 +164,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 
 BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -207,9 +211,9 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	historyReadResponseSPtr->responseHeader()->time(ptime);
-	historyReadResponseSPtr->responseHeader()->requestHandle(0);
-	historyReadResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build HistoryReadResult
 	historyReadResultSPtr = HistoryReadResult::construct();
@@ -218,6 +222,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 	historyReadResponseSPtr->results()->set(historyReadResultSPtr);
 
 	// encode 
+	responseHeader->opcUaBinaryEncode(ios1);
 	historyReadResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -263,11 +268,12 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 
 	// decode 
 	historyReadResponseSPtr = HistoryReadResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	historyReadResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(historyReadResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(historyReadResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(historyReadResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(historyReadResponseSPtr->results()->size() == 1);
 	historyReadResultSPtr = HistoryReadResult::construct();

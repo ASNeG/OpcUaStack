@@ -13,25 +13,12 @@ namespace OpcUaStackCore
 
 	HistoryUpdateRequest::HistoryUpdateRequest(void)
 	: ObjectPool<HistoryUpdateRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, historyUpdateDetailsSPtr_(ExtensibleParameter::construct())
 	{
 	}
 
 	HistoryUpdateRequest::~HistoryUpdateRequest(void)
 	{
-	}
-
-	void 
-	HistoryUpdateRequest::requestHeader(const RequestHeader::SPtr requestHeaderSPtr)
-	{
-		requestHeaderSPtr_ = requestHeaderSPtr;
-	}
-
-	RequestHeader::SPtr 
-	HistoryUpdateRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -46,18 +33,18 @@ namespace OpcUaStackCore
 		return historyUpdateDetailsSPtr_;
 	}
 
-	void 
+	bool 
 	HistoryUpdateRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		historyUpdateDetailsSPtr_->opcUaBinaryEncode(os);
+		return true;
 	}
 	
-	void 
+	bool 
 	HistoryUpdateRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		historyUpdateDetailsSPtr_->opcUaBinaryDecode(is);
+		return true;
 	}
 
 }

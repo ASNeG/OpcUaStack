@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		Object::SPtr remove(uint32_t key);
 
 	  private:
-		void onTimeout(PendingQueueElement::SPtr pendingQueueElementSPtr);
+		void onTimeout(uint32_t key);
 
 		IOService* ioService_;
 		typedef std::map<uint32_t, PendingQueueElement::SPtr> PendingQueueMap;
