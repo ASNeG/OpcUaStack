@@ -57,13 +57,13 @@ namespace OpcUaStackClient
 		void sessionIf(SessionIf* sessionIf);
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
 
-		void receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
 
  	  private:
-		void receiveCreateSessionResponse(boost::asio::streambuf& sb);
-		void receiveActivateSessionResponse(boost::asio::streambuf& sb);
-		void receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receiveCreateSessionResponse(boost::asio::streambuf& sb);
+		bool receiveActivateSessionResponse(boost::asio::streambuf& sb);
+		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 
 		SessionState sessionState_;
 		uint32_t requestHandle_;

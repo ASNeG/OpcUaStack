@@ -40,7 +40,7 @@ namespace OpcUaStackClient
 		//- SecureChannelIf ---------------------------------------------------
 		void connect(void);
 		void disconnect(void);
-		void receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
+		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
 		//- SecureChannelIf ---------------------------------------------------
 
 	  private:

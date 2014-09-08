@@ -14,7 +14,7 @@ namespace OpcUaStackClient
 	  public:
 		virtual void connect(void) = 0;
 		virtual void disconnect(void) = 0;
-		virtual void receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is) = 0;
+		virtual bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is) = 0;
 	};
 
 }

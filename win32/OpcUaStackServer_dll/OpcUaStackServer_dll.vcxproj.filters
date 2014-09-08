@@ -48,6 +48,18 @@
     <Filter Include="src\NodeSet">
       <UniqueIdentifier>{5f6e8c63-f2b3-48c2-a546-72bf09b8956b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet">
+      <UniqueIdentifier>{4f3c6a01-b42a-4530-be8e-f7c52ffc63ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\AttributeServiceSet">
+      <UniqueIdentifier>{a3bffaaf-083f-447a-8e8e-9110b62a8e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\Common">
+      <UniqueIdentifier>{9953561b-c983-4a15-b49e-e0f7f0b4d444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\SessionServiceSet">
+      <UniqueIdentifier>{d0233f5d-557a-4a78-ae7f-2f7973eb87ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -106,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetParser.h">
       <Filter>src\NodeSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\OpcUaStackServer\ServiceSet\ServiceSetIf.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

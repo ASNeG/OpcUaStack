@@ -218,7 +218,18 @@ namespace OpcUaStackClient
 		nodeId.opcUaBinaryDecode(is);
 
 		if (secureChannelIf_ != nullptr) {
-			secureChannelIf_->receive(nodeId, is_);
+			bool rc = secureChannelIf_->receive(nodeId, is_);
+			if (rc == false) {
+				Log(Error, "cannot read message body, because message handler error")
+					.parameter("PartnerAddress", partnerAddress_.to_string())
+					.parameter("PartnerPort", partnerPort_)
+					.parameter("SecureChannelState", secureChannelClientState_);
+
+				// FIXME:
+
+				return;
+			}
+
 		}
 
 		asyncReadMessageHeader();

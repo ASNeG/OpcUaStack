@@ -176,40 +176,47 @@ namespace OpcUaStackClient
 	{
 	}
 
-	void 
+	bool 
 	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
 		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
-				receiveCreateSessionResponse(sb);
+				return receiveCreateSessionResponse(sb);
 				break;
 			}
 			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
 			{
-				receiveActivateSessionResponse(sb);
+				return receiveActivateSessionResponse(sb);
 				break;
 			}
 			default:
 			{
-				receiveMessage(typeId, sb);
+				return receiveMessage(typeId, sb);
 			}
 		}
 
 		
 	}
 
-	void 
+	bool
 	Session::receiveCreateSessionResponse(boost::asio::streambuf& sb)
 	{
+		if (sessionIf_ == nullptr) {
+			Log(Error, "interface sessionIf is empty")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
 		if (sessionState_ != SessionState_SendCreateSession) {
 			Log(Error, "receive create session response in invalid state")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
 				.parameter("SessionState", sessionState_);
-			if (sessionIf_ != nullptr) sessionIf_->error();
-			return;
+			return false;
 		}
 
 		std::iostream ios(&sb);
@@ -218,19 +225,27 @@ namespace OpcUaStackClient
 
 		std::cout << "receive create session response..." << std::endl;
 		std::cout << "size=" << OpcUaStackCore::count(ios) << std::endl;
-		if (sessionIf_ != nullptr) sessionIf_->createSessionComplete(Success);
+		sessionIf_->createSessionComplete(Success);
+		return true;
 	}
 
-	void 
+	bool 
 	Session::receiveActivateSessionResponse(boost::asio::streambuf& sb)
 	{
+		if (sessionIf_ == nullptr) {
+			Log(Error, "interface sessionIf is empty")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
 		if (sessionState_ != SessionState_SendActivateSession) {
 			Log(Error, "receive activate session response in invalid state")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
 				.parameter("SessionState", sessionState_);
-			if (sessionIf_ != nullptr) sessionIf_->error();
-			return;
+			return false;
 		}
 
 		std::iostream ios(&sb);
@@ -239,19 +254,27 @@ namespace OpcUaStackClient
 
 		std::cout << "receive activate session response..." << std::endl;
 		std::cout << "size=" << OpcUaStackCore::count(ios) << std::endl;
-		if (sessionIf_ != nullptr) sessionIf_->activateSessionComplete(Success);
+		sessionIf_->activateSessionComplete(Success);
+		return true;
 	}
 
-	void 
+	bool
 	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
+		if (sessionIf_ == nullptr) {
+			Log(Error, "interface sessionIf is empty")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
 		if (sessionState_ != SessionState_ReceiveActivateSession) {
 			Log(Error, "receive message response in invalid state")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
 				.parameter("SessionState", sessionState_);
-			if (sessionIf_ != nullptr) sessionIf_->error();
-			return;
+			return false;
 		}
 
 		std::iostream ios(&sb);
@@ -265,7 +288,7 @@ namespace OpcUaStackClient
 				.parameter("SessionName", createSessionParameter_.sessionName_)
 				.parameter("TypeId", typeId);
 			char c; while (ios.get(c));
-			return;
+			return true;
 		}
 
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
@@ -274,7 +297,7 @@ namespace OpcUaStackClient
 		ServiceSetIf* serviceSetIf = serviceTransaction->serviceSetIf();
 		if (serviceSetIf != nullptr) {
 			serviceSetIf->serviceSetIf(typeId, serviceTransaction);
-			return;
+			return true;
 		}
 
 		ServiceSetMap::iterator it;
@@ -285,11 +308,12 @@ namespace OpcUaStackClient
 				.parameter("SessionName", createSessionParameter_.sessionName_)
 				.parameter("TypeId", typeId);
 			char c; while (ios.get(c));
-			return;
+			return true;
 		}
 
 		serviceSetIf = it->second;
 		serviceSetIf->serviceSetIf(typeId, serviceTransaction);
+		return true;
 	}
 
 	void 
