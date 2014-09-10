@@ -7,6 +7,9 @@
     <Filter Include="Unittest\SecureChannel">
       <UniqueIdentifier>{20619db9-f776-42d5-aa54-c4db8c56a736}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unittest\ServiceSet">
+      <UniqueIdentifier>{be992e6c-c0b2-40dc-9ce5-c63862d7877e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tst\os.h">
@@ -22,6 +25,9 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackClientServer\SecureChannel\SecureChannel_t.cpp">
       <Filter>Unittest\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackClientServer\ServiceSet\Session_t.cpp">
+      <Filter>Unittest\ServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,5 +4,8 @@
     <Filter Include="Unittest">
       <UniqueIdentifier>{30f17fa7-00ee-4e7f-960d-b7980b091ef5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unittest\ServiceSet">
+      <UniqueIdentifier>{2ffc7825-8bb5-470e-9c4e-18967b75ecdb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

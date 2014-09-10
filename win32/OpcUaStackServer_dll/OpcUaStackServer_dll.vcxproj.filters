@@ -119,7 +119,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetParser.h">
       <Filter>src\NodeSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\OpcUaStackServer\ServiceSet\ServiceSetIf.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
@@ -183,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetParser.cpp">
       <Filter>src\NodeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

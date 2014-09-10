@@ -96,7 +96,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h" />
-    <ClInclude Include="..\..\src\OpcUaStackServer\ServiceSet\ServiceSetIf.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -119,6 +119,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
