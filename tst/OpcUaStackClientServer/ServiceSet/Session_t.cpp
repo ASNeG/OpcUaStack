@@ -76,6 +76,69 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// server configuration : session
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	Config endpoint;
+	Config userTokenPolicy;
+
+	endpoint.clear();
+	endpoint.setValue("EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT) + "/0.0.0.0");
+	endpoint.setValue("ApplicationUri", "urn:localhost:compyny:Unittest");
+	endpoint.setValue("ProductUri", "urn:company:Unittest");
+	endpoint.setValue("ApplicationName", "company Unittest");
+	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
+	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+
+	userTokenPolicy.clear();
+	userTokenPolicy.setValue("PolicyId", "OpcUaStack");
+	userTokenPolicy.setValue("TokenType", "Anonymous");
+	endpoint.setChild("UserTokenPolicy", userTokenPolicy);
+
+	endpoint.setValue("TransportProfileUri", "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
+	endpoint.setValue("SecurityLevel", "0");
+	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
+
+
+	endpoint.clear();
+	endpoint.setValue("EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT) + "/0.0.0.0");
+	endpoint.setValue("ApplicationUri", "urn:localhost:compyny:Unittest");
+	endpoint.setValue("ProductUri", "urn:company:Unittest");
+	endpoint.setValue("ApplicationName", "company Unittest");
+	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
+	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+
+	userTokenPolicy.clear();
+	userTokenPolicy.setValue("PolicyId", "OpcUaStack");
+	userTokenPolicy.setValue("TokenType", "Anonymous");
+	endpoint.setChild("UserTokenPolicy", userTokenPolicy);
+
+	endpoint.setValue("TransportProfileUri", "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
+	endpoint.setValue("SecurityLevel", "1");
+	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
+
+
+	endpoint.clear();
+	endpoint.setValue("EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT) + "/0.0.0.0");
+	endpoint.setValue("ApplicationUri", "urn:localhost:compyny:Unittest");
+	endpoint.setValue("ProductUri", "urn:company:Unittest");
+	endpoint.setValue("ApplicationName", "company Unittest");
+	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
+	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+
+	userTokenPolicy.clear();
+	userTokenPolicy.setValue("PolicyId", "OpcUaStack");
+	userTokenPolicy.setValue("TokenType", "Anonymous");
+	endpoint.setChild("UserTokenPolicy", userTokenPolicy);
+
+	endpoint.setValue("TransportProfileUri", "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
+	endpoint.setValue("SecurityLevel", "3");
+	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// server configuration : secure channel
 	//
 	// ------------------------------------------------------------------------

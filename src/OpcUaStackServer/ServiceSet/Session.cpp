@@ -1,11 +1,20 @@
 #include "OpcUaStackServer/ServiceSet/Session.h"
 #include "OpcUaStackCore/BuildInTypes/OPcUaIdentifier.h"
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
 	Session::Session(void)
 	: sessionState_(SessionState_Close)
+	, sessionId_(0)
 	{
 	}
 
@@ -17,6 +26,24 @@ namespace OpcUaStackServer
 	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
 	{
 		sessionSecureChannelIf_ = sessionSecureChannelIf;
+	}
+
+	void 
+	Session::sessionId(uint32_t sessionId)
+	{
+		sessionId = sessionId;
+	}
+
+	void 
+	Session::authenticationToken(uint32_t authenticationToken)
+	{
+		authenticationToken_ = authenticationToken;
+	}
+
+	void 
+	Session::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
+	{
+		endpointDescriptionArray_ = endpointDescriptionArray;
 	}
 
 	bool 
@@ -44,18 +71,55 @@ namespace OpcUaStackServer
 	bool 
 	Session::receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
+		std::cout << "RECEIVE CREATE SESSION REQUEST" << std::endl;
+
+		if (sessionState_ != SessionState_Close) {
+			Log(Error, "receive create session request in invalid state")
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
+		std::iostream ios(&sb);
+		CreateSessionRequest createSessionRequest;
+		createSessionRequest.opcUaBinaryDecode(ios);
+
+		// FIXME: analyse request data
+
+		boost::asio::streambuf sbres;
+		std::iostream iosres(&sbres);
+
+		CreateSessionResponse createSessionResponse;
+		createSessionResponse.responseHeader()->requestHandle(createSessionRequest.requestHeader()->requestHandle());
+		createSessionResponse.responseHeader()->serviceResult(Success);
+
+		createSessionResponse.sessionId().namespaceIndex(1);
+		createSessionResponse.sessionId().nodeId(sessionId_);
+		createSessionResponse.authenticationToken().namespaceIndex(1);
+		createSessionResponse.authenticationToken().nodeId(sessionId_);
+		createSessionResponse.receivedSessionTimeout(120000);
+		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
+		createSessionResponse.maxRequestMessageSize(0);
+
+		createSessionResponse.opcUaBinaryEncode(iosres);
+
+		sessionState_ = SessionState_CreateSessionResponse;
+
+		typeId.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres);
 		return false;
 	}
 		
 	bool 
 	Session::receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
+		std::cout << "RECEIVE ACTIVATE SESSION REQUEST" << std::endl;
 		return false;
 	}
 
 	bool 
 	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
+		std::cout << "RECEIVE MESSAGE" << std::endl;
 		return false;
 	}
 

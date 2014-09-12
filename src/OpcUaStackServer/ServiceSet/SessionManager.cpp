@@ -81,6 +81,8 @@ namespace OpcUaStackServer
 		// create session 
 		session_ = Session::construct();
 		session_->sessionSecureChannelIf(this);
+		session_->sessionId(1);
+		session_->authenticationToken(1);
 		rc = SessionConfig::initial(session_, prefixSessionConfig, &sessionConfig);
 		if (!rc) {
 			session_.reset();
