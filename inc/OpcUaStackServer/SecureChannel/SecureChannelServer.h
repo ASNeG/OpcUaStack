@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 
 		bool connect(void);
 		bool disconnect(void);
+		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1);
 
 	  private:
 		void handleReadMessageHeaderError(void);
@@ -38,13 +39,16 @@ namespace OpcUaStackServer
 		void handleReadMessageHeaderTypeHello(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeError(MessageHeader& messageHeader);
-		//void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
+		void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 
+		void handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleReadHello(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleWriteAcknowledgeComplete(const boost::system::error_code& error);
 		void handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
+		void handleWriteSendComplete(const boost::system::error_code& error);
 
+		uint32_t tokenId_;
 		SecureChannelIf* secureChannelIf_;
 		SecureChannelServerState secureChannelServerState_;
 	};

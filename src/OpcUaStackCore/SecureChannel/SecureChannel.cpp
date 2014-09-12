@@ -54,11 +54,6 @@ namespace OpcUaStackCore
 		Log(Debug, "receive message header")
 			.parameter("MessageHeaderLength", bytes_transfered);
 
-		if (debugMode_) {
-			std::iostream debug_ios(&is_);
-			OpcUaStackCore::dumpHex(debug_ios);
-		}
-
 		if (error) {
 			Log(Error, "receive message header error")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -69,6 +64,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
+	
 		if (bytes_transfered == 0) {
 			Log(Error, "connection is closed by partner")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -76,6 +72,11 @@ namespace OpcUaStackCore
 
 			handleReadMessageHeaderError();
 			return;
+		}
+
+		if (debugMode_) {
+			std::iostream debug_ios(&is_);
+			OpcUaStackCore::dumpHex(debug_ios);
 		}
 
 		// decode message header
