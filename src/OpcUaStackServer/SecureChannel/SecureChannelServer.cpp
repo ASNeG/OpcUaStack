@@ -22,6 +22,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void 
+	SecureChannelServer::secureChannelIf(SecureChannelIf* secureChannelIf)
+	{
+		secureChannelIf_ = secureChannelIf;
+	}
+
 	bool 
 	SecureChannelServer::connect(void)
 	{
@@ -43,25 +49,37 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessageHeaderError(void)
 	{
+		boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
 		Log(Info, "close connection")
-			.parameter("PartnerAddress", partnerAddress_.to_string())
-			.parameter("PartnerPort", partnerPort_);
+			.parameter("LocalAddress", localEndpoint.address().to_string())
+			.parameter("LocalPort", localEndpoint.port())
+			.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+			.parameter("PartnerPort", remoteEndpoint.port());
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
-		// FIXME: signal application
+		
+		if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 	}
 		
 	void 
 	SecureChannelServer::handleReadMessageHeaderTypeHello(MessageHeader& messageHeader)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitHello) {
+			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+			
 			Log(Error, "cannot read hello, because secure channel is in invalid state")
-				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_)
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port())
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
-			// FIXME: signal application
+			
+			if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 			return;
 		}
 
@@ -76,13 +94,19 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadHello(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitHello) {
+			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
 			Log(Error, "cannot read hello, because secure channel is in invalid state")
-				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_)
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port())
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
-			// FIXME: signal application
+			
+			if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 			return;
 		}
 
@@ -122,13 +146,19 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleWriteAcknowledgeComplete(const boost::system::error_code& error)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
+			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
-				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_)
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port())
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelClientState_WaitOpenSecureChannel;
-			// FIXME: signal application
+			
+			if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 			return;
 		}
 
@@ -139,13 +169,19 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
+			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
-				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_)
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port())
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
-			// FIXME: signal application
+			
+			if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 			return;
 		}
 
@@ -160,13 +196,19 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
+			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
-				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_)
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port())
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
-			// FIXME: signal application
+			
+			if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 			return;
 		}
 
@@ -220,9 +262,14 @@ namespace OpcUaStackServer
 		
 		secureChannelServerState_ = SecureChannelServerState_Ready;
 
-		Log(Info, "accept connection from client")
-			.parameter("PartnerAddress", partnerAddress_.to_string())
-			.parameter("PartnerPort", partnerPort_);
+		boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
+		Log(Info, "accept secure channel from client")
+			.parameter("LocalAddress", localEndpoint.address().to_string())
+			.parameter("LocalPort", localEndpoint.port())
+			.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+			.parameter("PartnerPort", remoteEndpoint.port());
 
 		tcpConnection_.async_write(
 			sb2, sb1, boost::bind(&SecureChannelServer::handleWriteOpenSecureChannelComplete, this, boost::asio::placeholders::error)
@@ -233,13 +280,19 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleWriteOpenSecureChannelComplete(const boost::system::error_code& error)
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
+			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+
 			Log(Error, "cannot read open message, because secure channel is in invalid state")
-				.parameter("PartnerAddress", partnerAddress_.to_string())
-				.parameter("PartnerPort", partnerPort_)
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port())
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelClientState_WaitOpenSecureChannel;
-			// FIXME: signal application
+			
+			if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
 			return;
 		}
 

@@ -122,6 +122,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h">
+      <Filter>src\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

@@ -78,6 +78,7 @@ namespace OpcUaStackServer
 
 		// create secure channel
 		secureChannel_ = SecureChannelServer::construct(ioService_);
+		secureChannel_->secureChannelIf(this);
 		bool rc = SecureChannelServerConfig::initial(secureChannel_, prefixSecureChannelConfig, &secureChannelConfig);
 		if (!rc) {
 			secureChannel_.reset();
@@ -110,6 +111,8 @@ namespace OpcUaStackServer
 	void 
 	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
 	{
+		bool rc;
+
 		boost::asio::ip::tcp::endpoint remoteEndpoint = secureChannel->tcpConnection().socket().remote_endpoint();
 		boost::asio::ip::tcp::endpoint localEndpoint = secureChannel->tcpConnection().socket().local_endpoint();
 
@@ -119,7 +122,34 @@ namespace OpcUaStackServer
 			.parameter("PartnerAddress", remoteEndpoint.address().to_string())
 			.parameter("PartnerPort", remoteEndpoint.port());
 
-		secureChannel->connect();
+		rc = secureChannel->connect();
+		if (!rc) {
+			Log(Error, "cannot accept connection from client")
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress", remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port());
+
+			// FIXME: todo
+		}
+	}
+
+	void 
+	SessionManager::connect(void)
+	{
+	}
+	
+	void 
+	SessionManager::disconnect(void)
+	{
+		// FIXME:
+	}
+		
+	bool 
+	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
+	{
+		std::cout << "RECEIVE" << std::endl;
+		return true;
 	}
 
 #if 0

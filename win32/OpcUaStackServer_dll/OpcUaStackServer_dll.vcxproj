@@ -94,6 +94,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerCapabilitiesType.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerType.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetParser.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h" />

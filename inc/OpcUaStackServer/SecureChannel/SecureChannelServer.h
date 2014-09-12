@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -24,6 +25,8 @@ namespace OpcUaStackServer
 		SecureChannelServer(IOService& ioService);
 		~SecureChannelServer(void);
 
+		void secureChannelIf(SecureChannelIf* secureChannelIf);
+
 		bool connect(void);
 		bool disconnect(void);
 
@@ -42,6 +45,7 @@ namespace OpcUaStackServer
 		void handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered);
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
 
+		SecureChannelIf* secureChannelIf_;
 		SecureChannelServerState secureChannelServerState_;
 	};
 
