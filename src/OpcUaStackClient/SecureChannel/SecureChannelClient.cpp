@@ -287,7 +287,11 @@ namespace OpcUaStackClient
 			return;
 		}
 
+		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection().socket().local_endpoint();
+
 		Log(Info, "open connection to server")
+			.parameter("LocalAddress", localEndpoint.address().to_string())
+			.parameter("LocalPort", localEndpoint.port())
 			.parameter("PartnerAddress", partnerAddress_.to_string())
 			.parameter("PartnerPort", partnerPort_);
 

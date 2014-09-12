@@ -16,8 +16,8 @@
 #include <boost/asio/error.hpp>
 
 
-#define TEST_HOST		127.0.0.1
-#define TEST_PORT		4841
+#define TEST_HOST		"127.0.0.1"
+#define TEST_PORT		"4841"
 
 
 using namespace OpcUaStackCore;
@@ -56,9 +56,9 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	clientConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://TEST_HOST:TEST_PORT");
-	clientConfig.setValue("TestConfig.SessionName", "urn:TEST_HOST:Company:MyAppl");
-	clientConfig.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:TEST_HOST:Company:MyAppl");
+	clientConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT));
+	clientConfig.setValue("TestConfig.SessionName", "urn:" + std::string(TEST_HOST) + ":Company:MyAppl");
+	clientConfig.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:" + std::string(TEST_HOST) + ":Company:MyAppl");
 	clientConfig.setValue("TestConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
 	clientConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Locale", "en");
 	clientConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Text", "MyAppl");
@@ -70,8 +70,17 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	clientConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://TEST_HOST:TEST_PORT");
+	clientConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT));
 	clientConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// server configuration : secure channel
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	serverConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT));
 
 	rc = sessionManagerServer.openServerSocket(
 		"TestConfig", serverConfig,

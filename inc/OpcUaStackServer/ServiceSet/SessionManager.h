@@ -5,7 +5,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/IOService.h"
-//#include "OpcUaStackServer/SecureChannel/SecureChannelClientConfig.h"
+#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 //#include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 
 using namespace OpcUaStackCore;
@@ -52,13 +53,15 @@ namespace OpcUaStackServer
 		void disconnect(void);
 		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
 		//- SecureChannelIf ---------------------------------------------------
-
-	  private:
 #endif
-		IOService ioService_;
-#if 0
+	  private:
+		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
 
-		SecureChannelClient::SPtr secureChannel_;
+		IOService ioService_;
+
+		TCPAcceptor::SPtr tcpAcceptor_;
+		SecureChannelServer::SPtr secureChannel_;
+#if 0
 		Session::SPtr session_;
 #endif
 	};
