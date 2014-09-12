@@ -8,14 +8,14 @@
 #include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelIf.h"
-//#include "OpcUaStackServer/ServiceSet/SessionConfig.h"
+#include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionManager : public SecureChannelIf //: public SessionSecureChannelIf, public SecureChannelIf
+	class DLLEXPORT SessionManager : public SecureChannelIf, public SessionSecureChannelIf
 	{
 	  public:
 		static SessionManager* instance_;
@@ -39,26 +39,12 @@ namespace OpcUaStackServer
 		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
 		//- SecureChannelIf ---------------------------------------------------
 
-#if 0
-		Session::SPtr getNewSession(
-			const std::string& prefixSessionConfig, Config& sessionConfig, 
-			const std::string& prefixSecureChannelConfig, Config& secureChannelConfig, 
-			SessionIf* sessionIf,
-			bool newSecureChannel = false
-		);
-		void deleteSession(void);
-
 		//- SessionSecureChannelIf --------------------------------------------
-		void connectToSecureChannel(void); 
-	    void createSessionRequest(boost::asio::streambuf& sb);
-		void activateSessionRequest(boost::asio::streambuf& sb);
+		void createSessionResponse(boost::asio::streambuf& sb);
+		void activateSessionResponse(boost::asio::streambuf& sb);
 		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb);
 		//- SessionSecurechannelIf --------------------------------------------
 
-
-
-
-#endif
 	  private:
 		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
 
@@ -66,9 +52,7 @@ namespace OpcUaStackServer
 
 		TCPAcceptor::SPtr tcpAcceptor_;
 		SecureChannelServer::SPtr secureChannel_;
-#if 0
 		Session::SPtr session_;
-#endif
 	};
 
 }

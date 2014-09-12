@@ -125,6 +125,15 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\Session.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionIf.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionConfig.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -188,6 +197,12 @@
       <Filter>src\NodeSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\Session.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionConfig.cpp">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>

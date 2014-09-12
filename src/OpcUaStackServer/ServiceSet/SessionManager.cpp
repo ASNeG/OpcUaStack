@@ -43,6 +43,8 @@ namespace OpcUaStackServer
 		const std::string& prefixSecureChannelConfig, Config& secureChannelConfig
 	)
 	{
+		bool rc;
+
 		std::string configurationFileName = secureChannelConfig.getValue("Global.ConfigurationFileName", "Unknown");
 
 		// get secure channel configuration
@@ -76,12 +78,26 @@ namespace OpcUaStackServer
 
 		}
 
+		// create session 
+		session_ = Session::construct();
+		session_->sessionSecureChannelIf(this);
+		rc = SessionConfig::initial(session_, prefixSessionConfig, &sessionConfig);
+		if (!rc) {
+			session_.reset();
+
+			Log(Error, "session server configuration  error")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", prefixSessionConfig);
+			return false;
+		}
+
 		// create secure channel
 		secureChannel_ = SecureChannelServer::construct(ioService_);
 		secureChannel_->secureChannelIf(this);
-		bool rc = SecureChannelServerConfig::initial(secureChannel_, prefixSecureChannelConfig, &secureChannelConfig);
+		rc = SecureChannelServerConfig::initial(secureChannel_, prefixSecureChannelConfig, &secureChannelConfig);
 		if (!rc) {
 			secureChannel_.reset();
+			session_.reset();
 
 			Log(Error, "secure channel server configuration  error")
 				.parameter("ConfigurationFileName", configurationFileName)
@@ -134,6 +150,14 @@ namespace OpcUaStackServer
 		}
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	SessionManager::connect(void)
 	{
@@ -148,45 +172,8 @@ namespace OpcUaStackServer
 	bool 
 	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
 	{
-		std::cout << "RECEIVE" << std::endl;
-		return true;
+		return session_->receive(nodeId, is);
 	}
-
-#if 0
-	Session::SPtr 
-	SessionManager::getNewSession(
-		const std::string& prefixSessionConfig, Config& sessionConfig,
-		const std::string& prefixSecureChannelConfig, Config& secureChannelConfig,
-		SessionIf* sessionIf,
-		bool newSecureChannel)
-	{
-		bool rc;
-		Session::SPtr sessionSPtr;
-
-		// create session
-		session_ = Session::construct(ioService_);
-		rc = SessionConfig::initial(session_, prefixSessionConfig, &sessionConfig);
-		if (!rc) {
-			Log(Error, "cannot create client session");
-			return sessionSPtr;
-		}
-		session_->sessionSecureChannelIf(this);
-		session_->sessionIf(sessionIf);
-
-		// create secure channel
-		secureChannel_ = SecureChannelClient::construct(ioService_);
-		SecureChannelClientConfig::initial(secureChannel_, prefixSecureChannelConfig, &secureChannelConfig);
-		secureChannel_->secureChannelIf(this);
-		secureChannel_->debugMode(true);
-
-		return session_;
-	}
-
-	void 
-	SessionManager::deleteSession(void)
-	{
-	}
-
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -196,24 +183,18 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::connectToSecureChannel(void)
-	{
-		secureChannel_->connect();
-	}
-
-	void 
-	SessionManager::createSessionRequest(boost::asio::streambuf& sb)
+	SessionManager::createSessionResponse(boost::asio::streambuf& sb)
 	{
 		OpcUaNodeId typeId;
-		typeId.set(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+		typeId.set(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
 		secureChannel_->send(typeId, sb);
 	}
 
 	void 
-	SessionManager::activateSessionRequest(boost::asio::streambuf& sb)
+	SessionManager::activateSessionResponse(boost::asio::streambuf& sb)
 	{
 		OpcUaNodeId typeId;
-		typeId.set(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
+		typeId.set(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
 		secureChannel_->send(typeId, sb);
 	}
 
@@ -222,32 +203,5 @@ namespace OpcUaStackServer
 	{
 		secureChannel_->send(opcUaNodeId, sb);
 	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SecureChannelIf
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void 
-	SessionManager::connect(void)
-	{
-		session_->handleSecureChannelConnect();
-	}
-		
-	void 
-	SessionManager::disconnect(void)
-	{
-		session_->handleSecureChannelDisconnect();
-	}
-		
-	bool 
-	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
-	{
-		return session_->receive(nodeId, is);
-	}
-#endif
-
 
 }
