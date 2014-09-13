@@ -1,5 +1,5 @@
 #include "OpcUaStackServer/ServiceSet/Session.h"
-#include "OpcUaStackCore/BuildInTypes/OPcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
