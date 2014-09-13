@@ -690,6 +690,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionIf.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionRead.h">
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1291,6 +1294,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransaction.cpp">
       <Filter>src\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransactionRead.cpp">
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

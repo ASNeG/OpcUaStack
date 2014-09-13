@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransactionSPtr = it->second->constructTransaction();
+		serviceTransactionSPtr->serviceTransactionIfService(it->second->serviceTransactionIfService());
 		return serviceTransactionSPtr;
 	}
 

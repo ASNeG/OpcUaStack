@@ -1,14 +1,13 @@
-#include "OpcUaStackClient/ServiceSet/ServiceTransactionRead.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionRead.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	ServiceTransactionRead::ServiceTransactionRead(void)
 	: ServiceTransaction(OpcUaId_ReadRequest_Encoding_DefaultBinary, OpcUaId_ReadResponse_Encoding_DefaultBinary)
 	, readRequest_(ReadRequest::construct())
 	, readResponse_(ReadResponse::construct())
-	, serviceTransactionIfService_(nullptr)
 	{
 	}
 
@@ -20,18 +19,6 @@ namespace OpcUaStackClient
 	ServiceTransactionRead::constructTransaction(void) 
 	{
 		return ServiceTransactionRead::construct();
-	}
-
-	ServiceTransactionIf* 
-	ServiceTransactionRead::serviceTransactionIfService(void)
-	{
-		return serviceTransactionIfService_;
-	}
-		
-	void 
-	ServiceTransactionRead::serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService)
-	{
-		serviceTransactionIfService_ = serviceTransactionIfService;
 	}
 
 	ReadRequest::SPtr 

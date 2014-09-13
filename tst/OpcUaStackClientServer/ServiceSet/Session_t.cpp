@@ -12,6 +12,7 @@
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
+#include "OpcUaStackServer/ServiceSet/AttributeService.h"
 
 #include <boost/asio/error.hpp>
 
@@ -22,6 +23,7 @@
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
+using namespace OpcUaStackServer;
 
 BOOST_AUTO_TEST_SUITE(Session_)
 
@@ -41,7 +43,14 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	OpcUaStackClient::SessionManager sessionManagerClient;
 	OpcUaStackServer::SessionManager sessionManagerServer;
 
-	AttributeService attributeService;
+	OpcUaStackClient::AttributeService attributeServiceClient;
+	OpcUaStackServer::AttributeService attributeServiceServer;
+	
+	TransactionManager::SPtr transactionManager = TransactionManager::construct();
+	ServiceTransactionRead::SPtr serviceTransactionReadSPtr = ServiceTransactionRead::construct();
+	serviceTransactionReadSPtr->serviceTransactionIfService(&attributeServiceServer);
+	transactionManager->registerTransaction(serviceTransactionReadSPtr);
+	sessionManagerServer.transactionManager(transactionManager);
 	
 	sessionManagerClient.start();
 	sessionManagerServer.start();
@@ -151,12 +160,12 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	);
 	BOOST_REQUIRE(rc == true);
 
-	Session::SPtr session = sessionManagerClient.getNewSession(
+	OpcUaStackClient::Session::SPtr session = sessionManagerClient.getNewSession(
 		"TestConfig", clientConfig,
 		"TestConfig", clientConfig,
 		&sessionTestHandler
 	);
-	attributeService.session(session);
+	attributeServiceClient.session(session);
 
 	// client createSession
 	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
@@ -181,7 +190,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 
 	req->readValueIdArray()->set(readValueIdSPtr);
 
-	attributeService.send(readTrx);
+	attributeServiceClient.send(readTrx);
 
 	IOService::secSleep(1000);
 

@@ -97,6 +97,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\AttributeService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\Session.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionIf.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\AttributeService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\Session.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp" />

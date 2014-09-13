@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackClient_ServiceTransactionRead_h__
-#define __OpcUaStackClient_ServiceTransactionRead_h__
+#ifndef __OpcUaStackCore_ServiceTransactionRead_h__
+#define __OpcUaStackCore_ServiceTransactionRead_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -10,19 +10,18 @@
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServiceTransactionRead : public ObjectPool<ServiceTransactionRead>, public ServiceTransaction
 	{
 	  public:
+		typedef boost::shared_ptr<ServiceTransactionRead> SPtr;
+
 		ServiceTransactionRead(void);
 		~ServiceTransactionRead(void);
 
 		ServiceTransaction::SPtr constructTransaction(void);
-
-		ServiceTransactionIf* serviceTransactionIfService(void);
-		void serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIf);
 
 		ReadRequest::SPtr request(void);
 		ReadResponse::SPtr response(void);
@@ -35,8 +34,6 @@ namespace OpcUaStackClient
 	  private:
 		ReadRequest::SPtr readRequest_;
 		ReadResponse::SPtr readResponse_;
-		
-		ServiceTransactionIf* serviceTransactionIfService_;
 	};
 
 }

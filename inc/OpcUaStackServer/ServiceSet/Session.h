@@ -6,6 +6,8 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackServer/ServiceSet/TransactionManager.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -21,11 +23,13 @@ namespace OpcUaStackServer
 	} SessionState;
 
 
-	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>
+	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>, public ServiceTransactionIf
 	{
 	  public:
 		Session(void);
 		~Session(void);
+
+		void transactionManager(TransactionManager::SPtr transactionManager);
 
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
 		void sessionId(uint32_t sessionId);
@@ -33,6 +37,10 @@ namespace OpcUaStackServer
 		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
+
+		// - ServiceTransactionIf ---------------------------------------------
+		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		// - ServiceTransactionIf ---------------------------------------------
 
 	  private:
 		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
@@ -44,6 +52,8 @@ namespace OpcUaStackServer
 		SessionState sessionState_;
 		SessionSecureChannelIf* sessionSecureChannelIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+
+		TransactionManager::SPtr transactionManagerSPtr_;
 	};
 
 }

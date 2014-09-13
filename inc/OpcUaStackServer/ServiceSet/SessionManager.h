@@ -25,6 +25,8 @@ namespace OpcUaStackServer
 		SessionManager(void);
 		~SessionManager(void);
 
+		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
+
 		void start(void);
 		void stop(void);
 

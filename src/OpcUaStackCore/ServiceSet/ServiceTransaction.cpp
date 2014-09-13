@@ -78,4 +78,28 @@ namespace OpcUaStackCore
 		return nodeTypeResponse_;
 	}
 
+	ServiceTransactionIf* 
+	ServiceTransaction::serviceTransactionIfService(void)
+	{
+		return serviceTransactionIfService_;
+	}
+
+	void 
+	ServiceTransaction::serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService)
+	{
+		serviceTransactionIfService_ = serviceTransactionIfService;
+	}
+	
+	ServiceTransactionIf* 
+	ServiceTransaction::serviceTransactionIfSession(void)
+	{
+		return serviceTransactionIfSession_;
+	}
+
+	void 
+	ServiceTransaction::serviceTransactionIfSession(ServiceTransactionIf* serviceTransactionIfSession)
+	{
+		serviceTransactionIfSession_ = serviceTransactionIfSession;
+	}
+
 }

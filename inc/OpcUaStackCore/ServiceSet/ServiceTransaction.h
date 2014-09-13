@@ -29,8 +29,10 @@ namespace OpcUaStackCore
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
 
-		virtual ServiceTransactionIf* serviceTransactionIfService(void) { return nullptr; }
-		virtual ServiceTransactionIf* serviceTransactionIfSession(void) { return nullptr; }
+		ServiceTransactionIf* serviceTransactionIfService(void);
+		void serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService);
+		ServiceTransactionIf* serviceTransactionIfSession(void);
+		void serviceTransactionIfSession(ServiceTransactionIf* serviceTransactionIfSession);
 
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
@@ -48,6 +50,9 @@ namespace OpcUaStackCore
 
 		RequestHeader::SPtr requestHeader_;
 		ResponseHeader::SPtr responseHeader_;
+
+		ServiceTransactionIf* serviceTransactionIfService_;
+		ServiceTransactionIf* serviceTransactionIfSession_;
 	};
 
 }

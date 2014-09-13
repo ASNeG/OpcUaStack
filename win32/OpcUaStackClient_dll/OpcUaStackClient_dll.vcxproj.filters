@@ -60,9 +60,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\AttributeService.h">
       <Filter>src\ServiceSet\AttributeService</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ServiceTransactionRead.h">
-      <Filter>src\ServiceSet\AttributeService</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -90,9 +87,6 @@
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\AttributeService.cpp">
-      <Filter>src\ServiceSet\AttributeService</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ServiceTransactionRead.cpp">
       <Filter>src\ServiceSet\AttributeService</Filter>
     </ClCompile>
   </ItemGroup>

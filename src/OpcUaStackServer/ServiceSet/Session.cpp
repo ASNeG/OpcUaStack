@@ -9,7 +9,7 @@
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackServer
+namespace OpcUaStackServer 
 {
 
 	Session::Session(void)
@@ -20,6 +20,12 @@ namespace OpcUaStackServer
 
 	Session::~Session(void)
 	{
+	}
+
+	void 
+	Session::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
+	{
+		transactionManagerSPtr_ = transactionManagerSPtr;
 	}
 
 	void 
@@ -146,7 +152,51 @@ namespace OpcUaStackServer
 	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
 		std::cout << "RECEIVE MESSAGE" << std::endl;
-		return false;
+
+		if (sessionState_ != SessionState_Ready) {
+			Log(Error, "receive message request in invalid state")
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
+		if (transactionManagerSPtr_.get() == nullptr) {
+			Log(Error, "transaction manager empty");
+			return false;
+		}
+
+		ServiceTransaction::SPtr serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(typeId);
+		if (serviceTransactionSPtr.get() == nullptr) {
+			Log(Error, "receive invalid message type")
+				.parameter("TypeId", typeId);
+			return false;
+		}
+		serviceTransactionSPtr->serviceTransactionIfSession(this);
+
+		std::iostream ios(&sb);
+		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
+		requestHeader->opcUaBinaryDecode(ios);
+		serviceTransactionSPtr->opcUaBinaryDecodeResponse(ios);
+
+		serviceTransactionSPtr->serviceTransactionIfService()->receive(typeId, serviceTransactionSPtr);
+		return true;
+	}
+
+	void 
+	Session::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransactionSPtr) 
+	{
+		std::cout << "RECEIVE SESSION RESPONSE..." << std::endl;
+
+		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
+		ResponseHeader::SPtr responseHeader = serviceTransactionSPtr->responseHeader();
+		responseHeader->requestHandle(requestHeader->requestHandle());
+
+		boost::asio::streambuf sb;
+		std::iostream ios(&sb);
+		responseHeader->opcUaBinaryEncode(ios);
+		serviceTransactionSPtr->opcUaBinaryEncodeResponse(ios);
+
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sb);
+
 	}
 
 }

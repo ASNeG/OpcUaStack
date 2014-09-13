@@ -26,6 +26,12 @@ namespace OpcUaStackServer
 	}
 
 	void 
+	SessionManager::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
+	{
+		transactionManagerSPtr_ = transactionManagerSPtr;
+	}
+
+	void 
 	SessionManager::start(void)
 	{
 		ioService_.start();
@@ -80,6 +86,7 @@ namespace OpcUaStackServer
 
 		// create session 
 		session_ = Session::construct();
+		session_->transactionManager(transactionManagerSPtr_);
 		session_->sessionSecureChannelIf(this);
 		session_->sessionId(1);
 		session_->authenticationToken(1);
