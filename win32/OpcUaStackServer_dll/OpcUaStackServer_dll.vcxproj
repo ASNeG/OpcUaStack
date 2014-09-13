@@ -101,6 +101,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\TransactionManager.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -126,6 +127,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\Session.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\TransactionManager.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

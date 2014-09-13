@@ -16,6 +16,12 @@ namespace OpcUaStackClient
 	{
 	}
 
+	ServiceTransaction::SPtr 
+	ServiceTransactionRead::constructTransaction(void) 
+	{
+		return ServiceTransactionRead::construct();
+	}
+
 	ServiceSetIf* 
 	ServiceTransactionRead::serviceSetIf(void)
 	{

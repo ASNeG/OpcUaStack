@@ -134,6 +134,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionConfig.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\TransactionManager.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -203,6 +206,9 @@
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionConfig.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\TransactionManager.cpp">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>

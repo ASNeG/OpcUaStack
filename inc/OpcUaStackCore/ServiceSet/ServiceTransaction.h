@@ -18,6 +18,8 @@ namespace OpcUaStackCore
 		ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse);
 		virtual ~ServiceTransaction(void);
 
+		virtual SPtr constructTransaction(void) = 0;
+
 		uint32_t transactionId(void);
 		OpcUaNodeId& nodeTypeRequest(void);
 		OpcUaNodeId& nodeTypeResponse(void);
