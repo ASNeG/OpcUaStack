@@ -11,18 +11,6 @@
 namespace OpcUaStackCore
 {
 
-// Unitest
-// AddNodesItem ani;
-// ani.nodeAttributes().nodeId((OpcUaUInt32)12345);
-// ObjectAttributes::SPtr attr = ani.nodeAttributes().parameter<ObjectAttributes>();
-// attr->dislayName("ABC"),
-//
-// ani.opcUABinaryEncode..
-
-// ep.ObjectAttributes().nodeId((OpcUaUInt32)12345);
-// ObjectAttributes_::SPtr attr = ep.parameter<ObjectAttributes>();
-// atrr->dislayName("ABC"),
-
 	class DLLEXPORT AddNodesItem : public ObjectPool<AddNodesItem>
 	{
 	  public:
@@ -43,7 +31,7 @@ namespace OpcUaStackCore
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinitionSPtr);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 
-		void opcUaBinaryEncode(std::ostream& os) const; // nodeAttributes_.opcUaBinaryEncode(..)
+		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:

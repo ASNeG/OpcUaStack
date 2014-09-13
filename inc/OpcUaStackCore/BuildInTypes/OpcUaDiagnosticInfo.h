@@ -16,6 +16,20 @@ namespace OpcUaStackCore
 	    OpcUaDiagnosticInfo(void);
 		~OpcUaDiagnosticInfo(void);
 
+		void setSymbolicId(const OpcUaInt32 symbolicId);
+		OpcUaInt32 getSymbolicId() const;
+		void setNamespaceUri(const OpcUaInt32 namespaceUri);
+		OpcUaInt32 getNamespaceUri() const;
+		void setLocalizedText(const OpcUaInt32 localizedText);
+		OpcUaInt32 getLocalizedText() const;
+		void setLocale(const OpcUaInt32 locale);
+		OpcUaInt32 getLocale() const;
+		void setAdditionalInfo(const OpcUaString& additionalInfo);
+		const OpcUaString& getAdditionalInfo() const;
+		void setInnerStatusCode(const OpcUaStatusCode innerStatusCode);
+		OpcUaStatusCode getInnerStatusCode() const;
+
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

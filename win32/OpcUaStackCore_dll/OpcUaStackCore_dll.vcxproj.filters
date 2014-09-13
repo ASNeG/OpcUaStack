@@ -693,6 +693,36 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionRead.h">
       <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResponse.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResult.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesItem.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesRequest.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesResponse.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddReferencesResult.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesItem.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesRequest.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResponse.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1298,13 +1328,43 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransactionRead.cpp">
       <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
+      <Filter>src\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResult.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesRequest.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesResult.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesItem.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddReferencesResponse.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AddNodesResponse.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesItem.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesRequest.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResult.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResponse.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx">
       <Filter>src\Base</Filter>
     </None>
-    <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
-      <Filter>sc\Base</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
