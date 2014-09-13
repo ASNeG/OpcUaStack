@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_TransactionManager_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
 using namespace OpcUaStackCore;
@@ -9,7 +10,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT TransactionManager 
+	class DLLEXPORT TransactionManager : public ObjectPool<TransactionManager>
 	{
 	  public:
 		TransactionManager(void);

@@ -8,7 +8,7 @@
 
 namespace OpcUaStackCore
 {
-	class ServiceSetIf;
+	class ServiceTransactionIf;
 
 	class DLLEXPORT ServiceTransaction : public Object 
 	{
@@ -29,7 +29,8 @@ namespace OpcUaStackCore
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
 
-		virtual ServiceSetIf* serviceSetIf(void) { return nullptr; }
+		virtual ServiceTransactionIf* serviceTransactionIfService(void) { return nullptr; }
+		virtual ServiceTransactionIf* serviceTransactionIfSession(void) { return nullptr; }
 
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;

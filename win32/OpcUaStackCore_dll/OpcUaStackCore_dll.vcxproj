@@ -247,7 +247,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceBase.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceSetIf.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.h" />

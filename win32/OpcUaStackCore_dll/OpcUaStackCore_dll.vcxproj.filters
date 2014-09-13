@@ -684,10 +684,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceBase.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceSetIf.h">
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransaction.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransaction.h">
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionIf.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
   </ItemGroup>

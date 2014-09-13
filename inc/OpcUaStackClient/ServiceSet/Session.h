@@ -11,7 +11,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackCore/ServiceSet/ServiceSetIf.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 
 namespace OpcUaStackClient
@@ -43,7 +43,7 @@ namespace OpcUaStackClient
 		Session(IOService& ioService);
 		~Session(void);
 
-		bool registerService(OpcUaNodeId& typeId, ServiceSetIf* serviceSetIf);
+		bool registerService(OpcUaNodeId& typeId, ServiceTransactionIf* serviceTransactionIf);
 		bool deregisterService(OpcUaNodeId& typeId);
 
 		void createSession(void);
@@ -78,7 +78,7 @@ namespace OpcUaStackClient
 		PendingQueue pendingQueue_;
 		void pendingQueueTimeout(Object::SPtr object);
 
-		typedef std::map<OpcUaNodeId, ServiceSetIf*> ServiceSetMap;
+		typedef std::map<OpcUaNodeId, ServiceTransactionIf*> ServiceSetMap;
 		ServiceSetMap serviceSetMap_;
 	};
 

@@ -6,7 +6,7 @@
 #include "OpcUaStackCore/ServiceSet/ReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/ReadResponse.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackCore/ServiceSet/ServiceSetIf.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -21,8 +21,8 @@ namespace OpcUaStackClient
 
 		ServiceTransaction::SPtr constructTransaction(void);
 
-		ServiceSetIf* serviceSetIf(void);
-		void serviceSetIf(ServiceSetIf* serviceSetIf);
+		ServiceTransactionIf* serviceTransactionIfService(void);
+		void serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIf);
 
 		ReadRequest::SPtr request(void);
 		ReadResponse::SPtr response(void);
@@ -36,7 +36,7 @@ namespace OpcUaStackClient
 		ReadRequest::SPtr readRequest_;
 		ReadResponse::SPtr readResponse_;
 		
-		ServiceSetIf* serviceSetIf_;
+		ServiceTransactionIf* serviceTransactionIfService_;
 	};
 
 }

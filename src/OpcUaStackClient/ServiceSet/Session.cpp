@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::registerService(OpcUaNodeId& typeId, ServiceSetIf* serviceSetIf)
+	Session::registerService(OpcUaNodeId& typeId, ServiceTransactionIf* serviceTransactionIf)
 	{
 		ServiceSetMap::iterator it;
 		it = serviceSetMap_.find(typeId);
@@ -42,7 +42,7 @@ namespace OpcUaStackClient
 			return false;
 		}
 
-		serviceSetMap_.insert(std::make_pair(typeId, serviceSetIf));
+		serviceSetMap_.insert(std::make_pair(typeId, serviceTransactionIf));
 
 		return true;
 	}
@@ -294,9 +294,9 @@ namespace OpcUaStackClient
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
 		serviceTransaction->opcUaBinaryDecodeResponse(ios);
 		
-		ServiceSetIf* serviceSetIf = serviceTransaction->serviceSetIf();
-		if (serviceSetIf != nullptr) {
-			serviceSetIf->serviceSetIf(typeId, serviceTransaction);
+		ServiceTransactionIf* serviceTransactionIf = serviceTransaction->serviceTransactionIfService();
+		if (serviceTransactionIf != nullptr) {
+			serviceTransactionIf->receive(typeId, serviceTransaction);
 			return true;
 		}
 
@@ -311,8 +311,8 @@ namespace OpcUaStackClient
 			return true;
 		}
 
-		serviceSetIf = it->second;
-		serviceSetIf->serviceSetIf(typeId, serviceTransaction);
+		serviceTransactionIf = it->second;
+		serviceTransactionIf->receive(typeId, serviceTransaction);
 		return true;
 	}
 

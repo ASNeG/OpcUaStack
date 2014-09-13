@@ -2,14 +2,14 @@
 #define __OpcUaStackClient_AttributeService_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/ServiceSetIf.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackClient/ServiceSet/ServiceTransactionRead.h"
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT AttributeService : public ServiceSetIf
+	class DLLEXPORT AttributeService : public ServiceTransactionIf
 	{
 	  public:
 		AttributeService(void);
@@ -19,9 +19,9 @@ namespace OpcUaStackClient
 
 		void send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead);
 
-		//- ServiceSetIf ------------------------------------------------------
-		void serviceSetIf(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceSetIf ------------------------------------------------------
+		//- ServiceTransactionIf ------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		//- ServiceTransactionIf ------------------------------------------------------
 
 	  private:
 		Session::SPtr session_;

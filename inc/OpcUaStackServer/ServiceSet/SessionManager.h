@@ -9,6 +9,7 @@
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionConfig.h"
+#include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -53,6 +54,8 @@ namespace OpcUaStackServer
 		TCPAcceptor::SPtr tcpAcceptor_;
 		SecureChannelServer::SPtr secureChannel_;
 		Session::SPtr session_;
+
+		TransactionManager::SPtr transactionManagerSPtr_;
 	};
 
 }
