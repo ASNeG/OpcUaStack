@@ -106,14 +106,40 @@ namespace OpcUaStackServer
 
 		typeId.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
 		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres);
-		return false;
+		return true;
 	}
 		
 	bool 
 	Session::receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
 		std::cout << "RECEIVE ACTIVATE SESSION REQUEST" << std::endl;
-		return false;
+
+		if (sessionState_ != SessionState_CreateSessionResponse) {
+			Log(Error, "receive create session request in invalid state")
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
+		std::iostream ios(&sb);
+		ActivateSessionRequest activateSessionRequest;
+		activateSessionRequest.opcUaBinaryDecode(ios);
+
+		// FIXME: analyse request data
+
+		boost::asio::streambuf sbres;
+		std::iostream iosres(&sbres);
+
+		ActivateSessionResponse activateSessionResponse;
+		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->serviceResult(Success);
+
+		activateSessionResponse.opcUaBinaryEncode(iosres);
+
+		sessionState_ = SessionState_Ready;
+
+		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres);
+		return true;
 	}
 
 	bool 

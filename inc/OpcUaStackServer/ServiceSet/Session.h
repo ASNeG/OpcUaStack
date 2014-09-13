@@ -17,6 +17,7 @@ namespace OpcUaStackServer
 		SessionState_Close,
 		SessionState_ReceiveCreateSessionRequest,
 		SessionState_CreateSessionResponse,
+		SessionState_Ready
 	} SessionState;
 
 
