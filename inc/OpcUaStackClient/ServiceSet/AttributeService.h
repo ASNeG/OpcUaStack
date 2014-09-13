@@ -2,9 +2,9 @@
 #define __OpcUaStackClient_AttributeService_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSet/ServiceSetIf.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackClient/ServiceSet/ServiceTransactionRead.h"
-#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
 
 namespace OpcUaStackClient
 {

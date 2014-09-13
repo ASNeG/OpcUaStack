@@ -10,9 +10,9 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceSetIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
 
 namespace OpcUaStackClient
 {

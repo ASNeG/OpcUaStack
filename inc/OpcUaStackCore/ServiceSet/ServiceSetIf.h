@@ -1,13 +1,11 @@
-#ifndef __OpcUaStackClient_ServiceSetIf_h__
-#define __OpcUaStackClient_ServiceSetIf_h__
+#ifndef __OpcUaStackCore_ServiceSetIf_h__
+#define __OpcUaStackCore_ServiceSetIf_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServiceSetIf

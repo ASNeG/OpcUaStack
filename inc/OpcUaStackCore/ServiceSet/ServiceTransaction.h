@@ -1,14 +1,12 @@
-#ifndef __OpcUaStackClient_ServiceTransaction_h__
-#define __OpcUaStackClient_ServiceTransaction_h__
+#ifndef __OpcUaStackCore_ServiceTransaction_h__
+#define __OpcUaStackCore_ServiceTransaction_h__
 
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 	class ServiceSetIf;
 

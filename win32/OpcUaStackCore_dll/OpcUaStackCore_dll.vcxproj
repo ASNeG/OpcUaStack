@@ -246,6 +246,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RelativePathElement.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\RepublishResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceBase.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceSetIf.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.h" />
@@ -445,6 +448,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RelativePathElement.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceBase.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransaction.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.cpp" />

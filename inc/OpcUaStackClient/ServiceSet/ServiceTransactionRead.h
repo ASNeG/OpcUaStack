@@ -5,8 +5,8 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/ReadResponse.h"
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceSetIf.h"
 
 using namespace OpcUaStackCore;
 

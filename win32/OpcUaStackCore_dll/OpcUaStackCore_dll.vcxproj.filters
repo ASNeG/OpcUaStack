@@ -681,6 +681,15 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Url.h">
       <Filter>sc\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceBase.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceSetIf.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransaction.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1276,6 +1285,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\PendingQueue.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceBase.cpp">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransaction.cpp">
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

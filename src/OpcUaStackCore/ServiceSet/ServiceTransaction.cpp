@@ -1,6 +1,6 @@
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	uint32_t ServiceTransaction::uniqueTransactionId_ = 0;
