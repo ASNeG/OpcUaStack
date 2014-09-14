@@ -181,6 +181,7 @@ namespace OpcUaStackServer
 	bool 
 	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
 	{
+		// OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary
 		return session_->receive(nodeId, is);
 	}
 

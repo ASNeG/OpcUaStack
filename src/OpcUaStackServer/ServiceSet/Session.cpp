@@ -155,7 +155,8 @@ namespace OpcUaStackServer
 
 		if (sessionState_ != SessionState_Ready) {
 			Log(Error, "receive message request in invalid state")
-				.parameter("SessionState", sessionState_);
+				.parameter("SessionState", sessionState_)
+				.parameter("TypeId", typeId);
 			return false;
 		}
 

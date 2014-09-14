@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
+#include <sstream>
 
 namespace OpcUaStackCore
 {
@@ -376,6 +377,51 @@ namespace OpcUaStackCore
 				break;
 			}
 		}
+	}
+
+	std::string 
+	OpcUaNodeIdBase::toString(void) const
+	{
+		std::stringstream nodeIdStream;
+		nodeIdStream << "ns=" << namespaceIndex_ << ","; 
+
+		switch(nodeIdType())
+		{
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value = boost::get<OpcUaUInt32>(nodeIdValue_);
+				nodeIdStream << "i=" << value;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = boost::get<OpcUaString::SPtr>(nodeIdValue_);
+				if (value.get() != nullptr) {
+					std::string str = *value;
+					nodeIdStream << "s=" << str;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = boost::get<OpcUaGuid::SPtr>(nodeIdValue_);
+				if (value.get() != nullptr) {
+					std::string str = *value;
+					nodeIdStream << "g=" << str;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr value = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+				if (value.get() != nullptr) {
+					std::string str = value->toHexString();
+					nodeIdStream << "h=" << str;
+				}
+				break;
+			}
+		}
+		return nodeIdStream.str();
 	}
 
 }

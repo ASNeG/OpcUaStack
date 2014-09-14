@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Base/Utility.h"
 #include <string.h>
 
 namespace OpcUaStackCore
@@ -145,6 +146,16 @@ namespace OpcUaStackCore
 		
 		value_ = (OpcUaByte*)malloc(length_);
 		is.read((char*)value_, length_);
+	}
+
+	std::string 
+	OpcUaByteString::toHexString(void) const
+	{
+		std::stringstream ss;
+		if (length_ > 0) {
+			OpcUaStackCore::dumpHex((const char *)value_, (const uint32_t)length_, ss);
+		}
+		return ss.str();
 	}
 
 };

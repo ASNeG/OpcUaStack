@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 		bool get(std::string& nodeId, OpcUaUInt16& namespaceIndex);
 		bool get(OpcUaByte** buf, OpcUaInt32* bufLen, OpcUaUInt16& namespaceIndex);
 
+		std::string toString(void) const;
+
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
 		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 
@@ -56,6 +58,7 @@ namespace OpcUaStackCore
 		virtual void encodingFlag(OpcUaByte expandedEncodingFlag);
 
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaNodeIdBase& opcUaNodeId) {
+			os << opcUaNodeId.toString();
 			return os;
 		}
 
