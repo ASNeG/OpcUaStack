@@ -60,6 +60,9 @@
     <Filter Include="src\ServiceSet\SessionServiceSet">
       <UniqueIdentifier>{d0233f5d-557a-4a78-ae7f-2f7973eb87ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet\DiscoveryServiceSet">
+      <UniqueIdentifier>{86b90303-214c-433c-818f-b4ab6e2aa582}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -140,6 +143,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\AttributeService.h">
       <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\DiscoveryService.h">
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -216,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\AttributeService.cpp">
       <Filter>src\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\DiscoveryService.cpp">
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

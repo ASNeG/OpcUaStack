@@ -51,6 +51,8 @@ namespace OpcUaStackServer
 	  private:
 		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
 
+		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
+
 		IOService ioService_;
 
 		TCPAcceptor::SPtr tcpAcceptor_;

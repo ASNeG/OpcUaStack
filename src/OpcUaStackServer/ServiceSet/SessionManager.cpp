@@ -181,7 +181,9 @@ namespace OpcUaStackServer
 	bool 
 	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
 	{
-		// OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary
+		if (nodeId.nodeId<uint32_t>() == OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary) {
+			return receiveGetEndpointsRequest(nodeId, is);
+		}
 		return session_->receive(nodeId, is);
 	}
 
@@ -212,6 +214,13 @@ namespace OpcUaStackServer
 	SessionManager::send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb)
 	{
 		secureChannel_->send(opcUaNodeId, sb);
+	}
+
+
+	bool
+	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
+	{
+		return false;
 	}
 
 }
