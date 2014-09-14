@@ -7,6 +7,9 @@
     <Filter Include="Unittest\ServiceSet">
       <UniqueIdentifier>{2ffc7825-8bb5-470e-9c4e-18967b75ecdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unittest\NodeSet">
+      <UniqueIdentifier>{67780036-3852-4816-9da8-82854cd809b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tst\os.h">
@@ -22,6 +25,9 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackServer\Session_t.cpp">
       <Filter>Unittest\ServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackServer\NodeSet_t.cpp">
+      <Filter>Unittest\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

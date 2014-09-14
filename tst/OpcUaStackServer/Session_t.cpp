@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	);
 	BOOST_REQUIRE(rc == true);
 
-	IOService::secSleep(5000);
+	IOService::secSleep(4);
 
 	sessionManagerServer.stop();
 }

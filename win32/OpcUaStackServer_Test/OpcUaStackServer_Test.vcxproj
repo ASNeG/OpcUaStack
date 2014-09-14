@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\tst\unittest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\tst\OpcUaStackServer\NodeSet_t.cpp" />
     <ClCompile Include="..\..\tst\OpcUaStackServer\Session_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>

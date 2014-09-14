@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 		NodeSetParser(void);
 		~NodeSetParser(void);
 
-		bool decode(boost::property_tree::ptree& ptree);
+		bool decodeXml(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);
 		void clear();
 
@@ -54,6 +54,16 @@ namespace OpcUaStackServer
 		void viewNodeClassVec(ViewNodeClassVec& viewNodeClassVec);
 
 	  private:
+		bool decodeXmlNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
+		bool decodeXmlAliases(boost::property_tree::ptree& ptree);
+		bool decodeXmlUAObject(boost::property_tree::ptree& ptree);
+		bool decodeXmlUAObjectType(boost::property_tree::ptree& ptree);
+		bool decodeXmlUAVariable(boost::property_tree::ptree& ptree);
+		bool decodeXmlUAVariableType(boost::property_tree::ptree& ptree);
+		bool decodeXmlUADataType(boost::property_tree::ptree& ptree);
+		bool decodeXmlUAReferenceType(boost::property_tree::ptree& ptree);
+		bool decodeXmlUAMethod(boost::property_tree::ptree& ptree);
+
 		DataTypeNodeClassVec dataTypeNodeClassVec_;
 		MethodNodeClassVec methodNodeClassVec_;
 		ObjectNodeClassVec objectNodeClassVec_;

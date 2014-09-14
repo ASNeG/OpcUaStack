@@ -10,9 +10,11 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT BaseNodeClass
+	class DLLEXPORT BaseNodeClass 
 	{
 	  public: 
+		typedef boost::shared_ptr<BaseNodeClass> SPtr;
+
 		BaseNodeClass(void);
 		BaseNodeClass(NodeClass nodeClass);
 		~BaseNodeClass(void);
