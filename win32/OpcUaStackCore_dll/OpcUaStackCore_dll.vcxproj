@@ -169,6 +169,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesItem.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ElementOperand.h" />
@@ -320,6 +324,10 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResult.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesItem.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesResult.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ElementOperand.cpp" />

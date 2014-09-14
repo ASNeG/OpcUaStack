@@ -181,6 +181,15 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddNodes_t.cpp">
       <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddReferences_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteNodes_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteReferences_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
