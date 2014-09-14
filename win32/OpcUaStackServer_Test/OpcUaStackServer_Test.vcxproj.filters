@@ -8,4 +8,20 @@
       <UniqueIdentifier>{2ffc7825-8bb5-470e-9c4e-18967b75ecdb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\tst\os.h">
+      <Filter>Unittest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tst\unittest.h">
+      <Filter>Unittest</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\tst\unittest.cpp">
+      <Filter>Unittest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackServer\Session_t.cpp">
+      <Filter>Unittest\ServiceSet</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
