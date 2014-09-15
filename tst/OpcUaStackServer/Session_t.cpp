@@ -14,7 +14,7 @@
 
 
 #define TEST_HOST		"127.0.0.1"
-#define TEST_PORT		"4841"
+#define TEST_PORT		"4842"
 
 
 using namespace OpcUaStackCore;
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	);
 	BOOST_REQUIRE(rc == true);
 
-	IOService::secSleep(4);
+	IOService::secSleep(40000);
 
 	sessionManagerServer.stop();
 }
