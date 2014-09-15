@@ -1,6 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
-#include "OpcUaStackServer/NodeSet/NodeSetParser.h"
+#include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -22,10 +22,10 @@ BOOST_AUTO_TEST_CASE(NodeSet_read_xml)
 BOOST_AUTO_TEST_CASE(NodeSet_decode_xml)
 {
 	ConfigXml configXml;
-	NodeSetParser nodeSetParser;
+	NodeSetXmlParser nodeSetXmlParser;
 	
 	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet2.xml") == true);
-	BOOST_REQUIRE(nodeSetParser.decode(configXml.ptree()) == true);
+	BOOST_REQUIRE(nodeSetXmlParser.decode(configXml.ptree()) == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

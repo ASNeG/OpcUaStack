@@ -4,23 +4,12 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
-
-	typedef enum {
-		ReferenceType_HasComponent,
-		ReferenceType_HasProperty,
-		ReferenceType_HasModellingRule,
-		ReferenceType_HasTypeDefinition,
-		ReferenceType_HasModelParent,
-		ReferenceType_HasEventSource,
-		ReferenceType_HasNotifier,
-		ReferenceType_Organizes,
-		ReferenceType_HasDescription,
-	} ReferenceType;
 
 	class DLLEXPORT BaseNodeClass 
 	{

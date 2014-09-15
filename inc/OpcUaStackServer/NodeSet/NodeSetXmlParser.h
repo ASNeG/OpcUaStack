@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackServer_NodeSetParser_h__
-#define __OpcUaStackServer_NodeSetParser_h__
+#ifndef __OpcUaStackServer_NodeSetXmlParser_h__
+#define __OpcUaStackServer_NodeSetXmlParser_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include <boost/property_tree/ptree.hpp>
@@ -25,11 +25,11 @@ namespace OpcUaStackServer
 	typedef std::vector<VariableTypeNodeClass::SPtr> VariableTypeNodeClassVec;
 	typedef std::vector<ViewNodeClass::SPtr> ViewNodeClassVec;
 
-	class DLLEXPORT NodeSetParser
+	class DLLEXPORT NodeSetXmlParser
 	{
 	  public:
-		NodeSetParser(void);
-		~NodeSetParser(void);
+		NodeSetXmlParser(void);
+		~NodeSetXmlParser(void);
 
 		bool decode(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);

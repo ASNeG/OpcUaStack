@@ -1,19 +1,19 @@
-#include "OpcUaStackServer/NodeSet/NodeSetParser.h"
+#include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackServer
 {
 
-	NodeSetParser::NodeSetParser(void)
+	NodeSetXmlParser::NodeSetXmlParser(void)
 	{
 	}
 
-	NodeSetParser::~NodeSetParser(void)
+	NodeSetXmlParser::~NodeSetXmlParser(void)
 	{
 	}
 
 	bool 
-	NodeSetParser::decode(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decode(boost::property_tree::ptree& ptree)
 	{
 		boost::optional<boost::property_tree::ptree&> uaNodeSetTree = ptree.get_child_optional("UANodeSet");
 		if (!uaNodeSetTree) {
@@ -62,14 +62,14 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetParser::encode(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::encode(boost::property_tree::ptree& ptree)
 	{
 		// FIXME: todo
 		return true;
 	}
 
 	void 
-	NodeSetParser::clear()
+	NodeSetXmlParser::clear()
 	{
 		dataTypeNodeClassVec_.clear();
 		methodNodeClassVec_.clear();
@@ -82,102 +82,102 @@ namespace OpcUaStackServer
 	}
 
 	DataTypeNodeClassVec&  
-	NodeSetParser::dataTypeNodeClassVec(void)
+	NodeSetXmlParser::dataTypeNodeClassVec(void)
 	{
 		return dataTypeNodeClassVec_;
 	}
 	MethodNodeClassVec&  
-	NodeSetParser::methodNodeClassVec(void)
+	NodeSetXmlParser::methodNodeClassVec(void)
 	{
 		return methodNodeClassVec_;
 	}
 
 	ObjectNodeClassVec&  
-	NodeSetParser::objectNodeClassVec(void)
+	NodeSetXmlParser::objectNodeClassVec(void)
 	{
 		return objectNodeClassVec_;
 	}
 
 	ObjectTypeNodeClassVec&  
-	NodeSetParser::objectTypeNodeClassVec(void)
+	NodeSetXmlParser::objectTypeNodeClassVec(void)
 	{
 		return objectTypeNodeClassVec_;
 	}
 
 	ReferenceTypeNodeClassVec&  
-	NodeSetParser::referenceTypeNodeClassVec(void)
+	NodeSetXmlParser::referenceTypeNodeClassVec(void)
 	{
 		return referenceTypeNodeClassVec_;
 	}
 
 	VariableNodeClassVec&  
-	NodeSetParser::variableNodeClassVec(void)
+	NodeSetXmlParser::variableNodeClassVec(void)
 	{
 		return variableNodeClassVec_;
 	}
 
 	VariableTypeNodeClassVec&  
-	NodeSetParser::variableTypeNodeClassVec(void)
+	NodeSetXmlParser::variableTypeNodeClassVec(void)
 	{
 		return variableTypeNodeClassVec_;
 	}
 
 	ViewNodeClassVec&  
-	NodeSetParser::viewNodeClassVec(void)
+	NodeSetXmlParser::viewNodeClassVec(void)
 	{
 		return viewNodeClassVec_;
 	}
 
 	void   
-	NodeSetParser::dataTypeNodeClassVec(DataTypeNodeClassVec& dataTypeNodeClassVec)
+	NodeSetXmlParser::dataTypeNodeClassVec(DataTypeNodeClassVec& dataTypeNodeClassVec)
 	{
 		dataTypeNodeClassVec_ = dataTypeNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::methodNodeClassVec(MethodNodeClassVec& methodNodeClassVec)
+	NodeSetXmlParser::methodNodeClassVec(MethodNodeClassVec& methodNodeClassVec)
 	{
 		methodNodeClassVec_ = methodNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::objectNodeClassVec(ObjectNodeClassVec& objectNodeClassVec)
+	NodeSetXmlParser::objectNodeClassVec(ObjectNodeClassVec& objectNodeClassVec)
 	{
 		objectNodeClassVec_ = objectNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::objectTypeNodeClassVec(ObjectTypeNodeClassVec& objectTypeNodeClassVec)
+	NodeSetXmlParser::objectTypeNodeClassVec(ObjectTypeNodeClassVec& objectTypeNodeClassVec)
 	{
 		objectTypeNodeClassVec_ = objectTypeNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::referenceTypeNodeClassVec(ReferenceTypeNodeClassVec& referenceTypeNodeClassVec)
+	NodeSetXmlParser::referenceTypeNodeClassVec(ReferenceTypeNodeClassVec& referenceTypeNodeClassVec)
 	{
 		referenceTypeNodeClassVec_ = referenceTypeNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::variableNodeClassVec(VariableNodeClassVec& variableNodeClassVec)
+	NodeSetXmlParser::variableNodeClassVec(VariableNodeClassVec& variableNodeClassVec)
 	{
 		variableNodeClassVec_ = variableNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::variableTypeNodeClassVec(VariableTypeNodeClassVec& variableTypeNodeClassVec)
+	NodeSetXmlParser::variableTypeNodeClassVec(VariableTypeNodeClassVec& variableTypeNodeClassVec)
 	{
 		variableTypeNodeClassVec_ = variableTypeNodeClassVec;
 	}
 
 	void   
-	NodeSetParser::viewNodeClassVec(ViewNodeClassVec& viewNodeClassVec)
+	NodeSetXmlParser::viewNodeClassVec(ViewNodeClassVec& viewNodeClassVec)
 	{
 		viewNodeClassVec_ = viewNodeClassVec;
 	}
 
 	bool 
-	NodeSetParser::decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
 		//
 		// attribute NodeId (mandatory)
@@ -234,7 +234,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetParser::decodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
@@ -249,42 +249,63 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		boost::property_tree::ptree::iterator it;
+		for (it = refpTree->begin(); it != refpTree->end(); it++) {
+
+			if (it->first != "Reference") {
+				Log(Error, "find invalid element")
+					.parameter("NodeId", nodeId);
+				return false;
+			}
+			
+
+			//
+			// attribute reference (mandatory)
+			//
+			boost::optional<std::string> referenceTypeString = it->second.get_optional<std::string>("<xmlattr>.ReferenceType");
+			if (!referenceTypeString) {
+				Log(Error, "element ReferenceType not exist in node set")
+					.parameter("NodeId", nodeId);
+				return false;
+			}
+			ReferenceType referenceType = ReferenceTypeMap::stringToType(*referenceTypeString);
+			if (referenceType == ReferenceType_Unknown) {
+				Log(Error, "reference type unknown in node set")
+					.parameter("NodeId", nodeId)
+					.parameter("ReferenceType", *referenceTypeString);
+				// FIXME:
+				continue;
+				//return false;
+			}
+
+			
+			//
+			// reference value
+			//
+			std::string value = it->second.get_value<std::string>();
+			OpcUaNodeId opcUaNodeId;
+			if (!opcUaNodeId.fromString(value)) {
+				Log(Error, "invalid node id in reference")
+					.parameter("NodeId", nodeId)
+					.parameter("ReferenceType", *referenceTypeString)
+					.parameter("ReferenceNodeId", value);
+				return false;
+			}
+
+			objectNodeClass->addReference(referenceType, opcUaNodeId);
+		}
+
 		return true;
 	}
 
-	#if 0
-
-		EventNotifierAttribute& eventNotifier(void);
-
-	  private:
-		// attributes mandatory
-		EventNotifierAttribute eventNotifier_;
-
-		// references
-		OpcUaNodeIdList hasComponent_;
-		OpcUaNodeIdList hasProperty_;
-		OpcUaNodeIdList hasModellingRule_;
-		OpcUaNodeIdList hasTypeDefinition_;
-		OpcUaNodeIdList hasModelParent_;
-		OpcUaNodeIdList hasEventSource_;
-		OpcUaNodeIdList hasNotifier_;
-		OpcUaNodeIdList organizes_;
-		OpcUaNodeIdList hasDescription_;
-
-		// standard properties
-		OpcUaString::SPtr nodeVersion_;  // optional
-		// FIXME: Image icon_;	// optional
-		// FIXME: NamingRuleType nameingRule_;	// optional 
-#endif
-
 	bool 
-	NodeSetParser::decodeAliases(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeAliases(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeUAObject(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUAObject(boost::property_tree::ptree& ptree)
 	{
 		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
@@ -305,37 +326,37 @@ namespace OpcUaStackServer
 	}
 	
 	bool 
-	NodeSetParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeUAVariable(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUAVariable(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeUAVariableType(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUAVariableType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeUADataType(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUADataType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 
 	bool 
-	NodeSetParser::decodeUAReferenceType(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUAReferenceType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 
 	bool 
-	NodeSetParser::decodeUAMethod(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
