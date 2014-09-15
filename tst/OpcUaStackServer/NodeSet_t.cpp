@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(NodeSet_decode_xml)
 	NodeSetParser nodeSetParser;
 	
 	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet2.xml") == true);
-	BOOST_REQUIRE(nodeSetParser.decodeXml(configXml.ptree()) == true);
+	BOOST_REQUIRE(nodeSetParser.decode(configXml.ptree()) == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

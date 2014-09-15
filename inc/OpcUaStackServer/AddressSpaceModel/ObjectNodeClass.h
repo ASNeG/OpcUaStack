@@ -16,6 +16,8 @@ namespace OpcUaStackServer
 		ObjectNodeClass(void);
 		~ObjectNodeClass(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+
 		EventNotifierAttribute& eventNotifier(void);
 
 	  private:

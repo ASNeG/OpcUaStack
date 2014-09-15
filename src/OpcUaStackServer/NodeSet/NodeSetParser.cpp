@@ -13,7 +13,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetParser::decodeXml(boost::property_tree::ptree& ptree)
+	NodeSetParser::decode(boost::property_tree::ptree& ptree)
 	{
 		boost::optional<boost::property_tree::ptree&> uaNodeSetTree = ptree.get_child_optional("UANodeSet");
 		if (!uaNodeSetTree) {
@@ -25,31 +25,31 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree::iterator it;
 		for (it = uaNodeSetTree->begin(); it != uaNodeSetTree->end(); it++) {
 			if (it->first == "Aliases") {
-				if (!decodeXmlAliases(it->second)) return false;
+				if (!decodeAliases(it->second)) return false;
 			}
 			else if (it->first == "<xmlattr>") {
 			
 			}
 			else if (it->first == "UAObject") {
-				if (!decodeXmlUAObject(it->second)) return false;
+				if (!decodeUAObject(it->second)) return false;
 			}
 			else if (it->first == "UAObjectType") {
-				if (!decodeXmlUAObjectType(it->second)) return false;
+				if (!decodeUAObjectType(it->second)) return false;
 			}
 			else if (it->first == "UAVariable") {
-				if (!decodeXmlUAVariable(it->second)) return false;
+				if (!decodeUAVariable(it->second)) return false;
 			}
 			else if (it->first == "UAVariableType") {
-				if (!decodeXmlUAVariableType(it->second)) return false;
+				if (!decodeUAVariableType(it->second)) return false;
 			}
 			else if (it->first == "UADataType") {
-				if (!decodeXmlUADataType(it->second)) return false;
+				if (!decodeUADataType(it->second)) return false;
 			}
 			else if (it->first == "UAReferenceType") {
-				if (!decodeXmlUAReferenceType(it->second)) return false;
+				if (!decodeUAReferenceType(it->second)) return false;
 			}
 			else if (it->first == "UAMethod") {
-				if (!decodeXmlUAMethod(it->second)) return false;
+				if (!decodeUAMethod(it->second)) return false;
 			}
 			else {
 				Log(Error, "unknown element found in node set")
@@ -177,7 +177,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetParser::decodeXmlNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
 		//
 		// attribute NodeId (mandatory)
@@ -234,37 +234,25 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	NodeSetParser::decodeXmlAliases(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
-		return true;
-	}
-	
-	bool 
-	NodeSetParser::decodeXmlUAObject(boost::property_tree::ptree& ptree)
-	{
-		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
-		if (!decodeXmlNodeBase(objectNodeClassSPtr, ptree)) return false;
-
-
-		//
-		// attribute EventNotifier
-		//
-		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
-		if (eventNotifier) {
-			if (*eventNotifier == "1") objectNodeClassSPtr->eventNotifier().data(1);
-			else objectNodeClassSPtr->eventNotifier().data(0);
-		}
-
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
 		// references
 		//
 		boost::optional<boost::property_tree::ptree&> refpTree = ptree.get_child_optional("References");
 
+		if (!refpTree) {
+			Log(Error, "references not exist in node set")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
 		return true;
 	}
 
-#if 0
+	#if 0
 
 		EventNotifierAttribute& eventNotifier(void);
 
@@ -288,39 +276,66 @@ namespace OpcUaStackServer
 		// FIXME: Image icon_;	// optional
 		// FIXME: NamingRuleType nameingRule_;	// optional 
 #endif
-	
+
 	bool 
-	NodeSetParser::decodeXmlUAObjectType(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeAliases(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeXmlUAVariable(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeUAObject(boost::property_tree::ptree& ptree)
+	{
+		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
+		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
+
+
+		//
+		// attribute EventNotifier
+		//
+		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
+		if (eventNotifier) {
+			if (*eventNotifier == "1") objectNodeClassSPtr->eventNotifier().data(1);
+			else objectNodeClassSPtr->eventNotifier().data(0);
+		}
+
+		if (!decodeReferences(objectNodeClassSPtr, ptree)) return false;
+
+		return true;
+	}
+	
+	bool 
+	NodeSetParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeXmlUAVariableType(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeUAVariable(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 	
 	bool 
-	NodeSetParser::decodeXmlUADataType(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeUAVariableType(boost::property_tree::ptree& ptree)
+	{
+		return true;
+	}
+	
+	bool 
+	NodeSetParser::decodeUADataType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 
 	bool 
-	NodeSetParser::decodeXmlUAReferenceType(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeUAReferenceType(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
 
 	bool 
-	NodeSetParser::decodeXmlUAMethod(boost::property_tree::ptree& ptree)
+	NodeSetParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
 		return true;
 	}
