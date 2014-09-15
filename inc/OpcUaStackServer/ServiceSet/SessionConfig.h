@@ -12,8 +12,6 @@ namespace OpcUaStackServer
 	{
 	  public:
 		static bool initial(Session::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
-		static bool endpointDescriptions(Session::SPtr sessionSPtr, const std::string& configPrefix, Config* config, const std::string& configurationFileName);
-		static bool userTokenPolicy(EndpointDescription::SPtr endpointDescription, const std::string& configPrefix, Config* config, const std::string& configurationFileName);
 	};
 
 }
