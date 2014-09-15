@@ -1,3 +1,4 @@
+#include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include <sstream>
 
@@ -377,6 +378,78 @@ namespace OpcUaStackCore
 				break;
 			}
 		}
+	}
+
+	bool 
+	OpcUaNodeIdBase::fromString(const std::string& nodeIdString)
+	{
+		size_t pos;
+		size_t posBegin;
+		size_t posEnd;
+
+		//
+		// find token "ns=" (optional)
+		//
+		namespaceIndex_ = 0;
+		pos = nodeIdString.find("ns=");
+		if (pos == std::string::npos) {
+			posBegin = 0;
+			posEnd = 0;
+		}
+		else {
+			posBegin = 3;
+			posEnd = nodeIdString.find_first_of(',', posBegin+3);
+			if (posEnd == std::string::npos) return false;
+
+			try {
+				namespaceIndex_ = boost::lexical_cast<uint16_t>(nodeIdString.substr(posBegin, posEnd-posBegin));
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+			posBegin = posEnd+1;
+		}
+
+		//
+		// find token "i=" (optional)
+		//
+		pos = nodeIdString.find("i=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+2;
+			posEnd = nodeIdString.length();
+
+			try {
+				uint32_t value = boost::lexical_cast<uint32_t>(nodeIdString.substr(posBegin, posEnd-posBegin));
+				nodeId(value);
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		//
+		// find token "s=" (optional)
+		//
+		pos = nodeIdString.find("s=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+2;
+			posEnd = nodeIdString.length();
+
+			try {
+				OpcUaString::SPtr value = OpcUaString::construct();
+				*value = nodeIdString.substr(posBegin, posEnd-posBegin); 
+				nodeId(value);
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 	std::string 

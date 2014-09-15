@@ -48,6 +48,7 @@ namespace OpcUaStackCore
 		bool get(std::string& nodeId, OpcUaUInt16& namespaceIndex);
 		bool get(OpcUaByte** buf, OpcUaInt32* bufLen, OpcUaUInt16& namespaceIndex);
 
+		bool fromString(const std::string& nodeIdString);
 		std::string toString(void) const;
 
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);

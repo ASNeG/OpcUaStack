@@ -179,18 +179,26 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetParser::decodeXmlNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
+		//
+		// attribute NodeId (mandatory)
+		//
 		boost::optional<std::string> nodeId = ptree.get_optional<std::string>("<xmlattr>.NodeId");
-		boost::optional<std::string> browseName = ptree.get_optional<std::string>("<xmlattr>.BrowseName");
-		boost::optional<std::string> displayName = ptree.get_optional<std::string>("DisplayName");
-		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
-
 		if (!nodeId) {
 			Log(Error, "element NodeId not exist in node set")
 				.parameter("NodeId", "");
 			return false;
 		}
-		//objectNodeClass->nodeId().data().fromString(*nodeId);
+		if (!objectNodeClass->nodeId().data().fromString(*nodeId)) {
+			Log(Error, "invalid NodeId in node set")
+				.parameter("NodeId", *nodeId);
+			return false;
+		}
 
+
+		//
+		// attribute BrowseName (mandatory)
+		//
+		boost::optional<std::string> browseName = ptree.get_optional<std::string>("<xmlattr>.BrowseName");
 		if (!browseName) {
 			Log(Error, "element BrowseName not exist in node set")
 				.parameter("NodeId", *nodeId);
@@ -198,6 +206,11 @@ namespace OpcUaStackServer
 		}
 		objectNodeClass->browseName().data().set(*browseName);
 
+
+		//
+		// attribute DisplayName (mandatory)
+		//
+		boost::optional<std::string> displayName = ptree.get_optional<std::string>("DisplayName");
 		if (!displayName) {
 			Log(Error, "element DisplayName not exist in node set")
 				.parameter("NodeId", *nodeId);
@@ -205,11 +218,13 @@ namespace OpcUaStackServer
 		}
 		objectNodeClass->displayName().data().set("", *displayName);
 
+
+		//
+		// attribute Description (optional)
+		//
+		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
 		if (description) {
 			objectNodeClass->description().data().set("", *description);
-		}
-		else {
-			
 		}
 
 		//FIXME: WriteMaskAttribute writeMask_;
@@ -230,13 +245,20 @@ namespace OpcUaStackServer
 		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
 		if (!decodeXmlNodeBase(objectNodeClassSPtr, ptree)) return false;
 
-		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
 
+		//
+		// attribute EventNotifier
+		//
+		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
 		if (eventNotifier) {
 			if (*eventNotifier == "1") objectNodeClassSPtr->eventNotifier().data(1);
 			else objectNodeClassSPtr->eventNotifier().data(0);
 		}
 
+
+		//
+		// references
+		//
 		boost::optional<boost::property_tree::ptree&> refpTree = ptree.get_child_optional("References");
 
 		return true;
