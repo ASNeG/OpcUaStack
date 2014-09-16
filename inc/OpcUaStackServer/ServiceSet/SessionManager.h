@@ -10,6 +10,7 @@
 #include "OpcUaStackServer/SecureChannel/SecureChannelIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 
 using namespace OpcUaStackCore;
 
@@ -26,6 +27,7 @@ namespace OpcUaStackServer
 		~SessionManager(void);
 
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
+		void discoveryService(DiscoveryService::SPtr discoveryService);
 
 		void start(void);
 		void stop(void);
@@ -58,6 +60,7 @@ namespace OpcUaStackServer
 		TCPAcceptor::SPtr tcpAcceptor_;
 		SecureChannelServer::SPtr secureChannel_;
 		Session::SPtr session_;
+		DiscoveryService::SPtr discoveryService_;
 
 		TransactionManager::SPtr transactionManagerSPtr_;
 	};

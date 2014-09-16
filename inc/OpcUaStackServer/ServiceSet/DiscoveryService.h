@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_DiscoveryService_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
@@ -11,7 +12,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT DiscoveryService
+	class DLLEXPORT DiscoveryService : public ObjectPool<DiscoveryService>
 	{
 	  public:
 		DiscoveryService(void);
@@ -21,7 +22,7 @@ namespace OpcUaStackServer
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
-		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;

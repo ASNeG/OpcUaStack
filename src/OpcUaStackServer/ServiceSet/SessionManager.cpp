@@ -32,6 +32,13 @@ namespace OpcUaStackServer
 	}
 
 	void 
+	SessionManager::discoveryService(DiscoveryService::SPtr discoveryService)
+	{
+		discoveryService_ = discoveryService;
+		discoveryService_->sessionSecureChannelIf(this);
+	}
+
+	void 
 	SessionManager::start(void)
 	{
 		ioService_.start();
@@ -216,11 +223,10 @@ namespace OpcUaStackServer
 		secureChannel_->send(opcUaNodeId, sb);
 	}
 
-
 	bool
 	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& sb)
 	{
-		return false;
+		return discoveryService_->receiveGetEndpointsRequest(nodeId, sb);
 	}
 
 }

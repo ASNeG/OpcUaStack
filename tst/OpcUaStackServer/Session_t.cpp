@@ -8,7 +8,9 @@
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
+#include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 
 #include <boost/asio/error.hpp>
 
@@ -30,22 +32,6 @@ BOOST_AUTO_TEST_CASE(Session_)
 BOOST_AUTO_TEST_CASE(Session_open)
 {
 	bool rc;
-
-	ExtensibleParameter ep;
-	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-
-	OpcUaStackServer::SessionManager sessionManagerServer;
-
-	OpcUaStackServer::AttributeService attributeServiceServer;
-	
-	TransactionManager::SPtr transactionManager = TransactionManager::construct();
-	ServiceTransactionRead::SPtr serviceTransactionReadSPtr = ServiceTransactionRead::construct();
-	serviceTransactionReadSPtr->serviceTransactionIfService(&attributeServiceServer);
-	transactionManager->registerTransaction(serviceTransactionReadSPtr);
-	sessionManagerServer.transactionManager(transactionManager);
-	
-	sessionManagerServer.start();
-
 	Config serverConfig;
 
 	// ------------------------------------------------------------------------
@@ -111,6 +97,18 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("SecurityLevel", "3");
 	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
 
+
+	boost::optional<Config> childConfig = serverConfig.getChild("TestConfig");
+	EndpointDescriptionArray::SPtr endpointDescriptionArray = EndpointDescriptionArray::construct();
+	rc = EndpointDescriptionConfig::endpointDescriptions(
+		endpointDescriptionArray, 
+		"TestConfig", 
+		&*childConfig,
+		"Unknown"
+	);
+	BOOST_REQUIRE(rc == true);
+
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -119,6 +117,26 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	serverConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT));
+
+
+	ExtensibleParameter ep;
+	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+
+	OpcUaStackServer::SessionManager sessionManagerServer;
+
+	OpcUaStackServer::AttributeService attributeServiceServer;
+	
+	TransactionManager::SPtr transactionManager = TransactionManager::construct();
+	ServiceTransactionRead::SPtr serviceTransactionReadSPtr = ServiceTransactionRead::construct();
+	serviceTransactionReadSPtr->serviceTransactionIfService(&attributeServiceServer);
+	transactionManager->registerTransaction(serviceTransactionReadSPtr);
+	sessionManagerServer.transactionManager(transactionManager);
+
+	DiscoveryService::SPtr discoveryService = DiscoveryService::construct();
+	discoveryService->endpointDescriptionArray(endpointDescriptionArray);
+	sessionManagerServer.discoveryService(discoveryService);
+	
+	sessionManagerServer.start();
 
 	rc = sessionManagerServer.openServerSocket(
 		"TestConfig", serverConfig,

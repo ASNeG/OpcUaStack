@@ -1,4 +1,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
+#include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
+#include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 
 namespace OpcUaStackServer
@@ -26,35 +30,34 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	DiscoveryService::receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
-		return false;
+		std::iostream is(&sb);
+		RequestHeader requestHeader;
+		GetEndpointsRequest getEndpointsRequest;
+
+		requestHeader.opcUaBinaryDecode(is);
+		getEndpointsRequest.opcUaBinaryDecode(is);
+
+		// FIXME: analyse request data
+
+		boost::asio::streambuf sbo;
+		std::iostream os(&sbo);
+
+		ResponseHeader responseHeader;
+		GetEndpointsResponse getEndpointsResponse;
+
+		responseHeader.requestHandle(requestHeader.requestHandle());
+		responseHeader.serviceResult(Success);
+		getEndpointsResponse.endpoints(endpointDescriptionArray_);
+
+		responseHeader.opcUaBinaryEncode(os);
+		getEndpointsResponse.opcUaBinaryEncode(os);
+	
+
+		typeId.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbo);
+		return true;
 	}
-
-#if 0
-	void 
-	DiscoveryService::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
-	{
-		std::cout << "discovery services received request...." << std::endl;
-
-		if (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>() == OpcUaId_ReadRequest_Encoding_DefaultBinary) {
-			ServiceTransactionRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
-
-			ReadResponse::SPtr readResponseSPtr = trx->response();
-			OpcUaDateTime sourceTimestamp, serverTimestamp;
-			sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
-			serverTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
-
-			OpcUaDataValue::SPtr dataValueSPtr = OpcUaDataValue::construct();
-			dataValueSPtr->variant()->variant((OpcUaFloat)321);
-			dataValueSPtr->sourceTimestamp(sourceTimestamp);
-			dataValueSPtr->serverTimestamp(serverTimestamp);
-			readResponseSPtr->dataValueArray()->set(dataValueSPtr);
-
-			trx->responseHeader()->serviceResult(Success);
-			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
-		}
-	}
-#endif
 
 }
