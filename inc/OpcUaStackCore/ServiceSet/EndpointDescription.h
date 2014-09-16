@@ -13,7 +13,10 @@ namespace OpcUaStackCore
 {
 
 	typedef enum {
-		MessageSecurityMode_None = 0
+		MessageSecurityMode_Unknown = 0,
+		MessageSecurityMode_None = 1,
+		MessageSecurityMode_Sign = 2,
+		MessageSecurityMode_SignAndEncrypt = 3,
 	} MessageSecurityMode;
 
 	class DLLEXPORT EndpointDescription : public  ObjectPool<EndpointDescription>

@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
 		void sessionId(uint32_t sessionId);
 		void authenticationToken(uint32_t authenticationToken);
-		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
@@ -43,9 +43,9 @@ namespace OpcUaStackServer
 		// - ServiceTransactionIf ---------------------------------------------
 
 	  private:
-		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
-		bool receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
-		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
 		uint32_t sessionId_;
 		uint32_t authenticationToken_;

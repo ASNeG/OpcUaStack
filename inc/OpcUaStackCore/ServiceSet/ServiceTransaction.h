@@ -39,6 +39,8 @@ namespace OpcUaStackCore
 		virtual void opcUaBinaryDecodeRequest(std::istream& is) = 0;
 		virtual void opcUaBinaryDecodeResponse(std::istream& is) = 0;
 
+		uint32_t requestId_;
+
 	  private:
 		static uint32_t uniqueTransactionId_;
 		static boost::mutex mutex_;

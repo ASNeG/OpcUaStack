@@ -3,6 +3,7 @@
 
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelTransaction.h"
 
 using namespace OpcUaStackCore;
 
@@ -17,9 +18,9 @@ namespace OpcUaStackServer
 	class SessionSecureChannelIf
 	{
 	  public:
-	    virtual void createSessionResponse(boost::asio::streambuf& sb) = 0;
-		virtual void activateSessionResponse(boost::asio::streambuf& sb) = 0;
-		virtual void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb) = 0;
+	    virtual void createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction) = 0;
+		virtual void activateSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction) = 0;
+		virtual void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction) = 0;
 	};
 
 }

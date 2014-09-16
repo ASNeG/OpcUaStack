@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	DiscoveryService::receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		std::iostream is(&sb);
 		RequestHeader requestHeader;
@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 	
 
 		typeId.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbo);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbo, secureChannelTransaction);
 		return true;
 	}
 

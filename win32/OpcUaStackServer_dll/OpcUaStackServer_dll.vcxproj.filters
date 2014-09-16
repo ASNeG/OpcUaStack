@@ -152,6 +152,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelTransaction.h">
+      <Filter>src\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -237,6 +240,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.cpp">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelTransaction.cpp">
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

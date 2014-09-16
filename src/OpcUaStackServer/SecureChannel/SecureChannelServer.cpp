@@ -402,8 +402,11 @@ namespace OpcUaStackServer
 		OpcUaNodeId nodeId;
 		nodeId.opcUaBinaryDecode(is);
 
+		SecureChannelTransaction secureChannelTransaction;
+		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
+
 		if (secureChannelIf_ != nullptr) {
-			bool rc = secureChannelIf_->receive(nodeId, is_);
+			bool rc = secureChannelIf_->receive(nodeId, is_, secureChannelTransaction);
 			if (rc == false) {
 				boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
 				boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
@@ -427,7 +430,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SecureChannelServer::send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb)
+	SecureChannelServer::send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
@@ -459,8 +462,8 @@ namespace OpcUaStackServer
 		OpcUaNumber::opcUaBinaryEncode(ios1, tokenId_);
 
 		// encode sequence header
+		sequenceHeader_.requestId(secureChannelTransaction.requestId_);
 		sequenceHeader_.incSequenceNumber(); 
-		sequenceHeader_.incRequestId();
 		sequenceHeader_.opcUaBinaryEncode(ios1);
 
 		// encode message type id

@@ -41,19 +41,19 @@ namespace OpcUaStackServer
 		//- SecureChannelIf ---------------------------------------------------
 		void connect(void);
 		void disconnect(void);
-		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
+		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 		//- SecureChannelIf ---------------------------------------------------
 
 		//- SessionSecureChannelIf --------------------------------------------
-		void createSessionResponse(boost::asio::streambuf& sb);
-		void activateSessionResponse(boost::asio::streambuf& sb);
-		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb);
+		void createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void activateSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		//- SessionSecurechannelIf --------------------------------------------
 
 	  private:
 		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
 
-		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
+		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 
 		IOService ioService_;
 

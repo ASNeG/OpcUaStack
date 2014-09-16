@@ -53,29 +53,29 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
 			{
-				return receiveCreateSessionRequest(typeId, sb);
+				return receiveCreateSessionRequest(typeId, sb, secureChannelTransaction);
 				break;
 			}
 			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
 			{
-				return receiveActivateSessionRequest(typeId, sb);
+				return receiveActivateSessionRequest(typeId, sb, secureChannelTransaction);
 				break;
 			}
 			default:
 			{
-				return receiveMessage(typeId, sb);
+				return receiveMessage(typeId, sb, secureChannelTransaction);
 			}
 		}
 	}
 
 	bool 
-	Session::receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		std::cout << "RECEIVE CREATE SESSION REQUEST" << std::endl;
 
@@ -111,12 +111,12 @@ namespace OpcUaStackServer
 		sessionState_ = SessionState_CreateSessionResponse;
 
 		typeId.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
 		return true;
 	}
 		
 	bool 
-	Session::receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		std::cout << "RECEIVE ACTIVATE SESSION REQUEST" << std::endl;
 
@@ -144,12 +144,12 @@ namespace OpcUaStackServer
 		sessionState_ = SessionState_Ready;
 
 		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
 		return true;
 	}
 
 	bool 
-	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		std::cout << "RECEIVE MESSAGE" << std::endl;
 
@@ -177,6 +177,7 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
 		requestHeader->opcUaBinaryDecode(ios);
 		serviceTransactionSPtr->opcUaBinaryDecodeResponse(ios);
+		serviceTransactionSPtr->requestId_ = secureChannelTransaction.requestId_;
 
 		serviceTransactionSPtr->serviceTransactionIfService()->receive(typeId, serviceTransactionSPtr);
 		return true;
@@ -196,7 +197,9 @@ namespace OpcUaStackServer
 		responseHeader->opcUaBinaryEncode(ios);
 		serviceTransactionSPtr->opcUaBinaryEncodeResponse(ios);
 
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sb);
+		SecureChannelTransaction secureChannelTransaction;
+		secureChannelTransaction.requestId_ = serviceTransactionSPtr->requestId_;
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sb, secureChannelTransaction);
 
 	}
 

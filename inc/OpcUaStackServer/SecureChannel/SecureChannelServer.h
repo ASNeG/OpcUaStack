@@ -29,7 +29,7 @@ namespace OpcUaStackServer
 
 		bool connect(void);
 		bool disconnect(void);
-		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1);
+		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1, SecureChannelTransaction& secureChannelTransaction);
 
 	  private:
 		void handleReadMessageHeaderError(void);

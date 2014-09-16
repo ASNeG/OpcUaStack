@@ -186,12 +186,12 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
+	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction)
 	{
 		if (nodeId.nodeId<uint32_t>() == OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary) {
-			return receiveGetEndpointsRequest(nodeId, is);
+			return receiveGetEndpointsRequest(nodeId, is, secureChannelTransaction);
 		}
-		return session_->receive(nodeId, is);
+		return session_->receive(nodeId, is, secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------
@@ -202,31 +202,31 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::createSessionResponse(boost::asio::streambuf& sb)
+	SessionManager::createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		OpcUaNodeId typeId;
 		typeId.set(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
-		secureChannel_->send(typeId, sb);
+		secureChannel_->send(typeId, sb, secureChannelTransaction);
 	}
 
 	void 
-	SessionManager::activateSessionResponse(boost::asio::streambuf& sb)
+	SessionManager::activateSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		OpcUaNodeId typeId;
 		typeId.set(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-		secureChannel_->send(typeId, sb);
+		secureChannel_->send(typeId, sb, secureChannelTransaction);
 	}
 
 	void 
-	SessionManager::send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb)
+	SessionManager::send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		secureChannel_->send(opcUaNodeId, sb);
+		secureChannel_->send(opcUaNodeId, sb, secureChannelTransaction);
 	}
 
 	bool
-	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& sb)
+	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		return discoveryService_->receiveGetEndpointsRequest(nodeId, sb);
+		return discoveryService_->receiveGetEndpointsRequest(nodeId, sb, secureChannelTransaction);
 	}
 
 }
