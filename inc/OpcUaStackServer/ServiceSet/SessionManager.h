@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 		void start(void);
 		void stop(void);
 
-		bool openServerSocket(
+		void openServerSocket(
 			const std::string& prefixSessionConfig, Config& sessionConfig, 
 			const std::string& prefixSecureChannelConfig, Config& secureChannelConfig
 		);
@@ -51,18 +51,25 @@ namespace OpcUaStackServer
 		//- SessionSecurechannelIf --------------------------------------------
 
 	  private:
-		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
+		void acceptNewChannel(void);
+		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel, Session::SPtr session);
 
 		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 
 		IOService ioService_;
 
 		TCPAcceptor::SPtr tcpAcceptor_;
+		DiscoveryService::SPtr discoveryService_;
+		TransactionManager::SPtr transactionManagerSPtr_;
+
 		SecureChannelServer::SPtr secureChannel_;
 		Session::SPtr session_;
-		DiscoveryService::SPtr discoveryService_;
 
-		TransactionManager::SPtr transactionManagerSPtr_;
+		// server configuration
+		std::string prefixSessionConfig_;
+		std::string prefixSecureChannelConfig_; 
+		Config* sessionConfig_; 
+		Config* secureChannelConfig_;
 	};
 
 }

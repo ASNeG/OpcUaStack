@@ -77,7 +77,7 @@ namespace OpcUaStackServer
 	bool 
 	Session::receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		std::cout << "RECEIVE CREATE SESSION REQUEST" << std::endl;
+		std::cout << "RECEIVE CREATE SESSION REQUEST" << this << std::endl;
 
 		if (sessionState_ != SessionState_Close) {
 			Log(Error, "receive create session request in invalid state")
@@ -118,10 +118,10 @@ namespace OpcUaStackServer
 	bool 
 	Session::receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		std::cout << "RECEIVE ACTIVATE SESSION REQUEST" << std::endl;
+		std::cout << "RECEIVE ACTIVATE SESSION REQUEST" << this << std::endl;
 
 		if (sessionState_ != SessionState_CreateSessionResponse) {
-			Log(Error, "receive create session request in invalid state")
+			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
 			return false;
 		}

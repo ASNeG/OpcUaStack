@@ -3,6 +3,7 @@
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
+#include "OpcUaStackCore/SecureChannel/CloseSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
@@ -300,6 +301,23 @@ namespace OpcUaStackServer
 
 		secureChannelServerState_ = SecureChannelServerState_Ready;
 		asyncReadMessageHeader();
+	}
+
+	void 
+	SecureChannelServer::handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader)
+	{
+		boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
+		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
+		Log(Info, "close secure channel by partner")
+			.parameter("LocalAddress", localEndpoint.address().to_string())
+			.parameter("LocalPort", localEndpoint.port())
+			.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
+			.parameter("PartnerPort", remoteEndpoint.port());
+		tcpConnection_.close();
+		secureChannelServerState_ = SecureChannelServerState_Close;
+			
+		if (secureChannelIf_ != nullptr) secureChannelIf_->disconnect();
+		return;
 	}
 
 	void 

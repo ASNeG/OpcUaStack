@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 		void handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader);
 		void handleReadMessageHeaderTypeHello(MessageHeader& messageHeader);
-		//void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
+		void handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader);
 		//void handleReadMessageHeaderTypeError(MessageHeader& messageHeader);
 		void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 

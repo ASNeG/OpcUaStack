@@ -18,6 +18,12 @@ namespace OpcUaStackServer
 	}
 
 	SessionManager::SessionManager(void)
+	: session_()
+	, secureChannel_()
+	, prefixSessionConfig_("")
+	, prefixSecureChannelConfig_("") 
+	, sessionConfig_(nullptr)
+	, secureChannelConfig_(nullptr)
 	{
 	}
 
@@ -50,88 +56,18 @@ namespace OpcUaStackServer
 		ioService_.stop();
 	}
 
-	bool
+	void
 	SessionManager::openServerSocket(
 		const std::string& prefixSessionConfig, Config& sessionConfig, 
 		const std::string& prefixSecureChannelConfig, Config& secureChannelConfig
 	)
 	{
-		bool rc;
+		prefixSessionConfig_ = prefixSessionConfig;
+		prefixSecureChannelConfig_ = prefixSecureChannelConfig;
+		sessionConfig_ = &sessionConfig;
+		secureChannelConfig_ = &secureChannelConfig;
 
-		std::string configurationFileName = secureChannelConfig.getValue("Global.ConfigurationFileName", "Unknown");
-
-		// get secure channel configuration
-		boost::optional<Config> childSecureChannelConfig = secureChannelConfig.getChild(prefixSecureChannelConfig);
-		if (!childSecureChannelConfig) {
-			Log(Error, "secure channel server configuration not found")
-				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", prefixSecureChannelConfig);
-			return false;
-		}
-
-		// get endpoint url from configuration 
-		std::string endpointUrl;
-		if (childSecureChannelConfig->getConfigParameter("EndpointUrl", endpointUrl) == false) {
-			Log(Error, "mandatory parameter not found in configuration")
-				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", prefixSecureChannelConfig)
-				.parameter("ParameterName", "EndpointUrl");
-			return false;
-		}
-
-		// check endpoint url
-		Url url;
-		url.url(endpointUrl);
-		if (!url.good()) {
-			Log(Error, "invalid endpoint url in server configuration")
-				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", prefixSecureChannelConfig)
-				.parameter("EndpointUrl", endpointUrl);
-			return false;
-
-		}
-
-		// create session 
-		session_ = Session::construct();
-		session_->transactionManager(transactionManagerSPtr_);
-		session_->sessionSecureChannelIf(this);
-		session_->sessionId(1);
-		session_->authenticationToken(1);
-		rc = SessionConfig::initial(session_, prefixSessionConfig, &sessionConfig);
-		if (!rc) {
-			session_.reset();
-
-			Log(Error, "session server configuration  error")
-				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", prefixSessionConfig);
-			return false;
-		}
-
-		// create secure channel
-		secureChannel_ = SecureChannelServer::construct(ioService_);
-		secureChannel_->secureChannelIf(this);
-		rc = SecureChannelServerConfig::initial(secureChannel_, prefixSecureChannelConfig, &secureChannelConfig);
-		if (!rc) {
-			secureChannel_.reset();
-			session_.reset();
-
-			Log(Error, "secure channel server configuration  error")
-				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", prefixSecureChannelConfig);
-			return false;
-		}
-
-		// bind server socket
-		std::string host = url.host();
-		boost::asio::io_service& io_service = ioService_.io_service();
-		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url.port());
-		tcpAcceptor_->listen();
-		tcpAcceptor_->async_accept(
-			secureChannel_->tcpConnection().socket(),
-			boost::bind(&SessionManager::handleAccept, this, boost::asio::placeholders::error, secureChannel_)
-		);
-
-		return true;
+		acceptNewChannel();
 	}
 
 
@@ -141,7 +77,88 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
+	SessionManager::acceptNewChannel(void)
+	{
+		SecureChannelServer::SPtr secureChannel;
+		Session::SPtr session;
+		bool rc;
+
+		std::string configurationFileName = secureChannelConfig_->getValue("Global.ConfigurationFileName", "Unknown");
+
+		// get secure channel configuration
+		boost::optional<Config> childSecureChannelConfig = secureChannelConfig_->getChild(prefixSecureChannelConfig_);
+		if (!childSecureChannelConfig) {
+			Log(Error, "secure channel server configuration not found")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", prefixSecureChannelConfig_);
+			return;
+		}
+
+		// get endpoint url from configuration 
+		std::string endpointUrl;
+		if (childSecureChannelConfig->getConfigParameter("EndpointUrl", endpointUrl) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", prefixSecureChannelConfig_)
+				.parameter("ParameterName", "EndpointUrl");
+			return;
+		}
+
+		// check endpoint url
+		Url url;
+		url.url(endpointUrl);
+		if (!url.good()) {
+			Log(Error, "invalid endpoint url in server configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", prefixSecureChannelConfig_)
+				.parameter("EndpointUrl", endpointUrl);
+			return;
+
+		}
+
+		// create session 
+		session = Session::construct();
+		session->transactionManager(transactionManagerSPtr_);
+		session->sessionSecureChannelIf(this);
+		session->sessionId(1);
+		session->authenticationToken(1);
+		rc = SessionConfig::initial(session, prefixSessionConfig_, sessionConfig_);
+		if (!rc) {
+			session.reset();
+
+			Log(Error, "session server configuration  error")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", prefixSessionConfig_);
+			return;
+		}
+
+		// create secure channel
+		secureChannel = SecureChannelServer::construct(ioService_);
+		secureChannel->secureChannelIf(this);
+		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
+		if (!rc) {
+			secureChannel.reset();
+			session.reset();
+
+			Log(Error, "secure channel server configuration  error")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", prefixSecureChannelConfig_);
+			return;
+		}
+
+		// bind server socket
+		std::string host = url.host();
+		boost::asio::io_service& io_service = ioService_.io_service();
+		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url.port());
+		tcpAcceptor_->listen();
+		tcpAcceptor_->async_accept(
+			secureChannel->tcpConnection().socket(),
+			boost::bind(&SessionManager::handleAccept, this, boost::asio::placeholders::error, secureChannel, session)
+		);
+	}
+
+	void 
+	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel, Session::SPtr session)
 	{
 		bool rc;
 
@@ -164,6 +181,10 @@ namespace OpcUaStackServer
 
 			// FIXME: todo
 		}
+
+		secureChannel_ = secureChannel;
+		session_ = session;
+		acceptNewChannel();
 	}
 
 
@@ -177,12 +198,13 @@ namespace OpcUaStackServer
 	void 
 	SessionManager::connect(void)
 	{
+		std::cout << "SECURE CHANNEL CONNECT" << std::endl;
 	}
 	
 	void 
 	SessionManager::disconnect(void)
 	{
-		// FIXME:
+		std::cout << "SECURE CHANNEL DISCONNECT" << std::endl;
 	}
 		
 	bool 

@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("ApplicationUri", "urn:localhost:compyny:Unittest");
 	endpoint.setValue("ProductUri", "urn:company:Unittest");
 	endpoint.setValue("ApplicationName", "company Unittest");
-	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
+	endpoint.addValue("DiscoveryUrl", "opc.tcp://localhost:4841/0.0.0.0");
 	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	userTokenPolicy.clear();
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("ApplicationUri", "urn:localhost:compyny:Unittest");
 	endpoint.setValue("ProductUri", "urn:company:Unittest");
 	endpoint.setValue("ApplicationName", "company Unittest");
-	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
+	endpoint.addValue("DiscoveryUrl", "opc.tcp://localhost:4841/0.0.0.0");
 	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	userTokenPolicy.clear();
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("ApplicationUri", "urn:localhost:compyny:Unittest");
 	endpoint.setValue("ProductUri", "urn:company:Unittest");
 	endpoint.setValue("ApplicationName", "company Unittest");
-	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
+	endpoint.addValue("DiscoveryUrl", "opc.tcp://localhost:4841/0.0.0.0");
 	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	userTokenPolicy.clear();
@@ -138,12 +138,11 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	
 	sessionManagerServer.start();
 
-	rc = sessionManagerServer.openServerSocket(
+	sessionManagerServer.openServerSocket(
 		"TestConfig", serverConfig,
 		"TestConfig", serverConfig
 	);
-	BOOST_REQUIRE(rc == true);
-
+	
 	IOService::secSleep(40000);
 
 	sessionManagerServer.stop();
