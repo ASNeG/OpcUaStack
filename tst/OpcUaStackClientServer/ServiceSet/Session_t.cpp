@@ -152,11 +152,10 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	// ------------------------------------------------------------------------
 	serverConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://" + std::string(TEST_HOST) + ":" + std::string(TEST_PORT));
 
-	rc = sessionManagerServer.openServerSocket(
+	sessionManagerServer.openServerSocket(
 		"TestConfig", serverConfig,
 		"TestConfig", serverConfig
 	);
-	BOOST_REQUIRE(rc == true);
 
 	OpcUaStackClient::Session::SPtr session = sessionManagerClient.getNewSession(
 		"TestConfig", clientConfig,
