@@ -99,6 +99,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("ApplicationName", "company Unittest");
 	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
 	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+	endpoint.setValue("SecurityLevel", 0);
 
 	userTokenPolicy.clear();
 	userTokenPolicy.setValue("PolicyId", "OpcUaStack");
@@ -106,7 +107,6 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setChild("UserTokenPolicy", userTokenPolicy);
 
 	endpoint.setValue("TransportProfileUri", "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
-	endpoint.setValue("SecurityLevel", "0");
 	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
 
 
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("ProductUri", "urn:company:Unittest");
 	endpoint.setValue("ApplicationName", "company Unittest");
 	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
-	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
 
 	userTokenPolicy.clear();
 	userTokenPolicy.setValue("PolicyId", "OpcUaStack");
@@ -124,7 +124,6 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setChild("UserTokenPolicy", userTokenPolicy);
 
 	endpoint.setValue("TransportProfileUri", "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
-	endpoint.setValue("SecurityLevel", "1");
 	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
 
 
@@ -134,7 +133,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setValue("ProductUri", "urn:company:Unittest");
 	endpoint.setValue("ApplicationName", "company Unittest");
 	endpoint.addValue("DiscoveryUrl", "opt.tcp://localhost:4841/0.0.0.0");
-	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+	endpoint.setValue("SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
 
 	userTokenPolicy.clear();
 	userTokenPolicy.setValue("PolicyId", "OpcUaStack");
@@ -142,7 +141,6 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	endpoint.setChild("UserTokenPolicy", userTokenPolicy);
 
 	endpoint.setValue("TransportProfileUri", "http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary");
-	endpoint.setValue("SecurityLevel", "3");
 	serverConfig.addChild("TestConfig.EndpointDescription", endpoint);
 
 	// ------------------------------------------------------------------------

@@ -2,23 +2,30 @@
 #define __OpcUaStackServer_DiscoveryService_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionRead.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackServer/ServiceSet/SessionIf.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT DiscoveryService : public ServiceTransactionIf
+	class DLLEXPORT DiscoveryService
 	{
 	  public:
 		DiscoveryService(void);
 		~DiscoveryService(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
+
+		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
+
+		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 
 	  private:
+		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		SessionSecureChannelIf* sessionSecureChannelIf_;
 	};
 
 }

@@ -4,6 +4,8 @@
 #include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -21,6 +23,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Title)
 
 BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -65,12 +68,12 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	getEndpointsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	getEndpointsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	getEndpointsRequestSPtr->requestHeader()->time(ptime);
-	getEndpointsRequestSPtr->requestHeader()->requestHandle(0);
-	getEndpointsRequestSPtr->requestHeader()->returnDisagnostics(0);
-	getEndpointsRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 	
 	// build Parameter
 	stringSPtr = OpcUaString::construct();
@@ -81,6 +84,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	getEndpointsRequestSPtr->profileUris()->set(stringSPtr);
 
 	// encode
+	requestHeader->opcUaBinaryEncode(ios1);
 	getEndpointsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -129,16 +133,17 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 
 	// decode
 	getEndpointsRequestSPtr = GetEndpointsRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	getEndpointsRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *getEndpointsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(getEndpointsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(getEndpointsRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(getEndpointsRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(getEndpointsRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(getEndpointsRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(getEndpointsRequestSPtr->endpointUrl().value() == "EndpointUrl");
 	
@@ -154,6 +159,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 
 BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -203,9 +209,9 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	getEndpointsResponseSPtr->responseHeader()->time(ptime);
-	getEndpointsResponseSPtr->responseHeader()->requestHandle(0);
-	getEndpointsResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 
 	// build EndpointDescription
 	endpointDescriptionSPtr = EndpointDescription::construct();
@@ -234,7 +240,8 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 
 	getEndpointsResponseSPtr->endpoints()->set(endpointDescriptionSPtr);
 
-	// encode 
+	// encode
+	responseHeader->opcUaBinaryEncode(ios1);
 	getEndpointsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -300,11 +307,12 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 
 	// decode 
 	getEndpointsResponseSPtr = GetEndpointsResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	getEndpointsResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(getEndpointsResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(getEndpointsResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(getEndpointsResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(getEndpointsResponseSPtr->endpoints()->size() == 1);
 	endpointDescriptionSPtr = EndpointDescription::construct();

@@ -218,7 +218,7 @@ namespace OpcUaStackServer
 
 
 	bool
-	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
+	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& sb)
 	{
 		return false;
 	}

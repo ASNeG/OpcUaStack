@@ -5,6 +5,7 @@ namespace OpcUaStackServer
 {
 
 	DiscoveryService::DiscoveryService(void)
+	: sessionSecureChannelIf_(nullptr)
 	{
 	}
 
@@ -13,11 +14,29 @@ namespace OpcUaStackServer
 	}
 
 	void 
+	DiscoveryService::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
+	{
+		sessionSecureChannelIf_ = sessionSecureChannelIf;
+	}
+
+	void 
+	DiscoveryService::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
+	{
+		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	bool 
+	DiscoveryService::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	{
+		return false;
+	}
+
+#if 0
+	void 
 	DiscoveryService::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
 		std::cout << "discovery services received request...." << std::endl;
 
-#if 0
 		if (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>() == OpcUaId_ReadRequest_Encoding_DefaultBinary) {
 			ServiceTransactionRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
 
@@ -35,7 +54,7 @@ namespace OpcUaStackServer
 			trx->responseHeader()->serviceResult(Success);
 			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 		}
-#endif
 	}
+#endif
 
 }
