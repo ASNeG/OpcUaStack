@@ -9,9 +9,15 @@ namespace OpcUaStackCore
 	{
 	}
 
-	TCPAcceptor::TCPAcceptor(boost::asio::io_service& io_service, const std::string& addressString, uint32_t port)
+	TCPAcceptor::TCPAcceptor(boost::asio::io_service& io_service, std::string& addressString, uint32_t port)
 	: endpoint_(boost::asio::ip::address::from_string(addressString.c_str()), (unsigned short)port)
 	, acceptor_(io_service,endpoint_)
+	{
+	}
+
+	TCPAcceptor::TCPAcceptor(const boost::asio::io_service& io_service, const std::string& addressString, const uint32_t port)
+	: endpoint_(boost::asio::ip::address::from_string(addressString.c_str()), (unsigned short)port)
+	, acceptor_(*const_cast<boost::asio::io_service*>(&io_service),endpoint_)
 	{
 	}
 

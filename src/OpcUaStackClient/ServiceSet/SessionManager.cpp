@@ -125,9 +125,9 @@ namespace OpcUaStackClient
 		session_->handleSecureChannelDisconnect();
 	}
 		
-	void 
+	bool 
 	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
 	{
-		session_->receive(nodeId, is);
+		return session_->receive(nodeId, is);
 	}
 }

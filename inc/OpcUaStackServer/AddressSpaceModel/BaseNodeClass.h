@@ -4,15 +4,18 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT BaseNodeClass
+	class DLLEXPORT BaseNodeClass 
 	{
 	  public: 
+		typedef boost::shared_ptr<BaseNodeClass> SPtr;
+
 		BaseNodeClass(void);
 		BaseNodeClass(NodeClass nodeClass);
 		~BaseNodeClass(void);
@@ -24,6 +27,8 @@ namespace OpcUaStackServer
 		DescriptionAttribute& description(void);
 		WriteMaskAttribute& writeMask(void);
 		UserWriteMaskAttribute& userWriteMask(void);
+
+		virtual void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId) {};
 
 	  private:
 		NodeIdAttribute nodeId_;

@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackCore_ConfigXml_h__
 #define __OpcUaStackCore_ConfigXml_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include <string>
 

@@ -1,26 +1,27 @@
-#ifndef __OpcUaStackClient_ServiceTransactionRead_h__
-#define __OpcUaStackClient_ServiceTransactionRead_h__
+#ifndef __OpcUaStackCore_ServiceTransactionRead_h__
+#define __OpcUaStackCore_ServiceTransactionRead_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ReadRequest.h"
 #include "OpcUaStackCore/ServiceSet/ReadResponse.h"
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServiceTransactionRead : public ObjectPool<ServiceTransactionRead>, public ServiceTransaction
 	{
 	  public:
+		typedef boost::shared_ptr<ServiceTransactionRead> SPtr;
+
 		ServiceTransactionRead(void);
 		~ServiceTransactionRead(void);
 
-		ServiceSetIf* serviceSetIf(void);
-		void serviceSetIf(ServiceSetIf* serviceSetIf);
+		ServiceTransaction::SPtr constructTransaction(void);
 
 		ReadRequest::SPtr request(void);
 		ReadResponse::SPtr response(void);
@@ -33,8 +34,6 @@ namespace OpcUaStackClient
 	  private:
 		ReadRequest::SPtr readRequest_;
 		ReadResponse::SPtr readResponse_;
-		
-		ServiceSetIf* serviceSetIf_;
 	};
 
 }

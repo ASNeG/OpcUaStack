@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\tst\OpcUaStackClientServer\SecureChannel\SecureChannel_t.cpp" />
+    <ClCompile Include="..\..\tst\OpcUaStackClientServer\ServiceSet\Session_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

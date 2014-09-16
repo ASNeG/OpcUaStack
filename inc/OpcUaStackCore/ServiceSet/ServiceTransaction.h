@@ -1,16 +1,14 @@
-#ifndef __OpcUaStackClient_ServiceTransaction_h__
-#define __OpcUaStackClient_ServiceTransaction_h__
+#ifndef __OpcUaStackCore_ServiceTransaction_h__
+#define __OpcUaStackCore_ServiceTransaction_h__
 
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
-	class ServiceSetIf;
+	class ServiceTransactionIf;
 
 	class DLLEXPORT ServiceTransaction : public Object 
 	{
@@ -19,6 +17,8 @@ namespace OpcUaStackClient
 
 		ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse);
 		virtual ~ServiceTransaction(void);
+
+		virtual SPtr constructTransaction(void) = 0;
 
 		uint32_t transactionId(void);
 		OpcUaNodeId& nodeTypeRequest(void);
@@ -29,7 +29,10 @@ namespace OpcUaStackClient
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
 
-		virtual ServiceSetIf* serviceSetIf(void) { return nullptr; }
+		ServiceTransactionIf* serviceTransactionIfService(void);
+		void serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService);
+		ServiceTransactionIf* serviceTransactionIfSession(void);
+		void serviceTransactionIfSession(ServiceTransactionIf* serviceTransactionIfSession);
 
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
@@ -47,6 +50,9 @@ namespace OpcUaStackClient
 
 		RequestHeader::SPtr requestHeader_;
 		ResponseHeader::SPtr responseHeader_;
+
+		ServiceTransactionIf* serviceTransactionIfService_;
+		ServiceTransactionIf* serviceTransactionIfSession_;
 	};
 
 }

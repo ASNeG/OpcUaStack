@@ -48,6 +48,21 @@
     <Filter Include="src\NodeSet">
       <UniqueIdentifier>{5f6e8c63-f2b3-48c2-a546-72bf09b8956b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet">
+      <UniqueIdentifier>{4f3c6a01-b42a-4530-be8e-f7c52ffc63ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\AttributeServiceSet">
+      <UniqueIdentifier>{a3bffaaf-083f-447a-8e8e-9110b62a8e42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\Common">
+      <UniqueIdentifier>{9953561b-c983-4a15-b49e-e0f7f0b4d444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\SessionServiceSet">
+      <UniqueIdentifier>{d0233f5d-557a-4a78-ae7f-2f7973eb87ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\DiscoveryServiceSet">
+      <UniqueIdentifier>{86b90303-214c-433c-818f-b4ab6e2aa582}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -104,8 +119,38 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerCapabilitiesType.h">
       <Filter>src\InformationModel\ObjectTypes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetParser.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h">
+      <Filter>src\SecureChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\Session.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionIf.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionConfig.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\TransactionManager.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\AttributeService.h">
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\DiscoveryService.h">
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceType.h">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetXmlParser.h">
       <Filter>src\NodeSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +211,32 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerCapabilitiesType.cpp">
       <Filter>src\InformationModel\ObjectTypes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetParser.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\Session.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionConfig.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\TransactionManager.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\AttributeService.cpp">
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\DiscoveryService.cpp">
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceType.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetXmlParser.cpp">
       <Filter>src\NodeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

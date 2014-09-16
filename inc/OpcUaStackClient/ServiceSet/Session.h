@@ -10,9 +10,9 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/ServiceSetIf.h"
 
 namespace OpcUaStackClient
 {
@@ -43,7 +43,7 @@ namespace OpcUaStackClient
 		Session(IOService& ioService);
 		~Session(void);
 
-		bool registerService(OpcUaNodeId& typeId, ServiceSetIf* serviceSetIf);
+		bool registerService(OpcUaNodeId& typeId, ServiceTransactionIf* serviceTransactionIf);
 		bool deregisterService(OpcUaNodeId& typeId);
 
 		void createSession(void);
@@ -57,13 +57,13 @@ namespace OpcUaStackClient
 		void sessionIf(SessionIf* sessionIf);
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
 
-		void receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
 
  	  private:
-		void receiveCreateSessionResponse(boost::asio::streambuf& sb);
-		void receiveActivateSessionResponse(boost::asio::streambuf& sb);
-		void receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receiveCreateSessionResponse(boost::asio::streambuf& sb);
+		bool receiveActivateSessionResponse(boost::asio::streambuf& sb);
+		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 
 		SessionState sessionState_;
 		uint32_t requestHandle_;
@@ -78,7 +78,7 @@ namespace OpcUaStackClient
 		PendingQueue pendingQueue_;
 		void pendingQueueTimeout(Object::SPtr object);
 
-		typedef std::map<OpcUaNodeId, ServiceSetIf*> ServiceSetMap;
+		typedef std::map<OpcUaNodeId, ServiceTransactionIf*> ServiceSetMap;
 		ServiceSetMap serviceSetMap_;
 	};
 

@@ -13,7 +13,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT SecureChannelServerConfig
 	{
 	  public:
-		static bool initial(SecureChannelServer::SPtr secureChannelServerSPtr, const std::string& configPrefix);
+		static bool initial(SecureChannelServer::SPtr secureChannelServerSPtr, const std::string& configPrefix, Config* config = nullptr);
 	};
 
 }

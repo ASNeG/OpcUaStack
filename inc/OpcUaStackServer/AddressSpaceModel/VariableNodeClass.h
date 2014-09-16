@@ -11,6 +11,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT VariableNodeClass : public BaseNodeClass, public ObjectPool<VariableNodeClass>
 	{
 	  public:
+		typedef boost::shared_ptr<VariableNodeClass> SPtr;
+
 		VariableNodeClass(void);
 		~VariableNodeClass(void);
 

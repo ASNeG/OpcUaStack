@@ -1,6 +1,6 @@
-#include "OpcUaStackClient/ServiceSet/ServiceBase.h"
+#include "OpcUaStackCore/ServiceSet/ServiceBase.h"
 
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	ServiceBase::ServiceBase(void)

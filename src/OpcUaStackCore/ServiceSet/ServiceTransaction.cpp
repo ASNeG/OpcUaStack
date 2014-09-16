@@ -1,6 +1,6 @@
-#include "OpcUaStackClient/ServiceSet/ServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 
-namespace OpcUaStackClient
+namespace OpcUaStackCore
 {
 
 	uint32_t ServiceTransaction::uniqueTransactionId_ = 0;
@@ -76,6 +76,30 @@ namespace OpcUaStackClient
 	ServiceTransaction::nodeTypeResponse(void)
 	{
 		return nodeTypeResponse_;
+	}
+
+	ServiceTransactionIf* 
+	ServiceTransaction::serviceTransactionIfService(void)
+	{
+		return serviceTransactionIfService_;
+	}
+
+	void 
+	ServiceTransaction::serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService)
+	{
+		serviceTransactionIfService_ = serviceTransactionIfService;
+	}
+	
+	ServiceTransactionIf* 
+	ServiceTransaction::serviceTransactionIfSession(void)
+	{
+		return serviceTransactionIfSession_;
+	}
+
+	void 
+	ServiceTransaction::serviceTransactionIfSession(ServiceTransactionIf* serviceTransactionIfSession)
+	{
+		serviceTransactionIfSession_ = serviceTransactionIfSession;
 	}
 
 }
