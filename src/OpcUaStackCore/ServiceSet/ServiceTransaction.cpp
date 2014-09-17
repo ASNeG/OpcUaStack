@@ -102,4 +102,16 @@ namespace OpcUaStackCore
 		serviceTransactionIfSession_ = serviceTransactionIfSession;
 	}
 
+	void 
+	ServiceTransaction::statusCode(OpcUaStatusCode statusCode)
+	{
+		statusCode_ = statusCode;
+	}
+		
+	OpcUaStatusCode 
+	ServiceTransaction::statusCode(void)
+	{
+		return statusCode_;
+	}
+
 }

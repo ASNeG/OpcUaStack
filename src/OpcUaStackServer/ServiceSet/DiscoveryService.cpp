@@ -60,4 +60,18 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool 
+	DiscoveryService::receiveFindServersRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	{
+		// FIXME:
+		return false;
+	}
+
+	bool 
+	DiscoveryService::receiveRegisterServerRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	{
+		// FIXME:
+		return false;
+	}
+
 }

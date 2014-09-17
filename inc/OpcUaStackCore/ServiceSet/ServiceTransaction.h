@@ -39,6 +39,9 @@ namespace OpcUaStackCore
 		virtual void opcUaBinaryDecodeRequest(std::istream& is) = 0;
 		virtual void opcUaBinaryDecodeResponse(std::istream& is) = 0;
 
+		void statusCode(OpcUaStatusCode statusCode);
+		OpcUaStatusCode statusCode(void);
+
 		uint32_t requestId_;
 
 	  private:
@@ -55,6 +58,8 @@ namespace OpcUaStackCore
 
 		ServiceTransactionIf* serviceTransactionIfService_;
 		ServiceTransactionIf* serviceTransactionIfSession_;
+
+		OpcUaStatusCode statusCode_;
 	};
 
 }

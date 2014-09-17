@@ -19,6 +19,10 @@ namespace OpcUaStackServer
 		//- ServiceTransactionIf ------------------------------------------------------
 
 	  private:
+		void receiveReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveWriteRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveHistoryReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveHistoryUpdateRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

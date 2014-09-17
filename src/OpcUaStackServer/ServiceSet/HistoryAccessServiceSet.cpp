@@ -16,7 +16,15 @@ namespace OpcUaStackServer
 	void 
 	HistoryAccessServiceSet::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		std::cout << "not implemented" << std::endl;
+		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
+		{
+			case OpcUaId_ReadRequest_Encoding_DefaultBinary:
+				//receiveReadRequest(typeId, serviceTransaction);
+				break;
+			default:
+				serviceTransaction->statusCode(BadInternalError);
+				serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+		}
 	}
 
 }

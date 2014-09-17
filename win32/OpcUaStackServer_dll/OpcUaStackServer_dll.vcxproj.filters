@@ -63,9 +63,6 @@
     <Filter Include="src\ServiceSet\DiscoveryServiceSet">
       <UniqueIdentifier>{86b90303-214c-433c-818f-b4ab6e2aa582}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ServiceSet\HistoryAccessServiceSet">
-      <UniqueIdentifier>{f25694e9-a620-44e5-a8e7-a861729d7b96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\ServiceSet\MethodServiceSet">
       <UniqueIdentifier>{726fac33-db6e-4071-a8bf-98aa6b99cb99}</UniqueIdentifier>
     </Filter>
@@ -176,23 +173,23 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelTransaction.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\HistoryAccessServiceSet.h">
-      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MethodServiceSet.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MethodService.h">
       <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitoredItemServiceSet.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitoredItemService.h">
       <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\ViewServiceSet.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\ViewService.h">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionServiceSet.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionService.h">
       <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\QueryServiceSet.h">
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\QueryService.h">
       <Filter>src\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\NodeManagementService.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -283,25 +280,22 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelTransaction.cpp">
       <Filter>src\SecureChannel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\HistoryAccessServiceSet.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MethodServiceSet.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MethodService.cpp">
       <Filter>src\ServiceSet\MethodServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitoredItemServiceSet.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitoredItemService.cpp">
       <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\ViewServiceSet.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\ViewService.cpp">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionServiceSet.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionService.cpp">
       <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\QueryServiceSet.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\QueryService.cpp">
       <Filter>src\ServiceSet\QueryServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\NodeManagementServiceSet.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\NodeManagementService.cpp">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>

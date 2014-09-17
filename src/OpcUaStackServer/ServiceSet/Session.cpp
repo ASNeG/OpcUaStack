@@ -67,6 +67,16 @@ namespace OpcUaStackServer
 				return receiveActivateSessionRequest(typeId, sb, secureChannelTransaction);
 				break;
 			}
+			case OpcUaId_CloseSessionRequest_Encoding_DefaultBinary:
+			{
+				return receiveCloseSessionRequest(typeId, sb, secureChannelTransaction);
+				break;
+			}
+			case OpcUaId_CancelRequest_Encoding_DefaultBinary:
+			{
+				return receiveCancelRequest(typeId, sb, secureChannelTransaction);
+				break;
+			}
 			default:
 			{
 				return receiveMessage(typeId, sb, secureChannelTransaction);
@@ -146,6 +156,20 @@ namespace OpcUaStackServer
 		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
 		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
 		return true;
+	}
+
+	bool 
+	Session::receiveCloseSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	{
+		std::cout << "not implemented..." << std::endl;
+		return false;
+	}
+
+	bool 
+	Session::receiveCancelRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	{
+		std::cout << "not implemented..." << std::endl;
+		return false;
 	}
 
 	bool 

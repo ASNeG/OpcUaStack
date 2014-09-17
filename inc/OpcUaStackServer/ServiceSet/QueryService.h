@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackServer_MonitoredItemServiceSet_h__
-#define __OpcUaStackServer_MonitoredItemServiceSet_h__
+#ifndef __OpcUaStackServer_QueryService_h__
+#define __OpcUaStackServer_QueryService_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
@@ -8,17 +8,19 @@
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT MonitoredItemServiceSet : public ServiceTransactionIf
+	class DLLEXPORT QueryService : public ServiceTransactionIf
 	{
 	  public:
-		MonitoredItemServiceSet(void);
-		~MonitoredItemServiceSet(void);
+		QueryService(void);
+		~QueryService(void);
 
 		//- ServiceTransactionIf ------------------------------------------------------
 		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 		//- ServiceTransactionIf ------------------------------------------------------
 
 	  private:
+		void receiveQueryFirstRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveQueryNextRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

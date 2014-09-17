@@ -19,10 +19,11 @@ namespace OpcUaStackServer
 		~DiscoveryService(void);
 
 		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
-
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
 		bool receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveFindServersRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveRegisterServerRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
