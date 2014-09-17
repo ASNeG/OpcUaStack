@@ -63,6 +63,27 @@
     <Filter Include="src\ServiceSet\DiscoveryServiceSet">
       <UniqueIdentifier>{86b90303-214c-433c-818f-b4ab6e2aa582}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet\HistoryAccessServiceSet">
+      <UniqueIdentifier>{f25694e9-a620-44e5-a8e7-a861729d7b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\MethodServiceSet">
+      <UniqueIdentifier>{726fac33-db6e-4071-a8bf-98aa6b99cb99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\MonitoredItemServiceSet">
+      <UniqueIdentifier>{20c96cca-45f7-448e-9ebe-a94cf860ee82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\NodeManagementServiceSet">
+      <UniqueIdentifier>{c4154a18-a84b-4a78-8912-8d49f79f8161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\QueryServiceSet">
+      <UniqueIdentifier>{828b848c-cc9d-48cc-a586-c8a213245fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\SubscriptionServiceSet">
+      <UniqueIdentifier>{01bfa943-5c60-4767-923b-3383451cf636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\ViewServiceSet">
+      <UniqueIdentifier>{3b530c32-7c70-467a-bc88-11511d2fb8b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -155,6 +176,24 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelTransaction.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\HistoryAccessServiceSet.h">
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MethodServiceSet.h">
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitoredItemServiceSet.h">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\ViewServiceSet.h">
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionServiceSet.h">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\QueryServiceSet.h">
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -243,6 +282,27 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelTransaction.cpp">
       <Filter>src\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\HistoryAccessServiceSet.cpp">
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MethodServiceSet.cpp">
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitoredItemServiceSet.cpp">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\ViewServiceSet.cpp">
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionServiceSet.cpp">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\QueryServiceSet.cpp">
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\NodeManagementServiceSet.cpp">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

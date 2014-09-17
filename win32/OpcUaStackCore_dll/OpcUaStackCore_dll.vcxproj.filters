@@ -52,11 +52,11 @@
     <Filter Include="src\ServiceSet\DiscoveryServiceSet">
       <UniqueIdentifier>{9634c459-fcd1-4910-8ffd-d2ce6e8c113a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ServiceSet\HistoryAccessServices">
-      <UniqueIdentifier>{14618791-859c-4ecc-a741-601433f461f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Utility">
       <UniqueIdentifier>{6337ed5c-c7fd-422f-9262-f68bf882a0ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\HistoryAccessServiceSet">
+      <UniqueIdentifier>{14618791-859c-4ecc-a741-601433f461f6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -520,16 +520,16 @@
       <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadEventDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRawModifiedDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadProcessedDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadAtTimeDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AggregateFilter.h">
       <Filter>src\ServiceSet\Common</Filter>
@@ -538,40 +538,40 @@
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryData.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryModifiedData.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModificationInfo.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryEventFieldList.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryEvent.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UpdateDataDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UpdateStructureDataDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\UpdateEventDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteRawModifiedDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteAtTimeDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteEventDetails.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PerformUpdateEnumeration.h">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryReadResult.h">
       <Filter>src\ServiceSet\Common</Filter>
@@ -1167,16 +1167,16 @@
       <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadEventDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadRawModifiedDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadProcessedDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ReadAtTimeDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\AggregateConfiguration.cpp">
       <Filter>src\ServiceSet\Common</Filter>
@@ -1185,37 +1185,37 @@
       <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryData.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryModifiedData.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ModificationInfo.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryEventFieldList.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryEvent.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UpdateDataDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UpdateStructureDataDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\UpdateEventDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteRawModifiedDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteAtTimeDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteEventDetails.cpp">
-      <Filter>src\ServiceSet\HistoryAccessServices</Filter>
+      <Filter>src\ServiceSet\HistoryAccessServiceSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\HistoryReadResult.cpp">
       <Filter>src\ServiceSet\Common</Filter>
