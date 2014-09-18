@@ -243,6 +243,15 @@
     </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\PendingQueue_t.cpp">
       <Filter>unittest\Utility</Filter>
+	</ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\AddReferences_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteNodes_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\ServiceSet\DeleteReferences_t.cpp">
+      <Filter>unittest\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

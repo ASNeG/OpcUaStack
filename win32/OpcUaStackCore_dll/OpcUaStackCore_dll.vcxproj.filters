@@ -756,6 +756,18 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoringMode.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesItem.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesRequest.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesResponse.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesResult.h">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1390,6 +1402,18 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionsResponse.cpp">
       <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesItem.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesRequest.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesResponse.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesResult.cpp">
+      <Filter>sc\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
