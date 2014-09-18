@@ -690,9 +690,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionIf.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionRead.h">
-      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AddNodesResponse.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
@@ -722,6 +719,36 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeServiceTransaction.h">
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionTemplate.h">
+      <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DiscoveryServiceTransaction.h">
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodServiceTransaction.h">
+      <Filter>src\ServiceSet\MethodServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemServiceTransaction.h">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeManagementServiceTransaction.h">
+      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryServiceTransaction.h">
+      <Filter>src\ServiceSet\QueryServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SessionServiceTransaction.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionServiceTransaction.h">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewServiceTransaction.h">
+      <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1325,9 +1352,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransaction.cpp">
       <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransactionRead.cpp">
-      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Base\Url.cpp">
       <Filter>src\Base</Filter>
     </ClCompile>
@@ -1365,6 +1389,9 @@
   <ItemGroup>
     <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx">
       <Filter>src\Base</Filter>
+    </None>
+    <None Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionTemplate.txx">
+      <Filter>src\ServiceSet\Common</Filter>
     </None>
   </ItemGroup>
 </Project>

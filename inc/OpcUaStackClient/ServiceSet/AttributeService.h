@@ -3,7 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionRead.h"
+#include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;

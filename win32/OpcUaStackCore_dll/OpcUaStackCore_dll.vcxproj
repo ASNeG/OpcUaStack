@@ -146,6 +146,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ApplicationDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeOperand.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributesDescription.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseNextRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\BrowseNextResponse.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DiscoveryServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ElementOperand.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EventField.h" />
@@ -210,7 +212,10 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\HistoryUpdateResult.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModificationInfo.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemServiceTransaction.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeManagementServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeTypeDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ParsingResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\PerformUpdateEnumeration.h" />
@@ -220,6 +225,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryFirstResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryNextResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\QueryServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadAtTimeDetails.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadProcessedDetails.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ReadRawModifiedDetails.h" />
@@ -259,7 +265,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceBase.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransaction.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionRead.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionTemplate.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SessionServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.h" />
@@ -271,6 +278,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SimpleAttributeOperand.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\StatusChangeNotification.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.h" />
@@ -288,6 +296,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableTypeAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewAttributes.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewDescription.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ViewServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\WriteValue.h" />
@@ -471,7 +480,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\RepublishResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceBase.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransaction.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ServiceTransactionRead.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetMonitoringModeResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\SetPublishingModeRequest.cpp" />
@@ -525,6 +533,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\inc\OpcUaStackCore\Base\Callback.txx" />
+    <None Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionTemplate.txx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

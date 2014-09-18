@@ -3,6 +3,9 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
+#include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
