@@ -25,6 +25,8 @@ namespace OpcUaStackServer
 		ArrayDimensionsAttribute& arrayDimensions(void);
 		MinimumSamplingIntervalAttribute& minimumSamplingInterval(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+
 	  private:
 		// attributes mandatory
 		ValueAttribute value_;
@@ -43,7 +45,7 @@ namespace OpcUaStackServer
 		OpcUaNodeIdList hasProperty_;
 		OpcUaNodeIdList hasComponent_;
 		OpcUaNodeIdList hasTypeDefinition_;
-		OpcUaNodeIdList hasModelParameter_;
+		OpcUaNodeIdList hasModelParent_;
 
 		// standard properties - all optional
 		OpcUaString nodeVersion_;  

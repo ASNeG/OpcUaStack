@@ -67,4 +67,27 @@ namespace OpcUaStackServer
 		return minimumSamplingInterval_;
 	}
 
+	void 
+	VariableNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	{
+		switch (referenceType)
+		{
+			case ReferenceType_HasComponent:
+				hasComponent_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_HasProperty:
+				hasProperty_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_HasModellingRule:
+				hasModellingRule_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_HasTypeDefinition:
+				hasTypeDefinition_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_HasModelParent:
+				hasModelParent_.push_back(opcUaNodeId);
+				break;
+		}
+	}
+
 }

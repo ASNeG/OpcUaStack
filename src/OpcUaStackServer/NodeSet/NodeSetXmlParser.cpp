@@ -194,7 +194,6 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-
 		//
 		// attribute BrowseName (mandatory)
 		//
@@ -205,7 +204,6 @@ namespace OpcUaStackServer
 			return false;
 		}
 		objectNodeClass->browseName().data().set(*browseName);
-
 
 		//
 		// attribute DisplayName (mandatory)
@@ -258,7 +256,6 @@ namespace OpcUaStackServer
 				return false;
 			}
 			
-
 			//
 			// attribute reference (mandatory)
 			//
@@ -273,12 +270,16 @@ namespace OpcUaStackServer
 				Log(Error, "reference type unknown in node set")
 					.parameter("NodeId", nodeId)
 					.parameter("ReferenceType", *referenceTypeString);
-				// FIXME:
-				continue;
-				//return false;
+				return false;
 			}
 
-			
+			if (referenceType == ReferenceType_NodeId) {
+				// Example:
+				// <Reference ReferenceType="i=9004">i=9160</Reference>
+				// See Opc.Ua.NodeSet2.xml Line:8585.
+				continue;
+			}
+	
 			//
 			// reference value
 			//
@@ -308,8 +309,11 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::decodeUAObject(boost::property_tree::ptree& ptree)
 	{
 		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
-		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
 
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
 
 		//
 		// attribute EventNotifier
@@ -320,6 +324,9 @@ namespace OpcUaStackServer
 			else objectNodeClassSPtr->eventNotifier().data(0);
 		}
 
+		//
+		// decode References
+		//
 		if (!decodeReferences(objectNodeClassSPtr, ptree)) return false;
 
 		return true;
@@ -328,36 +335,313 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
 	{
+		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
+
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
+
+		//
+		// attribute EventNotifier
+		//
+		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
+		if (eventNotifier) {
+			if (*eventNotifier == "1") objectNodeClassSPtr->eventNotifier().data(1);
+			else objectNodeClassSPtr->eventNotifier().data(0);
+		}
+
+		//
+		// decode References
+		//
+		if (!decodeReferences(objectNodeClassSPtr, ptree)) return false;
+
 		return true;
 	}
 	
 	bool 
 	NodeSetXmlParser::decodeUAVariable(boost::property_tree::ptree& ptree)
 	{
+		VariableNodeClass::SPtr variableNodeClassSPtr = VariableNodeClass::construct();
+
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(variableNodeClassSPtr, ptree)) return false;
+		
+		//
+		// decode Value (optional)(mandatory)
+		//
+		// TODO
+		//if (!decodeVariableValue(variableNodeClassSPtr, ptree)) return false;
+
+		//
+		// attribute ValueRank (optional)(mandatory)
+		//
+		boost::optional<OpcUaUInt32> valueRank = ptree.get_optional<OpcUaUInt32>("<xmlattr>.ValueRank");
+		if (valueRank) {
+			variableNodeClassSPtr->valueRank().data(*valueRank);
+		} else {
+			variableNodeClassSPtr->valueRank().data(0);
+		}
+		
+		//
+		// attribute AccessLevel (optional)(mandatory)
+		//
+		boost::optional<OpcUaByte> accessLevel = ptree.get_optional<OpcUaByte>("<xmlattr>.AccessLevel");
+		if (accessLevel) {
+			variableNodeClassSPtr->accessLevel().data(*accessLevel);
+		} else {
+			variableNodeClassSPtr->accessLevel().data(0);
+		}
+
+		//
+		// attribute UserAccessLevel (optional)(mandatory)
+		//
+		boost::optional<OpcUaByte> userAccessLevel = ptree.get_optional<OpcUaByte>("<xmlattr>.UserAccessLevel");
+		if (userAccessLevel) {
+			variableNodeClassSPtr->userAccessLevel().data(*userAccessLevel);
+		} else {
+			variableNodeClassSPtr->userAccessLevel().data(0);
+		}
+
+		//
+		// attribute Historizing (optional)(mandatory)
+		//
+		boost::optional<OpcUaBoolean> historizing = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Historizing");
+		if (historizing) {
+			variableNodeClassSPtr->historizing().data(*historizing);
+		} else {
+			variableNodeClassSPtr->historizing().data(false);
+		}
+
+		//
+		// ArrayDimensions (optional)
+		// 
+		boost::optional<std::string> arrayDimensions = ptree.get_optional<std::string>("<xmlattr>.ArrayDimensions");
+		if (arrayDimensions) {
+			std::string str = *arrayDimensions;
+			boost::char_separator<char> sep(",");
+			boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
+
+			for (boost::tokenizer<boost::char_separator<char>>::iterator it = tokens.begin(); it != tokens.end(); ++it)
+			{
+				variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+			}
+		}
+
+		//
+		// attribute MinimumSamplingInterval (optional)
+		//
+		boost::optional<OpcUaDouble> minimumSamplingInterval = ptree.get_optional<OpcUaDouble>("<xmlattr>.MinimumSamplingInterval");
+		if (minimumSamplingInterval) {
+			variableNodeClassSPtr->minimumSamplingInterval().data(*minimumSamplingInterval);
+		} else {
+			variableNodeClassSPtr->minimumSamplingInterval().data(0);
+		}
+
+		//
+		// decode References
+		//
+		if (!decodeReferences(variableNodeClassSPtr, ptree)) return false;
+
+
+		// 
+		// Standard Properties
+		//
+		// TODO
+
 		return true;
 	}
 	
 	bool 
 	NodeSetXmlParser::decodeUAVariableType(boost::property_tree::ptree& ptree)
 	{
+		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr = VariableTypeNodeClass::construct();
+
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(variableTypeNodeClassSPtr, ptree)) return false;
+
+		//
+		// decode Value (optional)
+		//
+		// TODO
+		//if (!decodeVariableValue(variableTypeNodeClassSPtr, ptree)) return false;
+
+		//
+		// attribute ValueRank (mandatory)(optional)
+		//
+		boost::optional<OpcUaUInt32> valueRank = ptree.get_optional<OpcUaUInt32>("<xmlattr>.ValueRank");
+		if (valueRank) {
+			variableTypeNodeClassSPtr->valueRank().data(*valueRank);
+		} else {
+			variableTypeNodeClassSPtr->valueRank().data(0);
+		}
+
+		//
+		// ArrayDimensions (optional)
+		// 
+		boost::optional<std::string> arrayDimensions = ptree.get_optional<std::string>("<xmlattr>.ArrayDimensions");
+		if (arrayDimensions) {
+			std::string str = *arrayDimensions;
+			boost::char_separator<char> sep(",");
+			boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
+
+			for (boost::tokenizer<boost::char_separator<char>>::iterator it = tokens.begin(); it != tokens.end(); ++it)
+			{
+				variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+			}
+		}
+
+		//
+		// attribute IsAbstract (mandatory)(optional)
+		//
+		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
+		if (isAbstract) {
+			variableTypeNodeClassSPtr->isAbstract().data(*isAbstract);
+		} else {
+			variableTypeNodeClassSPtr->isAbstract().data(false);
+		}
+		
+
+		//
+		// decode References
+		//
+		if (!decodeReferences(variableTypeNodeClassSPtr, ptree)) return false;
+
+		// 
+		// Standard Properties
+		//
+		// TODO
+
 		return true;
 	}
 	
 	bool 
 	NodeSetXmlParser::decodeUADataType(boost::property_tree::ptree& ptree)
 	{
+		DataTypeNodeClass::SPtr dataTypeNodeClassSPtr = DataTypeNodeClass::construct();
+
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(dataTypeNodeClassSPtr, ptree)) return false;
+
+		//
+		// attribute IsAbstract (mandatory)(optional)
+		//
+		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
+		if (isAbstract) {
+			dataTypeNodeClassSPtr->isAbstract().data(*isAbstract);	
+		} else {
+			dataTypeNodeClassSPtr->isAbstract().data(false);
+		}
+		
+		//
+		// decode References
+		//
+		if (!decodeReferences(dataTypeNodeClassSPtr, ptree)) return false;
+
+		// 
+		// Standard Properties
+		//
+		// TODO
+
 		return true;
 	}
 
 	bool 
 	NodeSetXmlParser::decodeUAReferenceType(boost::property_tree::ptree& ptree)
 	{
+		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr = ReferenceTypeNodeClass::construct();
+
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(referenceTypeNodeClassSPtr, ptree)) return false;
+
+		//
+		// attribute IsAbstract (mandatory)(optional)
+		//
+		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
+		if (isAbstract) {
+			referenceTypeNodeClassSPtr->isAbstract().data(*isAbstract);	
+		} else {
+			referenceTypeNodeClassSPtr->isAbstract().data(false);
+		}
+
+		//
+		// attribute Symmetric (mandatory)(optional)
+		//
+		boost::optional<OpcUaBoolean> symmetric = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Symmetric");
+		if (symmetric) {
+			referenceTypeNodeClassSPtr->symmetric().data(*symmetric);
+		} else {
+			referenceTypeNodeClassSPtr->symmetric().data(false);
+		}
+
+		//
+		// attribute InverseName (optional)
+		//
+		boost::optional<std::string> inverseName = ptree.get_optional<std::string>("InverseName");
+		if (symmetric) {
+			referenceTypeNodeClassSPtr->inverseName().data().text(*inverseName);
+		} 
+
+		//
+		// decode References
+		//
+		if (!decodeReferences(referenceTypeNodeClassSPtr, ptree)) return false;
+
+		// 
+		// Standard Properties
+		//
+		// TODO
+
 		return true;
 	}
 
 	bool 
 	NodeSetXmlParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
+		MethodNodeClass::SPtr methodeNodeClassSPtr = MethodNodeClass::construct();
+
+		//
+		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		//
+		if (!decodeNodeBase(methodeNodeClassSPtr, ptree)) return false;
+
+		//
+		// attribute Executable (mandatory)(optional)
+		//
+		boost::optional<OpcUaBoolean> executable = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Executable");
+		if (executable) {
+			methodeNodeClassSPtr->executable().data(*executable);
+		} else {
+			methodeNodeClassSPtr->executable().data(false);
+		}
+		//
+		// attribute UserExecutable (mandatory)(optional)
+		//
+		boost::optional<OpcUaBoolean> userExecutable = ptree.get_optional<OpcUaBoolean>("<xmlattr>.UserExecutable");
+		if (userExecutable) {
+			methodeNodeClassSPtr->userExecutable().data(*userExecutable);
+		} else {
+			methodeNodeClassSPtr->userExecutable().data(false);
+		}
+
+		//
+		// decode References
+		//
+		if (!decodeReferences(methodeNodeClassSPtr, ptree)) return false;
+
+		// 
+		// Standard Properties
+		//
+		// TODO
+
 		return true;
 	}
 
