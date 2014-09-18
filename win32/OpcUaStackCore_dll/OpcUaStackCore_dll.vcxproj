@@ -185,8 +185,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionsRequest.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteSubscriptionsResponse.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DiscoveryServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ElementOperand.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\EndpointDescription.h" />
@@ -215,6 +215,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ModificationInfo.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoredItemServiceTransaction.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MonitoringMode.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeManagementServiceTransaction.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeTypeDescription.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ParsingResult.h" />
@@ -279,6 +280,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\StatusChangeNotification.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionAcknowledgement.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\SubscriptionServiceTransaction.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TimestampsToReturn.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferResult.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsRequest.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\TransferSubscriptionsResponse.h" />
@@ -408,8 +410,8 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesRequest.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteNodesResult.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionRequest.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionResponse.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionsRequest.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteSubscriptionsResponse.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ElementOperand.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EndpointDescription.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\EventField.cpp" />

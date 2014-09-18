@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/DeleteSubscriptionResponse.h"
+#include "OpcUaStackCore/ServiceSet/DeleteSubscriptionsResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -6,61 +6,61 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// OpcUa DeleteSubscriptionResponse
+	// OpcUa DeleteSubscriptionsResponse
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	DeleteSubscriptionResponse::DeleteSubscriptionResponse(void)
-	: ObjectPool<DeleteSubscriptionResponse>()
+	DeleteSubscriptionsResponse::DeleteSubscriptionsResponse(void)
+	: ObjectPool<DeleteSubscriptionsResponse>()
 	, responseHeaderSPtr_(ResponseHeader::construct())
 	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
-	DeleteSubscriptionResponse::~DeleteSubscriptionResponse(void)
+	DeleteSubscriptionsResponse::~DeleteSubscriptionsResponse(void)
 	{
 	}
 
 	void 
-	DeleteSubscriptionResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
+	DeleteSubscriptionsResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
 	{
 		responseHeaderSPtr_ = responseHeader;
 	}
 
 	ResponseHeader::SPtr 
-	DeleteSubscriptionResponse::responseHeader(void) const
+	DeleteSubscriptionsResponse::responseHeader(void) const
 	{
 		return responseHeaderSPtr_;
 	}
 
 	void 
-	DeleteSubscriptionResponse::results(const OpcUaStatusCodeArray::SPtr results)
+	DeleteSubscriptionsResponse::results(const OpcUaStatusCodeArray::SPtr results)
 	{
 		statusCodeArraySPtr_ = results;
 	}
 	
 	OpcUaStatusCodeArray::SPtr 
-	DeleteSubscriptionResponse::results(void) const
+	DeleteSubscriptionsResponse::results(void) const
 	{
 		return statusCodeArraySPtr_;
 	}
 	
 	void 
-	DeleteSubscriptionResponse::diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfos)
+	DeleteSubscriptionsResponse::diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfos)
 	{
 		diagnosticInfoArraySPtr_ = diagnosticInfos;
 	}
 
 	OpcUaDiagnosticInfoArray::SPtr 
-	DeleteSubscriptionResponse::diagnosticInfos(void) const
+	DeleteSubscriptionsResponse::diagnosticInfos(void) const
 	{
 		return diagnosticInfoArraySPtr_;
 	}
 
 	void 
-	DeleteSubscriptionResponse::opcUaBinaryEncode(std::ostream& os) const
+	DeleteSubscriptionsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		statusCodeArraySPtr_->opcUaBinaryEncode(os);
@@ -68,7 +68,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	DeleteSubscriptionResponse::opcUaBinaryDecode(std::istream& is)
+	DeleteSubscriptionsResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		statusCodeArraySPtr_->opcUaBinaryDecode(is);

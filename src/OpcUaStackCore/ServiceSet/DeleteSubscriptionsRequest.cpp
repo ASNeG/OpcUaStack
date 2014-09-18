@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/DeleteSubscriptionRequest.h"
+#include "OpcUaStackCore/ServiceSet/DeleteSubscriptionsRequest.h"
 
 namespace OpcUaStackCore
 {
@@ -6,55 +6,55 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// OpcUa DeleteSubscriptionRequest
+	// OpcUa DeleteSubscriptionsRequest
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	DeleteSubscriptionRequest::DeleteSubscriptionRequest(void)
-	: ObjectPool<DeleteSubscriptionRequest>()
+	DeleteSubscriptionsRequest::DeleteSubscriptionsRequest(void)
+	: ObjectPool<DeleteSubscriptionsRequest>()
 	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionIdArraySPtr_(OpcUaUInt32Array::construct())
 	{
 	}
 
-	DeleteSubscriptionRequest::~DeleteSubscriptionRequest(void)
+	DeleteSubscriptionsRequest::~DeleteSubscriptionsRequest(void)
 	{
 	}
 	
 	void 
-	DeleteSubscriptionRequest::requestHeader(const RequestHeader::SPtr requestHeader)
+	DeleteSubscriptionsRequest::requestHeader(const RequestHeader::SPtr requestHeader)
 	{
 		requestHeaderSPtr_ = requestHeader;
 	}
 	
 	RequestHeader::SPtr 
-	DeleteSubscriptionRequest::requestHeader(void) const
+	DeleteSubscriptionsRequest::requestHeader(void) const
 	{
 		return requestHeaderSPtr_;
 	}
 		
 	void 
-	DeleteSubscriptionRequest::subscriptionIds(const OpcUaUInt32Array::SPtr subscriptionIds)
+	DeleteSubscriptionsRequest::subscriptionIds(const OpcUaUInt32Array::SPtr subscriptionIds)
 	{
 		subscriptionIdArraySPtr_ = subscriptionIds;
 	}
 	
 	OpcUaUInt32Array::SPtr 
-	DeleteSubscriptionRequest::subscriptionIds(void) const
+	DeleteSubscriptionsRequest::subscriptionIds(void) const
 	{
 		return subscriptionIdArraySPtr_;
 	}
 
 	void 
-	DeleteSubscriptionRequest::opcUaBinaryEncode(std::ostream& os) const
+	DeleteSubscriptionsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		subscriptionIdArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	DeleteSubscriptionRequest::opcUaBinaryDecode(std::istream& is)
+	DeleteSubscriptionsRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		subscriptionIdArraySPtr_->opcUaBinaryDecode(is);

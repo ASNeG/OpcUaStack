@@ -7,16 +7,10 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemCreateRequest.h"
+#include "OpcUaStackCore/ServiceSet/TimestampsToReturn.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		TimestampsToReturn_Source = 0,
-		TimestampsToReturn_Server = 1,
-		TimestampsToReturn_Both = 2,
-		TimestampsToReturn_Neither = 3
-	} TimestampsToReturn;
 
 	class DLLEXPORT CreateMonitoredItemsRequest : public  ObjectPool<CreateMonitoredItemsRequest>
 	{

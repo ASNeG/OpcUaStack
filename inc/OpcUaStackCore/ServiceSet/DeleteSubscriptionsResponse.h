@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_DeleteSubscriptionResponse_h__
-#define __OpcUaStackCore_DeleteSubscriptionResponse_h__
+#ifndef __OpcUaStackCore_DeleteSubscriptionsResponse_h__
+#define __OpcUaStackCore_DeleteSubscriptionsResponse_h__
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -10,11 +10,11 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DeleteSubscriptionResponse : public  ObjectPool<DeleteSubscriptionResponse>
+	class DLLEXPORT DeleteSubscriptionsResponse : public  ObjectPool<DeleteSubscriptionsResponse>
 	{
 	  public:
-		DeleteSubscriptionResponse(void);
-		virtual ~DeleteSubscriptionResponse(void);
+		DeleteSubscriptionsResponse(void);
+		virtual ~DeleteSubscriptionsResponse(void);
 
 		void responseHeader(const ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void) const;

@@ -6,15 +6,10 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
+#include "OpcUaStackCore/ServiceSet/MonitoringMode.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		MonitoringMode_Disabled = 0,
-		MonitoringMode_Sampling = 1,
-		MonitoringMode_Reporting = 2
-	} MonitoringMode;
 
 	class DLLEXPORT SetMonitoringModeRequest : public  ObjectPool<SetMonitoringModeRequest>
 	{

@@ -8,15 +8,10 @@
 #include "OpcUaStackCore/ServiceSet/ReadValueId.h"
 #include "OpcUaStackCore/ServiceSet/MonitoringParameters.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/ServiceSet/MonitoringMode.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		MonitoringMode_Disabled = 0,
-		MonitoringMode_Sampling = 1,
-		MonitoringMode_Reporting = 2
-	} MonitoringMode;
 
 	class DLLEXPORT MonitoredItemCreateRequest : public  ObjectPool<MonitoredItemCreateRequest>
 	{

@@ -22,6 +22,27 @@
     <Filter Include="src\ServiceSet\Common">
       <UniqueIdentifier>{5c543bf9-1404-449a-92c4-2760b3669fe4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceSet\DisccoveryServiceSet">
+      <UniqueIdentifier>{d741dbfc-611f-499a-8797-437b03ff1a5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\MethodServiceSet">
+      <UniqueIdentifier>{9e684e4f-7149-4d48-8d7f-99d353ea0d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\MonitoredItemServiceSet">
+      <UniqueIdentifier>{bb0856ea-8851-4e44-932b-6243f0c45c7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\NodeManagementServiceSet">
+      <UniqueIdentifier>{933bcf9a-991b-4142-a391-b0610dd71285}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\QueryServiceSet">
+      <UniqueIdentifier>{b373d8ac-bc9d-4594-aca1-7122648d869e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\SubscriptionServiceSet">
+      <UniqueIdentifier>{8b242a51-547e-4da3-89dc-24c92c1f697f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ServiceSet\ViewServiceSet">
+      <UniqueIdentifier>{0706ca54-22a0-4e92-ab65-97f4be5970c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
