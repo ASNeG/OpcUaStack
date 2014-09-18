@@ -422,9 +422,9 @@ namespace OpcUaStackServer
 		if (arrayDimensions) {
 			std::string str = *arrayDimensions;
 			boost::char_separator<char> sep(",");
-			boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
+			boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
-			for (boost::tokenizer<boost::char_separator<char>>::iterator it = tokens.begin(); it != tokens.end(); ++it)
+			for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it)
 			{
 				variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
 			}
@@ -487,9 +487,9 @@ namespace OpcUaStackServer
 		if (arrayDimensions) {
 			std::string str = *arrayDimensions;
 			boost::char_separator<char> sep(",");
-			boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
+			boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
-			for (boost::tokenizer<boost::char_separator<char>>::iterator it = tokens.begin(); it != tokens.end(); ++it)
+			for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it)
 			{
 				variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
 			}

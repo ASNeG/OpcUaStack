@@ -5,8 +5,8 @@ namespace OpcUaStackCore
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ServiceTransactionTemplate(void)
 	  : ServiceTransaction(REQID, RESID)
-	  , request_(typename REQTYPE::construct())
-	  , response_(typename RESTYPE::construct())
+	  , request_(REQTYPE::construct())
+	  , response_(RESTYPE::construct())
 	  {
 	  }
 
