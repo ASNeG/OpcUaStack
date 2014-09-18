@@ -1,4 +1,5 @@
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
+#include <boost/algorithm/string/predicate.hpp>
 
 namespace OpcUaStackServer
 {
@@ -46,6 +47,8 @@ namespace OpcUaStackServer
 		else if (referenceTypeString == "Organizes") return ReferenceType_Organizes;
 		else if (referenceTypeString == "HasDescription") return ReferenceType_HasDescription;
 		else if (referenceTypeString == "HasEncoding") return ReferenceType_HasEncoding;
+		else if (referenceTypeString == "HasSubtype") return ReferenceType_HasSubtype;
+		else if (boost::starts_with(referenceTypeString, "i=")) return ReferenceType_NodeId;
 		return ReferenceType_Unknown;
 	}
 

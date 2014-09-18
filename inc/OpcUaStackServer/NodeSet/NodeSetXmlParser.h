@@ -1,7 +1,9 @@
 #ifndef __OpcUaStackServer_NodeSetXmlParser_h__
 #define __OpcUaStackServer_NodeSetXmlParser_h__
 
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
