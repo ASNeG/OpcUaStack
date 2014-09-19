@@ -9,10 +9,8 @@
 #include "OpcUaStackCore/ServiceSet/AddReferencesResponse.h"
 #include "OpcUaStackCore/ServiceSet/DeleteNodesRequest.h"
 #include "OpcUaStackCore/ServiceSet/DeleteNodesResponse.h"
-#if 0
 #include "OpcUaStackCore/ServiceSet/DeleteReferencesRequest.h"
 #include "OpcUaStackCore/ServiceSet/DeleteReferencesResponse.h"
-#endif
 
 namespace OpcUaStackCore
 {
@@ -38,14 +36,12 @@ namespace OpcUaStackCore
 		OpcUaId_DeleteNodesResponse_Encoding_DefaultBinary
 	> ServiceTransactionDeleteNodes;
 
-#if 0
 	typedef ServiceTransactionTemplate<
 		DeleteReferencesRequest, 
 		DeleteReferencesResponse, 
 		OpcUaId_DeleteReferencesRequest_Encoding_DefaultBinary, 
 		OpcUaId_DeleteReferencesResponse_Encoding_DefaultBinary
 	> ServiceTransactionDeleteReferences;
-#endif
 
 }
 

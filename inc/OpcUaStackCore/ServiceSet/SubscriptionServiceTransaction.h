@@ -68,7 +68,7 @@ namespace OpcUaStackCore
 		DeleteSubscriptionsResponse, 
 		OpcUaId_DeleteSubscriptionsRequest_Encoding_DefaultBinary, 
 		OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary
-	> ServiceTransactionDeleteSubscription;
+	> ServiceTransactionDeleteSubscriptions;
 
 }
 

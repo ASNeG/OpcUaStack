@@ -4,7 +4,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
-#include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/MethodService.h"
 #include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
 #include "OpcUaStackServer/ServiceSet/MonitoredItemService.h"
@@ -26,7 +25,6 @@ namespace OpcUaStackServer
 	  private:
 		TransactionManager::SPtr transactionManager_;
 		AttributeService::SPtr attributeService_;
-		DiscoveryService::SPtr discoveryService_;
 		MethodService::SPtr methodService_;
 		MonitoredItemService::SPtr monitoredItemService_;
 		NodeManagementService::SPtr nodeManagementService_;
