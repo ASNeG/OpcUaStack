@@ -92,8 +92,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerCapabilitiesType.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerType.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetXmlParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
@@ -118,7 +116,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\BaseObjectType.h" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\Attribute.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.cpp" />
@@ -131,9 +128,6 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\BaseObjectType.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerCapabilitiesType.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerType.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetXmlParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />

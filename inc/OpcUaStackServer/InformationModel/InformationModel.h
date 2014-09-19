@@ -1,13 +1,14 @@
 #ifndef __OpcUaStackServer_InformationModel_h__
 #define __OpcUaStackServer_InformationModel_h__
 
+#include <boost/thread/mutex.hpp>
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
-#include <set>
+#include <map>
 
 namespace OpcUaStackServer
 {
 
-	//typedef std::set<BaseNodeClass::SPtr> InformationModelMap;
+	typedef std::map<OpcUaNodeId, BaseNodeClass::SPtr> InformationModelMap;
 
 	class InformationModel
 	{
@@ -15,8 +16,13 @@ namespace OpcUaStackServer
 		InformationModel(void);
 		~InformationModel(void);
 
+		bool insert(BaseNodeClass::SPtr baseNodeClass);
+		BaseNodeClass::SPtr find(OpcUaNodeId& opcUaNodeId);
+		BaseNodeClass::SPtr find(OpcUaNodeId::SPtr opcUaNodeId);
+
 	  private:
-		//InformationModelMap informationModelMap_;
+		boost::mutex mutex_;
+		InformationModelMap informationModelMap_;
 
 	};
 

@@ -21,30 +21,6 @@
     <Filter Include="src\AddressSpaceModel">
       <UniqueIdentifier>{111d809e-d6a2-459f-899e-ee5bb124e4ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\InformationModel\ObjectTypes">
-      <UniqueIdentifier>{ed713048-1959-487f-a2d4-e476d281ba7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\VariableTypes">
-      <UniqueIdentifier>{2e0eb743-f6a1-4663-a6e2-5406676af4fb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\ObjectAndVariables">
-      <UniqueIdentifier>{ac717e98-7135-487a-bef5-1f237122848d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\Methods">
-      <UniqueIdentifier>{a9294494-ad92-4c83-91e1-bdd5d0eeb3b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\Views">
-      <UniqueIdentifier>{8166012b-c0fe-420b-b927-4037b527bfff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\ReferenceTypes">
-      <UniqueIdentifier>{6f2de133-9b2e-43dd-9924-85bdb2b4720e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\DataTypes">
-      <UniqueIdentifier>{2ce82e0d-7c63-4144-9ac4-b47398d2aeb9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\InformationModel\Base">
-      <UniqueIdentifier>{bcab815b-4a9a-4e94-9c7a-2949d13b7af9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\NodeSet">
       <UniqueIdentifier>{5f6e8c63-f2b3-48c2-a546-72bf09b8956b}</UniqueIdentifier>
     </Filter>
@@ -98,9 +74,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h">
-      <Filter>src\InformationModel\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.h">
       <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
@@ -122,9 +95,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h">
       <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\BaseObjectType.h">
-      <Filter>src\InformationModel\ObjectTypes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.h">
       <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
@@ -133,12 +103,6 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h">
       <Filter>src\AddressSpaceModel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerType.h">
-      <Filter>src\InformationModel\ObjectTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerCapabilitiesType.h">
-      <Filter>src\InformationModel\ObjectTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
@@ -197,6 +161,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceManager\ServiceManager.h">
       <Filter>src\ServiceManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h">
+      <Filter>src\InformationModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -213,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp">
       <Filter>src\SecureChannel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp">
-      <Filter>src\InformationModel\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.cpp">
       <Filter>src\AddressSpaceModel</Filter>
@@ -238,9 +202,6 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp">
       <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\BaseObjectType.cpp">
-      <Filter>src\InformationModel\ObjectTypes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.cpp">
       <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
@@ -249,12 +210,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.cpp">
       <Filter>src\AddressSpaceModel</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerType.cpp">
-      <Filter>src\InformationModel\ObjectTypes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerCapabilitiesType.cpp">
-      <Filter>src\InformationModel\ObjectTypes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
@@ -306,6 +261,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceManager\ServiceManager.cpp">
       <Filter>src\ServiceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp">
+      <Filter>src\InformationModel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

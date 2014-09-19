@@ -9,8 +9,8 @@
 
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
-#include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
+#include "OpcUaStackServer/ServiceManager/ServiceManager.h"
 
 #include <boost/asio/error.hpp>
 
@@ -123,14 +123,9 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 
 	OpcUaStackServer::SessionManager sessionManagerServer;
+	OpcUaStackServer::ServiceManager serviceManagerServer;
 
-	OpcUaStackServer::AttributeService attributeServiceServer;
-	
-	TransactionManager::SPtr transactionManager = TransactionManager::construct();
-	ServiceTransactionRead::SPtr serviceTransactionReadSPtr = ServiceTransactionRead::construct();
-	serviceTransactionReadSPtr->serviceTransactionIfService(&attributeServiceServer);
-	transactionManager->registerTransaction(serviceTransactionReadSPtr);
-	sessionManagerServer.transactionManager(transactionManager);
+	serviceManagerServer.init(sessionManagerServer);
 
 	DiscoveryService::SPtr discoveryService = DiscoveryService::construct();
 	discoveryService->endpointDescriptionArray(endpointDescriptionArray);

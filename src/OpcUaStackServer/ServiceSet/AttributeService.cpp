@@ -1,3 +1,4 @@
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
@@ -16,7 +17,6 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		std::cout << "attribute services received request...." << std::endl;
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_ReadRequest_Encoding_DefaultBinary:
