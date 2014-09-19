@@ -2,15 +2,19 @@
 #define __OpcUaStackServer_InformationModel_h__
 
 #include <boost/thread/mutex.hpp>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include <map>
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
 	typedef std::map<OpcUaNodeId, BaseNodeClass::SPtr> InformationModelMap;
 
-	class InformationModel
+	class InformationModel : public ObjectPool<InformationModel>
 	{
 	  public:
 		InformationModel(void);
