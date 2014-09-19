@@ -88,12 +88,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ReferenceDescription::nodeClass(const NodeClass nodeClass)
+	ReferenceDescription::nodeClass(const NodeClassType nodeClass)
 	{
 		nodeClass_ = nodeClass;
 	}
 	
-	NodeClass 
+	NodeClassType 
 	ReferenceDescription::nodeClass(void)
 	{
 		return nodeClass_;
@@ -133,7 +133,7 @@ namespace OpcUaStackCore
 		browseName_.opcUaBinaryDecode(is);
 		displayName_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
-		nodeClass_ = (NodeClass)tmp;
+		nodeClass_ = (NodeClassType)tmp;
 		typeDefinitionSPtr_->opcUaBinaryDecode(is);
 	}
 

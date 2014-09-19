@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_MonitoredItemService_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 
@@ -10,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT MonitoredItemService : public ServiceTransactionIf
+	class DLLEXPORT MonitoredItemService : public ServiceTransactionIf, public ObjectPool<MonitoredItemService>
 	{
 	  public:
 		MonitoredItemService(void);

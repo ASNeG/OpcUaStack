@@ -99,6 +99,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelTransaction.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceManager\ServiceManager.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\AttributeService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\DiscoveryService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.h" />
@@ -137,6 +138,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelTransaction.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceManager\ServiceManager.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\AttributeService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\DiscoveryService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.cpp" />

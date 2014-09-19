@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_ViewService_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 
@@ -10,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ViewService : public ServiceTransactionIf
+	class DLLEXPORT ViewService : public ServiceTransactionIf, public ObjectPool<ViewService>
 	{
 	  public:
 		ViewService(void);

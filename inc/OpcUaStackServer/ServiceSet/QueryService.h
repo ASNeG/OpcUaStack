@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_QueryService_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
 
@@ -10,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT QueryService : public ServiceTransactionIf
+	class DLLEXPORT QueryService : public ServiceTransactionIf, public ObjectPool<QueryService>
 	{
 	  public:
 		QueryService(void);

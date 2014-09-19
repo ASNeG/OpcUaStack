@@ -8,16 +8,10 @@
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/HistoryReadValueId.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/ServiceSet/TimestampsToReturn.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		TimestampsToReturn_Source = 0,
-		TimestampsToReturn_Server = 1,
-		TimestampsToReturn_Both = 2,
-		TimestampsToReturn_Neither = 3
-	} TimestampsToReturn;
 
 	class DLLEXPORT HistoryReadRequest : public  ObjectPool<HistoryReadRequest>
 	{

@@ -81,6 +81,9 @@
     <Filter Include="src\ServiceSet\ViewServiceSet">
       <UniqueIdentifier>{3b530c32-7c70-467a-bc88-11511d2fb8b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\ServiceManager">
+      <UniqueIdentifier>{1862a2a0-9f3f-4cf9-a782-e7aa27a3ee78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -191,6 +194,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\NodeManagementService.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceManager\ServiceManager.h">
+      <Filter>src\ServiceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -297,6 +303,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\NodeManagementService.cpp">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceManager\ServiceManager.cpp">
+      <Filter>src\ServiceManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

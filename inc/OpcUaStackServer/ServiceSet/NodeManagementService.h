@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_NodeManagementService_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/NodeManagementServiceTransaction.h"
 
@@ -10,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT NodeManagementService : public ServiceTransactionIf
+	class DLLEXPORT NodeManagementService : public ServiceTransactionIf, public ObjectPool<NodeManagementService>
 	{
 	  public:
 		NodeManagementService(void);

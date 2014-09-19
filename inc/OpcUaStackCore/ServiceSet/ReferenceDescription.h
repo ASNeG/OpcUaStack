@@ -6,20 +6,10 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		NodeClass_Object = 1,
-		NodeClass_Variable = 2,
-		NodeClass_Method = 4,
-		NodeClass_Object_Type = 8,
-		NodeClass_Variable_Type = 16,
-		NodeClass_Reference_Type = 32,
-		NodeClass_Data_Type = 64,
-		NodeClass_View = 128
-	} NodeClass;
 
 	class DLLEXPORT ReferenceDescription : public  ObjectPool<ReferenceDescription>
 	{
@@ -37,8 +27,8 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName& browseName(void);
 		void displayName(const OpcUaLocalizedText& displayName);
 		OpcUaLocalizedText& displayName(void);
-		void nodeClass(const NodeClass nodeClass);
-		NodeClass nodeClass(void);
+		void nodeClass(const NodeClassType nodeClass);
+		NodeClassType nodeClass(void);
 		void typeDefinition(const OpcUaExpandedNodeId::SPtr typeDefinition);
 		OpcUaExpandedNodeId::SPtr typeDefinition(void) const;
 		
@@ -51,7 +41,7 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr nodeIdSPtr_;
 		OpcUaQualifiedName browseName_;
 		OpcUaLocalizedText displayName_;
-		NodeClass nodeClass_;
+		NodeClassType nodeClass_;
 		OpcUaExpandedNodeId::SPtr typeDefinitionSPtr_;
 	};
 
