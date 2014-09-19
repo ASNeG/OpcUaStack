@@ -164,6 +164,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h">
       <Filter>src\InformationModel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBinaryParser.h">
+      <Filter>src\NodeSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBaseParser.h">
+      <Filter>src\NodeSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -264,6 +270,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp">
       <Filter>src\InformationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBinaryParser.cpp">
+      <Filter>src\NodeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBaseParser.cpp">
+      <Filter>src\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

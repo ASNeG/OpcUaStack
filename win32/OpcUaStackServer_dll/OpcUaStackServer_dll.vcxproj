@@ -92,6 +92,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBaseParser.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBinaryParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetXmlParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
@@ -128,6 +130,8 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBaseParser.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBinaryParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetXmlParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />
