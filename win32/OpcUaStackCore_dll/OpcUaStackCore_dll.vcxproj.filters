@@ -465,9 +465,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\MethodAttributes.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h">
-      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\VariableAttributes.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
@@ -767,6 +764,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteReferencesResult.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h">
+      <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1160,9 +1160,6 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\MethodAttributes.cpp">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp">
-      <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\ObjectAttributes.cpp">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClCompile>
@@ -1414,6 +1411,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\DeleteReferencesResult.cpp">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp">
+      <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
