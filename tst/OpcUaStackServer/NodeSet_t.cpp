@@ -17,6 +17,7 @@ BOOST_AUTO_TEST_CASE(NodeSet_read_xml)
 	ConfigXml configXml;
 	
 	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet2.xml") == true);
+	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet_Test1.xml") == true);
 }
 
 BOOST_AUTO_TEST_CASE(NodeSet_decode_xml)
@@ -26,6 +27,20 @@ BOOST_AUTO_TEST_CASE(NodeSet_decode_xml)
 	
 	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet2.xml") == true);
 	BOOST_REQUIRE(nodeSetXmlParser.decode(configXml.ptree()) == true);
+}
+
+BOOST_AUTO_TEST_CASE(NodeSet_decode_xml_testfile)
+{
+	ConfigXml configXml;
+	NodeSetXmlParser nodeSetXmlParser;
+	
+	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet_Test1.xml") == true);
+	BOOST_REQUIRE(nodeSetXmlParser.decode(configXml.ptree()) == true);
+}
+
+BOOST_AUTO_TEST_CASE(NodeSet_encode_xml_testfile)
+{
+	// TODO encode xml file test
 }
 
 BOOST_AUTO_TEST_SUITE_END()

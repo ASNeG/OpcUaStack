@@ -157,7 +157,9 @@ namespace OpcUaStackServer
 					.parameter("NodeId", nodeId);
 				return false;
 			}
+			
 			ReferenceType referenceType = ReferenceTypeMap::stringToType(*referenceTypeString);
+			
 			if (referenceType == ReferenceType_Unknown) {
 				Log(Error, "reference type unknown in node set")
 					.parameter("NodeId", nodeId)
@@ -194,6 +196,38 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeAliases(boost::property_tree::ptree& ptree)
 	{
+		boost::optional<boost::property_tree::ptree&> refpTree = ptree;
+
+		if (!refpTree) {
+			Log(Error, "Aliases not exist.");
+			return false;
+		}
+		
+		boost::property_tree::ptree::iterator it;
+		for (it = refpTree->begin(); it != refpTree->end(); it++) {
+
+			if (it->first != "Alias") {
+				Log(Error, "find invalid element in Aliases.");
+				return false;
+			}
+
+			boost::optional<std::string> aliasName = it->second.get_optional<std::string>("<xmlattr>.Alias");
+			if (!aliasName) {
+				Log(Error, "find invalid element in Aliases. Alias not exist.");
+				return false;
+			}
+			// TODO add Alias into Alias-Class.
+
+			std::string value = it->second.get_value<std::string>();
+			OpcUaNodeId opcUaNodeId;
+			if (!opcUaNodeId.fromString(value)) {
+				Log(Error, "invalid node id in Alias.")
+					.parameter("AliasNodeId", value);
+				return false;
+			}
+			// TODO add NodeId into Alias-Class.
+		}
+
 		return true;
 	}
 	
@@ -203,17 +237,23 @@ namespace OpcUaStackServer
 		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
 
 		//
-		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
-		// attribute EventNotifier
+		// attribute EventNotifier (mandatory)
 		//
 		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
 		if (eventNotifier) {
-			if (*eventNotifier == "1") objectNodeClassSPtr->eventNotifier().data(1);
-			else objectNodeClassSPtr->eventNotifier().data(0);
+			if (*eventNotifier == "1") {
+				objectNodeClassSPtr->eventNotifier().data(1);
+			} else {
+				Log(Warning, "element EventNotifier not exist in node set")
+					.parameter("NodeId", nodeId);
+				objectNodeClassSPtr->eventNotifier().data(0);
+			}
 		}
 
 		//
@@ -230,17 +270,23 @@ namespace OpcUaStackServer
 		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
 
 		//
-		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
-		// attribute EventNotifier
+		// attribute EventNotifier (mandatory)
 		//
 		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
 		if (eventNotifier) {
-			if (*eventNotifier == "1") objectNodeClassSPtr->eventNotifier().data(1);
-			else objectNodeClassSPtr->eventNotifier().data(0);
+			if (*eventNotifier == "1") {
+				objectNodeClassSPtr->eventNotifier().data(1);
+			} else {
+				Log(Warning, "element EventNotifier not exist in node set")
+					.parameter("NodeId", nodeId);
+				objectNodeClassSPtr->eventNotifier().data(0);
+			}
 		}
 
 		//
@@ -257,53 +303,62 @@ namespace OpcUaStackServer
 		VariableNodeClass::SPtr variableNodeClassSPtr = VariableNodeClass::construct();
 
 		//
-		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableNodeClassSPtr, ptree)) return false;
-		
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
+
 		//
-		// decode Value (optional)(mandatory)
+		// decode Value (mandatory)
 		//
 		// TODO
 		//if (!decodeVariableValue(variableNodeClassSPtr, ptree)) return false;
 
 		//
-		// attribute ValueRank (optional)(mandatory)
+		// attribute ValueRank (mandatory)
 		//
 		boost::optional<OpcUaUInt32> valueRank = ptree.get_optional<OpcUaUInt32>("<xmlattr>.ValueRank");
 		if (valueRank) {
 			variableNodeClassSPtr->valueRank().data(*valueRank);
 		} else {
+			Log(Warning, "element ValueRank not exist in node set")
+				.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->valueRank().data(0);
 		}
 		
 		//
-		// attribute AccessLevel (optional)(mandatory)
+		// attribute AccessLevel (mandatory)
 		//
 		boost::optional<OpcUaByte> accessLevel = ptree.get_optional<OpcUaByte>("<xmlattr>.AccessLevel");
 		if (accessLevel) {
 			variableNodeClassSPtr->accessLevel().data(*accessLevel);
 		} else {
+			Log(Warning, "element AccessLevel not exist in node set")
+				.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->accessLevel().data(0);
 		}
 
 		//
-		// attribute UserAccessLevel (optional)(mandatory)
+		// attribute UserAccessLevel (mandatory)
 		//
 		boost::optional<OpcUaByte> userAccessLevel = ptree.get_optional<OpcUaByte>("<xmlattr>.UserAccessLevel");
 		if (userAccessLevel) {
 			variableNodeClassSPtr->userAccessLevel().data(*userAccessLevel);
 		} else {
+			Log(Warning, "element UserAccessLevel not exist in node set")
+				.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->userAccessLevel().data(0);
 		}
 
 		//
-		// attribute Historizing (optional)(mandatory)
+		// attribute Historizing (mandatory)
 		//
 		boost::optional<OpcUaBoolean> historizing = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Historizing");
 		if (historizing) {
 			variableNodeClassSPtr->historizing().data(*historizing);
 		} else {
+			Log(Warning, "element Historizing not exist in node set")
+				.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->historizing().data(false);
 		}
 
@@ -316,9 +371,14 @@ namespace OpcUaStackServer
 			boost::char_separator<char> sep(",");
 			boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
-			for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it)
-			{
-				variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+			try {
+				for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
+					variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+				} 
+			} catch(boost::bad_lexical_cast &) {
+				Log(Error, "bad_lexical_cast in ArrayDimension in node set")
+					.parameter("NodeId", nodeId);
+				return false;
 			}
 		}
 
@@ -352,9 +412,10 @@ namespace OpcUaStackServer
 		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr = VariableTypeNodeClass::construct();
 
 		//
-		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableTypeNodeClassSPtr, ptree)) return false;
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
 		// decode Value (optional)
@@ -363,12 +424,14 @@ namespace OpcUaStackServer
 		//if (!decodeVariableValue(variableTypeNodeClassSPtr, ptree)) return false;
 
 		//
-		// attribute ValueRank (mandatory)(optional)
+		// attribute ValueRank (mandatory)
 		//
 		boost::optional<OpcUaUInt32> valueRank = ptree.get_optional<OpcUaUInt32>("<xmlattr>.ValueRank");
 		if (valueRank) {
 			variableTypeNodeClassSPtr->valueRank().data(*valueRank);
 		} else {
+			Log(Warning, "element ValueRank not exist in node set")
+				.parameter("NodeId", nodeId);
 			variableTypeNodeClassSPtr->valueRank().data(0);
 		}
 
@@ -381,22 +444,28 @@ namespace OpcUaStackServer
 			boost::char_separator<char> sep(",");
 			boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
-			for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it)
-			{
-				variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+			try {
+				for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
+					variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+				}
+			} catch(boost::bad_lexical_cast &) {
+				Log(Error, "bad_lexical_cast in ArrayDimension in node set")
+					.parameter("NodeId", nodeId);
+				return false;
 			}
 		}
 
 		//
-		// attribute IsAbstract (mandatory)(optional)
+		// attribute IsAbstract (mandatory)
 		//
 		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
 		if (isAbstract) {
 			variableTypeNodeClassSPtr->isAbstract().data(*isAbstract);
 		} else {
+			Log(Warning, "element isAbstract not exist in node set")
+				.parameter("NodeId", nodeId);
 			variableTypeNodeClassSPtr->isAbstract().data(false);
 		}
-		
 
 		//
 		// decode References
@@ -417,17 +486,20 @@ namespace OpcUaStackServer
 		DataTypeNodeClass::SPtr dataTypeNodeClassSPtr = DataTypeNodeClass::construct();
 
 		//
-		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		// decode NodeBase
 		//
 		if (!decodeNodeBase(dataTypeNodeClassSPtr, ptree)) return false;
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
-		// attribute IsAbstract (mandatory)(optional)
+		// attribute IsAbstract (mandatory)
 		//
 		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
 		if (isAbstract) {
 			dataTypeNodeClassSPtr->isAbstract().data(*isAbstract);	
 		} else {
+			Log(Warning, "element isAbstract not exist in node set")
+				.parameter("NodeId", nodeId);
 			dataTypeNodeClassSPtr->isAbstract().data(false);
 		}
 		
@@ -450,27 +522,32 @@ namespace OpcUaStackServer
 		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr = ReferenceTypeNodeClass::construct();
 
 		//
-		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
+		// decode NodeBase
 		//
 		if (!decodeNodeBase(referenceTypeNodeClassSPtr, ptree)) return false;
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
-		// attribute IsAbstract (mandatory)(optional)
+		// attribute IsAbstract (mandatory)
 		//
 		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
 		if (isAbstract) {
 			referenceTypeNodeClassSPtr->isAbstract().data(*isAbstract);	
 		} else {
+			Log(Warning, "element isAbstract not exist in node set")
+				.parameter("NodeId", nodeId);
 			referenceTypeNodeClassSPtr->isAbstract().data(false);
 		}
 
 		//
-		// attribute Symmetric (mandatory)(optional)
+		// attribute Symmetric (mandatory)
 		//
 		boost::optional<OpcUaBoolean> symmetric = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Symmetric");
 		if (symmetric) {
 			referenceTypeNodeClassSPtr->symmetric().data(*symmetric);
 		} else {
+			Log(Warning, "element Symmetric not exist in node set")
+				.parameter("NodeId", nodeId);
 			referenceTypeNodeClassSPtr->symmetric().data(false);
 		}
 
@@ -499,6 +576,7 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
 		MethodNodeClass::SPtr methodeNodeClassSPtr = MethodNodeClass::construct();
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
@@ -506,21 +584,25 @@ namespace OpcUaStackServer
 		if (!decodeNodeBase(methodeNodeClassSPtr, ptree)) return false;
 
 		//
-		// attribute Executable (mandatory)(optional)
+		// attribute Executable (mandatory)
 		//
 		boost::optional<OpcUaBoolean> executable = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Executable");
 		if (executable) {
 			methodeNodeClassSPtr->executable().data(*executable);
 		} else {
+			Log(Warning, "element Executable not exist in node set")
+				.parameter("NodeId", nodeId);
 			methodeNodeClassSPtr->executable().data(false);
 		}
 		//
-		// attribute UserExecutable (mandatory)(optional)
+		// attribute UserExecutable (mandatory)
 		//
 		boost::optional<OpcUaBoolean> userExecutable = ptree.get_optional<OpcUaBoolean>("<xmlattr>.UserExecutable");
 		if (userExecutable) {
 			methodeNodeClassSPtr->userExecutable().data(*userExecutable);
 		} else {
+			Log(Warning, "element UserExecutable not exist in node set")
+				.parameter("NodeId", nodeId);
 			methodeNodeClassSPtr->userExecutable().data(false);
 		}
 
