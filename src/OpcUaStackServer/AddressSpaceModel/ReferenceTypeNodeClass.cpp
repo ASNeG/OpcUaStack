@@ -33,4 +33,22 @@ namespace OpcUaStackServer
 		return inverseName_;
 	}
 
+	Attribute* 
+	ReferenceTypeNodeClass::isAbstractAttribute(void)
+	{
+		return &isAbstract_;
+	}
+
+	Attribute* 
+	ReferenceTypeNodeClass::symmetricAttribute(void)
+	{
+		return &symmetric_;
+	}
+
+	Attribute* 
+	ReferenceTypeNodeClass::inverseNameAttribute(void)
+	{
+		return &inverseName_;
+	}
+
 }

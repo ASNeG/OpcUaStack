@@ -67,6 +67,54 @@ namespace OpcUaStackServer
 		return minimumSamplingInterval_;
 	}
 
+	Attribute* 
+	VariableNodeClass::valueAttribute(void)
+	{
+		return &value_;
+	}
+
+	Attribute* 
+	VariableNodeClass::dataTypeAttribute(void)
+	{
+		return &dataType_;
+	}
+
+	Attribute* 
+	VariableNodeClass::valueRankAttribute(void)
+	{
+		return &valueRank_;
+	}
+
+	Attribute* 
+	VariableNodeClass::accessLevelAttribute(void)
+	{
+		return &accessLevel_;
+	}
+
+	Attribute* 
+	VariableNodeClass::userAccessLevelAttribute(void)
+	{
+		return &userAccessLevel_;
+	}
+
+	Attribute* 
+	VariableNodeClass::historizingAttribute(void)
+	{
+		return &historizing_;
+	}
+
+	Attribute* 
+	VariableNodeClass::arrayDimensionsAttribute(void)
+	{
+		return &arrayDimensions_;
+	}
+
+	Attribute* 
+	VariableNodeClass::minimumSamplingIntervalAttribute(void)
+	{
+		return &minimumSamplingInterval_;
+	}
+
 	void 
 	VariableNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
 	{

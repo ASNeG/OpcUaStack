@@ -19,6 +19,9 @@ namespace OpcUaStackServer
 		ContainsNoLoopsAttribute& containsNoLoops(void);
 		EventNotifierAttribute& eventNotifier(void);
 
+		Attribute* containsNoLoopsAttribute(void);
+		Attribute* eventNotifierAttribute(void);
+
 	  private:
 		// attributes mandatory
 		ContainsNoLoopsAttribute containsNoLoops_;

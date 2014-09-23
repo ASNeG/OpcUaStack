@@ -20,6 +20,10 @@ namespace OpcUaStackServer
 		SymmetricAttribute& symmetric(void);
 		InverseNameAttribute& inverseName(void);
 
+		Attribute* isAbstractAttribute(void);
+		Attribute* symmetricAttribute(void);
+		Attribute* inverseNameAttribute(void);
+
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;

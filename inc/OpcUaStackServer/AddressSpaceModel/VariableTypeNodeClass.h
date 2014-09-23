@@ -22,6 +22,12 @@ namespace OpcUaStackServer
 		ValueAttribute& value(void);
 		ArrayDimensionsAttribute& arrayDimensions(void);
 
+		Attribute* dataTypeAttribute(void);
+		Attribute* valueRankAttribute(void);
+		Attribute* isAbstractAttribute(void);
+		Attribute* valueAttribute(void);
+		Attribute* arrayDimensionsAttribute(void);
+
 	  private:
 		// attributes mandatory
 		DataTypeAttribute dataType_;

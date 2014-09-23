@@ -47,4 +47,34 @@ namespace OpcUaStackServer
 		return arrayDimensions_;
 	}
 
+	Attribute* 
+	VariableTypeNodeClass::dataTypeAttribute(void)
+	{
+		return &dataType_;
+	}
+
+	Attribute* 
+	VariableTypeNodeClass::valueRankAttribute(void)
+	{
+		return &valueRank_;
+	}
+
+	Attribute* 
+	VariableTypeNodeClass::isAbstractAttribute(void)
+	{
+		return &isAbstract_;
+	}
+
+	Attribute* 
+	VariableTypeNodeClass::valueAttribute(void)
+	{
+		return &value_;
+	}
+
+	Attribute* 
+	VariableTypeNodeClass::arrayDimensionsAttribute(void)
+	{
+		return &arrayDimensions_;
+	}
+
 }

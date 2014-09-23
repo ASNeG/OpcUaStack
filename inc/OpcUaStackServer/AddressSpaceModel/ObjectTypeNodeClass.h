@@ -18,6 +18,8 @@ namespace OpcUaStackServer
 
 		IsAbstractAttribute& isAbstract(void);
 
+		Attribute* isAbstractAttribute(void);
+
 		OpcUaNodeIdList& hasComponent(void);
 		OpcUaNodeIdList& hasProperty(void);
 		OpcUaNodeIdList& hasSubtypes(void);

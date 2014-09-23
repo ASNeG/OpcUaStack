@@ -18,6 +18,8 @@ namespace OpcUaStackServer
 
 		IsAbstractAttribute& isAbstract(void);
 
+		Attribute* isAbstractAttribute(void);
+
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;

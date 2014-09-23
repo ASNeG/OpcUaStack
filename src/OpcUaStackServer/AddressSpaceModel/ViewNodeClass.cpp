@@ -26,4 +26,16 @@ namespace OpcUaStackServer
 		return eventNotifier_;
 	}
 
+	Attribute* 
+	ViewNodeClass::containsNoLoopsAttribute(void)
+	{
+		return &containsNoLoops_;
+	}
+		
+	Attribute* 
+	ViewNodeClass::eventNotifierAttribute(void)
+	{
+		return &eventNotifier_;
+	}
+
 }

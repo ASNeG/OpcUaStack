@@ -20,6 +20,8 @@ namespace OpcUaStackServer
 
 		EventNotifierAttribute& eventNotifier(void);
 
+		Attribute* eventNotifierAttribute(void);
+
 	  private:
 		// attributes mandatory
 		EventNotifierAttribute eventNotifier_;

@@ -25,6 +25,15 @@ namespace OpcUaStackServer
 		ArrayDimensionsAttribute& arrayDimensions(void);
 		MinimumSamplingIntervalAttribute& minimumSamplingInterval(void);
 
+		Attribute* valueAttribute(void);
+		Attribute* dataTypeAttribute(void);
+		Attribute* valueRankAttribute(void);
+		Attribute* accessLevelAttribute(void);
+		Attribute* userAccessLevelAttribute(void);
+		Attribute* historizingAttribute(void);
+		Attribute* arrayDimensionsAttribute(void);
+		Attribute* minimumSamplingIntervalAttribute(void);
+
 		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
 
 	  private:

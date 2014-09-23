@@ -19,6 +19,9 @@ namespace OpcUaStackServer
 		ExecutableAttribute& executable(void);
 		UserExecutableAttribute& userExecutable(void);
 
+		Attribute* executableAttribute(void);
+		Attribute* userExecutableAttribute(void);
+
 	  private:
 		// attributes mandatory
 		ExecutableAttribute executable_;

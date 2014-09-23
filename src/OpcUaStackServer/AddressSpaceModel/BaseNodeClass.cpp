@@ -71,4 +71,46 @@ namespace OpcUaStackServer
 		return userWriteMask_;
 	}
 
+	Attribute* 
+	BaseNodeClass::nodeIdAttribute(void)
+	{
+		return &nodeId_;
+	}
+
+	Attribute* 
+	BaseNodeClass::nodeClassAttribute(void)
+	{
+		return &nodeClass_;
+	}
+
+	Attribute* 
+	BaseNodeClass::browseNameAttribute(void)
+	{
+		return &browseName_;
+	}
+
+	Attribute* 
+	BaseNodeClass::displayNameAttribute(void)
+	{
+		return &displayName_;
+	}
+
+	Attribute* 
+	BaseNodeClass::descriptionAttribute(void)
+	{
+		return &description_;
+	}
+
+	Attribute* 
+	BaseNodeClass::writeMaskAttribute(void)
+	{
+		return &writeMask_;
+	}
+
+	Attribute* 
+	BaseNodeClass::userWriteMaskAttribute(void)
+	{
+		return &userWriteMask_;
+	}
+
 }

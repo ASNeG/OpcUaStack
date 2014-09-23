@@ -26,4 +26,16 @@ namespace OpcUaStackServer
 		return userExecutable_;
 	}
 
+	Attribute* 
+	MethodNodeClass::executableAttribute(void)
+	{
+		return & executable_;
+	}
+		
+	Attribute* 
+	MethodNodeClass::userExecutableAttribute(void)
+	{
+		return &userExecutable_;
+	}
+
 }

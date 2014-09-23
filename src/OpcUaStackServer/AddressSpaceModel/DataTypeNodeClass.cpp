@@ -19,4 +19,10 @@ namespace OpcUaStackServer
 		return isAbstract_;
 	}
 
+	Attribute* 
+	DataTypeNodeClass::isAbstractAttribute(void)
+	{
+		return &isAbstract_;
+	}
+
 }

@@ -19,6 +19,12 @@ namespace OpcUaStackServer
 		return isAbstract_;
 	}
 
+	Attribute* 
+	ObjectTypeNodeClass::isAbstractAttribute(void)
+	{
+		return &isAbstract_;
+	}
+
 	OpcUaNodeIdList& 
 	ObjectTypeNodeClass::hasComponent(void)
 	{

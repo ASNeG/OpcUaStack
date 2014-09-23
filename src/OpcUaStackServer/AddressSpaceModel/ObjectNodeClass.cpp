@@ -20,6 +20,12 @@ namespace OpcUaStackServer
 		return eventNotifier_;
 	}
 
+	Attribute* 
+	ObjectNodeClass::eventNotifierAttribute(void)
+	{
+		return &eventNotifier_;
+	}
+
 	void 
 	ObjectNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
 	{
