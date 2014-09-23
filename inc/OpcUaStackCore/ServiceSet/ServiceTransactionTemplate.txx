@@ -2,6 +2,38 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ServiceTransactionTemplate (static)
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  std::string ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::name_ = "";
+
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  void 
+	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::name(const std::string& name) 
+	  { 
+	      name_ = name; 
+	  }
+	
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  std::string 
+	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::name(void) 
+	  { 
+	      return name_; 
+	  }
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ServiceTransactionTemplate
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::ServiceTransactionTemplate(void)
 	  : ServiceTransaction(REQID, RESID)
@@ -35,6 +67,20 @@ namespace OpcUaStackCore
 	  {
 		  return response_;
 	  }
+
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  std::string 
+	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::requestName(void) 
+	  { 
+	      return name() + std::string("Request"); 
+	  }
+
+	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
+	  std::string 
+	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::responseName(void) 
+	  { 
+	      return name() + std::string("Response"); 
+	  } 
 	  
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  void 

@@ -711,9 +711,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\DeleteNodesResult.h">
       <Filter>src\ServiceSet\NodeManagementServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeServiceTransaction.h">
-      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\ServiceTransactionTemplate.h">
       <Filter>src\ServiceSet\Common</Filter>
     </ClInclude>
@@ -767,6 +764,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\NodeClass.h">
       <Filter>src\ServiceSet\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeServiceTransaction.h">
+      <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

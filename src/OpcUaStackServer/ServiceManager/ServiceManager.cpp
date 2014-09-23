@@ -25,6 +25,11 @@ namespace OpcUaStackServer
 		//
 		// attribute service
 		//
+		ServiceTransactionRead::name("Read");
+		ServiceTransactionWrite::name("Write");
+		ServiceTransactionHistoryRead::name("HistoryRead");
+		ServiceTransactionHistoryUpdate::name("HistoryUpdate");
+
 		ServiceTransactionRead::SPtr serviceTransactionRead = ServiceTransactionRead::construct();
 		ServiceTransactionWrite::SPtr serviceTransactionWrite = ServiceTransactionWrite::construct();
 		ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead = ServiceTransactionHistoryRead::construct();
@@ -44,6 +49,8 @@ namespace OpcUaStackServer
 		//
 		// method service
 		//
+		ServiceTransactionCall::name("Call");
+
 		ServiceTransactionCall::SPtr serviceTransactionCall = ServiceTransactionCall::construct();
 
 		serviceTransactionCall->serviceTransactionIfService(&*methodService_);
@@ -54,6 +61,13 @@ namespace OpcUaStackServer
 		//
 		// monitored service
 		//
+		ServiceTransactionCreateMonitoredItems::name("CreateMonitorItems");
+		ServiceTransactionDeleteMonitoredItems::name("DeleteMonitorItems");
+		ServiceTransactionModifyMonitoredItems::name("ModifyMonitorItems");
+		ServiceTransactionSetMonitoringMode::name("SetMonitoringMode");
+		ServiceTransactionSetTriggering::name("SetTriggering");
+
+
 		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = ServiceTransactionCreateMonitoredItems::construct();
 		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = ServiceTransactionDeleteMonitoredItems::construct();
 		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = ServiceTransactionModifyMonitoredItems::construct();
@@ -76,6 +90,11 @@ namespace OpcUaStackServer
 		//
 		// node mangement service
 		//
+		ServiceTransactionAddNodes::name("AddNodes");
+		ServiceTransactionAddReferences::name("AddReferences");
+		ServiceTransactionDeleteNodes::name("DeleteNodes");
+		ServiceTransactionDeleteReferences::name("DeleteReferences");
+
 		ServiceTransactionAddNodes::SPtr serviceTransactionAddNodes = ServiceTransactionAddNodes::construct();
 		ServiceTransactionAddReferences::SPtr serviceTransactionAddReferences = ServiceTransactionAddReferences::construct();
 		ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes = ServiceTransactionDeleteNodes::construct();
@@ -95,6 +114,14 @@ namespace OpcUaStackServer
 		//
 		// subscription service
 		//
+		ServiceTransactionCreateSubscription::name("CreateSubscription");
+		ServiceTransactionDeleteSubscriptions::name("DeleteSubscription");
+		ServiceTransactionModifySubscription::name("ModifySubscription");
+		ServiceTransactionPublish::name("Publish");
+		ServiceTransactionRepublish::name("Republish");
+		ServiceTransactionSetPublishingMode::name("SetPublishingMode");
+		ServiceTransactionTransferSubscriptions::name("TransferSubscription");
+
 		ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription = ServiceTransactionCreateSubscription::construct();
 		ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions = ServiceTransactionDeleteSubscriptions::construct();
 		ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription = ServiceTransactionModifySubscription::construct();
@@ -123,6 +150,12 @@ namespace OpcUaStackServer
 		//
 		// view service
 		//
+		ServiceTransactionBrowse::name("Browse");
+		ServiceTransactionBrowseNext::name("BrowseNext");
+		ServiceTransactionTranslateBrowsePathsToNodeIds::name("TranslateBrowsePathsToNodeIds");
+		ServiceTransactionRegisterNodes::name("RegisterNodes");
+		ServiceTransactionUnregisterNodes::name("UnregisterNodes");
+
 		ServiceTransactionBrowse::SPtr serviceTransactionBrowse = ServiceTransactionBrowse::construct();
 		ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext = ServiceTransactionBrowseNext::construct();
 		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds = ServiceTransactionTranslateBrowsePathsToNodeIds::construct();
@@ -143,6 +176,19 @@ namespace OpcUaStackServer
 	
 
 		sessionManager.transactionManager(transactionManager_);
+		return true;
+	}
+
+	bool 
+	ServiceManager::informatinModel(InformationModel::SPtr informatinModel)
+	{
+		attributeService_->informationModel(informatinModel);
+		methodService_->informationModel(informatinModel);
+		monitoredItemService_->informationModel(informatinModel);
+		nodeManagementService_->informationModel(informatinModel);
+		queryService_->informationModel(informatinModel);
+		subscriptionService_->informationModel(informatinModel);
+		viewService_->informationModel(informatinModel);
 		return true;
 	}
 

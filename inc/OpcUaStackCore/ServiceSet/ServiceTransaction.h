@@ -44,6 +44,9 @@ namespace OpcUaStackCore
 
 		uint32_t requestId_;
 
+		virtual std::string requestName(void) = 0;
+		virtual std::string responseName(void) = 0;
+
 	  private:
 		static uint32_t uniqueTransactionId_;
 		static boost::mutex mutex_;

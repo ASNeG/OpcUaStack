@@ -175,9 +175,6 @@ namespace OpcUaStackServer
 	bool 
 	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		Log(Debug, "receive request in session")
-			.parameter("TypeId", typeId);
-
 		if (sessionState_ != SessionState_Ready) {
 			Log(Error, "receive message request in invalid state")
 				.parameter("SessionState", sessionState_)
@@ -201,9 +198,14 @@ namespace OpcUaStackServer
 		std::iostream ios(&sb);
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
 		requestHeader->opcUaBinaryDecode(ios);
-		serviceTransactionSPtr->opcUaBinaryDecodeResponse(ios);
+		serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios);
 		serviceTransactionSPtr->requestId_ = secureChannelTransaction.requestId_;
 		serviceTransactionSPtr->statusCode(Success);
+
+
+		Log(Debug, "receive request in session")
+			.parameter("TrxId", serviceTransactionSPtr->transactionId())
+			.parameter("TypeId", serviceTransactionSPtr->requestName());
 
 		serviceTransactionSPtr->serviceTransactionIfService()->receive(typeId, serviceTransactionSPtr);
 		return true;
@@ -213,7 +215,8 @@ namespace OpcUaStackServer
 	Session::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransactionSPtr) 
 	{
 		Log(Debug, "receive response in session")
-			.parameter("TypeId", typeId)
+			.parameter("TrxId", serviceTransactionSPtr->transactionId())
+			.parameter("TypeId", serviceTransactionSPtr->responseName())
 			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionSPtr->statusCode()));
 
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();

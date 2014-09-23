@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		Attribute(void);
-		~Attribute(void);
+		virtual ~Attribute(void);
 
 		virtual OpcUaUInt32 id(void) = 0;
 		virtual std::string name(void) = 0;
@@ -77,7 +77,7 @@ namespace OpcUaStackServer
 			  data_ = data;
 		  }
 			 
-		  ~AttributeData(void)
+		  virtual ~AttributeData(void)
 		  {}
 
 		  void reset(void)
@@ -117,7 +117,7 @@ namespace OpcUaStackServer
 			: AttributeData<DATATYPE>(data)
 			{}
 
-			~AttributeMeta(void) 
+			virtual ~AttributeMeta(void) 
 			{}
 
 			OpcUaUInt32 id(void) {
@@ -147,7 +147,7 @@ namespace OpcUaStackServer
 					case AttributeId_UserExecutable: return "UserExecutable";
 					case AttributeId_UserWriteMask: return "UserWriteMask";
 					case AttributeId_Value: return "Value";
-					case AttributeId_ValueRank: return "ValueRanl";
+					case AttributeId_ValueRank: return "ValueRank";
 					case AttributeId_WriteMask: return "WriteMask";
 					default: return "Unknown";
 				}

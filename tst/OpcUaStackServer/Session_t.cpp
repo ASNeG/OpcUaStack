@@ -2,11 +2,14 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
+#include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
+#include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -122,25 +125,46 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	ExtensibleParameter ep;
 	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 
-	OpcUaStackServer::SessionManager sessionManagerServer;
-	OpcUaStackServer::ServiceManager serviceManagerServer;
+	ConfigXml configXml;
+	NodeSetXmlParser nodeSetXmlParser;
+	InformationModel::SPtr informationModel = InformationModel::construct();
+	SessionManager sessionManager;
+	ServiceManager serviceManager;
 
-	serviceManagerServer.init(sessionManagerServer);
+	//
+	// create information model
+	//
+	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet2.xml") == true);
+	BOOST_REQUIRE(nodeSetXmlParser.decode(configXml.ptree()) == true);
+	BOOST_REQUIRE(InformationModelNodeSet::initial(informationModel, nodeSetXmlParser) == true);
+	
 
+	//
+	// create services
+	// 
+	BOOST_REQUIRE(serviceManager.init(sessionManager) == true);
+	BOOST_REQUIRE(serviceManager.informatinModel(informationModel) == true);
+
+
+	//
+	// create session manager
+	//
 	DiscoveryService::SPtr discoveryService = DiscoveryService::construct();
 	discoveryService->endpointDescriptionArray(endpointDescriptionArray);
-	sessionManagerServer.discoveryService(discoveryService);
+	sessionManager.discoveryService(discoveryService);
 	
-	sessionManagerServer.start();
-
-	sessionManagerServer.openServerSocket(
+	//
+	// start session manager
+	//
+	sessionManager.start();
+	sessionManager.openServerSocket(
 		"TestConfig", serverConfig,
 		"TestConfig", serverConfig
 	);
 	
 	IOService::secSleep(40000);
 
-	sessionManagerServer.stop();
+	sessionManager.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

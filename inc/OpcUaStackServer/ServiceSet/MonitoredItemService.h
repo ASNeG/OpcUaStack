@@ -5,13 +5,17 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT MonitoredItemService : public ServiceTransactionIf, public ObjectPool<MonitoredItemService>
+	class DLLEXPORT MonitoredItemService 
+	: public ServiceSetBase
+	, public ServiceTransactionIf
+	, public ObjectPool<MonitoredItemService>
 	{
 	  public:
 		MonitoredItemService(void);

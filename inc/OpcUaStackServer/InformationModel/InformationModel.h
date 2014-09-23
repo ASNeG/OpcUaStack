@@ -14,7 +14,7 @@ namespace OpcUaStackServer
 
 	typedef std::map<OpcUaNodeId, BaseNodeClass::SPtr> InformationModelMap;
 
-	class InformationModel : public ObjectPool<InformationModel>
+	class DLLEXPORT InformationModel : public ObjectPool<InformationModel>
 	{
 	  public:
 		InformationModel(void);

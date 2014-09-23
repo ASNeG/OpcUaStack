@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 
@@ -11,7 +12,10 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT AttributeService : public ServiceTransactionIf, public ObjectPool<AttributeService>
+	class DLLEXPORT AttributeService 
+	: public ServiceSetBase
+	, public ServiceTransactionIf
+	, public ObjectPool<AttributeService>
 	{
 	  public:
 		AttributeService(void);

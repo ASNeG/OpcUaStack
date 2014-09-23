@@ -15,6 +15,9 @@ namespace OpcUaStackCore
 	    public:
 		  typedef boost::shared_ptr<ServiceTransactionTemplate> SPtr;
 
+		  static void name(const std::string& name);
+		  static std::string name(void);
+
 		  ServiceTransactionTemplate(void);
 		  ~ServiceTransactionTemplate(void);
 
@@ -22,6 +25,9 @@ namespace OpcUaStackCore
 
 		  typename REQTYPE::SPtr request(void);
 		  typename RESTYPE::SPtr response(void);
+
+		  std::string requestName(void);
+		  std::string responseName(void); 
 
 		  void opcUaBinaryEncodeRequest(std::ostream& os) const;
 		  void opcUaBinaryEncodeResponse(std::ostream& os) const;
@@ -31,6 +37,8 @@ namespace OpcUaStackCore
 	    private:
 		  typename REQTYPE::SPtr request_;
 		  typename RESTYPE::SPtr response_;
+
+		  static std::string name_;
 	  };
 
 }

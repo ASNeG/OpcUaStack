@@ -32,6 +32,9 @@ namespace OpcUaStackServer
 				receiveHistoryUpdateRequest(typeId, serviceTransaction);
 				break;
 			default:
+				Log(Error, "attribute service received unknown message type")
+					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
+
 				serviceTransaction->statusCode(BadInternalError);
 				serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 		}
@@ -41,7 +44,75 @@ namespace OpcUaStackServer
 	AttributeService::receiveReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
+		ReadRequest::SPtr readRequest = trx->request();
+		ReadResponse::SPtr readResponse = trx->response();
 
+		Log(Debug, "attribute service read request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", readRequest->readValueIdArray()->size());
+
+		// check attribute maxAge
+		// FIXME: todo 
+
+		// check attribute timestampToReturn
+		// FIXME: todo
+
+		// check node id array
+		if (readRequest->readValueIdArray()->size() == 0) {
+			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			return;
+		}
+		if (readRequest->readValueIdArray()->size() > 1000) { // FIXME: todo
+			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			return;
+		}
+
+		// read values
+		readResponse->dataValueArray()->resize(readRequest->readValueIdArray()->size());
+		for (uint32_t idx = 0; idx < readRequest->readValueIdArray()->size(); idx++) {
+			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
+			readResponse->dataValueArray()->set(idx, dataValue);
+
+			ReadValueId::SPtr readValueId;
+			if (!readRequest->readValueIdArray()->get(idx, readValueId)) {
+				dataValue->statusCode(BadNodeIdInvalid);
+				continue;
+			}
+
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
+			if (baseNodeClass.get() == nullptr) {
+				dataValue->statusCode(BadNodeIdUnknown);
+				continue;
+			}
+
+			OpcUaDateTime sourceTimestamp, serverTimestamp;
+			sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
+			serverTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue->variant()->variant((OpcUaFloat)321);
+			dataValue->sourceTimestamp(sourceTimestamp);
+			dataValue->serverTimestamp(serverTimestamp);
+		}
+
+#if 0
+ReadValueId:
+		OpcUaNodeId::SPtr nodeIdSPtr_;
+		OpcUaInt32 attributeId_;
+		OpcUaString indexRange_;
+		OpcUaQualifiedName dataEncoding_;
+
+		
+		OpcUaVariant::SPtr opcUaVariantSPtr_;
+		OpcUaStatusCode opcUaStatusCode_;
+		OpcUaDateTime sourceTimestamp_;
+		OpcUaInt16 sourcePicoseconds_;
+		OpcUaDateTime serverTimestamp_;
+		OpcUaInt16 serverPicoseconds_;
+
+#endif
+
+#if 0
 		ReadResponse::SPtr readResponseSPtr = trx->response();
 		OpcUaDateTime sourceTimestamp, serverTimestamp;
 		sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
@@ -52,9 +123,19 @@ namespace OpcUaStackServer
 		dataValueSPtr->sourceTimestamp(sourceTimestamp);
 		dataValueSPtr->serverTimestamp(serverTimestamp);
 		readResponseSPtr->dataValueArray()->set(dataValueSPtr);
+#endif
 
 		trx->responseHeader()->serviceResult(Success);
 		trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+
+#if 0
+		void maxAge(const OpcUaDouble& maxAge);
+		OpcUaDouble maxAge(void) const;
+		void timestampsToReturn(const OpcUaInt32& timestampsToReturn);
+		OpcUaInt32 timestampsToReturn(void) const;
+		void readValueIdArray(const ReadValueIdArray::SPtr readValueIdArray);
+		ReadValueIdArray::SPtr readValueIdArray(void) const;
+#endif
 	}
 
 	void 

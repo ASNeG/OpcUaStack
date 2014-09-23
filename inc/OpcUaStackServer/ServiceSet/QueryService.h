@@ -5,13 +5,17 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT QueryService : public ServiceTransactionIf, public ObjectPool<QueryService>
+	class DLLEXPORT QueryService 
+	: public ServiceSetBase
+	, public ServiceTransactionIf
+	, public ObjectPool<QueryService>
 	{
 	  public:
 		QueryService(void);

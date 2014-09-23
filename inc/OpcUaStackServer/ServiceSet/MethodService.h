@@ -5,13 +5,17 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT MethodService : public ServiceTransactionIf, public ObjectPool<MethodService>
+	class DLLEXPORT MethodService 
+	: public ServiceSetBase
+	, public ServiceTransactionIf
+	, public ObjectPool<MethodService>
 	{
 	  public:
 		MethodService(void);
