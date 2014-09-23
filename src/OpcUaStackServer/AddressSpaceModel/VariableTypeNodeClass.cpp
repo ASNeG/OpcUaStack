@@ -10,6 +10,10 @@ namespace OpcUaStackServer
 	, isAbstract_()
 	, value_()
 	, arrayDimensions_()
+	, hasProperty_()
+	, hasComponent_()
+	, hasSubtype_()
+	, generatesEvent_()
 	{
 	}
 
@@ -47,4 +51,43 @@ namespace OpcUaStackServer
 		return arrayDimensions_;
 	}
 
+	void 
+	VariableTypeNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	{
+		switch (referenceType)
+		{
+			case ReferenceType_HasComponent:
+				hasComponent_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_HasProperty:
+				hasProperty_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_HasSubtype:
+				hasSubtype_.push_back(opcUaNodeId);
+				break;
+			case ReferenceType_GenerateEvents:
+				generatesEvent_.push_back(opcUaNodeId);
+				break;
+		}
+	}
+
+	void 
+	VariableTypeNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	{
+		switch (referenceType)
+		{
+			case ReferenceType_HasComponent:
+				list = hasComponent_;
+				break;
+			case ReferenceType_HasProperty:
+				list = hasProperty_;
+				break;
+			case ReferenceType_HasSubtype:
+				list = hasSubtype_;
+				break;
+			case ReferenceType_GenerateEvents:
+				list = generatesEvent_;
+				break;
+		}
+	}
 }

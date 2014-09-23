@@ -1,61 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UANodeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.02" LastModified="2013-03-06T05:36:44.0862658Z" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd">
   <Aliases>
-    <Alias Alias="Boolean">i=1</Alias>
+    <Alias Alias="Boolean">ns=0,i=1</Alias>
   </Aliases>
-  <UAObject NodeId="i=2" BrowseName="Mandatory" EventNotifier="1">
+  <UAObject NodeId="ns=0,i=2" BrowseName="Mandatory" EventNotifier="1">
     <DisplayName>Mandatory</DisplayName>
     <Description>Specifies that an instance with the attributes and references of the instance declaration must appear when a type is instantiated.</Description>
     <References>
-      <Reference ReferenceType="HasProperty">i=112</Reference>
-      <Reference ReferenceType="HasTypeDefinition">i=77</Reference>
+      <Reference ReferenceType="HasProperty">ns=0,i=112</Reference>
+      <Reference ReferenceType="HasTypeDefinition">ns=0,i=77</Reference>
     </References>
   </UAObject>
-  <UAObjectType NodeId="i=3" BrowseName="FolderType" EventNotifier="1">
+  <UAObject NodeId="ns=1,i=12" BrowseName="Mandatory2" EventNotifier="1">
+    <DisplayName>Mandatory</DisplayName>
+    <References>
+      <Reference ReferenceType="HasProperty">ns=0,i=112</Reference>
+      <Reference ReferenceType="HasTypeDefinition">ns=0,i=77</Reference>
+    </References>
+  </UAObject>
+  <UAObjectType NodeId="ns=0,i=3" BrowseName="FolderType" IsAbstract="true">
     <DisplayName>FolderType</DisplayName>
     <Description>The type for objects that organize other nodes.</Description>
     <References>
-      <Reference ReferenceType="HasSubtype" IsForward="false">i=58</Reference>
+      <Reference ReferenceType="HasSubtype" IsForward="false">ns=0,i=58</Reference>
     </References>
   </UAObjectType>
-  <UAVariable NodeId="i=4" BrowseName="NamespaceUri" ValueRank="2" AccessLevel="1" UserAccessLevel="1" Historizing="true" ArrayDimensions="0,0,0" MinimumSamplingInterval="123">
+  <UAVariable NodeId="ns=0,i=4" BrowseName="NamespaceUri" ValueRank="2" AccessLevel="1" UserAccessLevel="1" Historizing="true" ArrayDimensions="0,0,0" MinimumSamplingInterval="123">
     <DisplayName>NamespaceUri</DisplayName>
     <Description>A URI that uniquely identifies the dictionary.</Description>
     <References>
-      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
-      <Reference ReferenceType="HasModellingRule">i=80</Reference>
-      <Reference ReferenceType="HasProperty" IsForward="false">i=72</Reference>
+      <Reference ReferenceType="HasTypeDefinition">ns=0,i=68</Reference>
+      <Reference ReferenceType="HasModellingRule">ns=0,i=80</Reference>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=0,i=72</Reference>
     </References>
   </UAVariable>
-  <UAVariableType NodeId="i=5" BrowseName="DataTypeDictionaryType" ValueRank="2" IsAbstract="false" ArrayDimensions="0,0,0">
+  <UAVariableType NodeId="ns=0,i=5" BrowseName="DataTypeDictionaryType" ValueRank="2" IsAbstract="false" ArrayDimensions="0,0,0">
     <DisplayName>DataTypeDictionaryType</DisplayName>
     <Description>The type for variable that represents the collection of data type decriptions.</Description>
     <References>
-      <Reference ReferenceType="HasProperty">i=106</Reference>
-      <Reference ReferenceType="HasProperty">i=107</Reference>
-      <Reference ReferenceType="HasSubtype" IsForward="false">i=63</Reference>
+      <Reference ReferenceType="HasProperty">ns=0,i=106</Reference>
+      <Reference ReferenceType="HasProperty">ns=0,i=107</Reference>
+      <Reference ReferenceType="HasSubtype" IsForward="false">ns=0,i=63</Reference>
     </References>
   </UAVariableType>
-  <UADataType NodeId="i=6" BrowseName="Boolean" IsAbstract="false">
+  <UADataType NodeId="ns=0,i=6" BrowseName="Boolean" IsAbstract="false">
     <DisplayName>Boolean</DisplayName>
     <Description>Describes a value that is either TRUE or FALSE.</Description>
     <References>
-      <Reference ReferenceType="HasSubtype" IsForward="false">i=24</Reference>
+      <Reference ReferenceType="HasSubtype" IsForward="false">ns=0,i=24</Reference>
     </References>
   </UADataType>
-  <UAReferenceType NodeId="i=7" BrowseName="HasTrueSubState" IsAbstract="false" Symmetric="true" InverseName="TestName">
+  <UAReferenceType NodeId="ns=0,i=7" BrowseName="HasTrueSubState" IsAbstract="false" Symmetric="true" InverseName="TestName">
     <DisplayName>HasTrueSubState</DisplayName>
     <References>
-      <Reference ReferenceType="HasSubtype" IsForward="false">i=32</Reference>
+      <Reference ReferenceType="HasSubtype" IsForward="false">ns=0,i=32</Reference>
     </References>
     <InverseName>IsTrueSubStateOf</InverseName>
   </UAReferenceType>
-  <UAMethod NodeId="i=8" BrowseName="Disable" Executable="true" UserExecutable="true">
+  <UAMethod NodeId="ns=0,i=8" BrowseName="Disable" Executable="true" UserExecutable="true">
     <DisplayName>Disable</DisplayName>
     <References>
-      <Reference ReferenceType="i=3065">i=2803</Reference>
-      <Reference ReferenceType="HasModellingRule">i=78</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">i=2782</Reference>
+      <Reference ReferenceType="ns=0,i=3065">ns=0,i=2803</Reference>
+      <Reference ReferenceType="HasModellingRule">ns=0,i=78</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=0,i=2782</Reference>
     </References>
   </UAMethod>
 </UANodeSet>

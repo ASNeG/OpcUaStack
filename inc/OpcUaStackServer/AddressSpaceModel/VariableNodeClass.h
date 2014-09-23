@@ -26,6 +26,7 @@ namespace OpcUaStackServer
 		MinimumSamplingIntervalAttribute& minimumSamplingInterval(void);
 
 		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
 
 	  private:
 		// attributes mandatory

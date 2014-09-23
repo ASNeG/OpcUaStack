@@ -19,6 +19,9 @@ namespace OpcUaStackServer
 		ExecutableAttribute& executable(void);
 		UserExecutableAttribute& userExecutable(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+
 	  private:
 		// attributes mandatory
 		ExecutableAttribute executable_;

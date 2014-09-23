@@ -7,6 +7,15 @@ namespace OpcUaStackServer
 	: BaseNodeClass(NodeClass_Object)
 	, eventNotifier_()
 	, nodeVersion_()
+	, hasComponent_()
+	, hasProperty_()
+	, hasModellingRule_()
+	, hasTypeDefinition_()
+	, hasModelParent_()
+	, hasEventSource_()
+	, hasNotifier_()
+	, organizes_()
+	, hasDescription_()
 	{
 	}
 
@@ -55,4 +64,38 @@ namespace OpcUaStackServer
 		}
 	}
 
+	void 
+	ObjectNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	{
+		switch (referenceType)
+		{
+			case ReferenceType_HasComponent:
+				list = hasComponent_;
+				break;
+			case ReferenceType_HasProperty:
+				list = hasProperty_;
+				break;
+			case ReferenceType_HasModellingRule:
+				list = hasModellingRule_;
+				break;
+			case ReferenceType_HasTypeDefinition:
+				list = hasTypeDefinition_;
+				break;
+			case ReferenceType_HasModelParent:
+				list = hasModelParent_;
+				break;
+			case ReferenceType_HasEventSource:
+				list = hasEventSource_;
+				break;
+			case ReferenceType_HasNotifier:
+				list = hasNotifier_;
+				break;
+			case ReferenceType_Organizes:
+				list = organizes_;
+				break;
+			case ReferenceType_HasDescription:
+				list = hasDescription_;
+				break;
+		}
+	}
 }

@@ -12,6 +12,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	// ##########################################################
+	//
+	//  decode
+	//
+	// ##########################################################
+
 	bool 
 	NodeSetXmlParser::decode(boost::property_tree::ptree& ptree)
 	{
@@ -58,13 +64,6 @@ namespace OpcUaStackServer
 			}
 		}
 
-		return true;
-	}
-
-	bool 
-	NodeSetXmlParser::encode(boost::property_tree::ptree& ptree)
-	{
-		// FIXME: todo
 		return true;
 	}
 
@@ -228,6 +227,8 @@ namespace OpcUaStackServer
 			// TODO add NodeId into Alias-Class.
 		}
 
+		// TODO add Alias into Vector.
+
 		return true;
 	}
 	
@@ -240,6 +241,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
+		objectNodeClassSPtr->nodeClass().data(NodeClass_Object);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -260,6 +262,11 @@ namespace OpcUaStackServer
 		// decode References
 		//
 		if (!decodeReferences(objectNodeClassSPtr, ptree)) return false;
+
+		//
+		// add into vector
+		//
+		objectNodeClassVec().push_back(objectNodeClassSPtr);
 
 		return true;
 	}
@@ -267,32 +274,36 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
 	{
-		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
+		ObjectTypeNodeClass::SPtr objectTypeNodeClassSPtr = ObjectTypeNodeClass::construct();
 
 		//
 		// decode NodeBase 
 		//
-		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
+		if (!decodeNodeBase(objectTypeNodeClassSPtr, ptree)) return false;
+		objectTypeNodeClassSPtr->nodeClass().data(NodeClass_ObjectType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
-		// attribute EventNotifier (mandatory)
+		// attribute IsAbstract (mandatory)
 		//
-		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
-		if (eventNotifier) {
-			if (*eventNotifier == "1") {
-				objectNodeClassSPtr->eventNotifier().data(1);
-			} else {
-				Log(Warning, "element EventNotifier not exist in node set")
-					.parameter("NodeId", nodeId);
-				objectNodeClassSPtr->eventNotifier().data(0);
-			}
+		boost::optional<OpcUaBoolean> isAbstract = ptree.get_optional<OpcUaBoolean>("<xmlattr>.IsAbstract");
+		if (isAbstract) {
+			objectTypeNodeClassSPtr->isAbstract().data(*isAbstract);
+		} else {
+			Log(Warning, "element isAbstract not exist in node set")
+				.parameter("NodeId", nodeId);
+			objectTypeNodeClassSPtr->isAbstract().data(false);
 		}
 
 		//
 		// decode References
 		//
-		if (!decodeReferences(objectNodeClassSPtr, ptree)) return false;
+		if (!decodeReferences(objectTypeNodeClassSPtr, ptree)) return false;
+
+		//
+		// add into vector
+		//
+		objectTypeNodeClassVec().push_back(objectTypeNodeClassSPtr);
 
 		return true;
 	}
@@ -306,6 +317,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableNodeClassSPtr, ptree)) return false;
+		variableNodeClassSPtr->nodeClass().data(NodeClass_Variable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -403,6 +415,11 @@ namespace OpcUaStackServer
 		//
 		// TODO
 
+		//
+		// add into vector
+		//
+		variableNodeClassVec().push_back(variableNodeClassSPtr);
+
 		return true;
 	}
 	
@@ -415,6 +432,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableTypeNodeClassSPtr, ptree)) return false;
+		variableTypeNodeClassSPtr->nodeClass().data(NodeClass_VariableType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -477,6 +495,11 @@ namespace OpcUaStackServer
 		//
 		// TODO
 
+		//
+		// add into vector
+		//
+		variableTypeNodeClassVec().push_back(variableTypeNodeClassSPtr);
+
 		return true;
 	}
 	
@@ -489,6 +512,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(dataTypeNodeClassSPtr, ptree)) return false;
+		dataTypeNodeClassSPtr->nodeClass().data(NodeClass_DataType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -513,6 +537,11 @@ namespace OpcUaStackServer
 		//
 		// TODO
 
+		//
+		// add into vector
+		//
+		dataTypeNodeClassVec().push_back(dataTypeNodeClassSPtr);
+
 		return true;
 	}
 
@@ -525,6 +554,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(referenceTypeNodeClassSPtr, ptree)) return false;
+		referenceTypeNodeClassSPtr->nodeClass().data(NodeClass_ReferenceType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -569,6 +599,11 @@ namespace OpcUaStackServer
 		//
 		// TODO
 
+		//
+		// add into vector
+		//
+		referenceTypeNodeClassVec().push_back(referenceTypeNodeClassSPtr);
+
 		return true;
 	}
 
@@ -576,12 +611,13 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
 		MethodNodeClass::SPtr methodeNodeClassSPtr = MethodNodeClass::construct();
-		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
 		//
 		if (!decodeNodeBase(methodeNodeClassSPtr, ptree)) return false;
+		methodeNodeClassSPtr->nodeClass().data(NodeClass_Method);
+		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
 		// attribute Executable (mandatory)
@@ -616,7 +652,669 @@ namespace OpcUaStackServer
 		//
 		// TODO
 
+		//
+		// add into vector
+		//
+		methodNodeClassVec().push_back(methodeNodeClassSPtr);
+
 		return true;
 	}
 
+	// ##########################################################
+	//
+	//  encode
+	//
+	// ##########################################################
+
+	bool 
+	NodeSetXmlParser::encode(boost::property_tree::ptree& ptree)
+	{
+		boost::property_tree::ptree uaNodeSetTree;
+
+		// TODO View Node
+		// TODO Aliases
+
+		if (!encodeUAObject(uaNodeSetTree)) {
+			return false;
+		}
+		
+		if (!encodeUAObjectType(uaNodeSetTree)) {
+			return false;
+		}
+
+		if (!encodeUAVariable(uaNodeSetTree)) {
+			return false;
+		}
+
+		if (!encodeUAVariableType(uaNodeSetTree)) {
+			return false;
+		}
+
+		if (!encodeUADataType(uaNodeSetTree)) {
+			return false;
+		}
+
+		if (!encodeUAReferenceType(uaNodeSetTree)) {
+			return false;
+		}
+
+		if (!encodeUAMethod(uaNodeSetTree)) {
+			return false;
+		}
+		
+		ptree.add_child("UANodeSet", uaNodeSetTree);
+		ptree.put("UANodeSet.<xmlattr>.xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		ptree.put("UANodeSet.<xmlattr>.xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+		ptree.put("UANodeSet.<xmlattr>.Version", "1.02");
+		ptree.put("UANodeSet.<xmlattr>.LastModified", "2013-03-06T05:36:44.0862658Z");
+		ptree.put("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2011/03/UANodeSet.xsd");
+
+		return true;
+	}
+
+	bool 
+	NodeSetXmlParser::encodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
+	{
+		//
+		// attribute NodeId (mandatory)
+		//
+		if (objectNodeClass->nodeId().data().toString() != "") {
+			ptree.put("<xmlattr>.NodeId", objectNodeClass->nodeId().data().toString());
+		} else {
+			Log(Error, "element NodeId not exist in node set.");
+			return false;
+		}
+
+		//
+		// attribute BrowseName (mandatory)
+		//
+		if (objectNodeClass->browseName().data().name().value() != "") {
+			ptree.put("<xmlattr>.BrowseName", objectNodeClass->browseName().data().name().value());
+		} else {
+			Log(Error, "element BrowseName not exist in node set.")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		//
+		// attribute DisplayName (mandatory)
+		//
+		if (objectNodeClass->displayName().data().text().value() != "") {
+			ptree.put("DisplayName", objectNodeClass->displayName().data().text().value());
+		} else {
+			Log(Error, "element DisplayName not exist in node set.")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		//
+		// attribute Description (optional)
+		//
+		if (objectNodeClass->description().data().text().value() != "") {
+			ptree.put("Description", objectNodeClass->description().data().text().value());
+		}
+
+		//FIXME: WriteMaskAttribute writeMask_;
+		//FIXME: UserWriteMaskAttribute userWriteMask_;
+
+		return true;
+	}
+
+	bool 
+	NodeSetXmlParser::encodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
+	{
+		boost::property_tree::ptree referenceTree;
+
+		// ReferenceType_HasComponent
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasComponent, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasComponent] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasProperty
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasProperty, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasProperty] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasModellingRule
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasModellingRule, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasModellingRule] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasTypeDefinition
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasTypeDefinition, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasTypeDefinition] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasModelParent
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasModelParent, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasModelParent] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasEventSource
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasEventSource, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasEventSource] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasNotifier
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasNotifier, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasNotifier] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_Organizes
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_Organizes, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_Organizes] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasDescription
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasDescription, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasDescription] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasEncoding
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasEncoding, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasEncoding] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HasSubtype
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasSubtype, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasSubtype] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_NodeId
+		// TODO
+
+		// ReferenceType_HasModelParameter
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasModelParameter, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HasModelParameter] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_GenerateEvents
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_GenerateEvents, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_GenerateEvents] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_AlwaysGeneratesEvent
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_AlwaysGeneratesEvent, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_AlwaysGeneratesEvent] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// ReferenceType_HierarchicalReferences
+		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HierarchicalReferences, referenceTree)) {
+			Log(Error, "error by swap Reference [ReferenceType_HierarchicalReferences] to Tree")
+				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
+			return false;
+		}
+
+		// add to Tree
+		ptree.add_child("References", referenceTree);
+
+		return true;
+	}
+	
+	bool 
+	NodeSetXmlParser::encodeAliases(boost::property_tree::ptree& ptree)
+	{
+		// TODO
+		return true;
+	}
+	
+	bool 
+	NodeSetXmlParser::encodeUAObject(boost::property_tree::ptree& ptree)
+	{
+		ObjectNodeClass::SPtr objectNodeClassSPtr;
+
+		std::vector<ObjectNodeClass::SPtr> vector;
+		std::vector<ObjectNodeClass::SPtr>::iterator it;
+
+		vector = objectNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			objectNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(objectNodeClassSPtr, node)) return false;
+			std::string nodeId = objectNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// attribute EventNotifier (mandatory)
+			//
+			node.put("<xmlattr>.EventNotifier", objectNodeClassSPtr->eventNotifier().data());
+
+			//
+			// encode References
+			//
+			if (!encodeReferences(objectNodeClassSPtr, node)) return false;
+
+			//
+			// add to ptree
+			//
+			ptree.add_child("UAObject", node);
+		}
+
+		return true;
+	}
+
+	bool 
+	NodeSetXmlParser::encodeUAObjectType(boost::property_tree::ptree& ptree)
+	{
+		ObjectTypeNodeClass::SPtr objectTypeNodeClassSPtr;
+
+		std::vector<ObjectTypeNodeClass::SPtr> vector;
+		std::vector<ObjectTypeNodeClass::SPtr>::iterator it;
+
+		vector = objectTypeNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			objectTypeNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(objectTypeNodeClassSPtr, node)) return false;
+			std::string nodeId = objectTypeNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// attribute IsAbstract (mandatory)
+			//
+			node.put("<xmlattr>.IsAbstract", objectTypeNodeClassSPtr->isAbstract().data());
+
+			//
+			// encode References
+			//
+			if (!encodeReferences(objectTypeNodeClassSPtr, node)) return false;
+
+			//
+			// add to ptree
+			//
+			ptree.add_child("UAObjectType", node);
+		}
+
+		return true;
+	}
+	
+	bool 
+	NodeSetXmlParser::encodeUAVariable(boost::property_tree::ptree& ptree)
+	{
+		VariableNodeClass::SPtr variableNodeClassSPtr;
+
+		std::vector<VariableNodeClass::SPtr> vector;
+		std::vector<VariableNodeClass::SPtr>::iterator it;
+
+		vector = variableNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			variableNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(variableNodeClassSPtr, node)) return false;
+			std::string nodeId = variableNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// decode Value (mandatory)
+			//
+			// TODO
+			//if (!encodeVariableValue(variableNodeClassSPtr, ptree)) return false;
+
+			//
+			// attribute ValueRank (mandatory)
+			//
+			node.put("<xmlattr>.ValueRank", variableNodeClassSPtr->valueRank().data());
+		
+			//
+			// attribute AccessLevel (mandatory)
+			//
+			node.put("<xmlattr>.AccessLevel", variableNodeClassSPtr->accessLevel().data());
+
+			//
+			// attribute UserAccessLevel (mandatory)
+			//
+			node.put("<xmlattr>.UserAccessLevel", variableNodeClassSPtr->userAccessLevel().data());
+
+			//
+			// attribute Historizing (mandatory)
+			//
+			node.put("<xmlattr>.Historizing", variableNodeClassSPtr->historizing().data());
+
+			//
+			// ArrayDimensions (optional)
+			//
+			std::string arrayDimensions;
+			uint32ArrayToString(arrayDimensions, variableNodeClassSPtr->arrayDimensions().data());
+			if (arrayDimensions != "") {
+				node.put("<xmlattr>.ArrayDimensions", arrayDimensions);
+			}
+
+			//
+			// attribute MinimumSamplingInterval (optional)
+			//
+			if (variableNodeClassSPtr->minimumSamplingInterval().data() != 0) {
+				node.put("<xmlattr>.MinimumSamplingInterval", variableNodeClassSPtr->minimumSamplingInterval().data());
+			}
+
+			//
+			// encode References
+			//
+			if (!encodeReferences(variableNodeClassSPtr, node)) return false;
+
+
+			// 
+			// Standard Properties
+			//
+			// TODO
+
+			//
+			// add to ptree
+			//
+			ptree.add_child("UAVariable", node);
+		}
+
+		return true;
+	}
+
+	bool 
+	NodeSetXmlParser::encodeUAVariableType(boost::property_tree::ptree& ptree)
+	{
+		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr;
+
+		std::vector<VariableTypeNodeClass::SPtr> vector;
+		std::vector<VariableTypeNodeClass::SPtr>::iterator it;
+
+		vector = variableTypeNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			variableTypeNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(variableTypeNodeClassSPtr, node)) return false;
+			std::string nodeId = variableTypeNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// decode Value (optional)
+			//
+			// TODO
+			//if (!encodeVariableValue(variableTypeNodeClassSPtr, ptree)) return false;
+
+			//
+			// attribute ValueRank (mandatory)
+			//
+			node.put("<xmlattr>.ValueRank", variableTypeNodeClassSPtr->valueRank().data());
+
+			//
+			// ArrayDimensions (optional)
+			// 
+			std::string arrayDimensions;
+			uint32ArrayToString(arrayDimensions, variableTypeNodeClassSPtr->arrayDimensions().data());
+			if (arrayDimensions != "") {
+				node.put("<xmlattr>.ArrayDimensions", arrayDimensions);
+			}
+
+			//
+			// attribute IsAbstract (mandatory)
+			//
+			node.put("<xmlattr>.IsAbstract", variableTypeNodeClassSPtr->isAbstract().data());
+
+			//
+			// encode References
+			//
+			if (!encodeReferences(variableTypeNodeClassSPtr, node)) return false;
+
+			// 
+			// Standard Properties
+			//
+			// TODO
+
+			//
+			// add to ptree
+			//
+			ptree.add_child("UAVariableType", node);
+		}
+
+		return true;
+	}
+
+	bool 
+	NodeSetXmlParser::encodeUADataType(boost::property_tree::ptree& ptree)
+	{
+		DataTypeNodeClass::SPtr dataTypeNodeClassSPtr;
+
+		std::vector<DataTypeNodeClass::SPtr> vector;
+		std::vector<DataTypeNodeClass::SPtr>::iterator it;
+
+		vector = dataTypeNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			dataTypeNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(dataTypeNodeClassSPtr, node)) return false;
+			std::string nodeId = dataTypeNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// attribute IsAbstract (mandatory)
+			//
+			node.put("<xmlattr>.IsAbstract", dataTypeNodeClassSPtr->isAbstract().data());
+		
+			//
+			// encode References
+			//
+			if (!encodeReferences(dataTypeNodeClassSPtr, node)) return false;
+
+			// 
+			// Standard Properties
+			//
+			// TODO
+			
+			//
+			// add to ptree
+			//
+			ptree.add_child("UADataType", node);
+		}
+
+		return true;
+	}
+	
+	bool 
+	NodeSetXmlParser::encodeUAReferenceType(boost::property_tree::ptree& ptree)
+	{
+		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr;
+
+		std::vector<ReferenceTypeNodeClass::SPtr> vector;
+		std::vector<ReferenceTypeNodeClass::SPtr>::iterator it;
+
+		vector = referenceTypeNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			referenceTypeNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(referenceTypeNodeClassSPtr, node)) return false;
+			std::string nodeId = referenceTypeNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// attribute IsAbstract (mandatory)
+			//
+			node.put("<xmlattr>.IsAbstract", referenceTypeNodeClassSPtr->isAbstract().data());
+
+			//
+			// attribute Symmetric (mandatory)
+			//
+			node.put("<xmlattr>.Symmetric", referenceTypeNodeClassSPtr->symmetric().data());
+
+			//
+			// attribute InverseName (optional)
+			//
+			if (referenceTypeNodeClassSPtr->inverseName().data().text().value() != "") {
+				node.put("InverseName", referenceTypeNodeClassSPtr->inverseName().data().text().value());
+			}
+
+			//
+			// encode References
+			//
+			if (!encodeReferences(referenceTypeNodeClassSPtr, node)) return false;
+
+			// 
+			// Standard Properties
+			//
+			// TODO
+			
+			//
+			// add to ptree
+			//
+			ptree.add_child("UAReferenceType", node);
+		}
+
+		return true;
+	}
+	
+	bool 
+	NodeSetXmlParser::encodeUAMethod(boost::property_tree::ptree& ptree)
+	{
+		MethodNodeClass::SPtr methodeNodeClassSPtr;
+
+		std::vector<MethodNodeClass::SPtr> vector;
+		std::vector<MethodNodeClass::SPtr>::iterator it;
+
+		vector = methodNodeClassVec();
+		
+		for(it=vector.begin(); it!=vector.end(); it++) {
+			
+			boost::property_tree::ptree node;
+			methodeNodeClassSPtr = *it;
+
+			//
+			// encode NodeBase 
+			//
+			if (!encodeNodeBase(methodeNodeClassSPtr, node)) return false;
+			std::string nodeId = methodeNodeClassSPtr->nodeId().data().toString();
+
+			//
+			// attribute Executable (mandatory)
+			//
+			node.put("<xmlattr>.Executable", methodeNodeClassSPtr->executable().data());
+
+			//
+			// attribute UserExecutable (mandatory)
+			//
+			node.put("<xmlattr>.UserExecutable", methodeNodeClassSPtr->userExecutable().data());
+
+			//
+			// encode References
+			//
+			if (!encodeReferences(methodeNodeClassSPtr, node)) return false;
+
+			// 
+			// Standard Properties
+			//
+			// TODO
+
+			//
+			// add to ptree
+			//
+			ptree.add_child("UAMethod", node);
+		}
+
+		return true;
+	}
+
+	// ##########################################################
+	//
+	//  Helper Functions
+	//
+	// ##########################################################
+
+	bool 
+	NodeSetXmlParser::referenceTypeToTree(BaseNodeClass::SPtr objectNodeClass, ReferenceType referenceType, boost::property_tree::ptree& ptree)
+	{
+		OpcUaNodeIdList referenceList;
+		std::list<OpcUaNodeId>::iterator it;
+
+		objectNodeClass->getReference(referenceList, referenceType);
+		for(it=referenceList.begin(); it!=referenceList.end(); it++) {
+			
+			boost::property_tree::ptree reference;
+			std::string stringReferenceType;
+
+			stringReferenceType = ReferenceTypeMap::typeToString(referenceType);
+			if (stringReferenceType == "" || stringReferenceType == "Unkown") {
+				Log(Error, "cannot find ReferenceType.")
+					.parameter("NodeId", objectNodeClass->nodeId().data().toString())
+					.parameter("ReferenceType", referenceType);
+				return false;
+			}
+
+			reference.put("<xmlattr>.ReferenceType", stringReferenceType);
+			reference.put_value(it->toString());
+
+			ptree.add_child("Reference", reference);
+		}
+
+		return true;
+	}
+
+	bool
+	NodeSetXmlParser::uint32ArrayToString(std::string& value, OpcUaUInt32Array& array)
+	{
+		uint32_t i;
+		OpcUaUInt32 tmp;
+		std::ostringstream outStream;
+		
+		for (i=0; i<array.size(); i++) {
+			array.get(i, tmp);
+			outStream << tmp;
+			if (i<array.size()-1) outStream << ",";
+		}
+
+		value = outStream.str();
+		return true;
+	}
 }

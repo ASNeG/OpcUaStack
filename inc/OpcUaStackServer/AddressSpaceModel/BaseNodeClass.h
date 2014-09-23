@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 		UserWriteMaskAttribute& userWriteMask(void);
 
 		virtual void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId) {};
+		virtual void getReference(OpcUaNodeIdList& list, ReferenceType referenceType) {};
 
 	  private:
 		NodeIdAttribute nodeId_;
