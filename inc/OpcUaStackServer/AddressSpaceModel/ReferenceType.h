@@ -20,7 +20,11 @@ namespace OpcUaStackServer
 		ReferenceType_HasDescription,
 		ReferenceType_HasEncoding,
 		ReferenceType_HasSubtype,
-		ReferenceType_NodeId
+		ReferenceType_NodeId,
+		ReferenceType_HasModelParameter,
+		ReferenceType_GenerateEvents,
+		ReferenceType_AlwaysGeneratesEvent,
+		ReferenceType_HierarchicalReferences
 	} ReferenceType;
 
 	class DLLEXPORT ReferenceTypeMap

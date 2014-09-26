@@ -12,6 +12,11 @@ namespace OpcUaStackServer
 	, historizing_()
 	, arrayDimensions_()
 	, minimumSamplingInterval_()
+	, hasModellingRule_() 
+	, hasProperty_()
+	, hasComponent_()
+	, hasTypeDefinition_()
+	, hasModelParent_()
 	{
 	}
 
@@ -134,6 +139,29 @@ namespace OpcUaStackServer
 				break;
 			case ReferenceType_HasModelParent:
 				hasModelParent_.push_back(opcUaNodeId);
+				break;
+		}
+	}
+
+	void
+	VariableNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	{
+		switch (referenceType)
+		{
+			case ReferenceType_HasComponent:
+				list = hasComponent_;
+				break;
+			case ReferenceType_HasProperty:
+				list = hasProperty_;
+				break;
+			case ReferenceType_HasModellingRule:
+				list = hasModellingRule_;
+				break;
+			case ReferenceType_HasTypeDefinition:
+				list = hasTypeDefinition_;
+				break;
+			case ReferenceType_HasModelParent:
+				list = hasModelParent_;
 				break;
 		}
 	}

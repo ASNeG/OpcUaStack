@@ -398,7 +398,7 @@ namespace OpcUaStackCore
 		}
 		else {
 			posBegin = 3;
-			posEnd = nodeIdString.find_first_of(',', posBegin+3);
+			posEnd = nodeIdString.find_first_of(',', posBegin);
 			if (posEnd == std::string::npos) return false;
 
 			try {

@@ -30,6 +30,16 @@ namespace OpcUaStackServer
 				return "HasDescription";
 			case ReferenceType_HasEncoding:
 				return "HasEncoding";
+			case ReferenceType_HasSubtype:
+				return "HasSubtype";
+			case ReferenceType_HasModelParameter:
+				return "HasModelParameter";
+			case ReferenceType_GenerateEvents:
+				return "GenerateEvents";
+			case ReferenceType_AlwaysGeneratesEvent:
+				return "AlwaysGeneratesEvent";
+			case ReferenceType_HierarchicalReferences:
+				return "HierarchicalReferences";
 		}
 		return "Unknown";
 	}
@@ -48,7 +58,11 @@ namespace OpcUaStackServer
 		else if (referenceTypeString == "HasDescription") return ReferenceType_HasDescription;
 		else if (referenceTypeString == "HasEncoding") return ReferenceType_HasEncoding;
 		else if (referenceTypeString == "HasSubtype") return ReferenceType_HasSubtype;
-		else if (boost::starts_with(referenceTypeString, "i=")) return ReferenceType_NodeId;
+		else if (boost::contains(referenceTypeString, "i=")) return ReferenceType_NodeId;
+		else if (referenceTypeString == "hasModelParameter") ReferenceType_HasModelParameter;
+		else if (referenceTypeString == "generateEvents") ReferenceType_GenerateEvents;
+		else if (referenceTypeString == "alwaysGeneratesEvent") ReferenceType_AlwaysGeneratesEvent;
+		else if (referenceTypeString == "hierarchicalReferences") ReferenceType_HierarchicalReferences;
 		return ReferenceType_Unknown;
 	}
 

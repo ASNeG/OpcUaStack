@@ -22,6 +22,9 @@ namespace OpcUaStackServer
 		Attribute* containsNoLoopsAttribute(void);
 		Attribute* eventNotifierAttribute(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+
 	  private:
 		// attributes mandatory
 		ContainsNoLoopsAttribute containsNoLoops_;

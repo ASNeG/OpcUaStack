@@ -28,6 +28,9 @@ namespace OpcUaStackServer
 		Attribute* valueAttribute(void);
 		Attribute* arrayDimensionsAttribute(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+
 	  private:
 		// attributes mandatory
 		DataTypeAttribute dataType_;
@@ -43,7 +46,7 @@ namespace OpcUaStackServer
 		OpcUaNodeIdList hasProperty_;
 		OpcUaNodeIdList hasComponent_;
 		OpcUaNodeIdList hasSubtype_;
-		OpcUaNodeIdList GeneratesEvent_;
+		OpcUaNodeIdList generatesEvent_;
 
 		// standard properties - all optional
 		OpcUaString nodeVersion_;  

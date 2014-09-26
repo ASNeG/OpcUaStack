@@ -24,6 +24,9 @@ namespace OpcUaStackServer
 		Attribute* symmetricAttribute(void);
 		Attribute* inverseNameAttribute(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;

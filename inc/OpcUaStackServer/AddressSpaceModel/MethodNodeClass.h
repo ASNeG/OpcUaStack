@@ -22,6 +22,9 @@ namespace OpcUaStackServer
 		Attribute* executableAttribute(void);
 		Attribute* userExecutableAttribute(void);
 
+		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
+		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+
 	  private:
 		// attributes mandatory
 		ExecutableAttribute executable_;
