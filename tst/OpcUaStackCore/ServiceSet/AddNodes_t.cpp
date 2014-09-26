@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(ep.registerFactoryElement<VariableTypeAttributes>((OpcUaUInt32)12351) == true);
 	BOOST_REQUIRE(ep.registerFactoryElement<ViewAttributes>((OpcUaUInt32)12352) == true);
 	
-
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -80,12 +80,12 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	clientNonce[0] = 0x00;
 	addNodesRequestSPtr = AddNodesRequest::construct();
 
-	addNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	addNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	addNodesRequestSPtr->requestHeader()->time(ptime);
-	addNodesRequestSPtr->requestHeader()->requestHandle(1);
-	addNodesRequestSPtr->requestHeader()->returnDisagnostics(0);
-	addNodesRequestSPtr->requestHeader()->timeoutHint(10000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(1);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(10000);
 
 
 	addNodesRequestSPtr->nodesToAdd()->resize(8);
@@ -312,6 +312,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		addNodesRequestSPtr->nodesToAdd()->set(7, addNodesItemSPtr);
 	}
 
+	requestHeader->opcUaBinaryEncode(ios1);
 	addNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -373,16 +374,17 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	// decode AddNodesRequest
 	addNodesRequestSPtr = AddNodesRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	addNodesRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *addNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
-	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(addNodesRequestSPtr->requestHeader()->timeoutHint() == 10000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 1);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 10000);
 
 	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd().get() != 0);
 	BOOST_REQUIRE(addNodesRequestSPtr->nodesToAdd()->size() == 8);
@@ -631,7 +633,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 BOOST_AUTO_TEST_CASE(AddNodes_Response)
 {
-	// uint32_t pos;
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -670,9 +672,9 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	// encode AddNodesResponseResponse
 	addNodesResponseSPtr = AddNodesResponse::construct();
 
-	addNodesResponseSPtr->responseHeader()->time(ptime);
-	addNodesResponseSPtr->responseHeader()->requestHandle(1);
-	addNodesResponseSPtr->responseHeader()->serviceResult(Success);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(1);
+	responseHeader->serviceResult(Success);
 
 	AddNodesResultArray::SPtr addNodesResultArraySPtr = AddNodesResultArray::construct();
 	addNodesResultArraySPtr->resize(1);
@@ -687,6 +689,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 
 	addNodesResponseSPtr->results(addNodesResultArraySPtr);
 
+	responseHeader->opcUaBinaryDecode(ios1);
 	addNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -735,11 +738,12 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 
 	//decode AddNodesResponse
 	addNodesResponseSPtr = AddNodesResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	addNodesResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(addNodesResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(addNodesResponseSPtr->responseHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(addNodesResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 1);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 	BOOST_REQUIRE(addNodesResponseSPtr->results()->size() == 1);
 	BOOST_REQUIRE(addNodesResponseSPtr->diagnosticInfos()->size() == 0);
 

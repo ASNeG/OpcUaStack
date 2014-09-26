@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	CreateSubscriptionRequest::CreateSubscriptionRequest(void)
 	: ObjectPool<CreateSubscriptionRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, requestedPublishingInterval_()
 	, requestedLifetimeCount_()
 	, requestedMaxKeepAliveCount_()
@@ -25,18 +24,6 @@ namespace OpcUaStackCore
 
 	CreateSubscriptionRequest::~CreateSubscriptionRequest(void)
 	{
-	}
-
-	void 
-	CreateSubscriptionRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	CreateSubscriptionRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -114,7 +101,6 @@ namespace OpcUaStackCore
 	void 
 	CreateSubscriptionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, requestedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryEncode(os, requestedLifetimeCount_);
 		OpcUaNumber::opcUaBinaryEncode(os, requestedMaxKeepAliveCount_);
@@ -126,7 +112,6 @@ namespace OpcUaStackCore
 	void 
 	CreateSubscriptionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, requestedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryDecode(is, requestedLifetimeCount_);
 		OpcUaNumber::opcUaBinaryDecode(is, requestedMaxKeepAliveCount_);

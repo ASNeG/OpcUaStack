@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	DeleteMonitoredItemsResponse::DeleteMonitoredItemsResponse(void)
 	: ObjectPool<DeleteMonitoredItemsResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, resultArraySPtr_(OpcUaStatusCodeArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	DeleteMonitoredItemsResponse::~DeleteMonitoredItemsResponse(void)
 	{
-	}
-
-	void 
-	DeleteMonitoredItemsResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	DeleteMonitoredItemsResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	DeleteMonitoredItemsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		resultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	DeleteMonitoredItemsResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		resultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

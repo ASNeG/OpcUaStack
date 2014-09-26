@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		ModifyMonitoredItemsResponse(void);
 		virtual ~ModifyMonitoredItemsResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void results(const MonitoredItemModifyResultArray::SPtr results);
 		MonitoredItemModifyResultArray::SPtr results(void) const;
 		void diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfos);
@@ -28,7 +26,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		MonitoredItemModifyResultArray::SPtr resultArraySPtr_;
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};

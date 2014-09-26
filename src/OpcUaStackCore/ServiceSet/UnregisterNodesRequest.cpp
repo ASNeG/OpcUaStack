@@ -13,25 +13,12 @@ namespace OpcUaStackCore
 
 	UnregisterNodesRequest::UnregisterNodesRequest(void)
 	: ObjectPool<UnregisterNodesRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, nodesToUnregisterArraySPtr_(OpcUaNodeIdArray::construct())
 	{
 	}
 
 	UnregisterNodesRequest::~UnregisterNodesRequest(void)
 	{
-	}
-
-	void 
-	UnregisterNodesRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	UnregisterNodesRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -49,14 +36,12 @@ namespace OpcUaStackCore
 	void 
 	UnregisterNodesRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		nodesToUnregisterArraySPtr_->opcUaBinaryEncode(os);	
 	}
 	
 	void 
 	UnregisterNodesRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		nodesToUnregisterArraySPtr_->opcUaBinaryDecode(is);
 	}
 

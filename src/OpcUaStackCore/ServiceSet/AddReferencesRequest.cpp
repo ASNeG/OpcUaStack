@@ -11,8 +11,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddReferencesRequest::AddReferencesRequest(void)
-		: requestHeader_(RequestHeader::construct()),
-		addReferencesItemArray_(AddReferencesItemArray::construct())
+	: addReferencesItemArray_(AddReferencesItemArray::construct())
 	{
 	}
 
@@ -20,20 +19,6 @@ namespace OpcUaStackCore
 	{
 	}
 		
-	void 
-	AddReferencesRequest::requestHeader(
-		const RequestHeader::SPtr requestHeaderSPtr)
-	{
-		requestHeader_ = requestHeaderSPtr;
-	}
-
-	RequestHeader::SPtr
-	AddReferencesRequest::requestHeader(void) const
-	{
-		return requestHeader_;
-	}
-
-			
 	void 
 	AddReferencesRequest::referencesToAdd(
 		const AddReferencesItemArray::SPtr addReferencesItemArray)
@@ -49,18 +34,14 @@ namespace OpcUaStackCore
 
 
 	void 
-	AddReferencesRequest::opcUaBinaryEncode(
-		std::ostream& os) const
+	AddReferencesRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeader_->opcUaBinaryEncode(os);
 		addReferencesItemArray_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	AddReferencesRequest::opcUaBinaryDecode(
-		std::istream& is)
+	AddReferencesRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeader_->opcUaBinaryDecode(is);
 		addReferencesItemArray_->opcUaBinaryDecode(is);
 	}
 

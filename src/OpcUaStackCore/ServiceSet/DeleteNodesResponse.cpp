@@ -11,29 +11,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteNodesResponse::DeleteNodesResponse(void)
-		: responseHeaderSPtr_(ResponseHeader::construct()),
-		deleteNodesResultArraySPtr_(DeleteNodesResultArray::construct()),
-		diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: deleteNodesResultArraySPtr_(DeleteNodesResultArray::construct())
+	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
 	DeleteNodesResponse::~DeleteNodesResponse(void)
 	{
 	}
-
-	void
-	DeleteNodesResponse::responseHeader(
-		const ResponseHeader::SPtr responseHeaderSPtr)
-	{
-		responseHeaderSPtr_ = responseHeaderSPtr;
-	}
-
-	ResponseHeader::SPtr
-	DeleteNodesResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
-	}
-
 
 	void
 	DeleteNodesResponse::results(
@@ -50,8 +35,7 @@ namespace OpcUaStackCore
 
 
 	void
-	DeleteNodesResponse::diagnosticInfos(
-		const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
+	DeleteNodesResponse::diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
 	{
 		diagnosticInfoArraySPtr_ = diagnosticInfosSPtr;
 	}
@@ -64,19 +48,15 @@ namespace OpcUaStackCore
 		
 
 	void 
-	DeleteNodesResponse::opcUaBinaryEncode(
-		std::ostream& os) const
+	DeleteNodesResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		deleteNodesResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	DeleteNodesResponse::opcUaBinaryDecode(
-		std::istream& is)
+	DeleteNodesResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		deleteNodesResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

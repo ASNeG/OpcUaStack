@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		DeleteReferencesRequest(void);
 		virtual ~DeleteReferencesRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
-		RequestHeader::SPtr requestHeader(void) const;
 		void referencesToDelete(const DeleteReferencesItemArray::SPtr deleteReferencesItemArray);
 		DeleteReferencesItemArray::SPtr referencesToDelete() const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeader_;
 		DeleteReferencesItemArray::SPtr deleteReferencesItemArray_;
 	};
 

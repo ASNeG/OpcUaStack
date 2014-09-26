@@ -11,8 +11,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteNodesRequest::DeleteNodesRequest(void)
-		: requestHeaderSPtr_(RequestHeader::construct()),
-		deleteNodesItemArraySPtr_(DeleteNodesItemArray::construct())
+	: deleteNodesItemArraySPtr_(DeleteNodesItemArray::construct())
 	{
 	}
 
@@ -21,22 +20,7 @@ namespace OpcUaStackCore
 	}
 		
 	void 
-	DeleteNodesRequest::requestHeader(
-		const RequestHeader::SPtr requestHeaderSPtr)
-	{
-		requestHeaderSPtr_ = requestHeaderSPtr;
-	}
-
-	RequestHeader::SPtr
-	DeleteNodesRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
-	}
-
-			
-	void 
-	DeleteNodesRequest::nodesToDelete(
-		const DeleteNodesItemArray::SPtr addReferencesItemArray)
+	DeleteNodesRequest::nodesToDelete(const DeleteNodesItemArray::SPtr addReferencesItemArray)
 	{
 		deleteNodesItemArraySPtr_ = addReferencesItemArray;
 	}
@@ -49,18 +33,14 @@ namespace OpcUaStackCore
 
 
 	void 
-	DeleteNodesRequest::opcUaBinaryEncode(
-		std::ostream& os) const
+	DeleteNodesRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		deleteNodesItemArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	DeleteNodesRequest::opcUaBinaryDecode(
-		std::istream& is)
+	DeleteNodesRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		deleteNodesItemArraySPtr_->opcUaBinaryDecode(is);
 	}
 

@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		SetTriggeringResponse(void);
 		virtual ~SetTriggeringResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void addResults(const OpcUaStatusCodeArray::SPtr addResults);
 		OpcUaStatusCodeArray::SPtr addResults(void) const;
 		void addDiagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr addDiagnosticInfos);
@@ -31,7 +29,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		OpcUaStatusCodeArray::SPtr addResultArraySPtr_;
 		OpcUaDiagnosticInfoArray::SPtr addDiagnosticInfoArraySPtr_;
 		OpcUaStatusCodeArray::SPtr removeResultArraySPtr_;

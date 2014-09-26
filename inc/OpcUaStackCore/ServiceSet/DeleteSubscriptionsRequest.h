@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		DeleteSubscriptionsRequest(void);
 		virtual ~DeleteSubscriptionsRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionIds(const OpcUaUInt32Array::SPtr subscriptionIds);
 		OpcUaUInt32Array::SPtr subscriptionIds(void) const;
 
@@ -25,7 +23,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32Array::SPtr subscriptionIdArraySPtr_;
 	};
 

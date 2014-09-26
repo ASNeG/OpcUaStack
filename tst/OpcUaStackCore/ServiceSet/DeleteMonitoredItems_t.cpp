@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Title)
 
 BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 monitoredItemId;
@@ -65,18 +66,19 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	deleteMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	deleteMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	deleteMonitoredItemsRequestSPtr->requestHeader()->time(ptime);
-	deleteMonitoredItemsRequestSPtr->requestHeader()->requestHandle(0);
-	deleteMonitoredItemsRequestSPtr->requestHeader()->returnDisagnostics(0);
-	deleteMonitoredItemsRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build CreateMonitoredItemsRequest
 	deleteMonitoredItemsRequestSPtr->subscriptionId(4);
 	deleteMonitoredItemsRequestSPtr->monitoredItemIds()->set((OpcUaUInt32)123);
 
-	// encode 
+	// encode
+	requestHeader->opcUaBinaryEncode(ios1);
 	deleteMonitoredItemsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -123,16 +125,17 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 
 	// decode
 	deleteMonitoredItemsRequestSPtr = DeleteMonitoredItemsRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	deleteMonitoredItemsRequestSPtr->opcUaBinaryDecode(ios);
 	
 	std::string str;
-	str = *deleteMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(deleteMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(deleteMonitoredItemsRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(deleteMonitoredItemsRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(deleteMonitoredItemsRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(deleteMonitoredItemsRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(deleteMonitoredItemsRequestSPtr->monitoredItemIds()->size() == 1);
 	deleteMonitoredItemsRequestSPtr->monitoredItemIds()->get(monitoredItemId);
@@ -142,6 +145,7 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Request)
 
 BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -189,14 +193,15 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	deleteMonitoredItemsResponseSPtr->responseHeader()->time(ptime);
-	deleteMonitoredItemsResponseSPtr->responseHeader()->requestHandle(0);
-	deleteMonitoredItemsResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build Parameters
 	deleteMonitoredItemsResponseSPtr->results()->set((OpcUaStatusCode)Success);
 
 	// encode DeleteMonitoredItemsResponse
+	responseHeader->opcUaBinaryEncode(ios1);
 	deleteMonitoredItemsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -241,12 +246,12 @@ BOOST_AUTO_TEST_CASE(DeleteMonitoredItems_Response)
 
 	// decode 
 	deleteMonitoredItemsResponseSPtr = DeleteMonitoredItemsResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	deleteMonitoredItemsResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(deleteMonitoredItemsResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(deleteMonitoredItemsResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(deleteMonitoredItemsResponseSPtr->responseHeader()->serviceResult() == Success);
-
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 	BOOST_REQUIRE(deleteMonitoredItemsResponseSPtr->results()->size() == 1);
 	deleteMonitoredItemsResponseSPtr->results()->get(statusCode);
 	BOOST_REQUIRE(statusCode == Success);

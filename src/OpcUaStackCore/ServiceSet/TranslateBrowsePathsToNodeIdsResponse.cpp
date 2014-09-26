@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	TranslateBrowsePathsToNodeIdsResponse::TranslateBrowsePathsToNodeIdsResponse(void)
 	: ObjectPool<TranslateBrowsePathsToNodeIdsResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, resultArraySPtr_(BrowsePathResultArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	TranslateBrowsePathsToNodeIdsResponse::~TranslateBrowsePathsToNodeIdsResponse(void)
 	{
-	}
-
-	void 
-	TranslateBrowsePathsToNodeIdsResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	TranslateBrowsePathsToNodeIdsResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	TranslateBrowsePathsToNodeIdsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		resultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	TranslateBrowsePathsToNodeIdsResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		resultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

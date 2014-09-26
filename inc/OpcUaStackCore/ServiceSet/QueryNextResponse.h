@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		QueryNextResponse(void);
 		virtual ~QueryNextResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void queryDataSets(const QueryDataSetArray::SPtr queryDataSets);
 		QueryDataSetArray::SPtr queryDataSets(void) const;
 		void revisedContinuationPoint(const OpcUaByteString& revisedContinuationPoint);
@@ -28,7 +26,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		QueryDataSetArray::SPtr queryDataSetArraySPtr_;
 		OpcUaByteString revisedContinuationPoint_;
 	};

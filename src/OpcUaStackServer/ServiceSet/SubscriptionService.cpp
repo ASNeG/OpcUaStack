@@ -48,25 +48,7 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveCreateSubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-#if 0
-Request:
-		RequestHeader::SPtr requestHeaderSPtr_;
-		OpcUaDouble requestedPublishingInterval_;
-		OpcUaUInt32 requestedLifetimeCount_;
-		OpcUaUInt32 requestedMaxKeepAliveCount_;
-		OpcUaUInt32 maxNotificationsPerPublish_;
-		OpcUaBoolean publishingEnabled_;
-		OpcUaByte priority_;
-#endif
-
-#if 0
-Response:
-		ResponseHeader::SPtr responseHeaderSPtr_;
-		OpcUaUInt32 subscriptionId_;
-		OpcUaDouble revisedPublishingInterval_;
-		OpcUaUInt32 revisedLifetimeCount_;
-		OpcUaUInt32 revisedMaxKeepAliveCount_;
-#endif
+		// FIXME: dummy implementation
 
 		ServiceTransactionCreateSubscription::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
 		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
@@ -86,8 +68,6 @@ Response:
 		serviceTransaction->statusCode(Success);
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 	}
-
-
 
 	void 
 	SubscriptionService::receiveDeleteSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)

@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 	    TransferSubscriptionsResponse(void);
 		~TransferSubscriptionsResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void results(const TransferResultArray::SPtr results);
 		TransferResultArray::SPtr results(void) const;
 		void diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfos);
@@ -27,7 +25,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		TransferResultArray::SPtr transferResultArraySPtr_;
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};

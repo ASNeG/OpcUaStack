@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	SetPublishingModeResponse::SetPublishingModeResponse(void)
 	: ObjectPool<SetPublishingModeResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	SetPublishingModeResponse::~SetPublishingModeResponse(void)
 	{
-	}
-
-	void 
-	SetPublishingModeResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	SetPublishingModeResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	SetPublishingModeResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		statusCodeArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	SetPublishingModeResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		statusCodeArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

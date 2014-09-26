@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	PublishResponse::PublishResponse(void)
 	: ObjectPool<PublishResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, subscriptionId_()
 	, availableSequenceNumberArraySPtr_(OpcUaUInt32Array::construct())
 	, moreNotifications_()
@@ -25,18 +24,6 @@ namespace OpcUaStackCore
 
 	PublishResponse::~PublishResponse(void)
 	{
-	}
-
-	void 
-	PublishResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	PublishResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -114,7 +101,6 @@ namespace OpcUaStackCore
 	void 
 	PublishResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		availableSequenceNumberArraySPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, moreNotifications_);
@@ -126,7 +112,6 @@ namespace OpcUaStackCore
 	void 
 	PublishResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		availableSequenceNumberArraySPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, moreNotifications_);

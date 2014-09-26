@@ -11,9 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesResponse::AddNodesResponse(void)
-		: responseHeaderSPtr_(ResponseHeader::construct()),
-		addNodesResultArraySPtr_(AddNodesResultArray::construct()),
-		diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: addNodesResultArraySPtr_(AddNodesResultArray::construct())
+	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
@@ -22,22 +21,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	AddNodesResponse::responseHeader(
-		const ResponseHeader::SPtr responseHeaderSPtr)
-	{
-		responseHeaderSPtr_ = responseHeaderSPtr;
-	}
-
-	ResponseHeader::SPtr
-	AddNodesResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
-	}
-
-
-	void
-	AddNodesResponse::results(
-		const AddNodesResultArray::SPtr addNodesResultArraySPtr)
+	AddNodesResponse::results(const AddNodesResultArray::SPtr addNodesResultArraySPtr)
 	{
 		addNodesResultArraySPtr_ = addNodesResultArraySPtr;
 	}
@@ -50,8 +34,7 @@ namespace OpcUaStackCore
 
 
 	void
-	AddNodesResponse::diagnosticInfos(
-		const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
+	AddNodesResponse::diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
 	{
 		diagnosticInfoArraySPtr_ = diagnosticInfosSPtr;
 	}
@@ -64,19 +47,15 @@ namespace OpcUaStackCore
 		
 
 	void 
-	AddNodesResponse::opcUaBinaryEncode(
-		std::ostream& os) const
+	AddNodesResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		addNodesResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	AddNodesResponse::opcUaBinaryDecode(
-		std::istream& is)
+	AddNodesResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		addNodesResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

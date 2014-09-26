@@ -10,10 +10,8 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-
 	TransferSubscriptionsRequest::TransferSubscriptionsRequest(void)
 	: ObjectPool<TransferSubscriptionsRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionIdArraySPtr_(OpcUaUInt32Array::construct())
 	, sendInitialValues_()
 	{
@@ -21,18 +19,6 @@ namespace OpcUaStackCore
 
 	TransferSubscriptionsRequest::~TransferSubscriptionsRequest(void)
 	{
-	}
-
-	void 
-	TransferSubscriptionsRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	TransferSubscriptionsRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +48,6 @@ namespace OpcUaStackCore
 	void 
 	TransferSubscriptionsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		subscriptionIdArraySPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, sendInitialValues_);
 	}
@@ -70,7 +55,6 @@ namespace OpcUaStackCore
 	void 
 	TransferSubscriptionsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		subscriptionIdArraySPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, sendInitialValues_);
 	}

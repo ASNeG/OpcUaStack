@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		PublishRequest(void);
 		virtual ~PublishRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionAcknowledgements(const SubscriptionAcknowledgementArray::SPtr subscriptionAcknowledgements);
 		SubscriptionAcknowledgementArray::SPtr subscriptionAcknowledgements(void) const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		SubscriptionAcknowledgementArray::SPtr subscriptionAcknowledgementArraySPtr_;
 	};
 

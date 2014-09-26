@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	DeleteMonitoredItemsRequest::DeleteMonitoredItemsRequest(void)
 	: ObjectPool<DeleteMonitoredItemsRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionId_()
 	, monitoredItemIdArraySPtr_(OpcUaUInt32Array::construct())
 	{
@@ -23,18 +22,6 @@ namespace OpcUaStackCore
 	{
 	}
 	
-	void 
-	DeleteMonitoredItemsRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-	
-	RequestHeader::SPtr 
-	DeleteMonitoredItemsRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
-	}
-		
 	void 
 	DeleteMonitoredItemsRequest::subscriptionId(const OpcUaUInt32& subscriptionId)
 	{
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	DeleteMonitoredItemsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		monitoredItemIdArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	DeleteMonitoredItemsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		monitoredItemIdArraySPtr_->opcUaBinaryDecode(is);
 	}

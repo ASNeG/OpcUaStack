@@ -25,8 +25,6 @@ namespace OpcUaStackCore
 		AddNodesRequest(void);
 		virtual ~AddNodesRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
-		RequestHeader::SPtr requestHeader(void) const;
 		void nodesToAdd(const AddNodesItemArray::SPtr addNodesItemArray);
 		AddNodesItemArray::SPtr nodesToAdd() const;
 
@@ -34,7 +32,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeader_;
 		AddNodesItemArray::SPtr addNodesItemArray_;
 	};
 

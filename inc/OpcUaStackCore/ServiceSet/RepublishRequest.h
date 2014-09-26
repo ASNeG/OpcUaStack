@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		RepublishRequest(void);
 		virtual ~RepublishRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionId(const OpcUaUInt32 subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void retransmitSequenceNumber(const OpcUaUInt32 retransmitSequenceNumber);
@@ -28,7 +26,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		OpcUaUInt32 retransmitSequenceNumber_;
 	};

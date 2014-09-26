@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	RepublishRequest::RepublishRequest(void)
 	: ObjectPool<RepublishRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionId_()
 	, retransmitSequenceNumber_()
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	RepublishRequest::~RepublishRequest(void)
 	{
-	}
-
-	void 
-	RepublishRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	RepublishRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	RepublishRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		OpcUaNumber::opcUaBinaryEncode(os, retransmitSequenceNumber_);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	RepublishRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		OpcUaNumber::opcUaBinaryDecode(is, retransmitSequenceNumber_);
 	}

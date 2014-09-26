@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	TransferSubscriptionsResponse::TransferSubscriptionsResponse(void)
 	: ObjectPool<TransferSubscriptionsResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, transferResultArraySPtr_(TransferResultArray::construct())
 	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	TransferSubscriptionsResponse::~TransferSubscriptionsResponse(void)
 	{
-	}
-
-	void 
-	TransferSubscriptionsResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	TransferSubscriptionsResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	TransferSubscriptionsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		transferResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	TransferSubscriptionsResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		transferResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

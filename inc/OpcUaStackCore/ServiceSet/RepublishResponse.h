@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 	    RepublishResponse(void);
 		~RepublishResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void notificationMessage(const NotificationMessage::SPtr notificationMessage);
 		NotificationMessage::SPtr notificationMessage(void) const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		NotificationMessage::SPtr notificationMessageSPtr_;
 	};
 }

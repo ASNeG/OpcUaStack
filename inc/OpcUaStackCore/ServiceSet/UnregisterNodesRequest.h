@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		UnregisterNodesRequest(void);
 		virtual ~UnregisterNodesRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void nodesToUnregister(const OpcUaNodeIdArray::SPtr nodesToUnregister);
 		OpcUaNodeIdArray::SPtr nodesToUnregister(void) const;
 
@@ -25,7 +23,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaNodeIdArray::SPtr nodesToUnregisterArraySPtr_;
 	};
 

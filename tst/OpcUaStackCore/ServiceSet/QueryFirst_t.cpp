@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Title)
 
 BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -69,12 +70,12 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	queryFirstRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	queryFirstRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	queryFirstRequestSPtr->requestHeader()->time(ptime);
-	queryFirstRequestSPtr->requestHeader()->requestHandle(0);
-	queryFirstRequestSPtr->requestHeader()->returnDisagnostics(0);
-	queryFirstRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build QueryDataDescription
 	queryDataDescriptionSPtr = QueryDataDescription::construct();
@@ -102,6 +103,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 	queryFirstRequestSPtr->maxReferencesToReturn(2);
 
 	// encode 
+	requestHeader->opcUaBinaryEncode(ios1);
 	queryFirstRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -151,15 +153,16 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 
 	// decode ReadRequest
 	queryFirstRequestSPtr = QueryFirstRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	queryFirstRequestSPtr->opcUaBinaryDecode(ios);
 
-	str = *queryFirstRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(queryFirstRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(queryFirstRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(queryFirstRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(queryFirstRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(queryFirstRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(queryFirstRequestSPtr->view().viewId()->namespaceIndex() == 2);
 	BOOST_REQUIRE(queryFirstRequestSPtr->view().viewId()->nodeId<OpcUaUInt32>() == 123);
@@ -188,6 +191,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Request)
 
 BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -238,9 +242,9 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	queryFirstResponseSPtr->responseHeader()->time(ptime);
-	queryFirstResponseSPtr->responseHeader()->requestHandle(0);
-	queryFirstResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build QueryDataSet
 	queryDataSetSPtr = QueryDataSet::construct();
@@ -260,6 +264,7 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 	queryFirstResponseSPtr->filterResult(emptyContentFilterResult);
 
 	// encode 
+	responseHeader->opcUaBinaryEncode(ios1);
 	queryFirstResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -306,11 +311,12 @@ BOOST_AUTO_TEST_CASE(QueryFirst_Response)
 
 	// decode 
 	queryFirstResponseSPtr = QueryFirstResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	queryFirstResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(queryFirstResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(queryFirstResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(queryFirstResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(queryFirstResponseSPtr->queryDataSets()->size() == 1);
 	queryDataSetSPtr = QueryDataSet::construct();

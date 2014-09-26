@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	QueryFirstRequest::QueryFirstRequest(void)
 	: ObjectPool<QueryFirstRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, view_()
 	, nodeTypeArraySPtr_(NodeTypeDescriptionArray::construct())
 	, filter_()
@@ -25,18 +24,6 @@ namespace OpcUaStackCore
 
 	QueryFirstRequest::~QueryFirstRequest(void)
 	{
-	}
-
-	void 
-	QueryFirstRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	QueryFirstRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -102,7 +89,6 @@ namespace OpcUaStackCore
 	void 
 	QueryFirstRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		view_.opcUaBinaryEncode(os);
 		nodeTypeArraySPtr_->opcUaBinaryEncode(os);
 		filter_.opcUaBinaryEncode(os);
@@ -113,7 +99,6 @@ namespace OpcUaStackCore
 	void 
 	QueryFirstRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		view_.opcUaBinaryDecode(is);
 		nodeTypeArraySPtr_->opcUaBinaryDecode(is);
 		filter_.opcUaBinaryDecode(is);

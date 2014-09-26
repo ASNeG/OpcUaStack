@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		AddReferencesRequest(void);
 		virtual ~AddReferencesRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
-		RequestHeader::SPtr requestHeader(void) const;
 		void referencesToAdd(const AddReferencesItemArray::SPtr addReferencesItemArray);
 		AddReferencesItemArray::SPtr referencesToAdd() const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeader_;
 		AddReferencesItemArray::SPtr addReferencesItemArray_;
 	};
 

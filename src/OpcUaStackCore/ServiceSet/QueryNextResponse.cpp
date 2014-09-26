@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	QueryNextResponse::QueryNextResponse(void)
 	: ObjectPool<QueryNextResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, queryDataSetArraySPtr_(QueryDataSetArray::construct())
 	, revisedContinuationPoint_()
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	QueryNextResponse::~QueryNextResponse(void)
 	{
-	}
-
-	void 
-	QueryNextResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	QueryNextResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	QueryNextResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		queryDataSetArraySPtr_->opcUaBinaryEncode(os);
 		revisedContinuationPoint_.opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	QueryNextResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		queryDataSetArraySPtr_->opcUaBinaryDecode(is);
 		revisedContinuationPoint_.opcUaBinaryDecode(is);
 	}

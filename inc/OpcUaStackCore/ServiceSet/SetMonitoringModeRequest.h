@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		SetMonitoringModeRequest(void);
 		virtual ~SetMonitoringModeRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void monitoringMode(const MonitoringMode monitoringMode);
@@ -30,7 +28,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		MonitoringMode monitoringMode_;
 		OpcUaUInt32Array::SPtr monitoredItemIdArraySPtr_;

@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	CreateSubscriptionResponse::CreateSubscriptionResponse(void)
 	: ObjectPool<CreateSubscriptionResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, subscriptionId_()
 	, revisedPublishingInterval_()
 	, revisedLifetimeCount_()
@@ -23,18 +22,6 @@ namespace OpcUaStackCore
 
 	CreateSubscriptionResponse::~CreateSubscriptionResponse(void)
 	{
-	}
-
-	void 
-	CreateSubscriptionResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	CreateSubscriptionResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -88,7 +75,6 @@ namespace OpcUaStackCore
 	void 
 	CreateSubscriptionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		OpcUaNumber::opcUaBinaryEncode(os, revisedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryEncode(os, revisedLifetimeCount_);
@@ -98,7 +84,6 @@ namespace OpcUaStackCore
 	void 
 	CreateSubscriptionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		OpcUaNumber::opcUaBinaryDecode(is, revisedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryDecode(is, revisedLifetimeCount_);

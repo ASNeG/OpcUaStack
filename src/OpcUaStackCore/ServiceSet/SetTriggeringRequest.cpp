@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	SetTriggeringRequest::SetTriggeringRequest(void)
 	: ObjectPool<SetTriggeringRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionId_()
 	, triggeringItemId_()
 	, linksToAddArraySPtr_(OpcUaUInt32Array::construct())
@@ -25,18 +24,6 @@ namespace OpcUaStackCore
 	{
 	}
 	
-	void 
-	SetTriggeringRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-	
-	RequestHeader::SPtr 
-	SetTriggeringRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
-	}
-		
 	void 
 	SetTriggeringRequest::subscriptionId(const OpcUaUInt32& subscriptionId)
 	{
@@ -88,7 +75,6 @@ namespace OpcUaStackCore
 	void 
 	SetTriggeringRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		OpcUaNumber::opcUaBinaryEncode(os, triggeringItemId_);
 		linksToAddArraySPtr_->opcUaBinaryEncode(os);
@@ -98,7 +84,6 @@ namespace OpcUaStackCore
 	void 
 	SetTriggeringRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		OpcUaNumber::opcUaBinaryDecode(is, triggeringItemId_);
 		linksToAddArraySPtr_->opcUaBinaryDecode(is);

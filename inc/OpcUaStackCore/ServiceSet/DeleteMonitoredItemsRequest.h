@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		DeleteMonitoredItemsRequest(void);
 		virtual ~DeleteMonitoredItemsRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void monitoredItemIds(const OpcUaUInt32Array::SPtr monitoredItemIds);
@@ -27,7 +25,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		OpcUaUInt32Array::SPtr monitoredItemIdArraySPtr_;
 	};

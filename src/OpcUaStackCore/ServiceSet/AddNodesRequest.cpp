@@ -11,8 +11,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesRequest::AddNodesRequest(void)
-		: requestHeader_(RequestHeader::construct()),
-		addNodesItemArray_(AddNodesItemArray::construct())
+	: addNodesItemArray_(AddNodesItemArray::construct())
 	{
 	}
 
@@ -21,22 +20,7 @@ namespace OpcUaStackCore
 	}
 		
 	void 
-	AddNodesRequest::requestHeader(
-		const RequestHeader::SPtr requestHeaderSPtr)
-	{
-		requestHeader_ = requestHeaderSPtr;
-	}
-
-	RequestHeader::SPtr
-	AddNodesRequest::requestHeader(void) const
-	{
-		return requestHeader_;
-	}
-
-			
-	void 
-	AddNodesRequest::nodesToAdd(
-		const AddNodesItemArray::SPtr addNodesItemArray)
+	AddNodesRequest::nodesToAdd(const AddNodesItemArray::SPtr addNodesItemArray)
 	{
 		addNodesItemArray_ = addNodesItemArray;
 	}
@@ -49,18 +33,14 @@ namespace OpcUaStackCore
 
 
 	void 
-	AddNodesRequest::opcUaBinaryEncode(
-		std::ostream& os) const
+	AddNodesRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeader_->opcUaBinaryEncode(os);
 		addNodesItemArray_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	AddNodesRequest::opcUaBinaryDecode(
-		std::istream& is)
+	AddNodesRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeader_->opcUaBinaryDecode(is);
 		addNodesItemArray_->opcUaBinaryDecode(is);
 	}
 

@@ -11,9 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteReferencesResponse::DeleteReferencesResponse(void)
-		: responseHeaderSPtr_(ResponseHeader::construct()),
-		deleteReferencesResultArraySPtr_(DeleteReferencesResultArray::construct()),
-		diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: deleteReferencesResultArraySPtr_(DeleteReferencesResultArray::construct())
+	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	{
 	}
 
@@ -22,22 +21,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DeleteReferencesResponse::responseHeader(
-		const ResponseHeader::SPtr responseHeaderSPtr)
-	{
-		responseHeaderSPtr_ = responseHeaderSPtr;
-	}
-
-	ResponseHeader::SPtr
-	DeleteReferencesResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
-	}
-
-
-	void
-	DeleteReferencesResponse::results(
-		const DeleteReferencesResultArray::SPtr deleteReferencesResultArraySPtr)
+	DeleteReferencesResponse::results(const DeleteReferencesResultArray::SPtr deleteReferencesResultArraySPtr)
 	{
 		deleteReferencesResultArraySPtr_ = deleteReferencesResultArraySPtr;
 	}
@@ -50,8 +34,7 @@ namespace OpcUaStackCore
 
 
 	void
-	DeleteReferencesResponse::diagnosticInfos(
-		const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
+	DeleteReferencesResponse::diagnosticInfos(const OpcUaDiagnosticInfoArray::SPtr diagnosticInfosSPtr)
 	{
 		diagnosticInfoArraySPtr_ = diagnosticInfosSPtr;
 	}
@@ -64,19 +47,15 @@ namespace OpcUaStackCore
 		
 
 	void 
-	DeleteReferencesResponse::opcUaBinaryEncode(
-		std::ostream& os) const
+	DeleteReferencesResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		deleteReferencesResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	DeleteReferencesResponse::opcUaBinaryDecode(
-		std::istream& is)
+	DeleteReferencesResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		deleteReferencesResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

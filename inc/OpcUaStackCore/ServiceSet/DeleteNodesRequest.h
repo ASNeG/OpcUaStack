@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		DeleteNodesRequest(void);
 		virtual ~DeleteNodesRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
-		RequestHeader::SPtr requestHeader(void) const;
 		void nodesToDelete(const DeleteNodesItemArray::SPtr deleteNodesItemArraySPtr);
 		DeleteNodesItemArray::SPtr nodesToDelete() const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		DeleteNodesItemArray::SPtr deleteNodesItemArraySPtr_;
 	};
 

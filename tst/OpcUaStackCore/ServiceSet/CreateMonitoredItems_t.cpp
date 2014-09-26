@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Title)
 
 BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -67,12 +68,12 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	createMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	createMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	createMonitoredItemsRequestSPtr->requestHeader()->time(ptime);
-	createMonitoredItemsRequestSPtr->requestHeader()->requestHandle(0);
-	createMonitoredItemsRequestSPtr->requestHeader()->returnDisagnostics(0);
-	createMonitoredItemsRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build MonitoringParameters
 	OpcUaNodeId parameterTypeId;
@@ -102,6 +103,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	createMonitoredItemsRequestSPtr->itemsToCreate()->set(monitoredItemCreateRequestSPtr);
 
 	// encode 
+	requestHeader->opcUaBinaryEncode(ios1);
 	createMonitoredItemsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -152,16 +154,17 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CreateMonitoredItemsRequest_Encoding_DefaultBinary);
 
 	// decode
+	requestHeader->opcUaBinaryDecode(ios);
 	createMonitoredItemsRequestSPtr->opcUaBinaryDecode(ios);
 	
 	std::string str;
-	str = *createMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->timestampsToReturn() == TimestampsToReturn_Both);
 	
 	BOOST_REQUIRE(createMonitoredItemsRequestSPtr->itemsToCreate()->size() == 1);
@@ -181,6 +184,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 
 BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -229,9 +233,9 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	createMonitoredItemsResponseSPtr->responseHeader()->time(ptime);
-	createMonitoredItemsResponseSPtr->responseHeader()->requestHandle(0);
-	createMonitoredItemsResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build MonitoredItemCreateResult
 	monitoredItemCreateResultSPtr = MonitoredItemCreateResult::construct();
@@ -242,6 +246,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	createMonitoredItemsResponseSPtr->results()->set(monitoredItemCreateResultSPtr);
 
 	// encode CreateMonitoredItemsResponse
+	responseHeader->opcUaBinaryEncode(ios1);
 	createMonitoredItemsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -288,11 +293,12 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 
 	// decode ReadResponse
 	createMonitoredItemsResponseSPtr = CreateMonitoredItemsResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	createMonitoredItemsResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(createMonitoredItemsResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(createMonitoredItemsResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(createMonitoredItemsResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(createMonitoredItemsResponseSPtr->results()->size() == 1);
 	createMonitoredItemsResponseSPtr->results()->get(monitoredItemCreateResultSPtr);

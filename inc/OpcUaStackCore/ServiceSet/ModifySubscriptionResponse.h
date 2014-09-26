@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		ModifySubscriptionResponse(void);
 		virtual ~ModifySubscriptionResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void revisedPublishingInterval(const OpcUaDouble& revisedPublishingInterval);
 		OpcUaDouble revisedPublishingInterval(void) const;
 		void revisedLifetimeCount(const OpcUaUInt32& revisedLifetimeCount);
@@ -29,7 +27,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		OpcUaDouble revisedPublishingInterval_;
 		OpcUaUInt32 revisedLifetimeCount_;
 		OpcUaUInt32 revisedMaxKeepAliveCount_;

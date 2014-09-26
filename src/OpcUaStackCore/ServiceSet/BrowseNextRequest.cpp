@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	BrowseNextRequest::BrowseNextRequest(void)
 	: ObjectPool<BrowseNextRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, releaseContinuationPoints_()
 	, continuationPointArraySPtr_(OpcUaByteStringArray::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	BrowseNextRequest::~BrowseNextRequest(void)
 	{
-	}
-
-	void 
-	BrowseNextRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	BrowseNextRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	BrowseNextRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, releaseContinuationPoints_);
 		continuationPointArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	BrowseNextRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, releaseContinuationPoints_);
 		continuationPointArraySPtr_->opcUaBinaryDecode(is);
 	}

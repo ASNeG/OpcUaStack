@@ -11,7 +11,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteReferencesResult::DeleteReferencesResult(void)
-		: statusCode_()		
+	: statusCode_()		
 	{
 	}
 

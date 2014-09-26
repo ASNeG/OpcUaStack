@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	DeleteSubscriptionsRequest::DeleteSubscriptionsRequest(void)
 	: ObjectPool<DeleteSubscriptionsRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionIdArraySPtr_(OpcUaUInt32Array::construct())
 	{
 	}
@@ -22,18 +21,6 @@ namespace OpcUaStackCore
 	{
 	}
 	
-	void 
-	DeleteSubscriptionsRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-	
-	RequestHeader::SPtr 
-	DeleteSubscriptionsRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
-	}
-		
 	void 
 	DeleteSubscriptionsRequest::subscriptionIds(const OpcUaUInt32Array::SPtr subscriptionIds)
 	{
@@ -49,14 +36,12 @@ namespace OpcUaStackCore
 	void 
 	DeleteSubscriptionsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		subscriptionIdArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	DeleteSubscriptionsRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		subscriptionIdArraySPtr_->opcUaBinaryDecode(is);
 	}
 }

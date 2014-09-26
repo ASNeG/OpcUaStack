@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		BrowseNextRequest(void);
 		virtual ~BrowseNextRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void releaseContinuationPoints(const OpcUaBoolean& releaseContinuationPoints);
 		OpcUaBoolean releaseContinuationPoints(void);
 		void continuationPoints(const OpcUaByteStringArray::SPtr continuationPoints);
@@ -27,7 +25,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaBoolean releaseContinuationPoints_;
 		OpcUaByteStringArray::SPtr continuationPointArraySPtr_;
 	};

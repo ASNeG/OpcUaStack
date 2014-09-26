@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	ModifySubscriptionRequest::ModifySubscriptionRequest(void)
 	: ObjectPool<ModifySubscriptionRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionId_()
 	, requestedPublishingInterval_()
 	, requestedLifetimeCount_()
@@ -25,18 +24,6 @@ namespace OpcUaStackCore
 
 	ModifySubscriptionRequest::~ModifySubscriptionRequest(void)
 	{
-	}
-
-	void 
-	ModifySubscriptionRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	ModifySubscriptionRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -114,7 +101,6 @@ namespace OpcUaStackCore
 	void 
 	ModifySubscriptionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		OpcUaNumber::opcUaBinaryEncode(os, requestedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryEncode(os, requestedLifetimeCount_);
@@ -126,7 +112,6 @@ namespace OpcUaStackCore
 	void 
 	ModifySubscriptionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		OpcUaNumber::opcUaBinaryDecode(is, requestedPublishingInterval_);
 		OpcUaNumber::opcUaBinaryDecode(is, requestedLifetimeCount_);

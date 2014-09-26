@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	QueryFirstResponse::QueryFirstResponse(void)
 	: ObjectPool<QueryFirstResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, queryDataSetArraySPtr_(QueryDataSetArray::construct())
 	, continuationPoint_()
 	, parsingResultArraySPtr_(ParsingResultArray::construct())
@@ -25,19 +24,6 @@ namespace OpcUaStackCore
 	QueryFirstResponse::~QueryFirstResponse(void)
 	{
 	}
-
-	void 
-	QueryFirstResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	QueryFirstResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
-	}
-
 
 	void 
 	QueryFirstResponse::queryDataSets(const QueryDataSetArray::SPtr queryDataSets)
@@ -102,7 +88,6 @@ namespace OpcUaStackCore
 	void 
 	QueryFirstResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		queryDataSetArraySPtr_->opcUaBinaryEncode(os);
 		continuationPoint_.opcUaBinaryEncode(os);
 		parsingResultArraySPtr_->opcUaBinaryEncode(os);
@@ -113,7 +98,6 @@ namespace OpcUaStackCore
 	void 
 	QueryFirstResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		queryDataSetArraySPtr_->opcUaBinaryDecode(is);
 		continuationPoint_.opcUaBinaryDecode(is);
 		parsingResultArraySPtr_->opcUaBinaryDecode(is);

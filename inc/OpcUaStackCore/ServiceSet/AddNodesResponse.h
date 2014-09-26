@@ -17,9 +17,6 @@ namespace OpcUaStackCore
 		AddNodesResponse(void);
 		virtual ~AddNodesResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeaderSPtr);
-		ResponseHeader::SPtr responseHeader(void) const;
-
 		void results(const AddNodesResultArray::SPtr addNodesResultArraySPtr);
 		AddNodesResultArray::SPtr results() const;
 
@@ -30,7 +27,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		  ResponseHeader::SPtr responseHeaderSPtr_;
 		  AddNodesResultArray::SPtr addNodesResultArraySPtr_;
 		  OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};

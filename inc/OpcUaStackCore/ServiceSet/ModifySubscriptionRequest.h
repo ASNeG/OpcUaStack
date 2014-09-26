@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		ModifySubscriptionRequest(void);
 		virtual ~ModifySubscriptionRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void requestedPublishingInterval(const OpcUaDouble& requestedPublishingInterval);
@@ -35,7 +33,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		OpcUaDouble requestedPublishingInterval_;
 		OpcUaUInt32 requestedLifetimeCount_;

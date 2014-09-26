@@ -19,8 +19,6 @@ namespace OpcUaStackCore
 		QueryFirstRequest(void);
 		virtual ~QueryFirstRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void view(const ViewDescription& view);
 		ViewDescription& view(void);
 		void nodeTypes(const NodeTypeDescriptionArray::SPtr nodeTypes);
@@ -36,12 +34,11 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		  RequestHeader::SPtr requestHeaderSPtr_;
-		  ViewDescription view_;
-		  NodeTypeDescriptionArray::SPtr nodeTypeArraySPtr_;
-		  ContentFilter filter_;
-		  OpcUaUInt32 maxDataSetsToReturn_;
-		  OpcUaUInt32 maxReferencesToReturn_;
+		ViewDescription view_;
+		NodeTypeDescriptionArray::SPtr nodeTypeArraySPtr_;
+		ContentFilter filter_;
+		OpcUaUInt32 maxDataSetsToReturn_;
+		OpcUaUInt32 maxReferencesToReturn_;
 	};
 
 }

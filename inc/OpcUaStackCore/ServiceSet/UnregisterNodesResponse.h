@@ -17,14 +17,10 @@ namespace OpcUaStackCore
 	    UnregisterNodesResponse(void);
 		virtual ~UnregisterNodesResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
-
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 	};
 }
 

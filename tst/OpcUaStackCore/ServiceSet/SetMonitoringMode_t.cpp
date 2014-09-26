@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Title)
 
 BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 monitoredItemId;
@@ -65,19 +66,20 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	setMonitoringModeRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	setMonitoringModeRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	setMonitoringModeRequestSPtr->requestHeader()->time(ptime);
-	setMonitoringModeRequestSPtr->requestHeader()->requestHandle(0);
-	setMonitoringModeRequestSPtr->requestHeader()->returnDisagnostics(0);
-	setMonitoringModeRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build Parameter
 	setMonitoringModeRequestSPtr->subscriptionId(4);
 	setMonitoringModeRequestSPtr->monitoringMode(MonitoringMode_Sampling);
 	setMonitoringModeRequestSPtr->monitoredItemIds()->set((OpcUaUInt32)8);
 
-	// encode 
+	// encode
+	requestHeader->opcUaBinaryEncode(ios1);
 	setMonitoringModeRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -124,16 +126,17 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 
 	// decode
 	setMonitoringModeRequestSPtr = SetMonitoringModeRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	setMonitoringModeRequestSPtr->opcUaBinaryDecode(ios);
 	
 	std::string str;
-	str = *setMonitoringModeRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(setMonitoringModeRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(setMonitoringModeRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(setMonitoringModeRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(setMonitoringModeRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(setMonitoringModeRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(setMonitoringModeRequestSPtr->subscriptionId() == 4);
 	BOOST_REQUIRE(setMonitoringModeRequestSPtr->monitoringMode() == MonitoringMode_Sampling);
@@ -146,6 +149,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 
 BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -190,14 +194,15 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	setMonitoringModeResponseSPtr->responseHeader()->time(ptime);
-	setMonitoringModeResponseSPtr->responseHeader()->requestHandle(0);
-	setMonitoringModeResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build Parameters
 	setMonitoringModeResponseSPtr->results()->set((OpcUaStatusCode)Success);
 
 	// encode DeleteMonitoredItemsResponse
+	responseHeader->opcUaBinaryEncode(ios);
 	setMonitoringModeResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -242,11 +247,12 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 
 	// decode 
 	setMonitoringModeResponseSPtr = SetMonitoringModeResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	setMonitoringModeResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(setMonitoringModeResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(setMonitoringModeResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(setMonitoringModeResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(setMonitoringModeResponseSPtr->results()->size() == 1);
 	setMonitoringModeResponseSPtr->results()->get(statusCode);

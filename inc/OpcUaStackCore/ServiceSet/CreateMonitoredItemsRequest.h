@@ -18,8 +18,6 @@ namespace OpcUaStackCore
 		CreateMonitoredItemsRequest(void);
 		virtual ~CreateMonitoredItemsRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void timestampsToReturn(const TimestampsToReturn timestampsToReturn);
@@ -31,7 +29,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		TimestampsToReturn timestampsToReturn_;
 		MonitoredItemCreateRequestArray::SPtr itemsToCreateArraySPtr_;

@@ -23,6 +23,7 @@ BOOST_AUTO_TEST_CASE(AddReferences_)
 
 BOOST_AUTO_TEST_CASE(AddReferences_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -67,12 +68,12 @@ BOOST_AUTO_TEST_CASE(AddReferences_Request)
 	clientNonce[0] = 0x00;
 	addReferencesRequestSPtr = AddReferencesRequest::construct();
 
-	addReferencesRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	addReferencesRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	addReferencesRequestSPtr->requestHeader()->time(ptime);
-	addReferencesRequestSPtr->requestHeader()->requestHandle(1);
-	addReferencesRequestSPtr->requestHeader()->returnDisagnostics(0);
-	addReferencesRequestSPtr->requestHeader()->timeoutHint(10000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(1);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(10000);
 
 
 	addReferencesRequestSPtr->referencesToAdd()->resize(1);
@@ -90,6 +91,7 @@ BOOST_AUTO_TEST_CASE(AddReferences_Request)
 		addReferencesRequestSPtr->referencesToAdd()->set(0, addReferencesItemSPtr);
 	}
 
+	requestHeader->opcUaBinaryEncode(ios1);
 	addReferencesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -151,16 +153,17 @@ BOOST_AUTO_TEST_CASE(AddReferences_Request)
 
 	// decode AddReferencesRequest
 	addReferencesRequestSPtr = AddReferencesRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	addReferencesRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *addReferencesRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(addReferencesRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
-	BOOST_REQUIRE(addReferencesRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(addReferencesRequestSPtr->requestHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(addReferencesRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(addReferencesRequestSPtr->requestHeader()->timeoutHint() == 10000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 1);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 10000);
 
 	BOOST_REQUIRE(addReferencesRequestSPtr->referencesToAdd().get() != 0);
 	BOOST_REQUIRE(addReferencesRequestSPtr->referencesToAdd()->size() == 1);
@@ -193,7 +196,7 @@ BOOST_AUTO_TEST_CASE(AddReferences_Request)
 
 BOOST_AUTO_TEST_CASE(AddReferences_Response)
 {
-	// uint32_t pos;
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -232,9 +235,9 @@ BOOST_AUTO_TEST_CASE(AddReferences_Response)
 	// encode AddReferencesResponse
 	addReferencesResponseSPtr = AddReferencesResponse::construct();
 
-	addReferencesResponseSPtr->responseHeader()->time(ptime);
-	addReferencesResponseSPtr->responseHeader()->requestHandle(1);
-	addReferencesResponseSPtr->responseHeader()->serviceResult(Success);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(1);
+	responseHeader->serviceResult(Success);
 
 	AddReferencesResultArray::SPtr addReferencesResultArraySPtr = AddReferencesResultArray::construct();
 	addReferencesResultArraySPtr->resize(1);
@@ -246,7 +249,7 @@ BOOST_AUTO_TEST_CASE(AddReferences_Response)
 
 	addReferencesResponseSPtr->results(addReferencesResultArraySPtr);
 
-
+	responseHeader->opcUaBinaryEncode(ios1);
 	addReferencesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -295,11 +298,12 @@ BOOST_AUTO_TEST_CASE(AddReferences_Response)
 
 	//decode AddReferencesResponse
 	addReferencesResponseSPtr = AddReferencesResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	addReferencesResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(addReferencesResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(addReferencesResponseSPtr->responseHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(addReferencesResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 1);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 	BOOST_REQUIRE(addReferencesResponseSPtr->results()->size() == 1);
 	BOOST_REQUIRE(addReferencesResponseSPtr->diagnosticInfos()->size() == 0);
 

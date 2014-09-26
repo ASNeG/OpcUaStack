@@ -11,8 +11,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesResult::AddNodesResult(void)
-		: statusCode_(),
-		addedNodeIdSPtr_(OpcUaNodeId::construct())
+	: statusCode_()
+	, addedNodeIdSPtr_(OpcUaNodeId::construct())
 	{
 	}
 
@@ -34,8 +34,7 @@ namespace OpcUaStackCore
 
 
 	void
-	AddNodesResult::addedNodeId(
-		const OpcUaNodeId::SPtr addedNodeIdSPtr)
+	AddNodesResult::addedNodeId(const OpcUaNodeId::SPtr addedNodeIdSPtr)
 	{
 		addedNodeIdSPtr_ = addedNodeIdSPtr;
 	}
@@ -47,16 +46,14 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	AddNodesResult::opcUaBinaryEncode(
-		std::ostream& os) const
+	AddNodesResult::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
 		addedNodeIdSPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	AddNodesResult::opcUaBinaryDecode(
-		std::istream& is)
+	AddNodesResult::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaUInt32 tmp;
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);

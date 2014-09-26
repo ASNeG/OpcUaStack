@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 	    PublishResponse(void);
 		~PublishResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void availableSequenceNumbers(const OpcUaUInt32Array::SPtr availableSequenceNumbers);
@@ -36,7 +34,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		OpcUaUInt32Array::SPtr availableSequenceNumberArraySPtr_;
 		OpcUaBoolean moreNotifications_;

@@ -17,9 +17,6 @@ namespace OpcUaStackCore
 		DeleteNodesResponse(void);
 		virtual ~DeleteNodesResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeaderSPtr);
-		ResponseHeader::SPtr responseHeader(void) const;
-
 		void results(const DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr);
 		DeleteNodesResultArray::SPtr results() const;
 
@@ -30,7 +27,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		  ResponseHeader::SPtr responseHeaderSPtr_;
 		  DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr_;
 		  OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};

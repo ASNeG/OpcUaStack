@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		SetTriggeringRequest(void);
 		virtual ~SetTriggeringRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void triggeringItemId(const OpcUaUInt32& triggeringItemId);
@@ -31,7 +29,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaUInt32 subscriptionId_;
 		OpcUaUInt32 triggeringItemId_;
 		OpcUaUInt32Array::SPtr linksToAddArraySPtr_;

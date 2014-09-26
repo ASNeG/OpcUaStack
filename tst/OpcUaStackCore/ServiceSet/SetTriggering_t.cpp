@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Title)
 
 BOOST_AUTO_TEST_CASE(SetTriggering_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 link1, link2;
@@ -65,12 +66,12 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	setTriggeringRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	setTriggeringRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	setTriggeringRequestSPtr->requestHeader()->time(ptime);
-	setTriggeringRequestSPtr->requestHeader()->requestHandle(0);
-	setTriggeringRequestSPtr->requestHeader()->returnDisagnostics(0);
-	setTriggeringRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build SetTriggeringRequest
 	setTriggeringRequestSPtr->subscriptionId(4);
@@ -79,6 +80,7 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Request)
 	setTriggeringRequestSPtr->linksToRemove()->set(3);
 
 	// encode 
+	requestHeader->opcUaBinaryEncode(ios1);
 	setTriggeringRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -126,16 +128,17 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Request)
 
 	// decode
 	setTriggeringRequestSPtr = SetTriggeringRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	setTriggeringRequestSPtr->opcUaBinaryDecode(ios);
 	
 	std::string str;
-	str = *setTriggeringRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(setTriggeringRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(setTriggeringRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(setTriggeringRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(setTriggeringRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(setTriggeringRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(setTriggeringRequestSPtr->subscriptionId() == 4);
 	BOOST_REQUIRE(setTriggeringRequestSPtr->triggeringItemId() == 8);
@@ -152,6 +155,7 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Request)
 
 BOOST_AUTO_TEST_CASE(SetTriggering_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -196,15 +200,16 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	setTriggeringResponseSPtr->responseHeader()->time(ptime);
-	setTriggeringResponseSPtr->responseHeader()->requestHandle(0);
-	setTriggeringResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build Parameters
 	setTriggeringResponseSPtr->addResults()->set((OpcUaStatusCode)Success);
 	setTriggeringResponseSPtr->removeResults()->set((OpcUaStatusCode)Success);
 
 	// encode DeleteMonitoredItemsResponse
+	responseHeader->opcUaBinaryEncode(ios);
 	setTriggeringResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -250,11 +255,12 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Response)
 
 	// decode 
 	setTriggeringResponseSPtr = SetTriggeringResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	setTriggeringResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(setTriggeringResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(setTriggeringResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(setTriggeringResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(setTriggeringResponseSPtr->addResults()->size() == 1);
 	setTriggeringResponseSPtr->addResults()->get(statusCode);

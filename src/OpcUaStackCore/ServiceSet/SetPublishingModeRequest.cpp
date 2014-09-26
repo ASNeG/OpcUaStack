@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	SetPublishingModeRequest::SetPublishingModeRequest(void)
 	: ObjectPool<SetPublishingModeRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, publishingEnabled_()
 	, subscriptionIdArraySPtr_(OpcUaUInt32Array::construct())
 	{
@@ -21,18 +20,6 @@ namespace OpcUaStackCore
 
 	SetPublishingModeRequest::~SetPublishingModeRequest(void)
 	{
-	}
-
-	void 
-	SetPublishingModeRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	SetPublishingModeRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -62,7 +49,6 @@ namespace OpcUaStackCore
 	void 
 	SetPublishingModeRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, publishingEnabled_);
 		subscriptionIdArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -70,7 +56,6 @@ namespace OpcUaStackCore
 	void 
 	SetPublishingModeRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, publishingEnabled_);
 		subscriptionIdArraySPtr_->opcUaBinaryDecode(is);
 	}

@@ -13,25 +13,12 @@ namespace OpcUaStackCore
 
 	RepublishResponse::RepublishResponse(void)
 	: ObjectPool<RepublishResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, notificationMessageSPtr_(NotificationMessage::construct())
 	{
 	}
 
 	RepublishResponse::~RepublishResponse(void)
 	{
-	}
-
-	void 
-	RepublishResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	RepublishResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -49,14 +36,12 @@ namespace OpcUaStackCore
 	void 
 	RepublishResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		notificationMessageSPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	RepublishResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		notificationMessageSPtr_->opcUaBinaryDecode(is);
 	}
 }

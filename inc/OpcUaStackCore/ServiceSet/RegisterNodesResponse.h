@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 	    RegisterNodesResponse(void);
 		virtual ~RegisterNodesResponse(void);
 
-		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
 		void registeredNodeIds(const OpcUaNodeIdArray::SPtr registeredNodeIds);
 		OpcUaNodeIdArray::SPtr registeredNodeIds(void) const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ResponseHeader::SPtr responseHeaderSPtr_;
 		OpcUaNodeIdArray::SPtr registeredNodeIdArraySPtr_;
 	};
 }

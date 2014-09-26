@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	CreateMonitoredItemsRequest::CreateMonitoredItemsRequest(void)
 	: ObjectPool<CreateMonitoredItemsRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionId_()
 	, timestampsToReturn_()
 	, itemsToCreateArraySPtr_(MonitoredItemCreateRequestArray::construct())
@@ -22,18 +21,6 @@ namespace OpcUaStackCore
 
 	CreateMonitoredItemsRequest::~CreateMonitoredItemsRequest(void)
 	{
-	}
-	
-	void 
-	CreateMonitoredItemsRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-	
-	RequestHeader::SPtr 
-	CreateMonitoredItemsRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 		
 	void 
@@ -75,7 +62,6 @@ namespace OpcUaStackCore
 	void 
 	CreateMonitoredItemsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)timestampsToReturn_);
 		itemsToCreateArraySPtr_->opcUaBinaryEncode(os);
@@ -85,7 +71,6 @@ namespace OpcUaStackCore
 	CreateMonitoredItemsRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaUInt32 tmp;
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		timestampsToReturn_ = (TimestampsToReturn)tmp;

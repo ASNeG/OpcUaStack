@@ -17,8 +17,6 @@ namespace OpcUaStackCore
 		TranslateBrowsePathsToNodeIdsRequest(void);
 		virtual ~TranslateBrowsePathsToNodeIdsRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void browsePaths(const BrowsePathArray::SPtr browsePaths);
 		BrowsePathArray::SPtr browsePaths(void) const;
 
@@ -26,7 +24,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		BrowsePathArray::SPtr browsePathArraySPtr_;
 	};
 

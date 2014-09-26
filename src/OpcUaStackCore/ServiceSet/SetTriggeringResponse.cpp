@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	SetTriggeringResponse::SetTriggeringResponse(void)
 	: ObjectPool<SetTriggeringResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
 	, addResultArraySPtr_(OpcUaStatusCodeArray::construct())
 	, addDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
 	, removeResultArraySPtr_(OpcUaStatusCodeArray::construct())
@@ -23,18 +22,6 @@ namespace OpcUaStackCore
 
 	SetTriggeringResponse::~SetTriggeringResponse(void)
 	{
-	}
-
-	void 
-	SetTriggeringResponse::responseHeader(const ResponseHeader::SPtr responseHeader)
-	{
-		responseHeaderSPtr_ = responseHeader;
-	}
-
-	ResponseHeader::SPtr 
-	SetTriggeringResponse::responseHeader(void) const
-	{
-		return responseHeaderSPtr_;
 	}
 
 	void 
@@ -88,7 +75,6 @@ namespace OpcUaStackCore
 	void 
 	SetTriggeringResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
 		addResultArraySPtr_->opcUaBinaryEncode(os);
 		addDiagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 		removeResultArraySPtr_->opcUaBinaryEncode(os);
@@ -98,7 +84,6 @@ namespace OpcUaStackCore
 	void 
 	SetTriggeringResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
 		addResultArraySPtr_->opcUaBinaryDecode(is);
 		addDiagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 		removeResultArraySPtr_->opcUaBinaryDecode(is);

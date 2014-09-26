@@ -16,8 +16,6 @@ namespace OpcUaStackCore
 		SetPublishingModeRequest(void);
 		virtual ~SetPublishingModeRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void publishingEnabled(const OpcUaBoolean& publishingEnabled);
 		OpcUaBoolean publishingEnabled(void) const;
 		void subscriptionIds(const OpcUaUInt32Array::SPtr subscriptionIds);
@@ -27,7 +25,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaBoolean publishingEnabled_;
 		OpcUaUInt32Array::SPtr subscriptionIdArraySPtr_;
 	};

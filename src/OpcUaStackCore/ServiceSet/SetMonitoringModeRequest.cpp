@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	SetMonitoringModeRequest::SetMonitoringModeRequest(void)
 	: ObjectPool<SetMonitoringModeRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, subscriptionId_()
 	, monitoringMode_()
 	, monitoredItemIdArraySPtr_(OpcUaUInt32Array::construct())
@@ -24,18 +23,6 @@ namespace OpcUaStackCore
 	{
 	}
 	
-	void 
-	SetMonitoringModeRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-	
-	RequestHeader::SPtr 
-	SetMonitoringModeRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
-	}
-		
 	void 
 	SetMonitoringModeRequest::subscriptionId(const OpcUaUInt32& subscriptionId)
 	{
@@ -75,7 +62,6 @@ namespace OpcUaStackCore
 	void 
 	SetMonitoringModeRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, subscriptionId_);
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)monitoringMode_);
 		monitoredItemIdArraySPtr_->opcUaBinaryEncode(os);
@@ -85,7 +71,6 @@ namespace OpcUaStackCore
 	SetMonitoringModeRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaInt32 tmp;
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, subscriptionId_);
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		monitoringMode_ = (MonitoringMode)tmp;
