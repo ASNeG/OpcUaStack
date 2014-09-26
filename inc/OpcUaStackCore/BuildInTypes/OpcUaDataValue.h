@@ -29,6 +29,8 @@ namespace OpcUaStackCore
 		void serverPicoseconds(const OpcUaUInt16& serverPicoseconds);
 		OpcUaInt16 serverPicoseconds(void);
 
+		void copyTo(OpcUaDataValue& dataValue);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

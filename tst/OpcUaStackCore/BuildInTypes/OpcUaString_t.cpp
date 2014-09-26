@@ -67,4 +67,27 @@ BOOST_AUTO_TEST_CASE(OpcUaString_op_eq)
 	BOOST_REQUIRE(str1 == "DEF");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaString_copyTo)
+{
+	std::stringstream ss;
+	OpcUaString value1, value2;
+
+	value1.value("ABC");
+	
+	value1.copyTo(value2);
+	
+	BOOST_REQUIRE(value1.exist() == true);
+	BOOST_REQUIRE(value1.value() == "ABC");
+	BOOST_REQUIRE(value2.exist() == true);
+	BOOST_REQUIRE(value2.value() == "ABC");
+
+	value1.value("DEF");
+
+	BOOST_REQUIRE(value1.exist() == true);
+	BOOST_REQUIRE(value1.value() == "DEF");
+	BOOST_REQUIRE(value2.exist() == true);
+	BOOST_REQUIRE(value2.value() == "ABC");
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -71,4 +71,29 @@ BOOST_AUTO_TEST_CASE(OpcUaDateTime_in_range)
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "20140506T102013.123456");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDateTime_copyTo)
+{
+	boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
+	boost::posix_time::ptime ptime2; 
+	
+	std::stringstream ss;
+	OpcUaDateTime value1, value2;
+
+	value1.dateTime(ptime1);
+	value1.copyTo(value2);
+
+	ptime1 = value1.dateTime();
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime1) == "20140506T102013.123456");
+	ptime2 = value2.dateTime();
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "20140506T102013.123456");
+
+	ptime1 = boost::posix_time::from_iso_string("20141111T102013.123456789");
+	value1.dateTime(ptime1);
+
+	ptime1 = value1.dateTime();
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime1) == "20141111T102013.123456");
+	ptime2 = value2.dateTime();
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "20140506T102013.123456");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

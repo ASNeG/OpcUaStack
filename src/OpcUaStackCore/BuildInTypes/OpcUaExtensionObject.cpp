@@ -46,6 +46,13 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaExtensionObject::copyTo(OpcUaExtensionObject& extensionObject)
+	{
+		typeId_.copyTo(extensionObject.typeId());
+		body_.copyTo(extensionObject.body());
+	}
+
+	void 
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
 		typeId_.opcUaBinaryEncode(os);
@@ -71,9 +78,6 @@ namespace OpcUaStackCore
 		}
 		else if (encodingByte == 0x01) {
 			body_.opcUaBinaryDecode(is);
-		}
-		else {
-			// FIXME: todo
 		}
 	}
 

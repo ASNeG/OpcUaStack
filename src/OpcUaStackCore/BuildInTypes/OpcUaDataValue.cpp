@@ -95,6 +95,29 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaDataValue::copyTo(OpcUaDataValue& dataValue)
+	{
+		if (opcUaVariantSPtr_.get() != NULL) {
+		    opcUaVariantSPtr_->copyTo(*dataValue.variant());
+		}
+		if (opcUaStatusCode_ != 0) {
+		    dataValue.statusCode(opcUaStatusCode_);
+		}
+		if (sourceTimestamp_.exist()) {
+			dataValue.sourceTimestamp(sourceTimestamp_);
+		}
+		if (serverTimestamp_.exist()) {
+			dataValue.serverTimestamp(serverTimestamp_);
+		}
+		if (sourcePicoseconds_ != 0) {
+			dataValue.sourcePicoseconds(sourcePicoseconds_);
+		}
+		if (serverPicoseconds_ != 0) {
+			dataValue.serverPicoseconds(serverPicoseconds_);
+		}
+	}
+
+	void 
 	OpcUaDataValue::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte encodingMask = 0x00;

@@ -72,6 +72,13 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaLocalizedText::copyTo(OpcUaLocalizedText& localizedText)
+	{
+		locale_.copyTo(localizedText.locale());
+		text_.copyTo(localizedText.text());
+	}
+
+	void 
 	OpcUaLocalizedText::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte encodingMask = 0x00;

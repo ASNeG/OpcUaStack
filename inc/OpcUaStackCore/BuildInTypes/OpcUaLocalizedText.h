@@ -24,6 +24,8 @@ namespace OpcUaStackCore
 		void text(const std::string& text);
 		OpcUaString& text(void);
 
+		void copyTo(OpcUaLocalizedText& localizedText);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

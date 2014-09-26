@@ -27,6 +27,8 @@ namespace OpcUaStackCore
 		operator std::string const (void); 
 		operator OpcUaUInt16 const (void);
 
+		void copyTo(OpcUaQualifiedName& qualifiedName);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

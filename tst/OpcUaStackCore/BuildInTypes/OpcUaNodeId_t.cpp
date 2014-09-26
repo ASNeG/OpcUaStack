@@ -199,6 +199,17 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_copyTo2)
 	opcUaString2 = opcUaNodeId2.nodeId<OpcUaString::SPtr>(); 
 	std::string nodeId = opcUaString2->value();
 	BOOST_REQUIRE(nodeId == "ABC");
+
+	opcUaString1->value("DEF");
+
+	BOOST_REQUIRE(opcUaNodeId1.namespaceIndex() == 4711);
+	opcUaString1 = opcUaNodeId1.nodeId<OpcUaString::SPtr>(); 
+	nodeId = opcUaString1->value();
+	BOOST_REQUIRE(nodeId == "DEF");
+	BOOST_REQUIRE(opcUaNodeId2.namespaceIndex() == 4711);
+	opcUaString2 = opcUaNodeId2.nodeId<OpcUaString::SPtr>(); 
+	nodeId = opcUaString2->value();
+	BOOST_REQUIRE(nodeId == "ABC");
 }
 
 BOOST_AUTO_TEST_CASE(OpcUaNodeId_map_OpcUaUInt32)

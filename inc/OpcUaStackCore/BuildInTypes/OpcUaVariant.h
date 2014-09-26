@@ -70,6 +70,8 @@ namespace OpcUaStackCore
 			  variantValue_ = val;
 		  }
 		void variant(const OpcUaGuid::SPtr valSPtr);
+		void variant(const OpcUaByteString::SPtr valSPtr);
+		void variant(const OpcUaString::SPtr valSPtr);
 		void variant(const OpcUaXmlElement::SPtr valSPtr);
 		void variant(const OpcUaNodeId::SPtr valSPtr);
 		void variant(const OpcUaExpandedNodeId::SPtr valSPtr);
@@ -88,6 +90,8 @@ namespace OpcUaStackCore
 		      OpcUaVariantSPtr val = boost::get<OpcUaVariantSPtr>(variantValue_);
 			  return boost::static_pointer_cast<VAL>(val.objectSPtr_);
 		  }
+
+		  void copyTo(OpcUaVariantValue& variantValue);
 
 		  void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
 		  void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
@@ -115,6 +119,10 @@ namespace OpcUaStackCore
 
 		OpcUaBuildInType variantType(void) const;
 		template<typename VAL>
+		  void variant(uint32_t pos, const VAL& val) {
+			  variantValueVec_[pos].variant(val);
+		  }
+		template<typename VAL>
 		  void variant(const VAL& val) {
 			  clear();
 			  variantValueVec_[0].variant(val);
@@ -130,6 +138,8 @@ namespace OpcUaStackCore
 		  {
 			  return variantValueVec_[0].variantSPtr<VAL>();
 		  }
+
+		void copyTo(OpcUaVariant& variant);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

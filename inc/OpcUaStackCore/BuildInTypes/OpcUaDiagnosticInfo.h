@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 		void setInnerStatusCode(const OpcUaStatusCode innerStatusCode);
 		OpcUaStatusCode getInnerStatusCode() const;
 
+		void copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

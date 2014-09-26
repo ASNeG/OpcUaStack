@@ -103,6 +103,28 @@ namespace OpcUaStackCore
 		return innerStatusCode_;
 	}
 
+	void 
+	OpcUaDiagnosticInfo::copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo)
+	{
+		if (symbolicId_ != -1) {
+			opcUaDiagnosticInfo.setSymbolicId(symbolicId_);
+		}
+		if (namespaceUri_ != -1) {
+			opcUaDiagnosticInfo.setNamespaceUri(namespaceUri_);
+		}
+		if (localizedText_ != -1) {
+			opcUaDiagnosticInfo.setLocalizedText(localizedText_);
+		}
+		if (locale_ != -1) {
+			opcUaDiagnosticInfo.setLocale(locale_);
+		}
+		if (additionalInfo_.exist()) {
+			opcUaDiagnosticInfo.setAdditionalInfo(additionalInfo_);
+		}
+		if (innerStatusCode_ != 0) {
+			opcUaDiagnosticInfo.setInnerStatusCode(innerStatusCode_);
+		}
+	}
 
 	void 
 	OpcUaDiagnosticInfo::opcUaBinaryEncode(std::ostream& os) const

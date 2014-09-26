@@ -79,4 +79,28 @@ BOOST_AUTO_TEST_CASE(OpcUaString_reset)
 	BOOST_REQUIRE(length == -1);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaString_copyTo)
+{
+	std::string str;
+	std::stringstream ss;
+	OpcUaByteString value1, value2;
+
+	value1 = "ABC";
+
+	value1.copyTo(value2);
+
+	str = value1;
+	BOOST_REQUIRE(str == "ABC");
+	str = value2;
+	BOOST_REQUIRE(str == "ABC");
+
+	value2 = "DEF";
+
+	str = value1;
+	BOOST_REQUIRE(str == "ABC");
+	str = value2;
+	BOOST_REQUIRE(str == "DEF");
+	
+}
+
 BOOST_AUTO_TEST_SUITE_END()

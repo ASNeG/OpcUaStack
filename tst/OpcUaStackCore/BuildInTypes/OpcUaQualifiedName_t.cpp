@@ -27,4 +27,28 @@ BOOST_AUTO_TEST_CASE(OpcUaQualifiedName_encode_decode)
 	BOOST_REQUIRE(value2.namespaceIndex() == 12);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaQualifiedName_copyTo)
+{
+	std::stringstream ss;
+	OpcUaQualifiedName value1, value2;
+
+	value1 = "ABC";			// name
+	value1 = 12;			// namespaceIndex
+	
+	value1.copyTo(value2);
+
+	BOOST_REQUIRE(value1.name().value() == "ABC");
+	BOOST_REQUIRE(value1.namespaceIndex() == 12);
+	BOOST_REQUIRE(value2.name().value() == "ABC");
+	BOOST_REQUIRE(value2.namespaceIndex() == 12);
+
+	value1 = "DEF";	
+
+	BOOST_REQUIRE(value1.name().value() == "DEF");
+	BOOST_REQUIRE(value1.namespaceIndex() == 12);
+	BOOST_REQUIRE(value2.name().value() == "ABC");
+	BOOST_REQUIRE(value2.namespaceIndex() == 12);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()

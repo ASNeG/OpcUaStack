@@ -25,6 +25,8 @@ namespace OpcUaStackCore
 		void serverIndex(OpcUaUInt32 serverIndex);
 		OpcUaUInt32 serverIndex(void); 
 
+		void copyTo(OpcUaExpandedNodeId& opcUaExpandedNodeId);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

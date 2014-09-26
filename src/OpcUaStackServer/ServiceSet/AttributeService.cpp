@@ -87,6 +87,12 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
+			if (attribute == nullptr) {
+				dataValue->statusCode(BadAttributeIdInvalid);
+				continue;
+			}
+
 			OpcUaDateTime sourceTimestamp, serverTimestamp;
 			sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
 			serverTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());

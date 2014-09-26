@@ -16,6 +16,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_encode_decode)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
+	BOOST_REQUIRE(value1.variantType() == OpcUaBuildInType_Unknown);
 	
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
@@ -33,6 +34,34 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaBoolean)
 	
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
+
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaBoolean);
+	BOOST_REQUIRE(value2.variant<OpcUaBoolean>() == true);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaBoolean_copyTo)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.variant((OpcUaBoolean)true);
+	
+	value1.copyTo(value2);
+
+	BOOST_REQUIRE(value1.arrayLength() == -1);
+	BOOST_REQUIRE(value1.variantType() == OpcUaBuildInType_OpcUaBoolean);
+	BOOST_REQUIRE(value1.variant<OpcUaBoolean>() == true);
+
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaBoolean);
+	BOOST_REQUIRE(value2.variant<OpcUaBoolean>() == true);
+
+	value1.variant((OpcUaBoolean)false);
+
+	BOOST_REQUIRE(value1.arrayLength() == -1);
+	BOOST_REQUIRE(value1.variantType() == OpcUaBuildInType_OpcUaBoolean);
+	BOOST_REQUIRE(value1.variant<OpcUaBoolean>() == false);
 
 	BOOST_REQUIRE(value2.arrayLength() == -1);
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaBoolean);
@@ -349,6 +378,71 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaLocalizedText)
 	BOOST_REQUIRE(value2.variantSPtr<OpcUaLocalizedText>()->text().value() == "text");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaString)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	OpcUaString::SPtr stringSPtr = OpcUaString::construct();
+
+	stringSPtr->value("text");
+	value1.variant(stringSPtr);
+	
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaString>()->value() == "text");
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaString_copyTo)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	OpcUaString::SPtr stringSPtr = OpcUaString::construct();
+
+	stringSPtr->value("text");
+	value1.variant(stringSPtr);
+	
+	value1.copyTo(value2);
+
+	BOOST_REQUIRE(value1.arrayLength() == -1);
+	BOOST_REQUIRE(value1.variantType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(value1.variantSPtr<OpcUaString>()->value() == "text");
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaString>()->value() == "text");
+
+	value1.variantSPtr<OpcUaString>()->value("text1");
+
+	BOOST_REQUIRE(value1.arrayLength() == -1);
+	BOOST_REQUIRE(value1.variantType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(value1.variantSPtr<OpcUaString>()->value() == "text1");
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(value2.variantSPtr<OpcUaString>()->value() == "text");
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaByteString)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	OpcUaByteString::SPtr byteStringSPtr = OpcUaByteString::construct();
+
+	byteStringSPtr->value("text", 4);
+	value1.variant(byteStringSPtr);
+	
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+
+	OpcUaByte *buf;
+	OpcUaInt32 bufLen;
+	value2.variantSPtr<OpcUaByteString>()->value(&buf, &bufLen);
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_OpcUaByteString);
+	BOOST_REQUIRE(strncmp((char*)buf, "text", 4) == 0);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExtensionObject)
 {
 	std::stringstream ss;
@@ -418,6 +512,49 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_2)
 	value1.opcUaBinaryEncode(ss); 
 	value2.opcUaBinaryDecode(ss);
 	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value2.arrayLength() == 2);
+    BOOST_REQUIRE(variantVec2.size() == 2);
+	BOOST_REQUIRE(variantVec2[0].variant<OpcUaUInt32>() == 1);
+	BOOST_REQUIRE(variantVec2[1].variant<OpcUaUInt32>() == 2);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_2_copyTo)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	
+	OpcUaVariantValue variantValue;
+	variantValue.variant((OpcUaUInt32)1);
+	variantVec1.push_back(variantValue);
+	variantValue.variant((OpcUaUInt32)2);
+	variantVec1.push_back(variantValue);
+
+	value1.variant(variantVec1);
+	value1.copyTo(value2);
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value1.arrayLength() == 2);
+    BOOST_REQUIRE(variantVec1.size() == 2);
+	BOOST_REQUIRE(variantVec1[0].variant<OpcUaUInt32>() == 1);
+	BOOST_REQUIRE(variantVec1[1].variant<OpcUaUInt32>() == 2);
+
+	BOOST_REQUIRE(value2.arrayLength() == 2);
+    BOOST_REQUIRE(variantVec2.size() == 2);
+	BOOST_REQUIRE(variantVec2[0].variant<OpcUaUInt32>() == 1);
+	BOOST_REQUIRE(variantVec2[1].variant<OpcUaUInt32>() == 2);
+
+	value1.variant(0, (OpcUaUInt32)3);
+	value1.variant(1, (OpcUaUInt32)4);
+	variantVec1 = value1.variant();
+	variantVec2 = value2.variant();
+
+	BOOST_REQUIRE(value1.arrayLength() == 2);
+    BOOST_REQUIRE(variantVec1.size() == 2);
+	BOOST_REQUIRE(variantVec1[0].variant<OpcUaUInt32>() == 3);
+	BOOST_REQUIRE(variantVec1[1].variant<OpcUaUInt32>() == 4);
 
 	BOOST_REQUIRE(value2.arrayLength() == 2);
     BOOST_REQUIRE(variantVec2.size() == 2);

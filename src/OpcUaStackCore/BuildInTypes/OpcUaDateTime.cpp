@@ -75,4 +75,10 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, dateTime_);
 	}
 
+	void 
+	OpcUaDateTime::copyTo(OpcUaDateTime& opcUaDataTime)
+	{
+		opcUaDataTime = dateTime_;
+	}
+
 }

@@ -60,4 +60,32 @@ BOOST_AUTO_TEST_CASE(OpcUaGuid_binary)
 	//BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaGuid_copyTo)
+{
+	std::string str;
+	std::stringstream ss;
+	OpcUaGuid value1, value2;
+
+	value1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	str = value2;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+
+	value1 = "12345678-9abc-def0-1234-56789abcdef0";
+	value1.copyTo(value2);
+
+	str = value1;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	str = value2;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+
+	value1 = "12345678-9abc-def0-1234-56789abcdef1";
+
+	str = value1;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF1");
+	str = value2;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

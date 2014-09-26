@@ -69,6 +69,24 @@ namespace OpcUaStackCore
 		variantValue_ = val;
 	}
 
+	void 
+	OpcUaVariantValue::variant(const OpcUaByteString::SPtr valSPtr) 
+	{
+		OpcUaVariantSPtr val;
+		val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaByteString;
+		val.objectSPtr_ = valSPtr;
+		variantValue_ = val;
+	}
+
+	void 
+	OpcUaVariantValue::variant(const OpcUaString::SPtr valSPtr) 
+	{
+		OpcUaVariantSPtr val;
+		val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaString;
+		val.objectSPtr_ = valSPtr;
+		variantValue_ = val;
+	}
+
 	void  
 	OpcUaVariantValue::variant(const OpcUaXmlElement::SPtr valSPtr)
 	{
@@ -126,6 +144,183 @@ namespace OpcUaStackCore
 		val.objectSPtr_ = valSPtr;
 		val.objectSPtr_ = valSPtr;
 		variantValue_ = val;
+	}
+
+	void 
+	OpcUaVariantValue::copyTo(OpcUaVariantValue& variantValue)
+	{
+		switch (variantType()) 
+		{
+			case  OpcUaBuildInType_OpcUaBoolean:
+			{
+				OpcUaBoolean value;
+				value = boost::get<OpcUaBoolean>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte value;
+				value = boost::get<OpcUaSByte>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaByte value;
+				value = boost::get<OpcUaByte>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaInt16:
+			{
+				OpcUaInt16 value;
+				value = boost::get<OpcUaInt16>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value;
+				value = boost::get<OpcUaUInt16>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 value;
+				value = boost::get<OpcUaInt32>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value;
+				value = boost::get<OpcUaUInt32>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaInt64:
+			{
+				OpcUaInt64 value;
+				value = boost::get<OpcUaInt64>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaUInt64:
+			{
+				OpcUaUInt64 value;
+				value = boost::get<OpcUaUInt64>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat value;
+				value = boost::get<OpcUaFloat>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble value;
+				value = boost::get<OpcUaDouble>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime value;
+				boost::get<OpcUaDateTime>(variantValue_).copyTo(value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaStatusCode:
+			{
+				OpcUaInt32 value; 
+				value = boost::get<OpcUaStatusCode>(variantValue_);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = OpcUaGuid::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaGuid::SPtr opcUaGuidSPtr = boost::static_pointer_cast<OpcUaGuid>(opcUaVariantSPtr.objectSPtr_);
+				opcUaGuidSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr value = OpcUaByteString::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaByteString::SPtr opcUaByteStringSPtr = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr.objectSPtr_);
+				opcUaByteStringSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = OpcUaString::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaString::SPtr opcUaStringSPtr = boost::static_pointer_cast<OpcUaString>(opcUaVariantSPtr.objectSPtr_);
+				opcUaStringSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaXmlElement:
+			{
+				// FIXME: actualy not used
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaNodeId::SPtr value = OpcUaNodeId::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaNodeId::SPtr opcUaNodeIdSPtr = boost::static_pointer_cast<OpcUaNodeId>(opcUaVariantSPtr.objectSPtr_);
+				opcUaNodeIdSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				OpcUaExpandedNodeId::SPtr value = OpcUaExpandedNodeId::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = boost::static_pointer_cast<OpcUaExpandedNodeId>(opcUaVariantSPtr.objectSPtr_);
+				opcUaExpandedNodeIdSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				std::cout << "copy ..." << std::endl;
+				OpcUaQualifiedName::SPtr value = OpcUaQualifiedName::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = boost::static_pointer_cast<OpcUaQualifiedName>(opcUaVariantSPtr.objectSPtr_);
+				opcUaQualifiedNameSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				OpcUaLocalizedText::SPtr value = OpcUaLocalizedText::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = boost::static_pointer_cast<OpcUaLocalizedText>(opcUaVariantSPtr.objectSPtr_);
+				opcUaLocalizedTextSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				OpcUaExtensionObject::SPtr value = OpcUaExtensionObject::construct();
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = boost::static_pointer_cast<OpcUaExtensionObject>(opcUaVariantSPtr.objectSPtr_);
+				opcUaExtensionObjectSPtr->copyTo(*value);
+				variantValue.variant(value);
+				break;
+			}
+		}
 	}
 
 	void 
@@ -211,6 +406,13 @@ namespace OpcUaStackCore
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaByteString::SPtr opcUaByteStringSPtr = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr.objectSPtr_);
 				opcUaByteStringSPtr->opcUaBinaryEncode(os);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaString::SPtr opcUaStringSPtr = boost::static_pointer_cast<OpcUaString>(opcUaVariantSPtr.objectSPtr_);
+				opcUaStringSPtr->opcUaBinaryEncode(os);
 				break;
 			}
 			case  OpcUaBuildInType_OpcUaXmlElement:
@@ -390,6 +592,17 @@ namespace OpcUaStackCore
 				variantValue_ = val;
 				break;
 			}
+			case  OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaVariantSPtr val;
+
+				OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+				opcUaStringSPtr->opcUaBinaryDecode(is);
+				val.objectSPtr_ = opcUaStringSPtr;
+				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaString;
+				variantValue_ = val;
+				break;
+			}
 			case  OpcUaBuildInType_OpcUaXmlElement:
 			{
 				OpcUaVariantSPtr val;
@@ -561,16 +774,35 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaVariant::copyTo(OpcUaVariant& variant)
+	{
+		variant.variant().clear();
+		OpcUaVariantValue::Vec& sourceVariantValueVec = this->variant();
+		OpcUaVariantValue::Vec& destVariantValueVec = variant.variant();
+
+		OpcUaVariantValue::Vec::iterator it;
+		for (it = sourceVariantValueVec.begin(); it != sourceVariantValueVec.end(); it++) {
+			OpcUaVariantValue value;
+			it->copyTo(value);
+			destVariantValueVec.push_back(value);
+		}
+
+		variant.arrayLength(arrayLength_);
+		variant.arrayDimension(arrayDimensionsVec_);
+	}
+
+	void 
 	OpcUaVariant::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaBuildInType variantType = this->variantType();
 		OpcUaByte encodingMask = (OpcUaByte)variantType;
+		OpcUaInt32 arrayLength = arrayLength_;
 
-		if (variantType == OpcUaBuildInType_Unknown && variantValueVec_.size() != 0) {
-			return;
-		}
-			 
-		if (arrayLength_ != -1) {
+		// handle array 
+		if (arrayLength != -1 && arrayLength != variantValueVec_.size()) arrayLength = 0;
+		if (arrayLength != -1 && variantType == OpcUaBuildInType_Unknown) arrayLength = 0; 
+
+		if (arrayLength != -1) {
 			encodingMask += 64;
 		}
 
@@ -579,19 +811,21 @@ namespace OpcUaStackCore
 		}
 
 		OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
-		if (arrayLength_ != -1) {
-			OpcUaNumber::opcUaBinaryEncode(os, arrayLength_);
+		if (arrayLength != -1) {
+			OpcUaNumber::opcUaBinaryEncode(os, arrayLength);
 		}
 
-		if (arrayLength_ == -1) {
-		    variantValueVec_[0].opcUaBinaryEncode(os, variantType);
-		}
-		else if (arrayLength_ == 0) {
-		} 
-		else {
-			OpcUaVariantValue::Vec::const_iterator it;
-			for (it = variantValueVec_.begin(); it != variantValueVec_.end(); it++) {
-				it->opcUaBinaryEncode(os, variantType);
+		if (variantType != OpcUaBuildInType_Unknown) {
+			if (arrayLength == -1) {
+				variantValueVec_[0].opcUaBinaryEncode(os, variantType);
+			}
+			else if (arrayLength == 0) {
+			} 
+			else {
+				OpcUaVariantValue::Vec::const_iterator it;
+				for (it = variantValueVec_.begin(); it != variantValueVec_.end(); it++) {
+					it->opcUaBinaryEncode(os, variantType);
+				}
 			}
 		}
 
@@ -616,19 +850,23 @@ namespace OpcUaStackCore
 		}
 
 		OpcUaByte encodingMaskTmp = encodingMask & 0x3F;
+		OpcUaBuildInType variantType = (OpcUaBuildInType)encodingMaskTmp;
 
-		if (arrayLength_ == -1) {
-		    variantValueVec_[0].opcUaBinaryDecode(is, (OpcUaBuildInType)encodingMaskTmp);
-		}
-		else if (arrayLength_ == 0) {
-			variantValueVec_.clear();
-		}
-		else {
-			variantValueVec_.clear();
-			for (uint32_t idx=0; idx<(uint32_t)arrayLength_; idx++) {
+		variantValueVec_.clear();
+		if (variantType != OpcUaBuildInType_Unknown) {
+			if (arrayLength_ == -1) {
 				OpcUaVariantValue variantValue;
-				variantValue.opcUaBinaryDecode(is, (OpcUaBuildInType)encodingMaskTmp);
 				variantValueVec_.push_back(variantValue);
+				variantValueVec_[0].opcUaBinaryDecode(is, variantType);
+			}
+			else if (arrayLength_ == 0) {
+			}
+			else {
+				for (uint32_t idx=0; idx<(uint32_t)arrayLength_; idx++) {
+					OpcUaVariantValue variantValue;
+					variantValue.opcUaBinaryDecode(is, variantType);
+					variantValueVec_.push_back(variantValue);
+				}
 			}
 		}
 

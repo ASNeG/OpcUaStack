@@ -71,6 +71,14 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaExpandedNodeId::copyTo(OpcUaExpandedNodeId& opcUaExpandedNodeId)
+	{
+		OpcUaNodeIdBase::copyTo(opcUaExpandedNodeId);
+		if (namespaceUri_.size() > 0) opcUaExpandedNodeId.namespaceUri(namespaceUri_);
+		if (serverIndex_ != 0) opcUaExpandedNodeId.serverIndex(serverIndex_);
+	}
+
+	void 
 	OpcUaExpandedNodeId::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNodeIdBase::opcUaBinaryEncode(os);

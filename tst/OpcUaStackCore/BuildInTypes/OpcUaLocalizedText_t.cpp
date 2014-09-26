@@ -68,4 +68,35 @@ BOOST_AUTO_TEST_CASE(OpcUaLocalizedText_locale_yes_text_yes)
 	BOOST_REQUIRE(value2.text().value() == "text");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaLocalizedText_copyTo)
+{
+	std::stringstream ss;
+	OpcUaLocalizedText value1, value2;
+	
+	value1.locale("locale");
+	value1.text("text");
+	value1.copyTo(value2);
+
+	BOOST_REQUIRE(value1.locale().exist() == true);
+	BOOST_REQUIRE(value1.text().exist() == true);
+	BOOST_REQUIRE(value1.locale().value() == "locale");
+	BOOST_REQUIRE(value1.text().value() == "text");
+	BOOST_REQUIRE(value2.locale().exist() == true);
+	BOOST_REQUIRE(value2.text().exist() == true);
+	BOOST_REQUIRE(value2.locale().value() == "locale");
+	BOOST_REQUIRE(value2.text().value() == "text");
+
+	value1.locale("locale1");
+	value1.text("text1");
+
+	BOOST_REQUIRE(value1.locale().exist() == true);
+	BOOST_REQUIRE(value1.text().exist() == true);
+	BOOST_REQUIRE(value1.locale().value() == "locale1");
+	BOOST_REQUIRE(value1.text().value() == "text1");
+	BOOST_REQUIRE(value2.locale().exist() == true);
+	BOOST_REQUIRE(value2.text().exist() == true);
+	BOOST_REQUIRE(value2.locale().value() == "locale");
+	BOOST_REQUIRE(value2.text().value() == "text");
+}
+
 BOOST_AUTO_TEST_SUITE_END()

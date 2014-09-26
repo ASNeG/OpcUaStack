@@ -123,4 +123,50 @@ BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_10_element)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaArraySPtr_copyTo_string)
+{
+	std::stringstream ss;
+	OpcUaStringArray value1, value2;
+
+	value1.resize(10);
+	OpcUaString::SPtr value1SPtr;
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1SPtr = OpcUaString::construct();
+		*value1SPtr = std::string("string1");
+		value1.set(idx, value1SPtr);
+	}
+
+	value1.copyTo(value2);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaString::SPtr value2SPtr;
+		value1.get(idx, value2SPtr);
+		BOOST_REQUIRE(value2SPtr->value() == "string1");
+	}
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaString::SPtr value2SPtr;
+		value2.get(idx, value2SPtr);
+		BOOST_REQUIRE(value2SPtr->value() == "string1");
+	}
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1SPtr = OpcUaString::construct();
+		*value1SPtr = std::string("string2");
+		value1.set(idx, value1SPtr);
+	}
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaString::SPtr value2SPtr;
+		value1.get(idx, value2SPtr);
+		BOOST_REQUIRE(value2SPtr->value() == "string2");
+	}
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaString::SPtr value2SPtr;
+		value2.get(idx, value2SPtr);
+		BOOST_REQUIRE(value2SPtr->value() == "string1");
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()

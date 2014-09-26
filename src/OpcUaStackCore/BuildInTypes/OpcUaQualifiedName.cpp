@@ -90,6 +90,13 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaQualifiedName::copyTo(OpcUaQualifiedName& qualifiedName)
+	{
+		qualifiedName.namespaceIndex(namespaceIndex_);
+		name_.copyTo(qualifiedName.name());
+	}
+
+	void 
 	OpcUaQualifiedName::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);

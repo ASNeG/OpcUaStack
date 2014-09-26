@@ -19,6 +19,8 @@ namespace OpcUaStackCore
 		void body(const OpcUaByteString& body);
 		OpcUaByteString& body(void);
 
+		void copyTo(OpcUaExtensionObject& extensionObject);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

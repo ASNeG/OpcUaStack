@@ -21,6 +21,8 @@ namespace OpcUaStackCore
 		OpcUaDateTime& operator=(const OpcUaUInt64& dateTime); 
 		operator OpcUaUInt64 const (void); 
 
+		void copyTo(OpcUaDateTime& opcUaDataTime);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
