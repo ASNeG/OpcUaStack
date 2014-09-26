@@ -32,6 +32,11 @@ namespace OpcUaStackServer
 	bool 
 	SecureChannelServer::connect(void)
 	{
+		remoteEndpointAddress_ = tcpConnection_.socket().remote_endpoint().address().to_string();
+		remoteEndpointPort_ = tcpConnection_.socket().remote_endpoint().port();
+		localEndpointAddress_ = tcpConnection_.socket().local_endpoint().address().to_string();
+		localEndpointPort_ = tcpConnection_.socket().local_endpoint().port();
+
 		if (secureChannelServerState_ != SecureChannelServerState_Close) {
 			return false;
 		}
@@ -50,14 +55,11 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessageHeaderError(void)
 	{
-		boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 		Log(Info, "close connection")
-			.parameter("LocalAddress", localEndpoint.address().to_string())
-			.parameter("LocalPort", localEndpoint.port())
-			.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-			.parameter("PartnerPort", remoteEndpoint.port());
+			.parameter("LocalAddress", localEndpointAddress_)
+			.parameter("LocalPort", localEndpointPort_)
+			.parameter("PartnerAddress",  remoteEndpointAddress_)
+			.parameter("PartnerPort", remoteEndpointPort_);
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
 		
@@ -68,14 +70,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadMessageHeaderTypeHello(MessageHeader& messageHeader)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitHello) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-			
 			Log(Error, "cannot read hello, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -95,14 +94,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadHello(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitHello) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read hello, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -147,14 +143,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleWriteAcknowledgeComplete(const boost::system::error_code& error)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelClientState_WaitOpenSecureChannel;
@@ -170,14 +163,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -197,14 +187,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
 		if (secureChannelServerState_ != SecureChannelClientState_WaitOpenSecureChannel) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -269,10 +256,10 @@ namespace OpcUaStackServer
 		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
 
 		Log(Info, "accept secure channel from client")
-			.parameter("LocalAddress", localEndpoint.address().to_string())
-			.parameter("LocalPort", localEndpoint.port())
-			.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-			.parameter("PartnerPort", remoteEndpoint.port());
+			.parameter("LocalAddress", localEndpointAddress_)
+			.parameter("LocalPort", localEndpointPort_)
+			.parameter("PartnerAddress",  remoteEndpointAddress_)
+			.parameter("PartnerPort", remoteEndpointPort_);
 
 		tcpConnection_.async_write(
 			sb2, sb1, boost::bind(&SecureChannelServer::handleWriteOpenSecureChannelComplete, this, boost::asio::placeholders::error)
@@ -283,14 +270,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleWriteOpenSecureChannelComplete(const boost::system::error_code& error)
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read open message, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -306,13 +290,11 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader)
 	{
-		boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-		boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
 		Log(Info, "close secure channel by partner")
-			.parameter("LocalAddress", localEndpoint.address().to_string())
-			.parameter("LocalPort", localEndpoint.port())
-			.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-			.parameter("PartnerPort", remoteEndpoint.port());
+			.parameter("LocalAddress", localEndpointAddress_)
+			.parameter("LocalPort", localEndpointPort_)
+			.parameter("PartnerAddress",  remoteEndpointAddress_)
+			.parameter("PartnerPort", remoteEndpointPort_);
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
 			
@@ -324,14 +306,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader)
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read message header, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -354,14 +333,11 @@ namespace OpcUaStackServer
 			.parameter("BodySize", bytes_transfered);
 
 		if (error) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read message body")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("ErrorMessage", error.message());
 
 			tcpConnection_.close();
@@ -372,14 +348,11 @@ namespace OpcUaStackServer
 		}
 
 		if (bytes_transfered == 0) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read message body, because secure channel is closed by partner")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port());
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_);
 
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -389,14 +362,11 @@ namespace OpcUaStackServer
 		}
 
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot read message body, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_);
 
 			tcpConnection_.close();
@@ -426,14 +396,11 @@ namespace OpcUaStackServer
 		if (secureChannelIf_ != nullptr) {
 			bool rc = secureChannelIf_->receive(nodeId, is_, secureChannelTransaction);
 			if (rc == false) {
-				boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-				boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 				Log(Error, "cannot read message body, because message handler error")
-					.parameter("LocalAddress", localEndpoint.address().to_string())
-					.parameter("LocalPort", localEndpoint.port())
-					.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-					.parameter("PartnerPort", remoteEndpoint.port())
+					.parameter("LocalAddress", localEndpointAddress_)
+					.parameter("LocalPort", localEndpointPort_)
+					.parameter("PartnerAddress",  remoteEndpointAddress_)
+					.parameter("PartnerPort", remoteEndpointPort_)
 					.parameter("SecureChannelState", secureChannelServerState_);
 
 				tcpConnection_.close();
@@ -451,14 +418,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot send message, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecurechannelState", secureChannelServerState_);
 
 			tcpConnection_.close();
@@ -511,14 +475,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleWriteSendComplete(const boost::system::error_code& error)
 	{
 		if (error) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "send message error")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port());
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_);
 			
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
@@ -528,14 +489,11 @@ namespace OpcUaStackServer
 		}
 
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
-			boost::asio::ip::tcp::endpoint remoteEndpoint = tcpConnection_.socket().remote_endpoint();
-			boost::asio::ip::tcp::endpoint localEndpoint = tcpConnection_.socket().local_endpoint();
-
 			Log(Error, "cannot receive message, because secure channel is in invalid state")
-				.parameter("LocalAddress", localEndpoint.address().to_string())
-				.parameter("LocalPort", localEndpoint.port())
-				.parameter("PartnerAddress",  remoteEndpoint.address().to_string())
-				.parameter("PartnerPort", remoteEndpoint.port())
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
 				.parameter("SecureChannelState", secureChannelServerState_)
 				.parameter("ErrorMessage", error.message());
 

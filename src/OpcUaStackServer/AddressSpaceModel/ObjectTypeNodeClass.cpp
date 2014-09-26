@@ -31,6 +31,9 @@ namespace OpcUaStackServer
 
 	OpcUaNodeIdList& 
 	ObjectTypeNodeClass::hasComponent(void)
+	{
+		return hasComponent_;
+	}
 
 	void 
 	ObjectTypeNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)

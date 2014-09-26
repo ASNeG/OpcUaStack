@@ -51,6 +51,11 @@ namespace OpcUaStackServer
 		uint32_t tokenId_;
 		SecureChannelIf* secureChannelIf_;
 		SecureChannelServerState secureChannelServerState_;
+
+		std::string remoteEndpointAddress_;
+		uint32_t remoteEndpointPort_;
+		std::string localEndpointAddress_;
+		uint32_t localEndpointPort_;
 	};
 
 }
