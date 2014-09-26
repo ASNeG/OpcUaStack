@@ -25,8 +25,9 @@ namespace OpcUaStackCore
 			  ByteOrder<T>::opcUaBinaryDecodeNumber(is, value);
 		  }
 
-		  static T copy(T& sourceValue)
+		  static T copy(T& sourceValue, T& destValue)
 		  {
+			  destValue = sourceValue;
 			  return sourceValue;
 		  }
 	};
@@ -45,13 +46,11 @@ namespace OpcUaStackCore
 			  value.opcUaBinaryDecode(is);
 		  }
 
-		  static T& copy(T& sourceValue)
+		  static T& copy(T& sourceValue, T& destValue)
 		  {
-			  sourceValue.copyTo(destValue_);
-			  return destValue_;
+			  sourceValue.copyTo(destValue);
+			  return destValue;
 		  }
-
-		  T destValue_;
 	};
 
 	template <typename T>
@@ -71,8 +70,9 @@ namespace OpcUaStackCore
 			  value = (T)v;
 		  }
 
-		  static T copy(T& sourceValue)
+		  static T copy(T& sourceValue, T& destValue)
 		  {
+			  destValue = sourceValue;
 			  return sourceValue;
 		  }
 	};
@@ -92,9 +92,9 @@ namespace OpcUaStackCore
 			  value->opcUaBinaryDecode(is);
 		  }
 
-		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue)
+		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
 		  {
-			  boost::shared_ptr<T> destValue = T::construct();
+			  destValue = T::construct();
 			  sourceValue->copyTo(*destValue);
 			  return destValue;
 		  }
@@ -268,7 +268,9 @@ namespace OpcUaStackCore
 		if (actArrayLen_ == 0) return;
 		array.resize(actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			array.set(idx, CODER::copy(valueArray_[idx]));
+			T destValue;
+			CODER::copy(valueArray_[idx], destValue);
+			array.set(idx, destValue);
 		}
 	}
 		
