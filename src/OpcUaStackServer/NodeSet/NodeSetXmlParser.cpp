@@ -252,8 +252,8 @@ namespace OpcUaStackServer
 			if (*eventNotifier == "1") {
 				objectNodeClassSPtr->eventNotifier().data(1);
 			} else {
-				Log(Warning, "element EventNotifier not exist in node set")
-					.parameter("NodeId", nodeId);
+				//Log(Warning, "element EventNotifier not exist in node set")
+				//	.parameter("NodeId", nodeId);
 				objectNodeClassSPtr->eventNotifier().data(0);
 			}
 		}
@@ -290,8 +290,8 @@ namespace OpcUaStackServer
 		if (isAbstract) {
 			objectTypeNodeClassSPtr->isAbstract().data(*isAbstract);
 		} else {
-			Log(Warning, "element isAbstract not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element isAbstract not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			objectTypeNodeClassSPtr->isAbstract().data(false);
 		}
 
@@ -333,8 +333,8 @@ namespace OpcUaStackServer
 		if (valueRank) {
 			variableNodeClassSPtr->valueRank().data(*valueRank);
 		} else {
-			Log(Warning, "element ValueRank not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element ValueRank not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->valueRank().data(0);
 		}
 		
@@ -345,8 +345,8 @@ namespace OpcUaStackServer
 		if (accessLevel) {
 			variableNodeClassSPtr->accessLevel().data(*accessLevel);
 		} else {
-			Log(Warning, "element AccessLevel not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element AccessLevel not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->accessLevel().data(0);
 		}
 
@@ -357,8 +357,8 @@ namespace OpcUaStackServer
 		if (userAccessLevel) {
 			variableNodeClassSPtr->userAccessLevel().data(*userAccessLevel);
 		} else {
-			Log(Warning, "element UserAccessLevel not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element UserAccessLevel not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->userAccessLevel().data(0);
 		}
 
@@ -369,8 +369,8 @@ namespace OpcUaStackServer
 		if (historizing) {
 			variableNodeClassSPtr->historizing().data(*historizing);
 		} else {
-			Log(Warning, "element Historizing not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element Historizing not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->historizing().data(false);
 		}
 
@@ -448,8 +448,8 @@ namespace OpcUaStackServer
 		if (valueRank) {
 			variableTypeNodeClassSPtr->valueRank().data(*valueRank);
 		} else {
-			Log(Warning, "element ValueRank not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element ValueRank not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			variableTypeNodeClassSPtr->valueRank().data(0);
 		}
 
@@ -480,8 +480,8 @@ namespace OpcUaStackServer
 		if (isAbstract) {
 			variableTypeNodeClassSPtr->isAbstract().data(*isAbstract);
 		} else {
-			Log(Warning, "element isAbstract not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element isAbstract not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			variableTypeNodeClassSPtr->isAbstract().data(false);
 		}
 
@@ -522,8 +522,8 @@ namespace OpcUaStackServer
 		if (isAbstract) {
 			dataTypeNodeClassSPtr->isAbstract().data(*isAbstract);	
 		} else {
-			Log(Warning, "element isAbstract not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element isAbstract not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			dataTypeNodeClassSPtr->isAbstract().data(false);
 		}
 		
@@ -564,8 +564,8 @@ namespace OpcUaStackServer
 		if (isAbstract) {
 			referenceTypeNodeClassSPtr->isAbstract().data(*isAbstract);	
 		} else {
-			Log(Warning, "element isAbstract not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element isAbstract not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			referenceTypeNodeClassSPtr->isAbstract().data(false);
 		}
 
@@ -576,8 +576,8 @@ namespace OpcUaStackServer
 		if (symmetric) {
 			referenceTypeNodeClassSPtr->symmetric().data(*symmetric);
 		} else {
-			Log(Warning, "element Symmetric not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element Symmetric not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			referenceTypeNodeClassSPtr->symmetric().data(false);
 		}
 
@@ -626,8 +626,8 @@ namespace OpcUaStackServer
 		if (executable) {
 			methodeNodeClassSPtr->executable().data(*executable);
 		} else {
-			Log(Warning, "element Executable not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element Executable not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			methodeNodeClassSPtr->executable().data(false);
 		}
 		//
@@ -637,8 +637,8 @@ namespace OpcUaStackServer
 		if (userExecutable) {
 			methodeNodeClassSPtr->userExecutable().data(*userExecutable);
 		} else {
-			Log(Warning, "element UserExecutable not exist in node set")
-				.parameter("NodeId", nodeId);
+			//Log(Warning, "element UserExecutable not exist in node set")
+			//	.parameter("NodeId", nodeId);
 			methodeNodeClassSPtr->userExecutable().data(false);
 		}
 
