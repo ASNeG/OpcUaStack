@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(Republish_Title)
 
 BOOST_AUTO_TEST_CASE(Republish_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -64,17 +65,18 @@ BOOST_AUTO_TEST_CASE(Republish_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	republishRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	republishRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	republishRequestSPtr->requestHeader()->time(ptime);
-	republishRequestSPtr->requestHeader()->requestHandle(0);
-	republishRequestSPtr->requestHeader()->returnDisagnostics(0);
-	republishRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 	
 	republishRequestSPtr->subscriptionId(153451225);
 	republishRequestSPtr->retransmitSequenceNumber((OpcUaUInt32)123);
 
 	// encode PublishRequest
+	requestHeader->opcUaBinaryEncode(ios1);
 	republishRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -121,16 +123,17 @@ BOOST_AUTO_TEST_CASE(Republish_Request)
 
 	// decode RepublishRequest
 	republishRequestSPtr = RepublishRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	republishRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *republishRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(republishRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(republishRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(republishRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(republishRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(republishRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	BOOST_REQUIRE(republishRequestSPtr->subscriptionId() == 153451225);
 	BOOST_REQUIRE(republishRequestSPtr->retransmitSequenceNumber() == 123);
 }
@@ -138,6 +141,7 @@ BOOST_AUTO_TEST_CASE(Republish_Request)
 
 BOOST_AUTO_TEST_CASE(Republish_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	MessageHeader::SPtr messageHeaderSPtr;
@@ -180,9 +184,9 @@ BOOST_AUTO_TEST_CASE(Republish_Response)
 
 	// build RepublishResponse
 	republishResponseSPtr = RepublishResponse::construct();
-	republishResponseSPtr->responseHeader()->time(ptime);
-	republishResponseSPtr->responseHeader()->requestHandle(133);
-	republishResponseSPtr->responseHeader()->serviceResult((OpcUaStatusCode)Success);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(133);
+	responseHeader->serviceResult((OpcUaStatusCode)Success);
 
 	// build NotificationMessage (empty NotificationData)
 	notificationMessageSPtr = republishResponseSPtr->notificationMessage();
@@ -190,6 +194,7 @@ BOOST_AUTO_TEST_CASE(Republish_Response)
 	notificationMessageSPtr->publishTime(ptime);
 
 	// encode PublishResponse
+	responseHeader->opcUaBinaryEncode(ios1);
 	republishResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -235,11 +240,12 @@ BOOST_AUTO_TEST_CASE(Republish_Response)
 
 	// decode PublishResponse
 	republishResponseSPtr = RepublishResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	republishResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(republishResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(republishResponseSPtr->responseHeader()->requestHandle() == 133);
-	BOOST_REQUIRE(republishResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 133);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	notificationMessageSPtr = republishResponseSPtr->notificationMessage();
 	BOOST_REQUIRE(notificationMessageSPtr->sequenceNumber() == 1);

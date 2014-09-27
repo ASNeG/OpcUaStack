@@ -18,8 +18,6 @@ namespace OpcUaStackCore
 		BrowseRequest(void);
 		virtual ~BrowseRequest(void);
 
-		void requestHeader(const RequestHeader::SPtr requestHeader);
-		RequestHeader::SPtr requestHeader(void) const;
 		void view(const ViewDescription& view);
 		ViewDescription& view(void);
 		void requestMaxReferencesPerNode(const OpcUaUInt32& requestMaxReferencesPerNode);
@@ -31,7 +29,6 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		RequestHeader::SPtr requestHeaderSPtr_;
 		ViewDescription view_;
 		OpcUaUInt32 requestMaxReferencesPerNode_;
 		BrowseDescriptionArray::SPtr nodesToBrowseArraySPtr_;

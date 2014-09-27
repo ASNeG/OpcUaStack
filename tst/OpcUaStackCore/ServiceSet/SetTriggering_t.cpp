@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(SetTriggering_Response)
 	setTriggeringResponseSPtr->removeResults()->set((OpcUaStatusCode)Success);
 
 	// encode DeleteMonitoredItemsResponse
-	responseHeader->opcUaBinaryEncode(ios);
+	responseHeader->opcUaBinaryEncode(ios1);
 	setTriggeringResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader

@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Title)
 
 BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -65,18 +66,19 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	deleteSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	deleteSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	deleteSubscriptionsRequestSPtr->requestHeader()->time(ptime);
-	deleteSubscriptionsRequestSPtr->requestHeader()->requestHandle(0);
-	deleteSubscriptionsRequestSPtr->requestHeader()->returnDisagnostics(0);
-	deleteSubscriptionsRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 	
 	// build SubscriptionIds
 	subscriptionId = 153451225;
 	deleteSubscriptionsRequestSPtr->subscriptionIds()->set(subscriptionId);
 
 	// encode CreateSubscriptionRequest
+	requestHeader->opcUaBinaryEncode(ios1);
 	deleteSubscriptionsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -123,16 +125,17 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 
 	// decode ReadRequest
 	deleteSubscriptionsRequestSPtr = DeleteSubscriptionsRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	deleteSubscriptionsRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *deleteSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(deleteSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(deleteSubscriptionsRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(deleteSubscriptionsRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(deleteSubscriptionsRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(deleteSubscriptionsRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(deleteSubscriptionsRequestSPtr->subscriptionIds()->size() == 1);
 	
@@ -143,6 +146,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 
 BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -191,15 +195,16 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	deleteSubscriptionsResponseSPtr->responseHeader()->time(ptime);
-	deleteSubscriptionsResponseSPtr->responseHeader()->requestHandle(0);
-	deleteSubscriptionsResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build Results
 	statusCode1 = Success;
 	deleteSubscriptionsResponseSPtr->results()->set(statusCode1);
 
 	// encode ReadRequest
+	responseHeader->opcUaBinaryEncode(ios1);
 	deleteSubscriptionsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -244,11 +249,12 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 
 	// decode ReadResponse
 	deleteSubscriptionsResponseSPtr = DeleteSubscriptionsResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	deleteSubscriptionsResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(deleteSubscriptionsResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(deleteSubscriptionsResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(deleteSubscriptionsResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(deleteSubscriptionsResponseSPtr->results()->size() == 1);
 	

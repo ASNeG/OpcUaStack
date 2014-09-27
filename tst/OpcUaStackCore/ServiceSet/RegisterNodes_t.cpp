@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Title)
 
 BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -66,12 +67,12 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	registerNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	registerNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	registerNodesRequestSPtr->requestHeader()->time(ptime);
-	registerNodesRequestSPtr->requestHeader()->requestHandle(0);
-	registerNodesRequestSPtr->requestHeader()->returnDisagnostics(0);
-	registerNodesRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build Parameter
 	nodeIdSPtr = OpcUaNodeId::construct();
@@ -81,6 +82,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 	registerNodesRequestSPtr->nodesToRegister()->set(nodeIdSPtr);
 
 	// encode 
+	requestHeader->opcUaBinaryEncode(ios1);
 	registerNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -127,15 +129,16 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 
 	// decode 
 	registerNodesRequestSPtr = RegisterNodesRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	registerNodesRequestSPtr->opcUaBinaryDecode(ios);
 
-	str = *registerNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(registerNodesRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(registerNodesRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(registerNodesRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(registerNodesRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(registerNodesRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(registerNodesRequestSPtr->nodesToRegister()->size() == 1);
 	nodeIdSPtr = OpcUaNodeId::construct();
@@ -147,6 +150,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 
 BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -195,9 +199,9 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	registerNodesResponseSPtr->responseHeader()->time(ptime);
-	registerNodesResponseSPtr->responseHeader()->requestHandle(0);
-	registerNodesResponseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build Parameter
 	nodeIdSPtr = OpcUaNodeId::construct();
@@ -207,6 +211,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 	registerNodesResponseSPtr->registeredNodeIds()->set(nodeIdSPtr);
 
 	// encode 
+	responseHeader->opcUaBinaryEncode(ios1);
 	registerNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -251,11 +256,12 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 
 	// decode 
 	registerNodesResponseSPtr = RegisterNodesResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	registerNodesResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(registerNodesResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(registerNodesResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(registerNodesResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(registerNodesResponseSPtr->registeredNodeIds()->size() == 1);
 	nodeIdSPtr = OpcUaNodeId::construct();

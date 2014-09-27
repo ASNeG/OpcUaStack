@@ -13,7 +13,6 @@ namespace OpcUaStackCore
 
 	BrowseRequest::BrowseRequest(void)
 	: ObjectPool<BrowseRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
 	, view_()
 	, requestMaxReferencesPerNode_()
 	, nodesToBrowseArraySPtr_(BrowseDescriptionArray::construct())
@@ -22,18 +21,6 @@ namespace OpcUaStackCore
 
 	BrowseRequest::~BrowseRequest(void)
 	{
-	}
-
-	void 
-	BrowseRequest::requestHeader(const RequestHeader::SPtr requestHeader)
-	{
-		requestHeaderSPtr_ = requestHeader;
-	}
-
-	RequestHeader::SPtr 
-	BrowseRequest::requestHeader(void) const
-	{
-		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -75,7 +62,6 @@ namespace OpcUaStackCore
 	void 
 	BrowseRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		view_.opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, requestMaxReferencesPerNode_);
 		nodesToBrowseArraySPtr_->opcUaBinaryEncode(os);
@@ -84,7 +70,6 @@ namespace OpcUaStackCore
 	void 
 	BrowseRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		view_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, requestMaxReferencesPerNode_);
 		nodesToBrowseArraySPtr_->opcUaBinaryDecode(is);

@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	setMonitoringModeResponseSPtr->results()->set((OpcUaStatusCode)Success);
 
 	// encode DeleteMonitoredItemsResponse
-	responseHeader->opcUaBinaryEncode(ios);
+	responseHeader->opcUaBinaryEncode(ios1);
 	setMonitoringModeResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader

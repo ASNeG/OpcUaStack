@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Title)
 
 BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -67,12 +68,12 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	requestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	requestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	requestSPtr->requestHeader()->time(ptime);
-	requestSPtr->requestHeader()->requestHandle(0);
-	requestSPtr->requestHeader()->returnDisagnostics(0);
-	requestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 
 	// build BrowsePath
 	browsePathSPtr = BrowsePath::construct();
@@ -83,6 +84,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 	requestSPtr->browsePaths()->set(browsePathSPtr);
 
 	// encode 
+	requestHeader->opcUaBinaryEncode(ios1);
 	requestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -129,15 +131,16 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 
 	// decode ReadRequest
 	requestSPtr = TranslateBrowsePathsToNodeIdsRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	requestSPtr->opcUaBinaryDecode(ios);
 
-	str = *requestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(requestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(requestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(requestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(requestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(requestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(requestSPtr->browsePaths()->size() == 1);
 	browsePathSPtr = BrowsePath::construct();
@@ -150,6 +153,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Request)
 
 BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -198,9 +202,9 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 
 	// build ResponseHeader
 	statusCode = Success;
-	responseSPtr->responseHeader()->time(ptime);
-	responseSPtr->responseHeader()->requestHandle(0);
-	responseSPtr->responseHeader()->serviceResult(statusCode);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(0);
+	responseHeader->serviceResult(statusCode);
 	
 	// build BrowsePathResult
 	browsePathResultSPtr = BrowsePathResult::construct();
@@ -212,6 +216,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	responseSPtr->results()->set(browsePathResultSPtr);
 
 	// encode 
+	responseHeader->opcUaBinaryEncode(ios1);
 	responseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -257,11 +262,12 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 
 	// decode 
 	responseSPtr = TranslateBrowsePathsToNodeIdsResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	responseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(responseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(responseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(responseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(responseSPtr->results()->size() == 1);
 	browsePathResultSPtr = BrowsePathResult::construct();

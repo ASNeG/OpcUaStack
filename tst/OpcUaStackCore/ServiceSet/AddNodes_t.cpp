@@ -689,7 +689,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 
 	addNodesResponseSPtr->results(addNodesResultArraySPtr);
 
-	responseHeader->opcUaBinaryDecode(ios1);
+	responseHeader->opcUaBinaryEncode(ios1);
 	addNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader

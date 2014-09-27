@@ -48,6 +48,7 @@ BOOST_AUTO_TEST_CASE(TransferSubscriptions_Title)
 
 BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 {
+	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 subscriptionId;
@@ -92,18 +93,19 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	opcUaGuidSPtr = OpcUaGuid::construct();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	transferSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	transferSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	transferSubscriptionsRequestSPtr->requestHeader()->time(ptime);
-	transferSubscriptionsRequestSPtr->requestHeader()->requestHandle(0);
-	transferSubscriptionsRequestSPtr->requestHeader()->returnDisagnostics(0);
-	transferSubscriptionsRequestSPtr->requestHeader()->timeoutHint(300000);
+	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
+	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
+	requestHeader->time(ptime);
+	requestHeader->requestHandle(0);
+	requestHeader->returnDisagnostics(0);
+	requestHeader->timeoutHint(300000);
 	
 	// build Parameter
 	transferSubscriptionsRequestSPtr->subscriptionIds()->set((OpcUaUInt32)153451225);
 	transferSubscriptionsRequestSPtr->sendInitialValues(false);
 
 	// encode TransferSubscriptionsRequest
+	requestHeader->opcUaBinaryEncode(ios1);
 	transferSubscriptionsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -150,16 +152,17 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 
 	// decode TransferSubscriptionsRequest
 	transferSubscriptionsRequestSPtr = TransferSubscriptionsRequest::construct();
+	requestHeader->opcUaBinaryDecode(ios);
 	transferSubscriptionsRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
-	str = *transferSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(transferSubscriptionsRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
+	str = *requestHeader->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(requestHeader->sessionAuthenticationToken().namespaceIndex() == 1);
 	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(transferSubscriptionsRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(transferSubscriptionsRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(transferSubscriptionsRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(transferSubscriptionsRequestSPtr->requestHeader()->timeoutHint() == 300000);
+	BOOST_REQUIRE(requestHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(requestHeader->requestHandle() == 0);
+	BOOST_REQUIRE(requestHeader->returnDisagnostics() == 0);
+	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(transferSubscriptionsRequestSPtr->sendInitialValues() == false);
 	
@@ -171,6 +174,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 
 BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 {
+	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 sequenceNumber;
@@ -214,9 +218,9 @@ BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 
 	// build TransferSubscriptionsResponse
 	transferSubscriptionsResponseSPtr = TransferSubscriptionsResponse::construct();
-	transferSubscriptionsResponseSPtr->responseHeader()->time(ptime);
-	transferSubscriptionsResponseSPtr->responseHeader()->requestHandle(133);
-	transferSubscriptionsResponseSPtr->responseHeader()->serviceResult((OpcUaStatusCode)Success);
+	responseHeader->time(ptime);
+	responseHeader->requestHandle(133);
+	responseHeader->serviceResult((OpcUaStatusCode)Success);
 
 	// build TransferResult
 	transferResultSPtr = TransferResult::construct();
@@ -225,6 +229,7 @@ BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 	transferSubscriptionsResponseSPtr->results()->set(transferResultSPtr);
 
 	// encode SetPublishingModeResponse
+	responseHeader->opcUaBinaryEncode(ios1);
 	transferSubscriptionsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -270,11 +275,12 @@ BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 
 	// decode TransferSubscriptionsResponse
 	transferSubscriptionsResponseSPtr = TransferSubscriptionsResponse::construct();
+	responseHeader->opcUaBinaryDecode(ios);
 	transferSubscriptionsResponseSPtr->opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(transferSubscriptionsResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(transferSubscriptionsResponseSPtr->responseHeader()->requestHandle() == 133);
-	BOOST_REQUIRE(transferSubscriptionsResponseSPtr->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
+	BOOST_REQUIRE(responseHeader->requestHandle() == 133);
+	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(transferSubscriptionsResponseSPtr->results()->size() == 1);
 	transferSubscriptionsResponseSPtr->results()->get(transferResultSPtr);
