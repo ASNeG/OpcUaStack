@@ -55,6 +55,7 @@ namespace OpcUaStackServer
 		virtual std::string name(void) = 0;
 		virtual std::string description(void);
 		virtual OpcUaBuildInType type(void) = 0;
+		virtual bool exist(void) = 0;
 
 	  private:
 	};
@@ -97,6 +98,10 @@ namespace OpcUaStackServer
 		  boost::optional<DATATYPE&> data_optional(void) {
 			  if (!exist_) return nullptr;
 			  return data_;
+		  }
+
+		  bool exist(void) {
+			  return exist_;
 		  }
 
 	    private:
@@ -172,7 +177,7 @@ namespace OpcUaStackServer
 	  typedef AttributeMeta<OpcUaBoolean, AttributeId_ContainsNoLoops, OpcUaBuildInType_OpcUaBoolean> ContainsNoLoopsAttribute;
 	  typedef AttributeMeta<OpcUaByte, AttributeId_EventNotifier, OpcUaBuildInType_OpcUaByte> EventNotifierAttribute;
 	  typedef AttributeMeta<OpcUaDataValue, AttributeId_Value, OpcUaBuildInType_OpcUaDataValue> ValueAttribute;
-	  typedef AttributeMeta<OpcUaUInt32, AttributeId_ValueRank, OpcUaBuildInType_OpcUaUInt32> ValueRanklAttribute;
+	  typedef AttributeMeta<OpcUaUInt32, AttributeId_ValueRank, OpcUaBuildInType_OpcUaUInt32> ValueRankAttribute;
 	  typedef AttributeMeta<OpcUaUInt32Array, AttributeId_ArrayDimensions, OpcUaBuildInType_OpcUaUInt32> ArrayDimensionsAttribute;
 	  typedef AttributeMeta<OpcUaDouble, AttributeId_MinimumSamplingInterval, OpcUaBuildInType_OpcUaDouble> MinimumSamplingIntervalAttribute;
 	  typedef AttributeMeta<OpcUaBoolean, AttributeId_Historizing, OpcUaBuildInType_OpcUaBoolean> HistorizingAttribute;

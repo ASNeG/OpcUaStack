@@ -17,7 +17,7 @@ namespace OpcUaStackServer
 		~VariableTypeNodeClass(void);
 
 		DataTypeAttribute& dataType(void);
-		ValueRanklAttribute& valueRank(void);
+		ValueRankAttribute& valueRank(void);
 		IsAbstractAttribute& isAbstract(void);
 		ValueAttribute& value(void);
 		ArrayDimensionsAttribute& arrayDimensions(void);
@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 	  private:
 		// attributes mandatory
 		DataTypeAttribute dataType_;
-		ValueRanklAttribute valueRank_;
+		ValueRankAttribute valueRank_;
 		IsAbstractAttribute isAbstract_;
 
 		// attributes optional

@@ -27,7 +27,7 @@ namespace OpcUaStackServer
 		return dataType_;
 	}
 		
-	ValueRanklAttribute& 
+	ValueRankAttribute& 
 	VariableTypeNodeClass::valueRank(void)
 	{
 		return valueRank_;

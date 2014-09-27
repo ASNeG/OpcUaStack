@@ -179,6 +179,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\AttributeBase.h">
       <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\AttributeAccess.h">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -293,6 +296,9 @@
       <Filter>src\ServiceSet\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeBase.cpp">
+      <Filter>src\AddressSpaceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeAccess.cpp">
       <Filter>src\AddressSpaceModel</Filter>
     </ClCompile>
   </ItemGroup>

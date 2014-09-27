@@ -93,6 +93,13 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			if (attribute->exist() == false) {
+				dataValue->statusCode(BadNotReadable);
+				continue;
+			}
+
+			
+
 			OpcUaDateTime sourceTimestamp, serverTimestamp;
 			sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
 			serverTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());

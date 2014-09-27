@@ -18,7 +18,7 @@ namespace OpcUaStackServer
 
 		ValueAttribute& value(void);
 		DataTypeAttribute& dataType(void);
-		ValueRanklAttribute& valueRank(void);
+		ValueRankAttribute& valueRank(void);
 		AccessLevelAttribute& accessLevel(void);
 		UserAccessLevelAttribute& userAccessLevel(void);
 		HistorizingAttribute& historizing(void);
@@ -41,7 +41,7 @@ namespace OpcUaStackServer
 		// attributes mandatory
 		ValueAttribute value_;
 		DataTypeAttribute dataType_;
-		ValueRanklAttribute valueRank_;
+		ValueRankAttribute valueRank_;
 		AccessLevelAttribute accessLevel_;
 		UserAccessLevelAttribute userAccessLevel_;
 		HistorizingAttribute historizing_;
