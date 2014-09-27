@@ -1,6 +1,7 @@
 #include "OpcUaStackServer/ServiceSet/Session.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
@@ -197,8 +198,11 @@ namespace OpcUaStackServer
 
 		std::iostream ios(&sb);
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
+		OpcUaStackCore::dumpHex(sb);
 		requestHeader->opcUaBinaryDecode(ios);
+		OpcUaStackCore::dumpHex(sb);
 		serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios);
+		OpcUaStackCore::dumpHex(sb);
 		serviceTransactionSPtr->requestId_ = secureChannelTransaction.requestId_;
 		serviceTransactionSPtr->statusCode(Success);
 

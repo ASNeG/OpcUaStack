@@ -7,6 +7,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
@@ -124,6 +126,8 @@ BOOST_AUTO_TEST_CASE(Session_open)
 
 	ExtensibleParameter ep;
 	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+	ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
+	ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 
 	ConfigXml configXml;
 	NodeSetXmlParser nodeSetXmlParser;
