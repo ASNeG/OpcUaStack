@@ -1,4 +1,6 @@
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackServer
 {
@@ -42,6 +44,153 @@ namespace OpcUaStackServer
 	InformationModel::find(OpcUaNodeId::SPtr opcUaNodeId)
 	{
 		return find(*opcUaNodeId);
+	}
+
+	bool 
+	InformationModel::setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue)
+	{
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.nodeId(nodeId);
+		return setValue(opcUaNodeId, attributeId, dataValue);
+	}
+
+	bool 
+	InformationModel::setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaVariant& variant)
+	{
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.nodeId(nodeId);
+		return setValue(opcUaNodeId, attributeId, variant);
+	}
+
+	bool 
+	InformationModel::getValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue)
+	{
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.nodeId(nodeId);
+		return getValue(opcUaNodeId, attributeId, dataValue);
+	}
+
+	bool 
+	InformationModel::getValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaVariant& variant)
+	{
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.nodeId(nodeId);
+		return getValue(opcUaNodeId, attributeId, variant);
+	}
+
+	bool 
+	InformationModel::setValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaDataValue& dataValue)
+	{
+		BaseNodeClass::SPtr baseNodeClass = InformationModel::find(opcUaNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			Log(Error, "cannot set data value, because node not exist in information model")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+	
+		Attribute* attribute = baseNodeClass->attribute(attributeId);
+		if (attribute == nullptr) {
+			Log(Error, "cannot set data value, because attribute not exist in node")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		if (!AttributeAccess::copy(dataValue, *attribute)) {
+			Log(Error, "cannot set data value, because attribute error")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool 
+	InformationModel::setValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaVariant& variant)
+	{
+		BaseNodeClass::SPtr baseNodeClass = InformationModel::find(opcUaNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			Log(Error, "cannot set variant value, because node not exist in information model")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+	
+		Attribute* attribute = baseNodeClass->attribute(attributeId);
+		if (attribute == nullptr) {
+			Log(Error, "cannot set variant value, because attribute not exist in node")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		if (!AttributeAccess::copy(variant, *attribute)) {
+			Log(Error, "cannot set variant value, because attribute error")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+		return true;
+	}
+	
+	bool 
+	InformationModel::getValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaDataValue& dataValue)
+	{
+		BaseNodeClass::SPtr baseNodeClass = InformationModel::find(opcUaNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			Log(Error, "cannot get data value, because node not exist in information model")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+	
+		Attribute* attribute = baseNodeClass->attribute(attributeId);
+		if (attribute == nullptr) {
+			Log(Error, "cannot get data value, because attribute not exist in node")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		if (!AttributeAccess::copy(*attribute, dataValue)) {
+			Log(Error, "cannot get data value, because attribute error")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool 
+	InformationModel::getValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaVariant& variant)
+	{
+		BaseNodeClass::SPtr baseNodeClass = InformationModel::find(opcUaNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			Log(Error, "cannot get variant value, because node not exist in information model")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+	
+		Attribute* attribute = baseNodeClass->attribute(attributeId);
+		if (attribute == nullptr) {
+			Log(Error, "cannot get variant value, because attribute not exist in node")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		if (!AttributeAccess::copy(*attribute, variant)) {
+			Log(Error, "cannot get variant value, because attribute error")
+				.parameter("NodeId", opcUaNodeId)
+				.parameter("AttributeId", attributeId);
+			return false;
+		}
+
+		return true;
 	}
 
 }

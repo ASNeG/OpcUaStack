@@ -104,6 +104,41 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaDiagnosticInfo::out(std::ostream& os) const
+	{
+		bool outputExist = false;
+		if (symbolicId_ != -1) {
+			os << "SymbolId=" << symbolicId_;
+			outputExist = true;
+		}
+		if (namespaceUri_ != -1) {
+			if (outputExist) os << ",";
+			os << "NamespaceUri=" << namespaceUri_;
+			outputExist = true;
+		}
+		if (localizedText_ != -1) {
+			if (outputExist) os << ",";
+			os << "LocalizedText=" << localizedText_;
+			outputExist = true;
+		}
+		if (locale_ != -1) {
+			if (outputExist) os << ",";
+			os << "Localue=" << locale_;
+			outputExist = true;
+		}
+		if (additionalInfo_.exist()) {
+			if (outputExist) os << ",";
+			os << "AdditionalInfo=" << additionalInfo_;
+			outputExist = true;
+		}
+		if (innerStatusCode_ != 0) {
+			if (outputExist) os << ",";
+			os << "InnerStatusCode=" << innerStatusCode_;
+			outputExist = true;
+		}
+	}
+
+	void 
 	OpcUaDiagnosticInfo::copyTo(OpcUaDiagnosticInfo& opcUaDiagnosticInfo)
 	{
 		if (symbolicId_ != -1) {

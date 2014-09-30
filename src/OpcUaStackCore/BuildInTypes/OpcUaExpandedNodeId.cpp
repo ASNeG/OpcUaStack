@@ -71,6 +71,14 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaExpandedNodeId::out(std::ostream& os) const
+	{
+		os << *(OpcUaNodeIdBase*)this;
+		if (namespaceUri_.size() > 0) os << ",nu=" << namespaceUri_;
+		if (serverIndex_ != 0) os << ",si" << serverIndex_;
+	}
+
+	void 
 	OpcUaExpandedNodeId::copyTo(OpcUaExpandedNodeId& opcUaExpandedNodeId)
 	{
 		OpcUaNodeIdBase::copyTo(opcUaExpandedNodeId);

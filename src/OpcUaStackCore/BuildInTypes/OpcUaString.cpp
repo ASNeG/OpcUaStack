@@ -85,6 +85,17 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaString::out(std::ostream& os) const
+	{
+		if (!exist_) {
+			os << "---";
+		}
+		else {
+			os << value_;
+		}
+	}
+
+	void 
 	OpcUaString::opcUaBinaryEncode(std::ostream& os) const
 	{
 		if (!exist_) {

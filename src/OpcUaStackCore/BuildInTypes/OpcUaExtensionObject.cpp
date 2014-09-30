@@ -53,6 +53,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaExtensionObject::out(std::ostream& os) const
+	{
+		// FIXME: todo...
+	}
+
+	void 
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
 		typeId_.opcUaBinaryEncode(os);

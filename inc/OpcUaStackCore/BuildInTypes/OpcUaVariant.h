@@ -93,6 +93,12 @@ namespace OpcUaStackCore
 
 		  void copyTo(OpcUaVariantValue& variantValue);
 
+		  void out(std::ostream& os) const;
+		  friend std::ostream& operator<<(std::ostream& os, const OpcUaVariantValue& value) {
+			  value.out(os);
+			  return os;
+		  }
+
 		  void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
 		  void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
 
@@ -140,6 +146,12 @@ namespace OpcUaStackCore
 		  }
 
 		void copyTo(OpcUaVariant& variant);
+
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaVariant& value) {
+			value.out(os);
+			return os;
+		}
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

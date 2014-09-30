@@ -34,7 +34,6 @@ BOOST_AUTO_TEST_CASE(Session_)
 
 BOOST_AUTO_TEST_CASE(Session_open)
 {
-	bool rc;
 	SessionTestHandler sessionTestHandler;
 
 	ExtensibleParameter ep;

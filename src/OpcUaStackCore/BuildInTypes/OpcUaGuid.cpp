@@ -72,6 +72,13 @@ namespace OpcUaStackCore
 		return (OpcUaByte*)data4_;
 	}
 
+	void 
+	OpcUaGuid::out(std::ostream& os) const
+	{
+		std::string str = *const_cast<OpcUaGuid*>(this);
+		os << str;
+	}
+
 	OpcUaGuid& 
 	OpcUaGuid::operator=(const std::string& string)
 	{
@@ -124,13 +131,6 @@ namespace OpcUaStackCore
 		}
 		return false;
 	}
-
-#if 0
-	OpcUaUInt32 data1_;
-		OpcUaUInt16 data2_;
-		OpcUaUInt16 data3_;
-		OpcUaByte data4_[8];
-#endif
 
 	void 
 	OpcUaGuid::opcUaBinaryEncode(std::ostream& os) const

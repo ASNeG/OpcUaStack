@@ -30,6 +30,11 @@ namespace OpcUaStackCore
 			  destValue = sourceValue;
 			  return sourceValue;
 		  }
+
+		  static void out(std::ostream& os, const T& value) 
+		  {
+			  os << value;
+		  }
 	};
 
 	template <typename T>
@@ -50,6 +55,11 @@ namespace OpcUaStackCore
 		  {
 			  sourceValue.copyTo(destValue);
 			  return destValue;
+		  }
+
+		  static void out(std::ostream& os, const T& value) 
+		  {
+			  os << value;
 		  }
 	};
 
@@ -75,6 +85,11 @@ namespace OpcUaStackCore
 			  destValue = sourceValue;
 			  return sourceValue;
 		  }
+
+		  static void out(std::ostream& os, const T& value) 
+		  {
+			  os << value;
+		  }
 	};
 
 	template <typename T>
@@ -97,6 +112,11 @@ namespace OpcUaStackCore
 			  destValue = T::construct();
 			  sourceValue->copyTo(*destValue);
 			  return destValue;
+		  }
+
+		  static void out(std::ostream& os,  const boost::shared_ptr<T>& value) 
+		  {
+			  os << *value;
 		  }
 	};
 
@@ -127,6 +147,12 @@ namespace OpcUaStackCore
 		bool get(T& value);
 
 		void copyTo(OpcUaArray<T, CODER>& array);
+
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaArray<T,CODER>& array) {
+			array.out(os);
+			return os;
+		}
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -273,7 +299,22 @@ namespace OpcUaStackCore
 			array.set(idx, destValue);
 		}
 	}
-		
+
+	template<typename T, typename CODER>
+	void 
+	OpcUaArray<T, CODER>::out(std::ostream& os) const
+	{
+		bool first = true;
+
+		os << "[";
+		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+			if (!first) os << ",";
+			CODER::out(os, valueArray_[idx]);
+			first = false;
+		}
+		os << "]";
+	}
+
 	template<typename T, typename CODER>
 	void 
 	OpcUaArray<T, CODER>::opcUaBinaryEncode(std::ostream& os) const

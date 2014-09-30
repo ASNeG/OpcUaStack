@@ -79,6 +79,22 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaLocalizedText::out(std::ostream& os) const
+	{
+		bool outputExist = false;
+		if (locale_.exist()) {
+			os << "loc=" << locale_;
+			outputExist = true;
+		}
+		if (text_.exist()) {
+			if (outputExist == true) os << ",";
+			os << "txt=" << text_;
+			outputExist = true;
+		}
+
+	}
+
+	void 
 	OpcUaLocalizedText::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte encodingMask = 0x00;

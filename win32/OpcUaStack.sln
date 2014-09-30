@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpcUaStackClientServer_Test
 		{1CC3F1FC-87CE-4A76-B80B-315A6C2EA394} = {1CC3F1FC-87CE-4A76-B80B-315A6C2EA394}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "appl", "appl", "{C5B903B2-9349-4B9F-A22E-29FFC20234E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

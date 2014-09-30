@@ -31,6 +31,12 @@ namespace OpcUaStackCore
 		void copyTo(OpcUaGuid& opcUaGuid);
 		bool operator<(const OpcUaGuid& opcUaGuid) const;
 
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaGuid& value) {
+			value.out(os);
+			return os;
+		}
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

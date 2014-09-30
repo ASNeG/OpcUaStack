@@ -2,6 +2,7 @@
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
+#include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
 namespace OpcUaStackServer
 {
@@ -78,77 +79,67 @@ namespace OpcUaStackServer
 			ReadValueId::SPtr readValueId;
 			if (!readRequest->readValueIdArray()->get(idx, readValueId)) {
 				dataValue->statusCode(BadNodeIdInvalid);
+				Log(Debug, "read value error, because node request parameter invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
 				continue;
 			}
 
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
 			if (baseNodeClass.get() == nullptr) {
 				dataValue->statusCode(BadNodeIdUnknown);
+				Log(Debug, "read value error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId());
 				continue;
 			}
 
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
 			if (attribute == nullptr) {
 				dataValue->statusCode(BadAttributeIdInvalid);
+				Log(Debug, "read value error, because node attribute not exist in node")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
 				continue;
 			}
 
 			if (attribute->exist() == false) {
+				Log(Debug, "read value error, because node attribute is empty")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
 				dataValue->statusCode(BadNotReadable);
 				continue;
 			}
 
-			
+			if (!AttributeAccess::copy(*attribute, *dataValue)) {
+				Log(Debug, "read value error, because value error")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
+				dataValue->statusCode(BadAttributeIdInvalid);
+				continue;
+			}
 
-			OpcUaDateTime sourceTimestamp, serverTimestamp;
-			sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
-			serverTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue->variant()->variant((OpcUaFloat)321);
-			dataValue->sourceTimestamp(sourceTimestamp);
-			dataValue->serverTimestamp(serverTimestamp);
+			Log(Debug, "read value")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Idx", idx)
+				.parameter("Node", *readValueId->nodeId())
+				.parameter("Attr", readValueId->attributeId())
+				.parameter("Class", baseNodeClass->nodeClass().data());
 		}
-
-#if 0
-ReadValueId:
-		OpcUaNodeId::SPtr nodeIdSPtr_;
-		OpcUaInt32 attributeId_;
-		OpcUaString indexRange_;
-		OpcUaQualifiedName dataEncoding_;
-
-		
-		OpcUaVariant::SPtr opcUaVariantSPtr_;
-		OpcUaStatusCode opcUaStatusCode_;
-		OpcUaDateTime sourceTimestamp_;
-		OpcUaInt16 sourcePicoseconds_;
-		OpcUaDateTime serverTimestamp_;
-		OpcUaInt16 serverPicoseconds_;
-
-#endif
-
-#if 0
-		ReadResponse::SPtr readResponseSPtr = trx->response();
-		OpcUaDateTime sourceTimestamp, serverTimestamp;
-		sourceTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
-		serverTimestamp.dateTime(boost::posix_time::microsec_clock::local_time());
-
-		OpcUaDataValue::SPtr dataValueSPtr = OpcUaDataValue::construct();
-		dataValueSPtr->variant()->variant((OpcUaFloat)321);
-		dataValueSPtr->sourceTimestamp(sourceTimestamp);
-		dataValueSPtr->serverTimestamp(serverTimestamp);
-		readResponseSPtr->dataValueArray()->set(dataValueSPtr);
-#endif
 
 		trx->responseHeader()->serviceResult(Success);
 		trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
-
-#if 0
-		void maxAge(const OpcUaDouble& maxAge);
-		OpcUaDouble maxAge(void) const;
-		void timestampsToReturn(const OpcUaInt32& timestampsToReturn);
-		OpcUaInt32 timestampsToReturn(void) const;
-		void readValueIdArray(const ReadValueIdArray::SPtr readValueIdArray);
-		ReadValueIdArray::SPtr readValueIdArray(void) const;
-#endif
 	}
 
 	void 

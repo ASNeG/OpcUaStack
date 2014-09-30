@@ -64,6 +64,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaDateTime::out(std::ostream& os) const
+	{
+		os << boost::posix_time::to_iso_string(dateTime());
+	}
+
+	void 
 	OpcUaDateTime::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, dateTime_);

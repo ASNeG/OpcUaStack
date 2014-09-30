@@ -95,6 +95,42 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaDataValue::out(std::ostream& os) const
+	{
+		bool outputExist = false;
+		if (opcUaVariantSPtr_.get() != NULL) {
+			os << "Value=";
+		    os << *opcUaVariantSPtr_;
+			outputExist = true;
+		}
+		if (opcUaStatusCode_ != 0) {
+			if (outputExist) os << ",";
+			os << "Status=" << OpcUaStatusCodeMap::shortString(opcUaStatusCode_);
+			outputExist = true;
+		}
+		if (sourceTimestamp_.exist()) {
+			if (outputExist) os << ",";
+			os << "SourceTime=" << sourceTimestamp_;
+			outputExist = true;
+		}
+		if (serverTimestamp_.exist()) {
+			if (outputExist) os << ",";
+			os << "SourceTime=" << serverTimestamp_;
+			outputExist = true;
+		}
+		if (sourcePicoseconds_ != 0) {
+			if (outputExist) os << ",";
+			os << "SourcePicoSec=" << sourcePicoseconds_;
+			outputExist = true;
+		}
+		if (serverPicoseconds_ != 0) {
+			if (outputExist) os << ",";
+			os << "ServerPicoSec=" << serverPicoseconds_;
+			outputExist = true;
+		}
+	}
+
+	void 
 	OpcUaDataValue::copyTo(OpcUaDataValue& dataValue)
 	{
 		if (opcUaVariantSPtr_.get() != NULL) {

@@ -92,10 +92,8 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_Value:
 			{
-				OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
 				ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
-				valueAttribute->data().copyTo(*dataValue);
-				variant.variant(dataValue);
+				variant.copyTo(*valueAttribute->data().variant());
 				break;
 			}
 			case AttributeId_DataType:
@@ -175,6 +173,7 @@ namespace OpcUaStackServer
 				NodeIdAttribute* nodeIdAttribute = reinterpret_cast<NodeIdAttribute*>(&attribute);
 				OpcUaNodeId::SPtr nodeId = variant.variantSPtr<OpcUaNodeId>();
 				nodeId->copyTo(nodeIdAttribute->data());
+				nodeIdAttribute->exist(true);
 				break;
 			}
 			case AttributeId_NodeClass:
@@ -190,6 +189,7 @@ namespace OpcUaStackServer
 				BrowseNameAttribute* browseNameAttribute = reinterpret_cast<BrowseNameAttribute*>(&attribute);
 				OpcUaQualifiedName::SPtr browseName = variant.variantSPtr<OpcUaQualifiedName>();
 				browseName->copyTo(browseNameAttribute->data());
+				browseNameAttribute->exist(true);
 				break;
 			}
 			case AttributeId_DisplayName:
@@ -198,6 +198,7 @@ namespace OpcUaStackServer
 				DisplayNameAttribute* displayNameAttribute = reinterpret_cast<DisplayNameAttribute*>(&attribute);
 				OpcUaLocalizedText::SPtr displayName = variant.variantSPtr<OpcUaLocalizedText>();
 				displayName->copyTo(displayNameAttribute->data());
+				displayNameAttribute->exist(true);
 				break;
 			}
 			case AttributeId_Description:
@@ -206,6 +207,7 @@ namespace OpcUaStackServer
 				DescriptionAttribute* descriptionAttribute = reinterpret_cast<DescriptionAttribute*>(&attribute);
 				OpcUaLocalizedText::SPtr description = variant.variantSPtr<OpcUaLocalizedText>();
 				description->copyTo(descriptionAttribute->data());
+				descriptionAttribute->exist(true);
 				break;
 			}
 			case AttributeId_WriteMask:
@@ -242,6 +244,7 @@ namespace OpcUaStackServer
 				InverseNameAttribute* inverseNameAttribute = reinterpret_cast<InverseNameAttribute*>(&attribute);
 				OpcUaLocalizedText::SPtr inverseName = variant.variantSPtr<OpcUaLocalizedText>();
 				inverseName->copyTo(inverseNameAttribute->data());
+				inverseNameAttribute->exist();
 				break;
 			}
 			case AttributeId_ContainsNoLoops:
@@ -260,10 +263,9 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_Value:
 			{
-				if (variant.variantType() != OpcUaBuildInType_OpcUaDataValue) return false;
+				//if (variant.variantType() != OpcUaBuildInType_OpcUaDataValue) return false;
 				ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
-				OpcUaDataValue::SPtr dataValue = variant.variantSPtr<OpcUaDataValue>();
-				dataValue->copyTo(valueAttribute->data());
+				variant.copyTo(*valueAttribute->data().variant());
 				break;
 			}
 			case AttributeId_DataType:
@@ -272,6 +274,7 @@ namespace OpcUaStackServer
 				DataTypeAttribute* dataTypeAttribute = reinterpret_cast<DataTypeAttribute*>(&attribute);
 				OpcUaNodeId::SPtr dataType = variant.variantSPtr<OpcUaNodeId>();
 				dataType->copyTo(dataTypeAttribute->data());
+				dataTypeAttribute->exist();
 				break;
 			}
 			case AttributeId_ValueRank:
@@ -287,6 +290,7 @@ namespace OpcUaStackServer
 				ArrayDimensionsAttribute* arrayDimensionsAttribute = reinterpret_cast<ArrayDimensionsAttribute*>(&attribute);
 				OpcUaUInt32Array::SPtr arrayDimensions = variant.variantSPtr<OpcUaUInt32Array>();
 				arrayDimensions->copyTo(arrayDimensionsAttribute->data());
+				arrayDimensionsAttribute->exist();
 				break;
 			}
 			case AttributeId_AccessLevel:
@@ -336,6 +340,34 @@ namespace OpcUaStackServer
 			{
 				return false;
 			}
+		}
+		return true;
+	}
+
+	bool 
+	AttributeAccess::copy(OpcUaDataValue& dataValue, Attribute& attribute)
+	{
+		if (attribute.id() == AttributeId_Value) {
+			ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
+			dataValue.copyTo(valueAttribute->data());
+			valueAttribute->exist(true);
+		}
+		else {
+			return copy(*dataValue.variant(), attribute);
+		}
+		return true;
+	}
+
+
+	bool 
+	AttributeAccess::copy(Attribute& attribute, OpcUaDataValue& dataValue)
+	{
+		if (attribute.id() == AttributeId_Value) {
+			ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
+			valueAttribute->data().copyTo(dataValue);
+		}
+		else {
+			return copy(attribute, *dataValue.variant());
 		}
 		return true;
 	}

@@ -141,6 +141,18 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	BOOST_REQUIRE(configXml.parse("TestData/Opc.Ua.NodeSet2.xml") == true);
 	BOOST_REQUIRE(nodeSetXmlParser.decode(configXml.ptree()) == true);
 	BOOST_REQUIRE(InformationModelNodeSet::initial(informationModel, nodeSetXmlParser) == true);
+
+	OpcUaString::SPtr stringValue;
+	
+
+	{ // set NamespaceArray	
+		OpcUaVariant variant;
+		stringValue = OpcUaString::construct();
+
+		*stringValue = "http://opcfoundation.org/UA/";
+		variant.variant(0, stringValue);
+		BOOST_REQUIRE(informationModel->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant) == true);
+	}
 	
 
 	//

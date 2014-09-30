@@ -97,6 +97,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaQualifiedName::out(std::ostream& os) const
+	{
+		os << "ns=" << namespaceIndex_ << ",name=" << name_; 
+	}
+
+	void 
 	OpcUaQualifiedName::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, namespaceIndex_);

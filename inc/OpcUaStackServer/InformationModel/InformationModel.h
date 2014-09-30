@@ -24,6 +24,16 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr find(OpcUaNodeId& opcUaNodeId);
 		BaseNodeClass::SPtr find(OpcUaNodeId::SPtr opcUaNodeId);
 
+		bool setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue);
+		bool setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaVariant& variant);
+		bool getValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue);
+		bool getValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaVariant& variant);
+
+		bool setValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaDataValue& dataValue);
+		bool setValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaVariant& variant);
+		bool getValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaDataValue& dataValue);
+		bool getValue(OpcUaNodeId& opcUaNodeId, AttributeId attributeId, OpcUaVariant& variant);
+
 	  private:
 		boost::mutex mutex_;
 		InformationModelMap informationModelMap_;

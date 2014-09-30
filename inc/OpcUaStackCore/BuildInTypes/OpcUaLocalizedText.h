@@ -26,6 +26,12 @@ namespace OpcUaStackCore
 
 		void copyTo(OpcUaLocalizedText& localizedText);
 
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaLocalizedText& value) {
+			value.out(os);
+			return os;
+		}
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

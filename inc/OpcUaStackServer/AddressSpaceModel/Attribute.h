@@ -56,6 +56,7 @@ namespace OpcUaStackServer
 		virtual std::string description(void);
 		virtual OpcUaBuildInType type(void) = 0;
 		virtual bool exist(void) = 0;
+		virtual void exist(bool exist) = 0;
 
 	  private:
 	};
@@ -102,6 +103,15 @@ namespace OpcUaStackServer
 
 		  bool exist(void) {
 			  return exist_;
+		  }
+
+		  void exist(bool exist) {
+			  exist_ = exist;
+		  }
+
+		  friend std::ostream& operator<<(std::ostream& os, const AttributeData& attributeData) {
+			os << attributeData.data_;
+			return os;
 		  }
 
 	    private:

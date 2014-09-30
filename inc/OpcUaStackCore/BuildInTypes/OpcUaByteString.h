@@ -31,6 +31,12 @@ namespace OpcUaStackCore
 		void copyTo(OpcUaByteString& opcUaByteString);
 		bool operator<(const OpcUaByteString& opcUaByteString) const;
 
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaByteString& value) {
+			value.out(os);
+			return os;
+		}
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

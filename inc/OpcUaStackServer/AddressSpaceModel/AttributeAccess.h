@@ -12,6 +12,8 @@ namespace OpcUaStackServer
 	  public:
 		static bool copy(Attribute& attribute, OpcUaVariant& variant);
 		static bool copy(OpcUaVariant& variant, Attribute& attribute);
+		static bool copy(Attribute& attribute, OpcUaDataValue& dataValue);
+		static bool copy(OpcUaDataValue& dataValue, Attribute& attribute);
 	};
 
 }
