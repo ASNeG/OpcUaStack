@@ -58,6 +58,12 @@ namespace OpcUaStackServer
 		virtual bool exist(void) = 0;
 		virtual void exist(bool exist) = 0;
 
+		virtual void out(std::ostream& os) const = 0;
+		friend std::ostream& operator<<(std::ostream& os, const Attribute& value) {
+			value.out(os);
+			return os;
+		}
+
 	  private:
 	};
 
@@ -109,6 +115,9 @@ namespace OpcUaStackServer
 			  exist_ = exist;
 		  }
 
+		  virtual void out(std::ostream& os) const {
+			  os << data_;
+		  }
 		  friend std::ostream& operator<<(std::ostream& os, const AttributeData& attributeData) {
 			os << attributeData.data_;
 			return os;

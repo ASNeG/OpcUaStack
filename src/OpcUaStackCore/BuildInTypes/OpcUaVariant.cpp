@@ -927,7 +927,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaVariant::out(std::ostream& os) const
 	{
-		if (this->variantType() != OpcUaBuildInType_Unknown) {
+		if (this->variantType() == OpcUaBuildInType_Unknown) {
 			os << "---";
 			return;
 		}

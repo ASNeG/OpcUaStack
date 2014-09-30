@@ -266,6 +266,7 @@ namespace OpcUaStackServer
 				//if (variant.variantType() != OpcUaBuildInType_OpcUaDataValue) return false;
 				ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
 				variant.copyTo(*valueAttribute->data().variant());
+				valueAttribute->exist(true);
 				break;
 			}
 			case AttributeId_DataType:
