@@ -2,7 +2,7 @@
 #define __OpcUaStackServer_AttributeAccess_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackServer/AddressSPaceModel/Attribute.h"
+#include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 
 namespace OpcUaStackServer
 {
