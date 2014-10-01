@@ -147,10 +147,11 @@ BOOST_AUTO_TEST_CASE(Session_open)
 
 	{ // set NamespaceArray	
 		OpcUaVariant variant;
+		
 		stringValue = OpcUaString::construct();
-
 		*stringValue = "http://opcfoundation.org/UA/";
 		variant.variant(0, stringValue);
+		
 		variant.arrayLength(1);
 		BOOST_REQUIRE(informationModel->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant) == true);
 	}
