@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
 
 namespace OpcUaStackServer
 {
@@ -22,8 +23,8 @@ namespace OpcUaStackServer
 		Attribute* executableAttribute(void);
 		Attribute* userExecutableAttribute(void);
 
-		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
-		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+		void addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		void getReference(ReferenceList& list, ReferenceType referenceType);
 
 	  private:
 		// attributes mandatory
@@ -31,11 +32,11 @@ namespace OpcUaStackServer
 		UserExecutableAttribute userExecutable_;
 
 		// references
-		OpcUaNodeIdList hasProperty_;
-		OpcUaNodeIdList hasModellingRule_;
-		OpcUaNodeIdList hasModelParameter_;
-		OpcUaNodeIdList generateEvents_;
-		OpcUaNodeIdList alwaysGeneratesEvent_;
+		ReferenceList hasProperty_;
+		ReferenceList hasModellingRule_;
+		ReferenceList hasModelParameter_;
+		ReferenceList generateEvents_;
+		ReferenceList alwaysGeneratesEvent_;
 
 		// standard properties - all optional
 		OpcUaString nodeVersion_;  

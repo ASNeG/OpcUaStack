@@ -4,7 +4,7 @@
 #include <boost/optional.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/AddressSpaceModel/NodeClass.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -184,7 +184,7 @@ namespace OpcUaStackServer
 
 	  typedef AttributeMeta<OpcUaUInt32, AttributeId_AccessLevel, OpcUaBuildInType_OpcUaUInt32> AccessLevelAttribute;
 	  typedef AttributeMeta<OpcUaNodeId, AttributeId_NodeId, OpcUaBuildInType_OpcUaNodeId> NodeIdAttribute;
-	  typedef AttributeMeta<NodeClass, AttributeId_NodeClass, OpcUaBuildInType_OpcUaUInt32> NodeClassAttribute;
+	  typedef AttributeMeta<NodeClassType, AttributeId_NodeClass, OpcUaBuildInType_OpcUaUInt32> NodeClassAttribute;
 	  typedef AttributeMeta<OpcUaQualifiedName, AttributeId_BrowseName, OpcUaBuildInType_OpcUaQualifiedName> BrowseNameAttribute;
 	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_DisplayName, OpcUaBuildInType_OpcUaLocalizedText> DisplayNameAttribute;
 	  typedef AttributeMeta<OpcUaLocalizedText, AttributeId_Description, OpcUaBuildInType_OpcUaLocalizedText> DescriptionAttribute;

@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	MethodNodeClass::MethodNodeClass(void)
-	: BaseNodeClass(NodeClass_Method)
+	: BaseNodeClass(NodeClassType_Method)
 	, executable_()
 	, userExecutable_()
 	, hasProperty_()
@@ -44,30 +44,30 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	MethodNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	MethodNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasModellingRule:
-				hasModellingRule_.push_back(opcUaNodeId);
+				hasModellingRule_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasModelParameter:
-				hasModelParameter_.push_back(opcUaNodeId);
+				hasModelParameter_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_GenerateEvents:
-				generateEvents_.push_back(opcUaNodeId);
+				generateEvents_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_AlwaysGeneratesEvent:
-				alwaysGeneratesEvent_.push_back(opcUaNodeId);
+				alwaysGeneratesEvent_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void 
-	MethodNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	MethodNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

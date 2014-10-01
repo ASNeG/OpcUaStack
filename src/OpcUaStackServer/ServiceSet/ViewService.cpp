@@ -4,6 +4,7 @@
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
+
 namespace OpcUaStackServer
 {
 
@@ -187,14 +188,15 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	ViewService::browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec, BaseNodeClass::SPtr baseNodeClass, ReferenceType referenceType)
 	{
-		OpcUaNodeIdList::iterator it;
-		OpcUaNodeIdList nodeIdList;
+		ReferenceItemList::iterator it;
+		ReferenceList referenceList;
 
-		nodeIdList.clear();
-		baseNodeClass->getReference(nodeIdList, referenceType);
-		for (it = nodeIdList.begin(); it != nodeIdList.end(); it++) {
-			
-			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(*it);
+		referenceList.referenceItemList_.clear();
+		baseNodeClass->getReference(referenceList, referenceType);
+		for (it = referenceList.referenceItemList_.begin(); it != referenceList.referenceItemList_.end(); it++) {
+			ReferenceItem::SPtr referenceItem = *it;
+
+			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
 			if (baseNodeClassTarget.get() == nullptr) {
 				std::cout << "nicht gefunden..." << *it << std::endl;
 				continue;
@@ -206,12 +208,13 @@ namespace OpcUaStackServer
 			OpcUaExpandedNodeId::SPtr targetNodeId = OpcUaExpandedNodeId::construct();
 			baseNodeClass->nodeId().data().copyTo(*targetNodeId);
 
-			referenceDescription->isForward(true);  // FIXME: 
-			
+			referenceItem->referenceTypeId_.copyTo(*referenceDescription->referenceTypeId());
+			referenceDescription->isForward(referenceItem->isForward_);  
 			referenceDescription->nodeId(targetNodeId);
 			referenceDescription->displayName(baseNodeClass->displayName().data());
 			referenceDescription->browseName(baseNodeClass->browseName().data());
-			//referenceDescription->nodeClass(baseNodeClass->nodeClass().data());
+			referenceDescription->nodeClass(baseNodeClass->nodeClass().data());
+			
 		}
 
 		return Success;
@@ -219,9 +222,33 @@ namespace OpcUaStackServer
 
 	
 #if 0
-		OpcUaNodeId::SPtr referenceTypeIdSPtr_;
-		OpcUaExpandedNodeId::SPtr nodeIdSPtr_;
 		OpcUaExpandedNodeId::SPtr typeDefinitionSPtr_;
+#endif
+
+#if 0
+	typedef enum {
+		NodeClassType_Unspecified = 0,
+		NodeClassType_Object = 1,
+		NodeClassType_Variable = 2,
+		NodeClassType_Method = 4,
+		NodeClassType_ObjectType = 8,
+		NodeClassType_VariableType = 16,
+		NodeClassType_ReferenceType = 32,
+		NodeClassType_DataType = 64,
+		NodeClassType_View = 128,
+	} NodeClassType;
+
+		typedef enum
+	{
+		NodeClass_Object = 1,
+		NodeClass_Variable = 2,
+		NodeClass_Method = 4,
+		NodeClass_ObjectType = 8,
+		NodeClass_VariableType = 16,
+		NodeClass_ReferenceType = 32,
+		NodeClass_DataType = 64,
+		NodeClass_View = 128
+	} NodeClass;
 #endif
 
 

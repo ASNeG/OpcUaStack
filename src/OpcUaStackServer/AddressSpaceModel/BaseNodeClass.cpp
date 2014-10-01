@@ -14,7 +14,7 @@ namespace OpcUaStackServer
 	{
 	}
 
-	BaseNodeClass::BaseNodeClass(NodeClass nodeClass)
+	BaseNodeClass::BaseNodeClass(NodeClassType nodeClass)
 	: nodeId_()
 	, nodeClass_(nodeClass)
 	, browseName_()

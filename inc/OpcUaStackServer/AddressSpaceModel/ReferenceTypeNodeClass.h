@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
 
 namespace OpcUaStackServer
 {
@@ -24,8 +25,8 @@ namespace OpcUaStackServer
 		Attribute* symmetricAttribute(void);
 		Attribute* inverseNameAttribute(void);
 
-		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
-		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+		void addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		void getReference(ReferenceList& list, ReferenceType referenceType);
 
 	  private:
 		// attributes mandatory
@@ -36,8 +37,8 @@ namespace OpcUaStackServer
 		InverseNameAttribute inverseName_;
 
 		// references
-		OpcUaNodeIdList hasProperty_;
-		OpcUaNodeIdList hasSubtype_;
+		ReferenceList hasProperty_;
+		ReferenceList hasSubtype_;
 
 		// standard properties
 		OpcUaString nodeVersion_;  // optional

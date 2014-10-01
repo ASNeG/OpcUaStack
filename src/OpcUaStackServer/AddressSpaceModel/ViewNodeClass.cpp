@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	ViewNodeClass::ViewNodeClass(void)
-	: BaseNodeClass(NodeClass_View)
+	: BaseNodeClass(NodeClassType_View)
 	, containsNoLoops_()
 	, eventNotifier_()
 	, hierarchicalReferences_()
@@ -41,21 +41,21 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	ViewNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	ViewNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HierarchicalReferences:
-				hierarchicalReferences_.push_back(opcUaNodeId);
+				hierarchicalReferences_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void
-	ViewNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	ViewNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

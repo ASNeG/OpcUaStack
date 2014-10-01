@@ -17,7 +17,7 @@ namespace OpcUaStackServer
 		~ReferenceItem(void);
 
 		OpcUaNodeId nodeId_;
-		bool forward_;
+		bool isForward_;
 		OpcUaNodeId referenceTypeId_;
 	};
 

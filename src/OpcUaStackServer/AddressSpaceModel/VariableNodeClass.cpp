@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	VariableNodeClass::VariableNodeClass(void)
-	: BaseNodeClass(NodeClass_Variable)
+	: BaseNodeClass(NodeClassType_Variable)
 	, value_()
 	, dataType_()
 	, valueRank_()
@@ -121,30 +121,30 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	VariableNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	VariableNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasComponent:
-				hasComponent_.push_back(opcUaNodeId);
+				hasComponent_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasModellingRule:
-				hasModellingRule_.push_back(opcUaNodeId);
+				hasModellingRule_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasTypeDefinition:
-				hasTypeDefinition_.push_back(opcUaNodeId);
+				hasTypeDefinition_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasModelParent:
-				hasModelParent_.push_back(opcUaNodeId);
+				hasModelParent_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void
-	VariableNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	VariableNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

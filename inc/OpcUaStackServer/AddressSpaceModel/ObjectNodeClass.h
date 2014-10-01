@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
 
 namespace OpcUaStackServer
 {
@@ -20,23 +21,23 @@ namespace OpcUaStackServer
 
 		Attribute* eventNotifierAttribute(void);
 
-		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
-		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+		void addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		void getReference(ReferenceList& list, ReferenceType referenceType);
 
 	  private:
 		// attributes mandatory
 		EventNotifierAttribute eventNotifier_;
 
 		// references
-		OpcUaNodeIdList hasComponent_;
-		OpcUaNodeIdList hasProperty_;
-		OpcUaNodeIdList hasModellingRule_;
-		OpcUaNodeIdList hasTypeDefinition_;
-		OpcUaNodeIdList hasModelParent_;
-		OpcUaNodeIdList hasEventSource_;
-		OpcUaNodeIdList hasNotifier_;
-		OpcUaNodeIdList organizes_;
-		OpcUaNodeIdList hasDescription_;
+		ReferenceList hasComponent_;
+		ReferenceList hasProperty_;
+		ReferenceList hasModellingRule_;
+		ReferenceList hasTypeDefinition_;
+		ReferenceList hasModelParent_;
+		ReferenceList hasEventSource_;
+		ReferenceList hasNotifier_;
+		ReferenceList organizes_;
+		ReferenceList hasDescription_;
 
 		// standard properties
 		OpcUaString::SPtr nodeVersion_;  // optional

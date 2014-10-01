@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	ObjectTypeNodeClass::ObjectTypeNodeClass(void)
-	: BaseNodeClass(NodeClass_ObjectType)
+	: BaseNodeClass(NodeClassType_ObjectType)
 	, isAbstract_()
 	, hasComponent_()
 	, hasProperty_()
@@ -29,34 +29,28 @@ namespace OpcUaStackServer
 		return &isAbstract_;
 	}
 
-	OpcUaNodeIdList& 
-	ObjectTypeNodeClass::hasComponent(void)
-	{
-		return hasComponent_;
-	}
-
 	void 
-	ObjectTypeNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	ObjectTypeNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasComponent:
-				hasComponent_.push_back(opcUaNodeId);
+				hasComponent_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasSubtype:
-				hasSubtypes_.push_back(opcUaNodeId);
+				hasSubtypes_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_GenerateEvents:
-				generatesEvents_.push_back(opcUaNodeId);
+				generatesEvents_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void
-	ObjectTypeNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	ObjectTypeNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

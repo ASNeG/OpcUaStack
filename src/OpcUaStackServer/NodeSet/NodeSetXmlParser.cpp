@@ -146,9 +146,11 @@ namespace OpcUaStackServer
 					.parameter("NodeId", nodeId);
 				return false;
 			}
+
+			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
 			
 			//
-			// attribute reference (mandatory)
+			// attribute reference type (mandatory)
 			//
 			boost::optional<std::string> referenceTypeString = it->second.get_optional<std::string>("<xmlattr>.ReferenceType");
 			if (!referenceTypeString) {
@@ -172,13 +174,24 @@ namespace OpcUaStackServer
 				// See Opc.Ua.NodeSet2.xml Line:8585.
 				continue;
 			}
+
+			//
+			// attribute isForward (optional)
+			//
+			boost::optional<std::string> isForward = it->second.get_optional<std::string>("<xmlattr>.IsForward");
+			if (!isForward) {
+				referenceItem->isForward_ = true;
+			}
+			else {
+				if (*isForward == "false") referenceItem->isForward_ = false;
+				else referenceItem->isForward_ = true;
+			}
 	
 			//
 			// reference value
 			//
 			std::string value = it->second.get_value<std::string>();
-			OpcUaNodeId opcUaNodeId;
-			if (!opcUaNodeId.fromString(value)) {
+			if (!referenceItem->nodeId_.fromString(value)) {
 				Log(Error, "invalid node id in reference")
 					.parameter("NodeId", nodeId)
 					.parameter("ReferenceType", *referenceTypeString)
@@ -186,7 +199,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			objectNodeClass->addReference(referenceType, opcUaNodeId);
+			objectNodeClass->addReference(referenceType, referenceItem);
 		}
 
 		return true;
@@ -241,7 +254,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectNodeClassSPtr, ptree)) return false;
-		objectNodeClassSPtr->nodeClass().data(NodeClass_Object);
+		objectNodeClassSPtr->nodeClass().data(NodeClassType_Object);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -280,7 +293,7 @@ namespace OpcUaStackServer
 		// decode NodeBase 
 		//
 		if (!decodeNodeBase(objectTypeNodeClassSPtr, ptree)) return false;
-		objectTypeNodeClassSPtr->nodeClass().data(NodeClass_ObjectType);
+		objectTypeNodeClassSPtr->nodeClass().data(NodeClassType_ObjectType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -317,7 +330,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableNodeClassSPtr, ptree)) return false;
-		variableNodeClassSPtr->nodeClass().data(NodeClass_Variable);
+		variableNodeClassSPtr->nodeClass().data(NodeClassType_Variable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -432,7 +445,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(variableTypeNodeClassSPtr, ptree)) return false;
-		variableTypeNodeClassSPtr->nodeClass().data(NodeClass_VariableType);
+		variableTypeNodeClassSPtr->nodeClass().data(NodeClassType_VariableType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -512,7 +525,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(dataTypeNodeClassSPtr, ptree)) return false;
-		dataTypeNodeClassSPtr->nodeClass().data(NodeClass_DataType);
+		dataTypeNodeClassSPtr->nodeClass().data(NodeClassType_DataType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -554,7 +567,7 @@ namespace OpcUaStackServer
 		// decode NodeBase
 		//
 		if (!decodeNodeBase(referenceTypeNodeClassSPtr, ptree)) return false;
-		referenceTypeNodeClassSPtr->nodeClass().data(NodeClass_ReferenceType);
+		referenceTypeNodeClassSPtr->nodeClass().data(NodeClassType_ReferenceType);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -616,7 +629,7 @@ namespace OpcUaStackServer
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
 		//
 		if (!decodeNodeBase(methodeNodeClassSPtr, ptree)) return false;
-		methodeNodeClassSPtr->nodeClass().data(NodeClass_Method);
+		methodeNodeClassSPtr->nodeClass().data(NodeClassType_Method);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
@@ -1275,12 +1288,13 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::referenceTypeToTree(BaseNodeClass::SPtr objectNodeClass, ReferenceType referenceType, boost::property_tree::ptree& ptree)
 	{
-		OpcUaNodeIdList referenceList;
-		std::list<OpcUaNodeId>::iterator it;
+		ReferenceList referenceList;
+		ReferenceItemList::iterator it;
 
 		objectNodeClass->getReference(referenceList, referenceType);
-		for(it=referenceList.begin(); it!=referenceList.end(); it++) {
-			
+		for(it=referenceList.referenceItemList_.begin(); it!=referenceList.referenceItemList_.end(); it++) {
+			ReferenceItem::SPtr referenceItem = *it;
+
 			boost::property_tree::ptree reference;
 			std::string stringReferenceType;
 
@@ -1292,8 +1306,10 @@ namespace OpcUaStackServer
 				return false;
 			}
 
+			if (referenceItem->isForward_) reference.put("<xmlattr>.IsForward", "true");
+			else  reference.put("<xmlattr>.IsForward", "false");
 			reference.put("<xmlattr>.ReferenceType", stringReferenceType);
-			reference.put_value(it->toString());
+			reference.put_value(referenceItem->nodeId_.toString());
 
 			ptree.add_child("Reference", reference);
 		}

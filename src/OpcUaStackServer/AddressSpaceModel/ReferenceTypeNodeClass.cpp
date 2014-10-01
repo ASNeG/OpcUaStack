@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	ReferenceTypeNodeClass::ReferenceTypeNodeClass(void)
-	: BaseNodeClass(NodeClass_ReferenceType)
+	: BaseNodeClass(NodeClassType_ReferenceType)
 	, isAbstract_()
 	, symmetric_()
 	, inverseName_()
@@ -54,21 +54,21 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	ReferenceTypeNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	ReferenceTypeNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasSubtype:
-				hasSubtype_.push_back(opcUaNodeId);
+				hasSubtype_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void
-	ReferenceTypeNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	ReferenceTypeNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

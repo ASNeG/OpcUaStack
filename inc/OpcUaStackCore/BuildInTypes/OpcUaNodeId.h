@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include "OpcUaStackCore/Base/os.h"
 #include <list>
+#include <boost/shared_ptr.hpp>
 
 namespace OpcUaStackCore
 {

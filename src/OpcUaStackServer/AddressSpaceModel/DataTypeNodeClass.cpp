@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	DataTypeNodeClass::DataTypeNodeClass(void)
-	: BaseNodeClass(NodeClass_DataType)
+	: BaseNodeClass(NodeClassType_DataType)
 	, isAbstract_()
 	, hasProperty_()
 	, hasSubtype_()
@@ -29,24 +29,24 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DataTypeNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	DataTypeNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasSubtype:
-				hasSubtype_.push_back(opcUaNodeId);
+				hasSubtype_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasEncoding:
-				hasEncoding_.push_back(opcUaNodeId);
+				hasEncoding_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void
-	DataTypeNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	DataTypeNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

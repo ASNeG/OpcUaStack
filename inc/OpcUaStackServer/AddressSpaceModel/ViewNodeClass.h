@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
 
 namespace OpcUaStackServer
 {
@@ -22,8 +23,8 @@ namespace OpcUaStackServer
 		Attribute* containsNoLoopsAttribute(void);
 		Attribute* eventNotifierAttribute(void);
 
-		void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId);
-		void getReference(OpcUaNodeIdList& list, ReferenceType referenceType);
+		void addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		void getReference(ReferenceList& list, ReferenceType referenceType);
 
 	  private:
 		// attributes mandatory
@@ -31,8 +32,8 @@ namespace OpcUaStackServer
 		EventNotifierAttribute eventNotifier_;
 
 		// references
-		OpcUaNodeIdList hierarchicalReferences_;
-		OpcUaNodeIdList hasProperty_;
+		ReferenceList hierarchicalReferences_;
+		ReferenceList hasProperty_;
 
 		// standard properties
 		OpcUaString nodeVersion_;  // optional

@@ -6,6 +6,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
 
 using namespace OpcUaStackCore;
 
@@ -18,7 +19,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<BaseNodeClass> SPtr;
 
 		BaseNodeClass(void);
-		BaseNodeClass(NodeClass nodeClass);
+		BaseNodeClass(NodeClassType nodeClass);
 		~BaseNodeClass(void);
 
 		NodeIdAttribute& nodeId(void);
@@ -29,8 +30,8 @@ namespace OpcUaStackServer
 		WriteMaskAttribute& writeMask(void);
 		UserWriteMaskAttribute& userWriteMask(void);
 
-		virtual void addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId) {};
-		virtual void getReference(OpcUaNodeIdList& list, ReferenceType referenceType) {};
+		virtual void addReference(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem) {};
+		virtual void getReference(ReferenceList& list, ReferenceType referenceType) {};
 
 		Attribute* nodeIdAttribute(void); 
 		Attribute* nodeClassAttribute(void); 

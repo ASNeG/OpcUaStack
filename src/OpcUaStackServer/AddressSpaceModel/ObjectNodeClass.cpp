@@ -4,7 +4,7 @@ namespace OpcUaStackServer
 {
 
 	ObjectNodeClass::ObjectNodeClass(void)
-	: BaseNodeClass(NodeClass_Object)
+	: BaseNodeClass(NodeClassType_Object)
 	, eventNotifier_()
 	, nodeVersion_()
 	, hasComponent_()
@@ -36,42 +36,42 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	ObjectNodeClass::addReference(ReferenceType referenceType, OpcUaNodeId& opcUaNodeId)
+	ObjectNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
 		switch (referenceType)
 		{
 			case ReferenceType_HasComponent:
-				hasComponent_.push_back(opcUaNodeId);
+				hasComponent_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasProperty:
-				hasProperty_.push_back(opcUaNodeId);
+				hasProperty_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasModellingRule:
-				hasModellingRule_.push_back(opcUaNodeId);
+				hasModellingRule_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasTypeDefinition:
-				hasTypeDefinition_.push_back(opcUaNodeId);
+				hasTypeDefinition_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasModelParent:
-				hasModelParent_.push_back(opcUaNodeId);
+				hasModelParent_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasEventSource:
-				hasEventSource_.push_back(opcUaNodeId);
+				hasEventSource_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasNotifier:
-				hasNotifier_.push_back(opcUaNodeId);
+				hasNotifier_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_Organizes:
-				organizes_.push_back(opcUaNodeId);
+				organizes_.referenceItemList_.push_back(referenceItem);
 				break;
 			case ReferenceType_HasDescription:
-				hasDescription_.push_back(opcUaNodeId);
+				hasDescription_.referenceItemList_.push_back(referenceItem);
 				break;
 		}
 	}
 
 	void 
-	ObjectNodeClass::getReference(OpcUaNodeIdList& list, ReferenceType referenceType)
+	ObjectNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
 	{
 		switch (referenceType)
 		{

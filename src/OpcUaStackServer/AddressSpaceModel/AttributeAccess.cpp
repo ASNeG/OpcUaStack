@@ -180,7 +180,7 @@ namespace OpcUaStackServer
 			{
 				if (variant.variantType() != OpcUaBuildInType_OpcUaUInt32) return false;
 				NodeClassAttribute* nodeClassAttribute = reinterpret_cast<NodeClassAttribute*>(&attribute);
-				nodeClassAttribute->data((NodeClass)variant.variant<OpcUaUInt32>());
+				nodeClassAttribute->data((NodeClassType)variant.variant<OpcUaUInt32>());
 				break;
 			}
 			case AttributeId_BrowseName:
