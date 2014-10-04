@@ -17,7 +17,6 @@ namespace OpcUaStackServer
 	OpcUaNodeId::SPtr ReferenceTypeMap::hasEncodingTypeNodeId_;
 	OpcUaNodeId::SPtr ReferenceTypeMap::hasSubtypeTypeNodeId_;
 	OpcUaNodeId::SPtr ReferenceTypeMap::nodeIdTypeNodeId_;
-	OpcUaNodeId::SPtr ReferenceTypeMap::hasModelParameterTypeNodeId_;
 	OpcUaNodeId::SPtr ReferenceTypeMap::generateEventsTypeNodeId_;
 	OpcUaNodeId::SPtr ReferenceTypeMap::alwaysGeneratesEventTypeNodeId_;
 	OpcUaNodeId::SPtr ReferenceTypeMap::hierarchicalReferencesTypeNodeId_;
@@ -27,38 +26,21 @@ namespace OpcUaStackServer
 	{
 		switch (referenceType)
 		{
-			case ReferenceType_Unknown:
-				return "Unknown";
-			case ReferenceType_HasComponent:
-				return "HasComponent";
-			case ReferenceType_HasProperty:
-				return "HasProperty";
-			case ReferenceType_HasModellingRule:
-				return "HasModellingRule";
-			case ReferenceType_HasTypeDefinition:
-				return "HasTypeDefinition";
-			case ReferenceType_HasModelParent:
-				return "HasModelParent";
-			case ReferenceType_HasEventSource:
-				return "HasEventSource";
-			case ReferenceType_HasNotifier:
-				return "HasNotifier";
-			case ReferenceType_Organizes:
-				return "Organizes";
-			case ReferenceType_HasDescription:
-				return "HasDescription";
-			case ReferenceType_HasEncoding:
-				return "HasEncoding";
-			case ReferenceType_HasSubtype:
-				return "HasSubtype";
-			case ReferenceType_HasModelParameter:
-				return "HasModelParameter";
-			case ReferenceType_GenerateEvents:
-				return "GenerateEvents";
-			case ReferenceType_AlwaysGeneratesEvent:
-				return "AlwaysGeneratesEvent";
-			case ReferenceType_HierarchicalReferences:
-				return "HierarchicalReferences";
+			case ReferenceType_Unknown: return "Unknown";
+			case ReferenceType_HasComponent: return "HasComponent";
+			case ReferenceType_HasProperty: return "HasProperty";
+			case ReferenceType_HasModellingRule: return "HasModellingRule";
+			case ReferenceType_HasTypeDefinition: return "HasTypeDefinition";
+			case ReferenceType_HasModelParent: return "HasModelParent";
+			case ReferenceType_HasEventSource: return "HasEventSource";
+			case ReferenceType_HasNotifier: return "HasNotifier";
+			case ReferenceType_Organizes: return "Organizes";
+			case ReferenceType_HasDescription: return "HasDescription";
+			case ReferenceType_HasEncoding: return "HasEncoding";
+			case ReferenceType_HasSubtype: return "HasSubtype";
+			case ReferenceType_GenerateEvents: return "GenerateEvents";
+			case ReferenceType_AlwaysGeneratesEvent: return "AlwaysGeneratesEvent";
+			case ReferenceType_HierarchicalReferences: return "HierarchicalReferences";
 		}
 		return "Unknown";
 	}
@@ -78,11 +60,70 @@ namespace OpcUaStackServer
 		else if (referenceTypeString == "HasEncoding") return ReferenceType_HasEncoding;
 		else if (referenceTypeString == "HasSubtype") return ReferenceType_HasSubtype;
 		else if (boost::contains(referenceTypeString, "i=")) return ReferenceType_NodeId;
-		else if (referenceTypeString == "hasModelParameter") ReferenceType_HasModelParameter;
 		else if (referenceTypeString == "generateEvents") ReferenceType_GenerateEvents;
 		else if (referenceTypeString == "alwaysGeneratesEvent") ReferenceType_AlwaysGeneratesEvent;
 		else if (referenceTypeString == "hierarchicalReferences") ReferenceType_HierarchicalReferences;
 		return ReferenceType_Unknown;
+	}
+
+	OpcUaNodeId::SPtr 
+	ReferenceTypeMap::typeNodeId(ReferenceType referenceType)
+	{
+		switch (referenceType)
+		{
+			case ReferenceType_HasComponent: return hasComponentTypeNodeId();
+			case ReferenceType_HasProperty: return hasPropertyTypeNodeId();
+			case ReferenceType_HasModellingRule: return hasModellingRuleTypeNodeId();
+			case ReferenceType_HasTypeDefinition: return hasTypeDefinitionTypeNodeId();
+			case ReferenceType_HasModelParent: return hasModelParentTypeNodeId();
+			case ReferenceType_HasEventSource: return hasEventSourceTypeNodeId();
+			case ReferenceType_HasNotifier: return hasNotifierTypeNodeId();
+			case ReferenceType_Organizes: return organizesTypeNodeId();
+			case ReferenceType_HasDescription: return hasDescriptionTypeNodeId();
+			case ReferenceType_HasEncoding: return hasEncodingTypeNodeId();
+			case ReferenceType_HasSubtype: return hasSubtypeTypeNodeId();
+			case ReferenceType_GenerateEvents: return generateEventsTypeNodeId();
+			case ReferenceType_AlwaysGeneratesEvent: return alwaysGeneratesEventTypeNodeId();
+			case ReferenceType_HierarchicalReferences: return hierarchicalReferencesTypeNodeId();
+		}
+
+		OpcUaNodeId::SPtr nodeId;
+		return nodeId;
+	}
+
+	ReferenceType 
+	ReferenceTypeMap::nodeIdToReferenceType(OpcUaNodeId& nodeId)
+	{
+		if (nodeId.namespaceIndex() != 0) return ReferenceType_Unknown;
+		if (nodeId.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) return ReferenceType_Unknown;
+		switch (nodeId.nodeId<OpcUaUInt32>())
+		{
+			case OpcUaId_HasProperty: return ReferenceType_HasProperty;
+			case OpcUaId_HasComponent: return ReferenceType_HasComponent;
+			case OpcUaId_HasModellingRule: return ReferenceType_HasModellingRule;
+			case OpcUaId_HasTypeDefinition: return ReferenceType_HasTypeDefinition;
+			case OpcUaId_HasModelParent: return ReferenceType_HasModelParent;
+			case OpcUaId_HasEventSource: return ReferenceType_HasEventSource;
+			case OpcUaId_HasNotifier: return ReferenceType_HasNotifier;
+			case OpcUaId_Organizes: return ReferenceType_Organizes;
+			case OpcUaId_HasDescription: return ReferenceType_HasDescription;
+			case OpcUaId_HasEncoding: return ReferenceType_HasEncoding;
+			case OpcUaId_HasSubtype: return ReferenceType_HasSubtype;
+			case OpcUaId_GeneratesEvent: return ReferenceType_GenerateEvents;
+			case OpcUaId_AlwaysGeneratesEvent: return ReferenceType_AlwaysGeneratesEvent;
+			case OpcUaId_HierarchicalReferences: return ReferenceType_HierarchicalReferences;
+		}
+		return ReferenceType_Unknown;
+	}
+
+	std::string 
+	ReferenceTypeMap::nodeIdToString(OpcUaNodeId& nodeId)
+	{
+		ReferenceType referenceType = nodeIdToReferenceType(nodeId);
+		if (referenceType != ReferenceType_Unknown) {
+			return typeToString(referenceType);
+		}
+		return nodeId.toString();
 	}
 
 	OpcUaNodeId::SPtr 
@@ -130,7 +171,7 @@ namespace OpcUaStackServer
 	{
 		if (hasModelParentTypeNodeId_.get() == nullptr) {
 			hasModelParentTypeNodeId_ = OpcUaNodeId::construct();
-			hasModelParentTypeNodeId_->nodeId(4711); // FIXME: this is not right...
+			hasModelParentTypeNodeId_->nodeId(OpcUaId_HasModelParent); 
 		}
 		return hasModelParentTypeNodeId_;
 	}
@@ -203,16 +244,6 @@ namespace OpcUaStackServer
 			nodeIdTypeNodeId_->nodeId(OpcUaId_NodeId);
 		}
 		return nodeIdTypeNodeId_;
-	}
-
-	OpcUaNodeId::SPtr 
-	ReferenceTypeMap::hasModelParameterTypeNodeId(void)
-	{
-		if (hasModelParameterTypeNodeId_.get() == nullptr) {
-			hasModelParameterTypeNodeId_ = OpcUaNodeId::construct();
-			hasModelParameterTypeNodeId_->nodeId(4711);  // FIXME: this ist not right ...
-		}
-		return hasModelParameterTypeNodeId_;
 	}
 
 	OpcUaNodeId::SPtr 

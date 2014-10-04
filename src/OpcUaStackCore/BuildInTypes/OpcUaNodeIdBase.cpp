@@ -168,6 +168,12 @@ namespace OpcUaStackCore
 	}
 
 	bool 
+	OpcUaNodeIdBase::operator==(const OpcUaNodeIdBase& opcUaNodeIdBase) const
+	{
+		return ((opcUaNodeIdBase < *this) == false) &&  ((*this < opcUaNodeIdBase) == false);
+	}
+
+	bool 
 	OpcUaNodeIdBase::operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const
 	{
 		if (namespaceIndex() < opcUaNodeIdBase.namespaceIndex()) {

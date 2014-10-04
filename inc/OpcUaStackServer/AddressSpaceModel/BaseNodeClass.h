@@ -6,7 +6,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
-#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceItemMap.h"
 
 using namespace OpcUaStackCore;
 
@@ -30,9 +30,6 @@ namespace OpcUaStackServer
 		WriteMaskAttribute& writeMask(void);
 		UserWriteMaskAttribute& userWriteMask(void);
 
-		virtual void addReference(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem) {};
-		virtual void getReference(ReferenceList& list, ReferenceType referenceType) {};
-
 		Attribute* nodeIdAttribute(void); 
 		Attribute* nodeClassAttribute(void); 
 		Attribute* browseNameAttribute(void); 
@@ -40,6 +37,8 @@ namespace OpcUaStackServer
 		Attribute* descriptionAttribute(void); 
 		Attribute* writeMaskAttribute(void); 
 		Attribute* userWriteMaskAttribute(void); 
+
+		ReferenceItemMap& referenceItemMap(void);
 
 	  private:
 		NodeIdAttribute nodeId_;
@@ -49,6 +48,8 @@ namespace OpcUaStackServer
 		DescriptionAttribute description_;
 		WriteMaskAttribute writeMask_;
 		UserWriteMaskAttribute userWriteMask_;
+
+		ReferenceItemMap referenceItemMap_;
 	};
 
 }

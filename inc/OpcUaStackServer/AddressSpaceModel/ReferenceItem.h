@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackServer_ReferenceList_h__
-#define __OpcUaStackServer_ReferenceList_h__
+#ifndef __OpcUaStackServer_ReferenceItem_h__
+#define __OpcUaStackServer_ReferenceItem_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -16,20 +16,10 @@ namespace OpcUaStackServer
 		ReferenceItem(void);
 		~ReferenceItem(void);
 
+		bool operator==(const ReferenceItem& referenceItem);
+
 		OpcUaNodeId nodeId_;
 		bool isForward_;
-		OpcUaNodeId referenceTypeId_;
-	};
-
-	typedef std::list<ReferenceItem::SPtr> ReferenceItemList;
-
-	class DLLEXPORT ReferenceList : public ObjectPool<ReferenceList>
-	{
-	  public:
-		ReferenceList(void);
-		~ReferenceList(void);
-
-		ReferenceItemList referenceItemList_;
 	};
 
 }

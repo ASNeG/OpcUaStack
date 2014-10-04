@@ -33,9 +33,7 @@ namespace OpcUaStackServer
 		void receiveUnregisterNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 
 		typedef std::vector<ReferenceDescription::SPtr> ReferenceDescriptionVec;
-		OpcUaStatusCode browseReferences(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);
-		OpcUaStatusCode browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec, BaseNodeClass::SPtr baseNodeClass, ReferenceType referenceType);
-		
+		OpcUaStatusCode browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);
 	};
 
 }

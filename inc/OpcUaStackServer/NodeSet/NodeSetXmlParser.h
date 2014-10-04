@@ -43,7 +43,6 @@ namespace OpcUaStackServer
 		bool encodeUAReferenceType(boost::property_tree::ptree& ptree);
 		bool encodeUAMethod(boost::property_tree::ptree& ptree);
 
-		bool referenceTypeToTree(BaseNodeClass::SPtr objectNodeClass, ReferenceType referenceType, boost::property_tree::ptree& ptree);
 		bool uint32ArrayToString(std::string& value, OpcUaUInt32Array& array);
 	};
 

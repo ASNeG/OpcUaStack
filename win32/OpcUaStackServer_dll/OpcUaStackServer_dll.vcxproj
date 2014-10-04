@@ -88,7 +88,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceList.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceItem.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceItemMap.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceType.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ReferenceTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.h" />
@@ -131,7 +132,8 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceList.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceItem.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceItemMap.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceType.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ReferenceTypeNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.cpp" />

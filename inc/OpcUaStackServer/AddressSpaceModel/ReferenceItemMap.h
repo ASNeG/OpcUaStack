@@ -1,0 +1,32 @@
+#ifndef __OpcUaStackServer_ReferenceItemMap_h__
+#define __OpcUaStackServer_ReferenceItemMap_h__
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceItem.h"
+
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
+{
+
+	typedef std::multimap<OpcUaNodeId, ReferenceItem::SPtr> ReferenceItemMultiMap;
+
+	class DLLEXPORT ReferenceItemMap : public ObjectPool<ReferenceItemMap>
+	{
+	  public:
+		ReferenceItemMap(void);
+		~ReferenceItemMap(void);
+
+		bool add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		bool add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
+
+		ReferenceItemMultiMap& referenceItemMultiMap(void);
+
+	  private:
+		ReferenceItemMultiMap referenceItemMultiMap_;
+	};
+
+}
+
+#endif

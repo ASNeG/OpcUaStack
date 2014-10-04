@@ -68,12 +68,18 @@ namespace OpcUaStackServer
 
 			ReferenceDescriptionVec::iterator it;
 			ReferenceDescriptionVec referenceDescriptionVec;
-			OpcUaStatusCode statusCode = browseReferences(browseDescription, referenceDescriptionVec); 
+			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec); 
 			browseResult->statusCode(statusCode);
 
 			ReferenceDescriptionArray::SPtr referenceDescriptionArray = ReferenceDescriptionArray::construct();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
 			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
+				Log(Debug, "reference")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("SourceNodeId", browseDescription->nodeId())
+					.parameter("TargetNodeId", (*it)->nodeId())
+					.parameter("TargetDisplayName", (*it)->displayName().text());
+
 				referenceDescriptionArray->push_back(*it);
 			}
 
@@ -122,83 +128,28 @@ namespace OpcUaStackServer
 
 	
 	OpcUaStatusCode
-	ViewService::browseReferences(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec)
+	ViewService::browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec)
 	{
-		OpcUaStatusCode statusCode;
-
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(*browseDescription->nodeId());
 		if (baseNodeClass.get() == nullptr) {
 			return BadNodeIdUnknown;
 		}
 
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasComponent);
-		if (statusCode != Success) return statusCode;
-		
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasProperty);
-		if (statusCode != Success) return statusCode;
+		ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
+		Log(Debug, "read references")
+			.parameter("NodeId", baseNodeClass->nodeId())
+			.parameter("References", referenceItemMap.referenceItemMultiMap().size());
 
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasModellingRule);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasTypeDefinition);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasModelParent);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasEventSource);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasEventSource);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasNotifier);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_Organizes);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasDescription);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasEncoding);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasSubtype);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_NodeId);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HasModelParameter);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_GenerateEvents);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_AlwaysGeneratesEvent);
-		if (statusCode != Success) return statusCode;
-
-		statusCode = browseNode(browseDescription, referenceDescriptionVec, baseNodeClass, ReferenceType_HierarchicalReferences);
-		if (statusCode != Success) return statusCode;
-
-		return Success;
-	}
-
-	OpcUaStatusCode 
-	ViewService::browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec, BaseNodeClass::SPtr baseNodeClass, ReferenceType referenceType)
-	{
-		ReferenceItemList::iterator it;
-		ReferenceList referenceList;
-
-		referenceList.referenceItemList_.clear();
-		baseNodeClass->getReference(referenceList, referenceType);
-		for (it = referenceList.referenceItemList_.begin(); it != referenceList.referenceItemList_.end(); it++) {
-			ReferenceItem::SPtr referenceItem = *it;
+		ReferenceItemMultiMap::iterator it;
+		for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
+			OpcUaNodeId referenceTypeNodeId = it->first;
+			ReferenceItem::SPtr referenceItem = it->second;
 
 			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
 			if (baseNodeClassTarget.get() == nullptr) {
-				std::cout << "nicht gefunden..." << *it << std::endl;
+				Log(Debug, "target node not found")
+					.parameter("NodeId", baseNodeClass->nodeId())
+					.parameter("TargetNodeId", referenceItem->nodeId_);
 				continue;
 			}
 
@@ -207,49 +158,21 @@ namespace OpcUaStackServer
 
 			OpcUaExpandedNodeId::SPtr targetNodeId = OpcUaExpandedNodeId::construct();
 			baseNodeClass->nodeId().data().copyTo(*targetNodeId);
-
-			referenceItem->referenceTypeId_.copyTo(*referenceDescription->referenceTypeId());
+			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
 			referenceDescription->isForward(referenceItem->isForward_);  
 			referenceDescription->nodeId(targetNodeId);
 			referenceDescription->displayName(baseNodeClass->displayName().data());
 			referenceDescription->browseName(baseNodeClass->browseName().data());
 			referenceDescription->nodeClass(baseNodeClass->nodeClass().data());
-			
+
+			std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> itp;
+			itp = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+			if (itp.first != itp.second) {
+				ReferenceItem::SPtr referenceItem = itp.first->second;
+				referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
+			}
 		}
 
 		return Success;
 	}
-
-	
-#if 0
-		OpcUaExpandedNodeId::SPtr typeDefinitionSPtr_;
-#endif
-
-#if 0
-	typedef enum {
-		NodeClassType_Unspecified = 0,
-		NodeClassType_Object = 1,
-		NodeClassType_Variable = 2,
-		NodeClassType_Method = 4,
-		NodeClassType_ObjectType = 8,
-		NodeClassType_VariableType = 16,
-		NodeClassType_ReferenceType = 32,
-		NodeClassType_DataType = 64,
-		NodeClassType_View = 128,
-	} NodeClassType;
-
-		typedef enum
-	{
-		NodeClass_Object = 1,
-		NodeClass_Variable = 2,
-		NodeClass_Method = 4,
-		NodeClass_ObjectType = 8,
-		NodeClass_VariableType = 16,
-		NodeClass_ReferenceType = 32,
-		NodeClass_DataType = 64,
-		NodeClass_View = 128
-	} NodeClass;
-#endif
-
-
 }

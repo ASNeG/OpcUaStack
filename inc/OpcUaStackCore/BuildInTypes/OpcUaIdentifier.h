@@ -1031,6 +1031,7 @@
 #define OpcUaId_HasComponent 47
 #define OpcUaId_HasNotifier 48
 #define OpcUaId_HasOrderedComponent 49
+#define OpcUaId_HasModelParent 50
 #define OpcUaId_FromState 51
 #define OpcUaId_ToState 52
 #define OpcUaId_HasCause 53

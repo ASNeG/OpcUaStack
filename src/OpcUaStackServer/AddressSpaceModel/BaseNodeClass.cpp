@@ -113,4 +113,10 @@ namespace OpcUaStackServer
 		return &userWriteMask_;
 	}
 
+	ReferenceItemMap& 
+	BaseNodeClass::referenceItemMap(void)
+	{
+		return referenceItemMap_;
+	}
+
 }

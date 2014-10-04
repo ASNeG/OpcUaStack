@@ -4,7 +4,6 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
-#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
 
 namespace OpcUaStackServer
 {
@@ -35,9 +34,6 @@ namespace OpcUaStackServer
 		Attribute* arrayDimensionsAttribute(void);
 		Attribute* minimumSamplingIntervalAttribute(void);
 
-		void addReference(ReferenceType referenceType, ReferenceItem::SPtr& referenceItem);
-		void getReference(ReferenceList& list, ReferenceType referenceType);
-
 	  private:
 		// attributes mandatory
 		ValueAttribute value_;
@@ -50,13 +46,6 @@ namespace OpcUaStackServer
 		// attributes optional
 		ArrayDimensionsAttribute arrayDimensions_;
 		MinimumSamplingIntervalAttribute minimumSamplingInterval_;
-
-		// references
-		ReferenceList hasModellingRule_; 
-		ReferenceList hasProperty_;
-		ReferenceList hasComponent_;
-		ReferenceList hasTypeDefinition_;
-		ReferenceList hasModelParent_;
 
 		// standard properties - all optional
 		OpcUaString nodeVersion_;  

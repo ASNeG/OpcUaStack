@@ -4,7 +4,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
-#include "OpcUaStackServer/AddressSpaceModel/ReferenceList.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -21,17 +22,9 @@ namespace OpcUaStackServer
 
 		Attribute* isAbstractAttribute(void);
 
-		void addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
-		void getReference(ReferenceList& list, ReferenceType referenceType);
-
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;
-
-		// references
-		ReferenceList hasProperty_;
-		ReferenceList hasSubtype_;
-		ReferenceList hasEncoding_;
 
 		// standard properties - all optional
 		OpcUaString nodeVersion_;  

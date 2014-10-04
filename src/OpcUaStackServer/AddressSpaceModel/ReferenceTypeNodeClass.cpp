@@ -8,8 +8,6 @@ namespace OpcUaStackServer
 	, isAbstract_()
 	, symmetric_()
 	, inverseName_()
-	, hasProperty_()
-	, hasSubtype_()
 	{
 	}
 
@@ -51,34 +49,6 @@ namespace OpcUaStackServer
 	ReferenceTypeNodeClass::inverseNameAttribute(void)
 	{
 		return &inverseName_;
-	}
-
-	void 
-	ReferenceTypeNodeClass::addReference(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
-	{
-		switch (referenceType)
-		{
-			case ReferenceType_HasProperty:
-				hasProperty_.referenceItemList_.push_back(referenceItem);
-				break;
-			case ReferenceType_HasSubtype:
-				hasSubtype_.referenceItemList_.push_back(referenceItem);
-				break;
-		}
-	}
-
-	void
-	ReferenceTypeNodeClass::getReference(ReferenceList& list, ReferenceType referenceType)
-	{
-		switch (referenceType)
-		{
-			case ReferenceType_HasProperty:
-				list = hasProperty_;
-				break;
-			case ReferenceType_HasSubtype:
-				list = hasSubtype_;
-				break;
-		}
 	}
 
 }

@@ -199,7 +199,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			objectNodeClass->addReference(referenceType, referenceItem);
+			objectNodeClass->referenceItemMap().add(referenceType, referenceItem);
 		}
 
 		return true;
@@ -778,112 +778,20 @@ namespace OpcUaStackServer
 	{
 		boost::property_tree::ptree referenceTree;
 
-		// ReferenceType_HasComponent
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasComponent, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasComponent] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
+		ReferenceItemMultiMap::iterator it;
+		ReferenceItemMap& referenceItemMap = objectNodeClass->referenceItemMap();
 
-		// ReferenceType_HasProperty
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasProperty, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasProperty] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
+		for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
+			boost::property_tree::ptree reference;
+			ReferenceItem::SPtr referenceItem = it->second;
+			OpcUaNodeId referenceTypeNodeId = it->first;
 
-		// ReferenceType_HasModellingRule
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasModellingRule, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasModellingRule] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
+			reference.put("<xmlattr>.ReferenceType", ReferenceTypeMap::nodeIdToString(referenceTypeNodeId));
+			if (referenceItem->isForward_) reference.put("<xmlattr>.IsForward", "true");
+			else reference.put("<xmlattr>.IsForward", "false");
+			reference.put_value(referenceItem->nodeId_.toString());
 
-		// ReferenceType_HasTypeDefinition
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasTypeDefinition, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasTypeDefinition] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HasModelParent
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasModelParent, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasModelParent] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HasEventSource
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasEventSource, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasEventSource] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HasNotifier
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasNotifier, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasNotifier] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_Organizes
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_Organizes, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_Organizes] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HasDescription
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasDescription, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasDescription] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HasEncoding
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasEncoding, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasEncoding] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HasSubtype
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasSubtype, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasSubtype] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_NodeId
-		// TODO
-
-		// ReferenceType_HasModelParameter
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HasModelParameter, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HasModelParameter] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_GenerateEvents
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_GenerateEvents, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_GenerateEvents] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_AlwaysGeneratesEvent
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_AlwaysGeneratesEvent, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_AlwaysGeneratesEvent] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
-
-		// ReferenceType_HierarchicalReferences
-		if (!referenceTypeToTree(objectNodeClass, ReferenceType_HierarchicalReferences, referenceTree)) {
-			Log(Error, "error by swap Reference [ReferenceType_HierarchicalReferences] to Tree")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
+			referenceTree.add_child("Reference", reference);
 		}
 
 		// add to Tree
@@ -1284,39 +1192,6 @@ namespace OpcUaStackServer
 	//  Helper Functions
 	//
 	// ##########################################################
-
-	bool 
-	NodeSetXmlParser::referenceTypeToTree(BaseNodeClass::SPtr objectNodeClass, ReferenceType referenceType, boost::property_tree::ptree& ptree)
-	{
-		ReferenceList referenceList;
-		ReferenceItemList::iterator it;
-
-		objectNodeClass->getReference(referenceList, referenceType);
-		for(it=referenceList.referenceItemList_.begin(); it!=referenceList.referenceItemList_.end(); it++) {
-			ReferenceItem::SPtr referenceItem = *it;
-
-			boost::property_tree::ptree reference;
-			std::string stringReferenceType;
-
-			stringReferenceType = ReferenceTypeMap::typeToString(referenceType);
-			if (stringReferenceType == "" || stringReferenceType == "Unkown") {
-				Log(Error, "cannot find ReferenceType.")
-					.parameter("NodeId", objectNodeClass->nodeId().data().toString())
-					.parameter("ReferenceType", referenceType);
-				return false;
-			}
-
-			if (referenceItem->isForward_) reference.put("<xmlattr>.IsForward", "true");
-			else  reference.put("<xmlattr>.IsForward", "false");
-			reference.put("<xmlattr>.ReferenceType", stringReferenceType);
-			reference.put_value(referenceItem->nodeId_.toString());
-
-			ptree.add_child("Reference", reference);
-		}
-
-		return true;
-	}
-
 	bool
 	NodeSetXmlParser::uint32ArrayToString(std::string& value, OpcUaUInt32Array& array)
 	{
