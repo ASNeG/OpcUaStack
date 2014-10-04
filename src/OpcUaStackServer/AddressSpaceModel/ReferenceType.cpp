@@ -21,6 +21,8 @@ namespace OpcUaStackServer
 	OpcUaNodeId::SPtr ReferenceTypeMap::alwaysGeneratesEventTypeNodeId_;
 	OpcUaNodeId::SPtr ReferenceTypeMap::hierarchicalReferencesTypeNodeId_;
 
+	ReferenceTypeNodeIdSet ReferenceTypeMap::referenceTypeNodeIdSet_;
+
 	std::string 
 	ReferenceTypeMap::typeToString(ReferenceType referenceType)
 	{
@@ -59,11 +61,30 @@ namespace OpcUaStackServer
 		else if (referenceTypeString == "HasDescription") return ReferenceType_HasDescription;
 		else if (referenceTypeString == "HasEncoding") return ReferenceType_HasEncoding;
 		else if (referenceTypeString == "HasSubtype") return ReferenceType_HasSubtype;
-		else if (boost::contains(referenceTypeString, "i=")) return ReferenceType_NodeId;
 		else if (referenceTypeString == "generateEvents") ReferenceType_GenerateEvents;
 		else if (referenceTypeString == "alwaysGeneratesEvent") ReferenceType_AlwaysGeneratesEvent;
 		else if (referenceTypeString == "hierarchicalReferences") ReferenceType_HierarchicalReferences;
 		return ReferenceType_Unknown;
+	}
+
+	OpcUaNodeId::SPtr
+	ReferenceTypeMap::stringToNodeId(const std::string& referenceTypeString)
+	{
+		ReferenceType referenceType = stringToType(referenceTypeString);
+		if (referenceType != ReferenceType_Unknown) return typeNodeId(referenceType);
+
+		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+		if (!nodeId->fromString(referenceTypeString)) {
+			OpcUaNodeId::SPtr nodeIdTmp;
+			return nodeIdTmp;
+		}
+
+		ReferenceTypeNodeIdSet::iterator it;
+		it = referenceTypeNodeIdSet_.find(nodeId);
+		if (it != referenceTypeNodeIdSet_.end()) return *it;
+
+		referenceTypeNodeIdSet_.insert(nodeId);
+		return nodeId;
 	}
 
 	OpcUaNodeId::SPtr 

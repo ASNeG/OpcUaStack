@@ -85,6 +85,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\AttributeBase.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\DummyNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeBase.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\BaseNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\DataTypeNodeClass.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\DummyNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\MethodNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ObjectTypeNodeClass.cpp" />

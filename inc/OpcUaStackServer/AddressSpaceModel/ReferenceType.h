@@ -4,11 +4,14 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include <string>
+#include <set>
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
+
+	typedef std::set<OpcUaNodeId::SPtr, OpcUaNodeSPtrCompare> ReferenceTypeNodeIdSet;
 
 	typedef enum {
 		ReferenceType_Unknown,
@@ -36,6 +39,7 @@ namespace OpcUaStackServer
 		static ReferenceType stringToType(std::string referenceTypeString);
 		static ReferenceType nodeIdToReferenceType(OpcUaNodeId& nodeId);
 		static std::string nodeIdToString(OpcUaNodeId& nodeId);
+		static OpcUaNodeId::SPtr stringToNodeId(const std::string& referenceTypeString);
 
 		static OpcUaNodeId::SPtr typeNodeId(ReferenceType referenceType);
 		static OpcUaNodeId::SPtr hasPropertyTypeNodeId(void);
@@ -54,7 +58,7 @@ namespace OpcUaStackServer
 		static OpcUaNodeId::SPtr alwaysGeneratesEventTypeNodeId(void);
 		static OpcUaNodeId::SPtr hierarchicalReferencesTypeNodeId(void);
 
-	  protected:
+	  private:
 		static OpcUaNodeId::SPtr hasPropertyTypeNodeId_;
 		static OpcUaNodeId::SPtr hasComponentTypeNodeId_;
 		static OpcUaNodeId::SPtr hasModellingRuleTypeNodeId_;
@@ -70,6 +74,8 @@ namespace OpcUaStackServer
 		static OpcUaNodeId::SPtr generateEventsTypeNodeId_;
 		static OpcUaNodeId::SPtr alwaysGeneratesEventTypeNodeId_;
 		static OpcUaNodeId::SPtr hierarchicalReferencesTypeNodeId_;
+
+		static ReferenceTypeNodeIdSet referenceTypeNodeIdSet_;
 	};
 
 }

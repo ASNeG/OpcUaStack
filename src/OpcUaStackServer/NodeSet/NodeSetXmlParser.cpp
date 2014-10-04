@@ -143,7 +143,8 @@ namespace OpcUaStackServer
 
 			if (it->first != "Reference") {
 				Log(Error, "find invalid element")
-					.parameter("NodeId", nodeId);
+					.parameter("NodeId", nodeId)
+					.parameter("Element", it->first);
 				return false;
 			}
 
@@ -159,20 +160,12 @@ namespace OpcUaStackServer
 				return false;
 			}
 			
-			ReferenceType referenceType = ReferenceTypeMap::stringToType(*referenceTypeString);
-			
-			if (referenceType == ReferenceType_Unknown) {
+			OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::stringToNodeId(*referenceTypeString);
+			if (referenceTypeNodeId.get() == nullptr) {
 				Log(Error, "reference type unknown in node set")
 					.parameter("NodeId", nodeId)
 					.parameter("ReferenceType", *referenceTypeString);
 				return false;
-			}
-
-			if (referenceType == ReferenceType_NodeId) {
-				// Example:
-				// <Reference ReferenceType="i=9004">i=9160</Reference>
-				// See Opc.Ua.NodeSet2.xml Line:8585.
-				continue;
 			}
 
 			//
@@ -199,7 +192,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			objectNodeClass->referenceItemMap().add(referenceType, referenceItem);
+			objectNodeClass->referenceItemMap().add(referenceTypeNodeId, referenceItem);
 		}
 
 		return true;

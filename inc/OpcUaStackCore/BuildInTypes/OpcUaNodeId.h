@@ -16,6 +16,16 @@ namespace OpcUaStackCore
 		virtual ~OpcUaNodeId(void);
 	};
 
+	class OpcUaNodeSPtrCompare
+	{
+		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) {
+			if (a.get() == nullptr && b.get() != nullptr) return true;
+			if (a.get() != nullptr && b.get() == nullptr) return false;
+			if (a.get() == nullptr && b.get() == nullptr) return false;
+			return *a < *b;
+		}
+	};
+
 	class OpcUaNodeIdArray : public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >, public ObjectPool<OpcUaNodeIdArray> {};
 
 	typedef std::list<OpcUaNodeId> OpcUaNodeIdList;
