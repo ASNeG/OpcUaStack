@@ -17,6 +17,7 @@ namespace OpcUaStackCore
 		NodeClassType_ReferenceType = 32,
 		NodeClassType_DataType = 64,
 		NodeClassType_View = 128,
+		NodeClassType_Dummy = 256,
 	} NodeClassType;
 
 

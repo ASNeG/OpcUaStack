@@ -78,7 +78,8 @@ namespace OpcUaStackServer
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("SourceNodeId", browseDescription->nodeId())
 					.parameter("TargetNodeId", (*it)->nodeId())
-					.parameter("TargetDisplayName", (*it)->displayName().text());
+					.parameter("TargetDisplayName", (*it)->displayName().text())
+					.parameter("ReferenceType", ReferenceTypeMap::nodeIdToString(*(*it)->referenceTypeId()));
 
 				referenceDescriptionArray->push_back(*it);
 			}
@@ -157,13 +158,13 @@ namespace OpcUaStackServer
 			referenceDescriptionVec.push_back(referenceDescription);
 
 			OpcUaExpandedNodeId::SPtr targetNodeId = OpcUaExpandedNodeId::construct();
-			baseNodeClass->nodeId().data().copyTo(*targetNodeId);
+			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
+			referenceDescription->nodeId(targetNodeId);
 			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
 			referenceDescription->isForward(referenceItem->isForward_);  
-			referenceDescription->nodeId(targetNodeId);
-			referenceDescription->displayName(baseNodeClass->displayName().data());
-			referenceDescription->browseName(baseNodeClass->browseName().data());
-			referenceDescription->nodeClass(baseNodeClass->nodeClass().data());
+			referenceDescription->displayName(baseNodeClassTarget->displayName().data());
+			referenceDescription->browseName(baseNodeClassTarget->browseName().data());
+			referenceDescription->nodeClass(baseNodeClassTarget->nodeClass().data());
 
 			std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> itp;
 			itp = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
