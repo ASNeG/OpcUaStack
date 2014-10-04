@@ -24,6 +24,8 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr find(OpcUaNodeId& opcUaNodeId);
 		BaseNodeClass::SPtr find(OpcUaNodeId::SPtr opcUaNodeId);
 
+		void checkForwardReferences(void);
+
 		bool setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue);
 		bool setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaVariant& variant);
 		bool getValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue);

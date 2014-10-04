@@ -192,7 +192,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			objectNodeClass->referenceItemMap().add(referenceTypeNodeId, referenceItem);
+			objectNodeClass->referenceItemMap().add(*referenceTypeNodeId, referenceItem);
 		}
 
 		return true;

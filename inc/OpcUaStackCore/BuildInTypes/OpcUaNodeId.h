@@ -18,6 +18,7 @@ namespace OpcUaStackCore
 
 	class OpcUaNodeSPtrCompare
 	{
+	  public:
 		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) {
 			if (a.get() == nullptr && b.get() != nullptr) return true;
 			if (a.get() != nullptr && b.get() == nullptr) return false;

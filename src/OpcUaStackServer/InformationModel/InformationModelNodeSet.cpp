@@ -86,6 +86,7 @@ namespace OpcUaStackServer
 			}
 		}
 
+		informationModelSPtr->checkForwardReferences();
 		return true;
 	}
 

@@ -46,6 +46,33 @@ namespace OpcUaStackServer
 		return find(*opcUaNodeId);
 	}
 
+	void 
+	InformationModel::checkForwardReferences(void)
+	{
+		InformationModelMap::iterator it;
+		for (it = informationModelMap_.begin(); it != informationModelMap_.end(); it++) {
+			BaseNodeClass::SPtr baseNodeClass = it->second;
+
+			ReferenceItemMultiMap::iterator itr;
+			for (itr = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin(); itr != baseNodeClass->referenceItemMap().referenceItemMultiMap().end(); itr++) {
+				OpcUaNodeId referenceTypeNodeId = itr->first;
+				ReferenceItem::SPtr referenceItem = itr->second;
+				if (referenceItem->isForward_) continue;
+
+				BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
+				if (baseNodeClassTarget.get() == nullptr) continue;
+
+				ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
+				referenceItemForward->isForward_ = false;
+				baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
+
+				std::cout << "nodeId=" << baseNodeClassTarget->nodeId() << std::endl;
+
+				baseNodeClassTarget->referenceItemMap().add(referenceTypeNodeId, referenceItemForward);
+			}
+		}
+	}
+
 	bool 
 	InformationModel::setValue(OpcUaUInt32 nodeId, AttributeId attributeId, OpcUaDataValue& dataValue)
 	{
