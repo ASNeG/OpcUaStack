@@ -73,6 +73,7 @@ namespace OpcUaStackServer
 
 			ReferenceDescriptionArray::SPtr referenceDescriptionArray = ReferenceDescriptionArray::construct();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
+			browseResult->references(referenceDescriptionArray);
 			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
 				Log(Debug, "reference")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -146,6 +147,18 @@ namespace OpcUaStackServer
 			OpcUaNodeId referenceTypeNodeId = it->first;
 			ReferenceItem::SPtr referenceItem = it->second;
 
+			if (browseDescription->browseDirection() == BrowseDirectionEnum::BrowseDirection_Forward) {
+				if (!referenceItem->isForward_) continue;
+			}
+
+			if (browseDescription->browseDirection() == BrowseDirectionEnum::BrowseDirection_Inverse) {
+				if (referenceItem->isForward_) continue;
+			}
+
+			if (checkReferenceType(referenceTypeNodeId, browseDescription) != Success) {
+				continue;
+			}
+
 			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
 			if (baseNodeClassTarget.get() == nullptr) {
 				Log(Debug, "target node not found")
@@ -167,7 +180,7 @@ namespace OpcUaStackServer
 			referenceDescription->nodeClass(baseNodeClassTarget->nodeClass().data());
 
 			std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> itp;
-			itp = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
+			itp = baseNodeClassTarget->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
 			if (itp.first != itp.second) {
 				ReferenceItem::SPtr referenceItem = itp.first->second;
 				referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
@@ -175,5 +188,49 @@ namespace OpcUaStackServer
 		}
 
 		return Success;
+	}
+
+	OpcUaStatusCode 
+	ViewService::checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr browseDescription)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceTypeNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return BadNotFound;
+		}
+		return hashSubtype(baseNodeClass,  browseDescription);
+		return Success;
+	}
+
+	OpcUaStatusCode 
+	ViewService::hashSubtype(BaseNodeClass::SPtr baseNodeClass, BrowseDescription::SPtr browseDescription, uint32_t hopCounter)
+	{
+
+		if (hopCounter == 0) return BadInternalError;
+
+		if (*browseDescription->referenceTypeId() == baseNodeClass->nodeId().data()) {
+			return Success;
+		}
+
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
+		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
+		if (it.first == it.second) {
+			return BadNotFound;
+		}
+
+		ReferenceItemMultiMap::iterator itl;
+		for (itl = it.first; itl != it.second; itl++) {
+			ReferenceItem::SPtr referenceItem  = itl->second;
+
+			if (referenceItem->isForward_) continue;
+
+			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClassTarget.get() == nullptr) {
+				return BadNodeIdUnknown;
+			}
+
+			return hashSubtype(baseNodeClassTarget, browseDescription, hopCounter-1);
+		}
+
+		return BadNotFound;
 	}
 }

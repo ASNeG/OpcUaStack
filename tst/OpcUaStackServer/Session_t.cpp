@@ -155,6 +155,12 @@ BOOST_AUTO_TEST_CASE(Session_open)
 		variant.arrayLength(1);
 		BOOST_REQUIRE(informationModel->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant) == true);
 	}
+
+	{ // ServerStatus
+		OpcUaVariant variant;
+		variant.variant((OpcUaUInt32)0);
+		BOOST_REQUIRE(informationModel->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, variant) == true);
+	}
 	
 
 	//

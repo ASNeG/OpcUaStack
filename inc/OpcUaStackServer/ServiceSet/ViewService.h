@@ -34,6 +34,8 @@ namespace OpcUaStackServer
 
 		typedef std::vector<ReferenceDescription::SPtr> ReferenceDescriptionVec;
 		OpcUaStatusCode browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);
+		OpcUaStatusCode hashSubtype(BaseNodeClass::SPtr baseNodeClass, BrowseDescription::SPtr browseDescription, uint32_t hopCounter = 25);
+		OpcUaStatusCode checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr browseDescription);
 	};
 
 }

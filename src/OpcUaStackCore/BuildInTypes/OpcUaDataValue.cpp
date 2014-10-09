@@ -95,6 +95,17 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaDataValue::reset(void)
+	{
+		opcUaVariantSPtr_.reset();
+		opcUaStatusCode_ = Success;
+		sourceTimestamp_ = 0;
+		serverTimestamp_ = 0;
+		sourcePicoseconds_ = 0;
+		serverPicoseconds_ = 0;
+	}
+
+	void 
 	OpcUaDataValue::out(std::ostream& os) const
 	{
 		bool outputExist = false;

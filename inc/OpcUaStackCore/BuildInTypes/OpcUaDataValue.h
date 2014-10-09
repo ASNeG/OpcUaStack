@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 		OpcUaDateTime serverTimestamp(void);
 		void serverPicoseconds(const OpcUaUInt16& serverPicoseconds);
 		OpcUaInt16 serverPicoseconds(void);
+		void reset(void);
 
 		void copyTo(OpcUaDataValue& dataValue);
 

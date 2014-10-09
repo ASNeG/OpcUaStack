@@ -963,11 +963,11 @@ namespace OpcUaStackCore
 		if (arrayLength != -1 && variantType == OpcUaBuildInType_Unknown) arrayLength = 0; 
 
 		if (arrayLength != -1) {
-			encodingMask += 64;
+			encodingMask += 128;
 		}
 
 		if (arrayDimensionsVec_.size() > 0) {
-			encodingMask += 128;
+			encodingMask += 64;
 		}
 
 		OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
@@ -1005,7 +1005,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
 
 		arrayLength_ = -1;
-		if ((encodingMask & 64) == 64) {
+		if ((encodingMask & 128) == 128) {
 			OpcUaNumber::opcUaBinaryDecode(is, arrayLength_);
 		}
 

@@ -126,6 +126,7 @@ namespace OpcUaStackServer
 					.parameter("Node", *readValueId->nodeId())
 					.parameter("Attr", readValueId->attributeId())
 					.parameter("Class", baseNodeClass->nodeClass().data());
+				dataValue->reset();
 				dataValue->statusCode(BadAttributeIdInvalid);
 				continue;
 			}

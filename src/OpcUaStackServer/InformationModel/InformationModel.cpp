@@ -63,10 +63,8 @@ namespace OpcUaStackServer
 				if (baseNodeClassTarget.get() == nullptr) continue;
 
 				ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
-				referenceItemForward->isForward_ = false;
+				referenceItemForward->isForward_ = true;
 				baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
-
-				std::cout << "nodeId=" << baseNodeClassTarget->nodeId() << std::endl;
 
 				baseNodeClassTarget->referenceItemMap().add(referenceTypeNodeId, referenceItemForward);
 			}
