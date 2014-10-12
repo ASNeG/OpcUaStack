@@ -118,6 +118,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\Subscription.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionManager.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\TransactionManager.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\ViewService.h" />
@@ -161,6 +163,8 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionManager.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MethodService.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\Subscription.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionManager.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\TransactionManager.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\ViewService.cpp" />

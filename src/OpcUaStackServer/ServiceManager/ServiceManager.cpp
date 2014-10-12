@@ -192,4 +192,17 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool 
+	ServiceManager::ioService(IOService* ioService)
+	{
+		attributeService_->ioService(ioService);
+		methodService_->ioService(ioService);
+		monitoredItemService_->ioService(ioService);
+		nodeManagementService_->ioService(ioService);
+		queryService_->ioService(ioService);
+		subscriptionService_->ioService(ioService);
+		viewService_->ioService(ioService);
+		return true;
+	}
+
 }

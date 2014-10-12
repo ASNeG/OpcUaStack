@@ -48,32 +48,31 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveCreateSubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME: dummy implementation
-
 		ServiceTransactionCreateSubscription::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
 		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
 
 		Log(Debug, "create subscription")
-			.parameter("SubscriptionId", 123456)
+			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("PublisingInterval", createSubscriptionRequest->requestedPublishingInterval())
 			.parameter("LifetimeCount", createSubscriptionRequest->requestedLifetimeCount())
 			.parameter("MaxKeepAliveCount", createSubscriptionRequest->requestedMaxKeepAliveCount());
 
-		createSubscriptionResponse->subscriptionId(123456);
-		createSubscriptionResponse->revisedPublishingInterval(createSubscriptionRequest->requestedPublishingInterval());
-		createSubscriptionResponse->revisedLifetimeCount(createSubscriptionRequest->requestedLifetimeCount());
-		createSubscriptionResponse->revisedMaxKeepAliveCount(createSubscriptionRequest->requestedMaxKeepAliveCount());
-
-		serviceTransaction->statusCode(Success);
+		serviceTransaction->statusCode(subscriptionManager_.receive(trx));
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 	}
 
 	void 
 	SubscriptionService::receiveDeleteSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		ServiceTransactionDeleteSubscriptions::SPtr trx = boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction);
+		DeleteSubscriptionsRequest::SPtr deleteSubscriptionsRequest = trx->request();
+		DeleteSubscriptionsResponse::SPtr deleteSubscriptionsResponse = trx->response();
+
+		Log(Debug, "create subscription")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		serviceTransaction->statusCode(subscriptionManager_.receive(trx));
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 	}
 
@@ -88,9 +87,15 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receivePublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+		ServiceTransactionPublish::SPtr trx = boost::static_pointer_cast<ServiceTransactionPublish>(serviceTransaction);
+		PublishRequest::SPtr publishRequest = trx->request();
+		PublishResponse::SPtr publishResponse = trx->response();
+
+		Log(Debug, "publish")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		subscriptionManager_.ioService(ioService());
+		subscriptionManager_.receive(trx);
 	}
 
 	void 

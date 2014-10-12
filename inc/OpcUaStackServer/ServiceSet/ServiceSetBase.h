@@ -2,7 +2,10 @@
 #define __OpcUaStackServer_ServiceSetBase_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -15,9 +18,12 @@ namespace OpcUaStackServer
 
 		void informationModel(InformationModel::SPtr informationModel);
 		InformationModel::SPtr informationModel(void);
+		void ioService(IOService* ioService);
+		IOService* ioService(void);
 
 	  protected:
 		InformationModel::SPtr informationModel_;
+		IOService *ioService_;
 	};
 
 }

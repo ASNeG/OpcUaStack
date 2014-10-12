@@ -28,9 +28,7 @@ namespace OpcUaStackServer
 
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void discoveryService(DiscoveryService::SPtr discoveryService);
-
-		void start(void);
-		void stop(void);
+		void ioService(IOService* ioService);
 
 		void openServerSocket(
 			const std::string& prefixSessionConfig, Config& sessionConfig, 
@@ -56,7 +54,7 @@ namespace OpcUaStackServer
 
 		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 
-		IOService ioService_;
+		IOService* ioService_;
 
 		TCPAcceptor::SPtr tcpAcceptor_;
 		DiscoveryService::SPtr discoveryService_;

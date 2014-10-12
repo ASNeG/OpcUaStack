@@ -191,6 +191,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\DummyNodeClass.h">
       <Filter>src\AddressSpaceModel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\Subscription.h">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionManager.h">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -318,6 +324,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\DummyNodeClass.cpp">
       <Filter>src\AddressSpaceModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\Subscription.cpp">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionManager.cpp">
+      <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

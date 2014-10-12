@@ -38,6 +38,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 {
 	bool rc;
 	Config serverConfig;
+	IOService ioService;
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -168,6 +169,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	// 
 	BOOST_REQUIRE(serviceManager.init(sessionManager) == true);
 	BOOST_REQUIRE(serviceManager.informatinModel(informationModel) == true);
+	BOOST_REQUIRE(serviceManager.ioService(&ioService));
 
 
 	//
@@ -176,11 +178,12 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	DiscoveryService::SPtr discoveryService = DiscoveryService::construct();
 	discoveryService->endpointDescriptionArray(endpointDescriptionArray);
 	sessionManager.discoveryService(discoveryService);
+	sessionManager.ioService(&ioService);
 	
 	//
 	// start session manager
 	//
-	sessionManager.start();
+	ioService.start();
 	sessionManager.openServerSocket(
 		"TestConfig", serverConfig,
 		"TestConfig", serverConfig
@@ -188,7 +191,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	
 	IOService::secSleep(40000);
 
-	sessionManager.stop();
+	ioService.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -6,6 +6,7 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
+#include "OpcUaStackServer/ServiceSet/SubscriptionManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,6 +34,8 @@ namespace OpcUaStackServer
 		void receiveRepublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 		void receiveSetPublishingModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 		void receiveTransferSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+
+		SubscriptionManager subscriptionManager_;
 	};
 
 }

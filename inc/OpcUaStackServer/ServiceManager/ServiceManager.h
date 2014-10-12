@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_ServiceManager_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OPcUaStackCore/Base/IOService.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
@@ -11,6 +12,8 @@
 #include "OpcUaStackServer/ServiceSet/QueryService.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -23,6 +26,7 @@ namespace OpcUaStackServer
 
 		bool init(SessionManager& sessionManager);
 		bool informatinModel(InformationModel::SPtr informatinModel);
+		bool ioService(IOService* ioService);
 
 	  private:
 		TransactionManager::SPtr transactionManager_;

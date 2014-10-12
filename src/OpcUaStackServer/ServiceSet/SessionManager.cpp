@@ -24,6 +24,7 @@ namespace OpcUaStackServer
 	, prefixSecureChannelConfig_("") 
 	, sessionConfig_(nullptr)
 	, secureChannelConfig_(nullptr)
+	, ioService_(nullptr)
 	{
 	}
 
@@ -44,16 +45,10 @@ namespace OpcUaStackServer
 		discoveryService_->sessionSecureChannelIf(this);
 	}
 
-	void 
-	SessionManager::start(void)
+	void
+	SessionManager::ioService(IOService* ioService)
 	{
-		ioService_.start();
-	}
-		
-	void 
-	SessionManager::stop(void)
-	{
-		ioService_.stop();
+		ioService_ = ioService;
 	}
 
 	void
@@ -133,7 +128,7 @@ namespace OpcUaStackServer
 		}
 
 		// create secure channel
-		secureChannel = SecureChannelServer::construct(ioService_);
+		secureChannel = SecureChannelServer::construct(*ioService_);
 		secureChannel->secureChannelIf(this);
 		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
 		if (!rc) {
@@ -148,7 +143,7 @@ namespace OpcUaStackServer
 
 		// bind server socket
 		std::string host = url.host();
-		boost::asio::io_service& io_service = ioService_.io_service();
+		boost::asio::io_service& io_service = ioService_->io_service();
 		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url.port());
 		tcpAcceptor_->listen();
 		tcpAcceptor_->async_accept(
