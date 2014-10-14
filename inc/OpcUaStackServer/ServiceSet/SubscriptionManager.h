@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Utility/Timer.h"
 #include "OpcUaStackServer/ServiceSet/Subscription.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 
@@ -25,7 +26,10 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(ServiceTransactionPublish::SPtr trx);
 
 	  private:
+		void publishTimeout(void);
+
 		IOService* ioService_;
+		Timer::SPtr timer_;
 		SubscriptionMap subscriptionMap_;
 		ServiceTransactionPublishList serviceTransactionPublishList_;
 	};

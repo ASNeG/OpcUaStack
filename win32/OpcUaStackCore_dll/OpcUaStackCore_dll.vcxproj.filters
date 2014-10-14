@@ -768,6 +768,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\ServiceSet\AttributeServiceTransaction.h">
       <Filter>src\ServiceSet\AttributeServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\SlotTimer.h">
+      <Filter>src\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1414,6 +1417,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\ServiceSet\NodeClass.cpp">
       <Filter>src\ServiceSet\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Utility\SlotTimer.cpp">
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

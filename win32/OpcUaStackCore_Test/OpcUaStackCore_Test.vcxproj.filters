@@ -256,6 +256,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\BuildInTypes\OpcUaVariantValue_t.cpp">
       <Filter>unittest\BuildInTypes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\SlotTimer_t.cpp">
+      <Filter>unittest\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
