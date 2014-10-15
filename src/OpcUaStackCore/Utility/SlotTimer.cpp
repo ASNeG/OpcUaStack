@@ -112,14 +112,19 @@ namespace OpcUaStackCore
 	, tickOffset_(0)
 	, count_(0)
 	{
-		slotList_ = new SlotTimerElement::SPtr[numberSlots_]; 
-		for (uint8_t idx=0; idx<numberSlots_; idx++) {
+		if (numberSlots == 0) numberSlots = 1;
+
+		slotList_ = new SlotTimerElement::SPtr[numberSlots]; 
+		for (uint8_t idx=0; idx<numberSlots; idx++) {
 			slotList_[idx].reset();
 		}
 	}
 
 	SlotArray::~SlotArray(void)
 	{
+		uint32_t numberSlots = numberSlots_;
+		if (numberSlots_ == 0) numberSlots = 1;
+
 		for (uint8_t idx=0; idx<numberSlots_; idx++) {
 			while (slotList_[idx].get() != nullptr) del(idx, slotList_[idx]);
 		}
@@ -159,13 +164,13 @@ namespace OpcUaStackCore
 		uint64_t tickBegin = tickOffset_ + (actSlot_ * ticksPerSlot_);
 		uint64_t tickEnd = tickBegin + ticksPerArray_;
 		
-		if (tickTimer <= tickBegin) {
+		if (slotTimerElement->tick() <= tickBegin) {
 			add(actSlot_, slotTimerElement);
 			return;
 		}
 
-		if (tickTimer < tickEnd) {
-			uint8_t actSlot = (uint8_t)(tickTimer / ticksPerSlot_);
+		if (slotTimerElement->tick() < tickEnd) {
+			uint8_t actSlot = (tickTimer / ticksPerSlot_) % numberSlots_;
 			add(actSlot, slotTimerElement);
 			return;
 		}
@@ -197,6 +202,50 @@ namespace OpcUaStackCore
 		del(actSlot, slotTimerElement);
 	}
 
+	uint64_t 
+	SlotArray::run(void)
+	{
+		while (slotList_[actSlot_].get() != nullptr) {
+			SlotTimerElement::SPtr slotTimerElement = slotList_[actSlot_];
+			del(actSlot_, slotTimerElement);
+			slotTimerElement->callback()();
+		}
+
+		moveSlot();
+		return (tickOffset_ + (ticksPerSlot_ * actSlot_));
+	}
+
+	void
+	SlotArray::moveSlot(void)
+	{
+		if (next_ == nullptr) return;
+
+		actSlot_++;
+		if (actSlot_ < numberSlots_) return;
+
+		actSlot_ = 0;
+		tickOffset_ += ticksPerArray_;
+
+		SlotTimerElement::SPtr slotTimerElement; 
+		while (true) {
+			slotTimerElement = next_->removeActSlot();
+			if (slotTimerElement.get() == nullptr) break;
+			insert(slotTimerElement);
+		}
+
+		next_->moveSlot();
+	}
+
+	SlotTimerElement::SPtr
+	SlotArray::removeActSlot(void)
+	{
+		SlotTimerElement::SPtr slotTimerElement = slotList_[actSlot_];
+		if (slotTimerElement.get() != nullptr) {
+			del(actSlot_, slotTimerElement);
+		}
+		return slotTimerElement;
+	}
+
 	void 
 	SlotArray::add(uint8_t slotNumber, SlotTimerElement::SPtr slotTimerElement)
 	{
@@ -210,8 +259,8 @@ namespace OpcUaStackCore
 			slotList_[slotNumber] = slotTimerElement;
 		}
 		else {
-			slotTimerElement->next(slotTimerElement);
-			slotTimerElement->last(slotList_[slotNumber]->next());
+			slotTimerElement->next(slotList_[slotNumber]);
+			slotTimerElement->last(slotList_[slotNumber]->last());
 			slotList_[slotNumber]->last()->next(slotTimerElement);
 			slotList_[slotNumber]->last(slotTimerElement);
 		}
@@ -220,10 +269,6 @@ namespace OpcUaStackCore
 	void 
 	SlotArray::del(uint8_t slotNumber, SlotTimerElement::SPtr slotTimerElement)
 	{
-		if (slotTimerElement->next().get() == nullptr || slotTimerElement->last().get() == nullptr) {
-			return;
-		}
-
 		count_--;
 		if (slotList_[slotNumber].get() == slotList_[slotNumber]->next().get()) {
 			slotList_[slotNumber].reset();
@@ -254,9 +299,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	SlotTimer::SlotTimer(void)
 	: slotArray1_(255, 1)
-	, slotArray2_(64, 256)
-	, slotArray3_(64, 16384)
-	, slotArray4_(64, 1048576)
+	, slotArray2_(64, 255*1)
+	, slotArray3_(64, 255*1*64)
+	, slotArray4_(64, 255*1*64*64)
 	, slotArray5_(64, 0)
 	{
 		slotArray5_.next(nullptr);
@@ -297,6 +342,12 @@ namespace OpcUaStackCore
 	SlotTimer::count(void)
 	{
 		return slotArray1_.count();
+	}
+
+	uint64_t 
+	SlotTimer::run(void)
+	{
+		return slotArray1_.run();
 	}
 
 }

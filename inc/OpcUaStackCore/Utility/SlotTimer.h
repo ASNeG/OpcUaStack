@@ -53,8 +53,12 @@ namespace OpcUaStackCore
 		void insert(SlotTimerElement::SPtr slotTimerElement);
 		void remove(SlotTimerElement::SPtr slotTimerElement);
 		uint32_t count(void);
+		uint64_t run(void);
+
+		SlotTimerElement::SPtr removeActSlot(void);
 		
 	  private:
+		void moveSlot(void);
 		void add(uint8_t slotNumber, SlotTimerElement::SPtr slotTimerElement);
 		void del(uint8_t slotNumber, SlotTimerElement::SPtr SlotTimerElement);
 
@@ -82,6 +86,8 @@ namespace OpcUaStackCore
 		void insert(SlotTimerElement::SPtr slotTimerElement);
 		void remove(SlotTimerElement::SPtr slotTimerElement);
 		uint32_t count(void);
+		uint64_t run(void);
+		
 
 	  private:
 		SlotArray slotArray1_;
