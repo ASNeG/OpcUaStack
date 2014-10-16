@@ -203,12 +203,15 @@ namespace OpcUaStackCore
 	}
 
 	uint64_t 
-	SlotArray::run(void)
+	SlotArray::run(boost::mutex* mutex)
 	{
 		while (slotList_[actSlot_].get() != nullptr) {
 			SlotTimerElement::SPtr slotTimerElement = slotList_[actSlot_];
 			del(actSlot_, slotTimerElement);
+
+			if (mutex != nullptr) mutex->unlock();
 			slotTimerElement->callback()();
+			if (mutex != nullptr) mutex->lock();
 		}
 
 		moveSlot();
@@ -303,6 +306,10 @@ namespace OpcUaStackCore
 	, slotArray3_(64, 255*1*64)
 	, slotArray4_(64, 255*1*64*64)
 	, slotArray5_(64, 0)
+	, nextTick_(0)
+	, startTime_()
+	, timer_(nullptr)
+	, running_(false)
 	{
 		slotArray5_.next(nullptr);
 		slotArray4_.next(&slotArray5_);
@@ -314,16 +321,29 @@ namespace OpcUaStackCore
 
 	SlotTimer::~SlotTimer(void)
 	{
+		stopSlotTimerLoop(true);
 	}
 
 	void 
 	SlotTimer::start(SlotTimerElement::SPtr slotTimerElement)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+		if (startTime_ >= slotTimerElement->expireTime()) {
+			slotTimerElement->tick(0);
+		}
+		else {
+			boost::posix_time::time_duration diff = slotTimerElement->expireTime() - startTime_;
+			slotTimerElement->tick((uint64_t)(diff.total_milliseconds() / 10));
+		}
+	
+		slotArray1_.insert(slotTimerElement);
 	}
 
 	void 
 	SlotTimer::stop(SlotTimerElement::SPtr slotTimerElement)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+		slotArray1_.remove(slotTimerElement);
 	}
 
 	void 
@@ -347,7 +367,57 @@ namespace OpcUaStackCore
 	uint64_t 
 	SlotTimer::run(void)
 	{
-		return slotArray1_.run();
+		return slotArray1_.run(nullptr);
 	}
 
+	void 
+	SlotTimer::loop(const boost::system::error_code& error)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+
+		if (error) {
+			running_ = false;
+			return;
+		}
+
+		if (running_ == false) return; 
+
+		boost::posix_time::time_duration diff = boost::posix_time::microsec_clock::local_time() - startTime_;
+		uint64_t actTick = diff.total_milliseconds() / 10;
+
+		if (nextTick_ > actTick) {
+			timer_->expires_at(timer_->expires_at() + boost::posix_time::millisec(10));
+			timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+			return;
+		}
+
+		uint64_t nextTick = slotArray1_.run(&mutex_);
+		if (nextTick > actTick) {
+			timer_->expires_at(timer_->expires_at() + boost::posix_time::millisec(10));
+		}
+		else {
+			timer_->expires_at(timer_->expires_at());
+		}
+		timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+	}
+
+	void 
+	SlotTimer::startSlotTimerLoop(IOService* ioService)
+	{
+		running_ = true;
+		ioService_ = ioService;
+		startTime_ = boost::posix_time::microsec_clock::local_time();
+
+		timer_ = new boost::asio::deadline_timer(ioService_->io_service(), boost::posix_time::milliseconds(0));
+		timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+	}
+		
+	void 
+	SlotTimer::stopSlotTimerLoop(bool sync)
+	{
+		running_ = false;
+		IOService::msecSleep(20);
+		delete timer_;
+		timer_ = nullptr;
+	}
 }

@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/IOService.h"
 
 namespace OpcUaStackCore 
 {
@@ -53,7 +54,7 @@ namespace OpcUaStackCore
 		void insert(SlotTimerElement::SPtr slotTimerElement);
 		void remove(SlotTimerElement::SPtr slotTimerElement);
 		uint32_t count(void);
-		uint64_t run(void);
+		uint64_t run(boost::mutex* mutex);
 
 		SlotTimerElement::SPtr removeActSlot(void);
 		
@@ -83,6 +84,9 @@ namespace OpcUaStackCore
 		void start(SlotTimerElement::SPtr slotTimerElement);
 		void stop(SlotTimerElement::SPtr slotTimerElement);
 
+		void startSlotTimerLoop(IOService* ioService);
+		void stopSlotTimerLoop(bool sync = false);
+
 		void insert(SlotTimerElement::SPtr slotTimerElement);
 		void remove(SlotTimerElement::SPtr slotTimerElement);
 		uint32_t count(void);
@@ -90,13 +94,20 @@ namespace OpcUaStackCore
 		
 
 	  private:
+		void loop(const boost::system::error_code& error);
+
 		SlotArray slotArray1_;
 		SlotArray slotArray2_;
 		SlotArray slotArray3_;
 		SlotArray slotArray4_;
 		SlotArray slotArray5_;
 
-		uint32_t actTick_;
+		boost::mutex mutex_;
+		bool running_;
+		boost::asio::deadline_timer* timer_;
+		IOService* ioService_;
+		boost::posix_time::ptime startTime_;
+		uint32_t nextTick_;
 	};
 
 }

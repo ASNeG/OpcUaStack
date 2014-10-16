@@ -12,8 +12,9 @@ class SlotTimerTest
 {
   public:
 
-	  SlotTimerTest(void)
-	  : count_(0)
+	  SlotTimerTest::SlotTimerTest(void)
+	  : callCondition_()
+	  , count_(0)
 	  , tick_(0)
 	  {
 	  }
@@ -21,10 +22,12 @@ class SlotTimerTest
 	  void call(uint64_t tick) {
 		  tick_ = tick;
 		  count_++;
+		  callCondition_.conditionValueInc();
 	  }
 
 	  uint64_t tick_;
 	  uint32_t count_;
+	  Condition callCondition_;
 };
 
 BOOST_AUTO_TEST_SUITE(SlotTimer_t)
@@ -368,6 +371,83 @@ BOOST_AUTO_TEST_CASE(SlotTimer_call_n)
 		BOOST_REQUIRE(slotTimerTest.count_ == idx+1);
 		BOOST_REQUIRE(slotTimerTest.tick_ == idx);
 	}
+}
+
+BOOST_AUTO_TEST_CASE(SlotTimer_loop_1)
+{
+	IOService ioService;
+	SlotTimerTest slotTimerTest;
+	SlotTimerElement::SPtr slotTimerElement;
+	SlotTimer slotTimer;
+
+	ioService.start(1);
+	slotTimer.startSlotTimerLoop(&ioService);
+
+	slotTimerTest.callCondition_.condition(0,1);
+	slotTimerElement = SlotTimerElement::construct();
+	slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(10));
+	slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)10));
+	slotTimer.start(slotTimerElement);
+	BOOST_REQUIRE(slotTimerTest.callCondition_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(slotTimerTest.count_ == 1);
+	BOOST_REQUIRE(slotTimerTest.tick_ == 10);
+
+	slotTimer.stopSlotTimerLoop();
+	ioService.stop();
+}
+
+BOOST_AUTO_TEST_CASE(SlotTimer_loop_n)
+{
+	IOService ioService;
+	SlotTimerTest slotTimerTest;
+	SlotTimerElement::SPtr slotTimerElement;
+	SlotTimer slotTimer;
+
+	ioService.start(1);
+	slotTimer.startSlotTimerLoop(&ioService);
+
+	slotTimerTest.callCondition_.condition(0,1000);
+	for (uint32_t idx=0; idx<1000; idx++) {
+		slotTimerElement = SlotTimerElement::construct();
+		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
+		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
+		slotTimer.start(slotTimerElement);
+	}
+	BOOST_REQUIRE(slotTimerTest.callCondition_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(slotTimerTest.count_ == 1000);
+
+	slotTimer.stopSlotTimerLoop();
+	ioService.stop();
+}
+
+BOOST_AUTO_TEST_CASE(SlotTimer_loop_n2)
+{
+	IOService ioService;
+	SlotTimerTest slotTimerTest;
+	SlotTimerElement::SPtr slotTimerElement;
+	SlotTimer slotTimer;
+
+	ioService.start(1);
+	slotTimer.startSlotTimerLoop(&ioService);
+
+	slotTimerTest.callCondition_.condition(0,2000);
+	for (uint32_t idx=0; idx<1000; idx++) {
+		slotTimerElement = SlotTimerElement::construct();
+		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
+		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
+		slotTimer.start(slotTimerElement);
+	}
+	for (uint32_t idx=0; idx<1000; idx++) {
+		slotTimerElement = SlotTimerElement::construct();
+		slotTimerElement->expireTime(boost::posix_time::microsec_clock::local_time()+boost::posix_time::millisec(idx+10));
+		slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)idx+10));
+		slotTimer.start(slotTimerElement);
+	}
+	BOOST_REQUIRE(slotTimerTest.callCondition_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(slotTimerTest.count_ == 2000);
+
+	slotTimer.stopSlotTimerLoop();
+	ioService.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
