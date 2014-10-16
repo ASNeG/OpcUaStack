@@ -3,6 +3,8 @@
 namespace OpcUaStackCore
 {
 
+#define MAX_CALL_PER_LOOP	100
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -26,21 +28,30 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	SlotTimerElement::expireTime(boost::posix_time::ptime expireTime, uint32_t msecInterval)
+	{
+		expireTime_ = expireTime;
+		interval_ = msecInterval;
+	}
+
+	void 
 	SlotTimerElement::expireTime(boost::posix_time::ptime expireTime)
 	{
 		expireTime_ = expireTime;
+		interval_  = 0;
+	}
+
+	void 
+	SlotTimerElement::interval(uint32_t msecInterval)
+	{
+		expireTime_ = boost::posix_time::microsec_clock::local_time() + boost::posix_time::millisec(msecInterval);
+		interval_ = msecInterval;
 	}
 
 	boost::posix_time::ptime 
 	SlotTimerElement::expireTime(void)
 	{
 		return expireTime_;
-	}
-
-	void 
-	SlotTimerElement::interval(uint32_t interval)
-	{
-		interval_ = interval;
 	}
 
 	uint32_t 
@@ -133,6 +144,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	SlotArray::slotTimer(SlotTimer* slotTimer)
+	{
+		slotTimer_ = slotTimer;
+	}
+
+	void 
 	SlotArray::next(SlotArray* next)
 	{
 		next_ = next;
@@ -205,9 +222,25 @@ namespace OpcUaStackCore
 	uint64_t 
 	SlotArray::run(boost::mutex* mutex)
 	{
+		uint32_t count = 0;
+
 		while (slotList_[actSlot_].get() != nullptr) {
+
+			count++;
+			if (count == MAX_CALL_PER_LOOP) {
+				return (tickOffset_ + (ticksPerSlot_ * actSlot_));
+			}
+
 			SlotTimerElement::SPtr slotTimerElement = slotList_[actSlot_];
 			del(actSlot_, slotTimerElement);
+
+			if (slotTimerElement->interval() != 0) {
+				slotTimerElement->expireTime(
+					slotTimerElement->expireTime() + boost::posix_time::millisec(slotTimerElement->interval()), 
+					slotTimerElement->interval()
+				);
+				slotTimer_->internalStart(slotTimerElement);
+			}
 
 			if (mutex != nullptr) mutex->unlock();
 			slotTimerElement->callback()();
@@ -317,6 +350,7 @@ namespace OpcUaStackCore
 		slotArray2_.next(&slotArray3_);
 		slotArray1_.next(&slotArray2_);
 		slotArray1_.init();
+		slotArray1_.slotTimer(this);
 	}
 
 	SlotTimer::~SlotTimer(void)
@@ -328,6 +362,12 @@ namespace OpcUaStackCore
 	SlotTimer::start(SlotTimerElement::SPtr slotTimerElement)
 	{
 		boost::mutex::scoped_lock g(mutex_);
+		internalStart(slotTimerElement);
+	}
+
+	void 
+	SlotTimer::internalStart(SlotTimerElement::SPtr slotTimerElement)
+	{
 		if (startTime_ >= slotTimerElement->expireTime()) {
 			slotTimerElement->tick(0);
 		}

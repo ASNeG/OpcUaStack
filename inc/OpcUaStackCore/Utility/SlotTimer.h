@@ -17,9 +17,12 @@ namespace OpcUaStackCore
 		~SlotTimerElement(void);
 
 		Callback& callback(void);
+
+		void expireTime(boost::posix_time::ptime expireTime, uint32_t msecInterval);
 		void expireTime(boost::posix_time::ptime expireTime);
+		void interval(uint32_t msecInterval);
+
 		boost::posix_time::ptime expireTime(void);
-		void interval(uint32_t interval);
 		uint32_t interval(void);
 
 		void tick(uint64_t tick);
@@ -42,13 +45,14 @@ namespace OpcUaStackCore
 		SlotTimerElement::SPtr last_;
 	};
 
-
+	class SlotTimer;
 	class DLLEXPORT SlotArray
 	{
 	  public:
 		SlotArray(uint8_t numberSlots, uint32_t ticksPerSlot);
 		~SlotArray(void);
 
+		void slotTimer(SlotTimer* slotTimer);
 		void next(SlotArray* next);
 		void init(uint64_t tickOffset = 0, uint8_t id = 0);
 		void insert(SlotTimerElement::SPtr slotTimerElement);
@@ -72,6 +76,7 @@ namespace OpcUaStackCore
 		uint64_t tickOffset_;
 		uint32_t count_;
 
+		SlotTimer* slotTimer_;
 		SlotArray* next_;
 	};
 
@@ -92,6 +97,7 @@ namespace OpcUaStackCore
 		uint32_t count(void);
 		uint64_t run(void);
 		
+		void internalStart(SlotTimerElement::SPtr slotTimerElement);
 
 	  private:
 		void loop(const boost::system::error_code& error);

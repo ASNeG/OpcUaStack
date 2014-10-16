@@ -450,4 +450,27 @@ BOOST_AUTO_TEST_CASE(SlotTimer_loop_n2)
 	ioService.stop();
 }
 
+BOOST_AUTO_TEST_CASE(SlotTimer_interval)
+{
+	IOService ioService;
+	SlotTimerTest slotTimerTest;
+	SlotTimerElement::SPtr slotTimerElement;
+	SlotTimer slotTimer;
+
+	ioService.start(1);
+	slotTimer.startSlotTimerLoop(&ioService);
+
+	slotTimerTest.callCondition_.condition(0,100);
+	slotTimerElement = SlotTimerElement::construct();
+	slotTimerElement->interval(10);
+	slotTimerElement->callback().reset(boost::bind(&SlotTimerTest::call, &slotTimerTest, (uint64_t)0));
+	slotTimer.start(slotTimerElement);
+
+	BOOST_REQUIRE(slotTimerTest.callCondition_.waitForCondition(2000) == true);
+	BOOST_REQUIRE(slotTimerTest.count_ == 100);
+	
+	slotTimer.stopSlotTimerLoop();
+	ioService.stop();
+}
+
 BOOST_AUTO_TEST_SUITE_END()
