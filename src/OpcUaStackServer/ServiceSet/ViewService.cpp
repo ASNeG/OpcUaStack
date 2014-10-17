@@ -147,11 +147,11 @@ namespace OpcUaStackServer
 			OpcUaNodeId referenceTypeNodeId = it->first;
 			ReferenceItem::SPtr referenceItem = it->second;
 
-			if (browseDescription->browseDirection() == BrowseDirectionEnum::BrowseDirection_Forward) {
+			if (browseDescription->browseDirection() == BrowseDirection_Forward) {
 				if (!referenceItem->isForward_) continue;
 			}
 
-			if (browseDescription->browseDirection() == BrowseDirectionEnum::BrowseDirection_Inverse) {
+			if (browseDescription->browseDirection() == BrowseDirection_Inverse) {
 				if (referenceItem->isForward_) continue;
 			}
 

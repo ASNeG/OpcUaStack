@@ -2,7 +2,7 @@
 #define __OpcUaStackServer_ServiceManager_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OPcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
