@@ -16,6 +16,7 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionManager::ioService(IOService* ioService)
 	{
+		std::cout << "XXXXXXXXXXXXXXXXXXXX" << std::endl;
 		ioService_ = ioService;
 		timer_ = Timer::construct(*ioService_);
 		timer_->callback().reset(boost::bind(&SubscriptionManager::publishTimeout, this));

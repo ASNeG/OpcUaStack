@@ -205,4 +205,16 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	void
+	ServiceManager::init(void)
+	{
+		attributeService_->init();
+		methodService_->init();
+		monitoredItemService_->init();
+		nodeManagementService_->init();
+		queryService_->init();
+		subscriptionService_->init();
+		viewService_->init();
+	}
+
 }

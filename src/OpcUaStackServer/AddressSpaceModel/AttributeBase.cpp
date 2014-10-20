@@ -16,7 +16,7 @@ namespace OpcUaStackServer
 	{
 		switch (attributeId)
 		{
-			case AttributeId_NodeId: return nodeClassAttribute();
+			case AttributeId_NodeId: return nodeIdAttribute();
 			case AttributeId_NodeClass: return nodeClassAttribute();
 			case AttributeId_BrowseName: return browseNameAttribute();
 			case AttributeId_DisplayName: return displayNameAttribute();
@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 			case AttributeId_ValueRank: return valueRankAttribute();
 			case AttributeId_ArrayDimensions: return arrayDimensionsAttribute();
 			case AttributeId_AccessLevel: return accessLevelAttribute();
-			case AttributeId_UserAccessLevel: userAccessLevelAttribute();
+			case AttributeId_UserAccessLevel: return userAccessLevelAttribute();
 			case AttributeId_MinimumSamplingInterval: minimumSamplingIntervalAttribute();
 			case AttributeId_Historizing: return historizingAttribute();
 			case AttributeId_Executable: return executableAttribute();

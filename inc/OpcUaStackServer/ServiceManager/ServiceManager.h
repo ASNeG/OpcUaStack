@@ -27,6 +27,7 @@ namespace OpcUaStackServer
 		bool init(SessionManager& sessionManager);
 		bool informatinModel(InformationModel::SPtr informatinModel);
 		bool ioService(IOService* ioService);
+		void init(void);
 
 	  private:
 		TransactionManager::SPtr transactionManager_;

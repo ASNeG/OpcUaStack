@@ -96,6 +96,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			std::cout << "ATTRIVUTE ID=" << readValueId->attributeId() << std::endl;
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
 			if (attribute == nullptr) {
 				dataValue->statusCode(BadAttributeIdInvalid);

@@ -6,6 +6,7 @@ namespace OpcUaStackServer
 	bool 
 	AttributeAccess::copy(Attribute& attribute, OpcUaVariant& variant)
 	{
+		std::cout << "ATTRIBUTE ID=" << attribute.id() << std::endl;
 		switch (attribute.id())
 		{
 			case AttributeId_NodeId:

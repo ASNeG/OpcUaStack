@@ -84,6 +84,7 @@ namespace OpcUaStackServer
 				.parameter("NodeId", *nodeId);
 			return false;
 		}
+		objectNodeClass->nodeId().exist(true);
 
 		//
 		// attribute BrowseName (mandatory)
@@ -95,6 +96,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 		objectNodeClass->browseName().data().set(*browseName);
+		objectNodeClass->browseName().exist(true);
 
 		//
 		// attribute DisplayName (mandatory)
@@ -106,6 +108,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 		objectNodeClass->displayName().data().set("", *displayName);
+		objectNodeClass->displayName().exist(true);
 
 
 		//
@@ -115,9 +118,22 @@ namespace OpcUaStackServer
 		if (description) {
 			objectNodeClass->description().data().set("", *description);
 		}
+		else {
+			objectNodeClass->description().data().set("", "");
+		}
+		objectNodeClass->description().exist(true);
 
-		//FIXME: WriteMaskAttribute writeMask_;
-		//FIXME: UserWriteMaskAttribute userWriteMask_;
+		//
+		// attribute WriteMask
+		//
+		objectNodeClass->writeMask().data() = 0;
+		objectNodeClass->writeMask().exist(true);
+
+		//
+		// attribute UserWriteMask
+		//
+		objectNodeClass->userWriteMask().data() = 0;
+		objectNodeClass->userWriteMask().exist(true);
 
 		return true;
 	}
@@ -258,11 +274,13 @@ namespace OpcUaStackServer
 			if (*eventNotifier == "1") {
 				objectNodeClassSPtr->eventNotifier().data(1);
 			} else {
-				//Log(Warning, "element EventNotifier not exist in node set")
-				//	.parameter("NodeId", nodeId);
 				objectNodeClassSPtr->eventNotifier().data(0);
 			}
 		}
+		else {
+			objectNodeClassSPtr->eventNotifier().data(0);
+		}
+		objectNodeClassSPtr->eventNotifier().exist(true);
 
 		//
 		// decode References
@@ -296,10 +314,9 @@ namespace OpcUaStackServer
 		if (isAbstract) {
 			objectTypeNodeClassSPtr->isAbstract().data(*isAbstract);
 		} else {
-			//Log(Warning, "element isAbstract not exist in node set")
-			//	.parameter("NodeId", nodeId);
 			objectTypeNodeClassSPtr->isAbstract().data(false);
 		}
+		objectTypeNodeClassSPtr->isAbstract().exist(true);
 
 		//
 		// decode References
@@ -339,10 +356,9 @@ namespace OpcUaStackServer
 		if (valueRank) {
 			variableNodeClassSPtr->valueRank().data(*valueRank);
 		} else {
-			//Log(Warning, "element ValueRank not exist in node set")
-			//	.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->valueRank().data(0);
 		}
+		variableNodeClassSPtr->valueRank().exist(true);
 		
 		//
 		// attribute AccessLevel (mandatory)
@@ -351,10 +367,9 @@ namespace OpcUaStackServer
 		if (accessLevel) {
 			variableNodeClassSPtr->accessLevel().data(*accessLevel);
 		} else {
-			//Log(Warning, "element AccessLevel not exist in node set")
-			//	.parameter("NodeId", nodeId);
-			variableNodeClassSPtr->accessLevel().data(0);
+			variableNodeClassSPtr->accessLevel().data((OpcUaByte)1);
 		}
+		variableNodeClassSPtr->accessLevel().exist(true);
 
 		//
 		// attribute UserAccessLevel (mandatory)
@@ -363,10 +378,9 @@ namespace OpcUaStackServer
 		if (userAccessLevel) {
 			variableNodeClassSPtr->userAccessLevel().data(*userAccessLevel);
 		} else {
-			//Log(Warning, "element UserAccessLevel not exist in node set")
-			//	.parameter("NodeId", nodeId);
-			variableNodeClassSPtr->userAccessLevel().data(0);
+			variableNodeClassSPtr->userAccessLevel().data((OpcUaByte)1);
 		}
+		variableNodeClassSPtr->userAccessLevel().exist(true);
 
 		//
 		// attribute Historizing (mandatory)
@@ -375,10 +389,9 @@ namespace OpcUaStackServer
 		if (historizing) {
 			variableNodeClassSPtr->historizing().data(*historizing);
 		} else {
-			//Log(Warning, "element Historizing not exist in node set")
-			//	.parameter("NodeId", nodeId);
 			variableNodeClassSPtr->historizing().data(false);
 		}
+		variableNodeClassSPtr->historizing().exist(true);
 
 		//
 		// ArrayDimensions (optional)
@@ -393,6 +406,7 @@ namespace OpcUaStackServer
 				for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
 					variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
 				} 
+				variableNodeClassSPtr->arrayDimensions().exist(true);
 			} catch(boost::bad_lexical_cast &) {
 				Log(Error, "bad_lexical_cast in ArrayDimension in node set")
 					.parameter("NodeId", nodeId);

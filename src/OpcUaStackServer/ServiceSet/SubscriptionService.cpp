@@ -13,6 +13,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	SubscriptionService::init(void)
+	{
+		subscriptionManager_.ioService(ioService());
+	}
+
 	void 
 	SubscriptionService::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
@@ -94,7 +100,6 @@ namespace OpcUaStackServer
 		Log(Debug, "publish")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		subscriptionManager_.ioService(ioService());
 		subscriptionManager_.receive(trx);
 	}
 

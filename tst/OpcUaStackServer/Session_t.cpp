@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 		"Unknown"
 	);
 	BOOST_REQUIRE(rc == true);
-
+	
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -170,6 +170,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	BOOST_REQUIRE(serviceManager.init(sessionManager) == true);
 	BOOST_REQUIRE(serviceManager.informatinModel(informationModel) == true);
 	BOOST_REQUIRE(serviceManager.ioService(&ioService));
+	serviceManager.init();
 
 
 	//
