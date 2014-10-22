@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 		}
 		catch (const boost::property_tree::xml_parser_error& e)
 		{
-			errorMessage_ = e.what();
+			errorMessage_ = std::string(e.what());
 			return false;
 		}
 
