@@ -16,8 +16,11 @@ namespace OpcUaServer
 		Server(void);
 		~Server(void);
 
-		void startup(const std::string& configurationFile);
-
+		bool initial(const std::string& configurationFile);
+		bool start(void);
+		void stop(void);
+		void cleanup(void);
+		
 	  private:
 		bool readConfigurationFile(void);
 		bool initLogging(void);

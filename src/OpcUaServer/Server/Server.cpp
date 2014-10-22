@@ -1,5 +1,8 @@
 #include "OpcUaServer/Server/Server.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include <iostream>
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaServer
 {
@@ -14,18 +17,38 @@ namespace OpcUaServer
 	{
 	}
 
-	void 
-	Server::startup(const std::string& configurationFile)
+	bool
+	Server::initial(const std::string& configurationFile)
 	{
-		configurationFile_ = configurationFile;
+		configurationFile_ = Environment::getAbsolutePath(configurationFile);
 
+		// read configuration file
 		if (!readConfigurationFile()) {
-			return;
+			return false;
 		}
 
+		// intial logging
 		if (!initLogging()) {
-			return;
+			return false;
 		}
+
+		return false;
+	}
+
+	bool
+	Server::start(void)
+	{
+		return true;
+	}
+
+	void
+	Server::stop(void)
+	{
+	}
+
+	void 
+	Server::cleanup(void)
+	{
 	}
 
 	bool 

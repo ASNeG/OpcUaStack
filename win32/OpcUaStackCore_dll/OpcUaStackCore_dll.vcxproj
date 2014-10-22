@@ -310,6 +310,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnection.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPConnector.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\TCPChannel\TCPTestHandler.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Environment.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Library.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\PendingQueue.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\SlotTimer.h" />
@@ -527,6 +528,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnection.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPConnector.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\TCPChannel\TCPTestHandler.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Environment.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Library.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\PendingQueue.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\SlotTimer.cpp" />

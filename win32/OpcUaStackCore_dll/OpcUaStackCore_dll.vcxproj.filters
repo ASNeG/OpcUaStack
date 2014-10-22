@@ -774,6 +774,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Library.h">
       <Filter>src\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Environment.h">
+      <Filter>src\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1425,6 +1428,9 @@
       <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Library.cpp">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Environment.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
