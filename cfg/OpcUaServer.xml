@@ -1,2 +1,59 @@
 <OpcUaServer>
+
+  <Logging>
+    <ConfigFile></ConfigFile>
+  </Logging>
+  
+  <Endpoints>
+    <EndpointDescription>
+	  <EndpointUrl>opc.tcp://0.0.0.0:4388/0.0.0.0</EndpointUrl>
+	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
+	  <ProductUri>urn:company:OpcUaServer</ProductUri>
+	  <ApplicationName>OpcUaServer</ApplicationName>
+	  <DiscoveryUrl>opc.tcp://localhost:4841/0.0.0.0</DiscoveryUrl>	
+	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack</PolicyId>
+		<PolicyType>Anonymous</PolicyType>
+	  </UserTokenPolicy>
+	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
+	  <SecurityLevel>0</SecurityLevel>
+	</EndpointDescription>
+	
+    <EndpointDescription>
+	  <EndpointUrl>opc.tcp://0.0.0.0:4388/0.0.0.0</EndpointUrl>
+	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
+	  <ProductUri>urn:company:OpcUaServer</ProductUri>
+	  <ApplicationName>OpcUaServer</ApplicationName>
+	  <DiscoveryUrl>opc.tcp://localhost:4841/0.0.0.0</DiscoveryUrl>	
+	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack</PolicyId>
+		<PolicyType>Anonymous</PolicyType>
+	  </UserTokenPolicy>
+	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
+	  <SecurityLevel>1</SecurityLevel>
+	</EndpointDescription>
+	
+    <EndpointDescription>
+	  <EndpointUrl>opc.tcp://0.0.0.0:4388/0.0.0.0</EndpointUrl>
+	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
+	  <ProductUri>urn:company:OpcUaServer</ProductUri>
+	  <ApplicationName>OpcUaServer</ApplicationName>
+	  <DiscoveryUrl>opc.tcp://localhost:4841/0.0.0.0</DiscoveryUrl>	
+	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack</PolicyId>
+		<PolicyType>Anonymous</PolicyType>
+	  </UserTokenPolicy>
+	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
+	  <SecurityLevel>2</SecurityLevel>
+	</EndpointDescription>
+  </Endpoints>
+  
+  <InformationModel>
+    <NodeSetFile>xx</NodeSetFile>
+	<NodeSetFile>yy</NodeSetFile>
+  </InformationModel>
+
 </OpcUaServer>

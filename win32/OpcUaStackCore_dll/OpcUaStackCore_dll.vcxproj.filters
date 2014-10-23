@@ -58,6 +58,9 @@
     <Filter Include="src\ServiceSet\HistoryAccessServiceSet">
       <UniqueIdentifier>{14618791-859c-4ecc-a741-601433f461f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Core">
+      <UniqueIdentifier>{7a168d1e-8999-4613-8e90-5e1fcc529693}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
@@ -777,6 +780,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Utility\Environment.h">
       <Filter>src\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Core\Core.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1432,6 +1438,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Utility\Environment.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Core\Core.cpp">
+      <Filter>src\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

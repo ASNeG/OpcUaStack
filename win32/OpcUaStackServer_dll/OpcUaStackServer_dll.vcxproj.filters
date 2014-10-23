@@ -60,6 +60,9 @@
     <Filter Include="src\ServiceSet\Common">
       <UniqueIdentifier>{686606aa-e236-4fb9-a893-ac3f72fd1172}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Server">
+      <UniqueIdentifier>{5fdab8f9-d551-4582-a53d-572e572c4c01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -197,6 +200,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SubscriptionManager.h">
       <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\Server\Server.h">
+      <Filter>src\Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -330,6 +336,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SubscriptionManager.cpp">
       <Filter>src\ServiceSet\SubscriptionServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\Server\Server.cpp">
+      <Filter>src\Server</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
