@@ -12,7 +12,7 @@ class SlotTimerTest
 {
   public:
 
-	  SlotTimerTest::SlotTimerTest(void)
+	  SlotTimerTest(void)
 	  : callCondition_()
 	  , count_(0)
 	  , tick_(0)
