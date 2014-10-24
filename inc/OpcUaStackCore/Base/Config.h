@@ -115,6 +115,8 @@ namespace OpcUaStackCore
 		bool erase(const std::string& path);
 		void clear(void);
 
+		std::string configFileName(void);
+
 	  private:
 		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
 		void getChildFromName(const std::string& valueName, std::vector<Config>& valueVec);

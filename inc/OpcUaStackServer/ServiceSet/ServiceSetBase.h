@@ -20,7 +20,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel(void);
 		void ioService(IOService* ioService);
 		IOService* ioService(void);
-		virtual void init(void) {}
+		virtual bool init(void) { return true; }
 
 	  protected:
 		InformationModel::SPtr informationModel_;

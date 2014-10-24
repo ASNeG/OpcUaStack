@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_Server_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
@@ -18,8 +19,16 @@ namespace OpcUaStackServer
 
 		bool init(void);
 		void cleanup(void);
+		void start(void);
+		void stop(void);
 
 	  private:
+		bool initInformationModel(void);
+		bool setInformationModel(void);
+		bool initService(void);
+		bool initSession(void);
+
+		IOService ioService_;
 		InformationModel::SPtr informationModel_;
 		SessionManager sessionManager_;
 		ServiceManager serviceManager_;

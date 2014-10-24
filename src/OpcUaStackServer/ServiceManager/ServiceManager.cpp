@@ -205,16 +205,18 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	void
+	bool
 	ServiceManager::init(void)
 	{
-		attributeService_->init();
-		methodService_->init();
-		monitoredItemService_->init();
-		nodeManagementService_->init();
-		queryService_->init();
-		subscriptionService_->init();
-		viewService_->init();
+		bool rc = true;
+		rc = rc && attributeService_->init();
+		rc = rc && methodService_->init();
+		rc = rc && monitoredItemService_->init();
+		rc = rc && nodeManagementService_->init();
+		rc = rc && queryService_->init();
+		rc = rc && subscriptionService_->init();
+		rc = rc && viewService_->init();
+		return rc;
 	}
 
 }

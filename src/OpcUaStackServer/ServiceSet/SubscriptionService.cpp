@@ -13,10 +13,11 @@ namespace OpcUaStackServer
 	{
 	}
 
-	void
+	bool
 	SubscriptionService::init(void)
 	{
 		subscriptionManager_.ioService(ioService());
+		return true;
 	}
 
 	void 

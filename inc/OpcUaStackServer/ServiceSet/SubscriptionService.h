@@ -22,7 +22,7 @@ namespace OpcUaStackServer
 		SubscriptionService(void);
 		~SubscriptionService(void);
 
-		void init(void);
+		bool init(void);
 
 		//- ServiceTransactionIf ------------------------------------------------------
 		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);

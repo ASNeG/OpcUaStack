@@ -197,4 +197,13 @@ namespace OpcUaStackCore
 		}
 	}
 
+	std::string
+	Config::configFileName(void)
+	{
+		boost::optional<std::string> configFileName;
+		configFileName = getValue("Global.ConfigurationFileName");
+		if (!configFileName) return "unknwon";
+		return *configFileName;
+	}
+
 }
