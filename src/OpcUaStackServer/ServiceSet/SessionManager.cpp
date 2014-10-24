@@ -78,13 +78,11 @@ namespace OpcUaStackServer
 		Session::SPtr session;
 		bool rc;
 
-		std::string configurationFileName = secureChannelConfig_->getValue("Global.ConfigurationFileName", "Unknown");
-
 		// get secure channel configuration
 		boost::optional<Config> childSecureChannelConfig = secureChannelConfig_->getChild(prefixSecureChannelConfig_);
 		if (!childSecureChannelConfig) {
 			Log(Error, "secure channel server configuration not found")
-				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_);
 			return;
 		}
@@ -93,7 +91,7 @@ namespace OpcUaStackServer
 		std::string endpointUrl;
 		if (childSecureChannelConfig->getConfigParameter("EndpointUrl", endpointUrl) == false) {
 			Log(Error, "mandatory parameter not found in configuration")
-				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_)
 				.parameter("ParameterName", "EndpointUrl");
 			return;
@@ -104,7 +102,7 @@ namespace OpcUaStackServer
 		url.url(endpointUrl);
 		if (!url.good()) {
 			Log(Error, "invalid endpoint url in server configuration")
-				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_)
 				.parameter("EndpointUrl", endpointUrl);
 			return;
@@ -122,7 +120,7 @@ namespace OpcUaStackServer
 			session.reset();
 
 			Log(Error, "session server configuration  error")
-				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSessionConfig_);
 			return;
 		}
@@ -136,7 +134,7 @@ namespace OpcUaStackServer
 			session.reset();
 
 			Log(Error, "secure channel server configuration  error")
-				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_);
 			return;
 		}

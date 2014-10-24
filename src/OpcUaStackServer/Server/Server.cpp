@@ -26,12 +26,24 @@ namespace OpcUaStackServer
 	bool
 	Server::init(void)
 	{
-		if (!Core::init()) return false;
-		if (!initInformationModel()) return false;
-		if (!setInformationModel()) return false;
-		if (!initService()) return false;
-		if (!initSession()) return false;
-		return true;
+		bool rc = true;
+
+		Log(Info, "init opc ua core stack");
+		rc = rc && Core::init();
+
+		Log(Info, "init opc ua server stack information model (structure)");
+		rc = rc && initInformationModel();
+
+		Log(Info, "init opc ua server stack information model (data)");
+		rc = rc && setInformationModel();
+
+		Log(Info, "init opc ua server stack service");
+		rc = rc && initService();
+
+		Log(Info, "init opc ua server stack session");
+		rc = rc && initSession();
+
+		return rc;
 	}
 
 	void
@@ -40,18 +52,21 @@ namespace OpcUaStackServer
 		Core::cleanup();
 	}
 
-	void 
+	bool 
 	Server::start(void)
 	{
+		Log(Info, "start opc ua server stack");
+
 		ioService_.start();
 		sessionManager_.openServerSocket(
-			"OpcUaServer/Endpoints", config(),
-			"OpcUaServer/Endpoints", config()
+			"OpcUaServer.Endpoints.EndpointDescription", config(),
+			"OpcUaServer.Endpoints.EndpointDescription", config()
 		);
 	
 		IOService::secSleep(40000);
 
 		ioService_.stop();
+		return true;
 	}
 	
 	void 
@@ -64,21 +79,25 @@ namespace OpcUaStackServer
 	{
 		std::vector<std::string>::iterator it;
 		std::vector<std::string> configVec;
-		config().getValues("OpcUaServer/InformationModel/NodeSetFile", configVec);
-		if  (configVec.size()) {
+		config().getValues("OpcUaServer.InformationModel.NodeSetFile", configVec);
+		if  (configVec.size() == 0) {
 			Log(Error, "nodeset file not exist in configuration file")
 				.parameter("ConfigurationFileName", config().configFileName())
-				.parameter("Path", "OpcUaServer/InformationModel/NodeSetFile");
+				.parameter("Path", "OpcUaServer.InformationModel.NodeSetFile");
 			return false;
 		}
 
 		for (it=configVec.begin(); it!=configVec.end(); it++) {
 			std::string nodeSetFileName = *it;
 
+			Log(Info, "read node set file")
+				.parameter("NodeSetFile", nodeSetFileName);
+
 			ConfigXml configXml;
 			if (!configXml.parse(nodeSetFileName)) {
 				Log(Error, "node set file error")
-					.parameter("NodeSetFileName", nodeSetFileName);
+					.parameter("NodeSetFileName", nodeSetFileName)
+					.parameter("ErrorMessage", configXml.errorMessage());
 				return false;
 			}
 
@@ -122,7 +141,7 @@ namespace OpcUaStackServer
 			informationModel_->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, variant);
 		}
 
-		return false;
+		return true;
 	}
 
 	bool
@@ -147,7 +166,7 @@ namespace OpcUaStackServer
 			Log log(Error, "init service manager error");
 			return false;
 		}
-		return false;
+		return true;
 	}
 
 	bool
@@ -156,7 +175,7 @@ namespace OpcUaStackServer
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = EndpointDescriptionArray::construct();
 		bool rc = EndpointDescriptionConfig::endpointDescriptions(
 			endpointDescriptionArray, 
-			"OpcUaServer/Endpoints", 
+			"OpcUaServer.Endpoints", 
 			&config(),
 			config().configFileName()
 		);
@@ -170,7 +189,7 @@ namespace OpcUaStackServer
 		sessionManager_.discoveryService(discoveryService);
 		sessionManager_.ioService(&ioService_);
 
-		return false;
+		return true;
 	}
 
 }

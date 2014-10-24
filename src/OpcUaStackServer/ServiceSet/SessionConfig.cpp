@@ -12,12 +12,11 @@ namespace OpcUaStackServer
 	SessionConfig::initial(Session::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
 	{
 		if (config == nullptr) config = Config::instance();
-		std::string configurationFileName = config->getValue("Global.ConfigurationFileName", "Unknown");
 
 		boost::optional<Config> childConfig = config->getChild(configPrefix);
 		if (!childConfig) {
 			Log(Error, "session server configuration not found")
-				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ConfigurationFileName", config->configFileName())
 				.parameter("ParameterPath", configPrefix);
 			return false;
 		}
@@ -36,7 +35,7 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------------
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = EndpointDescriptionArray::construct();
 
-		if (!EndpointDescriptionConfig::endpointDescriptions(endpointDescriptionArray, configPrefix, &*childConfig, configurationFileName)) {
+		if (!EndpointDescriptionConfig::endpointDescriptions(endpointDescriptionArray, configPrefix, config, config->configFileName())) {
 			return false;
 		}
 

@@ -19,7 +19,7 @@ namespace OpcUaStackServer
 
 		bool init(void);
 		void cleanup(void);
-		void start(void);
+		bool start(void);
 		void stop(void);
 
 	  private:

@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackServer/Server/Server.h"
 #include <string>
 
 using namespace OpcUaStackCore;
@@ -10,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaServer
 {
 
-	class Server
+	class Server 
 	{
 	  public:
 		Server(void);
@@ -27,7 +28,7 @@ namespace OpcUaServer
 
 		std::string configurationFile_;
 		Config* config_;
-
+		OpcUaStackServer::Server server_;
 	};
 
 }

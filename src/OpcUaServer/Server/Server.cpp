@@ -1,3 +1,4 @@
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaServer/Server/Server.h"
 #include "OpcUaStackCore/Utility/Environment.h"
 #include <iostream>
@@ -10,6 +11,7 @@ namespace OpcUaServer
 	Server::Server(void)
 	: configurationFile_("")
 	, config_(nullptr)
+	, server_()
 	{
 	}
 
@@ -24,26 +26,36 @@ namespace OpcUaServer
 
 		// read configuration file
 		if (!readConfigurationFile()) {
+			Log(Error, "shutdown server, because read configuration error");
 			return false;
 		}
 
 		// intial logging
 		if (!initLogging()) {
+			Log(Error, "shutdown server, because init log error");
 			return false;
 		}
 
-		return false;
+		// initial opc ua server
+		if (!server_.init()) {
+			Log(Error, "shutdown server, because init server error");
+			return false;
+		}
+
+		return true;
 	}
 
 	bool
 	Server::start(void)
 	{
+		server_.start();
 		return true;
 	}
 
 	void
 	Server::stop(void)
 	{
+
 	}
 
 	void 
@@ -58,9 +70,12 @@ namespace OpcUaServer
 		ConfigXml configXml;
 		if (!configXml.parse(configurationFile_, true)) {
 			std::string errorMessage = configXml.errorMessage();
-			std::cout << "read configuration error: " <<  errorMessage << std::endl;
+			Log(Error, "read configuration error")
+				.parameter("ErrorMessage", errorMessage);
 			return false;
 		}
+
+		server_.config(*config_);
 		return true;
 	}
 

@@ -17,6 +17,21 @@ namespace OpcUaStackCore
 	}
 
 	bool 
+	ConfigXml::write(const std::string& configFileName)
+	{
+		try 
+		{
+			boost::property_tree::write_xml(configFileName, ptree_);
+		}
+		catch(const boost::property_tree::xml_parser_error& e)
+		{
+			errorMessage_ = std::string(e.what());
+			return false;
+		}
+		return true;
+	}
+
+	bool 
 	ConfigXml::parse(const std::string& configFileName, bool writeToConfig)
 	{
 		configFileName_ = configFileName;
@@ -49,6 +64,12 @@ namespace OpcUaStackCore
 	ConfigXml::ptree(void)
 	{
 		return ptree_;
+	}
+
+	void 
+	ConfigXml::ptree(boost::property_tree::ptree& ptree)
+	{
+		ptree_ = ptree;
 	}
 
 	void 

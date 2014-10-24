@@ -12,9 +12,18 @@ namespace OpcUaStackServer
 		std::string stringValue;
 		uint32_t uint32Value;
 
+		boost::optional<Config> config = childConfig->getChild("OpcUaServer.Endpoints");
+		if (!config) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", childConfig->configFileName())
+				.parameter("ParameterPath", "OpcUaServer")
+				.parameter("ParameterName", "Endpoints");
+			return false;
+		}
+
 		std::vector<Config>::iterator it;
 		std::vector<Config> endpointDescriptionVec;
-		childConfig->getChilds("EndpointDescription", endpointDescriptionVec);
+		config->getChilds("EndpointDescription", endpointDescriptionVec);
 		if (endpointDescriptionVec.size() == 0) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
