@@ -52,7 +52,6 @@ target_link_libraries(
     OpcUaServer 
     boost_thread 
     boost_system 
-    boost_unit_test_framework 
     boost_date_time 
     boost_filesystem
     ${OPCUA_STACK_CORE}
