@@ -203,6 +203,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\Server\Server.h">
       <Filter>src\Server</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetAlias.h">
+      <Filter>src\NodeSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -339,6 +342,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\Server\Server.cpp">
       <Filter>src\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetAlias.cpp">
+      <Filter>src\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

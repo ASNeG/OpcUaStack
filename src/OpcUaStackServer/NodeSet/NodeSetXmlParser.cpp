@@ -1,10 +1,12 @@
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
 namespace OpcUaStackServer
 {
 
 	NodeSetXmlParser::NodeSetXmlParser(void)
+	: nodeSetAlias_()
 	{
 	}
 
@@ -34,7 +36,8 @@ namespace OpcUaStackServer
 				if (!decodeAliases(it->second)) return false;
 			}
 			else if (it->first == "<xmlattr>") {
-			
+			}
+			else if (it->first == "<xmlcomment>") {
 			}
 			else if (it->first == "UAObject") {
 				if (!decodeUAObject(it->second)) return false;
@@ -43,7 +46,9 @@ namespace OpcUaStackServer
 				if (!decodeUAObjectType(it->second)) return false;
 			}
 			else if (it->first == "UAVariable") {
-				if (!decodeUAVariable(it->second)) return false;
+				// FIXME: 
+				//if (!decodeUAVariable(it->second)) return false;
+				decodeUAVariable(it->second);
 			}
 			else if (it->first == "UAVariableType") {
 				if (!decodeUAVariableType(it->second)) return false;
@@ -237,7 +242,6 @@ namespace OpcUaStackServer
 				Log(Error, "find invalid element in Aliases. Alias not exist.");
 				return false;
 			}
-			// TODO add Alias into Alias-Class.
 
 			std::string value = it->second.get_value<std::string>();
 			OpcUaNodeId opcUaNodeId;
@@ -246,10 +250,15 @@ namespace OpcUaStackServer
 					.parameter("AliasNodeId", value);
 				return false;
 			}
-			// TODO add NodeId into Alias-Class.
-		}
 
-		// TODO add Alias into Vector.
+			if (!nodeSetAlias_.insert(*aliasName, opcUaNodeId)) {
+				Log(Error, "alias already exist")
+					.parameter("AliasName", *aliasName)
+					.parameter("NodeId", opcUaNodeId);
+				return false;
+			}
+			
+		}
 
 		return true;
 	}
@@ -343,6 +352,37 @@ namespace OpcUaStackServer
 		variableNodeClassSPtr->nodeClass().data(NodeClassType_Variable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
+		bool isValue = true;
+		if (variableNodeClassSPtr->browseName().data().name().value() == "InputArguments") isValue = false;
+		if (variableNodeClassSPtr->browseName().data().name().value() == "OutputArguments") isValue = false;
+
+		//
+		// decode References
+		//
+		if (!decodeReferences(variableNodeClassSPtr, ptree)) return false;
+
+		//
+		// decode DataType (mandatory)
+		//
+		if (isValue) {
+			boost::optional<std::string> dataTypeString = ptree.get_optional<std::string>("<xmlattr>.DataType");
+			if (!dataTypeString) {
+				Log(Error, "element DataType not exist in node set")
+					.parameter("NodeId", nodeId);
+				return false;
+			}
+
+			OpcUaNodeId dataTypeNodeId;
+			if (!stringToNodeId(*dataTypeString, dataTypeNodeId)) {
+				Log(Error, "invalid DataType in node set")
+					.parameter("NodeId", nodeId)
+					.parameter("DataType", *dataTypeString);
+				return false;
+			}
+			variableNodeClassSPtr->dataType().data(dataTypeNodeId);
+			variableNodeClassSPtr->dataType().exist(true);
+		}
+
 		//
 		// decode Value (mandatory)
 		//
@@ -423,12 +463,6 @@ namespace OpcUaStackServer
 		} else {
 			variableNodeClassSPtr->minimumSamplingInterval().data(0);
 		}
-
-		//
-		// decode References
-		//
-		if (!decodeReferences(variableNodeClassSPtr, ptree)) return false;
-
 
 		// 
 		// Standard Properties
@@ -1215,4 +1249,32 @@ namespace OpcUaStackServer
 		value = outStream.str();
 		return true;
 	}
+
+	bool 
+	NodeSetXmlParser::stringToNodeId(const std::string& nodeIdString, OpcUaNodeId& nodeId)
+	{
+		if (nodeSetAlias_.map(nodeIdString, nodeId)) {
+			return true;
+		}
+				
+		if (nodeId.fromString(nodeIdString)) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	bool 
+	NodeSetXmlParser::isProperty(VariableNodeClass::SPtr variableNodeClassSPtr)
+	{
+		std::pair<ReferenceItemMultiMap::iterator, ReferenceItemMultiMap::iterator> itp;
+		ReferenceItemMultiMap& referenceItemMultiMap = variableNodeClassSPtr->referenceItemMap().referenceItemMultiMap();
+		OpcUaNodeId propertyTypeNodeId;
+		propertyTypeNodeId.nodeId(OpcUaId_HasProperty);
+
+		itp = referenceItemMultiMap.equal_range(propertyTypeNodeId);
+		if (itp.first == itp.second) return false;
+		return true;
+	}
+
 }
