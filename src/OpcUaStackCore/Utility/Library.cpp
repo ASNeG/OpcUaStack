@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 
 #else
 
-#include <dlfnc>
+#include <dlfcn.h>
 
 	class LibraryModul
 	{
