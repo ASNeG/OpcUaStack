@@ -54,7 +54,7 @@
   </Endpoints>
   
   <InformationModel>
-    <NodeSetFile>..\cfg\Opc.Ua.NodeSet2.xml</NodeSetFile>
+    <NodeSetFile>..\cfg\Opc.Ua.NodeSet.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>
