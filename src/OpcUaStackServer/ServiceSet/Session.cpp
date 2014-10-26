@@ -5,7 +5,6 @@
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
-#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 
 using namespace OpcUaStackCore;
@@ -131,15 +130,16 @@ namespace OpcUaStackServer
 	{
 		std::cout << "RECEIVE ACTIVATE SESSION REQUEST" << this << std::endl;
 
-		if (sessionState_ != SessionState_CreateSessionResponse) {
-			Log(Error, "receive activate session request in invalid state")
-				.parameter("SessionState", sessionState_);
-			return false;
-		}
-
 		std::iostream ios(&sb);
 		ActivateSessionRequest activateSessionRequest;
 		activateSessionRequest.opcUaBinaryDecode(ios);
+
+		if (sessionState_ != SessionState_CreateSessionResponse) {
+			Log(Error, "receive activate session request in invalid state")
+				.parameter("SessionState", sessionState_);
+			activateSessionRequestError(activateSessionRequest, secureChannelTransaction, BadIdentityTokenInvalid);
+			return true;
+		}
 
 		// FIXME: analyse request data
 
@@ -157,6 +157,23 @@ namespace OpcUaStackServer
 		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
 		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
 		return true;
+	}
+
+	void
+	Session::activateSessionRequestError(ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction& secureChannelTransaction, OpcUaStatusCode statusCode)
+	{
+		boost::asio::streambuf sbres;
+		std::iostream iosres(&sbres);
+
+		ActivateSessionResponse activateSessionResponse;
+		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->serviceResult(statusCode);
+
+		activateSessionResponse.opcUaBinaryEncode(iosres);
+
+		OpcUaNodeId typeId;
+		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
+		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
 	}
 
 	bool 

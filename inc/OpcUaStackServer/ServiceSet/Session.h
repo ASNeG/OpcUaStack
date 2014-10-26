@@ -8,6 +8,7 @@
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 
 using namespace OpcUaStackCore;
 
@@ -45,6 +46,7 @@ namespace OpcUaStackServer
 	  private:
 		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		bool receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void activateSessionRequestError(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction& secureChannelTransaction, OpcUaStatusCode statusCode);
 		bool receiveCloseSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		bool receiveCancelRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);

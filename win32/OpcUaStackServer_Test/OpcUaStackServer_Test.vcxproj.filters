@@ -23,9 +23,6 @@
     <ClCompile Include="..\..\tst\unittest.cpp">
       <Filter>Unittest</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\tst\OpcUaStackServer\Session_t.cpp">
-      <Filter>Unittest\ServiceSet</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\tst\OpcUaStackServer\NodeSet_t.cpp">
       <Filter>Unittest\NodeSet</Filter>
     </ClCompile>

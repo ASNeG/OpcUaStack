@@ -504,7 +504,6 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		std::cout << "SEND OK" << std::endl;
 	}
 
 }
