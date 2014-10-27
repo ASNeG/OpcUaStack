@@ -11,7 +11,7 @@ LINK_DIRECTORIES( ../../../boost_1_54_0/stage/lib ${LINK_DIRECTORIES} )
 
 
 set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
-set (CMAKE_CXX_LINK_FLAGS "-ldl")
+set (CMAKE_CXX_LINK_FLAGS "-ldl -lwiringPi")
 
 find_library(
     OPCUA_STACK_CORE 
