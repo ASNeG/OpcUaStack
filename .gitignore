@@ -6,5 +6,7 @@ ipch
 *.opensdf
 *.swp
 *.pcap
+*.swn
+*.swo
 core
 *.log

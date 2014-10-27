@@ -1,4 +1,5 @@
-#include "OPcUaServer/Raspberry/Raspberry.h"
+#include "OpcUaServer/Raspberry/Raspberry.h"
+#include <wiringPi.h>
 
 namespace OpcUaServer
 {
@@ -50,10 +51,14 @@ namespace OpcUaServer
 		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() != nullptr) readValues(baseNodeClass, inputGpioBinaryItemVec_);
 
+		wiringPiSetup();
+
 		for (it=outputGpioBinaryItemVec_.begin(); it!=outputGpioBinaryItemVec_.end(); it++) {
+			pinMode(it->pin_, OUTPUT);
 		}
 
 		for (it=inputGpioBinaryItemVec_.begin(); it!=inputGpioBinaryItemVec_.end(); it++) {
+			pinMode(it->pin_, INPUT);
 		}
 
 		timer_ = new boost::asio::deadline_timer(ioService_->io_service());
@@ -66,7 +71,17 @@ namespace OpcUaServer
 	void 
 	Raspberry::onTimeout(const boost::system::error_code& ec)
 	{
+		GpioBinaryItemVec::iterator it;
 		if (ec) return;
+
+		for (it=outputGpioBinaryItemVec_.begin(); it!=outputGpioBinaryItemVec_.end(); it++) {
+ 			int value = 1;
+			digitalWrite(it->pin_, value);
+		}
+
+		for (it=inputGpioBinaryItemVec_.begin(); it!=inputGpioBinaryItemVec_.end(); it++) {
+			int value = digitalRead(it->pin_);
+		}
 
 		timer_->expires_from_now(boost::posix_time::millisec(100));
 		timer_->async_wait(

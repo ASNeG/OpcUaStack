@@ -2,7 +2,7 @@
 #define __OpcUaServer_Raspberry_h__
 
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OPcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Base/IOService.h"
 
 using namespace OpcUaStackServer;
 using namespace OpcUaStackCore;
