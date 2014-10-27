@@ -147,7 +147,7 @@ namespace OpcUaStackCore
 		if (opcUaVariantSPtr_.get() != NULL) {
 		    opcUaVariantSPtr_->copyTo(*dataValue.variant());
 		}
-		if (opcUaStatusCode_ != 0) {
+		if (opcUaStatusCode_ != dataValue.statusCode()) {
 		    dataValue.statusCode(opcUaStatusCode_);
 		}
 		if (sourceTimestamp_.exist()) {

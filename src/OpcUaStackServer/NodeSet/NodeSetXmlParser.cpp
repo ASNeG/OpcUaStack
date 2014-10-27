@@ -352,9 +352,9 @@ namespace OpcUaStackServer
 		variableNodeClassSPtr->nodeClass().data(NodeClassType_Variable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
-		bool isValue = true;
-		if (variableNodeClassSPtr->browseName().data().name().value() == "InputArguments") isValue = false;
-		if (variableNodeClassSPtr->browseName().data().name().value() == "OutputArguments") isValue = false;
+		bool isVariable = true;
+		if (variableNodeClassSPtr->browseName().data().name().value() == "InputArguments") isVariable = false;
+		if (variableNodeClassSPtr->browseName().data().name().value() == "OutputArguments") isVariable = false;
 
 		//
 		// decode References
@@ -364,7 +364,7 @@ namespace OpcUaStackServer
 		//
 		// decode DataType (mandatory)
 		//
-		if (isValue) {
+		if (isVariable) {
 			boost::optional<std::string> dataTypeString = ptree.get_optional<std::string>("<xmlattr>.DataType");
 			if (!dataTypeString) {
 				Log(Error, "element DataType not exist in node set")
@@ -386,8 +386,9 @@ namespace OpcUaStackServer
 		//
 		// decode Value (mandatory)
 		//
-		// TODO
-		//if (!decodeVariableValue(variableNodeClassSPtr, ptree)) return false;
+		OpcUaDataValue dataValue;
+		dataValue.statusCode(BadNoData);
+		variableNodeClassSPtr->value().data(dataValue);
 
 		//
 		// attribute ValueRank (mandatory)

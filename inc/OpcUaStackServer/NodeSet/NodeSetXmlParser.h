@@ -7,6 +7,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
+#include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetAlias.h"
 
 namespace OpcUaStackServer
@@ -49,6 +50,7 @@ namespace OpcUaStackServer
 		bool isProperty(VariableNodeClass::SPtr variableNodeClassSPtr);
 
 		NodeSetAlias nodeSetAlias_;
+		NodeSetValueParser nodeSetValueParser_;
 	};
 
 }

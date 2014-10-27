@@ -206,6 +206,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetAlias.h">
       <Filter>src\NodeSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParser.h">
+      <Filter>src\NodeSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -344,6 +347,9 @@
       <Filter>src\Server</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetAlias.cpp">
+      <Filter>src\NodeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetValueParser.cpp">
       <Filter>src\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>

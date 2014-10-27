@@ -51,6 +51,58 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_all_elements)
 	BOOST_REQUIRE(value1.serverPicoseconds() == 5678);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_uint32)
+{
+	boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
+	boost::posix_time::ptime ptime2 = boost::posix_time::from_iso_string("20140506T102014.123456789");
+	OpcUaDateTime sourceTimestamp, serverTimestamp;
+	std::stringstream ss;
+	OpcUaDataValue value1, value2;
+
+	sourceTimestamp.dateTime(ptime1);
+	serverTimestamp.dateTime(ptime2);
+
+	value1.variant()->variant((OpcUaUInt32)1234);
+	value1.statusCode((OpcUaStatusCode)12);
+	value1.sourceTimestamp(sourceTimestamp);
+	value1.sourcePicoseconds(1234);
+	value1.serverTimestamp(serverTimestamp);
+	value1.serverPicoseconds(5678);
+
+	value1.copyTo(value2);
+
+	BOOST_REQUIRE(value1.variant()->variant<OpcUaUInt32>() == 1234);
+	BOOST_REQUIRE(value1.statusCode() == (OpcUaStatusCode)12);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value1.sourceTimestamp().dateTime()) == "20140506T102013.123456");
+	BOOST_REQUIRE(value1.sourcePicoseconds() == 1234);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value1.serverTimestamp().dateTime()) == "20140506T102014.123456");
+	BOOST_REQUIRE(value1.serverPicoseconds() == 5678);
+
+	BOOST_REQUIRE(value2.variant()->variant<OpcUaUInt32>() == 1234);
+	BOOST_REQUIRE(value2.statusCode() == (OpcUaStatusCode)12);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value2.sourceTimestamp().dateTime()) == "20140506T102013.123456");
+	BOOST_REQUIRE(value2.sourcePicoseconds() == 1234);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value2.serverTimestamp().dateTime()) == "20140506T102014.123456");
+	BOOST_REQUIRE(value2.serverPicoseconds() == 5678);
+
+	value2.variant()->variant((OpcUaUInt32)5678);
+
+	BOOST_REQUIRE(value1.variant()->variant<OpcUaUInt32>() == 1234);
+	BOOST_REQUIRE(value1.statusCode() == (OpcUaStatusCode)12);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value1.sourceTimestamp().dateTime()) == "20140506T102013.123456");
+	BOOST_REQUIRE(value1.sourcePicoseconds() == 1234);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value1.serverTimestamp().dateTime()) == "20140506T102014.123456");
+	BOOST_REQUIRE(value1.serverPicoseconds() == 5678);
+
+	BOOST_REQUIRE(value2.variant()->variant<OpcUaUInt32>() == 5678);
+	BOOST_REQUIRE(value2.statusCode() == (OpcUaStatusCode)12);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value2.sourceTimestamp().dateTime()) == "20140506T102013.123456");
+	BOOST_REQUIRE(value2.sourcePicoseconds() == 1234);
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value2.serverTimestamp().dateTime()) == "20140506T102014.123456");
+	BOOST_REQUIRE(value2.serverPicoseconds() == 5678);
+}
+
+
 BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_uint16)
 {
 	boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
