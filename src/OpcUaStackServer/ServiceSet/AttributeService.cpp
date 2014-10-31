@@ -96,7 +96,6 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			std::cout << "ATTRIVUTE ID=" << readValueId->attributeId() << std::endl;
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
 			if (attribute == nullptr) {
 				dataValue->statusCode(BadAttributeIdInvalid);
@@ -148,8 +147,86 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveWriteRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		ServiceTransactionWrite::SPtr trx = boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction);
+		WriteRequest::SPtr writeRequest = trx->request();
+		WriteResponse::SPtr writeResponse = trx->response();
+
+		Log(Debug, "attribute service write request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", writeRequest->writeValueArray()->size());
+
+
+		// check node id array
+		if (writeRequest->writeValueArray()->size() == 0) {
+			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			return;
+		}
+		if (writeRequest->writeValueArray()->size() > 1000) { // FIXME: todo
+			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			return;
+		}
+
+		// read values
+		writeResponse->results()->resize(writeRequest->writeValueArray()->size());
+		for (uint32_t idx=0; idx<writeRequest->writeValueArray()->size(); idx++) {
+
+			WriteValue::SPtr writeValue;
+			if (!writeRequest->writeValueArray()->get(idx, writeValue)) {
+				writeResponse->results()->set(idx, BadNodeIdInvalid);
+				Log(Debug, "write value error, because node request parameter invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
+				continue;
+			}
+
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(writeValue->nodeId());
+			if (baseNodeClass.get() == nullptr) {
+				writeResponse->results()->set(idx, BadNodeIdUnknown);
+				Log(Debug, "write value error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *writeValue->nodeId())
+					.parameter("Attr", writeValue->attributeId());
+				continue;
+			}
+
+			Attribute* attribute = baseNodeClass->attribute((AttributeId)writeValue->attributeId());
+			if (attribute == nullptr) {
+				writeResponse->results()->set(idx, BadAttributeIdInvalid);
+				Log(Debug, "write value error, because node attribute not exist in node")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *writeValue->nodeId())
+					.parameter("Attr", writeValue->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
+				continue;
+			}
+
+			if (!AttributeAccess::copy(writeValue->dataValue(), *attribute)) {
+				Log(Debug, "write value error, because value error")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *writeValue->nodeId())
+					.parameter("Attr", writeValue->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
+				writeResponse->results()->set(idx, BadAttributeIdInvalid);
+				continue;
+			}
+
+			Log(Debug, "write value")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Idx", idx)
+				.parameter("Node", *writeValue->nodeId())
+				.parameter("Attr", writeValue->attributeId())
+				.parameter("Class", baseNodeClass->nodeClass().data())
+				.parameter("Data", writeValue->dataValue());
+
+			writeResponse->results()->set(idx, Success);
+		}
+
+		serviceTransaction->statusCode(Success);
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 	}
 
