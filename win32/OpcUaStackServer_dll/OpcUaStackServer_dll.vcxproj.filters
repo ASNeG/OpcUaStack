@@ -209,6 +209,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParser.h">
       <Filter>src\NodeSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParserIf.h">
+      <Filter>src\NodeSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

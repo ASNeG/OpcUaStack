@@ -52,7 +52,7 @@ namespace OpcUaStackCore
 		sourceTimestamp_ = sourceTimestamp;
 	}
 
-	OpcUaDateTime  
+	OpcUaDateTime&  
 	OpcUaDataValue::sourceTimestamp(void)
 	{
 		return sourceTimestamp_;
@@ -76,7 +76,7 @@ namespace OpcUaStackCore
 		serverTimestamp_ = serverTimestamp;
 	}
 
-	OpcUaDateTime  
+	OpcUaDateTime&  
 	OpcUaDataValue::serverTimestamp(void)
 	{
 		return serverTimestamp_;

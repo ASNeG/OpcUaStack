@@ -30,5 +30,21 @@
       <uax:UInt32>123</uax:UInt32>
     </Value>
   </UAVariable>
+  
+  <UAVariable NodeId="ns=1,i=201" BrowseName="UInt32Array" DataType="i=7" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>UInt32ArrayValue</DisplayName>
+    <Description>uint32 array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfUInt32>
+        <uax:UInt32>1</uax:UInt32>
+        <uax:UInt32>2</uax:UInt32>
+        <uax:UInt32>3</uax:UInt32>
+      </uax:ListOfUInt32>
+    </Value>
+  </UAVariable>
 
 </UANodeSet>

@@ -1,4 +1,5 @@
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
+#include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -386,8 +387,18 @@ namespace OpcUaStackServer
 		//
 		// decode Value (mandatory)
 		//
+		OpcUaVariant::SPtr variant = OpcUaVariant::construct();
 		OpcUaDataValue dataValue;
-		dataValue.statusCode(BadNoData);
+		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		NodeSetValueParser nodeSetValueParser;
+		if (nodeSetValueParser.decodeValue(nodeId, ptree, *dataValue.variant())) {
+			dataValue.statusCode(Success);
+		}
+		else {
+			dataValue.variant()->clear();
+			dataValue.statusCode(BadNoData);
+		}
 		variableNodeClassSPtr->value().data(dataValue);
 
 		//

@@ -21,11 +21,11 @@ namespace OpcUaStackCore
 		void statusCode(const OpcUaStatusCode& opcUaStatusCode);
 		OpcUaStatusCode statusCode(void);
 		void sourceTimestamp(const OpcUaDateTime& sourceTimestamp);
-		OpcUaDateTime sourceTimestamp(void);
+		OpcUaDateTime& sourceTimestamp(void);
 		void sourcePicoseconds(const OpcUaUInt16& sourcePicoseconds);
 		OpcUaInt16 sourcePicoseconds(void);
 		void serverTimestamp(const OpcUaDateTime& serverTimestamp);
-		OpcUaDateTime serverTimestamp(void);
+		OpcUaDateTime& serverTimestamp(void);
 		void serverPicoseconds(const OpcUaUInt16& serverPicoseconds);
 		OpcUaInt16 serverPicoseconds(void);
 		void reset(void);
