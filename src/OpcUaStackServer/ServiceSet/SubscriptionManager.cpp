@@ -22,6 +22,12 @@ namespace OpcUaStackServer
 		timer_->start(timer_, 10);
 	}
 
+	uint32_t 
+	SubscriptionManager::size(void)
+	{
+		return subscriptionMap_.size();
+	}
+
 	OpcUaStatusCode 
 	SubscriptionManager::receive(ServiceTransactionCreateSubscription::SPtr trx)
 	{

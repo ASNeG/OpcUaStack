@@ -25,6 +25,8 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(ServiceTransactionDeleteSubscriptions::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionPublish::SPtr trx);
 
+		uint32_t size(void);
+
 	  private:
 		void publishTimeout(void);
 

@@ -16,7 +16,6 @@ namespace OpcUaStackServer
 	bool
 	SubscriptionService::init(void)
 	{
-		subscriptionManager_.ioService(ioService());
 		return true;
 	}
 
@@ -55,6 +54,7 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveCreateSubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
+		typeId.set(OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary);
 		ServiceTransactionCreateSubscription::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
 		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
@@ -63,24 +63,50 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("PublisingInterval", createSubscriptionRequest->requestedPublishingInterval())
 			.parameter("LifetimeCount", createSubscriptionRequest->requestedLifetimeCount())
-			.parameter("MaxKeepAliveCount", createSubscriptionRequest->requestedMaxKeepAliveCount());
+			.parameter("MaxKeepAliveCount", createSubscriptionRequest->requestedMaxKeepAliveCount())
+			.parameter("SessionId", trx->sessionId());
 
-		serviceTransaction->statusCode(subscriptionManager_.receive(trx));
+		// find subscription manager
+		SubscriptionManager::SPtr subscriptionManager;
+		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
+		if (it == subscriptionManagerMap_.end()) {
+			subscriptionManager = SubscriptionManager::construct();
+			subscriptionManager->ioService(ioService());
+			subscriptionManagerMap_.insert(std::make_pair(trx->sessionId(), subscriptionManager));
+		}
+
+		
+		serviceTransaction->statusCode(subscriptionManager->receive(trx));
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 	}
 
 	void 
 	SubscriptionService::receiveDeleteSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
+		typeId.set(OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary);
 		ServiceTransactionDeleteSubscriptions::SPtr trx = boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction);
 		DeleteSubscriptionsRequest::SPtr deleteSubscriptionsRequest = trx->request();
 		DeleteSubscriptionsResponse::SPtr deleteSubscriptionsResponse = trx->response();
 
-		Log(Debug, "create subscription")
+		Log(Debug, "delete subscription")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		serviceTransaction->statusCode(subscriptionManager_.receive(trx));
+		// find subscription manager
+		SubscriptionManager::SPtr subscriptionManager;
+		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
+		if (it == subscriptionManagerMap_.end()) {
+			serviceTransaction->statusCode(BadNothingToDo);
+			serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			return;
+		}
+		subscriptionManager = it->second;
+		
+		serviceTransaction->statusCode(subscriptionManager->receive(trx));
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+
+		if (subscriptionManager->size() == 0) {
+			subscriptionManagerMap_.erase(it);
+		}
 	}
 
 	void 
@@ -94,6 +120,7 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receivePublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
+		typeId.set(OpcUaId_PublishRequest_Encoding_DefaultBinary);
 		ServiceTransactionPublish::SPtr trx = boost::static_pointer_cast<ServiceTransactionPublish>(serviceTransaction);
 		PublishRequest::SPtr publishRequest = trx->request();
 		PublishResponse::SPtr publishResponse = trx->response();
@@ -101,7 +128,17 @@ namespace OpcUaStackServer
 		Log(Debug, "publish")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		subscriptionManager_.receive(trx);
+		// find subscription manager
+		SubscriptionManager::SPtr subscriptionManager;
+		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
+		if (it == subscriptionManagerMap_.end()) {
+			serviceTransaction->statusCode(BadNothingToDo);
+			serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			return;
+		}
+		subscriptionManager = it->second;
+
+		subscriptionManager->receive(trx);
 	}
 
 	void 

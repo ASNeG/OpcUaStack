@@ -24,6 +24,9 @@ namespace OpcUaStackCore
 		OpcUaNodeId& nodeTypeRequest(void);
 		OpcUaNodeId& nodeTypeResponse(void);
 
+		void sessionId(uint32_t sessionId);
+		uint32_t sessionId(void);
+
 		void requestHeader(RequestHeader::SPtr requestHeader);
 		RequestHeader::SPtr requestHeader(void);
 		void responseHeader(ResponseHeader::SPtr responseHeader);
@@ -52,6 +55,7 @@ namespace OpcUaStackCore
 		static boost::mutex mutex_;
 		static uint32_t getUniqueTransactionId(void);
 
+		uint32_t sessionId_;
 		uint32_t transactionId_;
 		OpcUaNodeId nodeTypeRequest_;
 		OpcUaNodeId nodeTypeResponse_;

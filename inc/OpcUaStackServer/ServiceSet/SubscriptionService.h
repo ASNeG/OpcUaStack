@@ -19,6 +19,8 @@ namespace OpcUaStackServer
 	, public ObjectPool<SubscriptionService>
 	{
 	  public:
+		typedef std::map<uint32_t, SubscriptionManager::SPtr> SubscriptionManagerMap;
+
 		SubscriptionService(void);
 		~SubscriptionService(void);
 
@@ -37,7 +39,7 @@ namespace OpcUaStackServer
 		void receiveSetPublishingModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 		void receiveTransferSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
 
-		SubscriptionManager subscriptionManager_;
+		SubscriptionManagerMap subscriptionManagerMap_;
 	};
 
 }

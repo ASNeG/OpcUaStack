@@ -212,6 +212,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 		serviceTransactionSPtr->serviceTransactionIfSession(this);
+		serviceTransactionSPtr->sessionId(sessionId_);
 
 		std::iostream ios(&sb);
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();

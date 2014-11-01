@@ -109,5 +109,4 @@ namespace OpcUaStackCore
 	  {
 		  response_->opcUaBinaryDecode(is);
 	  }
-
 }

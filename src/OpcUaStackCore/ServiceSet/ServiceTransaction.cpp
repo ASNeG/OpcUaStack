@@ -30,6 +30,18 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void 
+	ServiceTransaction::sessionId(uint32_t sessionId)
+	{
+		sessionId_ = sessionId;
+	}
+
+	uint32_t 
+	ServiceTransaction::sessionId(void)
+	{
+		return sessionId_;
+	}
+
 	uint32_t 
 	ServiceTransaction::transactionId(void)
 	{
