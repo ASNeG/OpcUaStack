@@ -343,6 +343,7 @@ namespace OpcUaStackCore
 	, startTime_()
 	, timer_(nullptr)
 	, running_(false)
+	, ownSPtr_()
 	{
 		slotArray5_.next(nullptr);
 		slotArray4_.next(&slotArray5_);
@@ -355,7 +356,7 @@ namespace OpcUaStackCore
 
 	SlotTimer::~SlotTimer(void)
 	{
-		stopSlotTimerLoop(true);
+		stopSlotTimerLoop();
 	}
 
 	void 
@@ -417,10 +418,14 @@ namespace OpcUaStackCore
 
 		if (error) {
 			running_ = false;
+			ownSPtr_.reset();
 			return;
 		}
 
-		if (running_ == false) return; 
+		if (running_ == false) {
+			ownSPtr_.reset();
+			return;
+		}
 
 		boost::posix_time::time_duration diff = boost::posix_time::microsec_clock::local_time() - startTime_;
 		uint64_t actTick = diff.total_milliseconds() / 10;
@@ -453,11 +458,19 @@ namespace OpcUaStackCore
 	}
 		
 	void 
-	SlotTimer::stopSlotTimerLoop(bool sync)
+	SlotTimer::stopSlotTimerLoop(void)
 	{
 		running_ = false;
 		IOService::msecSleep(20);
 		delete timer_;
 		timer_ = nullptr;
+	}
+
+	void
+	SlotTimer::stopSlotTimerLoop(SlotTimer::SPtr ownSPtr)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+		ownSPtr_ = ownSPtr;
+		running_ = false;
 	}
 }

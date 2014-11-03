@@ -72,10 +72,13 @@ namespace OpcUaStackServer
 		if (it == subscriptionManagerMap_.end()) {
 			subscriptionManager = SubscriptionManager::construct();
 			subscriptionManager->ioService(ioService());
+			subscriptionManager->sessionId(trx->sessionId());
 			subscriptionManagerMap_.insert(std::make_pair(trx->sessionId(), subscriptionManager));
 		}
+		else {
+			subscriptionManager = it->second;
+		}
 
-		
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
 		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
 	}

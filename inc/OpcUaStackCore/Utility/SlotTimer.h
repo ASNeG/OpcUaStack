@@ -1,5 +1,5 @@
 #ifndef __OpcUaStackCore_SlotTimer_h__
-#define __OpcUaStackCore_Slottimer_h__
+#define __OpcUaStackCore_SlotTimer_h__
 
 #include "boost/date_time/posix_time/posix_time.hpp"
 #include "OpcUaStackCore/Base/os.h"
@@ -80,7 +80,7 @@ namespace OpcUaStackCore
 		SlotArray* next_;
 	};
 
-	class DLLEXPORT SlotTimer
+	class DLLEXPORT SlotTimer : public ObjectPool<SlotTimer>
 	{
 	  public:
 		SlotTimer(void);
@@ -90,7 +90,8 @@ namespace OpcUaStackCore
 		void stop(SlotTimerElement::SPtr slotTimerElement);
 
 		void startSlotTimerLoop(IOService* ioService);
-		void stopSlotTimerLoop(bool sync = false);
+		void stopSlotTimerLoop(void);
+		void stopSlotTimerLoop(SlotTimer::SPtr onwSPtr);
 
 		void insert(SlotTimerElement::SPtr slotTimerElement);
 		void remove(SlotTimerElement::SPtr slotTimerElement);
@@ -114,6 +115,8 @@ namespace OpcUaStackCore
 		IOService* ioService_;
 		boost::posix_time::ptime startTime_;
 		uint32_t nextTick_;
+
+		SlotTimer::SPtr ownSPtr_;
 	};
 
 }

@@ -1,25 +1,36 @@
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionManager.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
 	SubscriptionManager::SubscriptionManager(void)
 	: ioService_(nullptr)
-	, timer_()
+	, slotTimer_(SlotTimer::construct())
+	, minPublishingInterval_(10)
+	, minLifetimeCount_(2)
+    , minMaxKeepAliveCount_(2)
 	{
 	}
 
 	SubscriptionManager::~SubscriptionManager(void)
 	{
+		slotTimer_->stopSlotTimerLoop(slotTimer_);
 	}
 
 	void 
 	SubscriptionManager::ioService(IOService* ioService)
 	{
 		ioService_ = ioService;
-		timer_ = Timer::construct(*ioService_);
-		timer_->callback().reset(boost::bind(&SubscriptionManager::publishTimeout, this));
-		timer_->start(timer_, 10);
+		slotTimer_->startSlotTimerLoop(ioService);
+	}
+
+	void
+	SubscriptionManager::sessionId(uint32_t sessionId) 
+	{
+		sessionId_ = sessionId;
 	}
 
 	uint32_t 
@@ -37,10 +48,39 @@ namespace OpcUaStackServer
 		Subscription::SPtr subscription = Subscription::construct();
 		subscriptionMap_.insert(std::make_pair(subscription->subscriptionId(), subscription));
 
+		// calculate publishing interval
+		double publishingInterval = createSubscriptionRequest->requestedPublishingInterval();
+		if (minPublishingInterval_ > publishingInterval) publishingInterval = minPublishingInterval_;
+		subscription->publishingInterval(publishingInterval);
+
+		// calculate lifetime count
+		uint32_t lifetimeCount = createSubscriptionRequest->requestedLifetimeCount();
+		if (lifetimeCount < minLifetimeCount_) lifetimeCount = minLifetimeCount_;
+		subscription->lifetimeCount(lifetimeCount);
+
+		// calculate max keepalive count
+		uint32_t maxKeepAliveCount = createSubscriptionRequest->requestedMaxKeepAliveCount();
+		if (maxKeepAliveCount < minMaxKeepAliveCount_) maxKeepAliveCount = minMaxKeepAliveCount_;
+		subscription->maxKeepAliveCount(maxKeepAliveCount);
+
+		std::cout << "XXXXXXXXXXXXXXXXXXX " << lifetimeCount << " " << maxKeepAliveCount << std::endl;
+
+		// start subscription timer
+		SlotTimerElement::SPtr slotTimerElement = subscription->slotTimerElement();
+		slotTimerElement->interval((uint32_t)publishingInterval);
+		slotTimerElement->callback().reset(boost::bind(&SubscriptionManager::subscriptionPublishTimeout, this, subscription));
+		slotTimer_->start(slotTimerElement);
+
+		// send create subscription response
 		createSubscriptionResponse->subscriptionId(subscription->subscriptionId());
-		createSubscriptionResponse->revisedPublishingInterval(createSubscriptionRequest->requestedPublishingInterval());
-		createSubscriptionResponse->revisedLifetimeCount(createSubscriptionRequest->requestedLifetimeCount());
-		createSubscriptionResponse->revisedMaxKeepAliveCount(createSubscriptionRequest->requestedMaxKeepAliveCount());
+		createSubscriptionResponse->revisedPublishingInterval(publishingInterval);
+		createSubscriptionResponse->revisedLifetimeCount(lifetimeCount);
+		createSubscriptionResponse->revisedMaxKeepAliveCount(maxKeepAliveCount);
+
+		Log(Debug, "create subscription")
+			.parameter("Trx", trx->transactionId())
+			.parameter("SessionId", trx->sessionId())
+			.parameter("Subscription", subscription->subscriptionId());
 
 		return Success;
 	}
@@ -55,6 +95,12 @@ namespace OpcUaStackServer
 		deleteSubscriptionsResponse->results()->resize(deleteSubscriptionsRequest->subscriptionIds()->size());
 		for (uint32_t idx = 0; idx < deleteSubscriptionsRequest->subscriptionIds()->size(); idx++) {
 			if (deleteSubscriptionsRequest->subscriptionIds()->get(idx, id)) {
+				SubscriptionMap::iterator it = subscriptionMap_.find((uint32_t)id);
+				if (it != subscriptionMap_.end()) {
+					// stop subscription timer
+					slotTimer_->stop(it->second->slotTimerElement());
+				}
+
 				subscriptionMap_.erase((uint32_t)id);
 			}
 			deleteSubscriptionsResponse->results()->set(0, Success);
@@ -70,11 +116,97 @@ namespace OpcUaStackServer
 		return Success;
 	}
 
-	void
-	SubscriptionManager::publishTimeout(void)
+	void 
+	SubscriptionManager::subscriptionPublishTimeout(Subscription::SPtr subscription)
 	{
-		std::cout << "timer run" << std::endl;
-		timer_->start(timer_, 10);
+		std::cout << "subscription timeout... " << subscription->subscriptionId()  << std::endl;
+
+		ServiceTransactionPublish::SPtr trx;
+		if (serviceTransactionPublishList_.size() != 0) {
+		    trx = serviceTransactionPublishList_.front();
+		}
+
+		PublishResult publishResult = subscription->publish(trx);
+		switch (publishResult)
+		{
+			case NothingTodo:
+			{
+				break;
+			}
+			case NeedAttention:
+			{
+				// todo
+				break;
+			}
+			case SendPublish:
+			{
+				serviceTransactionPublishList_.pop_front();
+
+				// FIXME: set unacknowledged sequence numbers...
+
+				OpcUaNodeId typeId;
+				typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);
+				trx->statusCode(Success);
+				trx->serviceTransactionIfSession()->receive(typeId, trx);
+				break;
+			}
+			case SubscriptionTimeout:
+			{
+				Log(Debug, "timeout subscription")
+					.parameter("SessionId", sessionId_)
+					.parameter("Subscription", subscription->subscriptionId());
+
+				slotTimer_->stop(subscription->slotTimerElement());
+				subscriptionMap_.erase(subscription->subscriptionId());
+				break;
+			}
+		}
 	}
+
+
+#if 0
+	void 
+	SubscriptionManager::publishNoNotificationAvailable(Subscription::SPtr subscription)
+	{
+		subscription->actLifetimeCountDec();
+		if (subscription->actLifetimeCount() != 0) return;
+		
+		subscription->actLifetimeCountReset();
+		sendPublishResponseKeepalive(subscription);
+	}
+		
+	void 
+	SubscriptionManager::publishNotificationAvailable(Subscription::SPtr subscription, uint32_t count)
+	{
+		subscription->actLifetimeCountReset();
+		// FIXME: todo
+	}
+
+	void
+	SubscriptionManager::sendPublishResponseKeepalive(Subscription::SPtr subscription)
+	{
+		if (serviceTransactionPublishList_.size() == 0) {
+			subscriptionIdList_.push_back(subscription->subscriptionId());
+			return;
+		}
+
+		ServiceTransactionPublish::SPtr trx = serviceTransactionPublishList_.front();
+		serviceTransactionPublishList_.pop_front();
+		PublishRequest::SPtr publishRequest = trx->request();
+		PublishResponse::SPtr publishResponse = trx->response();
+		ServiceTransaction::SPtr serviceTransaction = trx;
+
+		publishResponse->subscriptionId(subscription->subscriptionId());
+		//publishResponse->availableSequenceNumbers();
+		publishResponse->moreNotifications(false);
+		//publishResponse->notificationMessage()
+		//publishResponse->results();
+
+		OpcUaNodeId typeId;
+		typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);
+		serviceTransaction->statusCode(Success);
+		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+	}
+#endif
 
 }

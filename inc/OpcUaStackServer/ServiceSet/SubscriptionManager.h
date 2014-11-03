@@ -4,14 +4,20 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/Utility/Timer.h"
-#include "OpcUaStackServer/ServiceSet/Subscription.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/Subscription.h"
+
+#include <set>
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
 	typedef std::list<ServiceTransactionPublish::SPtr> ServiceTransactionPublishList; 
+	typedef std::list<uint32_t> SubscriptionIdList;
 
 	class DLLEXPORT SubscriptionManager : public ObjectPool<SubscriptionManager>
 	{
@@ -20,6 +26,7 @@ namespace OpcUaStackServer
 		~SubscriptionManager(void);
 
 		void ioService(IOService* ioService);
+		void sessionId(uint32_t sessionId);
 
 		OpcUaStatusCode receive(ServiceTransactionCreateSubscription::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionDeleteSubscriptions::SPtr trx);
@@ -28,12 +35,19 @@ namespace OpcUaStackServer
 		uint32_t size(void);
 
 	  private:
-		void publishTimeout(void);
+		void subscriptionPublishTimeout(Subscription::SPtr subscription);
 
 		IOService* ioService_;
-		Timer::SPtr timer_;
 		SubscriptionMap subscriptionMap_;
+		uint32_t sessionId_;
+
 		ServiceTransactionPublishList serviceTransactionPublishList_;
+		SubscriptionIdList subscriptionIdList_;
+
+		double minPublishingInterval_;
+		uint32_t minLifetimeCount_;
+		uint32_t minMaxKeepAliveCount_;
+		SlotTimer::SPtr slotTimer_;
 	};
 
 }
