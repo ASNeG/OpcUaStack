@@ -12,6 +12,12 @@ namespace OpcUaStackServer
 
 	MonitorManager::~MonitorManager(void)
 	{
+		MonitorItemMap::iterator it;
+		for (it=monitorItemMap_.begin(); it!=monitorItemMap_.end(); it++) {
+			slotTimer_->stop(it->second->slotTimerElement());
+		}
+
+		monitorItemMap_.clear();
 		slotTimer_->stopSlotTimerLoop(slotTimer_);
 	}
 
@@ -104,6 +110,35 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	MonitorManager::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
 	{
+		DeleteMonitoredItemsRequest::SPtr deleteMonitorItemRequest = trx->request();
+		DeleteMonitoredItemsResponse::SPtr deleteMonitorItemResponse = trx->response();
+
+		uint32_t size = deleteMonitorItemRequest->monitoredItemIds()->size();
+		deleteMonitorItemResponse->results()->resize(size);
+		
+		for (uint32_t idx=0; idx<size; idx++) {
+			
+			// get monitor id
+			uint32_t monitorItemId;
+			if (!deleteMonitorItemRequest->monitoredItemIds()->get(idx, monitorItemId)) {
+				deleteMonitorItemResponse->results()->set(idx, BadInvalidArgument);
+				continue;
+			}
+
+			// find monitor item in monitor map
+			MonitorItemMap::iterator it;
+			it = monitorItemMap_.find(monitorItemId);
+			if (it == monitorItemMap_.end()) {
+				deleteMonitorItemResponse->results()->set(idx, Success);
+				continue;
+			}
+
+			// stop sample timer an remove monitor item#
+			slotTimer_->stop(it->second->slotTimerElement());
+			monitorItemMap_.erase(it);
+			deleteMonitorItemResponse->results()->set(idx, Success);
+		}
+
 		return Success;
 	}
 
@@ -117,7 +152,11 @@ namespace OpcUaStackServer
 				// nothing to do
 				break;
 			case NodeNoLongerExist:
-				// FIXME: ???
+				Log(Debug, "monitor item no longer exist")
+					.parameter("MonitorId", monitorItem->monitorItemId());
+
+				slotTimer_->stop(monitorItem->slotTimerElement());
+				monitorItemMap_.erase(monitorItem->monitorItemId());
 				break;
 		}
 	}

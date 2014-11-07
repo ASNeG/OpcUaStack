@@ -65,7 +65,7 @@ namespace OpcUaStackServer
 	{
 		baseNodeClass_ = baseNodeClass;
 		monitoredItemCreateRequest_ = monitoredItemCreateRequest;
-		samplingInterval_ = monitoredItemCreateRequest->requestedParameters().samplingInterval();
+		samplingInterval_ = (uint32_t)monitoredItemCreateRequest->requestedParameters().samplingInterval();
 		queSize_ = monitoredItemCreateRequest->requestedParameters().queueSize();
 
 		// check attribute
@@ -137,6 +137,7 @@ namespace OpcUaStackServer
 	void 
 	MonitorItem::monitorItemListPushBack(OpcUaDataValue::SPtr dataValue)
 	{
+		if (monitorItemList_.size() >= queSize_) return;
 		monitorItemList_.push_back(dataValue);
 	}
 		
