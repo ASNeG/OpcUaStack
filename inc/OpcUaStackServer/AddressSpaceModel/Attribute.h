@@ -57,6 +57,9 @@ namespace OpcUaStackServer
 		virtual OpcUaBuildInType type(void) = 0;
 		virtual bool exist(void) = 0;
 		virtual void exist(bool exist) = 0;
+		virtual Attribute* clone(void) = 0;
+		virtual void copyTo(Attribute* attribute) = 0;
+		virtual bool equal(void) = 0;
 
 		virtual void out(std::ostream& os) const = 0;
 		friend std::ostream& operator<<(std::ostream& os, const Attribute& value) {
@@ -179,6 +182,21 @@ namespace OpcUaStackServer
 
 			OpcUaBuildInType type(void) {
 				return type_;
+			}
+
+			Attribute* clone(void) {
+				Attribute* clone = new AttributeMeta<DATATYPE, id_, type_>();
+				copyTo(clone);
+				return clone;
+			}
+
+			void copyTo(Attribute* attribute) {
+				// FIXME:
+			}
+
+			bool equal(void) {
+				// FIXME:
+				return true;
 			}
 	  };
 

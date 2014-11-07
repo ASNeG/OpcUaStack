@@ -115,6 +115,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MethodService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitoredItemService.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitorItem.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitorManager.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\NodeManagementService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\QueryService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\ServiceSetBase.h" />
@@ -163,6 +165,8 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\DiscoveryService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitoredItemService.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitorItem.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitorManager.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\NodeManagementService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\QueryService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\ServiceSetBase.cpp" />

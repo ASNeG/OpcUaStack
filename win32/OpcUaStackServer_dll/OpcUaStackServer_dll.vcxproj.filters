@@ -212,6 +212,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParserIf.h">
       <Filter>src\NodeSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitorItem.h">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitorManager.h">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -354,6 +360,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetValueParser.cpp">
       <Filter>src\NodeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitorItem.cpp">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitorManager.cpp">
+      <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

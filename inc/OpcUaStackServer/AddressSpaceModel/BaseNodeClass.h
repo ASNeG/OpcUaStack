@@ -17,6 +17,7 @@ namespace OpcUaStackServer
 	{
 	  public: 
 		typedef boost::shared_ptr<BaseNodeClass> SPtr;
+		typedef boost::weak_ptr<BaseNodeClass> WPtr;
 
 		BaseNodeClass(void);
 		BaseNodeClass(NodeClassType nodeClass);
