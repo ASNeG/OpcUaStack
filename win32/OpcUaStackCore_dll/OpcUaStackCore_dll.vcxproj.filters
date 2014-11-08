@@ -61,6 +61,9 @@
     <Filter Include="src\Core">
       <UniqueIdentifier>{7a168d1e-8999-4613-8e90-5e1fcc529693}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Component">
+      <UniqueIdentifier>{40a56b84-5cf4-4b21-b99e-435035bc6608}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">
@@ -783,6 +786,12 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Core\Core.h">
       <Filter>src\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Component\Component.h">
+      <Filter>src\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Component\Message.h">
+      <Filter>src\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1441,6 +1450,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Core\Core.cpp">
       <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Component\Component.cpp">
+      <Filter>src\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

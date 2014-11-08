@@ -11,6 +11,7 @@ namespace OpcUaStackCore
 	class DLLEXPORT ServiceTransactionIf
 	{
 	  public:
+
 		virtual void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction) = 0;
 	};
 

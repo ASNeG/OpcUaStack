@@ -112,6 +112,8 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaType.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaVariant.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Component\Component.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Component\Message.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\Core\Core.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\AcknowledgeMessage.h" />
     <ClInclude Include="..\..\inc\OpcUaStackCore\SecureChannel\ApplicationInstanceCertificate.h" />
@@ -347,6 +349,7 @@
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaString.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaVariant.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\OpcUaXmlElement.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackCore\Component\Component.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\Core\Core.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\AcknowledgeMessage.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackCore\SecureChannel\ApplicationInstanceCertificate.cpp" />
