@@ -3,7 +3,7 @@
 
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OPcUaStackCore/Component/Component.h"
+#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 

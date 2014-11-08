@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 		bool decode(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec);
 
 	  private:
-		static void insertDataTypeElement(const std::string& elementName, DataTypeElement& dataTypeELement);
+		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);
 		static bool findDataTypeElement(const std::string& elementName, DataTypeElement& dataTypeElement);
 		static void start(void);
 		static DataTypeElementMap dataTypeElementMap_;

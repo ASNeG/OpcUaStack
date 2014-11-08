@@ -4,7 +4,7 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
-#include "OpcUaStackServer/AddressSpaceModel/BaseNodeCLass.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include <list>
 
 using namespace OpcUaStackCore;

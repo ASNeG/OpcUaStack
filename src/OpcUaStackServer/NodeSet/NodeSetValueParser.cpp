@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	NodeSetValueParser::insertDataTypeElement(const std::string& elementName, DataTypeElement& dataTypeELement)
+	NodeSetValueParser::insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement)
 	{
 		dataTypeElementMap_.insert(std::make_pair(elementName, dataTypeELement));
 	}

@@ -21,7 +21,8 @@ namespace OpcUaStackClient
 	AttributeService::send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead)
 	{
 		serviceTransactionRead->componentService(this); 
-		componentSession_->send(OpcUaNodeId(), serviceTransactionRead);
+		OpcUaNodeId nodeId;
+		componentSession_->send(nodeId, serviceTransactionRead);
 	}
 
 	void 
