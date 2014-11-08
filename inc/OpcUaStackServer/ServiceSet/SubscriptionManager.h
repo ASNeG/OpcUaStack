@@ -7,6 +7,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/Subscription.h"
 
 #include <set>
@@ -31,6 +32,12 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(ServiceTransactionCreateSubscription::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionDeleteSubscriptions::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionPublish::SPtr trx);
+
+		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionDeleteMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
 
 		uint32_t size(void);
 

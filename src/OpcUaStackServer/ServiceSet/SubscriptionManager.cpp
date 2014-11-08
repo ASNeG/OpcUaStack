@@ -163,4 +163,59 @@ namespace OpcUaStackServer
 		}
 	}
 
+	OpcUaStatusCode 
+	SubscriptionManager::receive(ServiceTransactionCreateMonitoredItems::SPtr trx)
+	{
+		CreateMonitoredItemsRequest::SPtr createMonitoredItemsRequest = trx->request();
+
+		SubscriptionMap::iterator it;
+		it = subscriptionMap_.find(createMonitoredItemsRequest->subscriptionId());
+		if (it == subscriptionMap_.end()) return BadSubscriptionIdInvalid;
+		return it->second->receive(trx);
+	}
+
+	OpcUaStatusCode 
+	SubscriptionManager::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
+	{
+		DeleteMonitoredItemsRequest::SPtr deleteMonitoredItemsRequest = trx->request();
+
+		SubscriptionMap::iterator it;
+		it = subscriptionMap_.find(deleteMonitoredItemsRequest->subscriptionId());
+		if (it == subscriptionMap_.end()) return BadSubscriptionIdInvalid;
+		return it->second->receive(trx);
+	}
+
+	OpcUaStatusCode 
+	SubscriptionManager::receive(ServiceTransactionModifyMonitoredItems::SPtr trx)
+	{
+		ModifyMonitoredItemsRequest::SPtr modifyMonitoredItemsRequest = trx->request();
+
+		SubscriptionMap::iterator it;
+		it = subscriptionMap_.find(modifyMonitoredItemsRequest->subscriptionId());
+		if (it == subscriptionMap_.end()) return BadSubscriptionIdInvalid;
+		return it->second->receive(trx);
+	}
+
+	OpcUaStatusCode 
+	SubscriptionManager::receive(ServiceTransactionSetMonitoringMode::SPtr trx)
+	{
+		SetMonitoringModeRequest::SPtr setMonitoringModeRequest = trx->request();
+
+		SubscriptionMap::iterator it;
+		it = subscriptionMap_.find(setMonitoringModeRequest->subscriptionId());
+		if (it == subscriptionMap_.end()) return BadSubscriptionIdInvalid;
+		return it->second->receive(trx);
+	}
+
+	OpcUaStatusCode 
+	SubscriptionManager::receive(ServiceTransactionSetTriggering::SPtr trx)
+	{
+		SetTriggeringRequest::SPtr setTriggeringRequest = trx->request();
+
+		SubscriptionMap::iterator it;
+		it = subscriptionMap_.find(setTriggeringRequest->subscriptionId());
+		if (it == subscriptionMap_.end()) return BadSubscriptionIdInvalid;
+		return it->second->receive(trx);
+	}
+
 }

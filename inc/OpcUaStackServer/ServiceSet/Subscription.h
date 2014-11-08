@@ -7,6 +7,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include <map>
 
 using namespace OpcUaStackCore;
@@ -39,6 +40,13 @@ namespace OpcUaStackServer
 
 		PublishResult publish(ServiceTransactionPublish::SPtr trx);
 		uint32_t publishPre(void);
+
+		// monitored item
+		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionDeleteMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
 
 		SlotTimerElement::SPtr slotTimerElement(void);
 

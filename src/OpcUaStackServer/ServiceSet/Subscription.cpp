@@ -141,4 +141,35 @@ namespace OpcUaStackServer
 		retransmissionQueue_.insert(std::make_pair(publishResponse->notificationMessage()->sequenceNumber(), publishResponse));
 	}
 
+
+	OpcUaStatusCode 
+	Subscription::receive(ServiceTransactionCreateMonitoredItems::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
+	OpcUaStatusCode 
+	Subscription::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
+	OpcUaStatusCode 
+	Subscription::receive(ServiceTransactionModifyMonitoredItems::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
+	OpcUaStatusCode 
+	Subscription::receive(ServiceTransactionSetMonitoringMode::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
+	OpcUaStatusCode 
+	Subscription::receive(ServiceTransactionSetTriggering::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
 }

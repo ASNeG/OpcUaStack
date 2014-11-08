@@ -66,35 +66,6 @@ namespace OpcUaStackServer
 
 
 		//
-		// monitored service
-		//
-		ServiceTransactionCreateMonitoredItems::name("CreateMonitorItems");
-		ServiceTransactionDeleteMonitoredItems::name("DeleteMonitorItems");
-		ServiceTransactionModifyMonitoredItems::name("ModifyMonitorItems");
-		ServiceTransactionSetMonitoringMode::name("SetMonitoringMode");
-		ServiceTransactionSetTriggering::name("SetTriggering");
-
-
-		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = ServiceTransactionCreateMonitoredItems::construct();
-		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = ServiceTransactionDeleteMonitoredItems::construct();
-		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = ServiceTransactionModifyMonitoredItems::construct();
-		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = ServiceTransactionSetMonitoringMode::construct();
-		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = ServiceTransactionSetTriggering::construct();
-
-		serviceTransactionCreateMonitoredItems->componentService(&*monitoredItemService_);
-		serviceTransactionDeleteMonitoredItems->componentService(&*monitoredItemService_);
-		serviceTransactionModifyMonitoredItems->componentService(&*monitoredItemService_);
-		serviceTransactionSetMonitoringMode->componentService(&*monitoredItemService_);
-		serviceTransactionSetTriggering->componentService(&*monitoredItemService_);
-
-		transactionManager_->registerTransaction(serviceTransactionCreateMonitoredItems);
-		transactionManager_->registerTransaction(serviceTransactionDeleteMonitoredItems);
-		transactionManager_->registerTransaction(serviceTransactionModifyMonitoredItems);
-		transactionManager_->registerTransaction(serviceTransactionSetMonitoringMode);
-		transactionManager_->registerTransaction(serviceTransactionSetTriggering);
-
-
-		//
 		// node mangement service
 		//
 		ServiceTransactionAddNodes::name("AddNodes");
@@ -152,6 +123,35 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionRepublish);
 		transactionManager_->registerTransaction(serviceTransactionSetPublishingMode);
 		transactionManager_->registerTransaction(serviceTransactionTransferSubscriptions);
+
+
+		//
+		// monitored service
+		//
+		ServiceTransactionCreateMonitoredItems::name("CreateMonitorItems");
+		ServiceTransactionDeleteMonitoredItems::name("DeleteMonitorItems");
+		ServiceTransactionModifyMonitoredItems::name("ModifyMonitorItems");
+		ServiceTransactionSetMonitoringMode::name("SetMonitoringMode");
+		ServiceTransactionSetTriggering::name("SetTriggering");
+
+
+		ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems = ServiceTransactionCreateMonitoredItems::construct();
+		ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems = ServiceTransactionDeleteMonitoredItems::construct();
+		ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems = ServiceTransactionModifyMonitoredItems::construct();
+		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = ServiceTransactionSetMonitoringMode::construct();
+		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = ServiceTransactionSetTriggering::construct();
+
+		serviceTransactionCreateMonitoredItems->componentService(&*subscriptionService_);
+		serviceTransactionDeleteMonitoredItems->componentService(&*subscriptionService_);
+		serviceTransactionModifyMonitoredItems->componentService(&*subscriptionService_);
+		serviceTransactionSetMonitoringMode->componentService(&*subscriptionService_);
+		serviceTransactionSetTriggering->componentService(&*subscriptionService_);
+
+		transactionManager_->registerTransaction(serviceTransactionCreateMonitoredItems);
+		transactionManager_->registerTransaction(serviceTransactionDeleteMonitoredItems);
+		transactionManager_->registerTransaction(serviceTransactionModifyMonitoredItems);
+		transactionManager_->registerTransaction(serviceTransactionSetMonitoringMode);
+		transactionManager_->registerTransaction(serviceTransactionSetTriggering);
 
 
 		//
