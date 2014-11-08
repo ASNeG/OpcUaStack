@@ -16,8 +16,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	AttributeService::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	AttributeService::receive(OpcUaNodeId& typeId, Message::SPtr message)
 	{
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_ReadRequest_Encoding_DefaultBinary:
@@ -37,7 +38,7 @@ namespace OpcUaStackServer
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
 		}
 	}
 
@@ -61,12 +62,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (readRequest->readValueIdArray()->size() == 0) {
 			trx->responseHeader()->serviceResult(BadNothingToDo);
-			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			trx->componentSession()->send(typeId, serviceTransaction);
 			return;
 		}
 		if (readRequest->readValueIdArray()->size() > 1000) { // FIXME: todo
 			trx->responseHeader()->serviceResult(BadTooManyOperations);
-			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			trx->componentSession()->send(typeId, serviceTransaction);
 			return;
 		}
 
@@ -141,7 +142,7 @@ namespace OpcUaStackServer
 		}
 
 		trx->responseHeader()->serviceResult(Success);
-		trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+		trx->componentSession()->send(typeId, serviceTransaction);
 	}
 
 	void 
@@ -159,12 +160,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (writeRequest->writeValueArray()->size() == 0) {
 			trx->responseHeader()->serviceResult(BadNothingToDo);
-			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			trx->componentSession()->send(typeId, serviceTransaction);
 			return;
 		}
 		if (writeRequest->writeValueArray()->size() > 1000) { // FIXME: todo
 			trx->responseHeader()->serviceResult(BadTooManyOperations);
-			trx->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+			trx->componentSession()->receive(typeId, serviceTransaction);
 			return;
 		}
 
@@ -227,7 +228,7 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(Success);
-		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
 	}
 
 	void 
@@ -235,7 +236,7 @@ namespace OpcUaStackServer
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
 	}
 
 	void 
@@ -243,7 +244,7 @@ namespace OpcUaStackServer
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->serviceTransactionIfSession()->receive(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
 	}
 
 }

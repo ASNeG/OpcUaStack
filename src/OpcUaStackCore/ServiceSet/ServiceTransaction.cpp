@@ -90,28 +90,28 @@ namespace OpcUaStackCore
 		return nodeTypeResponse_;
 	}
 
-	ServiceTransactionIf* 
-	ServiceTransaction::serviceTransactionIfService(void)
+	Component*
+	ServiceTransaction::componentService(void)
 	{
-		return serviceTransactionIfService_;
+		return componentService_;
 	}
 
 	void 
-	ServiceTransaction::serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService)
+	ServiceTransaction::componentService(Component* componentService)
 	{
-		serviceTransactionIfService_ = serviceTransactionIfService;
+		componentService_ = componentService;
 	}
 	
-	ServiceTransactionIf* 
-	ServiceTransaction::serviceTransactionIfSession(void)
+	Component*
+	ServiceTransaction::componentSession(void)
 	{
-		return serviceTransactionIfSession_;
+		return componentSession_;
 	}
 
 	void 
-	ServiceTransaction::serviceTransactionIfSession(ServiceTransactionIf* serviceTransactionIfSession)
+	ServiceTransaction::componentSession(Component* componentSession)
 	{
-		serviceTransactionIfSession_ = serviceTransactionIfSession;
+		componentSession_ = componentSession;
 	}
 
 	void 

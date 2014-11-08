@@ -2,31 +2,31 @@
 #define __OpcUaStackClient_AttributeService_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
+#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaStackClient 
 {
 
-	class DLLEXPORT AttributeService : public ServiceTransactionIf
+	class DLLEXPORT AttributeService : public Component
 	{
 	  public:
 		AttributeService(void);
 		~AttributeService(void);
 
-		void session(Session::SPtr session);
+		void componentSession(Component* componentSession);
 
 		void send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
-		Session::SPtr session_;
+		Component* componentSession_;
 	};
 
 }

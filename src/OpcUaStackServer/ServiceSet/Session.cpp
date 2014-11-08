@@ -13,9 +13,11 @@ namespace OpcUaStackServer
 {
 
 	Session::Session(void)
-	: sessionState_(SessionState_Close)
+	: Component()
+	, sessionState_(SessionState_Close)
 	, sessionId_(0)
 	{
+		componentName("Session");
 	}
 
 	Session::~Session(void)
@@ -211,7 +213,7 @@ namespace OpcUaStackServer
 				.parameter("TypeId", typeId);
 			return false;
 		}
-		serviceTransactionSPtr->serviceTransactionIfSession(this);
+		serviceTransactionSPtr->componentSession(this);
 		serviceTransactionSPtr->sessionId(sessionId_);
 
 		std::iostream ios(&sb);
@@ -229,13 +231,14 @@ namespace OpcUaStackServer
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())
 			.parameter("TypeId", serviceTransactionSPtr->requestName());
 
-		serviceTransactionSPtr->serviceTransactionIfService()->receive(typeId, serviceTransactionSPtr);
+		serviceTransactionSPtr->componentService()->send(typeId, serviceTransactionSPtr);
 		return true;
 	}
 
 	void 
-	Session::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransactionSPtr) 
+	Session::receive(OpcUaNodeId& typeId, Message::SPtr message) 
 	{
+		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())
 			.parameter("TypeId", serviceTransactionSPtr->responseName())

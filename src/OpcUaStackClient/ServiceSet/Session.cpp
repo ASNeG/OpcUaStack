@@ -32,17 +32,18 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::registerService(OpcUaNodeId& typeId, ServiceTransactionIf* serviceTransactionIf)
+	Session::registerService(OpcUaNodeId& typeId, Component* component)
 	{
 		ServiceSetMap::iterator it;
 		it = serviceSetMap_.find(typeId);
 		if (it != serviceSetMap_.end()) {
 			Log(Error, "cannot insert type id into service set map, because type id already exist")
-				.parameter("TypeId", typeId);
+				.parameter("TypeId", typeId)
+				.parameter("ComponentName", component->componentName());
 			return false;
 		}
 
-		serviceSetMap_.insert(std::make_pair(typeId, serviceTransactionIf));
+		serviceSetMap_.insert(std::make_pair(typeId, component));
 
 		return true;
 	}
@@ -294,9 +295,9 @@ namespace OpcUaStackClient
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
 		serviceTransaction->opcUaBinaryDecodeResponse(ios);
 		
-		ServiceTransactionIf* serviceTransactionIf = serviceTransaction->serviceTransactionIfService();
-		if (serviceTransactionIf != nullptr) {
-			serviceTransactionIf->receive(typeId, serviceTransaction);
+		Component* componentService = serviceTransaction->componentService();
+		if (componentService != nullptr) {
+			componentService->send(typeId, serviceTransaction);
 			return true;
 		}
 
@@ -311,8 +312,8 @@ namespace OpcUaStackClient
 			return true;
 		}
 
-		serviceTransactionIf = it->second;
-		serviceTransactionIf->receive(typeId, serviceTransaction);
+		componentService = it->second;
+		componentService->send(typeId, serviceTransaction);
 		return true;
 	}
 

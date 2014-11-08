@@ -4,8 +4,8 @@ namespace OpcUaStackServer
 {
 
 	ServiceSetBase::ServiceSetBase(void)
-	: informationModel_()
-	, ioService_(nullptr)
+	: Component()
+	, informationModel_()
 	{
 	}
 
@@ -24,18 +24,5 @@ namespace OpcUaStackServer
 	{
 		return informationModel_;
 	}
-
-	void 
-	ServiceSetBase::ioService(IOService* ioService)
-	{
-		ioService_ = ioService;
-	}
-		
-	IOService* 
-	ServiceSetBase::ioService(void)
-	{
-		return ioService_;
-	}
-
 
 }

@@ -147,7 +147,7 @@ namespace OpcUaStackServer
 				OpcUaNodeId typeId;
 				typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);
 				trx->statusCode(Success);
-				trx->serviceTransactionIfSession()->receive(typeId, trx);
+				trx->componentSession()->send(typeId, trx);
 				break;
 			}
 			case SubscriptionTimeout:

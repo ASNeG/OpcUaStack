@@ -4,33 +4,35 @@ namespace OpcUaStackCore
 {
 
 	Component::ComponentMap Component::componentMap_;
+	boost::mutex Component::globalMutex_;
 
 	void 
-	Component::addComponent(const std::string& name, Component::SPtr component)
+	Component::addComponent(const std::string& componentName, Component& component)
 	{
-		componentMap_.insert(std::make_pair(name, component));
+		boost::mutex::scoped_lock g(globalMutex_);
+		componentMap_.insert(std::make_pair(componentName, &component));
 	}
 
 	void 
-	Component::removeComponent(const std::string& name)
+	Component::removeComponent(const std::string& componentName)
 	{
-		componentMap_.erase(name);
+		boost::mutex::scoped_lock g(globalMutex_);
+		componentMap_.erase(componentName);
 	}
 
 	void 
-	Component::removeComponent(Component::SPtr component)
+	Component::removeComponent(Component& component)
 	{
-		removeComponent(component->name());
+		removeComponent(component.componentName());
 	}
 
-	Component::SPtr 
-	Component::getComponent(const std::string& name)
+	Component* 
+	Component::getComponent(const std::string& componentName)
 	{
 		ComponentMap::iterator it;
-		it = componentMap_.find(name);
+		it = componentMap_.find(componentName);
 		if (it == componentMap_.end()) {
-			Component::SPtr component;
-			return component;
+			return nullptr;
 		}
 		return it->second;
 	}
@@ -43,24 +45,32 @@ namespace OpcUaStackCore
 
 	Component::~Component(void)
 	{
+		removeComponent(componentName_);
 	}
 		
 	void 
-	Component::ioService(IOService& ioService)
+	Component::ioService(IOService* ioService)
 	{
-		ioService_ = &ioService;
+		ioService_ = ioService;
+	}
+
+	IOService* 
+	Component::ioService(void)
+	{
+		return ioService_;
 	}
 
 	void 
-	Component::name(const std::string& name)
+	Component::componentName(const std::string& componentName)
 	{
-		name_ = name;
+		componentName_ = componentName;
+		addComponent(componentName_, *this);
 	}
 
 	std::string
-	Component::name(void)
+	Component::componentName(void)
 	{
-		return name_;
+		return componentName_;
 	}
 
 	void 
@@ -86,30 +96,28 @@ namespace OpcUaStackCore
 	void 
 	Component::send(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message)
 	{
-		Component::SPtr component;
-		component = getComponent(componentName);
-		if (component.get() != nullptr) send(component, messageNodeId, message);
+		Component* component = getComponent(componentName);
+		if (component != nullptr) send(*component, messageNodeId, message);
 	}
 
 	void 
 	Component::sendAsync(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message)
 	{
-		Component::SPtr component;
-		component = getComponent(componentName);
-		if (component.get() != nullptr) sendAsync(component, messageNodeId, message);
+		Component* component = getComponent(componentName);
+		if (component != nullptr) sendAsync(*component, messageNodeId, message);
 		return;
 	}
 
 	void 
-	Component::send(Component::SPtr component, OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::send(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message)
 	{
-		if (component.get() != nullptr) component->send(messageNodeId, message);
+		component.send(messageNodeId, message);
 	}
 
 	void 
-	Component::sendAsync(Component::SPtr component, OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::sendAsync(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message)
 	{
-		if (component.get() != nullptr) component->sendAsync(messageNodeId, message);
+		component.sendAsync(messageNodeId, message);
 	}
 
 }

@@ -13,35 +13,37 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<Component> SPtr;
-		typedef std::map<std::string, Component::SPtr> ComponentMap;
+		typedef std::map<std::string, Component*> ComponentMap;
 
 		Component(void);
 		~Component(void);
 		
-		static Component::SPtr getComponent(const std::string& name);
+		static Component* getComponent(const std::string& componentName);
 
-		void ioService(IOService& ioService);
-		void name(const std::string& name);
-		std::string name(void);
+		void ioService(IOService* ioService);
+		IOService* ioService(void);
+		void componentName(const std::string& componentName);
+		std::string componentName(void);
 
 		virtual void receive(OpcUaNodeId& messageNodeId, Message::SPtr message) = 0;
 		void send(OpcUaNodeId& messageNodeId, Message::SPtr message);
 		void sendAsync(OpcUaNodeId& messageNodeId, Message::SPtr message);
 
-		Component::SPtr component(const std::string& name);
+		Component::SPtr component(const std::string& componentName);
 		void send(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message);
 		void sendAsync(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message);
-		void send(Component::SPtr component, OpcUaNodeId& messageNodeId, Message::SPtr message);
-		void sendAsync(Component::SPtr component, OpcUaNodeId& messageNodeId, Message::SPtr message);
+		void send(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message);
+		void sendAsync(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message);
 
 	  private:
 		static ComponentMap componentMap_;
 
-		static void addComponent(const std::string& name, Component::SPtr component);
-		static void removeComponent(const std::string& name);
-		static void removeComponent(Component::SPtr component);
+		static boost::mutex globalMutex_;
+		static void addComponent(const std::string& componentName, Component& component);
+		static void removeComponent(const std::string& componentName);
+		static void removeComponent(Component& component);
 
-		std::string name_;
+		std::string componentName_;
 		IOService* ioService_;
 		boost::mutex mutex_;
 	};

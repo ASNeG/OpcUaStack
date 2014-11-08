@@ -12,20 +12,20 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::session(Session::SPtr session)
+	AttributeService::componentSession(Component* componentSession)
 	{
-		session_ = session;
+		componentSession_ = componentSession;
 	}
 
 	void 
 	AttributeService::send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead)
 	{
-		serviceTransactionRead->serviceTransactionIfService(this); 
-		session_->send(serviceTransactionRead);
+		serviceTransactionRead->componentService(this); 
+		componentSession_->send(OpcUaNodeId(), serviceTransactionRead);
 	}
 
 	void 
-	AttributeService::receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	AttributeService::receive(OpcUaNodeId& typeId, Message::SPtr message)
 	{
 		std::cout << "attribute services received response...." << std::endl;
 	}

@@ -3,7 +3,6 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
@@ -14,16 +13,17 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT QueryService 
 	: public ServiceSetBase
-	, public ServiceTransactionIf
 	, public ObjectPool<QueryService>
 	{
 	  public:
+		typedef boost::shared_ptr<QueryService> SPtr;
+
 		QueryService(void);
 		~QueryService(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
 		void receiveQueryFirstRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);

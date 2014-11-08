@@ -14,16 +14,17 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT NodeManagementService 
 	: public ServiceSetBase
-	, public ServiceTransactionIf
 	, public ObjectPool<NodeManagementService>
 	{
 	  public:
+		typedef boost::shared_ptr<NodeManagementService> SPtr;
+
 		NodeManagementService(void);
 		~NodeManagementService(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
 		void receiveAddNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);

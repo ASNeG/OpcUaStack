@@ -3,14 +3,14 @@
 
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OPcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
 namespace OpcUaStackCore
 {
-	class ServiceTransactionIf;
 
-	class DLLEXPORT ServiceTransaction : public Object 
+	class DLLEXPORT ServiceTransaction : public Object, public Message 
 	{
 	  public:
 		typedef boost::shared_ptr<ServiceTransaction> SPtr;
@@ -32,10 +32,10 @@ namespace OpcUaStackCore
 		void responseHeader(ResponseHeader::SPtr responseHeader);
 		ResponseHeader::SPtr responseHeader(void);
 
-		ServiceTransactionIf* serviceTransactionIfService(void);
-		void serviceTransactionIfService(ServiceTransactionIf* serviceTransactionIfService);
-		ServiceTransactionIf* serviceTransactionIfSession(void);
-		void serviceTransactionIfSession(ServiceTransactionIf* serviceTransactionIfSession);
+		Component* componentService(void);
+		void componentService(Component* componentService);
+		Component* componentSession(void);
+		void componentSession(Component* componentSession);
 
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
@@ -63,8 +63,8 @@ namespace OpcUaStackCore
 		RequestHeader::SPtr requestHeader_;
 		ResponseHeader::SPtr responseHeader_;
 
-		ServiceTransactionIf* serviceTransactionIfService_;
-		ServiceTransactionIf* serviceTransactionIfSession_;
+		Component* componentService_;
+		Component* componentSession_;
 
 		OpcUaStatusCode statusCode_;
 	};

@@ -3,11 +3,11 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 
 using namespace OpcUaStackCore;
@@ -24,11 +24,13 @@ namespace OpcUaStackServer
 	} SessionState;
 
 
-	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>, public ServiceTransactionIf
+	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>, public Component
 	{
 	  public:
 		Session(void);
 		~Session(void);
+
+		typedef boost::shared_ptr<Session> SPtr;
 
 		void transactionManager(TransactionManager::SPtr transactionManager);
 
@@ -39,9 +41,9 @@ namespace OpcUaStackServer
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
-		// - ServiceTransactionIf ---------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		// - ServiceTransactionIf ---------------------------------------------
+		// - Component -------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		// - Component -------------------------------------------------------
 
 	  private:
 		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);

@@ -3,7 +3,6 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
@@ -14,16 +13,17 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT ViewService 
 	: public ServiceSetBase
-	, public ServiceTransactionIf
 	, public ObjectPool<ViewService>
 	{
 	  public:
+		typedef boost::shared_ptr<ViewService> SPtr;
+
 		ViewService(void);
 		~ViewService(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
 		void receiveBrowseRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);

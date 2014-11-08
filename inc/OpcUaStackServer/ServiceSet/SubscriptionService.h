@@ -3,7 +3,6 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionManager.h"
@@ -15,10 +14,10 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT SubscriptionService 
 	: public ServiceSetBase
-	, public ServiceTransactionIf
 	, public ObjectPool<SubscriptionService>
 	{
 	  public:
+		typedef boost::shared_ptr<SubscriptionService> SPtr;
 		typedef std::map<uint32_t, SubscriptionManager::SPtr> SubscriptionManagerMap;
 
 		SubscriptionService(void);
@@ -26,9 +25,9 @@ namespace OpcUaStackServer
 
 		bool init(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
 		void receiveCreateSubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);

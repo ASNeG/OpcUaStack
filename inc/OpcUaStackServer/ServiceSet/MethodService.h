@@ -3,7 +3,6 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
@@ -14,16 +13,17 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT MethodService 
 	: public ServiceSetBase
-	, public ServiceTransactionIf
 	, public ObjectPool<MethodService>
 	{
 	  public:
+		typedef boost::shared_ptr<MethodService> SPtr;
+
 		MethodService(void);
 		~MethodService(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
 		void receiveCallRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);

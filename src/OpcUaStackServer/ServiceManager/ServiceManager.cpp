@@ -13,6 +13,13 @@ namespace OpcUaStackServer
 	, subscriptionService_(SubscriptionService::construct())
 	, viewService_(ViewService::construct())
 	{
+		attributeService_->componentName("AttributeService");
+		methodService_->componentName("MethodService");
+		monitoredItemService_->componentName("MonitoredItemService");
+		nodeManagementService_->componentName("NodeManagementService");
+		queryService_->componentName("QueryService");
+		subscriptionService_->componentName("SubscriptionService");
+		viewService_->componentName("ViewService");
 	}
 
 	ServiceManager::~ServiceManager(void)
@@ -35,10 +42,10 @@ namespace OpcUaStackServer
 		ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead = ServiceTransactionHistoryRead::construct();
 		ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate = ServiceTransactionHistoryUpdate::construct();
 
-		serviceTransactionRead->serviceTransactionIfService(&*attributeService_);
-		serviceTransactionWrite->serviceTransactionIfService(&*attributeService_);
-		serviceTransactionHistoryRead->serviceTransactionIfService(&*attributeService_);
-		serviceTransactionHistoryUpdate->serviceTransactionIfService(&*attributeService_);
+		serviceTransactionRead->componentService(&*attributeService_);
+		serviceTransactionWrite->componentService(&*attributeService_);
+		serviceTransactionHistoryRead->componentService(&*attributeService_);
+		serviceTransactionHistoryUpdate->componentService(&*attributeService_);
 
 		transactionManager_->registerTransaction(serviceTransactionRead);
 		transactionManager_->registerTransaction(serviceTransactionWrite);
@@ -53,7 +60,7 @@ namespace OpcUaStackServer
 
 		ServiceTransactionCall::SPtr serviceTransactionCall = ServiceTransactionCall::construct();
 
-		serviceTransactionCall->serviceTransactionIfService(&*methodService_);
+		serviceTransactionCall->componentService(&*methodService_);
 
 		transactionManager_->registerTransaction(serviceTransactionCall);
 
@@ -74,11 +81,11 @@ namespace OpcUaStackServer
 		ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode = ServiceTransactionSetMonitoringMode::construct();
 		ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering = ServiceTransactionSetTriggering::construct();
 
-		serviceTransactionCreateMonitoredItems->serviceTransactionIfService(&*monitoredItemService_);
-		serviceTransactionDeleteMonitoredItems->serviceTransactionIfService(&*monitoredItemService_);
-		serviceTransactionModifyMonitoredItems->serviceTransactionIfService(&*monitoredItemService_);
-		serviceTransactionSetMonitoringMode->serviceTransactionIfService(&*monitoredItemService_);
-		serviceTransactionSetTriggering->serviceTransactionIfService(&*monitoredItemService_);
+		serviceTransactionCreateMonitoredItems->componentService(&*monitoredItemService_);
+		serviceTransactionDeleteMonitoredItems->componentService(&*monitoredItemService_);
+		serviceTransactionModifyMonitoredItems->componentService(&*monitoredItemService_);
+		serviceTransactionSetMonitoringMode->componentService(&*monitoredItemService_);
+		serviceTransactionSetTriggering->componentService(&*monitoredItemService_);
 
 		transactionManager_->registerTransaction(serviceTransactionCreateMonitoredItems);
 		transactionManager_->registerTransaction(serviceTransactionDeleteMonitoredItems);
@@ -100,10 +107,10 @@ namespace OpcUaStackServer
 		ServiceTransactionDeleteNodes::SPtr serviceTransactionDeleteNodes = ServiceTransactionDeleteNodes::construct();
 		ServiceTransactionDeleteReferences::SPtr serviceTransactionDeleteReferences = ServiceTransactionDeleteReferences::construct();
 
-		serviceTransactionAddNodes->serviceTransactionIfService(&*nodeManagementService_);
-		serviceTransactionAddReferences->serviceTransactionIfService(&*nodeManagementService_);
-		serviceTransactionDeleteNodes->serviceTransactionIfService(&*nodeManagementService_);
-		serviceTransactionDeleteReferences->serviceTransactionIfService(&*nodeManagementService_);
+		serviceTransactionAddNodes->componentService(&*nodeManagementService_);
+		serviceTransactionAddReferences->componentService(&*nodeManagementService_);
+		serviceTransactionDeleteNodes->componentService(&*nodeManagementService_);
+		serviceTransactionDeleteReferences->componentService(&*nodeManagementService_);
 
 		transactionManager_->registerTransaction(serviceTransactionAddNodes);
 		transactionManager_->registerTransaction(serviceTransactionAddReferences);
@@ -130,13 +137,13 @@ namespace OpcUaStackServer
 		ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode = ServiceTransactionSetPublishingMode::construct();
 		ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions = ServiceTransactionTransferSubscriptions::construct();
 
-		serviceTransactionCreateSubscription->serviceTransactionIfService(&*subscriptionService_);
-		serviceTransactionDeleteSubscriptions->serviceTransactionIfService(&*subscriptionService_);
-		serviceTransactionModifySubscription->serviceTransactionIfService(&*subscriptionService_);
-		serviceTransactionPublish->serviceTransactionIfService(&*subscriptionService_);
-		serviceTransactionRepublish->serviceTransactionIfService(&*subscriptionService_);
-		serviceTransactionSetPublishingMode->serviceTransactionIfService(&*subscriptionService_);
-		serviceTransactionTransferSubscriptions->serviceTransactionIfService(&*subscriptionService_);
+		serviceTransactionCreateSubscription->componentService(&*subscriptionService_);
+		serviceTransactionDeleteSubscriptions->componentService(&*subscriptionService_);
+		serviceTransactionModifySubscription->componentService(&*subscriptionService_);
+		serviceTransactionPublish->componentService(&*subscriptionService_);
+		serviceTransactionRepublish->componentService(&*subscriptionService_);
+		serviceTransactionSetPublishingMode->componentService(&*subscriptionService_);
+		serviceTransactionTransferSubscriptions->componentService(&*subscriptionService_);
 
 		transactionManager_->registerTransaction(serviceTransactionCreateSubscription);
 		transactionManager_->registerTransaction(serviceTransactionDeleteSubscriptions);
@@ -162,11 +169,11 @@ namespace OpcUaStackServer
 		ServiceTransactionRegisterNodes::SPtr serviceTransactionRegisterNodes = ServiceTransactionRegisterNodes::construct();
 		ServiceTransactionUnregisterNodes::SPtr serviceTransactionUnregisterNodes = ServiceTransactionUnregisterNodes::construct();
 
-		serviceTransactionBrowse->serviceTransactionIfService(&*viewService_);
-		serviceTransactionBrowseNext->serviceTransactionIfService(&*viewService_);
-		serviceTransactionTranslateBrowsePathsToNodeIds->serviceTransactionIfService(&*viewService_);
-		serviceTransactionRegisterNodes->serviceTransactionIfService(&*viewService_);
-		serviceTransactionUnregisterNodes->serviceTransactionIfService(&*viewService_);
+		serviceTransactionBrowse->componentService(&*viewService_);
+		serviceTransactionBrowseNext->componentService(&*viewService_);
+		serviceTransactionTranslateBrowsePathsToNodeIds->componentService(&*viewService_);
+		serviceTransactionRegisterNodes->componentService(&*viewService_);
+		serviceTransactionUnregisterNodes->componentService(&*viewService_);
 
 		transactionManager_->registerTransaction(serviceTransactionBrowse);
 		transactionManager_->registerTransaction(serviceTransactionBrowseNext);

@@ -43,7 +43,7 @@ namespace OpcUaStackClient
 		Session(IOService& ioService);
 		~Session(void);
 
-		bool registerService(OpcUaNodeId& typeId, ServiceTransactionIf* serviceTransactionIf);
+		bool registerService(OpcUaNodeId& typeId, Component* component);
 		bool deregisterService(OpcUaNodeId& typeId);
 
 		void createSession(void);
@@ -78,7 +78,7 @@ namespace OpcUaStackClient
 		PendingQueue pendingQueue_;
 		void pendingQueueTimeout(Object::SPtr object);
 
-		typedef std::map<OpcUaNodeId, ServiceTransactionIf*> ServiceSetMap;
+		typedef std::map<OpcUaNodeId, Component*> ServiceSetMap;
 		ServiceSetMap serviceSetMap_;
 	};
 

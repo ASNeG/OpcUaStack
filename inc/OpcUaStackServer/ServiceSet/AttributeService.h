@@ -14,16 +14,17 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT AttributeService 
 	: public ServiceSetBase
-	, public ServiceTransactionIf
 	, public ObjectPool<AttributeService>
 	{
 	  public:
+		typedef boost::shared_ptr<AttributeService> SPtr;
+
 		AttributeService(void);
 		~AttributeService(void);
 
-		//- ServiceTransactionIf ------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		//- ServiceTransactionIf ------------------------------------------------------
+		//- Component -----------------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	  private:
 		void receiveReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
