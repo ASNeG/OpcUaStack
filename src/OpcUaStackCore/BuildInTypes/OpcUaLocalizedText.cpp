@@ -78,6 +78,20 @@ namespace OpcUaStackCore
 		text_.copyTo(localizedText.text());
 	}
 
+	bool 
+	OpcUaLocalizedText::operator!=(const OpcUaLocalizedText& opcUaLocalizedText) const
+	{
+		return !operator==(opcUaLocalizedText);
+	}
+
+	bool 
+	OpcUaLocalizedText::operator==(const OpcUaLocalizedText& opcUaLocalizedText) const
+	{
+		return 
+			locale_ == const_cast<OpcUaLocalizedText*>(&opcUaLocalizedText)->locale() && 
+			text_ == const_cast<OpcUaLocalizedText*>(&opcUaLocalizedText)->text();
+	}
+
 	void 
 	OpcUaLocalizedText::out(std::ostream& os) const
 	{

@@ -27,6 +27,12 @@ namespace OpcUaStackServer
 		slotTimer_->startSlotTimerLoop(ioService);
 	}
 
+	void 
+	SubscriptionManager::informationModel(InformationModel::SPtr informationModel)
+	{
+		informationModel_ = informationModel;
+	}
+
 	void
 	SubscriptionManager::sessionId(uint32_t sessionId) 
 	{
@@ -46,6 +52,8 @@ namespace OpcUaStackServer
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
 
 		Subscription::SPtr subscription = Subscription::construct();
+		subscription->ioService(ioService_);
+		subscription->informationModel(informationModel_);
 		subscriptionMap_.insert(std::make_pair(subscription->subscriptionId(), subscription));
 
 		// calculate publishing interval

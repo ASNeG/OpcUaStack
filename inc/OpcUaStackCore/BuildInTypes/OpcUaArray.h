@@ -138,6 +138,7 @@ namespace OpcUaStackCore
 		void resize(uint32_t maxArrayLen);
 		uint32_t size(void);
 		uint32_t maxSize(void);
+		uint32_t freeSize();
 		void clear(void);
 
 		bool set(uint32_t pos, const T& value);
@@ -147,6 +148,8 @@ namespace OpcUaStackCore
 		bool get(T& value);
 
 		void copyTo(OpcUaArray<T, CODER>& array);
+		bool operator!=(OpcUaArray<T, CODER>& array);
+		bool operator==(OpcUaArray<T, CODER>& array);
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaArray<T,CODER>& array) {
@@ -232,6 +235,13 @@ namespace OpcUaStackCore
 	}
 
 	template<typename T, typename CODER>
+	uint32_t
+	OpcUaArray<T, CODER>::freeSize(void)
+	{
+		return maxArrayLen_ - actArrayLen_;
+	}
+
+	template<typename T, typename CODER>
 	void
 	OpcUaArray<T, CODER>::clear(void)
 	{
@@ -298,6 +308,27 @@ namespace OpcUaStackCore
 			CODER::copy(valueArray_[idx], destValue);
 			array.set(idx, destValue);
 		}
+	}
+
+	template<typename T, typename CODER>
+	bool 
+	OpcUaArray<T, CODER>::operator!=(OpcUaArray<T, CODER>& array)
+	{
+		return !operator==(array);
+	}
+
+	template<typename T, typename CODER>
+	bool 
+	OpcUaArray<T, CODER>::operator==(OpcUaArray<T, CODER>& array)
+	{
+		if (size() != array.size()) return false;
+		for (uint32_t pos = 0; pos < size();  pos++) {
+			typename T value1, value2;
+			get(pos, value1);
+			array.get(pos, value2);
+			if (value1 != value2) return false;
+		}
+		return true;
 	}
 
 	template<typename T, typename CODER>

@@ -9,6 +9,7 @@
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/Subscription.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 #include <set>
 
@@ -27,6 +28,7 @@ namespace OpcUaStackServer
 		~SubscriptionManager(void);
 
 		void ioService(IOService* ioService);
+		void informationModel(InformationModel::SPtr informationModel);
 		void sessionId(uint32_t sessionId);
 
 		OpcUaStatusCode receive(ServiceTransactionCreateSubscription::SPtr trx);
@@ -45,6 +47,7 @@ namespace OpcUaStackServer
 		void subscriptionPublishTimeout(Subscription::SPtr subscription);
 
 		IOService* ioService_;
+		InformationModel::SPtr informationModel_;
 		SubscriptionMap subscriptionMap_;
 		uint32_t sessionId_;
 

@@ -6,7 +6,6 @@ namespace OpcUaStackServer
 	bool 
 	AttributeAccess::copy(Attribute& attribute, OpcUaVariant& variant)
 	{
-		std::cout << "ATTRIBUTE ID=" << attribute.id() << std::endl;
 		switch (attribute.id())
 		{
 			case AttributeId_NodeId:
@@ -372,6 +371,172 @@ namespace OpcUaStackServer
 			return copy(attribute, *dataValue.variant());
 		}
 		return true;
+	}
+
+	bool 
+	AttributeAccess::trigger(OpcUaDataValue& dataValue, Attribute& attribute, DataChangeTrigger dataChangeTrigger)
+	{
+		if (attribute.id() == AttributeId_Value) {
+			ValueAttribute* valueAttribute = reinterpret_cast<ValueAttribute*>(&attribute);
+			return valueAttribute->data().trigger(dataValue, dataChangeTrigger);
+		}
+		
+		OpcUaVariant::SPtr variant = dataValue.variant();
+		switch (attribute.id())
+		{
+			case AttributeId_NodeId:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaNodeId) return true;
+				NodeIdAttribute* nodeIdAttribute = reinterpret_cast<NodeIdAttribute*>(&attribute);
+				OpcUaNodeId::SPtr nodeId = variant->variantSPtr<OpcUaNodeId>();
+				return *nodeId == nodeIdAttribute->data();
+			}
+			case AttributeId_NodeClass:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) return true;
+				NodeClassAttribute* nodeClassAttribute = reinterpret_cast<NodeClassAttribute*>(&attribute);
+				OpcUaUInt32 nodeClass = variant->variant<OpcUaUInt32>();
+				return nodeClass == nodeClassAttribute->data();
+			}
+			case AttributeId_BrowseName:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaQualifiedName) return true;
+				BrowseNameAttribute* browseNameAttribute = reinterpret_cast<BrowseNameAttribute*>(&attribute);
+				OpcUaQualifiedName::SPtr browseName = variant->variantSPtr<OpcUaQualifiedName>();
+				return *browseName == browseNameAttribute->data();
+			}
+			case AttributeId_DisplayName:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaLocalizedText) return true;
+				DisplayNameAttribute* displayNameAttribute = reinterpret_cast<DisplayNameAttribute*>(&attribute);
+				OpcUaLocalizedText::SPtr displayName = variant->variantSPtr<OpcUaLocalizedText>();
+				return *displayName == displayNameAttribute->data();
+			}
+			case AttributeId_Description:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaLocalizedText) return true;
+				DescriptionAttribute* descriptionAttribute = reinterpret_cast<DescriptionAttribute*>(&attribute);
+				OpcUaLocalizedText::SPtr description = variant->variantSPtr<OpcUaLocalizedText>();
+				return *description == descriptionAttribute->data();
+			}
+			case AttributeId_WriteMask:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) return true;
+				WriteMaskAttribute* writeMaskAttribute = reinterpret_cast<WriteMaskAttribute*>(&attribute);
+				OpcUaUInt32 writeMask = variant->variant<OpcUaUInt32>();
+				return writeMask == writeMaskAttribute->data();
+			}
+			case AttributeId_UserWriteMask:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) return true;
+				UserWriteMaskAttribute* userWriteMaskAttribute = reinterpret_cast<UserWriteMaskAttribute*>(&attribute);
+				OpcUaUInt32 userWriteMask = variant->variant<OpcUaUInt32>();
+				return userWriteMask == userWriteMaskAttribute->data();
+			}
+			case AttributeId_IsAbstract:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) return true;
+				IsAbstractAttribute* isAbstractAttribute = reinterpret_cast<IsAbstractAttribute*>(&attribute);
+				OpcUaBoolean isAbstract = variant->variant<OpcUaBoolean>();
+				return isAbstract == isAbstractAttribute->data();
+			}
+			case AttributeId_Symmetric:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) return true;
+				SymmetricAttribute* symmetricAttribute = reinterpret_cast<SymmetricAttribute*>(&attribute);
+				OpcUaBoolean symmetric = variant->variant<OpcUaBoolean>();
+				return symmetric == symmetricAttribute->data();
+			}
+			case AttributeId_InverseName:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaLocalizedText) return true;
+				InverseNameAttribute* inverseNameAttribute = reinterpret_cast<InverseNameAttribute*>(&attribute);
+				OpcUaLocalizedText::SPtr inverseName = variant->variantSPtr<OpcUaLocalizedText>();
+				return *inverseName == inverseNameAttribute->data();
+			}
+			case AttributeId_ContainsNoLoops:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) return true;
+				ContainsNoLoopsAttribute* containsNoLoopsAttribute = reinterpret_cast<ContainsNoLoopsAttribute*>(&attribute);
+				OpcUaBoolean containsNoLoops = variant->variant<OpcUaBoolean>();
+				return containsNoLoops == containsNoLoopsAttribute->data();
+			}
+			case AttributeId_EventNotifier:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaByte) return true;
+				EventNotifierAttribute* eventNotifierAttribute = reinterpret_cast<EventNotifierAttribute*>(&attribute);
+				OpcUaByte eventNotifier = variant->variant<OpcUaByte>();
+				return eventNotifier == eventNotifierAttribute->data();
+			}
+			case AttributeId_DataType:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaNodeId) return true;
+ 				DataTypeAttribute* dataTypeAttribute = reinterpret_cast<DataTypeAttribute*>(&attribute);
+				OpcUaNodeId::SPtr dataType = variant->variantSPtr<OpcUaNodeId>();
+				return *dataType == dataTypeAttribute->data();
+			}
+			case AttributeId_ValueRank:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) return true;
+				ValueRankAttribute* valueRankAttribute = reinterpret_cast<ValueRankAttribute*>(&attribute);
+				OpcUaUInt32 valueRank = variant->variant<OpcUaUInt32>();
+				return valueRank == valueRankAttribute->data();
+			}
+			case AttributeId_ArrayDimensions:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) return true;
+				ArrayDimensionsAttribute* arrayDimensionsAttribute = reinterpret_cast<ArrayDimensionsAttribute*>(&attribute);
+				OpcUaUInt32Array::SPtr arrayDimensions = variant->variantSPtr<OpcUaUInt32Array>();
+				return *arrayDimensions == arrayDimensionsAttribute->data();
+				return true;
+			}
+			case AttributeId_AccessLevel:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaByte) return true;
+				AccessLevelAttribute* accessLevelAttribute = reinterpret_cast<AccessLevelAttribute*>(&attribute);
+				OpcUaByte accessLevel = variant->variant<OpcUaByte>();
+				return accessLevel == accessLevelAttribute->data();
+	 		}
+			case AttributeId_UserAccessLevel:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaByte) return true;
+				UserAccessLevelAttribute* userAccessLevelAttribute = reinterpret_cast<UserAccessLevelAttribute*>(&attribute);
+				OpcUaByte userAccessLevel = variant->variant<OpcUaByte>();
+				return userAccessLevel == userAccessLevelAttribute->data();
+			}
+			case AttributeId_MinimumSamplingInterval:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaDouble) return true;
+				MinimumSamplingIntervalAttribute* minimumSamplingIntervalAttribute = reinterpret_cast<MinimumSamplingIntervalAttribute*>(&attribute);
+				OpcUaDouble minimumSamplingInterval = variant->variant<OpcUaDouble>();
+				return minimumSamplingInterval == minimumSamplingIntervalAttribute->data();
+			}
+			case AttributeId_Historizing:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) return true;
+				HistorizingAttribute* historizingAttribute = reinterpret_cast<HistorizingAttribute*>(&attribute);
+				OpcUaBoolean historizing = variant->variant<OpcUaBoolean>();
+				return historizing == historizingAttribute->data();
+			}
+			case AttributeId_Executable:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) return true;
+				ExecutableAttribute* executableAttribute = reinterpret_cast<ExecutableAttribute*>(&attribute);
+				OpcUaBoolean executable = variant->variant<OpcUaBoolean>();
+				return executable == executableAttribute->data();
+			}
+			case AttributeId_UserExecutable:
+			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) return true;
+				UserExecutableAttribute* userExecutableAttribute = reinterpret_cast<UserExecutableAttribute*>(&attribute);
+				OpcUaBoolean userExecutable = variant->variant<OpcUaBoolean>();
+				return userExecutable == userExecutableAttribute->data();
+			}
+			default:
+			{
+				return false;
+			}
+		}
 	}
 
 }

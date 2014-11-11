@@ -52,6 +52,7 @@ namespace OpcUaStackCore
 		std::string toString(void) const;
 
 		void copyTo(OpcUaNodeIdBase& opcUaNodeIdBase);
+		bool operator!=(const OpcUaNodeIdBase& opcUaNodeId) const;
 		bool operator==(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 		bool operator<(const OpcUaNodeIdBase& opcUaNodeIdBase) const;
 

@@ -132,6 +132,21 @@ namespace OpcUaStackCore
 		return false;
 	}
 
+	bool 
+	OpcUaGuid::operator!=(const OpcUaGuid& opcUaGuid) const
+	{
+		return !operator==(opcUaGuid);
+	}
+	
+	bool 
+	OpcUaGuid::operator==(const OpcUaGuid& opcUaGuid) const
+	{
+		if (data1_ != opcUaGuid.data1()) return false;
+		if (data2_ != opcUaGuid.data2()) return false;
+		if (data3_ != opcUaGuid.data3()) return false;
+		return (strncmp((char*)data4_, (char*)opcUaGuid.data4(), 8) == 0);
+	}
+
 	void 
 	OpcUaGuid::opcUaBinaryEncode(std::ostream& os) const
 	{

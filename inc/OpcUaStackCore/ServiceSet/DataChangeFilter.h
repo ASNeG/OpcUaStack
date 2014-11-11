@@ -10,12 +10,6 @@
 namespace OpcUaStackCore
 {
 
-	typedef enum {
-		DataChangeTrigger_Status = 0,
-		DataChangeTrigger_Status_Value = 1,
-		DataChangeTrigger_Status_Value_Timestamp = 2
-	} DataChangeTrigger;
-
 	class DLLEXPORT DataChangeFilter : public  ObjectPool<DataChangeFilter>, public ExtensibleParameterBase
 	{
 	  public:

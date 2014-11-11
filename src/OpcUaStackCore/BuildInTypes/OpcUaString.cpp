@@ -84,6 +84,20 @@ namespace OpcUaStackCore
 		return value_  < opcUaString.value();
 	}
 
+	bool 
+	OpcUaString::operator!=(const OpcUaString& opcUaString) const
+	{
+		return !operator==(opcUaString);	
+	}
+	
+	bool 
+	OpcUaString::operator==(const OpcUaString& opcUaString) const
+	{
+		if (exist() != opcUaString.exist()) return false;
+		if (!exist() && !opcUaString.exist()) return true;
+		return value_ == opcUaString.value();
+	}
+
 	void 
 	OpcUaString::out(std::ostream& os) const
 	{

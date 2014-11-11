@@ -28,6 +28,9 @@ namespace OpcUaStackServer
 
 		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionDeleteMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
+		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
 
 	  private:
 		void sampleTimeout(MonitorItem::SPtr monitorItem);

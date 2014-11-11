@@ -96,6 +96,7 @@ namespace OpcUaStackServer
 		if (it == subscriptionManagerMap_.end()) {
 			subscriptionManager = SubscriptionManager::construct();
 			subscriptionManager->ioService(ioService());
+			subscriptionManager->informationModel(informationModel_);
 			subscriptionManager->sessionId(trx->sessionId());
 			subscriptionManagerMap_.insert(std::make_pair(trx->sessionId(), subscriptionManager));
 		}

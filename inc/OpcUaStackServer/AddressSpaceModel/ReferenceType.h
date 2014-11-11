@@ -11,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	typedef std::set<OpcUaNodeId::SPtr, OpcUaNodeSPtrCompare> ReferenceTypeNodeIdSet;
+	typedef std::set<OpcUaNodeId::SPtr, OpcUaNodeSPtrLess> ReferenceTypeNodeIdSet;
 
 	typedef enum {
 		ReferenceType_Unknown,

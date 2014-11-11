@@ -31,6 +31,8 @@ namespace OpcUaStackCore
 			value.out(os);
 			return os;
 		}
+		bool operator!=(const OpcUaLocalizedText& opcUaLocalizedText) const;
+		bool operator==(const OpcUaLocalizedText& opcUaLocalizedText) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

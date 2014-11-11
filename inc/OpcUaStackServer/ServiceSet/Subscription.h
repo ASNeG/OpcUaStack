@@ -8,6 +8,8 @@
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/MonitorManager.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include <map>
 
 using namespace OpcUaStackCore;
@@ -34,6 +36,8 @@ namespace OpcUaStackServer
 		void publishingInterval(double publishingInterval);	
 		void lifetimeCount(uint32_t lifetimeCount);
 		void maxKeepAliveCount(uint32_t maxKeepAliveCount);
+		void ioService(IOService* ioService);
+		void informationModel(InformationModel::SPtr informationModel);
 
 		void retransmissionQueue(SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement);
 		void retransmissionQueue(PublishResponse::SPtr publishResponse);
@@ -67,6 +71,9 @@ namespace OpcUaStackServer
 		uint32_t actMaxKeepAliveCount_;
 		SlotTimerElement::SPtr slotTimerElement_;
 		RetransmissionQueue retransmissionQueue_;
+
+		IOService* ioService_;
+		MonitorManager monitorManager_;
 	};
 
 	typedef std::map<uint32_t, Subscription::SPtr> SubscriptionMap;

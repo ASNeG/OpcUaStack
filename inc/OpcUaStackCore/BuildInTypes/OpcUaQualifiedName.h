@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 		operator OpcUaUInt16 const (void);
 
 		void copyTo(OpcUaQualifiedName& qualifiedName);
+		bool operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const;
+		bool operator==(const OpcUaQualifiedName& opcUaQualifiedName) const;
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaQualifiedName& value) {

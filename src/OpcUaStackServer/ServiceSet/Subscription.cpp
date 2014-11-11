@@ -28,6 +28,7 @@ namespace OpcUaStackServer
 	: subscriptionId_(uniqueSubscriptionId())
 	, slotTimerElement_(SlotTimerElement::construct())
 	, retransmissionQueue_()
+	, monitorManager_()
 	{
 	}
 
@@ -66,6 +67,19 @@ namespace OpcUaStackServer
 	{
 		maxKeepAliveCount_ = maxKeepAliveCount;
 		actMaxKeepAliveCount_  = maxKeepAliveCount;
+	}
+
+	void 
+	Subscription::ioService(IOService* ioService)
+	{
+		ioService_ = ioService;
+		monitorManager_.ioService(ioService);
+	}
+
+	void 
+	Subscription::informationModel(InformationModel::SPtr informationModel)
+	{
+		monitorManager_.informationModel(informationModel);
 	}
 		
 	uint32_t 
@@ -145,31 +159,31 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionCreateMonitoredItems::SPtr trx)
 	{
-		return BadNotImplemented;
+		return monitorManager_.receive(trx);
 	}
 
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
 	{
-		return BadNotImplemented;
+		return monitorManager_.receive(trx);
 	}
 
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionModifyMonitoredItems::SPtr trx)
 	{
-		return BadNotImplemented;
+		return monitorManager_.receive(trx);
 	}
 
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionSetMonitoringMode::SPtr trx)
 	{
-		return BadNotImplemented;
+		return monitorManager_.receive(trx);
 	}
 
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionSetTriggering::SPtr trx)
 	{
-		return BadNotImplemented;
+		return monitorManager_.receive(trx);
 	}
 
 }

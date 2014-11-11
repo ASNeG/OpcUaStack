@@ -20,6 +20,8 @@ namespace OpcUaStackCore
 		OpcUaByteString& body(void);
 
 		void copyTo(OpcUaExtensionObject& extensionObject);
+		bool operator!=(const OpcUaExtensionObject& extensionObject) const;
+		bool operator==(const OpcUaExtensionObject& extensionObject) const;
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaExtensionObject& value) {

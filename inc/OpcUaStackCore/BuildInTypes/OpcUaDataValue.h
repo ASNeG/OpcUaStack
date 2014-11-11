@@ -11,6 +11,12 @@
 namespace OpcUaStackCore
 {
 
+	typedef enum {
+		DataChangeTrigger_Status = 0,
+		DataChangeTrigger_Status_Value = 1,
+		DataChangeTrigger_Status_Value_Timestamp = 2
+	} DataChangeTrigger;
+
 	class DLLEXPORT OpcUaDataValue : public ObjectPool<OpcUaDataValue>
 	{
 	  public:
@@ -31,6 +37,8 @@ namespace OpcUaStackCore
 		void reset(void);
 
 		void copyTo(OpcUaDataValue& dataValue);
+		bool trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);
+		bool trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaDataValue& value) {

@@ -125,6 +125,28 @@ namespace OpcUaStackCore
 		return false;
 	}
 
+	bool 
+	OpcUaByteString::operator!=(const OpcUaByteString& opcUaByteString) const
+	{
+		return !operator==(opcUaByteString);
+	}
+
+	bool 
+	OpcUaByteString::operator==(const OpcUaByteString& opcUaByteString) const
+	{
+		if (exist() != opcUaByteString.exist()) return false;
+		if (!exist() && !opcUaByteString.exist()) return true;
+
+		if (size() != opcUaByteString.size()) return false;
+		if (size() == 0 && opcUaByteString.size() == 0) return true;
+
+		OpcUaByte* buf;
+		OpcUaInt32 bufLen;
+		opcUaByteString.value(&buf, &bufLen);
+
+		return (strncmp((char*)value_, (char*)buf, bufLen) == 0);
+	}
+
 	void 
 	OpcUaByteString::out(std::ostream& os) const
 	{

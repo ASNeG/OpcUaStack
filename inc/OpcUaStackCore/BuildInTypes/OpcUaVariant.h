@@ -99,6 +99,9 @@ namespace OpcUaStackCore
 			  return os;
 		  }
 
+		  bool operator!=(OpcUaVariantValue& variantValue);
+		  bool operator==(OpcUaVariantValue& variantValue);
+
 		  void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
 		  void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
 
@@ -146,6 +149,9 @@ namespace OpcUaStackCore
 		  }
 
 		void copyTo(OpcUaVariant& variant);
+
+		bool operator==(OpcUaVariant& variant);
+		bool operator!=(OpcUaVariant& variant);
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaVariant& value) {

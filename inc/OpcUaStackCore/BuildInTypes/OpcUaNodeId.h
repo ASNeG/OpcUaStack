@@ -16,7 +16,7 @@ namespace OpcUaStackCore
 		virtual ~OpcUaNodeId(void);
 	};
 
-	class OpcUaNodeSPtrCompare
+	class OpcUaNodeSPtrLess
 	{
 	  public:
 		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) {

@@ -92,7 +92,7 @@ namespace OpcUaStackServer
 
 			// start sample timer
 			SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
-			slotTimerElement->interval((uint32_t)monitorItem->samplingInterval());
+			slotTimerElement->interval(monitorItem->samplingInterval());
 			slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
 			slotTimer_->start(slotTimerElement);
 
@@ -140,6 +140,24 @@ namespace OpcUaStackServer
 		}
 
 		return Success;
+	}
+
+	OpcUaStatusCode 
+	MonitorManager::receive(ServiceTransactionModifyMonitoredItems::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
+	OpcUaStatusCode 
+	MonitorManager::receive(ServiceTransactionSetMonitoringMode::SPtr trx)
+	{
+		return BadNotImplemented;
+	}
+
+	OpcUaStatusCode 
+	MonitorManager::receive(ServiceTransactionSetTriggering::SPtr trx)
+	{
+		return BadNotImplemented;
 	}
 
 	void 

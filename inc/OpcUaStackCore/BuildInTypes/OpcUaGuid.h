@@ -31,6 +31,9 @@ namespace OpcUaStackCore
 		void copyTo(OpcUaGuid& opcUaGuid);
 		bool operator<(const OpcUaGuid& opcUaGuid) const;
 
+		bool operator!=(const OpcUaGuid& opcUaGuid) const;
+		bool operator==(const OpcUaGuid& opcUaGuid) const;
+
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaGuid& value) {
 			value.out(os);

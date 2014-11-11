@@ -26,6 +26,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 serverIndex(void); 
 
 		void copyTo(OpcUaExpandedNodeId& opcUaExpandedNodeId);
+		bool operator!=(const OpcUaExpandedNodeId& opcUaExpandedNodeId) const;
+		bool operator==(const OpcUaExpandedNodeId& opcUaExpandedNodeId) const;
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaExpandedNodeId& value) {

@@ -94,6 +94,33 @@ namespace OpcUaStackCore
 		return serverPicoseconds_;
 	}
 
+	bool 
+	OpcUaDataValue::trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger)
+	{
+		return trigger(*dataValue, dataChangeTrigger);
+	}
+
+	bool 
+	OpcUaDataValue::trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger)
+	{
+		switch (dataChangeTrigger) 
+		{
+			case DataChangeTrigger_Status_Value_Timestamp:
+			{
+				if (dataValue.sourceTimestamp() != sourceTimestamp()) return true;
+			}
+			case DataChangeTrigger_Status_Value:
+			{
+				if (*dataValue.variant() != *variant()) return true;
+			}
+			case DataChangeTrigger_Status:
+			{
+				if (dataValue.statusCode() != statusCode()) return true;
+			}
+		}
+		return false;
+	}
+
 	void 
 	OpcUaDataValue::reset(void)
 	{

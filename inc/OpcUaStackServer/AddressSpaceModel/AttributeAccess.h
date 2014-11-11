@@ -14,6 +14,8 @@ namespace OpcUaStackServer
 		static bool copy(OpcUaVariant& variant, Attribute& attribute);
 		static bool copy(Attribute& attribute, OpcUaDataValue& dataValue);
 		static bool copy(OpcUaDataValue& dataValue, Attribute& attribute);
+
+		static bool trigger(OpcUaDataValue& dataValue, Attribute& attribute, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);
 	};
 
 }

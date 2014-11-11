@@ -96,6 +96,20 @@ namespace OpcUaStackCore
 		name_.copyTo(qualifiedName.name());
 	}
 
+	bool 
+	OpcUaQualifiedName::operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const
+	{
+		return operator==(opcUaQualifiedName);
+	}
+
+	bool 
+	OpcUaQualifiedName::operator==(const OpcUaQualifiedName& opcUaQualifiedName) const
+	{
+		return 
+			namespaceIndex_ == const_cast<OpcUaQualifiedName*>(&opcUaQualifiedName)->namespaceIndex() && 
+			name_ == const_cast<OpcUaQualifiedName*>(&opcUaQualifiedName)->name();
+	}
+
 	void 
 	OpcUaQualifiedName::out(std::ostream& os) const
 	{

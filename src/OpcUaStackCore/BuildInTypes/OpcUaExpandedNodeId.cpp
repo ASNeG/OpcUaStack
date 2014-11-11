@@ -85,6 +85,20 @@ namespace OpcUaStackCore
 		if (namespaceUri_.size() > 0) opcUaExpandedNodeId.namespaceUri(namespaceUri_);
 		if (serverIndex_ != 0) opcUaExpandedNodeId.serverIndex(serverIndex_);
 	}
+	bool 
+	OpcUaExpandedNodeId::operator!=(const OpcUaExpandedNodeId& opcUaExpandedNodeId) const
+	{
+		return !operator==(opcUaExpandedNodeId);
+	}
+
+	bool 
+	OpcUaExpandedNodeId::operator==(const OpcUaExpandedNodeId& opcUaExpandedNodeId) const
+	{
+		return
+			namespaceUri_ == const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->namespaceUri() &&
+			serverIndex_ == const_cast<OpcUaExpandedNodeId*>(&opcUaExpandedNodeId)->serverIndex() &&
+			OpcUaNodeIdBase::operator==(opcUaExpandedNodeId);
+	}
 
 	void 
 	OpcUaExpandedNodeId::opcUaBinaryEncode(std::ostream& os) const

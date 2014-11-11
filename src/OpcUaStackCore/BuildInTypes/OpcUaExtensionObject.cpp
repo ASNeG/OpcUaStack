@@ -58,6 +58,20 @@ namespace OpcUaStackCore
 		// FIXME: todo...
 	}
 
+	bool 
+	OpcUaExtensionObject::operator!=(const OpcUaExtensionObject& extensionObject) const
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool 
+	OpcUaExtensionObject::operator==(const OpcUaExtensionObject& extensionObject) const
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	void 
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
