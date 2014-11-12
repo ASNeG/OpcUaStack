@@ -166,7 +166,14 @@ namespace OpcUaStackServer
 	void 
 	MonitorItem::monitorItemListPushBack(MonitoredItemNotification::SPtr monitoredItemNotification)
 	{
-		if (monitorItemList_.size() >= queSize_) return;
+		uint32_t actQueueSize = monitorItemList_.size();
+
+		Log(Trace, "monitor item sample")
+			.parameter("MonitorItemId", monitorItemId_)
+			.parameter("ActQueueSize", actQueueSize)
+			.parameter("MaxQueueSize", queSize_);
+		
+		if (actQueueSize >= queSize_) return;
 		monitoredItemNotification->clientHandle(clientHandle_);
 		monitorItemList_.push_back(monitoredItemNotification);
 	}

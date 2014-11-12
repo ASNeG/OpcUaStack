@@ -14,7 +14,8 @@ namespace OpcUaStackCore
 		Error,
 		Warning,
 		Info,
-		Debug
+		Debug,
+		Trace
 	} LogLevel;
 
 	class LogIf

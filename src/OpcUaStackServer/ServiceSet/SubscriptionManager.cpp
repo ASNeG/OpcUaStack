@@ -71,8 +71,6 @@ namespace OpcUaStackServer
 		if (maxKeepAliveCount < minMaxKeepAliveCount_) maxKeepAliveCount = minMaxKeepAliveCount_;
 		subscription->maxKeepAliveCount(maxKeepAliveCount);
 
-		std::cout << "XXXXXXXXXXXXXXXXXXX " << lifetimeCount << " " << maxKeepAliveCount << std::endl;
-
 		// start subscription timer
 		SlotTimerElement::SPtr slotTimerElement = subscription->slotTimerElement();
 		slotTimerElement->interval((uint32_t)publishingInterval);
@@ -127,8 +125,6 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionManager::subscriptionPublishTimeout(Subscription::SPtr subscription)
 	{
-		std::cout << "subscription timeout... " << subscription->subscriptionId()  << std::endl;
-
 		ServiceTransactionPublish::SPtr trx;
 		if (serviceTransactionPublishList_.size() != 0) {
 		    trx = serviceTransactionPublishList_.front();

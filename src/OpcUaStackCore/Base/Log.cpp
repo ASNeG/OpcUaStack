@@ -67,6 +67,7 @@ namespace OpcUaStackCore
 			case Warning:	return "WRN";
 			case Info:		return "INF";
 			case Debug:		return "DBG";
+			case Trace:		return "TRC";
 			default:		return "UKN";
 		}
 		return "";

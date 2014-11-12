@@ -117,13 +117,12 @@ namespace OpcUaStackServer
 			slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
 			slotTimer_->start(slotTimerElement);
 
-			Log(Debug, "create monitor item")
+			Log(Debug, "monitor item create")
+				.parameter("MonitorId", monitorItem->monitorItemId())
 				.parameter("Trx", trx->transactionId())
-				.parameter("NodeId", monitoredItemCreateRequest->itemToMonitor().nodeId())
 				.parameter("SessionId", trx->sessionId())
-				.parameter("Subscription", createMonitorItemRequest->subscriptionId())
-				.parameter("MonitorId", monitorItem->monitorItemId());
-
+				.parameter("NodeId", monitoredItemCreateRequest->itemToMonitor().nodeId())
+				.parameter("Subscription", createMonitorItemRequest->subscriptionId());
 		}
 		return Success;
 	}
@@ -153,6 +152,12 @@ namespace OpcUaStackServer
 				deleteMonitorItemResponse->results()->set(idx, Success);
 				continue;
 			}
+
+			Log(Trace, "monitor item remove")
+				.parameter("MonitorId", it->second->monitorItemId())
+				.parameter("Trx", trx->transactionId())
+				.parameter("SessionId", trx->sessionId())
+				.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
 
 			// stop sample timer an remove monitor item#
 			slotTimer_->stop(it->second->slotTimerElement());
@@ -191,7 +196,7 @@ namespace OpcUaStackServer
 				// nothing to do
 				break;
 			case NodeNoLongerExist:
-				Log(Debug, "monitor item no longer exist")
+				Log(Trace, "monitor item no longer exist")
 					.parameter("MonitorId", monitorItem->monitorItemId());
 
 				slotTimer_->stop(monitorItem->slotTimerElement());
@@ -213,7 +218,7 @@ namespace OpcUaStackServer
 
 		monitoredItemNotificationArray->resize(numberNotifications);
 		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
-			OpcUaStatusCode statusCode = receive(monitoredItemNotificationArray);
+			OpcUaStatusCode statusCode = it->second->receive(monitoredItemNotificationArray);
 			if (statusCode == BadOutOfMemory) return statusCode;
 		}
 

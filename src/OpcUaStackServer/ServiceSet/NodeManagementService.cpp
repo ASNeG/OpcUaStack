@@ -39,7 +39,14 @@ namespace OpcUaStackServer
 	void 
 	NodeManagementService::receiveAddNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
+#if 0
+		ServiceTransactionAddNodes::SPtr trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
+		AddNodesRequest::SPtr addNodesRequest = trx->request();
+		AddNodesResponse::SPtr addNodesResponse = trx->response();
+
+		addNodesRequest->
+#endif
+
 		serviceTransaction->statusCode(BadInternalError);
 		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
 	}

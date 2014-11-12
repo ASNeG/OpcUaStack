@@ -26,6 +26,7 @@ namespace OpcUaStackCore
 			case Warning: logLevelString = "WRN"; break;
 			case Info: logLevelString = "INF"; break;
 			case Debug: logLevelString = "DBG"; break;
+			case Trace: logLevelString = "TRC"; break;
 		}
 
 		if (isOpen_) {
