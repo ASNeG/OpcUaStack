@@ -1,4 +1,5 @@
 #include "OpcUaStackServer/ServiceSet/Subscription.h"
+#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 
 namespace OpcUaStackServer
 {
@@ -104,10 +105,27 @@ namespace OpcUaStackServer
 			return NothingTodo;
 		}
 
-		// FIXME: todo
-
 		// check lifetime counter
 		actLifetimeCount_ = lifetimeCount_;
+
+		ExtensibleParameter::SPtr extensibleParameter = ExtensibleParameter::construct();
+		extensibleParameter->parameterTypeId().nodeId(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
+		DataChangeNotification::SPtr dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
+		
+		OpcUaStatusCode statusCode = monitorManager_.receive(dataChangeNotification->monitoredItems());
+		if (dataChangeNotification->monitoredItems()->size() > 0) {
+			actMaxKeepAliveCount_ = maxKeepAliveCount_;
+
+			PublishResponse::SPtr publishResponse = trx->response();
+			publishResponse->notificationMessage()->notificationData()->set(0, extensibleParameter);
+			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
+			publishResponse->notificationMessage()->sequenceNumber(sequenceNumber());
+			publishResponse->subscriptionId(subscriptionId_);
+			publishResponse->moreNotifications(false);
+
+			if (statusCode == BadOutOfMemory) return NeedAttention;
+			return SendPublish;
+		}
 
 		// check keepalive counter
 		actMaxKeepAliveCount_--;

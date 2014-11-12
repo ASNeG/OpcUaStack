@@ -61,6 +61,12 @@ namespace OpcUaStackServer
 		return monitoredItemCreateRequest_;
 	}
 
+	uint32_t 
+	MonitorItem::size(void)
+	{
+		return monitorItemList_.size();
+	}
+
 	OpcUaStatusCode 
 	MonitorItem::receive(BaseNodeClass::SPtr baseNodeClass, MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest)
 	{
@@ -114,9 +120,8 @@ namespace OpcUaStackServer
 			if (freeSize == 0) return BadOutOfMemory;
 			freeSize--;
 
-			MonitoredItemNotification::SPtr monitoredItemNotification = MonitoredItemNotification::construct();
-			monitoredItemNotification->clientHandle(clientHandle_);
-			monitoredItemNotificationArray->push_back(monitoredItemNotification);
+			monitoredItemNotificationArray->push_back(monitorItemList_.front());
+			monitorItemList_.pop_front();
 		} while (true);
 
 		return Success;

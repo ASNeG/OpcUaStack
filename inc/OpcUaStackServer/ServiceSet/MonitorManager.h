@@ -7,6 +7,7 @@
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/ServiceSet/MonitoredItemNotification.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItem.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
@@ -25,12 +26,15 @@ namespace OpcUaStackServer
 		void subscriptionId(uint32_t subscriptionId);
 		uint32_t subscriptionId(void);
 		void informationModel(InformationModel::SPtr informationModel);
+		uint32_t noticicationNumber(void);
+		bool notificationAvailable(void);
 
 		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionDeleteMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
+		OpcUaStatusCode receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray);
 
 	  private:
 		void sampleTimeout(MonitorItem::SPtr monitorItem);

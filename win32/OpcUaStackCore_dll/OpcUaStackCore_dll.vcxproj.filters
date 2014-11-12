@@ -792,6 +792,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Component\Message.h">
       <Filter>src\Component</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Core\FileLogger.h">
+      <Filter>src\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1453,6 +1456,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Component\Component.cpp">
       <Filter>src\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Core\FileLogger.cpp">
+      <Filter>src\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

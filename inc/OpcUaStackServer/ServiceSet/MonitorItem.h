@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 		uint32_t monitorItemId(void);
 		uint32_t samplingInterval(void);
 		uint32_t queSize(void);
+		uint32_t size(void);
 
 		SlotTimerElement::SPtr slotTimerElement(void);
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest(void);

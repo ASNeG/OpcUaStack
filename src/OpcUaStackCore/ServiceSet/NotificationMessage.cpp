@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 		publishTime_.dateTime(time);
 	}
 
-	UtcTime
+	UtcTime&
 	NotificationMessage::publishTime(void)
 	{
 		return publishTime_;

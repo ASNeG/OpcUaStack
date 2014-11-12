@@ -12,6 +12,7 @@ namespace OpcUaServer
 	: configurationFile_("")
 	, config_(nullptr)
 	, server_()
+	, fileLogger_()
 	{
 	}
 
@@ -82,6 +83,7 @@ namespace OpcUaServer
 	bool
 	Server::initLogging(void)
 	{
+		OpcUaStackCore::Log::logIf(&fileLogger_);
 		return true;
 	}
 

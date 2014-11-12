@@ -8,9 +8,6 @@
     <Filter Include="src\server">
       <UniqueIdentifier>{489ce7e6-a65e-4f17-a192-724c7a6e0931}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ServerStack">
-      <UniqueIdentifier>{b25c0fbd-d205-4297-b872-048e21d48bd1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\ClientStack">
       <UniqueIdentifier>{129d7c46-82b0-4d07-9619-905d0d793ead}</UniqueIdentifier>
     </Filter>
@@ -22,16 +19,10 @@
     <ClCompile Include="..\..\src\OpcUaServer\Server\Server.cpp">
       <Filter>src\server</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaServer\ServerStack\ServerStack.cpp">
-      <Filter>src\ServerStack</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaServer\Server\Server.h">
       <Filter>src\server</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaServer\ServerStack\ServerStack.h">
-      <Filter>src\ServerStack</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 
 namespace OpcUaStackCore
 {
@@ -48,6 +49,7 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
+		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 	}
 
 	void
@@ -57,6 +59,7 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 	}
 
 }

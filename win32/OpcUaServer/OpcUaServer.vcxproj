@@ -11,12 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\OpcUaServer\ServerStack\ServerStack.cpp" />
     <ClCompile Include="..\..\src\OpcUaServer\Server\Server.cpp" />
     <ClCompile Include="..\..\src\OpcUaServer\Server\ServerMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\OpcUaServer\ServerStack\ServerStack.h" />
     <ClInclude Include="..\..\inc\OpcUaServer\Server\Server.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

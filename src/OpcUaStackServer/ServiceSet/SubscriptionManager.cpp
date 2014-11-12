@@ -142,10 +142,6 @@ namespace OpcUaStackServer
 				break;
 			}
 			case NeedAttention:
-			{
-				// todo
-				break;
-			}
 			case SendPublish:
 			{
 				serviceTransactionPublishList_.pop_front();

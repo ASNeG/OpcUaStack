@@ -46,6 +46,27 @@ namespace OpcUaStackServer
 		informationModel_ = informationModel;
 	}
 
+	uint32_t 
+	MonitorManager::noticicationNumber(void)
+	{
+		uint32_t notificationNumber = 0;
+		MonitorItemMap::iterator it;
+		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
+			notificationNumber += it->second->size();
+		}
+		return notificationNumber;
+	}
+
+	bool 
+	MonitorManager::notificationAvailable(void)
+	{
+		MonitorItemMap::iterator it;
+		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
+			if (it->second->size() > 0) return true;
+		}
+		return false;
+	}
+
 	OpcUaStatusCode 
 	MonitorManager::receive(ServiceTransactionCreateMonitoredItems::SPtr trx)
 	{
@@ -177,6 +198,26 @@ namespace OpcUaStackServer
 				monitorItemMap_.erase(monitorItem->monitorItemId());
 				break;
 		}
+	}
+
+	OpcUaStatusCode 
+	MonitorManager::receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray)
+	{
+		uint32_t numberNotifications = 0;
+		MonitorItemMap::iterator it;
+		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
+			numberNotifications += it->second->size();
+		}
+
+		if (numberNotifications == 0) return Success;
+
+		monitoredItemNotificationArray->resize(numberNotifications);
+		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
+			OpcUaStatusCode statusCode = receive(monitoredItemNotificationArray);
+			if (statusCode == BadOutOfMemory) return statusCode;
+		}
+
+		return Success;
 	}
 
 }

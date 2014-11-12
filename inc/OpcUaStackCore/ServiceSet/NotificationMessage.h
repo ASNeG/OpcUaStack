@@ -19,7 +19,7 @@ namespace OpcUaStackCore
 		void sequenceNumber(const OpcUaUInt32& sequenceNumber);
 		OpcUaUInt32 sequenceNumber(void);
 		void publishTime(const boost::posix_time::ptime& time);
-		UtcTime publishTime(void);
+		UtcTime& publishTime(void);
 		void notificationData(const ExtensibleParameterArray::SPtr notificationData);
 		ExtensibleParameterArray::SPtr notificationData(void) const;
 

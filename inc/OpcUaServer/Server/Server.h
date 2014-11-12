@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackServer/Server/Server.h"
 #include <string>
 
@@ -29,6 +30,7 @@ namespace OpcUaServer
 		std::string configurationFile_;
 		Config* config_;
 		OpcUaStackServer::Server server_;
+		FileLogger fileLogger_;
 	};
 
 }
