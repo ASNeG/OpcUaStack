@@ -12,7 +12,7 @@
 
 namespace OpcUaStackCore
 {
-	class OpcUaNodeIdNullType 
+	class DLLEXPORT OpcUaNodeIdNullType 
 	{
 	  public:
 		OpcUaNodeIdNullType(void) {}
