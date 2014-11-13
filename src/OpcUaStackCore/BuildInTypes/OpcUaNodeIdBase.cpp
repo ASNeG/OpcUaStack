@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaNodeIdValue 
+	OpcUaNodeIdValue&
 	OpcUaNodeIdBase::nodeIdValue(void)
 	{
 		return nodeIdValue_;

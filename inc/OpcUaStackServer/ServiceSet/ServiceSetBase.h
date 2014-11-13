@@ -6,7 +6,7 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
-#include "OPcUaStackServer/InformationModel/ServerArray.h"
+#include "OpcUaStackServer/InformationModel/ServerArray.h"
 
 using namespace OpcUaStackCore;
 

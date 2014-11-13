@@ -11,7 +11,7 @@ LINK_DIRECTORIES( ../../../boost_1_54_0/stage/lib ${LINK_DIRECTORIES} )
 
 
 set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
-#set (CMAKE_CXX_LINK_FLAGS "-L ")
+set (CMAKE_CXX_LINK_FLAGS "-ldl")
 
 find_library(
     OPCUA_STACK_CORE 
@@ -44,6 +44,7 @@ target_link_libraries(
     boost_system 
     boost_unit_test_framework 
     boost_date_time 
+    boost_filesystem
     ${OPCUA_STACK_CORE}
 )
 

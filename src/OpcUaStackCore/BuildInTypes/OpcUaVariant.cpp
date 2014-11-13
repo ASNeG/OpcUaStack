@@ -1045,7 +1045,7 @@ namespace OpcUaStackCore
 		arrayDimensionsVec_ = arrayDimensionsVec;
 	}
 	
-	OpcUaArrayDimensionsVec 
+	OpcUaArrayDimensionsVec&
 	OpcUaVariant::arrayDimension(void)
 	{
 		return arrayDimensionsVec_;
@@ -1120,12 +1120,6 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-#if 0
-	OpcUaInt32 arrayLength_;
-	OpcUaArrayDimensionsVec arrayDimensionsVec_;
-	OpcUaVariantValue::Vec variantValueVec_;
-#endif
-		
 	bool 
 	OpcUaVariant::operator!=(OpcUaVariant& variant)
 	{

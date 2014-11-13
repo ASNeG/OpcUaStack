@@ -323,7 +323,7 @@ namespace OpcUaStackCore
 	{
 		if (size() != array.size()) return false;
 		for (uint32_t pos = 0; pos < size();  pos++) {
-			typename T value1, value2;
+			T value1, value2;
 			get(pos, value1);
 			array.get(pos, value2);
 			if (value1 != value2) return false;

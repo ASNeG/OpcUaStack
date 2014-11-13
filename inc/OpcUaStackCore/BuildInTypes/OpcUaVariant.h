@@ -121,7 +121,7 @@ namespace OpcUaStackCore
 		void arrayLength(const OpcUaInt32& arrayLength);
 		OpcUaInt32 arrayLength(void);
 		void arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec);
-		OpcUaArrayDimensionsVec arrayDimension(void);
+		OpcUaArrayDimensionsVec& arrayDimension(void);
 		void variant(const OpcUaVariantValue::Vec& variantValueVec);
 		void variant(const OpcUaBuildInType& opcUaBuildInType);
 		OpcUaVariantValue::Vec& variant(void);
