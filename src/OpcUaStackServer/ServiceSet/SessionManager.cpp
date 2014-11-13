@@ -25,6 +25,7 @@ namespace OpcUaStackServer
 	, sessionConfig_(nullptr)
 	, secureChannelConfig_(nullptr)
 	, ioService_(nullptr)
+	, tcpAcceptor_()
 	{
 	}
 
@@ -140,10 +141,13 @@ namespace OpcUaStackServer
 		}
 
 		// bind server socket
-		std::string host = url.host();
-		boost::asio::io_service& io_service = ioService_->io_service();
-		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url.port());
-		tcpAcceptor_->listen();
+		if (tcpAcceptor_.get() == nullptr) {
+			std::string host = url.host();
+			boost::asio::io_service& io_service = ioService_->io_service();
+			tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url.port());
+			tcpAcceptor_->listen();
+		}
+
 		tcpAcceptor_->async_accept(
 			secureChannel->tcpConnection().socket(),
 			boost::bind(&SessionManager::handleAccept, this, boost::asio::placeholders::error, secureChannel, session)
