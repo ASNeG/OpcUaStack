@@ -29,6 +29,13 @@ OpcUaStackCore_Test() {
     cd ..
 }
 
+OpcUaServer_bin() {
+    cd OpcUaServer_bin
+    cmake CMakeLists.txt
+    make
+    cd ..
+}
+
 OpcUaStackCore_Test_run() {
     cd OpcUaStackCore_Test
     ./Unittest
@@ -50,6 +57,7 @@ then
     OpcUaStackClient_lib
     OpcUaStackServer_lib
     OpcUaStackCore_Test
+    OpcUaServer_bin
     OpcUaStackCore_Test_run
 fi
 
@@ -79,6 +87,11 @@ fi
 if [ $1 = "build-test" ] ;
 then
     OpcUaStackCore_Test
+fi
+
+if [ $1 = "build-bin" ] ;
+then
+    OpcUaServer_bin
 fi
 
 
