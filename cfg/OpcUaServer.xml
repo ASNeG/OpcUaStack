@@ -54,8 +54,8 @@
   </Endpoints>
   
   <InformationModel>
-    <NodeSetFile>..\cfg\Opc.Ua.NodeSet.xml</NodeSetFile>
-	<NodeSetFile>..\cfg\Opc.Ua.NodeSetTest.xml</NodeSetFile>
+    <NodeSetFile>..\..\cfg\Opc.Ua.NodeSet.xml</NodeSetFile>
+	<NodeSetFile>..\..\cfg\Opc.Ua.NodeSetTest.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>

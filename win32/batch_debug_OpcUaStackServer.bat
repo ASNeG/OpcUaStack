@@ -1,3 +1,3 @@
-Debug\OpcUaStackServer_Test.exe
+Debug/OpcUaStackServer_Test.exe
 
 pause
