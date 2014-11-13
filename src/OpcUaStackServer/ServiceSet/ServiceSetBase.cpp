@@ -7,6 +7,7 @@ namespace OpcUaStackServer
 	: Component()
 	, informationModel_()
 	, namespaceArray_(NamespaceArray::construct())
+	, serverArray_(ServerArray::construct())
 	{
 	}
 
@@ -19,7 +20,7 @@ namespace OpcUaStackServer
 	{
 		informationModel_ = informationModel;
 		namespaceArray_->informationModel(informationModel);
-
+		serverArray_->informationModel(informationModel);
 	}
 
 	InformationModel::SPtr 
@@ -32,6 +33,12 @@ namespace OpcUaStackServer
 	ServiceSetBase::namespaceArray(void)
 	{
 		return namespaceArray_;
+	}
+
+	ServerArray::SPtr
+	ServiceSetBase::serverArray(void)
+	{
+		return serverArray_;
 	}
 
 }
