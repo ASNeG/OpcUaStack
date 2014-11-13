@@ -125,6 +125,7 @@ namespace OpcUaStackCore
 		void variant(const OpcUaVariantValue::Vec& variantValueVec);
 		void variant(const OpcUaBuildInType& opcUaBuildInType);
 		OpcUaVariantValue::Vec& variant(void);
+		void pushBack(const OpcUaVariantValue& variantValue);
 
 		OpcUaBuildInType variantType(void) const;
 		template<typename VAL>
@@ -136,16 +137,32 @@ namespace OpcUaStackCore
 			  clear();
 			  variantValueVec_[0].variant(val);
 		  }
+		template<typename VAL>
+		  void pushBack(const VAL& val) {
+			  OpcUaVariantValue variantValue;
+			  variantValue.variant(val);
+			  pushBack(variantValue);
+		  }
 
 		template<typename VAL> 
 		  VAL variant(void) const
 		  {
 			  return variantValueVec_[0].variant<VAL>();
 		  }
+		template<typename VAL> 
+		  VAL variant(uint32_t pos) const
+		  {
+			  return variantValueVec_[pos].variant<VAL>();
+		  }
 		template<typename VAL>
 		  typename VAL::SPtr variantSPtr(void) const
 		  {
 			  return variantValueVec_[0].variantSPtr<VAL>();
+		  }
+		template<typename VAL>
+		  typename VAL::SPtr variantSPtr(uint32_t pos) const
+		  {
+			  return variantValueVec_[pos].variantSPtr<VAL>();
 		  }
 
 		void copyTo(OpcUaVariant& variant);

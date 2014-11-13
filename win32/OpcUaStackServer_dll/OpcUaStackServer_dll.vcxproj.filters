@@ -218,6 +218,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MonitorManager.h">
       <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\NamespaceArray.h">
+      <Filter>src\InformationModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -366,6 +369,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\MonitorManager.cpp">
       <Filter>src\ServiceSet\MonitoredItemServiceSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\NamespaceArray.cpp">
+      <Filter>src\InformationModel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

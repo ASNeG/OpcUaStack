@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModelNodeSet.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\NamespaceArray.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetAlias.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBaseParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBinaryParser.h" />
@@ -151,6 +152,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModelNodeSet.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\NamespaceArray.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetAlias.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBaseParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBinaryParser.cpp" />

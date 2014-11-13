@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OPcUaStackServer/InformationModel/NamespaceArray.h"
 
 using namespace OpcUaStackCore;
 
@@ -19,10 +20,13 @@ namespace OpcUaStackServer
 
 		void informationModel(InformationModel::SPtr informationModel);
 		InformationModel::SPtr informationModel(void);
+		NamespaceArray::SPtr namespaceArray(void);
+
 		virtual bool init(void) { return true; }
 
 	  protected:
 		InformationModel::SPtr informationModel_;
+		NamespaceArray::SPtr namespaceArray_;
 	};
 
 }

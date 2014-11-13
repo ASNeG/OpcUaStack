@@ -1064,6 +1064,13 @@ namespace OpcUaStackCore
 		return variantValueVec_;
 	}
 
+	void 
+	OpcUaVariant::pushBack(const OpcUaVariantValue& variantValue)
+	{
+		variantValueVec_.push_back(variantValue);
+		arrayLength_ = variantValueVec_.size();
+	}
+
 	OpcUaBuildInType 
 	OpcUaVariant::variantType(void) const
 	{

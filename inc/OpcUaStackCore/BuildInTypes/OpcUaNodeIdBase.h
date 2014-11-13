@@ -27,6 +27,9 @@ namespace OpcUaStackCore
 	    OpcUaNodeIdBase(void);
 		virtual ~OpcUaNodeIdBase(void);
 
+		OpcUaNodeIdValue nodeIdValue(void);
+		void nodeIdValue(OpcUaNodeIdValue& nodeIdValue);
+
 		void namespaceIndex(OpcUaUInt16 namespaceIndex);
 		OpcUaInt16 namespaceIndex(void) const;
 

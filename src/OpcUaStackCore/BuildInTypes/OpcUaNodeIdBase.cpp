@@ -28,6 +28,18 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaNodeIdValue 
+	OpcUaNodeIdBase::nodeIdValue(void)
+	{
+		return nodeIdValue_;
+	}
+	
+	void 
+	OpcUaNodeIdBase::nodeIdValue(OpcUaNodeIdValue& nodeIdValue)
+	{
+		nodeIdValue_ = nodeIdValue;
+	}
+
 	void 
 	OpcUaNodeIdBase::namespaceIndex(OpcUaUInt16 namespaceIndex)
 	{
