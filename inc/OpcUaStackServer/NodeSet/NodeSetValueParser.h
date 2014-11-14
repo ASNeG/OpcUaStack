@@ -86,38 +86,7 @@ namespace OpcUaStackServer
 				return true;
 			}
 
-		template<>
-			bool decode<OpcUaBoolean>(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
-			{
-				std::string sourceValue = ptree.get_value<std::string>();
-				if (sourceValue == "true") destValue = true;
-				else destValue = false;
-				return true;
-			}
 
-		template<>
-			bool decode<OpcUaByte>(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
-			{
-				std::string sourceValue = ptree.get_value<std::string>();
-				try {
-					destValue = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
-				} catch(boost::bad_lexical_cast&) {
-					return false;
-				}
-				return true;
-			}
-
-		template<>
-			bool decode<OpcUaSByte>(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
-			{
-				std::string sourceValue = ptree.get_value<std::string>();
-				try {
-					destValue = (OpcUaByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
-				} catch(boost::bad_lexical_cast&) {
-					return false;
-				}
-				return true;
-			}
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);
@@ -129,6 +98,39 @@ namespace OpcUaStackServer
 		std::string cutxmls(const std::string& tag);
 	};
 
+	template<>
+		bool NodeSetValueParser::decode<OpcUaBoolean>(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
+		{
+			std::string sourceValue = ptree.get_value<std::string>();
+			if (sourceValue == "true") destValue = true;
+			else destValue = false;
+			return true;
+		}
+
+	template<>
+		bool NodeSetValueParser::decode<OpcUaByte>(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
+		{
+			std::string sourceValue = ptree.get_value<std::string>();
+			try {
+				destValue = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
+			} catch(boost::bad_lexical_cast&) {
+				return false;
+			}
+			return true;
+		}
+
+	template<>
+		bool NodeSetValueParser::decode<OpcUaSByte>(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
+		{
+			std::string sourceValue = ptree.get_value<std::string>();
+			try {
+				destValue = (OpcUaByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
+			} catch(boost::bad_lexical_cast&) {
+				return false;
+			}
+			return true;
+		}
+
 }
 
 
@@ -136,17 +138,6 @@ namespace OpcUaStackServer
 	typedef enum 
 	{
 		OpcUaBuildInType_Unknown = 0,
-		OpcUaBuildInType_OpcUaBoolean = 1,
-		OpcUaBuildInType_OpcUaSByte = 2,
-		OpcUaBuildInType_OpcUaByte = 3,
-		OpcUaBuildInType_OpcUaInt16 = 4,
-		OpcUaBuildInType_OpcUaUInt16 = 5,
-		OpcUaBuildInType_OpcUaInt32 = 6,
-		OpcUaBuildInType_OpcUaUInt32 = 7,
-		OpcUaBuildInType_OpcUaInt64 = 8,
-		OpcUaBuildInType_OpcUaUInt64 = 9,
-		OpcUaBuildInType_OpcUaFloat = 10,
-		OpcUaBuildInType_OpcUaDouble = 11,
 		OpcUaBuildInType_OpcUaString = 12,
 		OpcUaBuildInType_OpcUaDateTime = 13,
 		OpcUaBuildInType_OpcUaGuid = 14,
