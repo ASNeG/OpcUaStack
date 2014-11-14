@@ -141,6 +141,47 @@ namespace OpcUaStackServer
 		return rc;
 	}
 
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
+	{
+		std::string sourceValue = ptree.get_value<std::string>();
+		if (sourceValue == "true") destValue = true;
+		else destValue = false;
+		return true;
+	}
+
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
+	{
+		std::string sourceValue = ptree.get_value<std::string>();
+		try {
+			destValue = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			Log(Error, "bad_lexical_cast in decode")
+				.parameter("Tag", tag)
+				.parameter("SourceValue", sourceValue)
+				.parameter("What", e.what());
+			return false;
+		}
+		return true;
+	}
+		
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
+	{
+		std::string sourceValue = ptree.get_value<std::string>();
+		try {
+			destValue = (OpcUaSByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			Log(Error, "bad_lexical_cast in decode")
+				.parameter("Tag", tag)
+				.parameter("SourceValue", sourceValue)
+				.parameter("What", e.what());
+			return false;
+		}
+		return true;
+	}
+
 	std::string
 	NodeSetValueParser::cutxmls(const std::string& tag)
 	{

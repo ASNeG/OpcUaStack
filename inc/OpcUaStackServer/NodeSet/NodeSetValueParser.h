@@ -3,6 +3,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
 
@@ -86,6 +87,9 @@ namespace OpcUaStackServer
 				return true;
 			}
 
+		bool decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);
 
 
 	  private:
@@ -98,38 +102,6 @@ namespace OpcUaStackServer
 		std::string cutxmls(const std::string& tag);
 	};
 
-	template<>
-		bool NodeSetValueParser::decode<OpcUaBoolean>(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
-		{
-			std::string sourceValue = ptree.get_value<std::string>();
-			if (sourceValue == "true") destValue = true;
-			else destValue = false;
-			return true;
-		}
-
-	template<>
-		bool NodeSetValueParser::decode<OpcUaByte>(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
-		{
-			std::string sourceValue = ptree.get_value<std::string>();
-			try {
-				destValue = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
-			} catch(boost::bad_lexical_cast&) {
-				return false;
-			}
-			return true;
-		}
-
-	template<>
-		bool NodeSetValueParser::decode<OpcUaSByte>(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
-		{
-			std::string sourceValue = ptree.get_value<std::string>();
-			try {
-				destValue = (OpcUaByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
-			} catch(boost::bad_lexical_cast&) {
-				return false;
-			}
-			return true;
-		}
 
 }
 
