@@ -32,9 +32,92 @@ namespace OpcUaStackServer
 
 		bool decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant);
 
-		bool decode(DataTypeElement& dataTypeElement, boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaUInt32& uint32);
-		bool decode(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec);
+		template<typename T>
+			bool 
+			decode(DataTypeElement& dataTypeElement, boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			{
+				bool rc;
+				if (dataTypeElement.isArray_) {
+					OpcUaVariantValue::Vec variantValueVec;
+					rc = decode<T>(ptreeValue.front().second, variantValueVec, tag);
+					if (rc) variant.variant(variantValueVec);
+				}
+				else {
+					T uint32;
+					rc = decode(ptreeValue.front().second, uint32, tag);
+					if (rc) variant.variant(uint32);
+				}
+				return rc;
+			}
+
+		template<typename T>
+			bool decode(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			{
+				if (ptree.size() == 0) return false;
+
+				boost::property_tree::ptree::iterator it;
+				for (it = ptree.begin(); it!=ptree.end(); it++) {
+					std::string tagValue = cutxmls(it->first);
+					if (tagValue != tag) return false;
+
+					T value;
+					if (!decode(it->second, value, tag)) return false;
+			
+					OpcUaVariantValue variantValue;
+					variantValue.variant(value);
+					variantValueVec.push_back(variantValue);
+			}
+			return true;
+		}
+
+		template<typename T>
+			bool decode(boost::property_tree::ptree& ptree, T& destValue, const std::string& tag)
+			{
+				std::string sourceValue = ptree.get_value<std::string>();
+				try {
+					destValue = boost::lexical_cast<T>(sourceValue);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast in decode")
+						.parameter("Tag", tag)
+						.parameter("SourceValue", sourceValue)
+						.parameter("What", e.what());
+					return false;
+				}
+				return true;
+			}
+
+		template<>
+			bool decode<OpcUaBoolean>(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag)
+			{
+				std::string sourceValue = ptree.get_value<std::string>();
+				if (sourceValue == "true") destValue = true;
+				else destValue = false;
+				return true;
+			}
+
+		template<>
+			bool decode<OpcUaByte>(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag)
+			{
+				std::string sourceValue = ptree.get_value<std::string>();
+				try {
+					destValue = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
+				} catch(boost::bad_lexical_cast&) {
+					return false;
+				}
+				return true;
+			}
+
+		template<>
+			bool decode<OpcUaSByte>(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag)
+			{
+				std::string sourceValue = ptree.get_value<std::string>();
+				try {
+					destValue = (OpcUaByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
+				} catch(boost::bad_lexical_cast&) {
+					return false;
+				}
+				return true;
+			}
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);

@@ -70,10 +70,28 @@ namespace OpcUaStackServer
 		if (initial_) return;
 		initial_ = true;
 
+		insertDataTypeElement("Boolean", DataTypeElement(OpcUaBuildInType_OpcUaBoolean, false));
+		insertDataTypeElement("ListOfBoolean", DataTypeElement(OpcUaBuildInType_OpcUaBoolean, true));
+		insertDataTypeElement("SByte", DataTypeElement(OpcUaBuildInType_OpcUaSByte, false));
+		insertDataTypeElement("ListOfSByte", DataTypeElement(OpcUaBuildInType_OpcUaSByte, true));
+		insertDataTypeElement("Byte", DataTypeElement(OpcUaBuildInType_OpcUaByte, false));
+		insertDataTypeElement("ListOfByte", DataTypeElement(OpcUaBuildInType_OpcUaByte, true));
+		insertDataTypeElement("Int16", DataTypeElement(OpcUaBuildInType_OpcUaInt16, false));
+		insertDataTypeElement("ListOfInt16", DataTypeElement(OpcUaBuildInType_OpcUaInt16, true));
+		insertDataTypeElement("UInt16", DataTypeElement(OpcUaBuildInType_OpcUaUInt16, false));
+		insertDataTypeElement("ListOfUInt16", DataTypeElement(OpcUaBuildInType_OpcUaUInt16, true));
 		insertDataTypeElement("Int32", DataTypeElement(OpcUaBuildInType_OpcUaInt32, false));
 		insertDataTypeElement("ListOfInt32", DataTypeElement(OpcUaBuildInType_OpcUaInt32, true));
 		insertDataTypeElement("UInt32", DataTypeElement(OpcUaBuildInType_OpcUaUInt32, false));
 		insertDataTypeElement("ListOfUInt32", DataTypeElement(OpcUaBuildInType_OpcUaUInt32, true));
+		insertDataTypeElement("Int64", DataTypeElement(OpcUaBuildInType_OpcUaInt64, false));
+		insertDataTypeElement("ListOfInt64", DataTypeElement(OpcUaBuildInType_OpcUaInt64, true));
+		insertDataTypeElement("UInt64", DataTypeElement(OpcUaBuildInType_OpcUaUInt64, false));
+		insertDataTypeElement("ListOfUInt64", DataTypeElement(OpcUaBuildInType_OpcUaUInt64, true));
+		insertDataTypeElement("Float", DataTypeElement(OpcUaBuildInType_OpcUaFloat, false));
+		insertDataTypeElement("ListOfFloat", DataTypeElement(OpcUaBuildInType_OpcUaFloat, true));
+		insertDataTypeElement("Double", DataTypeElement(OpcUaBuildInType_OpcUaDouble, false));
+		insertDataTypeElement("ListOfDouble", DataTypeElement(OpcUaBuildInType_OpcUaDouble, true));
 	}
 
 	bool 
@@ -95,7 +113,17 @@ namespace OpcUaStackServer
 		bool rc;
 		switch (dataTypeElement.buildInType_)
 		{
-			case OpcUaBuildInType_OpcUaUInt32: rc = decode(dataTypeElement, *ptreeValue, variant); break;
+			case OpcUaBuildInType_OpcUaBoolean: rc = decode<OpcUaBoolean>(dataTypeElement, *ptreeValue, variant, "Boolean"); break;
+			case OpcUaBuildInType_OpcUaSByte: rc = decode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte"); break;
+			case OpcUaBuildInType_OpcUaByte: rc = decode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte"); break;
+			case OpcUaBuildInType_OpcUaUInt16: rc = decode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16"); break;
+			case OpcUaBuildInType_OpcUaInt16: rc = decode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16"); break;
+			case OpcUaBuildInType_OpcUaUInt32: rc = decode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32"); break;
+			case OpcUaBuildInType_OpcUaInt32: rc = decode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32"); break;
+			case OpcUaBuildInType_OpcUaUInt64: rc = decode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
+			case OpcUaBuildInType_OpcUaInt64: rc = decode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
+			case OpcUaBuildInType_OpcUaFloat: rc = decode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
+			case OpcUaBuildInType_OpcUaDouble: rc = decode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
 			default:
 			{
 				Log(Error, "data type unknown in node set value parser")
@@ -113,56 +141,6 @@ namespace OpcUaStackServer
 		return rc;
 	}
 
-	bool
-	NodeSetValueParser::decode(DataTypeElement& dataTypeElement, boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant)
-	{
-		bool rc;
-		if (dataTypeElement.isArray_) {
-			OpcUaVariantValue::Vec variantValueVec;
-			rc = decode(ptreeValue.front().second, variantValueVec);
-			if (rc) variant.variant(variantValueVec);
-		}
-		else {
-			OpcUaUInt32 uint32;
-			rc = decode(ptreeValue.front().second, uint32);
-			if (rc) variant.variant(uint32);
-		}
-		return rc;
-	}
-
-	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaUInt32& uint32)
-	{
-		std::string value = ptree.get_value<std::string>();
-		try {
-			uint32 = boost::lexical_cast<OpcUaUInt32>(value);
-		} catch(boost::bad_lexical_cast &) {
-			Log(Error, "bad_lexical_cast in decodeUInt32");
-			return false;
-		}
-		return true;
-	}
-
-	bool 
-	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec)
-	{
-		if (ptree.size() == 0) return false;
-
-		boost::property_tree::ptree::iterator it;
-		for (it = ptree.begin(); it!=ptree.end(); it++) {
-			std::string tag = cutxmls(it->first);
-			if (tag != "UInt32") return false;
-
-			OpcUaUInt32 uint32;
-			if (!decode(it->second, uint32)) return false;
-			
-			OpcUaVariantValue variantValue;
-			variantValue.variant(uint32);
-			variantValueVec.push_back(variantValue);
-		}
-		return true;
-	}
-
 	std::string
 	NodeSetValueParser::cutxmls(const std::string& tag)
 	{
@@ -175,19 +153,3 @@ namespace OpcUaStackServer
 	}
 
 }
-
-#if 0
-	<Value>
-      <uax:UInt32>123</uax:UInt32>
-    </Value>
-
-	       <Value>
-            <uax:ListOfUInt32>
-                <uax:UInt32>1</uax:UInt32>
-                <uax:UInt32>2</uax:UInt32>
-                <uax:UInt32>3</uax:UInt32>
-            </uax:ListOfUInt32>
-        </Value>
-
-
-#endif
