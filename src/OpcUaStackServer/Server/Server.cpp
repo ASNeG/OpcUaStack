@@ -24,9 +24,15 @@ namespace OpcUaStackServer
 	}
 
 	InformationModel::SPtr 
-	Server::informationMode(void)
+	Server::getInformationModel(void)
 	{
 		return informationModel_;
+	}
+
+	IOService*
+	Server::ioService(void)
+	{
+		return &ioService_;
 	}
 
 	bool

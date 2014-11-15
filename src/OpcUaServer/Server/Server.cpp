@@ -43,6 +43,10 @@ namespace OpcUaServer
 			return false;
 		}
 
+		raspberry_.informationModel(server_.getInformationModel());
+		raspberry_.ioService(*server_.ioService());
+		raspberry_.start();
+
 		return true;
 	}
 

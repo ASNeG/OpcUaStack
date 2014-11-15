@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackServer/Server/Server.h"
+#include "OpcUaServer/Raspberry/Raspberry.h"
 #include <string>
 
 using namespace OpcUaStackCore;
@@ -31,6 +32,8 @@ namespace OpcUaServer
 		Config* config_;
 		OpcUaStackServer::Server server_;
 		FileLogger fileLogger_;
+
+		Raspberry raspberry_;
 	};
 
 }

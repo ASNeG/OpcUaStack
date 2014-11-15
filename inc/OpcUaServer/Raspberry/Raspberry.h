@@ -10,9 +10,18 @@ using namespace OpcUaStackCore;
 namespace OpcUaServer
 {
 
+	class GpioBinaryItem
+	{
+	  public:
+		OpcUaNodeId nodeIdValue_;
+		OpcUaByte pin_;
+	};
+
 	class Raspberry
 	{
 	  public:
+		typedef std::vector<GpioBinaryItem> GpioBinaryItemVec;
+
 		Raspberry(void);
 		~Raspberry(void);
 
@@ -21,8 +30,14 @@ namespace OpcUaServer
 		void start(void);
 
 	  private:
+		bool readValues(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItemVec& gpioBinaryItemVec);
+		bool readPropertyPin(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItem& gpioBinaryItem);
+
 	    InformationModel::SPtr informationModel_;
 		IOService* ioService_;
+
+		GpioBinaryItemVec inputGpioBinaryItemVec_;
+		GpioBinaryItemVec outputGpioBinaryItemVec_;
 	};
 
 }
