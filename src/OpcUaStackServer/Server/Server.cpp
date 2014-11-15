@@ -23,6 +23,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	InformationModel::SPtr 
+	Server::informationMode(void)
+	{
+		return informationModel_;
+	}
+
 	bool
 	Server::init(void)
 	{

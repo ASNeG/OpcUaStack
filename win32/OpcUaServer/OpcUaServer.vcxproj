@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\OpcUaServer\Raspberry\Raspberry.cpp" />
     <ClCompile Include="..\..\src\OpcUaServer\Server\Server.cpp" />
     <ClCompile Include="..\..\src\OpcUaServer\Server\ServerMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaServer\Raspberry\Raspberry.h" />
     <ClInclude Include="..\..\inc\OpcUaServer\Server\Server.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -22,6 +22,8 @@ namespace OpcUaStackServer
 		bool start(void);
 		void stop(void);
 
+		InformationModel::SPtr informationMode(void);
+
 	  private:
 		bool initInformationModel(void);
 		bool setInformationModel(void);

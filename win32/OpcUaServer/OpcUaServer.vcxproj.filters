@@ -11,6 +11,9 @@
     <Filter Include="src\ClientStack">
       <UniqueIdentifier>{129d7c46-82b0-4d07-9619-905d0d793ead}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\raspberry">
+      <UniqueIdentifier>{da73864d-bd58-46c0-830a-4bc6f182b318}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaServer\Server\ServerMain.cpp">
@@ -19,10 +22,16 @@
     <ClCompile Include="..\..\src\OpcUaServer\Server\Server.cpp">
       <Filter>src\server</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaServer\Raspberry\Raspberry.cpp">
+      <Filter>src\raspberry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaServer\Server\Server.h">
       <Filter>src\server</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaServer\Raspberry\Raspberry.h">
+      <Filter>src\raspberry</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
