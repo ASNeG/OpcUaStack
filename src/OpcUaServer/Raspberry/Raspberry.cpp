@@ -1,9 +1,12 @@
-#define RASPBERRY
+#undef RASPBERRY
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaServer/Raspberry/Raspberry.h"
 #ifdef RASPBERRY
 #include <wiringPi.h>
 #endif
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaServer
 {
@@ -41,6 +44,8 @@ namespace OpcUaServer
 		BaseNodeClass::SPtr baseNodeClass;
 		GpioBinaryItemVec::iterator it;
 
+		Log(Info, "init component raspberry");
+
 		nodeId.namespaceIndex(1);
 		nodeIdString = OpcUaString::construct();
 		nodeIdString->value("Raspberry.BinaryOutput");
@@ -60,12 +65,22 @@ namespace OpcUaServer
 #endif
 
 		for (it=outputGpioBinaryItemVec_.begin(); it!=outputGpioBinaryItemVec_.end(); it++) {
+
+			Log(Debug, "init output pin")
+				.parameter("Pin", (uint32_t)it->pin_)
+				.parameter("NodeId", it->nodeIdValue_);
+
 #ifdef RASPBERRY
 			pinMode(it->pin_, OUTPUT);
 #endif
 		}
 
 		for (it=inputGpioBinaryItemVec_.begin(); it!=inputGpioBinaryItemVec_.end(); it++) {
+
+			Log(Debug, "init input pin")
+				.parameter("Pin", (uint32_t)it->pin_)
+				.parameter("NodeId", it->nodeIdValue_);
+
 #ifdef RASPBERRY
 			pinMode(it->pin_, INPUT);
 #endif
@@ -85,8 +100,15 @@ namespace OpcUaServer
 		if (ec) return;
 
 		for (it=outputGpioBinaryItemVec_.begin(); it!=outputGpioBinaryItemVec_.end(); it++) {
-                        bool value;
+            bool value;
 			getValue(it->nodeIdValue_, value);
+
+
+			Log(Debug, "Set output pin")
+				.parameter("Pin", (uint32_t)it->pin_)
+				.parameter("NodeId", it->nodeIdValue_)
+				.parameter("Value", value);
+
 #ifdef RASPBERRY
 			if (value) digitalWrite(it->pin_, 1);
 			else digitalWrite(it->pin_, 0);
@@ -98,11 +120,21 @@ namespace OpcUaServer
 #ifdef RASPBERRY
 			value = digitalRead(it->pin_);
 #endif
-                        if (value == 1) setValue(it->nodeIdValue_, true);
-			else setValue(it->nodeIdValue_, false);
+
+			bool val;
+		    if (value == 1) val = true;
+			else val = false;
+
+
+			Log(Debug, "Get input pin")
+				.parameter("Pin", (uint32_t)it->pin_)
+				.parameter("NodeId", it->nodeIdValue_)
+				.parameter("Value", val);
+
+            setValue(it->nodeIdValue_, val);
 		}
 
-		timer_->expires_from_now(boost::posix_time::millisec(100));
+		timer_->expires_from_now(boost::posix_time::millisec(1000));
 		timer_->async_wait(
 			boost::bind(&Raspberry::onTimeout, this, boost::asio::placeholders::error)
 		);
