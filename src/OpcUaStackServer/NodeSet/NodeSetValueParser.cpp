@@ -92,6 +92,8 @@ namespace OpcUaStackServer
 		insertDataTypeElement("ListOfFloat", DataTypeElement(OpcUaBuildInType_OpcUaFloat, true));
 		insertDataTypeElement("Double", DataTypeElement(OpcUaBuildInType_OpcUaDouble, false));
 		insertDataTypeElement("ListOfDouble", DataTypeElement(OpcUaBuildInType_OpcUaDouble, true));
+		insertDataTypeElement("String", DataTypeElement(OpcUaBuildInType_OpcUaString, false));
+		insertDataTypeElement("ListOfString", DataTypeElement(OpcUaBuildInType_OpcUaString, true));
 	}
 
 	bool 
@@ -124,6 +126,7 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaInt64: rc = decode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
 			case OpcUaBuildInType_OpcUaFloat: rc = decode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
 			case OpcUaBuildInType_OpcUaDouble: rc = decode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
+			case OpcUaBuildInType_OpcUaString: rc = decodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
 			default:
 			{
 				Log(Error, "data type unknown in node set value parser")
@@ -191,6 +194,14 @@ namespace OpcUaStackServer
 			newTag = newTag.substr(pos+1);
 		}
 		return newTag;
+	}
+
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag)
+	{
+		std::string sourceValue = ptree.get_value<std::string>();
+		destValue->value(sourceValue);
+		return true;
 	}
 
 }

@@ -44,9 +44,27 @@ namespace OpcUaStackServer
 					if (rc) variant.variant(variantValueVec);
 				}
 				else {
-					T uint32;
-					rc = decode(ptreeValue.front().second, uint32, tag);
-					if (rc) variant.variant(uint32);
+					T value;
+					rc = decode(ptreeValue.front().second, value, tag);
+					if (rc) variant.variant(value);
+				}
+				return rc;
+			}
+
+		template<typename T>
+			bool 
+			decodeSPtr(DataTypeElement& dataTypeElement, boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			{
+				bool rc;
+				if (dataTypeElement.isArray_) {
+					OpcUaVariantValue::Vec variantValueVec;
+					rc = decodeSPtr<T>(ptreeValue.front().second, variantValueVec, tag);
+					if (rc) variant.variant(variantValueVec);
+				}
+				else {
+					typename T::SPtr value = T::construct();
+					rc = decode(ptreeValue.front().second, value, tag);
+					if (rc) variant.variant(value);
 				}
 				return rc;
 			}
@@ -62,6 +80,26 @@ namespace OpcUaStackServer
 					if (tagValue != tag) return false;
 
 					T value;
+					if (!decode(it->second, value, tag)) return false;
+			
+					OpcUaVariantValue variantValue;
+					variantValue.variant(value);
+					variantValueVec.push_back(variantValue);
+			}
+			return true;
+		}
+
+		template<typename T>
+			bool decodeSPtr(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			{
+				if (ptree.size() == 0) return false;
+
+				boost::property_tree::ptree::iterator it;
+				for (it = ptree.begin(); it!=ptree.end(); it++) {
+					std::string tagValue = cutxmls(it->first);
+					if (tagValue != tag) return false;
+
+					typename T::SPtr value = T::construct();
 					if (!decode(it->second, value, tag)) return false;
 			
 					OpcUaVariantValue variantValue;
@@ -90,6 +128,7 @@ namespace OpcUaStackServer
 		bool decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
 		bool decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
 		bool decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag);
 
 
 	  private:
