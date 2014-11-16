@@ -30,6 +30,7 @@ namespace OpcUaServer
 		void start(void);
 
 	  private:
+		void onTimeout(const boost::system::error_code& ec);
 		bool readValues(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItemVec& gpioBinaryItemVec);
 		bool readPropertyPin(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItem& gpioBinaryItem);
 
@@ -38,6 +39,8 @@ namespace OpcUaServer
 
 		GpioBinaryItemVec inputGpioBinaryItemVec_;
 		GpioBinaryItemVec outputGpioBinaryItemVec_;
+
+		boost::asio::deadline_timer *timer_;
 	};
 
 }

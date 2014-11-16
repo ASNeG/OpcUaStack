@@ -4,11 +4,16 @@ namespace OpcUaServer
 {
 
 	Raspberry::Raspberry(void)
+	: timer_(nullptr)
 	{
 	}
 
 	Raspberry::~Raspberry(void)
 	{
+		if (timer_ != nullptr) {
+			delete timer_;
+			timer_ = nullptr;
+		}
 	}
 
 	void 
@@ -29,6 +34,7 @@ namespace OpcUaServer
 		OpcUaNodeId nodeId;
 		OpcUaString::SPtr nodeIdString;
 		BaseNodeClass::SPtr baseNodeClass;
+		GpioBinaryItemVec::iterator it;
 
 		nodeId.namespaceIndex(1);
 		nodeIdString = OpcUaString::construct();
@@ -37,14 +43,35 @@ namespace OpcUaServer
 		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() != nullptr) readValues(baseNodeClass, outputGpioBinaryItemVec_);
 
-#if 0
 		nodeId.namespaceIndex(1);
 		nodeIdString = OpcUaString::construct();
 		nodeIdString->value("Raspberry.BinaryInput");
 		nodeId.nodeId(nodeIdString);
 		baseNodeClass = informationModel_->find(nodeId);
-		if (baseNodeClass.get() != nullptr) getConfigurationInput(baseNodeClass);
-#endif
+		if (baseNodeClass.get() != nullptr) readValues(baseNodeClass, inputGpioBinaryItemVec_);
+
+		for (it=outputGpioBinaryItemVec_.begin(); it!=outputGpioBinaryItemVec_.end(); it++) {
+		}
+
+		for (it=inputGpioBinaryItemVec_.begin(); it!=inputGpioBinaryItemVec_.end(); it++) {
+		}
+
+		timer_ = new boost::asio::deadline_timer(ioService_->io_service());
+		timer_->expires_from_now(boost::posix_time::millisec(0));
+		timer_->async_wait(
+			boost::bind(&Raspberry::onTimeout, this, boost::asio::placeholders::error)
+		);
+	}
+
+	void 
+	Raspberry::onTimeout(const boost::system::error_code& ec)
+	{
+		if (ec) return;
+
+		timer_->expires_from_now(boost::posix_time::millisec(100));
+		timer_->async_wait(
+			boost::bind(&Raspberry::onTimeout, this, boost::asio::placeholders::error)
+		);
 	}
 
 	bool 
@@ -61,6 +88,8 @@ namespace OpcUaServer
 			if (baseNodeClassTarget.get() == nullptr) continue;
 
 			GpioBinaryItem gpioBinaryItem;
+			gpioBinaryItem.nodeIdValue_ = baseNodeClassTarget->nodeId().data();
+
 			if (readPropertyPin(baseNodeClassTarget, gpioBinaryItem)) {
 				gpioBinaryItemVec.push_back(gpioBinaryItem);
 			}
