@@ -40,7 +40,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Pin11" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Pin3" BrowseName="Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for output value</Description>
     <References>
@@ -48,11 +48,11 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryOutput1</Reference>
     </References>
 	<Value>
-      <uax:Byte>11</uax:Byte>
+      <uax:Byte>3</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Description11" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Description3" BrowseName="Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for output value</Description>
     <References>
@@ -60,7 +60,7 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryOutput1</Reference>
     </References>
 	<Value>
-      <uax:String>pin 11</uax:String>
+      <uax:String>GPIO2 - PIN3</uax:String>
     </Value>
   </UAVariable>
   
@@ -76,7 +76,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Pin12" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Pin5" BrowseName="Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for output value</Description>
     <References>
@@ -84,11 +84,11 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryOutput2</Reference>
     </References>
 	<Value>
-      <uax:Byte>12</uax:Byte>
+      <uax:Byte>5</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Description12" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Description5" BrowseName="Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for output value</Description>
     <References>
@@ -96,7 +96,7 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryOutput2</Reference>
     </References>
 	<Value>
-      <uax:String>pin 12</uax:String>
+      <uax:String>GPIO3 PIN5</uax:String>
     </Value>
   </UAVariable>
   
@@ -112,7 +112,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Pin13" BrowseName="Pin" DataType="i=1">
+   <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Pin7" BrowseName="Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for output value</Description>
     <References>
@@ -120,11 +120,11 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryOutput3</Reference>
     </References>
 	<Value>
-      <uax:Byte>13</uax:Byte>
+      <uax:Byte>7</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Description13" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryOutput.Description7" BrowseName="Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for output value</Description>
     <References>
@@ -132,7 +132,7 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryOutput3</Reference>
     </References>
 	<Value>
-      <uax:String>pin 13</uax:String>
+      <uax:String>GPIO4 PIN7</uax:String>
     </Value>
   </UAVariable>
   
@@ -148,7 +148,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Pin14" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Pin11" BrowseName="Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for Input value</Description>
     <References>
@@ -156,11 +156,11 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryInput1</Reference>
     </References>
 	<Value>
-      <uax:Byte>14</uax:Byte>
+      <uax:Byte>11</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Description14" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Description11" BrowseName="Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for Input value</Description>
     <References>
@@ -168,7 +168,7 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryInput1</Reference>
     </References>
 	<Value>
-      <uax:String>pin 14</uax:String>
+      <uax:String>GPIO17 PIN11</uax:String>
     </Value>
   </UAVariable>
   
@@ -184,7 +184,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Pin15" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Pin13" BrowseName="Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for Input value</Description>
     <References>
@@ -192,11 +192,11 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryInput2</Reference>
     </References>
 	<Value>
-      <uax:Byte>15</uax:Byte>
+      <uax:Byte>13</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Description15" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Description13" BrowseName="Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for Input value</Description>
     <References>
@@ -204,7 +204,7 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryInput2</Reference>
     </References>
 	<Value>
-      <uax:String>pin 15</uax:String>
+      <uax:String>GPIO22 PIN13</uax:String>
     </Value>
   </UAVariable>
   
@@ -220,7 +220,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Pin16" BrowseName="Pin" DataType="i=1">
+   <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Pin15" BrowseName="Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for Input value</Description>
     <References>
@@ -228,11 +228,11 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryInput3</Reference>
     </References>
 	<Value>
-      <uax:Byte>16</uax:Byte>
+      <uax:Byte>15</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Description16" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1,s=Raspberry.BinaryInput.Description15" BrowseName="Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for Input value</Description>
     <References>
@@ -240,7 +240,7 @@
       <Reference ReferenceType="HasProperty" IsForward="false">ns=1,s=Raspberry.BinaryInput3</Reference>
     </References>
 	<Value>
-      <uax:String>pin 16</uax:String>
+      <uax:String>GPIO22 PIN15</uax:String>
     </Value>
   </UAVariable>
 
