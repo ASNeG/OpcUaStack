@@ -74,6 +74,28 @@ namespace OpcUaServer
 		);
 	}
 
+	bool
+	Raspberry::setValue(OpcUaNodeId& nodeId, bool value)
+	{
+		BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(nodeId);
+		if (baseNodeClassTarget.get() == nullptr) return false;
+
+		ValueAttribute *valueAttribute = reinterpret_cast<ValueAttribute*>(baseNodeClassTarget->valueAttribute());
+		valueAttribute->data().variant()->variant(value);
+		return true;
+	}
+
+	bool
+	Raspberry::getValue(OpcUaNodeId& nodeId, bool& value)
+	{
+		BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(nodeId);
+		if (baseNodeClassTarget.get() == nullptr) return false;
+
+		ValueAttribute *valueAttribute = reinterpret_cast<ValueAttribute*>(baseNodeClassTarget->valueAttribute());
+		value = valueAttribute->data().variant()->variant<OpcUaBoolean>();
+		return true;
+	}
+
 	bool 
 	Raspberry::readValues(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItemVec& gpioBinaryItemVec)
 	{

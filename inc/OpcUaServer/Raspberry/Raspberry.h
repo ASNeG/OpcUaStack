@@ -33,6 +33,8 @@ namespace OpcUaServer
 		void onTimeout(const boost::system::error_code& ec);
 		bool readValues(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItemVec& gpioBinaryItemVec);
 		bool readPropertyPin(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItem& gpioBinaryItem);
+		bool setValue(OpcUaNodeId& nodeId, bool value);
+		bool getValue(OpcUaNodeId& nodeId, bool& value);
 
 	    InformationModel::SPtr informationModel_;
 		IOService* ioService_;
