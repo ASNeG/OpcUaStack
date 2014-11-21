@@ -11,7 +11,22 @@ LINK_DIRECTORIES( ../../../boost_1_54_0/stage/lib ${LINK_DIRECTORIES} )
 
 
 set (CMAKE_C_FLAGS ${CMAKE_C_FLAGS} "-pthread")
-set (CMAKE_CXX_LINK_FLAGS "-ldl -lwiringPi")
+set (CMAKE_CXX_LINK_FLAGS "-ldl")
+
+
+EXECUTE_PROCESS( COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCHITECTURE )
+message( STATUS "Architecture: ${ARCHITECTURE}" )
+if (  ${ARCHITECTURE} STREQUAL "armv6l" )
+
+  add_definitions(
+    -DRASPBERRY
+  )
+
+  set (CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -lwiringPi")
+ 
+endif()
+
+
 
 find_library(
     OPCUA_STACK_CORE 

@@ -15,6 +15,7 @@ namespace OpcUaServer
 	  public:
 		OpcUaNodeId nodeIdValue_;
 		OpcUaByte pin_;
+                uint32_t wPi_;
 	};
 
 	class Raspberry
@@ -35,6 +36,7 @@ namespace OpcUaServer
 		bool readPropertyPin(BaseNodeClass::SPtr baseNodeClass, GpioBinaryItem& gpioBinaryItem);
 		bool setValue(OpcUaNodeId& nodeId, bool value);
 		bool getValue(OpcUaNodeId& nodeId, bool& value);
+                bool pinTowPi(OpcUaByte pin, uint32_t& wPi);
 
 	    InformationModel::SPtr informationModel_;
 		IOService* ioService_;

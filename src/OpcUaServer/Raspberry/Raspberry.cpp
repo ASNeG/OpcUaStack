@@ -1,5 +1,3 @@
-#undef RASPBERRY
-
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaServer/Raspberry/Raspberry.h"
 #ifdef RASPBERRY
@@ -39,6 +37,9 @@ namespace OpcUaServer
 	void
 	Raspberry::start(void)
 	{
+#ifndef RASPBERRY
+		return;
+#endif
 		OpcUaNodeId nodeId;
 		OpcUaString::SPtr nodeIdString;
 		BaseNodeClass::SPtr baseNodeClass;
@@ -61,28 +62,50 @@ namespace OpcUaServer
 		if (baseNodeClass.get() != nullptr) readValues(baseNodeClass, inputGpioBinaryItemVec_);
 
 #ifdef RASPBERRY
-		wiringPiSetup();
+		if (wiringPiSetup() == -1) {
+			Log(Error, "wiring pipe setup error");
+			return;
+		}
 #endif
 
 		for (it=outputGpioBinaryItemVec_.begin(); it!=outputGpioBinaryItemVec_.end(); it++) {
 
+			if (!pinTowPi(it->pin_, it->wPi_)) {
+				Log(Error, "cannot map pin to wPi")
+					.parameter("Pin", (uint32_t)it->pin_)
+					.parameter("NodeId", it->nodeIdValue_);
+				return;
+
+			}
+
 			Log(Debug, "init output pin")
 				.parameter("Pin", (uint32_t)it->pin_)
-				.parameter("NodeId", it->nodeIdValue_);
+				.parameter("NodeId", it->nodeIdValue_)
+				.parameter("wPi", it->wPi_);
 
 #ifdef RASPBERRY
-			pinMode(it->pin_, OUTPUT);
+			pinMode(it->wPi_, OUTPUT);
 #endif
 		}
 
 		for (it=inputGpioBinaryItemVec_.begin(); it!=inputGpioBinaryItemVec_.end(); it++) {
 
+			if (!pinTowPi(it->pin_, it->wPi_)) {
+				Log(Error, "cannot map pin to wPi")
+					.parameter("Pin", (uint32_t)it->pin_)
+					.parameter("NodeId", it->nodeIdValue_);
+				return;
+
+			}
+
+
 			Log(Debug, "init input pin")
 				.parameter("Pin", (uint32_t)it->pin_)
-				.parameter("NodeId", it->nodeIdValue_);
+				.parameter("NodeId", it->nodeIdValue_)
+				.parameter("wPi", it->wPi_);
 
 #ifdef RASPBERRY
-			pinMode(it->pin_, INPUT);
+			pinMode(it->wPi_, INPUT);
 #endif
 		}
 
@@ -106,19 +129,20 @@ namespace OpcUaServer
 
 			Log(Debug, "Set output pin")
 				.parameter("Pin", (uint32_t)it->pin_)
+				.parameter("wPi", it->wPi_)
 				.parameter("NodeId", it->nodeIdValue_)
 				.parameter("Value", value);
 
 #ifdef RASPBERRY
-			if (value) digitalWrite(it->pin_, 1);
-			else digitalWrite(it->pin_, 0);
+			if (value) digitalWrite(it->wPi_, 1);
+			else digitalWrite(it->wPi_, 0);
 #endif
 		}
 
 		for (it=inputGpioBinaryItemVec_.begin(); it!=inputGpioBinaryItemVec_.end(); it++) {
 			int value = 0;
 #ifdef RASPBERRY
-			value = digitalRead(it->pin_);
+			value = digitalRead(it->wPi_);
 #endif
 
 			bool val;
@@ -128,6 +152,7 @@ namespace OpcUaServer
 
 			Log(Debug, "Get input pin")
 				.parameter("Pin", (uint32_t)it->pin_)
+				.parameter("wPi", it->wPi_)
 				.parameter("NodeId", it->nodeIdValue_)
 				.parameter("Value", val);
 
@@ -207,6 +232,44 @@ namespace OpcUaServer
 		}
 
 		return false;
+	}
+
+	bool 
+	Raspberry::pinTowPi(OpcUaByte pin, uint32_t& wPi)
+	{
+		switch((uint32_t)pin)
+		{
+			case 3: wPi = 8; break;
+			case 5: wPi = 9; break;
+			case 7: wPi = 7; break;
+			case 8: wPi = 15; break;
+			case 10: wPi = 16; break;
+			case 11: wPi = 0; break;
+			case 12: wPi = 1; break;
+			case 13: wPi = 2; break;
+			case 15: wPi = 3; break;
+			case 16: wPi = 4; break;
+			case 18: wPi = 5; break;
+			case 19: wPi = 12; break;
+			case 21: wPi = 13; break;
+			case 22: wPi = 6; break;
+			case 23: wPi = 14; break;
+			case 24: wPi = 10; break;
+			case 26: wPi = 11; break;
+			case 27: wPi = 30; break;
+			case 28: wPi = 31; break;
+			case 29: wPi = 21; break;
+			case 31: wPi = 22; break;
+			case 32: wPi = 26; break;
+			case 33: wPi = 23; break;
+			case 35: wPi = 24; break;
+			case 36: wPi = 27; break;
+			case 37: wPi = 25; break;
+			case 38: wPi = 28; break;
+			case 40: wPi = 29; break;
+			default: return false; 
+		}
+		return true;
 	}
 
 }
