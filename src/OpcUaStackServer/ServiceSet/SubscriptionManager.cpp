@@ -138,6 +138,10 @@ namespace OpcUaStackServer
 				break;
 			}
 			case NeedAttention:
+			{
+				// FIXME: todo  - trx can be empty here
+				break;
+			}
 			case SendPublish:
 			{
 				serviceTransactionPublishList_.pop_front();

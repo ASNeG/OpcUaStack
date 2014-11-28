@@ -8,6 +8,7 @@ namespace OpcUaStackServer
 
 	NodeSetXmlParser::NodeSetXmlParser(void)
 	: nodeSetAlias_()
+	, xmlnsTypes_("")
 	{
 	}
 
@@ -30,6 +31,8 @@ namespace OpcUaStackServer
 				.parameter("ElementName", "UANodeSet");
 			return false;
 		}
+
+		parseXmlnsTypes(*uaNodeSetTree);
 		
 		boost::property_tree::ptree::iterator it;
 		for (it = uaNodeSetTree->begin(); it != uaNodeSetTree->end(); it++) {
@@ -71,6 +74,25 @@ namespace OpcUaStackServer
 		}
 
 		return true;
+	}
+
+	void 
+	NodeSetXmlParser::parseXmlnsTypes(boost::property_tree::ptree& ptree)
+	{
+		boost::optional<boost::property_tree::ptree&> xmlAttrPtree = ptree.get_child_optional("<xmlattr>");
+		if (!xmlAttrPtree) return;
+
+		boost::property_tree::ptree::iterator it;
+		for (it = xmlAttrPtree->begin(); it != xmlAttrPtree->end(); it++) {
+			std::string attr = it->first;
+			std::string value = it->second.data();
+
+			if (value != "http://opcfoundation.org/UA/2008/02/Types.xsd") continue;
+			if (attr.substr(0, 6) != "xmlns:") continue;
+
+			xmlnsTypes_ = attr.substr(6);
+			return;
+		}
 	}
 
 	bool 
@@ -392,7 +414,7 @@ namespace OpcUaStackServer
 		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		NodeSetValueParser nodeSetValueParser;
-		if (nodeSetValueParser.decodeValue(nodeId, ptree, *dataValue.variant())) {
+		if (nodeSetValueParser.decodeValue(nodeId, ptree, *dataValue.variant(), xmlnsTypes_)) {
 			dataValue.statusCode(Success);
 		}
 		else {

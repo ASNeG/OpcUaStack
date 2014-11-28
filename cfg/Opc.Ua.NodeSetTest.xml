@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<UANodeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.02" LastModified="2013-03-06T05:36:44.0862658Z" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd">
+<UANodeSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.02" LastModified="2013-03-06T05:36:44.0862658Z" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd">
 
-  <UAObject NodeId="ns=1,i=1" BrowseName="TestFolder">
+  <UAObject NodeId="ns=1;i=1" BrowseName="TestFolder">
     <DisplayName>TestFolder</DisplayName>
     <Description>Opc Ua test folder</Description>
     <References>
@@ -10,33 +10,33 @@
     </References>
   </UAObject>
   
-  <UAObject NodeId="ns=1,i=2" BrowseName="BuildInType">
+  <UAObject NodeId="ns=1;i=2" BrowseName="BuildInType">
     <DisplayName>BuildIType</DisplayName>
     <Description>build in types</Description>
     <References>
-      <Reference ReferenceType="Organizes" IsForward="false">ns=1,i=1</Reference>
+      <Reference ReferenceType="Organizes" IsForward="false">ns=1;i=1</Reference>
       <Reference ReferenceType="HasTypeDefinition">i=61</Reference>
     </References>
   </UAObject>
   
-  <UAVariable NodeId="ns=1,i=200" BrowseName="SByte" DataType="i=2">
+  <UAVariable NodeId="ns=1;i=200" BrowseName="SByte" DataType="i=2">
     <DisplayName>SByteValue</DisplayName>
     <Description>SByte test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:SByte>12</uax:SByte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=201" BrowseName="SByteArray" DataType="i=2" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=201" BrowseName="SByteArray" DataType="i=2" ValueRank="1" ArrayDimensions="3">
     <DisplayName>SByteArrayValue</DisplayName>
     <Description>SByte array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfSByte>
@@ -47,24 +47,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=202" BrowseName="Byte" DataType="i=3">
+  <UAVariable NodeId="ns=1;i=202" BrowseName="Byte" DataType="i=3">
     <DisplayName>ByteValue</DisplayName>
     <Description>Byte test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Byte>12</uax:Byte>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=203" BrowseName="ByteArray" DataType="i=3" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=203" BrowseName="ByteArray" DataType="i=3" ValueRank="1" ArrayDimensions="3">
     <DisplayName>ByteArrayValue</DisplayName>
     <Description>Byte array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfByte>
@@ -75,24 +75,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=204" BrowseName="Int16" DataType="i=4">
+  <UAVariable NodeId="ns=1;i=204" BrowseName="Int16" DataType="i=4">
     <DisplayName>Int16Value</DisplayName>
     <Description>Int16 test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Int16>123</uax:Int16>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=205" BrowseName="Int16Array" DataType="i=4" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=205" BrowseName="Int16Array" DataType="i=4" ValueRank="1" ArrayDimensions="3">
     <DisplayName>Int16ArrayValue</DisplayName>
     <Description>Int16 array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfInt16>
@@ -103,24 +103,24 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1,i=206" BrowseName="UInt16" DataType="i=5">
+   <UAVariable NodeId="ns=1;i=206" BrowseName="UInt16" DataType="i=5">
     <DisplayName>UInt16Value</DisplayName>
     <Description>UInt16 test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:UInt16>123</uax:UInt16>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=207" BrowseName="UInt16Array" DataType="i=5" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=207" BrowseName="UInt16Array" DataType="i=5" ValueRank="1" ArrayDimensions="3">
     <DisplayName>UInt16ArrayValue</DisplayName>
     <Description>UInt16 array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfUInt16>
@@ -131,24 +131,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=208" BrowseName="Int32" DataType="i=6">
+  <UAVariable NodeId="ns=1;i=208" BrowseName="Int32" DataType="i=6">
     <DisplayName>Int32Value</DisplayName>
     <Description>int32 test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Int32>123</uax:Int32>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=209" BrowseName="Int32Array" DataType="i=6" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=209" BrowseName="Int32Array" DataType="i=6" ValueRank="1" ArrayDimensions="3">
     <DisplayName>Int32ArrayValue</DisplayName>
     <Description>int32 array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfInt32>
@@ -159,24 +159,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=210" BrowseName="UInt32" DataType="i=7">
+  <UAVariable NodeId="ns=1;i=210" BrowseName="UInt32" DataType="i=7">
     <DisplayName>UInt32Value</DisplayName>
     <Description>uint32 test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:UInt32>123</uax:UInt32>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=211" BrowseName="UInt32Array" DataType="i=7" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=211" BrowseName="UInt32Array" DataType="i=7" ValueRank="1" ArrayDimensions="3">
     <DisplayName>UInt32ArrayValue</DisplayName>
     <Description>uint32 array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfUInt32>
@@ -187,24 +187,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=212" BrowseName="Int64" DataType="i=8">
+  <UAVariable NodeId="ns=1;i=212" BrowseName="Int64" DataType="i=8">
     <DisplayName>Int64Value</DisplayName>
     <Description>int64 test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Int64>123</uax:Int64>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=213" BrowseName="Int64Array" DataType="i=8" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=213" BrowseName="Int64Array" DataType="i=8" ValueRank="1" ArrayDimensions="3">
     <DisplayName>Int64ArrayValue</DisplayName>
     <Description>int64 array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfInt64>
@@ -215,24 +215,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=214" BrowseName="UInt64" DataType="i=9">
+  <UAVariable NodeId="ns=1;i=214" BrowseName="UInt64" DataType="i=9">
     <DisplayName>UInt64Value</DisplayName>
     <Description>uint64 test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:UInt64>123</uax:UInt64>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=215" BrowseName="UInt64Array" DataType="i=9" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=215" BrowseName="UInt64Array" DataType="i=9" ValueRank="1" ArrayDimensions="3">
     <DisplayName>UInt64ArrayValue</DisplayName>
     <Description>uint64 array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfUInt64>
@@ -243,24 +243,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=216" BrowseName="Float" DataType="i=10">
+  <UAVariable NodeId="ns=1;i=216" BrowseName="Float" DataType="i=10">
     <DisplayName>FloatValue</DisplayName>
     <Description>Float test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Float>123</uax:Float>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=217" BrowseName="FloatArray" DataType="i=10" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=217" BrowseName="FloatArray" DataType="i=10" ValueRank="1" ArrayDimensions="3">
     <DisplayName>FloatArrayValue</DisplayName>
     <Description>Float array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfFloat>
@@ -271,24 +271,24 @@
     </Value>
   </UAVariable>
  
-   <UAVariable NodeId="ns=1,i=218" BrowseName="Double" DataType="i=11">
+   <UAVariable NodeId="ns=1;i=218" BrowseName="Double" DataType="i=11">
     <DisplayName>DoubleValue</DisplayName>
     <Description>Double test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Double>123</uax:Double>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=219" BrowseName="DoubleArray" DataType="i=11" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=219" BrowseName="DoubleArray" DataType="i=11" ValueRank="1" ArrayDimensions="3">
     <DisplayName>DoubleArrayValue</DisplayName>
     <Description>Double array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfDouble>
@@ -299,24 +299,24 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=220" BrowseName="Boolean" DataType="i=1">
+  <UAVariable NodeId="ns=1;i=220" BrowseName="Boolean" DataType="i=1">
     <DisplayName>BooleanValue</DisplayName>
     <Description>Boolean test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:Boolean>true</uax:Boolean>
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1,i=221" BrowseName="BooleanArray" DataType="i=1" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=221" BrowseName="BooleanArray" DataType="i=1" ValueRank="1" ArrayDimensions="3">
     <DisplayName>BooleanArrayValue</DisplayName>
     <Description>Boolean array test value</Description>
     <References>
       <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-      <Reference ReferenceType="HasComponent" IsForward="false">ns=1,i=2</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
     </References>
 	<Value>
       <uax:ListOfBoolean>
@@ -326,5 +326,231 @@
       </uax:ListOfBoolean>
     </Value>
   </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=222" BrowseName="String" DataType="i=12">
+    <DisplayName>StringValue</DisplayName>
+    <Description>String test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:String>string</uax:String>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=223" BrowseName="StringArray" DataType="i=12" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>StringArrayValue</DisplayName>
+    <Description>String array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfString>
+        <uax:String>string1</uax:String>
+        <uax:String>string2</uax:String>
+        <uax:String>string3</uax:String>
+      </uax:ListOfString>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=224" BrowseName="ByteString" DataType="i=15">
+    <DisplayName>ByteStringValue</DisplayName>
+    <Description>ByteString test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ByteString>bytestring</uax:ByteString>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=225" BrowseName="ByteStringArray" DataType="i=15" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>ByteStringArrayValue</DisplayName>
+    <Description>ByteString array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfByteString>
+        <uax:ByteString>bytestring1</uax:ByteString>
+        <uax:ByteString>bytestring2</uax:ByteString>
+        <uax:ByteString>bytestring3</uax:ByteString>
+      </uax:ListOfByteString>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=226" BrowseName="LocalizedText" DataType="i=21">
+    <DisplayName>LocalizedTextValue</DisplayName>
+    <Description>LocalizedText test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:LocalizedText>
+	    <Locale>de</Locale>
+		<Text>LocalizedText</Text>
+	  </uax:LocalizedText>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=227" BrowseName="LocalizedTextArray" DataType="i=21" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>LocalizedTextArrayValue</DisplayName>
+    <Description>LocalizedText array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfLocalizedText>
+        <uax:LocalizedText>
+	      <uax:Locale>de</uax:Locale>
+		  <uax:Text>LocalizedText1</uax:Text>
+	    </uax:LocalizedText>
+	    <uax:LocalizedText>
+	      <uax:Locale>de</uax:Locale>
+		  <uax:Text>LocalizedText2</uax:Text>
+	    </uax:LocalizedText>
+	    <uax:LocalizedText>
+	      <uax:Locale>de</uax:Locale>
+		  <uax:Text>LocalizedText3</uax:Text>
+	    </uax:LocalizedText>
+      </uax:ListLocalizedText>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=228" BrowseName="DateTime" DataType="i=13">
+    <DisplayName>DateTimeValue</DisplayName>
+    <Description>DateTime test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:DateTime>2015-01-01T01:01:00Z</uax:DateTime>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=229" BrowseName="DateTimeArray" DataType="i=13" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>DateTimeValueArray</DisplayName>
+    <Description>DateTime array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfDateTime>
+        <uax:DateTime>2015-01-01T01:01:00Z</uax:DateTime>
+        <uax:DateTime>2015-01-01T01:02:00Z</uax:DateTime>
+        <uax:DateTime>2015-01-01T01:03:00Z</uax:DateTime>
+      </uax:ListOfDateTime>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=230" BrowseName="Guid" DataType="i=14">
+    <DisplayName>GuidValue</DisplayName>
+    <Description>Guid test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:Guid><uax:String>00000001-0001-0001-0001-000000000001</uax:String></uax:Guid>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=231" BrowseName="GuidArray" DataType="i=14" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>GuidValueArray</DisplayName>
+    <Description>Guid array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfGuid>
+        <uax:Guid><uax:String>00000001-0001-0001-0001-000000000001</uax:String></uax:Guid>
+		<uax:Guid><uax:String>00000001-0001-0001-0001-000000000002</uax:String></uax:Guid>
+		<uax:Guid><uax:String>00000001-0001-0001-0001-000000000003</uax:String></uax:Guid>
+      </uax:ListOfGuid>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=232" BrowseName="NodeId" DataType="i=17">
+    <DisplayName>NodeIdValue</DisplayName>
+    <Description>NodeId test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:NodeId><uax:Identifier>ns=1;s=String</uax:Identifier></uax:NodeId>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=233" BrowseName="NodeIdArray" DataType="i=17" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>NodeIdValueArray</DisplayName>
+    <Description>NodeId array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfNodeId>
+        <uax:NodeId><uax:Identifier>ns=1;s=String1</uax:Identifier></uax:NodeId>
+		<uax:NodeId><uax:Identifier>ns=1;i=1234</uax:Identifier></uax:NodeId>
+		<uax:NodeId><uax:Identifier>ns=1;s=00000001-0001-0001-0001-000000000001</uax:Identifier></uax:NodeId>
+      </uax:ListOfNodeId>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=234" BrowseName="QualifiedName" DataType="i=20">
+    <DisplayName>QualifiedNameValue</DisplayName>
+    <Description>QualifiedName test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+	  <uax:QualifiedName>
+        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:Name>QualifiedName</uax:Name>
+      </uax:QualifiedName>
+    </Value>
+  </UAVariable>
+  
+  <UAVariable NodeId="ns=1;i=235" BrowseName="QualifiedNameArray" DataType="i=20" ValueRank="1" ArrayDimensions="3">
+    <DisplayName>QualifiedNameValueArray</DisplayName>
+    <Description>QualifiedName array test value</Description>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
+    </References>
+	<Value>
+      <uax:ListOfQualifiedName>
+	  <uax:QualifiedName>
+        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:Name>QualifiedName1</uax:Name>
+      </uax:QualifiedName>
+	  <uax:QualifiedName>
+        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:Name>QualifiedName2</uax:Name>
+      </uax:QualifiedName>
+	  <uax:QualifiedName>
+        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:Name>QualifiedName3</uax:Name>
+      </uax:QualifiedName>
+      </uax:ListOfQualifiedName>
+    </Value>
+  </UAVariable>
+  
+  
+  <!--
+              
+
+  -->
 
 </UANodeSet>

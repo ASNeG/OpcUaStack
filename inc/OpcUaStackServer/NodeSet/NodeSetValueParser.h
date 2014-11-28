@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 		NodeSetValueParser(void);
 		~NodeSetValueParser(void);
 
-		bool decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant);
+		bool decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls = "");
 
 		template<typename T>
 			bool 
@@ -57,6 +57,8 @@ namespace OpcUaStackServer
 			{
 				bool rc;
 				if (dataTypeElement.isArray_) {
+
+					boost::property_tree::ptree::iterator it;
 					OpcUaVariantValue::Vec variantValueVec;
 					rc = decodeSPtr<T>(ptreeValue.front().second, variantValueVec, tag);
 					if (rc) variant.variant(variantValueVec);
@@ -72,15 +74,29 @@ namespace OpcUaStackServer
 		template<typename T>
 			bool decode(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
 			{
-				if (ptree.size() == 0) return false;
+				if (ptree.size() == 0) {
+					Log(Error, "tag empty")
+						.parameter("Tag", tag);
+					return false;
+				}
 
 				boost::property_tree::ptree::iterator it;
 				for (it = ptree.begin(); it!=ptree.end(); it++) {
 					std::string tagValue = cutxmls(it->first);
-					if (tagValue != tag) return false;
+					if (tagValue == "<xmlattr>") continue;
+					if (tagValue != tag) {
+						Log(Error, "Invalid tag")
+							.parameter("ExpectedTag", tag)
+							.parameter("AvailTag", tagValue);
+						return false;
+					}
 
 					T value;
-					if (!decode(it->second, value, tag)) return false;
+					if (!decode(it->second, value, tag)) {
+						Log(Error, "decode error")
+							.parameter("Tag", tag);
+						return false;
+					}
 			
 					OpcUaVariantValue variantValue;
 					variantValue.variant(value);
@@ -92,15 +108,30 @@ namespace OpcUaStackServer
 		template<typename T>
 			bool decodeSPtr(boost::property_tree::ptree& ptree, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
 			{
-				if (ptree.size() == 0) return false;
+	
+				if (ptree.size() == 0) {
+					Log(Error, "tag empty")
+						.parameter("Tag", tag);
+					return false;
+				}
 
 				boost::property_tree::ptree::iterator it;
 				for (it = ptree.begin(); it!=ptree.end(); it++) {
 					std::string tagValue = cutxmls(it->first);
-					if (tagValue != tag) return false;
+					if (tagValue == "<xmlattr>") continue;
+					if (tagValue != tag) {
+						Log(Error, "Invalid tag")
+							.parameter("ExpectedTag", tag)
+							.parameter("AvailTag", tagValue);
+						return false;
+					}
 
 					typename T::SPtr value = T::construct();
-					if (!decode(it->second, value, tag)) return false;
+					if (!decode(it->second, value, tag)) {
+						Log(Error, "decode error")
+							.parameter("Tag", tag);
+						return false;
+					}
 			
 					OpcUaVariantValue variantValue;
 					variantValue.variant(value);
@@ -128,8 +159,13 @@ namespace OpcUaStackServer
 		bool decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
 		bool decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
 		bool decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag);
 		bool decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag);
-
+		bool decode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag);
+		bool decode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag);
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);
@@ -138,7 +174,9 @@ namespace OpcUaStackServer
 		static DataTypeElementMap dataTypeElementMap_;
 		static bool initial_;
 
+		std::string xmls_;
 		std::string cutxmls(const std::string& tag);
+		std::string addxmls(const std::string& tag);
 	};
 
 

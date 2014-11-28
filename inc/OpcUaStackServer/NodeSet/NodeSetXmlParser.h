@@ -23,6 +23,8 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree);
 
 	  private:
+		void parseXmlnsTypes(boost::property_tree::ptree& ptree);
+
 		bool decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
 		bool decodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
 		bool decodeAliases(boost::property_tree::ptree& ptree);
@@ -51,6 +53,7 @@ namespace OpcUaStackServer
 
 		NodeSetAlias nodeSetAlias_;
 		NodeSetValueParser nodeSetValueParser_;
+		std::string xmlnsTypes_;
 	};
 
 }

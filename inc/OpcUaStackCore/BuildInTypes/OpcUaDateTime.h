@@ -20,6 +20,7 @@ namespace OpcUaStackCore
 
 		OpcUaDateTime& operator=(const OpcUaUInt64& dateTime); 
 		operator OpcUaUInt64 const (void); 
+		bool fromISOString(const std::string& dateTimeString);
 
 		void copyTo(OpcUaDateTime& opcUaDataTime);
 

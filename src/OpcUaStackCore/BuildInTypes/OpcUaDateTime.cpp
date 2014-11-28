@@ -63,6 +63,20 @@ namespace OpcUaStackCore
 		return dateTime_;
 	}
 
+	bool 
+	OpcUaDateTime::fromISOString(const std::string& dateTimeString)
+	{
+		std::stringstream ss;
+		boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet();
+		facet->set_iso_extended_format();
+		ss.imbue(std::locale(ss.getloc(), facet));
+		ss.str(dateTimeString);
+		boost::posix_time::ptime timeFromString; 
+		ss >> timeFromString;
+		dateTime(timeFromString);
+		return true;
+	}
+
 	void 
 	OpcUaDateTime::out(std::ostream& os) const
 	{

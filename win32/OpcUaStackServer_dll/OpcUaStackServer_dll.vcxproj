@@ -158,7 +158,9 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetAlias.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBaseParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBinaryParser.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetValueParser.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetValueParser.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/wd 4503 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetXmlParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServer.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.cpp" />

@@ -422,8 +422,10 @@ namespace OpcUaStackCore
 		}
 		else {
 			posBegin = 3;
-			posEnd = nodeIdString.find_first_of(',', posBegin);
-			if (posEnd == std::string::npos) return false;
+			posEnd = nodeIdString.find_first_of(';', posBegin);
+			if (posEnd == std::string::npos) {
+				return false;
+			}
 
 			try {
 				namespaceIndex_ = boost::lexical_cast<uint16_t>(nodeIdString.substr(posBegin, posEnd-posBegin));
@@ -480,7 +482,7 @@ namespace OpcUaStackCore
 	OpcUaNodeIdBase::toString(void) const
 	{
 		std::stringstream nodeIdStream;
-		nodeIdStream << "ns=" << namespaceIndex_ << ","; 
+		nodeIdStream << "ns=" << namespaceIndex_ << ";"; 
 
 		switch(nodeIdType())
 		{

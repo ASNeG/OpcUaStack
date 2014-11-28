@@ -11,7 +11,7 @@
       <Reference ReferenceType="HasTypeDefinition">ns=0,i=77</Reference>
     </References>
   </UAObject>
-  <UAObject NodeId="ns=1,i=12" BrowseName="Mandatory2" EventNotifier="1">
+  <UAObject NodeId="ns=1;i=12" BrowseName="Mandatory2" EventNotifier="1">
     <DisplayName>Mandatory</DisplayName>
     <References>
       <Reference ReferenceType="HasProperty">ns=0,i=112</Reference>
