@@ -103,6 +103,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetAlias.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBaseParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBinaryParser.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetNamespace.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParserIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetXmlParser.h" />
@@ -135,6 +136,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetNamespace.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\Attribute.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeAccess.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeBase.cpp" />
