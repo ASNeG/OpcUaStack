@@ -11,8 +11,8 @@ namespace OpcUaStackServer
 {
 
 	typedef std::vector<std::string> NamespaceVec;
-	typedef std::vector<uint32_t> NamespaceIndexVec;
-	typedef std::map<std::string, uint32_t> NamespaceMap;
+	typedef std::vector<uint16_t> NamespaceIndexVec;
+	typedef std::map<std::string, uint16_t> NamespaceMap;
 
 	class DLLEXPORT NodeSetNamespace
 	{
@@ -20,13 +20,17 @@ namespace OpcUaStackServer
 		NodeSetNamespace(void);
 		~NodeSetNamespace(void);
 
-		void parseXmlnsTypes(boost::property_tree::ptree& ptree);
-		uint32_t mapNamespaceIndex(uint32_t namespaceIndex);
+		void parseNamespaceUris(boost::property_tree::ptree& ptree);
+		uint16_t mapNamespaceIndex(uint16_t localNamespaceIndex);
 		NamespaceVec& namespaceVec(void);
 
 	  private:
-		NamespaceVec globalNamespaceVec_;
-		NamespaceMap globalNamespaceMap_;
+		static bool startup_;
+		static void startup(void);
+		static uint16_t addGlobalNamespace(const std::string& namespaceUri);
+		static NamespaceVec globalNamespaceVec_;
+		static NamespaceMap globalNamespaceMap_;
+		
 		NamespaceIndexVec localNamespaceIndexVec_;
 	};
 

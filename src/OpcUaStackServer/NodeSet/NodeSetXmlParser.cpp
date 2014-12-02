@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		parseNamespaces(*uaNodeSetTree);
 		parseXmlnsTypes(*uaNodeSetTree);
 		
 		boost::property_tree::ptree::iterator it;
@@ -42,6 +43,8 @@ namespace OpcUaStackServer
 			else if (it->first == "<xmlattr>") {
 			}
 			else if (it->first == "<xmlcomment>") {
+			}
+			else if (it->first == "NamespaceUris") {
 			}
 			else if (it->first == "UAObject") {
 				if (!decodeUAObject(it->second)) return false;
@@ -95,6 +98,12 @@ namespace OpcUaStackServer
 		}
 	}
 
+	void 
+	NodeSetXmlParser::parseNamespaces(boost::property_tree::ptree& ptree)
+	{
+		nodeSetNamespace_.parseNamespaceUris(ptree);
+	}
+
 	bool 
 	NodeSetXmlParser::decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
@@ -113,6 +122,11 @@ namespace OpcUaStackServer
 			return false;
 		}
 		objectNodeClass->nodeId().exist(true);
+
+		// replace local namespace index by global namespace index
+		uint16_t localNamepaceIndex = objectNodeClass->nodeId().data().namespaceIndex();
+		uint16_t globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
+		objectNodeClass->nodeId().data().namespaceIndex(globalNamespaceIndex);
 
 		//
 		// attribute BrowseName (mandatory)
@@ -235,6 +249,10 @@ namespace OpcUaStackServer
 					.parameter("ReferenceNodeId", value);
 				return false;
 			}
+
+			uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+			uint16_t globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamespaceIndex);
+			referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
 
 			objectNodeClass->referenceItemMap().add(*referenceTypeNodeId, referenceItem);
 		}

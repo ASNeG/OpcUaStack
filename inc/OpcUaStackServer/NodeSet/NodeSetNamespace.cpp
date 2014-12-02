@@ -1,23 +1,60 @@
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
+#include "OpcUaStackCore/Base/Log.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
+	bool NodeSetNamespace::startup_ = false;
+	NamespaceVec NodeSetNamespace::globalNamespaceVec_;
+	NamespaceMap NodeSetNamespace::globalNamespaceMap_;
+
 	NodeSetNamespace::NodeSetNamespace(void)
-	: globalNamespaceVec_()
-	, globalNamespaceMap_()
-	, localNamespaceIndexVec_()
+	: localNamespaceIndexVec_()
 	{
-		globalNamespaceVec_.push_back("http://opcfoundation.org/UA/");
-		globalNamespaceMap_.insert(std::make_pair("http://opcfoundation.org/UA/", 0));
+		startup();
+		
 	}
 
 	NodeSetNamespace::~NodeSetNamespace(void)
 	{
 	}
 
+	void
+	NodeSetNamespace::startup(void)
+	{
+		if (startup_) return;
+		startup_ = true;
+
+		globalNamespaceVec_.push_back("http://opcfoundation.org/UA/");
+		globalNamespaceMap_.insert(std::make_pair("http://opcfoundation.org/UA/", 0));
+	}
+
+	uint16_t 
+	NodeSetNamespace::addGlobalNamespace(const std::string& namespaceUri)
+	{
+		uint16_t globalNamespaceIndex;
+		NamespaceMap::iterator mit;
+		mit = globalNamespaceMap_.find(namespaceUri);
+		if (mit == globalNamespaceMap_.end()) {
+			globalNamespaceIndex = globalNamespaceMap_.size();
+			globalNamespaceVec_.push_back(namespaceUri);
+			globalNamespaceMap_.insert(std::make_pair(namespaceUri, globalNamespaceIndex));
+
+			Log(Info, "global namespace add")
+				.parameter("NamespaceUri", namespaceUri)
+				.parameter("NamespaceIndex", globalNamespaceIndex);
+		}
+		else {
+			globalNamespaceIndex = mit->second;
+		}
+
+		return globalNamespaceIndex;
+	}
+
 	void 
-	NodeSetNamespace::parseXmlnsTypes(boost::property_tree::ptree& ptree)
+	NodeSetNamespace::parseNamespaceUris(boost::property_tree::ptree& ptree)
 	{
 		localNamespaceIndexVec_.clear();
 		localNamespaceIndexVec_.push_back(0);
@@ -31,29 +68,23 @@ namespace OpcUaStackServer
 		for (it=namespaceUris->begin(); it!=namespaceUris->end(); it++) {
 			if (it->first != "Uri") continue;
 			std::string namespaceUri = it->second.data();
-
-			NamespaceMap::iterator mit;
-			uint32_t globalMamespaceIndex;
-			mit = globalNamespaceMap_.find(namespaceUri);
-			if (mit == globalNamespaceMap_.end()) {
-				globalMamespaceIndex = globalNamespaceMap_.size();
-				globalNamespaceVec_.push_back(namespaceUri);
-				globalNamespaceMap_.insert(std::make_pair(namespaceUri, globalMamespaceIndex));
-			}
-			else {
-				globalMamespaceIndex = mit->second;
-			}
+			uint16_t globalMamespaceIndex = this->addGlobalNamespace(namespaceUri);
 			localNamespaceIndexVec_.push_back(globalMamespaceIndex);
+
+			Log(Info, "local namespace add")
+				.parameter("NamespaceUri", namespaceUri)
+				.parameter("LocalNamespaceIndex", localNamespaceIndexVec_.size()-1)
+				.parameter("GlobalNamespaceIndex", globalMamespaceIndex);
 		}
 	}
 
-	uint32_t 
-	NodeSetNamespace::mapNamespaceIndex(uint32_t namespaceIndex)
+	uint16_t 
+	NodeSetNamespace::mapNamespaceIndex(uint16_t localNamespaceIndex)
 	{
-		if (namespaceIndex >= localNamespaceIndexVec_.size()) {
+		if (localNamespaceIndex >= localNamespaceIndexVec_.size()) {
 			return 999;
 		}
-		return localNamespaceIndexVec_[namespaceIndex];
+		return localNamespaceIndexVec_[localNamespaceIndex];
 	}
 
 	NamespaceVec& 

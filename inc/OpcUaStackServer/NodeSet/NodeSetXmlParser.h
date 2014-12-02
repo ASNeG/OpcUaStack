@@ -8,6 +8,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/NodeSet/NodeSetAlias.h"
 
 namespace OpcUaStackServer
@@ -23,6 +24,7 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree);
 
 	  private:
+		void parseNamespaces(boost::property_tree::ptree& ptree);
 		void parseXmlnsTypes(boost::property_tree::ptree& ptree);
 
 		bool decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
@@ -54,6 +56,7 @@ namespace OpcUaStackServer
 		NodeSetAlias nodeSetAlias_;
 		NodeSetValueParser nodeSetValueParser_;
 		std::string xmlnsTypes_;
+		NodeSetNamespace nodeSetNamespace_;
 	};
 
 }
