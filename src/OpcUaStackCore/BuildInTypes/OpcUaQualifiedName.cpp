@@ -1,3 +1,4 @@
+#include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 
 namespace OpcUaStackCore
@@ -63,6 +64,43 @@ namespace OpcUaStackCore
 	OpcUaQualifiedName::name(void)
 	{
 		return name_;
+	}
+
+	bool 
+	OpcUaQualifiedName::fromString(const std::string& qualifiedNameString)
+	{
+		size_t pos = qualifiedNameString.find(":");
+		if (pos == std::string::npos) {
+			namespaceIndex(0);
+			name(qualifiedNameString);
+			return true;
+		}
+
+		name(qualifiedNameString.substr(pos+1));
+		std::string namespaceIndexString = qualifiedNameString.substr(0, pos);
+
+		try
+		{
+			uint16_t ni = boost::lexical_cast<int16_t>(namespaceIndexString);
+			namespaceIndex(ni);
+		}
+		catch (boost::bad_lexical_cast&)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	std::string
+	OpcUaQualifiedName::toString(void)
+	{
+		std::stringstream ss;
+		if (namespaceIndex_ != 0) {
+			ss << namespaceIndex_ << ":";
+		}
+		ss << name_;
+		return ss.str();
 	}
 		
 	OpcUaQualifiedName& 

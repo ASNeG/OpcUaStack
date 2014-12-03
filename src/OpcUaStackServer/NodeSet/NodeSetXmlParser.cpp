@@ -107,6 +107,9 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
+		uint16_t localNamepaceIndex;
+		uint16_t globalNamespaceIndex;
+
 		//
 		// attribute NodeId (mandatory)
 		//
@@ -124,9 +127,10 @@ namespace OpcUaStackServer
 		objectNodeClass->nodeId().exist(true);
 
 		// replace local namespace index by global namespace index
-		uint16_t localNamepaceIndex = objectNodeClass->nodeId().data().namespaceIndex();
-		uint16_t globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
+		localNamepaceIndex = objectNodeClass->nodeId().data().namespaceIndex();
+		globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
 		objectNodeClass->nodeId().data().namespaceIndex(globalNamespaceIndex);
+
 
 		//
 		// attribute BrowseName (mandatory)
@@ -137,8 +141,17 @@ namespace OpcUaStackServer
 				.parameter("NodeId", *nodeId);
 			return false;
 		}
-		objectNodeClass->browseName().data().set(*browseName);
+		if (!objectNodeClass->browseName().data().fromString(*browseName)) {
+			Log(Error, "invalid BrowseName in node set")
+				.parameter("NodeId", *nodeId);
+			return false;
+		}
 		objectNodeClass->browseName().exist(true);
+
+		// replace local namespace index by global namespace index
+		globalNamespaceIndex = objectNodeClass->browseName().data().namespaceIndex();
+		globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
+		objectNodeClass->browseName().data().namespaceIndex(globalNamespaceIndex);
 
 		//
 		// attribute DisplayName (mandatory)

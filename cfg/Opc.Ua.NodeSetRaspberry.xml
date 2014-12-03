@@ -5,7 +5,7 @@
         <Uri>http://yourorganisation.org/Raspberry/</Uri>
     </NamespaceUris>
 
-  <UAObject NodeId="ns=1;s=Raspberry" BrowseName="Raspberry">
+  <UAObject NodeId="ns=1;s=Raspberry" BrowseName="1:Raspberry">
     <DisplayName>Raspberry</DisplayName>
     <Description>Raspberry folder</Description>
     <References>
@@ -14,7 +14,7 @@
     </References>
   </UAObject>
   
-  <UAObject NodeId="ns=1;s=Raspberry.BinaryOutput" BrowseName="Output">
+  <UAObject NodeId="ns=1;s=Raspberry.BinaryOutput" BrowseName="1:Output">
     <DisplayName>BinaryOutput</DisplayName>
     <Description>output objects</Description>
     <References>
@@ -23,7 +23,7 @@
     </References>
   </UAObject>
   
-  <UAObject NodeId="ns=1;s=Raspberry.BinaryInput" BrowseName="Input">
+  <UAObject NodeId="ns=1;s=Raspberry.BinaryInput" BrowseName="1:Input">
     <DisplayName>BinaryInput</DisplayName>
     <Description>input objects</Description>
     <References>
@@ -32,7 +32,7 @@
     </References>
   </UAObject>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput1" BrowseName="Value" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput1" BrowseName="1:Value" DataType="i=1">
     <DisplayName>BinaryOutput1</DisplayName>
     <Description>output value</Description>
     <References>
@@ -44,7 +44,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Pin3" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Pin3" BrowseName="1:Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for output value</Description>
     <References>
@@ -56,7 +56,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Description3" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Description3" BrowseName="1:Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for output value</Description>
     <References>
@@ -68,7 +68,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput2" BrowseName="Value" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput2" BrowseName="1:Value" DataType="i=1">
     <DisplayName>BinaryOutput2</DisplayName>
     <Description>output value</Description>
     <References>
@@ -80,7 +80,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Pin5" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Pin5" BrowseName="1:Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for output value</Description>
     <References>
@@ -92,7 +92,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Description5" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Description5" BrowseName="1:Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for output value</Description>
     <References>
@@ -104,7 +104,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput3" BrowseName="Value" DataType="i=1">
+   <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput3" BrowseName="1:Value" DataType="i=1">
     <DisplayName>BinaryOutput3</DisplayName>
     <Description>output value</Description>
     <References>
@@ -116,7 +116,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Pin7" BrowseName="Pin" DataType="i=1">
+   <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Pin7" BrowseName="1:Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for output value</Description>
     <References>
@@ -128,7 +128,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Description7" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryOutput.Description7" BrowseName="1:Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for output value</Description>
     <References>
@@ -140,7 +140,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput1" BrowseName="Value" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput1" BrowseName="1:Value" DataType="i=1">
     <DisplayName>BinaryInput1</DisplayName>
     <Description>Input value</Description>
     <References>
@@ -152,7 +152,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Pin11" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Pin11" BrowseName="1:Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for Input value</Description>
     <References>
@@ -164,7 +164,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Description11" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Description11" BrowseName="1:Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for Input value</Description>
     <References>
@@ -176,7 +176,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput2" BrowseName="Value" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput2" BrowseName="1:Value" DataType="i=1">
     <DisplayName>BinaryInput2</DisplayName>
     <Description>Input value</Description>
     <References>
@@ -188,7 +188,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Pin13" BrowseName="Pin" DataType="i=1">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Pin13" BrowseName="1:Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for Input value</Description>
     <References>
@@ -200,7 +200,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Description13" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Description13" BrowseName="1:Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for Input value</Description>
     <References>
@@ -212,7 +212,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput3" BrowseName="Value" DataType="i=1">
+   <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput3" BrowseName="1:Value" DataType="i=1">
     <DisplayName>BinaryInput3</DisplayName>
     <Description>Input value</Description>
     <References>
@@ -224,7 +224,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Pin15" BrowseName="Pin" DataType="i=1">
+   <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Pin15" BrowseName="1:Pin" DataType="i=1">
     <DisplayName>Pin</DisplayName>
     <Description>pin for Input value</Description>
     <References>
@@ -236,7 +236,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Description15" BrowseName="Description" DataType="i=12">
+  <UAVariable NodeId="ns=1;s=Raspberry.BinaryInput.Description15" BrowseName="1:Description" DataType="i=12">
     <DisplayName>Description</DisplayName>
     <Description>description for Input value</Description>
     <References>

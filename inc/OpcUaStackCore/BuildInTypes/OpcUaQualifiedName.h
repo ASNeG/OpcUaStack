@@ -22,10 +22,13 @@ namespace OpcUaStackCore
 		void name(const std::string& name);
 		void name(const OpcUaString& name);
 		OpcUaString& name(void);
+		bool fromString(const std::string& qualifiedNameString);
+		std::string toString(void);
+
 		OpcUaQualifiedName& operator=(const std::string& name);
 		OpcUaQualifiedName& operator=(const OpcUaUInt16& namespaceIndex);
 		operator std::string const (void); 
-		operator OpcUaUInt16 const (void);
+		operator OpcUaUInt16 const (void); 
 
 		void copyTo(OpcUaQualifiedName& qualifiedName);
 		bool operator!=(const OpcUaQualifiedName& opcUaQualifiedName) const;

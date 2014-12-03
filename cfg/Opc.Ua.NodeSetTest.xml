@@ -5,7 +5,7 @@
         <Uri>http://yourorganisation.org/Test-Server/</Uri>
     </NamespaceUris>
 
-  <UAObject NodeId="ns=1;i=1" BrowseName="TestFolder">
+  <UAObject NodeId="ns=1;i=1" BrowseName="1:TestFolder">
     <DisplayName>TestFolder</DisplayName>
     <Description>Opc Ua test folder</Description>
     <References>
@@ -14,7 +14,7 @@
     </References>
   </UAObject>
   
-  <UAObject NodeId="ns=1;i=2" BrowseName="BuildInType">
+  <UAObject NodeId="ns=1;i=2" BrowseName="1:BuildInType">
     <DisplayName>BuildIType</DisplayName>
     <Description>build in types</Description>
     <References>
@@ -23,7 +23,7 @@
     </References>
   </UAObject>
   
-  <UAVariable NodeId="ns=1;i=200" BrowseName="SByte" DataType="i=2">
+  <UAVariable NodeId="ns=1;i=200" BrowseName="1:SByte" DataType="i=2">
     <DisplayName>SByteValue</DisplayName>
     <Description>SByte test value</Description>
     <References>
@@ -35,7 +35,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=201" BrowseName="SByteArray" DataType="i=2" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=201" BrowseName="1:SByteArray" DataType="i=2" ValueRank="1" ArrayDimensions="3">
     <DisplayName>SByteArrayValue</DisplayName>
     <Description>SByte array test value</Description>
     <References>
@@ -51,7 +51,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=202" BrowseName="Byte" DataType="i=3">
+  <UAVariable NodeId="ns=1;i=202" BrowseName="1:Byte" DataType="i=3">
     <DisplayName>ByteValue</DisplayName>
     <Description>Byte test value</Description>
     <References>
@@ -63,7 +63,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=203" BrowseName="ByteArray" DataType="i=3" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=203" BrowseName="1:ByteArray" DataType="i=3" ValueRank="1" ArrayDimensions="3">
     <DisplayName>ByteArrayValue</DisplayName>
     <Description>Byte array test value</Description>
     <References>
@@ -79,7 +79,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=204" BrowseName="Int16" DataType="i=4">
+  <UAVariable NodeId="ns=1;i=204" BrowseName="1:Int16" DataType="i=4">
     <DisplayName>Int16Value</DisplayName>
     <Description>Int16 test value</Description>
     <References>
@@ -91,7 +91,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=205" BrowseName="Int16Array" DataType="i=4" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=205" BrowseName="1:Int16Array" DataType="i=4" ValueRank="1" ArrayDimensions="3">
     <DisplayName>Int16ArrayValue</DisplayName>
     <Description>Int16 array test value</Description>
     <References>
@@ -107,7 +107,7 @@
     </Value>
   </UAVariable>
   
-   <UAVariable NodeId="ns=1;i=206" BrowseName="UInt16" DataType="i=5">
+   <UAVariable NodeId="ns=1;i=206" BrowseName="1:UInt16" DataType="i=5">
     <DisplayName>UInt16Value</DisplayName>
     <Description>UInt16 test value</Description>
     <References>
@@ -119,7 +119,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=207" BrowseName="UInt16Array" DataType="i=5" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=207" BrowseName="1:UInt16Array" DataType="i=5" ValueRank="1" ArrayDimensions="3">
     <DisplayName>UInt16ArrayValue</DisplayName>
     <Description>UInt16 array test value</Description>
     <References>
@@ -135,7 +135,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=208" BrowseName="Int32" DataType="i=6">
+  <UAVariable NodeId="ns=1;i=208" BrowseName="1:Int32" DataType="i=6">
     <DisplayName>Int32Value</DisplayName>
     <Description>int32 test value</Description>
     <References>
@@ -147,7 +147,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=209" BrowseName="Int32Array" DataType="i=6" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=209" BrowseName="1:Int32Array" DataType="i=6" ValueRank="1" ArrayDimensions="3">
     <DisplayName>Int32ArrayValue</DisplayName>
     <Description>int32 array test value</Description>
     <References>
@@ -163,7 +163,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=210" BrowseName="UInt32" DataType="i=7">
+  <UAVariable NodeId="ns=1;i=210" BrowseName="1:UInt32" DataType="i=7">
     <DisplayName>UInt32Value</DisplayName>
     <Description>uint32 test value</Description>
     <References>
@@ -175,7 +175,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=211" BrowseName="UInt32Array" DataType="i=7" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=211" BrowseName="1:UInt32Array" DataType="i=7" ValueRank="1" ArrayDimensions="3">
     <DisplayName>UInt32ArrayValue</DisplayName>
     <Description>uint32 array test value</Description>
     <References>
@@ -191,7 +191,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=212" BrowseName="Int64" DataType="i=8">
+  <UAVariable NodeId="ns=1;i=212" BrowseName="1:Int64" DataType="i=8">
     <DisplayName>Int64Value</DisplayName>
     <Description>int64 test value</Description>
     <References>
@@ -203,7 +203,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=213" BrowseName="Int64Array" DataType="i=8" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=213" BrowseName="1:Int64Array" DataType="i=8" ValueRank="1" ArrayDimensions="3">
     <DisplayName>Int64ArrayValue</DisplayName>
     <Description>int64 array test value</Description>
     <References>
@@ -219,7 +219,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=214" BrowseName="UInt64" DataType="i=9">
+  <UAVariable NodeId="ns=1;i=214" BrowseName="1:UInt64" DataType="i=9">
     <DisplayName>UInt64Value</DisplayName>
     <Description>uint64 test value</Description>
     <References>
@@ -231,7 +231,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=215" BrowseName="UInt64Array" DataType="i=9" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=215" BrowseName="1:UInt64Array" DataType="i=9" ValueRank="1" ArrayDimensions="3">
     <DisplayName>UInt64ArrayValue</DisplayName>
     <Description>uint64 array test value</Description>
     <References>
@@ -247,7 +247,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=216" BrowseName="Float" DataType="i=10">
+  <UAVariable NodeId="ns=1;i=216" BrowseName="1:Float" DataType="i=10">
     <DisplayName>FloatValue</DisplayName>
     <Description>Float test value</Description>
     <References>
@@ -259,7 +259,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=217" BrowseName="FloatArray" DataType="i=10" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=217" BrowseName="1:FloatArray" DataType="i=10" ValueRank="1" ArrayDimensions="3">
     <DisplayName>FloatArrayValue</DisplayName>
     <Description>Float array test value</Description>
     <References>
@@ -275,7 +275,7 @@
     </Value>
   </UAVariable>
  
-   <UAVariable NodeId="ns=1;i=218" BrowseName="Double" DataType="i=11">
+   <UAVariable NodeId="ns=1;i=218" BrowseName="1:Double" DataType="i=11">
     <DisplayName>DoubleValue</DisplayName>
     <Description>Double test value</Description>
     <References>
@@ -287,7 +287,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=219" BrowseName="DoubleArray" DataType="i=11" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=219" BrowseName="1:DoubleArray" DataType="i=11" ValueRank="1" ArrayDimensions="3">
     <DisplayName>DoubleArrayValue</DisplayName>
     <Description>Double array test value</Description>
     <References>
@@ -303,7 +303,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=220" BrowseName="Boolean" DataType="i=1">
+  <UAVariable NodeId="ns=1;i=220" BrowseName="1:Boolean" DataType="i=1">
     <DisplayName>BooleanValue</DisplayName>
     <Description>Boolean test value</Description>
     <References>
@@ -315,7 +315,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=221" BrowseName="BooleanArray" DataType="i=1" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=221" BrowseName="1:BooleanArray" DataType="i=1" ValueRank="1" ArrayDimensions="3">
     <DisplayName>BooleanArrayValue</DisplayName>
     <Description>Boolean array test value</Description>
     <References>
@@ -331,7 +331,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=222" BrowseName="String" DataType="i=12">
+  <UAVariable NodeId="ns=1;i=222" BrowseName="1:String" DataType="i=12">
     <DisplayName>StringValue</DisplayName>
     <Description>String test value</Description>
     <References>
@@ -343,7 +343,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=223" BrowseName="StringArray" DataType="i=12" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=223" BrowseName="1:StringArray" DataType="i=12" ValueRank="1" ArrayDimensions="3">
     <DisplayName>StringArrayValue</DisplayName>
     <Description>String array test value</Description>
     <References>
@@ -359,7 +359,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=224" BrowseName="ByteString" DataType="i=15">
+  <UAVariable NodeId="ns=1;i=224" BrowseName="1:ByteString" DataType="i=15">
     <DisplayName>ByteStringValue</DisplayName>
     <Description>ByteString test value</Description>
     <References>
@@ -371,7 +371,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=225" BrowseName="ByteStringArray" DataType="i=15" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=225" BrowseName="1:ByteStringArray" DataType="i=15" ValueRank="1" ArrayDimensions="3">
     <DisplayName>ByteStringArrayValue</DisplayName>
     <Description>ByteString array test value</Description>
     <References>
@@ -387,7 +387,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=226" BrowseName="LocalizedText" DataType="i=21">
+  <UAVariable NodeId="ns=1;i=226" BrowseName="1:LocalizedText" DataType="i=21">
     <DisplayName>LocalizedTextValue</DisplayName>
     <Description>LocalizedText test value</Description>
     <References>
@@ -402,7 +402,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=227" BrowseName="LocalizedTextArray" DataType="i=21" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=227" BrowseName="1:LocalizedTextArray" DataType="i=21" ValueRank="1" ArrayDimensions="3">
     <DisplayName>LocalizedTextArrayValue</DisplayName>
     <Description>LocalizedText array test value</Description>
     <References>
@@ -427,7 +427,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=228" BrowseName="DateTime" DataType="i=13">
+  <UAVariable NodeId="ns=1;i=228" BrowseName="1:DateTime" DataType="i=13">
     <DisplayName>DateTimeValue</DisplayName>
     <Description>DateTime test value</Description>
     <References>
@@ -439,7 +439,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=229" BrowseName="DateTimeArray" DataType="i=13" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=229" BrowseName="1:DateTimeArray" DataType="i=13" ValueRank="1" ArrayDimensions="3">
     <DisplayName>DateTimeValueArray</DisplayName>
     <Description>DateTime array test value</Description>
     <References>
@@ -455,7 +455,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=230" BrowseName="Guid" DataType="i=14">
+  <UAVariable NodeId="ns=1;i=230" BrowseName="1:Guid" DataType="i=14">
     <DisplayName>GuidValue</DisplayName>
     <Description>Guid test value</Description>
     <References>
@@ -467,7 +467,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=231" BrowseName="GuidArray" DataType="i=14" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=231" BrowseName="1:GuidArray" DataType="i=14" ValueRank="1" ArrayDimensions="3">
     <DisplayName>GuidValueArray</DisplayName>
     <Description>Guid array test value</Description>
     <References>
@@ -483,7 +483,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=232" BrowseName="NodeId" DataType="i=17">
+  <UAVariable NodeId="ns=1;i=232" BrowseName="1:NodeId" DataType="i=17">
     <DisplayName>NodeIdValue</DisplayName>
     <Description>NodeId test value</Description>
     <References>
@@ -495,7 +495,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=233" BrowseName="NodeIdArray" DataType="i=17" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=233" BrowseName="1:NodeIdArray" DataType="i=17" ValueRank="1" ArrayDimensions="3">
     <DisplayName>NodeIdValueArray</DisplayName>
     <Description>NodeId array test value</Description>
     <References>
@@ -511,7 +511,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=234" BrowseName="QualifiedName" DataType="i=20">
+  <UAVariable NodeId="ns=1;i=234" BrowseName="1:QualifiedName" DataType="i=20">
     <DisplayName>QualifiedNameValue</DisplayName>
     <Description>QualifiedName test value</Description>
     <References>
@@ -526,7 +526,7 @@
     </Value>
   </UAVariable>
   
-  <UAVariable NodeId="ns=1;i=235" BrowseName="QualifiedNameArray" DataType="i=20" ValueRank="1" ArrayDimensions="3">
+  <UAVariable NodeId="ns=1;i=235" BrowseName="1:QualifiedNameArray" DataType="i=20" ValueRank="1" ArrayDimensions="3">
     <DisplayName>QualifiedNameValueArray</DisplayName>
     <Description>QualifiedName array test value</Description>
     <References>
