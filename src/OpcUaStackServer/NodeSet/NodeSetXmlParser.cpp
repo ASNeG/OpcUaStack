@@ -153,6 +153,7 @@ namespace OpcUaStackServer
 		globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
 		objectNodeClass->browseName().data().namespaceIndex(globalNamespaceIndex);
 
+
 		//
 		// attribute DisplayName (mandatory)
 		//
@@ -162,7 +163,12 @@ namespace OpcUaStackServer
 				.parameter("NodeId", *nodeId);
 			return false;
 		}
-		objectNodeClass->displayName().data().set("", *displayName);
+
+		std::string displayNameLocaleString = "";
+		boost::optional<std::string> displayNameLocale = ptree.get_optional<std::string>("DisplayName.<xmlattr>.Locale");
+		if (displayNameLocale) displayNameLocaleString = *displayNameLocale;
+
+		objectNodeClass->displayName().data().set(displayNameLocaleString, *displayName);
 		objectNodeClass->displayName().exist(true);
 
 
@@ -171,7 +177,11 @@ namespace OpcUaStackServer
 		//
 		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
 		if (description) {
-			objectNodeClass->description().data().set("", *description);
+			std::string descriptionLocaleString = "";
+			boost::optional<std::string> descriptionLocale = ptree.get_optional<std::string>("Description.<xmlattr>.Locale");
+			if (descriptionLocale) descriptionLocaleString = *descriptionLocale;
+
+			objectNodeClass->description().data().set(descriptionLocaleString, *description);
 		}
 		else {
 			objectNodeClass->description().data().set("", "");
