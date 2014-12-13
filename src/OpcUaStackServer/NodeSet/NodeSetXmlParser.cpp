@@ -46,6 +46,8 @@ namespace OpcUaStackServer
 			}
 			else if (it->first == "NamespaceUris") {
 			}
+			else if (it->first == "Extensions") {
+			}
 			else if (it->first == "UAObject") {
 				if (!decodeUAObject(it->second)) return false;
 			}
@@ -417,8 +419,8 @@ namespace OpcUaStackServer
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		bool isVariable = true;
-		if (variableNodeClassSPtr->browseName().data().name().value() == "InputArguments") isVariable = false;
-		if (variableNodeClassSPtr->browseName().data().name().value() == "OutputArguments") isVariable = false;
+		//if (variableNodeClassSPtr->browseName().data().name().value() == "InputArguments") isVariable = false;
+		//if (variableNodeClassSPtr->browseName().data().name().value() == "OutputArguments") isVariable = false;
 
 		//
 		// decode References
