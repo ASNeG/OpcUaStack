@@ -1067,6 +1067,12 @@ namespace OpcUaStackCore
 	void 
 	OpcUaVariant::pushBack(const OpcUaVariantValue& variantValue)
 	{
+		if (arrayLength_ == -1 && variantValueVec_.size() == 1) {
+			variantValueVec_[0] = variantValue;
+			arrayLength_ = variantValueVec_.size();
+			return;
+		}
+
 		variantValueVec_.push_back(variantValue);
 		arrayLength_ = variantValueVec_.size();
 	}

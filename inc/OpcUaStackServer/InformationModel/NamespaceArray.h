@@ -24,6 +24,7 @@ namespace OpcUaStackServer
 
 		void namespaceArray(std::vector<std::string>& namespaceArray);
 		bool addNamespaceName(const std::string& namespaceName);
+		bool addNamespaceNames(std::vector<std::string>& namespaceNameVec);
 		int32_t getNamespaceIndex(const std::string& namespaceName);
 		std::string getNamespaceName(uint32_t namespaceIndex);
 		bool expandedNodeIdToNodeId(OpcUaExpandedNodeId& expandedNodeId, OpcUaNodeId& nodeId);

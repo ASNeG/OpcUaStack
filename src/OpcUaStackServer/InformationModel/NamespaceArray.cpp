@@ -22,10 +22,15 @@ namespace OpcUaStackServer
 	void 
 	NamespaceArray::namespaceArray(std::vector<std::string>& namespaceArray)
 	{
-		OpcUaVariant variant;
-		informationModel_->getValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant);
-		for (int32_t idx=0; idx<variant.arrayLength(); idx++) {
-			OpcUaString::SPtr stringValue = variant.variantSPtr<OpcUaString>((uint32_t)idx);
+		namespaceArray.clear();
+
+		OpcUaDataValue dataValue;
+		if (!informationModel_->getValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue)) {
+			return;
+		}
+		
+		for (int32_t idx=0; idx<dataValue.variant()->arrayLength(); idx++) {
+			OpcUaString::SPtr stringValue = dataValue.variant()->variantSPtr<OpcUaString>((uint32_t)idx);
 			namespaceArray.push_back(stringValue->value());
 		}
 	}
@@ -33,14 +38,40 @@ namespace OpcUaStackServer
 	bool 
 	NamespaceArray::addNamespaceName(const std::string& namespaceName)
 	{
+		OpcUaDataValue dataValue;
+		if (!informationModel_->getValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue)) {
+			return false;
+		}
+
 		OpcUaString::SPtr stringValue = OpcUaString::construct();
 		*stringValue = namespaceName;
+		dataValue.variant()->pushBack(stringValue);
+		dataValue.statusCode(Success);
+		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		
+		return informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue);
+	}
 
-		OpcUaVariant variant;
-		informationModel_->getValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant);
-		variant.pushBack(stringValue);
-		informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant);
-		return true;
+	bool 
+	NamespaceArray::addNamespaceNames(std::vector<std::string>& namespaceNameVec)
+	{
+		OpcUaDataValue dataValue;
+		if (!informationModel_->getValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue)) {
+			return false;
+		}
+
+		std::vector<std::string>::iterator it;
+		for (it = namespaceNameVec.begin(); it != namespaceNameVec.end(); it++) {
+			OpcUaString::SPtr stringValue = OpcUaString::construct();
+			*stringValue = *it;
+			dataValue.variant()->pushBack(stringValue);
+		}
+		dataValue.statusCode(Success);
+		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		
+		return informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue);
 	}
 
 	int32_t 

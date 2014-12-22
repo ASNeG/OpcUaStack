@@ -139,27 +139,16 @@ namespace OpcUaStackServer
 	bool
 	Server::setInformationModel(void)
 	{
-		// FIXME: todo
-		OpcUaString::SPtr stringValue;
-
-		{ // set NamespaceArray	
-			OpcUaVariant variant;
-		
-			stringValue = OpcUaString::construct();
-			*stringValue = "http://opcfoundation.org/UA/";
-			variant.variant(0, stringValue);
-		
-			variant.arrayLength(1);
-			informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, variant);
+		// add namespaces to namespace array
+		{
+			NodeSetNamespace nodeSetNamespace;
+			NamespaceArray namespaceArray;
+			namespaceArray.informationModel(informationModel_);
+			namespaceArray.addNamespaceNames(nodeSetNamespace.namespaceVec());
 		}
 
-		{ // ServerStatus
-#if 0
-			OpcUaVariant variant;
-			variant.variant((OpcUaUInt32)0);
-			informationModel_->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, variant);
-#endif
-
+		// set server status
+		{ 
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant((OpcUaUInt32)0);
 			dataValue.statusCode(Success);
