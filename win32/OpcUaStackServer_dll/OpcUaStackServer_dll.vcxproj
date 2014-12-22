@@ -102,7 +102,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\ServerArray.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetAlias.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBaseParser.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetBinaryParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetNamespace.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParserIf.h" />
@@ -159,7 +158,6 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerArray.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetAlias.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBaseParser.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBinaryParser.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetValueParser.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/wd 4503 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
