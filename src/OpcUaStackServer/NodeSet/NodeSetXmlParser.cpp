@@ -242,13 +242,20 @@ namespace OpcUaStackServer
 					.parameter("NodeId", nodeId);
 				return false;
 			}
+
+			// check if the reference is included in the alias map 
+			OpcUaNodeId::SPtr referenceTypeNodeId = OpcUaNodeId::construct();
+			bool alias = nodeSetAlias_.map(*referenceTypeString, *referenceTypeNodeId);
 			
-			OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::stringToNodeId(*referenceTypeString);
-			if (referenceTypeNodeId.get() == nullptr) {
-				Log(Error, "reference type unknown in node set")
-					.parameter("NodeId", nodeId)
-					.parameter("ReferenceType", *referenceTypeString);
-				return false;
+			// check if the reference is an standard reference type
+			if (!alias) {
+				referenceTypeNodeId = ReferenceTypeMap::stringToNodeId(*referenceTypeString);
+				if (referenceTypeNodeId.get() == nullptr) {
+					Log(Error, "reference type unknown in node set")
+						.parameter("NodeId", nodeId)
+						.parameter("ReferenceType", *referenceTypeString);
+					return false;
+				}
 			}
 
 			//

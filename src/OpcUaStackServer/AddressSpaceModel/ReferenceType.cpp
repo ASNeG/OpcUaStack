@@ -70,9 +70,11 @@ namespace OpcUaStackServer
 	OpcUaNodeId::SPtr
 	ReferenceTypeMap::stringToNodeId(const std::string& referenceTypeString)
 	{
+		// check if type is a standard reference type
 		ReferenceType referenceType = stringToType(referenceTypeString);
 		if (referenceType != ReferenceType_Unknown) return typeNodeId(referenceType);
 
+		// parse type nodeid 
 		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
 		if (!nodeId->fromString(referenceTypeString)) {
 			OpcUaNodeId::SPtr nodeIdTmp;

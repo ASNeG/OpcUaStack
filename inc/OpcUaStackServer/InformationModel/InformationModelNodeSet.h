@@ -3,7 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
-#include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h" 
 
 namespace OpcUaStackServer
 {
