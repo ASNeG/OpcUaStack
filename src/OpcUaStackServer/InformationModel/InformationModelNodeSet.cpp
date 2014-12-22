@@ -86,8 +86,13 @@ namespace OpcUaStackServer
 			}
 		}
 
-		informationModelSPtr->checkForwardReferences();
 		return true;
 	}
 
+	bool 
+	InformationModelNodeSet::checkForwardReferences(InformationModel::SPtr informationModelSPtr)
+	{
+		informationModelSPtr->checkForwardReferences();
+		return true;
+	}
 }

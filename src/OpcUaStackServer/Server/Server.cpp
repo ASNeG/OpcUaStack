@@ -127,6 +127,12 @@ namespace OpcUaStackServer
 			}
 		}
 
+		// check forward references only once
+		if (!InformationModelNodeSet::checkForwardReferences(informationModel_)) {
+			Log(Error, "node set forward references error");
+			return false;
+		}
+
 		return true;
 	}
 

@@ -15,6 +15,7 @@ namespace OpcUaStackServer
 		~InformationModelNodeSet(void);
 
 		static bool initial(InformationModel::SPtr informationModelSPtr, NodeSetBaseParser& nodeSetBaseParser);
+		static bool checkForwardReferences(InformationModel::SPtr informationModelSPtr);
 	};
 
 }
