@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 	{
 		try 
 		{
-			boost::property_tree::write_xml(configFileName, ptree_);
+			boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+			boost::property_tree::write_xml(configFileName, ptree_, std::locale(), settings);
 		}
 		catch(const boost::property_tree::xml_parser_error& e)
 		{
@@ -39,7 +40,7 @@ namespace OpcUaStackCore
 
 		try
 		{
-		    boost::property_tree::read_xml(configFileName, ptree_);
+			boost::property_tree::read_xml(configFileName, ptree_, boost::property_tree::xml_parser::trim_whitespace);
 		}
 		catch (const boost::property_tree::xml_parser_error& e)
 		{
