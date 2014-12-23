@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 		Log(Info, "init opc ua server stack session");
 		rc = rc && initSession();
 
-#if 1
+#if 0
 		writeInformationModel("NodeSet.xml");
 #endif
 
