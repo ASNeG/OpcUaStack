@@ -135,7 +135,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetNamespace.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\Attribute.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeAccess.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\AttributeBase.cpp" />
@@ -158,6 +157,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerArray.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetAlias.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetBaseParser.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetNamespace.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetValueParser.cpp">
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/wd 4503 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>

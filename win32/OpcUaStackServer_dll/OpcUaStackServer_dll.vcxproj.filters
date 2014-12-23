@@ -376,7 +376,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\ServerArray.cpp">
       <Filter>src\InformationModel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetNamespace.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetNamespace.cpp">
       <Filter>src\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>

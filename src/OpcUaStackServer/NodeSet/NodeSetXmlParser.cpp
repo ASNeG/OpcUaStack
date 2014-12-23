@@ -193,13 +193,41 @@ namespace OpcUaStackServer
 		//
 		// attribute WriteMask
 		//
-		objectNodeClass->writeMask().data() = 0;
+		OpcUaUInt32 writeMask = 0;
+		boost::optional<std::string> writeMaskString = ptree.get_optional<std::string>("<xmlattr>.WriteMask");
+		if (writeMaskString) {
+			try {
+				writeMask = boost::lexical_cast<OpcUaUInt32>(*writeMaskString);
+				objectNodeClass->writeMask().data() = writeMask;
+			} catch(boost::bad_lexical_cast &) {
+				Log(Error, "bad_lexical_cast in WriteMask in node set")
+					.parameter("NodeId", nodeId);
+				return false;
+			}
+		}
+		else {
+			objectNodeClass->writeMask().data() = writeMask;
+		}
 		objectNodeClass->writeMask().exist(true);
 
 		//
 		// attribute UserWriteMask
 		//
-		objectNodeClass->userWriteMask().data() = 0;
+		OpcUaUInt32 userWriteMask = 0;
+		boost::optional<std::string> userWriteMaskString = ptree.get_optional<std::string>("<xmlattr>.UserWriteMask");
+		if (userWriteMaskString) {
+			try {
+				userWriteMask = boost::lexical_cast<OpcUaUInt32>(*userWriteMaskString);
+				objectNodeClass->userWriteMask().data() = userWriteMask;
+			} catch(boost::bad_lexical_cast &) {
+				Log(Error, "bad_lexical_cast in UserWriteMask in node set")
+					.parameter("NodeId", nodeId);
+				return false;
+			}
+		}
+		else {
+			objectNodeClass->userWriteMask().data() = userWriteMask;
+		}
 		objectNodeClass->userWriteMask().exist(true);
 
 		return true;
@@ -425,10 +453,6 @@ namespace OpcUaStackServer
 		variableNodeClassSPtr->nodeClass().data(NodeClassType_Variable);
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
-		bool isVariable = true;
-		//if (variableNodeClassSPtr->browseName().data().name().value() == "InputArguments") isVariable = false;
-		//if (variableNodeClassSPtr->browseName().data().name().value() == "OutputArguments") isVariable = false;
-
 		//
 		// decode References
 		//
@@ -437,24 +461,20 @@ namespace OpcUaStackServer
 		//
 		// decode DataType (mandatory)
 		//
-		if (isVariable) {
-			boost::optional<std::string> dataTypeString = ptree.get_optional<std::string>("<xmlattr>.DataType");
-			if (!dataTypeString) {
-				Log(Error, "element DataType not exist in node set")
-					.parameter("NodeId", nodeId);
-				return false;
-			}
-
-			OpcUaNodeId dataTypeNodeId;
-			if (!stringToNodeId(*dataTypeString, dataTypeNodeId)) {
-				Log(Error, "invalid DataType in node set")
-					.parameter("NodeId", nodeId)
-					.parameter("DataType", *dataTypeString);
-				return false;
-			}
-			variableNodeClassSPtr->dataType().data(dataTypeNodeId);
-			variableNodeClassSPtr->dataType().exist(true);
+		boost::optional<std::string> dataTypeString = ptree.get_optional<std::string>("<xmlattr>.DataType");
+		if (!dataTypeString) {
+			dataTypeString = "i=24";
 		}
+
+		OpcUaNodeId dataTypeNodeId;
+		if (!stringToNodeId(*dataTypeString, dataTypeNodeId)) {
+			Log(Error, "invalid DataType in node set")
+				.parameter("NodeId", nodeId)
+				.parameter("DataType", *dataTypeString);
+			return false;
+		}
+		variableNodeClassSPtr->dataType().data(dataTypeNodeId);
+		variableNodeClassSPtr->dataType().exist(true);
 
 		//
 		// decode Value (mandatory)
