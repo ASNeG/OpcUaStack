@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		rc = rc && Core::init();
 
 		Log(Info, "init opc ua server stack information model (structure)");
-		rc = rc && initInformationModel();
+		rc = rc && readInformationModel();
 
 		Log(Info, "init opc ua server stack information model (data)");
 		rc = rc && setInformationModel();
@@ -54,6 +54,10 @@ namespace OpcUaStackServer
 
 		Log(Info, "init opc ua server stack session");
 		rc = rc && initSession();
+
+#if 1
+		writeInformationModel("NodeSet.xml");
+#endif
 
 		return rc;
 	}
@@ -86,8 +90,36 @@ namespace OpcUaStackServer
 	{
 	}
 
+	bool
+	Server::writeInformationModel(const std::string& nodeSetFileName)
+	{
+		NodeSetXmlParser nodeSetXmlParser;
+
+		if (!InformationModelNodeSet::initial(nodeSetXmlParser, informationModel_)) {
+			Log(Error, "node set initialisation error")
+				.parameter("NodeSetFileName", nodeSetFileName);
+			return false;
+		}
+
+		ConfigXml configXml;
+		if (!nodeSetXmlParser.encode(configXml.ptree())) {
+			Log(Error, "node set encode error")
+				.parameter("NodeSetFileName", nodeSetFileName);
+			return false;
+		}
+
+		if (!configXml.write(nodeSetFileName)) {
+			Log(Error, "node set file error")
+				.parameter("NodeSetFileName", nodeSetFileName)
+				.parameter("ErrorMessage", configXml.errorMessage());
+			return false;
+		}
+			
+		return true;
+	}
+
 	bool 
-	Server::initInformationModel(void)
+	Server::readInformationModel(void)
 	{
 		std::vector<std::string>::iterator it;
 		std::vector<std::string> configVec;
@@ -115,7 +147,7 @@ namespace OpcUaStackServer
 
 			NodeSetXmlParser nodeSetXmlParser;
 			if (!nodeSetXmlParser.decode(configXml.ptree())) {
-				Log(Error, "node set parser error")
+				Log(Error, "node set decode error")
 					.parameter("NodeSetFileName", nodeSetFileName);
 				return false;
 			}

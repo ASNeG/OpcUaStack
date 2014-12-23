@@ -26,7 +26,8 @@ namespace OpcUaStackServer
 		IOService* ioService(void);
 
 	  private:
-		bool initInformationModel(void);
+		bool readInformationModel(void);
+		bool writeInformationModel(const std::string& nodeSetFileName);
 		bool setInformationModel(void);
 		bool initService(void);
 		bool initSession(void);
