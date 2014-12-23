@@ -11,8 +11,11 @@ namespace OpcUaStackServer
 	NamespaceMap NodeSetNamespace::globalNamespaceMap_;
 
 	NodeSetNamespace::NodeSetNamespace(void)
-	: localNamespaceIndexVec_()
+	: inputNamespaceIndexVec_()
+	, outputNamespaceIndexMap_()
+	, localNamespaceVec_()
 	{
+		localNamespaceVec_.push_back("http://opcfoundation.org/UA/"); 
 		startup();
 		
 	}
@@ -27,6 +30,11 @@ namespace OpcUaStackServer
 		if (startup_) return;
 		startup_ = true;
 
+		// clear namespace vector an namespace map
+		globalNamespaceVec_.clear();
+		globalNamespaceMap_.clear();
+
+		// add opc ua standard namespace
 		globalNamespaceVec_.push_back("http://opcfoundation.org/UA/");
 		globalNamespaceMap_.insert(std::make_pair("http://opcfoundation.org/UA/", 0));
 	}
@@ -53,11 +61,20 @@ namespace OpcUaStackServer
 		return globalNamespaceIndex;
 	}
 
+	std::string 
+	NodeSetNamespace::getGlobalNamespaceUri(uint16_t globalNamespaceIndex)
+	{
+		if (globalNamespaceVec_.size() <= globalNamespaceIndex) {
+			return "http://unknown.org/Unknown/";
+		}
+		return globalNamespaceVec_[globalNamespaceIndex];
+	}
+
 	void 
 	NodeSetNamespace::parseNamespaceUris(boost::property_tree::ptree& ptree)
 	{
-		localNamespaceIndexVec_.clear();
-		localNamespaceIndexVec_.push_back(0);
+		inputNamespaceIndexVec_.clear();
+		inputNamespaceIndexVec_.push_back(0);
 
 		boost::optional<boost::property_tree::ptree&> namespaceUris = ptree.get_child_optional("NamespaceUris");
 		if (!namespaceUris) {
@@ -69,28 +86,51 @@ namespace OpcUaStackServer
 			if (it->first != "Uri") continue;
 			std::string namespaceUri = it->second.data();
 			uint16_t globalMamespaceIndex = this->addGlobalNamespace(namespaceUri);
-			localNamespaceIndexVec_.push_back(globalMamespaceIndex);
+			inputNamespaceIndexVec_.push_back(globalMamespaceIndex);
 
 			Log(Info, "local namespace add")
 				.parameter("NamespaceUri", namespaceUri)
-				.parameter("LocalNamespaceIndex", localNamespaceIndexVec_.size()-1)
+				.parameter("LocalNamespaceIndex", inputNamespaceIndexVec_.size()-1)
 				.parameter("GlobalNamespaceIndex", globalMamespaceIndex);
 		}
 	}
 
-	uint16_t 
-	NodeSetNamespace::mapNamespaceIndex(uint16_t localNamespaceIndex)
+	NamespaceVec& 
+	NodeSetNamespace::globalNamespaceVec(void)
 	{
-		if (localNamespaceIndex >= localNamespaceIndexVec_.size()) {
+		return globalNamespaceVec_;
+	}
+
+	uint16_t 
+	NodeSetNamespace::mapToGlobalNamespaceIndex(uint16_t localNamespaceIndex)
+	{
+		if (localNamespaceIndex >= inputNamespaceIndexVec_.size()) {
 			return 999;
 		}
-		return localNamespaceIndexVec_[localNamespaceIndex];
+		return inputNamespaceIndexVec_[localNamespaceIndex];
 	}
 
 	NamespaceVec& 
-	NodeSetNamespace::namespaceVec(void)
+	NodeSetNamespace::localNamespaceVec(void)
 	{
-		return globalNamespaceVec_;
+		return localNamespaceVec_;
+	}
+
+	uint16_t 
+	NodeSetNamespace::mapToLocalNamespaceIndex(uint16_t globalNamespaceIndex)
+	{
+		NamespaceIndexMap::iterator it;
+		it = outputNamespaceIndexMap_.find(globalNamespaceIndex);
+		if (it != outputNamespaceIndexMap_.end()) {
+			return it->second;
+		}
+
+		std::string globalNamespaceUri = getGlobalNamespaceUri(globalNamespaceIndex);
+		uint16_t localNamespaceIndex = localNamespaceVec_.size();
+		localNamespaceVec_.push_back(globalNamespaceUri);
+		outputNamespaceIndexMap_.insert(std::make_pair(globalNamespaceIndex, localNamespaceIndex));
+
+		return localNamespaceIndex;
 	}
 
 }

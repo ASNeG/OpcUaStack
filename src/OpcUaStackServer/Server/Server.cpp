@@ -144,7 +144,7 @@ namespace OpcUaStackServer
 			NodeSetNamespace nodeSetNamespace;
 			NamespaceArray namespaceArray;
 			namespaceArray.informationModel(informationModel_);
-			namespaceArray.addNamespaceNames(nodeSetNamespace.namespaceVec());
+			namespaceArray.addNamespaceNames(nodeSetNamespace.globalNamespaceVec());
 		}
 
 		// set server status

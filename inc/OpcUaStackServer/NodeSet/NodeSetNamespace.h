@@ -12,6 +12,7 @@ namespace OpcUaStackServer
 
 	typedef std::vector<std::string> NamespaceVec;
 	typedef std::vector<uint16_t> NamespaceIndexVec;
+	typedef std::map<uint16_t,uint16_t> NamespaceIndexMap;
 	typedef std::map<std::string, uint16_t> NamespaceMap;
 
 	class DLLEXPORT NodeSetNamespace
@@ -21,17 +22,51 @@ namespace OpcUaStackServer
 		~NodeSetNamespace(void);
 
 		void parseNamespaceUris(boost::property_tree::ptree& ptree);
-		uint16_t mapNamespaceIndex(uint16_t localNamespaceIndex);
-		NamespaceVec& namespaceVec(void);
+	
+		// 
+		// read nodeset files
+		//
+		uint16_t mapToGlobalNamespaceIndex(uint16_t localNamespaceIndex);
+		NamespaceVec& globalNamespaceVec(void);
+
+		//
+		// write nodeset files
+		//
+		uint16_t mapToLocalNamespaceIndex(uint16_t globalNamespaceIndex);
+		NamespaceVec& localNamespaceVec(void);
+
 
 	  private:
 		static bool startup_;
 		static void startup(void);
 		static uint16_t addGlobalNamespace(const std::string& namespaceUri);
+		static std::string getGlobalNamespaceUri(uint16_t globalNamespaceIndex);
+
+		// list off all existing global namespaces
 		static NamespaceVec globalNamespaceVec_;
+		// map from global namespace name to global namespace index
 		static NamespaceMap globalNamespaceMap_;
 		
-		NamespaceIndexVec localNamespaceIndexVec_;
+		// 
+		// read nodeset files
+		//
+
+		// mapping vector
+		// The position defines the input namespace index in the nodeset file
+		// The value defines the global namespace index in the information model
+		NamespaceIndexVec inputNamespaceIndexVec_;
+
+
+		//
+		// write nodeset files
+		//
+
+		// namespace names in nodeset file
+		NamespaceVec localNamespaceVec_;
+
+		// mapping map
+		// maps the global namespace index to the namespace index in the nodeset file 
+		NamespaceIndexMap outputNamespaceIndexMap_;
 	};
 
 }
