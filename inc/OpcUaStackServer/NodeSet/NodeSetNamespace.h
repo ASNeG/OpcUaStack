@@ -20,8 +20,10 @@ namespace OpcUaStackServer
 	  public:
 		NodeSetNamespace(void);
 		~NodeSetNamespace(void);
+		void clear(void);
 
-		void parseNamespaceUris(boost::property_tree::ptree& ptree);
+		void decodeNamespaceUris(boost::property_tree::ptree& ptree);
+		void encodeNamespaceUris(boost::property_tree::ptree& ptree);
 	
 		// 
 		// read nodeset files
@@ -42,7 +44,7 @@ namespace OpcUaStackServer
 		static uint16_t addGlobalNamespace(const std::string& namespaceUri);
 		static std::string getGlobalNamespaceUri(uint16_t globalNamespaceIndex);
 
-		// list off all existing global namespaces
+		// list off all existing global namespace uris
 		static NamespaceVec globalNamespaceVec_;
 		// map from global namespace name to global namespace index
 		static NamespaceMap globalNamespaceMap_;

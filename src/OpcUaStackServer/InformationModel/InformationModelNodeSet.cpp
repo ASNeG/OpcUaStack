@@ -90,6 +90,82 @@ namespace OpcUaStackServer
 	}
 
 	bool 
+	InformationModelNodeSet::initial(NodeSetBaseParser& nodeSetBaseParser, InformationModel::SPtr informationModelSPtr)
+	{
+		InformationModelMap::iterator it;
+		for (
+			it = informationModelSPtr->informationModelMap().begin();
+			it != informationModelSPtr->informationModelMap().end();
+			it++
+		)
+		{
+			BaseNodeClass::SPtr baseNodeClassSPtr = it->second;
+
+			switch (baseNodeClassSPtr->nodeClass().data())
+			{
+				case NodeClassType_DataType:
+				{
+					DataTypeNodeClass::SPtr dataTypeNodeClass;
+					dataTypeNodeClass = boost::static_pointer_cast<DataTypeNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.dataTypeNodeClassVec().push_back(dataTypeNodeClass);
+					break;
+				}
+				case NodeClassType_Method:
+				{
+					MethodNodeClass::SPtr methodNodeClass;
+					methodNodeClass = boost::static_pointer_cast<MethodNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.methodNodeClassVec().push_back(methodNodeClass);
+					break;
+				}
+				case NodeClassType_Object:
+				{
+					ObjectNodeClass::SPtr objectNodeClass;
+					objectNodeClass = boost::static_pointer_cast<ObjectNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.objectNodeClassVec().push_back(objectNodeClass);
+					break;
+				}
+				case NodeClassType_ObjectType:
+				{
+					ObjectTypeNodeClass::SPtr objectTypeNodeClass;
+					objectTypeNodeClass = boost::static_pointer_cast<ObjectTypeNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.objectTypeNodeClassVec().push_back(objectTypeNodeClass);
+					break;
+				}
+				case NodeClassType_ReferenceType:
+				{
+					ReferenceTypeNodeClass::SPtr referenceTypeNodeClass;
+					referenceTypeNodeClass = boost::static_pointer_cast<ReferenceTypeNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.referenceTypeNodeClassVec().push_back(referenceTypeNodeClass);
+					break;
+				}
+				case NodeClassType_Variable:
+				{
+					VariableNodeClass::SPtr variableNodeClass;
+					variableNodeClass = boost::static_pointer_cast<VariableNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.variableNodeClassVec().push_back(variableNodeClass);
+					break;
+				}
+				case NodeClassType_VariableType:
+				{
+					VariableTypeNodeClass::SPtr variableTypeNodeClass;
+					variableTypeNodeClass = boost::static_pointer_cast<VariableTypeNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.variableTypeNodeClassVec().push_back(variableTypeNodeClass);
+					break;
+				}
+				case NodeClassType_View:
+				{
+					ViewNodeClass::SPtr viewNodeClass;
+					viewNodeClass = boost::static_pointer_cast<ViewNodeClass>(baseNodeClassSPtr);
+					nodeSetBaseParser.viewNodeClassVec().push_back(viewNodeClass);
+					break;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	bool 
 	InformationModelNodeSet::checkForwardReferences(InformationModel::SPtr informationModelSPtr)
 	{
 		informationModelSPtr->checkForwardReferences();

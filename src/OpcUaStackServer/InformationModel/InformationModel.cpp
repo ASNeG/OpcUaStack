@@ -13,6 +13,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	InformationModelMap& 
+	InformationModel::informationModelMap(void)
+	{
+		return informationModelMap_;
+	}
+
 	bool 
 	InformationModel::insert(BaseNodeClass::SPtr baseNodeClass)
 	{

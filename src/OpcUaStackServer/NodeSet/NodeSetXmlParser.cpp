@@ -32,8 +32,8 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		parseNamespaces(*uaNodeSetTree);
-		parseXmlnsTypes(*uaNodeSetTree);
+		decodeNamespaces(*uaNodeSetTree);
+		decodeXmlnsTypes(*uaNodeSetTree);
 		
 		boost::property_tree::ptree::iterator it;
 		for (it = uaNodeSetTree->begin(); it != uaNodeSetTree->end(); it++) {
@@ -82,7 +82,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	NodeSetXmlParser::parseXmlnsTypes(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeXmlnsTypes(boost::property_tree::ptree& ptree)
 	{
 		boost::optional<boost::property_tree::ptree&> xmlAttrPtree = ptree.get_child_optional("<xmlattr>");
 		if (!xmlAttrPtree) return;
@@ -101,9 +101,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	NodeSetXmlParser::parseNamespaces(boost::property_tree::ptree& ptree)
+	NodeSetXmlParser::decodeNamespaces(boost::property_tree::ptree& ptree)
 	{
-		nodeSetNamespace_.parseNamespaceUris(ptree);
+		nodeSetNamespace_.decodeNamespaceUris(ptree);
 	}
 
 	bool 
@@ -886,176 +886,58 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	void 
+	NodeSetXmlParser::encodeNamespaces(boost::property_tree::ptree& ptree)
+	{
+		nodeSetNamespace_.encodeNamespaceUris(ptree);
+	}
+
 	bool 
 	NodeSetXmlParser::encodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree)
 	{
 		//
-		// attribute NodeId (mandatory)
+		// attribute NodeId 
 		//
-		if (objectNodeClass->nodeId().data().toString() != "") {
-			ptree.put("<xmlattr>.NodeId", objectNodeClass->nodeId().data().toString());
-		} else {
-			Log(Error, "element NodeId not exist in node set.");
-			return false;
-		}
+		OpcUaNodeId nodeId = objectNodeClass->nodeId().data();
+		nodeId.namespaceIndex(nodeSetNamespace_.mapToLocalNamespaceIndex(nodeId.namespaceIndex()));
+		ptree.put("<xmlattr>.NodeId", nodeId.toString());
 
 		//
-		// attribute BrowseName (mandatory)
+		// attribute BrowseName 
 		//
-		if (objectNodeClass->browseName().data().name().value() != "") {
-			ptree.put("<xmlattr>.BrowseName", objectNodeClass->browseName().data().name().value());
-		} else {
-			Log(Error, "element BrowseName not exist in node set.")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
+		OpcUaQualifiedName browseName = objectNodeClass->browseName().data();
+		browseName.namespaceIndex(nodeSetNamespace_.mapToLocalNamespaceIndex(browseName.namespaceIndex()));
+		ptree.put("<xmlattr>.BrowseName", browseName.name().value());
 
 		//
-		// attribute DisplayName (mandatory)
+		// attribute DisplayName 
 		//
-		if (objectNodeClass->displayName().data().text().value() != "") {
-			ptree.put("DisplayName", objectNodeClass->displayName().data().text().value());
-		} else {
-			Log(Error, "element DisplayName not exist in node set.")
-				.parameter("NodeId", objectNodeClass->nodeId().data().toString());
-			return false;
-		}
+		OpcUaLocalizedText displayName = objectNodeClass->displayName().data();
+		ptree.put("DisplayName", displayName.text().value());
+		ptree.put("DisplayName.<xmlattr>.Locale", displayName.locale().value());
 
 		//
-		// attribute Description (optional)
+		// attribute Description 
 		//
-		if (objectNodeClass->description().data().text().value() != "") {
-			ptree.put("Description", objectNodeClass->description().data().text().value());
-		}
-
-		//FIXME: WriteMaskAttribute writeMask_;
-		//FIXME: UserWriteMaskAttribute userWriteMask_;
-
-
-#if 0
-		uint16_t localNamepaceIndex;
-		uint16_t globalNamespaceIndex;
-
-		//
-		// attribute NodeId (mandatory)
-		//
-		boost::optional<std::string> nodeId = ptree.get_optional<std::string>("<xmlattr>.NodeId");
-		if (!nodeId) {
-			Log(Error, "element NodeId not exist in node set")
-				.parameter("NodeId", "");
-			return false;
-		}
-		if (!objectNodeClass->nodeId().data().fromString(*nodeId)) {
-			Log(Error, "invalid NodeId in node set")
-				.parameter("NodeId", *nodeId);
-			return false;
-		}
-		objectNodeClass->nodeId().exist(true);
-
-		// replace local namespace index by global namespace index
-		localNamepaceIndex = objectNodeClass->nodeId().data().namespaceIndex();
-		globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
-		objectNodeClass->nodeId().data().namespaceIndex(globalNamespaceIndex);
-
-
-		//
-		// attribute BrowseName (mandatory)
-		//
-		boost::optional<std::string> browseName = ptree.get_optional<std::string>("<xmlattr>.BrowseName");
-		if (!browseName) {
-			Log(Error, "element BrowseName not exist in node set")
-				.parameter("NodeId", *nodeId);
-			return false;
-		}
-		if (!objectNodeClass->browseName().data().fromString(*browseName)) {
-			Log(Error, "invalid BrowseName in node set")
-				.parameter("NodeId", *nodeId);
-			return false;
-		}
-		objectNodeClass->browseName().exist(true);
-
-		// replace local namespace index by global namespace index
-		globalNamespaceIndex = objectNodeClass->browseName().data().namespaceIndex();
-		globalNamespaceIndex = nodeSetNamespace_.mapNamespaceIndex(localNamepaceIndex);
-		objectNodeClass->browseName().data().namespaceIndex(globalNamespaceIndex);
-
-
-		//
-		// attribute DisplayName (mandatory)
-		//
-		boost::optional<std::string> displayName = ptree.get_optional<std::string>("DisplayName");
-		if (!displayName) {
-			Log(Error, "element DisplayName not exist in node set")
-				.parameter("NodeId", *nodeId);
-			return false;
-		}
-
-		std::string displayNameLocaleString = "";
-		boost::optional<std::string> displayNameLocale = ptree.get_optional<std::string>("DisplayName.<xmlattr>.Locale");
-		if (displayNameLocale) displayNameLocaleString = *displayNameLocale;
-
-		objectNodeClass->displayName().data().set(displayNameLocaleString, *displayName);
-		objectNodeClass->displayName().exist(true);
-
-
-		//
-		// attribute Description (optional)
-		//
-		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
-		if (description) {
-			std::string descriptionLocaleString = "";
-			boost::optional<std::string> descriptionLocale = ptree.get_optional<std::string>("Description.<xmlattr>.Locale");
-			if (descriptionLocale) descriptionLocaleString = *descriptionLocale;
-
-			objectNodeClass->description().data().set(descriptionLocaleString, *description);
-		}
-		else {
-			objectNodeClass->description().data().set("", "");
-		}
-		objectNodeClass->description().exist(true);
+		OpcUaLocalizedText description = objectNodeClass->description().data();
+		ptree.put("Description", description.text().value());
+		ptree.put("Description.<xmlattr>.Locale", description.locale().value());
 
 		//
 		// attribute WriteMask
 		//
-		OpcUaUInt32 writeMask = 0;
-		boost::optional<std::string> writeMaskString = ptree.get_optional<std::string>("<xmlattr>.WriteMask");
-		if (writeMaskString) {
-			try {
-				writeMask = boost::lexical_cast<OpcUaUInt32>(*writeMaskString);
-				objectNodeClass->writeMask().data() = writeMask;
-			} catch(boost::bad_lexical_cast &) {
-				Log(Error, "bad_lexical_cast in WriteMask in node set")
-					.parameter("NodeId", nodeId);
-				return false;
-			}
-		}
-		else {
-			objectNodeClass->writeMask().data() = writeMask;
-		}
-		objectNodeClass->writeMask().exist(true);
+		OpcUaUInt32 writeMask = objectNodeClass->writeMask().data();
+		std::stringstream writeMaskStream;
+		writeMaskStream << writeMask;
+		ptree.put("<xmlattr>.WriteMask", writeMaskStream.str());
 
 		//
 		// attribute UserWriteMask
 		//
-		OpcUaUInt32 userWriteMask = 0;
-		boost::optional<std::string> userWriteMaskString = ptree.get_optional<std::string>("<xmlattr>.UserWriteMask");
-		if (userWriteMaskString) {
-			try {
-				userWriteMask = boost::lexical_cast<OpcUaUInt32>(*userWriteMaskString);
-				objectNodeClass->userWriteMask().data() = userWriteMask;
-			} catch(boost::bad_lexical_cast &) {
-				Log(Error, "bad_lexical_cast in UserWriteMask in node set")
-					.parameter("NodeId", nodeId);
-				return false;
-			}
-		}
-		else {
-			objectNodeClass->userWriteMask().data() = userWriteMask;
-		}
-		objectNodeClass->userWriteMask().exist(true);
-
-		return true;
-#endif
+		OpcUaUInt32 userWriteMask = objectNodeClass->userWriteMask().data();
+		std::stringstream userWriteMaskStream;
+		userWriteMaskStream << userWriteMask;
+		ptree.put("<xmlattr>.UserWriteMask", userWriteMaskStream.str());
 
 		return true;
 	}
@@ -1090,7 +972,6 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::encodeAliases(boost::property_tree::ptree& ptree)
 	{
-		// TODO
 		return true;
 	}
 	
@@ -1196,10 +1077,16 @@ namespace OpcUaStackServer
 			std::string nodeId = variableNodeClassSPtr->nodeId().data().toString();
 
 			//
-			// decode Value (mandatory)
+			// encode DataType
 			//
-			// TODO
-			//if (!encodeVariableValue(variableNodeClassSPtr, ptree)) return false;
+			OpcUaNodeId dataTypeNodeId = variableNodeClassSPtr->dataType().data();
+			dataTypeNodeId.namespaceIndex(nodeSetNamespace_.mapToLocalNamespaceIndex(dataTypeNodeId.namespaceIndex()));
+			node.put("<xmlattr>.DataType", dataTypeNodeId.toString());
+
+			//
+			// encode Value
+			//
+			// todo...
 
 			//
 			// attribute ValueRank (mandatory)
@@ -1279,10 +1166,16 @@ namespace OpcUaStackServer
 			std::string nodeId = variableTypeNodeClassSPtr->nodeId().data().toString();
 
 			//
-			// decode Value (optional)
+			// encode DataType
 			//
-			// TODO
-			//if (!encodeVariableValue(variableTypeNodeClassSPtr, ptree)) return false;
+			OpcUaNodeId dataTypeNodeId = variableTypeNodeClassSPtr->dataType().data();
+			dataTypeNodeId.namespaceIndex(nodeSetNamespace_.mapToLocalNamespaceIndex(dataTypeNodeId.namespaceIndex()));
+			node.put("<xmlattr>.DataType", dataTypeNodeId.toString());
+
+			//
+			// encode Value
+			//
+			// todo...
 
 			//
 			// attribute ValueRank (mandatory)

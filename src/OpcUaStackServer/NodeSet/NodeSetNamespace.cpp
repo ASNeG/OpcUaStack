@@ -25,6 +25,15 @@ namespace OpcUaStackServer
 	}
 
 	void
+	NodeSetNamespace::clear(void)
+	{
+		inputNamespaceIndexVec_.clear();
+		outputNamespaceIndexMap_.clear();
+		localNamespaceVec_.clear();
+		localNamespaceVec_.push_back("http://opcfoundation.org/UA/");
+	}
+
+	void
 	NodeSetNamespace::startup(void)
 	{
 		if (startup_) return;
@@ -71,7 +80,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	NodeSetNamespace::parseNamespaceUris(boost::property_tree::ptree& ptree)
+	NodeSetNamespace::decodeNamespaceUris(boost::property_tree::ptree& ptree)
 	{
 		inputNamespaceIndexVec_.clear();
 		inputNamespaceIndexVec_.push_back(0);
@@ -92,6 +101,20 @@ namespace OpcUaStackServer
 				.parameter("NamespaceUri", namespaceUri)
 				.parameter("LocalNamespaceIndex", inputNamespaceIndexVec_.size()-1)
 				.parameter("GlobalNamespaceIndex", globalMamespaceIndex);
+		}
+	}
+
+	void 
+	NodeSetNamespace::encodeNamespaceUris(boost::property_tree::ptree& ptree)
+	{
+		bool first = true;
+		NamespaceVec::iterator it;
+		for (it = localNamespaceVec_.begin(); it != localNamespaceVec_.end(); it++) {
+			if (first) {
+				first = false;
+				continue;
+			}
+			ptree.put("NamespaceUris.Uri", *it);
 		}
 	}
 

@@ -24,8 +24,11 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree);
 
 	  private:
-		void parseNamespaces(boost::property_tree::ptree& ptree);
-		void parseXmlnsTypes(boost::property_tree::ptree& ptree);
+		//
+		// decoder functions
+		//
+		void decodeNamespaces(boost::property_tree::ptree& ptree);
+		void decodeXmlnsTypes(boost::property_tree::ptree& ptree);
 
 		bool decodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
 		bool decodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
@@ -37,6 +40,11 @@ namespace OpcUaStackServer
 		bool decodeUADataType(boost::property_tree::ptree& ptree);
 		bool decodeUAReferenceType(boost::property_tree::ptree& ptree);
 		bool decodeUAMethod(boost::property_tree::ptree& ptree);
+
+		//
+		// encoder functions
+		//
+		void encodeNamespaces(boost::property_tree::ptree& ptree);
 
 		bool encodeNodeBase(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
 		bool encodeReferences(BaseNodeClass::SPtr objectNodeClass, boost::property_tree::ptree& ptree);
