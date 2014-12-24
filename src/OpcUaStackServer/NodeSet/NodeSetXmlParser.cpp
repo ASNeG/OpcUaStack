@@ -874,6 +874,8 @@ namespace OpcUaStackServer
 		if (!encodeUAMethod(uaNodeSetTree)) {
 			return false;
 		}
+
+		encodeNamespaces(uaNodeSetTree);
 		
 		ptree.add_child("UANodeSet", uaNodeSetTree);
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");

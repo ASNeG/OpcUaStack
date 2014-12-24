@@ -15,6 +15,7 @@ namespace OpcUaStackServer
 	, outputNamespaceIndexMap_()
 	, localNamespaceVec_()
 	{
+		outputNamespaceIndexMap_.insert(std::make_pair(0,0));
 		localNamespaceVec_.push_back("http://opcfoundation.org/UA/"); 
 		startup();
 		
@@ -31,6 +32,7 @@ namespace OpcUaStackServer
 		outputNamespaceIndexMap_.clear();
 		localNamespaceVec_.clear();
 		localNamespaceVec_.push_back("http://opcfoundation.org/UA/");
+		outputNamespaceIndexMap_.insert(std::make_pair(0,0));
 	}
 
 	void
@@ -114,7 +116,7 @@ namespace OpcUaStackServer
 				first = false;
 				continue;
 			}
-			ptree.put("NamespaceUris.Uri", *it);
+			ptree.add("NamespaceUris.Uri", *it);
 		}
 	}
 

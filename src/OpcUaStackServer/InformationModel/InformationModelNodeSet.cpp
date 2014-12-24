@@ -104,7 +104,6 @@ namespace OpcUaStackServer
 			namespaceUris = nodeSetNamespace.globalNamespaceVec();
 		}
 		for (it1 = namespaceUris.begin(); it1 != namespaceUris.end(); it1++) {
-			std::cout << *it1 << std::endl;
 			uint16_t namespaceIndex = nodeSetNamespace.mapToGlobalNamespaceIndex(*it1);
 			namespaceIndexSet.insert(namespaceIndex);
 		}
