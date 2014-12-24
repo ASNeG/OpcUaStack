@@ -957,10 +957,15 @@ namespace OpcUaStackServer
 			ReferenceItem::SPtr referenceItem = it->second;
 			OpcUaNodeId referenceTypeNodeId = it->first;
 
+			if (referenceItem->isForward_) continue;
+
 			reference.put("<xmlattr>.ReferenceType", ReferenceTypeMap::nodeIdToString(referenceTypeNodeId));
 			if (referenceItem->isForward_) reference.put("<xmlattr>.IsForward", "true");
 			else reference.put("<xmlattr>.IsForward", "false");
-			reference.put_value(referenceItem->nodeId_.toString());
+
+			OpcUaNodeId nodeId = referenceItem->nodeId_;
+			nodeId.namespaceIndex(nodeSetNamespace_.mapToLocalNamespaceIndex(nodeId.namespaceIndex()));
+			reference.put_value(nodeId.toString());
 
 			referenceTree.add_child("Reference", reference);
 		}
