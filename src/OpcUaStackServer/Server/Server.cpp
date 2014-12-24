@@ -56,7 +56,9 @@ namespace OpcUaStackServer
 		rc = rc && initSession();
 
 #if 1
-		writeInformationModel("NodeSet.xml");
+		std::vector<std::string> namespaceUris;
+		namespaceUris.push_back("http://yourorganisation.org/Raspberry/");
+		writeInformationModel("NodeSet.xml", namespaceUris);
 #endif
 
 		return rc;
@@ -91,11 +93,11 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	Server::writeInformationModel(const std::string& nodeSetFileName)
+	Server::writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris)
 	{
 		NodeSetXmlParser nodeSetXmlParser;
 
-		if (!InformationModelNodeSet::initial(nodeSetXmlParser, informationModel_)) {
+		if (!InformationModelNodeSet::initial(nodeSetXmlParser, informationModel_, namespaceUris)) {
 			Log(Error, "node set initialisation error")
 				.parameter("NodeSetFileName", nodeSetFileName);
 			return false;

@@ -27,7 +27,7 @@ namespace OpcUaStackServer
 
 	  private:
 		bool readInformationModel(void);
-		bool writeInformationModel(const std::string& nodeSetFileName);
+		bool writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris);
 		bool setInformationModel(void);
 		bool initService(void);
 		bool initSession(void);

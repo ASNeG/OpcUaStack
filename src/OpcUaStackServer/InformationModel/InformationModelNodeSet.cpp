@@ -1,4 +1,5 @@
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 namespace OpcUaStackServer
 {
@@ -14,6 +15,7 @@ namespace OpcUaStackServer
 	bool 
 	InformationModelNodeSet::initial(InformationModel::SPtr informationModelSPtr, NodeSetBaseParser& nodeSetBaseParser)
 	{
+		// copy nodes from parser to information model 
 		{
 			DataTypeNodeClassVec::iterator it;
 			DataTypeNodeClassVec& dataTypeNodeClassVec = nodeSetBaseParser.dataTypeNodeClassVec();
@@ -90,16 +92,37 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	InformationModelNodeSet::initial(NodeSetBaseParser& nodeSetBaseParser, InformationModel::SPtr informationModelSPtr)
+	InformationModelNodeSet::initial(NodeSetBaseParser& nodeSetBaseParser, InformationModel::SPtr informationModelSPtr, std::vector<std::string>& namespaceUris)
 	{
-		InformationModelMap::iterator it;
+		std::set<uint16_t>::iterator it0;
+		std::set<uint16_t> namespaceIndexSet;
+		std::vector<std::string>::iterator it1;
+		NodeSetNamespace nodeSetNamespace;
+
+		// create a set of all namespace indexes to be write
+		if (namespaceUris.size() == 0) {
+			namespaceUris = nodeSetNamespace.globalNamespaceVec();
+		}
+		for (it1 = namespaceUris.begin(); it1 != namespaceUris.end(); it1++) {
+			std::cout << *it1 << std::endl;
+			uint16_t namespaceIndex = nodeSetNamespace.mapToGlobalNamespaceIndex(*it1);
+			namespaceIndexSet.insert(namespaceIndex);
+		}
+
+		// copy nodes from information model to parser
+		InformationModelMap::iterator it2;
 		for (
-			it = informationModelSPtr->informationModelMap().begin();
-			it != informationModelSPtr->informationModelMap().end();
-			it++
+			it2 = informationModelSPtr->informationModelMap().begin();
+			it2 != informationModelSPtr->informationModelMap().end();
+			it2++
 		)
 		{
-			BaseNodeClass::SPtr baseNodeClassSPtr = it->second;
+			BaseNodeClass::SPtr baseNodeClassSPtr = it2->second;
+
+			// copy only the selected namespaces
+			OpcUaNodeId& nodeId = baseNodeClassSPtr->nodeId().data();
+			it0 = namespaceIndexSet.find(nodeId.namespaceIndex());
+			if (it0 == namespaceIndexSet.end()) continue;
 
 			switch (baseNodeClassSPtr->nodeClass().data())
 			{

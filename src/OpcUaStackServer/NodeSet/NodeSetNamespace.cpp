@@ -156,4 +156,14 @@ namespace OpcUaStackServer
 		return localNamespaceIndex;
 	}
 
+	uint16_t 
+	NodeSetNamespace::mapToGlobalNamespaceIndex(const std::string& namespaceUri)
+	{
+		NamespaceMap::iterator it = globalNamespaceMap_.find(namespaceUri);
+		if (it == globalNamespaceMap_.end()) {
+			return 0xFFFF;
+		}
+		return it->second;
+	}
+
 }
