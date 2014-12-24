@@ -482,7 +482,9 @@ namespace OpcUaStackCore
 	OpcUaNodeIdBase::toString(void) const
 	{
 		std::stringstream nodeIdStream;
-		nodeIdStream << "ns=" << namespaceIndex_ << ";"; 
+		if (namespaceIndex_ != 0) {
+			nodeIdStream << "ns=" << namespaceIndex_ << ";";
+		}
 
 		switch(nodeIdType())
 		{

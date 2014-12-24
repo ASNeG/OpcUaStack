@@ -909,21 +909,25 @@ namespace OpcUaStackServer
 		//
 		OpcUaQualifiedName browseName = objectNodeClass->browseName().data();
 		browseName.namespaceIndex(nodeSetNamespace_.mapToLocalNamespaceIndex(browseName.namespaceIndex()));
-		ptree.put("<xmlattr>.BrowseName", browseName.name().value());
+		ptree.put("<xmlattr>.BrowseName", browseName.toString());
 
 		//
 		// attribute DisplayName 
 		//
 		OpcUaLocalizedText displayName = objectNodeClass->displayName().data();
 		ptree.put("DisplayName", displayName.text().value());
-		ptree.put("DisplayName.<xmlattr>.Locale", displayName.locale().value());
+		if (displayName.locale().value() != "") {
+			ptree.put("DisplayName.<xmlattr>.Locale", displayName.locale().value());
+		}
 
 		//
 		// attribute Description 
 		//
 		OpcUaLocalizedText description = objectNodeClass->description().data();
 		ptree.put("Description", description.text().value());
-		ptree.put("Description.<xmlattr>.Locale", description.locale().value());
+		if (description.locale().value() != "") {
+			ptree.put("Description.<xmlattr>.Locale", description.locale().value());
+		}
 
 		//
 		// attribute WriteMask
@@ -957,7 +961,7 @@ namespace OpcUaStackServer
 			ReferenceItem::SPtr referenceItem = it->second;
 			OpcUaNodeId referenceTypeNodeId = it->first;
 
-			if (referenceItem->isForward_) continue;
+			//if (referenceItem->isForward_) continue;
 
 			reference.put("<xmlattr>.ReferenceType", ReferenceTypeMap::nodeIdToString(referenceTypeNodeId));
 			if (referenceItem->isForward_) reference.put("<xmlattr>.IsForward", "true");
