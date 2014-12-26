@@ -57,8 +57,8 @@ namespace OpcUaStackServer
 
 #if 1
 		std::vector<std::string> namespaceUris;
-		namespaceUris.push_back("http://yourorganisation.org/Raspberry/");
-		//namespaceUris.push_back("http://yourorganisation.org/Test-Server/");
+		//namespaceUris.push_back("http://yourorganisation.org/Raspberry/");
+		namespaceUris.push_back("http://yourorganisation.org/Test-Server/");
 		writeInformationModel("NodeSet.xml", namespaceUris);
 #endif
 

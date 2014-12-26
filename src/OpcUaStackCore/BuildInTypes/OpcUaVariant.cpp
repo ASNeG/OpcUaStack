@@ -1016,6 +1016,12 @@ namespace OpcUaStackCore
 		return arrayLength_;
 	}
 
+	bool
+	OpcUaVariant::isArray(void)
+	{
+		return arrayLength_ > -1;
+	}
+
 	void 
 	OpcUaVariant::arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec)
 	{

@@ -120,6 +120,7 @@ namespace OpcUaStackCore
 
 		void arrayLength(const OpcUaInt32& arrayLength);
 		OpcUaInt32 arrayLength(void);
+		bool isArray(void);
 		void arrayDimension(const OpcUaArrayDimensionsVec& arrayDimensionsVec);
 		OpcUaArrayDimensionsVec& arrayDimension(void);
 		void variant(const OpcUaVariantValue::Vec& variantValueVec);

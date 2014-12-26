@@ -73,6 +73,7 @@ namespace OpcUaStackServer
 		if (initial_) return;
 		initial_ = true;
 
+		// decode elements
 		insertDataTypeElement("Boolean", DataTypeElement(OpcUaBuildInType_OpcUaBoolean, false));
 		insertDataTypeElement("ListOfBoolean", DataTypeElement(OpcUaBuildInType_OpcUaBoolean, true));
 		insertDataTypeElement("SByte", DataTypeElement(OpcUaBuildInType_OpcUaSByte, false));
@@ -111,6 +112,14 @@ namespace OpcUaStackServer
 		insertDataTypeElement("ListOfQualifiedName", DataTypeElement(OpcUaBuildInType_OpcUaQualifiedName, true));
 	}
 
+
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	//
+	// decode value
+	//
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
 	bool 
 	NodeSetValueParser::decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& variant, const std::string& xmls)
 	{
@@ -155,16 +164,17 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaQualifiedName: rc = decodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
 			default:
 			{
-				Log(Error, "data type unknown in node set value parser")
+				Log(Error, "data type unknown in node set value decoder")
+					.parameter("NodeId", nodeId)
 					.parameter("DataType", dataTypeString);
 				return false;
 			}
 		}
 
 		if (!rc) {
-			Log(Warning, "parse value error")
-				.parameter("DataType", dataTypeString)
-				.parameter("NodeId", nodeId);
+			Log(Warning, "decode value error")
+				.parameter("NodeId", nodeId)
+				.parameter("DataType", dataTypeString);
 		}
 
 		return rc;
@@ -340,6 +350,148 @@ namespace OpcUaStackServer
 	NodeSetValueParser::addxmls(const std::string& tag)
 	{
 		return xmls_ + std::string(":") + tag;
+	}
+
+
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	//
+	// encode value
+	//
+	// ---------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------
+	bool 
+	NodeSetValueParser::encodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls)
+	{
+		xmls_ = xmls;
+		if (xmls != "") {
+			xmls_.append(":");
+		}
+
+		bool rc = false;
+		std::string dataTypeString;
+
+		switch (opcUaVariant.variantType())
+		{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				dataTypeString = "OpcUaBoolean";
+				rc = encode<OpcUaBoolean>(ptree, opcUaVariant, "Boolean");
+				break; 
+			}
+			default:
+			{
+				std::stringstream ss;
+				ss << opcUaVariant.variantType();
+				Log(Error, "data type unknown in node set value encoder")
+					.parameter("NodeId", nodeId)
+					.parameter("DataType", ss.str());
+				return false;
+			}
+#if 0
+		OpcUaBuildInType_OpcUaSByte = 2,
+		OpcUaBuildInType_OpcUaByte = 3,
+		OpcUaBuildInType_OpcUaInt16 = 4,
+		OpcUaBuildInType_OpcUaUInt16 = 5,
+		OpcUaBuildInType_OpcUaInt32 = 6,
+		OpcUaBuildInType_OpcUaUInt32 = 7,
+		OpcUaBuildInType_OpcUaInt64 = 8,
+		OpcUaBuildInType_OpcUaUInt64 = 9,
+		OpcUaBuildInType_OpcUaFloat = 10,
+		OpcUaBuildInType_OpcUaDouble = 11,
+		OpcUaBuildInType_OpcUaString = 12,
+		OpcUaBuildInType_OpcUaDateTime = 13,
+		OpcUaBuildInType_OpcUaGuid = 14,
+		OpcUaBuildInType_OpcUaByteString = 15,
+		OpcUaBuildInType_OpcUaXmlElement = 16,
+		OpcUaBuildInType_OpcUaNodeId = 17,
+		OpcUaBuildInType_OpcUaExpandedNodeId = 18,
+		OpcUaBuildInType_OpcUaStatusCode = 19,
+		OpcUaBuildInType_OpcUaQualifiedName = 20,
+		OpcUaBuildInType_OpcUaLocalizedText = 21,
+		OpcUaBuildInType_OpcUaExtensionObject = 22,
+		OpcUaBuildInType_OpcUaDataValue = 23,
+		OpcUaBuildInType_OpcUaVariant = 24,
+		OpcUaBuildInType_OpcUaDiagnosticInfo = 25
+#endif
+		}
+
+		if (!rc) {
+			Log(Warning, "encode value error")
+				.parameter("DataType", dataTypeString)
+				.parameter("NodeId", nodeId);
+		}
+
+		return true;
+	}
+
+#if 0
+			xmls_ = xmls;
+
+		// Test whether the value tag exist. If not exit function
+		boost::optional<boost::property_tree::ptree&> ptreeValue = ptree.get_child_optional("Value");
+		if (!ptreeValue) return false;
+		if (ptreeValue->begin() == ptreeValue->end()) return false;
+
+		// Test whether the data type of the value exist in data type element list. If not exit function
+		std::string dataTypeString = cutxmls(ptreeValue->front().first);
+		DataTypeElement dataTypeElement;
+		if (!findDataTypeElement(dataTypeString, dataTypeElement)) {
+			Log(Warning, "data type unknown in node set value parser")
+				.parameter("DataType", dataTypeString)
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
+		// execute decoder function depending on the variable type
+		bool rc;
+		switch (dataTypeElement.buildInType_)
+		{
+			case OpcUaBuildInType_OpcUaBoolean: rc = decode<OpcUaBoolean>(dataTypeElement, *ptreeValue, variant, "Boolean"); break;
+			case OpcUaBuildInType_OpcUaSByte: rc = decode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte"); break;
+			case OpcUaBuildInType_OpcUaByte: rc = decode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte"); break;
+			case OpcUaBuildInType_OpcUaUInt16: rc = decode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16"); break;
+			case OpcUaBuildInType_OpcUaInt16: rc = decode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16"); break;
+			case OpcUaBuildInType_OpcUaUInt32: rc = decode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32"); break;
+			case OpcUaBuildInType_OpcUaInt32: rc = decode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32"); break;
+			case OpcUaBuildInType_OpcUaUInt64: rc = decode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
+			case OpcUaBuildInType_OpcUaInt64: rc = decode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
+			case OpcUaBuildInType_OpcUaFloat: rc = decode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
+			case OpcUaBuildInType_OpcUaDouble: rc = decode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
+			case OpcUaBuildInType_OpcUaDateTime: rc = decode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime"); break;
+			case OpcUaBuildInType_OpcUaString: rc = decodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
+			case OpcUaBuildInType_OpcUaByteString: rc = decodeSPtr<OpcUaByteString>(dataTypeElement, *ptreeValue, variant, "ByteString"); break;
+			case OpcUaBuildInType_OpcUaLocalizedText: rc = decodeSPtr<OpcUaLocalizedText>(dataTypeElement, *ptreeValue, variant, "LocalizedText"); break;
+			case OpcUaBuildInType_OpcUaGuid: rc = decodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid"); break;
+			case OpcUaBuildInType_OpcUaNodeId: rc = decodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId"); break;
+			case OpcUaBuildInType_OpcUaQualifiedName: rc = decodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
+			default:
+			{
+				Log(Error, "data type unknown in node set value parser")
+					.parameter("DataType", dataTypeString);
+				return false;
+			}
+		}
+
+		if (!rc) {
+			Log(Warning, "parse value error")
+				.parameter("DataType", dataTypeString)
+				.parameter("NodeId", nodeId);
+		}
+
+		return rc;
+#endif
+
+	bool 
+	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag)
+	{
+		if (value) {
+			ptree.put(tag, "true");
+		}
+		else {
+			ptree.put(tag, "false");
+		}
+		return true;
 	}
 
 }

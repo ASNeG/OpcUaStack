@@ -1097,7 +1097,12 @@ namespace OpcUaStackServer
 			//
 			// encode Value
 			//
-			// todo...
+			if (variableNodeClassSPtr->value().exist()) {
+				OpcUaDataValue& dataValue = variableNodeClassSPtr->value().data();
+				if (dataValue.statusCode() != Success) break;
+				NodeSetValueParser nodeSetValueParser;
+				nodeSetValueParser.encodeValue(nodeId, node, *dataValue.variant());
+			}		
 
 			//
 			// attribute ValueRank (mandatory)

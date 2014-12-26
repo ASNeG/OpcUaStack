@@ -31,6 +31,13 @@ namespace OpcUaStackServer
 		NodeSetValueParser(void);
 		~NodeSetValueParser(void);
 
+		// --------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
+		//
+		// decode functions
+		//
+		// --------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
 		bool decodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls = "");
 
 		template<typename T>
@@ -167,6 +174,70 @@ namespace OpcUaStackServer
 		bool decode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag);
 		bool decode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag);
 
+
+		// --------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
+		//
+		// encode functions
+		//
+		// --------------------------------------------------------------------------
+		// --------------------------------------------------------------------------
+		bool encodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls = "");
+
+		template<typename T>
+			bool 
+			encode(boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			{
+				boost::property_tree::ptree ptree;
+				if (variant.isArray()) {
+					OpcUaVariantValue::Vec& variantValueVec = variant.variant();
+					if (!encode<T>(ptree, variantValueVec, tag)) {
+						return false;
+					}
+				}
+				else {
+					T value;
+					value = variant.variant<T>();
+					
+					if (!encode(ptree, value, tag)) {
+						Log(Error, "encode error")
+							.parameter("Tag", tag);
+						return false;
+					}
+					
+				}
+				ptreeValue.add_child("Value", ptree);
+				return true;
+			}
+
+		template<typename T>
+	        bool
+			encode(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			{
+				std::string listTag = "ListOf" + tag;
+
+				boost::property_tree::ptree ptree;
+				OpcUaVariantValue::Vec::iterator it;
+				for (it = variantValueVec.begin(); it != variantValueVec.end(); it++) {
+					T value;
+					value = it->variant<T>();
+					
+					boost::property_tree::ptree localPtree;
+					if (!encode(localPtree, value, tag)) {
+						Log(Error, "encode error")
+							.parameter("Tag", tag);
+						return false;
+					}
+
+					ptree.add_child(localPtree.front().first, localPtree.front().second);
+				}
+				ptreeValue.add_child(listTag, ptree);
+
+				return true;
+			}
+
+		bool encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag);
+
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);
 		static bool findDataTypeElement(const std::string& elementName, DataTypeElement& dataTypeElement);
@@ -181,27 +252,5 @@ namespace OpcUaStackServer
 
 
 }
-
-
-#if 0
-	typedef enum 
-	{
-		OpcUaBuildInType_Unknown = 0,
-		OpcUaBuildInType_OpcUaString = 12,
-		OpcUaBuildInType_OpcUaDateTime = 13,
-		OpcUaBuildInType_OpcUaGuid = 14,
-		OpcUaBuildInType_OpcUaByteString = 15,
-		OpcUaBuildInType_OpcUaXmlElement = 16,
-		OpcUaBuildInType_OpcUaNodeId = 17,
-		OpcUaBuildInType_OpcUaExpandedNodeId = 18,
-		OpcUaBuildInType_OpcUaStatusCode = 19,
-		OpcUaBuildInType_OpcUaQualifiedName = 20,
-		OpcUaBuildInType_OpcUaLocalizedText = 21,
-		OpcUaBuildInType_OpcUaExtensionObject = 22,
-		OpcUaBuildInType_OpcUaDataValue = 23,
-		OpcUaBuildInType_OpcUaVariant = 24,
-		OpcUaBuildInType_OpcUaDiagnosticInfo = 25
-	} OpcUaBuildInType;
-#endif
 
 #endif
