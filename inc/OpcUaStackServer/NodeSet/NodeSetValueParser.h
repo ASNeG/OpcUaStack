@@ -248,6 +248,15 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& tag);
+#if 0
+		bool encode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& tag);
+		bool enncode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& tag);
+#endif
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);

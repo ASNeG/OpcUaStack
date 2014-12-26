@@ -439,6 +439,12 @@ namespace OpcUaStackServer
 				rc = encode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				dataTypeString = "DateTime";
+				rc = encode<OpcUaDateTime>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
 			default:
 			{
 				std::stringstream ss;
@@ -450,7 +456,6 @@ namespace OpcUaStackServer
 			}
 #if 0
 		OpcUaBuildInType_OpcUaString = 12,
-		OpcUaBuildInType_OpcUaDateTime = 13,
 		OpcUaBuildInType_OpcUaGuid = 14,
 		OpcUaBuildInType_OpcUaByteString = 15,
 		OpcUaBuildInType_OpcUaXmlElement = 16,
@@ -561,5 +566,114 @@ namespace OpcUaStackServer
 		ptree.put(tag, ss.str());
 		return true;
 	}
+
+	bool 
+	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& tag)
+	{
+		ptree.put(tag, value.toISOString());
+		return true;
+	}
+
+#if 0
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag)
+	{
+		std::string sourceValue = ptree.get_value<std::string>();
+		destValue->value(sourceValue);
+		return true;
+	}
+
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag)
+	{
+		std::string sourceValue = ptree.get_value<std::string>();
+		destValue->value(sourceValue.c_str(), sourceValue.length()); 
+		return true;
+	}
+	
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag)
+	{
+		boost::optional<std::string> locale = ptree.get_optional<std::string>(addxmls("Locale"));
+		boost::optional<std::string> text = ptree.get_optional<std::string>(addxmls("Text"));
+
+		if (locale) {
+			destValue->locale(*locale);
+		}
+		else {
+			destValue->locale("");
+		}
+
+		if (text) {
+			destValue->text(*text);
+		}
+		else {
+			destValue->text("");
+		}
+
+		return true;
+	}
+
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag)
+	{
+		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(addxmls("String"));
+		
+		if (!sourceValue) {
+			Log(Error, "value empty")
+				.parameter("Tag", tag)
+				.parameter("SourceValue", sourceValue);
+			return false;
+		}
+		*destValue = *sourceValue;
+		return true;
+	}
+
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag)
+	{
+		boost::optional<std::string> sourceValue = ptree.get_optional<std::string>(addxmls("Identifier"));
+		if (!sourceValue) {
+			Log(Error, "value empty")
+				.parameter("Tag", addxmls("Identifier"));
+			return false;
+		}
+
+		std::string s = *sourceValue;
+		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+		bool rc = destValue->fromString(s);
+		if (!rc) {
+			Log(Error, "value format error")
+				.parameter("Tag", "uax:Identifier")
+				.parameter("SourceValue", s);
+		}
+		return rc;
+	}
+
+	bool 
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag)
+	{
+		boost::optional<std::string> namespaceIndex = ptree.get_optional<std::string>(addxmls("NamespaceIndex"));
+		if (namespaceIndex) {
+			try {
+				OpcUaUInt16 ns = boost::lexical_cast<OpcUaInt16>(*namespaceIndex);
+				destValue->namespaceIndex(ns);
+			} catch(boost::bad_lexical_cast& e) {
+				Log(Error, "bad_lexical_cast in decode")
+					.parameter("Tag", tag)
+					.parameter("SourceValue", *namespaceIndex)
+					.parameter("What", e.what());
+				return false;
+			}
+		}
+
+		boost::optional<std::string> name = ptree.get_optional<std::string>(addxmls("Name"));
+		if (name) {
+			destValue->name(*name);
+		}
+
+		return true;
+	}
+#endif
 
 }
