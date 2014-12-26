@@ -211,6 +211,32 @@ namespace OpcUaStackServer
 			}
 
 		template<typename T>
+			bool 
+			encodeSPtr(boost::property_tree::ptree& ptreeValue, OpcUaVariant& variant, const std::string& tag)
+			{
+				boost::property_tree::ptree ptree;
+				if (variant.isArray()) {
+					OpcUaVariantValue::Vec& variantValueVec = variant.variant();
+					if (!encodeSPtr<T>(ptree, variantValueVec, tag)) {
+						return false;
+					}
+				}
+				else {
+					T::SPtr value;
+					value = variant.variantSPtr<T>();
+					
+					if (!encode(ptree, value, tag)) {
+						Log(Error, "encode error")
+							.parameter("Tag", tag);
+						return false;
+					}
+					
+				}
+				ptreeValue.add_child("Value", ptree);
+				return true;
+			}
+
+		template<typename T>
 	        bool
 			encode(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
 			{
@@ -221,6 +247,32 @@ namespace OpcUaStackServer
 				for (it = variantValueVec.begin(); it != variantValueVec.end(); it++) {
 					T value;
 					value = it->variant<T>();
+					
+					boost::property_tree::ptree localPtree;
+					if (!encode(localPtree, value, tag)) {
+						Log(Error, "encode error")
+							.parameter("Tag", tag);
+						return false;
+					}
+
+					ptree.add_child(localPtree.front().first, localPtree.front().second);
+				}
+				ptreeValue.add_child(listTag, ptree);
+
+				return true;
+			}
+
+		template<typename T>
+	        bool
+			encodeSPtr(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
+			{
+				std::string listTag = "ListOf" + tag;
+
+				boost::property_tree::ptree ptree;
+				OpcUaVariantValue::Vec::iterator it;
+				for (it = variantValueVec.begin(); it != variantValueVec.end(); it++) {
+					T::SPtr value;
+					value = it->variantSPtr<T>();
 					
 					boost::property_tree::ptree localPtree;
 					if (!encode(localPtree, value, tag)) {
@@ -249,14 +301,12 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& tag);
-#if 0
 		bool encode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& tag);
-		bool enncode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag);
 		bool encode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& tag);
-#endif
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);

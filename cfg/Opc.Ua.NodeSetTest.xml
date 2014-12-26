@@ -536,15 +536,15 @@
 	<Value>
       <uax:ListOfQualifiedName>
 	  <uax:QualifiedName>
-        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:NamespaceIndex>1</uax:NamespaceIndex>
         <uax:Name>QualifiedName1</uax:Name>
       </uax:QualifiedName>
 	  <uax:QualifiedName>
-        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:NamespaceIndex>1</uax:NamespaceIndex>
         <uax:Name>QualifiedName2</uax:Name>
       </uax:QualifiedName>
 	  <uax:QualifiedName>
-        <uax:NamespaceIndex>0</uax:NamespaceIndex>
+        <uax:NamespaceIndex>1</uax:NamespaceIndex>
         <uax:Name>QualifiedName3</uax:Name>
       </uax:QualifiedName>
       </uax:ListOfQualifiedName>
