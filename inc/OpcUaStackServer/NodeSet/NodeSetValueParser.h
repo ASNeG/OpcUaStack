@@ -222,7 +222,7 @@ namespace OpcUaStackServer
 					}
 				}
 				else {
-					T::SPtr value;
+					typename T::SPtr value;
 					value = variant.variantSPtr<T>();
 					
 					if (!encode(ptree, value, tag)) {
@@ -271,7 +271,7 @@ namespace OpcUaStackServer
 				boost::property_tree::ptree ptree;
 				OpcUaVariantValue::Vec::iterator it;
 				for (it = variantValueVec.begin(); it != variantValueVec.end(); it++) {
-					T::SPtr value;
+					typename T::SPtr value;
 					value = it->variantSPtr<T>();
 					
 					boost::property_tree::ptree localPtree;
