@@ -375,8 +375,68 @@ namespace OpcUaStackServer
 		{
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
-				dataTypeString = "OpcUaBoolean";
-				rc = encode<OpcUaBoolean>(ptree, opcUaVariant, "Boolean");
+				dataTypeString = "Boolean";
+				rc = encode<OpcUaBoolean>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				dataTypeString = "SByte";
+				rc = encode<OpcUaSByte>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				dataTypeString = "Byte";
+				rc = encode<OpcUaByte>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				dataTypeString = "Int16";
+				rc = encode<OpcUaInt16>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				dataTypeString = "UInt16";
+				rc = encode<OpcUaUInt16>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				dataTypeString = "Int32";
+				rc = encode<OpcUaInt32>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				dataTypeString = "UInt32";
+				rc = encode<OpcUaUInt32>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				dataTypeString = "Int64";
+				rc = encode<OpcUaInt64>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				dataTypeString = "UInt64";
+				rc = encode<OpcUaUInt64>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				dataTypeString = "Float";
+				rc = encode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString);
+				break; 
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				dataTypeString = "Double";
+				rc = encode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString);
 				break; 
 			}
 			default:
@@ -389,16 +449,6 @@ namespace OpcUaStackServer
 				return false;
 			}
 #if 0
-		OpcUaBuildInType_OpcUaSByte = 2,
-		OpcUaBuildInType_OpcUaByte = 3,
-		OpcUaBuildInType_OpcUaInt16 = 4,
-		OpcUaBuildInType_OpcUaUInt16 = 5,
-		OpcUaBuildInType_OpcUaInt32 = 6,
-		OpcUaBuildInType_OpcUaUInt32 = 7,
-		OpcUaBuildInType_OpcUaInt64 = 8,
-		OpcUaBuildInType_OpcUaUInt64 = 9,
-		OpcUaBuildInType_OpcUaFloat = 10,
-		OpcUaBuildInType_OpcUaDouble = 11,
 		OpcUaBuildInType_OpcUaString = 12,
 		OpcUaBuildInType_OpcUaDateTime = 13,
 		OpcUaBuildInType_OpcUaGuid = 14,
@@ -491,6 +541,24 @@ namespace OpcUaStackServer
 		else {
 			ptree.put(tag, "false");
 		}
+		return true;
+	}
+
+	bool 
+	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag)
+	{
+		std::stringstream ss;
+		ss << (int16_t)value;
+		ptree.put(tag, ss.str());
+		return true;
+	}
+		
+	bool 
+	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag)
+	{
+		std::stringstream ss;
+		ss << (int16_t)value;
+		ptree.put(tag, ss.str());
 		return true;
 	}
 

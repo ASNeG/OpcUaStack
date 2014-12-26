@@ -236,7 +236,18 @@ namespace OpcUaStackServer
 				return true;
 			}
 
+		template<typename T>
+			bool encode(boost::property_tree::ptree& ptree, T& value, const std::string& tag)
+			{
+				std::stringstream ss;
+				ss << value;
+				ptree.put(tag, ss.str());
+				return true;
+			}
+
 		bool encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag);
+		bool encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag);
 
 	  private:
 		static void insertDataTypeElement(const std::string& elementName, const DataTypeElement& dataTypeELement);
