@@ -5,6 +5,8 @@
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 
+#include "OpcUaStackServer/InformationModel/RootNode.h"
+
 
 using namespace OpcUaStackCore;
 
@@ -183,11 +185,13 @@ namespace OpcUaStackServer
 		}
 
 #if 0
-		std::cout << "Test Code:" << std::endl;
-		NamespaceArray namespaceArray;
-		namespaceArray.informationModel(informationModel_);
-		std::cout << "ExistNamespaceIndex=" << namespaceArray.existNamespaceIndex(0) << std::endl;
-		std::cout << "NamespaceName=" << namespaceArray.getNamespaceName(0) << std::endl;
+
+	RootNode rootNode;
+	rootNode.informationModel(informationModel_);
+	BaseNodeClass::SPtr baseNodeClass = rootNode.rootNode();
+	if (baseNodeClass.get() == nullptr) std::cout << "root node not available" << std::endl;
+	else std::cout << "root node available" << std::endl;
+
 #endif
 
 		// set server status

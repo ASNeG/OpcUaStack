@@ -224,6 +224,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetNamespace.h">
       <Filter>src\NodeSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\RootNode.h">
+      <Filter>src\InformationModel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -378,6 +381,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\NodeSet\NodeSetNamespace.cpp">
       <Filter>src\NodeSet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\RootNode.cpp">
+      <Filter>src\InformationModel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
