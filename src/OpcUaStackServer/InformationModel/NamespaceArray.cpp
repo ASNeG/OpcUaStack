@@ -54,6 +54,23 @@ namespace OpcUaStackServer
 	}
 
 	bool 
+	NamespaceArray::replaceNamespaceNames(std::vector<std::string>& namespaceNameVec)
+	{
+		OpcUaDataValue dataValue;
+		std::vector<std::string>::iterator it;
+		for (it = namespaceNameVec.begin(); it != namespaceNameVec.end(); it++) {
+			OpcUaString::SPtr stringValue = OpcUaString::construct();
+			*stringValue = *it;
+			dataValue.variant()->pushBack(stringValue);
+		}
+		dataValue.statusCode(Success);
+		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		
+		return informationModel_->setValue(OpcUaId_Server_NamespaceArray, AttributeId_Value, dataValue);
+	}
+
+	bool 
 	NamespaceArray::addNamespaceNames(std::vector<std::string>& namespaceNameVec)
 	{
 		OpcUaDataValue dataValue;
@@ -120,6 +137,7 @@ namespace OpcUaStackServer
 		std::vector<std::string>::iterator it;
 		std::vector<std::string> namespaceArray;
 		this->namespaceArray(namespaceArray);
+
 
 		if (namespaceIndex >= namespaceArray.size()) return false;
 		return true;

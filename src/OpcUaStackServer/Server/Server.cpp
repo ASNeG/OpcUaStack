@@ -176,38 +176,13 @@ namespace OpcUaStackServer
 	bool
 	Server::setInformationModel(void)
 	{
-		// add namespaces to namespace array
+		// replace namespaces to namespace array
 		{
 			NodeSetNamespace nodeSetNamespace;
 			NamespaceArray namespaceArray;
 			namespaceArray.informationModel(informationModel_);
-			namespaceArray.addNamespaceNames(nodeSetNamespace.globalNamespaceVec());
+			namespaceArray.replaceNamespaceNames(nodeSetNamespace.globalNamespaceVec());
 		}
-
-#if 0
-	std::vector<std::string> namespaceVec;
-	std::vector<std::string>::iterator it;
-	NamespaceArray namespaceArray;
-	namespaceArray.informationModel(informationModel_);
-	namespaceArray.namespaceArray(namespaceVec);
-	for (it = namespaceVec.begin(); it != namespaceVec.end(); it++) {
-		std::cout << "Uri=" << *it << std::endl;
-	}
-
-	for (uint32_t idx=0; idx < 3; idx++) {
-		std::cout << "idx(" << idx << ")=" << namespaceArray.getNamespaceName(idx) << std::endl;
-	}
-#endif
-
-#if 0
-
-	RootNode rootNode;
-	rootNode.informationModel(informationModel_);
-	BaseNodeClass::SPtr baseNodeClass = rootNode.rootNode();
-	if (baseNodeClass.get() == nullptr) std::cout << "root node not available" << std::endl;
-	else std::cout << "root node available" << std::endl;
-
-#endif
 
 		// set server status
 		{ 
