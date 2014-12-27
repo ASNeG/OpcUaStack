@@ -128,7 +128,7 @@ namespace OpcUaStackServer
 
 		// create secure channel
 		secureChannel = SecureChannelServer::construct(*ioService_);
-		secureChannel->secureChannelIf(this);
+		secureChannel->secureChannelManagerIf(this);
 		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
 		if (!rc) {
 			secureChannel.reset();

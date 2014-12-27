@@ -110,9 +110,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManager.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h">
-      <Filter>src\SecureChannel</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\Session.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
@@ -226,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\RootNode.h">
       <Filter>src\InformationModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelManagerIf.h">
+      <Filter>src\SecureChannel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

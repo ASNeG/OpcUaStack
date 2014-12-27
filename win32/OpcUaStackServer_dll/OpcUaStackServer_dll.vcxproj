@@ -107,7 +107,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParser.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetValueParserIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\NodeSet\NodeSetXmlParser.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelIf.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelManagerIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServer.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelServerConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelTransaction.h" />

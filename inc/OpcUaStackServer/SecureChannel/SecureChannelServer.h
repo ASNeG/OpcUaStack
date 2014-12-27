@@ -4,7 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelIf.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 		SecureChannelServer(IOService& ioService);
 		~SecureChannelServer(void);
 
-		void secureChannelIf(SecureChannelIf* secureChannelIf);
+		void secureChannelManagerIf(SecureChannelManagerIf* secureChannelManagerIf);
 
 		bool connect(void);
 		bool disconnect(void);
@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		void handleWriteSendComplete(const boost::system::error_code& error);
 
 		uint32_t tokenId_;
-		SecureChannelIf* secureChannelIf_;
+		SecureChannelManagerIf* secureChannelManagerIf_;
 		SecureChannelServerState secureChannelServerState_;
 
 		std::string remoteEndpointAddress_;

@@ -7,7 +7,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelIf.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
@@ -17,7 +17,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionManager : public SecureChannelIf, public SessionSecureChannelIf
+	class DLLEXPORT SessionManager : public SecureChannelManagerIf, public SessionSecureChannelIf
 	{
 	  public:
 		static SessionManager* instance_;
@@ -36,11 +36,11 @@ namespace OpcUaStackServer
 		);
 		void closeServerSocket(void);
 
-		//- SecureChannelIf ---------------------------------------------------
+		//- SecureChannelManagerIf --------------------------------------------
 		void connect(void);
 		void disconnect(void);
 		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
-		//- SecureChannelIf ---------------------------------------------------
+		//- SecureChannelManagerIf --------------------------------------------
 
 		//- SessionSecureChannelIf --------------------------------------------
 		void createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);

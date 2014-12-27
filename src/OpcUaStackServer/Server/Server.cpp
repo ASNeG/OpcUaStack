@@ -185,6 +185,21 @@ namespace OpcUaStackServer
 		}
 
 #if 0
+	std::vector<std::string> namespaceVec;
+	std::vector<std::string>::iterator it;
+	NamespaceArray namespaceArray;
+	namespaceArray.informationModel(informationModel_);
+	namespaceArray.namespaceArray(namespaceVec);
+	for (it = namespaceVec.begin(); it != namespaceVec.end(); it++) {
+		std::cout << "Uri=" << *it << std::endl;
+	}
+
+	for (uint32_t idx=0; idx < 3; idx++) {
+		std::cout << "idx(" << idx << ")=" << namespaceArray.getNamespaceName(idx) << std::endl;
+	}
+#endif
+
+#if 0
 
 	RootNode rootNode;
 	rootNode.informationModel(informationModel_);
