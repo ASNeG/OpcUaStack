@@ -182,6 +182,14 @@ namespace OpcUaStackServer
 			namespaceArray.addNamespaceNames(nodeSetNamespace.globalNamespaceVec());
 		}
 
+#if 0
+		std::cout << "Test Code:" << std::endl;
+		NamespaceArray namespaceArray;
+		namespaceArray.informationModel(informationModel_);
+		std::cout << "ExistNamespaceIndex=" << namespaceArray.existNamespaceIndex(0) << std::endl;
+		std::cout << "NamespaceName=" << namespaceArray.getNamespaceName(0) << std::endl;
+#endif
+
 		// set server status
 		{ 
 			OpcUaDataValue dataValue;

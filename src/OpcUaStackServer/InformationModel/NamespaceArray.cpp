@@ -121,7 +121,7 @@ namespace OpcUaStackServer
 		std::vector<std::string> namespaceArray;
 		this->namespaceArray(namespaceArray);
 
-		if (namespaceArray.size() >= namespaceIndex) return false;
+		if (namespaceIndex >= namespaceArray.size()) return false;
 		return true;
 	}
 		
