@@ -59,6 +59,8 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->connect(channelId_);
+
 		secureChannelServerState_ = SecureChannelClientState_WaitHello;
 		asyncReadMessageHeader();
 		return true;
@@ -81,7 +83,7 @@ namespace OpcUaStackServer
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
 		
-		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 	}
 		
 	void 
@@ -97,7 +99,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -121,7 +123,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -170,7 +172,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelClientState_WaitOpenSecureChannel;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -190,7 +192,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -214,7 +216,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -296,7 +298,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -315,7 +317,7 @@ namespace OpcUaStackServer
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
 			
-		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 		return;
 	}
 
@@ -332,7 +334,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -360,7 +362,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -374,7 +376,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -389,7 +391,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -423,7 +425,7 @@ namespace OpcUaStackServer
 				tcpConnection_.close();
 				secureChannelServerState_ = SecureChannelServerState_Close;
 			
-				if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+				if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 				return;
 			}
 		}
@@ -445,7 +447,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -501,7 +503,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 
@@ -517,7 +519,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect();
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
 			return;
 		}
 

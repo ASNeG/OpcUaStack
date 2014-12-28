@@ -13,8 +13,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT SecureChannelManagerIf
 	{
 	  public:
-		virtual void connect(void) = 0;
-		virtual void disconnect(void) = 0;
+		virtual void connect(OpcUaUInt32 channelId) = 0;
+		virtual void disconnect(OpcUaUInt32 channelId) = 0;
 		virtual bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction) = 0;
 	};
 

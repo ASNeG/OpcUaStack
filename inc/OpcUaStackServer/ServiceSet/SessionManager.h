@@ -9,6 +9,7 @@
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelMap.h"
 #include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
@@ -38,8 +39,8 @@ namespace OpcUaStackServer
 		void closeServerSocket(void);
 
 		//- SecureChannelManagerIf --------------------------------------------
-		void connect(void);
-		void disconnect(void);
+		void connect(OpcUaUInt32 channelId);
+		void disconnect(OpcUaUInt32 channelId);
 		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
@@ -57,7 +58,7 @@ namespace OpcUaStackServer
 
 		// function to handle secure channel
 		void acceptNewChannel(void);
-		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel, Session::SPtr session);
+		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
 
 		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 
@@ -76,6 +77,8 @@ namespace OpcUaStackServer
 		std::string prefixSecureChannelConfig_; 
 		Config* sessionConfig_; 
 		Config* secureChannelConfig_;
+
+		SecureChannelMap secureChannelMap_;
 	};
 
 }

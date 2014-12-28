@@ -26,6 +26,7 @@ namespace OpcUaStackServer
 	, ioService_(nullptr)
 	, tcpAcceptor_()
 	, url_()
+	, secureChannelMap_()
 	{
 	}
 
@@ -120,6 +121,20 @@ namespace OpcUaStackServer
 	void
 	SessionManager::createSession(void)
 	{
+		session_ = Session::construct();
+		session_->transactionManager(transactionManagerSPtr_);
+		session_->sessionSecureChannelIf(this);
+		session_->sessionId(1);
+		session_->authenticationToken(1);
+		bool rc = SessionConfig::initial(session_, prefixSessionConfig_, sessionConfig_);
+		if (!rc) {
+			session_.reset();
+
+			Log(Error, "session server configuration  error")
+				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
+				.parameter("ParameterPath", prefixSessionConfig_);
+			return;
+		}
 	}
 
 	bool 
@@ -136,24 +151,7 @@ namespace OpcUaStackServer
 	SessionManager::acceptNewChannel(void)
 	{
 		SecureChannelServer::SPtr secureChannel;
-		Session::SPtr session;
 		bool rc;
-
-		// create session 
-		session = Session::construct();
-		session->transactionManager(transactionManagerSPtr_);
-		session->sessionSecureChannelIf(this);
-		session->sessionId(1);
-		session->authenticationToken(1);
-		rc = SessionConfig::initial(session, prefixSessionConfig_, sessionConfig_);
-		if (!rc) {
-			session.reset();
-
-			Log(Error, "session server configuration  error")
-				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
-				.parameter("ParameterPath", prefixSessionConfig_);
-			return;
-		}
 
 		// create secure channel
 		secureChannel = SecureChannelServer::construct(*ioService_);
@@ -161,7 +159,7 @@ namespace OpcUaStackServer
 		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
 		if (!rc) {
 			secureChannel.reset();
-			session.reset();
+			session_.reset();
 
 			Log(Error, "secure channel server configuration  error")
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
@@ -169,14 +167,18 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		// save channel
+		secureChannelMap_.insert(secureChannel->channelId(), secureChannel);
+
+		// accept new channel
 		tcpAcceptor_->async_accept(
 			secureChannel->tcpConnection().socket(),
-			boost::bind(&SessionManager::handleAccept, this, boost::asio::placeholders::error, secureChannel, session)
+			boost::bind(&SessionManager::handleAccept, this, boost::asio::placeholders::error, secureChannel)
 		);
 	}
 
 	void 
-	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel, Session::SPtr session)
+	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
 	{
 		bool rc;
 
@@ -197,11 +199,13 @@ namespace OpcUaStackServer
 				.parameter("PartnerAddress", remoteEndpoint.address().to_string())
 				.parameter("PartnerPort", remoteEndpoint.port());
 
-			// FIXME: todo
+			secureChannelMap_.disconnect(secureChannel->channelId());
+			acceptNewChannel();
+			return;
 		}
 
 		secureChannel_ = secureChannel;
-		session_ = session;
+		createSession();
 		acceptNewChannel();
 	}
 
@@ -209,20 +213,20 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// SecureChannelIf
+	// SecureChannelManagerIf
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::connect(void)
+	SessionManager::connect(OpcUaUInt32 channelId)
 	{
-		std::cout << "SECURE CHANNEL CONNECT" << std::endl;
+		secureChannelMap_.connect(channelId);
 	}
 	
 	void 
-	SessionManager::disconnect(void)
+	SessionManager::disconnect(OpcUaUInt32 channelId)
 	{
-		std::cout << "SECURE CHANNEL DISCONNECT" << std::endl;
+		secureChannelMap_.disconnect(channelId);
 	}
 		
 	bool 
