@@ -13,9 +13,21 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+	boost::mutex SecureChannelServer::mutex_;
+	OpcUaUInt32 SecureChannelServer::uniqueChannelId_ = 0;
+	
+	OpcUaUInt32 
+	SecureChannelServer::getUniqueChannelId(void)
+	{
+		boost::mutex::scoped_lock g(mutex_);
+		uniqueChannelId_++;
+		return uniqueChannelId_;
+	}
+
 	SecureChannelServer::SecureChannelServer(IOService& ioService)
 	: SecureChannel(ioService)
 	, secureChannelServerState_(SecureChannelServerState_Close)
+	, channelId_(getUniqueChannelId())
 	{
 	}
 
@@ -27,6 +39,12 @@ namespace OpcUaStackServer
 	SecureChannelServer::secureChannelManagerIf(SecureChannelManagerIf* secureChannelManagerIf)
 	{
 		secureChannelManagerIf_ = secureChannelManagerIf;
+	}
+
+	OpcUaUInt32 
+	SecureChannelServer::channelId(void)
+	{
+		return channelId_;
 	}
 
 	bool 
@@ -217,7 +235,6 @@ namespace OpcUaStackServer
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.opcUaBinaryDecode(is);
 
-		channelId_ = 1; // FIXME
 		tokenId_ = 1;	// FIXME
 
 		// send open secure channel response message

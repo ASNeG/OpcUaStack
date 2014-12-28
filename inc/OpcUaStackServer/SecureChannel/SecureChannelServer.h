@@ -26,12 +26,17 @@ namespace OpcUaStackServer
 		~SecureChannelServer(void);
 
 		void secureChannelManagerIf(SecureChannelManagerIf* secureChannelManagerIf);
+		OpcUaUInt32 channelId(void);
 
 		bool connect(void);
 		bool disconnect(void);
 		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1, SecureChannelTransaction& secureChannelTransaction);
 
 	  private:
+		static boost::mutex mutex_;
+		static OpcUaUInt32 uniqueChannelId_;
+		static OpcUaUInt32 getUniqueChannelId(void);
+
 		void handleReadMessageHeaderError(void);
 		//void handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader);
 		void handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader);
@@ -48,6 +53,7 @@ namespace OpcUaStackServer
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
 		void handleWriteSendComplete(const boost::system::error_code& error);
 
+		OpcUaUInt32 channelId_;
 		uint32_t tokenId_;
 		SecureChannelManagerIf* secureChannelManagerIf_;
 		SecureChannelServerState secureChannelServerState_;

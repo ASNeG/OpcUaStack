@@ -227,6 +227,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelManagerIf.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelMap.h">
+      <Filter>src\SecureChannel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -384,6 +387,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\RootNode.cpp">
       <Filter>src\InformationModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelMap.cpp">
+      <Filter>src\SecureChannel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

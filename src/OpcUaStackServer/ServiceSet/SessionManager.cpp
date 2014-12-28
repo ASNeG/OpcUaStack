@@ -1,6 +1,5 @@
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
 namespace OpcUaStackServer
@@ -26,6 +25,7 @@ namespace OpcUaStackServer
 	, secureChannelConfig_(nullptr)
 	, ioService_(nullptr)
 	, tcpAcceptor_()
+	, url_()
 	{
 	}
 
@@ -63,6 +63,16 @@ namespace OpcUaStackServer
 		sessionConfig_ = &sessionConfig;
 		secureChannelConfig_ = &secureChannelConfig;
 
+		// read configuration
+		if (!readConfiguration()) {
+			return;
+		}
+
+		// open listener socket
+		if (!openListenerSocket()) {
+			return;
+		}
+
 		acceptNewChannel();
 	}
 
@@ -72,20 +82,16 @@ namespace OpcUaStackServer
 	{
 	}
 
-	void 
-	SessionManager::acceptNewChannel(void)
+	bool 
+	SessionManager::readConfiguration(void)
 	{
-		SecureChannelServer::SPtr secureChannel;
-		Session::SPtr session;
-		bool rc;
-
 		// get secure channel configuration
 		boost::optional<Config> childSecureChannelConfig = secureChannelConfig_->getChild(prefixSecureChannelConfig_);
 		if (!childSecureChannelConfig) {
 			Log(Error, "secure channel server configuration not found")
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_);
-			return;
+			return false;
 		}
 
 		// get endpoint url from configuration 
@@ -95,20 +101,43 @@ namespace OpcUaStackServer
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_)
 				.parameter("ParameterName", "EndpointUrl");
-			return;
+			return false;
 		}
 
 		// check endpoint url
-		Url url;
-		url.url(endpointUrl);
-		if (!url.good()) {
+		url_.url(endpointUrl);
+		if (!url_.good()) {
 			Log(Error, "invalid endpoint url in server configuration")
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_)
 				.parameter("EndpointUrl", endpointUrl);
-			return;
+			return false;
 
 		}
+		return true;
+	}
+
+	void
+	SessionManager::createSession(void)
+	{
+	}
+
+	bool 
+	SessionManager::openListenerSocket(void)
+	{
+		std::string host = url_.host();
+		boost::asio::io_service& io_service = ioService_->io_service();
+		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url_.port());
+		tcpAcceptor_->listen();
+		return true;
+	}
+
+	void 
+	SessionManager::acceptNewChannel(void)
+	{
+		SecureChannelServer::SPtr secureChannel;
+		Session::SPtr session;
+		bool rc;
 
 		// create session 
 		session = Session::construct();
@@ -138,14 +167,6 @@ namespace OpcUaStackServer
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_);
 			return;
-		}
-
-		// bind server socket
-		if (tcpAcceptor_.get() == nullptr) {
-			std::string host = url.host();
-			boost::asio::io_service& io_service = ioService_->io_service();
-			tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url.port());
-			tcpAcceptor_->listen();
 		}
 
 		tcpAcceptor_->async_accept(
