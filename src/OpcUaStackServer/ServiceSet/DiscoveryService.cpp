@@ -9,7 +9,7 @@ namespace OpcUaStackServer
 {
 
 	DiscoveryService::DiscoveryService(void)
-	: sessionSecureChannelIf_(nullptr)
+	: sessionManagerIf_(nullptr)
 	{
 	}
 
@@ -18,9 +18,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DiscoveryService::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
+	DiscoveryService::sessionManagerIf(SessionManagerIf* sessionManagerIf)
 	{
-		sessionSecureChannelIf_ = sessionSecureChannelIf;
+		sessionManagerIf_ = sessionManagerIf;
 	}
 
 	void 
@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 	
 
 		typeId.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbo, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(typeId, sbo, secureChannelTransaction);
 		return true;
 	}
 

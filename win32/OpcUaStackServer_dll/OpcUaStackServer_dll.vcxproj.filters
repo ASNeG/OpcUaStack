@@ -230,6 +230,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\SecureChannel\SecureChannelMap.h">
       <Filter>src\SecureChannel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManagerIf.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

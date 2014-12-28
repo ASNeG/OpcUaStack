@@ -31,9 +31,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
+	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
 	{
-		sessionSecureChannelIf_ = sessionSecureChannelIf;
+		sessionManagerIf_ = sessionManagerIf;
 	}
 
 	void 
@@ -123,7 +123,7 @@ namespace OpcUaStackServer
 		sessionState_ = SessionState_CreateSessionResponse;
 
 		typeId.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(typeId, sbres, secureChannelTransaction);
 		return true;
 	}
 		
@@ -157,7 +157,7 @@ namespace OpcUaStackServer
 		sessionState_ = SessionState_Ready;
 
 		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(typeId, sbres, secureChannelTransaction);
 		return true;
 	}
 
@@ -175,7 +175,7 @@ namespace OpcUaStackServer
 
 		OpcUaNodeId typeId;
 		typeId.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(typeId, sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(typeId, sbres, secureChannelTransaction);
 	}
 
 	bool 
@@ -256,7 +256,7 @@ namespace OpcUaStackServer
 
 		SecureChannelTransaction secureChannelTransaction;
 		secureChannelTransaction.requestId_ = serviceTransactionSPtr->requestId_;
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(serviceTransactionSPtr->nodeTypeResponse(), sb, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(serviceTransactionSPtr->nodeTypeResponse(), sb, secureChannelTransaction);
 
 	}
 

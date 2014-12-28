@@ -5,7 +5,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
-#include "OpcUaStackServer/ServiceSet/SessionIf.h"
+#include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -18,7 +18,7 @@ namespace OpcUaStackServer
 		DiscoveryService(void);
 		~DiscoveryService(void);
 
-		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
+		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
 		bool receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
@@ -27,7 +27,7 @@ namespace OpcUaStackServer
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
-		SessionSecureChannelIf* sessionSecureChannelIf_;
+		SessionManagerIf* sessionManagerIf_;
 	};
 
 }

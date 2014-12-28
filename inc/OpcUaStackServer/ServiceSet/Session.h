@@ -6,6 +6,7 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
+#include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
@@ -34,7 +35,7 @@ namespace OpcUaStackServer
 
 		void transactionManager(TransactionManager::SPtr transactionManager);
 
-		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
+		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		void sessionId(uint32_t sessionId);
 		void authenticationToken(uint32_t authenticationToken);
 		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
@@ -56,7 +57,7 @@ namespace OpcUaStackServer
 		uint32_t sessionId_;
 		uint32_t authenticationToken_;
 		SessionState sessionState_;
-		SessionSecureChannelIf* sessionSecureChannelIf_;
+		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 
 		TransactionManager::SPtr transactionManagerSPtr_;

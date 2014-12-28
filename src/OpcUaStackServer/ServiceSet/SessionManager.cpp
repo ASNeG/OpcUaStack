@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 	SessionManager::discoveryService(DiscoveryService::SPtr discoveryService)
 	{
 		discoveryService_ = discoveryService;
-		discoveryService_->sessionSecureChannelIf(this);
+		discoveryService_->sessionManagerIf(this);
 	}
 
 	void
@@ -123,7 +123,7 @@ namespace OpcUaStackServer
 	{
 		session_ = Session::construct();
 		session_->transactionManager(transactionManagerSPtr_);
-		session_->sessionSecureChannelIf(this);
+		session_->sessionManagerIf(this);
 		session_->sessionId(1);
 		session_->authenticationToken(1);
 		bool rc = SessionConfig::initial(session_, prefixSessionConfig_, sessionConfig_);

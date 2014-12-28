@@ -19,7 +19,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionManager : public SecureChannelManagerIf, public SessionSecureChannelIf
+	class DLLEXPORT SessionManager : public SecureChannelManagerIf, public SessionManagerIf
 	{
 	  public:
 		static SessionManager* instance_;
@@ -44,11 +44,11 @@ namespace OpcUaStackServer
 		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
-		//- SessionSecureChannelIf --------------------------------------------
+		//- SessionManagerI------f --------------------------------------------
 		void createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		void activateSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
-		//- SessionSecurechannelIf --------------------------------------------
+		//- SessionManagerIf --------------------------------------------------
 
 	  private:
 		bool readConfiguration(void);
