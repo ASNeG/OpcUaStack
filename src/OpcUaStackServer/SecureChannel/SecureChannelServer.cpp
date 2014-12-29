@@ -281,14 +281,18 @@ namespace OpcUaStackServer
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
-				.parameter("PartnerPort", remoteEndpointPort_);
+				.parameter("PartnerPort", remoteEndpointPort_)
+				.parameter("ChannelId", channelId_)
+				.parameter("SecurityToken", tokenIdVec_[tokenIdVec_.size()-1]);
 		}
 		else {
 			Log(Info, "secure channel open")
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
-				.parameter("PartnerPort", remoteEndpointPort_);
+				.parameter("PartnerPort", remoteEndpointPort_)
+				.parameter("ChannelId", channelId_)
+				.parameter("SecurityToken", tokenIdVec_[tokenIdVec_.size()-1]);
 		}
 
 		secureChannelServerState_ = SecureChannelServerState_Ready;
@@ -425,6 +429,21 @@ namespace OpcUaStackServer
 		SecureChannelTransaction secureChannelTransaction;
 		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
 
+		if (!checkSecurityToken(securityTokenId)) {
+			Log(Error, "secure channel security token errir")
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
+				.parameter("SecureChannelState", secureChannelServerState_)
+				.parameter("SecurityToken", securityTokenId);
+			tcpConnection_.close();
+			secureChannelServerState_ = SecureChannelServerState_Close;
+			
+			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			return;
+		}
+		
 		if (secureChannelManagerIf_ != nullptr) {
 			bool rc = secureChannelManagerIf_->receive(nodeId, is_, secureChannelTransaction);
 			if (rc == false) {
@@ -536,6 +555,37 @@ namespace OpcUaStackServer
 			return;
 		}
 
+	}
+
+	bool 
+	SecureChannelServer::checkSecurityToken(OpcUaUInt32 securityTokenId)
+	{
+		if (tokenIdVec_.size() < 1) return false;
+		if (tokenIdVec_[0] == securityTokenId) return true;
+
+		if (tokenIdVec_.size() < 2) return false;
+
+		bool found = false;
+		uint32_t idx;
+		for (idx=1; idx<tokenIdVec_.size(); idx++) {
+			if (tokenIdVec_[idx] == securityTokenId) {
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) return false;
+		uint32_t pos = idx;
+		TokenIdVec newTokenIdVec;
+		newTokenIdVec.push_back(tokenIdVec_[pos]);
+		for (uint32_t idx=1; idx<tokenIdVec_.size(); idx++) {
+			if (idx == pos) continue;
+			newTokenIdVec.push_back(tokenIdVec_[idx]);
+		}
+
+		tokenIdVec_.clear();
+		tokenIdVec_ = newTokenIdVec;
+		return true;
 	}
 
 }

@@ -55,6 +55,8 @@ namespace OpcUaStackServer
 		void handleWriteOpenSecureChannelComplete(const boost::system::error_code& error);
 		void handleWriteSendComplete(const boost::system::error_code& error);
 
+		bool checkSecurityToken(OpcUaUInt32 securityTokenId);
+
 		OpcUaUInt32 channelId_;
 		TokenIdVec tokenIdVec_;
 		SecureChannelManagerIf* secureChannelManagerIf_;
