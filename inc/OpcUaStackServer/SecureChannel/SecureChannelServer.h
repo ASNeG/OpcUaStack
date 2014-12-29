@@ -14,14 +14,16 @@ namespace OpcUaStackServer
 	typedef enum
 	{
 		SecureChannelServerState_Close,
-		SecureChannelClientState_WaitHello,
-		SecureChannelClientState_WaitOpenSecureChannel,
+		SecureChannelServerState_WaitHello,
+		SecureChannelServerState_WaitOpenSecureChannel,
 		SecureChannelServerState_Ready,
 	} SecureChannelServerState;
 
 	class DLLEXPORT SecureChannelServer : public SecureChannel, public  ObjectPool<SecureChannelServer>
 	{
 	  public:
+		typedef std::vector<OpcUaUInt32> TokenIdVec;
+
 		SecureChannelServer(IOService& ioService);
 		~SecureChannelServer(void);
 
@@ -54,7 +56,7 @@ namespace OpcUaStackServer
 		void handleWriteSendComplete(const boost::system::error_code& error);
 
 		OpcUaUInt32 channelId_;
-		uint32_t tokenId_;
+		TokenIdVec tokenIdVec_;
 		SecureChannelManagerIf* secureChannelManagerIf_;
 		SecureChannelServerState secureChannelServerState_;
 
