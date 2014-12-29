@@ -181,6 +181,14 @@ namespace OpcUaStackServer
 		asyncReadMessageHeader();
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpenSecureChannel
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	SecureChannelServer::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
 	{
@@ -323,6 +331,14 @@ namespace OpcUaStackServer
 		asyncReadMessageHeader();
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// CloseSecureChannel
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	SecureChannelServer::handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader)
 	{
@@ -338,6 +354,14 @@ namespace OpcUaStackServer
 		return;
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Message
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	SecureChannelServer::handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader)
 	{

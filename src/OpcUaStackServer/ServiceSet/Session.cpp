@@ -5,6 +5,8 @@
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 
 using namespace OpcUaStackCore;
@@ -181,8 +183,20 @@ namespace OpcUaStackServer
 	bool 
 	Session::receiveCloseSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		std::cout << "not implemented..." << std::endl;
-		return false;
+		std::iostream ios(&sb);
+		CloseSessionRequest closeSessionRequest;
+		closeSessionRequest.opcUaBinaryDecode(ios);
+
+		boost::asio::streambuf sbres;
+		std::iostream iosres(&sbres);
+
+		CloseSessionResponse closeSessionResponse;
+		closeSessionResponse.responseHeader()->requestHandle(closeSessionRequest.requestHeader()->requestHandle());
+		closeSessionResponse.responseHeader()->serviceResult(Success);
+
+		typeId.nodeId(OpcUaId_CloseSessionResponse_Encoding_DefaultBinary);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(typeId, sbres, secureChannelTransaction);
+		return true;
 	}
 
 	bool 
