@@ -17,6 +17,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ActivateSessionRequest : public  ObjectPool<ActivateSessionRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<ActivateSessionRequest> SPtr;
+
 		ActivateSessionRequest(void);
 		virtual ~ActivateSessionRequest(void);
 

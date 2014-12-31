@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT AddReferencesResponse : public  ObjectPool<AddReferencesResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<AddReferencesResponse> SPtr;
+
 		AddReferencesResponse(void);
 		virtual ~AddReferencesResponse(void);
 

@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT TransferResult : public  ObjectPool<TransferResult>
 	{
 	  public:
+		typedef boost::shared_ptr<TransferResult> SPtr;
+
 		TransferResult(void);
 		virtual ~TransferResult(void);
 
@@ -29,7 +31,11 @@ namespace OpcUaStackCore
 		  OpcUaUInt32Array::SPtr availableSequenceNumberArraySPtr_;
 	};
 
-	class TransferResultArray : public OpcUaArray<TransferResult::SPtr, SPtrTypeCoder<TransferResult> >, public ObjectPool<TransferResultArray> {};
+	class TransferResultArray : public OpcUaArray<TransferResult::SPtr, SPtrTypeCoder<TransferResult> >, public ObjectPool<TransferResultArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<TransferResultArray> SPtr;
+	};
 
 }
 

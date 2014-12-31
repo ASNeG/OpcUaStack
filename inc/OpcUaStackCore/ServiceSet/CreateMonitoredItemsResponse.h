@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT CreateMonitoredItemsResponse : public  ObjectPool<CreateMonitoredItemsResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<CreateMonitoredItemsResponse> SPtr;
+
 		CreateMonitoredItemsResponse(void);
 		virtual ~CreateMonitoredItemsResponse(void);
 

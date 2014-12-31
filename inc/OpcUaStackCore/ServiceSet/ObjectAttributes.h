@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ObjectAttributes : public  ObjectPool<ObjectAttributes>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ObjectAttributes> SPtr;
+
 		ObjectAttributes(void);
 		virtual ~ObjectAttributes(void);
 

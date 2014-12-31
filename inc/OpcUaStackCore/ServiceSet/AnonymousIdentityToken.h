@@ -12,6 +12,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT AnonymousIdentityToken : public  ObjectPool<AnonymousIdentityToken>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<AnonymousIdentityToken> SPtr;
+
 		AnonymousIdentityToken(void);
 		~AnonymousIdentityToken(void);
 

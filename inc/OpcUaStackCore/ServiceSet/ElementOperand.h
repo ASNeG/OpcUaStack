@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ElementOperand : public  ObjectPool<ElementOperand>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ElementOperand> SPtr;
+
 		ElementOperand(void);
 		virtual ~ElementOperand(void);
 

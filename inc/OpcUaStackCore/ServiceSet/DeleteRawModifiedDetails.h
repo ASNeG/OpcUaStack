@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteRawModifiedDetails : public  ObjectPool<DeleteRawModifiedDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteRawModifiedDetails> SPtr;
+
 		DeleteRawModifiedDetails(void);
 		virtual ~DeleteRawModifiedDetails(void);
 

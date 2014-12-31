@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ReadAtTimeDetails : public  ObjectPool<ReadAtTimeDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ReadAtTimeDetails> SPtr;
+
 		ReadAtTimeDetails(void);
 		virtual ~ReadAtTimeDetails(void);
 

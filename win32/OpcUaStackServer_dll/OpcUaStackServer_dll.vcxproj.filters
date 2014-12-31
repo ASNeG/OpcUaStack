@@ -63,6 +63,9 @@
     <Filter Include="src\Server">
       <UniqueIdentifier>{5fdab8f9-d551-4582-a53d-572e572c4c01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Application">
+      <UniqueIdentifier>{5ca225d0-5044-4172-93dd-49e4f05d2d1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -233,6 +236,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionManagerIf.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\Application\Application.h">
+      <Filter>src\Application</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -393,6 +399,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\SecureChannel\SecureChannelMap.cpp">
       <Filter>src\SecureChannel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\Application\Application.cpp">
+      <Filter>src\Application</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

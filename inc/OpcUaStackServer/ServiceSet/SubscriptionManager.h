@@ -24,6 +24,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT SubscriptionManager : public ObjectPool<SubscriptionManager>
 	{
 	  public:
+		typedef boost::shared_ptr<SubscriptionManager> SPtr;
+
 		SubscriptionManager(void);
 		~SubscriptionManager(void);
 

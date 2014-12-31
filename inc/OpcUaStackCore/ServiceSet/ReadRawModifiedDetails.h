@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ReadRawModifiedDetails : public  ObjectPool<ReadRawModifiedDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ReadRawModifiedDetails> SPtr;
+
 		ReadRawModifiedDetails(void);
 		virtual ~ReadRawModifiedDetails(void);
 

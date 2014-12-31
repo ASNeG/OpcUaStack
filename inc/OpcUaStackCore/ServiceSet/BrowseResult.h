@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT BrowseResult : public  ObjectPool<BrowseResult>
 	{
 	  public:
+		typedef boost::shared_ptr<BrowseResult> SPtr;
+
 		BrowseResult(void);
 		virtual ~BrowseResult(void);
 
@@ -33,7 +35,11 @@ namespace OpcUaStackCore
 		ReferenceDescriptionArray::SPtr referenceArraySPtr_;
 	};
 
-	class BrowseResultArray : public OpcUaArray<BrowseResult::SPtr, SPtrTypeCoder<BrowseResult> >, public ObjectPool<BrowseResultArray> {};
+	class BrowseResultArray : public OpcUaArray<BrowseResult::SPtr, SPtrTypeCoder<BrowseResult> >, public ObjectPool<BrowseResultArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<BrowseResultArray> SPtr;
+	};
 
 }
 

@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ViewDescription : public  ObjectPool<ViewDescription>
 	{
 	  public:
+		typedef boost::shared_ptr<ViewDescription> SPtr;
+
 		ViewDescription(void);
 		virtual ~ViewDescription(void);
 
@@ -33,7 +35,11 @@ namespace OpcUaStackCore
 		OpcUaUInt32 viewVersion_;
 	};
 
-	class ViewDescriptionArray : public OpcUaArray<ViewDescription::SPtr, SPtrTypeCoder<ViewDescription> >, public ObjectPool<ViewDescriptionArray> {};
+	class ViewDescriptionArray : public OpcUaArray<ViewDescription::SPtr, SPtrTypeCoder<ViewDescription> >, public ObjectPool<ViewDescriptionArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ViewDescriptionArray> SPtr;
+	};
 
 }
 

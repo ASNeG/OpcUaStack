@@ -12,6 +12,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaQualifiedName : public ObjectPool<OpcUaQualifiedName>
 	{
 	  public:
+		typedef boost::shared_ptr<OpcUaQualifiedName> SPtr;
+
 		OpcUaQualifiedName(void);
 		~OpcUaQualifiedName(void);
 
@@ -48,7 +50,11 @@ namespace OpcUaStackCore
 		OpcUaString name_;
 	};
 
-	class OpcUaQualifiedNameArray : public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >, public ObjectPool<OpcUaQualifiedNameArray> {};
+	class OpcUaQualifiedNameArray : public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >, public ObjectPool<OpcUaQualifiedNameArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<OpcUaQualifiedNameArray> SPtr;
+	};
 };
 
 #endif

@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT BrowseResponse : public ObjectPool<BrowseResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<BrowseResponse> SPtr;
+
 	    BrowseResponse(void);
 		~BrowseResponse(void);
 

@@ -17,6 +17,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT InformationModel : public ObjectPool<InformationModel>
 	{
 	  public:
+		typedef boost::shared_ptr<InformationModel> SPtr;
+
 		InformationModel(void);
 		~InformationModel(void);
 

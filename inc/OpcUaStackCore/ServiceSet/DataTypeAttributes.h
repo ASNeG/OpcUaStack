@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DataTypeAttributes : public  ObjectPool<DataTypeAttributes>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<DataTypeAttributes> SPtr;
+
 		DataTypeAttributes(void);
 		virtual ~DataTypeAttributes(void);
 

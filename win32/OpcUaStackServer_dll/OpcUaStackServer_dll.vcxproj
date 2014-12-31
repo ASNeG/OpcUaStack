@@ -96,6 +96,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\Application\Application.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModel.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\InformationModelNodeSet.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\InformationModel\NamespaceArray.h" />
@@ -154,6 +155,7 @@
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableTypeNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\VariableNodeClass.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\AddressSpaceModel\ViewNodeClass.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackServer\Application\Application.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModel.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\InformationModelNodeSet.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackServer\InformationModel\NamespaceArray.cpp" />

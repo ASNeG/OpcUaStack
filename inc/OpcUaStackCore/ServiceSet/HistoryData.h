@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT HistoryData : public  ObjectPool<HistoryData>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryData> SPtr;
+
 		HistoryData(void);
 		virtual ~HistoryData(void);
 

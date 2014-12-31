@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT BrowsePath : public  ObjectPool<BrowsePath>
 	{
 	  public:
+		typedef boost::shared_ptr<BrowsePath> SPtr;
+
 		BrowsePath(void);
 		virtual ~BrowsePath(void);
 
@@ -30,7 +32,11 @@ namespace OpcUaStackCore
 		RelativePath relativePath_;
 	};
 
-	class BrowsePathArray : public OpcUaArray<BrowsePath::SPtr, SPtrTypeCoder<BrowsePath> >, public ObjectPool<BrowsePathArray> {};
+	class BrowsePathArray : public OpcUaArray<BrowsePath::SPtr, SPtrTypeCoder<BrowsePath> >, public ObjectPool<BrowsePathArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<BrowsePathArray> SPtr;
+	};
 	
 }
 

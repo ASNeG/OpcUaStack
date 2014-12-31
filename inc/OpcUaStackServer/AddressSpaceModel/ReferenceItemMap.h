@@ -15,6 +15,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT ReferenceItemMap : public ObjectPool<ReferenceItemMap>
 	{
 	  public:
+		typedef boost::shared_ptr<ReferenceItemMap> SPtr;
+
 		ReferenceItemMap(void);
 		~ReferenceItemMap(void);
 

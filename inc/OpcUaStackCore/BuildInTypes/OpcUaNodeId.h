@@ -12,6 +12,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaNodeId : public ObjectPool<OpcUaNodeId>, public OpcUaNodeIdBase
 	{
 	  public:
+		typedef boost::shared_ptr<OpcUaNodeId> SPtr;
+
 	    OpcUaNodeId(void);
 		virtual ~OpcUaNodeId(void);
 	};
@@ -27,7 +29,11 @@ namespace OpcUaStackCore
 		}
 	};
 
-	class OpcUaNodeIdArray : public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >, public ObjectPool<OpcUaNodeIdArray> {};
+	class OpcUaNodeIdArray : public OpcUaArray<OpcUaNodeId::SPtr, SPtrTypeCoder<OpcUaNodeId> >, public ObjectPool<OpcUaNodeIdArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<OpcUaNodeIdArray> SPtr;
+	};
 
 	typedef std::list<OpcUaNodeId> OpcUaNodeIdList;
 

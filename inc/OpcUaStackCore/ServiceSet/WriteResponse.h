@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT WriteResponse : public  ObjectPool<WriteResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<WriteResponse> SPtr;
+
 		WriteResponse(void);
 		virtual ~WriteResponse(void);
 

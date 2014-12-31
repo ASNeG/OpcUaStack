@@ -15,6 +15,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ExtensibleParameter : public  ObjectPool<ExtensibleParameter>
 	{
 	  public:
+		typedef boost::shared_ptr<ExtensibleParameter> SPtr;
+
 		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::BSPtr epSPtr);
 		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
 		static ExtensibleParameterBase::BSPtr findElement(OpcUaNodeId& opcUaNodeId);
@@ -85,7 +87,11 @@ namespace OpcUaStackCore
 		ExtensibleParameterBase::BSPtr epSPtr_;
 	};
 
-	class ExtensibleParameterArray : public OpcUaArray<ExtensibleParameter::SPtr, SPtrTypeCoder<ExtensibleParameter> >, public ObjectPool<ExtensibleParameterArray> {};
+	class ExtensibleParameterArray : public OpcUaArray<ExtensibleParameter::SPtr, SPtrTypeCoder<ExtensibleParameter> >, public ObjectPool<ExtensibleParameterArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ExtensibleParameterArray> SPtr;
+	};
 
 }
 

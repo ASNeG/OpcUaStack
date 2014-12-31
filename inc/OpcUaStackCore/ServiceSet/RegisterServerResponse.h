@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT RegisterServerResponse : public  ObjectPool<RegisterServerResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<RegisterServerResponse> SPtr;
+
 		RegisterServerResponse(void);
 		virtual ~RegisterServerResponse(void);
 

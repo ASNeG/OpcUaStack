@@ -16,6 +16,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT QueryFirstRequest : public  ObjectPool<QueryFirstRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<QueryFirstRequest> SPtr;
+
 		QueryFirstRequest(void);
 		virtual ~QueryFirstRequest(void);
 

@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT AddReferencesItem : public ObjectPool<AddReferencesItem>
 	{
 	  public:
+		typedef boost::shared_ptr<AddReferencesItem> SPtr;
+
 	    AddReferencesItem(void);
 		~AddReferencesItem(void);
 
@@ -41,7 +43,11 @@ namespace OpcUaStackCore
 		NodeClass::SPtr targetNodeClassSPtr_;
 	};
 
-	class AddReferencesItemArray : public OpcUaArray<AddReferencesItem::SPtr, SPtrTypeCoder<AddReferencesItem> >, public ObjectPool<AddReferencesItemArray> {};
+	class AddReferencesItemArray : public OpcUaArray<AddReferencesItem::SPtr, SPtrTypeCoder<AddReferencesItem> >, public ObjectPool<AddReferencesItemArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<AddReferencesItemArray> SPtr;
+	};
 }
 
 #endif

@@ -40,6 +40,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>
 	{
 	  public:
+		typedef boost::shared_ptr<Session> SPtr;
+
 		Session(IOService& ioService);
 		~Session(void);
 

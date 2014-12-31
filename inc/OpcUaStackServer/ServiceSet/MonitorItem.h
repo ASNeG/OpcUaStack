@@ -23,6 +23,8 @@ namespace OpcUaStackServer
 	class MonitorItem : public ObjectPool<MonitorItem>
 	{
 	  public:
+		typedef boost::shared_ptr<MonitorItem> SPtr;
+
 		MonitorItem(void);
 		~MonitorItem(void);
 

@@ -33,6 +33,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ContentFilterElement : public  ObjectPool<ContentFilterElement>
 	{
 	  public:
+		typedef boost::shared_ptr<ContentFilterElement> SPtr;
+
 		ContentFilterElement(void);
 		virtual ~ContentFilterElement(void);
 
@@ -49,7 +51,11 @@ namespace OpcUaStackCore
 		ExtensibleParameterArray::SPtr filterOperandsArraySPtr_;
 	};
 
-	class ContentFilterElementArray : public OpcUaArray<ContentFilterElement::SPtr, SPtrTypeCoder<ContentFilterElement> >, public ObjectPool<ContentFilterElementArray> {};
+	class ContentFilterElementArray : public OpcUaArray<ContentFilterElement::SPtr, SPtrTypeCoder<ContentFilterElement> >, public ObjectPool<ContentFilterElementArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ContentFilterElementArray> SPtr;
+	};
 
 }
 

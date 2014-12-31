@@ -19,6 +19,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT BrowseDescription : public  ObjectPool<BrowseDescription>
 	{
 	  public:
+		typedef boost::shared_ptr<BrowseDescription> SPtr;
+
 		BrowseDescription(void);
 		virtual ~BrowseDescription(void);
 
@@ -47,7 +49,11 @@ namespace OpcUaStackCore
 		OpcUaUInt32 resultMask_;
 	};
 
-	class BrowseDescriptionArray : public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >, public ObjectPool<BrowseDescriptionArray> {};
+	class BrowseDescriptionArray : public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >, public ObjectPool<BrowseDescriptionArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<BrowseDescriptionArray> SPtr;
+	};
 
 }
 

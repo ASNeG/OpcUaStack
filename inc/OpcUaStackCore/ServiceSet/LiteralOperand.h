@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT LiteralOperand : public  ObjectPool<LiteralOperand>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<LiteralOperand> SPtr;
+
 		LiteralOperand(void);
 		virtual ~LiteralOperand(void);
 

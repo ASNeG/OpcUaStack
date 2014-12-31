@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT NotificationMessage : public ObjectPool<NotificationMessage>
 	{
 	  public:
+		typedef boost::shared_ptr<NotificationMessage> SPtr;
+
 	    NotificationMessage(void);
 		~NotificationMessage(void);
 

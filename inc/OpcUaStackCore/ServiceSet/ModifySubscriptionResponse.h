@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ModifySubscriptionResponse : public  ObjectPool<ModifySubscriptionResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<ModifySubscriptionResponse> SPtr;
+
 		ModifySubscriptionResponse(void);
 		virtual ~ModifySubscriptionResponse(void);
 

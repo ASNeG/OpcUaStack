@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteNodesResponse : public  ObjectPool<DeleteNodesResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteNodesResponse> SPtr;
+
 		DeleteNodesResponse(void);
 		virtual ~DeleteNodesResponse(void);
 

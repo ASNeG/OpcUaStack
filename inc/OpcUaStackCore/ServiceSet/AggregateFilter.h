@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT AggregateFilter : public  ObjectPool<AggregateFilter>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<AggregateFilter> SPtr;
+
 		AggregateFilter(void);
 		virtual ~AggregateFilter(void);
 

@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ReadProcessedDetails : public  ObjectPool<ReadProcessedDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ReadProcessedDetails> SPtr;
+
 		ReadProcessedDetails(void);
 		virtual ~ReadProcessedDetails(void);
 

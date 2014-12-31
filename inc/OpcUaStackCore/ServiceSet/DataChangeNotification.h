@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DataChangeNotification : public  ObjectPool<DataChangeNotification>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<DataChangeNotification> SPtr;
+
 		DataChangeNotification(void);
 		virtual ~DataChangeNotification(void);
 

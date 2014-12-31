@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT RegisterNodesResponse : public ObjectPool<RegisterNodesResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<RegisterNodesResponse> SPtr;
+
 	    RegisterNodesResponse(void);
 		virtual ~RegisterNodesResponse(void);
 

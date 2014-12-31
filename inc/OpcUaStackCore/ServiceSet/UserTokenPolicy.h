@@ -19,6 +19,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT UserTokenPolicy : public  ObjectPool<UserTokenPolicy>
 	{
 	  public:
+		typedef boost::shared_ptr<UserTokenPolicy> SPtr;
+
 		UserTokenPolicy(void);
 		virtual ~UserTokenPolicy(void);
 
@@ -44,7 +46,11 @@ namespace OpcUaStackCore
 		OpcUaString securityPolicyUri_;
 	};
 
-	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >, public ObjectPool<UserTokenPolicyArray> {};
+	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >, public ObjectPool<UserTokenPolicyArray> 
+	{
+	  public:
+		  typedef boost::shared_ptr<UserTokenPolicyArray> SPtr;
+	};
 
 }
 

@@ -24,6 +24,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT NodeClass : public  ObjectPool<NodeClass>
 	{
 	  public:
+		typedef boost::shared_ptr<NodeClass> SPtr;
+
 		NodeClass(void);
 		virtual ~NodeClass(void);
 

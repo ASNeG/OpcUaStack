@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT RelativePathElement : public  ObjectPool<RelativePathElement>
 	{
 	  public:
+		typedef boost::shared_ptr<RelativePathElement> SPtr;
+
 		RelativePathElement(void);
 		virtual ~RelativePathElement(void);
 
@@ -35,7 +37,11 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName targetName_;
 	};
 
-	class RelativePathElementArray : public OpcUaArray<RelativePathElement::SPtr, SPtrTypeCoder<RelativePathElement> >, public ObjectPool<RelativePathElementArray> {};
+	class RelativePathElementArray : public OpcUaArray<RelativePathElement::SPtr, SPtrTypeCoder<RelativePathElement> >, public ObjectPool<RelativePathElementArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<RelativePathElementArray> SPtr;
+	};
 
 }
 

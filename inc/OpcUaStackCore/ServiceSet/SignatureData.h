@@ -12,6 +12,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SignatureData : public  ObjectPool<SignatureData>
 	{
 	  public:
+		typedef boost::shared_ptr<SignatureData> SPtr;
+
 		SignatureData(void);
 		virtual ~SignatureData(void);
 

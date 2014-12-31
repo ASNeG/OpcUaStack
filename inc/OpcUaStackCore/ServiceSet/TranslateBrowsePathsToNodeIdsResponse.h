@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT TranslateBrowsePathsToNodeIdsResponse : public ObjectPool<TranslateBrowsePathsToNodeIdsResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<TranslateBrowsePathsToNodeIdsResponse> SPtr;
+
 	    TranslateBrowsePathsToNodeIdsResponse(void);
 		virtual ~TranslateBrowsePathsToNodeIdsResponse(void);
 

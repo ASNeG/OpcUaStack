@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT QueryDataDescription : public  ObjectPool<QueryDataDescription>
 	{
 	  public:
+		typedef boost::shared_ptr<QueryDataDescription> SPtr;
+
 		QueryDataDescription(void);
 		virtual ~QueryDataDescription(void);
 
@@ -34,7 +36,11 @@ namespace OpcUaStackCore
 		OpcUaString indexRange_;
 	};
 
-	class QueryDataDescriptionArray : public OpcUaArray<QueryDataDescription::SPtr, SPtrTypeCoder<QueryDataDescription> >, public ObjectPool<QueryDataDescriptionArray> {};
+	class QueryDataDescriptionArray : public OpcUaArray<QueryDataDescription::SPtr, SPtrTypeCoder<QueryDataDescription> >, public ObjectPool<QueryDataDescriptionArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<QueryDataDescriptionArray> SPtr;
+	};
 
 }
 

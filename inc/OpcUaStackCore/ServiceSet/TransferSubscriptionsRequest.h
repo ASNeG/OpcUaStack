@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT TransferSubscriptionsRequest : public  ObjectPool<TransferSubscriptionsRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<TransferSubscriptionsRequest> SPtr;
+
 		TransferSubscriptionsRequest(void);
 		virtual ~TransferSubscriptionsRequest(void);
 

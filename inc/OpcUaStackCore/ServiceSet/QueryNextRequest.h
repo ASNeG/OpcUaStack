@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT QueryNextRequest : public  ObjectPool<QueryNextRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<QueryNextRequest> SPtr;
+
 		QueryNextRequest(void);
 		virtual ~QueryNextRequest(void);
 

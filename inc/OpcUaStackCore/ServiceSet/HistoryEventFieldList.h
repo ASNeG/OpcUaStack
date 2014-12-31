@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT HistoryEventFieldList : public  ObjectPool<HistoryEventFieldList>
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryEventFieldList> SPtr;
+
 		HistoryEventFieldList(void);
 		virtual ~HistoryEventFieldList(void);
 
@@ -26,7 +28,11 @@ namespace OpcUaStackCore
 		OpcUaVariantArray::SPtr eventFieldArraySPtr_;
 	};
 
-	class HistoryEventFieldListArray : public OpcUaArray<HistoryEventFieldList::SPtr, SPtrTypeCoder<HistoryEventFieldList> >, public ObjectPool<HistoryEventFieldListArray> {};
+	class HistoryEventFieldListArray : public OpcUaArray<HistoryEventFieldList::SPtr, SPtrTypeCoder<HistoryEventFieldList> >, public ObjectPool<HistoryEventFieldListArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<HistoryEventFieldListArray> SPtr;
+	};
 
 }
 

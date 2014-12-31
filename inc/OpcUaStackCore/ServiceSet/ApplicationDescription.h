@@ -20,6 +20,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ApplicationDescription : public  ObjectPool<ApplicationDescription>
 	{
 	  public:
+		typedef boost::shared_ptr<ApplicationDescription> SPtr;
+
 		ApplicationDescription(void);
 		virtual ~ApplicationDescription(void);
 
@@ -50,7 +52,11 @@ namespace OpcUaStackCore
 		OpcUaStringArray::SPtr discoveryUrls_;
 	};
 
-	class ApplicationDescriptionArray : public OpcUaArray<ApplicationDescription::SPtr, SPtrTypeCoder<ApplicationDescription> >, public ObjectPool<ApplicationDescriptionArray> {};
+	class ApplicationDescriptionArray : public OpcUaArray<ApplicationDescription::SPtr, SPtrTypeCoder<ApplicationDescription> >, public ObjectPool<ApplicationDescriptionArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ApplicationDescriptionArray> SPtr;
+	};
 
 }
 

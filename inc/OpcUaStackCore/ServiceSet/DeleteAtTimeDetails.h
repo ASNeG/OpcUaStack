@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteAtTimeDetails : public  ObjectPool<DeleteAtTimeDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteAtTimeDetails> SPtr;
+
 		DeleteAtTimeDetails(void);
 		virtual ~DeleteAtTimeDetails(void);
 

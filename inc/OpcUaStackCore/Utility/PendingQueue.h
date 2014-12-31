@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT PendingQueueElement : public ObjectPool<PendingQueueElement>
 	{
 	  public:
+		typedef boost::shared_ptr<PendingQueueElement> SPtr;
+
 		PendingQueueElement(IOService& ioService);
 		~PendingQueueElement(void);
 
@@ -33,6 +35,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT PendingQueue
 	{
 	  public:
+		typedef boost::shared_ptr<PendingQueue> SPtr;
+
 		PendingQueue(IOService& ioService);
 		~PendingQueue(void);
 

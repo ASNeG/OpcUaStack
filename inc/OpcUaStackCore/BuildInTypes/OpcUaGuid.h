@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaGuid : public ObjectPool<OpcUaGuid>
 	{
 	  public:
+		typedef boost::shared_ptr<OpcUaGuid> SPtr;
+
 	    OpcUaGuid(void);
 		~OpcUaGuid(void);
 
@@ -50,7 +52,11 @@ namespace OpcUaStackCore
 		OpcUaByte data4_[8];
 	};
 
-	class OpcUaGuidArray : public OpcUaArray<OpcUaGuid::SPtr, SPtrTypeCoder<OpcUaGuid> >, public ObjectPool<OpcUaGuidArray> {};
+	class OpcUaGuidArray : public OpcUaArray<OpcUaGuid::SPtr, SPtrTypeCoder<OpcUaGuid> >, public ObjectPool<OpcUaGuidArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<OpcUaGuidArray> SPtr;
+	};
 
 }
 

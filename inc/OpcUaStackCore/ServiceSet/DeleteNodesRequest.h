@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteNodesRequest : public  ObjectPool<DeleteNodesRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteNodesRequest> SPtr;
+
 		DeleteNodesRequest(void);
 		virtual ~DeleteNodesRequest(void);
 

@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SimpleAttributeOperand : public  ObjectPool<SimpleAttributeOperand>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<SimpleAttributeOperand> SPtr;
+
 		SimpleAttributeOperand(void);
 		virtual ~SimpleAttributeOperand(void);
 
@@ -40,7 +42,11 @@ namespace OpcUaStackCore
 		OpcUaString indexRange_;
 	};
 
-	class SimpleAttributeOperandArray : public OpcUaArray<SimpleAttributeOperand::SPtr, SPtrTypeCoder<SimpleAttributeOperand> >, public ObjectPool<SimpleAttributeOperandArray> {};
+	class SimpleAttributeOperandArray : public OpcUaArray<SimpleAttributeOperand::SPtr, SPtrTypeCoder<SimpleAttributeOperand> >, public ObjectPool<SimpleAttributeOperandArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<SimpleAttributeOperandArray> SPtr;
+	};
 
 }
 

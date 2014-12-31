@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ReadRequest : public  ObjectPool<ReadRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<ReadRequest> SPtr;
+
 		ReadRequest(void);
 		virtual ~ReadRequest(void);
 

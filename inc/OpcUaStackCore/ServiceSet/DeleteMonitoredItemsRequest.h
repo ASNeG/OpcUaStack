@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteMonitoredItemsRequest : public  ObjectPool<DeleteMonitoredItemsRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteMonitoredItemsRequest> SPtr;
+
 		DeleteMonitoredItemsRequest(void);
 		virtual ~DeleteMonitoredItemsRequest(void);
 

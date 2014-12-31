@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SetPublishingModeRequest : public  ObjectPool<SetPublishingModeRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<SetPublishingModeRequest> SPtr;
+
 		SetPublishingModeRequest(void);
 		virtual ~SetPublishingModeRequest(void);
 

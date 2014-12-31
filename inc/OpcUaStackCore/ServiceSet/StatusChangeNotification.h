@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT StatusChangeNotification : public  ObjectPool<StatusChangeNotification>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<StatusChangeNotification> SPtr;
+
 		StatusChangeNotification(void);
 		virtual ~StatusChangeNotification(void);
 

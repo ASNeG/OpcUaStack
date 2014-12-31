@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ReadEventDetails : public  ObjectPool<ReadEventDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ReadEventDetails> SPtr;
+
 		ReadEventDetails(void);
 		virtual ~ReadEventDetails(void);
 

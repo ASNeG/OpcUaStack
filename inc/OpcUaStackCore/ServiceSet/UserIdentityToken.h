@@ -12,6 +12,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT UserIdentityToken : public  ObjectPool<UserIdentityToken>
 	{
 	  public:
+		typedef boost::shared_ptr<UserIdentityToken> SPtr;
+
 		UserIdentityToken(void);
 		virtual ~UserIdentityToken(void);
 

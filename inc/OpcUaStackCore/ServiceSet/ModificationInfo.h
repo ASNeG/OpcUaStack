@@ -21,6 +21,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ModificationInfo : public  ObjectPool<ModificationInfo>
 	{
 	  public:
+		typedef boost::shared_ptr<ModificationInfo> SPtr;
+
 		ModificationInfo(void);
 		virtual ~ModificationInfo(void);
 
@@ -42,7 +44,11 @@ namespace OpcUaStackCore
 		HistoryUpdateMode updateType_;
 	};
 
-	class ModificationInfoArray : public OpcUaArray<ModificationInfo::SPtr, SPtrTypeCoder<ModificationInfo> >, public ObjectPool<ModificationInfoArray> {};
+	class ModificationInfoArray : public OpcUaArray<ModificationInfo::SPtr, SPtrTypeCoder<ModificationInfo> >, public ObjectPool<ModificationInfoArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ModificationInfoArray> SPtr;
+	};
 
 }
 

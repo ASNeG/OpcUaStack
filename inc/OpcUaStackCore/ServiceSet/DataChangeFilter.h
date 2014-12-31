@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DataChangeFilter : public  ObjectPool<DataChangeFilter>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<DataChangeFilter> SPtr;
+
 		DataChangeFilter(void);
 		virtual ~DataChangeFilter(void);
 

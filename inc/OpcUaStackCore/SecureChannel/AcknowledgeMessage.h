@@ -11,6 +11,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT AcknowledgeMessage : public  ObjectPool<AcknowledgeMessage>
 	{
 	  public:
+		typedef boost::shared_ptr<AcknowledgeMessage> SPtr;
+
 		AcknowledgeMessage(void);
 		virtual ~AcknowledgeMessage(void);
 

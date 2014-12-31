@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SubscriptionAcknowledgement : public  ObjectPool<SubscriptionAcknowledgement>
 	{
 	  public:
+		typedef boost::shared_ptr<SubscriptionAcknowledgement> SPtr;
+
 		SubscriptionAcknowledgement(void);
 		virtual ~SubscriptionAcknowledgement(void);
 
@@ -30,7 +32,11 @@ namespace OpcUaStackCore
 
 	};
 
-	class SubscriptionAcknowledgementArray : public OpcUaArray<SubscriptionAcknowledgement::SPtr, SPtrTypeCoder<SubscriptionAcknowledgement> >, public ObjectPool<SubscriptionAcknowledgementArray> {};
+	class SubscriptionAcknowledgementArray : public OpcUaArray<SubscriptionAcknowledgement::SPtr, SPtrTypeCoder<SubscriptionAcknowledgement> >, public ObjectPool<SubscriptionAcknowledgementArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<SubscriptionAcknowledgementArray> SPtr;
+	};
 
 }
 

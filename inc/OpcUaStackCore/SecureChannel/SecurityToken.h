@@ -8,6 +8,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SecurityToken : public  ObjectPool<SecurityToken>
 	{
 	  public:
+		typedef boost::shared_ptr<SecurityToken> SPtr;
+
 		SecurityToken(void);
 		virtual ~SecurityToken(void);
 

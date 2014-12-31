@@ -15,6 +15,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT EventFilter : public  ObjectPool<EventFilter>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<EventFilter> SPtr;
+
 		EventFilter(void);
 		virtual ~EventFilter(void);
 

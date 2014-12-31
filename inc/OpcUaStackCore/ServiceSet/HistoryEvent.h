@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT HistoryEvent : public  ObjectPool<HistoryEvent>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryEvent> SPtr;
+
 		HistoryEvent(void);
 		virtual ~HistoryEvent(void);
 

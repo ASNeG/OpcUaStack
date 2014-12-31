@@ -15,6 +15,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT EventNotificationList : public  ObjectPool<EventNotificationList>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<EventNotificationList> SPtr;
+
 		EventNotificationList(void);
 		virtual ~EventNotificationList(void);
 

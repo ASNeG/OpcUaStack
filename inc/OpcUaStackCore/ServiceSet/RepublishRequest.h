@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT RepublishRequest : public  ObjectPool<RepublishRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<RepublishRequest> SPtr;
+
 		RepublishRequest(void);
 		virtual ~RepublishRequest(void);
 

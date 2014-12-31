@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT HistoryUpdateResult : public  ObjectPool<HistoryUpdateResult>
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryUpdateResult> SPtr;
+
 		HistoryUpdateResult(void);
 		virtual ~HistoryUpdateResult(void);
 
@@ -32,7 +34,11 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};
 
-	class HistoryUpdateResultArray : public OpcUaArray<HistoryUpdateResult::SPtr, SPtrTypeCoder<HistoryUpdateResult> >, public ObjectPool<HistoryUpdateResultArray> {};
+	class HistoryUpdateResultArray : public OpcUaArray<HistoryUpdateResult::SPtr, SPtrTypeCoder<HistoryUpdateResult> >, public ObjectPool<HistoryUpdateResultArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<HistoryUpdateResultArray> SPtr;
+	};
 
 }
 

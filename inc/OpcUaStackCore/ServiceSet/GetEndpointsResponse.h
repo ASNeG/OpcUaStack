@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT GetEndpointsResponse : public  ObjectPool<GetEndpointsResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<GetEndpointsResponse> SPtr;
+
 		GetEndpointsResponse(void);
 		virtual ~GetEndpointsResponse(void);
 

@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ActivateSessionResponse : public  ObjectPool<ActivateSessionResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<ActivateSessionResponse> SPtr;
+
 		ActivateSessionResponse(void);
 		virtual ~ActivateSessionResponse(void);
 

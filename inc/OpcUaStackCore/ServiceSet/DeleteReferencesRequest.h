@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteReferencesRequest : public  ObjectPool<DeleteReferencesRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteReferencesRequest> SPtr;
+
 		DeleteReferencesRequest(void);
 		virtual ~DeleteReferencesRequest(void);
 

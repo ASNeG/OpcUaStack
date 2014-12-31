@@ -12,43 +12,41 @@ namespace OpcUaStackCore
 	class DLLEXPORT ObjectPool : public Object
 	{
 	  public:
-		typedef boost::shared_ptr<OBJ> SPtr;
-
-		static SPtr construct(void) {
+		static boost::shared_ptr<OBJ> construct(void) {
 			return boost::shared_ptr<OBJ>(new OBJ());
 		}
 
 		template<typename T>
-		  static SPtr construct(T& p) {
+		  static boost::shared_ptr<OBJ> construct(T& p) {
 			  return boost::shared_ptr<OBJ>(new OBJ(p));
 		  }
 
 		template<typename T1, typename T2>
-		  static SPtr construct(T1& p1, T2& p2) {
+		  static boost::shared_ptr<OBJ> construct(T1& p1, T2& p2) {
 			  return boost::shared_ptr<OBJ>(new OBJ(p1, p2));
 		  }
 
 		template<typename T1, typename T2, typename T3>
-		  static SPtr construct(T1& p1, T2& p2, T3& p3) {
+		  static boost::shared_ptr<OBJ> construct(T1& p1, T2& p2, T3& p3) {
 			  return boost::shared_ptr<OBJ>(new OBJ(p1, p2, p3));
 		  }
 
 		template<typename T>
-		  static SPtr construct(const T& p) {
+		  static boost::shared_ptr<OBJ> construct(const T& p) {
 			  return boost::shared_ptr<OBJ>(new OBJ(p));
 		  }
 
 		template<typename T1, typename T2>
-		  static SPtr construct(const T1& p1, const T2& p2) {
+		  static boost::shared_ptr<OBJ> construct(const T1& p1, const T2& p2) {
 			  return boost::shared_ptr<OBJ>(new OBJ(p1,p2));
 		  }
 
 		template<typename T1, typename T2, typename T3>
-		  static SPtr construct(const T1& p1, const T2& p2, const T3& p3) {
+		  static boost::shared_ptr<OBJ> construct(const T1& p1, const T2& p2, const T3& p3) {
 			  return boost::shared_ptr<OBJ>(new OBJ(p1,p2, p3));
 		  }
 
-		SPtr constructMember(void) {
+		boost::shared_ptr<OBJ> constructMember(void) {
 			return boost::shared_ptr<OBJ>(new OBJ());
 		}
 

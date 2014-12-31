@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ParsingResult : public  ObjectPool<ParsingResult>
 	{
 	  public:
+		typedef boost::shared_ptr<ParsingResult> SPtr;
+
 		ParsingResult(void);
 		virtual ~ParsingResult(void);
 
@@ -32,7 +34,11 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr dataDiagnosticInfoArraySPtr_;
 	};
 
-	class ParsingResultArray : public OpcUaArray<ParsingResult::SPtr, SPtrTypeCoder<ParsingResult> >, public ObjectPool<ParsingResultArray> {};
+	class ParsingResultArray : public OpcUaArray<ParsingResult::SPtr, SPtrTypeCoder<ParsingResult> >, public ObjectPool<ParsingResultArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ParsingResultArray> SPtr;
+	};
 
 }
 

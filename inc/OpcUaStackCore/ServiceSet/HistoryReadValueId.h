@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT HistoryReadValueId : public  ObjectPool<HistoryReadValueId>
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryReadValueId> SPtr;
+
 		HistoryReadValueId(void);
 		virtual ~HistoryReadValueId(void);
 
@@ -40,7 +42,11 @@ namespace OpcUaStackCore
 		OpcUaByteString continuationPoint_;
 	};
 
-	class HistoryReadValueIdArray : public OpcUaArray<HistoryReadValueId::SPtr, SPtrTypeCoder<HistoryReadValueId> >, public ObjectPool<HistoryReadValueIdArray> {};
+	class HistoryReadValueIdArray : public OpcUaArray<HistoryReadValueId::SPtr, SPtrTypeCoder<HistoryReadValueId> >, public ObjectPool<HistoryReadValueIdArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<HistoryReadValueIdArray> SPtr;
+	};
 
 }
 

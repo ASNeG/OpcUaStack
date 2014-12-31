@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ViewAttributes : public  ObjectPool<ViewAttributes>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<ViewAttributes> SPtr;
+
 		ViewAttributes(void);
 		virtual ~ViewAttributes(void);
 

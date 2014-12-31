@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ReadValueId : public  ObjectPool<ReadValueId>
 	{
 	  public:
+		typedef boost::shared_ptr<ReadValueId> SPtr;
+
 		ReadValueId(void);
 		virtual ~ReadValueId(void);
 
@@ -41,7 +43,11 @@ namespace OpcUaStackCore
 
 	};
 
-	class ReadValueIdArray : public OpcUaArray<ReadValueId::SPtr, SPtrTypeCoder<ReadValueId> >, public ObjectPool<ReadValueIdArray> {};
+	class ReadValueIdArray : public OpcUaArray<ReadValueId::SPtr, SPtrTypeCoder<ReadValueId> >, public ObjectPool<ReadValueIdArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<ReadValueIdArray> SPtr;
+	};
 
 }
 

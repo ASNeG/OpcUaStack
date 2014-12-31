@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SetMonitoringModeResponse : public  ObjectPool<SetMonitoringModeResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<SetMonitoringModeResponse> SPtr;
+
 		SetMonitoringModeResponse(void);
 		virtual ~SetMonitoringModeResponse(void);
 

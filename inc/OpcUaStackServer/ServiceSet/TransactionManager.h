@@ -13,6 +13,8 @@ namespace OpcUaStackServer
 	class DLLEXPORT TransactionManager : public ObjectPool<TransactionManager>
 	{
 	  public:
+		typedef boost::shared_ptr<TransactionManager> SPtr;
+
 		TransactionManager(void);
 		~TransactionManager(void);
 

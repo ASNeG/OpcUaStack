@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT CancelResponse : public  ObjectPool<CancelResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<CancelResponse> SPtr;
+
 		CancelResponse(void);
 		virtual ~CancelResponse(void);
 

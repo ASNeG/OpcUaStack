@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT FindServersResponse : public  ObjectPool<FindServersResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<FindServersResponse> SPtr;
+
 		FindServersResponse(void);
 		virtual ~FindServersResponse(void);
 

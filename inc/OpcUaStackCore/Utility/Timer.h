@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT Timer : public ObjectPool<Timer>
 	{
 	  public:
+		typedef boost::shared_ptr<Timer> SPtr;
+
 	    Timer(IOService& ioService);
 		~Timer(void);
 

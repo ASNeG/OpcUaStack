@@ -64,6 +64,12 @@
     <Filter Include="src\Component">
       <UniqueIdentifier>{40a56b84-5cf4-4b21-b99e-435035bc6608}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Log4cxx">
+      <UniqueIdentifier>{c06db85e-9178-4702-a993-691fec74668f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Log">
+      <UniqueIdentifier>{5d508fe5-44ea-44b4-91a3-d5a9d4024e00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackCore\Base\Object.h">

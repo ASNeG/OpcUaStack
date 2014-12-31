@@ -22,6 +22,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT EndpointDescription : public  ObjectPool<EndpointDescription>
 	{
 	  public:
+		typedef boost::shared_ptr<EndpointDescription> SPtr;
+
 		EndpointDescription(void);
 		virtual ~EndpointDescription(void);
 
@@ -56,7 +58,11 @@ namespace OpcUaStackCore
 		OpcUaByte securityLevel_;
 	};
 
-	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr, SPtrTypeCoder<EndpointDescription> >, public ObjectPool<EndpointDescriptionArray> {};
+	class EndpointDescriptionArray : public OpcUaArray<EndpointDescription::SPtr, SPtrTypeCoder<EndpointDescription> >, public ObjectPool<EndpointDescriptionArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<EndpointDescriptionArray> SPtr;
+	};
 
 }
 

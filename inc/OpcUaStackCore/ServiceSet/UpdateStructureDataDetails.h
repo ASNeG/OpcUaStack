@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT UpdateStructureDataDetails : public  ObjectPool<UpdateStructureDataDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<UpdateStructureDataDetails> SPtr;
+
 		UpdateStructureDataDetails(void);
 		virtual ~UpdateStructureDataDetails(void);
 

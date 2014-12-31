@@ -20,6 +20,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaDataValue : public ObjectPool<OpcUaDataValue>
 	{
 	  public:
+		typedef boost::shared_ptr<OpcUaDataValue> SPtr;
+
 	    OpcUaDataValue(void);
 		~OpcUaDataValue(void);
 
@@ -59,7 +61,11 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >, public ObjectPool<OpcUaDataValueArray> {};
+	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >, public ObjectPool<OpcUaDataValueArray> 
+	{
+	  public:
+		typedef boost::shared_ptr<OpcUaDataValueArray> SPtr;
+	};
 
 }
 

@@ -16,6 +16,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT HistoryReadRequest : public  ObjectPool<HistoryReadRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<HistoryReadRequest> SPtr;
+
 		HistoryReadRequest(void);
 		virtual ~HistoryReadRequest(void);
 

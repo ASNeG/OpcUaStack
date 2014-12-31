@@ -28,6 +28,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT SecureChannelClient : public SecureChannel, public  ObjectPool<SecureChannelClient>
 	{
 	  public:
+		typedef boost::shared_ptr<SecureChannelClient> SPtr;
+
 		SecureChannelClient(IOService& ioService);
 		~SecureChannelClient(void);
 

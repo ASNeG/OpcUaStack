@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT DeleteEventDetails : public  ObjectPool<DeleteEventDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<DeleteEventDetails> SPtr;
+
 		DeleteEventDetails(void);
 		virtual ~DeleteEventDetails(void);
 

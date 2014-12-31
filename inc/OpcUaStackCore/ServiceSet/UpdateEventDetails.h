@@ -16,6 +16,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT UpdateEventDetails : public  ObjectPool<UpdateEventDetails>, public ExtensibleParameterBase
 	{
 	  public:
+		typedef boost::shared_ptr<UpdateEventDetails> SPtr;
+
 		UpdateEventDetails(void);
 		virtual ~UpdateEventDetails(void);
 

@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SetTriggeringRequest : public  ObjectPool<SetTriggeringRequest>
 	{
 	  public:
+		typedef boost::shared_ptr<SetTriggeringRequest> SPtr;
+
 		SetTriggeringRequest(void);
 		virtual ~SetTriggeringRequest(void);
 

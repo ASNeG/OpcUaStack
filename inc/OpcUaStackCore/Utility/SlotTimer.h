@@ -13,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SlotTimerElement : public ObjectPool<SlotTimerElement>
 	{
 	  public:
+		typedef boost::shared_ptr<SlotTimerElement> SPtr;
+
 		SlotTimerElement(void);
 		~SlotTimerElement(void);
 
@@ -83,6 +85,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT SlotTimer : public ObjectPool<SlotTimer>
 	{
 	  public:
+		typedef boost::shared_ptr<SlotTimer> SPtr;
+
 		SlotTimer(void);
 		~SlotTimer(void);
 

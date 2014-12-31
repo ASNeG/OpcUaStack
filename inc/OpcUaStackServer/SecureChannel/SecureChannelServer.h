@@ -22,6 +22,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT SecureChannelServer : public SecureChannel, public  ObjectPool<SecureChannelServer>
 	{
 	  public:
+		typedef boost::shared_ptr<SecureChannelServer> SPtr;
 		typedef std::vector<OpcUaUInt32> TokenIdVec;
 
 		SecureChannelServer(IOService& ioService);

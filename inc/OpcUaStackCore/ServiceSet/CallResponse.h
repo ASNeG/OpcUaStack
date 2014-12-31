@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT CallResponse : public  ObjectPool<CallResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<CallResponse> SPtr;
+
 		CallResponse(void);
 		virtual ~CallResponse(void);
 
