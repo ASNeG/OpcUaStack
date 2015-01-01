@@ -51,6 +51,18 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	Session::SPtr 
+	SessionMap::get(OpcUaInt32 authenticationToken)
+	{
+		SessionElement::SPtr sessionElement = this->sessionElement(authenticationToken);
+		if (sessionElement.get() != nullptr) {
+			return sessionElement->session_;
+		}
+
+		Session::SPtr session;
+		return session;
+	}
+
 	SessionElement::SPtr 
 	SessionMap::sessionElement(OpcUaInt32 authenticationToken)
 	{

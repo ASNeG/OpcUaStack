@@ -32,9 +32,11 @@ namespace OpcUaStackServer
 		uint32_t size(void);
 		bool insert(OpcUaInt32 authenticationToken, Session::SPtr session);
 		bool remove(OpcUaInt32 authenticationToken);
-		SessionElement::SPtr sessionElement(OpcUaInt32 authenticationToken);
+		Session::SPtr get(OpcUaInt32 authenticationToken);
 
 	  private:
+		SessionElement::SPtr sessionElement(OpcUaInt32 authenticationToken);
+
 		SessionElementMap sessionElementMap_;
 	};
 
