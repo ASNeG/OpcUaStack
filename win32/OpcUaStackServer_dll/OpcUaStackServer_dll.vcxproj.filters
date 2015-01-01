@@ -239,6 +239,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\Application\Application.h">
       <Filter>src\Application</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionMap.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -402,6 +405,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackServer\Application\Application.cpp">
       <Filter>src\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackServer\ServiceSet\SessionMap.cpp">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
