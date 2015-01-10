@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include <stdint.h>
 
 using namespace OpcUaStackCore;
@@ -17,6 +18,8 @@ namespace OpcUaStackServer
 	    ~SecureChannelTransaction(void);
 
 		uint32_t requestId_;
+		OpcUaUInt32 channelId_;
+		OpcUaUInt32 authenticationToken_;
 	};
 
 }

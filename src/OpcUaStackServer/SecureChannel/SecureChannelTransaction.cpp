@@ -4,6 +4,8 @@ namespace OpcUaStackServer
 {
 
 	SecureChannelTransaction::SecureChannelTransaction(void)
+	: channelId_(0)
+	, authenticationToken_(0)
 	{
 	}
 

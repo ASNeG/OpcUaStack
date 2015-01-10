@@ -31,18 +31,30 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	ServiceTransaction::channelId(OpcUaUInt32 channelId)
+	{
+		channelId_ = channelId;
+	}
+		
+	OpcUaUInt32 
+	ServiceTransaction::channelId(void)
+	{
+		return channelId_;
+	}
+
+	void 
 	ServiceTransaction::sessionId(uint32_t sessionId)
 	{
 		sessionId_ = sessionId;
 	}
 
-	uint32_t 
+	OpcUaUInt32 
 	ServiceTransaction::sessionId(void)
 	{
 		return sessionId_;
 	}
 
-	uint32_t 
+	OpcUaUInt32 
 	ServiceTransaction::transactionId(void)
 	{
 		return transactionId_;

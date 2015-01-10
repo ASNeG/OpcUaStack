@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 	AttributeService::receiveReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
+
 		ReadRequest::SPtr readRequest = trx->request();
 		ReadResponse::SPtr readResponse = trx->response();
 

@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 	, secureChannelServerState_(SecureChannelServerState_Close)
 	, channelId_(getUniqueChannelId())
 	, tokenIdVec_()
+	, authenticationToken_(0)
 	{
 		std::srand(static_cast<unsigned int>(std::time(0))); 
 	}
@@ -452,6 +453,8 @@ namespace OpcUaStackServer
 
 		SecureChannelTransaction secureChannelTransaction;
 		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
+		secureChannelTransaction.channelId_ = channelId_;
+		secureChannelTransaction.authenticationToken_ = authenticationToken_;
 
 		if (!checkSecurityToken(securityTokenId)) {
 			Log(Error, "secure channel security token errir")
@@ -469,7 +472,14 @@ namespace OpcUaStackServer
 		}
 		
 		if (secureChannelManagerIf_ != nullptr) {
-			bool rc = secureChannelManagerIf_->receive(nodeId, is_, secureChannelTransaction);
+
+			Log(Debug, "secure channel send message")
+				.parameter("MessageType", nodeId)
+				.parameter("ChannelId", secureChannelTransaction.channelId_)
+				.parameter("RequestId", secureChannelTransaction.requestId_)
+				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
+
+			bool rc = secureChannelManagerIf_->secureChannelMessage(nodeId, is_, secureChannelTransaction);
 			if (rc == false) {
 				Log(Error, "cannot read message body, because message handler error")
 					.parameter("LocalAddress", localEndpointAddress_)
@@ -490,8 +500,18 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SecureChannelServer::send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SecureChannelServer::message(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
+		Log(Debug, "secure channel receive message")
+				.parameter("MessageType", nodeId)
+				.parameter("ChannelId", secureChannelTransaction.channelId_)
+				.parameter("RequestId", secureChannelTransaction.requestId_)
+				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
+
+		if (secureChannelTransaction.authenticationToken_ != 0) {
+			authenticationToken_ = secureChannelTransaction.authenticationToken_;
+		}
+
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot send message, because secure channel is in invalid state")
 				.parameter("LocalAddress", localEndpointAddress_)

@@ -42,9 +42,11 @@ namespace OpcUaStackServer
 		bool connect(OpcUaInt32 channelId);
 		bool disconnect(OpcUaInt32 channelId);
 
-		SecureChannelElement::SPtr secureChannelElement(OpcUaInt32 channelId);
+		SecureChannelServer::SPtr get(OpcUaUInt32 channelId);
 
 	  private:
+		SecureChannelElement::SPtr secureChannelElement(OpcUaInt32 channelId);
+
 		SecureChannelElementMap secureChannelElementMap_;
 	};
 

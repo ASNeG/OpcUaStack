@@ -17,9 +17,7 @@ namespace OpcUaStackServer
 	}
 
 	SessionManager::SessionManager(void)
-	: session_()
-	, secureChannel_()
-	, prefixSessionConfig_("")
+	: prefixSessionConfig_("")
 	, prefixSecureChannelConfig_("") 
 	, sessionConfig_(nullptr)
 	, secureChannelConfig_(nullptr)
@@ -27,6 +25,7 @@ namespace OpcUaStackServer
 	, tcpAcceptor_()
 	, url_()
 	, secureChannelMap_()
+	, sessionMap_()
 	{
 	}
 
@@ -44,7 +43,7 @@ namespace OpcUaStackServer
 	SessionManager::discoveryService(DiscoveryService::SPtr discoveryService)
 	{
 		discoveryService_ = discoveryService;
-		discoveryService_->sessionManagerIf(this);
+		discoveryService_->discoveryManagerIf(this);
 	}
 
 	void
@@ -118,23 +117,22 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	void
+	Session::SPtr
 	SessionManager::createSession(void)
 	{
-		session_ = Session::construct();
-		session_->transactionManager(transactionManagerSPtr_);
-		session_->sessionManagerIf(this);
-		session_->sessionId(1);
-		session_->authenticationToken(1);
-		bool rc = SessionConfig::initial(session_, prefixSessionConfig_, sessionConfig_);
+		Session::SPtr session = Session::construct();
+		session->transactionManager(transactionManagerSPtr_);
+		session->sessionManagerIf(this);
+		bool rc = SessionConfig::initial(session, prefixSessionConfig_, sessionConfig_);
 		if (!rc) {
-			session_.reset();
-
 			Log(Error, "session server configuration  error")
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSessionConfig_);
-			return;
+			
+			Session::SPtr session;
+			return session;
 		}
+		return session;
 	}
 
 	bool 
@@ -158,9 +156,6 @@ namespace OpcUaStackServer
 		secureChannel->secureChannelManagerIf(this);
 		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
 		if (!rc) {
-			secureChannel.reset();
-			session_.reset();
-
 			Log(Error, "secure channel server configuration  error")
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSecureChannelConfig_);
@@ -204,11 +199,29 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		secureChannel_ = secureChannel;
-		createSession();
 		acceptNewChannel();
 	}
 
+	Session::SPtr 
+	SessionManager::getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist)
+	{
+		Session::SPtr session = sessionMap_.get(authenticationToken);
+		if (session.get() == nullptr && createIfNotExist) {
+			Log(Debug, "session not exist")
+				.parameter("AuthenticationToken", authenticationToken);
+
+			session = createSession();
+			sessionMap_.insert(session->authenticationToken(), session);
+		}
+		return session;
+	}
+	
+	SecureChannelServer::SPtr 
+	SessionManager::getSecureChannel(OpcUaUInt32 secureChannelId)
+	{
+		SecureChannelServer::SPtr secureChannel = secureChannelMap_.get(secureChannelId);
+		return secureChannel;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -230,47 +243,67 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::secureChannelMessage(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction)
 	{
-		if (nodeId.nodeId<uint32_t>() == OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary) {
-			return receiveGetEndpointsRequest(nodeId, is, secureChannelTransaction);
+		switch (nodeId.nodeId<uint32_t>())
+		{
+			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
+			{
+				return discoveryService_->message(nodeId, is, secureChannelTransaction);
+			}
 		}
-		return session_->receive(nodeId, is, secureChannelTransaction);
+
+		Session::SPtr session = getSession(secureChannelTransaction.authenticationToken_, true);
+		if (session.get() != nullptr) {
+			return session->message(nodeId, is, secureChannelTransaction);
+		}
+
+		Log(Error, "session not found")
+			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_)
+			.parameter("ChannelId", secureChannelTransaction.channelId_);
+		return false;
 	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// SessionSecureChannelIf
+	// SessionManagerIf
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::sessionMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		OpcUaNodeId typeId;
-		typeId.set(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
-		secureChannel_->send(typeId, sb, secureChannelTransaction);
+		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
+		if (secureChannel.get() != nullptr) {
+			secureChannel->message(opcUaNodeId, sb, secureChannelTransaction);
+			return;
+		}
+
+		Log(Error, "secure channel not found (session service)")
+			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_)
+			.parameter("ChannelId", secureChannelTransaction.channelId_);
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DiscoveryManagerIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
-	SessionManager::activateSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::discoveryMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		OpcUaNodeId typeId;
-		typeId.set(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-		secureChannel_->send(typeId, sb, secureChannelTransaction);
-	}
+		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
+		if (secureChannel.get() != nullptr) {
+			secureChannel->message(opcUaNodeId, sb, secureChannelTransaction);
+			return;
+		}
 
-	void 
-	SessionManager::send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
-	{
-		secureChannel_->send(opcUaNodeId, sb, secureChannelTransaction);
-	}
-
-	bool
-	SessionManager::receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
-	{
-		return discoveryService_->receiveGetEndpointsRequest(nodeId, sb, secureChannelTransaction);
+		Log(Error, "secure channel not found (discovers service)")
+			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_)
+			.parameter("ChannelId", secureChannelTransaction.channelId_);
 	}
 
 }

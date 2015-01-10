@@ -20,12 +20,14 @@ namespace OpcUaStackCore
 
 		virtual SPtr constructTransaction(void) = 0;
 
-		uint32_t transactionId(void);
+		OpcUaUInt32 transactionId(void);
 		OpcUaNodeId& nodeTypeRequest(void);
 		OpcUaNodeId& nodeTypeResponse(void);
 
+		void channelId(OpcUaUInt32 channelId);
+		OpcUaUInt32 channelId(void);
 		void sessionId(uint32_t sessionId);
-		uint32_t sessionId(void);
+		OpcUaUInt32 sessionId(void);
 
 		void requestHeader(RequestHeader::SPtr requestHeader);
 		RequestHeader::SPtr requestHeader(void);
@@ -55,8 +57,9 @@ namespace OpcUaStackCore
 		static boost::mutex mutex_;
 		static uint32_t getUniqueTransactionId(void);
 
-		uint32_t sessionId_;
-		uint32_t transactionId_;
+		OpcUaUInt32 channelId_;
+		OpcUaUInt32 sessionId_;
+		OpcUaUInt32 transactionId_;
 		OpcUaNodeId nodeTypeRequest_;
 		OpcUaNodeId nodeTypeResponse_;
 

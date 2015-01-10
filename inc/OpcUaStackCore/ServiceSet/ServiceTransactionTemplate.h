@@ -10,7 +10,9 @@ namespace OpcUaStackCore
 {
 	
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
-	  class ServiceTransactionTemplate : public ObjectPool<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >, public ServiceTransaction
+	  class ServiceTransactionTemplate 
+			: public ObjectPool<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >
+			, public ServiceTransaction
 	  {
 	    public:
 		  typedef boost::shared_ptr<ServiceTransactionTemplate> SPtr;

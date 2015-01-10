@@ -1,15 +1,17 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 
+
 namespace OpcUaStackServer
 {
 
 	DiscoveryService::DiscoveryService(void)
-	: sessionManagerIf_(nullptr)
+	: discoveryManagerIf_(nullptr)
 	{
 	}
 
@@ -18,15 +20,34 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DiscoveryService::sessionManagerIf(SessionManagerIf* sessionManagerIf)
+	DiscoveryService::discoveryManagerIf(DiscoveryManagerIf* discoveryManagerIf)
 	{
-		sessionManagerIf_ = sessionManagerIf;
+		discoveryManagerIf_ = discoveryManagerIf;
 	}
 
 	void 
 	DiscoveryService::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
 	{
 		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	bool 
+	DiscoveryService::message(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	{
+		switch(typeId.nodeId<OpcUaUInt32>())
+		{
+			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
+			{
+				Log(Debug, "receive get endpoints request");
+				return receiveGetEndpointsRequest(typeId, sb, secureChannelTransaction);
+			}
+			default:
+			{
+				Log(Error, "Discovery service receives unknown message type")
+					.parameter("MessageType", typeId);
+			}
+		}
+		return false;
 	}
 
 	bool 
@@ -56,7 +77,7 @@ namespace OpcUaStackServer
 	
 
 		typeId.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(typeId, sbo, secureChannelTransaction);
+		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(typeId, sbo, secureChannelTransaction);
 		return true;
 	}
 

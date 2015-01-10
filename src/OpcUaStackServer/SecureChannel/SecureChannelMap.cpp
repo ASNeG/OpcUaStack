@@ -11,6 +11,7 @@ namespace OpcUaStackServer
 	
 	SecureChannelMap::~SecureChannelMap(void)
 	{
+		secureChannelElementMap_.clear();
 	}
 
 	uint32_t 
@@ -63,6 +64,18 @@ namespace OpcUaStackServer
 
 		secureChannelElementMap_.erase(channelId);
 		return true;
+	}
+
+	SecureChannelServer::SPtr 
+	SecureChannelMap::get(OpcUaUInt32 channelId)
+	{
+		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
+		if (secureChannelElement.get() != nullptr) {
+			return secureChannelElement->secureChannelServer_;
+		}
+
+		SecureChannelServer::SPtr secureChannel;
+		return secureChannel;
 	}
 
 	SecureChannelElement::SPtr 

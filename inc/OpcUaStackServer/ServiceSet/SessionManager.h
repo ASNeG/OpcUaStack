@@ -13,13 +13,18 @@
 #include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
+#include "OpcUaStackServer/ServiceSet/SessionMap.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryManagerIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionManager : public SecureChannelManagerIf, public SessionManagerIf
+	class DLLEXPORT SessionManager 
+	: public SecureChannelManagerIf
+	, public SessionManagerIf
+	, public DiscoveryManagerIf
 	{
 	  public:
 		static SessionManager* instance_;
@@ -41,26 +46,29 @@ namespace OpcUaStackServer
 		//- SecureChannelManagerIf --------------------------------------------
 		void connect(OpcUaUInt32 channelId);
 		void disconnect(OpcUaUInt32 channelId);
-		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
+		bool secureChannelMessage(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
-		//- SessionManagerI------f --------------------------------------------
-		void createSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
-		void activateSessionResponse(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
-		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		//- SessionManagerIf---------------------------------------------------
+		void sessionMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		//- SessionManagerIf --------------------------------------------------
+
+		//- DiscoveryManagerIf ------------------------------------------------
+		void discoveryMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:
 		bool readConfiguration(void);
 		bool openListenerSocket(void);
 
-		void createSession(void);
+		SecureChannelServer::SPtr getSecureChannel(OpcUaUInt32 secureChannelId);
+
+		Session::SPtr getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist = false);
+		Session::SPtr createSession(void);
 
 		// function to handle secure channel
 		void acceptNewChannel(void);
 		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
-
-		bool receiveGetEndpointsRequest(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 
 		IOService* ioService_;
 
@@ -69,9 +77,6 @@ namespace OpcUaStackServer
 		DiscoveryService::SPtr discoveryService_;
 		TransactionManager::SPtr transactionManagerSPtr_;
 
-		SecureChannelServer::SPtr secureChannel_;
-		Session::SPtr session_;
-
 		// server configuration
 		std::string prefixSessionConfig_;
 		std::string prefixSecureChannelConfig_; 
@@ -79,6 +84,7 @@ namespace OpcUaStackServer
 		Config* secureChannelConfig_;
 
 		SecureChannelMap secureChannelMap_;
+		SessionMap sessionMap_;
 	};
 
 }

@@ -116,6 +116,7 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\Server\Server.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceManager\ServiceManager.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\AttributeService.h" />
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\DiscoveryManagerIf.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\DiscoveryService.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\EndpointDescriptionConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\MethodService.h" />

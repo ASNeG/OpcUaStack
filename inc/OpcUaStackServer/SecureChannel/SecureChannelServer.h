@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 
 		bool connect(void);
 		bool disconnect(void);
-		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1, SecureChannelTransaction& secureChannelTransaction);
+		void message(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1, SecureChannelTransaction& secureChannelTransaction);
 
 	  private:
 		static boost::mutex mutex_;
@@ -60,6 +60,7 @@ namespace OpcUaStackServer
 
 		OpcUaUInt32 channelId_;
 		TokenIdVec tokenIdVec_;
+		OpcUaUInt32 authenticationToken_;
 		SecureChannelManagerIf* secureChannelManagerIf_;
 		SecureChannelServerState secureChannelServerState_;
 

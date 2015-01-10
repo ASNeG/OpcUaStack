@@ -242,6 +242,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\SessionMap.h">
       <Filter>src\ServiceSet\SessionServiceSet</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackServer\ServiceSet\DiscoveryManagerIf.h">
+      <Filter>src\ServiceSet\DiscoveryServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

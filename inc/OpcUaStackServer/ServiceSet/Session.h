@@ -36,9 +36,9 @@ namespace OpcUaStackServer
 		void transactionManager(TransactionManager::SPtr transactionManager);
 
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
-		void sessionId(uint32_t sessionId);
-		void authenticationToken(uint32_t authenticationToken);
-		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		OpcUaUInt32 sessionId(void);
+		OpcUaUInt32 authenticationToken(void);
+		bool message(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
@@ -47,6 +47,12 @@ namespace OpcUaStackServer
 		// - Component -------------------------------------------------------
 
 	  private:
+		static boost::mutex mutex_;
+		static OpcUaUInt32 uniqueSessionId_;
+		static OpcUaUInt32 uniqueAuthenticationToken_;
+		static OpcUaUInt32 getUniqueSessionId(void);
+		static OpcUaUInt32 getUniqueAuthenticationToken(void);
+
 		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		bool receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		void activateSessionRequestError(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction& secureChannelTransaction, OpcUaStatusCode statusCode);
@@ -54,8 +60,8 @@ namespace OpcUaStackServer
 		bool receiveCancelRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
-		uint32_t sessionId_;
-		uint32_t authenticationToken_;
+		OpcUaUInt32 sessionId_;
+		OpcUaUInt32 authenticationToken_;
 		SessionState sessionState_;
 		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
