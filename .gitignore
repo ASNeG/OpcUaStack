@@ -10,3 +10,4 @@ ipch
 *.swo
 core
 *.log
+build
