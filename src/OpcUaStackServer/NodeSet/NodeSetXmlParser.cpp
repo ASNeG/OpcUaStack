@@ -16,6 +16,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	NodeSetNamespace& 
+	NodeSetXmlParser::nodeSetNamespace(void)
+	{
+		return nodeSetNamespace_;
+	}
+
 	// ##########################################################
 	//
 	//  decode

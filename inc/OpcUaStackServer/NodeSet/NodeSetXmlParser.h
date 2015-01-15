@@ -23,6 +23,8 @@ namespace OpcUaStackServer
 		bool decode(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);
 
+		NodeSetNamespace& nodeSetNamespace(void);
+
 	  private:
 		//
 		// decoder functions

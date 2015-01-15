@@ -97,6 +97,7 @@ namespace OpcUaStackServer
 			if (it->first != "Uri") continue;
 			std::string namespaceUri = it->second.data();
 			uint16_t globalMamespaceIndex = this->addGlobalNamespace(namespaceUri);
+			localNamespaceVec_.push_back(namespaceUri);
 			inputNamespaceIndexVec_.push_back(globalMamespaceIndex);
 
 			Log(Info, "local namespace add")

@@ -25,19 +25,11 @@ namespace OpcUaStackServer
 		void decodeNamespaceUris(boost::property_tree::ptree& ptree);
 		void encodeNamespaceUris(boost::property_tree::ptree& ptree);
 	
-		// 
-		// read nodeset files
-		//
-		uint16_t mapToGlobalNamespaceIndex(uint16_t localNamespaceIndex);
+		NamespaceVec& localNamespaceVec(void);
 		NamespaceVec& globalNamespaceVec(void);
-
-		//
-		// write nodeset files
-		//
 		uint16_t mapToLocalNamespaceIndex(uint16_t globalNamespaceIndex);
 		uint16_t mapToGlobalNamespaceIndex(const std::string& namespaceUri);
-		NamespaceVec& localNamespaceVec(void);
-
+		uint16_t mapToGlobalNamespaceIndex(uint16_t localNamespaceIndex);
 
 	  private:
 		static bool startup_;
@@ -50,6 +42,12 @@ namespace OpcUaStackServer
 		// map from global namespace name to global namespace index
 		static NamespaceMap globalNamespaceMap_;
 		
+		//
+		// common
+		//
+		// namespace names in nodeset file
+		NamespaceVec localNamespaceVec_;
+
 		// 
 		// read nodeset files
 		//
@@ -63,11 +61,6 @@ namespace OpcUaStackServer
 		//
 		// write nodeset files
 		//
-
-		// namespace names in nodeset file
-		NamespaceVec localNamespaceVec_;
-
-		// mapping map
 		// maps the global namespace index to the namespace index in the nodeset file 
 		NamespaceIndexMap outputNamespaceIndexMap_;
 	};
