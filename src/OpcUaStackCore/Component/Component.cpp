@@ -73,6 +73,18 @@ namespace OpcUaStackCore
 		return componentName_;
 	}
 
+	Component* 
+	Component::component(const std::string& componentName)
+	{
+		return getComponent(componentName);
+	}
+		
+	Component* 
+	Component::component(void)
+	{
+		return component(componentName());
+	}
+
 	void 
 	Component::send(OpcUaNodeId& messageNodeId, Message::SPtr message)
 	{

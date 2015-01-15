@@ -19,7 +19,7 @@ namespace OpcUaStackClient
 
 		void componentSession(Component* componentSession);
 
-		void send(boost::shared_ptr<ServiceTransactionRead> serviceTransactionRead);
+		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
 
 		//- Component -----------------------------------------------------------------
 		void receive(OpcUaNodeId& typeId, Message::SPtr message);

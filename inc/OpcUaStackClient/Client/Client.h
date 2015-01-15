@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
+#include "OpcUaStackClient/ServiceSet/SessionManager.h"
 
 namespace OpcUaStackClient
 {
@@ -10,6 +11,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT Client
 	: public OpcUaStackCore::Core
 	{
+	  public:
 		Client(void);
 	    ~Client(void);
 
@@ -17,6 +19,11 @@ namespace OpcUaStackClient
 		void cleanup(void);
 		bool start(void);
 		void stop(void);
+
+		SessionManager& sessionManager(void);
+
+	  public:
+		SessionManager sessionManager_;
 	};
 
 }

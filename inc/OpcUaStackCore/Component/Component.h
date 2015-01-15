@@ -25,11 +25,13 @@ namespace OpcUaStackCore
 		void componentName(const std::string& componentName);
 		std::string componentName(void);
 
+		Component* component(const std::string& componentName);
+		Component* component(void);
+
 		virtual void receive(OpcUaNodeId& messageNodeId, Message::SPtr message) = 0;
 		void send(OpcUaNodeId& messageNodeId, Message::SPtr message);
 		void sendAsync(OpcUaNodeId& messageNodeId, Message::SPtr message);
 
-		Component::SPtr component(const std::string& componentName);
 		void send(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message);
 		void sendAsync(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message);
 		void send(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message);

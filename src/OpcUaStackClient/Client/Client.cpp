@@ -8,6 +8,7 @@ namespace OpcUaStackClient
 		
 	Client::Client(void)
 	: Core()
+	, sessionManager_()
 	{
 	}
 
@@ -35,12 +36,20 @@ namespace OpcUaStackClient
 	bool 
 	Client::start(void)
 	{
+		sessionManager_.start();
 		return true;
 	}
 
 	void 
 	Client::stop(void)
 	{
+		sessionManager_.stop();
+	}
+
+	SessionManager& 
+	Client::sessionManager(void)
+	{
+		return sessionManager_;
 	}
 
 }

@@ -4,9 +4,7 @@
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
-#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
-#include "OpcUaStackClient/ServiceSet/SessionManager.h"
+#include "OpcUaStackClient/Client/Client.h"
 #include "OpcUaStackClient/ServiceSet/SessionTestHandler.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 #include <boost/asio/error.hpp>
@@ -25,12 +23,10 @@ BOOST_AUTO_TEST_CASE(Session_open)
 {
 	SessionTestHandler sessionTestHandler;
 
-	ExtensibleParameter ep;
-	ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
-
-	SessionManager sessionManager;
+	Client client;
+	client.start();
+	
 	AttributeService attributeService;
-	sessionManager.start();
 
 	Config sessionConfig; 
 	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
@@ -44,12 +40,12 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
 	secureChannelConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
-	Session::SPtr session = sessionManager.getNewSession(
+	Session::SPtr session = client.sessionManager().getNewSession(
 		"TestConfig", sessionConfig,
 		"TestConfig", secureChannelConfig,
 		&sessionTestHandler
 	);
-	attributeService.session(session);
+	attributeService.componentSession(session->component());
 
 	// createSession
 	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
@@ -77,7 +73,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	attributeService.send(readTrx);
 
 	IOService::secSleep(1000);
-	sessionManager.stop();
+	client.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

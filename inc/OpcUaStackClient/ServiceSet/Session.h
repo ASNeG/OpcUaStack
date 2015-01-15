@@ -37,7 +37,9 @@ namespace OpcUaStackClient
 		uint32_t maxResponseMessageSize_;
 	};
 
-	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>
+	class DLLEXPORT Session 
+	: public  OpcUaStackCore::ObjectPool<Session>
+	, public Component
 	{
 	  public:
 		typedef boost::shared_ptr<Session> SPtr;
@@ -61,6 +63,10 @@ namespace OpcUaStackClient
 
 		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
+
+		// - Component -------------------------------------------------------
+		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		// - Component -------------------------------------------------------
 
  	  private:
 		bool receiveCreateSessionResponse(boost::asio::streambuf& sb);

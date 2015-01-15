@@ -114,6 +114,12 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	Session::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	{
+		// FIXME: service set interface ....
+	}
+
+	void 
 	Session::send(ServiceTransaction::SPtr serviceTransaction)
 	{
 		if (sessionState_ != SessionState_ReceiveActivateSession) {
