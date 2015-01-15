@@ -80,6 +80,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClient.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelIf.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\OpcUaStackClient\Client\Client.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClient.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\AttributeService.cpp" />

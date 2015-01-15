@@ -11,7 +11,8 @@
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT Server : public OpcUaStackCore::Core
+	class DLLEXPORT Server 
+	: public OpcUaStackCore::Core
 	{
 	  public:
 	    Server(void);
