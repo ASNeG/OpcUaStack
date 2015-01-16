@@ -97,13 +97,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackClient\Client\Client.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackClient\NodeSet\ViewService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClient.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\AttributeService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\Session.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionConfig.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\SessionManager.cpp" />
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ViewService.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

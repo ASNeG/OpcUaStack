@@ -84,11 +84,11 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\AttributeService.h">
       <Filter>src\ServiceSet\AttributeService</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h">
-      <Filter>src\Server</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ViewService.h">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,7 +122,7 @@
     <ClCompile Include="..\..\src\OpcUaStackClient\Client\Client.cpp">
       <Filter>src\Server</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackClient\NodeSet\ViewService.cpp">
+    <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ViewService.cpp">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClCompile>
   </ItemGroup>
