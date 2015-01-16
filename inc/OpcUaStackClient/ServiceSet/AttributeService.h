@@ -15,6 +15,7 @@ namespace OpcUaStackClient
 	{
 	  public:
         virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead) {};
+		virtual void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite) {};
 	};
 
 	class DLLEXPORT AttributeService : public Component
@@ -27,6 +28,7 @@ namespace OpcUaStackClient
 		void attributeServiceIf(AttributeServiceIf* attributeServiceIf);
 
 		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
+		void send(ServiceTransactionWrite::SPtr serviceTransactionWrite);
 
 		//- Component -----------------------------------------------------------------
 		void receive(OpcUaNodeId& typeId, Message::SPtr message);

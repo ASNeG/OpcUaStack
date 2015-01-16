@@ -37,19 +37,37 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	AttributeService::send(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	{
+		serviceTransactionWrite->componentService(this); 
+		OpcUaNodeId nodeId;
+		componentSession_->send(nodeId, serviceTransactionWrite);
+	}
+
+	void 
 	AttributeService::receive(OpcUaNodeId& typeId, Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (typeId.nodeId<uint32_t>()) 
 		{
 			case OpcUaId_ReadResponse_Encoding_DefaultBinary:
+			{
 				if (attributeServiceIf_ != nullptr) {
 					attributeServiceIf_->attributeServiceReadResponse(
 						boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction)
 					);
 				}
 				break;
+			}
 			case OpcUaId_WriteRequest_Encoding_DefaultBinary:
+			{
+				if (attributeServiceIf_ != nullptr) {
+					attributeServiceIf_->attributeServiceWriteResponse(
+						boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction)
+					);
+				}
+				break;
+			}
 			case OpcUaId_HistoryReadRequest_Encoding_DefaultBinary:
 			case OpcUaId_HistoryUpdateRequest_Encoding_DefaultBinary:
 			default:

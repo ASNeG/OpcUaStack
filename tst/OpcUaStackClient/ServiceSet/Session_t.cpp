@@ -20,9 +20,15 @@ class AttributeServiceHandler
 		 serviceTransactionRead_ = serviceTransactionRead;
 		 attributeServiceReadResponseCondition_.conditionValueDec();
 	 };
+	 void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite) {
+		 serviceTransactionWrite_ = serviceTransactionWrite;
+		 attributeServiceWriteResponseCondition_.conditionValueDec();
+	 };
 
 	 ServiceTransactionRead::SPtr serviceTransactionRead_;
+	 ServiceTransactionWrite::SPtr serviceTransactionWrite_;
 	 Condition attributeServiceReadResponseCondition_;
+	 Condition attributeServiceWriteResponseCondition_;
 };
 
 BOOST_AUTO_TEST_SUITE(Session_)
