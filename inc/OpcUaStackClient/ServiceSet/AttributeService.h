@@ -21,6 +21,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT AttributeService : public Component
 	{
 	  public:
+		boost::shared_ptr<AttributeService> SPtr;
+
 		AttributeService(void);
 		~AttributeService(void);
 
