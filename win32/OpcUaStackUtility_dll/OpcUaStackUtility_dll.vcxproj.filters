@@ -7,6 +7,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{9a14d733-57c0-49d2-adb1-8cadf693df13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\NodeSet">
+      <UniqueIdentifier>{27182981-f942-4466-8149-dff222bb08bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

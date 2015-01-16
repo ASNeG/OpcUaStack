@@ -46,9 +46,6 @@
     <Filter Include="src\Server">
       <UniqueIdentifier>{cdf9bb8c-fee6-4e56-aad0-af6f52918a2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\NodeSet">
-      <UniqueIdentifier>{f07b4cd3-47e0-4613-9e2d-40b84c30e4d1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -90,9 +87,6 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h">
       <Filter>src\Server</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inc\OpcUaStackClient\NodeSet\NodeSetClientReader.h">
-      <Filter>src\NodeSet</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\ViewService.h">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
@@ -127,9 +121,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\Client\Client.cpp">
       <Filter>src\Server</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\OpcUaStackClient\NodeSet\NodeSetClientReader.cpp">
-      <Filter>src\NodeSet</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\NodeSet\ViewService.cpp">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>

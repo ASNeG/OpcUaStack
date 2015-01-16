@@ -81,7 +81,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h" />
-    <ClInclude Include="..\..\inc\OpcUaStackClient\NodeSet\NodeSetClientReader.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClient.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.h" />
     <ClInclude Include="..\..\inc\OpcUaStackClient\SecureChannel\SecureChannelIf.h" />
@@ -98,7 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackClient\Client\Client.cpp" />
-    <ClCompile Include="..\..\src\OpcUaStackClient\NodeSet\NodeSetClientReader.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\NodeSet\ViewService.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClient.cpp" />
     <ClCompile Include="..\..\src\OpcUaStackClient\SecureChannel\SecureChannelClientConfig.cpp" />
