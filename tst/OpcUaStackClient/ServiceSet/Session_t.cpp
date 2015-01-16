@@ -73,6 +73,14 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	session->activateSession();
 	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// attribute service read
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
 	// send read request
 	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
 	ReadRequest::SPtr req = readTrx->request();
@@ -80,7 +88,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	req->timestampsToReturn(2);
 
 	ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
-	readValueIdSPtr->nodeId((OpcUaInt16) 2, (OpcUaInt32) 9);
+	readValueIdSPtr->nodeId((OpcUaInt16)0, (OpcUaInt32)2255);
 	readValueIdSPtr->attributeId((OpcUaInt32) 13);
 	readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 
@@ -90,6 +98,20 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	attributeService.send(readTrx);
 	BOOST_REQUIRE(attributeServiceHandler.attributeServiceReadResponseCondition_.waitForCondition(1000) == true);
 
+	std::cout << "ResultCode=" << attributeServiceHandler.serviceTransactionRead_->responseHeader()->serviceResult() << std::endl;
+	ReadResponse::SPtr readResponse = attributeServiceHandler.serviceTransactionRead_->response();
+	std::cout << "Size=" << readResponse->dataValueArray()->size() << std::endl;
+	
+	OpcUaDataValue::SPtr dataValue;
+	readResponse->dataValueArray()->get(0, dataValue);
+	OpcUaVariant::SPtr variant = dataValue->variant();
+
+	std::cout << "StatusCode=" << (uint32_t)dataValue->statusCode() << std::endl; // 0
+	std::cout << "ValueType=" << variant->variantType() << std::endl; //12
+	std::cout << "ValueArrayLen=" << variant->arrayLength() << std::endl; // 5
+	for (int32_t idx=0; idx < variant->arrayLength(); idx++) {
+		std::cout << variant->variant()[idx].variantSPtr<OpcUaString>()->value() << std::endl;
+	}
 
 	//IOService::secSleep(1000);
 	client.stop();
