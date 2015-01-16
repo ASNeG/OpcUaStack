@@ -104,6 +104,7 @@ namespace OpcUaStackClient
 		activateSessionRequestSPtr->localeIds()->resize(1);
 		activateSessionRequestSPtr->localeIds()->push_back(localeIdSPtr);
 
+
 		activateSessionRequestSPtr->userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequestSPtr->userIdentityToken()->parameter<AnonymousIdentityToken>();
 		anonymousIdentityToken->policyId("Anonymous");
@@ -116,12 +117,12 @@ namespace OpcUaStackClient
 	void 
 	Session::receive(OpcUaNodeId& typeId, Message::SPtr message)
 	{
-		// FIXME: service set interface ....
-	}
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
-	void 
-	Session::send(ServiceTransaction::SPtr serviceTransaction)
-	{
+		Log(Debug, "receive request in session")
+			.parameter("TrxId", serviceTransaction->transactionId())
+			.parameter("TypeId", serviceTransaction->requestName());
+
 		if (sessionState_ != SessionState_ReceiveActivateSession) {
 			Log(Error, "cannot send a message, because session is in invalid state")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
@@ -190,11 +191,13 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
+				Log(Debug, "receive create session response");
 				return receiveCreateSessionResponse(sb);
 				break;
 			}
 			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
 			{
+				Log(Debug, "receive activate session response");
 				return receiveActivateSessionResponse(sb);
 				break;
 			}
@@ -317,6 +320,13 @@ namespace OpcUaStackClient
 			char c; while (ios.get(c));
 			return true;
 		}
+
+#if 0
+		Log(Debug, "receive response in session")
+			.parameter("TrxId", serviceTransactionSPtr->transactionId())
+			.parameter("TypeId", serviceTransactionSPtr->responseName())
+			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionSPtr->statusCode()));
+#endif
 
 		componentService = it->second;
 		componentService->send(typeId, serviceTransaction);

@@ -82,7 +82,7 @@ namespace OpcUaStackCore
 	Component* 
 	Component::component(void)
 	{
-		return component(componentName());
+		return this;
 	}
 
 	void 

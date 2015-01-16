@@ -52,7 +52,6 @@ namespace OpcUaStackClient
 
 		void createSession(void);
 		void activateSession(void);
-		void send(ServiceTransaction::SPtr serviceTransaction);
 	
 		void handleSecureChannelConnect(void);
 		void handleSecureChannelDisconnect(void);

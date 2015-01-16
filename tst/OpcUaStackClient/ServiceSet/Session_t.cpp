@@ -12,6 +12,19 @@
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
+class AttributeServiceHandler 
+: public AttributeServiceIf
+{
+   public:
+     void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead) {
+		 serviceTransactionRead_ = serviceTransactionRead;
+		 attributeServiceReadResponseCondition_.conditionValueDec();
+	 };
+
+	 ServiceTransactionRead::SPtr serviceTransactionRead_;
+	 Condition attributeServiceReadResponseCondition_;
+};
+
 BOOST_AUTO_TEST_SUITE(Session_)
 
 BOOST_AUTO_TEST_CASE(Session_)
@@ -21,12 +34,15 @@ BOOST_AUTO_TEST_CASE(Session_)
 
 BOOST_AUTO_TEST_CASE(Session_open)
 {
+	AttributeServiceHandler attributeServiceHandler;
 	SessionTestHandler sessionTestHandler;
 
 	Client client;
+	client.init();
 	client.start();
 	
 	AttributeService attributeService;
+	attributeService.attributeServiceIf(&attributeServiceHandler);
 
 	Config sessionConfig; 
 	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
@@ -58,7 +74,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
 
 	// send read request
-	boost::shared_ptr<ServiceTransactionRead> readTrx = ServiceTransactionRead::construct();
+	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
 	ReadRequest::SPtr req = readTrx->request();
 	req->maxAge(0);
 	req->timestampsToReturn(2);
@@ -70,10 +86,14 @@ BOOST_AUTO_TEST_CASE(Session_open)
 
 	req->readValueIdArray()->set(readValueIdSPtr);
 
+	attributeServiceHandler.attributeServiceReadResponseCondition_.condition(1, 0);
 	attributeService.send(readTrx);
+	BOOST_REQUIRE(attributeServiceHandler.attributeServiceReadResponseCondition_.waitForCondition(1000) == true);
 
-	IOService::secSleep(1000);
+
+	//IOService::secSleep(1000);
 	client.stop();
+	client.cleanup();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

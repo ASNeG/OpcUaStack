@@ -11,6 +11,12 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient 
 {
 
+	class DLLEXPORT AttributeServiceIf
+	{
+	  public:
+        virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead) {};
+	};
+
 	class DLLEXPORT AttributeService : public Component
 	{
 	  public:
@@ -18,6 +24,7 @@ namespace OpcUaStackClient
 		~AttributeService(void);
 
 		void componentSession(Component* componentSession);
+		void attributeServiceIf(AttributeServiceIf* attributeServiceIf);
 
 		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
 
@@ -27,6 +34,8 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
+
+		AttributeServiceIf* attributeServiceIf_;
 	};
 
 }
