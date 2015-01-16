@@ -6,11 +6,12 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionManagerIf.h"
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionManager : public SessionSecureChannelIf, public SecureChannelIf
+	class DLLEXPORT SessionManager : public SessionManagerIf, public SecureChannelIf
 	{
 	  public:
 		static SessionManager* instance_;
@@ -30,12 +31,12 @@ namespace OpcUaStackClient
 		);
 		void deleteSession(void);
 
-		//- SessionSecureChannelIf --------------------------------------------
+		//- SessionManagerIf --------------------------------------------------
 		void connectToSecureChannel(void); 
 	    void createSessionRequest(boost::asio::streambuf& sb);
 		void activateSessionRequest(boost::asio::streambuf& sb);
 		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb);
-		//- SessionSecurechannelIf --------------------------------------------
+		//- SessionManagerIf --------------------------------------------------
 
 		//- SecureChannelIf ---------------------------------------------------
 		void connect(void);

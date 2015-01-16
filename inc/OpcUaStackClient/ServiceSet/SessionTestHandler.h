@@ -12,7 +12,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionTestHandler : public SessionIf, public SessionSecureChannelIf
+	class DLLEXPORT SessionTestHandler : public SessionIf, public SessionManagerIf
 	{
 	  public:
 
@@ -55,7 +55,7 @@ namespace OpcUaStackClient
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
 		//
-		// SessionSecureChannelIf
+		// SessionManagerIf
 		//
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------

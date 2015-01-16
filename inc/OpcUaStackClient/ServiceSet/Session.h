@@ -13,6 +13,7 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionManagerIf.h"
 
 namespace OpcUaStackClient
 {
@@ -58,7 +59,7 @@ namespace OpcUaStackClient
 
 		OpcUaStackCore::ApplicationDescription::SPtr applicationDescription(void);
 		void sessionIf(SessionIf* sessionIf);
-		void sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf);
+		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 
 		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		CreateSessionParameter& createSessionParameter(void);
@@ -77,7 +78,7 @@ namespace OpcUaStackClient
 		OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;
 		CreateSessionParameter createSessionParameter_;
 		SessionIf* sessionIf_;
-		SessionSecureChannelIf* sessionSecureChannelIf_;
+		SessionManagerIf* sessionManagerIf_;
 
 		OpcUaStackCore::CreateSessionResponse::SPtr createSessionResponseSPtr_;
 		OpcUaStackCore::ActivateSessionResponse::SPtr activateSessionResponseSPtr_;

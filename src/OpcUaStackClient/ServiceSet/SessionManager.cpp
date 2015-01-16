@@ -53,7 +53,7 @@ namespace OpcUaStackClient
 			Log(Error, "cannot create client session");
 			return sessionSPtr;
 		}
-		session_->sessionSecureChannelIf(this);
+		session_->sessionManagerIf(this);
 		session_->sessionIf(sessionIf);
 
 		// create secure channel

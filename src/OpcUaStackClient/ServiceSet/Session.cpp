@@ -18,7 +18,7 @@ namespace OpcUaStackClient
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
-	, sessionSecureChannelIf_(nullptr)
+	, sessionManagerIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	, activateSessionResponseSPtr_(OpcUaStackCore::ActivateSessionResponse::construct())
 	{
@@ -77,7 +77,7 @@ namespace OpcUaStackClient
 		}
 		
 		sessionState_ = SessionState_ConnectingToSecureChannel;
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->connectToSecureChannel();
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->connectToSecureChannel();
 	}
 
 	void 
@@ -111,7 +111,7 @@ namespace OpcUaStackClient
 		activateSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendActivateSession;
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->activateSessionRequest(sb);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->activateSessionRequest(sb);
 	}
 
 	void 
@@ -147,7 +147,7 @@ namespace OpcUaStackClient
 			3000
 		);
 
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->send(serviceTransaction->nodeTypeRequest(), sb);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(serviceTransaction->nodeTypeRequest(), sb);
 	}
 
 	void 
@@ -176,7 +176,7 @@ namespace OpcUaStackClient
 		createSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendCreateSession;
-		if (sessionSecureChannelIf_ != nullptr) sessionSecureChannelIf_->createSessionRequest(sb);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->createSessionRequest(sb);
 	}
 
 	void 
@@ -207,7 +207,6 @@ namespace OpcUaStackClient
 			}
 		}
 
-		
 	}
 
 	bool
@@ -358,9 +357,9 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::sessionSecureChannelIf(SessionSecureChannelIf* sessionSecureChannelIf)
+	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
 	{
-		sessionSecureChannelIf_ = sessionSecureChannelIf;
+		sessionManagerIf_ = sessionManagerIf;
 	}
 
 }

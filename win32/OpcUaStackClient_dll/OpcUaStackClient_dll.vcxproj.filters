@@ -90,6 +90,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h">
       <Filter>src\Client</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackClient\ServiceSet\SessionManagerIf.h">
+      <Filter>src\ServiceSet\SessionServiceSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
