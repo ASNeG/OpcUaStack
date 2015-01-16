@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dll">
+      <UniqueIdentifier>{2da30688-3c78-49db-8b0f-a0aaa481bff7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{9a14d733-57c0-49d2-adb1-8cadf693df13}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>dll</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>dll</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="OpcUaStackUtility_dll.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>dll</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
