@@ -21,7 +21,7 @@ namespace OpcUaStackUtility
 	NodeSetNamespace& 
 	NodeSetClientReader::nodeSetNamespace(void)
 	{
-		return nodeSetClientReader_;
+		return nodeSetNamespace_;
 	}
 
 }

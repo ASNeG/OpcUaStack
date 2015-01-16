@@ -18,6 +18,9 @@
     <ClInclude Include="targetver.h">
       <Filter>dll</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackUtility\NodeSet\NodeSetClientReader.h">
+      <Filter>src\NodeSet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -28,6 +31,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>dll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackUtility\NodeSet\NodeSetClientReader.cpp">
+      <Filter>src\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\tst\unittest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\tst\OpcUaStackUtility\NodeSet\NodeSetClientReader_t.cpp" />
     <ClCompile Include="..\..\tst\unittest.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -54,8 +55,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>

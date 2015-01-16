@@ -30,6 +30,8 @@ namespace OpcUaStackServer
 		static SessionManager* instance_;
 		static SessionManager* instance(void);
 
+		typedef boost::shared_ptr<SessionManager> SPtr;
+
 		SessionManager(void);
 		~SessionManager(void);
 

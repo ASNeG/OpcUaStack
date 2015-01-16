@@ -14,6 +14,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpenSecureChannelResponse : public  ObjectPool<OpenSecureChannelResponse>
 	{
 	  public:
+		typedef boost::shared_ptr<OpenSecureChannelResponse> SPtr;
+
 		OpenSecureChannelResponse(void);
 		virtual ~OpenSecureChannelResponse(void);
 

@@ -20,7 +20,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT ViewService : public Component
 	{
 	  public:
-		boost::shared_ptr<ViewService> SPtr;
+		typedef boost::shared_ptr<ViewService> SPtr;
 
 		ViewService(void);
 		~ViewService(void);

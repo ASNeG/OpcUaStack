@@ -64,7 +64,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\local\boost_1_54_0\lib32-msvc-11.0;..\Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpcUaStackCore.lib;OpcUaStackClient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OpcUaStackClient.lib;OpcUaStackCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <HeapReserveSize>100000000</HeapReserveSize>
       <HeapCommitSize>100000000</HeapCommitSize>
       <StackReserveSize>100000000</StackReserveSize>

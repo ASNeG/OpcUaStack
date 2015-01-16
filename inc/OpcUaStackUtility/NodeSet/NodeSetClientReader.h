@@ -2,12 +2,13 @@
 #define __OpcUaStackUtility_NodeSetClientReader_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 using namespace OpcUaStackServer;
 
-using OpcUaStackUtility
+namespace OpcUaStackUtility
 {
 
 	class DLLEXPORT NodeSetClientReader : public NodeSetBaseParser

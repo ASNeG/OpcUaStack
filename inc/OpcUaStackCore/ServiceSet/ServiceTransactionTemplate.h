@@ -15,7 +15,7 @@ namespace OpcUaStackCore
 			, public ServiceTransaction
 	  {
 	    public:
-		  typedef boost::shared_ptr<ServiceTransactionTemplate> SPtr;
+		  typedef boost::shared_ptr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> > SPtr;
 
 		  static void name(const std::string& name);
 		  static std::string name(void);

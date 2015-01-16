@@ -4,6 +4,9 @@
     <Filter Include="Unittest">
       <UniqueIdentifier>{a8c5266f-588b-4102-a51a-24bd47ad36ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unittest\NodeSet">
+      <UniqueIdentifier>{82e31c0c-cca0-442f-80a5-a1d7aacfaf2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tst\os.h">
@@ -16,6 +19,9 @@
   <ItemGroup>
     <ClCompile Include="..\..\tst\unittest.cpp">
       <Filter>Unittest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackUtility\NodeSet\NodeSetClientReader_t.cpp">
+      <Filter>Unittest\NodeSet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
