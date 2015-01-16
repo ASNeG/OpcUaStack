@@ -20,6 +20,8 @@ namespace OpcUaStackCore
 	ServiceTransaction::ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse)
 	: requestHeader_()
 	, responseHeader_()
+	, sync_(false)
+	, conditionBool_()
 	{
 		nodeTypeRequest_.set(nodeTypeRequest);
 		nodeTypeResponse_.set(nodeTypeResponse);
@@ -58,6 +60,24 @@ namespace OpcUaStackCore
 	ServiceTransaction::transactionId(void)
 	{
 		return transactionId_;
+	}
+
+	void 
+	ServiceTransaction::sync(bool sync)
+	{
+		sync_ = sync;
+	}
+
+	bool 
+	ServiceTransaction::sync(void)
+	{
+		return sync_;
+	}
+
+	ConditionBool&
+	ServiceTransaction::conditionBool(void)
+	{
+		return conditionBool_;
 	}
 
 	void 

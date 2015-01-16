@@ -801,6 +801,9 @@
     <ClInclude Include="..\..\inc\OpcUaStackCore\Core\FileLogger.h">
       <Filter>src\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inc\OpcUaStackCore\Base\ConditionBool.h">
+      <Filter>src\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\OpcUaStackCore\BuildInTypes\BuildInTypes.cpp">
@@ -1465,6 +1468,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackCore\Core\FileLogger.cpp">
       <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\OpcUaStackCore\Base\ConditionBool.cpp">
+      <Filter>src\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

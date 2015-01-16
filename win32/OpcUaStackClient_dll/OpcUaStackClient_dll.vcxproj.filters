@@ -43,7 +43,7 @@
     <Filter Include="src\ServiceSet\ViewServiceSet">
       <UniqueIdentifier>{0706ca54-22a0-4e92-ab65-97f4be5970c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Server">
+    <Filter Include="src\Client">
       <UniqueIdentifier>{cdf9bb8c-fee6-4e56-aad0-af6f52918a2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -88,7 +88,7 @@
       <Filter>src\ServiceSet\ViewServiceSet</Filter>
     </ClInclude>
     <ClInclude Include="..\..\inc\OpcUaStackClient\Client\Client.h">
-      <Filter>src</Filter>
+      <Filter>src\Client</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <Filter>src\ServiceSet\AttributeService</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\Client\Client.cpp">
-      <Filter>src\Server</Filter>
+      <Filter>src\Client</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\OpcUaStackClient\ServiceSet\ViewService.cpp">
       <Filter>src\ServiceSet\ViewServiceSet</Filter>

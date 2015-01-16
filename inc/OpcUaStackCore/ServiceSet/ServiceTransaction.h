@@ -3,6 +3,7 @@
 
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ConditionBool.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
@@ -28,6 +29,10 @@ namespace OpcUaStackCore
 		OpcUaUInt32 channelId(void);
 		void sessionId(uint32_t sessionId);
 		OpcUaUInt32 sessionId(void);
+
+		void sync(bool sync);
+		bool sync(void);
+		ConditionBool& conditionBool(void);
 
 		void requestHeader(RequestHeader::SPtr requestHeader);
 		RequestHeader::SPtr requestHeader(void);
@@ -56,6 +61,9 @@ namespace OpcUaStackCore
 		static uint32_t uniqueTransactionId_;
 		static boost::mutex mutex_;
 		static uint32_t getUniqueTransactionId(void);
+
+		bool sync_;
+		ConditionBool conditionBool_;
 
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 sessionId_;

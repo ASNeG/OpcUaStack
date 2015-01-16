@@ -16,6 +16,8 @@ namespace OpcUaStackClient
 	  public:
         virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead) {};
 		virtual void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite) {};
+		virtual void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead) {};
+		virtual void attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate) {};
 	};
 
 	class DLLEXPORT AttributeService : public Component
@@ -29,8 +31,14 @@ namespace OpcUaStackClient
 		void componentSession(Component* componentSession);
 		void attributeServiceIf(AttributeServiceIf* attributeServiceIf);
 
+		void sendSync(ServiceTransactionRead::SPtr serviceTransactionRead);
 		void send(ServiceTransactionRead::SPtr serviceTransactionRead);
+		void sendSync(ServiceTransactionWrite::SPtr serviceTransactionWrite);
 		void send(ServiceTransactionWrite::SPtr serviceTransactionWrite);
+		void sendSync(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
+		void send(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
+		void sendSync(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
+		void send(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
 
 		//- Component -----------------------------------------------------------------
 		void receive(OpcUaNodeId& typeId, Message::SPtr message);
