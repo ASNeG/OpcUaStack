@@ -29,6 +29,15 @@ namespace OpcUaStackClient
 	}
 
 	void 
+	ViewService::sendSync(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+	{
+		serviceTransactionBrowse->sync(true);
+		serviceTransactionBrowse->conditionBool().conditionInit();
+		send(serviceTransactionBrowse);
+		serviceTransactionBrowse->conditionBool().waitForCondition();
+	}
+
+	void 
 	ViewService::send(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
 	{
 		serviceTransactionBrowse->componentService(this); 
@@ -40,6 +49,13 @@ namespace OpcUaStackClient
 	ViewService::receive(OpcUaNodeId& typeId, Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+
+		// check if transaction is synchron
+		if (serviceTransaction->sync()) {
+			serviceTransaction->conditionBool().conditionTrue();
+			return;
+		}
+
 		switch (typeId.nodeId<uint32_t>()) 
 		{
 			case OpcUaId_BrowseResponse_Encoding_DefaultBinary:

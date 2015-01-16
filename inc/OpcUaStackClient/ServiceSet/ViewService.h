@@ -28,6 +28,7 @@ namespace OpcUaStackClient
 		void componentSession(Component* componentSession);
 		void viewServiceIf(ViewServiceIf* viewServiceIf);
 
+		void sendSync(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 		void send(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 
 		//- Component -----------------------------------------------------------------
