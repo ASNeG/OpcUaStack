@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -260,6 +261,11 @@ namespace OpcUaStackClient
 	void
 	SecureChannelClient::connectToServer(void)
 	{
+		Url url;
+		url.url(channelDataBase()->endpointUrl());
+		partnerAddress_.from_string(url.host());
+		partnerPort_ = url.port();
+
 		if (reconnectTimeout_ == 0) reconnectTimeout_ = 1;
 		else reconnectTimeout_ += reconnectTimeout_;
 		if (reconnectTimeout_ > maxReconnectTimeout_) reconnectTimeout_ = maxReconnectTimeout_;

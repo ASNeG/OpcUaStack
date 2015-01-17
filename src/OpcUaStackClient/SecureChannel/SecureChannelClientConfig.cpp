@@ -1,6 +1,7 @@
 #include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/Url.h"
 
 using namespace OpcUaStackCore;
 
@@ -63,6 +64,15 @@ namespace OpcUaStackClient
 				.parameter("ConfigurationFileName", configurationFileName)
 				.parameter("ParameterPath", configPrefix)
 				.parameter("ParameterName", "EndpointUrl");
+			return false;
+		}
+		Url url;
+		url.url(stringValue);
+		if (!url.good()) {
+			Log(Error, "invalid endpoint url in client configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("EndpointUrl", "EndpointUrl");
 			return false;
 		}
 		channelDataBasePtr->endpointUrl(stringValue);

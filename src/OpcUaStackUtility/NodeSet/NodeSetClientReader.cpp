@@ -174,6 +174,14 @@ namespace OpcUaStackUtility
 	bool 
 	NodeSetClientReader::browse(OpcUaNodeId& nodeId)
 	{
+		std::vector<OpcUaNodeId> nodeIdVec;
+		nodeIdVec.push_back(nodeId);
+		return browse(nodeIdVec);
+	}
+
+	bool 
+	NodeSetClientReader::browse(std::vector<OpcUaNodeId>& nodeIdVec)
+	{
 		ViewService viewService;
 		viewService.componentSession(session_->component());
 
@@ -183,12 +191,12 @@ namespace OpcUaStackUtility
 		ServiceTransactionBrowse::SPtr browseTrx = ServiceTransactionBrowse::construct();
 		BrowseRequest::SPtr req = browseTrx->request();
 
-		BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
-		nodeId.copyTo(*browseDescription->nodeId());
-		
-		BrowseDescriptionArray::SPtr browseDescriptionArray = BrowseDescriptionArray::construct();
-		req->nodesToBrowse()->resize(1);
-		req->nodesToBrowse()->set(browseDescription);
+		req->nodesToBrowse()->resize(nodeIdVec.size());
+		for (uint32_t idx=0; idx<nodeIdVec.size(); idx++) {
+			BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
+			nodeIdVec[idx].copyTo(*browseDescription->nodeId());
+			req->nodesToBrowse()->push_back(browseDescription);
+		}
 
 		viewService.sendSync(browseTrx);
 
@@ -196,14 +204,13 @@ namespace OpcUaStackUtility
 		// check response
 		//
 		if (browseTrx->responseHeader()->serviceResult() != Success) {
-			Log(Error, "browse node response error")
-				.parameter("NodeId", nodeId)
+			Log(Error, "browse nodes response error")
 				.parameter("ResultCode", OpcUaStatusCodeMap::longString(browseTrx->responseHeader()->serviceResult()));
 			return false;
 		}
-		if (browseTrx->response()->results()->size() != 1) {
-			Log(Error, "browse node array size error")
-				.parameter("NodeId", nodeId)
+		if (browseTrx->response()->results()->size() != nodeIdVec.size()) {
+			Log(Error, "browse nodes array size error")
+				.parameter("Nodes", nodeIdVec.size())
 				.parameter("ArraySize", browseTrx->response()->results()->size());
 			return false;
 		}
@@ -211,34 +218,38 @@ namespace OpcUaStackUtility
 		//
 		// check dataValue
 		// 
-		BrowseResult::SPtr browseResult;
-		browseTrx->response()->results()->get(0, browseResult);
-		if (browseResult->statusCode() != Success) {
-			Log(Error, "browse node result error")
-				.parameter("NodeId", nodeId)
-				.parameter("StatusCode", OpcUaStatusCodeMap::longString(browseResult->statusCode()));
-		}
-
-		//
-		// read node information from browse result
-		//
-		ReferenceDescriptionArray::SPtr references = browseResult->references();
-		for (uint32_t idx=0; idx<references->size(); idx++) {
-			ReferenceDescription::SPtr referenceDescription;
-			references->get(idx, referenceDescription);
-
-			// check if node already exist
-			OpcUaNodeId nodeId;
-			nodeId.nodeIdValue(referenceDescription->nodeId()->nodeIdValue());
-			nodeId.namespaceIndex(referenceDescription->nodeId()->namespaceIndex());
-
-			if (nodeIdMap_.find(nodeId) != nodeIdMap_.end()) {
-				continue;
+		for (uint32_t pos=0; pos<nodeIdVec.size(); pos++) {
+			BrowseResult::SPtr browseResult;
+			browseTrx->response()->results()->get(pos, browseResult);
+			if (browseResult->statusCode() != Success) {
+				Log(Error, "browse node result error")
+					.parameter("NodeId", nodeIdVec[pos])
+					.parameter("StatusCode", OpcUaStatusCodeMap::longString(browseResult->statusCode()));
 			}
-			nodeIdMap_.insert(std::make_pair(nodeId, referenceDescription));
 
-			// read node
-			if (!browse(nodeId)) return false;
+			//
+			// read node information from browse result
+			//
+			std::vector<OpcUaNodeId> newNodeIdVec;
+			ReferenceDescriptionArray::SPtr references = browseResult->references();
+			if (references->size() == 0) continue;
+			for (uint32_t idx=0; idx<references->size(); idx++) {
+				ReferenceDescription::SPtr referenceDescription;
+				references->get(idx, referenceDescription);
+
+				// check if node already exist
+				OpcUaNodeId nodeId;
+				nodeId.nodeIdValue(referenceDescription->nodeId()->nodeIdValue());
+				nodeId.namespaceIndex(referenceDescription->nodeId()->namespaceIndex());
+
+				if (nodeIdMap_.find(nodeId) != nodeIdMap_.end()) {
+					continue;
+				}
+				nodeIdMap_.insert(std::make_pair(nodeId, referenceDescription));
+				newNodeIdVec.push_back(nodeId);
+			}
+
+			if (!browse(newNodeIdVec)) return false;
 		}
 
 		return true;

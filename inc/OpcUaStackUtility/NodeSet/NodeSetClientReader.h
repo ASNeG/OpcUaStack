@@ -41,6 +41,7 @@ namespace OpcUaStackUtility
 	  private:
 		bool readNamespaceArray(void);
 		bool browse(OpcUaNodeId& nodeId);
+		bool browse(std::vector<OpcUaNodeId>& nodeIdVec);
 	
 		Client client_;
 		NodeSetNamespace nodeSetNamespace_;
