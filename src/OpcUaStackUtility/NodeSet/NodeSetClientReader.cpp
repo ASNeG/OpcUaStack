@@ -32,25 +32,44 @@ namespace OpcUaStackUtility
 		// open session to opc ua server. A condition is used to wait for
 		// the end of the operation
 		condition_.conditionInit();
-		Session::SPtr session = client_.sessionManager().getNewSession(
+		session_ = client_.sessionManager().getNewSession(
 			sessionConfigPrefix, sessionConfig,
 			secureChannelConfigPrefix, secureChannelConfig,
 			this
 		);
-		session->createSession();
+		session_->createSession();
 		rc = condition_.waitForCondition(operationTimeout);
 		if (!rc) {
 			Log(Error, "create session timeout in node set client reader");
 			return false;
 		}
 		if (error_) {
+			session_->closeSession();
 			Log(Error, "create Session error");
 			return false;
 		}
 
 		// activate session on the opc ua server. A condition is used to wait
 		// for the end of the operation
+		condition_.conditionInit();
+		session_->activateSession();
+		rc = condition_.waitForCondition(operationTimeout);
+		if (!rc) {
+			Log(Error, "activate session timeout in node set client reader");
+			return false;
+		}
+		if (error_) {
+			session_->closeSession();
+			Log(Error, "activate Session error");
+			return false;
+		}
 
+		// read namespace array from opc ua server
+		if (!readNamespaceArray()) {
+			session_->closeSession();
+			Log(Error, "read namespace array error");
+			return false;
+		}
 
 		return true;
 	}
@@ -59,6 +78,12 @@ namespace OpcUaStackUtility
 	NodeSetClientReader::nodeSetNamespace(void)
 	{
 		return nodeSetNamespace_;
+	}
+
+	bool 
+	NodeSetClientReader::readNamespaceArray(void)
+	{
+		return true;
 	}
 
 	// ------------------------------------------------------------------------

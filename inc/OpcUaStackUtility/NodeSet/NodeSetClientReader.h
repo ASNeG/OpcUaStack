@@ -38,11 +38,13 @@ namespace OpcUaStackUtility
 		//- SessionIf interface -----------------------------------------------
 
 	  private:
+		bool readNamespaceArray(void);
 	
 		Client client_;
 		NodeSetNamespace nodeSetNamespace_;
 		ConditionBool condition_;
 		
+		Session::SPtr session_;
 		bool error_;
 	};
 

@@ -53,6 +53,7 @@ namespace OpcUaStackClient
 
 		void createSession(void);
 		void activateSession(void);
+		void closeSession(void) {}; // FIXME: integrate close session handling
 	
 		void handleSecureChannelConnect(void);
 		void handleSecureChannelDisconnect(void);
