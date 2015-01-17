@@ -3,27 +3,47 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/ConditionBool.h"
+#include "OpcUaStackClient/Client/Client.h"
+#include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
+using namespace OpcUaStackClient;
 using namespace OpcUaStackServer;
 
 namespace OpcUaStackUtility
 {
 
-	class DLLEXPORT NodeSetClientReader : public NodeSetBaseParser
+	class DLLEXPORT NodeSetClientReader 
+	: public NodeSetBaseParser
+	, public SessionIf
 	{
 	  public:
 		NodeSetClientReader(void);
 		~NodeSetClientReader(void);
 
-		bool readNodes(void);
+		bool readNodes(
+			const std::string& sessionConfigPrefix, Config& sessionConfig,
+			const std::string& secureChannelConfigPrefix, Config& secureChannelConfig,
+			uint32_t operationTimeout = 5000
+		);
 
 		NodeSetNamespace& nodeSetNamespace(void);
 
+		//- SessionIf interface -----------------------------------------------
+		void error(void);
+		void createSessionComplete(OpcUaStatusCode opcUaStatusCode);
+		void activateSessionComplete(OpcUaStatusCode opcUaStatusCode);
+		//- SessionIf interface -----------------------------------------------
+
 	  private:
-		
+	
+		Client client_;
 		NodeSetNamespace nodeSetNamespace_;
+		ConditionBool condition_;
+		
+		bool error_;
 	};
 
 }

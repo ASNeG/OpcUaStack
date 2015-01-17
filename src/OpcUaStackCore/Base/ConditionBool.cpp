@@ -22,6 +22,7 @@ namespace OpcUaStackCore
 	ConditionBool::conditionTrue(void)
 	{
 		mutex_.lock();
+		conditionValue_ = true;
 		condition_.notify_one();
 		mutex_.unlock();
 	}
