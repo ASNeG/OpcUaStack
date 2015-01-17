@@ -121,7 +121,7 @@ namespace OpcUaStackClient
 
 		Log(Debug, "receive request in session")
 			.parameter("TrxId", serviceTransaction->transactionId())
-			.parameter("TypeId", serviceTransaction->requestName());
+			.parameter("NodeType", serviceTransaction->nodeTypeRequest());
 
 		if (sessionState_ != SessionState_ReceiveActivateSession) {
 			Log(Error, "cannot send a message, because session is in invalid state")
@@ -299,10 +299,15 @@ namespace OpcUaStackClient
 			char c; while (ios.get(c));
 			return true;
 		}
-
+		 
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
 		serviceTransaction->opcUaBinaryDecodeResponse(ios);
 		
+		Log(Debug, "receive response in session")
+			.parameter("TrxId", serviceTransaction->transactionId())
+			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
+			.parameter("ServiceResultCode", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
+
 		Component* componentService = serviceTransaction->componentService();
 		if (componentService != nullptr) {
 			componentService->send(typeId, serviceTransaction);
@@ -319,13 +324,6 @@ namespace OpcUaStackClient
 			char c; while (ios.get(c));
 			return true;
 		}
-
-#if 0
-		Log(Debug, "receive response in session")
-			.parameter("TrxId", serviceTransactionSPtr->transactionId())
-			.parameter("TypeId", serviceTransactionSPtr->responseName())
-			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionSPtr->statusCode()));
-#endif
 
 		componentService = it->second;
 		componentService->send(typeId, serviceTransaction);

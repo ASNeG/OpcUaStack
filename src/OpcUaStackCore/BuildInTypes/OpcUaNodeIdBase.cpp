@@ -139,7 +139,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaNodeIdBase::copyTo(OpcUaNodeIdBase& opcUaNodeIdBase)
+	OpcUaNodeIdBase::copyTo(OpcUaNodeIdBase& opcUaNodeIdBase) 
 	{
 		opcUaNodeIdBase.namespaceIndex(namespaceIndex_);
 

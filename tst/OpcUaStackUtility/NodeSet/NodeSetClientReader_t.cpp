@@ -1,8 +1,9 @@
 #include "unittest.h"
 
+#include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackUtility/NodeSet/NodeSetClientReader.h"
 
-//using namespace OpcUaStackCore;
+using namespace OpcUaStackCore;
 //using namespace OpcUaStackClient;
 //using namespace OpcUaStackServer;
 using namespace OpcUaStackUtility;
@@ -17,6 +18,9 @@ BOOST_AUTO_TEST_CASE(Session_)
 BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 {
 	bool rc;
+
+	FileLogger fileLogger;
+	OpcUaStackCore::Log::logIf(&fileLogger);
 
 	// configuration session
 	Config sessionConfig; 

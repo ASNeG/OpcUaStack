@@ -142,7 +142,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		std::cout << "SEND OK" << std::endl;
+		//std::cout << "SEND OK" << std::endl;
 	}
 
 	void 

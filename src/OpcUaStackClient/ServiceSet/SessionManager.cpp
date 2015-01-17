@@ -60,7 +60,7 @@ namespace OpcUaStackClient
 		secureChannel_ = SecureChannelClient::construct(ioService_);
 		SecureChannelClientConfig::initial(secureChannel_, prefixSecureChannelConfig, &secureChannelConfig);
 		secureChannel_->secureChannelIf(this);
-		secureChannel_->debugMode(true);
+		secureChannel_->debugMode(false);
 
 		return session_;
 	}

@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConditionBool.h"
+#include "OpcUaStackCore/ServiceSet/ReferenceDescription.h"
 #include "OpcUaStackClient/Client/Client.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
@@ -39,6 +40,7 @@ namespace OpcUaStackUtility
 
 	  private:
 		bool readNamespaceArray(void);
+		bool browse(OpcUaNodeId& nodeId);
 	
 		Client client_;
 		NodeSetNamespace nodeSetNamespace_;
@@ -47,6 +49,9 @@ namespace OpcUaStackUtility
 		uint32_t operationTimeout_;
 		Session::SPtr session_;
 		bool error_;
+
+		typedef std::map<OpcUaNodeId, ReferenceDescription::SPtr> NodeIdMap;
+		NodeIdMap nodeIdMap_;
 	};
 
 }

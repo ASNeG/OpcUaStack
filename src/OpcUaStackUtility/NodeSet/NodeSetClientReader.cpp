@@ -1,6 +1,7 @@
 #include "OpcUaStackUtility/NodeSet/NodeSetClientReader.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
+#include "OpcUaStackClient/ServiceSet/ViewService.h"
 
 using namespace OpcUaStackClient;
 
@@ -122,7 +123,7 @@ namespace OpcUaStackUtility
 			Log(Error, "read namespace array array size error")
 				.parameter("NodeId", readValueIdSPtr->nodeId())
 				.parameter("AttributeId", readValueIdSPtr->attributeId())
-				.parameter("ArraySize", readTrx->response()->dataValueArray());
+				.parameter("ArraySize", readTrx->response()->dataValueArray()->size());
 			return false;
 		}
 
@@ -155,6 +156,90 @@ namespace OpcUaStackUtility
 		}
 		nodeSetNamespace_.clear();
 		nodeSetNamespace_.decodeNamespaceUris(namespaceUriVec);
+
+		//
+		// browse nodes from opc ua server
+		//
+		nodeIdMap_.clear();
+		OpcUaNodeId nodeId;
+		nodeId.set(84);
+		if (!browse(nodeId)) {
+			return false;
+		}
+
+		std::cout << "Nodes=" << nodeIdMap_.size() << std::endl;
+		return true;
+	}
+
+	bool 
+	NodeSetClientReader::browse(OpcUaNodeId& nodeId)
+	{
+		ViewService viewService;
+		viewService.componentSession(session_->component());
+
+		//
+		// browse node
+		//
+		ServiceTransactionBrowse::SPtr browseTrx = ServiceTransactionBrowse::construct();
+		BrowseRequest::SPtr req = browseTrx->request();
+
+		BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
+		nodeId.copyTo(*browseDescription->nodeId());
+		
+		BrowseDescriptionArray::SPtr browseDescriptionArray = BrowseDescriptionArray::construct();
+		req->nodesToBrowse()->resize(1);
+		req->nodesToBrowse()->set(browseDescription);
+
+		viewService.sendSync(browseTrx);
+
+		//
+		// check response
+		//
+		if (browseTrx->responseHeader()->serviceResult() != Success) {
+			Log(Error, "browse node response error")
+				.parameter("NodeId", nodeId)
+				.parameter("ResultCode", OpcUaStatusCodeMap::longString(browseTrx->responseHeader()->serviceResult()));
+			return false;
+		}
+		if (browseTrx->response()->results()->size() != 1) {
+			Log(Error, "browse node array size error")
+				.parameter("NodeId", nodeId)
+				.parameter("ArraySize", browseTrx->response()->results()->size());
+			return false;
+		}
+
+		//
+		// check dataValue
+		// 
+		BrowseResult::SPtr browseResult;
+		browseTrx->response()->results()->get(0, browseResult);
+		if (browseResult->statusCode() != Success) {
+			Log(Error, "browse node result error")
+				.parameter("NodeId", nodeId)
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(browseResult->statusCode()));
+		}
+
+		//
+		// read node information from browse result
+		//
+		ReferenceDescriptionArray::SPtr references = browseResult->references();
+		for (uint32_t idx=0; idx<references->size(); idx++) {
+			ReferenceDescription::SPtr referenceDescription;
+			references->get(idx, referenceDescription);
+
+			// check if node already exist
+			OpcUaNodeId nodeId;
+			nodeId.nodeIdValue(referenceDescription->nodeId()->nodeIdValue());
+			nodeId.namespaceIndex(referenceDescription->nodeId()->namespaceIndex());
+
+			if (nodeIdMap_.find(nodeId) != nodeIdMap_.end()) {
+				continue;
+			}
+			nodeIdMap_.insert(std::make_pair(nodeId, referenceDescription));
+
+			// read node
+			if (!browse(nodeId)) return false;
+		}
 
 		return true;
 	}
