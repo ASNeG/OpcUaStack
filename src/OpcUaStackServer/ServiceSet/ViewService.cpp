@@ -194,6 +194,10 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	ViewService::checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr browseDescription)
 	{
+		OpcUaNodeId nullNodeId;
+		nullNodeId.set(0);
+		if (*browseDescription->referenceTypeId() == nullNodeId) return Success;
+
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceTypeNodeId);
 		if (baseNodeClass.get() == nullptr) {
 			return BadNotFound;

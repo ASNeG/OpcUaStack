@@ -166,6 +166,10 @@ namespace OpcUaStackUtility
 		if (!browse(nodeId)) {
 			return false;
 		}
+		if (nodeIdMap_.size() == 0) {
+			Log(Error, "browse nodes error, because no nodes found");
+			return false;
+		}
 
 		std::cout << "Nodes=" << nodeIdMap_.size() << std::endl;
 		return true;
@@ -195,6 +199,7 @@ namespace OpcUaStackUtility
 		for (uint32_t idx=0; idx<nodeIdVec.size(); idx++) {
 			BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
 			nodeIdVec[idx].copyTo(*browseDescription->nodeId());
+			browseDescription->browseDirection(BrowseDirection_Forward);
 			req->nodesToBrowse()->push_back(browseDescription);
 		}
 
