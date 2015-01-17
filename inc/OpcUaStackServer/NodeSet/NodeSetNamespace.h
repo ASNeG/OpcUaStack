@@ -23,6 +23,7 @@ namespace OpcUaStackServer
 		void clear(void);
 
 		void decodeNamespaceUris(boost::property_tree::ptree& ptree);
+		void decodeNamespaceUris(std::vector<std::string>& namespaceUriVec);
 		void encodeNamespaceUris(boost::property_tree::ptree& ptree);
 	
 		NamespaceVec& localNamespaceVec(void);

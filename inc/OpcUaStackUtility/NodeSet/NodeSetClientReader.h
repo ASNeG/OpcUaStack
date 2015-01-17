@@ -44,6 +44,7 @@ namespace OpcUaStackUtility
 		NodeSetNamespace nodeSetNamespace_;
 		ConditionBool condition_;
 		
+		uint32_t operationTimeout_;
 		Session::SPtr session_;
 		bool error_;
 	};
