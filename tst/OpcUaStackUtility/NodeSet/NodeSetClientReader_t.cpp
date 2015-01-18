@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
-#include "OpcUaStackServer/nodeSet/NodeSetXmlParser.h"
+#include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackUtility/NodeSet/NodeSetClientReader.h"
 
 using namespace OpcUaStackCore;
