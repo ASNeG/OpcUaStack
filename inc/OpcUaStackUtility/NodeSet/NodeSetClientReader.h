@@ -114,8 +114,8 @@ namespace OpcUaStackUtility
 		Session::SPtr session_;
 		bool error_;
 
-		typedef std::map<OpcUaNodeId, ReferenceDescription::SPtr> NodeIdMap;
-		NodeIdMap nodeIdMap_;
+		typedef std::set<OpcUaNodeId> NodeIdSet;
+		NodeIdSet nodeIdSet_;
 	};
 
 }

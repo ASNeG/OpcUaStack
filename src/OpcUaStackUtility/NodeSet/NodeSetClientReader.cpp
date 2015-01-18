@@ -78,7 +78,7 @@ namespace OpcUaStackUtility
 		}
 
 		// browse nodes from opc ua server
-		nodeIdMap_.clear();
+		nodeIdSet_.clear();
 		OpcUaNodeId nodeId;
 		nodeId.set(84);
 		if (!browse(nodeId)) {
@@ -86,22 +86,11 @@ namespace OpcUaStackUtility
 			Log(Error, "browse nodes error");
 			return false;
 		}
-		if (nodeIdMap_.size() == 0) {
+		if (nodeIdSet_.size() == 0) {
 			session_->closeSession();
 			Log(Error, "browse nodes error, because no nodes found");
 			return false;
 		}
-
-		std::cout << "Nodes=" << nodeIdMap_.size() << std::endl;
-
-#if 0
-		// read information model from opc ua server
-		if (!readInformationModel()) {
-			session_->closeSession();
-			Log(Error, "read nodes error");
-			return false;
-		}
-#endif
 
 		session_->closeSession();
 		return true;
@@ -274,10 +263,10 @@ namespace OpcUaStackUtility
 				nodeId.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
 
 				allReferenceDescriptionVec.push_back(referenceDescription);
-				if (nodeIdMap_.find(nodeId) != nodeIdMap_.end()) {
+				if (nodeIdSet_.find(nodeId) != nodeIdSet_.end()) {
 					continue;
 				}
-				nodeIdMap_.insert(std::make_pair(nodeId, referenceDescription));
+				nodeIdSet_.insert(nodeId);
 				newNodeIdVec.push_back(nodeId);
 				newReferenceDescriptionVec.push_back(referenceDescription);
 			}
