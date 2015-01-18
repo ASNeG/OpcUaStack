@@ -51,6 +51,15 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 	for (it = namespaceVec.begin(); it != namespaceVec.end(); it++) {
 		std::cout << "NamespaceUri=" << *it << ", NamespaceIndex=" << nodeSetNamespace.mapToGlobalNamespaceIndex(*it) << std::endl;
 	}
+
+	std::cout << "objects=" << nodeSetClientReader.objectNodeClassVec().size() << std::endl;
+	std::cout << "variables=" << nodeSetClientReader.variableNodeClassVec().size() << std::endl;
+	std::cout << "methods=" << nodeSetClientReader.methodNodeClassVec().size() << std::endl;
+	std::cout << "objectTypes=" << nodeSetClientReader.objectTypeNodeClassVec().size() << std::endl;
+	std::cout << "variableTypes=" << nodeSetClientReader.variableTypeNodeClassVec().size() << std::endl;
+	std::cout << "referenceTypes=" << nodeSetClientReader.referenceTypeNodeClassVec().size() << std::endl;
+	std::cout << "dataTypes=" << nodeSetClientReader.dataTypeNodeClassVec().size() << std::endl;
+	std::cout << "views=" << nodeSetClientReader.viewNodeClassVec().size() << std::endl;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
