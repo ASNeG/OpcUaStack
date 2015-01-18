@@ -424,17 +424,19 @@ namespace OpcUaStackUtility
 		//
 		// check data value
 		//
+		// FIXME: BadAttributeIdInvalid
 		for (uint32_t idx=0; idx<attributeIdVec.size(); idx++) {
+		
 			OpcUaDataValue::SPtr dataValue;
-			readTrx->response()->dataValueArray()->get(idx, dataValue);
+			bool rc = readTrx->response()->dataValueArray()->get(idx, dataValue);
 			
-			if (dataValue.get() == nullptr || dataValue->statusCode() != Success) {
-				dataValue.reset();
+			if (rc == false || dataValue.get() == nullptr || dataValue->statusCode() != Success) {
 				Log(Warning, "read attributes data value error")
 					.parameter("NodeId", nodeId)
 					.parameter("StatusCode", OpcUaStatusCodeMap::longString(dataValue->statusCode()));
+				dataValue.reset();
 			}
-			dataValueVec.push_back(dataValue);
+			dataValueVec.push_back(dataValue); 
 		}
 
 		return true;
@@ -507,6 +509,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_WriteMask);
 		attributeIdVec.push_back(AttributeId_UserWriteMask);
 		attributeIdVec.push_back(AttributeId_EventNotifier);
+attributeIdVec.push_back(AttributeId_Executable);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
 		if (!readNodeBase(nodeId, objectNodeClass, nodeReferenceDescription, dataValueVec)) return false;

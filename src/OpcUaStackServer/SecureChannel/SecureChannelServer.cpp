@@ -457,7 +457,7 @@ namespace OpcUaStackServer
 		secureChannelTransaction.authenticationToken_ = authenticationToken_;
 
 		if (!checkSecurityToken(securityTokenId)) {
-			Log(Error, "secure channel security token errir")
+			Log(Error, "secure channel security token error")
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -473,7 +473,7 @@ namespace OpcUaStackServer
 		
 		if (secureChannelManagerIf_ != nullptr) {
 
-			Log(Debug, "secure channel send message")
+			Log(Debug, "secure channel receive message")
 				.parameter("MessageType", nodeId)
 				.parameter("ChannelId", secureChannelTransaction.channelId_)
 				.parameter("RequestId", secureChannelTransaction.requestId_)
@@ -502,7 +502,7 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::message(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		Log(Debug, "secure channel receive message")
+		Log(Debug, "secure channel send message")
 				.parameter("MessageType", nodeId)
 				.parameter("ChannelId", secureChannelTransaction.channelId_)
 				.parameter("RequestId", secureChannelTransaction.requestId_)

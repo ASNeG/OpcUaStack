@@ -109,9 +109,12 @@ namespace OpcUaStackClient
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
 		std::iostream ios(&sb);
-		Log(Debug, "send message")
+		Log(Debug, "secure channel send message")
 			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
-			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1));
+			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1))
+			.parameter("ChannelId", securityTokenSPtr_->channelId())
+			.parameter("MessageType", nodeId)
+			.parameter("RequestId", sequenceHeader_.requestId());
 
 		if (debugMode_) {
 			OpcUaStackCore::dumpHex(ios2);
@@ -217,6 +220,11 @@ namespace OpcUaStackClient
 
 		OpcUaNodeId nodeId;
 		nodeId.opcUaBinaryDecode(is);
+
+		Log(Debug, "secure channel receive message")
+			.parameter("ChannelId", securityTokenSPtr_->channelId())
+			.parameter("MessageType", nodeId)
+			.parameter("RequestId", sequenceHeader_.requestId());
 
 		if (secureChannelIf_ != nullptr) {
 			bool rc = secureChannelIf_->receive(nodeId, is_);
