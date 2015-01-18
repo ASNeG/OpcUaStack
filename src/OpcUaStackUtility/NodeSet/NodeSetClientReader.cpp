@@ -94,12 +94,14 @@ namespace OpcUaStackUtility
 
 		std::cout << "Nodes=" << nodeIdMap_.size() << std::endl;
 
+#if 0
 		// read information model from opc ua server
 		if (!readInformationModel()) {
 			session_->closeSession();
 			Log(Error, "read nodes error");
 			return false;
 		}
+#endif
 
 		session_->closeSession();
 		return true;
@@ -187,13 +189,25 @@ namespace OpcUaStackUtility
 	bool 
 	NodeSetClientReader::browse(OpcUaNodeId& nodeId)
 	{
+		ReferenceDescription::SPtr referenceDescription = ReferenceDescription::construct();
+		referenceDescription->expandedNodeId()->nodeIdValue(nodeId.nodeIdValue());
+		referenceDescription->expandedNodeId()->namespaceIndex(nodeId.namespaceIndex());
+		referenceDescription->browseName().set("Root");
+		referenceDescription->displayName().set("", "Root");
+		referenceDescription->nodeClass(NodeClassType_Object);
+		
 		std::vector<OpcUaNodeId> nodeIdVec;
+		ReferenceDescription::Vec referenceDescriptionVec;
+		
 		nodeIdVec.push_back(nodeId);
-		return browse(nodeIdVec);
+		referenceDescriptionVec.push_back(referenceDescription);
+
+		bool rc = browse(nodeIdVec, referenceDescriptionVec);
+		return rc;
 	}
 
 	bool 
-	NodeSetClientReader::browse(std::vector<OpcUaNodeId>& nodeIdVec)
+	NodeSetClientReader::browse(std::vector<OpcUaNodeId>& nodeIdVec, ReferenceDescription::Vec& referenceDescriptionVec)
 	{
 		ViewService viewService;
 		viewService.componentSession(session_->component());
@@ -208,7 +222,7 @@ namespace OpcUaStackUtility
 		for (uint32_t idx=0; idx<nodeIdVec.size(); idx++) {
 			BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
 			nodeIdVec[idx].copyTo(*browseDescription->nodeId());
-			browseDescription->browseDirection(BrowseDirection_Forward);
+			browseDescription->browseDirection(BrowseDirection_Both);
 			req->nodesToBrowse()->push_back(browseDescription);
 		}
 
@@ -245,6 +259,9 @@ namespace OpcUaStackUtility
 			// read node information from browse result
 			//
 			std::vector<OpcUaNodeId> newNodeIdVec;
+			ReferenceDescription::Vec newReferenceDescriptionVec;
+			ReferenceDescription::Vec allReferenceDescriptionVec;
+
 			ReferenceDescriptionArray::SPtr references = browseResult->references();
 			if (references->size() == 0) continue;
 			for (uint32_t idx=0; idx<references->size(); idx++) {
@@ -253,89 +270,123 @@ namespace OpcUaStackUtility
 
 				// check if node already exist
 				OpcUaNodeId nodeId;
-				nodeId.nodeIdValue(referenceDescription->nodeId()->nodeIdValue());
-				nodeId.namespaceIndex(referenceDescription->nodeId()->namespaceIndex());
+				nodeId.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+				nodeId.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
 
+				allReferenceDescriptionVec.push_back(referenceDescription);
 				if (nodeIdMap_.find(nodeId) != nodeIdMap_.end()) {
 					continue;
 				}
 				nodeIdMap_.insert(std::make_pair(nodeId, referenceDescription));
 				newNodeIdVec.push_back(nodeId);
+				newReferenceDescriptionVec.push_back(referenceDescription);
 			}
 
-			if (!browse(newNodeIdVec)) return false;
-		}
-
-		return true;
-	}
-
-	bool
-	NodeSetClientReader::readInformationModel(void)
-	{
-		NodeIdMap::iterator it;
-		for (it=nodeIdMap_.begin(); it!=nodeIdMap_.end(); it++) {
-			OpcUaNodeId nodeId = it->first;
-			ReferenceDescription::SPtr referenceDescription = it->second;
-
-			bool rc;
-			switch (referenceDescription->nodeClass())
-			{
-				case NodeClassType_Object:
-				{
-					rc = readObject(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_Variable:
-				{
-					rc = readVariable(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_Method:
-				{
-					rc = readMethod(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_ObjectType:
-				{
-					rc = readObjectType(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_VariableType:
-				{
-					rc = readVariableType(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_ReferenceType:
-				{
-					rc = readReferenceType(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_DataType:
-				{
-					rc = readDataType(nodeId, referenceDescription);
-					break;
-				}
-				case NodeClassType_View:
-				{
-					rc = readView(nodeId, referenceDescription);
-					break;
-				}
-				default:
-				{
-					Log(Error, "node class unknown")
-						.parameter("NodeId", nodeId)
-						.parameter("NodeClass", referenceDescription->nodeClass())
-						.parameter("DisplayName", referenceDescription->browseName().name().value());
-					return false;
-				}
-			}
-
+			bool rc = createNode(nodeIdVec[pos], referenceDescriptionVec[pos], allReferenceDescriptionVec);
 			if (!rc) return false;
+
+			if (!browse(newNodeIdVec, newReferenceDescriptionVec)) return false;
 		}
 
 		return true;
 	}
 
+	bool 
+	NodeSetClientReader::createNode(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription, 
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
+	{
+		bool rc;
+		switch (nodeReferenceDescription->nodeClass())
+		{
+			case NodeClassType_Object:
+			{
+				rc = readObject(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_Variable:
+			{
+				rc = readVariable(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_Method:
+			{
+				rc = readMethod(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_ObjectType:
+			{
+				rc = readObjectType(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_VariableType:
+			{
+				rc = readVariableType(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_ReferenceType:
+			{
+				rc = readReferenceType(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_DataType:
+			{
+				rc = readDataType(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			case NodeClassType_View:
+			{
+				rc = readView(
+					nodeId, 
+					nodeReferenceDescription, 
+					referenceDescriptionVec
+				);
+				break;
+			}
+			default:
+			{
+				Log(Error, "node class unknown")
+					.parameter("NodeId", nodeId)
+					.parameter("NodeClass", nodeReferenceDescription->nodeClass())
+					.parameter("DisplayName", nodeReferenceDescription->browseName().name().value());
+				return false;
+			}
+		}
+
+		if (!rc) return false;
+		return true;
+	}
+	
 	bool
 	NodeSetClientReader::readAttributes(
 		OpcUaNodeId nodeId, 
@@ -430,9 +481,36 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readObject(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::addReferences(
+		BaseNodeClass::SPtr baseNodeClass,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
+	{
+		ReferenceDescription::Vec::iterator it;
+		for (it=referenceDescriptionVec.begin(); it!=referenceDescriptionVec.end(); it++) {
+			ReferenceDescription::SPtr referenceDescription = *it;
+			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+			referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+			referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+			referenceItem->isForward_ = referenceDescription->isForward();
+			
+			baseNodeClass->referenceItemMap().add(
+				*referenceDescription->referenceTypeId(),
+				referenceItem
+			);
+		}
+		return true;
+	}
+
+	bool 
+	NodeSetClientReader::readObject(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		ObjectNodeClass::SPtr objectNodeClass = ObjectNodeClass::construct();
+		if (!addReferences(objectNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -442,7 +520,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_EventNotifier);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, objectNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, objectNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
 			OpcUaByte eventNotifier = dataValueVec[3]->variant()->variant<OpcUaByte>();
@@ -455,9 +533,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readVariable(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readVariable(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+		if (!addReferences(variableNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -476,7 +559,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_MinimumSamplingInterval);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, variableNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, variableNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 #if 0
 		if (dataValueVec[3].get() != nullptr) {
@@ -529,9 +612,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readMethod(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readMethod(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		MethodNodeClass::SPtr methodNodeClass = MethodNodeClass::construct();
+		if (!addReferences(methodNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -542,7 +630,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_UserExecutable);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, methodNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, methodNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
 			OpcUaBoolean executable = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
@@ -560,9 +648,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readObjectType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readObjectType(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		ObjectTypeNodeClass::SPtr objectTypeNodeClass = ObjectTypeNodeClass::construct();
+		if (!addReferences(objectTypeNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -572,7 +665,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_IsAbstract);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, objectTypeNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, objectTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
 			OpcUaBoolean isAbstract = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
@@ -585,9 +678,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readVariableType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readVariableType(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		VariableTypeNodeClass::SPtr variableTypeNodeClass = VariableTypeNodeClass::construct();
+		if (!addReferences(variableTypeNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -603,7 +701,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_IsAbstract);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, variableTypeNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, variableTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 #if 0
 		if (dataValueVec[3].get() != nullptr) {
@@ -639,9 +737,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readReferenceType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readReferenceType(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = ReferenceTypeNodeClass::construct();
+		if (!addReferences(referenceTypeNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -653,7 +756,7 @@ namespace OpcUaStackUtility
 		//attributeIdVec.push_back(AttributeId_InverseName);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, referenceTypeNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, referenceTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
 			OpcUaBoolean isAbstract = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
@@ -678,9 +781,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readDataType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readDataType(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		DataTypeNodeClass::SPtr dataTypeNodeClass = DataTypeNodeClass::construct();
+		if (!addReferences(dataTypeNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -690,7 +798,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_IsAbstract);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, dataTypeNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, dataTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
 			OpcUaBoolean isAbstract = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
@@ -703,9 +811,14 @@ namespace OpcUaStackUtility
 	}
 
 	bool 
-	NodeSetClientReader::readView(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription)
+	NodeSetClientReader::readView(
+		OpcUaNodeId& nodeId, 
+		ReferenceDescription::SPtr nodeReferenceDescription,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		ViewNodeClass::SPtr viewNodeClass = ViewNodeClass::construct();
+		if (!addReferences(viewNodeClass, referenceDescriptionVec)) return false;
 
 		std::vector<AttributeId> attributeIdVec;
 		std::vector<OpcUaDataValue::SPtr> dataValueVec;
@@ -716,7 +829,7 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_EventNotifier);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
-		if (!readNodeBase(nodeId, viewNodeClass, referenceDescription, dataValueVec)) return false;
+		if (!readNodeBase(nodeId, viewNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
 			OpcUaBoolean containsNoLoops = dataValueVec[3]->variant()->variant<OpcUaBoolean>();

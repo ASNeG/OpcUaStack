@@ -41,19 +41,70 @@ namespace OpcUaStackUtility
 	  private:
 		bool readNamespaceArray(void);
 		bool browse(OpcUaNodeId& nodeId);
-		bool browse(std::vector<OpcUaNodeId>& nodeIdVec);
-		bool readInformationModel(void);
-
-		bool readAttributes(OpcUaNodeId nodeId, std::vector<AttributeId>& attributeIdVec, std::vector<OpcUaDataValue::SPtr>& dataValueVec);
-		bool readNodeBase(OpcUaNodeId& nodeId, BaseNodeClass::SPtr baseNodeClass, ReferenceDescription::SPtr referenceDescription, std::vector<OpcUaDataValue::SPtr>& dataValueVec);
-		bool readObject(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readVariable(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readMethod(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readObjectType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readVariableType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readReferenceType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readDataType(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
-		bool readView(OpcUaNodeId& nodeId, ReferenceDescription::SPtr referenceDescription);
+		bool browse(
+			std::vector<OpcUaNodeId>& nodeIdVec, 
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool createNode(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription, 
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readAttributes(
+			OpcUaNodeId nodeId, 
+			std::vector<AttributeId>& attributeIdVec, 
+			std::vector<OpcUaDataValue::SPtr>& dataValueVec
+		);
+		bool readNodeBase(
+			OpcUaNodeId& nodeId, 
+			BaseNodeClass::SPtr baseNodeClass, 
+			ReferenceDescription::SPtr referenceDescription, 
+			std::vector<OpcUaDataValue::SPtr>& dataValueVec
+		);
+		bool addReferences(
+			BaseNodeClass::SPtr baseNodeClass,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readObject(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readVariable(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readMethod(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readObjectType(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readVariableType(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readReferenceType(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readDataType(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		bool readView(
+			OpcUaNodeId& nodeId, 
+			ReferenceDescription::SPtr nodeReferenceDescription,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
 	
 		Client client_;
 		NodeSetNamespace nodeSetNamespace_;

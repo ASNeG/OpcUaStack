@@ -79,7 +79,7 @@ namespace OpcUaStackServer
 				Log(Debug, "reference")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("SourceNodeId", browseDescription->nodeId())
-					.parameter("TargetNodeId", (*it)->nodeId())
+					.parameter("TargetNodeId", (*it)->expandedNodeId())
 					.parameter("TargetDisplayName", (*it)->displayName().text())
 					.parameter("ReferenceType", ReferenceTypeMap::nodeIdToString(*(*it)->referenceTypeId()));
 
@@ -173,7 +173,7 @@ namespace OpcUaStackServer
 
 			OpcUaExpandedNodeId::SPtr targetNodeId = OpcUaExpandedNodeId::construct();
 			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
-			referenceDescription->nodeId(targetNodeId);
+			referenceDescription->expandedNodeId(targetNodeId);
 			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());
 			referenceDescription->isForward(referenceItem->isForward_);  
 			referenceDescription->displayName(baseNodeClassTarget->displayName().data());

@@ -15,6 +15,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<ReferenceDescription> SPtr;
+		typedef std::vector<ReferenceDescription::SPtr> Vec;
 
 		ReferenceDescription(void);
 		virtual ~ReferenceDescription(void);
@@ -23,8 +24,8 @@ namespace OpcUaStackCore
 		OpcUaNodeId::SPtr referenceTypeId(void) const;
 		void isForward(const OpcUaBoolean& isForward);
 		OpcUaBoolean isForward(void);
-		void nodeId(const OpcUaExpandedNodeId::SPtr nodeId);
-		OpcUaExpandedNodeId::SPtr nodeId(void) const;
+		void expandedNodeId(const OpcUaExpandedNodeId::SPtr nodeId);
+		OpcUaExpandedNodeId::SPtr expandedNodeId(void) const;
 		void browseName(const OpcUaQualifiedName& browseName);
 		OpcUaQualifiedName& browseName(void);
 		void displayName(const OpcUaLocalizedText& displayName);

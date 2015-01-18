@@ -52,17 +52,17 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	ReferenceDescription::nodeId(const OpcUaExpandedNodeId::SPtr nodeId)
+	ReferenceDescription::expandedNodeId(const OpcUaExpandedNodeId::SPtr nodeId)
 	{
 		nodeIdSPtr_ = nodeId;
 	}
 	
 	OpcUaExpandedNodeId::SPtr 
-	ReferenceDescription::nodeId(void) const
+	ReferenceDescription::expandedNodeId(void) const
 	{
 		return nodeIdSPtr_;
 	}
-	
+
 	void 
 	ReferenceDescription::browseName(const OpcUaQualifiedName& browseName)
 	{

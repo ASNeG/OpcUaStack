@@ -240,8 +240,8 @@ BOOST_AUTO_TEST_CASE(Browse_Response)
 	referenceDescriptionSPtr->referenceTypeId()->namespaceIndex(2);
 	referenceDescriptionSPtr->referenceTypeId()->nodeId<OpcUaUInt32>(123);
 	referenceDescriptionSPtr->isForward(true);
-	referenceDescriptionSPtr->nodeId()->namespaceIndex(2);
-	referenceDescriptionSPtr->nodeId()->nodeId<OpcUaUInt32>(123);
+	referenceDescriptionSPtr->expandedNodeId()->namespaceIndex(2);
+	referenceDescriptionSPtr->expandedNodeId()->nodeId<OpcUaUInt32>(123);
 	browseName = "ABC"; browseName = 2;
 	referenceDescriptionSPtr->browseName(browseName);
 	displayName.locale("local");
@@ -326,8 +326,8 @@ BOOST_AUTO_TEST_CASE(Browse_Response)
 	BOOST_REQUIRE(referenceDescriptionSPtr->referenceTypeId()->namespaceIndex() == 2);
 	BOOST_REQUIRE(referenceDescriptionSPtr->referenceTypeId()->nodeId<OpcUaUInt32>() == 123);
 	BOOST_REQUIRE(referenceDescriptionSPtr->isForward() == true);
-	BOOST_REQUIRE(referenceDescriptionSPtr->nodeId()->namespaceIndex() == 2);
-	BOOST_REQUIRE(referenceDescriptionSPtr->nodeId()->nodeId<OpcUaUInt32>() == 123);
+	BOOST_REQUIRE(referenceDescriptionSPtr->expandedNodeId()->namespaceIndex() == 2);
+	BOOST_REQUIRE(referenceDescriptionSPtr->expandedNodeId()->nodeId<OpcUaUInt32>() == 123);
 	BOOST_REQUIRE(referenceDescriptionSPtr->browseName().name().value() == "ABC");
 	BOOST_REQUIRE(referenceDescriptionSPtr->browseName().namespaceIndex() == 2);
 	BOOST_REQUIRE(referenceDescriptionSPtr->displayName().locale().value() == "local");

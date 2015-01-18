@@ -1,11 +1,14 @@
 #include "unittest.h"
 
 #include "OpcUaStackCore/Core/FileLogger.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
+#include "OpcUaStackServer/nodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackUtility/NodeSet/NodeSetClientReader.h"
 
 using namespace OpcUaStackCore;
 //using namespace OpcUaStackClient;
-//using namespace OpcUaStackServer;
+using namespace OpcUaStackServer;
 using namespace OpcUaStackUtility;
 
 BOOST_AUTO_TEST_SUITE(NodeSetClientReadeR_)
@@ -60,6 +63,26 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 	std::cout << "referenceTypes=" << nodeSetClientReader.referenceTypeNodeClassVec().size() << std::endl;
 	std::cout << "dataTypes=" << nodeSetClientReader.dataTypeNodeClassVec().size() << std::endl;
 	std::cout << "views=" << nodeSetClientReader.viewNodeClassVec().size() << std::endl;
+
+
+	// write nodes from node set into information model
+	InformationModel::SPtr informationModel = InformationModel::construct();
+	rc = InformationModelNodeSet::initial(informationModel, nodeSetClientReader);
+	BOOST_REQUIRE(rc == true);
+
+	
+	// write nodes from information model into node set file
+	NodeSetXmlParser nodeSetXmlParser;
+	rc = InformationModelNodeSet::initial(nodeSetXmlParser, informationModel, namespaceVec);
+	BOOST_REQUIRE(rc == true);
+
+	ConfigXml configXml;
+	rc = nodeSetXmlParser.encode(configXml.ptree());
+	BOOST_REQUIRE(rc == true);
+
+	rc = configXml.write("test-nodeset.xml");
+	BOOST_REQUIRE(rc == true);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()
