@@ -178,6 +178,7 @@ namespace OpcUaStackUtility
 	bool 
 	NodeSetClientReader::browse(OpcUaNodeId& nodeId)
 	{
+		Log(Debug, "browse begin");
 		ReferenceDescription::SPtr referenceDescription = ReferenceDescription::construct();
 		referenceDescription->expandedNodeId()->nodeIdValue(nodeId.nodeIdValue());
 		referenceDescription->expandedNodeId()->namespaceIndex(nodeId.namespaceIndex());
@@ -192,6 +193,7 @@ namespace OpcUaStackUtility
 		referenceDescriptionVec.push_back(referenceDescription);
 
 		bool rc = browse(nodeIdVec, referenceDescriptionVec);
+		Log(Debug, "browse end");
 		return rc;
 	}
 
@@ -212,6 +214,8 @@ namespace OpcUaStackUtility
 			BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
 			nodeIdVec[idx].copyTo(*browseDescription->nodeId());
 			browseDescription->browseDirection(BrowseDirection_Both);
+			browseDescription->nodeClassMask(0xFFFFFFFF);
+			browseDescription->resultMask(0xFFFFFFFF);
 			req->nodesToBrowse()->push_back(browseDescription);
 		}
 
@@ -375,6 +379,24 @@ namespace OpcUaStackUtility
 		if (!rc) return false;
 		return true;
 	}
+
+	bool 
+	NodeSetClientReader::checkVariantType(
+		OpcUaNodeId& nodeId, 
+		const std::string& attributeName, 
+		OpcUaVariant::SPtr variant,
+		OpcUaBuildInType buildInType
+	)
+	{
+		if (variant->variantType() == buildInType) return true;
+
+		Log(Error, "build in type invalid in attribute")
+			.parameter("NodeId", nodeId)
+			.parameter("AttributeName", attributeName)
+			.parameter("ActualType", variant->variantType())
+			.parameter("ExpectedType", buildInType);
+		return false;
+	}
 	
 	bool
 	NodeSetClientReader::readAttributes(
@@ -424,9 +446,11 @@ namespace OpcUaStackUtility
 		//
 		// check data value
 		//
-		// FIXME: BadAttributeIdInvalid
+		Log(Debug, "node set client reader read response")
+			.parameter("Trx", readTrx->transactionId())
+			.parameter("NumberNodes", attributeIdVec.size());
 		for (uint32_t idx=0; idx<attributeIdVec.size(); idx++) {
-		
+			
 			OpcUaDataValue::SPtr dataValue;
 			bool rc = readTrx->response()->dataValueArray()->get(idx, dataValue);
 			
@@ -435,8 +459,23 @@ namespace OpcUaStackUtility
 					.parameter("NodeId", nodeId)
 					.parameter("StatusCode", OpcUaStatusCodeMap::longString(dataValue->statusCode()));
 				dataValue.reset();
+
+				Log(Debug, "readValue")
+					.parameter("Trx", readTrx->transactionId())
+					.parameter("Idx", idx)
+					.parameter("NodeId", nodeId)
+					.parameter("Attr", attributeIdVec[idx])
+					.parameter("Data", "null");
 			}
-			dataValueVec.push_back(dataValue); 
+			else {
+				Log(Debug, "readValue")
+					.parameter("Trx", readTrx->transactionId())
+					.parameter("Idx", idx)
+					.parameter("NodeId", nodeId)
+					.parameter("Attr", attributeIdVec[idx])
+					.parameter("Data", *dataValue);
+			}
+			dataValueVec.push_back(dataValue);
 		}
 
 		return true;
@@ -454,16 +493,19 @@ namespace OpcUaStackUtility
 		referenceDescription->displayName().copyTo(baseNodeClass->displayName().data());
 		
 		if (dataValueVec[0].get() != nullptr) {
+			if (!checkVariantType(nodeId, "Description", dataValueVec[0]->variant(), OpcUaBuildInType_OpcUaLocalizedText)) return false;
 			OpcUaLocalizedText::SPtr description = dataValueVec[0]->variant()->variantSPtr<OpcUaLocalizedText>();
 			description->copyTo(baseNodeClass->description().data());
 		}
 
 		if (dataValueVec[1].get() != nullptr) {
+			if (!checkVariantType(nodeId, "WriteMask", dataValueVec[1]->variant(), OpcUaBuildInType_OpcUaUInt32)) return false;
 			OpcUaUInt32 writeMask = dataValueVec[1]->variant()->variant<OpcUaUInt32>();
 			baseNodeClass->writeMask().data(writeMask);
 		}
 
 		if (dataValueVec[2].get() != nullptr) {
+			if (!checkVariantType(nodeId, "UserWriteMask", dataValueVec[2]->variant(), OpcUaBuildInType_OpcUaUInt32)) return false;
 			OpcUaUInt32 userWriteMask = dataValueVec[2]->variant()->variant<OpcUaUInt32>();
 			baseNodeClass->userWriteMask().data(userWriteMask);
 		}
@@ -509,12 +551,12 @@ namespace OpcUaStackUtility
 		attributeIdVec.push_back(AttributeId_WriteMask);
 		attributeIdVec.push_back(AttributeId_UserWriteMask);
 		attributeIdVec.push_back(AttributeId_EventNotifier);
-attributeIdVec.push_back(AttributeId_Executable);
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
 		if (!readNodeBase(nodeId, objectNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "EventNotifier", dataValueVec[3]->variant(), OpcUaBuildInType_OpcUaByte)) return false;
 			OpcUaByte eventNotifier = dataValueVec[3]->variant()->variant<OpcUaByte>();
 			objectNodeClass->eventNotifier().data(eventNotifier);
 		}
@@ -549,37 +591,43 @@ attributeIdVec.push_back(AttributeId_Executable);
 		attributeIdVec.push_back(AttributeId_Historizing);
 		//attributeIdVec.push_back(AttributeId_ArrayDimensions);
 		attributeIdVec.push_back(AttributeId_MinimumSamplingInterval);
+
 		if (!readAttributes(nodeId, attributeIdVec, dataValueVec)) return false;
 
 		if (!readNodeBase(nodeId, variableNodeClass, nodeReferenceDescription, dataValueVec)) return false;
-	
+
 #if 0
 		if (dataValueVec[3].get() != nullptr) {
 			dataValueVec[3]->copyTo(variableNodeClass->value().data());
 		}
-#endif
+#endif 
 
 		if (dataValueVec[4].get() != nullptr && dataValueVec[4]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "DataType", dataValueVec[4]->variant(), OpcUaBuildInType_OpcUaNodeId)) return false;
 			OpcUaNodeId::SPtr dataType = dataValueVec[4]->variant()->variantSPtr<OpcUaNodeId>();
 			dataType->copyTo(variableNodeClass->dataType().data());
 		}
 
 		if (dataValueVec[5].get() != nullptr && dataValueVec[5]->statusCode() == Success) {
-			OpcUaUInt32 valueRank = dataValueVec[5]->variant()->variant<OpcUaUInt32>();
+			if (!checkVariantType(nodeId, "ValueRank", dataValueVec[5]->variant(), OpcUaBuildInType_OpcUaInt32)) return false;
+			OpcUaInt32 valueRank = dataValueVec[5]->variant()->variant<OpcUaInt32>();
 			variableNodeClass->valueRank().data(valueRank);
 		}
 
 		if (dataValueVec[6].get() != nullptr && dataValueVec[6]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "AccessLevel", dataValueVec[6]->variant(), OpcUaBuildInType_OpcUaByte)) return false;
 			OpcUaByte accessLevel = dataValueVec[6]->variant()->variant<OpcUaByte>();
 			variableNodeClass->accessLevel().data(accessLevel);
 		}
 
 		if (dataValueVec[7].get() != nullptr && dataValueVec[7]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "UserAccessLevel", dataValueVec[7]->variant(), OpcUaBuildInType_OpcUaByte)) return false;
 			OpcUaByte userAccessLevel = dataValueVec[7]->variant()->variant<OpcUaByte>();
 			variableNodeClass->userAccessLevel().data(userAccessLevel);
 		}
 
 		if (dataValueVec[8].get() != nullptr && dataValueVec[8]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "Hitoizing", dataValueVec[8]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean historizing = dataValueVec[8]->variant()->variant<OpcUaBoolean>();
 			variableNodeClass->historizing().data(historizing);
 		}
@@ -625,11 +673,13 @@ attributeIdVec.push_back(AttributeId_Executable);
 		if (!readNodeBase(nodeId, methodNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "Executable", dataValueVec[4]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean executable = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
 			methodNodeClass->executable().data(executable);
 		}
 
-		if (dataValueVec[4].get() != nullptr&& dataValueVec[3]->statusCode() == Success) {
+		if (dataValueVec[4].get() != nullptr&& dataValueVec[4]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "UserExecutable", dataValueVec[4]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean userExecutable = dataValueVec[4]->variant()->variant<OpcUaBoolean>();
 			methodNodeClass->userExecutable().data(userExecutable);
 		}
@@ -660,6 +710,7 @@ attributeIdVec.push_back(AttributeId_Executable);
 		if (!readNodeBase(nodeId, objectTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "IsAbstract", dataValueVec[3]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean isAbstract = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
 			objectTypeNodeClass->isAbstract().data(isAbstract);
 		}
@@ -702,12 +753,14 @@ attributeIdVec.push_back(AttributeId_Executable);
 #endif
 
 		if (dataValueVec[4].get() != nullptr && dataValueVec[4]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "DataType", dataValueVec[4]->variant(), OpcUaBuildInType_OpcUaNodeId)) return false;
 			OpcUaNodeId::SPtr dataType = dataValueVec[4]->variant()->variantSPtr<OpcUaNodeId>();
 			dataType->copyTo(variableTypeNodeClass->dataType().data());
 		}
 
 		if (dataValueVec[5].get() != nullptr && dataValueVec[5]->statusCode() == Success) {
-			OpcUaUInt32 valueRank = dataValueVec[5]->variant()->variant<OpcUaUInt32>();
+			if (!checkVariantType(nodeId, "ValueRank", dataValueVec[5]->variant(), OpcUaBuildInType_OpcUaInt32)) return false;
+			OpcUaInt32 valueRank = dataValueVec[5]->variant()->variant<OpcUaInt32>();
 			variableTypeNodeClass->valueRank().data(valueRank);
 		}
 
@@ -719,6 +772,7 @@ attributeIdVec.push_back(AttributeId_Executable);
 #endif
 
 		if (dataValueVec[7].get() != nullptr && dataValueVec[7]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "IsAbstract", dataValueVec[7]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean isAbstract = dataValueVec[7]->variant()->variant<OpcUaBoolean>();
 			variableTypeNodeClass->isAbstract().data(isAbstract);
 		}
@@ -751,11 +805,13 @@ attributeIdVec.push_back(AttributeId_Executable);
 		if (!readNodeBase(nodeId, referenceTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "IsAbstract", dataValueVec[3]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean isAbstract = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
 			referenceTypeNodeClass->isAbstract().data(isAbstract);
 		}
 
 		if (dataValueVec[4].get() != nullptr && dataValueVec[4]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "Symmetric", dataValueVec[4]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean symmetric = dataValueVec[4]->variant()->variant<OpcUaBoolean>();
 			referenceTypeNodeClass->symmetric().data(symmetric);
 		}
@@ -793,6 +849,7 @@ attributeIdVec.push_back(AttributeId_Executable);
 		if (!readNodeBase(nodeId, dataTypeNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "IsAbstract", dataValueVec[3]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean isAbstract = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
 			dataTypeNodeClass->isAbstract().data(isAbstract);
 		}
@@ -824,11 +881,13 @@ attributeIdVec.push_back(AttributeId_Executable);
 		if (!readNodeBase(nodeId, viewNodeClass, nodeReferenceDescription, dataValueVec)) return false;
 	
 		if (dataValueVec[3].get() != nullptr && dataValueVec[3]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "ContainsNoLoops", dataValueVec[3]->variant(), OpcUaBuildInType_OpcUaBoolean)) return false;
 			OpcUaBoolean containsNoLoops = dataValueVec[3]->variant()->variant<OpcUaBoolean>();
 			viewNodeClass->containsNoLoops().data(containsNoLoops);
 		}
 
 		if (dataValueVec[4].get() != nullptr && dataValueVec[4]->statusCode() == Success) {
+			if (!checkVariantType(nodeId, "EventNotifier", dataValueVec[4]->variant(), OpcUaBuildInType_OpcUaByte)) return false;
 			OpcUaByte eventNotifier = dataValueVec[4]->variant()->variant<OpcUaByte>();
 			viewNodeClass->eventNotifier().data(eventNotifier);
 		}

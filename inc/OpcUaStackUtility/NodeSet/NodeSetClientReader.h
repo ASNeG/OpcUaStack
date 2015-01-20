@@ -39,6 +39,12 @@ namespace OpcUaStackUtility
 		//- SessionIf interface -----------------------------------------------
 
 	  private:
+		bool checkVariantType(
+			OpcUaNodeId& nodeId, 
+			const std::string& attributeName, 
+			OpcUaVariant::SPtr variant,
+			OpcUaBuildInType buildInType
+		);
 		bool readNamespaceArray(void);
 		bool browse(OpcUaNodeId& nodeId);
 		bool browse(

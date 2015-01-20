@@ -72,6 +72,7 @@ namespace OpcUaStackClient
  	  private:
 		bool receiveCreateSessionResponse(boost::asio::streambuf& sb);
 		bool receiveActivateSessionResponse(boost::asio::streambuf& sb);
+		bool receiveServiceFault(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
 
 		SessionState sessionState_;

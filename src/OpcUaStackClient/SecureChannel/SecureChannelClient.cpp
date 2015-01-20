@@ -271,12 +271,16 @@ namespace OpcUaStackClient
 	{
 		Url url;
 		url.url(channelDataBase()->endpointUrl());
-		partnerAddress_.from_string(url.host());
+		partnerAddress_ = boost::asio::ip::address::from_string(url.host());
 		partnerPort_ = url.port();
 
 		if (reconnectTimeout_ == 0) reconnectTimeout_ = 1;
 		else reconnectTimeout_ += reconnectTimeout_;
 		if (reconnectTimeout_ > maxReconnectTimeout_) reconnectTimeout_ = maxReconnectTimeout_;
+
+		Log(Debug, "try open secure channel")
+			.parameter("PartnerAddress", partnerAddress_.to_string())
+			.parameter("PartnerPort", partnerPort_);
 
 		secureChannelClientState_ = SecureChannelClientState_Connecting;
 		tcpConnector_.async_connect(

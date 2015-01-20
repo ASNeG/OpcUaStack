@@ -104,10 +104,10 @@ namespace OpcUaStackClient
 		activateSessionRequestSPtr->localeIds()->resize(1);
 		activateSessionRequestSPtr->localeIds()->push_back(localeIdSPtr);
 
-
+		// user identity token
 		activateSessionRequestSPtr->userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequestSPtr->userIdentityToken()->parameter<AnonymousIdentityToken>();
-		anonymousIdentityToken->policyId("Anonymous");
+		anonymousIdentityToken->policyId("Anonymous_Policy");
 		activateSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendActivateSession;
@@ -201,6 +201,12 @@ namespace OpcUaStackClient
 				return receiveActivateSessionResponse(sb);
 				break;
 			}
+			case OpcUaId_ServiceFault_Encoding_DefaultBinary:
+			{
+				Log(Debug, "receive service fault");
+				return receiveServiceFault(typeId, sb);
+				break;
+			}
 			default:
 			{
 				return receiveMessage(typeId, sb);
@@ -267,6 +273,29 @@ namespace OpcUaStackClient
 		return true;
 	}
 
+	bool 
+	Session::receiveServiceFault(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	{
+		if (sessionIf_ == nullptr) {
+			Log(Error, "interface sessionIf is empty")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("SessionState", sessionState_);
+			return false;
+		}
+
+		std::iostream ios(&sb);
+		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+		responseHeader->opcUaBinaryDecode(ios);
+
+		Log(Error, "received Service Fault")
+			.parameter("ServiceResult", OpcUaStatusCodeMap::longString(responseHeader->serviceResult()));
+	
+		// FIXME: close session and close secure channel
+		// FIXME: send error message to associated service
+		return false;
+	}
+
 	bool
 	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
 	{
@@ -306,7 +335,7 @@ namespace OpcUaStackClient
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransaction->transactionId())
 			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
-			.parameter("ServiceResultCode", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
+			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
 
 		Component* componentService = serviceTransaction->componentService();
 		if (componentService != nullptr) {

@@ -1250,7 +1250,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		if ((encodingMask & 128) == 128) {
+		if ((encodingMask & 64) == 64) {
 			OpcUaUInt32 arrayDimensions;
 			OpcUaNumber::opcUaBinaryDecode(is, arrayDimensions);
 			arrayDimensionsVec_.push_back(arrayDimensions);

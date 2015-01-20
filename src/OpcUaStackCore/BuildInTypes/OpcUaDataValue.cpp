@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -153,7 +154,7 @@ namespace OpcUaStackCore
 		}
 		if (serverTimestamp_.exist()) {
 			if (outputExist) os << ",";
-			os << "SourceTime=" << serverTimestamp_;
+			os << "ServerTime=" << serverTimestamp_;
 			outputExist = true;
 		}
 		if (sourcePicoseconds_ != 0) {
@@ -236,6 +237,7 @@ namespace OpcUaStackCore
 		}
 	}
 		
+
 	void 
 	OpcUaDataValue::opcUaBinaryDecode(std::istream& is)
 	{

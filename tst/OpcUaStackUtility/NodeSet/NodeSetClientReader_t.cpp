@@ -27,6 +27,7 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 
 	// configuration session
 	Config sessionConfig; 
+	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.147:4880");
 	sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	sessionConfig.setValue("NodeSetClientReaderConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("NodeSetClientReaderConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
@@ -36,6 +37,7 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 
 	// configuration secure channel
 	Config secureChannelConfig;
+	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.147:4880");
 	secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	secureChannelConfig.setValue("NodeSetClientReaderConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
