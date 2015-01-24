@@ -30,6 +30,7 @@ namespace OpcUaStackServer
 	, channelId_(getUniqueChannelId())
 	, tokenIdVec_()
 	, authenticationToken_(0)
+	, asyncCount_(0)
 	{
 		std::srand(static_cast<unsigned int>(std::time(0))); 
 	}
@@ -75,10 +76,19 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	void
+	SecureChannelServer::handleDisconnect(void)
+	{
+		if (secureChannelManagerIf_ != nullptr && asyncCount_ == 0) {
+			secureChannelManagerIf_->disconnect(channelId_);
+		}
+	}
+
 	void 
 	SecureChannelServer::handleReadMessageHeaderError(void)
 	{
 		Log(Info, "close connection")
+			.parameter("ChannelId", channelId_)
 			.parameter("LocalAddress", localEndpointAddress_)
 			.parameter("LocalPort", localEndpointPort_)
 			.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -86,7 +96,7 @@ namespace OpcUaStackServer
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
 		
-		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+		handleDisconnect();
 	}
 		
 	void 
@@ -94,6 +104,7 @@ namespace OpcUaStackServer
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_WaitHello) {
 			Log(Error, "cannot read hello, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -102,10 +113,11 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
+		asyncCount_++;
 		tcpConnection_.async_read_exactly(
 			is_,
 			boost::bind(&SecureChannelServer::handleReadHello, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
@@ -116,8 +128,10 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadHello(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		asyncCount_--;
 		if (secureChannelServerState_ != SecureChannelServerState_WaitHello) {
 			Log(Error, "cannot read hello, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -126,7 +140,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
@@ -157,6 +171,7 @@ namespace OpcUaStackServer
 		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
+		asyncCount_++;
 		tcpConnection_.async_write(
 			sb2, sb1, boost::bind(&SecureChannelServer::handleWriteAcknowledgeComplete, this, boost::asio::placeholders::error)
 		);
@@ -165,8 +180,10 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleWriteAcknowledgeComplete(const boost::system::error_code& error)
 	{
+		asyncCount_--;
 		if (secureChannelServerState_ != SecureChannelServerState_WaitOpenSecureChannel) {
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -175,7 +192,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_WaitOpenSecureChannel;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
@@ -196,6 +213,7 @@ namespace OpcUaStackServer
 		if (secureChannelServerState_ != SecureChannelServerState_WaitOpenSecureChannel &&
 			secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -204,10 +222,11 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
+		asyncCount_++;
 		tcpConnection_.async_read_exactly(
 			is_,
 			boost::bind(&SecureChannelServer::handleReadOpenSecureChannelRequest, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
@@ -218,9 +237,11 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		asyncCount_--;
 		if (secureChannelServerState_ != SecureChannelServerState_WaitOpenSecureChannel &&
 			secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot read open secure message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -229,7 +250,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
@@ -287,25 +308,26 @@ namespace OpcUaStackServer
 
 		if (secureChannelServerState_ == SecureChannelServerState_Ready) {
 			Log(Info, "secure channel renew")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
 				.parameter("PartnerPort", remoteEndpointPort_)
-				.parameter("ChannelId", channelId_)
 				.parameter("SecurityToken", tokenIdVec_[tokenIdVec_.size()-1]);
 		}
 		else {
 			Log(Info, "secure channel open")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
 				.parameter("PartnerPort", remoteEndpointPort_)
-				.parameter("ChannelId", channelId_)
 				.parameter("SecurityToken", tokenIdVec_[tokenIdVec_.size()-1]);
 		}
 
 		secureChannelServerState_ = SecureChannelServerState_Ready;
 
+		asyncCount_++;
 		tcpConnection_.async_write(
 			sb2, sb1, boost::bind(&SecureChannelServer::handleWriteOpenSecureChannelComplete, this, boost::asio::placeholders::error)
 		);
@@ -314,8 +336,10 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleWriteOpenSecureChannelComplete(const boost::system::error_code& error)
 	{
+		asyncCount_--;
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot read open message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -324,7 +348,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
@@ -344,6 +368,7 @@ namespace OpcUaStackServer
 	SecureChannelServer::handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader)
 	{
 		Log(Info, "close secure channel by partner")
+			.parameter("ChannelId", channelId_)
 			.parameter("LocalAddress", localEndpointAddress_)
 			.parameter("LocalPort", localEndpointPort_)
 			.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -351,7 +376,7 @@ namespace OpcUaStackServer
 		tcpConnection_.close();
 		secureChannelServerState_ = SecureChannelServerState_Close;
 			
-		if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+		handleDisconnect();
 		return;
 	}
 
@@ -368,6 +393,7 @@ namespace OpcUaStackServer
 	{
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot read message header, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -376,10 +402,11 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
+		asyncCount_++;
 		tcpConnection_.async_read_exactly(
 			is_,
 			boost::bind(&SecureChannelServer::handleReadMessage, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
@@ -390,11 +417,13 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		asyncCount_--;
 		Log(Debug, "receive message body")
 			.parameter("BodySize", bytes_transfered);
 
 		if (error) {
 			Log(Error, "cannot read message body")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -404,12 +433,13 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
 		if (bytes_transfered == 0) {
 			Log(Error, "cannot read message body, because secure channel is closed by partner")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -418,12 +448,13 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot read message body, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -433,7 +464,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
@@ -458,6 +489,7 @@ namespace OpcUaStackServer
 
 		if (!checkSecurityToken(securityTokenId)) {
 			Log(Error, "secure channel security token error")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -467,21 +499,22 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 		
 		if (secureChannelManagerIf_ != nullptr) {
 
 			Log(Debug, "secure channel receive message")
+				.parameter("ChannelId", channelId_)
 				.parameter("MessageType", nodeId)
-				.parameter("ChannelId", secureChannelTransaction.channelId_)
 				.parameter("RequestId", secureChannelTransaction.requestId_)
 				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
 
 			bool rc = secureChannelManagerIf_->secureChannelMessage(nodeId, is_, secureChannelTransaction);
 			if (rc == false) {
 				Log(Error, "cannot read message body, because message handler error")
+					.parameter("ChannelId", channelId_)
 					.parameter("LocalAddress", localEndpointAddress_)
 					.parameter("LocalPort", localEndpointPort_)
 					.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -491,7 +524,7 @@ namespace OpcUaStackServer
 				tcpConnection_.close();
 				secureChannelServerState_ = SecureChannelServerState_Close;
 			
-				if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+				handleDisconnect();
 				return;
 			}
 		}
@@ -503,10 +536,11 @@ namespace OpcUaStackServer
 	SecureChannelServer::message(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		Log(Debug, "secure channel send message")
-				.parameter("MessageType", nodeId)
-				.parameter("ChannelId", secureChannelTransaction.channelId_)
-				.parameter("RequestId", secureChannelTransaction.requestId_)
-				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
+			.parameter("ChannelId", channelId_)
+			.parameter("MessageType", nodeId)
+			.parameter("ChannelId", secureChannelTransaction.channelId_)
+			.parameter("RequestId", secureChannelTransaction.requestId_)
+			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
 
 		if (secureChannelTransaction.authenticationToken_ != 0) {
 			authenticationToken_ = secureChannelTransaction.authenticationToken_;
@@ -514,6 +548,7 @@ namespace OpcUaStackServer
 
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot send message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -523,7 +558,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
@@ -554,6 +589,7 @@ namespace OpcUaStackServer
 
 		std::iostream ios(&sb);
 		Log(Debug, "send message")
+			.parameter("ChannelId", channelId_)
 			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
 			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1));
 
@@ -561,6 +597,7 @@ namespace OpcUaStackServer
 			OpcUaStackCore::dumpHex(ios2);
 		}
 
+		asyncCount_++;
 		tcpConnection_.async_write(
 			sb2, sb1, sb, boost::bind(&SecureChannelServer::handleWriteSendComplete, this, boost::asio::placeholders::error)
 		);
@@ -569,8 +606,10 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleWriteSendComplete(const boost::system::error_code& error)
 	{
+		asyncCount_--;
 		if (error) {
 			Log(Error, "send message error")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -579,12 +618,13 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
 			Log(Error, "cannot receive message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
 				.parameter("LocalAddress", localEndpointAddress_)
 				.parameter("LocalPort", localEndpointPort_)
 				.parameter("PartnerAddress",  remoteEndpointAddress_)
@@ -595,7 +635,7 @@ namespace OpcUaStackServer
 			tcpConnection_.close();
 			secureChannelServerState_ = SecureChannelServerState_Close;
 			
-			if (secureChannelManagerIf_ != nullptr) secureChannelManagerIf_->disconnect(channelId_);
+			handleDisconnect();
 			return;
 		}
 
