@@ -25,7 +25,9 @@ namespace OpcUaStackServer
 	} SessionState;
 
 
-	class DLLEXPORT Session : public  OpcUaStackCore::ObjectPool<Session>, public Component
+	class DLLEXPORT Session 
+	: public OpcUaStackCore::ObjectPool<Session>
+	, public Component
 	{
 	  public:
 		Session(void);
@@ -38,7 +40,7 @@ namespace OpcUaStackServer
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		OpcUaUInt32 sessionId(void);
 		OpcUaUInt32 authenticationToken(void);
-		bool message(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool message(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
@@ -53,12 +55,12 @@ namespace OpcUaStackServer
 		static OpcUaUInt32 getUniqueSessionId(void);
 		static OpcUaUInt32 getUniqueAuthenticationToken(void);
 
-		bool receiveCreateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
-		bool receiveActivateSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveCreateSessionRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveActivateSessionRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		void activateSessionRequestError(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction& secureChannelTransaction, OpcUaStatusCode statusCode);
-		bool receiveCloseSessionRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
-		bool receiveCancelRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
-		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveCloseSessionRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveCancelRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		bool receiveMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 
 		OpcUaUInt32 sessionId_;
 		OpcUaUInt32 authenticationToken_;

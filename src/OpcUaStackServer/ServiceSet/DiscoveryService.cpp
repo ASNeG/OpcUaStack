@@ -32,26 +32,27 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::message(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::message(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
-		switch(typeId.nodeId<OpcUaUInt32>())
+		switch(secureChannelTransaction.requestTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive get endpoints request");
-				return receiveGetEndpointsRequest(typeId, sb, secureChannelTransaction);
+				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
+				return receiveGetEndpointsRequest(sb, secureChannelTransaction);
 			}
 			default:
 			{
 				Log(Error, "Discovery service receives unknown message type")
-					.parameter("MessageType", typeId);
+					.parameter("MessageType", secureChannelTransaction.requestTypeNodeId_.nodeId<OpcUaUInt32>());
 			}
 		}
 		return false;
 	}
 
 	bool 
-	DiscoveryService::receiveGetEndpointsRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveGetEndpointsRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		std::iostream is(&sb);
 		RequestHeader requestHeader;
@@ -75,21 +76,19 @@ namespace OpcUaStackServer
 		responseHeader.opcUaBinaryEncode(os);
 		getEndpointsResponse.opcUaBinaryEncode(os);
 	
-
-		typeId.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
-		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(typeId, sbo, secureChannelTransaction);
+		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(sbo, secureChannelTransaction);
 		return true;
 	}
 
 	bool 
-	DiscoveryService::receiveFindServersRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveFindServersRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		// FIXME:
 		return false;
 	}
 
 	bool 
-	DiscoveryService::receiveRegisterServerRequest(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveRegisterServerRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		// FIXME:
 		return false;

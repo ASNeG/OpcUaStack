@@ -417,6 +417,8 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
+		SecureChannelTransaction secureChannelTransaction;
+
 		asyncCount_--;
 		Log(Debug, "receive message body")
 			.parameter("BodySize", bytes_transfered);
@@ -479,10 +481,7 @@ namespace OpcUaStackServer
 		SequenceHeader sequenceHeader;
 		sequenceHeader.opcUaBinaryDecode(is);
 
-		OpcUaNodeId nodeId;
-		nodeId.opcUaBinaryDecode(is);
-
-		SecureChannelTransaction secureChannelTransaction;
+		secureChannelTransaction.requestTypeNodeId_.opcUaBinaryDecode(is);
 		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
 		secureChannelTransaction.channelId_ = channelId_;
 		secureChannelTransaction.authenticationToken_ = authenticationToken_;
@@ -507,11 +506,14 @@ namespace OpcUaStackServer
 
 			Log(Debug, "secure channel receive message")
 				.parameter("ChannelId", channelId_)
-				.parameter("MessageType", nodeId)
+				.parameter("MessageType", secureChannelTransaction.requestTypeNodeId_)
 				.parameter("RequestId", secureChannelTransaction.requestId_)
 				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
 
-			bool rc = secureChannelManagerIf_->secureChannelMessage(nodeId, is_, secureChannelTransaction);
+			bool rc = secureChannelManagerIf_->secureChannelMessage(
+				is_, 
+				secureChannelTransaction
+			);
 			if (rc == false) {
 				Log(Error, "cannot read message body, because message handler error")
 					.parameter("ChannelId", channelId_)
@@ -533,11 +535,11 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SecureChannelServer::message(OpcUaNodeId& nodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SecureChannelServer::message(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		Log(Debug, "secure channel send message")
 			.parameter("ChannelId", channelId_)
-			.parameter("MessageType", nodeId)
+			.parameter("MessageType", secureChannelTransaction.responseTypeNodeId_)
 			.parameter("ChannelId", secureChannelTransaction.channelId_)
 			.parameter("RequestId", secureChannelTransaction.requestId_)
 			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
@@ -579,7 +581,7 @@ namespace OpcUaStackServer
 		sequenceHeader_.opcUaBinaryEncode(ios1);
 
 		// encode message type id
-		nodeId.opcUaBinaryEncode(ios1);
+		secureChannelTransaction.responseTypeNodeId_.opcUaBinaryEncode(ios1);
 
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
