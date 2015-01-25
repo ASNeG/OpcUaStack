@@ -7,6 +7,7 @@ namespace OpcUaStackCore
 	MessageHeader::MessageHeader(void)
 	: messageType_(MessageType_Unknown)
 	, messageSize_(0)
+	, segmentFlag_('F')
 	{
 	}
 	MessageHeader::~MessageHeader(void)
@@ -41,6 +42,18 @@ namespace OpcUaStackCore
 	MessageHeader::messageSize(void) const
 	{
 		return messageSize_;
+	}
+
+	void 
+	MessageHeader::segmentFlag(char segmentFlag)
+	{
+		segmentFlag_ = segmentFlag;
+	}
+		
+	char 
+	MessageHeader::segmentFlag(void)
+	{
+		return segmentFlag_;
 	}
 
 	void 
@@ -83,7 +96,7 @@ namespace OpcUaStackCore
 				os.write("XXX", 3);
 			}
 		}
-		os.write("F", 1);
+		os.write(&segmentFlag_, 1);
 		OpcUaNumber::opcUaBinaryEncode(os, messageSize_);
 	}
 		
@@ -114,8 +127,7 @@ namespace OpcUaStackCore
 			messageType_ = MessageType_Unknown;
 		}
 			
-		char buf;
-		is.read(&buf, 1);
+		is.read(&segmentFlag_, 1);
 
 		OpcUaNumber::opcUaBinaryDecode(is, messageSize_);
 	}

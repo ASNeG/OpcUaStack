@@ -31,6 +31,8 @@ namespace OpcUaStackCore
 		MessageType messageType(void) const;
 		void messageSize(const OpcUaUInt32& messageSize);
 		OpcUaInt32 messageSize(void) const;
+		void segmentFlag(char segmentFlag);
+		char segmentFlag(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -38,6 +40,7 @@ namespace OpcUaStackCore
 	  private:
 		char messageTypeString_[3];
 
+		char segmentFlag_;
 		MessageType messageType_;
 		OpcUaUInt32 messageSize_;
 	};
