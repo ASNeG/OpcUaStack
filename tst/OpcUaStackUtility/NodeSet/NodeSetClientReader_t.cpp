@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(Session_)
 
 BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 {
-	while (1) {
+	//while (1) {
 	bool rc;
 
 	FileLogger fileLogger;
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 
 	rc = configXml.write("test-nodeset.xml");
 	BOOST_REQUIRE(rc == true);
-}
+//}
 
 }
 
