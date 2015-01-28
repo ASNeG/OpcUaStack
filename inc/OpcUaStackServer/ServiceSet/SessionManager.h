@@ -48,15 +48,15 @@ namespace OpcUaStackServer
 		//- SecureChannelManagerIf --------------------------------------------
 		void connect(OpcUaUInt32 channelId);
 		void disconnect(OpcUaUInt32 channelId);
-		bool secureChannelMessage(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
+		bool secureChannelMessage(boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
 		//- SessionManagerIf---------------------------------------------------
-		void sessionMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void sessionMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		//- SessionManagerIf --------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
-		void discoveryMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void discoveryMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
 		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:

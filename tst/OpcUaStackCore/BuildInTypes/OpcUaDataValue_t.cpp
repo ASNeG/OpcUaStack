@@ -211,5 +211,54 @@ BOOST_AUTO_TEST_CASE(OpcUaDataValue_copyTo_string)
 	BOOST_REQUIRE(value2.serverPicoseconds() == 5678);
 }
 
+#if 0
+BOOST_AUTO_TEST_CASE(OpcUaDataValue_string_array_with_timestamp)
+{
+	boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102014.123456789");
+	boost::posix_time::ptime ptime2 = boost::posix_time::from_iso_string("20140506T102014.123456789");
+	OpcUaDateTime sourceTimestamp, serverTimestamp;
+	std::stringstream ss;
+	OpcUaDataValue value1, value2;
+	OpcUaString::SPtr string1, string2;
+
+	sourceTimestamp.dateTime(ptime1);
+	serverTimestamp.dateTime(ptime2);
+
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	OpcUaVariantValue variantValue1, variantValue2;
+
+	string1 = OpcUaString::construct();
+	string1->value("Dies ist der erste String");
+	variantValue1.variant(string1);
+	variantVec1.push_back(variantValue1);
+
+	string1 = OpcUaString::construct();
+	string1->value("Dies ist der zweite String");
+	variantValue1.variant(string1);
+	variantVec1.push_back(variantValue1);
+
+	string1 = OpcUaString::construct();
+	string1->value("Dies ist der dritte String");
+	variantValue1.variant(string1);
+	variantVec1.push_back(variantValue1);
+
+	value1.sourceTimestamp(sourceTimestamp);
+	value1.serverTimestamp(serverTimestamp);
+	value1.variant()->variant(variantVec1);
+
+	std::cout << "value1=" << value1 << std::endl;
+	value1.opcUaBinaryEncode(ss);
+	dumpHex(ss);
+	std::cout << "************************************************" << std::endl;
+	value2.opcUaBinaryDecode(ss);
+	dumpHex(ss);
+	std::cout << "value2=" << value2 << std::endl;
+
+
+	
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value2.sourceTimestamp().dateTime()) == "20140506T102014.123456");
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(value1.serverTimestamp().dateTime()) == "20140506T102014.123456");
+}
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -633,5 +633,37 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_dimensions_2_3)
 	BOOST_REQUIRE(value2.arrayDimension()[1] == 3);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_array_string)
+{
+	std::stringstream ss;
+	OpcUaString::SPtr string1, string2;
+	OpcUaVariant value1, value2;
+	OpcUaVariantValue::Vec variantVec1, variantVec2;
+	OpcUaVariantValue variantValue1, variantValue2;
+	
+	string1 = OpcUaString::construct();
+	string1->value("Dies ist der erste string");
+	variantValue1.variant(string1);
+	variantVec1.push_back(variantValue1);
+
+	string1 = OpcUaString::construct();
+	string1->value("Dies ist der zweite string");
+	variantValue1.variant(string1);
+	variantVec1.push_back(variantValue1);
+
+	string1 = OpcUaString::construct();
+	string1->value("Dies ist der dritte string");
+	variantValue1.variant(string1);
+	variantVec1.push_back(variantValue1);
+
+	value1.variant(variantVec1);
+
+	value1.opcUaBinaryEncode(ss);
+	dumpHex(ss);
+	value2.opcUaBinaryDecode(ss);
+	
+	BOOST_REQUIRE(value2.arrayLength() == 3);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()

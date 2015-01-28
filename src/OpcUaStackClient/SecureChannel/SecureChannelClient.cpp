@@ -109,9 +109,12 @@ namespace OpcUaStackClient
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
 		std::iostream ios(&sb);
-		Log(Debug, "send message")
+		Log(Debug, "secure channel send message")
 			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
-			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1));
+			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1))
+			.parameter("ChannelId", securityTokenSPtr_->channelId())
+			.parameter("MessageType", nodeId)
+			.parameter("RequestId", sequenceHeader_.requestId());
 
 		if (debugMode_) {
 			OpcUaStackCore::dumpHex(ios2);
@@ -142,8 +145,6 @@ namespace OpcUaStackClient
 			startReconnectTimer();
 			return;
 		}
-
-		//std::cout << "SEND OK" << std::endl;
 	}
 
 	void 
@@ -218,6 +219,11 @@ namespace OpcUaStackClient
 		OpcUaNodeId nodeId;
 		nodeId.opcUaBinaryDecode(is);
 
+		Log(Debug, "secure channel receive message")
+			.parameter("ChannelId", securityTokenSPtr_->channelId())
+			.parameter("MessageType", nodeId)
+			.parameter("RequestId", sequenceHeader_.requestId());
+
 		if (secureChannelIf_ != nullptr) {
 			bool rc = secureChannelIf_->receive(nodeId, is_);
 			if (rc == false) {
@@ -263,12 +269,16 @@ namespace OpcUaStackClient
 	{
 		Url url;
 		url.url(channelDataBase()->endpointUrl());
-		partnerAddress_.from_string(url.host());
+		partnerAddress_ = boost::asio::ip::address::from_string(url.host());
 		partnerPort_ = url.port();
 
 		if (reconnectTimeout_ == 0) reconnectTimeout_ = 1;
 		else reconnectTimeout_ += reconnectTimeout_;
 		if (reconnectTimeout_ > maxReconnectTimeout_) reconnectTimeout_ = maxReconnectTimeout_;
+
+		Log(Debug, "try open secure channel")
+			.parameter("PartnerAddress", partnerAddress_.to_string())
+			.parameter("PartnerPort", partnerPort_);
 
 		secureChannelClientState_ = SecureChannelClientState_Connecting;
 		tcpConnector_.async_connect(

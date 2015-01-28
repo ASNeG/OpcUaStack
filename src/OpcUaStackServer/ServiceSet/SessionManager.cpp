@@ -243,19 +243,19 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	SessionManager::secureChannelMessage(OpcUaNodeId& nodeId, boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::secureChannelMessage(boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction)
 	{
-		switch (nodeId.nodeId<uint32_t>())
+		switch (secureChannelTransaction.requestTypeNodeId_.nodeId<uint32_t>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
-				return discoveryService_->message(nodeId, is, secureChannelTransaction);
+				return discoveryService_->message(is, secureChannelTransaction);
 			}
 		}
 
 		Session::SPtr session = getSession(secureChannelTransaction.authenticationToken_, true);
 		if (session.get() != nullptr) {
-			return session->message(nodeId, is, secureChannelTransaction);
+			return session->message(is, secureChannelTransaction);
 		}
 
 		Log(Error, "session not found")
@@ -272,11 +272,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::sessionMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::sessionMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
 		if (secureChannel.get() != nullptr) {
-			secureChannel->message(opcUaNodeId, sb, secureChannelTransaction);
+			secureChannel->message(sb, secureChannelTransaction);
 			return;
 		}
 
@@ -293,11 +293,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::discoveryMessage(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::discoveryMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
 	{
 		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
 		if (secureChannel.get() != nullptr) {
-			secureChannel->message(opcUaNodeId, sb, secureChannelTransaction);
+			secureChannel->message(sb, secureChannelTransaction);
 			return;
 		}
 

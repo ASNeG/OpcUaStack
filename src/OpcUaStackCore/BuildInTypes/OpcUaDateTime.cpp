@@ -80,13 +80,27 @@ namespace OpcUaStackCore
 	std::string
 	OpcUaDateTime::toISOString(void)
 	{
-		return boost::posix_time::to_iso_extended_string(dateTime());
+		std::string str;
+		try 
+		{
+			str = boost::posix_time::to_iso_extended_string(dateTime());
+		} catch(std::exception&) {
+			return "unknown";
+		}
+		return str;
 	}
 
 	void 
 	OpcUaDateTime::out(std::ostream& os) const
 	{
-		os << boost::posix_time::to_iso_string(dateTime());
+		std::string str;
+		try 
+		{
+			str = boost::posix_time::to_iso_string(dateTime());
+		} catch(std::exception&) {
+			str = "unknown";
+		}
+		os << str;
 	}
 
 	void 

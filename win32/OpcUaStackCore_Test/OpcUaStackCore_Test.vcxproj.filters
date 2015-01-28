@@ -259,6 +259,9 @@
     <ClCompile Include="..\..\tst\OpcUaStackCore\Utility\SlotTimer_t.cpp">
       <Filter>unittest\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\tst\OpcUaStackCore\boost\Streambuf_t.cpp">
+      <Filter>unittest\boost</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="unittest">
@@ -314,6 +317,9 @@
     </Filter>
     <Filter Include="unittest\Utility">
       <UniqueIdentifier>{30d46de6-2cbe-4867-b8ff-5ea306126cc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="unittest\boost">
+      <UniqueIdentifier>{7f499655-1f88-4b36-8406-605e0a35bd56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -93,6 +93,16 @@ namespace OpcUaStackCore
 			  );
 		  }
 
+		template<typename HANDLER>
+		  void async_write(std::vector<boost::asio::const_buffer>& buffer) 
+		  {
+			  boost::asio::async_write(
+				  socket_,
+				  buffer,
+				  handler
+			  );
+		  }
+
 	  private:
 		boost::asio::ip::tcp::socket socket_;
 		boost::asio::io_service& io_service_;

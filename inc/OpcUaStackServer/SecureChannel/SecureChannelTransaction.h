@@ -1,9 +1,11 @@
 #ifndef __OpcUaStackServer_SecureChannelTransaction_h__
 #define __OpcUaStackServer_SecureChannelTransaction_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include <stdint.h>
 
 using namespace OpcUaStackCore;
@@ -14,9 +16,13 @@ namespace OpcUaStackServer
 	class DLLEXPORT SecureChannelTransaction : public ObjectPool<SecureChannelTransaction> 
 	{
 	  public:
+		typedef boost::shared_ptr<SecureChannelTransaction> SPtr;
+
 	    SecureChannelTransaction(void);
 	    ~SecureChannelTransaction(void);
 
+		OpcUaNodeId requestTypeNodeId_;
+		OpcUaNodeId responseTypeNodeId_;
 		uint32_t requestId_;
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 authenticationToken_;

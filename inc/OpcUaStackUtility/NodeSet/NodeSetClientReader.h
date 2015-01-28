@@ -39,6 +39,12 @@ namespace OpcUaStackUtility
 		//- SessionIf interface -----------------------------------------------
 
 	  private:
+		bool checkVariantType(
+			OpcUaNodeId& nodeId, 
+			const std::string& attributeName, 
+			OpcUaVariant::SPtr variant,
+			OpcUaBuildInType buildInType
+		);
 		bool readNamespaceArray(void);
 		bool browse(OpcUaNodeId& nodeId);
 		bool browse(
@@ -114,8 +120,8 @@ namespace OpcUaStackUtility
 		Session::SPtr session_;
 		bool error_;
 
-		typedef std::map<OpcUaNodeId, ReferenceDescription::SPtr> NodeIdMap;
-		NodeIdMap nodeIdMap_;
+		typedef std::set<OpcUaNodeId> NodeIdSet;
+		NodeIdSet nodeIdSet_;
 	};
 
 }
