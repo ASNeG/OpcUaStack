@@ -60,15 +60,15 @@ namespace OpcUaStackCore
 	Timer::onTimeout(const boost::system::error_code& ec)
 	{
 		if (ec) {
-			selfObjectSPtr_.reset();
 			running_ = false;
+			selfObjectSPtr_.reset();
 			return;
 		}
 
 		callback_();
 
-		selfObjectSPtr_.reset();
 		running_ = false;
+		selfObjectSPtr_.reset();
 	}
 
 }

@@ -145,8 +145,6 @@ namespace OpcUaStackClient
 			startReconnectTimer();
 			return;
 		}
-
-		//std::cout << "SEND OK" << std::endl;
 	}
 
 	void 

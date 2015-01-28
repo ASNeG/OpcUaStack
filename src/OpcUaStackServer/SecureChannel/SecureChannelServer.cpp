@@ -601,7 +601,12 @@ namespace OpcUaStackServer
 
 		asyncCount_++;
 		tcpConnection_.async_write(
-			sb2, sb1, sb, boost::bind(&SecureChannelServer::handleWriteSendComplete, this, boost::asio::placeholders::error)
+			sb2, sb1, sb, 
+			boost::bind(
+				&SecureChannelServer::handleWriteSendComplete, 
+				this, 
+				boost::asio::placeholders::error
+			)
 		);
 	}
 		
