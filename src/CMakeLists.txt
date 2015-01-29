@@ -18,6 +18,12 @@ option(
     ON
 )
 
+option(
+    USE_OpcUaStackClient
+    "build opc ua client library"
+    ON
+)
+
 find_package(Boost COMPONENTS system unit_test_framework filesystem thread REQUIRED)
 
 # -----------------------------------------------------------------------------
@@ -29,6 +35,10 @@ find_package(Boost COMPONENTS system unit_test_framework filesystem thread REQUI
 # -----------------------------------------------------------------------------
 if (USE_OpcUaStackCore)
     include(OpcUaStackCore/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaStackClient)
+    include(OpcUaStackClient/CMakeLists.txt) 
 endif ()
 
 # -----------------------------------------------------------------------------
