@@ -4,46 +4,42 @@ project	(OpcUaStack)
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# options
+# global options
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+set(VERSION_MAJOR "0" CACHE STRING "major version")
+set(VERSION_MINOR "0" CACHE STRING "minor version")
+set(VERSION_PATCH "1" CACHE STRING "patch version")
+
 option(
     USE_OpcUaStackCore
-    "build OpcUaStackCore"
+    "build opc ua core library"
     ON
 )
 
-set(BUILD_VERSION "0.1" CACHE STRING "build version")
-set(BUILD_VERSION_SO "1" CACHE STRING "so build version")
+find_package(Boost COMPONENTS system unit_test_framework filesystem thread REQUIRED)
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# global definitions
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-include_directories(
-    ../inc
-)
-
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# OpcUaStackCore
+# build subdirectories
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 if (USE_OpcUaStackCore)
+    include(OpcUaStackCore/CMakeLists.txt) 
+endif ()
 
-    message("OpcUaStackCore build begin")
-    add_subdirectory(
-        OpcUaStackCore 
-    )
-    message("OpcUaStackCore build done")
-
-endif (USE_OpcUaStackCore)
-
-
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# debian package
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+set(CPACK_PACKAGE_CONTACT "kai@huebl-sgh.de")
+set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
+include(CPack)
