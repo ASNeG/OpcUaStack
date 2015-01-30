@@ -10,7 +10,7 @@ include_directories(
     ../inc
 )
 file(GLOB OpcUaStackCore_SRC ./OpcUaStackCore/*/*.cpp)
-add_library(OpcUaStackCore ${OpcUaStackCore_SRC})
+add_library(OpcUaStackCore SHARED ${OpcUaStackCore_SRC})
 
 
 # -----------------------------------------------------------------------------

@@ -24,7 +24,25 @@ option(
     ON
 )
 
-find_package(Boost COMPONENTS system unit_test_framework filesystem thread REQUIRED)
+option(
+    USE_OpcUaStackServer
+    "build opc ua server library"
+    ON
+)
+
+option(
+    USE_OpcUaStackUtility
+    "build opc ua utility library"
+    ON
+)
+
+option(
+    USE_OpcUaServer
+    "build opc ua server library"
+    ON
+)
+
+find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time REQUIRED)
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -39,6 +57,18 @@ endif ()
 
 if (USE_OpcUaStackClient)
     include(OpcUaStackClient/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaStackServer)
+    include(OpcUaStackServer/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaStackUtility)
+    include(OpcUaStackUtility/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaServer)
+    include(OpcUaServer/CMakeLists.txt) 
 endif ()
 
 # -----------------------------------------------------------------------------
