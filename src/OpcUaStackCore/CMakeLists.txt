@@ -20,7 +20,7 @@ add_library(OpcUaStackCore SHARED ${OpcUaStackCore_SRC})
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-file(GLOB INC_OpcUaStackCore_Base ../inc/OpcUaStackCore/Base/*.h)
+file(GLOB INC_OpcUaStackCore_Base ../inc/OpcUaStackCore/Base/*.h ../inc/OpcUaStackCore/Base/*.txx)
 file(GLOB INC_OpcUaStackCore_BuildInTypes ../inc/OpcUaStackCore/BuildInTypes/*.h)
 file(GLOB INC_OpcUaStackCore_Component ../inc/OpcUaStackCore/Component/*.h)
 file(GLOB INC_OpcUaStackCore_Core ../inc/OpcUaStackCore/Core/*.h)

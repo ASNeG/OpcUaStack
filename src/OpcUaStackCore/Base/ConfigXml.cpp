@@ -1,5 +1,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Base/Config.h"
 
@@ -38,6 +39,7 @@ namespace OpcUaStackCore
 		configFileName_ = configFileName;
 		errorMessage_ = "";
 
+		// read configuration from xml file
 		try
 		{
 			boost::property_tree::read_xml(configFileName, ptree_, boost::property_tree::xml_parser::trim_whitespace);
@@ -48,6 +50,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// write property tree to configuration
 		if (writeToConfig) {
 			this->writeToConfig();
 		}
@@ -76,9 +79,15 @@ namespace OpcUaStackCore
 	void 
 	ConfigXml::writeToConfig(void)
 	{
+		// write property tree into configuration
 		Config* config = Config::instance();
 		config->child(ptree_);
 		config->addValue("Global.ConfigurationFileName", configFileName_);
+
+		// set config directory alias
+		boost::filesystem::path path(configFileName_);
+		config->alias("@CONF_DIR@", path.parent_path().string());
+
 	}
 
 }

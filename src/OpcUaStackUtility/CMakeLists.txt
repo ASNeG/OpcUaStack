@@ -20,8 +20,8 @@ add_library(OpcUaStackUtility SHARED ${OpcUaStackUtility_SRC})
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-file(GLOB INC_OpcUaStackUtility_Utility ../inc/OpcUaStackUtility/Utility/*.h)
+file(GLOB INC_OpcUaStackUtility_NodeSet ../inc/OpcUaStackUtility/NodeSet/*.h)
 
 
 install(TARGETS OpcUaStackUtility DESTINATION lib/OpcUaStack)
-install(FILES ${INC_OpcUaStackUtility_Utility} DESTINATION include/OpcUaStack/OpcUaStackUtility/Utility)
+install(FILES ${INC_OpcUaStackUtility_NodeSet} DESTINATION include/OpcUaStack/OpcUaStackUtility/NodeSet)

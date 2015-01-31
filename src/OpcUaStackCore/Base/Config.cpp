@@ -1,3 +1,4 @@
+#include <boost/algorithm/string.hpp>
 #include "OpcUaStackCore/Base/Config.h"
 
 namespace OpcUaStackCore
@@ -93,15 +94,25 @@ namespace OpcUaStackCore
 	boost::optional<std::string>
 	Config::getValue(const std::string& path)
 	{
-		return child_.get_optional<std::string>(path);
+		boost::optional<std::string> value = child_.get_optional<std::string>(path);
+		if (!value) return value;
+		std::string substValue = *value;
+		substAlias(substValue);
+		return substValue;
 	}
 		
 	std::string 
 	Config::getValue(const std::string& path, const std::string& defaultValue)
 	{
 		boost::optional<std::string> value = getValue(path);
-		if (value) return *value;
-		return defaultValue;
+		if (!value) {
+			std::string substValue = defaultValue;
+			substAlias(substValue);
+			return substValue;
+		}
+		std::string substValue = *value;
+		substAlias(substValue);
+		return substValue;
 	}
 
 	void 
@@ -117,7 +128,7 @@ namespace OpcUaStackCore
 		std::string prefixPath = path.substr(0, pos);
 		boost::optional<Config> cfg = getChild(prefixPath);
 		if (!cfg) return;
-		return cfg->getValues(valueName, valueVec);
+		cfg->getValues(valueName, valueVec);
 	}
 
 	boost::optional<Config>
@@ -178,7 +189,9 @@ namespace OpcUaStackCore
 
 				boost::optional<std::string> value = it->second.data();
 				if (!value) continue;
-				valueVec.push_back(*value);
+				std::string substValue = *value;
+				substAlias(substValue);
+				valueVec.push_back(substValue);
 			}
 		}
 	}
@@ -204,6 +217,40 @@ namespace OpcUaStackCore
 		configFileName = getValue("Global.ConfigurationFileName");
 		if (!configFileName) return "unknwon";
 		return *configFileName;
+	}
+
+	void
+	Config::substAlias(std::string value)
+	{
+		AliasMap::iterator it;
+		for (it=aliasMap_.begin(); it!=aliasMap_.end(); it++) {
+			boost::replace_all(value, it->first, it->second);
+		}
+	}
+
+	bool
+	Config::aliasExist(const std::string& aliasName)
+	{
+		AliasMap::iterator it;
+		it = aliasMap_.find(aliasName);
+		if (it == aliasMap_.end()) return false;
+		return true;
+	}
+
+	void
+	Config::alias(const std::string& aliasName, const std::string& aliasValue)
+	{
+		aliasMap_.erase(aliasName);
+		aliasMap_.insert(std::make_pair(aliasName, aliasValue));
+	}
+
+	std::string
+	Config::alias(const std::string aliasName)
+	{
+		AliasMap::iterator it;
+		it = aliasMap_.find(aliasName);
+		if (it == aliasMap_.end()) return "";
+		return it->second;
 	}
 
 }
