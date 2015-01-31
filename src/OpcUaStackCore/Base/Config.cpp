@@ -5,6 +5,7 @@ namespace OpcUaStackCore
 {
 
 	Config* Config::instance_ = nullptr;
+	Config::AliasMap Config::aliasMap_;
 		
 	Config* 
 	Config::instance(void)
@@ -220,7 +221,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	Config::substAlias(std::string value)
+	Config::substAlias(std::string& value)
 	{
 		AliasMap::iterator it;
 		for (it=aliasMap_.begin(); it!=aliasMap_.end(); it++) {
@@ -245,7 +246,7 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	Config::alias(const std::string aliasName)
+	Config::alias(const std::string& aliasName)
 	{
 		AliasMap::iterator it;
 		it = aliasMap_.find(aliasName);

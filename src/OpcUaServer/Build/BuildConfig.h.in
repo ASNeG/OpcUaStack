@@ -1,5 +1,5 @@
-#ifndef __OpcUaServer_Config__
-#define __OpcUaServer_Config__
+#ifndef __OpcUaServer_BuildConfig__
+#define __OpcUaServer_BuildConfig__
 
 #define INSTALL_PREFIX 		"@CMAKE_INSTALL_PREFIX@"
 #define CONF_DIR		"@CONF_DIR@"

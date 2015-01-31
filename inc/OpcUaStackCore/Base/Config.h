@@ -4,6 +4,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>
 #include <vector>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -12,6 +13,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT Config 
 	{
 	  public:
+		typedef std::map<std::string, std::string> AliasMap;
+
 		static Config* instance_;
 		static Config* instance(void);
 		static void destroy(void);
@@ -117,11 +120,17 @@ namespace OpcUaStackCore
 
 		std::string configFileName(void);
 
+		bool aliasExist(const std::string& aliasName);
+		void alias(const std::string& aliasName, const std::string& aliasValue);
+		std::string alias(const std::string& aliasName);
+
 	  private:
 		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
 		void getChildFromName(const std::string& valueName, std::vector<Config>& valueVec);
+		static void substAlias(std::string& value);
 
 		boost::property_tree::ptree child_;
+		static AliasMap aliasMap_;
 	};
 
 }
