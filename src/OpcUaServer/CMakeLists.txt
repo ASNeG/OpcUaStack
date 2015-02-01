@@ -5,8 +5,9 @@
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(CONF_DIR "${CMAKE_INSTALL_PREFIX}/etc/OpcUaStack" CACHE STRING "configuration directory")
-set(LOG_DIR "${CMAKE_INSTALL_PREFIX}/var/log/OpcUaStack" CACHE STRING "log output directory")
+set(BIN_DIR "/bin" CACHE STRING "binary directory")
+set(CONF_DIR "/etc/OpcUaStack" CACHE STRING "configuration directory")
+set(LOG_DIR "/var/log/OpcUaStack" CACHE STRING "log output directory")
 
 configure_file(
     "${PROJECT_SOURCE_DIR}/OpcUaServer/Build/BuildConfig.h.in"
@@ -64,7 +65,7 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 install(TARGETS OpcUaServer DESTINATION bin)
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/OpcUaServer.xml DESTINATION ${CONF_DIR}) 
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSet.xml DESTINATION ${CONF_DIR})
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CONF_DIR})
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CONF_DIR})
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/OpcUaServer.xml DESTINATION ${CMAKE_INSTALL_PREFIX}${CONF_DIR}) 
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSet.xml DESTINATION ${CMAKE_INSTALL_PREFIX}${CONF_DIR})
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CMAKE_INSTALL_PREFIX}${CONF_DIR})
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CMAKE_INSTALL_PREFIX}${CONF_DIR})

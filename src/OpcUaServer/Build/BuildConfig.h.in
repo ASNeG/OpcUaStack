@@ -1,8 +1,9 @@
 #ifndef __OpcUaServer_BuildConfig__
 #define __OpcUaServer_BuildConfig__
 
-#define INSTALL_PREFIX 		"@CMAKE_INSTALL_PREFIX@"
-#define CONF_DIR		"@CONF_DIR@"
-#define LOG_DIR			"@LOG_DIR@"
+#define INSTALL_DIR 		"@CMAKE_INSTALL_PREFIX@"
+#define BIN_DIR				"@BIN_DIR@"
+#define CONF_DIR			"@CONF_DIR@"
+#define LOG_DIR				"@LOG_DIR@"
 
 #endif

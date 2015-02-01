@@ -83,11 +83,6 @@ namespace OpcUaStackCore
 		Config* config = Config::instance();
 		config->child(ptree_);
 		config->addValue("Global.ConfigurationFileName", configFileName_);
-
-		// set config directory alias
-		boost::filesystem::path path(configFileName_);
-		config->alias("@CONF_DIR@", path.parent_path().string());
-
 	}
 
 }
