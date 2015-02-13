@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/Core/FileLogger.h"
+#include <iostream>
 
 namespace OpcUaStackCore
 {

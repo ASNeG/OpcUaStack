@@ -10,7 +10,7 @@ int main(int argc, char** argv)
 	std::string configurationFile;
 
 	if (argc != 2) {
-		configurationFile = std::string(INSTALL_DIR) + std::string(CONF_DIR) + std::string("/OpcUaServer.xml");
+		configurationFile = std::string(INSTALL_DIR) + std::string("/") + std::string(CONF_DIR) + std::string("/OpcUaServer.xml");
 	}
 	else {
 		configurationFile = argv[1];
