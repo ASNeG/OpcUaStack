@@ -4,6 +4,46 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// LogHandle
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	LogHandle::LogHandle(void)
+	: logHandleName_("")
+	{
+	}
+
+	LogHandle::LogHandle(const std::string& logHandleName)
+	: logHandleName_(logHandleName)
+	{
+	}
+
+	LogHandle::~LogHandle(void)
+	{
+	}
+
+	void
+	LogHandle::logHandleName(const std::string& logHandleName)
+	{
+		logHandleName_ = logHandleName;
+	}
+
+	std::string
+	LogHandle::logHandleName(void)
+	{
+		return logHandleName_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Log
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	LogIf* Log::logIf_ = nullptr;
 	
 	void 
@@ -29,13 +69,7 @@ namespace OpcUaStackCore
 	: logLevel_(logLevel)
 	, message_(message)
 	, parameter_("")
-	{
-	}
-
-	Log::Log(const std::string& message)
-	: logLevel_(Info)
-	, message_(message)
-	, parameter_()
+	, logHandle_(nullptr)
 	{
 	}
 

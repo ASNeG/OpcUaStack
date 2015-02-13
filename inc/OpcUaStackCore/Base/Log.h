@@ -18,11 +18,28 @@ namespace OpcUaStackCore
 		Trace
 	} LogLevel;
 
+
+	class DLLEXPORT LogHandle
+	{
+	  public:
+	    LogHandle(void);
+	    LogHandle(const std::string& logHandleName);
+	    ~LogHandle(void);
+
+	    void logHandleName(const std::string& logHandleName);
+	    std::string logHandleName(void);
+
+	  private:
+	    std::string logHandleName_;
+	};
+
+
 	class LogIf
 	{
 	  public:
 		virtual bool logout(LogLevel logLevel, const std::string& message) = 0;
 	};
+
 
 	class DLLEXPORT Log
 	{
@@ -33,7 +50,6 @@ namespace OpcUaStackCore
 		static bool logout(LogLevel logLevel, const std::string& message);
 
 		Log(LogLevel logLevel, const std::string& message);
-		Log(const std::string& message);
 		~Log(void);
 
 		template<typename T>
@@ -90,6 +106,7 @@ namespace OpcUaStackCore
 		LogLevel logLevel_;
 		std::string message_;
 		std::string parameter_;
+		LogHandle* logHandle_;
 	};
 
 }

@@ -3,16 +3,30 @@
 namespace OpcUaStackCore
 {
 
+	std::string FileLogger::logFileName_ = "trace.log";
+
 	FileLogger::FileLogger(void)
 	: isOpen_(false)
 	{
-		ofStream_.open("trace.log", std::ios::out);
+		ofStream_.open(logFileName(), std::ios::out);
 		if (ofStream_) isOpen_ = true;  
 	}
 
 	FileLogger::~FileLogger(void)
 	{
 		if (isOpen_) ofStream_.close();
+	}
+
+	void
+	FileLogger::logFileName(const std::string logFileName)
+	{
+		logFileName_ = logFileName;
+	}
+
+	std::string
+	FileLogger::logFileName(void)
+	{
+		return logFileName_;
 	}
 
 	bool 

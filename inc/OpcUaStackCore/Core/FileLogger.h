@@ -14,11 +14,16 @@ namespace OpcUaStackCore
 		FileLogger(void);
 		~FileLogger(void);
 
+		static void logFileName(const std::string logFileName);
+		static std::string logFileName(void);
+
 		//- LogIf -------------------------------------------------------------
 		bool logout(LogLevel logLevel, const std::string& message);
 		//- LogIf -------------------------------------------------------------
 
 	  private:
+		static std::string logFileName_;
+
 		bool isOpen_;
 	    boost::filesystem::ofstream ofStream_;
 	};
