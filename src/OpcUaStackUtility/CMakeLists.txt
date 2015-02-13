@@ -8,9 +8,20 @@
 # -----------------------------------------------------------------------------
 include_directories(
     ../inc
+	${Boost_INCLUDE_DIRS}
 )
 file(GLOB OpcUaStackUtility_SRC ./OpcUaStackUtility/*/*.cpp)
 add_library(OpcUaStackUtility SHARED ${OpcUaStackUtility_SRC})
+
+target_link_libraries(
+    OpcUaStackUtility
+	OpcUaStackCore
+	OpcUaStackClient
+	OpcUaStackServer
+    ${CMAKE_DL_LIBS}
+    ${pthread}
+    ${Boost_LIBRARIES}
+)
 
 
 # -----------------------------------------------------------------------------

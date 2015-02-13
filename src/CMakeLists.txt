@@ -42,7 +42,16 @@ option(
     ON
 )
 
-find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time REQUIRED)
+add_definitions(-DBOOST_ALL_DYN_LINK)
+
+if (WIN32)
+	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
+	set(BOOST_LIBRARYDIR C:\\local\\boost_1_54_0\\lib32-msvc-11.0)
+	ADD_DEFINITIONS(-DUNICODE)
+	ADD_DEFINITIONS(-D_UNICODE)
+endif ()
+
+find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------

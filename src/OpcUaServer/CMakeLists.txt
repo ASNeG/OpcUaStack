@@ -35,9 +35,8 @@ set(BUILD_DATE "${CURRENT_DATE}" CACHE STRING "current build an time")
 include_directories(
     ${PROJECT_BINARY_DIR}
     ../inc/
+	${Boost_INCLUDE_DIRS}
 )
-
-add_definitions(-DBOOST_DYN_LINK)
 
 file(GLOB OpcUaServer_SRC ${PROJECT_SOURCE_DIR}/OpcUaServer/*/*.cpp)
 add_executable(
