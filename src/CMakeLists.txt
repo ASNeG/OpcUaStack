@@ -87,7 +87,19 @@ endif ()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(CPACK_PACKAGE_CONTACT "kai@huebl-sgh.de")
+
+if (WIN32)
+	include (InstallRequiredSystemLibraries)
+	
+	set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
+	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
+endif ()
+	
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+set(CPACK_PACKAGE_CONTACT "info@asneg.de")
+set(CPACK_PACKAGE_NAME "OpcUaStack")
+set(CPACK_PACKAGE_VENDOR "asneg.de")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpcUaStack - Opc Ua client server application framework")
 set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
