@@ -42,6 +42,8 @@ option(
     ON
 )
 
+include(Tools/CMakeLists.txt) 
+
 add_definitions(-DBOOST_ALL_DYN_LINK)
 
 if (WIN32)
