@@ -767,7 +767,7 @@ namespace OpcUaStackServer
 		// attribute InverseName (optional)
 		//
 		boost::optional<std::string> inverseName = ptree.get_optional<std::string>("InverseName");
-		if (symmetric) {
+		if (inverseName) {
 			referenceTypeNodeClassSPtr->inverseName().data().text(*inverseName);
 		} 
 

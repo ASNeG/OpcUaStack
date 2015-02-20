@@ -26,6 +26,16 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 	FileLogger fileLogger;
 	OpcUaStackCore::Log::logIf(&fileLogger);
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// read information model from OpcUaServer
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+
 	// configuration session
 	Config sessionConfig; 
 	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.147:4880");
@@ -68,23 +78,54 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_read)
 	std::cout << "views=" << nodeSetClientReader.viewNodeClassVec().size() << std::endl;
 
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// write information model to file
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+
 	// write nodes from node set into information model
-	InformationModel::SPtr informationModel = InformationModel::construct();
-	rc = InformationModelNodeSet::initial(informationModel, nodeSetClientReader);
+	InformationModel::SPtr informationModelWrite = InformationModel::construct();
+	rc = InformationModelNodeSet::initial(informationModelWrite, nodeSetClientReader);
 	BOOST_REQUIRE(rc == true);
 
 	
 	// write nodes from information model into node set file
-	NodeSetXmlParser nodeSetXmlParser;
-	rc = InformationModelNodeSet::initial(nodeSetXmlParser, informationModel, namespaceVec);
+	NodeSetXmlParser nodeSetXmlParserWrite;
+	rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModelWrite, namespaceVec);
 	BOOST_REQUIRE(rc == true);
 
-	ConfigXml configXml;
-	rc = nodeSetXmlParser.encode(configXml.ptree());
+	ConfigXml configXmlWrite;
+	rc = nodeSetXmlParserWrite.encode(configXmlWrite.ptree());
 	BOOST_REQUIRE(rc == true);
 
-	rc = configXml.write("test-nodeset.xml");
+	rc = configXmlWrite.write("test-nodeset.xml");
 	BOOST_REQUIRE(rc == true);
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// read information model from file
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ConfigXml configXmlRead;
+	rc = configXmlRead.parse("test-nodeset.xml");
+	BOOST_REQUIRE(rc == true);
+
+
+	NodeSetXmlParser nodeSetXmlParserRead;
+	rc = nodeSetXmlParserRead.decode(configXmlRead.ptree());
+	BOOST_REQUIRE(rc == true);
+
+	//InformationModel::SPtr informationModelRead = InformationModel::construct();
+	//rc = InformationModelNodeSet::initial(informationModelRead, nodeSetXmlParserRead);
+	//BOOST_REQUIRE(rc == true);
+
 //}
 
 }

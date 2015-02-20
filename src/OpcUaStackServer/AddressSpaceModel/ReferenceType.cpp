@@ -61,9 +61,9 @@ namespace OpcUaStackServer
 		else if (referenceTypeString == "HasDescription") return ReferenceType_HasDescription;
 		else if (referenceTypeString == "HasEncoding") return ReferenceType_HasEncoding;
 		else if (referenceTypeString == "HasSubtype") return ReferenceType_HasSubtype;
-		else if (referenceTypeString == "generateEvents") ReferenceType_GenerateEvents;
-		else if (referenceTypeString == "alwaysGeneratesEvent") ReferenceType_AlwaysGeneratesEvent;
-		else if (referenceTypeString == "hierarchicalReferences") ReferenceType_HierarchicalReferences;
+		else if (referenceTypeString == "GenerateEvents") return ReferenceType_GenerateEvents;
+		else if (referenceTypeString == "AlwaysGeneratesEvent") return ReferenceType_AlwaysGeneratesEvent;
+		else if (referenceTypeString == "HierarchicalReferences") return ReferenceType_HierarchicalReferences;
 		return ReferenceType_Unknown;
 	}
 
@@ -286,7 +286,7 @@ namespace OpcUaStackServer
 			alwaysGeneratesEventTypeNodeId_ = OpcUaNodeId::construct();
 			alwaysGeneratesEventTypeNodeId_->nodeId(OpcUaId_AlwaysGeneratesEvent);
 		}
-		return generateEventsTypeNodeId_;
+		return alwaysGeneratesEventTypeNodeId_;
 	}
 
 	OpcUaNodeId::SPtr 
