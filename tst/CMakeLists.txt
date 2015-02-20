@@ -44,6 +44,8 @@ endif ()
 find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
 find_library(OpcUaStackCore_LIBRARY NAMES OpcUaStackCore PATHS ${OpcUaStack_INSTALL_DIR}/lib/OpcUaStack)
 find_library(OpcUaStackClient_LIBRARY NAMES OpcUaStackClient PATHS ${OpcUaStack_INSTALL_DIR}/lib/OpcUaStack)
+find_library(OpcUaStackServer_LIBRARY NAMES OpcUaStackServer PATHS ${OpcUaStack_INSTALL_DIR}/lib/OpcUaStack)
+find_library(OpcUaStackUtility_LIBRARY NAMES OpcUaStackUtility PATHS ${OpcUaStack_INSTALL_DIR}/lib/OpcUaStack)
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -60,10 +62,10 @@ if (USE_OpcUaStackClient)
     include(OpcUaStackClient/CMakeLists.txt) 
 endif ()
 
-#if (USE_OpcUaStackServer)
-#    include(OpcUaStackServer/CMakeLists.txt) 
-#endif ()
-#
-#if (USE_OpcUaStackUtility)
-#    include(OpcUaStackUtility/CMakeLists.txt) 
-#endif ()
+if (USE_OpcUaStackServer)
+    include(OpcUaStackServer/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaStackUtility)
+    include(OpcUaStackUtility/CMakeLists.txt) 
+endif ()
