@@ -11,3 +11,5 @@ ipch
 core
 *.log
 build
+build_src
+build_tst
