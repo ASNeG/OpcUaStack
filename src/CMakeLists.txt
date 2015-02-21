@@ -111,6 +111,7 @@ if (WIN32)
 endif ()
 	
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
 set(CPACK_PACKAGE_NAME "OpcUaStack")
 set(CPACK_PACKAGE_VENDOR "asneg.de")
