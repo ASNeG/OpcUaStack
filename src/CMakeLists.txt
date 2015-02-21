@@ -92,7 +92,8 @@ endif ()
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 install(FILES icon/asneg.ico DESTINATION icon)
-
+install(FILES icon/asneg_install.ico DESTINATION icon)
+install(FILES icon/asneg_uninstall.ico DESTINATION icon)
 
 
 # -----------------------------------------------------------------------------
@@ -110,8 +111,8 @@ if (WIN32)
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
 	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\icon\\\\asneg.ico")
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
-	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
-	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
+	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
+	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")
 	#set(CPACK_NSIS_INSTALLED_ICON_NAME "asneg.ico")
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
