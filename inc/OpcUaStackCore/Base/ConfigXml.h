@@ -15,6 +15,7 @@ namespace OpcUaStackCore
 		~ConfigXml(void);
 
 		bool write(const std::string& configFileName);
+		bool read(const std::string& configFileName);
 		bool parse(const std::string& configFileName, bool writeToConfig = false);
 		std::string errorMessage(void);
 		boost::property_tree::ptree& ptree(void);

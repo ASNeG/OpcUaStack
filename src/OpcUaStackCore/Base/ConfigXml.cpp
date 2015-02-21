@@ -33,6 +33,12 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ConfigXml::read(const std::string& configFileName)
+	{
+		return parse(configFileName);
+	}
+
 	bool 
 	ConfigXml::parse(const std::string& configFileName, bool writeToConfig)
 	{
