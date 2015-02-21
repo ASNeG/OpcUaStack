@@ -10,7 +10,7 @@ project	(OpcUaStack)
 # -----------------------------------------------------------------------------
 set(VERSION_MAJOR "0" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
-set(VERSION_PATCH "1" CACHE STRING "patch version")
+set(VERSION_PATCH "2" CACHE STRING "patch version")
 
 option(
     USE_OpcUaStackCore
@@ -82,6 +82,19 @@ if (USE_OpcUaServer)
     include(OpcUaServer/CMakeLists.txt) 
 endif ()
 
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# installation
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+install(FILES icon/asneg.ico DESTINATION icon)
+
+
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -93,28 +106,33 @@ endif ()
 if (WIN32)
 	include (InstallRequiredSystemLibraries)
 	
-	set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
+	#set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
+	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\icon\\\\asneg.ico")
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
 	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
 	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
+	#set(CPACK_NSIS_INSTALLED_ICON_NAME "asneg.ico")
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
 			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKCU Environment\\\ PATH \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
+			CreateShortCut \\\"$DESKTOP\\\\OpcUaServer.lnk\\\" \\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\"  \\\" \\\"$INSTDIR\\\\icon\\\\asneg.ico\\\"
+			CreateShortCut \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\" \\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\"  \\\" \\\"$INSTDIR\\\\icon\\\\asneg.ico\\\"
 		"
 	) 
 	
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
 		"
 			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKCU Environment\\\ PATH \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
+			Delete \\\"$DESKTOP\\\\OpcUaStack.lnk\\\"
+			Delete \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\"
 		"
 	) 
 	
 endif ()
 	
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
 set(CPACK_PACKAGE_NAME "OpcUaStack")
 set(CPACK_PACKAGE_VENDOR "asneg.de")
