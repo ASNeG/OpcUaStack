@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readXml_readXml_readClient_)
 	rc = InformationModelNodeSet::initial(informationModelRead3, nodeSetClientReader);
 	BOOST_REQUIRE(rc == true);
 
-	//informationModelRead3->checkForwardReferences();
+	informationModelRead3->checkForwardReferences();
 
 	NodeSetNamespace& nodeSetNamespaceRead3 = nodeSetClientReader.nodeSetNamespace();
 	NamespaceVec& namespaceVecRead3 = nodeSetNamespaceRead3.localNamespaceVec();
@@ -157,17 +157,23 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readXml_readXml_readClient_)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+#if 0
+	uint32_t counter = 0;
 	InformationModelMap::iterator itm;
 	for (
 		itm = informationModelRead3->informationModelMap().begin();
 		itm != informationModelRead3->informationModelMap().end();
-		it++
+		itm++
 	)
 	{
+		counter++;
+		//if (counter == 10) break;
+
 		BaseNodeClass::SPtr baseNodeClassSPtr = itm->second;
 		OpcUaNodeId& nodeId = baseNodeClassSPtr->nodeId().data();
-		//std::cout << nodeId << std::endl;
+		std::cout << nodeId << std::endl;
 	}
+#endif
 }
 
 BOOST_AUTO_TEST_CASE(NodeSetClientReader_readClient_writeFile)

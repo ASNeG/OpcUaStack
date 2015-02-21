@@ -85,8 +85,10 @@ namespace OpcUaStackServer
 	NodeSetNamespace::decodeNamespaceUris(std::vector<std::string>& namespaceUriVec)
 	{
 		inputNamespaceIndexVec_.clear();
+		inputNamespaceIndexVec_.push_back(0);
 		
 		if (namespaceUriVec.size() == 0) return;
+
 		if (namespaceUriVec[0] != "http://opcfoundation.org/UA/") {
 			inputNamespaceIndexVec_.push_back(0);
 		}
@@ -94,6 +96,7 @@ namespace OpcUaStackServer
 		std::vector<std::string>::iterator it;
 		for (it = namespaceUriVec.begin(); it != namespaceUriVec.end(); it++) {
 			std::string namespaceUri = *it;
+
 			uint16_t globalNamespaceIndex = this->addGlobalNamespace(namespaceUri);
 			if (namespaceUri != "http://opcfoundation.org/UA/") {
 				localNamespaceVec_.push_back(namespaceUri);

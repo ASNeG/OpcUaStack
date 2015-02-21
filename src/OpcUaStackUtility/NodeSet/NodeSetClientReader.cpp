@@ -488,10 +488,24 @@ namespace OpcUaStackUtility
 		ReferenceDescription::SPtr referenceDescription, 
 		std::vector<OpcUaDataValue::SPtr>& dataValueVec)
 	{
+		uint16_t localNamepaceIndex;
+		uint16_t globalNamespaceIndex;
+
+		// set nodeId and replace local namespace by global namespace index
 		nodeId.copyTo(baseNodeClass->nodeId().data());
+		localNamepaceIndex = baseNodeClass->nodeId().data().namespaceIndex();
+		globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
+		baseNodeClass->nodeId().data().namespaceIndex(globalNamespaceIndex);
+
+		// set browse name and replace local namespace by global namespace index
 		referenceDescription->browseName().copyTo(baseNodeClass->browseName().data());
+		globalNamespaceIndex = baseNodeClass->browseName().data().namespaceIndex();
+		globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
+		baseNodeClass->browseName().data().namespaceIndex(globalNamespaceIndex);
+
+		// set display name
 		referenceDescription->displayName().copyTo(baseNodeClass->displayName().data());
-		
+
 		if (dataValueVec[0].get() != nullptr) {
 			if (!checkVariantType(nodeId, "Description", dataValueVec[0]->variant(), OpcUaBuildInType_OpcUaLocalizedText)) return false;
 			OpcUaLocalizedText::SPtr description = dataValueVec[0]->variant()->variantSPtr<OpcUaLocalizedText>();
@@ -523,10 +537,16 @@ namespace OpcUaStackUtility
 		for (it=referenceDescriptionVec.begin(); it!=referenceDescriptionVec.end(); it++) {
 			ReferenceDescription::SPtr referenceDescription = *it;
 			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+
 			referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
 			referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
 			referenceItem->isForward_ = referenceDescription->isForward();
 			
+			// replace local namespace by global namespace index
+			uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+			uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
+			referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
+
 			baseNodeClass->referenceItemMap().add(
 				*referenceDescription->referenceTypeId(),
 				referenceItem
