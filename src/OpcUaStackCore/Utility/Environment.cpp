@@ -1,6 +1,10 @@
 #include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Utility/Environment.h"
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 namespace OpcUaStackCore
 {
 

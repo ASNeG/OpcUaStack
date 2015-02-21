@@ -13,13 +13,8 @@ namespace OpcUaStackCore
 		bool openLibrary(const std::string& libraryName) {
 
 			if (libraryName.length() > 999) return false;
-			
-			size_t convertedChars = 0;
-			wchar_t wtext[1000];
-			mbstowcs_s(&convertedChars, wtext,  libraryName.length()+1, libraryName.c_str(), _TRUNCATE);
-			LPWSTR ptr = wtext;
 
-			handle_ = LoadLibrary(ptr);
+			handle_ = LoadLibrary(libraryName.c_str());
 			if (handle_ == nullptr) return false;
 			return true;
 		}

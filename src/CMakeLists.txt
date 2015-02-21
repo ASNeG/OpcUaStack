@@ -94,7 +94,10 @@ if (WIN32)
 	include (InstallRequiredSystemLibraries)
 	
 	set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
+	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
+	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
+	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
@@ -111,7 +114,7 @@ if (WIN32)
 endif ()
 	
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
+#set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/icon/asneg.ico")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
 set(CPACK_PACKAGE_NAME "OpcUaStack")
 set(CPACK_PACKAGE_VENDOR "asneg.de")
