@@ -13,6 +13,7 @@ namespace OpcUaStackCore
 		Environment(void);
 		~Environment(void);
 
+		static std::string getInstallationPath(const std::string& binaryDirectory);
 		static std::string getCurrentPath(void);
 		static void setCurrentPath(const std::string& currentPath);
 		static std::string getAbsolutePath(const std::string& relativePath);

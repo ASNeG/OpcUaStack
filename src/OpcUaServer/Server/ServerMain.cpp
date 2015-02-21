@@ -1,7 +1,9 @@
 #include "OpcUaServer/Server/Server.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "BuildConfig.h"
 #include <iostream>
+
 
 using namespace OpcUaStackCore;
 
@@ -9,11 +11,16 @@ int main(int argc, char** argv)
 {
 	std::string configurationFile;
 
-	if (argc != 2) {
-		configurationFile = std::string(INSTALL_DIR) + std::string("/") + std::string(CONF_DIR) + std::string("/OpcUaServer.xml");
+	if (argc == 1) {
+		std::string installationPath = Environment::getInstallationPath(BIN_DIR);
+		configurationFile = installationPath + std::string("/") + std::string(CONF_DIR) + std::string("/OpcUaServer.xml");
+	}
+	else if (argc == 2) {
+		configurationFile = argv[1];
 	}
 	else {
-		configurationFile = argv[1];
+		std::cout << "usage: OpcUaServer [<ConfigFile>]" << std::endl;
+		return 1;
 	}
 
 

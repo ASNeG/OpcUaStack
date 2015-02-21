@@ -63,7 +63,7 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaServer DESTINATION bin)
+install(TARGETS OpcUaServer DESTINATION ${BIN_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/OpcUaServer.xml DESTINATION ${CONF_DIR}) 
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSet.xml DESTINATION ${CONF_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CONF_DIR})
