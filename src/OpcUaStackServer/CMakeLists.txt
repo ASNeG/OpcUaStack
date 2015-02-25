@@ -29,14 +29,14 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-file(GLOB INC_OpcUaStackServer_Server ../inc/OpcUaStackServer/Server/*.h)
-file(GLOB INC_OpcUaStackServer_AddressSpaceModel ../inc/OpcUaStackServer/AddressSpaceModel/*.h)
-file(GLOB INC_OpcUaStackServer_Application ../inc/OpcUaStackServer/Application/*.h)
-file(GLOB INC_OpcUaStackServer_InformationModel ../inc/OpcUaStackServer/InformationModel/*.h)
-file(GLOB INC_OpcUaStackServer_NodeSet ../inc/OpcUaStackServer/NodeSet/*.h)
-file(GLOB INC_OpcUaStackServer_SecureChannel ../inc/OpcUaStackServer/SecureChannel/*.h)
-file(GLOB INC_OpcUaStackServer_ServiceManager ../inc/OpcUaStackServer/ServiceManager/*.h)
-file(GLOB INC_OpcUaStackServer_ServiceSet ../inc/OpcUaStackServer/ServiceSet/*.h)
+file(GLOB INC_OpcUaStackServer_Server OpcUaStackServer/Server/*.h)
+file(GLOB INC_OpcUaStackServer_AddressSpaceModel OpcUaStackServer/AddressSpaceModel/*.h)
+file(GLOB INC_OpcUaStackServer_Application OpcUaStackServer/Application/*.h)
+file(GLOB INC_OpcUaStackServer_InformationModel OpcUaStackServer/InformationModel/*.h)
+file(GLOB INC_OpcUaStackServer_NodeSet OpcUaStackServer/NodeSet/*.h)
+file(GLOB INC_OpcUaStackServer_SecureChannel OpcUaStackServer/SecureChannel/*.h)
+file(GLOB INC_OpcUaStackServer_ServiceManager OpcUaStackServer/ServiceManager/*.h)
+file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServer/ServiceSet/*.h)
 
 
 install(TARGETS OpcUaStackServer DESTINATION lib/OpcUaStack)

@@ -29,9 +29,9 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-file(GLOB INC_OpcUaStackClient_Client ../inc/OpcUaStackClient/Client/*.h)
-file(GLOB INC_OpcUaStackClient_SecureChannel ../inc/OpcUaStackClient/SecureChannel/*.h)
-file(GLOB INC_OpcUaStackClient_ServiceSet ../inc/OpcUaStackClient/ServiceSet/*.h)
+file(GLOB INC_OpcUaStackClient_Client OpcUaStackClient/Client/*.h)
+file(GLOB INC_OpcUaStackClient_SecureChannel OpcUaStackClient/SecureChannel/*.h)
+file(GLOB INC_OpcUaStackClient_ServiceSet OpcUaStackClient/ServiceSet/*.h)
 
 install(TARGETS OpcUaStackClient DESTINATION lib/OpcUaStack)
 install(FILES ${INC_OpcUaStackClient_Client} DESTINATION include/OpcUaStack/OpcUaStackClient/Client)

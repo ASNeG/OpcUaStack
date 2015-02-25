@@ -28,14 +28,14 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-file(GLOB INC_OpcUaStackCore_Base ../inc/OpcUaStackCore/Base/*.h ../inc/OpcUaStackCore/Base/*.txx)
-file(GLOB INC_OpcUaStackCore_BuildInTypes ../inc/OpcUaStackCore/BuildInTypes/*.h)
-file(GLOB INC_OpcUaStackCore_Component ../inc/OpcUaStackCore/Component/*.h)
-file(GLOB INC_OpcUaStackCore_Core ../inc/OpcUaStackCore/Core/*.h)
-file(GLOB INC_OpcUaStackCore_SecureChannel ../inc/OpcUaStackCore/SecureChannel/*.h)
-file(GLOB INC_OpcUaStackCore_ServiceSet ../inc/OpcUaStackCore/ServiceSet/*.h)
-file(GLOB INC_OpcUaStackCore_TCPChannel ../inc/OpcUaStackCore/TCPChannel/*.h)
-file(GLOB INC_OpcUaStackCore_Utility ../inc/OpcUaStackCore/Utility/*.h)
+file(GLOB INC_OpcUaStackCore_Base OpcUaStackCore/Base/*.h OpcUaStackCore/Base/*.txx)
+file(GLOB INC_OpcUaStackCore_BuildInTypes OpcUaStackCore/BuildInTypes/*.h)
+file(GLOB INC_OpcUaStackCore_Component OpcUaStackCore/Component/*.h)
+file(GLOB INC_OpcUaStackCore_Core OpcUaStackCore/Core/*.h)
+file(GLOB INC_OpcUaStackCore_SecureChannel OpcUaStackCore/SecureChannel/*.h)
+file(GLOB INC_OpcUaStackCore_ServiceSet OpcUaStackCore/ServiceSet/*.h)
+file(GLOB INC_OpcUaStackCore_TCPChannel OpcUaStackCore/TCPChannel/*.h)
+file(GLOB INC_OpcUaStackCore_Utility OpcUaStackCore/Utility/*.h)
 
 install(TARGETS OpcUaStackCore DESTINATION lib/OpcUaStack)
 install(FILES ${INC_OpcUaStackCore_Base} DESTINATION include/OpcUaStack/OpcUaStackCore/Base)

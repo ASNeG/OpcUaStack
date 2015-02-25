@@ -31,7 +31,7 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-file(GLOB INC_OpcUaStackUtility_NodeSet ../inc/OpcUaStackUtility/NodeSet/*.h)
+file(GLOB INC_OpcUaStackUtility_NodeSet OpcUaStackUtility/NodeSet/*.h)
 
 
 install(TARGETS OpcUaStackUtility DESTINATION lib/OpcUaStack)
