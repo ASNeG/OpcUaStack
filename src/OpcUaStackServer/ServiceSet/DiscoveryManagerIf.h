@@ -13,7 +13,7 @@ namespace OpcUaStackServer
 	class DiscoveryManagerIf
 	{
 	  public:
-		virtual void discoveryMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction) = 0;
+		virtual void discoveryMessage(SecureChannelTransaction& secureChannelTransaction) = 0;
 	};
 
 };

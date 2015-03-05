@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 
 		bool connect(void);
 		bool disconnect(void);
-		void message(boost::asio::streambuf& sb1, SecureChannelTransaction& secureChannelTransaction);
+		void message(SecureChannelTransaction& secureChannelTransaction);
 
 	  private:
 		static boost::mutex mutex_;

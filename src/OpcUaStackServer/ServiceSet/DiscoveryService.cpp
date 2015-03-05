@@ -63,8 +63,7 @@ namespace OpcUaStackServer
 
 		// FIXME: analyse request data
 
-		boost::asio::streambuf sbo;
-		std::iostream os(&sbo);
+		std::iostream os(&secureChannelTransaction.os_);
 
 		ResponseHeader responseHeader;
 		GetEndpointsResponse getEndpointsResponse;
@@ -76,7 +75,7 @@ namespace OpcUaStackServer
 		responseHeader.opcUaBinaryEncode(os);
 		getEndpointsResponse.opcUaBinaryEncode(os);
 	
-		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(sbo, secureChannelTransaction);
+		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
 		return true;
 	}
 

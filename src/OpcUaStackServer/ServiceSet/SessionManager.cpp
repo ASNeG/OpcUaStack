@@ -272,11 +272,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::sessionMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::sessionMessage(SecureChannelTransaction& secureChannelTransaction)
 	{
 		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
 		if (secureChannel.get() != nullptr) {
-			secureChannel->message(sb, secureChannelTransaction);
+			secureChannel->message(secureChannelTransaction);
 			return;
 		}
 
@@ -293,11 +293,11 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::discoveryMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::discoveryMessage(SecureChannelTransaction& secureChannelTransaction)
 	{
 		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
 		if (secureChannel.get() != nullptr) {
-			secureChannel->message(sb, secureChannelTransaction);
+			secureChannel->message(secureChannelTransaction);
 			return;
 		}
 

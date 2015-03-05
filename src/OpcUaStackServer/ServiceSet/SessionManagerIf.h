@@ -13,7 +13,7 @@ namespace OpcUaStackServer
 	class SessionManagerIf
 	{ 
 	  public:
-		virtual void sessionMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction) = 0;
+		virtual void sessionMessage(SecureChannelTransaction& secureChannelTransaction) = 0;
 	};
 
 };

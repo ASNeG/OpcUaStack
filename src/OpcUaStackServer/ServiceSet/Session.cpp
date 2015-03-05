@@ -141,8 +141,7 @@ namespace OpcUaStackServer
 
 		// FIXME: analyse request data
 
-		boost::asio::streambuf sbres;
-		std::iostream iosres(&sbres);
+		std::iostream iosres(&secureChannelTransaction.os_);
 
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(createSessionRequest.requestHeader()->requestHandle());
@@ -161,7 +160,7 @@ namespace OpcUaStackServer
 		sessionState_ = SessionState_CreateSessionResponse;
 
 		secureChannelTransaction.authenticationToken_ = authenticationToken_;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 		return true;
 	}
 		
@@ -185,8 +184,7 @@ namespace OpcUaStackServer
 
 		// FIXME: analyse request data
 
-		boost::asio::streambuf sbres;
-		std::iostream iosres(&sbres);
+		std::iostream iosres(&secureChannelTransaction.os_);
 
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
@@ -197,15 +195,14 @@ namespace OpcUaStackServer
 		sessionState_ = SessionState_Ready;
 
 		secureChannelTransaction.authenticationToken_ = authenticationToken_;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 		return true;
 	}
 
 	void
 	Session::activateSessionRequestError(ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction& secureChannelTransaction, OpcUaStatusCode statusCode)
 	{
-		boost::asio::streambuf sbres;
-		std::iostream iosres(&sbres);
+		std::iostream iosres(&secureChannelTransaction.os_);
 
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
@@ -213,7 +210,7 @@ namespace OpcUaStackServer
 
 		activateSessionResponse.opcUaBinaryEncode(iosres);
 
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 	}
 
 	bool 
@@ -223,14 +220,13 @@ namespace OpcUaStackServer
 		CloseSessionRequest closeSessionRequest;
 		closeSessionRequest.opcUaBinaryDecode(ios);
 
-		boost::asio::streambuf sbres;
-		std::iostream iosres(&sbres);
+		std::iostream iosres(&secureChannelTransaction.os_);
 
 		CloseSessionResponse closeSessionResponse;
 		closeSessionResponse.responseHeader()->requestHandle(closeSessionRequest.requestHeader()->requestHandle());
 		closeSessionResponse.responseHeader()->serviceResult(Success);
 
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(sbres, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 		return true;
 	}
 
@@ -298,16 +294,15 @@ namespace OpcUaStackServer
 		responseHeader->requestHandle(requestHeader->requestHandle());
 		responseHeader->serviceResult(serviceTransactionSPtr->statusCode());
 
-		boost::asio::streambuf sb;
-		std::iostream ios(&sb);
+		SecureChannelTransaction secureChannelTransaction;
+		std::iostream ios(&secureChannelTransaction.os_);
 		responseHeader->opcUaBinaryEncode(ios);
 		serviceTransactionSPtr->opcUaBinaryEncodeResponse(ios);
 
-		SecureChannelTransaction secureChannelTransaction;
 		secureChannelTransaction.requestId_ = serviceTransactionSPtr->requestId_;
 		secureChannelTransaction.channelId_ = serviceTransactionSPtr->channelId();
 		secureChannelTransaction.responseTypeNodeId_.nodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(sb, secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 
 	}
 

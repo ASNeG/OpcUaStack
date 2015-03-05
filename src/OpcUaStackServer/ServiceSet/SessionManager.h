@@ -52,11 +52,11 @@ namespace OpcUaStackServer
 		//- SecureChannelManagerIf --------------------------------------------
 
 		//- SessionManagerIf---------------------------------------------------
-		void sessionMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void sessionMessage(SecureChannelTransaction& secureChannelTransaction);
 		//- SessionManagerIf --------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
-		void discoveryMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction);
+		void discoveryMessage(SecureChannelTransaction& secureChannelTransaction);
 		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:

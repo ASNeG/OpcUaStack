@@ -533,7 +533,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SecureChannelServer::message(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	SecureChannelServer::message(SecureChannelTransaction& secureChannelTransaction)
 	{
 		Log(Debug, "secure channel send message")
 			.parameter("ChannelId", channelId_)
@@ -584,10 +584,10 @@ namespace OpcUaStackServer
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
 		messageHeaderSPtr->messageType(MessageType_Message);
-		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(sb)+8);
+		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(secureChannelTransaction.os_)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction.os_);
 		Log(Debug, "send message")
 			.parameter("ChannelId", channelId_)
 			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
@@ -599,7 +599,7 @@ namespace OpcUaStackServer
 
 		asyncCount_++;
 		tcpConnection_.async_write(
-			sb2, sb1, sb, 
+			sb2, sb1, secureChannelTransaction.os_,
 			boost::bind(
 				&SecureChannelServer::handleWriteSendComplete, 
 				this, 
