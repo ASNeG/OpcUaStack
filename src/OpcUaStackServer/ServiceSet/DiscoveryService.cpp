@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::message(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::message(SecureChannelTransaction& secureChannelTransaction)
 	{
 		switch(secureChannelTransaction.requestTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
@@ -40,7 +40,7 @@ namespace OpcUaStackServer
 			{
 				Log(Debug, "receive get endpoints request");
 				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
-				return receiveGetEndpointsRequest(sb, secureChannelTransaction);
+				return receiveGetEndpointsRequest(secureChannelTransaction);
 			}
 			default:
 			{
@@ -52,9 +52,9 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveGetEndpointsRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
-		std::iostream is(&sb);
+		std::iostream is(&secureChannelTransaction.is_);
 		RequestHeader requestHeader;
 		GetEndpointsRequest getEndpointsRequest;
 
@@ -81,14 +81,14 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveFindServersRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveFindServersRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
 		// FIXME:
 		return false;
 	}
 
 	bool 
-	DiscoveryService::receiveRegisterServerRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
 		// FIXME:
 		return false;

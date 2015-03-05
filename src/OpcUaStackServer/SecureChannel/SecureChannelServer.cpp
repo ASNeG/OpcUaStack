@@ -470,18 +470,27 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		std::iostream is(&is_);
+		std::iostream ios(&is_);
 
 		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		OpcUaNumber::opcUaBinaryDecode(ios, channelId);
 
 		OpcUaUInt32 securityTokenId;
-		OpcUaNumber::opcUaBinaryDecode(is, securityTokenId);
+		OpcUaNumber::opcUaBinaryDecode(ios, securityTokenId);
 
 		SequenceHeader sequenceHeader;
-		sequenceHeader.opcUaBinaryDecode(is);
+		sequenceHeader.opcUaBinaryDecode(ios);
 
-		secureChannelTransaction.requestTypeNodeId_.opcUaBinaryDecode(is);
+		secureChannelTransaction.requestTypeNodeId_.opcUaBinaryDecode(ios);
+
+		// FIXME:
+		std::iostream s(&secureChannelTransaction.is_);
+		boost::asio::const_buffer buffer(is_.data());
+		std::size_t bufferSize = boost::asio::buffer_size(buffer);
+		const char* bufferPtr = boost::asio::buffer_cast<const char*>(buffer);
+		s.write(bufferPtr,bufferSize);
+		is_.consume(bufferSize);
+
 		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
 		secureChannelTransaction.channelId_ = channelId_;
 		secureChannelTransaction.authenticationToken_ = authenticationToken_;
@@ -510,10 +519,7 @@ namespace OpcUaStackServer
 				.parameter("RequestId", secureChannelTransaction.requestId_)
 				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
 
-			bool rc = secureChannelManagerIf_->secureChannelMessage(
-				is_, 
-				secureChannelTransaction
-			);
+			bool rc = secureChannelManagerIf_->secureChannelMessage(secureChannelTransaction);
 			if (rc == false) {
 				Log(Error, "cannot read message body, because message handler error")
 					.parameter("ChannelId", channelId_)

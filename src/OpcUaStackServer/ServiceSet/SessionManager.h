@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 		//- SecureChannelManagerIf --------------------------------------------
 		void connect(OpcUaUInt32 channelId);
 		void disconnect(OpcUaUInt32 channelId);
-		bool secureChannelMessage(boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction);
+		bool secureChannelMessage(SecureChannelTransaction& secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
 		//- SessionManagerIf---------------------------------------------------

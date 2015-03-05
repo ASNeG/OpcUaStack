@@ -85,7 +85,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::message(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	Session::message(SecureChannelTransaction& secureChannelTransaction)
 	{
 		switch (secureChannelTransaction.requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
@@ -93,39 +93,39 @@ namespace OpcUaStackServer
 			{
 				Log(Debug, "receive create session request");
 				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
-				return receiveCreateSessionRequest(sb, secureChannelTransaction);
+				return receiveCreateSessionRequest(secureChannelTransaction);
 				break;
 			}
 			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive activate session request");
 				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-				return receiveActivateSessionRequest(sb, secureChannelTransaction);
+				return receiveActivateSessionRequest(secureChannelTransaction);
 				break;
 			}
 			case OpcUaId_CloseSessionRequest_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive close session request");
 				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_CloseSessionResponse_Encoding_DefaultBinary);
-				return receiveCloseSessionRequest(sb, secureChannelTransaction);
+				return receiveCloseSessionRequest(secureChannelTransaction);
 				break;
 			}
 			case OpcUaId_CancelRequest_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive cancel request");
 				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_CancelResponse_Encoding_DefaultBinary);
-				return receiveCancelRequest(sb, secureChannelTransaction);
+				return receiveCancelRequest(secureChannelTransaction);
 				break;
 			}
 			default:
 			{
-				return receiveMessage(sb, secureChannelTransaction);
+				return receiveMessage(secureChannelTransaction);
 			}
 		}
 	}
 
 	bool 
-	Session::receiveCreateSessionRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	Session::receiveCreateSessionRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
 		// FIXME: authenticationToken in secureChannelTransaction must be 0
 
@@ -135,7 +135,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction.is_);
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.opcUaBinaryDecode(ios);
 
@@ -166,13 +166,13 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	Session::receiveActivateSessionRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	Session::receiveActivateSessionRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
 		// FIXME: if authenticationToken in the secureChannelTransaction contains 0 then 
 		//        the session has a new sechure channel
 
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction.is_);
 		ActivateSessionRequest activateSessionRequest;
 		activateSessionRequest.opcUaBinaryDecode(ios);
 
@@ -217,9 +217,9 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCloseSessionRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	Session::receiveCloseSessionRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction.is_);
 		CloseSessionRequest closeSessionRequest;
 		closeSessionRequest.opcUaBinaryDecode(ios);
 
@@ -235,14 +235,14 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCancelRequest(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	Session::receiveCancelRequest(SecureChannelTransaction& secureChannelTransaction)
 	{
 		std::cout << "not implemented..." << std::endl;
 		return false;
 	}
 
 	bool 
-	Session::receiveMessage(boost::asio::streambuf& sb, SecureChannelTransaction& secureChannelTransaction)
+	Session::receiveMessage(SecureChannelTransaction& secureChannelTransaction)
 	{
 		if (sessionState_ != SessionState_Ready) {
 			Log(Error, "receive message request in invalid state")
@@ -266,7 +266,7 @@ namespace OpcUaStackServer
 		serviceTransactionSPtr->sessionId(sessionId_);
 		serviceTransactionSPtr->channelId(secureChannelTransaction.channelId_);
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction.is_);
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
 		//OpcUaStackCore::dumpHex(sb);
 		requestHeader->opcUaBinaryDecode(ios);

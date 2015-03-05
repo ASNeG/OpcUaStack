@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_SecureChannelTransaction_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
@@ -26,6 +27,9 @@ namespace OpcUaStackServer
 		uint32_t requestId_;
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 authenticationToken_;
+
+		boost::asio::streambuf is_;
+		boost::asio::streambuf os_;
 	};
 
 }

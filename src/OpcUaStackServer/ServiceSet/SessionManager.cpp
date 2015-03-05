@@ -243,19 +243,19 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	SessionManager::secureChannelMessage(boost::asio::streambuf& is, SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::secureChannelMessage(SecureChannelTransaction& secureChannelTransaction)
 	{
 		switch (secureChannelTransaction.requestTypeNodeId_.nodeId<uint32_t>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
-				return discoveryService_->message(is, secureChannelTransaction);
+				return discoveryService_->message(secureChannelTransaction);
 			}
 		}
 
 		Session::SPtr session = getSession(secureChannelTransaction.authenticationToken_, true);
 		if (session.get() != nullptr) {
-			return session->message(is, secureChannelTransaction);
+			return session->message(secureChannelTransaction);
 		}
 
 		Log(Error, "session not found")
