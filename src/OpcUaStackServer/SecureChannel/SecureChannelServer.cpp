@@ -482,15 +482,7 @@ namespace OpcUaStackServer
 		sequenceHeader.opcUaBinaryDecode(ios);
 
 		secureChannelTransaction.requestTypeNodeId_.opcUaBinaryDecode(ios);
-
-		// FIXME:
-		std::iostream s(&secureChannelTransaction.is_);
-		boost::asio::const_buffer buffer(is_.data());
-		std::size_t bufferSize = boost::asio::buffer_size(buffer);
-		const char* bufferPtr = boost::asio::buffer_cast<const char*>(buffer);
-		s.write(bufferPtr,bufferSize);
-		is_.consume(bufferSize);
-
+		secureChannelTransaction.isAppend(is_);
 		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
 		secureChannelTransaction.channelId_ = channelId_;
 		secureChannelTransaction.authenticationToken_ = authenticationToken_;

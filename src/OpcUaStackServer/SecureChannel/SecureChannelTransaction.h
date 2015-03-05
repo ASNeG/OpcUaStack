@@ -22,6 +22,9 @@ namespace OpcUaStackServer
 	    SecureChannelTransaction(void);
 	    ~SecureChannelTransaction(void);
 
+	    void isAppend(boost::asio::streambuf& sb);
+	    void osAppend(boost::asio::streambuf& sb);
+
 		OpcUaNodeId requestTypeNodeId_;
 		OpcUaNodeId responseTypeNodeId_;
 		uint32_t requestId_;
