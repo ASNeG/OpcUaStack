@@ -24,15 +24,15 @@ namespace OpcUaStackServer
 		void discoveryManagerIf(DiscoveryManagerIf* discoveryManagerIf);
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
-		bool message(SecureChannelTransaction& secureChannelTransaction);
+		bool message(SecureChannelTransaction::SPtr secureChannelTransaction);
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		DiscoveryManagerIf* discoveryManagerIf_;
 
-		bool receiveGetEndpointsRequest(SecureChannelTransaction& secureChannelTransaction);
-		bool receiveFindServersRequest(SecureChannelTransaction& secureChannelTransaction);
-		bool receiveRegisterServerRequest(SecureChannelTransaction& secureChannelTransaction);
+		bool receiveGetEndpointsRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveFindServersRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
 	};
 
 }

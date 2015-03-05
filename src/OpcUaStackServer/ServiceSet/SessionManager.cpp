@@ -243,9 +243,9 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	SessionManager::secureChannelMessage(SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		switch (secureChannelTransaction.requestTypeNodeId_.nodeId<uint32_t>())
+		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<uint32_t>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
@@ -253,14 +253,14 @@ namespace OpcUaStackServer
 			}
 		}
 
-		Session::SPtr session = getSession(secureChannelTransaction.authenticationToken_, true);
+		Session::SPtr session = getSession(secureChannelTransaction->authenticationToken_, true);
 		if (session.get() != nullptr) {
 			return session->message(secureChannelTransaction);
 		}
 
 		Log(Error, "session not found")
-			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_)
-			.parameter("ChannelId", secureChannelTransaction.channelId_);
+			.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_)
+			.parameter("ChannelId", secureChannelTransaction->channelId_);
 		return false;
 	}
 
@@ -272,17 +272,17 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::sessionMessage(SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
+		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {
 			secureChannel->message(secureChannelTransaction);
 			return;
 		}
 
 		Log(Error, "secure channel not found (session service)")
-			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_)
-			.parameter("ChannelId", secureChannelTransaction.channelId_);
+			.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_)
+			.parameter("ChannelId", secureChannelTransaction->channelId_);
 	}
 
 	// ------------------------------------------------------------------------
@@ -293,17 +293,17 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::discoveryMessage(SecureChannelTransaction& secureChannelTransaction)
+	SessionManager::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction.channelId_);
+		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {
 			secureChannel->message(secureChannelTransaction);
 			return;
 		}
 
 		Log(Error, "secure channel not found (discovers service)")
-			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_)
-			.parameter("ChannelId", secureChannelTransaction.channelId_);
+			.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_)
+			.parameter("ChannelId", secureChannelTransaction->channelId_);
 	}
 
 }

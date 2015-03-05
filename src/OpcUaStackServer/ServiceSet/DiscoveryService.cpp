@@ -32,29 +32,29 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::message(SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::message(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		switch(secureChannelTransaction.requestTypeNodeId_.nodeId<OpcUaUInt32>())
+		switch(secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive get endpoints request");
-				secureChannelTransaction.responseTypeNodeId_.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
+				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
 				return receiveGetEndpointsRequest(secureChannelTransaction);
 			}
 			default:
 			{
 				Log(Error, "Discovery service receives unknown message type")
-					.parameter("MessageType", secureChannelTransaction.requestTypeNodeId_.nodeId<OpcUaUInt32>());
+					.parameter("MessageType", secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>());
 			}
 		}
 		return false;
 	}
 
 	bool 
-	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		std::iostream is(&secureChannelTransaction.is_);
+		std::iostream is(&secureChannelTransaction->is_);
 		RequestHeader requestHeader;
 		GetEndpointsRequest getEndpointsRequest;
 
@@ -63,7 +63,7 @@ namespace OpcUaStackServer
 
 		// FIXME: analyse request data
 
-		std::iostream os(&secureChannelTransaction.os_);
+		std::iostream os(&secureChannelTransaction->os_);
 
 		ResponseHeader responseHeader;
 		GetEndpointsResponse getEndpointsResponse;
@@ -80,14 +80,14 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveFindServersRequest(SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveFindServersRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		// FIXME:
 		return false;
 	}
 
 	bool 
-	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction& secureChannelTransaction)
+	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		// FIXME:
 		return false;

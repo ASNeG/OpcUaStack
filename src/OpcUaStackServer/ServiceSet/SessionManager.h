@@ -48,15 +48,15 @@ namespace OpcUaStackServer
 		//- SecureChannelManagerIf --------------------------------------------
 		void connect(OpcUaUInt32 channelId);
 		void disconnect(OpcUaUInt32 channelId);
-		bool secureChannelMessage(SecureChannelTransaction& secureChannelTransaction);
+		bool secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
 		//- SessionManagerIf---------------------------------------------------
-		void sessionMessage(SecureChannelTransaction& secureChannelTransaction);
+		void sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 		//- SessionManagerIf --------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
-		void discoveryMessage(SecureChannelTransaction& secureChannelTransaction);
+		void discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:

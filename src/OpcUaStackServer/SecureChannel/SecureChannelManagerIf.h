@@ -15,7 +15,7 @@ namespace OpcUaStackServer
 	  public:
 		virtual void connect(OpcUaUInt32 channelId) = 0;
 		virtual void disconnect(OpcUaUInt32 channelId) = 0;
-		virtual bool secureChannelMessage(SecureChannelTransaction& secureChannelTransaction) = 0;
+		virtual bool secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction) = 0;
 	};
 
 }

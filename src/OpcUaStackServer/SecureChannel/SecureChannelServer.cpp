@@ -417,7 +417,7 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
-		SecureChannelTransaction secureChannelTransaction;
+		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 
 		asyncCount_--;
 		Log(Debug, "receive message body")
@@ -481,11 +481,11 @@ namespace OpcUaStackServer
 		SequenceHeader sequenceHeader;
 		sequenceHeader.opcUaBinaryDecode(ios);
 
-		secureChannelTransaction.requestTypeNodeId_.opcUaBinaryDecode(ios);
-		secureChannelTransaction.isAppend(is_);
-		secureChannelTransaction.requestId_ = sequenceHeader.requestId();
-		secureChannelTransaction.channelId_ = channelId_;
-		secureChannelTransaction.authenticationToken_ = authenticationToken_;
+		secureChannelTransaction->requestTypeNodeId_.opcUaBinaryDecode(ios);
+		secureChannelTransaction->isAppend(is_);
+		secureChannelTransaction->requestId_ = sequenceHeader.requestId();
+		secureChannelTransaction->channelId_ = channelId_;
+		secureChannelTransaction->authenticationToken_ = authenticationToken_;
 
 		if (!checkSecurityToken(securityTokenId)) {
 			Log(Error, "secure channel security token error")
@@ -507,9 +507,9 @@ namespace OpcUaStackServer
 
 			Log(Debug, "secure channel receive message")
 				.parameter("ChannelId", channelId_)
-				.parameter("MessageType", secureChannelTransaction.requestTypeNodeId_)
-				.parameter("RequestId", secureChannelTransaction.requestId_)
-				.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
+				.parameter("MessageType", secureChannelTransaction->requestTypeNodeId_)
+				.parameter("RequestId", secureChannelTransaction->requestId_)
+				.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_);
 
 			bool rc = secureChannelManagerIf_->secureChannelMessage(secureChannelTransaction);
 			if (rc == false) {
@@ -533,17 +533,17 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SecureChannelServer::message(SecureChannelTransaction& secureChannelTransaction)
+	SecureChannelServer::message(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		Log(Debug, "secure channel send message")
 			.parameter("ChannelId", channelId_)
-			.parameter("MessageType", secureChannelTransaction.responseTypeNodeId_)
-			.parameter("ChannelId", secureChannelTransaction.channelId_)
-			.parameter("RequestId", secureChannelTransaction.requestId_)
-			.parameter("AuthenticationToken", secureChannelTransaction.authenticationToken_);
+			.parameter("MessageType", secureChannelTransaction->responseTypeNodeId_)
+			.parameter("ChannelId", secureChannelTransaction->channelId_)
+			.parameter("RequestId", secureChannelTransaction->requestId_)
+			.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_);
 
-		if (secureChannelTransaction.authenticationToken_ != 0) {
-			authenticationToken_ = secureChannelTransaction.authenticationToken_;
+		if (secureChannelTransaction->authenticationToken_ != 0) {
+			authenticationToken_ = secureChannelTransaction->authenticationToken_;
 		}
 
 		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
@@ -574,20 +574,20 @@ namespace OpcUaStackServer
 		OpcUaNumber::opcUaBinaryEncode(ios1, tokenIdVec_[tokenIdVec_.size()-1]);
 
 		// encode sequence header
-		sequenceHeader_.requestId(secureChannelTransaction.requestId_);
+		sequenceHeader_.requestId(secureChannelTransaction->requestId_);
 		sequenceHeader_.incSequenceNumber(); 
 		sequenceHeader_.opcUaBinaryEncode(ios1);
 
 		// encode message type id
-		secureChannelTransaction.responseTypeNodeId_.opcUaBinaryEncode(ios1);
+		secureChannelTransaction->responseTypeNodeId_.opcUaBinaryEncode(ios1);
 
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
 		messageHeaderSPtr->messageType(MessageType_Message);
-		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(secureChannelTransaction.os_)+8);
+		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(secureChannelTransaction->os_)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
-		std::iostream ios(&secureChannelTransaction.os_);
+		std::iostream ios(&secureChannelTransaction->os_);
 		Log(Debug, "send message")
 			.parameter("ChannelId", channelId_)
 			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
@@ -599,7 +599,7 @@ namespace OpcUaStackServer
 
 		asyncCount_++;
 		tcpConnection_.async_write(
-			sb2, sb1, secureChannelTransaction.os_,
+			sb2, sb1, secureChannelTransaction->os_,
 			boost::bind(
 				&SecureChannelServer::handleWriteSendComplete, 
 				this, 
