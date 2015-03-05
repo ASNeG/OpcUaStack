@@ -68,3 +68,4 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/OpcUaServer.xml DESTINATI
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSet.xml DESTINATION ${CONF_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CONF_DIR})
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServer/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CONF_DIR})
+install(DIRECTORY DESTINATION ${LOG_DIR})

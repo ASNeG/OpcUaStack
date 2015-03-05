@@ -87,6 +87,18 @@ namespace OpcUaServer
 	bool
 	Server::initLogging(void)
 	{
+		boost::optional<Config> childConfig = config_->getChild("OpcUaServer.Logging.FileLogger");
+		if (!childConfig) {
+			fileLogger_.logFileName("OpcUaServer.log");
+			OpcUaStackCore::Log::logIf(&fileLogger_);
+		    return true;
+		}
+
+		std::string logFileName;
+		childConfig->getConfigParameter("LogFileName", logFileName, "");
+		if (logFileName == "") logFileName = "OpcUaServer.log";
+
+		fileLogger_.logFileName(logFileName);
 		OpcUaStackCore::Log::logIf(&fileLogger_);
 		return true;
 	}

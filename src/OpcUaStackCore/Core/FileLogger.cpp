@@ -8,14 +8,13 @@ namespace OpcUaStackCore
 
 	FileLogger::FileLogger(void)
 	: isOpen_(false)
+	, ofStream_()
 	{
-		ofStream_.open(logFileName(), std::ios::out);
-		if (ofStream_) isOpen_ = true;  
 	}
 
 	FileLogger::~FileLogger(void)
 	{
-		if (isOpen_) ofStream_.close();
+		closeLogFile();
 	}
 
 	void
@@ -30,9 +29,26 @@ namespace OpcUaStackCore
 		return logFileName_;
 	}
 
+	bool
+	FileLogger::openLogFile(void)
+	{
+		ofStream_.open(logFileName(), std::ios::out);
+		if (ofStream_) isOpen_ = true;
+		return isOpen_ == true;
+	}
+
+	bool
+	FileLogger::closeLogFile(void)
+	{
+		if (isOpen_) ofStream_.close();
+		isOpen_ = false;
+		return true;
+	}
+
 	bool 
 	FileLogger::logout(LogLevel logLevel, const std::string& message)
 	{
+		if (!isOpen_) openLogFile();
 		std::string logLevelString = "Unknown"; 
 
 		switch (logLevel)
