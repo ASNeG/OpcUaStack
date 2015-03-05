@@ -5,11 +5,23 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
+#include <list>
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
+
+	class SendMessageInfo
+	{
+	  public:
+		SendMessageInfo(void);
+		~SendMessageInfo(void);
+
+		bool fragment_;
+		bool asyncSend_;
+		SecureChannelTransaction::List secureChannelTransactionList_;
+	};
 
 	typedef enum
 	{
@@ -19,7 +31,9 @@ namespace OpcUaStackServer
 		SecureChannelServerState_Ready,
 	} SecureChannelServerState;
 
-	class DLLEXPORT SecureChannelServer : public SecureChannel, public  ObjectPool<SecureChannelServer>
+	class DLLEXPORT SecureChannelServer
+	: public SecureChannel
+	, public  ObjectPool<SecureChannelServer>
 	{
 	  public:
 		typedef boost::shared_ptr<SecureChannelServer> SPtr;
@@ -39,6 +53,8 @@ namespace OpcUaStackServer
 		static boost::mutex mutex_;
 		static OpcUaUInt32 uniqueChannelId_;
 		static OpcUaUInt32 getUniqueChannelId(void);
+
+		void sendMessage(void);
 
 		void handleDisconnect(void);
 		void handleReadMessageHeaderError(void);
@@ -70,6 +86,8 @@ namespace OpcUaStackServer
 		uint32_t remoteEndpointPort_;
 		std::string localEndpointAddress_;
 		uint32_t localEndpointPort_;
+
+		SendMessageInfo sendMessageInfo_;
 	};
 
 }

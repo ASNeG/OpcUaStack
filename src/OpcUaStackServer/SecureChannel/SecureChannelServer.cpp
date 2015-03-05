@@ -13,6 +13,32 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SendMessageInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SendMessageInfo::SendMessageInfo(void)
+	: secureChannelTransactionList_()
+	, asyncSend_(false)
+	, fragment_(false)
+	{
+	}
+
+	SendMessageInfo::~SendMessageInfo(void)
+	{
+		secureChannelTransactionList_.clear();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelServer
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	boost::mutex SecureChannelServer::mutex_;
 	OpcUaUInt32 SecureChannelServer::uniqueChannelId_ = 0;
 	
@@ -31,6 +57,7 @@ namespace OpcUaStackServer
 	, tokenIdVec_()
 	, authenticationToken_(0)
 	, asyncCount_(0)
+	, sendMessageInfo_()
 	{
 		std::srand(static_cast<unsigned int>(std::time(0))); 
 	}
@@ -157,6 +184,22 @@ namespace OpcUaStackServer
 		std::iostream ios1(&sb1);
 
 		AcknowledgeMessage::SPtr achnowledgeMessageSPtr(AcknowledgeMessage::construct());
+
+		// check secure channel limits
+		if (hello.receivedBufferSize() < channelDataBase()->receivedBufferSize()) {
+			channelDataBase()->receivedBufferSize(hello.receivedBufferSize());
+		}
+		if (hello.sendBufferSize() < channelDataBase()->sendBufferSize()) {
+			channelDataBase()->sendBufferSize(hello.sendBufferSize());
+		}
+		if (hello.maxMessageSize() < channelDataBase()->maxMessageSize()) {
+			channelDataBase()->maxMessageSize(hello.maxMessageSize());
+		}
+		if (hello.maxChunkCount() < channelDataBase()->maxChunkCount()) {
+			channelDataBase()->maxChunkCount(hello.maxMessageSize());
+		}
+
+		// set secure channel limits
 		achnowledgeMessageSPtr->protocolVersion(channelDataBase()->protocolVersion());
 		achnowledgeMessageSPtr->receivedBufferSize(channelDataBase()->receivedBufferSize());
 		achnowledgeMessageSPtr->sendBufferSize(channelDataBase()->sendBufferSize());
@@ -535,6 +578,10 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::message(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		sendMessageInfo_.secureChannelTransactionList_.push_back(secureChannelTransaction);
+		sendMessage();
+		return;
+
 		Log(Debug, "secure channel send message")
 			.parameter("ChannelId", channelId_)
 			.parameter("MessageType", secureChannelTransaction->responseTypeNodeId_)
@@ -584,6 +631,7 @@ namespace OpcUaStackServer
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
 		messageHeaderSPtr->messageType(MessageType_Message);
+		messageHeaderSPtr->segmentFlag('F');
 		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(secureChannelTransaction->os_)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
@@ -607,10 +655,135 @@ namespace OpcUaStackServer
 			)
 		);
 	}
+
+	void
+	SecureChannelServer::sendMessage(void)
+	{
+		if (sendMessageInfo_.secureChannelTransactionList_.size() == 0) return;
+		if (sendMessageInfo_.asyncSend_) return;
+		SecureChannelTransaction::SPtr secureChannelTransaction = sendMessageInfo_.secureChannelTransactionList_.front();
+
+		Log(Debug, "secure channel send message")
+			.parameter("ChannelId", channelId_)
+			.parameter("MessageType", secureChannelTransaction->responseTypeNodeId_)
+			.parameter("ChannelId", secureChannelTransaction->channelId_)
+			.parameter("RequestId", secureChannelTransaction->requestId_)
+			.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_);
+
+		if (secureChannelTransaction->authenticationToken_ != 0) {
+			authenticationToken_ = secureChannelTransaction->authenticationToken_;
+		}
+
+		if (secureChannelServerState_ != SecureChannelServerState_Ready) {
+			Log(Error, "cannot send message, because secure channel is in invalid state")
+				.parameter("ChannelId", channelId_)
+				.parameter("LocalAddress", localEndpointAddress_)
+				.parameter("LocalPort", localEndpointPort_)
+				.parameter("PartnerAddress",  remoteEndpointAddress_)
+				.parameter("PartnerPort", remoteEndpointPort_)
+				.parameter("SecurechannelState", secureChannelServerState_);
+
+			tcpConnection_.close();
+			secureChannelServerState_ = SecureChannelServerState_Close;
+
+			handleDisconnect();
+			return;
+		}
+
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+
+		// encode channel id
+		OpcUaNumber::opcUaBinaryEncode(ios1, channelId_);
+
+		// encode token id
+		OpcUaNumber::opcUaBinaryEncode(ios1, tokenIdVec_[tokenIdVec_.size()-1]);
+
+		// encode sequence header
+		sequenceHeader_.requestId(secureChannelTransaction->requestId_);
+		sequenceHeader_.incSequenceNumber();
+		sequenceHeader_.opcUaBinaryEncode(ios1);
+
+		if (!sendMessageInfo_.fragment_) {
+			// encode message type id
+			secureChannelTransaction->responseTypeNodeId_.opcUaBinaryEncode(ios1);
+		}
+
+		// calculate packet size
+		char segmentFlag = 'F';
+		uint32_t headerSize = OpcUaStackCore::count(sb1) + 8;
+		uint32_t bodySize = OpcUaStackCore::count(secureChannelTransaction->os_);
+		uint32_t packetSize = headerSize + bodySize;
+		if (packetSize > channelDataBase()->sendBufferSize()) {
+			segmentFlag = 'C';
+			sendMessageInfo_.fragment_ = true;
+			bodySize = channelDataBase()->sendBufferSize() - headerSize;
+			packetSize = channelDataBase()->sendBufferSize();
+		}
+		else {
+			sendMessageInfo_.fragment_ = false;
+		}
+
+		// encode MessageHeader
+		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
+		messageHeaderSPtr->messageType(MessageType_Message);
+		messageHeaderSPtr->segmentFlag(segmentFlag);
+		messageHeaderSPtr->messageSize(packetSize);
+		messageHeaderSPtr->opcUaBinaryEncode(ios2);
+
+		Log(Debug, "write")
+			.parameter("ChannelId", channelId_)
+			.parameter("RequestId", secureChannelTransaction->requestId_)
+			.parameter("SequenceNumber", sequenceHeader_.sequenceNumber())
+			.parameter("HeaderSize", headerSize)
+			.parameter("BodySize", bodySize)
+			.parameter("SegmentFlag", segmentFlag);
+
+		if (debugMode_) {
+			OpcUaStackCore::dumpHex(ios2);
+		}
+
+		asyncCount_++;
+		sendMessageInfo_.asyncSend_ = true;
+
+		if (sendMessageInfo_.fragment_) {
+			boost::asio::streambuf sb;
+			std::iostream ios(&sb);
+			boost::asio::const_buffer buffer(secureChannelTransaction->os_.data());
+			std::size_t bufferSize = boost::asio::buffer_size(buffer);
+			const char* bufferPtr = boost::asio::buffer_cast<const char*>(buffer);
+			ios.write(bufferPtr,bodySize);
+			secureChannelTransaction->os_.consume(bodySize);
+
+			tcpConnection_.async_write(
+				sb2, sb1, sb,
+				boost::bind(
+					&SecureChannelServer::handleWriteSendComplete,
+					this,
+					boost::asio::placeholders::error
+				)
+			);
+		}
+		else {
+			tcpConnection_.async_write(
+				sb2, sb1, secureChannelTransaction->os_,
+				boost::bind(
+					&SecureChannelServer::handleWriteSendComplete,
+					this,
+					boost::asio::placeholders::error
+				)
+			);
+
+			sendMessageInfo_.secureChannelTransactionList_.pop_front();
+		}
+	}
 		
 	void 
 	SecureChannelServer::handleWriteSendComplete(const boost::system::error_code& error)
 	{
+		sendMessageInfo_.asyncSend_ = false;
 		asyncCount_--;
 		if (error) {
 			Log(Error, "send message error")
@@ -644,6 +817,7 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		sendMessage();
 	}
 
 	bool 

@@ -8,6 +8,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include <stdint.h>
+#include <list>
 
 using namespace OpcUaStackCore;
 
@@ -18,6 +19,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef boost::shared_ptr<SecureChannelTransaction> SPtr;
+		typedef std::list<SecureChannelTransaction::SPtr> List;
 
 	    SecureChannelTransaction(void);
 	    ~SecureChannelTransaction(void);
