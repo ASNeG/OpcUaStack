@@ -16,6 +16,18 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	class ReceiveMessageInfo
+	{
+	  public:
+		ReceiveMessageInfo(void);
+		~ReceiveMessageInfo(void);
+
+		char segmentFlag_;
+		bool segment_;
+		bool first_;
+		SecureChannelTransaction::SPtr secureChannelTransaction_;
+	};
+
 	typedef enum
 	{
 		SecureChannelClientState_Close,
@@ -78,6 +90,8 @@ namespace OpcUaStackClient
 
 		SecurityHeader::SPtr securityHeaderSPtr_;
 		SecurityToken::SPtr securityTokenSPtr_;
+
+		ReceiveMessageInfo receiveMessageInfo_;
 	};
 
 }

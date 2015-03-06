@@ -13,6 +13,31 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ReceiveMessageInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ReceiveMessageInfo::ReceiveMessageInfo(void)
+	: secureChannelTransaction_()
+	, segment_(false)
+	{
+	}
+
+	ReceiveMessageInfo::~ReceiveMessageInfo(void)
+	{
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelClient
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	SecureChannelClient::SecureChannelClient(IOService& ioService)
 	: SecureChannel(ioService)
 	, tcpConnector_()
@@ -22,6 +47,7 @@ namespace OpcUaStackClient
 	, reconnectTimer_(nullptr)
 	, securityHeaderSPtr_(SecurityHeader::construct())
 	, debugMode_(false)
+	, receiveMessageInfo_()
 	{
 	}
 
@@ -161,6 +187,15 @@ namespace OpcUaStackClient
 			return;
 		}
 
+		receiveMessageInfo_.segmentFlag_ = messageHeader.segmentFlag();
+		receiveMessageInfo_.segment_ = (messageHeader.segmentFlag() == 'C');
+		receiveMessageInfo_.first_ = false;
+
+		if (receiveMessageInfo_.secureChannelTransaction_.get() == nullptr) {
+			receiveMessageInfo_.secureChannelTransaction_ = SecureChannelTransaction::construct();
+			receiveMessageInfo_.first_ = true;
+		}
+
 		tcpConnection_.async_read_exactly(
 			is_,
 			boost::bind(&SecureChannelClient::handleReadMessage, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
@@ -206,8 +241,6 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
-
 		std::iostream is(&is_);
 
 		OpcUaUInt32 channelId;
@@ -219,16 +252,28 @@ namespace OpcUaStackClient
 		SequenceHeader sequenceHeader;
 		sequenceHeader.opcUaBinaryDecode(is);
 
-		secureChannelTransaction->responseTypeNodeId_.opcUaBinaryDecode(is);
+		if (receiveMessageInfo_.first_) {
+			receiveMessageInfo_.secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(is);
+		}
 
 		Log(Debug, "secure channel receive message")
 			.parameter("ChannelId", securityTokenSPtr_->channelId())
-			.parameter("MessageType", secureChannelTransaction->responseTypeNodeId_)
-			.parameter("RequestId", sequenceHeader_.requestId());
+			.parameter("MessageType", receiveMessageInfo_.secureChannelTransaction_->responseTypeNodeId_)
+			.parameter("RequestId", sequenceHeader_.requestId())
+			.parameter("SequenceNumber", sequenceHeader.sequenceNumber())
+			.parameter("SegmentFlag", receiveMessageInfo_.segmentFlag_);
+
+		receiveMessageInfo_.secureChannelTransaction_->isAppend(is_);
+		if (receiveMessageInfo_.segment_) {
+			asyncReadMessageHeader();
+			return;
+		}
 
 		if (secureChannelIf_ != nullptr) {
-			secureChannelTransaction->isAppend(is_);
-			bool rc = secureChannelIf_->receive(secureChannelTransaction);
+			bool rc = secureChannelIf_->receive(receiveMessageInfo_.secureChannelTransaction_);
+
+			receiveMessageInfo_.secureChannelTransaction_.reset();
+
 			if (rc == false) {
 				Log(Error, "cannot read message body, because message handler error")
 					.parameter("PartnerAddress", partnerAddress_.to_string())
