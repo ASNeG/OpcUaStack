@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 		virtual void handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader);
 
 	  protected:
+		void consumeAll(boost::asio::streambuf& streambuf);
 		bool debugMode_;
 
 		IOService* ioService_;

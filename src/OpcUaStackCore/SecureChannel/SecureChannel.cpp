@@ -197,4 +197,12 @@ namespace OpcUaStackCore
 		handleReadMessageHeaderError();
 	}
 
+	void
+	SecureChannel::consumeAll(boost::asio::streambuf& streambuf)
+	{
+		boost::asio::const_buffer buffer(streambuf.data());
+		std::size_t bufferSize = boost::asio::buffer_size(buffer);
+		streambuf.consume(bufferSize);
+	}
+
 }

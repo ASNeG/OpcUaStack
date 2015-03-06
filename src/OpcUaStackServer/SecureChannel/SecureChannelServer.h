@@ -18,7 +18,7 @@ namespace OpcUaStackServer
 		SendMessageInfo(void);
 		~SendMessageInfo(void);
 
-		bool fragment_;
+		bool first_;
 		bool asyncSend_;
 		SecureChannelTransaction::List secureChannelTransactionList_;
 	};

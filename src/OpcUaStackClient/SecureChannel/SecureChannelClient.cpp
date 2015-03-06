@@ -16,6 +16,25 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// SendMessageInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SendMessageInfo::SendMessageInfo(void)
+	: secureChannelTransactionList_()
+	, asyncSend_(false)
+	, first_(true)
+	{
+	}
+
+	SendMessageInfo::~SendMessageInfo(void)
+	{
+		secureChannelTransactionList_.clear();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// ReceiveMessageInfo
 	//
 	// ------------------------------------------------------------------------
@@ -40,6 +59,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	SecureChannelClient::SecureChannelClient(IOService& ioService)
 	: SecureChannel(ioService)
+	, secureChannelIf_(nullptr)
 	, tcpConnector_()
 	, secureChannelClientState_(SecureChannelClientState_Close)
 	, reconnectTimeout_(0)
@@ -47,6 +67,7 @@ namespace OpcUaStackClient
 	, reconnectTimer_(nullptr)
 	, securityHeaderSPtr_(SecurityHeader::construct())
 	, debugMode_(false)
+	, sendMessageInfo_()
 	, receiveMessageInfo_()
 	{
 	}
@@ -101,6 +122,17 @@ namespace OpcUaStackClient
 	void 
 	SecureChannelClient::send(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		sendMessageInfo_.secureChannelTransactionList_.push_back(secureChannelTransaction);
+		sendMessage();
+	}
+
+	void
+	SecureChannelClient::sendMessage(void)
+	{
+		if (sendMessageInfo_.secureChannelTransactionList_.size() == 0) return;
+		if (sendMessageInfo_.asyncSend_) return;
+		SecureChannelTransaction::SPtr secureChannelTransaction = sendMessageInfo_.secureChannelTransactionList_.front();
+
 		if (secureChannelClientState_ != SecureChannelClientState_Ready) {
 			Log(Error, "cannot send message, because secure channel is in invalid state")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -122,39 +154,85 @@ namespace OpcUaStackClient
 
 		// encode sequence header
 		sequenceHeader_.incSequenceNumber();
-		sequenceHeader_.incRequestId();
+		if (sendMessageInfo_.first_) {
+			sequenceHeader_.incRequestId();
+		}
 		sequenceHeader_.opcUaBinaryEncode(ios1);
 
-		// encode message type id
-		secureChannelTransaction->requestTypeNodeId_.opcUaBinaryEncode(ios1);
+		if (sendMessageInfo_.first_) {
+			// encode message type id
+			secureChannelTransaction->requestTypeNodeId_.opcUaBinaryEncode(ios1);
+		}
+
+		// calculate packet size
+		char segmentFlag = 'F';
+		uint32_t headerSize = OpcUaStackCore::count(sb1) + 8;
+		uint32_t bodySize = OpcUaStackCore::count(secureChannelTransaction->os_);
+		uint32_t packetSize = headerSize + bodySize;
+		if (packetSize > channelDataBase()->sendBufferSize()) {
+			segmentFlag = 'C';
+			bodySize = channelDataBase()->sendBufferSize() - headerSize;
+			packetSize = channelDataBase()->sendBufferSize();
+		}
 
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
 		messageHeaderSPtr->messageType(MessageType_Message);
-		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+OpcUaStackCore::count(secureChannelTransaction->os_)+8);
+		messageHeaderSPtr->segmentFlag(segmentFlag);
+		messageHeaderSPtr->messageSize(packetSize);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
 		std::iostream ios(&secureChannelTransaction->os_);
-		Log(Debug, "secure channel send message")
-			.parameter("HeaderSize", OpcUaStackCore::count(ios2))
-			.parameter("BodySize", OpcUaStackCore::count(ios) + OpcUaStackCore::count(ios1))
+		Log(Debug, "write socket")
 			.parameter("ChannelId", securityTokenSPtr_->channelId())
-			.parameter("MessageType", secureChannelTransaction->requestTypeNodeId_)
-			.parameter("RequestId", sequenceHeader_.requestId());
+			.parameter("RequestId", sequenceHeader_.requestId())
+			.parameter("SequenceNumber", sequenceHeader_.sequenceNumber())
+			.parameter("HeaderSize", headerSize)
+			.parameter("BodySize", bodySize)
+			.parameter("SegmentFlag", segmentFlag);
 
-		if (debugMode_) {
-			OpcUaStackCore::dumpHex(ios2);
+		sendMessageInfo_.asyncSend_ = true;
+
+		if (segmentFlag == 'C') {
+			boost::asio::streambuf sb;
+			std::iostream ios(&sb);
+			boost::asio::const_buffer buffer(secureChannelTransaction->os_.data());
+			std::size_t bufferSize = boost::asio::buffer_size(buffer);
+			const char* bufferPtr = boost::asio::buffer_cast<const char*>(buffer);
+			ios.write(bufferPtr,bodySize);
+			secureChannelTransaction->os_.consume(bodySize);
+
+			tcpConnection_.async_write(
+				sb2, sb1, sb,
+				boost::bind(
+					&SecureChannelClient::handleWriteSendComplete,
+					this,
+					boost::asio::placeholders::error
+				)
+			);
+
+			sendMessageInfo_.first_ = false;
 		}
+		else {
+			tcpConnection_.async_write(
+				sb2, sb1, secureChannelTransaction->os_,
+				boost::bind(
+					&SecureChannelClient::handleWriteSendComplete,
+					this,
+					boost::asio::placeholders::error
+				)
+			);
 
-		tcpConnection_.async_write(
-			sb2, sb1, secureChannelTransaction->os_,
-			boost::bind(&SecureChannelClient::handleWriteSendComplete, this, boost::asio::placeholders::error)
-		);
+			sendMessageInfo_.secureChannelTransactionList_.pop_front();
+			sendMessageInfo_.first_ = true;
+		}
 	}
 
 	void 
 	SecureChannelClient::handleWriteSendComplete(const boost::system::error_code& error)
 	{
+		sendMessageInfo_.asyncSend_ = false;
+
 		if (error) {
 			Log(Error, "send message error")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -172,6 +250,8 @@ namespace OpcUaStackClient
 			startReconnectTimer();
 			return;
 		}
+
+		sendMessage();
 	}
 
 	void 
@@ -207,9 +287,6 @@ namespace OpcUaStackClient
 	void 
 	SecureChannelClient::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
-		Log(Debug, "receive message body")
-			.parameter("BodySize", bytes_transfered);
-
 		if (error) {
 			Log(Error, "cannot read message body")
 				.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -256,7 +333,7 @@ namespace OpcUaStackClient
 			receiveMessageInfo_.secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(is);
 		}
 
-		Log(Debug, "secure channel receive message")
+		Log(Debug, "read socket")
 			.parameter("ChannelId", securityTokenSPtr_->channelId())
 			.parameter("MessageType", receiveMessageInfo_.secureChannelTransaction_->responseTypeNodeId_)
 			.parameter("RequestId", sequenceHeader_.requestId())

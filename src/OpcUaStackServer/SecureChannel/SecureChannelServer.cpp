@@ -23,7 +23,7 @@ namespace OpcUaStackServer
 	SendMessageInfo::SendMessageInfo(void)
 	: secureChannelTransactionList_()
 	, asyncSend_(false)
-	, fragment_(false)
+	, first_(true)
 	{
 	}
 
@@ -175,16 +175,6 @@ namespace OpcUaStackServer
 		HelloMessage hello;
 		hello.opcUaBinaryDecode(is);
 
-		// FIXME: handle hello...
-
-		// send acknowledge message
-		secureChannelServerState_ = SecureChannelServerState_WaitOpenSecureChannel;
-
-		boost::asio::streambuf sb1;
-		std::iostream ios1(&sb1);
-
-		AcknowledgeMessage::SPtr achnowledgeMessageSPtr(AcknowledgeMessage::construct());
-
 		// check secure channel limits
 		if (hello.receivedBufferSize() < channelDataBase()->receivedBufferSize()) {
 			channelDataBase()->receivedBufferSize(hello.receivedBufferSize());
@@ -198,6 +188,14 @@ namespace OpcUaStackServer
 		if (hello.maxChunkCount() < channelDataBase()->maxChunkCount()) {
 			channelDataBase()->maxChunkCount(hello.maxMessageSize());
 		}
+
+		// send acknowledge message
+		secureChannelServerState_ = SecureChannelServerState_WaitOpenSecureChannel;
+
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+
+		AcknowledgeMessage::SPtr achnowledgeMessageSPtr(AcknowledgeMessage::construct());
 
 		// set secure channel limits
 		achnowledgeMessageSPtr->protocolVersion(channelDataBase()->protocolVersion());
@@ -632,7 +630,7 @@ namespace OpcUaStackServer
 		sequenceHeader_.incSequenceNumber();
 		sequenceHeader_.opcUaBinaryEncode(ios1);
 
-		if (!sendMessageInfo_.fragment_) {
+		if (sendMessageInfo_.first_) {
 			// encode message type id
 			secureChannelTransaction->responseTypeNodeId_.opcUaBinaryEncode(ios1);
 		}
@@ -644,12 +642,8 @@ namespace OpcUaStackServer
 		uint32_t packetSize = headerSize + bodySize;
 		if (packetSize > channelDataBase()->sendBufferSize()) {
 			segmentFlag = 'C';
-			sendMessageInfo_.fragment_ = true;
 			bodySize = channelDataBase()->sendBufferSize() - headerSize;
 			packetSize = channelDataBase()->sendBufferSize();
-		}
-		else {
-			sendMessageInfo_.fragment_ = false;
 		}
 
 		// encode MessageHeader
@@ -659,7 +653,7 @@ namespace OpcUaStackServer
 		messageHeaderSPtr->messageSize(packetSize);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
-		Log(Debug, "write")
+		Log(Debug, "write socket")
 			.parameter("ChannelId", channelId_)
 			.parameter("RequestId", secureChannelTransaction->requestId_)
 			.parameter("SequenceNumber", sequenceHeader_.sequenceNumber())
@@ -674,7 +668,7 @@ namespace OpcUaStackServer
 		asyncCount_++;
 		sendMessageInfo_.asyncSend_ = true;
 
-		if (sendMessageInfo_.fragment_) {
+		if (segmentFlag == 'C') {
 			boost::asio::streambuf sb;
 			std::iostream ios(&sb);
 			boost::asio::const_buffer buffer(secureChannelTransaction->os_.data());
@@ -691,6 +685,8 @@ namespace OpcUaStackServer
 					boost::asio::placeholders::error
 				)
 			);
+
+			sendMessageInfo_.first_ = false;
 		}
 		else {
 			tcpConnection_.async_write(
@@ -703,6 +699,7 @@ namespace OpcUaStackServer
 			);
 
 			sendMessageInfo_.secureChannelTransactionList_.pop_front();
+			sendMessageInfo_.first_ = true;
 		}
 	}
 		

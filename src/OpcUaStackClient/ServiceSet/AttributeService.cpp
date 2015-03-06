@@ -118,7 +118,7 @@ namespace OpcUaStackClient
 				}
 				break;
 			}
-			case OpcUaId_WriteRequest_Encoding_DefaultBinary:
+			case OpcUaId_WriteResponse_Encoding_DefaultBinary:
 			{
 				if (attributeServiceIf_ != nullptr) {
 					attributeServiceIf_->attributeServiceWriteResponse(

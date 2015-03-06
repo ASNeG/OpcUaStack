@@ -79,6 +79,52 @@ BOOST_AUTO_TEST_CASE(AttributeService_open)
 	session->activateSession();
 	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
 
+	//IOService::secSleep(1000);
+	client.stop();
+	client.cleanup();
+}
+
+BOOST_AUTO_TEST_CASE(AttributeService_read)
+{
+	AttributeServiceHandler attributeServiceHandler;
+	SessionTestHandler sessionTestHandler;
+
+	Client client;
+	client.init();
+	client.start();
+
+	AttributeService attributeService;
+	attributeService.attributeServiceIf(&attributeServiceHandler);
+
+	Config sessionConfig;
+	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	sessionConfig.setValue("TestConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Locale", "en");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Text", "MyAppl");
+
+	Config secureChannelConfig;
+	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	secureChannelConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+
+	Session::SPtr session = client.sessionManager().getNewSession(
+		"TestConfig", sessionConfig,
+		"TestConfig", secureChannelConfig,
+		&sessionTestHandler
+	);
+	attributeService.componentSession(session->component());
+
+	// createSession
+	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
+	session->createSession();
+	BOOST_REQUIRE(sessionTestHandler.createSessionCompleteCondition_.waitForCondition(1000) == true);
+
+	// activateSession
+	sessionTestHandler.activateSessionCompleteCondition_.condition(1, 0);
+	session->activateSession();
+	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -116,6 +162,95 @@ BOOST_AUTO_TEST_CASE(AttributeService_open)
 	std::cout << "ValueType=" << variant->variantType() << std::endl; //12
 	std::cout << "ValueArrayLen=" << variant->arrayLength() << std::endl; // 5
 
+
+	//IOService::secSleep(1000);
+	client.stop();
+	client.cleanup();
+}
+
+BOOST_AUTO_TEST_CASE(AttributeService_write)
+{
+	AttributeServiceHandler attributeServiceHandler;
+	SessionTestHandler sessionTestHandler;
+
+	Client client;
+	client.init();
+	client.start();
+
+	AttributeService attributeService;
+	attributeService.attributeServiceIf(&attributeServiceHandler);
+
+	Config sessionConfig;
+	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	sessionConfig.setValue("TestConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Locale", "en");
+	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Text", "MyAppl");
+
+	Config secureChannelConfig;
+	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	secureChannelConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
+
+	Session::SPtr session = client.sessionManager().getNewSession(
+		"TestConfig", sessionConfig,
+		"TestConfig", secureChannelConfig,
+		&sessionTestHandler
+	);
+	attributeService.componentSession(session->component());
+
+	// createSession
+	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
+	session->createSession();
+	BOOST_REQUIRE(sessionTestHandler.createSessionCompleteCondition_.waitForCondition(1000) == true);
+
+	// activateSession
+	sessionTestHandler.activateSessionCompleteCondition_.condition(1, 0);
+	session->activateSession();
+	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// attribute service write
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+	// send write request
+	ServiceTransactionWrite::SPtr writeTrx = ServiceTransactionWrite::construct();
+	WriteRequest::SPtr req = writeTrx->request();
+
+	uint32_t bufLen = 100000;
+	OpcUaByte buf[bufLen];
+	memset((char*)buf, 0x01, bufLen);
+	OpcUaByteString::SPtr byteString = OpcUaByteString::construct();
+	byteString->value(buf, bufLen);
+
+	WriteValue::SPtr writeValue = WriteValue::construct();
+	writeValue->nodeId((OpcUaInt16)0, (OpcUaInt32)7617);
+	writeValue->attributeId((OpcUaInt32) 13);
+	writeValue->dataValue().variant()->variant(byteString);
+
+	req->writeValueArray()->resize(1);
+	req->writeValueArray()->set(writeValue);
+
+	attributeServiceHandler.attributeServiceWriteResponseCondition_.condition(1, 0);
+	attributeService.send(writeTrx);
+	BOOST_REQUIRE(attributeServiceHandler.attributeServiceWriteResponseCondition_.waitForCondition(1000) == true);
+
+	std::cout << "ResultCode=" << attributeServiceHandler.serviceTransactionWrite_->responseHeader()->serviceResult() << std::endl;
+	WriteResponse::SPtr writeResponse = attributeServiceHandler.serviceTransactionWrite_->response();
+
+#if 0
+	OpcUaDataValue::SPtr dataValue;
+	readResponse->dataValueArray()->get(0, dataValue);
+	OpcUaVariant::SPtr variant = dataValue->variant();
+
+	std::cout << "StatusCode=" << (uint32_t)dataValue->statusCode() << std::endl; // 0
+	std::cout << "ValueType=" << variant->variantType() << std::endl; //12
+	std::cout << "ValueArrayLen=" << variant->arrayLength() << std::endl; // 5
+#endif
 
 	//IOService::secSleep(1000);
 	client.stop();

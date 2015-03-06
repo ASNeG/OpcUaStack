@@ -16,6 +16,17 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	class SendMessageInfo
+	{
+	  public:
+		SendMessageInfo(void);
+		~SendMessageInfo(void);
+
+		bool first_;
+		bool asyncSend_;
+		SecureChannelTransaction::List secureChannelTransactionList_;
+	};
+
 	class ReceiveMessageInfo
 	{
 	  public:
@@ -56,6 +67,7 @@ namespace OpcUaStackClient
 		void send(SecureChannelTransaction::SPtr secureChannelTransaction);
 
 	  private:
+		void sendMessage(void);
 
 		void startReconnectTimer(void);
 		void handleReconnectTimeout(const boost::system::error_code& error);
@@ -91,6 +103,7 @@ namespace OpcUaStackClient
 		SecurityHeader::SPtr securityHeaderSPtr_;
 		SecurityToken::SPtr securityTokenSPtr_;
 
+		SendMessageInfo sendMessageInfo_;
 		ReceiveMessageInfo receiveMessageInfo_;
 	};
 
