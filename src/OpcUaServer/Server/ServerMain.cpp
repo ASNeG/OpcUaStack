@@ -11,8 +11,8 @@ int main(int argc, char** argv)
 {
 	std::string configurationFile;
 
+        std::string installationPath = Environment::getInstallationPath(BIN_DIR);
 	if (argc == 1) {
-		std::string installationPath = Environment::getInstallationPath(BIN_DIR);
 		configurationFile = installationPath + std::string("/") + std::string(CONF_DIR) + std::string("/OpcUaServer.xml");
 	}
 	else if (argc == 2) {
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	config->alias("@BIN_DIR@", std::string(CONF_DIR));
 	config->alias("@CONF_DIR@", std::string(CONF_DIR));
 	config->alias("@LOG_DIR@", std::string(LOG_DIR));
-	config->alias("@INSTALL_DIR@", std::string(INSTALL_DIR));
+	config->alias("@INSTALL_DIR@", installationPath);
 
 
 	// start server
