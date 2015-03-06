@@ -8,7 +8,7 @@
 include_directories(
     ./
     ${PROJECT_BINARY_DIR}
-    ../inc/
+    ../src/
 	${Boost_INCLUDE_DIRS}
 )
 

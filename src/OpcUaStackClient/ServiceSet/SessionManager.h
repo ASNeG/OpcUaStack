@@ -35,13 +35,13 @@ namespace OpcUaStackClient
 		void connectToSecureChannel(void); 
 	    void createSessionRequest(boost::asio::streambuf& sb);
 		void activateSessionRequest(boost::asio::streambuf& sb);
-		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb);
+		void send(SecureChannelTransaction::SPtr secureChannelTransaction);
 		//- SessionManagerIf --------------------------------------------------
 
 		//- SecureChannelIf ---------------------------------------------------
 		void connect(void);
 		void disconnect(void);
-		bool receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is);
+		bool receive(SecureChannelTransaction::SPtr secureChannelTransaction);
 		//- SecureChannelIf ---------------------------------------------------
 
 	  private:

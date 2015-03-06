@@ -92,8 +92,8 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		boost::asio::streambuf sb;
-		std::iostream ios(&sb);
+		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
+		std::iostream ios(&secureChannelTransaction->os_);
 
 		OpcUaStackCore::ActivateSessionRequest::SPtr activateSessionRequestSPtr = OpcUaStackCore::ActivateSessionRequest::construct();
 		activateSessionRequestSPtr->requestHeader()->requestHandle(++requestHandle_);
@@ -111,7 +111,8 @@ namespace OpcUaStackClient
 		activateSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendActivateSession;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->activateSessionRequest(sb);
+		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(secureChannelTransaction);
 	}
 
 	void 
@@ -132,8 +133,8 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		boost::asio::streambuf sb;
-		std::iostream ios(&sb);
+		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
+		std::iostream ios(&secureChannelTransaction->os_);
 
 		RequestHeader::SPtr requestHeader = serviceTransaction->requestHeader();
 		requestHeader->requestHandle(serviceTransaction->transactionId());
@@ -147,7 +148,10 @@ namespace OpcUaStackClient
 			3000
 		);
 
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(serviceTransaction->nodeTypeRequest(), sb);
+		if (sessionManagerIf_ != nullptr) {
+			secureChannelTransaction->requestTypeNodeId_ = serviceTransaction->nodeTypeRequest();
+			sessionManagerIf_->send(secureChannelTransaction);
+		}
 	}
 
 	void 
@@ -162,8 +166,8 @@ namespace OpcUaStackClient
 		}
 		sessionState_ = SessionState_ConnectedToSecureChannel;
 
-		boost::asio::streambuf sb;
-		std::iostream ios(&sb);
+		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
+		std::iostream ios(&secureChannelTransaction->os_);
 
 		OpcUaStackCore::CreateSessionRequest::SPtr createSessionRequestSPtr = OpcUaStackCore::CreateSessionRequest::construct();
 		createSessionRequestSPtr->requestHeader()->requestHandle(++requestHandle_);
@@ -176,7 +180,8 @@ namespace OpcUaStackClient
 		createSessionRequestSPtr->opcUaBinaryEncode(ios);
 
 		sessionState_ = SessionState_SendCreateSession;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->createSessionRequest(sb);
+		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(secureChannelTransaction);
 	}
 
 	void 
@@ -185,38 +190,38 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receive(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		switch (typeId.nodeId<OpcUaStackCore::OpcUaUInt32>())
+		switch (secureChannelTransaction->responseTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive create session response");
-				return receiveCreateSessionResponse(sb);
+				return receiveCreateSessionResponse(secureChannelTransaction);
 				break;
 			}
 			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive activate session response");
-				return receiveActivateSessionResponse(sb);
+				return receiveActivateSessionResponse(secureChannelTransaction);
 				break;
 			}
 			case OpcUaId_ServiceFault_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive service fault");
-				return receiveServiceFault(typeId, sb);
+				return receiveServiceFault(secureChannelTransaction);
 				break;
 			}
 			default:
 			{
-				return receiveMessage(typeId, sb);
+				return receiveMessage(secureChannelTransaction);
 			}
 		}
 
 	}
 
 	bool
-	Session::receiveCreateSessionResponse(boost::asio::streambuf& sb)
+	Session::receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		if (sessionIf_ == nullptr) {
 			Log(Error, "interface sessionIf is empty")
@@ -234,7 +239,7 @@ namespace OpcUaStackClient
 			return false;
 		}
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction->is_);
 		createSessionResponseSPtr_->opcUaBinaryDecode(ios);
 		sessionState_ = SessionState_ReceiveCreateSession;
 
@@ -245,7 +250,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::receiveActivateSessionResponse(boost::asio::streambuf& sb)
+	Session::receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		if (sessionIf_ == nullptr) {
 			Log(Error, "interface sessionIf is empty")
@@ -263,7 +268,7 @@ namespace OpcUaStackClient
 			return false;
 		}
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction->is_);
 		activateSessionResponseSPtr_->opcUaBinaryDecode(ios);
 		sessionState_ = SessionState_ReceiveActivateSession;
 
@@ -274,7 +279,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::receiveServiceFault(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		if (sessionIf_ == nullptr) {
 			Log(Error, "interface sessionIf is empty")
@@ -284,7 +289,7 @@ namespace OpcUaStackClient
 			return false;
 		}
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction->is_);
 		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 		responseHeader->opcUaBinaryDecode(ios);
 
@@ -297,7 +302,7 @@ namespace OpcUaStackClient
 	}
 
 	bool
-	Session::receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb)
+	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		if (sessionIf_ == nullptr) {
 			Log(Error, "interface sessionIf is empty")
@@ -315,7 +320,7 @@ namespace OpcUaStackClient
 			return false;
 		}
 
-		std::iostream ios(&sb);
+		std::iostream ios(&secureChannelTransaction->is_);
 		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 		responseHeader->opcUaBinaryDecode(ios);
 
@@ -324,7 +329,7 @@ namespace OpcUaStackClient
 			Log(Error, "element in pending queue not exist")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
-				.parameter("TypeId", typeId);
+				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_);
 			char c; while (ios.get(c));
 			return true;
 		}
@@ -339,23 +344,23 @@ namespace OpcUaStackClient
 
 		Component* componentService = serviceTransaction->componentService();
 		if (componentService != nullptr) {
-			componentService->send(typeId, serviceTransaction);
+			componentService->send(secureChannelTransaction->responseTypeNodeId_, serviceTransaction);
 			return true;
 		}
 
 		ServiceSetMap::iterator it;
-		it = serviceSetMap_.find(typeId);
+		it = serviceSetMap_.find(secureChannelTransaction->responseTypeNodeId_);
 		if (it == serviceSetMap_.end()) {
 			Log(Error, "type id not exist in service map")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
-				.parameter("TypeId", typeId);
+				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_);
 			char c; while (ios.get(c));
 			return true;
 		}
 
 		componentService = it->second;
-		componentService->send(typeId, serviceTransaction);
+		componentService->send(secureChannelTransaction->responseTypeNodeId_, serviceTransaction);
 		return true;
 	}
 

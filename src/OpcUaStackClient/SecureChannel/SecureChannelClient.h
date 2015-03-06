@@ -9,6 +9,7 @@
 #include "OpcUaStackCore/SecureChannel/SecurityToken.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelIf.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelTransaction.h"
 
 using namespace OpcUaStackCore;
 
@@ -40,7 +41,7 @@ namespace OpcUaStackClient
 
 		bool connect(void);
 		bool disconnect(void);
-		void send(OpcUaNodeId& nodeId, boost::asio::streambuf& sb1);
+		void send(SecureChannelTransaction::SPtr secureChannelTransaction);
 
 	  private:
 

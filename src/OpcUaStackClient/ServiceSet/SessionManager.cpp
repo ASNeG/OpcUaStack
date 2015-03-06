@@ -85,25 +85,9 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	SessionManager::createSessionRequest(boost::asio::streambuf& sb)
+	SessionManager::send(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		OpcUaNodeId typeId;
-		typeId.set(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
-		secureChannel_->send(typeId, sb);
-	}
-
-	void 
-	SessionManager::activateSessionRequest(boost::asio::streambuf& sb)
-	{
-		OpcUaNodeId typeId;
-		typeId.set(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
-		secureChannel_->send(typeId, sb);
-	}
-
-	void 
-	SessionManager::send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb)
-	{
-		secureChannel_->send(opcUaNodeId, sb);
+		secureChannel_->send(secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------
@@ -126,8 +110,8 @@ namespace OpcUaStackClient
 	}
 		
 	bool 
-	SessionManager::receive(OpcUaNodeId& nodeId, boost::asio::streambuf& is)
+	SessionManager::receive(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		return session_->receive(nodeId, is);
+		return session_->receive(secureChannelTransaction);
 	}
 }

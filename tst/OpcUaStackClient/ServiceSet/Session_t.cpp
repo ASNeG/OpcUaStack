@@ -50,8 +50,8 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	AttributeService attributeService;
 	attributeService.attributeServiceIf(&attributeServiceHandler);
 
-	Config sessionConfig; 
-	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
+	Config sessionConfig;
+	sessionConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	sessionConfig.setValue("TestConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("TestConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	sessionConfig.setValue("TestConfig.ApplicationDescription.ApplicationName.Text", "MyAppl");
 
 	Config secureChannelConfig;
-	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:4841");
+	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	secureChannelConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	Session::SPtr session = client.sessionManager().getNewSession(

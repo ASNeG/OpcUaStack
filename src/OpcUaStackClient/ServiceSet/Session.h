@@ -14,6 +14,7 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionManagerIf.h"
+#include "OpcUaStackClient/SecureChannel/SecureChannelTransaction.h"
 
 namespace OpcUaStackClient
 {
@@ -62,7 +63,7 @@ namespace OpcUaStackClient
 		void sessionIf(SessionIf* sessionIf);
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 
-		bool receive(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receive(SecureChannelTransaction::SPtr secureChannelTransaction);
 		CreateSessionParameter& createSessionParameter(void);
 
 		// - Component -------------------------------------------------------
@@ -70,10 +71,10 @@ namespace OpcUaStackClient
 		// - Component -------------------------------------------------------
 
  	  private:
-		bool receiveCreateSessionResponse(boost::asio::streambuf& sb);
-		bool receiveActivateSessionResponse(boost::asio::streambuf& sb);
-		bool receiveServiceFault(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
-		bool receiveMessage(OpcUaStackCore::OpcUaNodeId& typeId, boost::asio::streambuf& sb);
+		bool receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 
 		SessionState sessionState_;
 		uint32_t requestHandle_;

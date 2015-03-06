@@ -8,8 +8,8 @@
 include_directories(
     ./
     ${PROJECT_BINARY_DIR}
-    ../inc/
-	${Boost_INCLUDE_DIRS}
+    ../src/
+    ${Boost_INCLUDE_DIRS}
 )
 
 file(

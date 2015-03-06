@@ -4,6 +4,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/Condition.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include <iostream>
 
@@ -12,7 +14,9 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionTestHandler : public SessionIf, public SessionManagerIf
+	class DLLEXPORT SessionTestHandler
+	: public SessionIf
+	, public SessionManagerIf
 	{
 	  public:
 
@@ -22,7 +26,10 @@ namespace OpcUaStackClient
 		, activateSessionRequestCount_(0)
 		, createSessionCompleteCondition_()
 		, activateSessionCompleteCondition_()
+	    , opcUaStatusCode_()
 		{}
+
+		virtual ~SessionTestHandler(void) {}
 
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
@@ -44,10 +51,6 @@ namespace OpcUaStackClient
 			activateSessionCompleteCondition_.conditionValueDec();
 		}
 
-		void send(OpcUaNodeId& opcUaNodeId, boost::asio::streambuf& sb) {
-			// FIXME
-		}
-
 		OpcUaStatusCode opcUaStatusCode_;
 		Condition createSessionCompleteCondition_;
 		Condition activateSessionCompleteCondition_;
@@ -59,20 +62,30 @@ namespace OpcUaStackClient
 		//
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
-		void createSessionRequest(boost::asio::streambuf& sb) {
-			std::iostream sbs(&sb);
-			std::iostream sbt(&sb_);
-			OpcUaStackCore::clear(sbt);
-			OpcUaStackCore::duplicate(sbs, sbt);
-			createSessionRequestCount_++;
-		}
+		void send(SecureChannelTransaction::SPtr secureChannelTransaction) {
 
-		void activateSessionRequest(boost::asio::streambuf& sb) {
-			std::iostream sbs(&sb);
-			std::iostream sbt(&sb_);
-			OpcUaStackCore::clear(sbt);
-			OpcUaStackCore::duplicate(sbs, sbt);
-			activateSessionRequestCount_++;
+			switch (secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
+			{
+				case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
+				{
+					std::iostream sbs(&secureChannelTransaction->os_);
+					std::iostream sbt(&sb_);
+					OpcUaStackCore::clear(sbt);
+					OpcUaStackCore::duplicate(sbs, sbt);
+					createSessionRequestCount_++;
+					break;
+				}
+
+				case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
+				{
+					std::iostream sbs(&secureChannelTransaction->os_);
+					std::iostream sbt(&sb_);
+					OpcUaStackCore::clear(sbt);
+					OpcUaStackCore::duplicate(sbs, sbt);
+					activateSessionRequestCount_++;
+					break;
+				}
+			}
 		}
 
 		void connectToSecureChannel(void) {
