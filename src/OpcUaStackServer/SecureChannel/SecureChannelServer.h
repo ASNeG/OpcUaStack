@@ -23,6 +23,18 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::List secureChannelTransactionList_;
 	};
 
+	class ReceiveMessageInfo
+	{
+	  public:
+		ReceiveMessageInfo(void);
+		~ReceiveMessageInfo(void);
+
+		char segmentFlag_;
+		bool segment_;
+		bool first_;
+		SecureChannelTransaction::SPtr secureChannelTransaction_;
+	};
+
 	typedef enum
 	{
 		SecureChannelServerState_Close,
@@ -88,6 +100,7 @@ namespace OpcUaStackServer
 		uint32_t localEndpointPort_;
 
 		SendMessageInfo sendMessageInfo_;
+		ReceiveMessageInfo receiveMessageInfo_;
 	};
 
 }

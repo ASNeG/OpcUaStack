@@ -35,6 +35,23 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// ReceiveMessageInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ReceiveMessageInfo::ReceiveMessageInfo(void)
+	: secureChannelTransaction_()
+	, segment_(false)
+	{
+	}
+
+	ReceiveMessageInfo::~ReceiveMessageInfo(void)
+	{
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// SecureChannelServer
 	//
 	// ------------------------------------------------------------------------
@@ -58,6 +75,7 @@ namespace OpcUaStackServer
 	, authenticationToken_(0)
 	, asyncCount_(0)
 	, sendMessageInfo_()
+	, receiveMessageInfo_()
 	{
 		std::srand(static_cast<unsigned int>(std::time(0))); 
 	}
@@ -447,6 +465,15 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		receiveMessageInfo_.segmentFlag_ = messageHeader.segmentFlag();
+		receiveMessageInfo_.segment_ = (messageHeader.segmentFlag() == 'C');
+		receiveMessageInfo_.first_ = false;
+
+		if (receiveMessageInfo_.secureChannelTransaction_.get() == nullptr) {
+			receiveMessageInfo_.secureChannelTransaction_ = SecureChannelTransaction::construct();
+			receiveMessageInfo_.first_ = true;
+		}
+
 		asyncCount_++;
 		tcpConnection_.async_read_exactly(
 			is_,
@@ -458,8 +485,6 @@ namespace OpcUaStackServer
 	void 
 	SecureChannelServer::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
-
 		asyncCount_--;
 		Log(Debug, "receive message body")
 			.parameter("BodySize", bytes_transfered);
@@ -522,11 +547,22 @@ namespace OpcUaStackServer
 		SequenceHeader sequenceHeader;
 		sequenceHeader.opcUaBinaryDecode(ios);
 
-		secureChannelTransaction->requestTypeNodeId_.opcUaBinaryDecode(ios);
-		secureChannelTransaction->isAppend(is_);
-		secureChannelTransaction->requestId_ = sequenceHeader.requestId();
-		secureChannelTransaction->channelId_ = channelId_;
-		secureChannelTransaction->authenticationToken_ = authenticationToken_;
+		if (receiveMessageInfo_.first_) {
+			receiveMessageInfo_.secureChannelTransaction_->requestTypeNodeId_.opcUaBinaryDecode(ios);
+		}
+
+		Log(Debug, "read socket")
+			.parameter("ChannelId", channelId)
+			.parameter("MessageType", receiveMessageInfo_.secureChannelTransaction_->responseTypeNodeId_)
+			.parameter("RequestId", sequenceHeader_.requestId())
+			.parameter("SequenceNumber", sequenceHeader.sequenceNumber())
+			.parameter("SegmentFlag", receiveMessageInfo_.segmentFlag_);
+
+		receiveMessageInfo_.secureChannelTransaction_->isAppend(is_);
+
+		receiveMessageInfo_.secureChannelTransaction_->requestId_ = sequenceHeader.requestId();
+		receiveMessageInfo_.secureChannelTransaction_->channelId_ = channelId_;
+		receiveMessageInfo_.secureChannelTransaction_->authenticationToken_ = authenticationToken_;
 
 		if (!checkSecurityToken(securityTokenId)) {
 			Log(Error, "secure channel security token error")
@@ -546,13 +582,15 @@ namespace OpcUaStackServer
 		
 		if (secureChannelManagerIf_ != nullptr) {
 
-			Log(Debug, "secure channel receive message")
-				.parameter("ChannelId", channelId_)
-				.parameter("MessageType", secureChannelTransaction->requestTypeNodeId_)
-				.parameter("RequestId", secureChannelTransaction->requestId_)
-				.parameter("AuthenticationToken", secureChannelTransaction->authenticationToken_);
+			if (receiveMessageInfo_.segment_) {
+				asyncReadMessageHeader();
+				return;
+			}
 
-			bool rc = secureChannelManagerIf_->secureChannelMessage(secureChannelTransaction);
+			bool rc = secureChannelManagerIf_->secureChannelMessage(receiveMessageInfo_.secureChannelTransaction_);
+
+			receiveMessageInfo_.secureChannelTransaction_.reset();
+
 			if (rc == false) {
 				Log(Error, "cannot read message body, because message handler error")
 					.parameter("ChannelId", channelId_)
