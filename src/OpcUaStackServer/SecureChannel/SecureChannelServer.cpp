@@ -329,6 +329,7 @@ namespace OpcUaStackServer
 
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.opcUaBinaryDecode(is);
+		consumeAll(is_);
 
 		tokenIdVec_.push_back(std::rand());
 
