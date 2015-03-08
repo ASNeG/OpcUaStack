@@ -35,7 +35,7 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

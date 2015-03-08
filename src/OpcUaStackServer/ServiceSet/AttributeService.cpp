@@ -16,34 +16,34 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	AttributeService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	AttributeService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_ReadRequest_Encoding_DefaultBinary:
-				receiveReadRequest(typeId, serviceTransaction);
+				receiveReadRequest(serviceTransaction);
 				break;
 			case OpcUaId_WriteRequest_Encoding_DefaultBinary:
-				receiveWriteRequest(typeId, serviceTransaction);
+				receiveWriteRequest(serviceTransaction);
 				break;
 			case OpcUaId_HistoryReadRequest_Encoding_DefaultBinary:
-				receiveHistoryReadRequest(typeId, serviceTransaction);
+				receiveHistoryReadRequest( serviceTransaction);
 				break;
 			case OpcUaId_HistoryUpdateRequest_Encoding_DefaultBinary:
-				receiveHistoryUpdateRequest(typeId, serviceTransaction);
+				receiveHistoryUpdateRequest(serviceTransaction);
 				break;
 			default:
 				Log(Error, "attribute service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(serviceTransaction);
 		}
 	}
 
 	void 
-	AttributeService::receiveReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	AttributeService::receiveReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
 
@@ -63,12 +63,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (readRequest->readValueIdArray()->size() == 0) {
 			trx->responseHeader()->serviceResult(BadNothingToDo);
-			trx->componentSession()->send(typeId, serviceTransaction);
+			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 		if (readRequest->readValueIdArray()->size() > 1000) { // FIXME: todo
 			trx->responseHeader()->serviceResult(BadTooManyOperations);
-			trx->componentSession()->send(typeId, serviceTransaction);
+			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 
@@ -143,11 +143,11 @@ namespace OpcUaStackServer
 		}
 
 		trx->responseHeader()->serviceResult(Success);
-		trx->componentSession()->send(typeId, serviceTransaction);
+		trx->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	AttributeService::receiveWriteRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	AttributeService::receiveWriteRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionWrite::SPtr trx = boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction);
 		WriteRequest::SPtr writeRequest = trx->request();
@@ -161,12 +161,12 @@ namespace OpcUaStackServer
 		// check node id array
 		if (writeRequest->writeValueArray()->size() == 0) {
 			trx->responseHeader()->serviceResult(BadNothingToDo);
-			trx->componentSession()->send(typeId, serviceTransaction);
+			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 		if (writeRequest->writeValueArray()->size() > 1000) { // FIXME: todo
 			trx->responseHeader()->serviceResult(BadTooManyOperations);
-			trx->componentSession()->receive(typeId, serviceTransaction);
+			trx->componentSession()->receive(serviceTransaction);
 			return;
 		}
 
@@ -229,23 +229,23 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(Success);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	AttributeService::receiveHistoryReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	AttributeService::receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	AttributeService::receiveHistoryUpdateRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	AttributeService::receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 }

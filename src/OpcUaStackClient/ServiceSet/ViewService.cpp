@@ -42,11 +42,11 @@ namespace OpcUaStackClient
 	{
 		serviceTransactionBrowse->componentService(this); 
 		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionBrowse);
+		componentSession_->send(serviceTransactionBrowse);
 	}
 
 	void 
-	ViewService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	ViewService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
@@ -56,7 +56,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		switch (typeId.nodeId<uint32_t>()) 
+		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_BrowseResponse_Encoding_DefaultBinary:
 			{

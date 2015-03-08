@@ -86,50 +86,50 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	Component::send(OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::send(Message::SPtr message)
 	{
-		receive(messageNodeId, message);
+		receive(message);
 	}
 		
 	void 
-	Component::sendAsync(OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::sendAsync(Message::SPtr message)
 	{
 		if (ioService_ == nullptr) {
-			send(messageNodeId, message);
+			send(message);
 			return;
 		}
 
 		boost::mutex::scoped_lock g(mutex_);
 		ioService_->io_service().post(
-			boost::bind(&Component::receive, this, messageNodeId, message)
+			boost::bind(&Component::receive, this, message)
 		);
 	}
 
 	void 
-	Component::send(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::send(const std::string& componentName, Message::SPtr message)
 	{
 		Component* component = getComponent(componentName);
-		if (component != nullptr) send(*component, messageNodeId, message);
+		if (component != nullptr) send(*component, message);
 	}
 
 	void 
-	Component::sendAsync(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::sendAsync(const std::string& componentName, Message::SPtr message)
 	{
 		Component* component = getComponent(componentName);
-		if (component != nullptr) sendAsync(*component, messageNodeId, message);
+		if (component != nullptr) sendAsync(*component, message);
 		return;
 	}
 
 	void 
-	Component::send(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::send(Component& component, Message::SPtr message)
 	{
-		component.send(messageNodeId, message);
+		component.send(message);
 	}
 
 	void 
-	Component::sendAsync(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message)
+	Component::sendAsync(Component& component, Message::SPtr message)
 	{
-		component.sendAsync(messageNodeId, message);
+		component.sendAsync(message);
 	}
 
 }

@@ -22,11 +22,11 @@ namespace OpcUaStackServer
 		~MethodService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveCallRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveCallRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

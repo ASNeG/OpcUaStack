@@ -22,15 +22,15 @@ namespace OpcUaStackServer
 		~ViewService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveBrowseRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveBrowseNextRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveTranslateBrowsePathsToNodeIdsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveRegisterNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveUnregisterNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveBrowseRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveBrowseNextRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveTranslateBrowsePathsToNodeIdsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveRegisterNodesRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveUnregisterNodesRequest(ServiceTransaction::SPtr serviceTransaction);
 
 		typedef std::vector<ReferenceDescription::SPtr> ReferenceDescriptionVec;
 		OpcUaStatusCode browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec);

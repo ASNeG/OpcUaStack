@@ -41,8 +41,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 		serviceTransactionRead->componentService(this); 
-		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionRead);
+		componentSession_->send(serviceTransactionRead);
 	}
 
 	void 
@@ -58,8 +57,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
 		serviceTransactionWrite->componentService(this); 
-		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionWrite);
+		componentSession_->send(serviceTransactionWrite);
 	}
 
 	void 
@@ -75,8 +73,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 		serviceTransactionHistoryRead->componentService(this); 
-		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionHistoryRead);
+		componentSession_->send(serviceTransactionHistoryRead);
 	}
 
 	void 
@@ -92,12 +89,11 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
 		serviceTransactionHistoryUpdate->componentService(this); 
-		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionHistoryUpdate);
+		componentSession_->send(serviceTransactionHistoryUpdate);
 	}
 
 	void 
-	AttributeService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	AttributeService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		
@@ -107,7 +103,7 @@ namespace OpcUaStackClient
 			return;
 		}
 		
-		switch (typeId.nodeId<uint32_t>()) 
+		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_ReadResponse_Encoding_DefaultBinary:
 			{
@@ -127,7 +123,7 @@ namespace OpcUaStackClient
 				}
 				break;
 			}
-			case OpcUaId_HistoryReadRequest_Encoding_DefaultBinary:
+			case OpcUaId_HistoryReadResponse_Encoding_DefaultBinary:
 			{
 				if (attributeServiceIf_ != nullptr) {
 					attributeServiceIf_->attributeServiceHistoryReadResponse(
@@ -136,7 +132,7 @@ namespace OpcUaStackClient
 				}
 				break;
 			}
-			case OpcUaId_HistoryUpdateRequest_Encoding_DefaultBinary:
+			case OpcUaId_HistoryUpdateResponse_Encoding_DefaultBinary:
 				{
 				if (attributeServiceIf_ != nullptr) {
 					attributeServiceIf_->attributeServiceHistoryUpdateResponse(

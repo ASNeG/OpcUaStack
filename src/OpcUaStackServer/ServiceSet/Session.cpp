@@ -276,12 +276,12 @@ namespace OpcUaStackServer
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())
 			.parameter("TypeId", serviceTransactionSPtr->requestName());
 
-		serviceTransactionSPtr->componentService()->send(secureChannelTransaction->requestTypeNodeId_, serviceTransactionSPtr);
+		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
 		return true;
 	}
 
 	void  
-	Session::receive(OpcUaNodeId& typeId, Message::SPtr message) 
+	Session::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
 		Log(Debug, "receive response in session")

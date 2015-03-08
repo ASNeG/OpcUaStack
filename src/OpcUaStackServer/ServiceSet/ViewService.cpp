@@ -17,34 +17,34 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	ViewService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	ViewService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_BrowseRequest_Encoding_DefaultBinary:
-				receiveBrowseRequest(typeId, serviceTransaction);
+				receiveBrowseRequest(serviceTransaction);
 				break;
 			case OpcUaId_BrowseNextRequest_Encoding_DefaultBinary:
-				receiveBrowseNextRequest(typeId, serviceTransaction);
+				receiveBrowseNextRequest(serviceTransaction);
 				break;
 			case OpcUaId_TranslateBrowsePathsToNodeIdsRequest_Encoding_DefaultBinary:
-				receiveTranslateBrowsePathsToNodeIdsRequest(typeId, serviceTransaction);
+				receiveTranslateBrowsePathsToNodeIdsRequest(serviceTransaction);
 				break;
 			case OpcUaId_RegisterNodesRequest_Encoding_DefaultBinary:
-				receiveRegisterNodesRequest(typeId, serviceTransaction);
+				receiveRegisterNodesRequest(serviceTransaction);
 				break;
 			case OpcUaId_UnregisterNodesRequest_Encoding_DefaultBinary:
-				receiveUnregisterNodesRequest(typeId, serviceTransaction);
+				receiveUnregisterNodesRequest(serviceTransaction);
 				break;
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(serviceTransaction);
 		}
 	}
 
 	void 
-	ViewService::receiveBrowseRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	ViewService::receiveBrowseRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionBrowse::SPtr trx = boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction);
 		BrowseRequest::SPtr browseRequest = trx->request();
@@ -94,39 +94,39 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(Success);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	ViewService::receiveBrowseNextRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	ViewService::receiveBrowseNextRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	ViewService::receiveTranslateBrowsePathsToNodeIdsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	ViewService::receiveTranslateBrowsePathsToNodeIdsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	ViewService::receiveRegisterNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	ViewService::receiveRegisterNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	ViewService::receiveUnregisterNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	ViewService::receiveUnregisterNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	

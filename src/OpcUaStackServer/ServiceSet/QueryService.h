@@ -22,12 +22,12 @@ namespace OpcUaStackServer
 		~QueryService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveQueryFirstRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveQueryNextRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveQueryFirstRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveQueryNextRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

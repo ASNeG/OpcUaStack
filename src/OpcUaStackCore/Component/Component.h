@@ -28,14 +28,14 @@ namespace OpcUaStackCore
 		Component* component(const std::string& componentName);
 		Component* component(void);
 
-		virtual void receive(OpcUaNodeId& messageNodeId, Message::SPtr message) = 0;
-		void send(OpcUaNodeId& messageNodeId, Message::SPtr message);
-		void sendAsync(OpcUaNodeId& messageNodeId, Message::SPtr message);
+		virtual void receive(Message::SPtr message) = 0;
+		void send(Message::SPtr message);
+		void sendAsync(Message::SPtr message);
 
-		void send(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message);
-		void sendAsync(const std::string& componentName, OpcUaNodeId& messageNodeId, Message::SPtr message);
-		void send(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message);
-		void sendAsync(Component& component, OpcUaNodeId& messageNodeId, Message::SPtr message);
+		void send(const std::string& componentName, Message::SPtr message);
+		void sendAsync(const std::string& componentName, Message::SPtr message);
+		void send(Component& component, Message::SPtr message);
+		void sendAsync(Component& component, Message::SPtr message);
 
 	  private:
 		static ComponentMap componentMap_;

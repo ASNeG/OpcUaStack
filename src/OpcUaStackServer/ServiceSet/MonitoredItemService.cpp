@@ -14,35 +14,35 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	MonitoredItemService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	MonitoredItemService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_CreateMonitoredItemsRequest_Encoding_DefaultBinary:
-				receiveCreateMonitoredItemsRequest(typeId, serviceTransaction);
+				receiveCreateMonitoredItemsRequest(serviceTransaction);
 				break;
 			case OpcUaId_DeleteMonitoredItemsRequest_Encoding_DefaultBinary:
-				receiveDeleteMonitoredItemsRequest(typeId, serviceTransaction);
+				receiveDeleteMonitoredItemsRequest(serviceTransaction);
 				break;
 			case OpcUaId_ModifyMonitoredItemsRequest_Encoding_DefaultBinary:
-				receiveModifyMonitoredItemsRequest(typeId, serviceTransaction);
+				receiveModifyMonitoredItemsRequest(serviceTransaction);
 				break;
 			case OpcUaId_SetMonitoringModeRequest_Encoding_DefaultBinary:
-				receiveSetmonitoringModeRequest(typeId, serviceTransaction);
+				receiveSetmonitoringModeRequest(serviceTransaction);
 				break;
 			case OpcUaId_SetTriggeringRequest_Encoding_DefaultBinary:
-				receiveSetTriggeringRequest(typeId, serviceTransaction);
+				receiveSetTriggeringRequest(serviceTransaction);
 				break;
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(serviceTransaction);
 		}
 	}
 
 	static uint32_t itemId = 0;
 	void 
-	MonitoredItemService::receiveCreateMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	MonitoredItemService::receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME: dummy implementation
 
@@ -80,39 +80,39 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(Success);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	MonitoredItemService::receiveDeleteMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	MonitoredItemService::receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	MonitoredItemService::receiveModifyMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	MonitoredItemService::receiveModifyMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	MonitoredItemService::receiveSetmonitoringModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	MonitoredItemService::receiveSetmonitoringModeRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	MonitoredItemService::receiveSetTriggeringRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	MonitoredItemService::receiveSetTriggeringRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 }

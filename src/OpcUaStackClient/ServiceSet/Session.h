@@ -67,7 +67,7 @@ namespace OpcUaStackClient
 		CreateSessionParameter& createSessionParameter(void);
 
 		// - Component -------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		// - Component -------------------------------------------------------
 
  	  private:

@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
 		// - Component -------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		// - Component -------------------------------------------------------
 
 	  private:

@@ -13,26 +13,26 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	MethodService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	MethodService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
-		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
+		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
 		{
 			case OpcUaId_CallRequest_Encoding_DefaultBinary:
-				receiveCallRequest(typeId, serviceTransaction);
+				receiveCallRequest(serviceTransaction);
 				break;
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(serviceTransaction);
 		}
 	}
 
 	void 
-	MethodService::receiveCallRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	MethodService::receiveCallRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 }

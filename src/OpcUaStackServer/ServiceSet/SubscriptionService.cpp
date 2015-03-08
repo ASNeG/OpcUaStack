@@ -20,7 +20,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SubscriptionService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	SubscriptionService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
@@ -29,56 +29,55 @@ namespace OpcUaStackServer
 			// subscription
 			//
 			case OpcUaId_CreateSubscriptionRequest_Encoding_DefaultBinary:
-				receiveCreateSubscriptionRequest(typeId, serviceTransaction);
+				receiveCreateSubscriptionRequest(serviceTransaction);
 				break;
 			case OpcUaId_DeleteSubscriptionsRequest_Encoding_DefaultBinary:
-				receiveDeleteSubscriptionsRequest(typeId, serviceTransaction);
+				receiveDeleteSubscriptionsRequest(serviceTransaction);
 				break;
 			case OpcUaId_ModifySubscriptionRequest_Encoding_DefaultBinary:
-				receiveModifySubscriptionRequest(typeId, serviceTransaction);
+				receiveModifySubscriptionRequest(serviceTransaction);
 				break;
 			case OpcUaId_PublishRequest_Encoding_DefaultBinary:
-				receivePublishRequest(typeId, serviceTransaction);
+				receivePublishRequest(serviceTransaction);
 				break;
 			case OpcUaId_RepublishRequest_Encoding_DefaultBinary:
-				receiveRepublishRequest(typeId, serviceTransaction);
+				receiveRepublishRequest(serviceTransaction);
 				break;
 			case OpcUaId_SetPublishingModeRequest_Encoding_DefaultBinary:
-				receiveSetPublishingModeRequest(typeId, serviceTransaction);
+				receiveSetPublishingModeRequest(serviceTransaction);
 				break;
 			case OpcUaId_TransferSubscriptionsRequest_Encoding_DefaultBinary:
-				receiveTransferSubscriptionsRequest(typeId, serviceTransaction);
+				receiveTransferSubscriptionsRequest(serviceTransaction);
 				break;
 
 			//
 			// monitorted item
 			//
 			case OpcUaId_CreateMonitoredItemsRequest_Encoding_DefaultBinary:
-				receiveCreateMonitoredItemsRequest(typeId, serviceTransaction);
+				receiveCreateMonitoredItemsRequest(serviceTransaction);
 				break;
 			case OpcUaId_DeleteMonitoredItemsRequest_Encoding_DefaultBinary:
-				receiveDeleteMonitoredItemsRequest(typeId, serviceTransaction);
+				receiveDeleteMonitoredItemsRequest(serviceTransaction);
 				break;
 			case OpcUaId_ModifyMonitoredItemsRequest_Encoding_DefaultBinary:
-				receiveModifyMonitoredItemsRequest(typeId, serviceTransaction);
+				receiveModifyMonitoredItemsRequest(serviceTransaction);
 				break;
 			case OpcUaId_SetMonitoringModeRequest_Encoding_DefaultBinary:
-				receiveSetMonitoringModeRequest(typeId, serviceTransaction);
+				receiveSetMonitoringModeRequest(serviceTransaction);
 				break;
 			case OpcUaId_SetTriggeringRequest_Encoding_DefaultBinary:
-				receiveSetTriggeringRequest(typeId, serviceTransaction);
+				receiveSetTriggeringRequest(serviceTransaction);
 				break;
 
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(serviceTransaction);
 		}
 	}
 
 	void 
-	SubscriptionService::receiveCreateSubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveCreateSubscriptionRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary);
 		ServiceTransactionCreateSubscription::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction);
 		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
@@ -105,13 +104,12 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveDeleteSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveDeleteSubscriptionsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary);
 		ServiceTransactionDeleteSubscriptions::SPtr trx = boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction);
 		DeleteSubscriptionsRequest::SPtr deleteSubscriptionsRequest = trx->request();
 		DeleteSubscriptionsResponse::SPtr deleteSubscriptionsResponse = trx->response();
@@ -124,13 +122,13 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadNothingToDo);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 
 		if (subscriptionManager->size() == 0) {
 			subscriptionManagerMap_.erase(it);
@@ -138,17 +136,16 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SubscriptionService::receiveModifySubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveModifySubscriptionRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receivePublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receivePublishRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_PublishRequest_Encoding_DefaultBinary);
 		ServiceTransactionPublish::SPtr trx = boost::static_pointer_cast<ServiceTransactionPublish>(serviceTransaction);
 		PublishRequest::SPtr publishRequest = trx->request();
 		PublishResponse::SPtr publishResponse = trx->response();
@@ -161,7 +158,7 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadNothingToDo);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
@@ -170,27 +167,27 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SubscriptionService::receiveRepublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveRepublishRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveSetPublishingModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveSetPublishingModeRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveTransferSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveTransferSubscriptionsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 
@@ -203,9 +200,8 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SubscriptionService::receiveCreateMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_CreateMonitoredItemsResponse_Encoding_DefaultBinary);
 		ServiceTransactionCreateMonitoredItems::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction);
 
 		// find subscription manager
@@ -213,20 +209,19 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveDeleteMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_DeleteMonitoredItemsResponse_Encoding_DefaultBinary);
 		ServiceTransactionDeleteMonitoredItems::SPtr trx = boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction);
 		
 		// find subscription manager
@@ -234,20 +229,19 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveModifyMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveModifyMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_ModifyMonitoredItemsResponse_Encoding_DefaultBinary);
 		ServiceTransactionModifyMonitoredItems::SPtr trx = boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction);
 
 		// find subscription manager
@@ -255,20 +249,19 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveSetMonitoringModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveSetMonitoringModeRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_SetMonitoringModeResponse_Encoding_DefaultBinary);
 		ServiceTransactionSetMonitoringMode::SPtr trx = boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction);
 
 		// find subscription manager
@@ -276,20 +269,19 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	SubscriptionService::receiveSetTriggeringRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	SubscriptionService::receiveSetTriggeringRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		typeId.set(OpcUaId_SetTriggeringResponse_Encoding_DefaultBinary);
 		ServiceTransactionSetTriggering::SPtr trx = boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction);
 
 		// find subscription manager
@@ -297,14 +289,14 @@ namespace OpcUaStackServer
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
 			serviceTransaction->statusCode(BadSubscriptionIdInvalid);
-			serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+			serviceTransaction->componentSession()->send(serviceTransaction);
 			return;
 		}
 		subscriptionManager = it->second;
 		
 		// call service function in subscription manager
 		serviceTransaction->statusCode(subscriptionManager->receive(trx));
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 }

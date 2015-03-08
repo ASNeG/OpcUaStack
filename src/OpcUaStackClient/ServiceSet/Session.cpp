@@ -116,7 +116,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	Session::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
@@ -344,7 +344,7 @@ namespace OpcUaStackClient
 
 		Component* componentService = serviceTransaction->componentService();
 		if (componentService != nullptr) {
-			componentService->send(secureChannelTransaction->responseTypeNodeId_, serviceTransaction);
+			componentService->send(serviceTransaction);
 			return true;
 		}
 
@@ -360,7 +360,7 @@ namespace OpcUaStackClient
 		}
 
 		componentService = it->second;
-		componentService->send(secureChannelTransaction->responseTypeNodeId_, serviceTransaction);
+		componentService->send(serviceTransaction);
 		return true;
 	}
 

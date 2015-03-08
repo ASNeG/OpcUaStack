@@ -278,7 +278,10 @@ namespace OpcUaStackUtility
 			bool rc = createNode(nodeIdVec[pos], referenceDescriptionVec[pos], allReferenceDescriptionVec);
 			if (!rc) return false;
 
-			if (!browse(newNodeIdVec, newReferenceDescriptionVec)) return false;
+			if (newNodeIdVec.size() > 0) {
+				return browse(newNodeIdVec, newReferenceDescriptionVec);
+			}
+			return true;
 		}
 
 		return true;

@@ -23,14 +23,14 @@ namespace OpcUaStackServer
 		~AttributeService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveWriteRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveHistoryReadRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveHistoryUpdateRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveWriteRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

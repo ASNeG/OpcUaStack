@@ -27,25 +27,25 @@ namespace OpcUaStackServer
 		bool init(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
 		 // subscription
-		void receiveCreateSubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveModifySubscriptionRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receivePublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveRepublishRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetPublishingModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveTransferSubscriptionsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateSubscriptionRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteSubscriptionsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveModifySubscriptionRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receivePublishRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveRepublishRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetPublishingModeRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveTransferSubscriptionsRequest(ServiceTransaction::SPtr serviceTransaction);
 
 		// monitored item
-		void receiveCreateMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveModifyMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetMonitoringModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetTriggeringRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveModifyMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetMonitoringModeRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetTriggeringRequest(ServiceTransaction::SPtr serviceTransaction);
 
 		SubscriptionManagerMap subscriptionManagerMap_;
 	};

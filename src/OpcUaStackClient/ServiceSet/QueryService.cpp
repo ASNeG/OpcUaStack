@@ -41,8 +41,7 @@ namespace OpcUaStackClient
 	QueryService::send(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
 		serviceTransactionQueryFirst->componentService(this);
-		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionQueryFirst);
+		componentSession_->send(serviceTransactionQueryFirst);
 	}
 
 	void
@@ -58,13 +57,12 @@ namespace OpcUaStackClient
 	QueryService::send(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
 		serviceTransactionQueryNext->componentService(this);
-		OpcUaNodeId nodeId;
-		componentSession_->send(nodeId, serviceTransactionQueryNext);
+		componentSession_->send(serviceTransactionQueryNext);
 	}
 
 
 	void 
-	QueryService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	QueryService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		
@@ -74,7 +72,7 @@ namespace OpcUaStackClient
 			return;
 		}
 		
-		switch (typeId.nodeId<uint32_t>()) 
+		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_QueryFirstResponse_Encoding_DefaultBinary:
 			{

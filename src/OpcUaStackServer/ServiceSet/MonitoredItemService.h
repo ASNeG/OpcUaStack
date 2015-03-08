@@ -22,15 +22,15 @@ namespace OpcUaStackServer
 		~MonitoredItemService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveCreateMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveModifyMonitoredItemsRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetmonitoringModeRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveSetTriggeringRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveCreateMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveModifyMonitoredItemsRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetmonitoringModeRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveSetTriggeringRequest(ServiceTransaction::SPtr serviceTransaction);
 
 	};
 

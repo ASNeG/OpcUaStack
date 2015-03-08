@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

@@ -15,31 +15,31 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	NodeManagementService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	NodeManagementService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_AddNodesRequest_Encoding_DefaultBinary:
-				receiveAddNodesRequest(typeId, serviceTransaction);
+				receiveAddNodesRequest(serviceTransaction);
 				break;
 			case OpcUaId_AddReferencesRequest_Encoding_DefaultBinary:
-				receiveAddReferencesRequest(typeId, serviceTransaction);
+				receiveAddReferencesRequest(serviceTransaction);
 				break;
 			case OpcUaId_DeleteNodesRequest_Encoding_DefaultBinary:
-				receiveDeleteNodesRequest(typeId, serviceTransaction);
+				receiveDeleteNodesRequest(serviceTransaction);
 				break;
 			case OpcUaId_DeleteReferencesRequest_Encoding_DefaultBinary:
-				receiveDeleteReferencesRequest(typeId, serviceTransaction);
+				receiveDeleteReferencesRequest(serviceTransaction);
 				break;
 			default:
 				serviceTransaction->statusCode(BadInternalError);
-				serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+				serviceTransaction->componentSession()->send(serviceTransaction);
 		}
 	}
 
 	void 
-	NodeManagementService::receiveAddNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	NodeManagementService::receiveAddNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		OpcUaStatusCode statusCode = Success;
 		ServiceTransactionAddNodes::SPtr trx = boost::static_pointer_cast<ServiceTransactionAddNodes>(serviceTransaction);
@@ -64,33 +64,32 @@ namespace OpcUaStackServer
 			if (statusCode != Success) break; 
 		}
 
-		typeId.nodeId(OpcUaId_AddNodesResponse_Encoding_DefaultBinary);
 		serviceTransaction->statusCode(statusCode);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	NodeManagementService::receiveAddReferencesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	NodeManagementService::receiveAddReferencesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	NodeManagementService::receiveDeleteNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	NodeManagementService::receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 	void 
-	NodeManagementService::receiveDeleteReferencesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction)
+	NodeManagementService::receiveDeleteReferencesRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(typeId, serviceTransaction);
+		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
 
@@ -182,13 +181,4 @@ namespace OpcUaStackServer
 		return BadInternalError;
 	}
 
-#if 0
-		OpcUaExpandedNodeId::SPtr parentNodeId_;
-		OpcUaNodeId::SPtr referenceTypeId_;
-		OpcUaExpandedNodeId::SPtr requestedNewNodeId_;
-		OpcUaQualifiedName::SPtr browseName_;
-		NodeClass::SPtr nodeClass_;
-		ExtensibleParameter nodeAttributes_;
-		OpcUaExpandedNodeId::SPtr typeDefinition_;
-#endif
 }

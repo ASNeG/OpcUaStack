@@ -24,14 +24,14 @@ namespace OpcUaStackServer
 		~NodeManagementService(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
-		void receiveAddNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveAddReferencesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteNodesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
-		void receiveDeleteReferencesRequest(OpcUaNodeId& typeId, ServiceTransaction::SPtr serviceTransaction);
+		void receiveAddNodesRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveAddReferencesRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveDeleteReferencesRequest(ServiceTransaction::SPtr serviceTransaction);
 
 		OpcUaStatusCode addNode(uint32_t, BaseNodeClass::SPtr baseNodeClass);
 		OpcUaStatusCode addNode(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult);
