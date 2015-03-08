@@ -728,6 +728,9 @@ namespace OpcUaStackServer
 			sendMessageInfo_.first_ = false;
 		}
 		else {
+			sendMessageInfo_.secureChannelTransactionList_.pop_front();
+			sendMessageInfo_.first_ = true;
+
 			tcpConnection_.async_write(
 				sb2, sb1, secureChannelTransaction->os_,
 				boost::bind(
@@ -737,8 +740,6 @@ namespace OpcUaStackServer
 				)
 			);
 
-			sendMessageInfo_.secureChannelTransactionList_.pop_front();
-			sendMessageInfo_.first_ = true;
 		}
 	}
 		

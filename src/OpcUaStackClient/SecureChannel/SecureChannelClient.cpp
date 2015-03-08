@@ -131,6 +131,7 @@ namespace OpcUaStackClient
 	{
 		if (sendMessageInfo_.secureChannelTransactionList_.size() == 0) return;
 		if (sendMessageInfo_.asyncSend_) return;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction = sendMessageInfo_.secureChannelTransactionList_.front();
 
 		if (secureChannelClientState_ != SecureChannelClientState_Ready) {
@@ -214,6 +215,9 @@ namespace OpcUaStackClient
 			sendMessageInfo_.first_ = false;
 		}
 		else {
+			sendMessageInfo_.secureChannelTransactionList_.pop_front();
+			sendMessageInfo_.first_ = true;
+
 			tcpConnection_.async_write(
 				sb2, sb1, secureChannelTransaction->os_,
 				boost::bind(
@@ -222,9 +226,6 @@ namespace OpcUaStackClient
 					boost::asio::placeholders::error
 				)
 			);
-
-			sendMessageInfo_.secureChannelTransactionList_.pop_front();
-			sendMessageInfo_.first_ = true;
 		}
 	}
 

@@ -279,9 +279,8 @@ namespace OpcUaStackUtility
 			if (!rc) return false;
 
 			if (newNodeIdVec.size() > 0) {
-				return browse(newNodeIdVec, newReferenceDescriptionVec);
+				if (!browse(newNodeIdVec, newReferenceDescriptionVec)) return false;
 			}
-			return true;
 		}
 
 		return true;
