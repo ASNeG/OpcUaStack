@@ -17,7 +17,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		ServiceSetBase(void);
-		~ServiceSetBase(void);
+		virtual ~ServiceSetBase(void);
 
 		void informationModel(InformationModel::SPtr informationModel);
 		InformationModel::SPtr informationModel(void);

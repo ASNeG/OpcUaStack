@@ -11,4 +11,9 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	Application::receive(Message::SPtr message)
+	{
+	}
+
 }

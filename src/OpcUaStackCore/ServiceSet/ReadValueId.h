@@ -43,7 +43,9 @@ namespace OpcUaStackCore
 
 	};
 
-	class ReadValueIdArray : public OpcUaArray<ReadValueId::SPtr, SPtrTypeCoder<ReadValueId> >, public ObjectPool<ReadValueIdArray> 
+	class ReadValueIdArray
+	: public OpcUaArray<ReadValueId::SPtr, SPtrTypeCoder<ReadValueId> >
+	, public ObjectPool<ReadValueIdArray>
 	{
 	  public:
 		typedef boost::shared_ptr<ReadValueIdArray> SPtr;
