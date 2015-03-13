@@ -1,0 +1,181 @@
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaServer/ApplicationLibrary/DynamicLibrary.h"
+
+using namespace OpcUaStackCore;
+
+namespace OpcUaServer
+{
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Lib
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+#if WIN32
+
+#include <Windows.h>
+
+	class Lib
+	{
+	  public:
+		bool open(const std::string& libraryName) {
+
+			std::string libName = libraryName + std::string(".dll");
+			if (libName.length() > 999) return false;
+
+			size_t convertedChars = 0;
+			wchar_t wtext[1000];
+			mbstowcs_s(&convertedChars, wtext,  libName.length()+1, libName.c_str(), _TRUNCATE);
+			LPWSTR ptr = wtext;
+
+			handle_ = LoadLibrary(ptr);
+			if (handle_ == nullptr) return false;
+			return true;
+		}
+
+		bool close(void) {
+			BOOL rc = FreeLibrary(handle_);
+			return rc == TRUE;
+		}
+
+		bool get(const std::string& functionName, void **ptr) {
+			*ptr = GetProcAddress(handle_, functionName.c_str());
+			if (*ptr == nullptr) return false;
+			return true;
+		}
+
+		std::string errorString(void)
+		{
+			return "unknown";
+		}
+
+	  private:
+	    HMODULE handle_;
+	};
+
+#else
+
+#include <dlfcn.h>
+
+	class Lib
+	{
+	  public:
+		bool open(const std::string& libraryName) {
+
+			errorString_ = "unknown";
+			std::string libName = libraryName + std::string(".so");
+			if (libName.length() > 999) return false;
+			handle_ = dlopen(libName.c_str(), RTLD_LAZY);
+			if (handle_ == NULL) {
+				char* err = dlerror();
+				if (err != NULL) errorString_ = std::string(err);
+				return false;
+			}
+			return true;
+		}
+
+		bool close(void) {
+			dlclose(&handle_);
+			return true;
+		}
+
+		bool get(const std::string& functionName, void **ptr) {
+			errorString_ = "unknown";
+			*ptr = dlsym(handle_, functionName.c_str());
+			if (*ptr == NULL) {
+				char *err = dlerror();
+				if (err != NULL) errorString_ = std::string(err);
+				return false;
+			}
+			return true;
+		}
+
+		std::string errorString(void)
+		{
+			return errorString_;
+		}
+
+	  private:
+		std::string errorString_;
+		void *handle_;
+	};
+
+#endif
+
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ApplicationLibrary
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	DynamicLibrary::DynamicLibrary(void)
+	: moduleName_("")
+	, lib_()
+	{
+	}
+
+	DynamicLibrary::~DynamicLibrary(void)
+	{
+		if (lib_ != nullptr) {
+			close();
+		}
+	}
+
+	bool
+	DynamicLibrary::isOpen(void)
+	{
+		return lib_ != nullptr;
+	}
+
+	bool
+	DynamicLibrary::open(const std::string& moduleName)
+	{
+		moduleName_ = moduleName;
+		if (lib_ != nullptr) {
+			Log(Error, "cannot open dynamic library, because library already loaded")
+				.parameter("ModuleName", moduleName);
+			return false;
+		}
+
+		lib_ = new Lib();
+		bool rc = lib_->open(moduleName);
+		if (!rc) {
+			Log(Error, "cannot open dynamic library")
+				.parameter("ModuleName", moduleName)
+				.parameter("Reason", lib_->errorString());
+			close();
+			return false;
+		}
+
+		return false;
+	}
+
+	bool
+	DynamicLibrary::close(void)
+	{
+		if (lib_ == nullptr) return true;
+		delete lib_;
+		lib_ = nullptr;
+		return false;
+	}
+
+	bool
+	DynamicLibrary::get(const std::string& functionName, void **ptr)
+	{
+		if (lib_ == nullptr) {
+			Log(Error, "cannot load library function, because library is not open")
+				.parameter("ModulName", moduleName_)
+				.parameter("FunctionName", functionName);
+			return false;
+		}
+
+		return lib_->get(functionName, ptr);
+	}
+
+}
