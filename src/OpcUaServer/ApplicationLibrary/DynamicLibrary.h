@@ -12,7 +12,6 @@ namespace OpcUaServer
 	{
 	  public:
 
-
 		DynamicLibrary(void);
 		~DynamicLibrary(void);
 
