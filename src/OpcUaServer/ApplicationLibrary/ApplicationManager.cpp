@@ -12,6 +12,7 @@ namespace OpcUaServer
 
 	ApplicationManager::~ApplicationManager(void)
 	{
+		applicationLibraryMap_.clear();
 	}
 
 	bool
@@ -24,13 +25,33 @@ namespace OpcUaServer
 		if (applicationVec.size() == 0) {
 			Log(Info, "no application in configuration available")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", "OpcUaServer.Application.ApplicationLibrary");
+				.parameter("ParameterPath", "OpcUaServer.Application");
 			return true;
 		}
 
 		std::vector<Config>::iterator it;
 		for (it = applicationVec.begin(); it != applicationVec.end(); it++) {
-			std::cout << "Library=" << it->getValue("ApplicationLibrary") << std::endl;
+			boost::optional<std::string> moduleName = it->getValue("ApplicationLibrary");
+			if (!moduleName) {
+				Log(Info, "no application library in configuration available")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", "OpcUaServer.Application.ApplicationLibrary");
+				return false;
+			}
+
+			Log(Info, "load application library")
+			    .parameter("ModuleName", *moduleName);
+
+			ApplicationLibrary::SPtr applicationLibrary = ApplicationLibrary::construct();
+			applicationLibrary->moduleName(*moduleName);
+			if (!applicationLibrary->startup()) {
+				return false;
+			}
+
+			applicationLibraryMap_.insert(
+				std::make_pair(*moduleName, applicationLibrary)
+			);
+
 		}
 
 		return true;

@@ -10,9 +10,11 @@
     
   </Logging>
   
+  <!--
   <Application>
       <ApplicationLibrary>OpcUaServerApplicationDemo</ApplicationLibrary>
   </Application>
+  -->
   
   <Endpoints>
     <EndpointDescription>
