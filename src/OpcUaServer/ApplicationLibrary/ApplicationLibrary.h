@@ -6,6 +6,8 @@
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaServer/ApplicationLibrary/DynamicLibrary.h"
 
+#include <map>
+
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
@@ -17,6 +19,7 @@ namespace OpcUaServer
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationLibrary> SPtr;
+		typedef std::map<std::string, ApplicationLibrary::SPtr> Map;
 		typedef ApplicationIf* InitFunction(void);
 
 		ApplicationLibrary(void);

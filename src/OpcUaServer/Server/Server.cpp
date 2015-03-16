@@ -13,6 +13,7 @@ namespace OpcUaServer
 	, config_(nullptr)
 	, server_()
 	, fileLogger_()
+	, applicationManager_()
 	{
 	}
 
@@ -40,6 +41,13 @@ namespace OpcUaServer
 		// initial opc ua server
 		if (!server_.init()) {
 			Log(Error, "shutdown server, because init server error");
+			return false;
+		}
+
+		// initial application library manager
+		applicationManager_.config(*config_);
+		if (!applicationManager_.startup()) {
+			Log(Error, "shutdown server, because startup application manager error");
 			return false;
 		}
 

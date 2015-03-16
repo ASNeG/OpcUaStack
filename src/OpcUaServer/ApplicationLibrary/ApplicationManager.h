@@ -1,6 +1,11 @@
 #ifndef __OpcUaServer_ApplicationManager_h__
 #define __OpcUaServer_ApplicationManager_h__
 
+#include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaServer/ApplicationLibrary/ApplicationLibrary.h"
+
+using namespace OpcUaStackCore;
+
 namespace OpcUaServer
 {
 
@@ -12,6 +17,13 @@ namespace OpcUaServer
 
 		bool startup(void);
 		bool shutdown(void);
+
+		void config(Config& config);
+		Config& config(void);
+
+	  private:
+		Config* config_;
+		ApplicationLibrary::Map applicationLibraryMap_;
 	};
 
 }
