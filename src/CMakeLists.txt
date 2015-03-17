@@ -42,6 +42,12 @@ option(
     ON
 )
 
+option(
+    USE_OpcUaServerApplicationDemo
+    "build opc ua server application demo library"
+    ON
+)
+
 include(Tools/CMakeLists.txt) 
 
 add_definitions(-DBOOST_ALL_DYN_LINK)
@@ -82,6 +88,9 @@ if (USE_OpcUaServer)
     include(OpcUaServer/CMakeLists.txt) 
 endif ()
 
+if (USE_OpcUaServerApplicationDemo)
+    include(OpcUaServerApplicationDemo/CMakeLists.txt) 
+endif ()
 
 
 # -----------------------------------------------------------------------------
