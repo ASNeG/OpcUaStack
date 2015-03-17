@@ -4,6 +4,7 @@ namespace OpcUaServerApplicationDemo
 {
 
 	DemoLibrary::DemoLibrary(void)
+	: ApplicationIf()
 	{
 	}
 
@@ -11,4 +12,19 @@ namespace OpcUaServerApplicationDemo
 	{
 	}
 
+	void
+	DemoLibrary::startup(void)
+	{
+	}
+
+	void
+	DemoLibrary::shutdown(void)
+	{
+	}
+
 }
+
+extern "C" void init(ApplicationIf** applicationIf) {
+    *applicationIf = new OpcUaServerApplicationDemo::DemoLibrary();
+}
+
