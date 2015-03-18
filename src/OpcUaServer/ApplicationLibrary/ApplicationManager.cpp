@@ -48,6 +48,11 @@ namespace OpcUaServer
 				return false;
 			}
 
+			// call startup function
+			ApplicationIf* applicationIf;
+			applicationIf = applicationLibrary->applicationIf();
+			applicationIf->startup();
+
 			applicationLibraryMap_.insert(
 				std::make_pair(*moduleName, applicationLibrary)
 			);

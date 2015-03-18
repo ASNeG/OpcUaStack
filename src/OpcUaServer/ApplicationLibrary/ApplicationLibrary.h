@@ -27,6 +27,7 @@ namespace OpcUaServer
 
 		void moduleName(const std::string& moduleName);
 		InitFunction* initFunction(void);
+		ApplicationIf* applicationIf(void);
 
 		bool startup(void);
 		bool shutdown(void);
@@ -35,6 +36,7 @@ namespace OpcUaServer
 		InitFunction* initFunction_;
 		std::string moduleName_;
 		DynamicLibrary dynamicLibrary_;
+		ApplicationIf* applicationIf_;
 	};
 
 }

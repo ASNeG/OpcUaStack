@@ -1,3 +1,5 @@
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationLibrary.h"
 
 namespace OpcUaServer
@@ -7,6 +9,7 @@ namespace OpcUaServer
 	: moduleName_("")
 	, dynamicLibrary_()
 	, initFunction_(nullptr)
+	, applicationIf_(nullptr)
 	{
 	}
 
@@ -26,6 +29,12 @@ namespace OpcUaServer
 		return initFunction_;
 	}
 
+	ApplicationIf*
+	ApplicationLibrary::applicationIf(void)
+	{
+		return applicationIf_;
+	}
+
 	bool
 	ApplicationLibrary::startup(void)
 	{
@@ -36,6 +45,14 @@ namespace OpcUaServer
 
 		// load init function
 		if (!dynamicLibrary_.get("init", (void**)&initFunction_)) {
+			return false;
+		}
+
+		// call in function in library
+		applicationIf_ = (*initFunction_)();
+		if (applicationIf_ == NULL) {
+			Log(Error, "init function library error")
+			    .parameter("ModuleName", moduleName_);
 			return false;
 		}
 
