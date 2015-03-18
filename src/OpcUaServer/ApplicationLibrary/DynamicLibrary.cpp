@@ -153,7 +153,7 @@ namespace OpcUaServer
 			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	bool
@@ -175,7 +175,13 @@ namespace OpcUaServer
 			return false;
 		}
 
-		return lib_->get(functionName, ptr);
+		bool rc = lib_->get(functionName, ptr);
+		if (!rc) {
+			Log(Error, "load library function error")
+			.parameter("FunctionName", functionName)
+			.parameter("ErrorString", lib_->errorString());
+		}
+		return true;
 	}
 
 }

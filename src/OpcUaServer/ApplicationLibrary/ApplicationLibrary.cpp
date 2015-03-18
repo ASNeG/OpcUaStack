@@ -20,7 +20,7 @@ namespace OpcUaServer
 	void
 	ApplicationLibrary::moduleName(const std::string& moduleName)
 	{
-		moduleName_ = moduleName;
+		moduleName_ = std::string("lib") + moduleName;
 	}
 
 	ApplicationLibrary::InitFunction*
@@ -49,7 +49,7 @@ namespace OpcUaServer
 		}
 
 		// call in function in library
-		applicationIf_ = (*initFunction_)();
+		(*initFunction_)(&applicationIf_);
 		if (applicationIf_ == NULL) {
 			Log(Error, "init function library error")
 			    .parameter("ModuleName", moduleName_);

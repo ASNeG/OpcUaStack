@@ -20,7 +20,7 @@ namespace OpcUaServer
 	  public:
 		typedef boost::shared_ptr<ApplicationLibrary> SPtr;
 		typedef std::map<std::string, ApplicationLibrary::SPtr> Map;
-		typedef ApplicationIf* InitFunction(void);
+		typedef void InitFunction(ApplicationIf**);
 
 		ApplicationLibrary(void);
 		~ApplicationLibrary(void);
