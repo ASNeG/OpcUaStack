@@ -15,16 +15,18 @@ namespace OpcUaServerApplicationDemo
 		std::cout << "DemoLibrary::destruct" << std::endl;
 	}
 
-	void
+	bool
 	DemoLibrary::startup(void)
 	{
 		std::cout << "DemoLibrary::startup" << std::endl;
+		return true;
 	}
 
-	void
+	bool
 	DemoLibrary::shutdown(void)
 	{
 		std::cout << "DemoLibrary::shutdown" << std::endl;
+		return true;
 	}
 
 }

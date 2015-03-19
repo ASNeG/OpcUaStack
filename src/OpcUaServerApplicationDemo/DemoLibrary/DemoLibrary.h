@@ -16,8 +16,8 @@ namespace OpcUaServerApplicationDemo
 		virtual ~DemoLibrary(void);
 
 		//- ApplicationIf -----------------------------------------------------
-		virtual void startup(void);
-		virtual void shutdown(void);
+		virtual bool startup(void);
+		virtual bool shutdown(void);
 		//- ApplicationIf -----------------------------------------------------
 	};
 

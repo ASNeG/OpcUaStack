@@ -12,8 +12,8 @@ namespace OpcUaStackServer
 		ApplicationIf(void) {}
 		virtual ~ApplicationIf(void) {}
 
-		virtual void startup(void) = 0;
-		virtual void shutdown(void) = 0;
+		virtual bool startup(void) = 0;
+		virtual bool shutdown(void) = 0;
 	};
 
 }
