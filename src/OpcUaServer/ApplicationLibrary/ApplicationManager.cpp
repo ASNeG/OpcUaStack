@@ -51,7 +51,6 @@ namespace OpcUaServer
 			// call startup function
 			ApplicationIf* applicationIf;
 			applicationIf = applicationLibrary->applicationIf();
-			applicationIf->startup();
 
 			applicationLibraryMap_.insert(
 				std::make_pair(*moduleName, applicationLibrary)
@@ -78,6 +77,12 @@ namespace OpcUaServer
 	ApplicationManager::config(void)
 	{
 		return *config_;
+	}
+
+	ApplicationLibrary::Map&
+	ApplicationManager::applicationLibraryMap(void)
+	{
+		return applicationLibraryMap_;
 	}
 
 }

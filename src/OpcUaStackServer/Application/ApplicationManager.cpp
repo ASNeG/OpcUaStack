@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 	{
 		Application::Map::iterator it;
 		for (it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
-			Application::SPtr application = *it;
+			Application::SPtr application = it->second;
 			if (!application->startup()) return false;
 		}
 		return true;
@@ -66,7 +66,7 @@ namespace OpcUaStackServer
 	{
 		Application::Map::iterator it;
 		for (it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
-			Application::SPtr application = *it;
+			Application::SPtr application = it->second;
 			application->shutdown();
 		}
 		return true;

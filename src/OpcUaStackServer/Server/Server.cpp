@@ -18,6 +18,7 @@ namespace OpcUaStackServer
 	, informationModel_(InformationModel::construct())
 	, sessionManager_()
 	, serviceManager_()
+	, applicationManager_()
 	{
 	}
 
@@ -76,8 +77,14 @@ namespace OpcUaStackServer
 	bool 
 	Server::start(void)
 	{
-		Log(Info, "start opc ua server stack");
+		// startup application
+		Log(Info, "start application");
+		if (!applicationManager_.startup()) {
+			return false;
+		}
 
+		// startup opc ua stack
+		Log(Info, "start opc ua server stack");
 		ioService_.start();
 		sessionManager_.openServerSocket(
 			"OpcUaServer.Endpoints.EndpointDescription", config(),
@@ -93,6 +100,12 @@ namespace OpcUaStackServer
 	void 
 	Server::stop(void)
 	{
+	}
+
+	ApplicationManager&
+	Server::applicationManager(void)
+	{
+		return applicationManager_;
 	}
 
 	bool

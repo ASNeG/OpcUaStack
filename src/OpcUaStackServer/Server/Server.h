@@ -7,6 +7,7 @@
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
+#include "OpcUaStackServer/Application/ApplicationManager.h"
 
 namespace OpcUaStackServer
 {
@@ -25,6 +26,7 @@ namespace OpcUaStackServer
 
 		InformationModel::SPtr getInformationModel(void);
 		IOService* ioService(void);
+		ApplicationManager& applicationManager(void);
 
 	  private:
 		bool readInformationModel(void);
@@ -37,6 +39,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		SessionManager sessionManager_;
 		ServiceManager serviceManager_;
+		ApplicationManager applicationManager_;
 	};
 
 }

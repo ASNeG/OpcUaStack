@@ -20,6 +20,7 @@ namespace OpcUaServer
 
 		void config(Config& config);
 		Config& config(void);
+		ApplicationLibrary::Map& applicationLibraryMap(void);
 
 	  private:
 		Config* config_;

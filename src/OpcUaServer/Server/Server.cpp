@@ -51,6 +51,17 @@ namespace OpcUaServer
 			return false;
 		}
 
+		// register application libraries
+		ApplicationLibrary::Map::iterator it;
+		for (
+			it = applicationManager_.applicationLibraryMap().begin();
+			it != applicationManager_.applicationLibraryMap().end();
+			it++
+		) {
+			ApplicationLibrary::SPtr applicationLibrary = it->second;
+			server_.applicationManager().registerApplication(it->first, applicationLibrary->applicationIf());
+		}
+
 		raspberry_.informationModel(server_.getInformationModel());
 		raspberry_.ioService(*server_.ioService());
 		raspberry_.start();

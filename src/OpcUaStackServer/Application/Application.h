@@ -12,7 +12,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT Application
 	: public ApplicationBase
-	, public ObjectPool<ApplicationBase>
+	, public ObjectPool<Application>
 	{
 	  public:
 		typedef boost::shared_ptr<Application> SPtr;
