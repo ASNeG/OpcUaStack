@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/ForwardInfo.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
 
 namespace OpcUaStackCore
 {

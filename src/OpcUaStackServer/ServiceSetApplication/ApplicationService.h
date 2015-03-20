@@ -5,7 +5,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
-#include "OpcUaStackCore/ServiceSet/ApplicationServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 
 using namespace OpcUaStackCore;
 

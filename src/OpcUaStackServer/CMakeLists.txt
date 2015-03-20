@@ -37,6 +37,7 @@ file(GLOB INC_OpcUaStackServer_NodeSet OpcUaStackServer/NodeSet/*.h)
 file(GLOB INC_OpcUaStackServer_SecureChannel OpcUaStackServer/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceManager OpcUaStackServer/ServiceManager/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServer/ServiceSet/*.h)
+file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServerApplication/ServiceSetApplication/*.h)
 
 
 install(TARGETS OpcUaStackServer DESTINATION lib/OpcUaStack)
@@ -48,4 +49,5 @@ install(FILES ${INC_OpcUaStackServer_NodeSet} DESTINATION include/OpcUaStack/Opc
 install(FILES ${INC_OpcUaStackServer_SecureChannel} DESTINATION include/OpcUaStack/OpcUaStackServer/SecureChannel)
 install(FILES ${INC_OpcUaStackServer_ServiceManager} DESTINATION include/OpcUaStack/OpcUaStackServer/ServiceManager)
 install(FILES ${INC_OpcUaStackServer_ServiceSet} DESTINATION include/OpcUaStack/OpcUaStackServer/ServiceSet)
+install(FILES ${INC_OpcUaStackServer_ServiceSetApplication} DESTINATION include/OpcUaStack/OpcUaStackServer/ServiceSetApplication)
 

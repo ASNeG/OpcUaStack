@@ -1,7 +1,7 @@
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSet/ApplicationServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackServer/ServiceSet/ApplicationService.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
 namespace OpcUaStackServer

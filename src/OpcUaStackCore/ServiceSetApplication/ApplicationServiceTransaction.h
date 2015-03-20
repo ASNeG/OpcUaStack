@@ -3,8 +3,8 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionTemplate.h"
-#include "OpcUaStackCore/ServiceSet/RegisterForwardRequest.h"
-#include "OpcUaStackCore/ServiceSet/RegisterForwardResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardResponse.h"
 
 namespace OpcUaStackCore
 {

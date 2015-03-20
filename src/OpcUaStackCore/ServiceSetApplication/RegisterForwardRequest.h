@@ -6,7 +6,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/ServiceSet/ForwardInfo.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
 
 namespace OpcUaStackCore
 {

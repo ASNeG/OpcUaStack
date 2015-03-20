@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/RegisterForwardRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardRequest.h"
 
 namespace OpcUaStackCore
 {

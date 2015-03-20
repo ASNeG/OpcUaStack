@@ -34,6 +34,7 @@ file(GLOB INC_OpcUaStackCore_Component OpcUaStackCore/Component/*.h)
 file(GLOB INC_OpcUaStackCore_Core OpcUaStackCore/Core/*.h)
 file(GLOB INC_OpcUaStackCore_SecureChannel OpcUaStackCore/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackCore_ServiceSet OpcUaStackCore/ServiceSet/*.h)
+file(GLOB INC_OpcUaStackCore_ServiceSetApplication OpcUaStackCore/ServiceSetApplication/*.h)
 file(GLOB INC_OpcUaStackCore_TCPChannel OpcUaStackCore/TCPChannel/*.h)
 file(GLOB INC_OpcUaStackCore_Utility OpcUaStackCore/Utility/*.h)
 
@@ -44,6 +45,7 @@ install(FILES ${INC_OpcUaStackCore_Component} DESTINATION include/OpcUaStack/Opc
 install(FILES ${INC_OpcUaStackCore_Core} DESTINATION include/OpcUaStack/OpcUaStackCore/Core)
 install(FILES ${INC_OpcUaStackCore_SecureChannel} DESTINATION include/OpcUaStack/OpcUaStackCore/SecureChannel)
 install(FILES ${INC_OpcUaStackCore_ServiceSet} DESTINATION include/OpcUaStack/OpcUaStackCore/ServiceSet)
+install(FILES ${INC_OpcUaStackCore_ServiceSetApplication} DESTINATION include/OpcUaStack/OpcUaStackCore/ServiceSetAplication)
 install(FILES ${INC_OpcUaStackCore_TCPChannel} DESTINATION include/OpcUaStack/OpcUaStackCore/TCPChannel)
 install(FILES ${INC_OpcUaStackCore_Utility} DESTINATION include/OpcUaStack/OpcUaStackCore/Utility)
 
