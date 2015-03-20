@@ -12,6 +12,7 @@
 #include "OpcUaStackServer/ServiceSet/QueryService.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,6 +39,7 @@ namespace OpcUaStackServer
 		QueryService::SPtr queryService_;
 		SubscriptionService::SPtr subscriptionService_;
 		ViewService::SPtr viewService_;
+		ApplicationService::SPtr applicationService_;
 	};
 
 }

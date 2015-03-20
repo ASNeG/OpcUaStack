@@ -12,6 +12,7 @@ namespace OpcUaStackServer
 	, queryService_(QueryService::construct())
 	, subscriptionService_(SubscriptionService::construct())
 	, viewService_(ViewService::construct())
+	, applicationService_(ApplicationService::construct())
 	{
 		attributeService_->componentName("AttributeService");
 		methodService_->componentName("MethodService");
@@ -20,6 +21,7 @@ namespace OpcUaStackServer
 		queryService_->componentName("QueryService");
 		subscriptionService_->componentName("SubscriptionService");
 		viewService_->componentName("ViewService");
+		applicationService_->componentName("ApplicationService");
 	}
 
 	ServiceManager::~ServiceManager(void)
@@ -180,6 +182,17 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionTranslateBrowsePathsToNodeIds);
 		transactionManager_->registerTransaction(serviceTransactionRegisterNodes);
 		transactionManager_->registerTransaction(serviceTransactionUnregisterNodes);
+
+		//
+		// application service
+		//
+		ServiceTransactionRegisterForward::name("RegisterForward");
+
+		ServiceTransactionRegisterForward::SPtr serviceTransactionRegisterForward = ServiceTransactionRegisterForward::construct();
+
+		serviceTransactionRegisterForward->componentService(&*applicationService_);
+
+		transactionManager_->registerTransaction(serviceTransactionRegisterForward);
 	
 
 		sessionManager.transactionManager(transactionManager_);
