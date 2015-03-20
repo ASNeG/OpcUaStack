@@ -119,4 +119,16 @@ namespace OpcUaStackServer
 		return referenceItemMap_;
 	}
 
+	void
+	BaseNodeClass::forwardInfo(ForwardInfo::SPtr forwardInfo)
+	{
+		forwardInfo_ = forwardInfo;
+	}
+
+	ForwardInfo::SPtr
+	BaseNodeClass::forwardInfo(void)
+	{
+		return forwardInfo_;
+	}
+
 }

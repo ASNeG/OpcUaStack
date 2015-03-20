@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
@@ -13,7 +14,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT BaseNodeClass : public AttributeBase
+	class DLLEXPORT BaseNodeClass
+	: public AttributeBase
 	{
 	  public: 
 		typedef boost::shared_ptr<BaseNodeClass> SPtr;
@@ -21,7 +23,7 @@ namespace OpcUaStackServer
 
 		BaseNodeClass(void);
 		BaseNodeClass(NodeClassType nodeClass);
-		~BaseNodeClass(void);
+		virtual ~BaseNodeClass(void);
 
 		NodeIdAttribute& nodeId(void);
 		NodeClassAttribute& nodeClass(void);
@@ -41,6 +43,9 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap& referenceItemMap(void);
 
+		void forwardInfo(ForwardInfo::SPtr forwardInfo);
+		ForwardInfo::SPtr forwardInfo(void);
+
 	  private:
 		NodeIdAttribute nodeId_;
 		NodeClassAttribute nodeClass_;
@@ -51,6 +56,8 @@ namespace OpcUaStackServer
 		UserWriteMaskAttribute userWriteMask_;
 
 		ReferenceItemMap referenceItemMap_;
+
+		ForwardInfo::SPtr forwardInfo_;
 	};
 
 }
