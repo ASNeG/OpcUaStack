@@ -45,9 +45,51 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", registerForwardRequest->nodesToRegister()->size());
 
+		if (registerForwardRequest->nodesToRegister()->size() == 0) {
+			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+		if (registerForwardRequest->nodesToRegister()->size() > 1000) { // FIXME: todo
+			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
 
-		// FIXME:
-		trx->responseHeader()->serviceResult(BadNothingToDo);
+		// register forward
+		registerForwardResponse->statusCodeArray()->resize(registerForwardRequest->nodesToRegister()->size());
+		for (uint32_t idx = 0; idx < registerForwardRequest->nodesToRegister()->size(); idx++) {
+			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
+			registerForwardResponse->statusCodeArray()->set(idx, Success);
+
+			OpcUaNodeId::SPtr nodeId;
+			if (!registerForwardRequest->nodesToRegister()->get(idx, nodeId)) {
+				registerForwardResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
+				Log(Debug, "register forward error, because node request parameter node id invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
+				continue;
+			}
+
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+			if (baseNodeClass.get() == nullptr) {
+				registerForwardResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
+				Log(Debug, "register forward error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *nodeId);
+				continue;
+			}
+
+			baseNodeClass->forwardInfo(registerForwardRequest->forwardInfo());
+
+			Log(Debug, "register forward")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Idx", idx)
+				.parameter("Node", *nodeId);
+		}
+
+		trx->responseHeader()->serviceResult(Success);
 		trx->componentSession()->send(serviceTransaction);
 
 	}

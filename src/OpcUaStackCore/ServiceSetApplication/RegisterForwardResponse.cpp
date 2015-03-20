@@ -13,7 +13,7 @@ namespace OpcUaStackCore
 
 	RegisterForwardResponse::RegisterForwardResponse(void)
 	: ObjectPool<RegisterForwardResponse>()
-	, registeredNodeIdArraySPtr_(OpcUaNodeIdArray::construct())
+	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
 	{
 	}
 
@@ -22,26 +22,26 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	RegisterForwardResponse::registeredNodeIds(const OpcUaNodeIdArray::SPtr registeredNodeIds)
+	RegisterForwardResponse::statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray)
 	{
-		registeredNodeIdArraySPtr_ = registeredNodeIds;
+		statusCodeArraySPtr_ = statusCodeArray;
 	}
 	
-	OpcUaNodeIdArray::SPtr 
-	RegisterForwardResponse::registeredNodeIds(void) const
+	OpcUaStatusCodeArray::SPtr
+	RegisterForwardResponse::statusCodeArray(void) const
 	{
-		return registeredNodeIdArraySPtr_;
+		return statusCodeArraySPtr_;
 	}
 
 	void 
 	RegisterForwardResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		registeredNodeIdArraySPtr_->opcUaBinaryEncode(os);
+		statusCodeArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	RegisterForwardResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		registeredNodeIdArraySPtr_->opcUaBinaryDecode(is);
+		statusCodeArraySPtr_->opcUaBinaryDecode(is);
 	}
 }

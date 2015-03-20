@@ -19,14 +19,14 @@ namespace OpcUaStackCore
 	    RegisterForwardResponse(void);
 		virtual ~RegisterForwardResponse(void);
 
-		void registeredNodeIds(const OpcUaNodeIdArray::SPtr registeredNodeIds);
-		OpcUaNodeIdArray::SPtr registeredNodeIds(void) const;
+		void statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray);
+		OpcUaStatusCodeArray::SPtr statusCodeArray(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaNodeIdArray::SPtr registeredNodeIdArraySPtr_;
+		OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;
 	};
 }
 
