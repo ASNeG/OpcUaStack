@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationBase.h"
 
 #include <map>
@@ -30,6 +31,7 @@ namespace OpcUaStackServer
 
 		void applicationIf(ApplicationIf* applicationIf);
 		void applicationName(const std::string& applicationName);
+		void serviceComponent(Component* serviceComponent);
 
 		bool startup(void);
 		bool shutdown(void);
@@ -42,6 +44,7 @@ namespace OpcUaStackServer
 		State state_;
 		ApplicationIf* applicationIf_;
 		std::string applicationName_;
+		Component* serviceComponent_;
 	};
 
 }

@@ -34,6 +34,12 @@ namespace OpcUaStackServer
 		applicationName_ = applicationName;
 	}
 
+	void
+	Application::serviceComponent(Component* serviceComponent)
+	{
+		serviceComponent_ = serviceComponent;
+	}
+
 	bool
 	Application::startup(void)
 	{

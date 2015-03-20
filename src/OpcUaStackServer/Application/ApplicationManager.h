@@ -15,12 +15,14 @@ namespace OpcUaStackServer
 
 		bool registerApplication(const std::string& applicationName, ApplicationIf* applicationIf);
 		bool deregisterApplication(const std::string& applicationName);
+		void serviceComponent(Component* serviceComponent);
 
 		bool startup(void);
 		bool shutdown(void);
 
 	  private:
 		Application::Map applicationMap_;
+		Component* serviceComponent_;
 	};
 
 }

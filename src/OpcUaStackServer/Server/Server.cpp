@@ -77,8 +77,12 @@ namespace OpcUaStackServer
 	bool 
 	Server::start(void)
 	{
+
 		// startup application
 		Log(Info, "start application");
+		Component* applicationService = Component::getComponent("ApplicationService");
+		applicationManager_.serviceComponent(applicationService);
+
 		if (!applicationManager_.startup()) {
 			return false;
 		}

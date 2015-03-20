@@ -50,12 +50,19 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	void
+	ApplicationManager::serviceComponent(Component* serviceComponent)
+	{
+		serviceComponent_ = serviceComponent;
+	}
+
 	bool
 	ApplicationManager::startup(void)
 	{
 		Application::Map::iterator it;
 		for (it = applicationMap_.begin(); it !=  applicationMap_.end(); it++) {
 			Application::SPtr application = it->second;
+			application->serviceComponent(serviceComponent_);
 			if (!application->startup()) return false;
 		}
 		return true;
