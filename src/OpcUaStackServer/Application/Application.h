@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationBase.h"
+#include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 
 #include <map>
 
@@ -14,6 +15,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT Application
 	: public ApplicationBase
 	, public ObjectPool<Application>
+	, public ApplicationServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<Application> SPtr;
@@ -37,8 +39,13 @@ namespace OpcUaStackServer
 		bool shutdown(void);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
+
+		//- ApplicationServiceIf ------------------------------------------------------
+		virtual void send(ServiceTransaction::SPtr serviceTransaction);
+		virtual void sendSync(ServiceTransaction::SPtr serviceTransaction);
+		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
 		State state_;
