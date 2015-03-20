@@ -2031,4 +2031,10 @@
 #define OpcUaId_ConditionVariableType 9002
 #define OpcUaId_ProgramDiagnosticType 2380
 
+//
+// private identifier
+//
+#define OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary 1000000
+#define OpcUaId_RegisterForwardResponse_Encoding_DefaultBinary 1000001
+
 #endif

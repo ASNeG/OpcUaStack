@@ -1,4 +1,4 @@
-#include "OpcUaStackCore/ServiceSet/RegisterNodesResponse.h"
+#include "OpcUaStackCore/ServiceSet/RegisterForwardResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -6,41 +6,41 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// OpcUa RegisterNodesResponse
+	// OpcUa RegisterForwardResponse
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	RegisterNodesResponse::RegisterNodesResponse(void)
-	: ObjectPool<RegisterNodesResponse>()
+	RegisterForwardResponse::RegisterForwardResponse(void)
+	: ObjectPool<RegisterForwardResponse>()
 	, registeredNodeIdArraySPtr_(OpcUaNodeIdArray::construct())
 	{
 	}
 
-	RegisterNodesResponse::~RegisterNodesResponse(void)
+	RegisterForwardResponse::~RegisterForwardResponse(void)
 	{
 	}
 
 	void 
-	RegisterNodesResponse::registeredNodeIds(const OpcUaNodeIdArray::SPtr registeredNodeIds)
+	RegisterForwardResponse::registeredNodeIds(const OpcUaNodeIdArray::SPtr registeredNodeIds)
 	{
 		registeredNodeIdArraySPtr_ = registeredNodeIds;
 	}
 	
 	OpcUaNodeIdArray::SPtr 
-	RegisterNodesResponse::registeredNodeIds(void) const
+	RegisterForwardResponse::registeredNodeIds(void) const
 	{
 		return registeredNodeIdArraySPtr_;
 	}
 
 	void 
-	RegisterNodesResponse::opcUaBinaryEncode(std::ostream& os) const
+	RegisterForwardResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		registeredNodeIdArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	RegisterNodesResponse::opcUaBinaryDecode(std::istream& is)
+	RegisterForwardResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		registeredNodeIdArraySPtr_->opcUaBinaryDecode(is);
 	}

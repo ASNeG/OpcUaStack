@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_RegisterNodesResponse_h__
-#define __OpcUaStackCore_RegisterNodesResponse_h__
+#ifndef __OpcUaStackCore_RegisterForwardResponse_h__
+#define __OpcUaStackCore_RegisterForwardResponse_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -11,13 +11,13 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT RegisterNodesResponse : public ObjectPool<RegisterNodesResponse>
+	class DLLEXPORT RegisterForwardResponse : public ObjectPool<RegisterForwardResponse>
 	{
 	  public:
-		typedef boost::shared_ptr<RegisterNodesResponse> SPtr;
+		typedef boost::shared_ptr<RegisterForwardResponse> SPtr;
 
-	    RegisterNodesResponse(void);
-		virtual ~RegisterNodesResponse(void);
+	    RegisterForwardResponse(void);
+		virtual ~RegisterForwardResponse(void);
 
 		void registeredNodeIds(const OpcUaNodeIdArray::SPtr registeredNodeIds);
 		OpcUaNodeIdArray::SPtr registeredNodeIds(void) const;
