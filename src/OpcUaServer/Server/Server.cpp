@@ -59,7 +59,10 @@ namespace OpcUaServer
 			it++
 		) {
 			ApplicationLibrary::SPtr applicationLibrary = it->second;
-			server_.applicationManager().registerApplication(it->first, applicationLibrary->applicationIf());
+			server_.applicationManager().registerApplication(
+				it->first,
+				applicationLibrary->applicationIf()
+			);
 		}
 
 		raspberry_.informationModel(server_.getInformationModel());

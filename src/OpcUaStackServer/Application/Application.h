@@ -48,6 +48,8 @@ namespace OpcUaStackServer
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
+		void updateServiceTransactionRequest(ServiceTransaction::SPtr serviceTransaction);
+
 		State state_;
 		ApplicationIf* applicationIf_;
 		std::string applicationName_;

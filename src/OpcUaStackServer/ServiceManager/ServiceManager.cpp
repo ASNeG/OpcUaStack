@@ -200,15 +200,16 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	ServiceManager::informatinModel(InformationModel::SPtr informatinModel)
+	ServiceManager::informatinModel(InformationModel::SPtr informationModel)
 	{
-		attributeService_->informationModel(informatinModel);
-		methodService_->informationModel(informatinModel);
-		monitoredItemService_->informationModel(informatinModel);
-		nodeManagementService_->informationModel(informatinModel);
-		queryService_->informationModel(informatinModel);
-		subscriptionService_->informationModel(informatinModel);
-		viewService_->informationModel(informatinModel);
+		attributeService_->informationModel(informationModel);
+		methodService_->informationModel(informationModel);
+		monitoredItemService_->informationModel(informationModel);
+		nodeManagementService_->informationModel(informationModel);
+		queryService_->informationModel(informationModel);
+		subscriptionService_->informationModel(informationModel);
+		viewService_->informationModel(informationModel);
+		applicationService_->informationModel(informationModel);
 		return true;
 	}
 
@@ -222,6 +223,7 @@ namespace OpcUaStackServer
 		queryService_->ioService(ioService);
 		subscriptionService_->ioService(ioService);
 		viewService_->ioService(ioService);
+		applicationService_->ioService(ioService);
 		return true;
 	}
 
@@ -236,7 +238,14 @@ namespace OpcUaStackServer
 		rc = rc && queryService_->init();
 		rc = rc && subscriptionService_->init();
 		rc = rc && viewService_->init();
+		rc = rc && applicationService_->init();
 		return rc;
+	}
+
+	ApplicationService::SPtr
+	ServiceManager::applicationService(void)
+	{
+		return applicationService_;
 	}
 
 }

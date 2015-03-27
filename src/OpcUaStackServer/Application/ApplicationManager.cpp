@@ -14,7 +14,10 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ApplicationManager::registerApplication(const std::string& applicationName, ApplicationIf* applicationIf)
+	ApplicationManager::registerApplication(
+		const std::string& applicationName,
+		ApplicationIf* applicationIf
+	)
 	{
 		Application::Map::iterator it;
 		it = applicationMap_.find(applicationName);
@@ -27,6 +30,7 @@ namespace OpcUaStackServer
 		Application::SPtr application = Application::construct();
 		application->applicationIf(applicationIf);
 		application->applicationName(applicationName);
+		application->serviceComponent(serviceComponent_);
 		applicationMap_.insert(
 			std::make_pair(applicationName, application)
 		);

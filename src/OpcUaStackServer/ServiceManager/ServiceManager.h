@@ -30,6 +30,8 @@ namespace OpcUaStackServer
 		bool ioService(IOService* ioService);
 		bool init(void);
 
+		ApplicationService::SPtr applicationService(void);
+
 	  private:
 		TransactionManager::SPtr transactionManager_;
 		AttributeService::SPtr attributeService_;

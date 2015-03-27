@@ -16,7 +16,7 @@ namespace OpcUaStackCore
 		typedef std::map<std::string, Component*> ComponentMap;
 
 		Component(void);
-		~Component(void);
+		virtual ~Component(void);
 		
 		static Component* getComponent(const std::string& componentName);
 

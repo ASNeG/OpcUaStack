@@ -1,4 +1,6 @@
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/Application/Application.h"
 
 using namespace OpcUaStackCore;
@@ -22,6 +24,7 @@ namespace OpcUaStackServer
 	Application::applicationIf(ApplicationIf* applicationIf)
 	{
 		applicationIf_ = applicationIf;
+		applicationIf_->service(this);
 	}
 
 	void
@@ -103,6 +106,7 @@ namespace OpcUaStackServer
 	void
 	Application::send(ServiceTransaction::SPtr serviceTransaction)
 	{
+		//updateServiceTransactionRequest(serviceTransaction);
 		serviceTransaction->sync(false);
 		serviceTransaction->componentSession(this);
 		serviceComponent_->send(serviceTransaction);
@@ -111,12 +115,40 @@ namespace OpcUaStackServer
 	void
 	Application::sendSync(ServiceTransaction::SPtr serviceTransaction)
 	{
+
+		//updateServiceTransactionRequest(serviceTransaction);
 		serviceTransaction->sync(true);
 		serviceTransaction->componentSession(this);
 
 		serviceTransaction->conditionBool().conditionInit();
-		serviceComponent_->sendAsync(serviceTransaction);
+		serviceComponent_->send(serviceTransaction);
 		serviceTransaction->conditionBool().waitForCondition();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// private function
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	Application::updateServiceTransactionRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
+		{
+			case OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary:
+			{
+				ServiceTransactionRegisterForward::SPtr trx;
+				trx = boost::static_pointer_cast<ServiceTransactionRegisterForward>(serviceTransaction);
+				trx->componentService(this);
+				break;
+			}
+			default:
+			{
+				// nothing to do
+			}
+		}
 	}
 
 }

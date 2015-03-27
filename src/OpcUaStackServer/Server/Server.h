@@ -27,6 +27,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr getInformationModel(void);
 		IOService* ioService(void);
 		ApplicationManager& applicationManager(void);
+		ServiceManager& serviceManager(void);
 
 	  private:
 		bool readInformationModel(void);
