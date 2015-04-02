@@ -10,10 +10,17 @@ include_directories(
     ${PROJECT_SOURCE_DIR}
 )
 
-add_definitions(-DBOOST_DYN_LINK)
-
 file(GLOB OpcUaServerApplicationDemo_SRC ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/*/*.cpp)
 add_library(OpcUaServerApplicationDemo SHARED ${OpcUaServerApplicationDemo_SRC})
+
+target_link_libraries(
+    OpcUaServerApplicationDemo
+    OpcUaStackCore
+    OpcUaStackServer
+	OpcUaStackClient
+    ${pthread}
+    ${Boost_LIBRARIES}
+)
 
 
 # -----------------------------------------------------------------------------

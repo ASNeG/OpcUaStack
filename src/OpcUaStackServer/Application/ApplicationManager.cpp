@@ -4,7 +4,7 @@
 namespace OpcUaStackServer
 {
 
-	ApplicationManager::ApplicationManager(void)
+	ApplicationManager::ApplicationManager(void) 
 	: applicationMap_()
 	{
 	}
@@ -13,7 +13,7 @@ namespace OpcUaStackServer
 	{
 	}
 
-	bool
+	bool 
 	ApplicationManager::registerApplication(
 		const std::string& applicationName,
 		ApplicationIf* applicationIf

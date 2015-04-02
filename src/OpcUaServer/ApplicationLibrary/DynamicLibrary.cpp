@@ -26,12 +26,7 @@ namespace OpcUaServer
 			std::string libName = libraryName + std::string(".dll");
 			if (libName.length() > 999) return false;
 
-			size_t convertedChars = 0;
-			wchar_t wtext[1000];
-			mbstowcs_s(&convertedChars, wtext,  libName.length()+1, libName.c_str(), _TRUNCATE);
-			LPWSTR ptr = wtext;
-
-			handle_ = LoadLibrary(ptr);
+			handle_ = LoadLibrary(libName.c_str());
 			if (handle_ == nullptr) return false;
 			return true;
 		}
