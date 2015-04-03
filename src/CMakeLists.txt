@@ -112,7 +112,7 @@ install(FILES icon/asneg_uninstall.ico DESTINATION icon)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-
+# C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files (x86)\Windows Kits\8.0\Windows Performance Toolkit\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;D:\Inteq\advantage\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\CMake\bin
 if (WIN32)
 	include (InstallRequiredSystemLibraries)
 	
@@ -126,16 +126,16 @@ if (WIN32)
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKCU Environment\\\ PATH \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-			CreateShortCut \\\"$DESKTOP\\\\OpcUaServer.lnk\\\" \\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\"  \\\" \\\"$INSTDIR\\\\icon\\\\asneg.ico\\\"
-			CreateShortCut \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\" \\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\"  \\\" \\\"$INSTDIR\\\\icon\\\\asneg.ico\\\"
+			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
+			ExecWait '\\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\" INSTALL \\\"ASNeG Server Demo\\\" \\\"ASNeG Demo Server\\\"'
+			CreateShortCut \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\" \\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\"  \\\"$INSTDIR\\\\icon\\\\asneg.ico\\\"
 		"
 	) 
 	
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKCU Environment\\\ PATH \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-			Delete \\\"$DESKTOP\\\\OpcUaStack.lnk\\\"
+			ExecWait '\\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\" UNINSTALL \\\"ASNeG Server Demo\\\"'
+			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
 			Delete \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\"
 		"
 	) 

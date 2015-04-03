@@ -369,6 +369,8 @@ namespace OpcUaServer
 
 		CloseServiceHandle(scService);
 		CloseServiceHandle(scManager);
+
+		restartAfterFailure(serviceName, 2);
 		return true;
 	}
 
@@ -420,6 +422,57 @@ namespace OpcUaServer
 		CloseServiceHandle(scManager);
 		return true;
 	}
+
+
+	bool
+	WindowsService::restartAfterFailure(const std::string& serviceName, int restartAfterFailureTime)
+	{
+		SC_HANDLE scManager = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS); 
+		if (scManager==0) 
+		{
+			std::stringstream ss;
+			int errorCode = GetLastError();
+			ss << "OpenSCManager failed, error code =" << errorCode;
+			eventLog("Error", ss.str());
+			eventLog("Error", getLastErrorMessage(errorCode));
+
+			return false;
+		}
+
+		SC_HANDLE scService = OpenService(scManager, serviceName.c_str(), SERVICE_ALL_ACCESS);
+		if (scService==0) {
+			std::stringstream ss;
+			int errorCode = GetLastError();
+			ss << "OpenService failed, error code =" << errorCode;
+			eventLog("Error", ss.str());
+			eventLog("Error", getLastErrorMessage(errorCode));
+
+			CloseServiceHandle(scManager); 
+		}
+
+		SERVICE_FAILURE_ACTIONS sfa;
+		SC_ACTION actions;
+
+		sfa.dwResetPeriod = INFINITE;
+		sfa.lpCommand = NULL;
+		sfa.lpRebootMsg = NULL;
+		sfa.cActions = 1;
+		sfa.lpsaActions = &actions;
+
+		sfa.lpsaActions[0].Type = SC_ACTION_RESTART;
+		sfa.lpsaActions[0].Delay = restartAfterFailureTime; 
+
+		ChangeServiceConfig2(scService, SERVICE_CONFIG_FAILURE_ACTIONS, &sfa);
+
+		std::stringstream ss;
+		ss << "Service " << serviceName << " set to restart on failure";
+		eventLog("Info", ss.str());
+
+		CloseServiceHandle(scService);
+		CloseServiceHandle(scManager);
+		return true;
+	}
+
 
 	void 
 	WindowsService::serviceMain(unsigned int argc, char** argv)
@@ -649,7 +702,9 @@ namespace OpcUaServer
 			SYSTEMTIME oT;
 			::GetLocalTime(&oT);
 			FILE* pLog = NULL;
-			fopen_s(&pLog, "C:\\OpcUaServer.trc", "a");
+			errno_t err = fopen_s(&pLog, "C:\\OpcUaServer.trc", "a");
+			if (pLog == NULL) return;
+
 			fprintf(pLog,"%s - %02d/%02d/%04d, %02d:%02d:%02d\n    %s\n",
 				logLevel.c_str(),
 				oT.wMonth,oT.wDay,oT.wYear,oT.wHour,oT.wMinute,oT.wSecond,

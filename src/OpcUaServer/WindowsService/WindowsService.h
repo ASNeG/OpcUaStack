@@ -39,6 +39,7 @@ namespace OpcUaServer
 		bool setServiceDescription(const std::string& serviceName, const std::string& serviceDescription);
 		bool delServiceDescription(const std::string& serviceName);
 		std::string getLastErrorMessage(int errorCode);
+		bool restartAfterFailure(const std::string& serviceName, int restartAfterFailureTime);
 
 		CRITICAL_SECTION criticalSection_;
 		SERVICE_STATUS serviceStatus_;

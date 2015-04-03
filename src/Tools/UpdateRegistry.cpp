@@ -1,12 +1,21 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
+#include <stdint.h>
+#include <sstream>
 
 class UpdateRegistry
 {
   public:
 	int start(int argc, char**argv) 
 	{
+		std::stringstream ss;
+		ss << "Main: " << std::endl;
+		for (uint32_t idx=0; idx<argc; idx++) {
+			ss << "P[" << idx << "] = " << argv[idx] << std::endl;
+		}
+		eventLog("Info", ss.str());
+
 		if (argc != 6) {
 			usage();
 			return 1;
@@ -25,6 +34,12 @@ class UpdateRegistry
 				value_[0] = 0x00;
 			}
 
+			{
+				std::stringstream ss;
+				ss << "ActualValue=" << value_ << std::endl;
+				eventLog("Info", ss.str());
+			}
+
 			std::string value(value_);
 			value = stringAdd(value_, std::string(argv[5]));
 			if (value_ == value) return 0;
@@ -32,6 +47,12 @@ class UpdateRegistry
 			if (!createRegistry(std::string(argv[3]))) {
 				closeRegistry();
 				return 1;
+			}
+
+			{
+				std::stringstream ss;
+				ss << "NewValue=" << value << std::endl;
+				eventLog("Info", ss.str());
 			}
 
 			if (!setValue(std::string(argv[4]), value)) {
@@ -55,9 +76,21 @@ class UpdateRegistry
 			value = stringRemove(value_, std::string(argv[5]));
 			if (value_ == value) return 0;
 		
+			{
+				std::stringstream ss;
+				ss << "ActualValue=" << value_ << std::endl;
+				eventLog("Info", ss.str());
+			}
+
 			if (!createRegistry(std::string(argv[3]))) {
 				closeRegistry();
 				return 1;
+			}
+
+			{
+				std::stringstream ss;
+				ss << "NewValue=" << value << std::endl;
+				eventLog("Info", ss.str());
 			}
 
 			if (!setValue(std::string(argv[4]), value)) {
@@ -92,7 +125,7 @@ class UpdateRegistry
 	bool openRegistry(const std::string& parameter)
 	{
 		if (RegOpenKey(primaryKey_, parameter.c_str(), &accessKey_) != 0) {
-			std::cout << "cannot open registry" << std::endl;
+			eventLog("Error", "cannot open registry");
 			return false;
 		}
 		return true;
@@ -101,7 +134,7 @@ class UpdateRegistry
 	bool createRegistry(const std::string& parameter)
 	{
 		if (RegCreateKey(primaryKey_, parameter.c_str(), &accessKey_) != 0) {
-			std::cout << "cannot create registry" << std::endl;
+			eventLog("Error", "cannot create registry");
 			return false;
 		}
 		return true;
@@ -118,7 +151,7 @@ class UpdateRegistry
 		valueLen_ = 1024;
 		value_[0] = 0x00;
 		if (RegGetValue(primaryKey_, path.c_str(), parameter.c_str(), RRF_RT_ANY, NULL, (PVOID)&value_, &valueLen_) != 0) {
-			std::cout << "get value error" << std::endl;
+			eventLog("Error", "get value error");
 			return false;
 		}
 		return true;
@@ -127,7 +160,7 @@ class UpdateRegistry
 	bool setValue(const std::string& parameter, const std::string& value)
 	{
 		if (RegSetValueEx(accessKey_, parameter.c_str(), 0, REG_EXPAND_SZ, (BYTE*)value.c_str(), value.length()) != 0) {
-			std::cout << "set value error" << std::endl;
+			eventLog("Error", "set value error");
 			return false;
 		}
 		return true;
@@ -135,8 +168,11 @@ class UpdateRegistry
 
 	std::string stringAdd(const std::string& value, const std::string& addValue)
 	{
-		std::size_t pos = value.find_first_of(addValue);
-		if (pos != std::string::npos) return value;
+		std::size_t pos = value.find(addValue);
+		if (pos != std::string::npos) {
+			eventLog("Error", "value exist...");
+			return value;
+		}
 		std::string val = value;
 		if (val.length() == 0) val = addValue;
 		else val = val + std::string(";") + addValue;
@@ -145,13 +181,42 @@ class UpdateRegistry
 
 	std::string stringRemove(const std::string& value, const std::string& removeValue)
 	{
-		std::size_t pos = value.find_first_of(removeValue);
-		if (pos == std::string::npos) return value;
+		std::size_t pos = value.find(removeValue);
+		if (pos == std::string::npos) {
+			eventLog("Error", "value not exist...");
+			return value;
+		}
 
 		std::string val = value;
 		if (pos == 0) val = val.replace(0, removeValue.length()+1, "");
 		else val = val.replace(pos-1, removeValue.length()+1, "");
 		return val;
+	}
+
+	void log(const std::string& logLevel, const std::string& message)
+	{
+		try
+		{
+			SYSTEMTIME oT;
+			::GetLocalTime(&oT);
+			FILE* pLog = NULL;
+			errno_t err = fopen_s(&pLog, "C:\\OpcUaServer.trc", "a");
+			if (pLog == NULL) return;
+
+			fprintf(pLog,"%s - %02d/%02d/%04d, %02d:%02d:%02d\n    %s\n",
+				logLevel.c_str(),
+				oT.wMonth,oT.wDay,oT.wYear,oT.wHour,oT.wMinute,oT.wSecond,
+				message.c_str()
+			); 
+			fclose(pLog);
+		} catch(...) {}
+	}
+
+	void 
+	eventLog(const std::string& logLevel, const std::string& message)
+	{
+		log(logLevel, message);
+		return;
 	}
 
   private:
