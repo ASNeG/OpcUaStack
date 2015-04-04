@@ -1,5 +1,5 @@
 #ifdef WIN32
-#include "OpcUaServer/WindowsService/WindowsService.h"
+#include "OpcUaServer/Service/WindowsService.h"
 #include <iostream>
 #include <stdint.h>
 #include <sstream>

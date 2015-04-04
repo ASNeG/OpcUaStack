@@ -38,6 +38,8 @@ namespace OpcUaServer
 		else if (argc == 2) {
 			configFileName_ = argv[1];
 		}
+
+		std::cout << ".,," << configFileName_ << std::endl;
 	}
 
 	bool 
