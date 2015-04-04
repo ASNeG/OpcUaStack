@@ -1,3 +1,4 @@
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/DemoLibrary.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include <iostream>
@@ -58,11 +59,9 @@ namespace OpcUaServerApplicationDemo
 		return true;
 	}
 
- void xx(int i) {}
-
 }
 
-extern "C" void init(ApplicationIf** applicationIf) {
+extern "C" DLLEXPORT void  init(ApplicationIf** applicationIf) {
     *applicationIf = new OpcUaServerApplicationDemo::DemoLibrary();
 }
 
