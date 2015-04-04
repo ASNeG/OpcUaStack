@@ -83,7 +83,7 @@ namespace OpcUaServer
 			<< "OpcUaServer UNINSTALL <ServiceName>\n" 
 			<< "OpcUaServer START\n" 
 			<< "OpcUaServer STOP\n"
-			<< "OpcUaServer CONSOLE <ServiceName>\n\n"; 
+			<< "OpcUaServer CONSOLE <ServiceName> [<ConfigFileName>]\n\n"; 
 
 		eventLog("Error", ss.str());
 	}
@@ -162,13 +162,13 @@ namespace OpcUaServer
 
 		// handle console
 		else if (command == "CONSOLE") {
-			if (argc != 3) {
+			if (argc != 3 && argc!= 4) {
 				usage();
 				return;
 			}
 
 			std::string serviceName(argv[2]);
-			runConsole(serviceName);
+			runConsole(serviceName, argc-2, &argv[2]);
 			return;
 		}
 		
@@ -202,9 +202,9 @@ namespace OpcUaServer
 	}
 
 	bool 
-	WindowsService::runConsole(const std::string& serviceName)
+	WindowsService::runConsole(const std::string& serviceName, unsigned int argc, char** argv)
 	{
-		serverApplicationIf_->serviceName(serviceName);
+		serverApplicationIf_->serviceName(serviceName, argc, argv);
 		if (!serverApplicationIf_->startup()) return false;
 		if (!serverApplicationIf_->run()) return false;
 		serverApplicationIf_->shutdown();
@@ -507,7 +507,7 @@ namespace OpcUaServer
 			return; 
 		} 
 
-		serverApplicationIf_->serviceName(serviceName);
+		serverApplicationIf_->serviceName(serviceName, argc, argv);
 
 		// startup service
 		serviceStatus_.dwCurrentState		= SERVICE_START_PENDING;

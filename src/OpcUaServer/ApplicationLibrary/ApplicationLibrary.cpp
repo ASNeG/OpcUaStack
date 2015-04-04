@@ -20,7 +20,7 @@ namespace OpcUaServer
 	void
 	ApplicationLibrary::moduleName(const std::string& moduleName)
 	{
-		moduleName_ = std::string("lib") + moduleName;
+		moduleName_ = moduleName;
 	}
 
 	ApplicationLibrary::InitFunction*

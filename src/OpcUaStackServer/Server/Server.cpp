@@ -97,15 +97,13 @@ namespace OpcUaStackServer
 			"OpcUaServer.Endpoints.EndpointDescription", config()
 		);
 	
-		IOService::secSleep(40000);
-
-		ioService_.stop();
 		return true;
 	}
 	
 	void 
 	Server::stop(void)
 	{
+		ioService_.stop();
 	}
 
 	ApplicationManager&

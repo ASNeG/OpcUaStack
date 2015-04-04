@@ -28,7 +28,7 @@ namespace OpcUaServer
 		bool startService(const std::string& serviceName);
 		bool stopService(const std::string& serviceName);
 		bool runService(unsigned int argc, char** argv);
-		bool runConsole(const std::string& serviceName);
+		bool runConsole(const std::string& serviceName, unsigned int argc, char** argv);
 
 		void log(const std::string& logLevel, const std::string& message);
 		void eventLog(const std::string& logLevel, const std::string& message);

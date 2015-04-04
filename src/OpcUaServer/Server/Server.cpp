@@ -82,12 +82,13 @@ namespace OpcUaServer
 	void
 	Server::stop(void)
 	{
-
+		server_.stop();
 	}
 
 	void 
 	Server::cleanup(void)
 	{
+		server_.cleanup();
 	}
 
 	bool 

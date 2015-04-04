@@ -23,31 +23,78 @@ namespace OpcUaServer
 	  public:
 		bool open(const std::string& libraryName) {
 
+			message_ = "";
+
 			std::string libName = libraryName + std::string(".dll");
 			if (libName.length() > 999) return false;
 
 			handle_ = LoadLibrary(libName.c_str());
-			if (handle_ == nullptr) return false;
+			if (handle_ == nullptr) {
+				int errorCode = GetLastError();
+				message_ = getLastErrorMessage(errorCode);
+				return false;
+			}
 			return true;
 		}
 
 		bool close(void) {
+			message_ = "";
+
 			BOOL rc = FreeLibrary(handle_);
 			return rc == TRUE;
 		}
 
 		bool get(const std::string& functionName, void **ptr) {
+			message_ = "";
+
 			*ptr = GetProcAddress(handle_, functionName.c_str());
-			if (*ptr == nullptr) return false;
+			if (*ptr == nullptr) {
+				int errorCode = GetLastError();
+				message_ = getLastErrorMessage(errorCode);
+				return false;
+			}
 			return true;
 		}
 
 		std::string errorString(void)
 		{
-			return "unknown";
+			return message_;
 		}
 
+		std::string 
+		getLastErrorMessage(int errorCode)
+		{
+			HMODULE hModule = NULL; 
+			LPSTR MessageBuffer;
+			DWORD dwBufferLength;
+
+			DWORD dwFormatFlags = FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_SYSTEM ;
+
+			//
+			// Call FormatMessage() to allow for message 
+			//  text to be acquired from the system 
+			//  or from the supplied module handle.
+			//
+			bool success = false;
+			if((dwBufferLength = FormatMessageA(
+				dwFormatFlags,
+				hModule, // module to get message from (NULL == system)
+				errorCode,
+				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
+				(LPSTR) &MessageBuffer,
+				0,
+				NULL
+			)) > 0)
+			{
+				success = true;
+			}
+
+			if (!success) return "error unknown";
+			return MessageBuffer;
+	}
+
 	  private:
+		std::string message_;
 	    HMODULE handle_;
 	};
 
@@ -61,7 +108,7 @@ namespace OpcUaServer
 		bool open(const std::string& libraryName) {
 
 			errorString_ = "unknown";
-			std::string libName = libraryName + std::string(".so");
+			std::string libName = std::string("lib") + libraryName + std::string(".so");
 			if (libName.length() > 999) return false;
 			handle_ = dlopen(libName.c_str(), RTLD_LAZY);
 			if (handle_ == NULL) {
@@ -175,7 +222,9 @@ namespace OpcUaServer
 			Log(Error, "load library function error")
 			.parameter("FunctionName", functionName)
 			.parameter("ErrorString", lib_->errorString());
+			return false;
 		}
+
 		return true;
 	}
 

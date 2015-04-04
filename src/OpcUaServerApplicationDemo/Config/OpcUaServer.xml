@@ -2,7 +2,7 @@
 
   <Logging>
     <FileLogger>
-      <LogFileName>@INSTALL_DIR@/@LOG_DIR@/OpcUaServer.log</LogFileName>
+      <LogFileName>@INSTALL_DIR@/@LOG_DIR@/ASNeG-Demo/OpcUaServer.log</LogFileName>
     </FileLogger>
     
     <Log4cxxLogger>
@@ -64,9 +64,9 @@
   </Endpoints>
   
   <InformationModel>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/Opc.Ua.NodeSet.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/Opc.Ua.NodeSetTest.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/Opc.Ua.NodeSetRaspberry.xml</NodeSetFile>
+    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.xml</NodeSetFile>
+    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTest.xml</NodeSetFile>
+    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetRaspberry.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>
