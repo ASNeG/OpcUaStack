@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
 
 namespace OpcUaStackCore
 {
@@ -17,14 +18,14 @@ namespace OpcUaStackCore
 	    GetNodeReferenceResponse(void);
 		virtual ~GetNodeReferenceResponse(void);
 
-		void statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray);
-		OpcUaStatusCodeArray::SPtr statusCodeArray(void) const;
+		void nodeReferenceArray(const NodeReferenceArray::SPtr nodeReferenceArray);
+		NodeReferenceArray::SPtr nodeReferenceArray(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaStatusCodeArray::SPtr statusCodeArraySPtr_;
+		NodeReferenceArray::SPtr nodeReferenceArray_;
 	};
 }
 

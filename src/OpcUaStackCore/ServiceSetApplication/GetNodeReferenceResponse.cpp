@@ -13,7 +13,7 @@ namespace OpcUaStackCore
 
 	GetNodeReferenceResponse::GetNodeReferenceResponse(void)
 	: ObjectPool<GetNodeReferenceResponse>()
-	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
+	, nodeReferenceArray_(NodeReferenceArray::construct())
 	{
 	}
 
@@ -22,26 +22,26 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	GetNodeReferenceResponse::statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray)
+	GetNodeReferenceResponse::nodeReferenceArray(const NodeReferenceArray::SPtr nodeReferenceArray)
 	{
-		statusCodeArraySPtr_ = statusCodeArray;
+		nodeReferenceArray_ = nodeReferenceArray;
 	}
 	
-	OpcUaStatusCodeArray::SPtr
-	GetNodeReferenceResponse::statusCodeArray(void) const
+	NodeReferenceArray::SPtr
+	GetNodeReferenceResponse::nodeReferenceArray(void) const
 	{
-		return statusCodeArraySPtr_;
+		return nodeReferenceArray_;
 	}
 
 	void 
 	GetNodeReferenceResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		statusCodeArraySPtr_->opcUaBinaryEncode(os);
+		//nodeReferenceArray_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	GetNodeReferenceResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		statusCodeArraySPtr_->opcUaBinaryDecode(is);
+		//nodeReferenceArray_->opcUaBinaryDecode(is);
 	}
 }

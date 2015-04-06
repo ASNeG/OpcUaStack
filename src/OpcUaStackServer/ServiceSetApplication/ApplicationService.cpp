@@ -121,15 +121,16 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		// register forward
-		getNodeReferenceResponse->statusCodeArray()->resize(getNodeReferenceRequest->nodes()->size());
+		// get node reference
+		getNodeReferenceResponse->nodeReferenceArray()->resize(getNodeReferenceRequest->nodes()->size());
 		for (uint32_t idx = 0; idx < getNodeReferenceRequest->nodes()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
-			getNodeReferenceResponse->statusCodeArray()->set(idx, Success);
+			NodeReference::SPtr nodeReference = NodeReference::construct();
+			nodeReference->statusCode(Success);
+			getNodeReferenceResponse->nodeReferenceArray()->set(idx, nodeReference);
 
 			OpcUaNodeId::SPtr nodeId;
 			if (!getNodeReferenceRequest->nodes()->get(idx, nodeId)) {
-				getNodeReferenceResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
+				nodeReference->statusCode(BadNodeIdInvalid);
 				Log(Debug, "get node reference error, because node request parameter node id invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx);
@@ -138,7 +139,7 @@ namespace OpcUaStackServer
 
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
 			if (baseNodeClass.get() == nullptr) {
-				getNodeReferenceResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
+				nodeReference->statusCode(BadNodeIdUnknown);
 				Log(Debug, "getNodeReference error, because node not exist in information model")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
