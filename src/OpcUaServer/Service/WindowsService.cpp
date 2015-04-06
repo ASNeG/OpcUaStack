@@ -54,7 +54,8 @@ namespace OpcUaServer
 	}
 
 	WindowsService::WindowsService(void)
-	: criticalSection_()		
+	: programFileName_("")
+	, criticalSection_()		
 	, serviceStatus_()
 	, ssHandle_()
 	, serverApplicationIf_(nullptr)
@@ -218,6 +219,10 @@ namespace OpcUaServer
 		char moduleFileName[2048];
 		DWORD moduleFileNameLen = GetModuleFileName(NULL, moduleFileName, 2048);
 		std::string programFileName(moduleFileName, moduleFileNameLen);
+
+		if (!programFileName_.empty()) {
+			programFileName = programFileName_;
+		}
 
 		SC_HANDLE scManager = OpenSCManager(NULL, NULL, SC_MANAGER_CREATE_SERVICE); 
 		if (scManager==0) 
@@ -566,6 +571,12 @@ namespace OpcUaServer
 				break; 
 			}
 		}
+	}
+
+	void 
+	WindowsService::programFileName(const std::string& programFileName)
+	{
+		programFileName_ = programFileName;
 	}
 
 	std::string 
