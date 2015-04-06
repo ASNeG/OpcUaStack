@@ -6,6 +6,7 @@ namespace OpcUaStackServer
 
 	ApplicationManager::ApplicationManager(void) 
 	: applicationMap_()
+	, serviceComponent_(nullptr)
 	{
 	}
 
