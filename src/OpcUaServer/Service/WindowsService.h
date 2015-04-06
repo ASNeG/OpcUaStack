@@ -30,6 +30,7 @@ namespace OpcUaServer
 		bool runService(unsigned int argc, char** argv);
 		bool runConsole(const std::string& serviceName, unsigned int argc, char** argv);
 
+		void programFileName(const std::string& programFileName);
 		void log(const std::string& logLevel, const std::string& message);
 		void eventLog(const std::string& logLevel, const std::string& message);
 
@@ -41,6 +42,7 @@ namespace OpcUaServer
 		std::string getLastErrorMessage(int errorCode);
 		bool restartAfterFailure(const std::string& serviceName, int restartAfterFailureTime);
 
+		std::string programFileName_;
 		CRITICAL_SECTION criticalSection_;
 		SERVICE_STATUS serviceStatus_;
 		SERVICE_STATUS_HANDLE ssHandle_;
