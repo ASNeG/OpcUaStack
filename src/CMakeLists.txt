@@ -10,7 +10,7 @@ project	(OpcUaStack)
 # -----------------------------------------------------------------------------
 set(VERSION_MAJOR "0" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
-set(VERSION_PATCH "6" CACHE STRING "patch version")
+set(VERSION_PATCH "7" CACHE STRING "patch version")
 
 option(
     USE_OpcUaStackCore

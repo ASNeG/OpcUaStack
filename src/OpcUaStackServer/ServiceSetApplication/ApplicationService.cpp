@@ -19,12 +19,17 @@ namespace OpcUaStackServer
 	ApplicationService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
 			case OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardRequest(serviceTransaction);
 				break;
+			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
+				receiveGetNodeReferenceRequest(serviceTransaction);
+				break;
 			default:
+				std::cout << "CC" << std::endl;
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
@@ -33,7 +38,7 @@ namespace OpcUaStackServer
 		}
 	}
 
-	void 
+	void
 	ApplicationService::receiveRegisterForwardRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionRegisterForward::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForward>(serviceTransaction);
@@ -84,6 +89,68 @@ namespace OpcUaStackServer
 			baseNodeClass->forwardInfo(registerForwardRequest->forwardInfo());
 
 			Log(Debug, "register forward")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Idx", idx)
+				.parameter("Node", *nodeId);
+		}
+
+		trx->responseHeader()->serviceResult(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveGetNodeReferenceRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionGetNodeReference::SPtr trx = boost::static_pointer_cast<ServiceTransactionGetNodeReference>(serviceTransaction);
+
+		GetNodeReferenceRequest::SPtr getNodeReferenceRequest = trx->request();
+		GetNodeReferenceResponse::SPtr getNodeReferenceResponse = trx->response();
+
+		Log(Debug, "application service get node reference request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", getNodeReferenceRequest->nodes()->size());
+
+		if (getNodeReferenceRequest->nodes()->size() == 0) {
+			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+		if (getNodeReferenceRequest->nodes()->size() > 1000) { // FIXME: todo
+			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+
+		// get node reference
+		getNodeReferenceResponse->nodeReferenceArray()->resize(getNodeReferenceRequest->nodes()->size());
+		for (uint32_t idx = 0; idx < getNodeReferenceRequest->nodes()->size(); idx++) {
+			NodeReference::SPtr nodeReference = NodeReference::construct();
+			nodeReference->statusCode(Success);
+			getNodeReferenceResponse->nodeReferenceArray()->set(idx, nodeReference);
+
+			OpcUaNodeId::SPtr nodeId;
+			if (!getNodeReferenceRequest->nodes()->get(idx, nodeId)) {
+				nodeReference->statusCode(BadNodeIdInvalid);
+				Log(Debug, "get node reference error, because node request parameter node id invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
+				continue;
+			}
+
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+			if (baseNodeClass.get() == nullptr) {
+				nodeReference->statusCode(BadNodeIdUnknown);
+				Log(Debug, "getNodeReference error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *nodeId);
+				continue;
+			}
+
+			// FIXME:
+			//baseNodeClass->forwardInfo(registerForwardRequest->forwardInfo());
+
+			Log(Debug, "get node reference")
 				.parameter("Trx", serviceTransaction->transactionId())
 				.parameter("Idx", idx)
 				.parameter("Node", *nodeId);

@@ -58,8 +58,6 @@ namespace OpcUaStackServer
 		Log(Info, "init opc ua server stack session");
 		rc = rc && initSession();
 
-		applicationManager_.serviceComponent(serviceManager_.applicationService().get());
-
 #if 0
 		std::vector<std::string> namespaceUris;
 		//namespaceUris.push_back("http://yourorganisation.org/Raspberry/");
