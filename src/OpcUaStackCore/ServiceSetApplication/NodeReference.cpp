@@ -24,4 +24,16 @@ namespace OpcUaStackCore
 		return statusCode_;
 	}
 
+	void 
+	NodeReference::copyTo(NodeReference& nodeReference)
+	{
+		nodeReference.statusCode(statusCode_);
+	}
+
+	void 
+	NodeReference::out(std::ostream& os) const
+	{
+		os << statusCode_;
+	}
+
 }

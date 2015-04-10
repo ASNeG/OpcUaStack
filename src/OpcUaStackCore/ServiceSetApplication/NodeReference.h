@@ -21,6 +21,16 @@ namespace OpcUaStackCore
 		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void);
 
+		void copyTo(NodeReference& nodeReference);
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const NodeReference& value) {
+			value.out(os);
+			return os;
+		}
+
+		void opcUaBinaryEncode(std::ostream& os) {}
+		void opcUaBinaryDecode(std::istream& is) {}
+		
 	  private:
 		OpcUaStatusCode statusCode_;
 	};
