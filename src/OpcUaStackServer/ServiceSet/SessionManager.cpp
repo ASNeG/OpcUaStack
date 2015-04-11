@@ -17,7 +17,8 @@ namespace OpcUaStackServer
 	}
 
 	SessionManager::SessionManager(void)
-	: prefixSessionConfig_("")
+	: shutdown_()
+	, prefixSessionConfig_("")
 	, prefixSecureChannelConfig_("") 
 	, sessionConfig_(nullptr)
 	, secureChannelConfig_(nullptr)
@@ -80,6 +81,9 @@ namespace OpcUaStackServer
 	void 
 	SessionManager::closeServerSocket(void)
 	{
+		shutdown_.start();
+		closeListenerSocket();
+		shutdown_.waitForReady();
 	}
 
 	bool 
@@ -145,6 +149,13 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	SessionManager::closeListenerSocket(void)
+	{
+		tcpAcceptor_->close();
+		return true;
+	}
+
 	void 
 	SessionManager::acceptNewChannel(void)
 	{
@@ -175,10 +186,24 @@ namespace OpcUaStackServer
 	void 
 	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
 	{
-		bool rc;
+		if (shutdown_.isStart()) {
+			shutdown_.ready();
+			return;
+		}
 
 		boost::asio::ip::tcp::endpoint remoteEndpoint = secureChannel->tcpConnection().socket().remote_endpoint();
 		boost::asio::ip::tcp::endpoint localEndpoint = secureChannel->tcpConnection().socket().local_endpoint();
+		if (error) {
+			Log(Error, "server socket error")
+				.parameter("LocalAddress", localEndpoint.address().to_string())
+				.parameter("LocalPort", localEndpoint.port())
+				.parameter("PartnerAddress", remoteEndpoint.address().to_string())
+				.parameter("PartnerPort", remoteEndpoint.port());
+
+			// FIXME: what doing now?
+
+			return;
+		}
 
 		Log(Info, "server accept connection")
 			.parameter("LocalAddress", localEndpoint.address().to_string())
@@ -186,7 +211,7 @@ namespace OpcUaStackServer
 			.parameter("PartnerAddress", remoteEndpoint.address().to_string())
 			.parameter("PartnerPort", remoteEndpoint.port());
 
-		rc = secureChannel->connect();
+		bool rc = secureChannel->connect();
 		if (!rc) {
 			Log(Error, "cannot accept connection from client")
 				.parameter("LocalAddress", localEndpoint.address().to_string())

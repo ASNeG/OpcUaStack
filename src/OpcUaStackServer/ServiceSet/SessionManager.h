@@ -7,6 +7,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Base/ConditionProcess.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelMap.h"
@@ -62,6 +63,7 @@ namespace OpcUaStackServer
 	  private:
 		bool readConfiguration(void);
 		bool openListenerSocket(void);
+		bool closeListenerSocket(void);
 
 		SecureChannelServer::SPtr getSecureChannel(OpcUaUInt32 secureChannelId);
 
@@ -73,6 +75,7 @@ namespace OpcUaStackServer
 		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
 
 		IOService* ioService_;
+		ConditionProcess shutdown_;
 
 		Url url_;
 		TCPAcceptor::SPtr tcpAcceptor_;

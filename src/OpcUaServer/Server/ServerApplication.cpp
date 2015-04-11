@@ -58,25 +58,26 @@ namespace OpcUaServer
 	bool 
 	ServerApplication::shutdown(void)
 	{
+
 		return true;
 	}
 
 	bool 
 	ServerApplication::run(void)
 	{
-		if (!server_.initial(configFileName_)) return false;
+		if (!server_.startup(configFileName_)) return false;
 		if (!server_.start()) return false;
 		
 		running_ = true;
 		while (running_) boost::this_thread::sleep(boost::posix_time::seconds(1));
-
-		server_.cleanup();
+		server_.shutdown();
 		return true;
 	}
 
 	void 
 	ServerApplication::stop(void)
 	{
+		server_.stop();
 		running_ = false;
 	}
 

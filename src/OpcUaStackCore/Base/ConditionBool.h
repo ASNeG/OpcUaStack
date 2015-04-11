@@ -17,6 +17,7 @@ namespace OpcUaStackCore
 		void conditionTrue(void);
 		void waitForCondition(void);
 		bool waitForCondition(uint32_t msec);
+		bool isCondition(void);
 
 	  private:
 		bool conditionValue_;

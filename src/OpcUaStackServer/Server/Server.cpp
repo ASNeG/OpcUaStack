@@ -110,7 +110,13 @@ namespace OpcUaStackServer
 	void 
 	Server::stop(void)
 	{
+		// shutdown opc ua stack
+		Log(Info, "stop opc ua server stack");
+		sessionManager_.closeServerSocket();
 		ioService_.stop();
+
+		// shutdown application
+		applicationManager_.shutdown();
 	}
 
 	ApplicationManager&

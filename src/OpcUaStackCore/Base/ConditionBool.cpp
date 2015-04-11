@@ -50,4 +50,10 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ConditionBool::isCondition(void)
+	{
+		return conditionValue_;
+	}
+
 }

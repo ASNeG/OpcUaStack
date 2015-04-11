@@ -22,7 +22,7 @@ namespace OpcUaServer
 	}
 
 	bool
-	Server::initial(const std::string& configurationFile)
+	Server::startup(const std::string& configurationFile)
 	{
 		configurationFile_ = Environment::getAbsolutePath(configurationFile);
 
@@ -86,7 +86,7 @@ namespace OpcUaServer
 	}
 
 	void 
-	Server::cleanup(void)
+	Server::shutdown(void)
 	{
 		// deregister application libraries
 		ApplicationLibrary::Map::iterator it;
