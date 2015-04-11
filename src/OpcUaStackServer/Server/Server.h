@@ -20,7 +20,7 @@ namespace OpcUaStackServer
 	    ~Server(void);
 
 		bool init(void);
-		void cleanup(void);
+		bool shutdown(void);
 		bool start(void);
 		void stop(void);
 
@@ -34,7 +34,9 @@ namespace OpcUaStackServer
 		bool writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris);
 		bool setInformationModel(void);
 		bool initService(void);
+		bool shutdownService(void);
 		bool initSession(void);
+		bool shutdownSession(void);
 
 		IOService ioService_;
 		InformationModel::SPtr informationModel_;

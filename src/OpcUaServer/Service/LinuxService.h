@@ -19,6 +19,7 @@ namespace OpcUaServer
 		void main(const std::string& applicationName, unsigned int argc, char** argv);
 
 		void serverApplicationIf(ServerApplicationIf* serverApplicationIf);
+		void stop(void);
 
 	  private:
 		ServerApplicationIf* serverApplicationIf_;

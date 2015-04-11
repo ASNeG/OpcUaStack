@@ -242,6 +242,20 @@ namespace OpcUaStackServer
 		return rc;
 	}
 
+	bool
+	ServiceManager::shutdown(void)
+	{
+		applicationService_->shutdown();
+		viewService_->shutdown();
+		subscriptionService_->shutdown();
+		queryService_->shutdown();
+		nodeManagementService_->shutdown();
+		monitoredItemService_->shutdown();
+		methodService_->shutdown();
+		attributeService_->shutdown();
+		return true;
+	}
+
 	ApplicationService::SPtr
 	ServiceManager::applicationService(void)
 	{

@@ -88,7 +88,24 @@ namespace OpcUaServer
 	void 
 	Server::cleanup(void)
 	{
-		server_.cleanup();
+		// deregister application libraries
+		ApplicationLibrary::Map::iterator it;
+		for (
+			it = applicationManager_.applicationLibraryMap().begin();
+			it != applicationManager_.applicationLibraryMap().end();
+			it++
+		) {
+			ApplicationLibrary::SPtr applicationLibrary = it->second;
+			server_.applicationManager().deregisterApplication(
+				it->first
+			);
+		}
+
+		// shutdown application library manager
+		applicationManager_.shutdown();
+
+		// shutdown opc ua server
+		server_.shutdown();
 	}
 
 	bool 

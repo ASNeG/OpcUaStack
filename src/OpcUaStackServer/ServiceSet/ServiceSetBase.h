@@ -25,6 +25,7 @@ namespace OpcUaStackServer
 		ServerArray::SPtr serverArray(void);
 
 		virtual bool init(void) { return true; }
+		virtual bool shutdown(void) { return true; }
 
 	  protected:
 		InformationModel::SPtr informationModel_;

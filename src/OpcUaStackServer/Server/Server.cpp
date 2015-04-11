@@ -68,10 +68,19 @@ namespace OpcUaStackServer
 		return rc;
 	}
 
-	void
-	Server::cleanup(void)
+	bool
+	Server::shutdown(void)
 	{
+		Log(Info, "shutdown opc ua server stack session");
+		shutdownSession();
+
+		Log(Info, "shutdown opc ua server stack service");
+		shutdownService();
+
+		Log(Info, "shutdown opc ua core stack");
 		Core::cleanup();
+
+		return true;
 	}
 
 	bool 
@@ -254,6 +263,13 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	Server::shutdownService(void)
+	{
+		serviceManager_.shutdown();
+		return true;
+	}
+
+	bool
 	Server::initSession(void)
 	{
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = EndpointDescriptionArray::construct();
@@ -273,6 +289,13 @@ namespace OpcUaStackServer
 		sessionManager_.discoveryService(discoveryService);
 		sessionManager_.ioService(&ioService_);
 
+		return true;
+	}
+
+	bool
+	Server::shutdownSession(void)
+	{
+		// FIXME: todo
 		return true;
 	}
 

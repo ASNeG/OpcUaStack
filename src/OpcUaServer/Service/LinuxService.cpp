@@ -1,6 +1,15 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServer/Service/LinuxService.h"
 #include <iostream>
+#include <csignal>
+
+using namespace std;
+
+void signalHandler(int signum)
+{
+	OpcUaServer::LinuxService::instance()->stop();
+}
+
 
 namespace OpcUaServer
 {
@@ -45,6 +54,9 @@ namespace OpcUaServer
 
 		serverApplicationIf_->serviceName(serviceName, argc-1, &argv[1]);
 		if (!serverApplicationIf_->startup()) return;
+
+		signal(SIGINT, signalHandler);
+
 		if (!serverApplicationIf_->run()) return;
 		serverApplicationIf_->shutdown();
 		return;
@@ -54,6 +66,12 @@ namespace OpcUaServer
 	LinuxService::serverApplicationIf(ServerApplicationIf* serverApplicationIf)
 	{
 		serverApplicationIf_ = serverApplicationIf;
+	}
+
+	void
+	LinuxService::stop(void)
+	{
+		serverApplicationIf_->stop();
 	}
 
 }

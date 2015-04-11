@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 		bool informatinModel(InformationModel::SPtr informatinModel);
 		bool ioService(IOService* ioService);
 		bool init(void);
+		bool shutdown(void);
 
 		ApplicationService::SPtr applicationService(void);
 
