@@ -1,0 +1,66 @@
+#!/bin/sh
+#### INFO
+# Provides:			ASNeG Server Demo Application
+# Required-Start:	network
+# Required-Stop:	network
+# Description:		Starts/Stops ASNeG Server Demo Application
+####
+
+
+NAME=OpcUaServer
+INSTALL_DIR=@CMAKE_INSTALL_PREFIX@
+BIN_DIR=/bin
+LIB_DIR=/lib/OpcUaStack
+OPTS=ASNeG-Demo
+
+DAEMON=$INSTALL_DIR$BIN_DIR/$NAME
+SCRIPTNAME=$0
+
+
+do_start()
+{
+    echo "Start $NAME ..."
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$INSTALL_DIR$LIB_DIR
+    start-stop-daemon --start --quiet --background --exec $DAEMON -- $OPTS
+    echo "  started."
+}
+
+
+do_stop()
+{
+    echo "Stop $NAME ..."
+    start-stop-daemon --stop --retry 5 --exec $DAEMON
+    echo "  stopped."
+}
+
+
+do_status()
+{
+    start-stop-daemon --status --exec $DAEMON
+    if [ $? -eq 0] ; then
+        echo "process $NAME running"
+    else
+        echo "process $NAME NOT running"
+    fi
+}
+
+
+case "$1" in
+    start)
+        do_start
+		;;
+    stop)
+        do_stop
+		;;
+    restart)
+		do_stop
+		do_start
+		;;
+    status)
+		do_status
+		;;
+    *)
+		echo "Usage: $SCRIPTNAME {start|stop|restart|status}"
+		exit 3
+		;;
+esac

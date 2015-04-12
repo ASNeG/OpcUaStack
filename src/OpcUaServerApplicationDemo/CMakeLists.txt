@@ -22,6 +22,11 @@ target_link_libraries(
     ${Boost_LIBRARIES}
 )
 
+configure_file(
+    "${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/PACKAGE/ASNeGServer-Demo.in"
+    "${PROJECT_BINARY_DIR}/ASNeGServer-Demo"
+)
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -37,3 +42,5 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.Nod
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
+
+install(FILES ${PROJECT_BINARY_DIR}/ASNeGServer-Demo DESTINATION ${CONF_DIR}/init.d)
