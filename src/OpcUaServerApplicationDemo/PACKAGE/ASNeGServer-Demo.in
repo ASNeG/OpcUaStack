@@ -37,7 +37,8 @@ do_stop()
 do_status()
 {
     start-stop-daemon --status --exec $DAEMON
-    if [ $? -eq 0] ; then
+    if [ $? -eq 0 ] 
+    then
         echo "process $NAME running"
     else
         echo "process $NAME NOT running"
