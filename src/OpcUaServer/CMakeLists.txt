@@ -5,9 +5,6 @@
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(BIN_DIR "bin" CACHE STRING "binary directory")
-set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
-set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
 
 configure_file(
     "${PROJECT_SOURCE_DIR}/OpcUaServer/Build/BuildConfig.h.in"

@@ -12,6 +12,10 @@ set(VERSION_MAJOR "0" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
 set(VERSION_PATCH "7" CACHE STRING "patch version")
 
+set(BIN_DIR "bin" CACHE STRING "binary directory")
+set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
+set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
+
 option(
     USE_OpcUaStackCore
     "build opc ua core library"
@@ -112,7 +116,6 @@ install(FILES icon/asneg_uninstall.ico DESTINATION icon)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-# C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;c:\Program Files (x86)\Microsoft SQL Server\90\Tools\binn\;C:\Program Files\Microsoft\Web Platform Installer\;C:\Program Files (x86)\Microsoft ASP.NET\ASP.NET Web Pages\v1.0\;C:\Program Files (x86)\Windows Kits\8.0\Windows Performance Toolkit\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;D:\Inteq\advantage\bin;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\CMake\bin
 if (WIN32)
 	include (InstallRequiredSystemLibraries)
 	
