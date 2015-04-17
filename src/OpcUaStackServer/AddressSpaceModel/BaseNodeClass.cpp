@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 	{
 		return nodeId_;
 	}
-		
+
 	NodeClassAttribute& 
 	BaseNodeClass::nodeClass(void)
 	{
