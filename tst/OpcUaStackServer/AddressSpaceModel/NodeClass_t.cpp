@@ -80,8 +80,8 @@ BOOST_AUTO_TEST_CASE(NodeClass_BrowseName)
 	OpcUaQualifiedName browseName2;
 	boost::optional<OpcUaQualifiedName&> browseName3;
 
-	BOOST_REQUIRE(variableNodeClass->isPartNodeId() == true);
-	BOOST_REQUIRE(variableNodeClass->isNullNodeId() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartBrowseName() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullBrowseName() == true);
 	BOOST_REQUIRE(variableNodeClass->getBrowseName(browseName1) == false);
 	browseName3 = variableNodeClass->getBrowseName();
 	BOOST_REQUIRE(!browseName3 == true);
@@ -102,6 +102,68 @@ BOOST_AUTO_TEST_CASE(NodeClass_BrowseName)
 	BOOST_REQUIRE(variableNodeClass->getBrowseName(browseName1) == false);
 	browseName3 = variableNodeClass->getBrowseName();
 	BOOST_REQUIRE(!browseName3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_DisplayName)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaLocalizedText displayName1;
+	OpcUaLocalizedText displayName2;
+	boost::optional<OpcUaLocalizedText&> displayName3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartDisplayName() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDisplayName() == true);
+	BOOST_REQUIRE(variableNodeClass->getDisplayName(displayName1) == false);
+	displayName3 = variableNodeClass->getDisplayName();
+	BOOST_REQUIRE(!displayName3 == true);
+
+	displayName1.locale("de");
+	displayName1.text("DisplayName");
+	BOOST_REQUIRE(variableNodeClass->setDisplayName(displayName1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDisplayName() == false);
+	BOOST_REQUIRE(variableNodeClass->getDisplayName(displayName2) == true);
+	BOOST_REQUIRE(displayName1 == displayName2);
+	displayName3 = variableNodeClass->getDisplayName();
+	BOOST_REQUIRE(!displayName3 == false);
+	BOOST_REQUIRE(displayName1 == *displayName3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetDisplayName() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartDisplayName() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDisplayName() == true);
+	BOOST_REQUIRE(variableNodeClass->getDisplayName(displayName1) == false);
+	displayName3 = variableNodeClass->getDisplayName();
+	BOOST_REQUIRE(!displayName3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_Description)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaLocalizedText description1;
+	OpcUaLocalizedText description2;
+	boost::optional<OpcUaLocalizedText&> description3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartDescription() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDescription() == true);
+	BOOST_REQUIRE(variableNodeClass->getDescription(description1) == false);
+	description3 = variableNodeClass->getDescription();
+	BOOST_REQUIRE(!description3 == true);
+
+	description1.locale("de");
+	description1.text("Description");
+	BOOST_REQUIRE(variableNodeClass->setDescription(description1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDescription() == false);
+	BOOST_REQUIRE(variableNodeClass->getDescription(description2) == true);
+	BOOST_REQUIRE(description1 == description2);
+	description3 = variableNodeClass->getDescription();
+	BOOST_REQUIRE(!description3 == false);
+	BOOST_REQUIRE(description1 == *description3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetDescription() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartDescription() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDescription() == true);
+	BOOST_REQUIRE(variableNodeClass->getDescription(description1) == false);
+	description3 = variableNodeClass->getDescription();
+	BOOST_REQUIRE(!description3 == true);
 };
 
 BOOST_AUTO_TEST_SUITE_END()

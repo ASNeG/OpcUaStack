@@ -245,11 +245,119 @@ namespace OpcUaStackServer
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetDisplayName(void)
+	{
+		if (!isPartDisplayName()) return false;
+		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setDisplayName(OpcUaLocalizedText& displayName)
+	{
+		if (!isPartDisplayName()) return false;
+		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
+		displayName.copyTo(attr->data());
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getDisplayName(OpcUaLocalizedText& displayName)
+	{
+		if (!isPartDisplayName()) return false;
+
+		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
+		if (!attr->exist()) return false;
+		attr->data().copyTo(displayName);
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullDisplayName(void)
+	{
+		if (!isPartDisplayName()) return false;
+		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartDisplayName(void)
+	{
+		return (displayNameAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaLocalizedText&>
+	AttributeBase::getDisplayName(void)
+	{
+		if (isNullDisplayName()) return nullptr;
+		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
+		return attr->data();
+	}
+
+
+
 	Attribute* 
 	AttributeBase::descriptionAttribute(void)
 	{
 		return nullptr;
 	}
+
+	bool
+	AttributeBase::unsetDescription(void)
+	{
+		if (!isPartDescription()) return false;
+		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setDescription(OpcUaLocalizedText& description)
+	{
+		if (!isPartDescription()) return false;
+		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
+		description.copyTo(attr->data());
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getDescription(OpcUaLocalizedText& description)
+	{
+		if (!isPartDescription()) return false;
+
+		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
+		if (!attr->exist()) return false;
+		attr->data().copyTo(description);
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullDescription(void)
+	{
+		if (!isPartDescription()) return false;
+		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartDescription(void)
+	{
+		return (descriptionAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaLocalizedText&>
+	AttributeBase::getDescription(void)
+	{
+		if (isNullDescription()) return nullptr;
+		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
+		return attr->data();
+	}
+
+
 
 	Attribute* 
 	AttributeBase::writeMaskAttribute(void)

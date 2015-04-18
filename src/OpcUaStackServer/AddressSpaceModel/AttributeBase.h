@@ -58,7 +58,21 @@ namespace OpcUaStackServer
 		boost::optional<OpcUaQualifiedName&> getBrowseName(void);
 
 		virtual Attribute* displayNameAttribute(void);
+		bool unsetDisplayName(void);
+		bool setDisplayName(OpcUaLocalizedText& displayName);
+		bool getDisplayName(OpcUaLocalizedText& displayName);
+		bool isPartDisplayName(void);
+		bool isNullDisplayName(void);
+		boost::optional<OpcUaLocalizedText&> getDisplayName(void);
+
 		virtual Attribute* descriptionAttribute(void);
+		bool unsetDescription(void);
+		bool setDescription(OpcUaLocalizedText& displayName);
+		bool getDescription(OpcUaLocalizedText& displayName);
+		bool isPartDescription(void);
+		bool isNullDescription(void);
+		boost::optional<OpcUaLocalizedText&> getDescription(void);
+
 		virtual Attribute* writeMaskAttribute(void);
 		virtual Attribute* userWriteMaskAttribute(void);
 		virtual Attribute* isAbstractAttribute(void);
