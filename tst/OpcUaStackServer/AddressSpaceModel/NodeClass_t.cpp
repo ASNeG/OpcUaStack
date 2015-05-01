@@ -3,6 +3,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ViewNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -378,6 +379,308 @@ BOOST_AUTO_TEST_CASE(NodeClass_EventNotifier)
 	BOOST_REQUIRE(viewNodeClass->getEventNotifier(eventNotifier1) == false);
 	eventNotifier3 = viewNodeClass->getEventNotifier();
 	BOOST_REQUIRE(!eventNotifier3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_Value)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaDataValue value1;
+	OpcUaDataValue value2;
+	boost::optional<OpcUaDataValue&> value3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartValue() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullValue() == true);
+	BOOST_REQUIRE(variableNodeClass->getValue(value1) == false);
+	value3 = variableNodeClass->getValue();
+	BOOST_REQUIRE(!value3 == true);
+
+	value1.variant()->variant((OpcUaDouble)12.34);
+	BOOST_REQUIRE(variableNodeClass->setValue(value1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullValue() == false);
+	BOOST_REQUIRE(variableNodeClass->getValue(value2) == true);
+	BOOST_REQUIRE(*value1.variant() == *value2.variant());
+	value3 = variableNodeClass->getValue();
+	BOOST_REQUIRE(!value3 == false);
+	BOOST_REQUIRE(*value1.variant() == *(*value3).variant());
+
+	BOOST_REQUIRE(variableNodeClass->unsetValue() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartValue() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullValue() == true);
+	BOOST_REQUIRE(variableNodeClass->getValue(value1) == false);
+	value3 = variableNodeClass->getValue();
+	BOOST_REQUIRE(!value3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_DataType)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaNodeId dataType1;
+	OpcUaNodeId dataType2;
+	boost::optional<OpcUaNodeId&> dataType3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartDataType() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDataType() == true);
+	BOOST_REQUIRE(variableNodeClass->getDataType(dataType1) == false);
+	dataType3 = variableNodeClass->getDataType();
+	BOOST_REQUIRE(!dataType3 == true);
+
+	dataType1.namespaceIndex(123);
+	dataType1.nodeId((OpcUaUInt32)123);
+	BOOST_REQUIRE(variableNodeClass->setDataType(dataType1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDataType() == false);
+	BOOST_REQUIRE(variableNodeClass->getDataType(dataType2) == true);
+	BOOST_REQUIRE(dataType1 == dataType2);
+	dataType3 = variableNodeClass->getDataType();
+	BOOST_REQUIRE(!dataType3 == false);
+	BOOST_REQUIRE(dataType1== *dataType3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetDataType() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartDataType() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullDataType() == true);
+	BOOST_REQUIRE(variableNodeClass->getDataType(dataType1) == false);
+	dataType3 = variableNodeClass->getDataType();
+	BOOST_REQUIRE(!dataType3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_ValueRank)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaInt32 valueRank1;
+	OpcUaInt32 valueRank2;
+	boost::optional<OpcUaInt32&> valueRank3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartValueRank() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullValueRank() == true);
+	BOOST_REQUIRE(variableNodeClass->getValueRank(valueRank1) == false);
+	valueRank3 = variableNodeClass->getValueRank();
+	BOOST_REQUIRE(!valueRank3 == true);
+
+	valueRank1 = 123;
+	BOOST_REQUIRE(variableNodeClass->setValueRank(valueRank1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullValueRank() == false);
+	BOOST_REQUIRE(variableNodeClass->getValueRank(valueRank2) == true);
+	BOOST_REQUIRE(valueRank1 == valueRank2);
+	valueRank3 = variableNodeClass->getValueRank();
+	BOOST_REQUIRE(!valueRank3 == false);
+	BOOST_REQUIRE(valueRank1== *valueRank3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetValueRank() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartValueRank() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullValueRank() == true);
+	BOOST_REQUIRE(variableNodeClass->getValueRank(valueRank1) == false);
+	valueRank3 = variableNodeClass->getValueRank();
+	BOOST_REQUIRE(!valueRank3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_ArrayDimensions)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaUInt32Array arrayDimensions1;
+	OpcUaUInt32Array arrayDimensions2;
+	boost::optional<OpcUaUInt32Array&> arrayDimensions3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartArrayDimensions() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullArrayDimensions() == true);
+	BOOST_REQUIRE(variableNodeClass->getArrayDimensions(arrayDimensions1) == false);
+	arrayDimensions3 = variableNodeClass->getArrayDimensions();
+	BOOST_REQUIRE(!arrayDimensions3 == true);
+
+	arrayDimensions1.push_back(12);
+	arrayDimensions1.push_back(34);
+	BOOST_REQUIRE(variableNodeClass->setArrayDimensions(arrayDimensions1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullArrayDimensions() == false);
+	BOOST_REQUIRE(variableNodeClass->getArrayDimensions(arrayDimensions2) == true);
+	BOOST_REQUIRE(arrayDimensions1 == arrayDimensions2);
+	arrayDimensions3 = variableNodeClass->getArrayDimensions();
+	BOOST_REQUIRE(!arrayDimensions3 == false);
+	BOOST_REQUIRE(arrayDimensions1== *arrayDimensions3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetArrayDimensions() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartArrayDimensions() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullArrayDimensions() == true);
+	BOOST_REQUIRE(variableNodeClass->getArrayDimensions(arrayDimensions1) == false);
+	arrayDimensions3 = variableNodeClass->getArrayDimensions();
+	BOOST_REQUIRE(!arrayDimensions3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_AccessLevel)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaByte accessLevel1;
+	OpcUaByte accessLevel2;
+	boost::optional<OpcUaByte&> accessLevel3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->getAccessLevel(accessLevel1) == false);
+	accessLevel3 = variableNodeClass->getAccessLevel();
+	BOOST_REQUIRE(!accessLevel3 == true);
+
+	accessLevel1 = 12;
+	BOOST_REQUIRE(variableNodeClass->setAccessLevel(accessLevel1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullAccessLevel() == false);
+	BOOST_REQUIRE(variableNodeClass->getAccessLevel(accessLevel2) == true);
+	BOOST_REQUIRE(accessLevel1 == accessLevel2);
+	accessLevel3 = variableNodeClass->getAccessLevel();
+	BOOST_REQUIRE(!accessLevel3 == false);
+	BOOST_REQUIRE(accessLevel1== *accessLevel3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->getAccessLevel(accessLevel1) == false);
+	accessLevel3 = variableNodeClass->getAccessLevel();
+	BOOST_REQUIRE(!accessLevel3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_UserAccessLevel)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaByte userAccessLevel1;
+	OpcUaByte userAccessLevel2;
+	boost::optional<OpcUaByte&> userAccessLevel3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartUserAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullUserAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->getUserAccessLevel(userAccessLevel1) == false);
+	userAccessLevel3 = variableNodeClass->getUserAccessLevel();
+	BOOST_REQUIRE(!userAccessLevel3 == true);
+
+	userAccessLevel1 = 12;
+	BOOST_REQUIRE(variableNodeClass->setUserAccessLevel(userAccessLevel1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullUserAccessLevel() == false);
+	BOOST_REQUIRE(variableNodeClass->getUserAccessLevel(userAccessLevel2) == true);
+	BOOST_REQUIRE(userAccessLevel1 == userAccessLevel2);
+	userAccessLevel3 = variableNodeClass->getUserAccessLevel();
+	BOOST_REQUIRE(!userAccessLevel3 == false);
+	BOOST_REQUIRE(userAccessLevel1== *userAccessLevel3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetUserAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartUserAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullUserAccessLevel() == true);
+	BOOST_REQUIRE(variableNodeClass->getUserAccessLevel(userAccessLevel1) == false);
+	userAccessLevel3 = variableNodeClass->getUserAccessLevel();
+	BOOST_REQUIRE(!userAccessLevel3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_Historizing)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaBoolean historizing1;
+	OpcUaBoolean historizing2;
+	boost::optional<OpcUaBoolean&> historizing3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartHistorizing() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullHistorizing() == true);
+	BOOST_REQUIRE(variableNodeClass->getHistorizing(historizing1) == false);
+	historizing3 = variableNodeClass->getHistorizing();
+	BOOST_REQUIRE(!historizing3 == true);
+
+	historizing1 = false;
+	BOOST_REQUIRE(variableNodeClass->setHistorizing(historizing1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullHistorizing() == false);
+	BOOST_REQUIRE(variableNodeClass->getHistorizing(historizing2) == true);
+	BOOST_REQUIRE(historizing1 == historizing2);
+	historizing3 = variableNodeClass->getHistorizing();
+	BOOST_REQUIRE(!historizing3 == false);
+	BOOST_REQUIRE(historizing1== *historizing3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetHistorizing() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartHistorizing() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullHistorizing() == true);
+	BOOST_REQUIRE(variableNodeClass->getHistorizing(historizing1) == false);
+	historizing3 = variableNodeClass->getHistorizing();
+	BOOST_REQUIRE(!historizing3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_Executable)
+{
+	MethodNodeClass::SPtr variableNodeClass = MethodNodeClass::construct();
+	OpcUaBoolean executable1;
+	OpcUaBoolean executable2;
+	boost::optional<OpcUaBoolean&> executable3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->getExecutable(executable1) == false);
+	executable3 = variableNodeClass->getExecutable();
+	BOOST_REQUIRE(!executable3 == true);
+
+	executable1 = false;
+	BOOST_REQUIRE(variableNodeClass->setExecutable(executable1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullExecutable() == false);
+	BOOST_REQUIRE(variableNodeClass->getExecutable(executable2) == true);
+	BOOST_REQUIRE(executable1 == executable2);
+	executable3 = variableNodeClass->getExecutable();
+	BOOST_REQUIRE(!executable3 == false);
+	BOOST_REQUIRE(executable1== *executable3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->getExecutable(executable1) == false);
+	executable3 = variableNodeClass->getExecutable();
+	BOOST_REQUIRE(!executable3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_UserExecutable)
+{
+	MethodNodeClass::SPtr variableNodeClass = MethodNodeClass::construct();
+	OpcUaBoolean userExecutable1;
+	OpcUaBoolean userExecutable2;
+	boost::optional<OpcUaBoolean&> userExecutable3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartUserExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullUserExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->getUserExecutable(userExecutable1) == false);
+	userExecutable3 = variableNodeClass->getUserExecutable();
+	BOOST_REQUIRE(!userExecutable3 == true);
+
+	userExecutable1 = false;
+	BOOST_REQUIRE(variableNodeClass->setUserExecutable(userExecutable1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullUserExecutable() == false);
+	BOOST_REQUIRE(variableNodeClass->getUserExecutable(userExecutable2) == true);
+	BOOST_REQUIRE(userExecutable1 == userExecutable2);
+	userExecutable3 = variableNodeClass->getUserExecutable();
+	BOOST_REQUIRE(!userExecutable3 == false);
+	BOOST_REQUIRE(userExecutable1== *userExecutable3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetUserExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartUserExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullUserExecutable() == true);
+	BOOST_REQUIRE(variableNodeClass->getUserExecutable(userExecutable1) == false);
+	userExecutable3 = variableNodeClass->getUserExecutable();
+	BOOST_REQUIRE(!userExecutable3 == true);
+};
+
+BOOST_AUTO_TEST_CASE(NodeClass_MinimumSamplingInterval)
+{
+	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	OpcUaDouble minimumSamplingInterval1;
+	OpcUaDouble minimumSamplingInterval2;
+	boost::optional<OpcUaDouble&> minimumSamplingInterval3;
+
+	BOOST_REQUIRE(variableNodeClass->isPartMinimumSamplingInterval() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullMinimumSamplingInterval() == true);
+	BOOST_REQUIRE(variableNodeClass->getMinimumSamplingInterval(minimumSamplingInterval1) == false);
+	minimumSamplingInterval3 = variableNodeClass->getMinimumSamplingInterval();
+	BOOST_REQUIRE(!minimumSamplingInterval3 == true);
+
+	minimumSamplingInterval1 = 12.23;
+	BOOST_REQUIRE(variableNodeClass->setMinimumSamplingInterval(minimumSamplingInterval1) == true);
+	BOOST_REQUIRE(variableNodeClass->isNullMinimumSamplingInterval() == false);
+	BOOST_REQUIRE(variableNodeClass->getMinimumSamplingInterval(minimumSamplingInterval2) == true);
+	BOOST_REQUIRE(minimumSamplingInterval1 == minimumSamplingInterval2);
+	minimumSamplingInterval3 = variableNodeClass->getMinimumSamplingInterval();
+	BOOST_REQUIRE(!minimumSamplingInterval3 == false);
+	BOOST_REQUIRE(minimumSamplingInterval1== *minimumSamplingInterval3);
+
+	BOOST_REQUIRE(variableNodeClass->unsetMinimumSamplingInterval() == true);
+	BOOST_REQUIRE(variableNodeClass->isPartMinimumSamplingInterval() == true);
+	BOOST_REQUIRE(variableNodeClass->isNullMinimumSamplingInterval() == true);
+	BOOST_REQUIRE(variableNodeClass->getMinimumSamplingInterval(minimumSamplingInterval1) == false);
+	minimumSamplingInterval3 = variableNodeClass->getMinimumSamplingInterval();
+	BOOST_REQUIRE(!minimumSamplingInterval3 == true);
 };
 
 BOOST_AUTO_TEST_SUITE_END()

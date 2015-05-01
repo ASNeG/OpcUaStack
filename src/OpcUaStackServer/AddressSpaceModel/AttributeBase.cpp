@@ -50,7 +50,7 @@ namespace OpcUaStackServer
 			case AttributeId_Value: return valueAttribute();
 			case AttributeId_DataType: return dataTypeAttribute();
 			case AttributeId_ValueRank: return valueRankAttribute();
-			case AttributeId_ArrayDimensions: return arrayDimensionsAttribute();
+			case AttributeId_ArrayDimensions: return accessLevelAttribute();
 			case AttributeId_AccessLevel: return accessLevelAttribute();
 			case AttributeId_UserAccessLevel: return userAccessLevelAttribute();
 			case AttributeId_MinimumSamplingInterval: minimumSamplingIntervalAttribute();
@@ -795,70 +795,615 @@ namespace OpcUaStackServer
 		return attr->data();
 	}
 
-
-	Attribute* valueAttribute(void)
+	//
+	// value
+	//
+	Attribute*
+	AttributeBase::valueAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetValue(void)
+	{
+		if (!isPartValue()) return false;
+		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setValue(OpcUaDataValue& value)
+	{
+		if (!isPartValue()) return false;
+		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
+		value.copyTo(attr->data());
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getValue(OpcUaDataValue& value)
+	{
+		if (!isPartValue()) return false;
+
+		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
+		if (!attr->exist()) return false;
+		attr->data().copyTo(value);
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullValue(void)
+	{
+		if (!isPartValue()) return false;
+		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartValue(void)
+	{
+		return (valueAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaDataValue&>
+	AttributeBase::getValue(void)
+	{
+		if (isNullValue()) return nullptr;
+		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
+		return attr->data();
+	}
+
+
+	//
+	// datat type
+	//
 	Attribute* 
 	AttributeBase::dataTypeAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetDataType(void)
+	{
+		if (!isPartDataType()) return false;
+		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setDataType(OpcUaNodeId& dataType)
+	{
+		if (!isPartDataType()) return false;
+		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
+		dataType.copyTo(attr->data());
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getDataType(OpcUaNodeId& dataType)
+	{
+		if (!isPartDataType()) return false;
+
+		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
+		if (!attr->exist()) return false;
+		attr->data().copyTo(dataType);
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullDataType(void)
+	{
+		if (!isPartDataType()) return false;
+		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartDataType(void)
+	{
+		return (dataTypeAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaNodeId&>
+	AttributeBase::getDataType(void)
+	{
+		if (isNullDataType()) return nullptr;
+		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
+		return attr->data();
+	}
+
+	//
+	// value rank
+	//
 	Attribute* 
 	AttributeBase::valueRankAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetValueRank(void)
+	{
+		if (!isPartValueRank()) return false;
+		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setValueRank(OpcUaInt32& valueRank)
+	{
+		if (!isPartValueRank()) return false;
+		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
+		attr->data(valueRank);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getValueRank(OpcUaInt32& valueRank)
+	{
+		if (!isPartValueRank()) return false;
+
+		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
+		if (!attr->exist()) return false;
+		valueRank = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullValueRank(void)
+	{
+		if (!isPartValueRank()) return false;
+		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartValueRank(void)
+	{
+		return (valueRankAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaInt32&>
+	AttributeBase::getValueRank(void)
+	{
+		if (isNullValueRank()) return nullptr;
+		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
+		return attr->data();
+	}
+
+	//
+	// array dimensions
+	//
 	Attribute* 
 	AttributeBase::arrayDimensionsAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetArrayDimensions(void)
+	{
+		if (!isPartArrayDimensions()) return false;
+		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setArrayDimensions(OpcUaUInt32Array& arrayDimensions)
+	{
+		if (!isPartArrayDimensions()) return false;
+		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
+		attr->data(arrayDimensions);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getArrayDimensions(OpcUaUInt32Array& arrayDimensions)
+	{
+		if (!isPartArrayDimensions()) return false;
+
+		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
+		if (!attr->exist()) return false;
+		arrayDimensions = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullArrayDimensions(void)
+	{
+		if (!isPartArrayDimensions()) return false;
+		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartArrayDimensions(void)
+	{
+		return (arrayDimensionsAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaUInt32Array&>
+	AttributeBase::getArrayDimensions(void)
+	{
+		if (isNullArrayDimensions()) return nullptr;
+		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
+		return attr->data();
+	}
+
+	//
+	// access level
+	//
 	Attribute* 
 	AttributeBase::accessLevelAttribute(void)
 	{
 		return nullptr;
 	}
 
-	Attribute* 
+	bool
+	AttributeBase::unsetAccessLevel(void)
+	{
+		if (!isPartAccessLevel()) return false;
+		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setAccessLevel(OpcUaByte& accessLevel)
+	{
+		if (!isPartAccessLevel()) return false;
+		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
+		attr->data(accessLevel);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getAccessLevel(OpcUaByte& accessLevel)
+	{
+		if (!isPartAccessLevel()) return false;
+
+		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
+		if (!attr->exist()) return false;
+		accessLevel = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullAccessLevel(void)
+	{
+		if (!isPartAccessLevel()) return false;
+		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartAccessLevel(void)
+	{
+		return (arrayDimensionsAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaByte&>
+	AttributeBase::getAccessLevel(void)
+	{
+		if (isNullAccessLevel()) return nullptr;
+		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
+		return attr->data();
+	}
+
+	//
+	// user access level
+	//
+	Attribute*
 	AttributeBase::userAccessLevelAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetUserAccessLevel(void)
+	{
+		if (!isPartUserAccessLevel()) return false;
+		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setUserAccessLevel(OpcUaByte& userAccessLevel)
+	{
+		if (!isPartUserAccessLevel()) return false;
+		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
+		attr->data(userAccessLevel);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getUserAccessLevel(OpcUaByte& userAccessLevel)
+	{
+		if (!isPartUserAccessLevel()) return false;
+
+		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
+		if (!attr->exist()) return false;
+		userAccessLevel = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullUserAccessLevel(void)
+	{
+		if (!isPartUserAccessLevel()) return false;
+		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartUserAccessLevel(void)
+	{
+		return (arrayDimensionsAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaByte&>
+	AttributeBase::getUserAccessLevel(void)
+	{
+		if (isNullUserAccessLevel()) return nullptr;
+		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
+		return attr->data();
+	}
+
+	//
+	// historizing
+	//
 	Attribute* 
 	AttributeBase::historizingAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetHistorizing(void)
+	{
+		if (!isPartHistorizing()) return false;
+		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setHistorizing(OpcUaBoolean& historizing)
+	{
+		if (!isPartHistorizing()) return false;
+		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
+		attr->data(historizing);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getHistorizing(OpcUaBoolean& historizing)
+	{
+		if (!isPartHistorizing()) return false;
+
+		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
+		if (!attr->exist()) return false;
+		historizing = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullHistorizing(void)
+	{
+		if (!isPartHistorizing()) return false;
+		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartHistorizing(void)
+	{
+		return (arrayDimensionsAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaBoolean&>
+	AttributeBase::getHistorizing(void)
+	{
+		if (isNullHistorizing()) return nullptr;
+		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
+		return attr->data();
+	}
+
+	//
+	// executable
+	//
 	Attribute* 
 	AttributeBase::executableAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetExecutable(void)
+	{
+		if (!isPartExecutable()) return false;
+		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setExecutable(OpcUaBoolean& executable)
+	{
+		if (!isPartExecutable()) return false;
+		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
+		attr->data(executable);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getExecutable(OpcUaBoolean& executable)
+	{
+		if (!isPartExecutable()) return false;
+
+		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
+		if (!attr->exist()) return false;
+		executable = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullExecutable(void)
+	{
+		if (!isPartExecutable()) return false;
+		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartExecutable(void)
+	{
+		return (executableAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaBoolean&>
+	AttributeBase::getExecutable(void)
+	{
+		if (isNullExecutable()) return nullptr;
+		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
+		return attr->data();
+	}
+
+	//
+	// user executable
+	//
 	Attribute* 
 	AttributeBase::userExecutableAttribute(void)
 	{
 		return nullptr;
 	}
 
+	bool
+	AttributeBase::unsetUserExecutable(void)
+	{
+		if (!isPartUserExecutable()) return false;
+		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setUserExecutable(OpcUaBoolean& userExecutable)
+	{
+		if (!isPartUserExecutable()) return false;
+		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
+		attr->data(userExecutable);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getUserExecutable(OpcUaBoolean& userExecutable)
+	{
+		if (!isPartUserExecutable()) return false;
+
+		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
+		if (!attr->exist()) return false;
+		userExecutable = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullUserExecutable(void)
+	{
+		if (!isPartUserExecutable()) return false;
+		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartUserExecutable(void)
+	{
+		return (userExecutableAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaBoolean&>
+	AttributeBase::getUserExecutable(void)
+	{
+		if (isNullUserExecutable()) return nullptr;
+		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
+		return attr->data();
+	}
+
+	//
+	// minimum sminimumSamplingIntervalal
+	//
 	Attribute* 
 	AttributeBase::minimumSamplingIntervalAttribute(void)
 	{
 		return nullptr;
 	}
 
-	Attribute* 
-	AttributeBase::valueAttribute(void)
+	bool
+	AttributeBase::unsetMinimumSamplingInterval(void)
 	{
-		return nullptr;
+		if (!isPartMinimumSamplingInterval()) return false;
+		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
+		attr->exist(false);
+		return true;
+	}
+
+	bool
+	AttributeBase::setMinimumSamplingInterval(OpcUaDouble& minimumSamplingInterval)
+	{
+		if (!isPartMinimumSamplingInterval()) return false;
+		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
+		attr->data(minimumSamplingInterval);
+		attr->exist(true);
+		return true;
+	}
+
+	bool
+	AttributeBase::getMinimumSamplingInterval(OpcUaDouble& minimumSamplingInterval)
+	{
+		if (!isPartMinimumSamplingInterval()) return false;
+
+		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
+		if (!attr->exist()) return false;
+		minimumSamplingInterval = attr->data();
+		return true;
+	}
+
+	bool
+	AttributeBase::isNullMinimumSamplingInterval(void)
+	{
+		if (!isPartMinimumSamplingInterval()) return false;
+		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
+		return !attr->exist();
+	}
+
+	bool
+	AttributeBase::isPartMinimumSamplingInterval(void)
+	{
+		return (arrayDimensionsAttribute() != nullptr);
+	}
+
+	boost::optional<OpcUaDouble&>
+	AttributeBase::getMinimumSamplingInterval(void)
+	{
+		if (isNullMinimumSamplingInterval()) return nullptr;
+		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
+		return attr->data();
 	}
 
 }

@@ -150,22 +150,121 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* eventNotifierAttribute(void);
 		bool unsetEventNotifier(void);
-		bool setEventNotifier(OpcUaByte& eventNotifierLoops);
-		bool getEventNotifier(OpcUaByte& eventNotifierLoops);
+		bool setEventNotifier(OpcUaByte& eventNotifier);
+		bool getEventNotifier(OpcUaByte& eventNotifier);
 		bool isPartEventNotifier(void);
 		bool isNullEventNotifier(void);
 		boost::optional<OpcUaByte&> getEventNotifier(void);
 
+		//
+		// value
+		//
 		virtual Attribute* valueAttribute(void);
+		bool unsetValue(void);
+		bool setValue(OpcUaDataValue& value);
+		bool getValue(OpcUaDataValue& value);
+		bool isPartValue(void);
+		bool isNullValue(void);
+		boost::optional<OpcUaDataValue&> getValue(void);
+
+		//
+		// dataType
+		//
 		virtual Attribute* dataTypeAttribute(void);
+		bool unsetDataType(void);
+		bool setDataType(OpcUaNodeId& dataType);
+		bool getDataType(OpcUaNodeId& dataType);
+		bool isPartDataType(void);
+		bool isNullDataType(void);
+		boost::optional<OpcUaNodeId&> getDataType(void);
+
+		//
+		// value rank
+		//
 		virtual Attribute* valueRankAttribute(void);
+		bool unsetValueRank(void);
+		bool setValueRank(OpcUaInt32& arrayDimensions);
+		bool getValueRank(OpcUaInt32& arrayDimensions);
+		bool isPartValueRank(void);
+		bool isNullValueRank(void);
+		boost::optional<OpcUaInt32&> getValueRank(void);
+
+		//
+		// array dimensions
+		//
 		virtual Attribute* arrayDimensionsAttribute(void);
+		bool unsetArrayDimensions(void);
+		bool setArrayDimensions(OpcUaUInt32Array& arrayDimensions);
+		bool getArrayDimensions(OpcUaUInt32Array& arrayDimensions);
+		bool isPartArrayDimensions(void);
+		bool isNullArrayDimensions(void);
+		boost::optional<OpcUaUInt32Array&> getArrayDimensions(void);
+
+		//
+		// access level
+		//
 		virtual Attribute* accessLevelAttribute(void);
+		bool unsetAccessLevel(void);
+		bool setAccessLevel(OpcUaByte& accessLevel);
+		bool getAccessLevel(OpcUaByte& accessLevel);
+		bool isPartAccessLevel(void);
+		bool isNullAccessLevel(void);
+		boost::optional<OpcUaByte&> getAccessLevel(void);
+
+		//
+		// user access level
+		//
 		virtual Attribute* userAccessLevelAttribute(void);
+		bool unsetUserAccessLevel(void);
+		bool setUserAccessLevel(OpcUaByte& userAccessLevel);
+		bool getUserAccessLevel(OpcUaByte& userAccessLevel);
+		bool isPartUserAccessLevel(void);
+		bool isNullUserAccessLevel(void);
+		boost::optional<OpcUaByte&> getUserAccessLevel(void);
+
+		//
+		// historizing
+		//
 		virtual Attribute* historizingAttribute(void);
+		bool unsetHistorizing(void);
+		bool setHistorizing(OpcUaBoolean& historizing);
+		bool getHistorizing(OpcUaBoolean& historizing);
+		bool isPartHistorizing(void);
+		bool isNullHistorizing(void);
+		boost::optional<OpcUaBoolean&> getHistorizing(void);
+
+		//
+		// executable
+		//
 		virtual Attribute* executableAttribute(void);
+		bool unsetExecutable(void);
+		bool setExecutable(OpcUaBoolean& executable);
+		bool getExecutable(OpcUaBoolean& executable);
+		bool isPartExecutable(void);
+		bool isNullExecutable(void);
+		boost::optional<OpcUaBoolean&> getExecutable(void);
+
+		//
+		// user executable
+		//
 		virtual Attribute* userExecutableAttribute(void);
+		bool unsetUserExecutable(void);
+		bool setUserExecutable(OpcUaBoolean& userExecutable);
+		bool getUserExecutable(OpcUaBoolean& userExecutable);
+		bool isPartUserExecutable(void);
+		bool isNullUserExecutable(void);
+		boost::optional<OpcUaBoolean&> getUserExecutable(void);
+
+		//
+		// minimum sampling interval
+		//
 		virtual Attribute* minimumSamplingIntervalAttribute(void);
+		bool unsetMinimumSamplingInterval(void);
+		bool setMinimumSamplingInterval(OpcUaDouble& minimumSamplingInterval);
+		bool getMinimumSamplingInterval(OpcUaDouble& minimumSamplingInterval);
+		bool isPartMinimumSamplingInterval(void);
+		bool isNullMinimumSamplingInterval(void);
+		boost::optional<OpcUaDouble&> getMinimumSamplingInterval(void);
 
 	  private:
 		boost::mutex mutex_;
