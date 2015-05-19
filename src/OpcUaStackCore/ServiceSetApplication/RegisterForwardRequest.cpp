@@ -14,7 +14,7 @@ namespace OpcUaStackCore
 	RegisterForwardRequest::RegisterForwardRequest(void)
 	: ObjectPool<RegisterForwardRequest>()
 	, nodesToRegisterArraySPtr_(OpcUaNodeIdArray::construct())
-	, forwardInfo_(ForwardInfo::construct())
+	, forwardInfo_(ForwardInfoAsync::construct())
 	{
 	}
 
@@ -47,13 +47,13 @@ namespace OpcUaStackCore
 	}
 
 	void
-	RegisterForwardRequest::forwardInfo(ForwardInfo::SPtr forwardInfo)
+	RegisterForwardRequest::forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo)
 	{
 		forwardInfo_ = forwardInfo;
 	}
 
-	ForwardInfo::SPtr
-	RegisterForwardRequest::forwardInfo(void)
+	ForwardInfoAsync::SPtr
+	RegisterForwardRequest::forwardInfoAsync(void)
 	{
 		return forwardInfo_;
 	}

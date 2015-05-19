@@ -3,7 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardInfoAsync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
@@ -43,8 +43,8 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap& referenceItemMap(void);
 
-		void forwardInfo(ForwardInfo::SPtr forwardInfo);
-		ForwardInfo::SPtr forwardInfo(void);
+		void forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo);
+		ForwardInfoAsync::SPtr forwardInfoAsync(void);
 
 	  private:
 		NodeIdAttribute nodeId_;
@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap referenceItemMap_;
 
-		ForwardInfo::SPtr forwardInfo_;
+		ForwardInfoAsync::SPtr forwardInfoAsync_;
 	};
 
 }

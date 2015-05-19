@@ -11,6 +11,7 @@ namespace OpcUaStackServer
 	, description_()
 	, writeMask_()
 	, userWriteMask_()
+	, forwardInfoAsync_()
 	{
 	}
 
@@ -22,6 +23,7 @@ namespace OpcUaStackServer
 	, description_()
 	, writeMask_()
 	, userWriteMask_()
+	, forwardInfoAsync_()
 	{
 	}
 
@@ -120,15 +122,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	BaseNodeClass::forwardInfo(ForwardInfo::SPtr forwardInfo)
+	BaseNodeClass::forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfoAsync)
 	{
-		forwardInfo_ = forwardInfo;
+		forwardInfoAsync_ = forwardInfoAsync;
 	}
 
-	ForwardInfo::SPtr
-	BaseNodeClass::forwardInfo(void)
+	ForwardInfoAsync::SPtr
+	BaseNodeClass::forwardInfoAsync(void)
 	{
-		return forwardInfo_;
+		return forwardInfoAsync_;
 	}
 
 }
