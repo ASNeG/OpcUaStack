@@ -803,6 +803,32 @@ namespace OpcUaStackServer
 		std::string nodeId = ptree.get<std::string>("<xmlattr>.NodeId");
 
 		//
+		// MethodDeclarationID
+		//
+		boost::optional<std::string> methodDeclarationId = ptree.get_optional<std::string>("<xmlattr>.MethodDeclarationId");
+		if (methodDeclarationId) {
+			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+
+			OpcUaNodeId::SPtr referenceTypeNodeId = OpcUaNodeId::construct();
+			referenceTypeNodeId = ReferenceTypeMap::stringToNodeId("HasTypeDefinition");
+			referenceItem->isForward_ = true;
+
+			if (!referenceItem->nodeId_.fromString(*methodDeclarationId)) {
+				Log(Error, "invalid node id in MethodDeclarationID")
+					.parameter("NodeId", nodeId)
+					.parameter("ReferenceType", "HasTypeDefinition")
+					.parameter("ReferenceNodeId", *methodDeclarationId);
+				return false;
+			}
+
+			uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+			uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
+			referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
+
+			methodeNodeClassSPtr->referenceItemMap().add(*referenceTypeNodeId, referenceItem);
+		}
+
+		//
 		// attribute Executable (mandatory)
 		//
 		boost::optional<OpcUaBoolean> executable = ptree.get_optional<OpcUaBoolean>("<xmlattr>.Executable");
