@@ -15,6 +15,7 @@ namespace OpcUaStackClient
 	{
 	  public:
         virtual void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse) {};
+        virtual void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext) {};
 	};
 
 	class DLLEXPORT ViewService : public Component
@@ -30,6 +31,10 @@ namespace OpcUaStackClient
 
 		void sendSync(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 		void send(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+
+		void sendSync(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		void send(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+
 
 		//- Component -----------------------------------------------------------------
 		void receive(Message::SPtr message);

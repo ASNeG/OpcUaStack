@@ -45,6 +45,23 @@ namespace OpcUaStackClient
 		componentSession_->send(serviceTransactionBrowse);
 	}
 
+	void
+	ViewService::sendSync(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+	{
+		serviceTransactionBrowseNext->sync(true);
+		serviceTransactionBrowseNext->conditionBool().conditionInit();
+		send(serviceTransactionBrowseNext);
+		serviceTransactionBrowseNext->conditionBool().waitForCondition();
+	}
+
+	void
+	ViewService::send(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+	{
+		serviceTransactionBrowseNext->componentService(this);
+		OpcUaNodeId nodeId;
+		componentSession_->send(serviceTransactionBrowseNext);
+	}
+
 	void 
 	ViewService::receive(Message::SPtr message)
 	{
@@ -63,6 +80,15 @@ namespace OpcUaStackClient
 				if (viewServiceIf_ != nullptr) {
 					viewServiceIf_->viewServiceBrowseResponse(
 						boost::static_pointer_cast<ServiceTransactionBrowse>(serviceTransaction)
+					);
+				}
+				break;
+			}
+			case OpcUaId_BrowseNextResponse_Encoding_DefaultBinary:
+			{
+				if (viewServiceIf_ != nullptr) {
+					viewServiceIf_->viewServiceBrowseNextResponse(
+						boost::static_pointer_cast<ServiceTransactionBrowseNext>(serviceTransaction)
 					);
 				}
 				break;
