@@ -475,6 +475,26 @@ namespace OpcUaStackCore
 			return true;
 		}
 
+		//
+		// find token "g=" (optional)
+		//
+		pos = nodeIdString.find("g=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+2;
+			posEnd = nodeIdString.length();
+
+			try {
+				OpcUaGuid::SPtr value = OpcUaGuid::construct();
+				*value = nodeIdString.substr(posBegin, posEnd-posBegin);
+				nodeId(value);
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
 		return false;
 	}
 
