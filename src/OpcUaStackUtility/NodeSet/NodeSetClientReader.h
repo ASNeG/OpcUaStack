@@ -53,6 +53,11 @@ namespace OpcUaStackUtility
 			OpcUaBuildInType buildInType
 		);
 		bool readNamespaceArray(void);
+		bool browse(
+			OpcUaNodeId& nodeId,
+			ReferenceDescription::SPtr referenceDescription,
+			OpcUaByteString::SPtr continuationPoint
+		);
 		bool browse(OpcUaNodeId& nodeId);
 		bool browse(
 			std::vector<OpcUaNodeId>& nodeIdVec, 
