@@ -31,6 +31,24 @@ namespace OpcUaStackUtility
 		uint32_t operationTimeout
 	)
 	{
+		OpcUaNodeId nodeId;
+		nodeId.set(84);
+		return readNodes(
+			sessionConfigPrefix, sessionConfig,
+			secureChannelConfigPrefix, secureChannelConfig,
+			nodeId,
+			operationTimeout
+		);
+	}
+
+	bool
+	NodeSetClientReader::readNodes(
+		const std::string& sessionConfigPrefix, Config& sessionConfig,
+		const std::string& secureChannelConfigPrefix, Config& secureChannelConfig,
+		OpcUaNodeId& nodeId,
+		uint32_t operationTimeout
+	)
+	{
 		bool rc;
 
 		operationTimeout_ = operationTimeout;
@@ -79,8 +97,6 @@ namespace OpcUaStackUtility
 
 		// browse nodes from opc ua server
 		nodeIdSet_.clear();
-		OpcUaNodeId nodeId;
-		nodeId.set(84);
 		if (!browse(nodeId)) {
 			session_->closeSession();
 			Log(Error, "browse nodes error");

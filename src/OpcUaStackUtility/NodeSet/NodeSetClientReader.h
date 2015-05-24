@@ -24,10 +24,17 @@ namespace OpcUaStackUtility
 		NodeSetClientReader(void);
 		~NodeSetClientReader(void);
 
+
 		bool readNodes(
 			const std::string& sessionConfigPrefix, Config& sessionConfig,
 			const std::string& secureChannelConfigPrefix, Config& secureChannelConfig,
-			uint32_t operationTimeout = 5000
+			OpcUaNodeId& nodeId,
+			uint32_t operationTimeout = 120000
+		);
+		bool readNodes(
+			const std::string& sessionConfigPrefix, Config& sessionConfig,
+			const std::string& secureChannelConfigPrefix, Config& secureChannelConfig,
+			uint32_t operationTimeout = 120000
 		);
 
 		NodeSetNamespace& nodeSetNamespace(void);
