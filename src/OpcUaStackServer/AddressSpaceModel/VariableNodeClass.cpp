@@ -115,4 +115,24 @@ namespace OpcUaStackServer
 		return &minimumSamplingInterval_;
 	}
 
+	void
+	VariableNodeClass::copyTo(VariableNodeClass::SPtr variableNodeClass)
+	{
+		copyTo(*variableNodeClass);
+	}
+
+	void
+	VariableNodeClass::copyTo(VariableNodeClass& variableNodeClass)
+	{
+		BaseNodeClass::copyTo(variableNodeClass);
+		valueAttribute()->copyTo(variableNodeClass.valueAttribute());
+		dataTypeAttribute()->copyTo(variableNodeClass.dataTypeAttribute());
+		valueRankAttribute()->copyTo(variableNodeClass.valueRankAttribute());
+		accessLevelAttribute()->copyTo(variableNodeClass.accessLevelAttribute());
+		userAccessLevelAttribute()->copyTo(variableNodeClass.userAccessLevelAttribute());
+		historizingAttribute()->copyTo(variableNodeClass.historizingAttribute());
+		arrayDimensionsAttribute()->copyTo(variableNodeClass.arrayDimensionsAttribute());
+		minimumSamplingIntervalAttribute()->copyTo(variableNodeClass.minimumSamplingIntervalAttribute());
+	}
+
 }

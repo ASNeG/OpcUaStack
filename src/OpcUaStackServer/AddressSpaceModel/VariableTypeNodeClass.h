@@ -28,6 +28,9 @@ namespace OpcUaStackServer
 		Attribute* valueAttribute(void);
 		Attribute* arrayDimensionsAttribute(void);
 
+		void copyTo(VariableTypeNodeClass::SPtr variableTypeNodeClass);
+		void copyTo(VariableTypeNodeClass& variableTypeNodeClass);
+
 	  private:
 		// attributes mandatory
 		DataTypeAttribute dataType_;

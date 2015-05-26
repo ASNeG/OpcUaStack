@@ -22,6 +22,9 @@ namespace OpcUaStackServer
 		Attribute* containsNoLoopsAttribute(void);
 		Attribute* eventNotifierAttribute(void);
 
+		void copyTo(ViewNodeClass::SPtr viewNodeClass);
+		void copyTo(ViewNodeClass& viewNodeClass);
+
 	  private:
 		// attributes mandatory
 		ContainsNoLoopsAttribute containsNoLoops_;

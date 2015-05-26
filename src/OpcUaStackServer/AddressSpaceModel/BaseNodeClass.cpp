@@ -122,6 +122,23 @@ namespace OpcUaStackServer
 	}
 
 	void
+	BaseNodeClass::copyTo(BaseNodeClass::SPtr baseNodeClass)
+	{
+		copyTo(*baseNodeClass);
+	}
+	void
+	BaseNodeClass::copyTo(BaseNodeClass& baseNodeClass)
+	{
+		nodeIdAttribute()->copyTo(baseNodeClass.nodeIdAttribute());
+		nodeClassAttribute()->copyTo(baseNodeClass.nodeClassAttribute());
+		browseNameAttribute()->copyTo(baseNodeClass.browseNameAttribute());
+		displayNameAttribute()->copyTo(baseNodeClass.displayNameAttribute());
+		descriptionAttribute()->copyTo(baseNodeClass.descriptionAttribute());
+		writeMaskAttribute()->copyTo(baseNodeClass.writeMaskAttribute());
+		userWriteMaskAttribute()->copyTo(baseNodeClass.userWriteMaskAttribute());;
+	}
+
+	void
 	BaseNodeClass::forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfoAsync)
 	{
 		forwardInfoAsync_ = forwardInfoAsync;

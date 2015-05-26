@@ -43,6 +43,9 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap& referenceItemMap(void);
 
+		void copyTo(BaseNodeClass::SPtr baseNodeClass);
+		void copyTo(BaseNodeClass& baseNodeClass);
+
 		void forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo);
 		ForwardInfoAsync::SPtr forwardInfoAsync(void);
 

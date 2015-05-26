@@ -26,4 +26,17 @@ namespace OpcUaStackServer
 		return &eventNotifier_;
 	}
 
+	void
+	ObjectNodeClass::copyTo(ObjectNodeClass::SPtr objectNodeClass)
+	{
+		copyTo(*objectNodeClass);
+	}
+
+	void
+	ObjectNodeClass::copyTo(ObjectNodeClass& objectNodeClass)
+	{
+		BaseNodeClass::copyTo(objectNodeClass);
+		eventNotifierAttribute()->copyTo(objectNodeClass.eventNotifierAttribute());
+	}
+
 }

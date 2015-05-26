@@ -24,6 +24,9 @@ namespace OpcUaStackServer
 		Attribute* symmetricAttribute(void);
 		Attribute* inverseNameAttribute(void);
 
+		void copyTo(ReferenceTypeNodeClass::SPtr referenceTypeNodeClass);
+		void copyTo(ReferenceTypeNodeClass& referenceTypeNodeClass);
+
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;
