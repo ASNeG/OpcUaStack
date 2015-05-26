@@ -52,4 +52,12 @@ namespace OpcUaStackServer
 		userExecutableAttribute()->copyTo(methodNodeClass.userExecutableAttribute());
 	}
 
+	BaseNodeClass::SPtr
+	MethodNodeClass::clone(void)
+	{
+		MethodNodeClass::SPtr methodNodeClass = MethodNodeClass::construct();
+		copyTo(methodNodeClass);
+		return methodNodeClass;
+	}
+
 }

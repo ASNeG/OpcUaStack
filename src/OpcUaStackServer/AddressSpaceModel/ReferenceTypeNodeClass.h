@@ -26,6 +26,7 @@ namespace OpcUaStackServer
 
 		void copyTo(ReferenceTypeNodeClass::SPtr referenceTypeNodeClass);
 		void copyTo(ReferenceTypeNodeClass& referenceTypeNodeClass);
+		BaseNodeClass::SPtr clone(void);
 
 	  private:
 		// attributes mandatory

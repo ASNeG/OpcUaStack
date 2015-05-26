@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 
 		void copyTo(BaseNodeClass::SPtr baseNodeClass);
 		void copyTo(BaseNodeClass& baseNodeClass);
+		virtual BaseNodeClass::SPtr clone(void) = 0;
 
 		void forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo);
 		ForwardInfoAsync::SPtr forwardInfoAsync(void);

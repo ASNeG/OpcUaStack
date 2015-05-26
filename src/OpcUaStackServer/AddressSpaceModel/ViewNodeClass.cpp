@@ -52,4 +52,12 @@ namespace OpcUaStackServer
 		eventNotifierAttribute()->copyTo(viewNodeClass.eventNotifierAttribute());
 	}
 
+	BaseNodeClass::SPtr
+	ViewNodeClass::clone(void)
+	{
+		ViewNodeClass::SPtr viewNodeClass = ViewNodeClass::construct();
+		copyTo(viewNodeClass);
+		return viewNodeClass;
+	}
+
 }

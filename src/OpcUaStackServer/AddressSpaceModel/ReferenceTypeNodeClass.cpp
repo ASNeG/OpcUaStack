@@ -66,4 +66,12 @@ namespace OpcUaStackServer
 		inverseNameAttribute()->copyTo(referenceTypeNodeClass.inverseNameAttribute());
 	}
 
+	BaseNodeClass::SPtr
+	ReferenceTypeNodeClass::clone(void)
+	{
+		ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = ReferenceTypeNodeClass::construct();
+		copyTo(referenceTypeNodeClass);
+		return referenceTypeNodeClass;
+	}
+
 }

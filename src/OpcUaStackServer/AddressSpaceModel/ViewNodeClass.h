@@ -24,6 +24,7 @@ namespace OpcUaStackServer
 
 		void copyTo(ViewNodeClass::SPtr viewNodeClass);
 		void copyTo(ViewNodeClass& viewNodeClass);
+		BaseNodeClass::SPtr clone(void);
 
 	  private:
 		// attributes mandatory

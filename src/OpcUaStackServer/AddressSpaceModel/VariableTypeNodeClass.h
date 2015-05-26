@@ -30,6 +30,7 @@ namespace OpcUaStackServer
 
 		void copyTo(VariableTypeNodeClass::SPtr variableTypeNodeClass);
 		void copyTo(VariableTypeNodeClass& variableTypeNodeClass);
+		BaseNodeClass::SPtr clone(void);
 
 	  private:
 		// attributes mandatory

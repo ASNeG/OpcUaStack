@@ -37,4 +37,13 @@ namespace OpcUaStackServer
 		BaseNodeClass::copyTo(dataTypeNodeClass);
 		isAbstractAttribute()->copyTo(dataTypeNodeClass.isAbstractAttribute());
 	}
+
+	BaseNodeClass::SPtr
+	DataTypeNodeClass::clone(void)
+	{
+		DataTypeNodeClass::SPtr dataTypeNodeClass = DataTypeNodeClass::construct();
+		copyTo(dataTypeNodeClass);
+		return dataTypeNodeClass;
+	}
+
 }

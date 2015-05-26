@@ -135,4 +135,12 @@ namespace OpcUaStackServer
 		minimumSamplingIntervalAttribute()->copyTo(variableNodeClass.minimumSamplingIntervalAttribute());
 	}
 
+	BaseNodeClass::SPtr
+	VariableNodeClass::clone(void)
+	{
+		VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+		copyTo(variableNodeClass);
+		return variableNodeClass;
+	}
+
 }

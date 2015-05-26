@@ -18,6 +18,7 @@ namespace OpcUaStackServer
 
 		void copyTo(DummyNodeClass::SPtr dummyNodeClass);
 		void copyTo(DummyNodeClass& dummyNodeClass);
+		BaseNodeClass::SPtr clone(void);
 	};
 
 }

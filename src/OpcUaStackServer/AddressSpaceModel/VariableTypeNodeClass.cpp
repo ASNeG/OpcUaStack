@@ -94,5 +94,13 @@ namespace OpcUaStackServer
 		arrayDimensionsAttribute()->copyTo(variableTypeNodeClass.arrayDimensionsAttribute());
 	}
 
+	BaseNodeClass::SPtr
+	VariableTypeNodeClass::clone(void)
+	{
+		VariableTypeNodeClass::SPtr variableTypeNodeClass = VariableTypeNodeClass::construct();
+		copyTo(variableTypeNodeClass);
+		return variableTypeNodeClass;
+	}
+
 }
 
