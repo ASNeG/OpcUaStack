@@ -135,7 +135,9 @@ namespace OpcUaStackServer
 		displayNameAttribute()->copyTo(baseNodeClass.displayNameAttribute());
 		descriptionAttribute()->copyTo(baseNodeClass.descriptionAttribute());
 		writeMaskAttribute()->copyTo(baseNodeClass.writeMaskAttribute());
-		userWriteMaskAttribute()->copyTo(baseNodeClass.userWriteMaskAttribute());;
+		userWriteMaskAttribute()->copyTo(baseNodeClass.userWriteMaskAttribute());
+
+		referenceItemMap_.copyTo(baseNodeClass.referenceItemMap());
 	}
 
 	void

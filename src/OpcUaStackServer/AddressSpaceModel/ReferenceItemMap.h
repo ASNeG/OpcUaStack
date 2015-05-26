@@ -25,6 +25,9 @@ namespace OpcUaStackServer
 
 		ReferenceItemMultiMap& referenceItemMultiMap(void);
 
+		void copyTo(ReferenceItemMap::SPtr referenceItemMap);
+		void copyTo(ReferenceItemMap& referenceItemMap);
+
 	  private:
 		ReferenceItemMultiMap referenceItemMultiMap_;
 	};

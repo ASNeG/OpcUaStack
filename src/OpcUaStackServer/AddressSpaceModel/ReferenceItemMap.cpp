@@ -40,4 +40,26 @@ namespace OpcUaStackServer
 		return referenceItemMultiMap_;
 	}
 
+	void
+	ReferenceItemMap::copyTo(ReferenceItemMap::SPtr referenceItemMap)
+	{
+		copyTo(*referenceItemMap);
+	}
+
+	void
+	ReferenceItemMap::copyTo(ReferenceItemMap& referenceItemMap)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (it = referenceItemMultiMap_.begin(); it != referenceItemMultiMap_.end(); it++) {
+			ReferenceItem::SPtr referenceItem = it->second;
+			ReferenceItem::SPtr newReferenceItem = ReferenceItem::construct();
+
+			referenceItem->copyTo(newReferenceItem);
+
+			referenceItemMap.referenceItemMultiMap().insert(
+				std::make_pair(it->first, newReferenceItem)
+			);
+		}
+	}
+
 }

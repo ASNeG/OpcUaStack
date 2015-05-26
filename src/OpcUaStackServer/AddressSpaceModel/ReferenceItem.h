@@ -18,6 +18,8 @@ namespace OpcUaStackServer
 		ReferenceItem(void);
 		~ReferenceItem(void);
 
+		void copyTo(ReferenceItem::SPtr referenceItem);
+		void copyTo(ReferenceItem& referenceItem);
 		bool operator==(const ReferenceItem& referenceItem);
 
 		OpcUaNodeId nodeId_;
