@@ -213,8 +213,111 @@ namespace OpcUaStackUtility
 		return rc;
 	}
 
+	bool
+	NodeSetClientReader::browse(
+		OpcUaNodeId& nodeId,
+		ReferenceDescription::SPtr referenceDescription,
+		OpcUaByteString::SPtr continuationPoint
+	)
+	{
+		ViewService viewService;
+		viewService.componentSession(session_->component());
+
+		ServiceTransactionBrowseNext::SPtr browseNextTrx = ServiceTransactionBrowseNext::construct();
+		BrowseNextRequest::SPtr req = browseNextTrx->request();
+
+		req->continuationPoints()->resize(1);
+		req->continuationPoints()->push_back(continuationPoint);
+
+		viewService.sendSync(browseNextTrx);
+
+		//
+		// check response
+		//
+		if (browseNextTrx->responseHeader()->serviceResult() != Success) {
+			Log(Error, "browse next nodes response error")
+				.parameter("ResultCode", OpcUaStatusCodeMap::longString(browseNextTrx->responseHeader()->serviceResult()));
+			return false;
+		}
+		if (browseNextTrx->response()->results()->size() != 1) {
+			Log(Error, "browse next nodes array size error")
+				.parameter("Nodes", nodeId)
+				.parameter("ArraySize", browseNextTrx->response()->results()->size());
+			return false;
+		}
+
+		//
+		// check dataValue
+		//
+		BrowseResultArray::SPtr browseResultArray = browseNextTrx->response()->results();
+		BrowseResult::SPtr browseResult;
+		browseResultArray->get(0, browseResult);
+
+		if (browseResult->statusCode() != Success) {
+			Log(Error, "browse next node result error")
+				.parameter("NodeId", nodeId)
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(browseResult->statusCode()));
+		}
+
+		Log(Debug, "browse response")
+			.parameter("NodeId", nodeId)
+			.parameter("References", browseResult->references()->size());
+
+		//
+		// read node information from browse result
+		//
+		std::vector<OpcUaNodeId> newNodeIdVec;
+		ReferenceDescription::Vec newReferenceDescriptionVec;
+		ReferenceDescription::Vec allReferenceDescriptionVec;
+
+		ReferenceDescriptionArray::SPtr references = browseResult->references();
+		if (references->size() == 0) return true;
+		for (uint32_t idx=0; idx<references->size(); idx++) {
+			ReferenceDescription::SPtr referenceDescription;
+			references->get(idx, referenceDescription);
+
+			// check if node already exist
+			OpcUaNodeId nodeId;
+			nodeId.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+			nodeId.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+
+			allReferenceDescriptionVec.push_back(referenceDescription);
+			if (nodeIdSet_.find(nodeId) != nodeIdSet_.end()) {
+				continue;
+			}
+			nodeIdSet_.insert(nodeId);
+			newNodeIdVec.push_back(nodeId);
+			newReferenceDescriptionVec.push_back(referenceDescription);
+		}
+
+		bool rc = createNode(nodeId, referenceDescription, allReferenceDescriptionVec);
+		if (!rc) return false;
+
+		//
+		// check if the answer is completely arrived
+		//
+		if (browseResult->continuationPoint().exist()) {
+			Log(Debug, "browse continuation point found")
+				.parameter("NodeId", nodeId);
+
+			OpcUaByteString::SPtr continuationPoint = OpcUaByteString::construct();
+			browseResult->continuationPoint().copyTo(*continuationPoint);
+
+			if (!browse(nodeId, referenceDescription, continuationPoint)) return false;
+		}
+
+		if (newNodeIdVec.size() > 0) {
+			if (!browse(newNodeIdVec, newReferenceDescriptionVec)) return false;
+		}
+
+		return true;
+	}
+
 	bool 
-	NodeSetClientReader::browse(std::vector<OpcUaNodeId>& nodeIdVec, ReferenceDescription::Vec& referenceDescriptionVec)
+	NodeSetClientReader::browse(
+		std::vector<OpcUaNodeId>& nodeIdVec,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
 		ViewService viewService;
 		viewService.componentSession(session_->component());
@@ -255,14 +358,20 @@ namespace OpcUaStackUtility
 		//
 		// check dataValue
 		// 
-		for (uint32_t pos=0; pos<nodeIdVec.size(); pos++) {
+		BrowseResultArray::SPtr browseResultArray = browseTrx->response()->results();
+		for (uint32_t pos=0; pos<browseResultArray->size(); pos++) {
 			BrowseResult::SPtr browseResult;
-			browseTrx->response()->results()->get(pos, browseResult);
+			browseResultArray->get(pos, browseResult);
+
 			if (browseResult->statusCode() != Success) {
 				Log(Error, "browse node result error")
 					.parameter("NodeId", nodeIdVec[pos])
 					.parameter("StatusCode", OpcUaStatusCodeMap::longString(browseResult->statusCode()));
 			}
+
+			Log(Debug, "browse response")
+				.parameter("NodeId", nodeIdVec[pos])
+				.parameter("References", browseResult->references()->size());
 
 			//
 			// read node information from browse result
@@ -293,6 +402,22 @@ namespace OpcUaStackUtility
 
 			bool rc = createNode(nodeIdVec[pos], referenceDescriptionVec[pos], allReferenceDescriptionVec);
 			if (!rc) return false;
+
+			//
+			// check if the answer is completely arrived
+			//
+			if (browseResult->continuationPoint().exist()) {
+				BrowseDescription::SPtr browseDescription;
+				req->nodesToBrowse()->get(pos, browseDescription);
+
+				Log(Debug, "browse continuation point found")
+					.parameter("NodeId", *browseDescription->nodeId());
+
+				OpcUaByteString::SPtr continuationPoint = OpcUaByteString::construct();
+				browseResult->continuationPoint().copyTo(*continuationPoint);
+
+				if (!browse(nodeIdVec[pos], referenceDescriptionVec[pos], continuationPoint)) return false;
+			}
 
 			if (newNodeIdVec.size() > 0) {
 				if (!browse(newNodeIdVec, newReferenceDescriptionVec)) return false;

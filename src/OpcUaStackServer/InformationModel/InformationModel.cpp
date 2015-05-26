@@ -63,16 +63,26 @@ namespace OpcUaStackServer
 			for (itr = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin(); itr != baseNodeClass->referenceItemMap().referenceItemMultiMap().end(); itr++) {
 				OpcUaNodeId referenceTypeNodeId = itr->first;
 				ReferenceItem::SPtr referenceItem = itr->second;
-				if (referenceItem->isForward_) continue;
+				if (referenceItem->isForward_) {
+					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
+					if (baseNodeClassTarget.get() == nullptr) continue;
 
-				BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
-				if (baseNodeClassTarget.get() == nullptr) continue;
+					ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
+					referenceItemForward->isForward_ = false;
+					baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
 
-				ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
-				referenceItemForward->isForward_ = true;
-				baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
+					baseNodeClassTarget->referenceItemMap().add(referenceTypeNodeId, referenceItemForward);
+				}
+				else {
+					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
+					if (baseNodeClassTarget.get() == nullptr) continue;
 
-				baseNodeClassTarget->referenceItemMap().add(referenceTypeNodeId, referenceItemForward);
+					ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
+					referenceItemForward->isForward_ = true;
+					baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
+
+					baseNodeClassTarget->referenceItemMap().add(referenceTypeNodeId, referenceItemForward);
+				}
 			}
 		}
 	}
