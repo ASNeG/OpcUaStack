@@ -87,6 +87,7 @@ namespace OpcUaStackServer
 			}
 
 			baseNodeClass->forwardInfoAsync(registerForwardRequest->forwardInfoAsync());
+			baseNodeClass->forwardInfoSync(registerForwardRequest->forwardInfoSync());
 
 			Log(Debug, "register forward")
 				.parameter("Trx", serviceTransaction->transactionId())

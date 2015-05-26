@@ -7,6 +7,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardInfoAsync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardInfoSync.h"
 
 namespace OpcUaStackCore
 {
@@ -23,12 +24,15 @@ namespace OpcUaStackCore
 		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
 		void forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo);
 		ForwardInfoAsync::SPtr forwardInfoAsync(void);
+		void forwardInfoSync(ForwardInfoSync::SPtr forwardInfo);
+		ForwardInfoSync::SPtr forwardInfoSync(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardInfoAsync::SPtr forwardInfo_;
+		ForwardInfoAsync::SPtr forwardInfoAsync_;
+		ForwardInfoSync::SPtr forwardInfoSync_;
 		OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
 	};
 
