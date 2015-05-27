@@ -22,6 +22,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<Merge> SPtr;
 
 		Merge(void);
+		Merge(InformationModel::SPtr informationModel);
 		~Merge(void);
 
 		void informationModel(InformationModel::SPtr informationModel);

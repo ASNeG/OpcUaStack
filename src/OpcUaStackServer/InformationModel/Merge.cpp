@@ -13,6 +13,11 @@ namespace OpcUaStackServer
 	{
 	}
 
+	Merge::Merge(InformationModel::SPtr informationModel)
+	: informationModel_(informationModel)
+	{
+	}
+
 	Merge::~Merge(void)
 	{
 	}
