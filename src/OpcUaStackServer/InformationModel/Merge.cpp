@@ -1,5 +1,7 @@
-#include "OpcUaStackServer/InformationModel/Merge.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/InformationModel/Merge.h"
+
 
 using namespace OpcUaStackCore;
 
@@ -26,7 +28,7 @@ namespace OpcUaStackServer
 	{
 		bool success = true;
 		uint32_t actCount = 0;
-		uint32_t maxCount = informationModel->informationModelMap();
+		uint32_t maxCount = informationModel->informationModelMap().size();
 
 		InformationModelMap::iterator it;
 		for (
@@ -46,7 +48,7 @@ namespace OpcUaStackServer
 				success = false;
 			}
 
-			OpcUaNodeId = baseNodeClass->getParent();
+			//OpcUaNodeId = baseNodeClass->getParent();
 		}
 		return success;
 	}
