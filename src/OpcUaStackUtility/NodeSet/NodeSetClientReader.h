@@ -22,7 +22,7 @@ namespace OpcUaStackUtility
 	{
 	  public:
 		NodeSetClientReader(void);
-		~NodeSetClientReader(void);
+		virtual ~NodeSetClientReader(void);
 
 
 		bool readNodes(

@@ -37,4 +37,5 @@ install(TARGETS OpcUaStackClient DESTINATION lib/OpcUaStack)
 install(FILES ${INC_OpcUaStackClient_Client} DESTINATION include/OpcUaStack/OpcUaStackClient/Client)
 install(FILES ${INC_OpcUaStackClient_SecureChannel} DESTINATION include/OpcUaStack/OpcUaStackClient/SecureChannel)
 install(FILES ${INC_OpcUaStackClient_ServiceSet} DESTINATION include/OpcUaStack/OpcUaStackClient/ServiceSet)
+install(FILES ${INC_OpcUaStackClient_ServiceAccess} DESTINATION include/OpcUaStack/OpcUaStackClient/ServiceAccess)
 

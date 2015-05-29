@@ -99,9 +99,9 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readXml_readXml_readClient_)
 	// configuration session
 	Config sessionConfig;
 
-	sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
+	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
 	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.162:4880");
-	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	sessionConfig.setValue("NodeSetClientReaderConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("NodeSetClientReaderConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("NodeSetClientReaderConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
@@ -110,16 +110,14 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readXml_readXml_readClient_)
 
 	// configuration secure channel
 	Config secureChannelConfig;
-	secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
+	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
 	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.162:4880");
-	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	secureChannelConfig.setValue("NodeSetClientReaderConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	// set start node
 	OpcUaNodeId startNodeId;
-	//startNodeId.set(84, 0);
-	startNodeId.set("CDA", 3);
-
+	startNodeId.set(84, 0);
 
 	// read node set from opc ua server
 	NodeSetClientReader nodeSetClientReader;
@@ -205,9 +203,9 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readClient_writeFile)
 
 	// configuration session
 	Config sessionConfig; 
-	sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
+	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
 	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.162:4880");
-	//sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	sessionConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	sessionConfig.setValue("NodeSetClientReaderConfig.SessionName", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("NodeSetClientReaderConfig.ApplicationDescription.ApplicationUri", "urn:127.0.0.1:Company:MyAppl");
 	sessionConfig.setValue("NodeSetClientReaderConfig.ApplicationDescription.ProductUri", "urn:Company:MyAppl");
@@ -216,9 +214,9 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readClient_writeFile)
 
 	// configuration secure channel
 	Config secureChannelConfig;
-	secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
+	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.43.1.133:4841");
 	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://10.49.143.162:4880");
-	//secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
+	secureChannelConfig.setValue("NodeSetClientReaderConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	secureChannelConfig.setValue("NodeSetClientReaderConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	// read node set from opc ua server
