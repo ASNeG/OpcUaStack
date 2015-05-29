@@ -22,6 +22,10 @@ namespace OpcUaStackServer
 
 		Attribute* isAbstractAttribute(void);
 
+		void copyTo(DataTypeNodeClass::SPtr dataTypeNodeClass);
+		void copyTo(DataTypeNodeClass& dataTypeNodeClass);
+		BaseNodeClass::SPtr clone(void);
+
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;

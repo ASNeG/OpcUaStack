@@ -34,6 +34,10 @@ namespace OpcUaStackServer
 		Attribute* arrayDimensionsAttribute(void);
 		Attribute* minimumSamplingIntervalAttribute(void);
 
+		void copyTo(VariableNodeClass::SPtr variableNodeClass);
+		void copyTo(VariableNodeClass& variableNodeClass);
+		BaseNodeClass::SPtr clone(void);
+
 	  private:
 		// attributes mandatory
 		ValueAttribute value_;

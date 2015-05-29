@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackServer_BaseNodeClass_h__
 #define __OpcUaStackServer_BaseNodeClass_h__
 
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardInfoAsync.h"
@@ -20,6 +21,7 @@ namespace OpcUaStackServer
 	{
 	  public: 
 		typedef boost::shared_ptr<BaseNodeClass> SPtr;
+		typedef std::vector<BaseNodeClass::SPtr> Vec;
 		typedef boost::weak_ptr<BaseNodeClass> WPtr;
 
 		BaseNodeClass(void);
@@ -43,6 +45,10 @@ namespace OpcUaStackServer
 		Attribute* userWriteMaskAttribute(void); 
 
 		ReferenceItemMap& referenceItemMap(void);
+
+		void copyTo(BaseNodeClass::SPtr baseNodeClass);
+		void copyTo(BaseNodeClass& baseNodeClass);
+		virtual BaseNodeClass::SPtr clone(void) = 0;
 
 		void forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo);
 		ForwardInfoAsync::SPtr forwardInfoAsync(void);

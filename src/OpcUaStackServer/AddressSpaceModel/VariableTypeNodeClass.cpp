@@ -77,5 +77,30 @@ namespace OpcUaStackServer
 		return &arrayDimensions_;
 	}
 
+	void
+	VariableTypeNodeClass::copyTo(VariableTypeNodeClass::SPtr variableTypeNodeClass)
+	{
+		copyTo(*variableTypeNodeClass);
+	}
+
+	void
+	VariableTypeNodeClass::copyTo(VariableTypeNodeClass& variableTypeNodeClass)
+	{
+		BaseNodeClass::copyTo(variableTypeNodeClass);
+		dataTypeAttribute()->copyTo(variableTypeNodeClass.dataTypeAttribute());
+		valueRankAttribute()->copyTo(variableTypeNodeClass.valueRankAttribute());
+		isAbstractAttribute()->copyTo(variableTypeNodeClass.isAbstractAttribute());
+		valueAttribute()->copyTo(variableTypeNodeClass.valueRankAttribute());
+		arrayDimensionsAttribute()->copyTo(variableTypeNodeClass.arrayDimensionsAttribute());
+	}
+
+	BaseNodeClass::SPtr
+	VariableTypeNodeClass::clone(void)
+	{
+		VariableTypeNodeClass::SPtr variableTypeNodeClass = VariableTypeNodeClass::construct();
+		copyTo(variableTypeNodeClass);
+		return variableTypeNodeClass;
+	}
+
 }
 

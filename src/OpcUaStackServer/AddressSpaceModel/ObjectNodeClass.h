@@ -20,6 +20,10 @@ namespace OpcUaStackServer
 
 		Attribute* eventNotifierAttribute(void);
 
+		void copyTo(ObjectNodeClass::SPtr objectNodeClass);
+		void copyTo(ObjectNodeClass& objectNodeClass);
+		BaseNodeClass::SPtr clone(void);
+
 	  private:
 		// attributes mandatory
 		EventNotifierAttribute eventNotifier_;

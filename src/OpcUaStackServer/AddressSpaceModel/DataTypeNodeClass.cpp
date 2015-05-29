@@ -25,4 +25,25 @@ namespace OpcUaStackServer
 		return &isAbstract_;
 	}
 
+	void
+	DataTypeNodeClass::copyTo(DataTypeNodeClass::SPtr dataTypeNodeClass)
+	{
+		copyTo(*dataTypeNodeClass);
+	}
+
+	void
+	DataTypeNodeClass::copyTo(DataTypeNodeClass& dataTypeNodeClass)
+	{
+		BaseNodeClass::copyTo(dataTypeNodeClass);
+		isAbstractAttribute()->copyTo(dataTypeNodeClass.isAbstractAttribute());
+	}
+
+	BaseNodeClass::SPtr
+	DataTypeNodeClass::clone(void)
+	{
+		DataTypeNodeClass::SPtr dataTypeNodeClass = DataTypeNodeClass::construct();
+		copyTo(dataTypeNodeClass);
+		return dataTypeNodeClass;
+	}
+
 }

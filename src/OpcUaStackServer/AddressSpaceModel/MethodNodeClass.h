@@ -22,6 +22,10 @@ namespace OpcUaStackServer
 		Attribute* executableAttribute(void);
 		Attribute* userExecutableAttribute(void);
 
+		void copyTo(MethodNodeClass::SPtr methodNodeClass);
+		void copyTo(MethodNodeClass& methodNodeClass);
+		BaseNodeClass::SPtr clone(void);
+
 	  private:
 		// attributes mandatory
 		ExecutableAttribute executable_;
