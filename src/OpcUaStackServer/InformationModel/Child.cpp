@@ -32,20 +32,59 @@ namespace OpcUaStackServer
 	bool
 	Child::getChild(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
-		// FIXME: TODO
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) continue;
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
 		return true;
 	}
 
 	bool
 	Child::getChildHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
-		// FIXME: TODO
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) continue;
+
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
 		return true;
 	}
 
-	bool getChildNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	bool
+	Child::getChildNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
-		// FIXME: TODO
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) continue;
+
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
 		return true;
 	}
 
