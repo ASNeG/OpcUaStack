@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackServer_ReferenceItem_h__
 #define __OpcUaStackServer_ReferenceItem_h__
 
+#include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
@@ -14,6 +15,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef boost::shared_ptr<ReferenceItem> SPtr;
+		typedef std::vector<ReferenceItem::SPtr> Vec;
 
 		ReferenceItem(void);
 		~ReferenceItem(void);

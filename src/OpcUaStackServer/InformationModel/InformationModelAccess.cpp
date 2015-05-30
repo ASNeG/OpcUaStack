@@ -30,6 +30,348 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// node functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	InformationModelAccess::rootNode(BaseNodeClass::SPtr& baseNodeClass)
+	{
+		OpcUaNodeId nodeId;
+		nodeId.nodeId(OpcUaId_RootFolder);
+		return getNode(nodeId, baseNodeClass);
+	}
+
+	bool
+	InformationModelAccess::getNode(const OpcUaNodeId& nodeId, BaseNodeClass::SPtr& baseNodeClass)
+	{
+		baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) {
+			Log(Warning, "node not found in information model")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// child functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	InformationModelAccess::getChild(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "child node not found in information model")
+					.parameter("ParentNodeId", baseNodeClass->getNodeId())
+					.parameter("ChildNodeId", referenceItem->nodeId_);
+				return false;
+			}
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getChildHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+
+			if (!isReferenceHierarchically(it->first)) continue;
+
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "child node not found in information model")
+					.parameter("ParentNodeId", baseNodeClass->getNodeId())
+					.parameter("ChildNodeId", referenceItem->nodeId_);
+				return false;
+			}
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getChildNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+
+			if (isReferenceHierarchically(it->first)) continue;
+
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "child node not found in information model")
+					.parameter("ParentNodeId", baseNodeClass->getNodeId())
+					.parameter("ChildNodeId", referenceItem->nodeId_);
+				return false;
+			}
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// parent functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	InformationModelAccess::getParentReference(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& referenceTypeNodeIdVec, ReferenceItem::Vec& referenceItemVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+			referenceTypeNodeIdVec.push_back(it->first);
+			referenceItemVec.push_back(referenceItem);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParent(BaseNodeClass::SPtr baseNodeClass, ReferenceItem::Vec& referenceItemVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+			referenceItemVec.push_back(referenceItem);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParent(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+			nodeIdVec.push_back(referenceItem->nodeId_);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParent(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "parent node not found in information model")
+					.parameter("ChildNodeId", baseNodeClass->getNodeId())
+					.parameter("ParentNodeId", referenceItem->nodeId_);
+				return false;
+			}
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+
+			if (!isReferenceHierarchically(it->first)) continue;
+
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "parent node not found in information model")
+					.parameter("ChildNodeId", baseNodeClass->getNodeId())
+					.parameter("ParentNodeId", referenceItem->nodeId_);
+				return false;
+			}
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+
+			if (!isReferenceHierarchically(it->first)) continue;
+
+			nodeIdVec.push_back(referenceItem->nodeId_);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParentNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+
+			if (isReferenceHierarchically(it->first)) continue;
+
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "parent node not found in information model")
+					.parameter("ChildNodeId", baseNodeClass->getNodeId())
+					.parameter("ParentNodeId", referenceItem->nodeId_);
+				return false;
+			}
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+		}
+		return true;
+	}
+
+	bool
+	InformationModelAccess::getParentNonHierarchically(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec)
+	{
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+
+			if (isReferenceHierarchically(it->first)) continue;
+
+			nodeIdVec.push_back(referenceItem->nodeId_);
+		}
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// reference functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	InformationModelAccess::isReferenceHierarchically(BaseNodeClass::SPtr baseNodeClass)
+	{
+		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+
+		if (nodeId->namespaceIndex() == 0) {
+			if (nodeId->nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
+				Log(Error, "found reference with invalid node id type")
+					.parameter("ExpectedNodeIdType", "UINT32")
+					.parameter("ActualNodeIdType", nodeId->nodeIdType())
+					.parameter("NodeId", *nodeId);
+				return false;
+			}
+
+			uint32_t id = nodeId->nodeId<uint32_t>();
+			switch (id)
+			{
+				case OpcUaId_HierarchicalReferences:
+				case OpcUaId_HasEventSource:
+				case OpcUaId_HasChild:
+				case OpcUaId_Organizes:
+				case OpcUaId_HasNotifier:
+				case OpcUaId_Aggregates:
+				case OpcUaId_HasSubtype:
+				case OpcUaId_HasProperty:
+				case OpcUaId_HasComponent:
+				case OpcUaId_HasOrderedComponent:
+					return true;
+			}
+			return false;
+		}
+
+		BaseNodeClass::SPtr subTypeBaseNodeClass;
+		if (!getSubType(baseNodeClass, subTypeBaseNodeClass)) return false;
+		return isReferenceHierarchically(subTypeBaseNodeClass);
+	}
+
+	bool
+	InformationModelAccess::isReferenceHierarchically(const OpcUaNodeId& nodeId)
+	{
+		BaseNodeClass::SPtr baseNodeClass;
+		if (!getNode(nodeId, baseNodeClass)) return false;
+		return isReferenceHierarchically(baseNodeClass);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// type functions
 	//
 	// ------------------------------------------------------------------------
@@ -147,6 +489,76 @@ namespace OpcUaStackServer
 		Log(Warning, "HasSubTypeDefinition backward reference not exist in node")
 			.parameter("NodeId", baseNodeClass->nodeId());
 		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// merge function
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	InformationModelAccess::add(InformationModel::SPtr informationModel, uint16_t namespaceIndex, MergeIf* mergeIf, uint32_t step)
+	{
+		BaseNodeClass::Vec baseNodeClassVec;
+
+		bool success = true;
+		uint32_t actCount = 0;
+		uint32_t maxCount = informationModel->informationModelMap().size();
+
+		// clone node classes and insert them into target information model
+		InformationModelMap::iterator it1;
+		for (
+			it1 = informationModel->informationModelMap().begin();
+			it1 != informationModel->informationModelMap().end();
+			it1++
+		) {
+			if (mergeIf != NULL && actCount % step == 0) mergeIf->handleMerge(maxCount, actCount);
+			actCount++;
+
+			if (namespaceIndex != it1->first.namespaceIndex()) continue;
+			BaseNodeClass::SPtr baseNodeClass = it1->second->clone();
+
+			if (!informationModel_->insert(baseNodeClass)) {
+				Log(Error, "node id already exist in information model")
+					.parameter("NodeId", baseNodeClass->nodeId().data());
+				success = false;
+			}
+
+			baseNodeClassVec.push_back(baseNodeClass);
+		}
+
+		// check if there is a target for all references
+		BaseNodeClass::Vec::iterator it2;
+		for (it2 = baseNodeClassVec.begin(); it2 != baseNodeClassVec.end(); it2++) {
+			BaseNodeClass::SPtr baseNodeClass = *it2;
+
+			if (mergeIf != NULL && actCount % step == 0) mergeIf->handleMerge(maxCount*2, actCount+maxCount);
+			actCount++;
+
+#if 0
+			// get parent references
+			ReferenceItem::Vec referenceItemVec;
+			bool success = getParentReference(baseNodeClass, referenceItemVec);
+			if (!success || referenceItemVec.size() == 0) {
+				Log(Debug, "no parent reference available")
+					.parameter("NodeId", *baseNodeClass->getNodeId());
+				success = false;
+				continue;
+			}
+
+			// check all parent references
+			ReferenceItem::Vec::iterator it3;
+			for (it3 = referenceItemVec.begin(); it3 != referenceItemVec.end(); it3++) {
+				;
+			}
+#endif
+
+		}
+
+		return success;
 	}
 
 }

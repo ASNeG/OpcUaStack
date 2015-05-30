@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 	}
 
 	BaseNodeClass::SPtr 
-	InformationModel::find(OpcUaNodeId& opcUaNodeId)
+	InformationModel::find(const OpcUaNodeId& opcUaNodeId)
 	{
 		boost::mutex::scoped_lock lock(mutex_);
 		InformationModelMap::iterator it;

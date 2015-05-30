@@ -4,6 +4,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include "OpcUaStackCore/Base/os.h"
 #include <list>
+#include <vector>
 #include <boost/shared_ptr.hpp>
 
 namespace OpcUaStackCore
@@ -13,6 +14,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaNodeId> SPtr;
+		typedef std::vector<OpcUaNodeId::SPtr> Vec;
 
 	    OpcUaNodeId(void);
 		virtual ~OpcUaNodeId(void);

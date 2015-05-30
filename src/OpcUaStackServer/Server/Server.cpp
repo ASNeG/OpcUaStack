@@ -5,8 +5,6 @@
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 
-#include "OpcUaStackServer/InformationModel/RootNode.h"
-
 
 using namespace OpcUaStackCore;
 
