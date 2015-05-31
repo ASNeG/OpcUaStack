@@ -325,9 +325,9 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	InformationModelAccess::isReferenceHierarchically(BaseNodeClass::SPtr baseNodeClass)
+	InformationModelAccess::isReferenceHierarchically(BaseNodeClass::SPtr referenceBaseNodeClass)
 	{
-		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+		boost::optional<OpcUaNodeId&> nodeId = referenceBaseNodeClass->getNodeId();
 
 		if (nodeId->namespaceIndex() == 0) {
 			if (nodeId->nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
@@ -362,11 +362,11 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelAccess::isReferenceHierarchically(const OpcUaNodeId& nodeId)
+	InformationModelAccess::isReferenceHierarchically(const OpcUaNodeId& referenceNodeId)
 	{
-		BaseNodeClass::SPtr baseNodeClass;
-		if (!getNode(nodeId, baseNodeClass)) return false;
-		return isReferenceHierarchically(baseNodeClass);
+		BaseNodeClass::SPtr referenceBaseNodeClass;
+		if (!getNode(referenceNodeId, referenceBaseNodeClass)) return false;
+		return isReferenceHierarchically(referenceBaseNodeClass);
 	}
 
 	// ------------------------------------------------------------------------
@@ -500,6 +500,12 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
+	InformationModelAccess::getWildcardNode(BaseNodeClass::SPtr& baseNodeClass)
+	{
+		return true;
+	}
+
+	bool
 	InformationModelAccess::add(InformationModel::SPtr informationModel, uint16_t namespaceIndex, MergeIf* mergeIf, uint32_t step)
 	{
 		BaseNodeClass::Vec baseNodeClassVec;
@@ -523,7 +529,7 @@ namespace OpcUaStackServer
 
 			if (!informationModel_->insert(baseNodeClass)) {
 				Log(Error, "node id already exist in information model")
-					.parameter("NodeId", baseNodeClass->nodeId().data());
+					.parameter("NodeId", baseNodeClass->getNodeId());
 				success = false;
 			}
 
@@ -538,10 +544,10 @@ namespace OpcUaStackServer
 			if (mergeIf != NULL && actCount % step == 0) mergeIf->handleMerge(maxCount*2, actCount+maxCount);
 			actCount++;
 
-#if 0
 			// get parent references
+			std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
 			ReferenceItem::Vec referenceItemVec;
-			bool success = getParentReference(baseNodeClass, referenceItemVec);
+			bool success = getParentReference(baseNodeClass, referenceTypeNodeIdVec, referenceItemVec);
 			if (!success || referenceItemVec.size() == 0) {
 				Log(Debug, "no parent reference available")
 					.parameter("NodeId", *baseNodeClass->getNodeId());
@@ -550,11 +556,17 @@ namespace OpcUaStackServer
 			}
 
 			// check all parent references
-			ReferenceItem::Vec::iterator it3;
-			for (it3 = referenceItemVec.begin(); it3 != referenceItemVec.end(); it3++) {
-				;
+			for (uint32_t pos = 0; pos < referenceItemVec.size(); pos++) {
+				OpcUaNodeId referenceTypeNodeId = referenceTypeNodeIdVec[pos];
+				ReferenceItem::SPtr referenceItem = referenceItemVec[pos];
+
+				BaseNodeClass::SPtr parentBaseNodeClass = informationModel->find(referenceItem->nodeId_);
+				if (parentBaseNodeClass.get() != nullptr) continue;
+
+				// parent node not exist
+				BaseNodeClass::SPtr newParentBaseNode = getWildcardNode();
+
 			}
-#endif
 
 		}
 
