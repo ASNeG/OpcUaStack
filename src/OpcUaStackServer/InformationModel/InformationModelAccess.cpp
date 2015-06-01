@@ -357,7 +357,7 @@ namespace OpcUaStackServer
 		}
 
 		BaseNodeClass::SPtr subTypeBaseNodeClass;
-		if (!getSubType(baseNodeClass, subTypeBaseNodeClass)) return false;
+		if (!getSubType(referenceBaseNodeClass, subTypeBaseNodeClass)) return false;
 		return isReferenceHierarchically(subTypeBaseNodeClass);
 	}
 
@@ -564,7 +564,7 @@ namespace OpcUaStackServer
 				if (parentBaseNodeClass.get() != nullptr) continue;
 
 				// parent node not exist
-				BaseNodeClass::SPtr newParentBaseNode = getWildcardNode();
+				//BaseNodeClass::SPtr newParentBaseNode = getWildcardNode();
 
 			}
 
