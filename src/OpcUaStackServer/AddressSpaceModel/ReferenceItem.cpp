@@ -5,6 +5,14 @@ namespace OpcUaStackServer
 {
 
 	ReferenceItem::ReferenceItem(void)
+	: isForward_(false)
+	, nodeId_()
+	{
+	}
+
+	ReferenceItem::ReferenceItem(const bool& isForward, const OpcUaNodeId& nodeId)
+	: isForward_(isForward)
+	, nodeId_(nodeId)
 	{
 	}
 

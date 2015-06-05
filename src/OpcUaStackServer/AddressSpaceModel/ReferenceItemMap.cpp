@@ -18,6 +18,13 @@ namespace OpcUaStackServer
 		return add(*nodeId, referenceItem);
 	}
 
+	bool
+	ReferenceItemMap::add(ReferenceType referenceType, bool isForward, OpcUaNodeId& nodeId)
+	{
+		OpcUaNodeId::SPtr referenceTypeNodeId = ReferenceTypeMap::typeNodeId(referenceType);
+		return add(*referenceTypeNodeId, isForward, nodeId);
+	}
+
 	bool 
 	ReferenceItemMap::add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem)
 	{
@@ -32,6 +39,48 @@ namespace OpcUaStackServer
 
 		referenceItemMultiMap_.insert(std::make_pair(referenceTypeNodeId, referenceItem));
 		return true;
+	}
+
+	bool
+	ReferenceItemMap::add(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId)
+	{
+		ReferenceItem::SPtr referenceItem;
+		referenceItem.reset(new ReferenceItem());
+		referenceItem->isForward_ = isForward;
+		referenceItem->nodeId_ = nodeId;
+		return add(referenceTypeNodeId, referenceItem);
+	}
+
+	bool
+	ReferenceItemMap::remove(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem)
+	{
+		if (referenceItem.get() == nullptr) return false;
+
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it1;
+		ReferenceItemMultiMap::iterator it2;
+		it1 = referenceItemMultiMap_.equal_range(referenceTypeNodeId);
+		for (it2 = it1.first; it2 != it1.second; it2++) {
+			if (*it2->second == *referenceItem) {
+				referenceItemMultiMap_.erase(it2);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool
+	ReferenceItemMap::remove(OpcUaNodeId& referenceTypeNodeId, OpcUaNodeId& nodeId)
+	{
+		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it1;
+		ReferenceItemMultiMap::iterator it2;
+		it1 = referenceItemMultiMap_.equal_range(referenceTypeNodeId);
+		for (it2 = it1.first; it2 != it1.second; it2++) {
+			if (it2->second->nodeId_ == nodeId) {
+				referenceItemMultiMap_.erase(it2);
+				return true;
+			}
+		}
+		return false;
 	}
 		
 	ReferenceItemMultiMap& 

@@ -21,7 +21,12 @@ namespace OpcUaStackServer
 		~ReferenceItemMap(void);
 
 		bool add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem);
+		bool add(ReferenceType referenceType, bool isForward, OpcUaNodeId& nodeId);
 		bool add(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
+		bool add(OpcUaNodeId& referenceTypeNodeId, bool isForward, OpcUaNodeId& nodeId);
+
+		bool remove(OpcUaNodeId& referenceTypeNodeId, ReferenceItem::SPtr referenceItem);
+		bool remove(OpcUaNodeId& referenceTypeNodeId, OpcUaNodeId& nodeId);
 
 		ReferenceItemMultiMap& referenceItemMultiMap(void);
 

@@ -18,6 +18,13 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaQualifiedName::OpcUaQualifiedName(const std::string& name, OpcUaInt16 namespaceIndex)
+	: ObjectPool<OpcUaQualifiedName>()
+	, namespaceIndex_(namespaceIndex)
+	, name_(name)
+	{
+	}
+
 	OpcUaQualifiedName::~OpcUaQualifiedName(void)
 	{
 	}

@@ -17,6 +17,13 @@ namespace OpcUaStackCore
 	, text_()
 	{
 	}
+
+	OpcUaLocalizedText::OpcUaLocalizedText(const std::string& locale, const std::string& text)
+	: ObjectPool<OpcUaLocalizedText>()
+	, locale_(locale)
+	, text_(text)
+	{
+	}
 		
 	OpcUaLocalizedText::~OpcUaLocalizedText(void)
 	{

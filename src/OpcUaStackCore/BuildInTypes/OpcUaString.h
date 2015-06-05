@@ -16,6 +16,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaString> SPtr;
 
 	    OpcUaString(void);
+	    OpcUaString(const std::string& value);
 		~OpcUaString(void);
 
 		std::string value(void) const;

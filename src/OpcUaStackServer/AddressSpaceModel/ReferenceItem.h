@@ -18,6 +18,7 @@ namespace OpcUaStackServer
 		typedef std::vector<ReferenceItem::SPtr> Vec;
 
 		ReferenceItem(void);
+		ReferenceItem(const bool& isForward, const OpcUaNodeId& nodeId);
 		~ReferenceItem(void);
 
 		void copyTo(ReferenceItem::SPtr referenceItem);

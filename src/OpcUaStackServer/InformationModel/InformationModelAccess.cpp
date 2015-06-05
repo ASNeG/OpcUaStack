@@ -1,6 +1,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -316,6 +317,51 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	BaseNodeClass::SPtr
+	InformationModelAccess::getSurrogateParentNode()
+	{
+		BaseNodeClass::SPtr baseNodeClass;
+		BaseNodeClass::SPtr baseNodeClass0;
+		OpcUaNodeId nodeId;
+		OpcUaNodeId nodeId0;
+
+		nodeId0.set(OpcUaId_ObjectsFolder);
+		baseNodeClass0 = informationModel_->find(nodeId0);
+		if (baseNodeClass.get() != nullptr) {
+			Log(Error, "objects folder not found in information model");
+			return baseNodeClass;
+		}
+
+		// get surrogate parent form information model
+		nodeId.set("SurrogateParent");
+		baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() != nullptr) {
+			return baseNodeClass;
+		}
+
+		// surrogate parent does not exist. Create a surrogate parent
+		baseNodeClass = ObjectNodeClass::construct();
+		baseNodeClass->setNodeId(nodeId);
+		OpcUaQualifiedName browseName("SurrogateParent");
+		baseNodeClass->setBrowseName(browseName);
+		OpcUaLocalizedText displayName("en", "SurrogateParent");
+		baseNodeClass->setDisplayName(displayName);
+		OpcUaLocalizedText description("en", "surrogate parent node");
+		baseNodeClass->setDescription(description);
+		informationModel_->insert(baseNodeClass);
+
+		// add type reference
+		OpcUaNodeId typeNodeId;
+		typeNodeId.set(OpcUaId_TypesFolder);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+
+		// add reference between surrogate node and namespace 0
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, nodeId0);
+		baseNodeClass0->referenceItemMap().add(ReferenceType_HasComponent, true, *baseNodeClass->getNodeId());
+
+		return baseNodeClass;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -500,12 +546,6 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	InformationModelAccess::getWildcardNode(BaseNodeClass::SPtr& baseNodeClass)
-	{
-		return true;
-	}
-
-	bool
 	InformationModelAccess::add(InformationModel::SPtr informationModel, uint16_t namespaceIndex, MergeIf* mergeIf, uint32_t step)
 	{
 		BaseNodeClass::Vec baseNodeClassVec;
@@ -564,8 +604,20 @@ namespace OpcUaStackServer
 				if (parentBaseNodeClass.get() != nullptr) continue;
 
 				// parent node not exist
-				//BaseNodeClass::SPtr newParentBaseNode = getWildcardNode();
+				BaseNodeClass::SPtr surrogateParentNode = getSurrogateParentNode();
+				if (surrogateParentNode.get() == nullptr) {
+					continue;
+				}
 
+				// parent node does not exist. Remove reference
+				baseNodeClass->referenceItemMap().remove(referenceTypeNodeId, referenceItem);
+
+				// add reference between node and new parent
+				referenceItem = ReferenceItem::construct(true, *baseNodeClass->getNodeId());
+				surrogateParentNode->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
+
+				referenceItem = ReferenceItem::construct(false, *surrogateParentNode->getNodeId());
+				baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
 			}
 
 		}

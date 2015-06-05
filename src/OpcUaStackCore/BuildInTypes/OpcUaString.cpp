@@ -20,6 +20,13 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaString::OpcUaString(const std::string& value)
+	: ObjectPool<OpcUaString>()
+	, exist_(true)
+	, value_(value)
+	{
+	}
+
 	OpcUaString::~OpcUaString(void)
 	{
 	}
