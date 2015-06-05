@@ -36,19 +36,21 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	InformationModelAccess::rootNode(BaseNodeClass::SPtr& baseNodeClass)
+	InformationModelAccess::rootNode(BaseNodeClass::SPtr& baseNodeClass, bool logOnError)
 	{
 		OpcUaNodeId nodeId;
 		nodeId.nodeId(OpcUaId_RootFolder);
-		return getNode(nodeId, baseNodeClass);
+		return getNode(nodeId, baseNodeClass, logOnError);
 	}
 
 	bool
-	InformationModelAccess::getNode(const OpcUaNodeId& nodeId, BaseNodeClass::SPtr& baseNodeClass)
+	InformationModelAccess::getNode(const OpcUaNodeId& nodeId, BaseNodeClass::SPtr& baseNodeClass, bool logOnError)
 	{
 		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() == nullptr) {
-			Log(Warning, "node not found in information model")
+			if (!logOnError) return false;
+
+			Log(Error, "node not found in information model")
 				.parameter("NodeId", nodeId);
 			return false;
 		}

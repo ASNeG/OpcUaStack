@@ -31,8 +31,8 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------
 		// node functions
 		// --------------------------------------------------------------------
-		bool rootNode(BaseNodeClass::SPtr& baseNodeClass);
-		bool getNode(const OpcUaNodeId& nodeId, BaseNodeClass::SPtr& baseNodeClass);
+		bool rootNode(BaseNodeClass::SPtr& baseNodeClass, bool logOnError = true);
+		bool getNode(const OpcUaNodeId& nodeId, BaseNodeClass::SPtr& baseNodeClass, bool logOnError = true);
 
 		// --------------------------------------------------------------------
 		// child functions
