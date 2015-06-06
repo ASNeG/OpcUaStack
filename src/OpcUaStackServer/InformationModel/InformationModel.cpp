@@ -52,6 +52,12 @@ namespace OpcUaStackServer
 		return find(*opcUaNodeId);
 	}
 
+	uint32_t
+	InformationModel::size(void)
+	{
+		return informationModelMap_.size();
+	}
+
 	void 
 	InformationModel::checkForwardReferences(void)
 	{

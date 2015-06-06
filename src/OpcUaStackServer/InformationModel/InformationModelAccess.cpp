@@ -158,6 +158,9 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParentReference(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& referenceTypeNodeIdVec, ReferenceItem::Vec& referenceItemVec)
 	{
+		referenceTypeNodeIdVec.clear();
+		referenceItemVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -176,6 +179,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParent(BaseNodeClass::SPtr baseNodeClass, ReferenceItem::Vec& referenceItemVec)
 	{
+		referenceItemVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -193,6 +198,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParent(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec)
 	{
+		nodeIdVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -210,6 +217,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParent(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
+		childBaseNodeClassVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -234,6 +243,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
+		childBaseNodeClassVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -261,6 +272,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec)
 	{
+		nodeIdVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -281,6 +294,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParentNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
+		childBaseNodeClassVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -308,6 +323,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getParentNonHierarchically(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec)
 	{
+		nodeIdVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();

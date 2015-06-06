@@ -25,6 +25,7 @@ namespace OpcUaStackServer
 		bool insert(BaseNodeClass::SPtr baseNodeClass);
 		BaseNodeClass::SPtr find(const OpcUaNodeId& opcUaNodeId);
 		BaseNodeClass::SPtr find(OpcUaNodeId::SPtr opcUaNodeId);
+		uint32_t size(void);
 
 		InformationModelMap& informationModelMap(void);
 
