@@ -72,7 +72,8 @@ namespace OpcUaStackServer
 
 	
 	template<typename DATATYPE>
-	  class DLLEXPORT AttributeData : public Attribute
+	  class DLLEXPORT AttributeData
+	  : public Attribute
 	  {
 	    public:
 		  AttributeData(void) 
@@ -133,7 +134,8 @@ namespace OpcUaStackServer
 
 
     template<typename DATATYPE, OpcUaUInt32 id_, OpcUaBuildInType type_>
-	  class DLLEXPORT AttributeMeta : public AttributeData<DATATYPE>
+	  class DLLEXPORT AttributeMeta
+	  : public AttributeData<DATATYPE>
 	  {
 	    public:
 			AttributeMeta(void) 
@@ -191,7 +193,9 @@ namespace OpcUaStackServer
 			}
 
 			void copyTo(Attribute* attribute) {
-				// FIXME:
+				AttributeMeta<DATATYPE, id_, type_>* attributeMeta;
+				attributeMeta = reinterpret_cast<AttributeMeta<DATATYPE, id_, type_>*>(attribute);
+				if (this->exist()) attributeMeta->data(this->data());
 			}
 
 			bool equal(void) {

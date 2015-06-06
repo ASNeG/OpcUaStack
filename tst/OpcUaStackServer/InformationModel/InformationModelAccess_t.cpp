@@ -291,4 +291,167 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getSubType)
 	BOOST_REQUIRE(nodeId == subTypeNodeId);
 }
 
+BOOST_AUTO_TEST_CASE(InformationModelAccess_merge)
+{
+	bool success;
+	OpcUaNodeId nodeId;
+	OpcUaNodeId typeNodeId;
+	OpcUaNodeId objectsNodeId;
+	BaseNodeClass::SPtr objectsNodeClass;
+	BaseNodeClass::SPtr baseNodeClass;
+
+	InformationModel::SPtr informationModel1 = InformationModel::construct();
+	InformationModelAccess informationModelAccess1;
+	informationModelAccess1.informationModel(informationModel1);
+
+	InformationModel::SPtr informationModel2 = InformationModel::construct();
+	InformationModelAccess informationModelAccess2;
+	informationModelAccess2.informationModel(informationModel2);
+
+	// add object type node
+	baseNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
+	baseNodeClass->setNodeId(objectsNodeId);
+	informationModel2->insert(baseNodeClass);
+
+	baseNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
+	baseNodeClass->setNodeId(objectsNodeId);
+	informationModel1->insert(baseNodeClass);
+
+	objectsNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectsFolder);
+	objectsNodeClass->setNodeId(objectsNodeId);
+	informationModel2->insert(objectsNodeClass);
+
+	objectsNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectsFolder);
+	objectsNodeClass->setNodeId(objectsNodeId);
+	informationModel1->insert(objectsNodeClass);
+
+	// add variable type node to information model 1
+	baseNodeClass = VariableTypeNodeClass::construct();
+	typeNodeId.set("MyType", 1);
+	baseNodeClass->setNodeId(typeNodeId);
+	baseNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, objectsNodeId);
+	informationModel1->insert(baseNodeClass);
+
+	// add nodes to information model 1
+	for (uint32_t idx=0; idx<20; idx++) {
+		std::stringstream nodeName;
+		nodeName << "MyVariable" << idx;
+		baseNodeClass = VariableNodeClass::construct();
+		nodeId.set(nodeName.str(), 1);
+		baseNodeClass->setNodeId(nodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, objectsNodeId);
+		objectsNodeClass->referenceItemMap().add(ReferenceType_HasComponent, true, nodeId);
+		informationModel1->insert(baseNodeClass);
+	}
+
+	BOOST_REQUIRE(informationModel1->size() == 23);
+	BOOST_REQUIRE(informationModel2->size() == 2);
+
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 0) == true);
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 1) == false);
+
+	success = informationModelAccess2.add(informationModel1, 1);
+	BOOST_REQUIRE(success == true);
+
+	BOOST_REQUIRE(informationModel1->size() == 23);
+	BOOST_REQUIRE(informationModel2->size() == 23);
+
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 0) == true);
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 1) == true);
+}
+
+BOOST_AUTO_TEST_CASE(InformationModelAccess_merge_with_surrogate_parent)
+{
+	bool success;
+	OpcUaNodeId nodeId;
+	OpcUaNodeId typeNodeId;
+	OpcUaNodeId objectsNodeId;
+	BaseNodeClass::SPtr objectsNodeClass;
+	BaseNodeClass::SPtr baseNodeClass;
+
+	InformationModel::SPtr informationModel1 = InformationModel::construct();
+	InformationModelAccess informationModelAccess1;
+	informationModelAccess1.informationModel(informationModel1);
+
+	InformationModel::SPtr informationModel2 = InformationModel::construct();
+	InformationModelAccess informationModelAccess2;
+	informationModelAccess2.informationModel(informationModel2);
+
+	// add object type node
+	baseNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
+	baseNodeClass->setNodeId(objectsNodeId);
+	informationModel2->insert(baseNodeClass);
+
+	baseNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectTypesFolder);
+	baseNodeClass->setNodeId(objectsNodeId);
+	informationModel1->insert(baseNodeClass);
+
+	objectsNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectsFolder);
+	objectsNodeClass->setNodeId(objectsNodeId);
+	informationModel2->insert(objectsNodeClass);
+
+	objectsNodeClass = ObjectNodeClass::construct();
+	objectsNodeId.set(OpcUaId_ObjectsFolder);
+	objectsNodeClass->setNodeId(objectsNodeId);
+	informationModel1->insert(objectsNodeClass);
+
+	// add variable type node to information model 1
+	baseNodeClass = VariableTypeNodeClass::construct();
+	typeNodeId.set("MyType", 1);
+	baseNodeClass->setNodeId(typeNodeId);
+	baseNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, objectsNodeId);
+	informationModel1->insert(baseNodeClass);
+
+	// add nodes to information model 1
+	for (uint32_t idx=0; idx<20; idx++) {
+		std::stringstream nodeName;
+		nodeName << "MyVariable" << idx;
+		baseNodeClass = VariableNodeClass::construct();
+		nodeId.set(nodeName.str(), 1);
+		baseNodeClass->setNodeId(nodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, objectsNodeId);
+		objectsNodeClass->referenceItemMap().add(ReferenceType_HasComponent, true, nodeId);
+		informationModel1->insert(baseNodeClass);
+	}
+
+	// add nodes to information model 1
+	for (uint32_t idx=0; idx<20; idx++) {
+		OpcUaNodeId ownNodeId;
+		ownNodeId.set(33,33);
+
+		std::stringstream nodeName;
+		nodeName << "MyVariableWithoutParent" << idx;
+		baseNodeClass = VariableNodeClass::construct();
+		nodeId.set(nodeName.str(), 1);
+		baseNodeClass->setNodeId(nodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, ownNodeId);
+		informationModel1->insert(baseNodeClass);
+	}
+
+	BOOST_REQUIRE(informationModel1->size() == 43);
+	BOOST_REQUIRE(informationModel2->size() == 2);
+
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 0) == true);
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 1) == false);
+
+	success = informationModelAccess2.add(informationModel1, 1);
+	BOOST_REQUIRE(success == true);
+
+	BOOST_REQUIRE(informationModel1->size() == 43);
+	BOOST_REQUIRE(informationModel2->size() == 44);
+
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 0) == true);
+	BOOST_REQUIRE(informationModelAccess2.containsNodeIds(informationModel1, 1) == true);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

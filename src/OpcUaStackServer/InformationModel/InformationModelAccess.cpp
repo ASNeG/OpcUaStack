@@ -352,7 +352,7 @@ namespace OpcUaStackServer
 
 		nodeId0.set(OpcUaId_ObjectsFolder);
 		baseNodeClass0 = informationModel_->find(nodeId0);
-		if (baseNodeClass.get() != nullptr) {
+		if (baseNodeClass0.get() == nullptr) {
 			Log(Error, "objects folder not found in information model");
 			return baseNodeClass;
 		}
@@ -602,11 +602,17 @@ namespace OpcUaStackServer
 
 			if (namespaceIndex != it1->first.namespaceIndex()) continue;
 			BaseNodeClass::SPtr baseNodeClass = it1->second->clone();
+			if (!baseNodeClass->getNodeId()) {
+				Log(Error, "node contains no node id");
+				success = false;
+				continue;
+			}
 
 			if (!informationModel_->insert(baseNodeClass)) {
 				Log(Error, "node id already exist in information model")
-					.parameter("NodeId", baseNodeClass->getNodeId());
+					.parameter("NodeId", *baseNodeClass->getNodeId());
 				success = false;
+				continue;
 			}
 
 			baseNodeClassVec.push_back(baseNodeClass);
@@ -655,10 +661,26 @@ namespace OpcUaStackServer
 				referenceItem = ReferenceItem::construct(false, *surrogateParentNode->getNodeId());
 				baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
 			}
-
 		}
 
 		return success;
+	}
+
+	bool
+	InformationModelAccess::containsNodeIds(InformationModel::SPtr informationModel, uint16_t namespaceIndex)
+	{
+		InformationModelMap::iterator it;
+		for (
+			it = informationModel->informationModelMap().begin();
+			it != informationModel->informationModelMap().end();
+			it++
+		) {
+			BaseNodeClass::SPtr baseNodeClass;
+			OpcUaNodeId nodeId = it->first;
+			if (nodeId.namespaceIndex() != namespaceIndex) continue;
+			if (!getNode(nodeId, baseNodeClass, false)) return false;
+		}
+		return true;
 	}
 
 }
