@@ -2,6 +2,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
@@ -186,7 +187,7 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getSurrogateParentNode)
 	InformationModelAccess informationModelAccess;
 	informationModelAccess.informationModel(informationModel);
 
-	// add root node to information model
+	// add objects node to information model
 	objectsNodeClass = ObjectNodeClass::construct();
 	nodeId.set(OpcUaId_ObjectsFolder);
 	objectsNodeClass->setNodeId(nodeId);
@@ -206,6 +207,88 @@ BOOST_AUTO_TEST_CASE(InformationModelAccess_getSurrogateParentNode)
 	BOOST_REQUIRE(referenceTypeNodeIdVec.size() == 1);
 	BOOST_REQUIRE(referenceItemVec.size() == 1);
 	BOOST_REQUIRE(referenceItemVec[0]->nodeId_ == nodeId);
+}
+
+BOOST_AUTO_TEST_CASE(InformationModelAccess_getType)
+{
+	bool success;
+	OpcUaNodeId nodeId;
+	OpcUaNodeId subTypeNodeId;
+	OpcUaNodeId typeNodeId;
+	BaseNodeClass::SPtr objectsNodeClass;
+	BaseNodeClass::SPtr objectTypeNodeClass;
+	BaseNodeClass::SPtr baseObjectTypeNodeClass;
+
+	InformationModel::SPtr informationModel = InformationModel::construct();
+	InformationModelAccess informationModelAccess;
+	informationModelAccess.informationModel(informationModel);
+
+
+	// add base object type node
+	baseObjectTypeNodeClass = ObjectNodeClass::construct();
+	subTypeNodeId.set(OpcUaId_BaseObjectType);
+	baseObjectTypeNodeClass->setNodeId(subTypeNodeId);
+	informationModel->insert(baseObjectTypeNodeClass);
+
+	// add object type node
+	objectTypeNodeClass = ObjectNodeClass::construct();
+	typeNodeId.set(OpcUaId_ObjectTypesFolder);
+	objectTypeNodeClass->setNodeId(typeNodeId);
+	objectTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, subTypeNodeId);
+	informationModel->insert(objectTypeNodeClass);
+
+	// add objects node to information model
+	objectsNodeClass = ObjectNodeClass::construct();
+	nodeId.set(OpcUaId_ObjectsFolder);
+	objectsNodeClass->setNodeId(nodeId);
+	objectsNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+	informationModel->insert(objectsNodeClass);
+
+	// get type information from objects node
+	success = informationModelAccess.getType(objectsNodeClass, nodeId);
+	BOOST_REQUIRE(success == true);
+	BOOST_REQUIRE(nodeId == typeNodeId);
+}
+
+BOOST_AUTO_TEST_CASE(InformationModelAccess_getSubType)
+{
+	bool success;
+	OpcUaNodeId nodeId;
+	OpcUaNodeId subTypeNodeId;
+	OpcUaNodeId typeNodeId;
+	BaseNodeClass::SPtr objectsNodeClass;
+	BaseNodeClass::SPtr objectTypeNodeClass;
+	BaseNodeClass::SPtr baseObjectTypeNodeClass;
+
+	InformationModel::SPtr informationModel = InformationModel::construct();
+	InformationModelAccess informationModelAccess;
+	informationModelAccess.informationModel(informationModel);
+
+
+	// add base object type node
+	baseObjectTypeNodeClass = ObjectNodeClass::construct();
+	subTypeNodeId.set(OpcUaId_BaseObjectType);
+	baseObjectTypeNodeClass->setNodeId(subTypeNodeId);
+	informationModel->insert(baseObjectTypeNodeClass);
+
+	// add object type node
+	objectTypeNodeClass = ObjectNodeClass::construct();
+	typeNodeId.set(OpcUaId_ObjectTypesFolder);
+	objectTypeNodeClass->setNodeId(typeNodeId);
+	objectTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, subTypeNodeId);
+	informationModel->insert(objectTypeNodeClass);
+
+	// add objects node to information model
+	objectsNodeClass = ObjectNodeClass::construct();
+	nodeId.set(OpcUaId_ObjectsFolder);
+	objectsNodeClass->setNodeId(nodeId);
+	objectsNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+	informationModel->insert(objectsNodeClass);
+
+	// get sub type information from objects node
+	success = informationModelAccess.getSubType(objectTypeNodeClass, nodeId);
+	BOOST_REQUIRE(success == true);
+	BOOST_REQUIRE(nodeId == subTypeNodeId);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
