@@ -642,7 +642,7 @@ namespace OpcUaStackServer
 				OpcUaNodeId referenceTypeNodeId = referenceTypeNodeIdVec[pos];
 				ReferenceItem::SPtr referenceItem = referenceItemVec[pos];
 
-				BaseNodeClass::SPtr parentBaseNodeClass = informationModel->find(referenceItem->nodeId_);
+				BaseNodeClass::SPtr parentBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 				if (parentBaseNodeClass.get() != nullptr) continue;
 
 				// parent node not exist

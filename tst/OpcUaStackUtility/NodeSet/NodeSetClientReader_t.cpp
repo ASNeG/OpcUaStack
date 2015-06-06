@@ -85,7 +85,6 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readXml_readXml_readClient_)
 		std::cout << "NamespaceUri=" << *it << ", NamespaceIndex=" << nodeSetNamespaceRead2.mapToGlobalNamespaceIndex(*it) << std::endl;
 	}
 
-
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
