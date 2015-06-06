@@ -67,6 +67,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getChild(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
+		childBaseNodeClassVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -91,6 +93,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getChildHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
+		childBaseNodeClassVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -118,6 +122,8 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getChildNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
+		childBaseNodeClassVec.clear();
+
 		ReferenceItemMultiMap::iterator it;
 		for (
 			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
@@ -373,35 +379,42 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
+	InformationModelAccess::isReferenceHierarchically0(const OpcUaNodeId& referenceNodeId)
+	{
+		if (referenceNodeId.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
+			Log(Error, "found reference with invalid node id type")
+				.parameter("ExpectedNodeIdType", "UINT32")
+				.parameter("ActualNodeIdType", referenceNodeId.nodeIdType())
+				.parameter("NodeId", referenceNodeId);
+			return false;
+		}
+
+		uint32_t id = referenceNodeId.nodeId<uint32_t>();
+		switch (id)
+		{
+			case OpcUaId_HierarchicalReferences:
+			case OpcUaId_HasEventSource:
+			case OpcUaId_HasChild:
+			case OpcUaId_Organizes:
+			case OpcUaId_HasNotifier:
+			case OpcUaId_Aggregates:
+			case OpcUaId_HasSubtype:
+			case OpcUaId_HasProperty:
+			case OpcUaId_HasComponent:
+			case OpcUaId_HasOrderedComponent:
+				return true;
+		}
+		return false;
+	}
+
+	bool
 	InformationModelAccess::isReferenceHierarchically(BaseNodeClass::SPtr referenceBaseNodeClass)
 	{
-		boost::optional<OpcUaNodeId&> nodeId = referenceBaseNodeClass->getNodeId();
+		boost::optional<OpcUaNodeId&> referenceNodeId = referenceBaseNodeClass->getNodeId();
+		if (!referenceNodeId) return false;
 
-		if (nodeId->namespaceIndex() == 0) {
-			if (nodeId->nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
-				Log(Error, "found reference with invalid node id type")
-					.parameter("ExpectedNodeIdType", "UINT32")
-					.parameter("ActualNodeIdType", nodeId->nodeIdType())
-					.parameter("NodeId", *nodeId);
-				return false;
-			}
-
-			uint32_t id = nodeId->nodeId<uint32_t>();
-			switch (id)
-			{
-				case OpcUaId_HierarchicalReferences:
-				case OpcUaId_HasEventSource:
-				case OpcUaId_HasChild:
-				case OpcUaId_Organizes:
-				case OpcUaId_HasNotifier:
-				case OpcUaId_Aggregates:
-				case OpcUaId_HasSubtype:
-				case OpcUaId_HasProperty:
-				case OpcUaId_HasComponent:
-				case OpcUaId_HasOrderedComponent:
-					return true;
-			}
-			return false;
+		if (referenceNodeId->namespaceIndex() == 0) {
+			return isReferenceHierarchically0(*referenceNodeId);
 		}
 
 		BaseNodeClass::SPtr subTypeBaseNodeClass;
@@ -412,6 +425,10 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::isReferenceHierarchically(const OpcUaNodeId& referenceNodeId)
 	{
+		if (referenceNodeId.namespaceIndex() == 0) {
+			return isReferenceHierarchically0(referenceNodeId);
+		}
+
 		BaseNodeClass::SPtr referenceBaseNodeClass;
 		if (!getNode(referenceNodeId, referenceBaseNodeClass)) return false;
 		return isReferenceHierarchically(referenceBaseNodeClass);

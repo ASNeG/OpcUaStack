@@ -57,6 +57,7 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------
 		// reference functions
 		// --------------------------------------------------------------------
+		bool isReferenceHierarchically0(const OpcUaNodeId& nodeId);
 		bool isReferenceHierarchically(BaseNodeClass::SPtr referenceBaseNodeClass);
 		bool isReferenceHierarchically(const OpcUaNodeId& nodeId);
 
@@ -71,7 +72,6 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------
 		// merge function
 		// --------------------------------------------------------------------
-		bool getWildcardNode(BaseNodeClass::SPtr& baseNodeClass);
 		bool add(InformationModel::SPtr informationModel, uint16_t namespaceIndex, MergeIf* mergeIf = NULL, uint32_t step = 10);
 
 
