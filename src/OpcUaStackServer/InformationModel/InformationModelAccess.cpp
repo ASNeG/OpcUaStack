@@ -393,6 +393,83 @@ namespace OpcUaStackServer
 		return baseNodeClass;
 	}
 
+	bool
+	InformationModelAccess::parentChange(BaseNodeClass::SPtr baseNodeClass, const OpcUaNodeId& oldParentNodeId, const OpcUaNodeId& newParentNodeId)
+	{
+		bool success;
+		ReferenceItemMultiMap::iterator it;
+		OpcUaNodeId nodeId = *baseNodeClass->getNodeId();
+
+		// get old parent base node class
+		BaseNodeClass::SPtr oldParentBaseNodeClass;
+		if (!getNode(oldParentNodeId, oldParentBaseNodeClass)) {
+			Log(Error, "cannot change parent, because old parent not found")
+				.parameter("NodeId", *baseNodeClass->getNodeId())
+				.parameter("OldParentNodeId", oldParentNodeId)
+				.parameter("NewParentNodeId", newParentNodeId);
+			return false;
+		}
+
+		// get new parent base node class
+		BaseNodeClass::SPtr newParentBaseNodeClass;
+		if (!getNode(newParentNodeId, newParentBaseNodeClass)) {
+			Log(Error, "cannot change parent, because new parent not found")
+				.parameter("NodeId", *baseNodeClass->getNodeId())
+				.parameter("OldParentNodeId", oldParentNodeId)
+				.parameter("NewParentNodeId", newParentNodeId);
+			return false;
+		}
+
+		// remove reference from parent to node
+		success = false;
+		for (
+			it = oldParentBaseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != oldParentBaseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		) {
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->nodeId_ == nodeId && referenceItem->isForward_ == true)
+			{
+				success = true;
+				oldParentBaseNodeClass->referenceItemMap().referenceItemMultiMap().erase(it);
+				break;
+			}
+		}
+		if (!success) {
+			Log(Error, "cannot change parent, because reference from parent to node not found")
+				.parameter("NodeId", *baseNodeClass->getNodeId())
+				.parameter("OldParentNodeId", oldParentNodeId)
+				.parameter("NewParentNodeId", newParentNodeId);
+			return false;
+		}
+
+		// change reference from node to parent
+		success = false;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		) {
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->nodeId_ == nodeId && referenceItem->isForward_ == false)
+			{
+				success = true;
+				referenceItem->nodeId_ = newParentNodeId;
+				break;
+			}
+		}
+		if (!success) {
+			Log(Warning, "cannot change parent, because reference from node to parent not found")
+				.parameter("NodeId", *baseNodeClass->getNodeId())
+				.parameter("OldParentNodeId", oldParentNodeId)
+				.parameter("NewParentNodeId", newParentNodeId);
+		}
+
+		// add reference from new parent to node
+		newParentBaseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, nodeId);
+		return true;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

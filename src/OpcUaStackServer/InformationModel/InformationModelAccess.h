@@ -54,6 +54,7 @@ namespace OpcUaStackServer
 		bool getParentNonHierarchically(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec);
 		BaseNodeClass::SPtr getSurrogateParentNode();
 		BaseNodeClass::SPtr getSurrogateParentNode(OpcUaNodeId& nodeId);
+		bool parentChange(BaseNodeClass::SPtr baseNodeClass, const OpcUaNodeId& oldParentNodeId, const OpcUaNodeId& newParentNodeId);
 
 		// --------------------------------------------------------------------
 		// reference functions
