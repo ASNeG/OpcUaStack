@@ -52,6 +52,19 @@ namespace OpcUaStackServer
 		return find(*opcUaNodeId);
 	}
 
+	bool
+	InformationModel::remove(const OpcUaNodeId& opcUaNodeId)
+	{
+		informationModelMap_.erase(opcUaNodeId);
+		return true;
+	}
+
+	bool
+	InformationModel::remove(OpcUaNodeId::SPtr opcUaNodeId)
+	{
+		return remove(*opcUaNodeId);
+	}
+
 	uint32_t
 	InformationModel::size(void)
 	{

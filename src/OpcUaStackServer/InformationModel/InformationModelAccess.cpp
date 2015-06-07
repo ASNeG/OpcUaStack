@@ -692,5 +692,37 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	InformationModelAccess::remove(OpcUaNodeId& nodeId)
+	{
+		InformationModelMap::iterator it1;
+		for (
+			it1 = informationModel_->informationModelMap().begin();
+			it1 != informationModel_->informationModelMap().end();
+			it1++
+		) {
+			BaseNodeClass::SPtr baseNodeClass = it1->second;
+			ReferenceItemMultiMap::iterator it2;
+			for (
+				it2 = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+				it2 != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+				it2++
+			) {
+				ReferenceItem::SPtr referenceItem = it2->second;
+				if (referenceItem->nodeId_ == nodeId) {
+					baseNodeClass->referenceItemMap().referenceItemMultiMap().erase(it2);
+				}
+			}
+		}
+		informationModel_->remove(nodeId);
+		return true;
+	}
+
+	bool
+	InformationModelAccess::remove(BaseNodeClass::SPtr baseNodeClass)
+	{
+		return remove(*baseNodeClass->getNodeId());
+	}
+
 }
 

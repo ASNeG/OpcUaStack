@@ -136,6 +136,54 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
 	BOOST_REQUIRE(success == true);
 }
 
+BOOST_AUTO_TEST_CASE(Nodeset_Remove)
+{
+	bool success;
+
+	// read raspberry nodeset
+	ConfigXml configXmlRead;
+	success = configXmlRead.read("../tst/data/Opc.Ua.NodeSetRaspberry.xml");
+	BOOST_REQUIRE(success == true);
+
+	NodeSetXmlParser nodeSetXmlParserRead;
+	success = nodeSetXmlParserRead.decode(configXmlRead.ptree());
+	BOOST_REQUIRE(success == true);
+
+	InformationModel::SPtr informationModelRead = InformationModel::construct();
+	success = InformationModelNodeSet::initial(informationModelRead, nodeSetXmlParserRead);
+	BOOST_REQUIRE(success == true);
+
+	informationModelRead->checkForwardReferences();
+
+	// remove node from information model (ns=1;s=Raspberry.BinaryOutput.Pin7)
+	BaseNodeClass::SPtr baseNodeClass;
+	InformationModelAccess informationModelAccess;
+	informationModelAccess.informationModel(informationModelRead);
+	OpcUaNodeId nodeId;
+	nodeId.set("Raspberry.BinaryOutput.Pin7", 1);
+	BOOST_REQUIRE(informationModelAccess.getNode(nodeId, baseNodeClass) == true);
+
+	informationModelAccess.remove(nodeId);
+
+	BOOST_REQUIRE(informationModelAccess.getNode(nodeId, baseNodeClass) == false);
+
+	// write nodes from information model into node set file
+	NodeSetXmlParser nodeSetXmlParserWrite;
+	NamespaceVec namespaceVec;
+
+	namespaceVec.push_back("http://yourorganisation.org/Opc.Ua.Raspberry/");
+	namespaceVec.push_back("http://yourorganisation.org/Opc.Ua.Raspberry1/");
+	success = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModelRead, namespaceVec);
+	BOOST_REQUIRE(success == true);
+
+	ConfigXml configXmlWrite;
+	success = nodeSetXmlParserWrite.encode(configXmlWrite.ptree());
+	BOOST_REQUIRE(success == true);
+
+	success = configXmlWrite.write("test-nodeset2.xml");
+	BOOST_REQUIRE(success == true);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 

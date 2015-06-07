@@ -74,6 +74,8 @@ namespace OpcUaStackServer
 		// merge function
 		// --------------------------------------------------------------------
 		bool add(InformationModel::SPtr informationModel, uint16_t namespaceIndex, MergeIf* mergeIf = NULL, uint32_t step = 10);
+		bool remove(BaseNodeClass::SPtr baseNodeClass);
+		bool remove(OpcUaNodeId& nodeId);
 		bool containsNodeIds(InformationModel::SPtr informationModel, uint16_t namespaceIndex);
 
 	  private:
