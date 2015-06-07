@@ -451,7 +451,7 @@ namespace OpcUaStackServer
 			it++
 		) {
 			ReferenceItem::SPtr referenceItem = it->second;
-			if (referenceItem->nodeId_ == nodeId && referenceItem->isForward_ == false)
+			if (referenceItem->nodeId_ == oldParentNodeId && referenceItem->isForward_ == false)
 			{
 				success = true;
 				referenceItem->nodeId_ = newParentNodeId;
@@ -466,7 +466,7 @@ namespace OpcUaStackServer
 		}
 
 		// add reference from new parent to node
-		newParentBaseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, nodeId);
+		newParentBaseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, true, nodeId);
 		return true;
 	}
 
