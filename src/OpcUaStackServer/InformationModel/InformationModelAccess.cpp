@@ -343,11 +343,18 @@ namespace OpcUaStackServer
 	}
 
 	BaseNodeClass::SPtr
-	InformationModelAccess::getSurrogateParentNode()
+	InformationModelAccess::getSurrogateParentNode(void)
+	{
+		OpcUaNodeId nodeId;
+		nodeId.set("SurrogateParent");
+		return getSurrogateParentNode(nodeId);
+	}
+
+	BaseNodeClass::SPtr
+	InformationModelAccess::getSurrogateParentNode(OpcUaNodeId& nodeId)
 	{
 		BaseNodeClass::SPtr baseNodeClass;
 		BaseNodeClass::SPtr baseNodeClass0;
-		OpcUaNodeId nodeId;
 		OpcUaNodeId nodeId0;
 
 		nodeId0.set(OpcUaId_ObjectsFolder);
@@ -358,7 +365,6 @@ namespace OpcUaStackServer
 		}
 
 		// get surrogate parent form information model
-		nodeId.set("SurrogateParent");
 		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() != nullptr) {
 			return baseNodeClass;
@@ -646,7 +652,10 @@ namespace OpcUaStackServer
 				if (parentBaseNodeClass.get() != nullptr) continue;
 
 				// parent node not exist
-				BaseNodeClass::SPtr surrogateParentNode = getSurrogateParentNode();
+				OpcUaNodeId surrogateParentNodeId;
+				OpcUaNodeId::Opt baseNodeClassNodeId = baseNodeClass->getNodeId();
+				surrogateParentNodeId.set("SurrogateParent", baseNodeClassNodeId->namespaceIndex());
+				BaseNodeClass::SPtr surrogateParentNode = getSurrogateParentNode(surrogateParentNodeId);
 				if (surrogateParentNode.get() == nullptr) {
 					continue;
 				}

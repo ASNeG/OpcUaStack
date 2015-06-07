@@ -1,11 +1,12 @@
 #ifndef __OpcUaStackCore_OpcUaNodeId_h__
 #define __OpcUaStackCore_OpcUaNodeId_h__
 
+#include <boost/shared_ptr.hpp>
+#include <boost/optional/optional.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include "OpcUaStackCore/Base/os.h"
 #include <list>
 #include <vector>
-#include <boost/shared_ptr.hpp>
 
 namespace OpcUaStackCore
 {
@@ -13,6 +14,7 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaNodeId : public ObjectPool<OpcUaNodeId>, public OpcUaNodeIdBase
 	{
 	  public:
+		typedef boost::optional<OpcUaNodeId&> Opt;
 		typedef boost::shared_ptr<OpcUaNodeId> SPtr;
 		typedef std::vector<OpcUaNodeId::SPtr> Vec;
 
