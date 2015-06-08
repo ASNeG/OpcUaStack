@@ -357,6 +357,7 @@
 #define OpcUaId_ObjectTypesFolder 88
 #define OpcUaId_VariableTypesFolder 89
 #define OpcUaId_DataTypesFolder 90
+#define OpcUaId_ReferenceTypesFolder 91
 #define OpcUaId_XmlSchema_TypeSystem 92
 #define OpcUaId_OPCBinarySchema_TypeSystem 93
 #define OpcUaId_ServerType_ServerCapabilities 2009
