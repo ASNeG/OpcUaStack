@@ -8,6 +8,7 @@ namespace OpcUaServerApplicationDemo
 
 	DemoLibrary::DemoLibrary(void)
 	: ApplicationIf()
+	, namespaceIndex_(0)
 	{
 		std::cout << "DemoLibrary::construct" << std::endl;
 	}
@@ -21,6 +22,11 @@ namespace OpcUaServerApplicationDemo
 	DemoLibrary::startup(void)
 	{
 		std::cout << "DemoLibrary::startup" << std::endl;
+
+		// read namespace info from information model
+		if (!getNamespaceInfo()) {
+			return false;
+		}
 
 		ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
 		RegisterForwardRequest::SPtr req = trx->request();
@@ -58,6 +64,33 @@ namespace OpcUaServerApplicationDemo
 	{
 		std::cout << "DemoLibrary::shutdown" << std::endl;
 		return true;
+	}
+
+	bool
+	DemoLibrary::getNamespaceInfo(void)
+	{
+		ServiceTransactionNamespaceInfo::SPtr trx = ServiceTransactionNamespaceInfo::construct();
+		NamespaceInfoRequest::SPtr req = trx->request();
+		NamespaceInfoResponse::SPtr res = trx->response();
+
+		service().sendSync(trx);
+		if (trx->responseHeader()->serviceResult() != Success) {
+			std::cout << "NamespaceInfoResponse error" << std::endl;
+			return false;
+		}
+
+		NamespaceInfoResponse::Index2NamespaceMap::iterator it;
+		for (
+		    it = res->index2NamespaceMap().begin();
+			it != res->index2NamespaceMap().end();
+			it++
+		)
+		{
+			std::cout << "Index=" << it->first << " Namespace=" << it->second << std::endl;
+			if (it->second == "http://yourorganisation.org/Test-Server-Lib/") {
+				namespaceIndex_ = it->first;
+			}
+ 		}
 	}
 
 }

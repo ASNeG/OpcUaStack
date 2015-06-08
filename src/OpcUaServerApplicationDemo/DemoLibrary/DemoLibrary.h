@@ -19,6 +19,10 @@ namespace OpcUaServerApplicationDemo
 		virtual bool startup(void);
 		virtual bool shutdown(void);
 		//- ApplicationIf -----------------------------------------------------
+
+	  private:
+		uint32_t namespaceIndex_;
+		bool getNamespaceInfo(void);
 	};
 
 }

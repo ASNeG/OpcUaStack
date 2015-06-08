@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackCore_RegisterForwardRequest_h__
-#define __OpcUaStackCore_RegisterForwardRequest_h__
+#ifndef __OpcUaStackCore_NamespaceInfoRequest_h__
+#define __OpcUaStackCore_NamespaceInfoRequest_h__
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -9,7 +9,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT NamespaceInfoRequest : public  ObjectPool<NamespaceInfoRequest>
+	class DLLEXPORT NamespaceInfoRequest
+	: public  ObjectPool<NamespaceInfoRequest>
 	{
 	  public:
 		typedef boost::shared_ptr<NamespaceInfoRequest> SPtr;

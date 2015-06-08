@@ -14,7 +14,8 @@ namespace OpcUaStackServer
 
 	typedef std::map<OpcUaNodeId, BaseNodeClass::SPtr> InformationModelMap;
 
-	class DLLEXPORT InformationModel : public ObjectPool<InformationModel>
+	class DLLEXPORT InformationModel
+	: public ObjectPool<InformationModel>
 	{
 	  public:
 		typedef boost::shared_ptr<InformationModel> SPtr;
