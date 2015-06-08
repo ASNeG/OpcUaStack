@@ -1,6 +1,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -172,8 +173,9 @@ namespace OpcUaStackServer
 		ApplicationReadContext applicationReadContext;
 		applicationReadContext.nodeId_ = *readValueId->nodeId();
 		applicationReadContext.attributeId_ = readValueId->attributeId();
+		applicationReadContext.statusCode_ = Success;
 
-		forwardInfoSync->readCallback()(applicationReadContext);
+		forwardInfoSync->readCallback()(&applicationReadContext);
 
 		if (applicationReadContext.statusCode_ != Success) return;
 		baseNodeClass->setValue(applicationReadContext.dataValue_);
@@ -246,6 +248,17 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			OpcUaStatusCode statusCode = forwardWrite(baseNodeClass, writeRequest, writeValue);
+			if (statusCode != Success) {
+				writeResponse->results()->set(idx, statusCode);
+				Log(Debug, "write value error, because invalid status code from library")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *writeValue->nodeId())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				continue;
+			}
+
 			if (!AttributeAccess::copy(writeValue->dataValue(), *attribute)) {
 				Log(Debug, "write value error, because value error")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -272,6 +285,33 @@ namespace OpcUaStackServer
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
+	OpcUaStatusCode
+	AttributeService::forwardWrite(BaseNodeClass::SPtr baseNodeClass, WriteRequest::SPtr writeRequest, WriteValue::SPtr writeValue)
+	{
+		if ((AttributeId)writeValue->attributeId() != AttributeId_Value) return Success;
+
+		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+		if (forwardInfoSync.get() == nullptr) return Success;
+		if (!forwardInfoSync->isWriteCallback()) return Success;
+
+		ApplicationWriteContext applicationWriteContext;
+		applicationWriteContext.nodeId_ = *writeValue->nodeId();
+		applicationWriteContext.attributeId_ = writeValue->attributeId();
+		writeValue->dataValue().copyTo(applicationWriteContext.dataValue_);
+		applicationWriteContext.statusCode_ = Success;
+
+		forwardInfoSync->writeCallback()(&applicationWriteContext);
+
+		return applicationWriteContext.statusCode_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// history read service
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	AttributeService::receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
@@ -280,6 +320,13 @@ namespace OpcUaStackServer
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// history write service
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	AttributeService::receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction)
 	{

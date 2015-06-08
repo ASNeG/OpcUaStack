@@ -2,6 +2,7 @@
 #define __OpcUaServerApplicationDemo_DemoLibrary_h__
 
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
@@ -24,8 +25,8 @@ namespace OpcUaServerApplicationDemo
 
 	  private:
 		bool getNamespaceInfo(void);
-		void readValue(ApplicationReadContext& applicationReadContext);
-		void writeValue(void);
+		void readValue(ApplicationReadContext* applicationReadContext);
+		void writeValue(ApplicationWriteContext* applicationWriteContext);
 
 		OpcUaDataValue::SPtr createDataValue(void);
 		bool createValueMap(void);

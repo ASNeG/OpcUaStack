@@ -10,7 +10,7 @@ namespace OpcUaServerApplicationDemo
 	: ApplicationIf()
 	, namespaceIndex_(0)
 	, readCallback_(boost::bind(&DemoLibrary::readValue, this, _1))
-	, writeCallback_(boost::bind(&DemoLibrary::writeValue, this))
+	, writeCallback_(boost::bind(&DemoLibrary::writeValue, this, _1))
 	, valueMap_()
 	{
 		std::cout << "DemoLibrary::construct" << std::endl;
@@ -127,7 +127,7 @@ namespace OpcUaServerApplicationDemo
 
 		// SByte
 		nodeId.set(200, namespaceIndex_);
-		OpcUaSByte sByte(12);
+		OpcUaSByte sByte(11);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(sByte);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -650,24 +650,33 @@ namespace OpcUaServerApplicationDemo
 #endif
 
 	void
-	DemoLibrary::readValue(ApplicationReadContext& applicationReadContext)
+	DemoLibrary::readValue(ApplicationReadContext* applicationReadContext)
 	{
-	    std::cout << "read value ..." << applicationReadContext.nodeId_ << std::endl;
+	    std::cout << "read value ..." << applicationReadContext->nodeId_ << std::endl;
 
 	    ValueMap::iterator it;
-	    it = valueMap_.find(applicationReadContext.nodeId_);
+	    it = valueMap_.find(applicationReadContext->nodeId_);
 	    if (it == valueMap_.end()) {
-	    	applicationReadContext.statusCode_ = BadInternalError;
+	    	applicationReadContext->statusCode_ = BadInternalError;
 	    	return;
 	    }
-	    applicationReadContext.statusCode_ = Success;
-	    it->second->copyTo(applicationReadContext.dataValue_);
+	    applicationReadContext->statusCode_ = Success;
+	    it->second->copyTo(applicationReadContext->dataValue_);
 	}
 
 	void
-	DemoLibrary::writeValue(void)
+	DemoLibrary::writeValue(ApplicationWriteContext* applicationWriteContext)
 	{
-		std::cout << "write value ..." << std::endl;
+		std::cout << "write value ..." << applicationWriteContext->nodeId_  << std::endl;
+
+		ValueMap::iterator it;
+		it = valueMap_.find(applicationWriteContext->nodeId_);
+		if (it == valueMap_.end()) {
+			applicationWriteContext->statusCode_ = BadInternalError;
+			return;
+		}
+		applicationWriteContext->statusCode_ = Success;
+		applicationWriteContext->dataValue_.copyTo(*it->second);
 	}
 
 }
