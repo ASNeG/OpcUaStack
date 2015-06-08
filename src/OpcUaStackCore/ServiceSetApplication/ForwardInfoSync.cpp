@@ -23,7 +23,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ForwardInfoSync::resetReadCallback(void)
+	ForwardInfoSync::unsetReadCallback(void)
 	{
 		readCallbackFlag_ = false;
 	}
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ForwardInfoSync::resetWriteCallback(void)
+	ForwardInfoSync::unsetWriteCallback(void)
 	{
 		writeCallbackFlag_ = false;
 	}

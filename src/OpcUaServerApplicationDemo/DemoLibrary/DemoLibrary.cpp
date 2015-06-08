@@ -30,7 +30,8 @@ namespace OpcUaServerApplicationDemo
 		nodeId->namespaceIndex(1);
 		nodeId->nodeId((uint32_t)220);
 
-		req->forwardInfoAsync()->flag(ForwardInfoAsync::F_Read);
+		//req->forwardInfoSync()->setReadCallback();
+		//req->forwardInfoSync()->setWriteCallback();
 		req->nodesToRegister()->resize(1);
 		req->nodesToRegister()->set(0, nodeId);
 

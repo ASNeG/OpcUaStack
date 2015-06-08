@@ -29,7 +29,6 @@ namespace OpcUaStackServer
 				receiveGetNodeReferenceRequest(serviceTransaction);
 				break;
 			default:
-				std::cout << "CC" << std::endl;
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
@@ -86,7 +85,6 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			baseNodeClass->forwardInfoAsync(registerForwardRequest->forwardInfoAsync());
 			baseNodeClass->forwardInfoSync(registerForwardRequest->forwardInfoSync());
 
 			Log(Debug, "register forward")
@@ -148,7 +146,6 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			// FIXME:
 			//baseNodeClass->forwardInfo(registerForwardRequest->forwardInfo());
 
 			Log(Debug, "get node reference")

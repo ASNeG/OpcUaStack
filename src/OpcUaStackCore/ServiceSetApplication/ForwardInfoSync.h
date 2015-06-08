@@ -18,12 +18,12 @@ namespace OpcUaStackCore
 		virtual ~ForwardInfoSync(void);
 
 		void setReadCallback(Callback& readCallback);
-		void resetReadCallback(void);
+		void unsetReadCallback(void);
 		bool isReadCallback(void);
 		Callback& readCallback(void);
 
 		void setWriteCallback(Callback& writeCallback);
-		void resetWriteCallback(void);
+		void unsetWriteCallback(void);
 		bool isWriteCallback(void);
 		Callback& writeCallback(void);
 
