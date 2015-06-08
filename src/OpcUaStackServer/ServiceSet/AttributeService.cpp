@@ -85,6 +85,7 @@ namespace OpcUaStackServer
 			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
 			readResponse->dataValueArray()->set(idx, dataValue);
 
+			// determine node information
 			ReadValueId::SPtr readValueId;
 			if (!readRequest->readValueIdArray()->get(idx, readValueId)) {
 				dataValue->statusCode(BadNodeIdInvalid);
@@ -94,6 +95,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// find node class instance for the node
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
 			if (baseNodeClass.get() == nullptr) {
 				dataValue->statusCode(BadNodeIdUnknown);
@@ -105,6 +107,10 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// forward read request
+			//forwardRead();
+
+			// determine the attribute to be read
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
 			if (attribute == nullptr) {
 				dataValue->statusCode(BadAttributeIdInvalid);

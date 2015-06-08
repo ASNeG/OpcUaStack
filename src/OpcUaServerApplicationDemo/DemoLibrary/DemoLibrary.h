@@ -21,8 +21,18 @@ namespace OpcUaServerApplicationDemo
 		//- ApplicationIf -----------------------------------------------------
 
 	  private:
-		uint32_t namespaceIndex_;
 		bool getNamespaceInfo(void);
+		void readValue(void);
+		void writeValue(void);
+		OpcUaDataValue::SPtr createDataValue(void);
+		bool createValueMap(void);
+
+		uint32_t namespaceIndex_;
+		Callback readCallback_;
+		Callback writeCallback_;
+
+		typedef std::map<OpcUaNodeId,OpcUaDataValue::SPtr> ValueMap;
+		ValueMap valueMap_;
 	};
 
 }
