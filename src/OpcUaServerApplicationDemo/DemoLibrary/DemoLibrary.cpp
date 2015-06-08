@@ -9,7 +9,7 @@ namespace OpcUaServerApplicationDemo
 	DemoLibrary::DemoLibrary(void)
 	: ApplicationIf()
 	, namespaceIndex_(0)
-	, readCallback_(boost::bind(&DemoLibrary::readValue, this))
+	, readCallback_(boost::bind(&DemoLibrary::readValue, this, _1))
 	, writeCallback_(boost::bind(&DemoLibrary::writeValue, this))
 	, valueMap_()
 	{
@@ -31,13 +31,18 @@ namespace OpcUaServerApplicationDemo
 			return false;
 		}
 
+		// create value map
+		if (!createValueMap()) {
+			return false;
+		}
+
 		ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
 		RegisterForwardRequest::SPtr req = trx->request();
 		RegisterForwardResponse::SPtr res = trx->response();
 
 		req->forwardInfoSync()->setReadCallback(readCallback_);
 		req->forwardInfoSync()->setWriteCallback(writeCallback_);
-		req->nodesToRegister()->resize(1);
+		req->nodesToRegister()->resize(valueMap_.size());
 
 		uint32_t pos = 0;
 		ValueMap::iterator it;
@@ -99,6 +104,8 @@ namespace OpcUaServerApplicationDemo
 				namespaceIndex_ = it->first;
 			}
  		}
+
+		return true;
 	}
 
 	OpcUaDataValue::SPtr
@@ -643,9 +650,18 @@ namespace OpcUaServerApplicationDemo
 #endif
 
 	void
-	DemoLibrary::readValue(void)
+	DemoLibrary::readValue(ApplicationReadContext& applicationReadContext)
 	{
-	    std::cout << "read value ..." << std::endl;
+	    std::cout << "read value ..." << applicationReadContext.nodeId_ << std::endl;
+
+	    ValueMap::iterator it;
+	    it = valueMap_.find(applicationReadContext.nodeId_);
+	    if (it == valueMap_.end()) {
+	    	applicationReadContext.statusCode_ = BadInternalError;
+	    	return;
+	    }
+	    applicationReadContext.statusCode_ = Success;
+	    it->second->copyTo(applicationReadContext.dataValue_);
 	}
 
 	void

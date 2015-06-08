@@ -1,5 +1,6 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
+#include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -108,7 +109,7 @@ namespace OpcUaStackServer
 			}
 
 			// forward read request
-			//forwardRead();
+			forwardRead(baseNodeClass, readRequest, readValueId);
 
 			// determine the attribute to be read
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
@@ -159,6 +160,24 @@ namespace OpcUaStackServer
 		trx->componentSession()->send(serviceTransaction);
 	}
 
+	void
+	AttributeService::forwardRead(BaseNodeClass::SPtr baseNodeClass, ReadRequest::SPtr readRequest, ReadValueId::SPtr readValueId)
+	{
+		if ((AttributeId)readValueId->attributeId() != AttributeId_Value) return;
+
+		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+		if (forwardInfoSync.get() == nullptr) return;
+		if (!forwardInfoSync->isReadCallback()) return;
+
+		ApplicationReadContext applicationReadContext;
+		applicationReadContext.nodeId_ = *readValueId->nodeId();
+		applicationReadContext.attributeId_ = readValueId->attributeId();
+
+		forwardInfoSync->readCallback()(applicationReadContext);
+
+		if (applicationReadContext.statusCode_ != Success) return;
+		baseNodeClass->setValue(applicationReadContext.dataValue_);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

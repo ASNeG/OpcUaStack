@@ -1,8 +1,10 @@
 #ifndef __OpcUaServerApplicationDemo_DemoLibrary_h__
 #define __OpcUaServerApplicationDemo_DemoLibrary_h__
 
+#include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
 namespace OpcUaServerApplicationDemo
@@ -22,8 +24,9 @@ namespace OpcUaServerApplicationDemo
 
 	  private:
 		bool getNamespaceInfo(void);
-		void readValue(void);
+		void readValue(ApplicationReadContext& applicationReadContext);
 		void writeValue(void);
+
 		OpcUaDataValue::SPtr createDataValue(void);
 		bool createValueMap(void);
 
