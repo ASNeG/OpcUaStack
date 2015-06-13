@@ -3,12 +3,12 @@
 namespace OpcUaStackServer
 {
 
-	NodeReferenceApplication::NodeReferenceApplication()
+	NodeReferenceApplication::NodeReferenceApplication(void)
 	: baseNodeClass_()
 	{
 	}
 
-	NodeReferenceApplication::~NodeReferenceApplication()
+	NodeReferenceApplication::~NodeReferenceApplication(void)
 	{
 	}
 

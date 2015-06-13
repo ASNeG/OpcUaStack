@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackServer_NodeReferenceApplication_h__
 #define __OpcUaStackServer_NodeReferenceApplication_h__
 
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
@@ -10,13 +11,14 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT NodeReferenceApplication
-	: public NodeReference
+	: public  ObjectPool<NodeReferenceApplication>
+	, public NodeReference
 	{
 	  public:
 		typedef boost::shared_ptr<NodeReferenceApplication> SPtr;
 
-		NodeReferenceApplication();
-		virtual ~NodeReferenceApplication();
+		NodeReferenceApplication(void);
+		virtual ~NodeReferenceApplication(void);
 
 		void baseNodeClass(BaseNodeClass::WPtr baseNodeClass);
 		BaseNodeClass::WPtr baseNodeClass(void);
@@ -25,4 +27,5 @@ namespace OpcUaStackServer
 		BaseNodeClass::WPtr baseNodeClass_;
 	};
 
+}
 #endif

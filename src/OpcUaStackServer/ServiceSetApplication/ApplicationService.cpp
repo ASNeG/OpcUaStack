@@ -2,6 +2,7 @@
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
+#include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
@@ -127,7 +128,7 @@ namespace OpcUaStackServer
 		// get node reference
 		getNodeReferenceResponse->nodeReferenceArray()->resize(getNodeReferenceRequest->nodes()->size());
 		for (uint32_t idx = 0; idx < getNodeReferenceRequest->nodes()->size(); idx++) {
-			NodeReference::SPtr nodeReference = NodeReference::construct();
+			NodeReferenceApplication::SPtr nodeReference = NodeReferenceApplication::construct();
 			nodeReference->statusCode(Success);
 			getNodeReferenceResponse->nodeReferenceArray()->set(idx, nodeReference);
 
@@ -149,8 +150,7 @@ namespace OpcUaStackServer
 					.parameter("Node", *nodeId);
 				continue;
 			}
-
-			//baseNodeClass->forwardInfo(registerForwardRequest->forwardInfo());
+			nodeReference->baseNodeClass(baseNodeClass);
 
 			Log(Debug, "get node reference")
 				.parameter("Trx", serviceTransaction->transactionId())
