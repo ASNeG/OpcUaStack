@@ -4,7 +4,6 @@
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardInfoAsync.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardInfoSync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
@@ -50,8 +49,6 @@ namespace OpcUaStackServer
 		void copyTo(BaseNodeClass& baseNodeClass);
 		virtual BaseNodeClass::SPtr clone(void) = 0;
 
-		void forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo);
-		ForwardInfoAsync::SPtr forwardInfoAsync(void);
 		void forwardInfoSync(ForwardInfoSync::SPtr forwardInfo);
 		ForwardInfoSync::SPtr forwardInfoSync(void);
 
@@ -66,7 +63,6 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap referenceItemMap_;
 
-		ForwardInfoAsync::SPtr forwardInfoAsync_;
 		ForwardInfoSync::SPtr forwardInfoSync_;
 	};
 

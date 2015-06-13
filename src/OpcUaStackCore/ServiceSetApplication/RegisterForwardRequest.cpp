@@ -14,7 +14,6 @@ namespace OpcUaStackCore
 	RegisterForwardRequest::RegisterForwardRequest(void)
 	: ObjectPool<RegisterForwardRequest>()
 	, nodesToRegisterArraySPtr_(OpcUaNodeIdArray::construct())
-	, forwardInfoAsync_(ForwardInfoAsync::construct())
 	, forwardInfoSync_(ForwardInfoSync::construct())
 	{
 	}
@@ -45,18 +44,6 @@ namespace OpcUaStackCore
 	RegisterForwardRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		nodesToRegisterArraySPtr_->opcUaBinaryDecode(is);
-	}
-
-	void
-	RegisterForwardRequest::forwardInfoAsync(ForwardInfoAsync::SPtr forwardInfo)
-	{
-		forwardInfoAsync_ = forwardInfo;
-	}
-
-	ForwardInfoAsync::SPtr
-	RegisterForwardRequest::forwardInfoAsync(void)
-	{
-		return forwardInfoAsync_;
 	}
 
 	void

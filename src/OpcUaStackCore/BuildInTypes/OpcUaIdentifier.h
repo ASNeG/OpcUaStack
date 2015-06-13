@@ -2038,5 +2038,7 @@
 #define OpcUaId_RegisterForwardResponse_Encoding_DefaultBinary 1000001
 #define OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary 1000002
 #define OpcUaId_GetNodeReferenceResponse_Encoding_DefaultBinary 1000003
+#define OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary 1000004
+#define OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary 1000005
 
 #endif

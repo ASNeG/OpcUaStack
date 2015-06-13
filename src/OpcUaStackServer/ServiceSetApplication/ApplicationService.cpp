@@ -3,6 +3,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 namespace OpcUaStackServer
 {
@@ -28,8 +29,10 @@ namespace OpcUaStackServer
 			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
 				receiveGetNodeReferenceRequest(serviceTransaction);
 				break;
+			case OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary:
+				receiveNamespaceInfoRequest(serviceTransaction);
+				break;
 			default:
-				std::cout << "CC" << std::endl;
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 
@@ -86,7 +89,6 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			baseNodeClass->forwardInfoAsync(registerForwardRequest->forwardInfoAsync());
 			baseNodeClass->forwardInfoSync(registerForwardRequest->forwardInfoSync());
 
 			Log(Debug, "register forward")
@@ -148,7 +150,6 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			// FIXME:
 			//baseNodeClass->forwardInfo(registerForwardRequest->forwardInfo());
 
 			Log(Debug, "get node reference")
@@ -159,7 +160,29 @@ namespace OpcUaStackServer
 
 		trx->responseHeader()->serviceResult(Success);
 		trx->componentSession()->send(serviceTransaction);
+	}
 
+	void
+	ApplicationService::receiveNamespaceInfoRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionNamespaceInfo::SPtr trx = boost::static_pointer_cast<ServiceTransactionNamespaceInfo>(serviceTransaction);
+
+		NamespaceInfoRequest::SPtr namespaceInfoRequest = trx->request();
+		NamespaceInfoResponse::SPtr namespaceInfoResponse = trx->response();
+
+		Log(Debug, "application service namespace info request")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		// read global namespaces
+		NodeSetNamespace nodeSetNamespace;
+		for (uint32_t idx = 0; idx < nodeSetNamespace.globalNamespaceVec().size(); idx++) {
+			std::string namespaceName = nodeSetNamespace.globalNamespaceVec()[idx];
+			namespaceInfoResponse->index2NamespaceMap().insert(std::make_pair(idx, namespaceName));
+			namespaceInfoResponse->namespace2IndexMap().insert(std::make_pair(namespaceName, idx));
+		}
+
+		trx->responseHeader()->serviceResult(Success);
+		trx->componentSession()->send(serviceTransaction);
 	}
 
 }

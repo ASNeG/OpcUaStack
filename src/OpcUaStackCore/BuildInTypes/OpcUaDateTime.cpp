@@ -18,6 +18,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaDateTime::OpcUaDateTime(const boost::posix_time::ptime& ptime)
+	: dateTime_(0)
+	{
+		dateTime(ptime);
+	}
+
 	OpcUaDateTime::~OpcUaDateTime(void)
 	{
 	}

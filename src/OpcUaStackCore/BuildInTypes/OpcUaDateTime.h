@@ -14,6 +14,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaDateTime> SPtr;
 
 		OpcUaDateTime(void);
+		OpcUaDateTime(const boost::posix_time::ptime& ptime);
 		~OpcUaDateTime(void);
 
 		void dateTime(const boost::posix_time::ptime& dateTime);

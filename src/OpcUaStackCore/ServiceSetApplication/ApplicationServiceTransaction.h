@@ -7,6 +7,8 @@
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -24,6 +26,13 @@ namespace OpcUaStackCore
 		OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary,
 		OpcUaId_GetNodeReferenceResponse_Encoding_DefaultBinary
 	> ServiceTransactionGetNodeReference;
+
+	typedef ServiceTransactionTemplate<
+		NamespaceInfoRequest,
+		NamespaceInfoResponse,
+		OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary,
+		OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary
+	> ServiceTransactionNamespaceInfo;
 
 }
 

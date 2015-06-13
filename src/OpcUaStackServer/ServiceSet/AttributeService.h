@@ -28,7 +28,9 @@ namespace OpcUaStackServer
 
 	  private:
 		void receiveReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		void forwardRead(BaseNodeClass::SPtr baseNodeClass, ReadRequest::SPtr readRequest, ReadValueId::SPtr readValueId);
 		void receiveWriteRequest(ServiceTransaction::SPtr serviceTransaction);
+		OpcUaStatusCode forwardWrite(BaseNodeClass::SPtr baseNodeClass, WriteRequest::SPtr writeRequest, WriteValue::SPtr writeValue);
 		void receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction);
 	};

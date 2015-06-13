@@ -1,5 +1,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
+#include "OpcUaStackCore/Application/ApplicationReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -85,6 +87,7 @@ namespace OpcUaStackServer
 			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
 			readResponse->dataValueArray()->set(idx, dataValue);
 
+			// determine node information
 			ReadValueId::SPtr readValueId;
 			if (!readRequest->readValueIdArray()->get(idx, readValueId)) {
 				dataValue->statusCode(BadNodeIdInvalid);
@@ -94,6 +97,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// find node class instance for the node
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
 			if (baseNodeClass.get() == nullptr) {
 				dataValue->statusCode(BadNodeIdUnknown);
@@ -105,6 +109,10 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// forward read request
+			forwardRead(baseNodeClass, readRequest, readValueId);
+
+			// determine the attribute to be read
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
 			if (attribute == nullptr) {
 				dataValue->statusCode(BadAttributeIdInvalid);
@@ -153,6 +161,25 @@ namespace OpcUaStackServer
 		trx->componentSession()->send(serviceTransaction);
 	}
 
+	void
+	AttributeService::forwardRead(BaseNodeClass::SPtr baseNodeClass, ReadRequest::SPtr readRequest, ReadValueId::SPtr readValueId)
+	{
+		if ((AttributeId)readValueId->attributeId() != AttributeId_Value) return;
+
+		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+		if (forwardInfoSync.get() == nullptr) return;
+		if (!forwardInfoSync->isReadCallback()) return;
+
+		ApplicationReadContext applicationReadContext;
+		applicationReadContext.nodeId_ = *readValueId->nodeId();
+		applicationReadContext.attributeId_ = readValueId->attributeId();
+		applicationReadContext.statusCode_ = Success;
+
+		forwardInfoSync->readCallback()(&applicationReadContext);
+
+		if (applicationReadContext.statusCode_ != Success) return;
+		baseNodeClass->setValue(applicationReadContext.dataValue_);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -221,6 +248,17 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			OpcUaStatusCode statusCode = forwardWrite(baseNodeClass, writeRequest, writeValue);
+			if (statusCode != Success) {
+				writeResponse->results()->set(idx, statusCode);
+				Log(Debug, "write value error, because invalid status code from library")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *writeValue->nodeId())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				continue;
+			}
+
 			if (!AttributeAccess::copy(writeValue->dataValue(), *attribute)) {
 				Log(Debug, "write value error, because value error")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -247,17 +285,59 @@ namespace OpcUaStackServer
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
+	OpcUaStatusCode
+	AttributeService::forwardWrite(BaseNodeClass::SPtr baseNodeClass, WriteRequest::SPtr writeRequest, WriteValue::SPtr writeValue)
+	{
+		if ((AttributeId)writeValue->attributeId() != AttributeId_Value) return Success;
+
+		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+		if (forwardInfoSync.get() == nullptr) return Success;
+		if (!forwardInfoSync->isWriteCallback()) return Success;
+
+		ApplicationWriteContext applicationWriteContext;
+		applicationWriteContext.nodeId_ = *writeValue->nodeId();
+		applicationWriteContext.attributeId_ = writeValue->attributeId();
+		writeValue->dataValue().copyTo(applicationWriteContext.dataValue_);
+		applicationWriteContext.statusCode_ = Success;
+
+		forwardInfoSync->writeCallback()(&applicationWriteContext);
+
+		return applicationWriteContext.statusCode_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// history read service
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	AttributeService::receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		ServiceTransactionHistoryRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction);
+		HistoryReadRequest::SPtr readRequest = trx->request();
+		HistoryReadResponse::SPtr readResponse = trx->response();
+
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// history write service
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	AttributeService::receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		ServiceTransactionHistoryUpdate::SPtr trx = boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction);
+		HistoryUpdateRequest::SPtr updateRequest = trx->request();
+		HistoryUpdateResponse::SPtr updateResponse = trx->response();
+
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
 		serviceTransaction->componentSession()->send(serviceTransaction);
