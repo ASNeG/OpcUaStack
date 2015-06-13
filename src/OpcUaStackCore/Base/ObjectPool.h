@@ -9,7 +9,8 @@ namespace OpcUaStackCore
 {
 
 	template<typename OBJ>
-	class DLLEXPORT ObjectPool : public Object
+	class DLLEXPORT ObjectPool
+	: public Object
 	{
 	  public:
 		static boost::shared_ptr<OBJ> construct(void) {

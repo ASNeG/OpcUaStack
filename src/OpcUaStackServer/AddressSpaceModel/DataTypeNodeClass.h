@@ -10,7 +10,9 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT DataTypeNodeClass : public BaseNodeClass, public ObjectPool<DataTypeNodeClass>
+	class DLLEXPORT DataTypeNodeClass
+	: public BaseNodeClass
+	, public ObjectPool<DataTypeNodeClass>
 	{
 	  public:
 		typedef boost::shared_ptr<DataTypeNodeClass> SPtr;

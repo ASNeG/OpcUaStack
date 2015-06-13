@@ -10,7 +10,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT GetNodeReferenceResponse : public ObjectPool<GetNodeReferenceResponse>
+	class DLLEXPORT GetNodeReferenceResponse
+	: public ObjectPool<GetNodeReferenceResponse>
 	{
 	  public:
 		typedef boost::shared_ptr<GetNodeReferenceResponse> SPtr;
