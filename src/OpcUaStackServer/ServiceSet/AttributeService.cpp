@@ -315,6 +315,10 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		ServiceTransactionHistoryRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction);
+		HistoryReadRequest::SPtr readRequest = trx->request();
+		HistoryReadResponse::SPtr readResponse = trx->response();
+
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
 		serviceTransaction->componentSession()->send(serviceTransaction);
@@ -330,6 +334,10 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		ServiceTransactionHistoryUpdate::SPtr trx = boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction);
+		HistoryUpdateRequest::SPtr updateRequest = trx->request();
+		HistoryUpdateResponse::SPtr updateResponse = trx->response();
+
 		// FIXME:
 		serviceTransaction->statusCode(BadInternalError);
 		serviceTransaction->componentSession()->send(serviceTransaction);
