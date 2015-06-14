@@ -321,138 +321,78 @@ namespace OpcUaServerApplicationDemo
 		}
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
 
+		// DateTime
+		nodeId.set(228, namespaceIndex_);
+		OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+		dataValue = createDataValue();
+		dataValue->variant()->variant(dateTime);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// DateTimeArray
+		nodeId.set(229, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue->variant()->pushBack(dateTime);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// GUID
+		nodeId.set(230, namespaceIndex_);
+		OpcUaGuid::SPtr guid = OpcUaGuid::construct();
+		*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+		dataValue = createDataValue();
+		dataValue->variant()->variant(guid);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// LocalizedTextArray
+		nodeId.set(231, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaGuid::SPtr guid = OpcUaGuid::construct();
+			*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+			dataValue->variant()->pushBack(guid);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// NodeId
+		nodeId.set(232, namespaceIndex_);
+		OpcUaNodeId::SPtr nodeIdValue = OpcUaNodeId::construct();
+		nodeIdValue->set(1,1);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(nodeIdValue);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// nodeIdArray
+		nodeId.set(233, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaNodeId::SPtr nodeIdValue = OpcUaNodeId::construct();
+			nodeIdValue->set(pos, 1);
+			dataValue->variant()->pushBack(nodeIdValue);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// QualifiedName
+		nodeId.set(234, namespaceIndex_);
+		OpcUaQualifiedName::SPtr qualifiedName = OpcUaQualifiedName::construct();
+		qualifiedName->set("Name", 1);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(qualifiedName);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// QualifiedName
+		nodeId.set(235, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaQualifiedName::SPtr qualifiedName = OpcUaQualifiedName::construct();
+			qualifiedName->set("Name", pos);
+			dataValue->variant()->pushBack(qualifiedName);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
 		return true;
 	}
-
-#if 0
-	  <UAVariable NodeId="ns=1;i=228" BrowseName="1:DateTime" DataType="i=13">
-	    <DisplayName>DateTimeValue</DisplayName>
-	    <Description>DateTime test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:DateTime>2015-01-01T01:01:00Z</uax:DateTime>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=229" BrowseName="1:DateTimeArray" DataType="i=13" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>DateTimeValueArray</DisplayName>
-	    <Description>DateTime array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfDateTime>
-	        <uax:DateTime>2015-01-01T01:01:00Z</uax:DateTime>
-	        <uax:DateTime>2015-01-01T01:02:00Z</uax:DateTime>
-	        <uax:DateTime>2015-01-01T01:03:00Z</uax:DateTime>
-	      </uax:ListOfDateTime>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=230" BrowseName="1:Guid" DataType="i=14">
-	    <DisplayName>GuidValue</DisplayName>
-	    <Description>Guid test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Guid><uax:String>00000001-0001-0001-0001-000000000001</uax:String></uax:Guid>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=231" BrowseName="1:GuidArray" DataType="i=14" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>GuidValueArray</DisplayName>
-	    <Description>Guid array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfGuid>
-	        <uax:Guid><uax:String>00000001-0001-0001-0001-000000000001</uax:String></uax:Guid>
-			<uax:Guid><uax:String>00000001-0001-0001-0001-000000000002</uax:String></uax:Guid>
-			<uax:Guid><uax:String>00000001-0001-0001-0001-000000000003</uax:String></uax:Guid>
-	      </uax:ListOfGuid>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=232" BrowseName="1:NodeId" DataType="i=17">
-	    <DisplayName>NodeIdValue</DisplayName>
-	    <Description>NodeId test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:NodeId><uax:Identifier>ns=1;s=String</uax:Identifier></uax:NodeId>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=233" BrowseName="1:NodeIdArray" DataType="i=17" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>NodeIdValueArray</DisplayName>
-	    <Description>NodeId array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfNodeId>
-	        <uax:NodeId><uax:Identifier>ns=1;s=String1</uax:Identifier></uax:NodeId>
-			<uax:NodeId><uax:Identifier>ns=1;i=1234</uax:Identifier></uax:NodeId>
-			<uax:NodeId><uax:Identifier>ns=1;s=00000001-0001-0001-0001-000000000001</uax:Identifier></uax:NodeId>
-	      </uax:ListOfNodeId>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=234" BrowseName="1:QualifiedName" DataType="i=20">
-	    <DisplayName>QualifiedNameValue</DisplayName>
-	    <Description>QualifiedName test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-		  <uax:QualifiedName>
-	        <uax:NamespaceIndex>0</uax:NamespaceIndex>
-	        <uax:Name>QualifiedName</uax:Name>
-	      </uax:QualifiedName>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=235" BrowseName="1:QualifiedNameArray" DataType="i=20" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName Locale="de">QualifiedNameValueArray</DisplayName>
-	    <Description Locale="de">QualifiedName array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfQualifiedName>
-		  <uax:QualifiedName>
-	        <uax:NamespaceIndex>1</uax:NamespaceIndex>
-	        <uax:Name>QualifiedName1</uax:Name>
-	      </uax:QualifiedName>
-		  <uax:QualifiedName>
-	        <uax:NamespaceIndex>1</uax:NamespaceIndex>
-	        <uax:Name>QualifiedName2</uax:Name>
-	      </uax:QualifiedName>
-		  <uax:QualifiedName>
-	        <uax:NamespaceIndex>1</uax:NamespaceIndex>
-	        <uax:Name>QualifiedName3</uax:Name>
-	      </uax:QualifiedName>
-	      </uax:ListOfQualifiedName>
-	    </Value>
-	  </UAVariable>
-
-
-#endif
-
-
 
 	bool
 	DemoLibrary::registerCallbacks(void)
@@ -774,6 +714,33 @@ namespace OpcUaServerApplicationDemo
 				dataValue->variant()->set(ltext);
 				break;
 			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+				dataValue->variant()->set(dateTime);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr guid = dataValue->variant()->getSPtr<OpcUaGuid>();
+				guid->data1(guid->data1()+1);
+				dataValue->variant()->set(guid);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaNodeId::SPtr nodeIdValue = dataValue->variant()->getSPtr<OpcUaNodeId>();
+				nodeIdValue->set(rand(),1);
+				dataValue->variant()->set(nodeIdValue);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				OpcUaQualifiedName::SPtr qualifiedName = dataValue->variant()->getSPtr<OpcUaQualifiedName>();
+				qualifiedName->set("Name", rand());
+				dataValue->variant()->set(qualifiedName);
+				break;
+			}
 			default:
 			{
 				std::cout << "data type unknown in update single" << std::endl;
@@ -923,6 +890,41 @@ namespace OpcUaServerApplicationDemo
 					ss << "String" << rand();
 					ltext->set("de", ss.str());
 					dataValue->variant()->set(pos, ltext);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+					dataValue->variant()->set(pos, dateTime);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaGuid::SPtr guid = dataValue->variant()->getSPtr<OpcUaGuid>(pos);
+					guid->data1(guid->data1()+1);
+					dataValue->variant()->set(pos, guid);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaNodeId::SPtr nodeIdValue = dataValue->variant()->getSPtr<OpcUaNodeId>(pos);
+					nodeIdValue->set(rand(), 1);
+					dataValue->variant()->set(pos, nodeIdValue);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaQualifiedName::SPtr qualifiedName = dataValue->variant()->getSPtr<OpcUaQualifiedName>(pos);
+					qualifiedName->set("Name", rand());
+					dataValue->variant()->set(pos, qualifiedName);
 				}
 				break;
 			}
