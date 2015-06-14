@@ -17,7 +17,8 @@ namespace OpcUaStackCore
 		DataChangeTrigger_Status_Value_Timestamp = 2
 	} DataChangeTrigger;
 
-	class DLLEXPORT OpcUaDataValue : public ObjectPool<OpcUaDataValue>
+	class DLLEXPORT OpcUaDataValue
+	: public ObjectPool<OpcUaDataValue>
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDataValue> SPtr;

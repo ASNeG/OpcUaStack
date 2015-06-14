@@ -501,22 +501,22 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaSByte:
 			{
-				os << boost::get<OpcUaSByte>(variantValue_);
+				os << (int64_t)boost::get<OpcUaSByte>(variantValue_);
 				break;
 			}
 			case  OpcUaBuildInType_OpcUaByte:
 			{
-				os << boost::get<OpcUaByte>(variantValue_);
+				os << (int64_t)boost::get<OpcUaByte>(variantValue_);
 				break;
 			}
 			case  OpcUaBuildInType_OpcUaInt16:
 			{
-				os << boost::get<OpcUaInt16>(variantValue_);
+				os << (int64_t)boost::get<OpcUaInt16>(variantValue_);
 				break;
 			}
 			case  OpcUaBuildInType_OpcUaUInt16:
 			{
-				os << boost::get<OpcUaUInt16>(variantValue_);
+				os << (int64_t)boost::get<OpcUaUInt16>(variantValue_);
 				break;
 			}
 			case  OpcUaBuildInType_OpcUaInt32:

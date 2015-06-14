@@ -136,7 +136,16 @@ namespace OpcUaStackCore
 			  variantValueVec_[pos].variant(val);
 		  }
 		template<typename VAL>
+		  void set(uint32_t pos, const VAL& val) {
+			  variantValueVec_[pos].variant(val);
+		  }
+		template<typename VAL>
 		  void variant(const VAL& val) {
+			  clear();
+			  variantValueVec_[0].variant(val);
+		  }
+		template<typename VAL>
+		  void set(const VAL& val) {
 			  clear();
 			  variantValueVec_[0].variant(val);
 		  }
@@ -153,8 +162,18 @@ namespace OpcUaStackCore
 			  return variantValueVec_[0].variant<VAL>();
 		  }
 		template<typename VAL> 
+		  VAL get(void) const
+		  {
+			 return variantValueVec_[0].variant<VAL>();
+		  }
+		template<typename VAL>
 		  VAL variant(uint32_t pos) const
 		  {
+			  return variantValueVec_[pos].variant<VAL>();
+		  }
+		template<typename VAL>
+		  VAL get(uint32_t pos) const
+	      {
 			  return variantValueVec_[pos].variant<VAL>();
 		  }
 		template<typename VAL>

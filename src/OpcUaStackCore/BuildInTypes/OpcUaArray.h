@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 
 		  static void out(std::ostream& os, const T& value) 
 		  {
-			  os << value;
+			  os << (int64_t)value;
 		  }
 	};
 

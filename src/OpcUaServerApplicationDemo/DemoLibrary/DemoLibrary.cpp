@@ -131,302 +131,146 @@ namespace OpcUaServerApplicationDemo
 		dataValue->variant()->variant(sByte);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
 
-#if 0
 		// SByteByteArray
 		nodeId.set(201, namespaceIndex_);
-		OpcUaSByteArray::SPtr sByteArray = OpcUaSByteArray::construct();
-		sByteArray->resize(3);
-		for (uint32_t pos=0; pos<3;pos++) sByteArray->set(pos, pos);
 		dataValue = createDataValue();
-		dataValue->variant()->variant(sByteArray);
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaSByte)pos);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
-#endif
+
+		// Byte
+		nodeId.set(202, namespaceIndex_);
+		OpcUaByte byte(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(byte);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// ByteByteArray
+		nodeId.set(203, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaByte)pos);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Int16
+		nodeId.set(204, namespaceIndex_);
+		OpcUaInt16 int16(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(int16);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Int16Array
+		nodeId.set(205, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaInt16)(pos*2));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// UInt16
+		nodeId.set(206, namespaceIndex_);
+		OpcUaUInt16 uint16(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(uint16);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// UInt16Array
+		nodeId.set(207, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaUInt16)(pos*3));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Int32
+		nodeId.set(208, namespaceIndex_);
+		OpcUaInt32 int32(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(int32);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Int32Array
+		nodeId.set(209, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaInt32)(pos*4));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// UInt32
+		nodeId.set(210, namespaceIndex_);
+		OpcUaUInt32 uint32(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(uint32);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// UInt32Array
+		nodeId.set(211, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaUInt32)(pos*5));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Int64
+		nodeId.set(212, namespaceIndex_);
+		OpcUaInt64 int64(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(int64);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Int64Array
+		nodeId.set(213, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaInt64)(pos*6));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// UInt64
+		nodeId.set(214, namespaceIndex_);
+		OpcUaUInt64 uint64(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(uint64);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// UInt64Array
+		nodeId.set(215, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaUInt64)(pos*5));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Float
+		nodeId.set(216, namespaceIndex_);
+		OpcUaFloat floats(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(floats);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// FloatArray
+		nodeId.set(217, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaFloat)(pos*6.7));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Double
+		nodeId.set(218, namespaceIndex_);
+		OpcUaDouble doubles(11);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(doubles);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// DoubleArray
+		nodeId.set(219, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaDouble)(pos*7.23));
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// Boolean
+		nodeId.set(220, namespaceIndex_);
+		OpcUaBoolean boolean(true);
+		dataValue = createDataValue();
+		dataValue->variant()->variant(boolean);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// DoubleArray
+		nodeId.set(221, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaBoolean)false);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
 
 		return true;
 	}
 
 #if 0
-
-	  <UAVariable NodeId="ns=1;i=202" BrowseName="1:Byte" DataType="i=3">
-	    <DisplayName>ByteValue</DisplayName>
-	    <Description>Byte test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Byte>12</uax:Byte>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=203" BrowseName="1:ByteArray" DataType="i=3" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>ByteArrayValue</DisplayName>
-	    <Description>Byte array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfByte>
-	        <uax:Byte>1</uax:Byte>
-	        <uax:Byte>2</uax:Byte>
-	        <uax:Byte>3</uax:Byte>
-	      </uax:ListOfByte>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=204" BrowseName="1:Int16" DataType="i=4">
-	    <DisplayName>Int16Value</DisplayName>
-	    <Description>Int16 test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Int16>123</uax:Int16>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=205" BrowseName="1:Int16Array" DataType="i=4" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>Int16ArrayValue</DisplayName>
-	    <Description>Int16 array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfInt16>
-	        <uax:Int16>1</uax:Int16>
-	        <uax:Int16>2</uax:Int16>
-	        <uax:Int16>3</uax:Int16>
-	      </uax:ListOfInt16>
-	    </Value>
-	  </UAVariable>
-
-	   <UAVariable NodeId="ns=1;i=206" BrowseName="1:UInt16" DataType="i=5">
-	    <DisplayName>UInt16Value</DisplayName>
-	    <Description>UInt16 test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:UInt16>123</uax:UInt16>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=207" BrowseName="1:UInt16Array" DataType="i=5" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>UInt16ArrayValue</DisplayName>
-	    <Description>UInt16 array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfUInt16>
-	        <uax:UInt16>1</uax:UInt16>
-	        <uax:UInt16>2</uax:UInt16>
-	        <uax:UInt16>3</uax:UInt16>
-	      </uax:ListOfUInt16>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=208" BrowseName="1:Int32" DataType="i=6">
-	    <DisplayName>Int32Value</DisplayName>
-	    <Description>int32 test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Int32>123</uax:Int32>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=209" BrowseName="1:Int32Array" DataType="i=6" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>Int32ArrayValue</DisplayName>
-	    <Description>int32 array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfInt32>
-	        <uax:Int32>1</uax:Int32>
-	        <uax:Int32>2</uax:Int32>
-	        <uax:Int32>3</uax:Int32>
-	      </uax:ListOfInt32>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=210" BrowseName="1:UInt32" DataType="i=7">
-	    <DisplayName>UInt32Value</DisplayName>
-	    <Description>uint32 test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:UInt32>123</uax:UInt32>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=211" BrowseName="1:UInt32Array" DataType="i=7" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>UInt32ArrayValue</DisplayName>
-	    <Description>uint32 array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfUInt32>
-	        <uax:UInt32>1</uax:UInt32>
-	        <uax:UInt32>2</uax:UInt32>
-	        <uax:UInt32>3</uax:UInt32>
-	      </uax:ListOfUInt32>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=212" BrowseName="1:Int64" DataType="i=8">
-	    <DisplayName>Int64Value</DisplayName>
-	    <Description>int64 test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Int64>123</uax:Int64>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=213" BrowseName="1:Int64Array" DataType="i=8" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>Int64ArrayValue</DisplayName>
-	    <Description>int64 array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfInt64>
-	        <uax:Int64>1</uax:Int64>
-	        <uax:Int64>2</uax:Int64>
-	        <uax:Int64>3</uax:Int64>
-	      </uax:ListOfInt64>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=214" BrowseName="1:UInt64" DataType="i=9">
-	    <DisplayName>UInt64Value</DisplayName>
-	    <Description>uint64 test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:UInt64>123</uax:UInt64>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=215" BrowseName="1:UInt64Array" DataType="i=9" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>UInt64ArrayValue</DisplayName>
-	    <Description>uint64 array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfUInt64>
-	        <uax:UInt64>1</uax:UInt64>
-	        <uax:UInt64>2</uax:UInt64>
-	        <uax:UInt64>3</uax:UInt64>
-	      </uax:ListOfUInt64>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=216" BrowseName="1:Float" DataType="i=10">
-	    <DisplayName>FloatValue</DisplayName>
-	    <Description>Float test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Float>123</uax:Float>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=217" BrowseName="1:FloatArray" DataType="i=10" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>FloatArrayValue</DisplayName>
-	    <Description>Float array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfFloat>
-	        <uax:Float>1</uax:Float>
-	        <uax:Float>2</uax:Float>
-	        <uax:Float>3</uax:Float>
-	      </uax:ListOfFloat>
-	    </Value>
-	  </UAVariable>
-
-	   <UAVariable NodeId="ns=1;i=218" BrowseName="1:Double" DataType="i=11">
-	    <DisplayName>DoubleValue</DisplayName>
-	    <Description>Double test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Double>123</uax:Double>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=219" BrowseName="1:DoubleArray" DataType="i=11" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>DoubleArrayValue</DisplayName>
-	    <Description>Double array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfDouble>
-	        <uax:Double>1</uax:Double>
-	        <uax:Double>2</uax:Double>
-	        <uax:Double>3</uax:Double>
-	      </uax:ListOfDouble>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=220" BrowseName="1:Boolean" DataType="i=1">
-	    <DisplayName>BooleanValue</DisplayName>
-	    <Description>Boolean test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:Boolean>true</uax:Boolean>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=221" BrowseName="1:BooleanArray" DataType="i=1" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>BooleanArrayValue</DisplayName>
-	    <Description>Boolean array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfBoolean>
-	        <uax:Boolean>true</uax:Boolean>
-	        <uax:Boolean>false</uax:Boolean>
-	        <uax:Boolean>true</uax:Boolean>
-	      </uax:ListOfBoolean>
-	    </Value>
-	  </UAVariable>
-
 	  <UAVariable NodeId="ns=1;i=222" BrowseName="1:String" DataType="i=12">
 	    <DisplayName>StringValue</DisplayName>
 	    <Description>String test value</Description>
@@ -731,6 +575,7 @@ namespace OpcUaServerApplicationDemo
 
 	  	uint32_t pos = 0;
 	  	ValueMap::iterator it;
+	  	req->nodes()->resize(valueMap_.size());
 	  	for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
 	  		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
 	  		*nodeId = it->first;
@@ -830,24 +675,32 @@ namespace OpcUaServerApplicationDemo
 	{
 	  	ValueMap::iterator it1;
 	  	for (it1 = valueMap_.begin(); it1 != valueMap_.end(); it1++) {
+
 	  		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
 	  		OpcUaDataValue::SPtr dataValue = it1->second;
 	  		*nodeId = it1->first;
 
+	  		std::cout << "update " << *nodeId << std::endl;
+
 	  		BaseNodeClassWMap::iterator it2;
 	  		it2 = baseNodeClassWMap_.find(*nodeId);
-	  		if (it2 == baseNodeClassWMap_.end()) continue;
+	  		if (it2 == baseNodeClassWMap_.end()) {
+	  			std::cout << "baseNodeClass not exist: " << *nodeId << std::endl;
+	  			continue;
+	  		}
 	  		BaseNodeClass::WPtr baseNodeClassWPtr = it2->second;
 	  		BaseNodeClass::SPtr baseNodeClass = baseNodeClassWPtr.lock();
-	  		if (baseNodeClass.get() == nullptr) continue;
+	  		if (baseNodeClass.get() == nullptr) {
+	  			std::cout << "baseNodeClass is deleted: " << *nodeId << std::endl;
+	  			continue;
+	  		}
 
-	  		std::cout << dataValue->variant()->arrayLength() << std::endl;
-	  		//if (dataValue->variant()->arrayLength() == 0) {
+	  		if (dataValue->variant()->isArray()) {
+	  			updateArray(*nodeId, dataValue, baseNodeClass);
+	  		}
+	  		else {
 	  			updateSingle(*nodeId, dataValue, baseNodeClass);
-	  		//}
-	  		//else {
-	  		//	updateArray(*nodeId, dataValue, baseNodeClass);
-	  		//}
+	  		}
 	  	}
 
 		std::cout << "timer..." << std::endl;
@@ -856,13 +709,218 @@ namespace OpcUaServerApplicationDemo
 	void
 	DemoLibrary::updateSingle(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass)
 	{
-		std::cout << "update single" << std::endl;
+		switch (dataValue->variant()->variantType())
+		{
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte sByte = dataValue->variant()->get<OpcUaSByte>();
+				sByte++;
+				dataValue->variant()->set(sByte);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaByte byte = dataValue->variant()->get<OpcUaByte>();
+				byte++;
+				dataValue->variant()->set(byte);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				OpcUaInt16 int16 = dataValue->variant()->get<OpcUaInt16>();
+				int16++;
+				dataValue->variant()->set(int16);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 uint16 = dataValue->variant()->get<OpcUaUInt16>();
+				uint16++;
+				dataValue->variant()->set(uint16);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 int32 = dataValue->variant()->get<OpcUaInt32>();
+				int32++;
+				dataValue->variant()->set(int32);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 uint32 = dataValue->variant()->get<OpcUaUInt32>();
+				uint32++;
+				dataValue->variant()->set(uint32);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				OpcUaInt64 int64 = dataValue->variant()->get<OpcUaInt64>();
+				int64++;
+				dataValue->variant()->set(int64);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				OpcUaUInt64 uint64 = dataValue->variant()->get<OpcUaUInt64>();
+				uint64++;
+				dataValue->variant()->set(uint64);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat floats = dataValue->variant()->get<OpcUaFloat>();
+				floats += 1.1234;
+				dataValue->variant()->set(floats);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble doubles = dataValue->variant()->get<OpcUaDouble>();
+				doubles += 232.324;
+				dataValue->variant()->set(doubles);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				OpcUaBoolean boolean = dataValue->variant()->get<OpcUaBoolean>();
+				if (boolean) boolean = false;
+				else boolean = true;
+				dataValue->variant()->set(boolean);
+				break;
+			}
+			default:
+			{
+				std::cout << "data type unknown in update single" << std::endl;
+				return;
+			}
+		}
+
+		OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+		dataValue->serverTimestamp(dateTime);
+		dataValue->sourceTimestamp(dateTime);
+		dataValue->statusCode(Success);
+		baseNodeClass->setValue(*dataValue);
 	}
 
 	void
 	DemoLibrary::updateArray(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass)
 	{
-		std::cout << "update array" << std::endl;
+		switch (dataValue->variant()->variantType())
+		{
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaSByte sByte = dataValue->variant()->get<OpcUaSByte>(pos);
+					sByte++;
+					dataValue->variant()->set(pos, sByte);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaByte byte = dataValue->variant()->get<OpcUaByte>(pos);
+					byte++;
+					dataValue->variant()->set(pos, byte);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaInt16 int16 = dataValue->variant()->get<OpcUaInt16>(pos);
+					int16++;
+					dataValue->variant()->set(pos, int16);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaUInt16 uint16 = dataValue->variant()->get<OpcUaUInt16>(pos);
+					uint16++;
+					dataValue->variant()->set(pos, uint16);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaInt32 int32 = dataValue->variant()->get<OpcUaInt32>(pos);
+					int32++;
+					dataValue->variant()->set(pos, int32);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaUInt32 uint32 = dataValue->variant()->get<OpcUaUInt32>(pos);
+					uint32++;
+					dataValue->variant()->set(pos, uint32);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaInt64 int64 = dataValue->variant()->get<OpcUaInt64>(pos);
+					int64++;
+					dataValue->variant()->set(pos, int64);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaUInt64 uint64 = dataValue->variant()->get<OpcUaUInt64>(pos);
+					uint64++;
+					dataValue->variant()->set(pos, uint64);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaFloat floats = dataValue->variant()->get<OpcUaFloat>(pos);
+					floats += 3.354;
+					dataValue->variant()->set(pos, floats);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaDouble doubles = dataValue->variant()->get<OpcUaDouble>(pos);
+					doubles += 33.354;
+					dataValue->variant()->set(pos, doubles);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaBoolean boolean = dataValue->variant()->get<OpcUaBoolean>(pos);
+					if (boolean) boolean = false;
+					else boolean = true;
+					dataValue->variant()->set(pos, boolean);
+				}
+				break;
+			}
+			default:
+			{
+				std::cout << "data type unknown in update array" << std::endl;
+				return;
+			}
+		}
+
+
+		OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+		dataValue->serverTimestamp(dateTime);
+		dataValue->sourceTimestamp(dateTime);
+		dataValue->statusCode(Success);
+		baseNodeClass->setValue(*dataValue);
 	}
 
 }
