@@ -182,7 +182,17 @@ namespace OpcUaStackCore
 			  return variantValueVec_[0].variantSPtr<VAL>();
 		  }
 		template<typename VAL>
+		  typename VAL::SPtr getSPtr(void) const
+		  {
+			  return variantValueVec_[0].variantSPtr<VAL>();
+		  }
+		template<typename VAL>
 		  typename VAL::SPtr variantSPtr(uint32_t pos) const
+		  {
+			  return variantValueVec_[pos].variantSPtr<VAL>();
+		  }
+		template<typename VAL>
+		  typename VAL::SPtr getSPtr(uint32_t pos) const
 		  {
 			  return variantValueVec_[pos].variantSPtr<VAL>();
 		  }

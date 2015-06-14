@@ -267,106 +267,64 @@ namespace OpcUaServerApplicationDemo
 		for (uint32_t pos=0; pos<3;pos++) dataValue->variant()->pushBack((OpcUaBoolean)false);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
 
+		// String
+		nodeId.set(222, namespaceIndex_);
+		OpcUaString::SPtr str = OpcUaString::construct();
+		str->value("string");
+		dataValue = createDataValue();
+		dataValue->variant()->variant(str);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// StringArray
+		nodeId.set(223, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaString::SPtr str = OpcUaString::construct();
+			str->value("string");
+			dataValue->variant()->pushBack(str);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// ByteString
+		nodeId.set(224, namespaceIndex_);
+		OpcUaByteString::SPtr bstr = OpcUaByteString::construct();
+		bstr->value("string");
+		dataValue = createDataValue();
+		dataValue->variant()->variant(bstr);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// ByteStringArray
+		nodeId.set(225, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaByteString::SPtr bstr = OpcUaByteString::construct();
+			bstr->value("string");
+			dataValue->variant()->pushBack(bstr);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// LocalizedText
+		nodeId.set(226, namespaceIndex_);
+		OpcUaLocalizedText::SPtr ltext = OpcUaLocalizedText::construct();
+		ltext->set("de", "text");
+		dataValue = createDataValue();
+		dataValue->variant()->variant(ltext);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
+		// LocalizedTextArray
+		nodeId.set(227, namespaceIndex_);
+		dataValue = createDataValue();
+		for (uint32_t pos=0; pos<3;pos++) {
+			OpcUaLocalizedText::SPtr bstr = OpcUaLocalizedText::construct();
+			ltext->set("de", "text");
+			dataValue->variant()->pushBack(ltext);
+		}
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+
 		return true;
 	}
 
 #if 0
-	  <UAVariable NodeId="ns=1;i=222" BrowseName="1:String" DataType="i=12">
-	    <DisplayName>StringValue</DisplayName>
-	    <Description>String test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:String>string</uax:String>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=223" BrowseName="1:StringArray" DataType="i=12" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>StringArrayValue</DisplayName>
-	    <Description>String array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfString>
-	        <uax:String>string1</uax:String>
-	        <uax:String>string2</uax:String>
-	        <uax:String>string3</uax:String>
-	      </uax:ListOfString>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=224" BrowseName="1:ByteString" DataType="i=15">
-	    <DisplayName>ByteStringValue</DisplayName>
-	    <Description>ByteString test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ByteString>bytestring</uax:ByteString>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=225" BrowseName="1:ByteStringArray" DataType="i=15" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>ByteStringArrayValue</DisplayName>
-	    <Description>ByteString array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfByteString>
-	        <uax:ByteString>bytestring1</uax:ByteString>
-	        <uax:ByteString>bytestring2</uax:ByteString>
-	        <uax:ByteString>bytestring3</uax:ByteString>
-	      </uax:ListOfByteString>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=226" BrowseName="1:LocalizedText" DataType="i=21">
-	    <DisplayName>LocalizedTextValue</DisplayName>
-	    <Description>LocalizedText test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:LocalizedText>
-		    <Locale>de</Locale>
-			<Text>LocalizedText</Text>
-		  </uax:LocalizedText>
-	    </Value>
-	  </UAVariable>
-
-	  <UAVariable NodeId="ns=1;i=227" BrowseName="1:LocalizedTextArray" DataType="i=21" ValueRank="1" ArrayDimensions="3">
-	    <DisplayName>LocalizedTextArrayValue</DisplayName>
-	    <Description>LocalizedText array test value</Description>
-	    <References>
-	      <Reference ReferenceType="HasTypeDefinition">i=2138</Reference>
-	      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=2</Reference>
-	    </References>
-		<Value>
-	      <uax:ListOfLocalizedText>
-	        <uax:LocalizedText>
-		      <uax:Locale>de</uax:Locale>
-			  <uax:Text>LocalizedText1</uax:Text>
-		    </uax:LocalizedText>
-		    <uax:LocalizedText>
-		      <uax:Locale>de</uax:Locale>
-			  <uax:Text>LocalizedText2</uax:Text>
-		    </uax:LocalizedText>
-		    <uax:LocalizedText>
-		      <uax:Locale>de</uax:Locale>
-			  <uax:Text>LocalizedText3</uax:Text>
-		    </uax:LocalizedText>
-	      </uax:ListLocalizedText>
-	    </Value>
-	  </UAVariable>
-
 	  <UAVariable NodeId="ns=1;i=228" BrowseName="1:DateTime" DataType="i=13">
 	    <DisplayName>DateTimeValue</DisplayName>
 	    <Description>DateTime test value</Description>
@@ -789,6 +747,33 @@ namespace OpcUaServerApplicationDemo
 				dataValue->variant()->set(boolean);
 				break;
 			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr str = dataValue->variant()->getSPtr<OpcUaString>();
+				std::stringstream ss;
+				ss << "String" << rand();
+				str->value(ss.str());
+				dataValue->variant()->set(str);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr bstr = dataValue->variant()->getSPtr<OpcUaByteString>();
+				std::stringstream ss;
+				ss << "String" << rand();
+				bstr->value(ss.str());
+				dataValue->variant()->set(bstr);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				OpcUaLocalizedText::SPtr ltext = dataValue->variant()->getSPtr<OpcUaLocalizedText>();
+				std::stringstream ss;
+				ss << "String" << rand();
+				ltext->set("de", ss.str());
+				dataValue->variant()->set(ltext);
+				break;
+			}
 			default:
 			{
 				std::cout << "data type unknown in update single" << std::endl;
@@ -905,6 +890,39 @@ namespace OpcUaServerApplicationDemo
 					if (boolean) boolean = false;
 					else boolean = true;
 					dataValue->variant()->set(pos, boolean);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaString::SPtr str = dataValue->variant()->getSPtr<OpcUaString>(pos);
+					std::stringstream ss;
+					ss << "String" << rand();
+					str->value(ss.str());
+					dataValue->variant()->set(pos, str);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaByteString::SPtr bstr = dataValue->variant()->getSPtr<OpcUaByteString>(pos);
+					std::stringstream ss;
+					ss << "String" << rand();
+					bstr->value(ss.str());
+					dataValue->variant()->set(pos, bstr);
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				for (uint32_t pos = 0; pos < dataValue->variant()->variant().size(); pos++) {
+					OpcUaLocalizedText::SPtr ltext = dataValue->variant()->getSPtr<OpcUaLocalizedText>(pos);
+					std::stringstream ss;
+					ss << "String" << rand();
+					ltext->set("de", ss.str());
+					dataValue->variant()->set(pos, ltext);
 				}
 				break;
 			}
