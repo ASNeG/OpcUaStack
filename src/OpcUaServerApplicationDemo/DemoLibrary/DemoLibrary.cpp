@@ -1,6 +1,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/DemoLibrary.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
+#include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include <iostream>
 
 namespace OpcUaServerApplicationDemo
@@ -9,10 +10,19 @@ namespace OpcUaServerApplicationDemo
 	DemoLibrary::DemoLibrary(void)
 	: ApplicationIf()
 	, namespaceIndex_(0)
+	, loopTime_()
 	, readCallback_(boost::bind(&DemoLibrary::readValue, this, _1))
+	, readLoopTimeCallback_(boost::bind(&DemoLibrary::readLoopTimeValue, this, _1))
 	, writeCallback_(boost::bind(&DemoLibrary::writeValue, this, _1))
+	, writeLoopTimeCallback_(boost::bind(&DemoLibrary::writeLoopTimeValue, this, _1))
 	, valueMap_()
+	, ioService_()
+	, slotTimer_()
+	, slotTimerElement_()
 	{
+		loopTime_ = createDataValue();
+		loopTime_->variant()->variant((uint32_t)0);
+
 		std::cout << "DemoLibrary::construct" << std::endl;
 	}
 
@@ -36,38 +46,23 @@ namespace OpcUaServerApplicationDemo
 			return false;
 		}
 
-		ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
-		RegisterForwardRequest::SPtr req = trx->request();
-		RegisterForwardResponse::SPtr res = trx->response();
-
-		req->forwardInfoSync()->setReadCallback(readCallback_);
-		req->forwardInfoSync()->setWriteCallback(writeCallback_);
-		req->nodesToRegister()->resize(valueMap_.size());
-
-		uint32_t pos = 0;
-		ValueMap::iterator it;
-		for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
-			OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
-			*nodeId = it->first;
-
-			req->nodesToRegister()->set(pos, nodeId);
-			pos++;
-		}
-
-		service().sendSync(trx);
-		if (trx->responseHeader()->serviceResult() != Success) {
-			std::cout << "response error" << std::endl;
+		// register read and write callbacks
+		if (!registerCallbacks()) {
 			return false;
 		}
 
-		OpcUaStatusCode statusCode;
-		res->statusCodeArray()->get(0, statusCode);
-		if (statusCode != Success) {
-			std::cout << "register value error" << std::endl;
+		// register loop time callbacks
+		if (!registerLoopTimeCallbacks()) {
 			return false;
 		}
 
-		std::cout << "register forward ok..." << std::endl;
+		// create node references
+		if (!createNodeReferences()) {
+			return false;
+		}
+
+		ioService_.start();
+		slotTimer_.startSlotTimerLoop(&ioService_);
 
 		return true;
 	}
@@ -76,6 +71,10 @@ namespace OpcUaServerApplicationDemo
 	DemoLibrary::shutdown(void)
 	{
 		std::cout << "DemoLibrary::shutdown" << std::endl;
+
+		slotTimer_.stopSlotTimerLoop();
+		ioService_.stop();
+
 		return true;
 	}
 
@@ -132,6 +131,7 @@ namespace OpcUaServerApplicationDemo
 		dataValue->variant()->variant(sByte);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
 
+#if 0
 		// SByteByteArray
 		nodeId.set(201, namespaceIndex_);
 		OpcUaSByteArray::SPtr sByteArray = OpcUaSByteArray::construct();
@@ -140,6 +140,7 @@ namespace OpcUaServerApplicationDemo
 		dataValue = createDataValue();
 		dataValue->variant()->variant(sByteArray);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
+#endif
 
 		return true;
 	}
@@ -649,6 +650,120 @@ namespace OpcUaServerApplicationDemo
 
 #endif
 
+
+
+	bool
+	DemoLibrary::registerCallbacks(void)
+	{
+	  	ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
+	  	RegisterForwardRequest::SPtr req = trx->request();
+	  	RegisterForwardResponse::SPtr res = trx->response();
+
+	  	req->forwardInfoSync()->setReadCallback(readCallback_);
+	  	req->forwardInfoSync()->setWriteCallback(writeCallback_);
+	  	req->nodesToRegister()->resize(valueMap_.size());
+
+	  	uint32_t pos = 0;
+	  	ValueMap::iterator it;
+	  	for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
+	  		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+	  		*nodeId = it->first;
+
+	  		req->nodesToRegister()->set(pos, nodeId);
+	  		pos++;
+	  	}
+
+	  	service().sendSync(trx);
+	  	if (trx->responseHeader()->serviceResult() != Success) {
+	  		std::cout << "response error" << std::endl;
+	  		return false;
+	  	}
+
+	  	for (pos = 0; pos < res->statusCodeArray()->size(); pos++) {
+	  		OpcUaStatusCode statusCode;
+	  		res->statusCodeArray()->get(pos, statusCode);
+	  		if (statusCode != Success) {
+	  			std::cout << "register value error" << std::endl;
+	  			return false;
+	  		}
+	  	}
+
+	    return true;
+	}
+
+	bool
+	DemoLibrary::registerLoopTimeCallbacks(void)
+	{
+	  	OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+	  	nodeId->set(3, namespaceIndex_);
+
+	  	ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
+	  	RegisterForwardRequest::SPtr req = trx->request();
+	  	RegisterForwardResponse::SPtr res = trx->response();
+
+	  	req->forwardInfoSync()->setReadCallback(readLoopTimeCallback_);
+	  	req->forwardInfoSync()->setWriteCallback(writeLoopTimeCallback_);
+	  	req->nodesToRegister()->resize(1);
+	  	req->nodesToRegister()->set(0, nodeId);
+
+	  	service().sendSync(trx);
+	  	if (trx->responseHeader()->serviceResult() != Success) {
+	  		std::cout << "response error" << std::endl;
+	  	  	return false;
+	  	}
+
+	  	OpcUaStatusCode statusCode;
+	  	res->statusCodeArray()->get(0, statusCode);
+	  	if (statusCode != Success) {
+	  	  	std::cout << "register value error" << std::endl;
+	  	  	return false;
+	  	}
+
+	  	return true;
+	}
+
+	bool
+	DemoLibrary::createNodeReferences(void)
+	{
+		ServiceTransactionGetNodeReference::SPtr trx = ServiceTransactionGetNodeReference::construct();
+		GetNodeReferenceRequest::SPtr req = trx->request();
+		GetNodeReferenceResponse::SPtr res = trx->response();
+
+	  	uint32_t pos = 0;
+	  	ValueMap::iterator it;
+	  	for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
+	  		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+	  		*nodeId = it->first;
+
+	  		req->nodes()->set(pos, nodeId);
+	  		pos++;
+	  	}
+
+	  	service().sendSync(trx);
+	  	if (trx->responseHeader()->serviceResult() != Success) {
+	  		std::cout << "response error" << std::endl;
+	  		return false;
+	  	}
+
+	  	for (pos = 0; pos < res->nodeReferenceArray()->size(); pos++) {
+	  		NodeReference::SPtr nodeReference;
+	  		res->nodeReferenceArray()->get(pos, nodeReference);
+	  		if (nodeReference->statusCode() != Success) {
+	  			std::cout << "node reference error" << std::endl;
+	  			return false;
+	  		}
+
+	  		OpcUaNodeId::SPtr nodeId;
+	  		req->nodes()->get(pos, nodeId);
+
+	  		NodeReferenceApplication::SPtr nodeReferenceApplication;
+	  		nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
+	  		baseNodeClassWMap_.insert(std::make_pair(*nodeId, nodeReferenceApplication->baseNodeClass()));
+	  	}
+
+		return true;
+	}
+
 	void
 	DemoLibrary::readValue(ApplicationReadContext* applicationReadContext)
 	{
@@ -665,6 +780,15 @@ namespace OpcUaServerApplicationDemo
 	}
 
 	void
+	DemoLibrary::readLoopTimeValue(ApplicationReadContext* applicationReadContext)
+	{
+		std::cout << "read loop time value ..." << applicationReadContext->nodeId_ << std::endl;
+
+		applicationReadContext->statusCode_ = Success;
+		loopTime_->copyTo(applicationReadContext->dataValue_);
+	}
+
+	void
 	DemoLibrary::writeValue(ApplicationWriteContext* applicationWriteContext)
 	{
 		std::cout << "write value ..." << applicationWriteContext->nodeId_  << std::endl;
@@ -677,6 +801,68 @@ namespace OpcUaServerApplicationDemo
 		}
 		applicationWriteContext->statusCode_ = Success;
 		applicationWriteContext->dataValue_.copyTo(*it->second);
+	}
+
+	void
+	DemoLibrary::writeLoopTimeValue(ApplicationWriteContext* applicationWriteContext)
+	{
+		std::cout << "write loop time value ..." << applicationWriteContext->nodeId_  << std::endl;
+
+		uint32_t timerInterval_ = applicationWriteContext->dataValue_.variant()->variant<OpcUaUInt32>();
+
+		applicationWriteContext->statusCode_ = Success;
+		applicationWriteContext->dataValue_.copyTo(*loopTime_);
+
+		if (slotTimerElement_.get() != nullptr) {
+			slotTimer_.stop(slotTimerElement_);
+			slotTimerElement_.reset();
+		}
+		if (timerInterval_ == 0) return;
+
+		slotTimerElement_ = SlotTimerElement::construct();
+		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
+		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), timerInterval_);
+		slotTimer_.start(slotTimerElement_);
+	}
+
+	void
+	DemoLibrary::timerLoop(void)
+	{
+	  	ValueMap::iterator it1;
+	  	for (it1 = valueMap_.begin(); it1 != valueMap_.end(); it1++) {
+	  		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+	  		OpcUaDataValue::SPtr dataValue = it1->second;
+	  		*nodeId = it1->first;
+
+	  		BaseNodeClassWMap::iterator it2;
+	  		it2 = baseNodeClassWMap_.find(*nodeId);
+	  		if (it2 == baseNodeClassWMap_.end()) continue;
+	  		BaseNodeClass::WPtr baseNodeClassWPtr = it2->second;
+	  		BaseNodeClass::SPtr baseNodeClass = baseNodeClassWPtr.lock();
+	  		if (baseNodeClass.get() == nullptr) continue;
+
+	  		std::cout << dataValue->variant()->arrayLength() << std::endl;
+	  		//if (dataValue->variant()->arrayLength() == 0) {
+	  			updateSingle(*nodeId, dataValue, baseNodeClass);
+	  		//}
+	  		//else {
+	  		//	updateArray(*nodeId, dataValue, baseNodeClass);
+	  		//}
+	  	}
+
+		std::cout << "timer..." << std::endl;
+	}
+
+	void
+	DemoLibrary::updateSingle(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass)
+	{
+		std::cout << "update single" << std::endl;
+	}
+
+	void
+	DemoLibrary::updateArray(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass)
+	{
+		std::cout << "update array" << std::endl;
 	}
 
 }

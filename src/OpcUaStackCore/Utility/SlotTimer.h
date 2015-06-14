@@ -82,7 +82,8 @@ namespace OpcUaStackCore
 		SlotArray* next_;
 	};
 
-	class DLLEXPORT SlotTimer : public ObjectPool<SlotTimer>
+	class DLLEXPORT SlotTimer
+	: public ObjectPool<SlotTimer>
 	{
 	  public:
 		typedef boost::shared_ptr<SlotTimer> SPtr;
