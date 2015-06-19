@@ -46,6 +46,6 @@ endif ()
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 if (WIN32)
-	install(TARGETS UpdateRegistry DESTINATION bin)
-	install(TARGETS OpcUaStackService DESTINATION bin)
+	install(TARGETS UpdateRegistry DESTINATION ${BIN_DIR})
+	install(TARGETS OpcUaStackService DESTINATION ${BIN_DIR})
 endif ()

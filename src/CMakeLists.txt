@@ -12,7 +12,9 @@ set(VERSION_MAJOR "0" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
 set(VERSION_PATCH "11" CACHE STRING "patch version")
 
-set(BIN_DIR "bin" CACHE STRING "binary directory")
+set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
+set(LIB_DIR "usr/lib" CACHE STRING "library directory")
+set(INC_DIR "usr/include" CACHE STRING "library directory")
 set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
 set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
 
@@ -104,9 +106,9 @@ endif ()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(FILES icon/asneg.ico DESTINATION icon)
-install(FILES icon/asneg_install.ico DESTINATION icon)
-install(FILES icon/asneg_uninstall.ico DESTINATION icon)
+install(FILES icon/asneg.ico DESTINATION usr/share/icons/OpcUaStack)
+install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/OpcUaStack)
+install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/OpcUaStack)
 
 
 # -----------------------------------------------------------------------------
@@ -121,25 +123,23 @@ if (WIN32)
 	
 	#set(CPACK_PACKAGE_EXECUTABLES "OpcUaServer" "OpcUaServer")
 	set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpcUaStack")
-	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\icon\\\\asneg.ico")
+	set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}\\\\usr\\\\share\\\\icons\\\\OpcUaStack\\\\asneg.ico")
 	set(CPACK_NSIS_URL_INFO_ABOUT "http://asneg.de")
-	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/icon/asneg_install.ico")
-	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/icon/asneg_uninstall.ico")
+	set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/usr/share/icons/OpcUaStack/asneg_install.ico")
+	set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/usr/share/icons/OpcUaStack/asneg_uninstall.ico")
 	#set(CPACK_NSIS_INSTALLED_ICON_NAME "asneg.ico")
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ASNeG-Demo\\\" \\\"ASNeG Demo Server\\\"'
-			CreateShortCut \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\" \\\"$INSTDIR\\\\bin\\\\OpcUaServer.exe\\\"  \\\"$INSTDIR\\\\icon\\\\asneg.ico\\\"
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ASNeG-Demo\\\" \\\"ASNeG Demo Server\\\"'
 		"
 	) 
 	
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ASNeG-Demo\\\"'
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-			Delete \\\"$SMPROGRAMS\\\\OpcUaStack\\\\OpcUaServer.lnk\\\"
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ASNeG-Demo\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
 		"
 	) 
 	

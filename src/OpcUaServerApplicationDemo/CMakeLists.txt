@@ -35,7 +35,7 @@ configure_file(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaServerApplicationDemo DESTINATION lib/OpcUaStack)
+install(TARGETS OpcUaServerApplicationDemo DESTINATION ${LIB_DIR}/OpcUaStack)
 
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/OpcUaServer.xml DESTINATION ${CONF_DIR}/ASNeG-Demo) 
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSet.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
@@ -43,9 +43,3 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.Nod
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLib.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
-
-install(
-	FILES ${PROJECT_BINARY_DIR}/ASNeGServer-Demo 
-	DESTINATION ${CONF_DIR}/init.d 
-	PERMISSIONS OWNER_EXECUTE OWNER_READ OWNER_WRITE GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ 
-)
