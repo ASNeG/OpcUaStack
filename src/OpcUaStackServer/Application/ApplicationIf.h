@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_ApplicationIf_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 
 namespace OpcUaStackServer
@@ -28,8 +29,17 @@ namespace OpcUaStackServer
 			return *applicationServiceIf_;
 		}
 
+		void config(Config* config) {
+			config_ = config;
+		}
+
+		Config* config(void) {
+			return config_;
+		}
+
 	  private:
 		ApplicationServiceIf* applicationServiceIf_;
+		Config* config_;
 	};
 
 }

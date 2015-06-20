@@ -63,6 +63,8 @@ namespace OpcUaServer
 				it->first,
 				applicationLibrary->applicationIf()
 			);
+
+			applicationLibrary->applicationIf()->config(config_);
 		}
 
 		raspberry_.informationModel(server_.getInformationModel());
