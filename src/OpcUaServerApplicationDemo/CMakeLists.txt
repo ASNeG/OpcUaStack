@@ -22,10 +22,10 @@ target_link_libraries(
     ${Boost_LIBRARIES}
 )
 
-configure_file(
-    "${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/PACKAGE/ASNeGServer-Demo.in"
-    "${PROJECT_BINARY_DIR}/ASNeGServer-Demo"
-)
+#configure_file(
+#    "${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/PACKAGE/ASNeGServer-Demo.in"
+#    "${PROJECT_BINARY_DIR}/ASNeGServer-Demo"
+#)
 
 
 # -----------------------------------------------------------------------------
@@ -43,3 +43,13 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.Nod
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLib.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
+
+if (WIN32)
+else() 
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init.d/ASNeG-Demo DESTINATION etc/init.d)
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init/ASNeG-Demo.conf DESTINATION etc/init)
+set( CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postinst"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/preinst"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/prerm"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postrm")
+endif()

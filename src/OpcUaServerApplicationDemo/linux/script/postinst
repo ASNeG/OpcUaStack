@@ -1,0 +1,19 @@
+#! /bin/sh
+
+echo "RUN POSTINST"
+
+if [ -x /sbin/start ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
+    # use Ubuntu upstart
+    echo "INFO: starting daemon by upstart"
+    /sbin/start ASNeG-Demo
+else
+    # use SYSV init script
+    if [ -x "/etc/init.d/ASNeG-Demo" ]; then
+        update-rc.d ASNeG-Demo defaults >/dev/null
+        invoke-rc.d ASNeG-Demo start || exit $?
+    fi
+fi
+
+echo "POSTINST RETURN"
+exit 0
+

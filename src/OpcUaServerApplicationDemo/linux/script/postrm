@@ -1,0 +1,11 @@
+#! /bin/sh
+
+echo "RUN POSTRM"
+
+
+# stop service, ignore result code !
+service ASNeG-Demo stop 
+
+echo "POSTRM RETURN"
+exit 0
+

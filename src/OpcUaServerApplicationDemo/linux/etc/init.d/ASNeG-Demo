@@ -1,13 +1,13 @@
 #! /bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          OpcUaServerApplicationDemo
+# Provides:          ASNeG-Demo
 # Required-Start:    network
 # Required-Stop:     network
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Opc Ua application demo service 
-# Description:       start stop OpcUAServerApplicationDemo Services
+# Description:       start stop ua application demo services
 ### END INIT INFO
 
 
@@ -19,8 +19,8 @@
 
 
 NAME=OpcUaServer
-DAEMON="/usr/bin/OpcUaApplicationServer"
-OPTS="OpcUaServerApplicationDemo"
+DAEMON="/usr/bin/OpcUaServer"
+OPTS="ASNeG-Demo"
 PID=/var/run/${OPTS}.pid
 
 SCRIPTNAME=/etc/init.d/$NAME
