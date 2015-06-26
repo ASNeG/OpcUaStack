@@ -1,0 +1,79 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          OpcUaServerApplicationDemo
+# Required-Start:    network
+# Required-Stop:     network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Opc Ua application demo service 
+# Description:       start stop OpcUAServerApplicationDemo Services
+### END INIT INFO
+
+
+#
+# Author:    		Kai Huebl, 2015
+#
+
+. /lib/lsb/init-functions
+
+
+NAME=OpcUaServer
+DAEMON="/usr/bin/OpcUaApplicationServer"
+OPTS="OpcUaServerApplicationDemo"
+PID=/var/run/${OPTS}.pid
+
+SCRIPTNAME=/etc/init.d/$NAME
+
+do_start()
+{
+    echo "Start $NAME ..."
+    export LD_LIBRARY_PATH=/usr/lib/OpcUaStack/:$LD_LIBRARY_PATH
+    start-stop-daemon --start --quiet --background --make-pidfile --pidfile $PID --exec $DAEMON -- $OPTS
+    echo "STATUS= $?"
+}
+
+do_stop()
+{
+    echo "Stopping $NAME ..."
+    start-stop-daemon --stop --signal 2 --retry 5 --pidfile $PID --exec $DAEMON
+    rm $PID
+}
+
+do_status()
+{
+    start-stop-daemon --status --exec $DAEMON
+    if [ $? -eq 0 ]; then
+        echo "process $DAMEON running";
+    else
+        echo "process $DAMEON NOT running";
+    fi
+}
+
+
+case "$1" in
+    start)
+        echo "Start $NAME services ..."
+	do_start
+        echo "  started."
+        ;;
+    stop)
+        do_stop
+        echo "  stopped."
+        ;;
+    restart)
+        do_stop
+        do_start
+        echo "  done."
+        ;;
+    status)
+	do_status
+	;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart|status}" >&2
+        exit 3
+        ;;
+esac
+
+
+
