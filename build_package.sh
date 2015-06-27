@@ -25,9 +25,9 @@ CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
 echo "CMAKE_ARGS=${CMAKE_ARGS}"
 
 # create build directory and move into it
-rm -rf build
-mkdir -p build
-cd build
+rm -rf build_package
+mkdir -p build_package
+cd build_package
 
 # configure cmake
 cmake ../src ${CMAKE_ARGS}

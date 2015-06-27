@@ -13,3 +13,4 @@ core
 build
 build_src
 build_tst
+build_package
