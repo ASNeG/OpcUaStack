@@ -1,8 +1,19 @@
 #! /bin/sh
 
-echo "RUN PRERM"
+echo "PRERM RUN"
 
-# do nothing
+if [ -x /sbin/stop ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
+    # use Ubuntu upstart
+    echo "INFO: stopping daemon by upstart"
+    /sbin/stop ASNeG-Demo 
+else
+    # use SYSV init script
+    if [ -x "/etc/init.d/ASNeG-Demo" ]; then
+        echo "stopping daemon by SYS init script"
+        invoke-rc.d ASNeG-Demo stop || exit $?
+        update-rc.d -f ASNeG-Demo remove >/dev/null
+    fi
+fi
 
 echo "PRERM RETURN"
 exit 0

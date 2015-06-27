@@ -1,9 +1,7 @@
 #! /bin/sh
 
-echo "RUN PREINST"
-
-# do nothing
-
+echo "PREINST RUN"
+echo "PREINST RETURN"
 exit 0
 
 

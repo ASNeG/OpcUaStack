@@ -1,6 +1,6 @@
 #! /bin/sh
 
-echo "RUN POSTINST"
+echo "POSTINST RUN"
 
 if [ -x /sbin/start ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
     # use Ubuntu upstart
@@ -8,6 +8,7 @@ if [ -x /sbin/start ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
     /sbin/start ASNeG-Demo
 else
     # use SYSV init script
+    echo "INFO: starting SYSV init script"
     if [ -x "/etc/init.d/ASNeG-Demo" ]; then
         update-rc.d ASNeG-Demo defaults >/dev/null
         invoke-rc.d ASNeG-Demo start || exit $?
