@@ -46,10 +46,10 @@ install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
 
 if (WIN32)
 else() 
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init.d/ASNeG-Demo DESTINATION etc/init.d)
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init/ASNeG-Demo.conf DESTINATION etc/init)
-set( CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postinst"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/preinst"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/prerm"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postrm")
+    install(PROGRAMS ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init.d/ASNeG-Demo DESTINATION etc/init.d)
+    install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init/ASNeG-Demo.conf DESTINATION etc/init)
+    set( CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postinst"
+                                            "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/preinst"
+                                            "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/prerm"
+                                            "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postrm")
 endif()

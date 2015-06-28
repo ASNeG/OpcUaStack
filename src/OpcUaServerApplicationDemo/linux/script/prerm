@@ -8,8 +8,8 @@ if [ -x /sbin/stop ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
     /sbin/stop ASNeG-Demo 
 else
     # use SYSV init script
-    if [ -x "/etc/init.d/ASNeG-Demo" ]; then
-        echo "stopping daemon by SYS init script"
+    if [ -e "/etc/init.d/ASNeG-Demo" ]; then
+        echo "INFO: stopping daemon by SYS init script"
         invoke-rc.d ASNeG-Demo stop || exit $?
         update-rc.d -f ASNeG-Demo remove >/dev/null
     fi
