@@ -14,6 +14,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT AttributeServiceIf
 	{
 	  public:
+		virtual ~AttributeServiceIf(void) {}
+
         virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead) {};
 		virtual void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite) {};
 		virtual void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead) {};

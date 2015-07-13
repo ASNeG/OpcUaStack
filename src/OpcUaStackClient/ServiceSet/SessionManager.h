@@ -11,7 +11,9 @@
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionManager : public SessionManagerIf, public SecureChannelIf
+	class DLLEXPORT SessionManager
+	: public SessionManagerIf
+	, public SecureChannelIf
 	{
 	  public:
 		static SessionManager* instance_;
