@@ -16,6 +16,8 @@ class AttributeServiceHandler
 : public AttributeServiceIf
 {
    public:
+	virtual ~AttributeServiceHandler(void) {}
+
      void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead) {
 		 serviceTransactionRead_ = serviceTransactionRead;
 		 attributeServiceReadResponseCondition_.conditionValueDec();
