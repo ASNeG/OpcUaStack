@@ -56,7 +56,7 @@ namespace OpcUaStackClient
 		req->publishingEnabled(publishingEnabled_);
 		req->priority(priority_);
 
-		// send subscription request
+		// send create subscription request
 		state_ = S_Connecting;
 		subscriptionService_.sendAsync(trx);
 	}
@@ -70,13 +70,15 @@ namespace OpcUaStackClient
 			return;
 		}
 
+		// create delete subscription request
+		ServiceTransactionDeleteSubscriptions::SPtr trx = ServiceTransactionDeleteSubscriptions::construct();
+		DeleteSubscriptionsRequest::SPtr req = trx->request();
+		req->subscriptionIds()->resize(1);
+		req->subscriptionIds()->set(0, subscriptionId_);
 
-#if 0
-		S_Connecting,
-			S_Connected,
-			S_Closing,
-			S_Reconnecting
-#endif
+		// send delete subscription request
+		state_ = S_Closing;
+		subscriptionService_.sendAsync(trx);
 	}
 
     void
@@ -123,6 +125,45 @@ namespace OpcUaStackClient
     void
     Subscription::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
     {
+		// The subscription must be in the state S_Closing
+		if (state_ != S_Closing) {
+			Log(Error, "received delete subscription response in invalid state")
+				.parameter("State", state_);
+			state_ = S_Closed;
+			if (subscriptionIf_) subscriptionIf_->subscriptionStateChange(S_Close);
+			return;
+		}
+
+		// check result code
+		OpcUaStatusCode statusCode = serviceTransactionDeleteSubscriptions->responseHeader()->serviceResult();
+		if ( statusCode != Success) {
+			Log(Error, "received invalid status code in delete subscription response")
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+			state_ = S_Closed;
+			if (subscriptionIf_) subscriptionIf_->subscriptionStateChange(S_Close);
+			return;
+		}
+
+		// save parameter and send notify to application
+		DeleteSubscriptionsResponse::SPtr res = serviceTransactionDeleteSubscriptions->response();
+		if (res->results()->size() != 1) {
+			Log(Error, "received invalid result size in delete subscription response")
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+			state_ = S_Closed;
+			if (subscriptionIf_) subscriptionIf_->subscriptionStateChange(S_Close);
+			return;
+		}
+
+		res->results()->get(0, statusCode);
+		if (statusCode != Success) {
+			Log(Error, "received invalid result status code in delete subscription response")
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+			state_ = S_Closed;
+			if (subscriptionIf_) subscriptionIf_->subscriptionStateChange(S_Close);
+			return;
+		}
+
+		if (subscriptionIf_) subscriptionIf_->subscriptionStateChange(S_Close);
     }
 
 }
