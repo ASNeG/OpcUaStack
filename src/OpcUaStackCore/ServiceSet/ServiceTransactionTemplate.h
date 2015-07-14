@@ -11,8 +11,8 @@ namespace OpcUaStackCore
 	
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>
 	  class ServiceTransactionTemplate 
-			: public ObjectPool<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >
-			, public ServiceTransaction
+	  : public ObjectPool<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >
+	  , public ServiceTransaction
 	  {
 	    public:
 		  typedef boost::shared_ptr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> > SPtr;
@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 
 		  typename REQTYPE::SPtr request(void);
 		  typename RESTYPE::SPtr response(void);
+		  ResponseHeader::SPtr responseHeader(void);
 
 		  std::string requestName(void);
 		  std::string responseName(void); 
@@ -37,6 +38,7 @@ namespace OpcUaStackCore
 		  void opcUaBinaryDecodeResponse(std::istream& is);
 
 	    private:
+		  ResponseHeader::SPtr responseHeader_;
 		  typename REQTYPE::SPtr request_;
 		  typename RESTYPE::SPtr response_;
 

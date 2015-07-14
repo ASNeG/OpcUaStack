@@ -14,13 +14,16 @@ namespace OpcUaStackClient
 	class DLLEXPORT SubscriptionServiceIf
 	{
 	  public:
+		virtual ~SubscriptionServiceIf(void) {}
+
         virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription) {};
         virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription) {};
         virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions) {};
         virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) {};
 	};
 
-	class DLLEXPORT SubscriptionService : public Component
+	class DLLEXPORT SubscriptionService
+	: public Component
 	{
 	  public:
 		boost::shared_ptr<SubscriptionService> SPtr;
@@ -41,7 +44,7 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

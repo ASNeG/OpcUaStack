@@ -41,7 +41,6 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->componentService(this);
-		OpcUaNodeId nodeId;
 		componentSession_->send(serviceTransactionCreateSubscription);
 	}
 
@@ -58,7 +57,6 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->componentService(this);
-		OpcUaNodeId nodeId;
 		componentSession_->send(serviceTransactionModifySubscription);
 	}
 
@@ -75,7 +73,6 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->componentService(this);
-		OpcUaNodeId nodeId;
 		componentSession_->send(serviceTransactionTransferSubscriptions);
 	}
 
@@ -92,12 +89,11 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->componentService(this);
-		OpcUaNodeId nodeId;
 		componentSession_->send(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	SubscriptionService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
@@ -107,7 +103,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		switch (typeId.nodeId<uint32_t>())
+		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
 			{

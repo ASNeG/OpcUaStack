@@ -9,10 +9,20 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	typedef enum
+	{
+		S_Close,
+		S_Open
+	} SubscriptionState;
+
+
 	class SubscriptionIf
 	{
 	  public:
+
 		virtual ~SubscriptionIf(void) {}
+
+		virtual void subscriptionStateChange(SubscriptionState state) = 0;
 	};
 
 }

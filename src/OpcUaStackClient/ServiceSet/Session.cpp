@@ -336,6 +336,7 @@ namespace OpcUaStackClient
 		 
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
 		serviceTransaction->opcUaBinaryDecodeResponse(ios);
+		serviceTransaction->responseHeader(responseHeader);
 		
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransaction->transactionId())
