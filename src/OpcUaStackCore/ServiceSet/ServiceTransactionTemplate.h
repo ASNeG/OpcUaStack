@@ -27,7 +27,6 @@ namespace OpcUaStackCore
 
 		  typename REQTYPE::SPtr request(void);
 		  typename RESTYPE::SPtr response(void);
-		  ResponseHeader::SPtr responseHeader(void);
 
 		  std::string requestName(void);
 		  std::string responseName(void); 
