@@ -41,7 +41,6 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/OpcUaServe
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSet.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLib.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
-install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetRaspberry.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
 
 if (WIN32)
