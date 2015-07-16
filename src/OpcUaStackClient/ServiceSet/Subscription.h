@@ -35,14 +35,8 @@ namespace OpcUaStackClient
 		void componentSession(Component* componentSession);
 		void subscriptionIf(SubscriptionIf* subscriptionIf);
 
-		void open(void);
-		void close(void);
-
-#if 0
-		ReadValueId itemToMonitor_;
-		MonitoringMode monitoringMode_;
-		MonitoringParameters requestedParameters_;
-#endif
+		void createSubscription(void);
+		void deleteSubscription(void);
 
 		//- SubscriptionServiceIf ---------------------------------------------
         virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
@@ -52,6 +46,10 @@ namespace OpcUaStackClient
         //- SubscriptionServiceIf ---------------------------------------------
 
 	  private:
+        // --------------------------------------------------------------------
+        // subscription
+        // --------------------------------------------------------------------
+
 		// requested subscription parameter
 		double requestedPublishingInterval_;
 		uint32_t requestedLifetimeCount_;

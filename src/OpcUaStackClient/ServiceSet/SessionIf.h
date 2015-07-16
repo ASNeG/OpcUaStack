@@ -12,6 +12,8 @@ namespace OpcUaStackClient
 	class SessionIf
 	{
 	  public:
+		virtual ~SessionIf(void) {}
+
 		virtual void error(void) = 0;
 		virtual void createSessionComplete(OpcUaStatusCode opcUaStatusCode) = 0;
 		virtual void activateSessionComplete(OpcUaStatusCode opcUaStatusCode) = 0;

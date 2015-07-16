@@ -37,8 +37,15 @@ namespace OpcUaStackClient
 		subscriptionIf_ = subscriptionIf;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// functions to handle subscriptions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
-	Subscription::open(void)
+	Subscription::createSubscription(void)
 	{
 		// The subscription must be in the state S_Closed
 		if (state_ != S_Closed) {
@@ -62,7 +69,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Subscription::close(void)
+	Subscription::deleteSubscription(void)
 	{
 		// The subscription must not be in the state S_Closed
 		if (state_ != S_Closed) {
