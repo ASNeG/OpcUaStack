@@ -38,10 +38,11 @@ namespace OpcUaStackClient
 		void open(void);
 		void close(void);
 
-
+#if 0
 		ReadValueId itemToMonitor_;
 		MonitoringMode monitoringMode_;
 		MonitoringParameters requestedParameters_;
+#endif
 
 		//- SubscriptionServiceIf ---------------------------------------------
         virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);

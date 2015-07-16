@@ -71,12 +71,12 @@ namespace OpcUaStackServer
 
 		// check node id array
 		if (readRequest->readValueIdArray()->size() == 0) {
-			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 		if (readRequest->readValueIdArray()->size() > 1000) { // FIXME: todo
-			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
@@ -157,7 +157,7 @@ namespace OpcUaStackServer
 				.parameter("Data", *dataValue);
 		}
 
-		trx->responseHeader()->serviceResult(Success);
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
@@ -202,12 +202,12 @@ namespace OpcUaStackServer
 
 		// check node id array
 		if (writeRequest->writeValueArray()->size() == 0) {
-			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 		if (writeRequest->writeValueArray()->size() > 1000) { // FIXME: todo
-			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->receive(serviceTransaction);
 			return;
 		}

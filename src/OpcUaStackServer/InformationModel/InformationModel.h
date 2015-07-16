@@ -4,6 +4,7 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include <map>
 

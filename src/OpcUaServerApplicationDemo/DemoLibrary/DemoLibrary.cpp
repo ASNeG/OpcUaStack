@@ -86,7 +86,7 @@ namespace OpcUaServerApplicationDemo
 		NamespaceInfoResponse::SPtr res = trx->response();
 
 		service().sendSync(trx);
-		if (trx->responseHeader()->serviceResult() != Success) {
+		if (trx->statusCode() != Success) {
 			std::cout << "NamespaceInfoResponse error" << std::endl;
 			return false;
 		}
@@ -416,7 +416,7 @@ namespace OpcUaServerApplicationDemo
 	  	}
 
 	  	service().sendSync(trx);
-	  	if (trx->responseHeader()->serviceResult() != Success) {
+	  	if (trx->statusCode() != Success) {
 	  		std::cout << "response error" << std::endl;
 	  		return false;
 	  	}
@@ -449,7 +449,7 @@ namespace OpcUaServerApplicationDemo
 	  	req->nodesToRegister()->set(0, nodeId);
 
 	  	service().sendSync(trx);
-	  	if (trx->responseHeader()->serviceResult() != Success) {
+	  	if (trx->statusCode() != Success) {
 	  		std::cout << "response error" << std::endl;
 	  	  	return false;
 	  	}
@@ -483,7 +483,7 @@ namespace OpcUaServerApplicationDemo
 	  	}
 
 	  	service().sendSync(trx);
-	  	if (trx->responseHeader()->serviceResult() != Success) {
+	  	if (trx->statusCode() != Success) {
 	  		std::cout << "response error" << std::endl;
 	  		return false;
 	  	}

@@ -17,7 +17,8 @@ namespace OpcUaStackClient
         virtual void methodServiceCallResponse(ServiceTransactionCall::SPtr serviceTransactionCall) {};
 	};
 
-	class DLLEXPORT MethodService : public Component
+	class DLLEXPORT MethodService
+	: public Component
 	{
 	  public:
 		boost::shared_ptr<MethodService> SPtr;

@@ -55,12 +55,12 @@ namespace OpcUaStackServer
 			.parameter("NumberNodes", registerForwardRequest->nodesToRegister()->size());
 
 		if (registerForwardRequest->nodesToRegister()->size() == 0) {
-			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 		if (registerForwardRequest->nodesToRegister()->size() > 1000) { // FIXME: todo
-			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
@@ -98,7 +98,7 @@ namespace OpcUaStackServer
 				.parameter("Node", *nodeId);
 		}
 
-		trx->responseHeader()->serviceResult(Success);
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
@@ -115,12 +115,12 @@ namespace OpcUaStackServer
 			.parameter("NumberNodes", getNodeReferenceRequest->nodes()->size());
 
 		if (getNodeReferenceRequest->nodes()->size() == 0) {
-			trx->responseHeader()->serviceResult(BadNothingToDo);
+			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 		if (getNodeReferenceRequest->nodes()->size() > 1000) { // FIXME: todo
-			trx->responseHeader()->serviceResult(BadTooManyOperations);
+			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
@@ -158,7 +158,7 @@ namespace OpcUaStackServer
 				.parameter("Node", *nodeId);
 		}
 
-		trx->responseHeader()->serviceResult(Success);
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
@@ -181,7 +181,7 @@ namespace OpcUaStackServer
 			namespaceInfoResponse->namespace2IndexMap().insert(std::make_pair(namespaceName, idx));
 		}
 
-		trx->responseHeader()->serviceResult(Success);
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
