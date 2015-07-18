@@ -5,8 +5,9 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Component/Component.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionIf.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
+#include "OpcUaStackClient/ServiceSet/MonitoredItemService.h"
 
 using namespace OpcUaStackCore;
 
@@ -16,6 +17,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT Subscription
 	: public  OpcUaStackCore::ObjectPool<Subscription>
 	, SubscriptionServiceIf
+	, MonitoredItemServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<Subscription> SPtr;
@@ -45,9 +47,19 @@ namespace OpcUaStackClient
         virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
         //- SubscriptionServiceIf ---------------------------------------------
 
+        //- MonitoredItemServiceIf --------------------------------------------
+        virtual void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+        virtual void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+        virtual void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+        virtual void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+        virtual void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+        //- MonitoredItemServiceIf --------------------------------------------
+
 	  private:
         // --------------------------------------------------------------------
+        // --------------------------------------------------------------------
         // subscription
+        // --------------------------------------------------------------------
         // --------------------------------------------------------------------
 
 		// requested subscription parameter

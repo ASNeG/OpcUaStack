@@ -31,6 +31,30 @@ namespace OpcUaStackClient
 	{
 	}
 
+	OpcUaStackCore::ApplicationDescription::SPtr
+	Session::applicationDescription(void)
+	{
+		return applicatinDescriptionSPtr_;
+	}
+
+	CreateSessionParameter&
+	Session::createSessionParameter(void)
+	{
+		return createSessionParameter_;
+	}
+
+	void
+	Session::sessionIf(SessionIf *sessionIf)
+	{
+		sessionIf_ = sessionIf;
+	}
+
+	void
+	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
+	{
+		sessionManagerIf_ = sessionManagerIf;
+	}
+
 	bool 
 	Session::registerService(OpcUaNodeId& typeId, Component* component)
 	{
@@ -115,12 +139,20 @@ namespace OpcUaStackClient
 		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(secureChannelTransaction);
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// This receive function is used to send a message to a server by a
+	// service.
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	Session::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
-		Log(Debug, "receive request in session")
+		Log(Debug, "send request in session")
 			.parameter("TrxId", serviceTransaction->transactionId())
 			.parameter("NodeType", serviceTransaction->nodeTypeRequest());
 
@@ -154,6 +186,18 @@ namespace OpcUaStackClient
 		}
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// handle messages from secure channel
+	//
+	// handleSecureChannelConnect - a new secure channel is connected
+	// handleSecureChannelDisconnect - a existing secure channel is disconnected
+	// receive - a message is received from a server
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void 
 	Session::handleSecureChannelConnect(void)
 	{
@@ -192,6 +236,8 @@ namespace OpcUaStackClient
 	bool 
 	Session::receive(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		// receive message from secure channel
+
 		switch (secureChannelTransaction->responseTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
@@ -369,30 +415,6 @@ namespace OpcUaStackClient
 	Session::pendingQueueTimeout(Object::SPtr object)
 	{
 		// FIXME:
-	}
-
-	OpcUaStackCore::ApplicationDescription::SPtr 
-	Session::applicationDescription(void)
-	{
-		return applicatinDescriptionSPtr_;
-	}
-
-	CreateSessionParameter& 
-	Session::createSessionParameter(void)
-	{
-		return createSessionParameter_;
-	}
-
-	void 
-	Session::sessionIf(SessionIf *sessionIf) 
-	{
-		sessionIf_ = sessionIf;
-	}
-
-	void 
-	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
-	{
-		sessionManagerIf_ = sessionManagerIf;
 	}
 
 }

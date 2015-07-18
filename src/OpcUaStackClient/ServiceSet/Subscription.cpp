@@ -173,4 +173,37 @@ namespace OpcUaStackClient
 		if (subscriptionIf_) subscriptionIf_->subscriptionStateChange(S_Close);
     }
 
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // function to handle monitored items
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    void
+    Subscription::monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
+    {
+    }
+
+    void
+    Subscription::monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
+    {
+    }
+
+    void
+    Subscription::monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
+    {
+    }
+
+    void
+    Subscription::monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
+    {
+    }
+
+    void
+    Subscription::monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
+    {
+    }
+
 }

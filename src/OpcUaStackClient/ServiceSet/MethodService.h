@@ -14,6 +14,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT MethodServiceIf
 	{
 	  public:
+		virtual ~MethodServiceIf(void) {}
+
         virtual void methodServiceCallResponse(ServiceTransactionCall::SPtr serviceTransactionCall) {};
 	};
 

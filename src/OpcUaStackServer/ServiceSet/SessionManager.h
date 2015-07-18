@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<SessionManager> SPtr;
 
 		SessionManager(void);
-		~SessionManager(void);
+		virtual ~SessionManager(void);
 
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void discoveryService(DiscoveryService::SPtr discoveryService);
