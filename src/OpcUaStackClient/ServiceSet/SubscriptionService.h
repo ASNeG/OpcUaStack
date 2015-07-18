@@ -44,7 +44,7 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:
