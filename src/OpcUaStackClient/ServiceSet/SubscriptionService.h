@@ -20,6 +20,13 @@ namespace OpcUaStackClient
         virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription) {};
         virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions) {};
         virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) {};
+    };
+
+	class DLLEXPORT SubscriptionServicePublishIf
+	{
+	  public:
+		virtual ~SubscriptionServicePublishIf(void) {}
+
         virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
         virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
         virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
@@ -36,6 +43,7 @@ namespace OpcUaStackClient
 
 		virtual void componentSession(Component* componentSession);
 		virtual void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
+		void subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf);
 
 		void sendSync(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
 		void send(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
@@ -60,6 +68,7 @@ namespace OpcUaStackClient
 		Component* componentSession_;
 
 		SubscriptionServiceIf* subscriptionServiceIf_;
+		SubscriptionServicePublishIf* subscriptionServicePublishIf_;
 	};
 
 }

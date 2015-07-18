@@ -29,6 +29,12 @@ namespace OpcUaStackClient
 	}
 
 	void
+	SubscriptionService::subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf)
+	{
+		subscriptionServicePublishIf_ = subscriptionServicePublishIf;
+	}
+
+	void
 	SubscriptionService::sendSync(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->sync(true);
@@ -195,8 +201,8 @@ namespace OpcUaStackClient
 
 			case OpcUaId_SetPublishingModeResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServiceSetPublishingModeResponse(
+				if (subscriptionServicePublishIf_ != nullptr) {
+					subscriptionServicePublishIf_->subscriptionServiceSetPublishingModeResponse(
 						boost::static_pointer_cast<ServiceTransactionSetPublishingMode>(serviceTransaction)
 					);
 				}
@@ -205,8 +211,8 @@ namespace OpcUaStackClient
 
 			case OpcUaId_PublishResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServicePublishResponse(
+				if (subscriptionServicePublishIf_ != nullptr) {
+					subscriptionServicePublishIf_->subscriptionServicePublishResponse(
 						boost::static_pointer_cast<ServiceTransactionPublish>(serviceTransaction)
 					);
 				}
@@ -215,8 +221,8 @@ namespace OpcUaStackClient
 
 			case OpcUaId_RepublishResponse_Encoding_DefaultBinary:
 			{
-				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServiceRepublishResponse(
+				if (subscriptionServicePublishIf_ != nullptr) {
+					subscriptionServicePublishIf_->subscriptionServiceRepublishResponse(
 						boost::static_pointer_cast<ServiceTransactionRepublish>(serviceTransaction)
 					);
 				}
