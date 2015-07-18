@@ -93,6 +93,54 @@ namespace OpcUaStackClient
 	}
 
 	void
+	SubscriptionService::sendSync(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode)
+	{
+		serviceTransactionSetPublishingMode->sync(true);
+		serviceTransactionSetPublishingMode->conditionBool().conditionInit();
+		send(serviceTransactionSetPublishingMode);
+		serviceTransactionSetPublishingMode->conditionBool().waitForCondition();
+	}
+
+	void
+	SubscriptionService::send(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode)
+	{
+		serviceTransactionSetPublishingMode->componentService(this);
+		componentSession_->send(serviceTransactionSetPublishingMode);
+	}
+
+	void
+	SubscriptionService::sendSync(ServiceTransactionPublish::SPtr serviceTransactionPublish)
+	{
+		serviceTransactionPublish->sync(true);
+		serviceTransactionPublish->conditionBool().conditionInit();
+		send(serviceTransactionPublish);
+		serviceTransactionPublish->conditionBool().waitForCondition();
+	}
+
+	void
+	SubscriptionService::send(ServiceTransactionPublish::SPtr serviceTransactionPublish)
+	{
+		serviceTransactionPublish->componentService(this);
+		componentSession_->send(serviceTransactionPublish);
+	}
+
+	void
+	SubscriptionService::sendSync(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
+	{
+		serviceTransactionRepublish->sync(true);
+		serviceTransactionRepublish->conditionBool().conditionInit();
+		send(serviceTransactionRepublish);
+		serviceTransactionRepublish->conditionBool().waitForCondition();
+	}
+
+	void
+	SubscriptionService::send(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
+	{
+		serviceTransactionRepublish->componentService(this);
+		componentSession_->send(serviceTransactionRepublish);
+	}
+
+	void
 	SubscriptionService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
@@ -140,6 +188,36 @@ namespace OpcUaStackClient
 				if (subscriptionServiceIf_ != nullptr) {
 					subscriptionServiceIf_->subscriptionServiceDeleteSubscriptionsResponse(
 						boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction)
+					);
+				}
+				break;
+			}
+
+			case OpcUaId_SetPublishingModeResponse_Encoding_DefaultBinary:
+			{
+				if (subscriptionServiceIf_ != nullptr) {
+					subscriptionServiceIf_->subscriptionServiceSetPublishingModeResponse(
+						boost::static_pointer_cast<ServiceTransactionSetPublishingMode>(serviceTransaction)
+					);
+				}
+				break;
+			}
+
+			case OpcUaId_PublishResponse_Encoding_DefaultBinary:
+			{
+				if (subscriptionServiceIf_ != nullptr) {
+					subscriptionServiceIf_->subscriptionServicePublishResponse(
+						boost::static_pointer_cast<ServiceTransactionPublish>(serviceTransaction)
+					);
+				}
+				break;
+			}
+
+			case OpcUaId_RepublishResponse_Encoding_DefaultBinary:
+			{
+				if (subscriptionServiceIf_ != nullptr) {
+					subscriptionServiceIf_->subscriptionServiceRepublishResponse(
+						boost::static_pointer_cast<ServiceTransactionRepublish>(serviceTransaction)
 					);
 				}
 				break;

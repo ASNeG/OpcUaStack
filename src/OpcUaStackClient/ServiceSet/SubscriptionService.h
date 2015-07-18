@@ -20,6 +20,9 @@ namespace OpcUaStackClient
         virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription) {};
         virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions) {};
         virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) {};
+        virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
+        virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
+        virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
 	};
 
 	class DLLEXPORT SubscriptionService
@@ -31,8 +34,8 @@ namespace OpcUaStackClient
 		SubscriptionService(void);
 		~SubscriptionService(void);
 
-		void componentSession(Component* componentSession);
-		void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
+		virtual void componentSession(Component* componentSession);
+		virtual void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
 
 		void sendSync(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
 		void send(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
@@ -42,9 +45,15 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
 		void sendSync(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 		void send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+		void sendSync(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
+		void send(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
+		void sendSync(ServiceTransactionPublish::SPtr serviceTransactionPublish);
+		void send(ServiceTransactionPublish::SPtr serviceTransactionPublish);
+		void sendSync(ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
+		void send(ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
 
 		//- Component -----------------------------------------------------------------
-		virtual void receive(Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

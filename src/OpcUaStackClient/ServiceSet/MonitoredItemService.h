@@ -23,7 +23,8 @@ namespace OpcUaStackClient
         virtual void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering) {};
 	};
 
-	class DLLEXPORT MonitoredItemService : public Component
+	class DLLEXPORT MonitoredItemService
+	: public Component
 	{
 	  public:
 		boost::shared_ptr<MonitoredItemService> SPtr;
