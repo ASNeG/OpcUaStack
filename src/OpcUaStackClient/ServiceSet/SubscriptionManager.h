@@ -5,6 +5,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackClient/ServiceSet/Subscription.h"
 
 using namespace OpcUaStackCore;
 
@@ -20,10 +21,10 @@ namespace OpcUaStackClient
 		SubscriptionManager(IOService& ioService);
 		~SubscriptionManager(void);
 
-		void startup(void);
-		void shutdown(void);
-
 		void componentSession(Component* componentSession);
+
+		Subscription::SPtr getNewSubscription(void);
+		void deleteSubscription(const Subscription::SPtr& subscription);
 
 	  private:
 		Component* componentSession_;

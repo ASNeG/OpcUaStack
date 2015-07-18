@@ -4,6 +4,7 @@ namespace OpcUaStackClient
 {
 
 	SubscriptionManager::SubscriptionManager(IOService& ioService)
+	: componentSession_(NULL)
 	{
 	}
 
@@ -12,19 +13,23 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionManager::startup(void)
-	{
-	}
-
-	void
-	SubscriptionManager::shutdown(void)
-	{
-	}
-
-	void
 	SubscriptionManager::componentSession(Component* componentSession)
 	{
 		componentSession_ = componentSession;
+	}
+
+	Subscription::SPtr
+	SubscriptionManager::getNewSubscription(
+		void
+	)
+	{
+		Subscription::SPtr subscription;
+		return subscription;
+	}
+
+	void
+	SubscriptionManager::deleteSubscription(const Subscription::SPtr& subscription)
+	{
 	}
 
 }
