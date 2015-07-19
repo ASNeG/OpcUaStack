@@ -11,7 +11,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT PublishResponse : public ObjectPool<PublishResponse>
+	class DLLEXPORT PublishResponse
+	: public ObjectPool<PublishResponse>
 	{
 	  public:
 		typedef boost::shared_ptr<PublishResponse> SPtr;

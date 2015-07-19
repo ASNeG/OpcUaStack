@@ -105,6 +105,18 @@ namespace OpcUaStackClient
     void
     SubscriptionManager::subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish)
     {
+    	actPublishCount_--;
+
+    	// check transaction status code
+    	if (serviceTransactionPublish->statusCode() != Success) {
+    		Log(Error, "received publish response error")
+    			.parameter("StatsCode", OpcUaStatusCodeMap::shortString(serviceTransactionPublish->statusCode()));
+    		sendPublishRequests();
+    		return;
+    	}
+
+    	PublishResponse::SPtr res = serviceTransactionPublish->response();
+    	receivePublishResponse(res);
     }
 
     void
@@ -133,6 +145,8 @@ namespace OpcUaStackClient
     	subscriptionSet_.insert(subscriptionId);
 
     	if (subscriptionSet_.size() != 1) return;
+
+    	sendPublishRequests();
     }
 
     void
@@ -149,4 +163,22 @@ namespace OpcUaStackClient
     	subscriptionSet_.erase(it);
     }
 
+    void
+    SubscriptionManager::sendPublishRequests(void)
+    {
+    	while (actPublishCount_ < publishCount_) {
+    		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
+    		PublishRequest::SPtr publishRequest = trx->request();
+    		send(trx);
+
+    		actPublishCount_++;
+    	}
+    }
+
+    void
+    SubscriptionManager::receivePublishResponse(PublishResponse::SPtr publishResponse)
+    {
+    	std::cout << "receive publish response..." << std::endl;
+    	sendPublishRequests();
+    }
 }

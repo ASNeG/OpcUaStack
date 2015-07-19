@@ -39,6 +39,8 @@ namespace OpcUaStackClient
 	  private:
 	    void createSubscription(uint32_t subscriptionId);
 	    void deleteSubscription(uint32_t subscriptionId);
+	    void sendPublishRequests(void);
+	    void receivePublishResponse(PublishResponse::SPtr publishResponse);
 
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;
