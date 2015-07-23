@@ -13,7 +13,8 @@ namespace OpcUaStackClient
 {
 
 	Session::Session(IOService& ioService)
-	: pendingQueue_(ioService)
+	: requestTimeout_(3000)
+	, pendingQueue_(ioService)
 	, sessionState_(SessionState_Close)
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
@@ -154,7 +155,8 @@ namespace OpcUaStackClient
 
 		Log(Debug, "send request in session")
 			.parameter("TrxId", serviceTransaction->transactionId())
-			.parameter("NodeType", serviceTransaction->nodeTypeRequest());
+			.parameter("NodeType", serviceTransaction->nodeTypeRequest())
+			.parameter("RequestHandle", serviceTransaction->transactionId());
 
 		if (sessionState_ != SessionState_ReceiveActivateSession) {
 			Log(Error, "cannot send a message, because session is in invalid state")
@@ -174,10 +176,13 @@ namespace OpcUaStackClient
 		requestHeader->opcUaBinaryEncode(ios);
 		serviceTransaction->opcUaBinaryEncodeRequest(ios);
 
+		uint32_t requestTimeout = requestTimeout_;
+		serviceTransaction->calcRequestTimeout(requestTimeout);
+
 		pendingQueue_.insert(
 			serviceTransaction->transactionId(),
 			serviceTransaction,
-			3000
+			requestTimeout
 		);
 
 		if (sessionManagerIf_ != nullptr) {
@@ -375,7 +380,8 @@ namespace OpcUaStackClient
 			Log(Error, "element in pending queue not exist")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
-				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_);
+				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_)
+				.parameter("RequestHandle", responseHeader->requestHandle());
 			char c; while (ios.get(c));
 			return true;
 		}
@@ -383,6 +389,7 @@ namespace OpcUaStackClient
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
 		serviceTransaction->opcUaBinaryDecodeResponse(ios);
 		serviceTransaction->responseHeader(responseHeader);
+		serviceTransaction->statusCode(responseHeader->serviceResult());
 		
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransaction->transactionId())
@@ -414,7 +421,16 @@ namespace OpcUaStackClient
 	void 
 	Session::pendingQueueTimeout(Object::SPtr object)
 	{
-		// FIXME:
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
+
+		Log(Debug, "receive response timeout in session")
+			.parameter("TrxId", serviceTransaction->transactionId())
+			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
+			.parameter("RequestHandle", serviceTransaction->transactionId());
+
+		serviceTransaction->statusCode(BadTimeout);
+		Component* componentService = serviceTransaction->componentService();
+		componentService->send(serviceTransaction);
 	}
 
 }

@@ -8,14 +8,14 @@
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
-BOOST_AUTO_TEST_SUITE(Subscription_)
+BOOST_AUTO_TEST_SUITE(MonitoredItem_)
 
-BOOST_AUTO_TEST_CASE(Subscription_)
+BOOST_AUTO_TEST_CASE(MonitoredItem_)
 {
-	std::cout << "Subscription_t" << std::endl;
+	std::cout << "MonitoredItem_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(Subscription_create_delete_sync)
+BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 {
 	SessionTestHandler sessionTestHandler;
 
@@ -66,6 +66,15 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_sync)
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
 	subscriptionManager.sendSync(subCreateTrx);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// create monitored item
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	IOService::secSleep(10000);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

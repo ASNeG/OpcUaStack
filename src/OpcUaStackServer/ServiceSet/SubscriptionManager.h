@@ -21,7 +21,8 @@ namespace OpcUaStackServer
 	typedef std::list<ServiceTransactionPublish::SPtr> ServiceTransactionPublishList; 
 	typedef std::list<uint32_t> SubscriptionIdList;
 
-	class DLLEXPORT SubscriptionManager : public ObjectPool<SubscriptionManager>
+	class DLLEXPORT SubscriptionManager
+	: public ObjectPool<SubscriptionManager>
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionManager> SPtr;

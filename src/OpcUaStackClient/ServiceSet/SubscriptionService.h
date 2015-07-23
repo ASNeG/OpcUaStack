@@ -61,7 +61,7 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
 
 		//- Component -----------------------------------------------------------------
-		void receive(Message::SPtr message);
+		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

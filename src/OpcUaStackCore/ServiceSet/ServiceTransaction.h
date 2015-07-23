@@ -11,7 +11,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ServiceTransaction : public Object, public Message 
+	class DLLEXPORT ServiceTransaction
+	: public Object
+	, public Message
 	{
 	  public:
 		typedef boost::shared_ptr<ServiceTransaction> SPtr;
@@ -51,6 +53,8 @@ namespace OpcUaStackCore
 
 		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void);
+		void requestTimeout(uint32_t requestTimeout);
+		void calcRequestTimeout(uint32_t& requestTimeout);
 
 		uint32_t requestId_;
 
@@ -61,6 +65,8 @@ namespace OpcUaStackCore
 		static uint32_t uniqueTransactionId_;
 		static boost::mutex mutex_;
 		static uint32_t getUniqueTransactionId(void);
+
+		uint32_t requestTimeout_;
 
 		bool sync_;
 		ConditionBool conditionBool_;

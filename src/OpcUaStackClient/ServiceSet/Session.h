@@ -76,6 +76,8 @@ namespace OpcUaStackClient
 		bool receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 
+		uint32_t requestTimeout_;
+
 		SessionState sessionState_;
 		uint32_t requestHandle_;
 		OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;

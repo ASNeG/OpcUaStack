@@ -9,7 +9,6 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT SubscriptionManager
 	: public SubscriptionService
-	, public SubscriptionServiceIf
 	, public SubscriptionServicePublishIf
 	{
 	  public:
@@ -19,16 +18,9 @@ namespace OpcUaStackClient
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
 
-		//- SubscriptionService -----------------------------------------------
-		virtual void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
-		//- SubscriptionService -----------------------------------------------
-
-		//- SubscriptionServiceIf ---------------------------------------------
-	    virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-	    virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-	    virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-	    virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
-	    //- SubscriptionServiceIf ---------------------------------------------
+		//- Component -----------------------------------------------------------------
+		virtual void receive(Message::SPtr message);
+		//- Component -----------------------------------------------------------------
 
 	    //- SubscriptionServicePublish ----------------------------------------
 	    virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
@@ -37,6 +29,9 @@ namespace OpcUaStackClient
 		//- SubscriptionServicePublishIf --------------------------------------
 
 	  private:
+	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+
 	    void createSubscription(uint32_t subscriptionId);
 	    void deleteSubscription(uint32_t subscriptionId);
 	    void sendPublishRequests(void);

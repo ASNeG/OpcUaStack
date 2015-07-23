@@ -32,20 +32,39 @@ namespace OpcUaStackClient
 		return publishCount_;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Component
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
-	SubscriptionManager::subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf)
+	SubscriptionManager::receive(Message::SPtr message)
 	{
-		subscriptionServiceIf_ = subscriptionServiceIf;
-		SubscriptionService::subscriptionServiceIf(this);
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
+		{
+			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
+			{
+				subscriptionServiceCreateSubscriptionResponse(
+					boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction)
+				);
+				break;
+			}
+
+			case OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary:
+			{
+				subscriptionServiceDeleteSubscriptionsResponse(
+					boost::static_pointer_cast<ServiceTransactionDeleteSubscriptions>(serviceTransaction)
+				);
+				break;
+			}
+		}
+
+		SubscriptionService::receive(message);
 	}
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// SubscriptionServiceIf
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
     void
     SubscriptionManager::subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
     {
@@ -53,20 +72,8 @@ namespace OpcUaStackClient
     		CreateSubscriptionResponse::SPtr res = serviceTransactionCreateSubscription->response();
     		createSubscription(res->subscriptionId());
     	}
-    	subscriptionServiceIf_->subscriptionServiceCreateSubscriptionResponse(serviceTransactionCreateSubscription);
     }
 
-    void
-    SubscriptionManager::subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
-    {
-    	subscriptionServiceIf_->subscriptionServiceModifySubscriptionResponse(serviceTransactionModifySubscription);
-    }
-
-    void
-    SubscriptionManager::subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
-    {
-    	subscriptionServiceIf_->subscriptionServiceTransferSubscriptionsResponse(serviceTransactionTransferSubscriptions);
-    }
 
     void
     SubscriptionManager::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
@@ -94,7 +101,6 @@ namespace OpcUaStackClient
     			}
     		}
         }
-    	subscriptionServiceIf_->subscriptionServiceDeleteSubscriptionsResponse(serviceTransactionDeleteSubscriptions);
     }
 
     void
@@ -168,7 +174,7 @@ namespace OpcUaStackClient
     {
     	while (actPublishCount_ < publishCount_) {
     		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
-    		PublishRequest::SPtr publishRequest = trx->request();
+    		trx->requestTimeout(60000); // FIXME:
     		send(trx);
 
     		actPublishCount_++;

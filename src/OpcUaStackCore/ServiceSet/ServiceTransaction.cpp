@@ -18,7 +18,8 @@ namespace OpcUaStackCore
 	}
 
 	ServiceTransaction::ServiceTransaction(OpcUaUInt32 nodeTypeRequest, OpcUaUInt32 nodeTypeResponse)
-	: requestHeader_()
+	: requestTimeout_(0)
+	, requestHeader_()
 	, responseHeader_()
 	, sync_(false)
 	, conditionBool_()
@@ -156,6 +157,18 @@ namespace OpcUaStackCore
 	ServiceTransaction::statusCode(void)
 	{
 		return statusCode_;
+	}
+
+	void
+	ServiceTransaction::requestTimeout(uint32_t requestTimeout)
+	{
+		requestTimeout_ = requestTimeout;
+	}
+
+	void
+	ServiceTransaction::calcRequestTimeout(uint32_t& requestTimeout)
+	{
+		if (requestTimeout_ != 0) requestTimeout = requestTimeout_;
 	}
 
 }
