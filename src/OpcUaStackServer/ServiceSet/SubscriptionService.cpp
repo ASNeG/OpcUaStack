@@ -72,6 +72,7 @@ namespace OpcUaStackServer
 			default:
 				serviceTransaction->statusCode(BadInternalError);
 				serviceTransaction->componentSession()->send(serviceTransaction);
+				break;
 		}
 	}
 

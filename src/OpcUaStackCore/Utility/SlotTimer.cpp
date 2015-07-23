@@ -414,8 +414,6 @@ namespace OpcUaStackCore
 	void 
 	SlotTimer::loop(const boost::system::error_code& error)
 	{
-		boost::mutex::scoped_lock g(mutex_);
-
 		if (error) {
 			running_ = false;
 			ownSPtr_.reset();
@@ -426,6 +424,8 @@ namespace OpcUaStackCore
 			ownSPtr_.reset();
 			return;
 		}
+
+		boost::mutex::scoped_lock g(mutex_);
 
 		boost::posix_time::time_duration diff = boost::posix_time::microsec_clock::local_time() - startTime_;
 		uint64_t actTick = diff.total_milliseconds() / 10;

@@ -13,12 +13,12 @@ namespace OpcUaStackCore
 
 	CreateSubscriptionRequest::CreateSubscriptionRequest(void)
 	: ObjectPool<CreateSubscriptionRequest>()
-	, requestedPublishingInterval_()
-	, requestedLifetimeCount_()
-	, requestedMaxKeepAliveCount_()
-	, maxNotificationsPerPublish_()
-	, publishingEnabled_()
-	, priority_()
+	, requestedPublishingInterval_(100)
+	, requestedLifetimeCount_(100)
+	, requestedMaxKeepAliveCount_(33)
+	, maxNotificationsPerPublish_(65536)
+	, publishingEnabled_(true)
+	, priority_(0)
 	{
 	}
 

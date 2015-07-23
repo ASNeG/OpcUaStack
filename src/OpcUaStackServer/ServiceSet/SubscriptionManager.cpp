@@ -108,8 +108,13 @@ namespace OpcUaStackServer
 				}
 
 				subscriptionMap_.erase((uint32_t)id);
+
+				Log(Debug, "delete subscription")
+				    .parameter("Trx", trx->transactionId())
+				    .parameter("SessionId", trx->sessionId())
+					.parameter("Subscription", id);
 			}
-			deleteSubscriptionsResponse->results()->set(0, Success);
+			deleteSubscriptionsResponse->results()->set(idx, Success);
 		}
 	
 		return Success;
