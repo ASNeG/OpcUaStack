@@ -3,6 +3,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionManagerIf.h"
 
 namespace OpcUaStackClient
 {
@@ -17,6 +18,7 @@ namespace OpcUaStackClient
 
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
+		void subscriptionManagerIf(SubscriptionManagerIf* subscriptionManagerIf);
 
 		//- Component -----------------------------------------------------------------
 		virtual void receive(Message::SPtr message);
@@ -35,13 +37,16 @@ namespace OpcUaStackClient
 	    void createSubscription(uint32_t subscriptionId);
 	    void deleteSubscription(uint32_t subscriptionId);
 	    void sendPublishRequests(void);
-	    void receivePublishResponse(PublishResponse::SPtr publishResponse);
+
+	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);
+	    void dataChangeNotification(const ExtensibleParameter::SPtr& extensibleParameter);
 
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;
 	    typedef std::set<uint32_t> SubscriptionSet;
 	    SubscriptionSet subscriptionSet_;
 	    SubscriptionServiceIf* subscriptionServiceIf_;
+	    SubscriptionManagerIf* subscriptionManagerIf_;
 	};
 
 }

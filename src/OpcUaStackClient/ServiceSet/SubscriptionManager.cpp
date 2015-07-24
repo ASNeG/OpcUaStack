@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
 
 using namespace OpcUaStackCore;
@@ -9,6 +10,7 @@ namespace OpcUaStackClient
 	SubscriptionManager::SubscriptionManager(void)
 	: SubscriptionService()
 	, subscriptionServiceIf_(NULL)
+	, subscriptionManagerIf_(NULL)
 	, subscriptionSet_()
 	, publishCount_(5)
 	, actPublishCount_(0)
@@ -30,6 +32,12 @@ namespace OpcUaStackClient
 	SubscriptionManager::publishCount(void)
 	{
 		return publishCount_;
+	}
+
+	void
+	SubscriptionManager::subscriptionManagerIf(SubscriptionManagerIf* subscriptionManagerIf)
+	{
+		subscriptionManagerIf_ = subscriptionManagerIf;
 	}
 
 	// ------------------------------------------------------------------------
@@ -182,19 +190,42 @@ namespace OpcUaStackClient
     }
 
     void
-    SubscriptionManager::receivePublishResponse(PublishResponse::SPtr publishResponse)
+    SubscriptionManager::receivePublishResponse(const PublishResponse::SPtr& publishResponse)
     {
-    	std::cout << "receive publish response..." << std::endl;
-
     	uint32_t count = publishResponse->notificationMessage()->notificationData()->size();
     	for (uint32_t idx=0; idx<count; idx++) {
     		ExtensibleParameter::SPtr notify;
     		publishResponse->notificationMessage()->notificationData()->get(idx, notify);
 
-    		// OpcUaId_DataChangeNotification_Encoding_DefaultBinary
-    		std::cout << "receive extensible parameter..." << notify->parameterTypeId() << std::endl;
+    		switch (notify->parameterTypeId().nodeId<uint32_t>())
+    		{
+    			case OpcUaId_DataChangeNotification_Encoding_DefaultBinary:
+    				dataChangeNotification(notify);
+    				break;
+    			default:
+    				Log(Error, "receive unknown notification type in publish response")
+    				    .parameter("NotificationTypeId", notify->parameterTypeId().toString());
+    				break;
+    		}
     	}
 
     	sendPublishRequests();
+    }
+
+    void
+    SubscriptionManager::dataChangeNotification(const ExtensibleParameter::SPtr& extensibleParameter)
+    {
+    	DataChangeNotification::SPtr dataChange;
+    	dataChange = extensibleParameter->parameter<DataChangeNotification>();
+
+    	uint32_t count = dataChange->monitoredItems()->size();
+    	for (uint32_t idx=0; idx<count; idx++) {
+    		MonitoredItemNotification::SPtr monitoredItem;
+    		dataChange->monitoredItems()->get(idx, monitoredItem);
+
+    		if (subscriptionManagerIf_ != NULL) {
+    			subscriptionManagerIf_->dataChangeNotification(monitoredItem);
+    		}
+    	}
     }
 }

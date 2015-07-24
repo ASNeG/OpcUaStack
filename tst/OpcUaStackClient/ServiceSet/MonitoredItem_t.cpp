@@ -9,6 +9,21 @@
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
+
+class MonitoredItemHandler
+: public SubscriptionManagerIf
+{
+  public:
+	void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem) {
+		monitoredItem_ = monitoredItem;
+		dataChangeNotificationCondition_.conditionValueDec();
+	}
+
+	MonitoredItemNotification::SPtr monitoredItem_;
+	Condition dataChangeNotificationCondition_;
+};
+
+
 BOOST_AUTO_TEST_SUITE(MonitoredItem_)
 
 BOOST_AUTO_TEST_CASE(MonitoredItem_)
@@ -19,6 +34,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_)
 BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 {
 	SessionTestHandler sessionTestHandler;
+	MonitoredItemHandler monitoredItemHandler;
 
 	Client client;
 	client.init();
@@ -61,6 +77,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 	// ------------------------------------------------------------------------
 	SubscriptionManager subscriptionManager;
 	subscriptionManager.componentSession(session->component());
+	subscriptionManager.subscriptionManagerIf(&monitoredItemHandler);
 
 	ServiceTransactionCreateSubscription::SPtr subCreateTrx = ServiceTransactionCreateSubscription::construct();
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
@@ -89,6 +106,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
+	monitoredItemHandler.dataChangeNotificationCondition_.condition(1, 0);
 	monitoredItemService.sendSync(monCreateTrx);
 	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
 	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
@@ -96,7 +114,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 	MonitoredItemCreateResult::SPtr createMonResult;
 	monCreateRes->results()->get(0, createMonResult);
 
-	IOService::secSleep(10000);
+	BOOST_REQUIRE(monitoredItemHandler.dataChangeNotificationCondition_.waitForCondition(1000) == true);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
