@@ -1,4 +1,5 @@
 #include "OpcUaStackCore/ServiceSet/ReadValueId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 
 namespace OpcUaStackCore
 {
@@ -14,7 +15,7 @@ namespace OpcUaStackCore
 	ReadValueId::ReadValueId(void)
 	: ObjectPool<ReadValueId>()
 	, nodeIdSPtr_(OpcUaNodeId::construct())
-	, attributeId_()
+	, attributeId_(AttributeId_Value)
 	, indexRange_()
 	, dataEncoding_()
 	{

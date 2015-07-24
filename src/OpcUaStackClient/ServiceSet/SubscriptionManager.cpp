@@ -185,6 +185,16 @@ namespace OpcUaStackClient
     SubscriptionManager::receivePublishResponse(PublishResponse::SPtr publishResponse)
     {
     	std::cout << "receive publish response..." << std::endl;
+
+    	uint32_t count = publishResponse->notificationMessage()->notificationData()->size();
+    	for (uint32_t idx=0; idx<count; idx++) {
+    		ExtensibleParameter::SPtr notify;
+    		publishResponse->notificationMessage()->notificationData()->get(idx, notify);
+
+    		// OpcUaId_DataChangeNotification_Encoding_DefaultBinary
+    		std::cout << "receive extensible parameter..." << notify->parameterTypeId() << std::endl;
+    	}
+
     	sendPublishRequests();
     }
 }

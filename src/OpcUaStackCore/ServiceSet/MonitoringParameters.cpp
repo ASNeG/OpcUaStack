@@ -14,10 +14,10 @@ namespace OpcUaStackCore
 	MonitoringParameters::MonitoringParameters(void)
 	: ObjectPool<MonitoringParameters>()
 	, clientHandle_()
-	, samplingInterval_()
+	, samplingInterval_(500)
 	, filter_()
-	, queueSize_()
-	, discardOldest_()
+	, queueSize_(1)
+	, discardOldest_(true)
 	{
 	}
 

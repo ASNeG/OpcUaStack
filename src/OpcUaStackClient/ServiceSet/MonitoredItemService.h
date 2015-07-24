@@ -47,7 +47,7 @@ namespace OpcUaStackClient
 		void send(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

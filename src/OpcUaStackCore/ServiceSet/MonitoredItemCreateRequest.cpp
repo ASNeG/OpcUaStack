@@ -14,7 +14,7 @@ namespace OpcUaStackCore
 	MonitoredItemCreateRequest::MonitoredItemCreateRequest(void)
 	: ObjectPool<MonitoredItemCreateRequest>()
 	, itemToMonitor_()
-	, monitoringMode_()
+	, monitoringMode_(MonitoringMode_Sampling)
 	, requestedParameters_()
 	{
 	}

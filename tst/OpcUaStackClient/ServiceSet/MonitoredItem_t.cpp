@@ -4,6 +4,7 @@
 #include "OpcUaStackClient/Client/Client.h"
 #include "OpcUaStackClient/ServiceSet/SessionTestHandler.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
+#include "OpcUaStackClient/ServiceSet/MonitoredItemService.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
@@ -65,7 +66,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
 	subscriptionManager.sendSync(subCreateTrx);
-	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(subCreateTrx->statusCode() == Success);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -74,7 +75,43 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	MonitoredItemService monitoredItemService;
+	monitoredItemService.componentSession(session->component());
+
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = ServiceTransactionCreateMonitoredItems::construct();
+	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
+	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
+	monCreateReq->subscriptionId(subCreateRes->subscriptionId());
+
+	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = MonitoredItemCreateRequest::construct();
+	monitoredItemCreateRequest->itemToMonitor().nodeId()->set(218,1);
+	monitoredItemCreateRequest->requestedParameters().clientHandle(218);
+
+	monCreateReq->itemsToCreate()->resize(1);
+	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
+	monitoredItemService.sendSync(monCreateTrx);
+	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
+	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
+
+	MonitoredItemCreateResult::SPtr createMonResult;
+	monCreateRes->results()->get(0, createMonResult);
+
 	IOService::secSleep(10000);
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// delete monitored item
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ServiceTransactionDeleteMonitoredItems::SPtr monDeleteTrx = ServiceTransactionDeleteMonitoredItems::construct();
+	DeleteMonitoredItemsRequest::SPtr monDeleteReq = monDeleteTrx->request();
+	DeleteMonitoredItemsResponse::SPtr monDeleteRes = monDeleteTrx->response();
+	monDeleteReq->subscriptionId(subCreateRes->subscriptionId());
+
+	monDeleteReq->monitoredItemIds()->resize(1);
+	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -89,7 +126,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subCreateRes->subscriptionId());
 	subscriptionManager.sendSync(subDeleteTrx);
-	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
+	BOOST_REQUIRE(subDeleteTrx->statusCode() == Success);
 	std::cout << subDeleteRes->results()->size() << std::endl;
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	OpcUaStatusCode statusCode;

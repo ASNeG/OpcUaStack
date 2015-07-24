@@ -14,7 +14,7 @@ namespace OpcUaStackCore
 	CreateMonitoredItemsRequest::CreateMonitoredItemsRequest(void)
 	: ObjectPool<CreateMonitoredItemsRequest>()
 	, subscriptionId_()
-	, timestampsToReturn_()
+	, timestampsToReturn_(TimestampsToReturn_Both)
 	, itemsToCreateArraySPtr_(MonitoredItemCreateRequestArray::construct())
 	{
 	}
