@@ -60,6 +60,27 @@ namespace OpcUaStackCore
 			  return *this;
 		  }
 
+		template<typename T1, typename T2>
+		  Log& parameter(const std::string& parameterName, const T1& parameterValue1, const T2& parameterValue2) {
+			  std::stringstream ss;
+			  ss << parameterValue1 << parameterValue2;
+			  format(parameterName, ss.str());
+			  return *this;
+		  }
+
+		template<typename T1, typename T2, typename T3>
+		  Log& parameter(
+		    const std::string& parameterName,
+		    const T1& parameterValue1,
+		    const T2& parameterValue2,
+		    const T3& parameterValue3
+		  ) {
+			  std::stringstream ss;
+			  ss << parameterValue1 << parameterValue2 << parameterValue3;
+			  format(parameterName, ss.str());
+			  return *this;
+		  }
+
 		template<typename T>
 		  Log& parameter(const std::string& parameterName, boost::shared_ptr<T> parameterValueSPtr) {
 			  std::stringstream ss;

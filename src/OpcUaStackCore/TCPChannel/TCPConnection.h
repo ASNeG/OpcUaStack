@@ -24,6 +24,17 @@ namespace OpcUaStackCore
 		void close(void);
 
 		template<typename BUFFER, typename HANDLER>
+		  void async_read_until(BUFFER& buffer, HANDLER handler, const std::string& str)
+		  {
+			  boost::asio::async_read_until(
+				  socket_,
+				  buffer,
+				  str.c_str(),
+				  handler
+			  );
+		  }
+
+		template<typename BUFFER, typename HANDLER>
 		  void async_read_atLeast(BUFFER& buffer, HANDLER handler, uint32_t atLeast=0)
 		  {
 			  boost::asio::async_read(
