@@ -17,6 +17,8 @@ class MonitoredItemHandler
 	void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem) {
 		monitoredItem_ = monitoredItem;
 		dataChangeNotificationCondition_.conditionValueDec();
+
+		std::cout << monitoredItem->dataValue() << std::endl;
 	}
 
 	MonitoredItemNotification::SPtr monitoredItem_;
@@ -116,6 +118,8 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 
 	BOOST_REQUIRE(monitoredItemHandler.dataChangeNotificationCondition_.waitForCondition(1000) == true);
 
+	IOService::secSleep(1000000);
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -130,6 +134,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

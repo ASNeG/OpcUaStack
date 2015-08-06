@@ -158,6 +158,7 @@ namespace OpcUaStackServer
 		}
 
 		// insert notification
+		AttributeAccess::copy(*attribute_, dataValue_);
 		monitoredItemNotification->dataValue().statusCode(Success);
 		monitorItemListPushBack(monitoredItemNotification);
 		return Ok;
