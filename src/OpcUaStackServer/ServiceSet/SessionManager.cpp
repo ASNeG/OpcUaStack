@@ -310,6 +310,12 @@ namespace OpcUaStackServer
 			.parameter("ChannelId", secureChannelTransaction->channelId_);
 	}
 
+	void
+	SessionManager::sessionDelete(uint32_t authenticationToken)
+	{
+		sessionMap_.remove(authenticationToken);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

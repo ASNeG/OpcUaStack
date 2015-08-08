@@ -54,6 +54,7 @@ namespace OpcUaStackServer
 
 		//- SessionManagerIf---------------------------------------------------
 		void sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void sessionDelete(uint32_t authenticationToken);
 		//- SessionManagerIf --------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------

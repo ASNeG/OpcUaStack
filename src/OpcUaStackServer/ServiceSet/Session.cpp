@@ -200,7 +200,12 @@ namespace OpcUaStackServer
 	}
 
 	void
-	Session::activateSessionRequestError(ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction::SPtr secureChannelTransaction, OpcUaStatusCode statusCode)
+	Session::activateSessionRequestError(
+		ActivateSessionRequest& activateSessionRequest,
+		SecureChannelTransaction::SPtr secureChannelTransaction,
+		OpcUaStatusCode statusCode,
+		bool deleteSession
+	)
 	{
 		std::iostream iosres(&secureChannelTransaction->os_);
 
@@ -210,7 +215,10 @@ namespace OpcUaStackServer
 
 		activateSessionResponse.opcUaBinaryEncode(iosres);
 
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
+		if (sessionManagerIf_ != nullptr) {
+			sessionManagerIf_->sessionMessage(secureChannelTransaction);
+			if (deleteSession) sessionManagerIf_->sessionDelete(authenticationToken_);
+		}
 	}
 
 	bool 

@@ -57,7 +57,12 @@ namespace OpcUaStackServer
 
 		bool receiveCreateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveActivateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
-		void activateSessionRequestError(OpcUaStackCore::ActivateSessionRequest& activateSessionRequest, SecureChannelTransaction::SPtr secureChannelTransaction, OpcUaStatusCode statusCode);
+		void activateSessionRequestError(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
+			SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStatusCode statusCode,
+			bool deleteSession = true
+		);
 		bool receiveCloseSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveCancelRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);

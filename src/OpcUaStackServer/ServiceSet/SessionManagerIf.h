@@ -13,7 +13,10 @@ namespace OpcUaStackServer
 	class SessionManagerIf
 	{ 
 	  public:
+		virtual ~SessionManagerIf(void) {}
+
 		virtual void sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction) = 0;
+		virtual void sessionDelete(uint32_t authenticationToken) = 0;
 	};
 
 };
