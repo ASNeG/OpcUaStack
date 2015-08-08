@@ -92,6 +92,7 @@ namespace OpcUaStackClient
 		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered);
 
 		bool debugMode_;
+		bool mustSendDisconnect_;
 		SecureChannelIf* secureChannelIf_;
 
 		TCPConnector tcpConnector_;

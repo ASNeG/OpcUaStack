@@ -236,6 +236,7 @@ namespace OpcUaStackClient
 	void 
 	Session::handleSecureChannelDisconnect(void)
 	{
+		Log(Debug, "handle secure channel disconnect in session");
 	}
 
 	bool 

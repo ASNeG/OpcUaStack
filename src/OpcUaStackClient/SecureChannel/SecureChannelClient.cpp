@@ -69,6 +69,7 @@ namespace OpcUaStackClient
 	, debugMode_(false)
 	, sendMessageInfo_()
 	, receiveMessageInfo_()
+	, mustSendDisconnect_(false)
 	{
 	}
 
@@ -371,6 +372,12 @@ namespace OpcUaStackClient
 	void
 	SecureChannelClient::startReconnectTimer(void)
 	{
+		if (mustSendDisconnect_) {
+			mustSendDisconnect_ = false;
+			if (secureChannelIf_ != nullptr) {
+				secureChannelIf_->disconnect();
+			}
+		}
 		secureChannelClientState_ = SecureChannelClientState_Reconnecting;
 		reconnectTimer_ = new boost::asio::deadline_timer(ioService_->io_service(), boost::posix_time::seconds(1));
 		reconnectTimer_->expires_from_now(boost::posix_time::seconds(reconnectTimeout_));
@@ -676,7 +683,10 @@ namespace OpcUaStackClient
 		securityTokenSPtr_ = openSecureChannelResponse.securityToken();
 
 		secureChannelClientState_ = SecureChannelClientState_Ready;
-		if (secureChannelIf_ != nullptr) secureChannelIf_->connect();
+		if (secureChannelIf_ != nullptr) {
+			mustSendDisconnect_ = true;
+			secureChannelIf_->connect();
+		}
 
 		asyncReadMessageHeader();
 	}
