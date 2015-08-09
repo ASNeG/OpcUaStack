@@ -156,8 +156,6 @@ namespace OpcUaStackClient
 	void
 	Session::sendCreateSessionRequest(void)
 	{
-		communicationState_ = CS_Create;
-
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		std::iostream ios(&secureChannelTransaction->os_);
 
@@ -179,8 +177,6 @@ namespace OpcUaStackClient
 	void
 	Session::sendActivateSessionRequest(void)
 	{
-		communicationState_ = CS_Activate;
-
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		std::iostream ios(&secureChannelTransaction->os_);
 
@@ -225,8 +221,15 @@ namespace OpcUaStackClient
 
 		switch (communicationState_)
 		{
+			case CS_Reconnect:
+			{
+				communicationState_ = CS_ActivateReconnect;
+				sendActivateSessionRequest();
+				break;
+			}
 			case CS_Disconnect:
 			{
+				communicationState_ = CS_Create;
 				sendCreateSessionRequest();
 				break;
 			}
@@ -244,7 +247,17 @@ namespace OpcUaStackClient
 	void 
 	Session::handleSecureChannelDisconnect(void)
 	{
-		Log(Debug, "handle secure channel disconnect in session");
+		Log(Info, "session close")
+			.parameter("SessionId", sessionId_)
+			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+			.parameter("SessionName", createSessionParameter_.sessionName_);
+
+		if (communicationState_ == CS_Connect) {
+			communicationState_ = CS_Reconnect;
+		}
+		else {
+			communicationState_ = CS_Disconnect;
+		}
 	}
 
 	bool 
@@ -292,6 +305,7 @@ namespace OpcUaStackClient
 			{
 				// FIXME:  error handling
 				sessionId_ = createSessionResponseSPtr_->sessionId();
+				communicationState_ = CS_Activate;
 				sendActivateSessionRequest();
 				break;
 			}
@@ -315,11 +329,32 @@ namespace OpcUaStackClient
 
 		switch (communicationState_)
 		{
+			case CS_ActivateReconnect:
+			{
+				OpcUaStatusCode statusCode = activateSessionResponseSPtr_->responseHeader()->serviceResult();
+				if (statusCode == Success) {
+					communicationState_ = CS_Connect;
+					sessionIf_->sessionStateUpdate(SS_Connect);
+					break;
+				}
+
+				// session error;
+				Log(Error, "receive activate session response with error (reconnect)")
+					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+					.parameter("SessionName", createSessionParameter_.sessionName_)
+					.parameter("CommubnicationState", communicationState_)
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+
+				// open a new session
+				communicationState_ = CS_Create;
+				sendCreateSessionRequest();
+				break;
+			}
 			case CS_Activate:
 			{
 				// FIXME:  error handling
 
-				Log(Error, "session open")
+				Log(Info, "session open")
 					.parameter("SessionId", sessionId_)
 					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 					.parameter("SessionName", createSessionParameter_.sessionName_);
