@@ -11,7 +11,8 @@ namespace OpcUaStackClient
 
 	typedef enum {
 		SS_Disconnect,
-		SS_Connect
+		SS_Connect,
+		SS_Reactivate
 	} SessionState;
 
 	class SessionIf

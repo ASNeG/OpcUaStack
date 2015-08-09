@@ -16,16 +16,25 @@ namespace OpcUaStackClient
 	: sessionId_()
 	, communicationState_(CS_Disconnect)
 	, requestTimeout_(3000)
+	, reconnectTimeout_(3000)
 	, pendingQueue_(ioService)
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
 	, sessionManagerIf_(nullptr)
+	, sessionIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	, activateSessionResponseSPtr_(OpcUaStackCore::ActivateSessionResponse::construct())
+	, timer_(Timer::construct(ioService))
 	{
+		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
 			boost::bind(&Session::pendingQueueTimeout, this, _1)
+		);
+
+		// set timer callback
+		timer_->callback().reset(
+			boost::bind(&Session::timeout, this)
 		);
 	}
 
@@ -169,9 +178,9 @@ namespace OpcUaStackClient
 		createSessionRequestSPtr->maxResponseMessageSize(createSessionParameter_.maxResponseMessageSize_);
 		createSessionRequestSPtr->opcUaBinaryEncode(ios);
 
+		startTimer(requestTimeout_);
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
 		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(secureChannelTransaction);
-		// FIXME: no timeout handling
 	}
 
 	void
@@ -195,9 +204,9 @@ namespace OpcUaStackClient
 		anonymousIdentityToken->policyId("Anonymous_Policy");
 		activateSessionRequestSPtr->opcUaBinaryEncode(ios);
 
+		startTimer(requestTimeout_);
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 		if (sessionManagerIf_ != nullptr) sessionManagerIf_->send(secureChannelTransaction);
-		// FIXME: no timeout handling
 	}
 
 	// ------------------------------------------------------------------------
@@ -221,7 +230,7 @@ namespace OpcUaStackClient
 
 		switch (communicationState_)
 		{
-			case CS_Reconnect:
+			case CS_Reactivate:
 			{
 				communicationState_ = CS_ActivateReconnect;
 				sendActivateSessionRequest();
@@ -239,7 +248,11 @@ namespace OpcUaStackClient
 					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 					.parameter("SessionName", createSessionParameter_.sessionName_)
 					.parameter("CommubnicationState", communicationState_);
-				// FIXME: reconnect after timeout
+
+				// reconnect after timeout
+				communicationState_ = CS_ReconnectAfterTimeout;
+				sessionClose();
+				sessionReconnectAfterTimeout();
 			}
 		}
 	}
@@ -252,11 +265,31 @@ namespace OpcUaStackClient
 			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
-		if (communicationState_ == CS_Connect) {
-			communicationState_ = CS_Reconnect;
-		}
-		else {
-			communicationState_ = CS_Disconnect;
+		switch (communicationState_)
+		{
+			case CS_Create:
+			case CS_Activate:
+				stopTimer();
+				communicationState_ = CS_Disconnect;
+				sessionClose();
+				break;
+			case CS_Connect:
+				communicationState_ = CS_Reactivate;
+				sessionReactivate();
+				break;
+			case CS_ReconnectAfterTimeout:
+				communicationState_ = CS_Disconnect;
+				break;
+			case CS_ActivateReconnect:
+				communicationState_ = CS_Reactivate;
+				break;
+			default:
+				Log(Error, "receive secure channel connect in invalid state")
+					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+					.parameter("SessionName", createSessionParameter_.sessionName_)
+					.parameter("CommubnicationState", communicationState_);
+				communicationState_ = CS_Disconnect;
+				break;
 		}
 	}
 
@@ -296,6 +329,8 @@ namespace OpcUaStackClient
 	bool
 	Session::receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		stopTimer();
+
 		std::iostream ios(&secureChannelTransaction->is_);
 		createSessionResponseSPtr_->opcUaBinaryDecode(ios);
 
@@ -303,7 +338,20 @@ namespace OpcUaStackClient
 		{
 			case CS_Create:
 			{
-				// FIXME:  error handling
+				// check result of create session resonse
+				if (createSessionResponseSPtr_->responseHeader()->serviceResult() != Success) {
+					Log(Error, "error in receive create session response")
+						.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+						.parameter("SessionName", createSessionParameter_.sessionName_)
+						.parameter("CommubnicationState", communicationState_);
+
+					// reconnect after timeout
+					communicationState_ = CS_ReconnectAfterTimeout;
+					sessionClose();
+					sessionReconnectAfterTimeout();
+					break;
+				}
+
 				sessionId_ = createSessionResponseSPtr_->sessionId();
 				communicationState_ = CS_Activate;
 				sendActivateSessionRequest();
@@ -315,7 +363,13 @@ namespace OpcUaStackClient
 					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 					.parameter("SessionName", createSessionParameter_.sessionName_)
 					.parameter("CommubnicationState", communicationState_);
-				// FIXME: reconnect after timeout
+
+				// reconnect after timeout
+				communicationState_ = CS_ReconnectAfterTimeout;
+				sessionClose();
+				sessionReconnectAfterTimeout();
+				break;
+
 			}
 		}
 		return true;
@@ -324,6 +378,8 @@ namespace OpcUaStackClient
 	bool 
 	Session::receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		stopTimer();
+
 		std::iostream ios(&secureChannelTransaction->is_);
 		activateSessionResponseSPtr_->opcUaBinaryDecode(ios);
 
@@ -334,7 +390,7 @@ namespace OpcUaStackClient
 				OpcUaStatusCode statusCode = activateSessionResponseSPtr_->responseHeader()->serviceResult();
 				if (statusCode == Success) {
 					communicationState_ = CS_Connect;
-					sessionIf_->sessionStateUpdate(SS_Connect);
+					sessionOpen();
 					break;
 				}
 
@@ -346,21 +402,29 @@ namespace OpcUaStackClient
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 
 				// open a new session
+				sessionClose();
 				communicationState_ = CS_Create;
 				sendCreateSessionRequest();
 				break;
 			}
 			case CS_Activate:
 			{
-				// FIXME:  error handling
+				// check result of activate session resonse
+				if (activateSessionResponseSPtr_->responseHeader()->serviceResult() != Success) {
+					Log(Error, "error in receive activate session response")
+						.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+						.parameter("SessionName", createSessionParameter_.sessionName_)
+						.parameter("CommubnicationState", communicationState_);
 
-				Log(Info, "session open")
-					.parameter("SessionId", sessionId_)
-					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
-					.parameter("SessionName", createSessionParameter_.sessionName_);
+					// reconnect after timeout
+					communicationState_ = CS_ReconnectAfterTimeout;
+					sessionClose();
+					sessionReconnectAfterTimeout();
+					break;
+				}
 
 				communicationState_ = CS_Connect;
-				sessionIf_->sessionStateUpdate(SS_Connect);
+				sessionOpen();
 				break;
 			}
 			default:
@@ -369,7 +433,12 @@ namespace OpcUaStackClient
 					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 					.parameter("SessionName", createSessionParameter_.sessionName_)
 					.parameter("CommubnicationState", communicationState_);
-				// FIXME: reconnect after timeout
+
+				// reconnect after timeout
+				communicationState_ = CS_ReconnectAfterTimeout;
+				sessionClose();
+				sessionReconnectAfterTimeout();
+				break;
 			}
 		}
 		return true;
@@ -378,6 +447,8 @@ namespace OpcUaStackClient
 	bool 
 	Session::receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		// FIXME: timer could be running ...
+
 		std::iostream ios(&secureChannelTransaction->is_);
 		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 		responseHeader->opcUaBinaryDecode(ios);
@@ -385,11 +456,105 @@ namespace OpcUaStackClient
 		Log(Error, "received Service Fault")
 			.parameter("ServiceResult", OpcUaStatusCodeMap::longString(responseHeader->serviceResult()));
 	
-		// FIXME: close session and close secure channel
-		// FIXME: send error message to associated service
+		// reconnect after timeout
+		communicationState_ = CS_ReconnectAfterTimeout;
+		sessionClose();
+		sessionReconnectAfterTimeout();
+
 		return false;
 	}
 
+	void
+	Session::sessionReconnectAfterTimeout(void)
+	{
+		startTimer(reconnectTimeout_);
+	}
+
+	void
+	Session::sessionOpen(void)
+	{
+		Log(Info, "session open")
+			.parameter("SessionId", sessionId_)
+			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+			.parameter("SessionName", createSessionParameter_.sessionName_);
+
+		sessionIf_->sessionStateUpdate(SS_Connect);
+	}
+
+	void
+	Session::sessionClose(void)
+	{
+		Log(Info, "session close")
+			.parameter("SessionId", sessionId_)
+			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+			.parameter("SessionName", createSessionParameter_.sessionName_);
+
+		sessionIf_->sessionStateUpdate(SS_Disconnect);
+	}
+
+	void
+	Session::sessionReactivate(void)
+	{
+	    Log(Info, "session reactivate")
+			.parameter("SessionId", sessionId_)
+			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+			.parameter("SessionName", createSessionParameter_.sessionName_);
+
+	    sessionIf_->sessionStateUpdate(SS_Reactivate);
+	}
+
+	void
+	Session::startTimer(uint32_t timeout)
+	{
+		timer_->start(timeout);
+	}
+
+	void
+	Session::stopTimer(void)
+	{
+		timer_->stop(timer_);
+	}
+
+	void
+	Session::timeout(void)
+	{
+		Log(Debug, "timeout")
+			.parameter("SessionId", sessionId_)
+			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+			.parameter("SessionName", createSessionParameter_.sessionName_)
+			.parameter("CommunicationState", communicationState_);
+
+		switch (communicationState_)
+		{
+			case CS_Create:
+			case CS_Activate:
+				communicationState_ = CS_ReconnectAfterTimeout;
+				sessionClose();
+				sessionReconnectAfterTimeout();
+				break;
+			case CS_ReconnectAfterTimeout:
+				communicationState_ = CS_Create;
+				sendCreateSessionRequest();
+				break;
+			case CS_Disconnect:
+			case CS_Connect:
+			case CS_Reactivate:
+			case CS_ActivateReconnect:
+				Log(Error, "receive timeout in invalid state")
+					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+					.parameter("SessionName", createSessionParameter_.sessionName_)
+					.parameter("CommubnicationState", communicationState_);
+				break;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// handle service messages
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	bool
 	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{

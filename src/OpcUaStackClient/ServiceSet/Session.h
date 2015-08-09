@@ -10,11 +10,14 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
+#include "OpcUaStackCore/Utility/Timer.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelTransaction.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -25,8 +28,8 @@ namespace OpcUaStackClient
 		CS_Create,
 		CS_Activate,
 		CS_Connect,
-		CS_Reconnect,
-		CS_ReconnectTimer,
+		CS_Reactivate,
+		CS_ReconnectAfterTimeout,
 		CS_ActivateReconnect,
 	} CommunicationState;
 
@@ -73,6 +76,15 @@ namespace OpcUaStackClient
 		void sendCreateSessionRequest(void);
 		void sendActivateSessionRequest(void);
 
+		void startTimer(uint32_t timeout);
+		void stopTimer(void);
+		void timeout(void);
+
+		void sessionReconnectAfterTimeout(void);
+		void sessionOpen(void);
+		void sessionClose(void);
+		void sessionReactivate(void);
+
 		bool receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction);
@@ -81,8 +93,10 @@ namespace OpcUaStackClient
 		OpcUaNodeId sessionId_;
 		CommunicationState communicationState_;
 
+		Timer::SPtr timer_;
 
 		uint32_t requestTimeout_;
+		uint32_t reconnectTimeout_;
 
 		uint32_t requestHandle_;
 		OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;
