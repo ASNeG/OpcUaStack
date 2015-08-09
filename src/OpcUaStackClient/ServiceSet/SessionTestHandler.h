@@ -24,9 +24,8 @@ namespace OpcUaStackClient
 		: connectToSecureChannelCount_(0)
 		, createSessionRequestCount_(0)
 		, activateSessionRequestCount_(0)
-		, createSessionCompleteCondition_()
-		, activateSessionCompleteCondition_()
-	    , opcUaStatusCode_()
+		, sessionUpdateCondition_()
+		, sessionState_(SS_Disconnect)
 		{}
 
 		virtual ~SessionTestHandler(void) {}
@@ -38,22 +37,14 @@ namespace OpcUaStackClient
 		//
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
-		void error(void) {
+		void sessionStateUpdate(SessionState sessionState)
+		{
+			sessionState_ = sessionState;
+			sessionUpdateCondition_.conditionValueDec();
 		}
 
-		void createSessionComplete(OpcUaStatusCode opcUaStatusCode) {
-			opcUaStatusCode_ = opcUaStatusCode;
-			createSessionCompleteCondition_.conditionValueDec();
-		}
-
-		void activateSessionComplete(OpcUaStatusCode opcUaStatusCode) {
-			opcUaStatusCode_ = opcUaStatusCode;
-			activateSessionCompleteCondition_.conditionValueDec();
-		}
-
-		OpcUaStatusCode opcUaStatusCode_;
-		Condition createSessionCompleteCondition_;
-		Condition activateSessionCompleteCondition_;
+		SessionState sessionState_;
+		Condition sessionUpdateCondition_;
 
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------

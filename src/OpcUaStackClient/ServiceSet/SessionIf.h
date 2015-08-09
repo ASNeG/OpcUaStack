@@ -9,14 +9,17 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	typedef enum {
+		SS_Disconnect,
+		SS_Connect
+	} SessionState;
+
 	class SessionIf
 	{
 	  public:
 		virtual ~SessionIf(void) {}
 
-		virtual void error(void) = 0;
-		virtual void createSessionComplete(OpcUaStatusCode opcUaStatusCode) = 0;
-		virtual void activateSessionComplete(OpcUaStatusCode opcUaStatusCode) = 0;
+		virtual void sessionStateUpdate(SessionState sessionState) = 0;
 	};
 
 }

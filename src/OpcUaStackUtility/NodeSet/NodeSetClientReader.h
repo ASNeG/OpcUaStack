@@ -40,9 +40,7 @@ namespace OpcUaStackUtility
 		NodeSetNamespace& nodeSetNamespace(void);
 
 		//- SessionIf interface -----------------------------------------------
-		void error(void);
-		void createSessionComplete(OpcUaStatusCode opcUaStatusCode);
-		void activateSessionComplete(OpcUaStatusCode opcUaStatusCode);
+		void sessionStateUpdate(SessionState sessionState);
 		//- SessionIf interface -----------------------------------------------
 
 	  private:

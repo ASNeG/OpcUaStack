@@ -10,7 +10,8 @@ namespace OpcUaStackUtility
 {
 
 	NodeSetClientReader::NodeSetClientReader(void)
-	: client_()
+	: SessionIf()
+	, client_()
 	, nodeSetNamespace_()
 	, condition_()
 	, error_(false)
@@ -62,36 +63,21 @@ namespace OpcUaStackUtility
 			secureChannelConfigPrefix, secureChannelConfig,
 			this
 		);
-		session_->createSession();
-		rc = condition_.waitForCondition(operationTimeout_);
-		if (!rc) {
-			Log(Error, "create session timeout in node set client reader");
-			return false;
-		}
-		if (error_) {
-			session_->closeSession();
-			Log(Error, "create Session error");
-			return false;
-		}
-
-		// activate session on the opc ua server. A condition is used to wait
-		// for the end of the operation
-		condition_.conditionInit();
-		session_->activateSession();
+		session_->open();
 		rc = condition_.waitForCondition(operationTimeout_);
 		if (!rc) {
 			Log(Error, "activate session timeout in node set client reader");
 			return false;
 		}
 		if (error_) {
-			session_->closeSession();
+			session_->close();
 			Log(Error, "activate Session error");
 			return false;
 		}
 
 		// read namespace array from opc ua server
 		if (!readNamespaceArray()) {
-			session_->closeSession();
+			session_->close();
 			Log(Error, "read namespace array error");
 			return false;
 		}
@@ -99,17 +85,17 @@ namespace OpcUaStackUtility
 		// browse nodes from opc ua server
 		nodeIdSet_.clear();
 		if (!browse(nodeId)) {
-			session_->closeSession();
+			session_->close();
 			Log(Error, "browse nodes error");
 			return false;
 		}
 		if (nodeIdSet_.size() == 0) {
-			session_->closeSession();
+			session_->close();
 			Log(Error, "browse nodes error, because no nodes found");
 			return false;
 		}
 
-		session_->closeSession();
+		session_->close();
 		return true;
 	}
 
@@ -1006,28 +992,20 @@ namespace OpcUaStackUtility
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	NodeSetClientReader::error(void)
+	NodeSetClientReader::sessionStateUpdate(SessionState sessionState)
 	{
-		Log(Error, "session error in node set client reader");
-		error_ = true;
-		condition_.conditionTrue();
-	}
+		switch (sessionState)
+		{
+			case SS_Connect:
+				Log(Debug, "receive session connect in node set client reader");
+				break;
+			case SS_Disconnect:
+				Log(Debug, "receive session disconnect in node set client reader");
+				break;
+			default:
+				Log(Error, "receive invalid session state in node set client reader");
+		}
 
-	void 
-	NodeSetClientReader::createSessionComplete(OpcUaStatusCode opcUaStatusCode)
-	{
-		Log(Debug, "create session complete in node set client reader")
-			.parameter("StatusCode", opcUaStatusCode);
-		if (opcUaStatusCode != Success) error_ = true;
-		condition_.conditionTrue();
-	}
-
-	void 
-	NodeSetClientReader::activateSessionComplete(OpcUaStatusCode opcUaStatusCode)
-	{
-		Log(Debug, "activate session complete in node set client reader")
-			.parameter("StatusCode", opcUaStatusCode);
-		if (opcUaStatusCode != Success) error_ = true;
 		condition_.conditionTrue();
 	}
 

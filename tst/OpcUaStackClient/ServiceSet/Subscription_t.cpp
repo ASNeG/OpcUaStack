@@ -41,15 +41,10 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_sync)
 		&sessionTestHandler
 	);
 
-	// createSession
-	sessionTestHandler.createSessionCompleteCondition_.condition(1, 0);
-	session->createSession();
-	BOOST_REQUIRE(sessionTestHandler.createSessionCompleteCondition_.waitForCondition(1000) == true);
-
-	// activateSession
-	sessionTestHandler.activateSessionCompleteCondition_.condition(1, 0);
-	session->activateSession();
-	BOOST_REQUIRE(sessionTestHandler.activateSessionCompleteCondition_.waitForCondition(1000) == true);
+	// open session
+	sessionTestHandler.sessionUpdateCondition_.condition(1, 0);
+	session->open();
+	BOOST_REQUIRE(sessionTestHandler.sessionUpdateCondition_.waitForCondition(1000) == true);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

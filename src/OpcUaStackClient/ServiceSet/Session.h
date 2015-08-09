@@ -21,14 +21,14 @@ namespace OpcUaStackClient
 
 	typedef enum
 	{
-		SessionState_Close,
-		SessionState_ConnectingToSecureChannel,
-		SessionState_ConnectedToSecureChannel,
-		SessionState_SendCreateSession,
-		SessionState_ReceiveCreateSession,
-		SessionState_SendActivateSession,
-		SessionState_ReceiveActivateSession,
-	} SessionState;
+		CS_Disconnect,
+		CS_Create,
+		CS_Activate,
+		CS_Connect,
+		CS_Reconnect,
+		CS_ReconnectTimer,
+		CS_ActivateReconnect,
+	} CommunicationState;
 
 	class CreateSessionParameter
 	{
@@ -52,9 +52,8 @@ namespace OpcUaStackClient
 		bool registerService(OpcUaNodeId& typeId, Component* component);
 		bool deregisterService(OpcUaNodeId& typeId);
 
-		void createSession(void);
-		void activateSession(void);
-		void closeSession(void) {}; // FIXME: integrate close session handling
+		void open(void);
+		void close(void);
 	
 		void handleSecureChannelConnect(void);
 		void handleSecureChannelDisconnect(void);
@@ -71,14 +70,20 @@ namespace OpcUaStackClient
 		// - Component -------------------------------------------------------
 
  	  private:
+		void sendCreateSessionRequest(void);
+		void sendActivateSessionRequest(void);
+
 		bool receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 
+		OpcUaNodeId sessionId_;
+		CommunicationState communicationState_;
+
+
 		uint32_t requestTimeout_;
 
-		SessionState sessionState_;
 		uint32_t requestHandle_;
 		OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;
 		CreateSessionParameter createSessionParameter_;
