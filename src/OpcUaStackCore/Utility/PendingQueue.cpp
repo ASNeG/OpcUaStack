@@ -110,6 +110,15 @@ namespace OpcUaStackCore
 		return pendingQueueElement->element();
 	}
 
+	void
+	PendingQueue::keys(std::vector<uint32_t>& keys)
+	{
+		PendingQueueMap::iterator it;
+		for (it = pendingQueueMap_.begin(); it != pendingQueueMap_.end(); it++) {
+			keys.push_back(it->first);
+		}
+	}
+
 	void 
 	PendingQueue::onTimeout(uint32_t key)
 	{

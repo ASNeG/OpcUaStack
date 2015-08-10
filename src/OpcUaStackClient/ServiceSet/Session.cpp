@@ -130,7 +130,12 @@ namespace OpcUaStackClient
 			.parameter("NodeType", serviceTransaction->nodeTypeRequest())
 			.parameter("RequestHandle", serviceTransaction->transactionId());
 
-		// FIXME: check communication state...
+		if (communicationState_ == CS_Disconnect) {
+			serviceTransaction->statusCode(BadSessionClosed);
+			Component* componentService = serviceTransaction->componentService();
+			componentService->send(serviceTransaction);
+			return;
+		}
 
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		std::iostream ios(&secureChannelTransaction->os_);
@@ -155,6 +160,100 @@ namespace OpcUaStackClient
 			sessionManagerIf_->send(secureChannelTransaction);
 		}
 	}
+
+	void
+	Session::pendingQueueTimeout(Object::SPtr object)
+	{
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
+
+		Log(Debug, "receive response timeout in session")
+			.parameter("TrxId", serviceTransaction->transactionId())
+			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
+			.parameter("RequestHandle", serviceTransaction->transactionId());
+
+		serviceTransaction->statusCode(BadTimeout);
+		Component* componentService = serviceTransaction->componentService();
+		componentService->send(serviceTransaction);
+	}
+
+	void
+	Session::pendingQueueClose(void)
+	{
+		std::vector<uint32_t>::iterator it;
+		std::vector<uint32_t> keys;
+		pendingQueue_.keys(keys);
+
+		for (it = keys.begin(); it != keys.end(); it++) {
+			Object::SPtr objectSPtr = pendingQueue_.remove(*it);
+			if (objectSPtr.get() == nullptr) return;
+
+			ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
+			serviceTransaction->statusCode(BadSessionClosed);
+			Component* componentService = serviceTransaction->componentService();
+			componentService->send(serviceTransaction);
+		}
+	}
+
+	bool
+	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	{
+		if (sessionIf_ == nullptr) {
+			Log(Error, "interface sessionIf is empty")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("CommunicationState", communicationState_);
+			return false;
+		}
+
+		// FIXME: check communication state
+
+		std::iostream ios(&secureChannelTransaction->is_);
+		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+		responseHeader->opcUaBinaryDecode(ios);
+
+		Object::SPtr objectSPtr = pendingQueue_.remove(responseHeader->requestHandle());
+		if (objectSPtr.get() == nullptr) {
+			Log(Error, "element in pending queue not exist")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_)
+				.parameter("RequestHandle", responseHeader->requestHandle());
+			char c; while (ios.get(c));
+			return true;
+		}
+
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
+		serviceTransaction->opcUaBinaryDecodeResponse(ios);
+		serviceTransaction->responseHeader(responseHeader);
+		serviceTransaction->statusCode(responseHeader->serviceResult());
+
+		Log(Debug, "receive response in session")
+			.parameter("TrxId", serviceTransaction->transactionId())
+			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
+			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
+
+		Component* componentService = serviceTransaction->componentService();
+		if (componentService != nullptr) {
+			componentService->send(serviceTransaction);
+			return true;
+		}
+
+		ServiceSetMap::iterator it;
+		it = serviceSetMap_.find(secureChannelTransaction->responseTypeNodeId_);
+		if (it == serviceSetMap_.end()) {
+			Log(Error, "type id not exist in service map")
+				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
+				.parameter("SessionName", createSessionParameter_.sessionName_)
+				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_);
+			char c; while (ios.get(c));
+			return true;
+		}
+
+		componentService = it->second;
+		componentService->send(serviceTransaction);
+		return true;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -493,6 +592,7 @@ namespace OpcUaStackClient
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
 		sessionIf_->sessionStateUpdate(SS_Disconnect);
+		pendingQueueClose();
 	}
 
 	void
@@ -553,87 +653,4 @@ namespace OpcUaStackClient
 				break;
 		}
 	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// handle service messages
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	bool
-	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
-	{
-		if (sessionIf_ == nullptr) {
-			Log(Error, "interface sessionIf is empty")
-				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
-				.parameter("SessionName", createSessionParameter_.sessionName_)
-				.parameter("CommunicationState", communicationState_);
-			return false;
-		}
-
-		// FIXME: check communication state
-
-		std::iostream ios(&secureChannelTransaction->is_);
-		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
-		responseHeader->opcUaBinaryDecode(ios);
-
-		Object::SPtr objectSPtr = pendingQueue_.remove(responseHeader->requestHandle());
-		if (objectSPtr.get() == nullptr) {
-			Log(Error, "element in pending queue not exist")
-				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
-				.parameter("SessionName", createSessionParameter_.sessionName_)
-				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_)
-				.parameter("RequestHandle", responseHeader->requestHandle());
-			char c; while (ios.get(c));
-			return true;
-		}
-		 
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(objectSPtr);
-		serviceTransaction->opcUaBinaryDecodeResponse(ios);
-		serviceTransaction->responseHeader(responseHeader);
-		serviceTransaction->statusCode(responseHeader->serviceResult());
-		
-		Log(Debug, "receive response in session")
-			.parameter("TrxId", serviceTransaction->transactionId())
-			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
-			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
-
-		Component* componentService = serviceTransaction->componentService();
-		if (componentService != nullptr) {
-			componentService->send(serviceTransaction);
-			return true;
-		}
-
-		ServiceSetMap::iterator it;
-		it = serviceSetMap_.find(secureChannelTransaction->responseTypeNodeId_);
-		if (it == serviceSetMap_.end()) {
-			Log(Error, "type id not exist in service map")
-				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
-				.parameter("SessionName", createSessionParameter_.sessionName_)
-				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_);
-			char c; while (ios.get(c));
-			return true;
-		}
-
-		componentService = it->second;
-		componentService->send(serviceTransaction);
-		return true;
-	}
-
-	void 
-	Session::pendingQueueTimeout(Object::SPtr object)
-	{
-		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
-
-		Log(Debug, "receive response timeout in session")
-			.parameter("TrxId", serviceTransaction->transactionId())
-			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
-			.parameter("RequestHandle", serviceTransaction->transactionId());
-
-		serviceTransaction->statusCode(BadTimeout);
-		Component* componentService = serviceTransaction->componentService();
-		componentService->send(serviceTransaction);
-	}
-
 }

@@ -46,6 +46,8 @@ namespace OpcUaStackCore
 		bool insert(uint32_t key, Object::SPtr object, uint32_t timeoutMSec);
 		Object::SPtr remove(uint32_t key);
 
+		void keys(std::vector<uint32_t>& keys);
+
 	  private:
 		void onTimeout(uint32_t key);
 

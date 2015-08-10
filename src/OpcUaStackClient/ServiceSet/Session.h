@@ -90,6 +90,9 @@ namespace OpcUaStackClient
 		bool receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 
+		void pendingQueueTimeout(Object::SPtr object);
+		void pendingQueueClose(void);
+
 		OpcUaNodeId sessionId_;
 		CommunicationState communicationState_;
 
@@ -109,7 +112,6 @@ namespace OpcUaStackClient
 		OpcUaStackCore::ActivateSessionResponse::SPtr activateSessionResponseSPtr_;
 
 		PendingQueue pendingQueue_;
-		void pendingQueueTimeout(Object::SPtr object);
 
 		typedef std::map<OpcUaNodeId, Component*> ServiceSetMap;
 		ServiceSetMap serviceSetMap_;
