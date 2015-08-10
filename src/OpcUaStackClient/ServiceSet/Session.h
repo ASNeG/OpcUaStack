@@ -97,6 +97,7 @@ namespace OpcUaStackClient
 
 		uint32_t requestTimeout_;
 		uint32_t reconnectTimeout_;
+		uint32_t reactivateTimeout_;
 
 		uint32_t requestHandle_;
 		OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;

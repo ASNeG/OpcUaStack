@@ -41,6 +41,19 @@ namespace OpcUaStackClient
 		{
 			sessionState_ = sessionState;
 			sessionUpdateCondition_.conditionValueDec();
+
+			switch (sessionState)
+			{
+				case SS_Connect:
+					std::cout << "SessionState: Connect" << std::endl;
+					break;
+				case SS_Disconnect:
+					std::cout << "SessionState: Disconnect" << std::endl;
+					break;
+				case SS_Reactivate:
+					std::cout << "SessionState: Reactivate" << std::endl;
+					break;
+			}
 		}
 
 		SessionState sessionState_;

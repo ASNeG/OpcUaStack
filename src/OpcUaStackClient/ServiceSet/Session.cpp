@@ -17,6 +17,7 @@ namespace OpcUaStackClient
 	, communicationState_(CS_Disconnect)
 	, requestTimeout_(3000)
 	, reconnectTimeout_(3000)
+	, reactivateTimeout_(8000)
 	, pendingQueue_(ioService)
 	, requestHandle_(0)
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
@@ -232,6 +233,7 @@ namespace OpcUaStackClient
 		{
 			case CS_Reactivate:
 			{
+				stopTimer();
 				communicationState_ = CS_ActivateReconnect;
 				sendActivateSessionRequest();
 				break;
@@ -275,6 +277,7 @@ namespace OpcUaStackClient
 				break;
 			case CS_Connect:
 				communicationState_ = CS_Reactivate;
+				startTimer(reactivateTimeout_);
 				sessionReactivate();
 				break;
 			case CS_ReconnectAfterTimeout:
@@ -536,9 +539,12 @@ namespace OpcUaStackClient
 				communicationState_ = CS_Create;
 				sendCreateSessionRequest();
 				break;
+			case CS_Reactivate:
+				communicationState_ = CS_Disconnect;
+				sessionClose();
+				break;
 			case CS_Disconnect:
 			case CS_Connect:
-			case CS_Reactivate:
 			case CS_ActivateReconnect:
 				Log(Error, "receive timeout in invalid state")
 					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
