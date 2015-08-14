@@ -72,6 +72,7 @@ namespace OpcUaServer
 			);
 
 			applicationLibrary->applicationIf()->config(config_);
+			applicationLibrary->applicationIf()->client(&client_);
 		}
 		return true;
 	}
