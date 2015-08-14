@@ -1,6 +1,9 @@
 #ifndef __OpcUaStackCore_OpcUaType_h__
 #define __OpcUaStackCore_OpcUaType_h__
 
+#include <string>
+#include "OpcUaStackCore/Base/os.h"
+
 namespace OpcUaStackCore
 {
 
@@ -33,6 +36,14 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaVariant = 24,
 		OpcUaBuildInType_OpcUaDiagnosticInfo = 25
 	} OpcUaBuildInType;
+
+
+	class DLLEXPORT OpcUaBuildInTypeMap
+	{
+	  public:
+		static std::string buildInType2String(OpcUaBuildInType buildInType);
+		static OpcUaBuildInType string2BuildInType(const std::string& type);
+	};
 
 };
 
