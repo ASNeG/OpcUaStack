@@ -28,7 +28,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Client::cleanup(void)
+	Client::shutdown(void)
 	{
 		Core::cleanup();
 	}

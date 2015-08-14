@@ -1,5 +1,5 @@
-#ifndef __OpcUaStackServer_SecureChannelTransaction_h__
-#define __OpcUaStackServer_SecureChannelTransaction_h__
+#ifndef __OpcUaStackClient_SecureChannelTransaction_h__
+#define __OpcUaStackClient_SecureChannelTransaction_h__
 
 #include <boost/shared_ptr.hpp>
 #include <boost/asio/streambuf.hpp>

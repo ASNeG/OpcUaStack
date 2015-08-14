@@ -12,6 +12,7 @@ namespace OpcUaServer
 	: configurationFile_("")
 	, config_(nullptr)
 	, server_()
+	, client_()
 	, fileLogger_()
 	, applicationManager_()
 	{
@@ -44,6 +45,12 @@ namespace OpcUaServer
 			return false;
 		}
 
+		// initial opc ua client
+		if (!client_.init()) {
+			Log(Error, "shutdown server, because init client error");
+			return false;
+		}
+
 		// initial application library manager
 		applicationManager_.config(*config_);
 		if (!applicationManager_.startup()) {
@@ -73,12 +80,14 @@ namespace OpcUaServer
 	Server::start(void)
 	{
 		server_.start();
+		client_.start();
 		return true;
 	}
 
 	void
 	Server::stop(void)
 	{
+		client_.stop();
 		server_.stop();
 	}
 
@@ -100,6 +109,9 @@ namespace OpcUaServer
 
 		// shutdown application library manager
 		applicationManager_.shutdown();
+
+		// shutdown opc ua client
+		client_.shutdown();
 
 		// shutdown opc ua server
 		server_.shutdown();

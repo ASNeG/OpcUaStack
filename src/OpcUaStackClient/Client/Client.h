@@ -16,7 +16,7 @@ namespace OpcUaStackClient
 	    ~Client(void);
 
 		bool init(void);
-		void cleanup(void);
+		void shutdown(void);
 		bool start(void);
 		void stop(void);
 

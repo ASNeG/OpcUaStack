@@ -13,6 +13,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT SecureChannelIf
 	{
 	  public:
+		virtual ~SecureChannelIf(void) {}
+
 		virtual void connect(void) = 0;
 		virtual void disconnect(void) = 0;
 		virtual bool receive(SecureChannelTransaction::SPtr secureChannelTransaction) = 0;
