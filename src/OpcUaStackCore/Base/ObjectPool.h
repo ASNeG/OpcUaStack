@@ -72,6 +72,70 @@ namespace OpcUaStackCore
 		}
 	};
 
+	template<typename OBJ>
+	class DLLEXPORT ObjectPool1
+	: public Object
+	{
+	  public:
+		static boost::shared_ptr<OBJ> construct1(void) {
+			return boost::shared_ptr<OBJ>(new OBJ());
+		}
+
+		template<typename T>
+		  static boost::shared_ptr<OBJ> construct1(T& p) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p));
+		  }
+
+		template<typename T1, typename T2>
+		  static boost::shared_ptr<OBJ> construct1(T1& p1, T2& p2) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p1, p2));
+		  }
+
+		template<typename T1, typename T2, typename T3>
+		  static boost::shared_ptr<OBJ> construct1(T1& p1, T2& p2, T3& p3) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p1, p2, p3));
+		  }
+
+		template<typename T>
+		  static boost::shared_ptr<OBJ> construct1(const T& p) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p));
+		  }
+
+		template<typename T1, typename T2>
+		  static boost::shared_ptr<OBJ> construct1(const T1& p1, const T2& p2) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p1,p2));
+		  }
+
+		template<typename T1, typename T2, typename T3>
+		  static boost::shared_ptr<OBJ> construct1(const T1& p1, const T2& p2, const T3& p3) {
+			  return boost::shared_ptr<OBJ>(new OBJ(p1,p2, p3));
+		  }
+
+		boost::shared_ptr<OBJ> constructMember1(void) {
+			return boost::shared_ptr<OBJ>(new OBJ());
+		}
+
+		static void destruct1(OBJ* obj) {
+			delete obj;
+		}
+
+		void destructMember1(OBJ* obj) {
+			delete obj;
+		}
+
+		static void destruct1(SPtr objSPtr) {
+		}
+
+		ObjectPool1(void)
+		: Object()
+		{
+		}
+
+		virtual ~ObjectPool1(void)
+		{
+		}
+	};
+
 }
 
 #endif
