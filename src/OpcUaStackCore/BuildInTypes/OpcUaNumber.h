@@ -127,6 +127,8 @@ namespace OpcUaStackCore
 		//
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaSByte& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaSByte& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaSByte& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaSByte& value);
 	
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaSByteArray& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaSByteArray& value);

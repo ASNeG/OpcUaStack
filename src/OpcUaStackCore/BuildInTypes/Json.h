@@ -14,10 +14,11 @@ namespace OpcUaStackCore
 	  public:
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaSByte& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaSByte& value);
 	};
 
 #if 0
-	typedef int8_t OpcUaSByte;
 	typedef uint8_t OpcUaByte;
 	typedef int16_t OpcUaInt16;
 	typedef uint16_t OpcUaUInt16;

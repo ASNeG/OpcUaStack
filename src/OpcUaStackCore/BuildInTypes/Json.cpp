@@ -18,4 +18,18 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	Json::encode(boost::property_tree::ptree& pt, const OpcUaSByte& value)
+	{
+		pt.put_value<int8_t>(value);
+		return true;
+	}
+
+	bool
+	Json::decode(boost::property_tree::ptree& pt, OpcUaSByte& value)
+	{
+		value = pt.get_value<int8_t>();
+		return true;
+	}
+
 }

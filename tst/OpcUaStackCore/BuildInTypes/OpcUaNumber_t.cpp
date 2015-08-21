@@ -100,7 +100,6 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArray_ptree)
 	value1.set(2, true);
 
 	OpcUaNumber::encode(pt, value1);
-	writeDocument(pt);
 	OpcUaNumber::decode(pt, value2);
 
 	bool result;
@@ -139,6 +138,32 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArraySPtr)
 	BOOST_REQUIRE(value2->get(3, result) == false);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArraySPtr_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaBooleanArray::SPtr value1, value2;
+
+	value1 = OpcUaBooleanArray::construct();
+	value2 = OpcUaBooleanArray::construct();
+
+	value1->resize(3);
+	value1->set(0, true);
+	value1->set(1, false);
+	value1->set(2, true);
+
+	OpcUaNumber::encode(pt, value1);
+	OpcUaNumber::decode(pt, value2);
+
+	bool result;
+	BOOST_REQUIRE(value2->get(0, result) == true);
+	BOOST_REQUIRE(result == true);
+	BOOST_REQUIRE(value2->get(1, result) == true);
+	BOOST_REQUIRE(result == false);
+	BOOST_REQUIRE(value2->get(2, result) == true);
+	BOOST_REQUIRE(result == true);
+	BOOST_REQUIRE(value2->get(3, result) == false);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaSByte)
 {
 	std::stringstream ss;
@@ -167,6 +192,38 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaSByte)
 	value1 = 127;
 	OpcUaNumber::opcUaBinaryEncode(ss, value1);
 	OpcUaNumber::opcUaBinaryDecode(ss, value2);
+	BOOST_REQUIRE(value2 == 127);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaSByte_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaSByte value1, value2;
+
+	value1 = -128;
+	OpcUaNumber::encode(pt, value1);
+	writeDocument(pt);
+	OpcUaNumber::decode(pt, value2);
+	BOOST_REQUIRE(value2 == -128);
+
+	value1 = -1;
+	OpcUaNumber::encode(pt, value1);
+	OpcUaNumber::decode(pt, value2);
+	BOOST_REQUIRE(value2 == -1);
+
+	value1 = 0;
+	OpcUaNumber::encode(pt, value1);
+	OpcUaNumber::decode(pt, value2);
+	BOOST_REQUIRE(value2 == 0);
+
+	value1 = 1;
+	OpcUaNumber::encode(pt, value1);
+	OpcUaNumber::decode(pt, value2);
+	BOOST_REQUIRE(value2 == 1);
+
+	value1 = 127;
+	OpcUaNumber::encode(pt, value1);
+	OpcUaNumber::decode(pt, value2);
 	BOOST_REQUIRE(value2 == 127);
 }
 

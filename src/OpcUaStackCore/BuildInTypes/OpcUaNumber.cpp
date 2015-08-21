@@ -112,6 +112,18 @@ namespace OpcUaStackCore
 		is.read((char*)&value, 1);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaSByte& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaSByte& value)
+	{
+		return Json::decode(pt, value);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
