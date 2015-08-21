@@ -2,11 +2,13 @@
 #define __OpcUaStackCore_OpcUaArray_h__
 
 
-#include "boost/shared_ptr.hpp"
+#include <boost/shared_ptr.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <stdint.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
+#include "OpcUaStackCore/BuildInTypes/Json.h"
 
 namespace OpcUaStackCore
 {
@@ -23,6 +25,16 @@ namespace OpcUaStackCore
 		  static void opcUaBinaryDecode(std::istream& is, T& value) 
 		  {
 			  ByteOrder<T>::opcUaBinaryDecodeNumber(is, value);
+		  }
+
+		  static bool encode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  return Json::encode(pt, value);
+		  }
+
+		  static bool decode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  return Json::decode(pt, value);
 		  }
 
 		  static T copy(T& sourceValue, T& destValue)
@@ -49,6 +61,16 @@ namespace OpcUaStackCore
 		  static void opcUaBinaryDecode(std::istream& is, T& value)
 		  {
 			  value.opcUaBinaryDecode(is);
+		  }
+
+		  static bool encode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  return value.encode(pt);
+		  }
+
+		  static bool decode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  return value.decode(pt);
 		  }
 
 		  static T& copy(T& sourceValue, T& destValue)
@@ -80,6 +102,21 @@ namespace OpcUaStackCore
 			  value = (T)v;
 		  }
 
+		  static bool encode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  int32_t v = value;
+			  pt.put_value(value);
+			  return true;
+		  }
+
+		  static bool decode(boost::property_tree::ptree& pt, T& value)
+		  {
+			  int32_t v = 0;
+			  try { v = pt.get_value<int32_t>(); } catch(...) { return false; }
+			  value = (T)v;
+			  return true;
+		  }
+
 		  static T copy(T& sourceValue, T& destValue)
 		  {
 			  destValue = sourceValue;
@@ -105,6 +142,17 @@ namespace OpcUaStackCore
 		  {
 			  value = T::construct();
 			  value->opcUaBinaryDecode(is);
+		  }
+
+		  static bool encode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
+		  {
+			  return value->opcUaBinaryEncode(pt);
+		  }
+
+		  static bool decode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
+		  {
+			  value = T::construct();
+			  return value->decode(pt);
 		  }
 
 		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
@@ -159,6 +207,9 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 
 	  private:
 		void initArray(void);
@@ -372,6 +423,37 @@ namespace OpcUaStackCore
 			CODER::opcUaBinaryDecode(is, value);
 			push_back(value);
 		}
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::encode(boost::property_tree::ptree& pt) const
+	{
+		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
+			boost::property_tree::ptree arrayElement;
+			if (!CODER::encode(arrayElement, valueArray_[idx])) return false;
+			pt.push_back(std::make_pair("", arrayElement));
+		}
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::decode(boost::property_tree::ptree& pt)
+	{
+		int32_t arrayLength = 0;
+		arrayLength = pt.size();
+
+		resize(arrayLength);
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			boost::property_tree::ptree arrayElement = it->second;
+
+			T value;
+			if (!CODER::decode(arrayElement, value)) return false;
+			push_back(value);
+		}
+		return true;
 	}
 
 }

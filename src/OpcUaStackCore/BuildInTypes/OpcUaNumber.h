@@ -1,16 +1,17 @@
 #ifndef __OpcUaStackCore_OpcUaNumber_h__
 #define __OpcUaStackCore_OpcUaNumber_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumberTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 
 namespace OpcUaStackCore
 {
 
-	typedef bool OpcUaBoolean;
 	class DLLEXPORT OpcUaBooleanArray
 	: public OpcUaArray<OpcUaBoolean, NumberTypeCoder<OpcUaBoolean> >
 	, public ObjectPool<OpcUaBooleanArray>
@@ -19,7 +20,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaBooleanArray> SPtr;
 	};
 
-	typedef int8_t OpcUaSByte;
 	class DLLEXPORT OpcUaSByteArray
 	: public OpcUaArray<OpcUaSByte, NumberTypeCoder<OpcUaSByte> >
 	, public ObjectPool<OpcUaSByteArray>
@@ -28,7 +28,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaSByteArray> SPtr;
 	};
 
-	typedef uint8_t OpcUaByte;
 	class DLLEXPORT OpcUaByteArray
 	: public OpcUaArray<OpcUaByte, NumberTypeCoder<OpcUaByte> >
 	, public ObjectPool<OpcUaByteArray>
@@ -37,7 +36,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaByteArray> SPtr;
 	};
 
-	typedef int16_t OpcUaInt16;
 	class DLLEXPORT OpcUaInt16Array
 	: public OpcUaArray<OpcUaInt16, NumberTypeCoder<OpcUaInt16> >
 	, public ObjectPool<OpcUaInt16Array>
@@ -46,7 +44,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaInt16Array> SPtr;
 	};
 
-	typedef uint16_t OpcUaUInt16;
 	class DLLEXPORT OpcUaUInt16Array
 	: public OpcUaArray<OpcUaUInt16, NumberTypeCoder<OpcUaUInt16> >
 	, public ObjectPool<OpcUaUInt16Array>
@@ -55,7 +52,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaUInt16Array> SPtr;
 	};
 
-	typedef int32_t OpcUaInt32;
 	class DLLEXPORT OpcUaInt32Array
 	: public OpcUaArray<OpcUaInt32, NumberTypeCoder<OpcUaInt32> >
 	, public ObjectPool<OpcUaInt32Array>
@@ -64,7 +60,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaInt32Array> SPtr;
 	};
 
-	typedef uint32_t OpcUaUInt32;
 	class DLLEXPORT OpcUaUInt32Array
 	: public OpcUaArray<OpcUaUInt32, NumberTypeCoder<OpcUaUInt32> >
 	, public ObjectPool<OpcUaUInt32Array>
@@ -73,7 +68,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaUInt32Array> SPtr;
 	};
 
-	typedef int64_t OpcUaInt64;
 	class DLLEXPORT OpcUaInt64Array
 	: public OpcUaArray<OpcUaInt64, NumberTypeCoder<OpcUaInt64> >
 	, public ObjectPool<OpcUaInt64Array>
@@ -82,7 +76,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaInt64Array> SPtr;
 	};
 	
-	typedef uint64_t OpcUaUInt64;
 	class DLLEXPORT OpcUaUInt64Array
 	: public OpcUaArray<OpcUaUInt64, NumberTypeCoder<OpcUaUInt64> >
 	, public ObjectPool<OpcUaUInt64Array>
@@ -91,7 +84,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaUInt64Array> SPtr;
 	};
 
-	typedef float OpcUaFloat;
 	class DLLEXPORT OpcUaFloatArray
 	: public OpcUaArray<OpcUaFloat, NumberTypeCoder<OpcUaFloat> >
 	, public ObjectPool<OpcUaFloatArray>
@@ -100,7 +92,6 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaFloatArray> SPtr;
 	};
 
-	typedef double OpcUaDouble;
 	class DLLEXPORT OpcUaDoubleArray
 	: public OpcUaArray<OpcUaDouble, NumberTypeCoder<OpcUaDouble> >
 	, public ObjectPool<OpcUaDoubleArray>
@@ -114,14 +105,26 @@ namespace OpcUaStackCore
     {
 	  public:
 	
+		//
+		// Boolean
+		//
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBoolean& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
 
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray& value);
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray::SPtr& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray::SPtr& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaBooleanArray& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaBooleanArray& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaBooleanArray::SPtr& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaBooleanArray::SPtr& value);
 
+		//
+		// SByte
+		//
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaSByte& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaSByte& value);
 	

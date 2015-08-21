@@ -267,4 +267,46 @@ namespace OpcUaStackCore
 	}
 
 
+	bool
+	OpcUaDataValue::encode(boost::property_tree::ptree& pt) const
+	{
+#if 0
+		if (opcUaVariantSPtr_.get() != NULL) {
+			boost::property_tree::ptree ptVariant;
+			if (!opcUaVariantSPtr_->encode(ptVariant)) return false;
+			pt.put("Value", ptVariant);
+		}
+
+		if (opcUaStatusCode_ != 0) {
+			boost::property_tree::ptree ptStatusCode;
+			if (!OpcUaNumber::encode(ptStatusCode,opcUaStatusCode_)) return false;
+			pt.put("StatusCode", ptStatusCode);
+		}
+		if (sourceTimestamp_.exist()) {
+			boost::property_tree::ptree ptSourceTimestamp;
+			if (!sourceTimestamp_.encode(ptSourceTimestamp)) return false;
+			pt.put("SourceTimestamp", ptSourceTimestamp);
+		}
+		if (sourcePicoseconds_ != 0) {
+			OpcUaNumber::opcUaBinaryEncode(os,sourcePicoseconds_);
+		}
+		if (serverTimestamp_.exist()) {
+			boost::property_tree::ptree ptServerTimestamp;
+			if (!serverTimestamp_.encode(ptServerTimestamp)) return false;
+			pt.put("ServerTimestamp", ptServerTimestamp);
+		}
+		if (serverPicoseconds_ != 0) {
+			OpcUaNumber::opcUaBinaryEncode(os,serverPicoseconds_);
+		}
+#endif
+
+		return true;
+	}
+
+	bool
+	OpcUaDataValue::decode(boost::property_tree::ptree& pt, OpcUaBuildInType type, bool isArray)
+	{
+		return true;
+	}
+
 }

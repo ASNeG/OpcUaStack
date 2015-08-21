@@ -1,5 +1,6 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
+#include "OpcUaStackCore/BuildInTypes/Json.h"
 
 namespace OpcUaStackCore
 {
@@ -21,6 +22,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value)
 	{	
 		is.read((char*)&value, 1);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaBoolean& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 
@@ -53,6 +66,30 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray::SPtr& value)
 	{	
 		value->opcUaBinaryDecode(is);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaBooleanArray& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaBooleanArray& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaBooleanArray::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaBooleanArray::SPtr& value)
+	{
+		return value->decode(pt);
 	}
 
 

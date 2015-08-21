@@ -1,9 +1,33 @@
 #include "unittest.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include <sstream>
 #include <boost/iostreams/stream.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 using namespace OpcUaStackCore;
+
+void writeDocument(boost::property_tree::ptree& pt)
+{
+#if 0
+	std::cout << "READ" << std::endl;
+
+	std::stringstream ss1;
+	boost::property_tree::ptree js;
+	ss1 << "{ \"Value\": \"123\" }";
+	boost::property_tree::json_parser::read_json(ss1, js);
+
+	std::cout << "WRITE:" << std::endl;
+#endif
+
+	boost::property_tree::ptree xx;
+	xx.add_child("AAA", pt);
+
+	std::stringstream ss2;
+	boost::property_tree::json_parser::write_json(ss2, xx);
+	std::cout << "Document: " << ss2.str() << std::endl;
+}
 
 BOOST_AUTO_TEST_SUITE(OpcUaNumber_)
 
@@ -27,6 +51,21 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBoolean)
 	BOOST_REQUIRE(value2 == false);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBoolean_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaBoolean value1, value2;
+
+	value1 = true;
+	OpcUaNumber::encode(pt, value1);
+	OpcUaNumber::decode(pt, value2);
+	BOOST_REQUIRE(value2 == true);
+
+	OpcUaNumber::encode(pt, false);
+	OpcUaNumber::decode(pt, value2);
+	BOOST_REQUIRE(value2 == false);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArray)
 {
 	std::stringstream ss;
@@ -42,6 +81,30 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArray)
 
 	bool result;
 	BOOST_REQUIRE(value2.get(0, result) == true); 
+	BOOST_REQUIRE(result == true);
+	BOOST_REQUIRE(value2.get(1, result) == true);
+	BOOST_REQUIRE(result == false);
+	BOOST_REQUIRE(value2.get(2, result) == true);
+	BOOST_REQUIRE(result == true);
+	BOOST_REQUIRE(value2.get(3, result) == false);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArray_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaBooleanArray value1, value2;
+
+	value1.resize(3);
+	value1.set(0, true);
+	value1.set(1, false);
+	value1.set(2, true);
+
+	OpcUaNumber::encode(pt, value1);
+	writeDocument(pt);
+	OpcUaNumber::decode(pt, value2);
+
+	bool result;
+	BOOST_REQUIRE(value2.get(0, result) == true);
 	BOOST_REQUIRE(result == true);
 	BOOST_REQUIRE(value2.get(1, result) == true);
 	BOOST_REQUIRE(result == false);

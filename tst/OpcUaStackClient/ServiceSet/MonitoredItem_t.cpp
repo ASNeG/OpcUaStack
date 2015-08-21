@@ -9,7 +9,6 @@
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
-
 class MonitoredItemHandler
 : public SubscriptionManagerIf
 {
@@ -33,6 +32,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_)
 	std::cout << "MonitoredItem_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 {
 	SessionTestHandler sessionTestHandler;
@@ -155,5 +155,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_create_delete_sync)
 	client.stop();
 	client.cleanup();
 }
+
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()

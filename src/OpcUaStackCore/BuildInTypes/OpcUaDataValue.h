@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackCore_OpcUaDataValue_h__
 #define __OpcUaStackCore_OpcUaDataValue_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
@@ -52,6 +53,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt, OpcUaBuildInType type, bool isArray);
+
 	  private:
 		OpcUaVariant::SPtr opcUaVariantSPtr_;
 		OpcUaStatusCode opcUaStatusCode_;
@@ -62,7 +66,9 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaDataValueArray : public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >, public ObjectPool<OpcUaDataValueArray> 
+	class OpcUaDataValueArray
+	: public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >
+	, public ObjectPool<OpcUaDataValueArray>
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDataValueArray> SPtr;
