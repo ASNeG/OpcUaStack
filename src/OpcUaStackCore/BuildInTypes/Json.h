@@ -16,19 +16,25 @@ namespace OpcUaStackCore
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaSByte& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaSByte& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaByte& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaByte& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaInt16& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaInt16& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaUInt16& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaUInt16& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaInt32& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaInt32& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaUInt32& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaUInt32& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaInt64& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaInt64& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaUInt64& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaUInt64& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaFloat& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaFloat& value);
+		static bool encode(boost::property_tree::ptree& pt, const OpcUaDouble& value);
+		static bool decode(boost::property_tree::ptree& pt, OpcUaDouble& value);
 	};
-
-#if 0
-	typedef uint8_t OpcUaByte;
-	typedef int16_t OpcUaInt16;
-	typedef uint16_t OpcUaUInt16;
-	typedef int32_t OpcUaInt32;
-	typedef uint32_t OpcUaUInt32;
-	typedef int64_t OpcUaInt64;
-	typedef uint64_t OpcUaUInt64;
-	typedef float OpcUaFloat;
-	typedef double OpcUaDouble;
-#endif
 
 }
 

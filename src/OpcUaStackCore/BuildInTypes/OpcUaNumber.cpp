@@ -155,6 +155,29 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaSByteArray& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaSByteArray& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaSByteArray::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaSByteArray::SPtr& value)
+	{
+		return value->decode(pt);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -173,6 +196,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaByte& value)
 	{	
 		is.read((char*)&value, 1);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaByte& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaByte& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -206,6 +241,30 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaByteArray& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaByteArray& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaByteArray::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaByteArray::SPtr& value)
+	{
+		return value->decode(pt);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -223,6 +282,17 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt16& value)
 	{	
 		ByteOrder<OpcUaInt16>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt16& value)
+	{
+		return Json::encode(pt, value);
+	}
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt16& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -256,6 +326,30 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt16Array& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt16Array& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt16Array::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt16Array::SPtr& value)
+	{
+		return value->decode(pt);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -274,6 +368,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value)
 	{	
 		ByteOrder<OpcUaUInt16>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt16& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt16& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -307,6 +413,30 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt16Array& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt16Array& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt16Array::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt16Array::SPtr& value)
+	{
+		return value->decode(pt);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -325,6 +455,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt32& value)
 	{
 		ByteOrder<OpcUaInt32>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt32& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt32& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -358,6 +500,29 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt32Array& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt32Array& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt32Array::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt32Array::SPtr& value)
+	{
+		return value->decode(pt);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -376,6 +541,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value)
 	{	
 		ByteOrder<OpcUaUInt32>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt32& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt32& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -409,6 +586,30 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt32Array& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt32Array& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt32Array::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt32Array::SPtr& value)
+	{
+		return value->decode(pt);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -427,6 +628,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaInt64& value)
 	{	
 		ByteOrder<OpcUaInt64>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt64& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt64& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -460,6 +673,30 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt64Array& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt64Array& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaInt64Array::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaInt64Array::SPtr& value)
+	{
+		return value->decode(pt);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -479,6 +716,19 @@ namespace OpcUaStackCore
 	{	
 		ByteOrder<OpcUaUInt64>::opcUaBinaryDecodeNumber(is, value);
 	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt64& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt64& value)
+	{
+		return Json::decode(pt, value);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -511,6 +761,30 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt64Array& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt64Array& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaUInt64Array::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaUInt64Array::SPtr& value)
+	{
+		return value->decode(pt);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -529,6 +803,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaFloat& value)
 	{	
 		ByteOrder<OpcUaFloat>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaFloat& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaFloat& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -562,6 +848,29 @@ namespace OpcUaStackCore
 		value->opcUaBinaryDecode(is);
 	}
 
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaFloatArray& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaFloatArray& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaFloatArray::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaFloatArray::SPtr& value)
+	{
+		return value->decode(pt);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -580,6 +889,18 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaDouble& value)
 	{	
 		ByteOrder<OpcUaDouble>::opcUaBinaryDecodeNumber(is, value);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaDouble& value)
+	{
+		return Json::encode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaDouble& value)
+	{
+		return Json::decode(pt, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -611,6 +932,30 @@ namespace OpcUaStackCore
 	OpcUaNumber::opcUaBinaryDecode(std::istream& is, OpcUaDoubleArray::SPtr& value)
 	{	
 		value->opcUaBinaryDecode(is);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaDoubleArray& value)
+	{
+		return value.encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaDoubleArray& value)
+	{
+		return value.decode(pt);
+	}
+
+	bool
+	OpcUaNumber::encode(boost::property_tree::ptree& pt, const OpcUaDoubleArray::SPtr& value)
+	{
+		return value->encode(pt);
+	}
+
+	bool
+	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaDoubleArray::SPtr& value)
+	{
+		return value->decode(pt);
 	}
 
 }
