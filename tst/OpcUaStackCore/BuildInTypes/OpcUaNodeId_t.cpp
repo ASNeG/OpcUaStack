@@ -104,6 +104,22 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaUInt32)
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 0x10000);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaUInt32_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaNodeId value1, value2;
+
+	value1.namespaceIndex(123);
+	value1.nodeId((OpcUaInt32)0x10000);
+
+	value1.encode(pt);
+	value2.decode(pt);
+
+	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaUInt32);
+	BOOST_REQUIRE(value2.namespaceIndex() == 123);
+	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 0x10000);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr)
 {
 	std::string str;
@@ -124,6 +140,26 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr)
 	BOOST_REQUIRE(value2.nodeId<OpcUaString::SPtr>()->value() == "Dies ist ein String");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaString_SPtr_ptree)
+{
+	std::string str;
+	boost::property_tree::ptree pt;
+	OpcUaNodeId value1, value2;
+
+	OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr->value("Dies ist ein String");
+
+	value1.namespaceIndex(123);
+	value1.nodeId(opcUaStringSPtr);
+
+	value1.encode(pt);
+	value2.decode(pt);
+
+	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaString);
+	BOOST_REQUIRE(value2.namespaceIndex() == 123);
+	BOOST_REQUIRE(value2.nodeId<OpcUaString::SPtr>()->value() == "Dies ist ein String");
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr)
 {
 	std::string str;
@@ -138,6 +174,27 @@ BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr)
 	
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
+
+	str = *value2.nodeId<OpcUaGuid::SPtr>();
+	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaGuid);
+	BOOST_REQUIRE(value2.namespaceIndex() == 123);
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaNodeId_type_OpcUaGuid_SPtr_ptree)
+{
+	std::string str;
+	boost::property_tree::ptree pt;
+	OpcUaNodeId value1, value2;
+
+	OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+
+	value1.namespaceIndex(123);
+	value1.nodeId(opcUaGuidSPtr);
+
+	value1.encode(pt);
+	value2.decode(pt);
 
 	str = *value2.nodeId<OpcUaGuid::SPtr>();
 	BOOST_REQUIRE(value2.nodeIdType() == OpcUaBuildInType_OpcUaGuid);

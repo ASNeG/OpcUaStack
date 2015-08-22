@@ -2,10 +2,32 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaExpandedNodeId.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(OpcUaExpandedNodeId_)
+
+void writeDocument3(boost::property_tree::ptree& pt)
+{
+#if 0
+	std::cout << "READ" << std::endl;
+
+	std::stringstream ss1;
+	boost::property_tree::ptree js;
+	ss1 << "{ \"Value\": \"123\" }";
+	boost::property_tree::json_parser::read_json(ss1, js);
+
+	std::cout << "WRITE:" << std::endl;
+#endif
+
+	boost::property_tree::ptree xx;
+	xx.add_child("AAA", pt);
+
+	std::stringstream ss2;
+	boost::property_tree::json_parser::write_json(ss2, xx);
+	std::cout << "Document: " << ss2.str() << std::endl;
+}
 
 BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_)
 {
@@ -48,6 +70,25 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_no)
 	BOOST_REQUIRE(value2.serverIndex() == 0);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_no_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaExpandedNodeId value1, value2;
+
+	value1.namespaceIndex(345);
+	value1.nodeId((OpcUaInt32)11);
+	value1.namespaceUri("URI");
+
+	value1.encode(pt);
+	value2.decode(pt);
+
+	BOOST_REQUIRE(value2.namespaceIndex() == 0);
+	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(value2.namespaceUri().exist() == true);
+	BOOST_REQUIRE(value2.namespaceUri().value() == "URI");
+	BOOST_REQUIRE(value2.serverIndex() == 0);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_no_ServerIndex_yes)
 {
 	std::stringstream ss;
@@ -59,6 +100,25 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_no_ServerIndex_yes)
 	
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
+
+	BOOST_REQUIRE(value2.namespaceIndex() == 345);
+	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(value2.namespaceUri().exist() == false);
+	BOOST_REQUIRE(value2.serverIndex() == 4711);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_no_ServerIndex_yes_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaExpandedNodeId value1, value2;
+
+	value1.namespaceIndex(345);
+	value1.nodeId((OpcUaInt32)11);
+	value1.serverIndex(4711);
+
+	value1.encode(pt);
+	writeDocument3(pt);
+	value2.decode(pt);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 345);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
@@ -78,6 +138,26 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_yes)
 	
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
+
+	BOOST_REQUIRE(value2.namespaceIndex() == 0);
+	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
+	BOOST_REQUIRE(value2.namespaceUri().exist() == true);
+	BOOST_REQUIRE(value2.namespaceUri().value() == "URI");
+	BOOST_REQUIRE(value2.serverIndex() == 4711);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_namespaceUri_yes_ServerIndex_yes_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaExpandedNodeId value1, value2;
+
+	value1.namespaceIndex(345);
+	value1.nodeId((OpcUaInt32)11);
+	value1.namespaceUri("URI");
+	value1.serverIndex(4711);
+
+ 	BOOST_REQUIRE(value1.encode(pt) == true);
+	BOOST_REQUIRE(value2.decode(pt) == true);
 
 	BOOST_REQUIRE(value2.namespaceIndex() == 0);
 	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);

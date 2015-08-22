@@ -2,10 +2,33 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(OpcUaByteString_)
+
+void writeDocument1(boost::property_tree::ptree& pt)
+{
+#if 0
+	std::cout << "READ" << std::endl;
+
+	std::stringstream ss1;
+	boost::property_tree::ptree js;
+	ss1 << "{ \"Value\": \"123\" }";
+	boost::property_tree::json_parser::read_json(ss1, js);
+
+	std::cout << "WRITE:" << std::endl;
+#endif
+
+	boost::property_tree::ptree xx;
+	xx.add_child("AAA", pt);
+
+	std::stringstream ss2;
+	boost::property_tree::json_parser::write_json(ss2, xx);
+	std::cout << "Document: " << ss2.str() << std::endl;
+}
 
 BOOST_AUTO_TEST_CASE(OpcUaByteString_)
 {
@@ -43,6 +66,22 @@ BOOST_AUTO_TEST_CASE(OpcUaString_string)
 	value1 = "ABC";
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.exist() == true);
+	str = value2;
+	BOOST_REQUIRE(str == "ABC");
+	BOOST_REQUIRE(str.length() == 3);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaString_string_ptree)
+{
+	std::string str;
+	boost::property_tree::ptree pt;
+	OpcUaByteString value1, value2;
+
+	value1 = "ABC";
+	value1.encode(pt);
+	writeDocument1(pt);
+	value2.decode(pt);
 	BOOST_REQUIRE(value2.exist() == true);
 	str = value2;
 	BOOST_REQUIRE(str == "ABC");

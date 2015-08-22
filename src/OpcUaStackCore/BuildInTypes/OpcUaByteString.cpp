@@ -185,6 +185,36 @@ namespace OpcUaStackCore
 		is.read((char*)value_, length_);
 	}
 
+	bool
+	OpcUaByteString::encode(boost::property_tree::ptree& pt) const
+	{
+		std::string hexString  = "";
+
+		if (length_ > 1) {
+			OpcUaStackCore::byteSequenceToHexString(value_, length_, hexString);
+		}
+
+		pt.put_value<std::string>(hexString);
+
+		return false;
+	}
+
+	bool
+	OpcUaByteString::decode(boost::property_tree::ptree& pt)
+	{
+		std::string hexString;
+		hexString = pt.get_value<std::string>();
+
+		if (hexString.length() < 1) return true;
+		if (hexString.length() % 2 != 0) return false;
+
+		length_ = hexString.length()/2;
+		value_ = (OpcUaByte*)malloc(length_);
+		OpcUaStackCore::hexStringToByteSequence(hexString, value_);
+
+		return false;
+	}
+
 	std::string 
 	OpcUaByteString::toHexString(void) const
 	{

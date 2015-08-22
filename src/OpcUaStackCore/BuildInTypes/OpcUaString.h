@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include <boost/property_tree/ptree.hpp>
 
 namespace OpcUaStackCore
 {
@@ -41,6 +42,8 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 
 	  private:
 		bool exist_;

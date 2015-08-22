@@ -164,4 +164,36 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, data3_);
 		is.read((char*)data4_, sizeof(data4_));
 	}
+
+	bool
+	OpcUaGuid::encode(boost::property_tree::ptree& pt) const
+	{
+		std::string str1, str2, str3, str4, str5;
+
+		byteSequenceToHexString((uint8_t*)&data1_, 4, str1);
+		byteSequenceToHexString((uint8_t*)&data2_, 2, str2);
+		byteSequenceToHexString((uint8_t*)&data3_, 2, str3);
+		byteSequenceToHexString(data4_, 2, str4);
+		byteSequenceToHexString(&data4_[2], 6, str5);
+
+		str1.append("-").append(str2).append("-").append(str3)
+			.append("-").append(str4).append("-").append(str5);
+		pt.put_value<std::string>(str1);
+		return true;
+	}
+
+	bool
+	OpcUaGuid::decode(boost::property_tree::ptree& pt)
+	{
+		std::string guidString;
+		guidString = pt.get_value<std::string>();
+		if (guidString.length() != 36) return false;
+		hexStringToByteSequence(guidString.substr(0,8), (uint8_t*)&data1_);
+		hexStringToByteSequence(guidString.substr(9,4), (uint8_t*)&data2_);
+		hexStringToByteSequence(guidString.substr(14,4), (uint8_t*)&data3_);
+		hexStringToByteSequence(guidString.substr(19,4), data4_);
+		hexStringToByteSequence(guidString.substr(24,12), &data4_[2]);
+		return true;
+	}
+
 }

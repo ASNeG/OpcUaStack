@@ -119,4 +119,58 @@ namespace OpcUaStackCore
 		if ((expandedEncodingFlag_ & 0x40) == 0x40) OpcUaNumber::opcUaBinaryDecode(is, serverIndex_);
 	}
 
+	bool
+	OpcUaExpandedNodeId::encode(boost::property_tree::ptree& pt) const
+	{
+		boost::property_tree::ptree nodeId;
+		if (!OpcUaNodeIdBase::encode(nodeId)) return false;
+		pt.put_child("NodeId", nodeId);
+
+		if (namespaceUri_.size() > 0) {
+			boost::property_tree::ptree namespaceUri;
+			if (!namespaceUri_.encode(namespaceUri)) return false;
+			pt.put_child("NamespaceUri", namespaceUri);
+		}
+
+		if (serverIndex_ != 0) {
+			boost::property_tree::ptree serverIndex;
+			if (!Json::encode(serverIndex, serverIndex_)) return false;
+			pt.put_child("ServerIndex", serverIndex);
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaExpandedNodeId::decode(boost::property_tree::ptree& pt)
+	{
+		// read nodeid
+		boost::property_tree::ptree nodeId;
+		nodeId = pt.get_child("NodeId");
+		if (!OpcUaNodeIdBase::decode(nodeId)) return false;
+
+		// namespace uri
+		boost::optional<boost::property_tree::ptree&> namespaceUri;
+		namespaceUri = pt.get_child_optional("NamespaceUri");
+		if (!namespaceUri) {
+			// nothing todo
+		}
+		else {
+			namespaceIndex(0);
+			if (!namespaceUri_.decode(*namespaceUri)) return false;
+		}
+
+		// server index
+		boost::optional<boost::property_tree::ptree&> serverIndex;
+		serverIndex = pt.get_child_optional("ServerIndex");
+		if (!serverIndex) {
+			serverIndex_ = 0;
+		}
+		else {
+			if (!Json::decode(*serverIndex, serverIndex_)) return false;
+		}
+
+		return true;
+	}
+
 }

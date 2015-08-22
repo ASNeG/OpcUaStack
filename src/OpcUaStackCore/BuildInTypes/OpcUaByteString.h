@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackCore_OpcUaByteString_h__
 #define __OpcUaStackCore_OpcUaByteString_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -43,6 +44,8 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 
 	  private:
 		OpcUaInt32 length_;

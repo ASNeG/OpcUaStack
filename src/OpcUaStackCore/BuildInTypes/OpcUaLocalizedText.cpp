@@ -149,4 +149,45 @@ namespace OpcUaStackCore
 		}
 	}
 
+	bool
+	OpcUaLocalizedText::encode(boost::property_tree::ptree& pt) const
+	{
+		if (locale_.exist()) {
+			boost::property_tree::ptree locale;
+			if (!locale_.encode(locale)) return false;
+			pt.add_child("Locale", locale);
+		}
+
+		if (text_.exist()) {
+			boost::property_tree::ptree text;
+			if (!text_.encode(text)) return false;
+			pt.add_child("Text", text);
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaLocalizedText::decode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> locale;
+		locale = pt.get_child_optional("Locale");
+		if (!locale) {
+			// do nothing
+		}
+		else {
+			if (!locale_.decode(*locale)) return false;
+		}
+
+		boost::optional<boost::property_tree::ptree&> text;
+		text = pt.get_child_optional("Text");
+		if (!text) {
+			// do nothing
+		}
+		else {
+			if (!text_.decode(*text)) return false;
+		}
+		return true;
+	}
+
 };

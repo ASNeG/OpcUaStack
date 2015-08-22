@@ -165,4 +165,19 @@ namespace OpcUaStackCore
 		} while (length > 0);
 	}
 
+	bool
+	OpcUaString::encode(boost::property_tree::ptree& pt) const
+	{
+		if (exist_) pt.put_value<std::string>(value_);
+		return true;
+	}
+
+	bool
+	OpcUaString::decode(boost::property_tree::ptree& pt)
+	{
+		value_ = pt.get_value<std::string>();
+		exist_ = true;
+		return true;
+	}
+
 }

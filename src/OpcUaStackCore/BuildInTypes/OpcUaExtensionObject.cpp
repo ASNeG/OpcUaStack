@@ -100,6 +100,29 @@ namespace OpcUaStackCore
 			body_.opcUaBinaryDecode(is);
 		}
 	}
-
 	
+	bool
+	OpcUaExtensionObject::encode(boost::property_tree::ptree& pt) const
+	{
+		boost::property_tree::ptree typeId;
+		if (!typeId_.encode(typeId)) return false;
+		pt.put_child("TypeId", typeId);
+
+		if (!body_.exist()) return false;
+		if (!body_.encode(pt)) return false;
+		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::decode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> typeId;
+		typeId = pt.get_child_optional("TypeId");
+		if (!typeId) return false;
+		if (!typeId_.decode(*typeId)) return false;
+
+		if (!body_.decode(pt)) return false;
+		return true;
+	}
+
 };

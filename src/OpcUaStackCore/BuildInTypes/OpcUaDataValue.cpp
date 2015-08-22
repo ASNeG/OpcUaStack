@@ -270,14 +270,11 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDataValue::encode(boost::property_tree::ptree& pt) const
 	{
-#if 0
 		if (opcUaVariantSPtr_.get() != NULL) {
 			boost::property_tree::ptree ptVariant;
 			if (!opcUaVariantSPtr_->encode(ptVariant)) return false;
-			pt.put("Value", ptVariant);
+			pt.add_child("Value", ptVariant);
 		}
-#endif
-
 		if (opcUaStatusCode_ != 0) {
 			boost::property_tree::ptree ptStatusCode;
 			if (!OpcUaNumber::encode(ptStatusCode, (OpcUaUInt32)opcUaStatusCode_)) return false;
@@ -310,6 +307,51 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDataValue::decode(boost::property_tree::ptree& pt, OpcUaBuildInType type, bool isArray)
 	{
+		// Value
+		boost::optional<boost::property_tree::ptree&> value;
+		value = pt.get_child_optional("Value");
+		if (value) {
+			opcUaVariantSPtr_ = OpcUaVariant::construct();
+			if (!opcUaVariantSPtr_->decode(*value, type, isArray)) return false;
+		}
+
+		// StatusCode
+		boost::optional<boost::property_tree::ptree&> statusCode;
+		statusCode = pt.get_child_optional("StatusCode");
+		if (statusCode) {
+			OpcUaUInt32 sc;
+			if (!Json::decode(*statusCode, sc)) return false;
+			opcUaStatusCode_ = (OpcUaStatusCode)sc;
+		}
+
+		// SourceTimestamp
+		boost::optional<boost::property_tree::ptree&> sourceTimestamp;
+		sourceTimestamp = pt.get_child_optional("SourceTimestamp");
+		if (sourceTimestamp) {
+			if (!sourceTimestamp_.decode(*sourceTimestamp)) return false;
+		}
+
+		// SourcePicoseconds
+		boost::optional<boost::property_tree::ptree&> SourcePicoseconds;
+		SourcePicoseconds = pt.get_child_optional("SourcePicoseconds");
+		if (SourcePicoseconds) {
+			if (!Json::decode(*SourcePicoseconds, sourcePicoseconds_)) return false;
+		}
+
+		// Servertimestamp
+		boost::optional<boost::property_tree::ptree&> serverTimestamp;
+		serverTimestamp = pt.get_child_optional("ServerTimestamp");
+		if (serverTimestamp) {
+			if (!sourceTimestamp_.decode(*serverTimestamp)) return false;
+		}
+
+		// ServerPicoseconds
+		boost::optional<boost::property_tree::ptree&> ServerPicoseconds;
+		ServerPicoseconds = pt.get_child_optional("ServerPicoseconds");
+		if (ServerPicoseconds) {
+			if (!Json::decode(*ServerPicoseconds, serverPicoseconds_)) return false;
+		}
+
 		return true;
 	}
 

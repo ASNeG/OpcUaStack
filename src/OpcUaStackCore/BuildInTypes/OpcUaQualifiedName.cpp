@@ -1,5 +1,6 @@
 #include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
+#include "OpcUaStackCore/BuildInTypes/Json.h"
 
 namespace OpcUaStackCore
 {
@@ -173,6 +174,40 @@ namespace OpcUaStackCore
 	{
 		OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
 		name_.opcUaBinaryDecode(is);
+	}
+
+	bool
+	OpcUaQualifiedName::encode(boost::property_tree::ptree& pt) const
+	{
+		boost::property_tree::ptree namespaceIndex;
+		if (!Json::encode(namespaceIndex, namespaceIndex_)) return false;
+		pt.put_child("NamespaceIndex", namespaceIndex);
+
+		boost::property_tree::ptree name;
+		if (!name_.encode(name)) return false;
+		pt.put_child("Name", name);
+
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::decode(boost::property_tree::ptree& pt)
+	{
+		boost::optional<boost::property_tree::ptree&> namespaceIndex;
+		namespaceIndex = pt.get_child_optional("NamespaceIndex");
+		if (!namespaceIndex) {
+			namespaceIndex_ = 0;
+		}
+		else {
+			if (!Json::decode(*namespaceIndex, namespaceIndex_)) return false;
+		}
+
+		boost::optional<boost::property_tree::ptree&> name;
+		name = pt.get_child_optional("Name");
+		if (!name) return false;
+		if (!name_.decode(*name)) return false;
+
+		return true;
 	}
 
 }

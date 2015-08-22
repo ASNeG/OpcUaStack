@@ -46,6 +46,18 @@ BOOST_AUTO_TEST_CASE(OpcUaString_string)
 	BOOST_REQUIRE(value2.value() == "ABC");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaString_string_ptree)
+{
+	boost::property_tree::ptree pt;
+	OpcUaString value1, value2;
+
+	value1.value("ABC");
+	value1.encode(pt);
+	value2.decode(pt);
+	BOOST_REQUIRE(value2.exist() == true);
+	BOOST_REQUIRE(value2.value() == "ABC");
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaString_op_eq)
 {
 	std::stringstream ss;

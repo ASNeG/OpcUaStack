@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackCore_OpcUaExpandedNodeId_h__
 #define __OpcUaStackCore_OpcUaExpandedNodeId_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
@@ -10,7 +11,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaExpandedNodeId : public ObjectPool<OpcUaExpandedNodeId>, public OpcUaNodeIdBase
+	class DLLEXPORT OpcUaExpandedNodeId
+	: public ObjectPool<OpcUaExpandedNodeId>
+	, public OpcUaNodeIdBase
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaExpandedNodeId> SPtr;
@@ -39,6 +42,8 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 
 	  private:
 		OpcUaByte expandedEncodingFlag_;
@@ -47,7 +52,9 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaExpandedNodeIdArray : public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >, public ObjectPool<OpcUaExpandedNodeId> 
+	class OpcUaExpandedNodeIdArray
+	: public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >
+	, public ObjectPool<OpcUaExpandedNodeId>
 	{
   	  public:
 		boost::shared_ptr<OpcUaExpandedNodeIdArray> SPtr;

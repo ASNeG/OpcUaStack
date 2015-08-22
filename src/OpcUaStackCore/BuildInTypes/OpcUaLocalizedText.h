@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackCore_OpcUaLocalizedText_h__
 #define __OpcUaStackCore_OpcUaLocalizedText_h__
 
+#include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
@@ -39,6 +40,8 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool encode(boost::property_tree::ptree& pt) const;
+		bool decode(boost::property_tree::ptree& pt);
 
 	  private:
 		OpcUaString locale_;

@@ -28,4 +28,16 @@ namespace OpcUaStackCore
 	OpcUaXmlElement::opcUaBinaryDecode(std::istream& is)
 	{
 	}
+
+	bool
+	OpcUaXmlElement::encode(boost::property_tree::ptree& pt) const
+	{
+		return true;
+	}
+
+	bool
+	OpcUaXmlElement::decode(boost::property_tree::ptree& pt)
+	{
+		return true;
+	}
 }
