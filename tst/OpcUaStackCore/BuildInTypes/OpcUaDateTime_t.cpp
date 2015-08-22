@@ -71,6 +71,22 @@ BOOST_AUTO_TEST_CASE(OpcUaDateTime_in_range)
 	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "20140506T102013.123456");
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaDateTime_in_range_ptree)
+{
+	boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
+	boost::posix_time::ptime ptime2;
+
+	boost::property_tree::ptree pt;
+	OpcUaDateTime value1, value2;
+
+	value1.dateTime(ptime1);
+	value1.encode(pt);
+	value2.decode(pt);
+
+	ptime2 = value2.dateTime();
+	BOOST_REQUIRE(boost::posix_time::to_iso_string(ptime2) == "20140506T102013.123456");
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaDateTime_copyTo)
 {
 	boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");

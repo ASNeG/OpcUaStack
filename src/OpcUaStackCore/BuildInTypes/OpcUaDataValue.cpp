@@ -276,29 +276,33 @@ namespace OpcUaStackCore
 			if (!opcUaVariantSPtr_->encode(ptVariant)) return false;
 			pt.put("Value", ptVariant);
 		}
+#endif
 
 		if (opcUaStatusCode_ != 0) {
 			boost::property_tree::ptree ptStatusCode;
-			if (!OpcUaNumber::encode(ptStatusCode,opcUaStatusCode_)) return false;
-			pt.put("StatusCode", ptStatusCode);
+			if (!OpcUaNumber::encode(ptStatusCode, (OpcUaUInt32)opcUaStatusCode_)) return false;
+			pt.add_child("StatusCode", ptStatusCode);
 		}
 		if (sourceTimestamp_.exist()) {
 			boost::property_tree::ptree ptSourceTimestamp;
 			if (!sourceTimestamp_.encode(ptSourceTimestamp)) return false;
-			pt.put("SourceTimestamp", ptSourceTimestamp);
+			pt.add_child("SourceTimestamp", ptSourceTimestamp);
 		}
 		if (sourcePicoseconds_ != 0) {
-			OpcUaNumber::opcUaBinaryEncode(os,sourcePicoseconds_);
+			boost::property_tree::ptree ptSourcePicoseconds;
+			if (!OpcUaNumber::encode(ptSourcePicoseconds, (OpcUaInt16)sourcePicoseconds_)) return false;
+			pt.add_child("SourcePicoseconds", ptSourcePicoseconds);
 		}
 		if (serverTimestamp_.exist()) {
 			boost::property_tree::ptree ptServerTimestamp;
 			if (!serverTimestamp_.encode(ptServerTimestamp)) return false;
-			pt.put("ServerTimestamp", ptServerTimestamp);
+			pt.add_child("ServerTimestamp", ptServerTimestamp);
 		}
 		if (serverPicoseconds_ != 0) {
-			OpcUaNumber::opcUaBinaryEncode(os,serverPicoseconds_);
+			boost::property_tree::ptree ptServerPicoseconds;
+			if (!OpcUaNumber::encode(ptServerPicoseconds, (OpcUaInt16)serverPicoseconds_)) return false;;
+			pt.add_child("ServerPicoseconds", ptServerPicoseconds);
 		}
-#endif
 
 		return true;
 	}
