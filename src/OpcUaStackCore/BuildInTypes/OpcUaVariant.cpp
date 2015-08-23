@@ -1164,7 +1164,9 @@ namespace OpcUaStackCore
 			case  OpcUaBuildInType_OpcUaInt32:
 			{
 				OpcUaInt32 opcUaInt32;
-				if (!Json::decode(pt, opcUaInt32)) return false;
+				if (!Json::decode(pt, opcUaInt32)) {
+					return false;
+				}
 				opcUaVariantValue = opcUaInt32;
 				variantValue_ = opcUaVariantValue;
 				break;
@@ -1673,7 +1675,7 @@ namespace OpcUaStackCore
 		}
 
 		arrayDimensionsVec_.clear();
-		return false;
+		return true;
 	}
 
 };

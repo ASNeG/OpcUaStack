@@ -1,7 +1,19 @@
 #include "OpcUaStackCore/BuildInTypes/Json.h"
+#include <boost/property_tree/json_parser.hpp>
 
 namespace OpcUaStackCore
 {
+
+	std::string
+	Json::toString(boost::property_tree::ptree& pt)
+	{
+		std::stringstream ss;
+
+		boost::property_tree::ptree document;
+		document.add_child("Document", pt);
+		boost::property_tree::json_parser::write_json(ss, document);
+		return ss.str();
+	}
 
 	bool
 	Json::encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value)
