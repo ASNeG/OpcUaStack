@@ -4,15 +4,45 @@
 namespace OpcUaStackCore
 {
 
-	std::string
-	Json::toString(boost::property_tree::ptree& pt)
+	bool
+	Json::toDocumentString(boost::property_tree::ptree& pt, std::string& string)
 	{
 		std::stringstream ss;
 
 		boost::property_tree::ptree document;
 		document.add_child("Document", pt);
 		boost::property_tree::json_parser::write_json(ss, document);
-		return ss.str();
+		string = ss.str();
+		return true;
+	}
+
+	bool
+	Json::toString(boost::property_tree::ptree& pt, std::string& string)
+	{
+		std::stringstream ss;
+
+		//boost::property_tree::ptree document;
+		//document.add_child("Document", pt);
+		boost::property_tree::json_parser::write_json(ss, pt);
+		string = ss.str();
+		return true;
+	}
+
+	bool
+	Json::fromString(const std::string& string, boost::property_tree::ptree& pt)
+	{
+		std::stringstream ss;
+		ss.str(string);
+
+		try {
+			boost::property_tree::json_parser::read_json(ss, pt);
+		}
+		catch (...)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	bool

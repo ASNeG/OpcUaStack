@@ -12,7 +12,9 @@ namespace OpcUaStackCore
 	class DLLEXPORT Json
 	{
 	  public:
-		static std::string toString(boost::property_tree::ptree& pt);
+		static bool toDocumentString(boost::property_tree::ptree& pt, std::string& string);
+		static bool toString(boost::property_tree::ptree& pt, std::string& string);
+		static bool fromString(const std::string& string, boost::property_tree::ptree& pt);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaSByte& value);
