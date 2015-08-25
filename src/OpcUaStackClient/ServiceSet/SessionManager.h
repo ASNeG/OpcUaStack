@@ -32,6 +32,7 @@ namespace OpcUaStackClient
 			bool newSecureChannel = false
 		);
 		void deleteSession(void);
+		IOService* ioService(void);
 
 		//- SessionManagerIf --------------------------------------------------
 		void connectToSecureChannel(void); 
