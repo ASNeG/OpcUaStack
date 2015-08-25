@@ -146,7 +146,7 @@ namespace OpcUaStackCore
 
 		  static bool encode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
 		  {
-			  return value->opcUaBinaryEncode(pt);
+			  return value->encode(pt);
 		  }
 
 		  static bool decode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
