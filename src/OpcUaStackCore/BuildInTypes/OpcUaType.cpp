@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaNodeId: return "NodeId";
 			case OpcUaBuildInType_OpcUaExpandedNodeId: return "ExpandedNodeId";
 			case OpcUaBuildInType_OpcUaStatusCode: return "StatusCode";
-			case OpcUaBuildInType_OpcUaQualifiedName: return "QulifiedName";
+			case OpcUaBuildInType_OpcUaQualifiedName: return "QualifiedName";
 			case OpcUaBuildInType_OpcUaLocalizedText: return "LocalizedText";
 			case OpcUaBuildInType_OpcUaExtensionObject: return "ExtensionObject";
 			case OpcUaBuildInType_OpcUaDataValue: return "DataValue";
