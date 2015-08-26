@@ -196,7 +196,7 @@ namespace OpcUaStackCore
 
 		pt.put_value<std::string>(hexString);
 
-		return false;
+		return true;
 	}
 
 	bool
@@ -212,7 +212,7 @@ namespace OpcUaStackCore
 		value_ = (OpcUaByte*)malloc(length_);
 		OpcUaStackCore::hexStringToByteSequence(hexString, value_);
 
-		return false;
+		return true;
 	}
 
 	std::string 
