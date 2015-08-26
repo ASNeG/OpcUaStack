@@ -2,17 +2,22 @@
 #define __OpcUaStackCore_IOService_h__
 
 #include <vector>
+#include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/condition.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT IOService
+	: public ObjectPool<IOService>
 	{
 	  public:
+		typedef boost::shared_ptr<IOService> SPtr;
+
 		IOService();
 		virtual ~IOService();
 
