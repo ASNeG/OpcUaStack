@@ -2,6 +2,7 @@
 #define __OpcUaStackCore_IOThread_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 
@@ -9,8 +10,11 @@ namespace OpcUaStackCore
 {
 
 	class IOThread
+	: public ObjectPool<IOThread>
 	{
 	  public:
+		typedef boost::shared_ptr<IOThread> SPtr;
+
 		IOThread(void);
 		~IOThread(void);
 
