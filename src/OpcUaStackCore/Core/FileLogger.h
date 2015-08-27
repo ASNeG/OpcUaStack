@@ -12,7 +12,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		FileLogger(void);
-		~FileLogger(void);
+		virtual ~FileLogger(void);
 
 		static void logFileName(const std::string logFileName);
 		static std::string logFileName(void);

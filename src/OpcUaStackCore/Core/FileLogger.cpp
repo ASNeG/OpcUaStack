@@ -1,3 +1,4 @@
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include <iostream>
 
@@ -49,6 +50,7 @@ namespace OpcUaStackCore
 	FileLogger::logout(LogLevel logLevel, const std::string& message)
 	{
 		if (!isOpen_) openLogFile();
+		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
 		std::string logLevelString = "Unknown"; 
 
 		switch (logLevel)
@@ -58,13 +60,14 @@ namespace OpcUaStackCore
 			case Info: logLevelString = "INF"; break;
 			case Debug: logLevelString = "DBG"; break;
 			case Trace: logLevelString = "TRC"; break;
+			default: logLevelString = "UKN"; break;
 		}
 
 		if (isOpen_) {
-			ofStream_ << logLevelString << " " << message << std::endl;
+			ofStream_ << now << " " << logLevelString << " " << message << std::endl;
 		}
 		else {
-			std::cout << logLevelString << " " << message << std::endl;
+			std::cout << now << " " << logLevelString << " " << message << std::endl;
 		}
 
 		return true;
