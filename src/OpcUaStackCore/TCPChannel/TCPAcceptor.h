@@ -21,6 +21,7 @@ namespace OpcUaStackCore
 		~TCPAcceptor(void);
 
 		void listen(void);
+		void listen(uint32_t maxConnections);
 
 		template<typename HANDLER>
 		  void async_accept(boost::asio::ip::tcp::socket& socket, HANDLER handler)

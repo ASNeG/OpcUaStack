@@ -1,3 +1,4 @@
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 
 namespace OpcUaStackCore
@@ -351,6 +352,7 @@ namespace OpcUaStackCore
 	, timer_(nullptr)
 	, running_(false)
 	, ownSPtr_()
+	, debug_(false)
 	{
 		slotArray5_.next(nullptr);
 		slotArray4_.next(&slotArray5_);
@@ -421,7 +423,10 @@ namespace OpcUaStackCore
 	void 
 	SlotTimer::loop(const boost::system::error_code& error)
 	{
+		if (debug_) Log(Debug, "slot timer loop");
+
 		if (error) {
+			Log(Error, "slot timer error");
 			running_ = false;
 			ownSPtr_.reset();
 			return;

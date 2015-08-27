@@ -38,6 +38,12 @@ namespace OpcUaStackCore
 	}
 
 	void
+	TCPAcceptor::listen(uint32_t maxConnections)
+	{
+		acceptor_.listen(maxConnections);
+	}
+
+	void
 	TCPAcceptor::cancel(void)
 	{
 		acceptor_.cancel();

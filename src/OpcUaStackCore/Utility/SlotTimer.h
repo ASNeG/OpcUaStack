@@ -109,6 +109,7 @@ namespace OpcUaStackCore
 	  private:
 		void loop(const boost::system::error_code& error);
 
+		bool debug_;
 		SlotArray slotArray1_;
 		SlotArray slotArray2_;
 		SlotArray slotArray3_;
