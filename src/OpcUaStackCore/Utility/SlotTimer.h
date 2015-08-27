@@ -20,6 +20,7 @@ namespace OpcUaStackCore
 
 		Callback& callback(void);
 
+		void expireFromNow(uint32_t msecInterval);
 		void expireTime(boost::posix_time::ptime expireTime, uint32_t msecInterval);
 		void expireTime(boost::posix_time::ptime expireTime);
 		void interval(uint32_t msecInterval);

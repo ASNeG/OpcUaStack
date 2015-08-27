@@ -28,6 +28,13 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	SlotTimerElement::expireFromNow(uint32_t msecInterval)
+	{
+		expireTime_ = boost::posix_time::microsec_clock::local_time() + boost::posix_time::millisec(msecInterval);
+		interval_ = 0;
+	}
+
+	void
 	SlotTimerElement::expireTime(boost::posix_time::ptime expireTime, uint32_t msecInterval)
 	{
 		expireTime_ = expireTime;
