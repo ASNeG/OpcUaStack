@@ -128,7 +128,7 @@ namespace OpcUaStackServer
 		// get node reference
 		getNodeReferenceResponse->nodeReferenceArray()->resize(getNodeReferenceRequest->nodes()->size());
 		for (uint32_t idx = 0; idx < getNodeReferenceRequest->nodes()->size(); idx++) {
-			NodeReferenceApplication::SPtr nodeReference = NodeReferenceApplication::construct();
+			NodeReferenceApplication::SPtr nodeReference(new NodeReferenceApplication()); // FIXME: use construct
 			nodeReference->statusCode(Success);
 			getNodeReferenceResponse->nodeReferenceArray()->set(idx, nodeReference);
 

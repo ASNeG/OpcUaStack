@@ -2,6 +2,7 @@
 #define __OpcUaStackServer_SessionManagerIf_h__
 
 #include "boost/asio.hpp"
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelTransaction.h"
 
@@ -10,7 +11,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class SessionManagerIf
+	class DLLEXPORT SessionManagerIf
 	{ 
 	  public:
 		virtual ~SessionManagerIf(void) {}

@@ -1,6 +1,7 @@
 #ifndef __OpcUaStackClient_SubscriptionManager_h__
 #define __OpcUaStackClient_SubscriptionManager_h__
 
+#include <set>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManagerIf.h"
