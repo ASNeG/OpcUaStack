@@ -2,6 +2,7 @@
 #define __OpcUaStackCore_IOThread_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
@@ -9,7 +10,7 @@
 namespace OpcUaStackCore
 {
 
-	class IOThread
+	class DLLEXPORT IOThread
 	: public ObjectPool<IOThread>
 	{
 	  public:
