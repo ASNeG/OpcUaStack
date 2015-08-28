@@ -1,4 +1,5 @@
 #include <boost/thread.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "BuildConfig.h"
 #include "OpcUaServer/Server/ServerApplication.h"
@@ -29,6 +30,20 @@ namespace OpcUaServer
 		serviceName_ = serviceName;
 		installationPath_ = Environment::getInstallationPath(BIN_DIR);
 		
+		// if we are on windows the installation directory of a component can
+		// differ from the installation directory of the opc ua server. In this
+		// case, we must determine the installation directory of the component.
+		boost::filesystem::path installDirectory(installationPath_);
+		if (installDirectory.has_leaf()) {
+			installDirectory.remove_leaf();
+			installDirectory /= serviceName_;
+
+			if (boost::filesystem::exists(installDirectory)) {
+				installationPath_ = installDirectory.string();
+			}
+		}
+
+		// determine the path of the configuration file
 		if (argc == 1) {
 		    configFileName_ = installationPath_
 				+ std::string("/") + std::string(CONF_DIR)
@@ -38,8 +53,6 @@ namespace OpcUaServer
 		else if (argc == 2) {
 			configFileName_ = argv[1];
 		}
-
-		std::cout << ".,," << configFileName_ << std::endl;
 	}
 
 	bool 
