@@ -595,7 +595,7 @@ namespace OpcUaServerApplicationDemo
 	  		OpcUaDataValue::SPtr dataValue = it1->second;
 	  		*nodeId = it1->first;
 
-	  		std::cout << "update " << *nodeId << std::endl;
+	  		//std::cout << "update " << *nodeId << std::endl;
 
 	  		BaseNodeClassWMap::iterator it2;
 	  		it2 = baseNodeClassWMap_.find(*nodeId);

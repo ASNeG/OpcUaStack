@@ -16,13 +16,19 @@
  */
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include <iostream>
 
 namespace OpcUaStackCore
 {
 
+	uint32_t FileLogger::counter_ = 0;
 	std::string FileLogger::logFileName_ = "trace.log";
+	uint32_t FileLogger::maxLogFileNumber_ = 5;
+	uint32_t FileLogger::maxLogFileSize_ = 5000000;
+	LogLevel FileLogger::logLevel_ = Trace;
+	boost::mutex FileLogger::mutex_;
 
 	FileLogger::FileLogger(void)
 	: isOpen_(false)
@@ -47,6 +53,42 @@ namespace OpcUaStackCore
 		return logFileName_;
 	}
 
+	void
+	FileLogger::maxLogFileNumber(const uint32_t maxLogFileNumber)
+	{
+		maxLogFileNumber_ = maxLogFileNumber;
+	}
+
+	uint32_t
+	FileLogger::maxLogFileNumber(void)
+	{
+		return maxLogFileNumber_;
+	}
+
+	void
+	FileLogger::maxLogFileSize(const uint32_t maxLogFileSize)
+	{
+		maxLogFileSize_ = maxLogFileSize;
+	}
+
+	uint32_t
+	FileLogger::maxLogFileSize(void)
+	{
+		return maxLogFileSize_;
+	}
+
+	void
+	FileLogger::logLevel(const LogLevel& logLevel)
+	{
+		//logLevel_ = logLevel;
+	}
+
+	LogLevel
+	FileLogger::logLevel(void)
+	{
+		return logLevel_;
+	}
+
 	bool
 	FileLogger::openLogFile(void)
 	{
@@ -63,12 +105,66 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	void
+	FileLogger::checkLogFile(void)
+	{
+		boost::filesystem::path logFile(logFileName());
+		uint32_t logFileSize = boost::filesystem::file_size(logFile);
+		if (logFileSize < maxLogFileSize_) return;
+
+		// close log file
+		closeLogFile();
+
+		// remove oldest log file if necessary
+		std::stringstream oldestLogFileName;
+		oldestLogFileName << logFileName() << maxLogFileNumber_;
+		boost::filesystem::remove(boost::filesystem::path(oldestLogFileName.str()));
+
+		for (uint32_t idx = maxLogFileNumber_- 1; idx > 0; idx--) {
+			std::stringstream srcLogFileName;
+			std::stringstream dstLogFileName;
+
+			srcLogFileName << logFileName() << idx;
+			dstLogFileName << logFileName() << idx+1;
+
+			if (boost::filesystem::exists(boost::filesystem::path(srcLogFileName.str()))) {
+				boost::filesystem::rename(
+					boost::filesystem::path(srcLogFileName.str()),
+					boost::filesystem::path(dstLogFileName.str())
+				);
+			}
+		}
+
+		std::stringstream srcLogFileName;
+		std::stringstream dstLogFileName;
+
+		srcLogFileName << logFileName();
+		dstLogFileName << logFileName() << "1";
+
+		if (boost::filesystem::exists(boost::filesystem::path(srcLogFileName.str()))) {
+			boost::filesystem::rename(
+				boost::filesystem::path(srcLogFileName.str()),
+				boost::filesystem::path(dstLogFileName.str())
+			);
+		}
+
+		openLogFile();
+	}
+
 	bool 
 	FileLogger::logout(LogLevel logLevel, const std::string& message)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		if (!isOpen_) openLogFile();
 		boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
 		std::string logLevelString = "Unknown"; 
+
+		counter_++;
+		if (counter_ > 500) {
+			counter_ = 0;
+			checkLogFile();
+		}
 
 		switch (logLevel)
 		{

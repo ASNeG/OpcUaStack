@@ -19,13 +19,15 @@
 #define __OpcUaStackCore_Filelogger_h__
 
 #include <boost/filesystem/fstream.hpp>
+#include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT FileLogger : public LogIf
+	class DLLEXPORT FileLogger
+	: public LogIf
 	{
 	  public:
 		FileLogger(void);
@@ -33,6 +35,12 @@ namespace OpcUaStackCore
 
 		static void logFileName(const std::string logFileName);
 		static std::string logFileName(void);
+		static void maxLogFileNumber(const uint32_t maxLogFileNumber);
+		static uint32_t maxLogFileNumber(void);
+		static void maxLogFileSize(const uint32_t maxLogFileSize);
+		static uint32_t maxLogFileSize(void);
+		static void logLevel(const LogLevel& logLevel);
+		static LogLevel logLevel(void);
 
 		//- LogIf -------------------------------------------------------------
 		bool logout(LogLevel logLevel, const std::string& message);
@@ -41,7 +49,14 @@ namespace OpcUaStackCore
 	  private:
 		bool openLogFile(void);
 		bool closeLogFile(void);
+		void checkLogFile(void);
+
+		static boost::mutex mutex_;
+		static uint32_t counter_;
 		static std::string logFileName_;
+		static uint32_t maxLogFileNumber_;
+		static uint32_t maxLogFileSize_;
+		static LogLevel logLevel_;
 
 		bool isOpen_;
 	    boost::filesystem::ofstream ofStream_;
