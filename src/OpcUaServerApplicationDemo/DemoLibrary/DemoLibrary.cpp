@@ -529,7 +529,7 @@ namespace OpcUaServerApplicationDemo
 	void
 	DemoLibrary::readValue(ApplicationReadContext* applicationReadContext)
 	{
-	    std::cout << "read value ..." << applicationReadContext->nodeId_ << std::endl;
+	    //std::cout << "read value ..." << applicationReadContext->nodeId_ << std::endl;
 
 	    ValueMap::iterator it;
 	    it = valueMap_.find(applicationReadContext->nodeId_);
@@ -544,7 +544,7 @@ namespace OpcUaServerApplicationDemo
 	void
 	DemoLibrary::readLoopTimeValue(ApplicationReadContext* applicationReadContext)
 	{
-		std::cout << "read loop time value ..." << applicationReadContext->nodeId_ << std::endl;
+		//std::cout << "read loop time value ..." << applicationReadContext->nodeId_ << std::endl;
 
 		applicationReadContext->statusCode_ = Success;
 		loopTime_->copyTo(applicationReadContext->dataValue_);
@@ -553,7 +553,7 @@ namespace OpcUaServerApplicationDemo
 	void
 	DemoLibrary::writeValue(ApplicationWriteContext* applicationWriteContext)
 	{
-		std::cout << "write value ..." << applicationWriteContext->nodeId_  << std::endl;
+		//std::cout << "write value ..." << applicationWriteContext->nodeId_  << std::endl;
 
 		ValueMap::iterator it;
 		it = valueMap_.find(applicationWriteContext->nodeId_);
@@ -568,9 +568,14 @@ namespace OpcUaServerApplicationDemo
 	void
 	DemoLibrary::writeLoopTimeValue(ApplicationWriteContext* applicationWriteContext)
 	{
-		std::cout << "write loop time value ..." << applicationWriteContext->nodeId_  << std::endl;
+		//std::cout << "write loop time value ..." << applicationWriteContext->nodeId_  << std::endl;
 
 		uint32_t timerInterval_ = applicationWriteContext->dataValue_.variant()->variant<OpcUaUInt32>();
+
+		if (timerInterval_ < 100) {
+			timerInterval_ = 100;
+			applicationWriteContext->dataValue_.variant()->variant(timerInterval_);
+		}
 
 		applicationWriteContext->statusCode_ = Success;
 		applicationWriteContext->dataValue_.copyTo(*loopTime_);
@@ -632,8 +637,6 @@ namespace OpcUaServerApplicationDemo
 	  			updateSingle(*nodeId, dataValue, baseNodeClass);
 	  		}
 	  	}
-
-		std::cout << "timer..." << std::endl;
 	}
 
 	int32_t sign(void)
