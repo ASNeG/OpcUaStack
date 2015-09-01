@@ -623,7 +623,7 @@ namespace OpcUaServerApplicationDemo
 
 	int32_t sign(void)
 	{
-		if ((rand() % 2) == 1) return -1;
+		if ((rand() % 4) == 1) return -1;
 		return 1;
 	}
 
