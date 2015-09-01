@@ -147,7 +147,7 @@ namespace OpcUaStackClient
 			.parameter("NodeType", serviceTransaction->nodeTypeRequest())
 			.parameter("RequestHandle", serviceTransaction->transactionId());
 
-		if (communicationState_ == CS_Disconnect) {
+		if (communicationState_ != CS_Connect) {
 			serviceTransaction->statusCode(BadSessionClosed);
 			Component* componentService = serviceTransaction->componentService();
 			componentService->send(serviceTransaction);
@@ -282,6 +282,7 @@ namespace OpcUaStackClient
 	void
 	Session::sendCreateSessionRequest(void)
 	{
+		Log(Debug, "send create session request");
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		std::iostream ios(&secureChannelTransaction->os_);
 
@@ -303,6 +304,7 @@ namespace OpcUaStackClient
 	void
 	Session::sendActivateSessionRequest(void)
 	{
+		Log(Debug, "send activate session request");
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		std::iostream ios(&secureChannelTransaction->os_);
 
@@ -517,7 +519,7 @@ namespace OpcUaStackClient
 				Log(Error, "receive activate session response with error (reconnect)")
 					.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 					.parameter("SessionName", createSessionParameter_.sessionName_)
-					.parameter("CommubnicationState", communicationState_)
+					.parameter("CommunicationState", communicationState_)
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 
 				// open a new session

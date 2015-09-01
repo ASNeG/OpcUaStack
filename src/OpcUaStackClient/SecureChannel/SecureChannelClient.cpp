@@ -80,7 +80,7 @@ namespace OpcUaStackClient
 	, tcpConnector_()
 	, secureChannelClientState_(SecureChannelClientState_Close)
 	, reconnectTimeout_(0)
-	, maxReconnectTimeout_(120)
+	, maxReconnectTimeout_(10)
 	, reconnectTimer_(nullptr)
 	, securityHeaderSPtr_(SecurityHeader::construct())
 	, debugMode_(false)
