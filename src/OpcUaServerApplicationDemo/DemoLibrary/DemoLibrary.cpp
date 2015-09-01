@@ -156,7 +156,7 @@ namespace OpcUaServerApplicationDemo
 
 		// Byte
 		nodeId.set(202, namespaceIndex_);
-		OpcUaByte byte(11);
+		OpcUaByte byte(32);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(byte);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -169,7 +169,7 @@ namespace OpcUaServerApplicationDemo
 
 		// Int16
 		nodeId.set(204, namespaceIndex_);
-		OpcUaInt16 int16(11);
+		OpcUaInt16 int16(25);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(int16);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -182,7 +182,7 @@ namespace OpcUaServerApplicationDemo
 
 		// UInt16
 		nodeId.set(206, namespaceIndex_);
-		OpcUaUInt16 uint16(11);
+		OpcUaUInt16 uint16(50);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(uint16);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -195,7 +195,7 @@ namespace OpcUaServerApplicationDemo
 
 		// Int32
 		nodeId.set(208, namespaceIndex_);
-		OpcUaInt32 int32(11);
+		OpcUaInt32 int32(180);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(int32);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -208,7 +208,7 @@ namespace OpcUaServerApplicationDemo
 
 		// UInt32
 		nodeId.set(210, namespaceIndex_);
-		OpcUaUInt32 uint32(11);
+		OpcUaUInt32 uint32(180);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(uint32);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -221,7 +221,7 @@ namespace OpcUaServerApplicationDemo
 
 		// Int64
 		nodeId.set(212, namespaceIndex_);
-		OpcUaInt64 int64(11);
+		OpcUaInt64 int64(0);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(int64);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -234,7 +234,7 @@ namespace OpcUaServerApplicationDemo
 
 		// UInt64
 		nodeId.set(214, namespaceIndex_);
-		OpcUaUInt64 uint64(11);
+		OpcUaUInt64 uint64(1500);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(uint64);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -247,7 +247,7 @@ namespace OpcUaServerApplicationDemo
 
 		// Float
 		nodeId.set(216, namespaceIndex_);
-		OpcUaFloat floats(11);
+		OpcUaFloat floats(500);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(floats);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -260,7 +260,7 @@ namespace OpcUaServerApplicationDemo
 
 		// Double
 		nodeId.set(218, namespaceIndex_);
-		OpcUaDouble doubles(11);
+		OpcUaDouble doubles(500);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(doubles);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
@@ -621,6 +621,17 @@ namespace OpcUaServerApplicationDemo
 		std::cout << "timer..." << std::endl;
 	}
 
+	int32_t sign(void)
+	{
+		if ((rand() % 2) == 1) return -1;
+		return 1;
+	}
+
+	double percent(void)
+	{
+		return ((rand() % 2) / 100.0);
+	}
+
 	void
 	DemoLibrary::updateSingle(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass)
 	{
@@ -633,66 +644,84 @@ namespace OpcUaServerApplicationDemo
 				dataValue->variant()->set(sByte);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaByte:
+			case OpcUaBuildInType_OpcUaByte: // 0 - 64
 			{
 				OpcUaByte byte = dataValue->variant()->get<OpcUaByte>();
-				byte++;
+				byte += (64 * percent() * sign());
+			    if (byte < 0) byte = 0;
+			    if (byte > 64) byte = 64;
 				dataValue->variant()->set(byte);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaInt16:
+			case OpcUaBuildInType_OpcUaInt16: // -50 - 100
 			{
 				OpcUaInt16 int16 = dataValue->variant()->get<OpcUaInt16>();
-				int16++;
+				int16 += (150 * percent() * sign());
+				if (int16 < -50) int16 = -50;
+				if (int16 > 100) int16 = 100;
 				dataValue->variant()->set(int16);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaUInt16:
+			case OpcUaBuildInType_OpcUaUInt16: // 0 - 100
 			{
 				OpcUaUInt16 uint16 = dataValue->variant()->get<OpcUaUInt16>();
-				uint16++;
+				uint16 += (100 * percent() * sign());
+				if (uint16 < 0) uint16 = 0;
+				if (uint16 > 100) uint16 = 100;
 				dataValue->variant()->set(uint16);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaInt32:
+			case OpcUaBuildInType_OpcUaInt32: // 0 - 360
 			{
 				OpcUaInt32 int32 = dataValue->variant()->get<OpcUaInt32>();
-				int32++;
+				int32 += (360 * percent() * sign());
+				if (int32 < 0) int32 = 0;
+				if (int32 > 360) int32 = 360;
 				dataValue->variant()->set(int32);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaUInt32:
+			case OpcUaBuildInType_OpcUaUInt32: // 0 - 360
 			{
 				OpcUaUInt32 uint32 = dataValue->variant()->get<OpcUaUInt32>();
-				uint32++;
+				uint32 += (360 * percent() * sign());
+				if (uint32 < 0) uint32 = 0;
+				if (uint32 > 360) uint32 = 360;
 				dataValue->variant()->set(uint32);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaInt64:
+			case OpcUaBuildInType_OpcUaInt64: // -1000 - 1000
 			{
 				OpcUaInt64 int64 = dataValue->variant()->get<OpcUaInt64>();
-				int64++;
+				int64 += (2000 * percent() * sign());
+				if (int64 < -1000) int64 = 1000;
+				if (int64 > 1000) int64 = 1000;
 				dataValue->variant()->set(int64);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaUInt64:
+			case OpcUaBuildInType_OpcUaUInt64: // 0 -3000
 			{
 				OpcUaUInt64 uint64 = dataValue->variant()->get<OpcUaUInt64>();
-				uint64++;
+				uint64 += (3000 * percent() * sign());
+				if (uint64 < 0) uint64 = 0;
+				if (uint64 > 3000) uint64 = 3000;
 				dataValue->variant()->set(uint64);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaFloat:
+			case OpcUaBuildInType_OpcUaFloat: // 0 - 1000
 			{
 				OpcUaFloat floats = dataValue->variant()->get<OpcUaFloat>();
-				floats += 1.1234;
+				floats += (1000 * percent() * sign());
+				if (floats < 0) floats = 0;
+				if (floats > 1000) floats = 1000;
 				dataValue->variant()->set(floats);
 				break;
 			}
-			case OpcUaBuildInType_OpcUaDouble:
+			case OpcUaBuildInType_OpcUaDouble: // 0 - 1000
 			{
 				OpcUaDouble doubles = dataValue->variant()->get<OpcUaDouble>();
-				doubles += 232.324;
+				doubles += (1000 * percent() * sign());
+				if (doubles < 0) doubles = 0;
+				if (doubles > 1000) doubles = 1000;
 				dataValue->variant()->set(doubles);
 				break;
 			}
