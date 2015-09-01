@@ -623,13 +623,13 @@ namespace OpcUaServerApplicationDemo
 
 	int32_t sign(void)
 	{
-		if ((rand() % 4) == 1) return -1;
+		if ((rand() % 2) == 1) return -1;
 		return 1;
 	}
 
 	double percent(void)
 	{
-		return ((rand() % 2) / 100.0);
+		return ((rand() % 5) / 100.0);
 	}
 
 	void
