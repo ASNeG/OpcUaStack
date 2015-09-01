@@ -58,6 +58,7 @@ namespace OpcUaServerApplicationDemo
 		bool registerLoopTimeCallbacks(void);
 		bool createNodeReferences(void);
 
+		void startTimerLoop(void);
 		void timerLoop(void);
 
 		uint32_t namespaceIndex_;

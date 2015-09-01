@@ -81,6 +81,8 @@ namespace OpcUaServerApplicationDemo
 		ioService_.start();
 		slotTimer_.startSlotTimerLoop(&ioService_);
 
+		startTimerLoop();
+
 		return true;
 	}
 
@@ -582,6 +584,19 @@ namespace OpcUaServerApplicationDemo
 		slotTimerElement_ = SlotTimerElement::construct();
 		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), timerInterval_);
+		slotTimer_.start(slotTimerElement_);
+	}
+
+	void
+	DemoLibrary::startTimerLoop(void)
+	{
+		// TimerInterval
+		OpcUaUInt32 loopTime(1111);
+		loopTime_->variant()->variant(loopTime);
+
+		slotTimerElement_ = SlotTimerElement::construct();
+		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
+		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), 1111);
 		slotTimer_.start(slotTimerElement_);
 	}
 
