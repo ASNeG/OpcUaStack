@@ -80,7 +80,7 @@ namespace OpcUaStackCore
 	void
 	FileLogger::logLevel(const LogLevel& logLevel)
 	{
-		//logLevel_ = logLevel;
+		logLevel_ = logLevel;
 	}
 
 	LogLevel

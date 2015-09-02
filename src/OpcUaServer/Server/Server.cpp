@@ -161,13 +161,38 @@ namespace OpcUaServer
 		    return true;
 		}
 
+		// read log file name
 		std::string logFileName;
 		childConfig->getConfigParameter("LogFileName", logFileName, "");
 		if (logFileName == "") logFileName = "OpcUaServer.log";
-
 		fileLogger_.logFileName(logFileName);
+
+		// read max log file number
+		uint32_t maxLogFileNumber;
+		childConfig->getConfigParameter("MaxLogFileNumber", maxLogFileNumber, "20");
+		fileLogger_.maxLogFileNumber(maxLogFileNumber);
+
+		// read max log file size
+		uint32_t maxLogFileSize;
+		childConfig->getConfigParameter("MaxLogFileSize", maxLogFileSize, "5000000");
+		fileLogger_.maxLogFileSize(maxLogFileSize);
+
+		// read log level
+		LogLevel logLevel;
+		std::string logLevelString;
+		childConfig->getConfigParameter("LogLevel", logLevelString, "Trace");
+		if (logLevelString == "Error") logLevel = Error;
+		else if (logLevelString == "Warning") logLevel = Warning;
+		else if (logLevelString == "Info") logLevel = Info;
+		else if (logLevelString == "Debug") logLevel = Debug;
+		else logLevel = Trace;
+		fileLogger_.logLevel(logLevel);
+
+		// init logging
 		OpcUaStackCore::Log::logIf(&fileLogger_);
+
 		return true;
 	}
+
 
 }
