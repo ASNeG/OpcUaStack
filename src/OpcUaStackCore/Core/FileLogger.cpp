@@ -93,7 +93,10 @@ namespace OpcUaStackCore
 	FileLogger::openLogFile(void)
 	{
 		if (boost::filesystem::exists(boost::filesystem::path(logFileName()))) {
-			rotateLogFile();
+			boost::filesystem::path logFile(logFileName());
+			uint32_t logFileSize = boost::filesystem::file_size(logFile);
+
+			if (logFileSize != 0 ) rotateLogFile();
 		}
 
 		ofStream_.open(logFileName(), std::ios::out);
