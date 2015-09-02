@@ -42,7 +42,7 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.Nod
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTest.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLib.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLibClientServer.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
-install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
+install(DIRECTORY DESTINATION ${LOG_DIR}/OpcUaStack/ASNeG-Demo)
 
 if (WIN32)
 else() 
