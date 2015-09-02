@@ -50,6 +50,7 @@ namespace OpcUaStackCore
 		bool openLogFile(void);
 		bool closeLogFile(void);
 		void checkLogFile(void);
+		void rotateLogFile(void);
 
 		static boost::mutex mutex_;
 		static uint32_t counter_;

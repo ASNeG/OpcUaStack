@@ -92,6 +92,10 @@ namespace OpcUaStackCore
 	bool
 	FileLogger::openLogFile(void)
 	{
+		if (boost::filesystem::exists(boost::filesystem::path(logFileName()))) {
+			rotateLogFile();
+		}
+
 		ofStream_.open(logFileName(), std::ios::out);
 		if (ofStream_) isOpen_ = true;
 		return isOpen_ == true;
@@ -114,6 +118,17 @@ namespace OpcUaStackCore
 
 		// close log file
 		closeLogFile();
+
+		// rotate old log files
+		rotateLogFile();
+
+		openLogFile();
+	}
+
+	void
+	FileLogger::rotateLogFile(void)
+	{
+		boost::filesystem::path logFile(logFileName());
 
 		// remove oldest log file if necessary
 		std::stringstream oldestLogFileName;
@@ -147,8 +162,6 @@ namespace OpcUaStackCore
 				boost::filesystem::path(dstLogFileName.str())
 			);
 		}
-
-		openLogFile();
 	}
 
 	bool 
