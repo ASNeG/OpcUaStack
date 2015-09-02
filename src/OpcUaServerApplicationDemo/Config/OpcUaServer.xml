@@ -20,6 +20,9 @@
   <Logging>
     <FileLogger>
       <LogFileName>@INSTALL_DIR@/@LOG_DIR@/ASNeG-Demo/OpcUaServer.log</LogFileName>
+      <MaxLogFileNumber>20</MaxLogFileNumber>
+      <MaxLogFileSize>5000000</MaxLogFileSize>
+      <LogLevel>Trace</LogLevel>
     </FileLogger>
     
     <Log4cxxLogger>
