@@ -109,6 +109,9 @@ endif ()
 install(FILES icon/asneg.ico DESTINATION usr/share/icons/OpcUaStack)
 install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/OpcUaStack)
 install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/OpcUaStack)
+install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION usr/share/OpcUaStack)
+install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/OpcUaStack)
+
 
 
 # -----------------------------------------------------------------------------
@@ -158,10 +161,12 @@ set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSIO
 
 if (CPACK_BINARY_DEB)
     	set (CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
 endif()
 
 if (CPACK_BINARY_RPM)
-    	set (CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+    	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
 endif()
 
 	
