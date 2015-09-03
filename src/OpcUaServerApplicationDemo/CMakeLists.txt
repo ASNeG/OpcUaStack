@@ -49,8 +49,17 @@ if (WIN32)
 else() 
     install(PROGRAMS ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init.d/ASNeG-Demo DESTINATION etc/init.d)
     install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/etc/init/ASNeG-Demo.conf DESTINATION etc/init)
+    install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/usr/lib/systemd/system/ASNeG-Demo.service DESTINATION usr/lib/systemd/system)
+endif()
+
+if (CPACK_BINARY_DEB)
     set( CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postinst"
                                             "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/preinst"
                                             "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/prerm"
                                             "${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postrm")
+endif()
+
+if (CPACK_BINARY_RPM)
+    set(CPACK_RPM_POST_INSTALL_SCRIPT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/postinst)
+    set(CPACK_RPM_PRE_UNINSTALL_SCRIPT_FILE ${CMAKE_CURRENT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/script/prerm)
 endif()

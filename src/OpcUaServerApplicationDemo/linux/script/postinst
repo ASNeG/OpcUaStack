@@ -20,9 +20,14 @@
 echo "POSTINST RUN"
 
 if [ -x /sbin/start ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
-    # use Ubuntu upstart
+    # use upstart
     echo "INFO: starting daemon by upstart"
     /sbin/start ASNeG-Demo
+elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/ASNeG-Demo.service" ]; then
+    # use systemd
+    echo "INFO: starting daemon by systemd"
+    /usr/bin/systemctl enable ASNeG-Demo.service
+    /usr/bin/systemctl start ASNeG-Demo.service
 else
     # use SYSV init script
     echo "INFO: starting SYSV init script"
@@ -34,4 +39,3 @@ fi
 
 echo "POSTINST RETURN"
 exit 0
-

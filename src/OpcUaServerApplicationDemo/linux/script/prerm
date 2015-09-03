@@ -23,6 +23,11 @@ if [ -x /sbin/stop ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
     # use Ubuntu upstart
     echo "INFO: stopping daemon by upstart"
     /sbin/stop ASNeG-Demo 
+elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/ASNeG-Demo.service" ]; then
+    # use systemd
+    echo "INFO: stopping  daemon by systemd"
+    /usr/bin/systemctl stop ASNeG-Demo.service
+    /usr/bin/systemctl enable ASNeG-Demo.service
 else
     # use SYSV init script
     if [ -e "/etc/init.d/ASNeG-Demo" ]; then
