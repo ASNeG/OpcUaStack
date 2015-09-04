@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ### BEGIN INIT INFO
-# Provides:          ASNeG-Demo
+# Provides:          ProjectName
 # Required-Start:    network
 # Required-Stop:     network
 # Default-Start:     2 3 4 5
@@ -33,7 +33,7 @@
 
 NAME=OpcUaServer
 DAEMON="/usr/bin/OpcUaServer"
-OPTS="ASNeG-Demo"
+OPTS="ProjectName"
 PID=/var/run/${OPTS}.pid
 
 SCRIPTNAME=/etc/init.d/$NAME

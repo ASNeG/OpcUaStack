@@ -19,21 +19,21 @@
 
 echo "PRERM RUN"
 
-if [ -x /sbin/stop ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
+if [ -x /sbin/stop ] && [ -e "/etc/init/OpcUaProjectName.conf" ]; then
     # use Ubuntu upstart
     echo "INFO: stopping daemon by upstart"
-    /sbin/stop ASNeG-Demo 
-elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/ASNeG-Demo.service" ]; then
+    /sbin/stop OpcUaProjectName 
+elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/OpcUaProjectName.service" ]; then
     # use systemd
     echo "INFO: stopping  daemon by systemd"
-    /usr/bin/systemctl stop ASNeG-Demo.service
-    /usr/bin/systemctl enable ASNeG-Demo.service
+    /usr/bin/systemctl stop OpcUaProjectName.service
+    /usr/bin/systemctl enable OpcUaProjectName.service
 else
     # use SYSV init script
-    if [ -e "/etc/init.d/ASNeG-Demo" ]; then
+    if [ -e "/etc/init.d/OpcUaProjectName" ]; then
         echo "INFO: stopping daemon by SYS init script"
-        invoke-rc.d ASNeG-Demo stop || exit $?
-        update-rc.d -f ASNeG-Demo remove >/dev/null
+        invoke-rc.d OpcUaProjectName stop || exit $?
+        update-rc.d -f OpcUaProjectName remove >/dev/null
     fi
 fi
 

@@ -19,7 +19,7 @@
 
   <Logging>
     <FileLogger>
-      <LogFileName>@INSTALL_DIR@/@LOG_DIR@/ASNeG-Demo/OpcUaServer.log</LogFileName>
+      <LogFileName>@INSTALL_DIR@/@LOG_DIR@/ProjectName/OpcUaServer.log</LogFileName>
       <MaxLogFileNumber>20</MaxLogFileNumber>
       <MaxLogFileSize>5000000</MaxLogFileSize>
       <LogLevel>Trace</LogLevel>
@@ -31,7 +31,7 @@
   </Logging>
   
   <Application>
-      <ApplicationLibrary>OpcUaServerApplicationDemo</ApplicationLibrary>
+      <ApplicationLibrary>OpcUaProjectName</ApplicationLibrary>
   </Application>
   
   <Endpoints>
@@ -84,7 +84,7 @@
   </Endpoints>
   
   <InformationModel>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.xml</NodeSetFile>
+    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ProjectName/Opc.Ua.NodeSet.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>

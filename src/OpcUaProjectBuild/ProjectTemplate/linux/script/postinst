@@ -19,21 +19,21 @@
 
 echo "POSTINST RUN"
 
-if [ -x /sbin/start ] && [ -e "/etc/init/ASNeG-Demo.conf" ]; then
+if [ -x /sbin/start ] && [ -e "/etc/init/OpcUaProjectName.conf" ]; then
     # use upstart
     echo "INFO: starting daemon by upstart"
-    /sbin/start ASNeG-Demo
-elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/ASNeG-Demo.service" ]; then
+    /sbin/start OpcUaProjectName
+elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/OpcUaProjectName.service" ]; then
     # use systemd
     echo "INFO: starting daemon by systemd"
-    /usr/bin/systemctl enable ASNeG-Demo.service
-    /usr/bin/systemctl start ASNeG-Demo.service
+    /usr/bin/systemctl enable OpcUaProjectName.service
+    /usr/bin/systemctl start OpcUaProjectName.service
 else
     # use SYSV init script
     echo "INFO: starting SYSV init script"
-    if [ -x "/etc/init.d/ASNeG-Demo" ]; then
-        update-rc.d ASNeG-Demo defaults >/dev/null
-        invoke-rc.d ASNeG-Demo start || exit $?
+    if [ -x "/etc/init.d/OpcUaProjectName" ]; then
+        update-rc.d OpcUaProjectName defaults >/dev/null
+        invoke-rc.d OpcUaProjectName start || exit $?
     fi
 fi
 
