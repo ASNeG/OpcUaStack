@@ -174,6 +174,9 @@ namespace OpcUaStackClient
     	}
 
     	subscriptionSet_.insert(subscriptionId);
+   		if (subscriptionManagerIf_ != NULL) {
+    		subscriptionManagerIf_->subscriptionStateUpdate(SS_Open, subscriptionId);
+    	}
 
     	if (subscriptionSet_.size() != 1) return;
 
@@ -191,6 +194,9 @@ namespace OpcUaStackClient
     	    return;
     	}
 
+   		if (subscriptionManagerIf_ != NULL) {
+    		subscriptionManagerIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
+    	}
     	subscriptionSet_.erase(it);
     }
 
