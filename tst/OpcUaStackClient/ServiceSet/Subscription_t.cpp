@@ -16,12 +16,12 @@ using namespace OpcUaStackClient;
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 class SubscriptionServiceHandler
-: SubscriptionServiceIf
+: public SubscriptionServiceIf
 {
   public:
 	void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
 	{
-		createSubscriptionResponseCondition_.conditionValueDec();
+		createSubscriptionCondition_.conditionValueDec();
 	}
 	void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
 	{
@@ -38,7 +38,7 @@ class SubscriptionServiceHandler
 		deleteSubscriptionCondition_.conditionValueDec();
 	}
 
-	Condition createSubscriptionResponseCondition_;
+	Condition createSubscriptionCondition_;
 	Condition modifySubscriptionCondition_;
 	Condition transferSubscriptionCondition_;
 	Condition deleteSubscriptionCondition_;
@@ -150,7 +150,6 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_sync)
 
 BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 {
-#if 0
 	SessionTestHandler sessionTestHandler;
 
 	Client client;
@@ -180,6 +179,7 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 	session->open();
 	BOOST_REQUIRE(sessionTestHandler.sessionUpdateCondition_.waitForCondition(1000) == true);
 
+#if 0
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -187,13 +187,20 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	SubscriptionServiceHandler ssh;
+
 	SubscriptionManager subscriptionManager;
 	subscriptionManager.componentSession(session->component());
+	subscriptionManager.subscriptionServiceIf(&ssh);
 
 	ServiceTransactionCreateSubscription::SPtr subCreateTrx = ServiceTransactionCreateSubscription::construct();
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
-	subscriptionManager.sendSync(subCreateTrx);
+
+	ssh.createSubscriptionCondition_.condition(1, 0);
+	subscriptionManager.sendAsync(subCreateTrx);
+	BOOST_REQUIRE(ssh.createSubscriptionCondition_.waitForCondition(1000) == true);
+
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 
 	// ------------------------------------------------------------------------
@@ -208,18 +215,22 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subCreateRes->subscriptionId());
-	subscriptionManager.sendSync(subDeleteTrx);
+
+	ssh.deleteSubscriptionCondition_.condition(1, 0);
+	subscriptionManager.sendAsync(subDeleteTrx);
+	BOOST_REQUIRE(ssh.deleteSubscriptionCondition_.waitForCondition(1000) == true);
+
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	std::cout << subDeleteRes->results()->size() << std::endl;
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	OpcUaStatusCode statusCode;
 	subDeleteRes->results()->get(0, statusCode);
 	BOOST_REQUIRE(statusCode == Success);
+#endif
 
 	//IOService::secSleep(10000);
 	client.stop();
 	client.cleanup();
-#endif
 }
 
 BOOST_AUTO_TEST_SUITE_END()
