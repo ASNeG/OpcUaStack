@@ -21,6 +21,68 @@ BOOST_AUTO_TEST_CASE(Nodeset_)
 	std::cout << "Nodeset_t" << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(Nodeset_New_Node)
+{
+	OpcUaNodeId nodeId;
+	bool success;
+
+	// read opc ua nodeset
+	ConfigXml configXmlRead1;
+	success = configXmlRead1.read("../tst/data/Opc.Ua.NodeSet.xml");
+	BOOST_REQUIRE(success == true);
+
+	NodeSetXmlParser nodeSetXmlParserRead1;
+	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
+	BOOST_REQUIRE(success == true);
+
+	InformationModel::SPtr informationModelRead1 = InformationModel::construct();
+	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
+	BOOST_REQUIRE(success == true);
+
+	informationModelRead1->checkForwardReferences();
+
+	// add new namespace to nodeset
+	NodeSetNamespace nodeSetNamespace;
+	uint32_t namespaceIndex = nodeSetNamespace.addNewGlobalNamespace("http://yourorganisation.org/Opc.Ua.Raspberry/");
+
+	// create a new node
+	for (uint32_t idx=0; idx<10; idx++) {
+
+		BaseNodeClass::SPtr baseNodeClass;
+
+		OpcUaNodeId rootNodeId;
+		BaseNodeClass::SPtr rootNodeClass;
+		rootNodeId.set(OpcUaId_RootFolder);
+		rootNodeClass = informationModelRead1->find(rootNodeId);
+
+		OpcUaNodeId nodeId;
+		std::stringstream nodeName;
+		nodeName << "MyVariable" << idx;
+
+		baseNodeClass = VariableNodeClass::construct();
+		nodeId.set(nodeName.str(), namespaceIndex);
+		baseNodeClass->setNodeId(nodeId);
+		baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, rootNodeId);
+		rootNodeClass->referenceItemMap().add(ReferenceType_HasComponent, true, nodeId);
+		informationModelRead1->insert(baseNodeClass);
+	}
+
+	// write nodes from information model into node set file
+	NodeSetXmlParser nodeSetXmlParserWrite;
+	NamespaceVec namespaceVec;
+
+	namespaceVec.push_back("http://yourorganisation.org/Opc.Ua.Raspberry/");
+	success = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModelRead1, namespaceVec);
+	BOOST_REQUIRE(success == true);
+
+	ConfigXml configXmlWrite;
+	success = nodeSetXmlParserWrite.encode(configXmlWrite.ptree());
+	BOOST_REQUIRE(success == true);
+
+	success = configXmlWrite.write("test-nodeset-new-node.xml");
+	BOOST_REQUIRE(success == true);
+}
+
 BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
 {
 	bool success;
