@@ -54,6 +54,12 @@ option(
     ON
 )
 
+option(
+    USE_OpcUaProjectBuilder
+    "build opc ua project builder"
+    ON
+)
+
 include(Tools/CMakeLists.txt) 
 
 add_definitions(-DBOOST_ALL_DYN_LINK)
@@ -96,6 +102,10 @@ endif ()
 
 if (USE_OpcUaServerApplicationDemo)
     include(OpcUaServerApplicationDemo/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaProjectBuilder)
+    include(OpcUaProjectBuilder/CMakeLists.txt) 
 endif ()
 
 
