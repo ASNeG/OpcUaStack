@@ -19,21 +19,21 @@
 
 echo "POSTINST RUN"
 
-if [ -x /sbin/start ] && [ -e "/etc/init/OpcUaProjectName.conf" ]; then
+if [ -x /sbin/start ] && [ -e "/etc/init/ProjectName.conf" ]; then
     # use upstart
     echo "INFO: starting daemon by upstart"
-    /sbin/start OpcUaProjectName
-elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/OpcUaProjectName.service" ]; then
+    /sbin/start ProjectName
+elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/ProjectName.service" ]; then
     # use systemd
     echo "INFO: starting daemon by systemd"
-    /usr/bin/systemctl enable OpcUaProjectName.service
-    /usr/bin/systemctl start OpcUaProjectName.service
+    /usr/bin/systemctl enable ProjectName.service
+    /usr/bin/systemctl start ProjectName.service
 else
     # use SYSV init script
     echo "INFO: starting SYSV init script"
-    if [ -x "/etc/init.d/OpcUaProjectName" ]; then
-        update-rc.d OpcUaProjectName defaults >/dev/null
-        invoke-rc.d OpcUaProjectName start || exit $?
+    if [ -x "/etc/init.d/ProjectName" ]; then
+        update-rc.d ProjectName defaults >/dev/null
+        invoke-rc.d ProjectName start || exit $?
     fi
 fi
 
