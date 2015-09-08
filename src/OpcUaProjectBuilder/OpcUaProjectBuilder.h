@@ -41,6 +41,7 @@ namespace OpcUaProjectBuilder
 		bool createProjectFile(boost::filesystem::path& filename, const std::string& content);
 		bool readProjectFile(boost::filesystem::path& filename, std::string& content);
 		bool browseProjectDirectory(boost::filesystem::path& templateDirectory, boost::filesystem::path& projectDirectory);
+		std::string processString(const std::string& string);
 
 		// command line parameter
 		std::string projectName_;

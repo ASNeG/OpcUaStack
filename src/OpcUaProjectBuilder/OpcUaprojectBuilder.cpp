@@ -16,6 +16,7 @@
  */
 
 #include <boost/filesystem/fstream.hpp>
+#include <boost/regex.hpp>
 #include <iostream>
 #include <sstream>
 #include "OpcUaProjectBuilderConfig.h"
@@ -188,6 +189,19 @@ namespace OpcUaProjectBuilder
 		return true;
 	}
 
+	std::string
+	OpcUaProjectBuilder::processString(const std::string& string)
+	{
+		std::string result;
+		boost::regex regProjectName("ProjectName");
+		boost::regex regProjectDescription("ProjectDescription");
+
+		result = boost::regex_replace(string, regProjectName, projectName_);
+		result = boost::regex_replace(result, regProjectDescription, projectDescription_);
+
+		return result;
+	}
+
 	bool
 	OpcUaProjectBuilder::browseProjectDirectory(boost::filesystem::path& templateDirectory, boost::filesystem::path& projectDirectory)
 	{
@@ -195,8 +209,12 @@ namespace OpcUaProjectBuilder
 		for (boost::filesystem::directory_iterator it(templateDirectory); it != itEnd; it++) {
 
 			boost::filesystem::path file = *it;
+
+			std::string leaf = file.leaf().c_str();
+			leaf = processString(leaf);
+
 			templateDirectory /= file.leaf();
-			projectDirectory /= file.leaf();
+			projectDirectory /= leaf;
 
 			if (boost::filesystem::is_directory(templateDirectory)) {
 				// create directory
@@ -210,6 +228,9 @@ namespace OpcUaProjectBuilder
 
 				// read project file
 				if (!readProjectFile(templateDirectory, content)) return false;
+
+				// substituate file content
+				content = processString(content);
 
 				// create project file
 				if (!createProjectFile(projectDirectory, content)) return false;
