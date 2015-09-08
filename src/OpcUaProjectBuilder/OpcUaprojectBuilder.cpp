@@ -15,7 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/filesystem/fstream.hpp>
 #include <iostream>
+#include <sstream>
 #include "OpcUaProjectBuilderConfig.h"
 #include "OpcUaProjectBuilder/OpcUaProjectBuilder.h"
 
@@ -124,19 +126,66 @@ namespace OpcUaProjectBuilder
 	bool
 	OpcUaProjectBuilder::createProjectDirectory(boost::filesystem::path& projectDirectory)
 	{
-		return true;
+		if (verbose_) {
+			std::cout << "create project directory: " << projectDirectory << std::endl;
+		}
+
+		if (boost::filesystem::create_directory(projectDirectory)) return true;
+
+		if (verbose_)  {
+			std::cout << "create project directory " << projectDirectory << "failed" << std::endl;
+		}
+
+		return false;
 	}
 
 	bool
 	OpcUaProjectBuilder::createProjectFile(boost::filesystem::path& filename, const std::string& content)
 	{
+		if (verbose_) {
+			std::cout << "create template file: " << filename << std::endl;
+		}
+
+		boost::filesystem::ofstream out;
+		out.open(filename.string(), std::ios::out);
+
+		if (!out) {
+			if (verbose_)  {
+				std::cout << "writing file " << filename << "failed" << std::endl;
+			}
+			return false;
+		}
+
+		out << content;
+
+		out.close();
+
 		return true;
 	}
 
 	bool
 	OpcUaProjectBuilder::readProjectFile(boost::filesystem::path& filename, std::string& content)
 	{
-		return false;
+		if (verbose_) {
+			std::cout << "read template file: " << filename << std::endl;
+		}
+
+		boost::filesystem::ifstream in;
+		in.open(filename.string(), std::ios::in);
+
+		if (!in) {
+			if (verbose_)  {
+				std::cout << "reading file " << filename << "failed" << std::endl;
+			}
+			return false;
+		}
+
+		std::stringstream ss;
+		ss << in.rdbuf();
+		content = ss.str();
+
+		in.close();
+		return true;
 	}
 
 	bool
@@ -144,19 +193,30 @@ namespace OpcUaProjectBuilder
 	{
 		boost::filesystem::directory_iterator itEnd;
 		for (boost::filesystem::directory_iterator it(templateDirectory); it != itEnd; it++) {
-			boost::filesystem::path newTemplateDirectory = templateDirectory;
-			boost::filesystem::path newProjectDirectory = projectDirectory;
 
 			boost::filesystem::path file = *it;
-			templateDirectory /= file;
-			projectDirectory /= file;
+			templateDirectory /= file.leaf();
+			projectDirectory /= file.leaf();
 
 			if (boost::filesystem::is_directory(templateDirectory)) {
-				if (!browseProjectDirectory(newTemplateDirectory, newProjectDirectory)) return false;
+				// create directory
+				if (!createProjectDirectory(projectDirectory)) return false;
+
+				// create sub tree
+				if (!browseProjectDirectory(templateDirectory, projectDirectory)) return false;
 			}
 			else {
-				std::cout << *it << std::endl;
+				std::string content;
+
+				// read project file
+				if (!readProjectFile(templateDirectory, content)) return false;
+
+				// create project file
+				if (!createProjectFile(projectDirectory, content)) return false;
 			}
+
+			templateDirectory.remove_leaf();
+			projectDirectory.remove_leaf();
 		}
 		return true;
 	}
