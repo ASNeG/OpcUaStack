@@ -36,7 +36,7 @@ namespace OpcUaStackClient
 		virtual ~SubscriptionManagerIf(void) {}
 
 		virtual void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem) {};
-		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState) = 0;
+		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId) = 0;
 	};
 
 }

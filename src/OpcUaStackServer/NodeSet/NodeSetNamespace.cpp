@@ -167,6 +167,12 @@ namespace OpcUaStackServer
 		}
 	}
 
+	uint32_t
+	NodeSetNamespace::addNewGlobalNamespace(const std::string& namespaceUri)
+	{
+		return addGlobalNamespace(namespaceUri);
+	}
+
 	NamespaceVec& 
 	NodeSetNamespace::globalNamespaceVec(void)
 	{
