@@ -1147,13 +1147,15 @@ namespace OpcUaStackServer
 			//
 			// encode Value
 			//
-			if (variableNodeClassSPtr->value().exist()) {
-				OpcUaDataValue& dataValue = variableNodeClassSPtr->value().data();
-
-				if (dataValue.statusCode() == Success) {
-					if (dataValue.variant()->variantType() != OpcUaBuildInType_Unknown) {
+			if (!variableNodeClassSPtr->isNullValue()) {
+				boost::optional<OpcUaDataValue&> dataValue = variableNodeClassSPtr->getValue();
+				if (!dataValue) {
+					// nothing to do
+				}
+				else {
+					if (dataValue->statusCode() == Success) {
 						NodeSetValueParser nodeSetValueParser;
-						nodeSetValueParser.encodeValue(nodeId, node, *dataValue.variant());
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
 					}
 				}
 			}		

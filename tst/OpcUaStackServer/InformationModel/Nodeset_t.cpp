@@ -93,12 +93,11 @@ BOOST_AUTO_TEST_CASE(Nodeset_NodeSet_Decode_Endode)
 /*
       {
           OpcUaDataValue dataValue;
-
-          dataValue.variant()->clear();
           dataValue.statusCode(BadNoData);
-          variableSPtr->value().data(dataValue);
+          variableSPtr->setValue(dataValue);
       }
 */
+
 
     OpcUaInt32 valueRank = 0;
     variableSPtr->setValueRank(valueRank);
