@@ -1149,9 +1149,13 @@ namespace OpcUaStackServer
 			//
 			if (variableNodeClassSPtr->value().exist()) {
 				OpcUaDataValue& dataValue = variableNodeClassSPtr->value().data();
-				if (dataValue.statusCode() != Success) break;
-				NodeSetValueParser nodeSetValueParser;
-				nodeSetValueParser.encodeValue(nodeId, node, *dataValue.variant());
+
+				if (dataValue.statusCode() == Success) {
+					if (dataValue.variant()->variantType() != OpcUaBuildInType_Unknown) {
+						NodeSetValueParser nodeSetValueParser;
+						nodeSetValueParser.encodeValue(nodeId, node, *dataValue.variant());
+					}
+				}
 			}		
 
 			//
