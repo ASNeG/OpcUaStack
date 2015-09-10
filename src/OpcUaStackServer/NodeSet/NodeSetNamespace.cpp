@@ -43,6 +43,15 @@ namespace OpcUaStackServer
 	}
 
 	void
+	NodeSetNamespace::clearGlobal(void)
+	{
+		startup_ = false;
+		globalNamespaceVec_.clear();
+		globalNamespaceMap_.clear();
+		clear();
+	}
+
+	void
 	NodeSetNamespace::clear(void)
 	{
 		inputNamespaceIndexVec_.clear();
