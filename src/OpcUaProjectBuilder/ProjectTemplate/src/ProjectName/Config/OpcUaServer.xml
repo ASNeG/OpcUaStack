@@ -31,7 +31,7 @@
   </Logging>
   
   <Application>
-      <ApplicationLibrary>OpcUaProjectName</ApplicationLibrary>
+      <ApplicationLibrary>ProjectName</ApplicationLibrary>
   </Application>
   
   <Endpoints>

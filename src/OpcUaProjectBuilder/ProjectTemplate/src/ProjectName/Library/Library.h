@@ -15,15 +15,15 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaProjectName_Library_h__
-#define __OpcUaProjectName_Library_h__
+#ifndef __ProjectName_Library_h__
+#define __ProjectName_Library_h__
 
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
 
-namespace OpcUaProjectName
+namespace ProjectName
 {
 
 	class Library

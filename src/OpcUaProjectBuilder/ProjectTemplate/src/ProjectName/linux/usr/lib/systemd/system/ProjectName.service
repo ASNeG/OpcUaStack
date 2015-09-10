@@ -1,9 +1,9 @@
 [Unit]
-Description=ASNeg-Demo Server
+Description=ProjectDescription
 
 [Service]
 Environment="LD_LIBRARY_PATH=/usr/lib/OpcUaStack:${LD_LIBRARY_PATH}"
-ExecStart=/usr/bin/OpcUaServer OpcUaProjectName
+ExecStart=/usr/bin/OpcUaServer ProjectName
 Restart=on-failure
 
 [Install]

@@ -19,21 +19,21 @@
 
 echo "PRERM RUN"
 
-if [ -x /sbin/stop ] && [ -e "/etc/init/OpcUaProjectName.conf" ]; then
+if [ -x /sbin/stop ] && [ -e "/etc/init/ProjectName.conf" ]; then
     # use Ubuntu upstart
     echo "INFO: stopping daemon by upstart"
-    /sbin/stop OpcUaProjectName 
-elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/OpcUaProjectName.service" ]; then
+    /sbin/stop ProjectName 
+elif [ -x /usr/bin/systemctl ] && [ -e "/usr/lib/systemd/system/ProjectName.service" ]; then
     # use systemd
     echo "INFO: stopping  daemon by systemd"
-    /usr/bin/systemctl stop OpcUaProjectName.service
-    /usr/bin/systemctl enable OpcUaProjectName.service
+    /usr/bin/systemctl stop ProjectName.service
+    /usr/bin/systemctl enable ProjectName.service
 else
     # use SYSV init script
-    if [ -e "/etc/init.d/OpcUaProjectName" ]; then
+    if [ -e "/etc/init.d/ProjectName" ]; then
         echo "INFO: stopping daemon by SYS init script"
-        invoke-rc.d OpcUaProjectName stop || exit $?
-        update-rc.d -f OpcUaProjectName remove >/dev/null
+        invoke-rc.d ProjectName stop || exit $?
+        update-rc.d -f ProjectName remove >/dev/null
     fi
 fi
 

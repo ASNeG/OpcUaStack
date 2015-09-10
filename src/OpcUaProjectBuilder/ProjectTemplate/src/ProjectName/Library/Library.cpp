@@ -16,12 +16,12 @@
  */
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaProjectName/Library/Library.h"
+#include "ProjectName/Library/Library.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include <iostream>
 
-namespace OpcUaProjectName
+namespace ProjectName
 {
 
 	Library::Library(void)
@@ -52,6 +52,6 @@ namespace OpcUaProjectName
 }
 
 extern "C" DLLEXPORT void  init(ApplicationIf** applicationIf) {
-    *applicationIf = new OpcUaProjectName::Library();
+    *applicationIf = new ProjectName::Library();
 }
 
