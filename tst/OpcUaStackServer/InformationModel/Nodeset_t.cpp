@@ -214,6 +214,8 @@ BOOST_AUTO_TEST_CASE(Nodeset_New_Node_And_New_Namespace)
 
 	success = configXmlWrite.write("test-nodeset-new-node.xml");
 	BOOST_REQUIRE(success == true);
+
+	nodeSetXmlParserWrite.nodeSetNamespace().clearGlobal();
 }
 
 BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
@@ -271,6 +273,8 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
 
 	success = configXmlWrite.write("test-nodeset-merge.xml");
 	BOOST_REQUIRE(success == true);
+
+	nodeSetXmlParserWrite.nodeSetNamespace().clearGlobal();
 }
 
 BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
@@ -329,6 +333,8 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
 
 	success = configXmlWrite.write("test-nodeset-merge1.xml");
 	BOOST_REQUIRE(success == true);
+
+	nodeSetXmlParserWrite.nodeSetNamespace().clearGlobal();
 }
 
 BOOST_AUTO_TEST_CASE(Nodeset_Remove)
@@ -358,7 +364,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_Remove)
 	nodeId.set("Raspberry.BinaryOutput.Pin7", 1);
 	BOOST_REQUIRE(informationModelAccess.getNode(nodeId, baseNodeClass) == true);
 
-	informationModelAccess.remove(nodeId);
+	BOOST_REQUIRE(informationModelAccess.remove(nodeId) == true);
 
 	BOOST_REQUIRE(informationModelAccess.getNode(nodeId, baseNodeClass) == false);
 
@@ -377,6 +383,8 @@ BOOST_AUTO_TEST_CASE(Nodeset_Remove)
 
 	success = configXmlWrite.write("test-nodeset2.xml");
 	BOOST_REQUIRE(success == true);
+
+	nodeSetXmlParserWrite.nodeSetNamespace().clearGlobal();
 }
 
 BOOST_AUTO_TEST_CASE(Nodeset_ParentChange)
@@ -430,6 +438,8 @@ BOOST_AUTO_TEST_CASE(Nodeset_ParentChange)
 
 	success = configXmlWrite.write("test-nodeset3.xml");
 	BOOST_REQUIRE(success == true);
+
+	nodeSetXmlParserWrite.nodeSetNamespace().clearGlobal();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
