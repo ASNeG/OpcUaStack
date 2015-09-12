@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_write)
 	WriteRequest::SPtr req = writeTrx->request();
 
 	uint32_t bufLen = 100000;
-	OpcUaByte buf[bufLen];
+	OpcUaByte buf[100000];
 	memset((char*)buf, 0x01, bufLen);
 	OpcUaByteString::SPtr byteString = OpcUaByteString::construct();
 	byteString->value(buf, bufLen);
