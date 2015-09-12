@@ -94,7 +94,7 @@ namespace OpcUaStackCore
 	{
 		if (boost::filesystem::exists(boost::filesystem::path(logFileName()))) {
 			boost::filesystem::path logFile(logFileName());
-			uint32_t logFileSize = boost::filesystem::file_size(logFile);
+			uint32_t logFileSize = (uint32_t)boost::filesystem::file_size(logFile);
 
 			if (logFileSize != 0 ) rotateLogFile();
 		}
@@ -116,7 +116,7 @@ namespace OpcUaStackCore
 	FileLogger::checkLogFile(void)
 	{
 		boost::filesystem::path logFile(logFileName());
-		uint32_t logFileSize = boost::filesystem::file_size(logFile);
+		uint32_t logFileSize = (uint32_t)boost::filesystem::file_size(logFile);
 		if (logFileSize < maxLogFileSize_) return;
 
 		// close log file
