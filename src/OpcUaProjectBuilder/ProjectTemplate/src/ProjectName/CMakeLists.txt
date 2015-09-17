@@ -7,8 +7,9 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 include_directories(
-     ${INSTALL_PREFIX_OpcUaStack}/usr/include/OpcUaStack
+    ${INSTALL_PREFIX_OpcUaStack}/usr/include/OpcUaStack
     ${PROJECT_SOURCE_DIR}
+    ${Boost_INCLUDE_DIRS}
 )
 
 file(GLOB ProjectName_SRC ${PROJECT_SOURCE_DIR}/ProjectName/*/*.cpp)
