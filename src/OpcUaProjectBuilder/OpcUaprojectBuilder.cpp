@@ -44,13 +44,14 @@ namespace OpcUaProjectBuilder
 	OpcUaProjectBuilder::start(int argc, char** argv)
 	{
 		// check command line arguments
-		if (argc != 3 && argc != 4) {
+		if (argc != 4 && argc != 5) {
 			usage();
 			return 1;
 		}
 		projectName_ = argv[1];
 		projectDescription_ = argv[2];
-		if (argc == 3) verbose_ = false;
+		projectPort_ = argv[3];
+		if (argc == 4) verbose_ = false;
 		else verbose_ = true;
 
 		if (!createProject()) {
@@ -65,12 +66,14 @@ namespace OpcUaProjectBuilder
 	OpcUaProjectBuilder::usage(void)
 	{
 		std::cout <<
-			"OpcUaProjectBuilder <Project-Name> <Project-Description> [verbose]\n"
+			"OpcUaProjectBuilder <Project-Name> <Project-Description> <Project-Port> [verbose]\n"
 			"\n"
 			"<Project-Name>\n"
 			"  name of the new project\n"
 			"<Project-Description>\n"
 			"  short description of the new project\n"
+			"<Project-Port>\n"
+			"  project port of the opc ua server\n"
 			"\n";
 	}
 
@@ -195,9 +198,11 @@ namespace OpcUaProjectBuilder
 		std::string result;
 		boost::regex regProjectName("ProjectName");
 		boost::regex regProjectDescription("ProjectDescription");
+		boost::regex regProjectPort("ProjectPort");
 
 		result = boost::regex_replace(string, regProjectName, projectName_);
 		result = boost::regex_replace(result, regProjectDescription, projectDescription_);
+		result = boost::regex_replace(result, regProjectPort, projectPort_);
 
 		return result;
 	}

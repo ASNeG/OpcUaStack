@@ -36,7 +36,7 @@
   
   <Endpoints>
     <EndpointDescription>
-	  <EndpointUrl>opc.tcp://0.0.0.0:8888/0.0.0.0</EndpointUrl>
+	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort/0.0.0.0</EndpointUrl>
 	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
 	  <ProductUri>urn:company:OpcUaServer</ProductUri>
 	  <ApplicationName>OpcUaServer</ApplicationName>

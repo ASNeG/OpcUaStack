@@ -46,6 +46,7 @@ namespace OpcUaProjectBuilder
 		// command line parameter
 		std::string projectName_;
 		std::string projectDescription_;
+		std::string projectPort_;
 		bool verbose_;
 
 		boost::filesystem::path templateDirectory_;
