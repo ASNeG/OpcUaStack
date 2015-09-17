@@ -33,6 +33,11 @@ if [ -z "${CPACK_BINARY_TZ}" ] ; then
     CPACK_BINARY_TZ="0"
 fi
 
+if [ -z "${INSTALL_PREFIX_OpcUaStack}"] ; then
+    echo "set environment variable INSTALL_PREFIX_OpcUaStack to ${HOME}/install"
+    INSTALL_PREFIX_OpcUaStack="${HOME}/install"
+fi
+
 if [ -z "${CMAKE_INSTALL_PREFIX}"] ; then
     echo "set environment variable CMAKE_INSTALL_PREFIX to ${HOME}/install"
     CMAKE_INSTALL_PREFIX="${HOME}/install"
@@ -58,6 +63,7 @@ CMAKE_ARGS="${CMAKE_ARGS} -DCPACK_SOURCE_TZ=${CPACK_SOURCE_TZ}"
 CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
 CMAKE_ARGS="${CMAKE_ARGS} -DCPACK_PACKAGING_INSTALL_PREFIX=${CPACK_PACKAGING_INSTALL_PREFIX}"
 CMAKE_ARGS="${CMAKE_ARGS} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
+CMAKE_ARGS="${CMAKE_ARGS} -DINSTALL_PREFIX_OpcUaStack=${INSTALL_PREFIX_OpcUaStack}"
 echo "CMAKE_ARGS=${CMAKE_ARGS}"
 
 # create build directory and move into it
