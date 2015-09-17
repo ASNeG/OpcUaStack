@@ -17,6 +17,7 @@ set(LIB_DIR "usr/lib" CACHE STRING "library directory")
 set(INC_DIR "usr/include" CACHE STRING "library directory")
 set(CONF_DIR "etc" CACHE STRING "configuration directory")
 set(LOG_DIR "var/log" CACHE STRING "log output directory")
+set(INSTALL_PREFIX_OpcUaStack "/" CACHE PATH "opc ua stack intallation prefix")
 
 option(
     USE_ProjectName
