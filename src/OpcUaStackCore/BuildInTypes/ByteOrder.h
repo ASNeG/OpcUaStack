@@ -37,6 +37,17 @@ namespace OpcUaStackCore
 	    public:
 
 		  static void 
+		  opcUaBinaryEncodeNumber(std::ostream& os, const T& value, bool littleEndian = true)
+		  {
+			  if (littleEndian) {
+				  opcUaBinaryEncodeNumberLE(os, value);
+			  }
+			  else {
+				  opcUaBinaryEncodeNumberBE(os, value);
+			  }
+		  }
+
+		  static void
 		  opcUaBinaryEncodeNumberLE(std::ostream& os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -46,6 +57,30 @@ namespace OpcUaStackCore
 				  for (uint32_t size=sizeof(T); size>0; size--) {
 					  os.write(((char*)&value)+size-1,1);
 				  }
+			  }
+		  }
+
+		  static void
+		  opcUaBinaryEncodeNumberBE(std::ostream& os, const T& value)
+		  {
+			  if (LITTLE_ENDIAN) {
+				  for (uint32_t size=sizeof(T); size>0; size--) {
+					  os.write(((char*)&value)+size-1,1);
+				  }
+			  }
+			  else {
+				  os.write((char*)&value, sizeof(T));
+			  }
+		  }
+
+		  static void
+		  opcUaBinaryDecodeNumber(std::istream& is, const T& value, bool littleEndian = true)
+		  {
+			  if (littleEndian) {
+				  opcUaBinaryDecodeNumberLE(is, value);
+			  }
+			  else {
+				  opcUaBinaryDecodeNumberBE(is, value);
 			  }
 		  }
 
@@ -61,6 +96,20 @@ namespace OpcUaStackCore
 				  }
 			  }
 		  }
+
+		  static void
+		  opcUaBinaryDecodeNumberBE(std::istream& is, const T& value)
+		  {
+			  if (LITTLE_ENDIAN) {
+				  for (uint32_t size=sizeof(T); size>0; size--) {
+					  is.read(((char*)&value)+size-1,1);
+				  }
+			  }
+			  else {
+				  is.read((char*)&value, sizeof(T));
+			  }
+		  }
+
     };
 }
 
