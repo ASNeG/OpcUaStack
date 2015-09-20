@@ -144,15 +144,15 @@ if (WIN32)
 	
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ASNeG-Demo\\\" \\\"ASNeG Demo Server\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" addPath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" INSTALL \\\"ASNeG-Demo\\\" \\\"ASNeG Demo Server\\\"'
 		"
 	) 
 	
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS
 		"
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ASNeG-Demo\\\"'
-			ExecWait '\\\"$INSTDIR\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\OpcUaStackService.exe\\\" UNINSTALL \\\"ASNeG-Demo\\\"'
+			ExecWait '\\\"$INSTDIR\\\\usr\\\\bin\\\\UpdateRegistry.exe\\\" removePath HKLM \\\"SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\Environment\\\" \\\"Path\\\" \\\"$INSTDIR\\\\usr\\\\lib\\\\OpcUaStack;C:\\\\local\\\\boost_1_54_0\\\\lib32-msvc-11.0\\\"'
 		"
 	) 
 	

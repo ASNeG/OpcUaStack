@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConditionBool.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceDescription.h"
 #include "OpcUaStackClient/Client/Client.h"

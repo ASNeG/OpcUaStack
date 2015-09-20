@@ -28,7 +28,7 @@ class UpdateRegistry
 	{
 		std::stringstream ss;
 		ss << "Main: " << std::endl;
-		for (uint32_t idx=0; idx<argc; idx++) {
+		for (uint32_t idx=0; idx<(uint32_t)argc; idx++) {
 			ss << "P[" << idx << "] = " << argv[idx] << std::endl;
 		}
 		eventLog("Info", ss.str());

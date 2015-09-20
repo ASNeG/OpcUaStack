@@ -148,6 +148,7 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_sync)
 	client.cleanup();
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 {
 	SessionTestHandler sessionTestHandler;
@@ -232,5 +233,6 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 	client.stop();
 	client.cleanup();
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()

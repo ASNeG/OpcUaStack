@@ -215,7 +215,7 @@ namespace OpcUaProjectBuilder
 
 			boost::filesystem::path file = *it;
 
-			std::string leaf = file.leaf().c_str();
+			std::string leaf = file.leaf().string();
 			leaf = processString(leaf);
 
 			templateDirectory /= file.leaf();

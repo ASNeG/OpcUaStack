@@ -789,6 +789,7 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::remove(OpcUaNodeId& nodeId)
 	{
+		// remove references to node class id
 		InformationModelMap::iterator it1;
 		for (
 			it1 = informationModel_->informationModelMap().begin();
@@ -800,16 +801,19 @@ namespace OpcUaStackServer
 			for (
 				it2 = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
 				it2 != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
-				it2++
 			) {
 				ReferenceItem::SPtr referenceItem = it2->second;
 				if (referenceItem->nodeId_ == nodeId) {
-					baseNodeClass->referenceItemMap().referenceItemMultiMap().erase(it2);
+					it2 = baseNodeClass->referenceItemMap().referenceItemMultiMap().erase(it2);
+				}
+				else {
+					it2++;
 				}
 			}
 		}
-		informationModel_->remove(nodeId);
-		return true;
+
+		// remove node class
+		return informationModel_->remove(nodeId);
 	}
 
 	bool

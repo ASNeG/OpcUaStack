@@ -72,7 +72,10 @@ namespace OpcUaStackServer
 	bool
 	InformationModel::remove(const OpcUaNodeId& opcUaNodeId)
 	{
-		informationModelMap_.erase(opcUaNodeId);
+		InformationModelMap::iterator it;
+		it = informationModelMap_.find(opcUaNodeId);
+		if (it == informationModelMap_.end()) return false;
+		informationModelMap_.erase(it);
 		return true;
 	}
 

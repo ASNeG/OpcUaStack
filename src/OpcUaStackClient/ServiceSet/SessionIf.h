@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 		SS_Reactivate
 	} SessionState;
 
-	class SessionIf
+	class DLLEXPORT SessionIf
 	{
 	  public:
 		virtual ~SessionIf(void) {}
