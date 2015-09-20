@@ -34,14 +34,19 @@ namespace OpcUaStackCore
 	class NumberTypeCoder
 	{
 	  public:
-		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
+		  typedef enum {
+			  LittleEndian,
+			  BigEndian,
+		  } NumberByteOrder;
+
+		  static void opcUaBinaryEncode(std::ostream& os, T& value)
 		  {
-			  ByteOrder<T>::opcUaBinaryEncodeNumber(os, value);
+			  ByteOrder<T>::opcUaBinaryEncodeNumberLE(os, value);
 		  }
 
-		  static void opcUaBinaryDecode(std::istream& is, T& value) 
+		  static void opcUaBinaryDecode(std::istream& is, T& value)
 		  {
-			  ByteOrder<T>::opcUaBinaryDecodeNumber(is, value);
+			  ByteOrder<T>::opcUaBinaryDecodeNumberLE(is, value);
 		  }
 
 		  static bool encode(boost::property_tree::ptree& pt, T& value)
@@ -109,13 +114,13 @@ namespace OpcUaStackCore
 		  static void opcUaBinaryEncode(std::ostream& os, T& value) 
 		  {
 			  int32_t v = value;
-			  ByteOrder<int32_t>::opcUaBinaryEncodeNumber(os, v);
+			  ByteOrder<int32_t>::opcUaBinaryEncodeNumberLE(os, v);
 		  }
 
 		  static void opcUaBinaryDecode(std::istream& is, T& value)
 		  {
 			  int32_t v = 0;
-			  ByteOrder<int32_t>::opcUaBinaryDecodeNumber(is, v);
+			  ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, v);
 			  value = (T)v;
 		  }
 
@@ -418,7 +423,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T, CODER>::opcUaBinaryEncode(std::ostream& os) const
 	{
-		ByteOrder<uint32_t>::opcUaBinaryEncodeNumber(os, actArrayLen_);
+		ByteOrder<uint32_t>::opcUaBinaryEncodeNumberLE(os, actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			CODER::opcUaBinaryEncode(os, valueArray_[idx]);
 		}
@@ -429,7 +434,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::opcUaBinaryDecode(std::istream& is)
 	{
 		int32_t arrayLength = 0;
-		ByteOrder<int32_t>::opcUaBinaryDecodeNumber(is, arrayLength);
+		ByteOrder<int32_t>::opcUaBinaryDecodeNumberLE(is, arrayLength);
 		if (arrayLength <= 0) {
 			return;
 		}

@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 	    public:
 
 		  static void 
-		  opcUaBinaryEncodeNumber(std::ostream& os, const T& value)
+		  opcUaBinaryEncodeNumberLE(std::ostream& os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  os.write((char*)&value, sizeof(T));
@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void 
-		  opcUaBinaryDecodeNumber(std::istream& is, const T& value)
+		  opcUaBinaryDecodeNumberLE(std::istream& is, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  is.read((char*)&value, sizeof(T));
