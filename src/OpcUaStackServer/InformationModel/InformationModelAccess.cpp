@@ -798,17 +798,21 @@ namespace OpcUaStackServer
 		) {
 			BaseNodeClass::SPtr baseNodeClass = it1->second;
 			ReferenceItemMultiMap::iterator it2;
+			std::vector<ReferenceItemMultiMap::iterator> it2Vec;
 			for (
 				it2 = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
 				it2 != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+				it2++
 			) {
 				ReferenceItem::SPtr referenceItem = it2->second;
 				if (referenceItem->nodeId_ == nodeId) {
-					it2 = baseNodeClass->referenceItemMap().referenceItemMultiMap().erase(it2);
+					it2Vec.push_back(it2);
 				}
-				else {
-					it2++;
-				}
+			}
+
+			std::vector<ReferenceItemMultiMap::iterator>::iterator it3;
+			for (it3 = it2Vec.begin(); it3 != it2Vec.end(); it3++) {
+				baseNodeClass->referenceItemMap().referenceItemMultiMap().erase(*it3);
 			}
 		}
 
