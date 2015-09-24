@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "ProjectName/Library/Library.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
@@ -27,25 +28,25 @@ namespace ProjectName
 	Library::Library(void)
 	: ApplicationIf()
 	{
-		std::cout << "Library::construct" << std::endl;
+		Log(Debug, "Library::Library");
 	}
 
 	Library::~Library(void)
 	{
-		std::cout << "Library::destruct" << std::endl;
+		Log(Debug, "Library::~Library");
 	}
 
 	bool
 	Library::startup(void)
 	{
-		std::cout << "Library::startup" << std::endl;
+		Log(Debug, "Library::startup");
 		return true;
 	}
 
 	bool
 	Library::shutdown(void)
 	{
-		std::cout << "Library::shutdown" << std::endl;
+		Log(Debug, "Library::shutdown");
 		return true;
 	}
 
