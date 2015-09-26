@@ -163,6 +163,11 @@ namespace OpcUaStackServer
 		boost::asio::io_service& io_service = ioService_->io_service();
 		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url_.port());
 		tcpAcceptor_->listen();
+
+		Log(Info, "open opc ua listener socket")
+			.parameter("Address", url_.host())
+			.parameter("Port", url_.port());
+
 		return true;
 	}
 
