@@ -179,8 +179,8 @@ namespace OpcUaStackCore
 		//
 		// Int16
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt16& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt16& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt16& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaInt16& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaInt16& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaInt16& value);
 	
@@ -197,8 +197,8 @@ namespace OpcUaStackCore
 		//
 		// UInt16
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt16& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt16& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaUInt16& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaUInt16& value);
 
@@ -215,8 +215,8 @@ namespace OpcUaStackCore
 		//
 		// Int32
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt32& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt32& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt32& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaInt32& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaInt32& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaInt32& value);
 	
@@ -233,8 +233,8 @@ namespace OpcUaStackCore
 		//
 		// UInt32
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt32& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt32& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaUInt32& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaUInt32& value);
 	
@@ -251,8 +251,8 @@ namespace OpcUaStackCore
 		//
 		// Int64
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt64& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaInt64& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaInt64& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaInt64& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaInt64& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaInt64& value);
 	
@@ -268,8 +268,8 @@ namespace OpcUaStackCore
 		//
 		// UInt64
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt64& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaUInt64& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaUInt64& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaUInt64& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaUInt64& value);
 	
@@ -286,8 +286,8 @@ namespace OpcUaStackCore
 		//
 		// Float
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaFloat& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaFloat& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaFloat& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaFloat& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaFloat& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaFloat& value);
 
@@ -304,8 +304,8 @@ namespace OpcUaStackCore
 		//
 		// Double
 		//
-		static void opcUaBinaryEncode(std::ostream& os, const OpcUaDouble& value);
-		static void opcUaBinaryDecode(std::istream& is, OpcUaDouble& value);
+		static void opcUaBinaryEncode(std::ostream& os, const OpcUaDouble& value, bool littleEndian=true);
+		static void opcUaBinaryDecode(std::istream& is, OpcUaDouble& value, bool littleEndian=true);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaDouble& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaDouble& value);
 	
