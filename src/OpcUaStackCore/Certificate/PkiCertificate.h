@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Certificate/PkiIdentity.h"
 #include "OpcUaStackCore/Certificate/PkiCertificateInfo.h"
 #include "OpcUaStackCore/Certificate/PkiPublicKey.h"
+#include "OpcUaStackCore/Certificate/PkiPrivateKey.h"
 
 namespace OpcUaStackCore
 {
@@ -37,7 +38,13 @@ namespace OpcUaStackCore
 		PkiCertificate(void);
 		~PkiCertificate(void);
 
-		bool createNewCertificate(PkiIdentity& pkiIdentity, PkiCertificateInfo& pkiCertificateInfo, PkiPublicKey& pkiPublicKey);
+		bool createNewCertificate(
+			PkiCertificateInfo& pkiCertificateInfo,
+			PkiIdentity& subjectPkiIdentity,
+			PkiPublicKey& subjectPkiPublicKey,
+			PkiIdentity& issuerPkiIdentity,
+			PkiPrivateKey& issuerPrivateKey
+		);
 
 	  private:
 		void openSSLError(void);

@@ -33,10 +33,20 @@ namespace OpcUaStackCore
 
 	PkiCertificate::~PkiCertificate(void)
 	{
+		if (x509Cert_ != nullptr) {
+		    X509_free(x509Cert_);
+		    x509Cert_ = nullptr;
+		}
 	}
 
 	bool
-	PkiCertificate::createNewCertificate(PkiIdentity& pkiIdentity, PkiCertificateInfo& pkiCertificateInfo, PkiPublicKey& pkiPublicKey)
+	PkiCertificate::createNewCertificate(
+		PkiCertificateInfo& pkiCertificateInfo,
+		PkiIdentity& subjectPkiIdentity,
+		PkiPublicKey& subjectPkiPublicKey,
+		PkiIdentity& issuerPkiIdentity,
+		PkiPrivateKey& issuerPrivateKey
+	)
 	{
 		bool success = true;
 		int resultCode;
@@ -76,7 +86,7 @@ namespace OpcUaStackCore
 
 	        // set domain component
 	        resultCode = X509_NAME_add_entry_by_txt (
-	        	x509Name, "DC", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.domainComponent().c_str(), -1, -1, 0
+	        	x509Name, "DC", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.domainComponent().c_str(), -1, -1, 0
 	        );
             if (!resultCode) {
             	openSSLError();
@@ -84,7 +94,7 @@ namespace OpcUaStackCore
 
             // set country
             resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "C", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.country().c_str(), -1, -1, 0
+            	x509Name, "C", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.country().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -92,7 +102,7 @@ namespace OpcUaStackCore
 
             // set state
             resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "ST", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.state().c_str(), -1, -1, 0
+            	x509Name, "ST", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.state().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -100,7 +110,7 @@ namespace OpcUaStackCore
 
             // set locality
             resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "L", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.locality().c_str(), -1, -1, 0
+                x509Name, "L", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.locality().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -108,7 +118,7 @@ namespace OpcUaStackCore
 
             // set organization
             resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "O", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.organization().c_str(), -1, -1, 0
+                x509Name, "O", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.organization().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -116,7 +126,7 @@ namespace OpcUaStackCore
 
             // set organization unit
             resultCode = X509_NAME_add_entry_by_txt (
-               	x509Name, "OU", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.organizationUnit().c_str(), -1, -1, 0
+               	x509Name, "OU", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.organizationUnit().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -124,7 +134,7 @@ namespace OpcUaStackCore
 
             // set common name
             resultCode = X509_NAME_add_entry_by_txt (
-               x509Name, "CN", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.commonName().c_str(), -1, -1, 0
+               x509Name, "CN", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.commonName().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -150,7 +160,7 @@ namespace OpcUaStackCore
 
 	        // set domain component
 	        resultCode = X509_NAME_add_entry_by_txt (
-	        	x509Name, "DC", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.domainComponent().c_str(), -1, -1, 0
+	        	x509Name, "DC", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.domainComponent().c_str(), -1, -1, 0
 	        );
             if (!resultCode) {
             	openSSLError();
@@ -158,7 +168,7 @@ namespace OpcUaStackCore
 
             // set country
             resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "C", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.country().c_str(), -1, -1, 0
+            	x509Name, "C", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.country().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -166,7 +176,7 @@ namespace OpcUaStackCore
 
             // set state
             resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "ST", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.state().c_str(), -1, -1, 0
+            	x509Name, "ST", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.state().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -174,7 +184,7 @@ namespace OpcUaStackCore
 
             // set locality
             resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "L", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.locality().c_str(), -1, -1, 0
+                x509Name, "L", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.locality().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -182,7 +192,7 @@ namespace OpcUaStackCore
 
             // set organization
             resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "O", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.organization().c_str(), -1, -1, 0
+                x509Name, "O", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.organization().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -190,7 +200,7 @@ namespace OpcUaStackCore
 
             // set organization unit
             resultCode = X509_NAME_add_entry_by_txt (
-               	x509Name, "OU", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.organizationUnit().c_str(), -1, -1, 0
+               	x509Name, "OU", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.organizationUnit().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -198,7 +208,7 @@ namespace OpcUaStackCore
 
             // set common name
             resultCode = X509_NAME_add_entry_by_txt (
-               x509Name, "CN", MBSTRING_UTF8, (const unsigned char*)pkiIdentity.commonName().c_str(), -1, -1, 0
+               x509Name, "CN", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.commonName().c_str(), -1, -1, 0
             );
             if (!resultCode) {
             	openSSLError();
@@ -224,7 +234,7 @@ namespace OpcUaStackCore
         if (success)
         {
             // set public key
-            EVP_PKEY *pKey = pkiPublicKey.publicKey();
+            EVP_PKEY *pKey = subjectPkiPublicKey.publicKey();
             resultCode = X509_set_pubkey(x509Cert_, pKey);
             if (!resultCode) {
             	success = false;
@@ -289,29 +299,28 @@ namespace OpcUaStackCore
 	        }
 	#endif
 
-#if 0
 
 	    if (success) {
 	        // sign the certificate
-	        EVP_MD* publicDigest = EVP_sha1();
-	        if (!publicDigest) {
+	        const EVP_MD* digest = EVP_sha1();
+	        if (!digest) {
 	        	success = false;
 	        	openSSLError();
 	        }
 	        else {
-	                EVP_PKEY *pKey = ( EVP_PKEY* ) ( const EVP_PKEY* ) issuerPrivateKey;
-	                iRet = X509_sign ( m_pCert, pKey, pDgst );
-	                if (!iRet) {bError = true; addOpenSSLError();}
-	            }
-	        }
-
-	        if (bError)
-	        {
-	            X509_free ( m_pCert );
-	            m_pCert = 0;
+	        	EVP_PKEY* pKey = issuerPrivateKey.privateKey();
+	            resultCode = X509_sign(x509Cert_, pKey, digest);
+	            if (!resultCode) {
+		        	success = false;
+		        	openSSLError();
+		        }
 	        }
 	    }
-#endif
+
+	    if (!success) {
+	       X509_free (x509Cert_);
+	       x509Cert_ = nullptr;
+	    }
 
 		return true;
 	}
