@@ -17,34 +17,42 @@
 
 #include <openssl/err.h>
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Certificate/PkiPublicKey.h"
+#include "OpcUaStackCore/Certificate/PkiError.h"
 
 namespace OpcUaStackCore
 {
 
-	PkiPublicKey::PkiPublicKey(void)
-	: publicKey_(nullptr)
+	PkiError::PkiError(void)
+	: errorList_()
 	{
-		publicKey_ = X509_PUBKEY_new();
 	}
 
-	PkiPublicKey::~PkiPublicKey(void)
+	PkiError::~PkiError(void)
 	{
-		if (publicKey_ != nullptr) {
-			X509_PUBKEY_free(publicKey_);
-			publicKey_ = nullptr;
-		}
 	}
 
-	EVP_PKEY*
-	PkiPublicKey::publicKey(void)
+	void
+	PkiError::openSSLError(void)
 	{
-	    EVP_PKEY *pKey = 0;
-	    pKey = X509_PUBKEY_get(publicKey_);
-	    if (!pKey) {
-	    	// FIXME: error handling
+		errorList_.clear();
+	    ERR_load_crypto_strings();
+
+	    unsigned long error = ERR_get_error();
+	    while (error != 0)
+	    {
+	    	errorList_.push_back(ERR_error_string(error, NULL));
+	        error = ERR_get_error();
+
+	        if (errorList_.size() > 20) {
+	        	errorList_.pop_front();
+	        }
 	    }
-	    return pKey;
+	}
+
+	void
+	PkiError::getError(std::list<std::string>& errorList)
+	{
+		errorList = errorList_;
 	}
 
 }

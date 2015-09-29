@@ -15,37 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <openssl/err.h>
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Certificate/PkiPublicKey.h"
+#ifndef __OpcUaStackCore_PkiError_h__
+#define __OpcUaStackCore_PkiError_h__
+
+#include <list>
+#include "OpcUaStackCore/Base/os.h"
+
 
 namespace OpcUaStackCore
 {
 
-	PkiPublicKey::PkiPublicKey(void)
-	: publicKey_(nullptr)
+	class DLLEXPORT PkiError
 	{
-		publicKey_ = X509_PUBKEY_new();
-	}
+	  public:
+		PkiError(void);
+		~PkiError(void);
 
-	PkiPublicKey::~PkiPublicKey(void)
-	{
-		if (publicKey_ != nullptr) {
-			X509_PUBKEY_free(publicKey_);
-			publicKey_ = nullptr;
-		}
-	}
+		void openSSLError(void);
+		void getError(std::list<std::string>& errorList);
 
-	EVP_PKEY*
-	PkiPublicKey::publicKey(void)
-	{
-	    EVP_PKEY *pKey = 0;
-	    pKey = X509_PUBKEY_get(publicKey_);
-	    if (!pKey) {
-	    	// FIXME: error handling
-	    }
-	    return pKey;
-	}
+	  private:
+		std::list<std::string> errorList_;
+	};
 
 }
 
+#endif
