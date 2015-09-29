@@ -32,7 +32,9 @@ namespace OpcUaStackCore
 		~PkiError(void);
 
 		void openSSLError(void);
+		void openSSLError(const std::string& message);
 		void getError(std::list<std::string>& errorList);
+		void logError(LogLevel logLevel, const std::string& logMessage);
 
 	  private:
 		std::list<std::string> errorList_;

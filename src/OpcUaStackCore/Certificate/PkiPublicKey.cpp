@@ -16,6 +16,7 @@
  */
 
 #include <openssl/err.h>
+#include <openssl/x509.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Certificate/PkiPublicKey.h"
 
@@ -23,7 +24,8 @@ namespace OpcUaStackCore
 {
 
 	PkiPublicKey::PkiPublicKey(void)
-	: publicKey_(nullptr)
+	: PkiError()
+	, publicKey_(nullptr)
 	{
 		publicKey_ = X509_PUBKEY_new();
 	}
@@ -36,15 +38,78 @@ namespace OpcUaStackCore
 		}
 	}
 
+	PkiPublicKey::KeyType
+	PkiPublicKey::keyType(void)
+	{
+	    EVP_PKEY *key = nullptr;
+	    key = X509_PUBKEY_get (publicKey_);
+	    if (!key) {
+	    	openSSLError();
+	    	return KT_None;
+	    }
+	    uint32_t keyType = key->type;
+	    EVP_PKEY_free(key);
+
+	    switch(key->type)
+	    {
+	        case EVP_PKEY_RSA: return KT_RSA;
+	        case EVP_PKEY_DSA: return KT_DSA;
+	        default: return KT_None;
+	    }
+	}
+
 	EVP_PKEY*
 	PkiPublicKey::publicKey(void)
 	{
-	    EVP_PKEY *pKey = 0;
-	    pKey = X509_PUBKEY_get(publicKey_);
-	    if (!pKey) {
-	    	// FIXME: error handling
+	    EVP_PKEY *key = 0;
+	    key = X509_PUBKEY_get(publicKey_);
+	    if (!key) {
+	    	openSSLError();
+	    	return nullptr;
 	    }
-	    return pKey;
+	    return key;
+	}
+
+	bool
+	PkiPublicKey::publicKey(EVP_PKEY* publicKey)
+	{
+	    int resultCode = X509_PUBKEY_set(&publicKey_, publicKey);
+	    if (!resultCode) {
+	    	openSSLError();
+	    	return false;
+	    }
+	    return true;
+	}
+
+	bool
+	PkiPublicKey::toDER(char* bufDER, uint32_t* lengthDER)
+	{
+		int length = i2d_X509_PUBKEY(publicKey_, 0);
+		if (length < 0) {
+			openSSLError();
+			return false;
+		}
+		if (length > *lengthDER) {
+			openSSLError("external DER buffer to small");
+			return false;
+		}
+
+		i2d_X509_PUBKEY(publicKey_, (unsigned char**)&bufDER);
+		*lengthDER = length;
+
+		return true;
+	}
+
+	bool
+	PkiPublicKey::fromDER(char* bufDER, uint32_t lengthDER)
+	{
+		publicKey_ = d2i_X509_PUBKEY ( 0, ( const unsigned char** ) &bufDER, lengthDER );
+		if (!publicKey_) {
+			openSSLError();
+		    return false;
+		}
+
+		return true;
 	}
 
 }

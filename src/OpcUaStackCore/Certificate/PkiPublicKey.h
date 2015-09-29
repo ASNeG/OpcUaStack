@@ -19,19 +19,32 @@
 #define __OpcUaStackCore_PkiPublicKey_h__
 
 #include <openssl/x509.h>
+#include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/PkiError.h"
 
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT PkiPublicKey
+	: public PkiError
 	{
 	  public:
+		typedef enum {
+			KT_None,
+			KT_RSA,
+			KT_DSA
+		} KeyType;
+
 		PkiPublicKey(void);
 		~PkiPublicKey(void);
 
+		KeyType keyType(void);
 		EVP_PKEY* publicKey(void);
+		bool publicKey(EVP_PKEY* publicKey);
+		bool toDER(char* bufDER, uint32_t* lengthDER);
+		bool fromDER(char* bufDER, uint32_t lengthDER);
 
 	  private:
 		X509_PUBKEY* publicKey_;

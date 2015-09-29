@@ -34,7 +34,6 @@ namespace OpcUaStackCore
 	void
 	PkiError::openSSLError(void)
 	{
-		errorList_.clear();
 	    ERR_load_crypto_strings();
 
 	    unsigned long error = ERR_get_error();
@@ -50,9 +49,29 @@ namespace OpcUaStackCore
 	}
 
 	void
+	PkiError::openSSLError(const std::string& message)
+	{
+		errorList_.push_back(message);
+	}
+
+	void
 	PkiError::getError(std::list<std::string>& errorList)
 	{
 		errorList = errorList_;
+		errorList_.clear();
+	}
+
+	void
+	PkiError::logError(LogLevel logLevel, const std::string& logMessage)
+	{
+		Log log(logLevel, logMessage);
+
+		std::list<std::string>::iterator it;
+		for (it = errorList_.begin(); it != errorList_.end(); it++) {
+			log.parameter("SSLErrorMessage", *it);
+		}
+
+		errorList_.clear();
 	}
 
 }
