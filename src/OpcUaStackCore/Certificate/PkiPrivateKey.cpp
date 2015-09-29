@@ -23,12 +23,24 @@ namespace OpcUaStackCore
 {
 
 	PkiPrivateKey::PkiPrivateKey(void)
-	: privateKey_(nullptr)
+	: PkiError()
+	, privateKey_(nullptr)
 	{
+		privateKey_ = EVP_PKEY_new();
 	}
 
 	PkiPrivateKey::~PkiPrivateKey(void)
 	{
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_free(privateKey_);
+		}
+	}
+
+	void
+	PkiPrivateKey::privateKey(EVP_PKEY* privateKey)
+	{
+	    CRYPTO_add ( &privateKey->references, 1, CRYPTO_LOCK_EVP_PKEY );
+	    privateKey_ = privateKey;
 	}
 
 	EVP_PKEY*

@@ -20,17 +20,19 @@
 
 #include <openssl/x509.h>
 #include "OpcUaStackCore/Base/os.h"
-
+#include "OpcUaStackCore/Certificate/PkiError.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT PkiPrivateKey
+	: public PkiError
 	{
 	  public:
 		PkiPrivateKey(void);
 		~PkiPrivateKey(void);
 
+		void privateKey(EVP_PKEY* privateKey);
 		EVP_PKEY* privateKey(void);
 
 	  private:
