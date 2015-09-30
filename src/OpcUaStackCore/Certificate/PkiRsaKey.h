@@ -22,7 +22,8 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/PkiError.h"
-
+#include "OpcUaStackCore/Certificate/PkiPublicKey.h"
+#include "OpcUaStackCore/Certificate/PkiPrivateKey.h"
 
 namespace OpcUaStackCore
 {
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
 		PkiRsaKey(void);
 		~PkiRsaKey(void);
 
+		bool createKey(uint32_t bits);
+		bool getPublicKey(PkiPublicKey& publicKey);
+		bool getPrivateKey(PkiPrivateKey& privateKey);
+
+		bool writePEMFile(const std::string& fileName, const std::string& password);
+		bool readPEMFile(const std::string& fileName, const std::string& password);
+
 	  private:
+		EVP_PKEY *key_;
 	};
 
 }
