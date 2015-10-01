@@ -20,6 +20,7 @@
 
 #include <list>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 
 namespace OpcUaStackCore
