@@ -24,6 +24,13 @@
 namespace OpcUaStackCore
 {
 
+	int passwordCallback(char* buf, int size, int rwflag, void* u)
+	{
+		if (u == nullptr) return 0;
+		return snprintf(buf, size, "%s", (char*)u);
+	}
+
+
 	PkiRsaKey::PkiRsaKey(void)
 	: PkiError()
 	, key_(nullptr)
@@ -145,29 +152,32 @@ namespace OpcUaStackCore
         	return false;
         }
 
-#if 0
-        UaPkiRsaKeyPair keyPair;
+        RSA* rsaKey = nullptr;
+        if (password.empty()) {
+        	// load private key unencrypted
+        	rsaKey = PEM_read_bio_RSAPrivateKey(bioPem, 0, passwordCallback, nullptr);
+            if (rsaKey == nullptr) {
+            	openSSLError();
+            	BIO_free (bioPem);
+            	return false;
+            }
+        }
+        else {
+        	// load private key encrypted
+        	rsaKey = PEM_read_bio_RSAPrivateKey(bioPem, 0, passwordCallback, (void*)password.c_str());
+            if (rsaKey == nullptr) {
+            	openSSLError();
+            	BIO_free (bioPem);
+            	return false;
+            }
+        }
 
-         RSA *pRSA = 0;
-
-         if (pCallback)
-         {
-             pRSA = PEM_read_bio_RSAPrivateKey ( bioPem, 0, pCallback, pCBData );
-             if (!pRSA) {keyPair.addOpenSSLError();}
-         }
-         else
-         {
-             pRSA = c ( bioPem, 0, password_callback, ( void* ) szPassword );
-             if (!pRSA) {keyPair.addOpenSSLError();}
-         }
-
-         if (pRSA)
-         {
-             // assign the key pair
-             resultCode = EVP_PKEY_assign_RSA ( keyPair.m_pKey, pRSA );
-             if (!resultCode) {keyPair.addOpenSSLError();}
-         }
-#endif
+        resultCode = EVP_PKEY_assign_RSA(key_, rsaKey);
+        if (!resultCode) {
+        	openSSLError();
+        	BIO_free (bioPem);
+        	return false;
+        }
 
         BIO_free(bioPem);
 		return true;
