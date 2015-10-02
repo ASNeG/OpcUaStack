@@ -328,8 +328,6 @@ namespace OpcUaStackCore
 	bool
 	PkiCertificate::toDERFile(const std::string& derFileName)
 	{
-	    int ret = -1;
-
 	    if (x509Cert_ == nullptr) {
 	    	openSSLError("The certificate is NULL");
 	    	return false;
@@ -351,6 +349,39 @@ namespace OpcUaStackCore
 
 	    resultCode = i2d_X509_bio(bio, x509Cert_);
 	    if (!resultCode) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return false;
+	    }
+
+	    BIO_free (bio);
+		return true;
+	}
+
+	bool
+	PkiCertificate::fromDERFile(const std::string& derFileName)
+	{
+		if (x509Cert_ != nullptr) {
+		    X509_free(x509Cert_);
+		    x509Cert_ = nullptr;
+		}
+
+	    BIO* bio = BIO_new(BIO_s_file());
+	    if (bio == nullptr)
+	    {
+	    	openSSLError();
+	    	return false;
+	    }
+
+	    int resultCode = BIO_read_filename(bio, (void*)derFileName.c_str());
+	    if (!resultCode) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return false;
+	    }
+
+	    x509Cert_ = d2i_X509_bio(bio, 0);
+	    if (x509Cert_ == nullptr) {
 	    	openSSLError();
 	    	BIO_free (bio);
 	    	return false;

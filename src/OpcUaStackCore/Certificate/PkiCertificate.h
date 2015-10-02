@@ -47,6 +47,7 @@ namespace OpcUaStackCore
 			PkiPrivateKey& issuerPrivateKey
 		);
 		bool toDERFile(const std::string& derFileName);
+		bool fromDERFile(const std::string& derFileName);
 
 	  private:
 		X509 *x509Cert_;

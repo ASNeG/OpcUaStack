@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_store_key)
 	BOOST_REQUIRE(certificate.createNewCertificate(info, identity, subjectPublicKey, identity, issuerPrivateKey) == true);
 
 	//
-	// store public key
+	// store certificate
 	//
 	BOOST_REQUIRE(certificate.toDERFile("../tst/data/certs/ASNeG-Test.der") == true);
 
