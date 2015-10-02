@@ -36,6 +36,7 @@ namespace OpcUaStackCore
 		std::string& URI(void);
 		void ipAddresses(const std::vector<std::string>& ipAddresses);
 		std::vector<std::string>& ipAddresses(void);
+		void dnsName(const std::string& dnsName);
 		void dnsNames(const std::vector<std::string>& dnsNames);
 		std::vector<std::string>& dnsNames(void);
 		void email(const std::string& email);

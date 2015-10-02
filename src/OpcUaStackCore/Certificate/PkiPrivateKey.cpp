@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 	void
 	PkiPrivateKey::privateKey(EVP_PKEY* privateKey)
 	{
-	    CRYPTO_add ( &privateKey->references, 1, CRYPTO_LOCK_EVP_PKEY );
+	    CRYPTO_add(&privateKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
 	    privateKey_ = privateKey;
 	}
 
