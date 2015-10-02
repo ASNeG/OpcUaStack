@@ -257,8 +257,8 @@ namespace OpcUaStackCore
 	                if (!pExt) {bError = true; addOpenSSLError();}
 	                else
 	                {
-	                    iRet = X509_add_ext ( m_pCert, pExt, -1 );
-	                    if (!iRet) {bError = true; addOpenSSLError();}
+	                    resultCode = X509_add_ext ( m_pCert, pExt, -1 );
+	                    if (!resultCode) {bError = true; addOpenSSLError();}
 	                    X509_EXTENSION_free ( pExt );
 	                }
 	            }
@@ -292,8 +292,8 @@ namespace OpcUaStackCore
 	            if (!pExt) {bError = true; addOpenSSLError();}
 	            else
 	            {
-	                iRet = X509_add_ext ( m_pCert, pExt, -1 );
-	                if (!iRet) {bError = true; addOpenSSLError();}
+	                resultCode = X509_add_ext ( m_pCert, pExt, -1 );
+	                if (!resultCode) {bError = true; addOpenSSLError();}
 	                X509_EXTENSION_free ( pExt );
 	            }
 	        }
@@ -325,25 +325,39 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	void
-	PkiCertificate::openSSLError(void)
+	bool
+	PkiCertificate::toDERFile(const std::string& derFileName)
 	{
-	    if (!loadCryptoStrings_)
-	    {
-	        ERR_load_crypto_strings();
-	        loadCryptoStrings_ = true;
+	    int ret = -1;
+
+	    if (x509Cert_ == nullptr) {
+	    	openSSLError("The certificate is NULL");
+	    	return false;
 	    }
 
-	    unsigned long error = ERR_get_error();
-	    while (error != 0)
+	    BIO* bio = BIO_new(BIO_s_file());
+	    if (bio == nullptr)
 	    {
-	    	cryptoStringErrorList_.push_back(ERR_error_string(error, NULL));
-	        error = ERR_get_error();
-
-	        if (cryptoStringErrorList_.size() > 20) {
-	        	cryptoStringErrorList_.pop_front();
-	        }
+	    	openSSLError();
+	    	return false;
 	    }
+
+	    int resultCode = BIO_write_filename(bio, (void*)derFileName.c_str());
+	    if (!resultCode) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return false;
+	    }
+
+	    resultCode = i2d_X509_bio(bio, x509Cert_);
+	    if (!resultCode) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return false;
+	    }
+
+	    BIO_free (bio);
+		return true;
 	}
 
 }

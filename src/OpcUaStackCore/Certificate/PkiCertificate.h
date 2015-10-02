@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT PkiCertificate
+	: public PkiError
 	{
 	  public:
 		static bool loadCryptoStrings_;
@@ -45,10 +46,9 @@ namespace OpcUaStackCore
 			PkiIdentity& issuerPkiIdentity,
 			PkiPrivateKey& issuerPrivateKey
 		);
+		bool toDERFile(const std::string& derFileName);
 
 	  private:
-		void openSSLError(void);
-
 		X509 *x509Cert_;
 	};
 
