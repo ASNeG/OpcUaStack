@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_create)
 	BOOST_REQUIRE(certificate.createNewCertificate(info, identity, subjectPublicKey, identity, issuerPrivateKey) == true);
 }
 
-BOOST_AUTO_TEST_CASE(PkiCertificate_store_public_key)
+BOOST_AUTO_TEST_CASE(PkiCertificate_store_key)
 {
 	std::string hostname = boost::asio::ip::host_name();
 
@@ -76,10 +76,12 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_store_public_key)
 	//
 	// store public key
 	//
-	certificate.toDERFile("../tst/data/certs/ASNeG-Test.der");
-	certificate.logError(Error, "xxx");
-
 	BOOST_REQUIRE(certificate.toDERFile("../tst/data/certs/ASNeG-Test.der") == true);
+
+	//
+	// store private key
+	//
+	BOOST_REQUIRE(rsaKey.writePEMFile("../tst/data/private/ASNeG-Test.PEM", "") == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
