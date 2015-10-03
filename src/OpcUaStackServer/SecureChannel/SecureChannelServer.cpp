@@ -370,7 +370,7 @@ namespace OpcUaStackServer
 		openSecureChannelResponse.securityToken()->channelId(channelId_);
 		openSecureChannelResponse.securityToken()->tokenId(tokenIdVec_[tokenIdVec_.size()-1]);
 		openSecureChannelResponse.securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
-		openSecureChannelResponse.securityToken()->revisedLifetime(10000);
+		openSecureChannelResponse.securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
 		openSecureChannelResponse.responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
 		openSecureChannelResponse.serverNonce(serverNonce, 1);
 		openSecureChannelResponse.opcUaBinaryEncode(ios1);
