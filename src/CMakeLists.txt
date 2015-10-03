@@ -71,6 +71,7 @@ if (WIN32)
 	#ADD_DEFINITIONS(-D_UNICODE)
 endif ()
 
+find_package(OpenSSL REQUIRED)
 find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
 
 # -----------------------------------------------------------------------------

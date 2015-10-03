@@ -8,7 +8,8 @@
 # -----------------------------------------------------------------------------
 include_directories(
     ../inc
-	${Boost_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR}
 )
 file(GLOB OpcUaStackCore_SRC ./OpcUaStackCore/*/*.cpp)
 add_library(OpcUaStackCore SHARED ${OpcUaStackCore_SRC})
@@ -18,6 +19,7 @@ target_link_libraries(
     ${CMAKE_DL_LIBS}
 #    ${pthread}
     ${Boost_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
 )
 
 
