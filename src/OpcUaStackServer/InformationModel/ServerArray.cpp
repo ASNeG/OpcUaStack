@@ -50,14 +50,20 @@ namespace OpcUaStackServer
 	bool 
 	ServerArray::addServerName(const std::string& serverName)
 	{
+		OpcUaDataValue dataValue;
+		if (!informationModel_->getValue(OpcUaId_Server_ServerArray, AttributeId_Value, dataValue)) {
+			return false;
+		}
+
 		OpcUaString::SPtr stringValue = OpcUaString::construct();
 		*stringValue = serverName;
+		dataValue.variant()->pushBack(stringValue);
+		dataValue.statusCode(Success);
+		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 
-		OpcUaVariant variant;
-		informationModel_->getValue(OpcUaId_Server_ServerArray, AttributeId_Value, variant);
-		variant.pushBack(stringValue);
-		informationModel_->setValue(OpcUaId_Server_ServerArray, AttributeId_Value, variant);
-		return true;
+		return informationModel_->setValue(OpcUaId_Server_ServerArray, AttributeId_Value, dataValue);
+
 	}
 
 	int32_t 

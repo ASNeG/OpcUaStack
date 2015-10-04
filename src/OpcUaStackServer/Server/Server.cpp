@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/asio/ip/host_name.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/Server/Server.h"
@@ -237,12 +238,20 @@ namespace OpcUaStackServer
 	bool
 	Server::setInformationModel(void)
 	{
-		// replace namespaces to namespace array
+		// replace namespaces by namespace array
 		{
 			NodeSetNamespace nodeSetNamespace;
 			NamespaceArray namespaceArray;
 			namespaceArray.informationModel(informationModel_);
 			namespaceArray.replaceNamespaceNames(nodeSetNamespace.globalNamespaceVec());
+		}
+
+		// set server array
+		{
+			std::string hostname = boost::asio::ip::host_name();
+			ServerArray serverArray;
+			serverArray.informationModel(informationModel_);
+			serverArray.addServerName("urn:" + hostname + ":asneg:ASNeG-Demo");
 		}
 
 		// set server status
