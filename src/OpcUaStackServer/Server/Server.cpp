@@ -270,7 +270,7 @@ namespace OpcUaStackServer
 		// set server status
 		{
 			OpcUaDataValue dataValue;
-			dataValue.variant()->variant((OpcUaUInt32)0);
+			dataValue.variant()->variant((OpcUaInt32)0);
 			dataValue.statusCode(Success);
 			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
