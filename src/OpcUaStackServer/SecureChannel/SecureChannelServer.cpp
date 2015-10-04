@@ -358,7 +358,10 @@ namespace OpcUaStackServer
 
 		OpcUaNumber::opcUaBinaryEncode(ios1, channelId_);
 		securityHeader.opcUaBinaryEncode(ios1);
-		sequenceHeader.opcUaBinaryEncode(ios1);
+
+		sequenceHeader_.requestId(sequenceHeader.requestId());
+		sequenceHeader_.incSequenceNumber();
+		sequenceHeader_.opcUaBinaryEncode(ios1);
 
 		OpcUaNodeId typeIdResponse;
 		typeIdResponse.nodeId(OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
