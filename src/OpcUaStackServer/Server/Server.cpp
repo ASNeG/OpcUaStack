@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/asio/ip/host_name.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/Server/Server.h"
@@ -237,7 +238,7 @@ namespace OpcUaStackServer
 	bool
 	Server::setInformationModel(void)
 	{
-		// replace namespaces to namespace array
+		// replace namespaces by namespace array
 		{
 			NodeSetNamespace nodeSetNamespace;
 			NamespaceArray namespaceArray;
@@ -245,15 +246,37 @@ namespace OpcUaStackServer
 			namespaceArray.replaceNamespaceNames(nodeSetNamespace.globalNamespaceVec());
 		}
 
-		// set server status
-		{ 
+		// set server array
+		{
+			std::string hostname = boost::asio::ip::host_name();
+			ServerArray serverArray;
+			serverArray.informationModel(informationModel_);
+			serverArray.addServerName("urn:" + hostname + ":asneg:ASNeG-Demo");
+		}
+
+		// set locale id array
+		{
 			OpcUaDataValue dataValue;
-			dataValue.variant()->variant((OpcUaUInt32)0);
+			informationModel_->getValue(OpcUaId_Server_ServerCapabilities_LocaleIdArray, AttributeId_Value, dataValue);
+			OpcUaString::SPtr stringValue = OpcUaString::construct();
+			*stringValue = "en";
+			dataValue.variant()->pushBack(stringValue);
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel_->setValue(OpcUaId_Server_ServerCapabilities_LocaleIdArray, AttributeId_Value, dataValue);
+		}
+
+		// set server status
+		{
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant((OpcUaInt32)0);
 			dataValue.statusCode(Success);
 			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			bool rc = informationModel_->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, dataValue);
 		}
+
 
 		return true;
 	}

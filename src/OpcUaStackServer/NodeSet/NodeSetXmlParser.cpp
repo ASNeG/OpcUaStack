@@ -496,8 +496,7 @@ namespace OpcUaStackServer
 				.parameter("DataType", *dataTypeString);
 			return false;
 		}
-		variableNodeClassSPtr->dataType().data(dataTypeNodeId);
-		variableNodeClassSPtr->dataType().exist(true);
+		variableNodeClassSPtr->setDataType(dataTypeNodeId);
 
 		//
 		// decode Value (mandatory)

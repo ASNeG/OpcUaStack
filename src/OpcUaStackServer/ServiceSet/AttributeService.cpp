@@ -171,7 +171,8 @@ namespace OpcUaStackServer
 				.parameter("Node", *readValueId->nodeId())
 				.parameter("Attr", readValueId->attributeId())
 				.parameter("Class", baseNodeClass->nodeClass().data())
-				.parameter("Data", *dataValue);
+				.parameter("Data", *dataValue)
+				.parameter("Type", attribute->type());
 		}
 
 		trx->statusCode(Success);
