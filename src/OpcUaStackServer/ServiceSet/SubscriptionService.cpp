@@ -168,8 +168,18 @@ namespace OpcUaStackServer
 		PublishRequest::SPtr publishRequest = trx->request();
 		PublishResponse::SPtr publishResponse = trx->response();
 
-		Log(Debug, "publish")
-			.parameter("Trx", serviceTransaction->transactionId());
+		{
+			Log log(Debug, "publish request");
+			log.parameter("Trx", serviceTransaction->transactionId());
+
+			SubscriptionAcknowledgementArray::SPtr acks = publishRequest->subscriptionAcknowledgements();
+			for (uint32_t idx=0; idx<acks->size(); idx++) {
+				SubscriptionAcknowledgement::SPtr ack;
+				acks->get(idx, ack);
+				log.parameter("Ack-SubscriptionId", ack->subscriptionId());
+				log.parameter("Ack-SequenceNumber", ack->sequenceNumber());
+			}
+		}
 
 		// find subscription manager
 		SubscriptionManager::SPtr subscriptionManager;
@@ -187,8 +197,16 @@ namespace OpcUaStackServer
 	void 
 	SubscriptionService::receiveRepublishRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		ServiceTransactionRepublish::SPtr trx = boost::static_pointer_cast<ServiceTransactionRepublish>(serviceTransaction);
+		RepublishRequest::SPtr republishRequest = trx->request();
+		RepublishResponse::SPtr republishResponse = trx->response();
+
+		Log(Debug, "republish request")
+		    .parameter("Trx", serviceTransaction->transactionId())
+		    .parameter("SequenceNumber", republishRequest->retransmitSequenceNumber());
+
 		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		serviceTransaction->statusCode(BadMessageNotAvailable);
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 

@@ -40,6 +40,7 @@ namespace OpcUaStackServer
 		NothingTodo,
 		NeedAttention,
 		SendPublish,
+		SendPublishKeepalive,
 		SubscriptionTimeout,
 	} PublishResult;
 

@@ -165,10 +165,18 @@ namespace OpcUaStackServer
 				break;
 			}
 			case SendPublish:
+			case SendPublishKeepalive:
 			{
 				serviceTransactionPublishList_.pop_front();
 
-				// FIXME: set unacknowledged sequence numbers...
+				std::string mode = "Normal";
+				if (publishResult == SendPublishKeepalive) mode = "Keepalive";
+
+				Log(Debug, "publish response")
+					.parameter("Mode", mode)
+					.parameter("Trx", trx->transactionId())
+					.parameter("SequenceNumber", trx->response()->notificationMessage()->sequenceNumber())
+					.parameter("Unack-SequenceNumber", *trx->response()->availableSequenceNumbers());
 
 				OpcUaNodeId typeId;
 				typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);

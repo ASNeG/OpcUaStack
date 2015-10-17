@@ -140,6 +140,9 @@ namespace OpcUaStackServer
 			publishResponse->subscriptionId(subscriptionId_);
 			publishResponse->moreNotifications(false);
 
+			publishResponse->availableSequenceNumbers()->resize(1);
+			publishResponse->availableSequenceNumbers()->set(0, publishResponse->notificationMessage()->sequenceNumber());
+
 			if (statusCode == BadOutOfMemory) return NeedAttention;
 			return SendPublish;
 		}
@@ -150,7 +153,7 @@ namespace OpcUaStackServer
 			actMaxKeepAliveCount_  = maxKeepAliveCount_;
 
 			createKeepalive(trx);
-			return SendPublish;
+			return SendPublishKeepalive;
 		}
 
 		return NothingTodo;
@@ -167,6 +170,9 @@ namespace OpcUaStackServer
 		publishResponse->notificationMessage()->sequenceNumber(sequenceNumber());
 		publishResponse->subscriptionId(subscriptionId_);
 		publishResponse->moreNotifications(false);
+
+		publishResponse->availableSequenceNumbers()->resize(1);
+		publishResponse->availableSequenceNumbers()->set(0, publishResponse->notificationMessage()->sequenceNumber());
 	}
 
 	void 
