@@ -575,7 +575,7 @@ namespace OpcUaStackServer
 		Log(Debug, "read socket")
 			.parameter("ChannelId", channelId)
 			.parameter("MessageType", receiveMessageInfo_.secureChannelTransaction_->responseTypeNodeId_)
-			.parameter("RequestId", sequenceHeader_.requestId())
+			.parameter("RequestId", sequenceHeader.requestId())
 			.parameter("SequenceNumber", sequenceHeader.sequenceNumber())
 			.parameter("SegmentFlag", receiveMessageInfo_.segmentFlag_);
 

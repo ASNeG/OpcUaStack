@@ -299,7 +299,8 @@ namespace OpcUaStackServer
 
 		Log(Debug, "receive request in session")
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())
-			.parameter("TypeId", serviceTransactionSPtr->requestName());
+			.parameter("TypeId", serviceTransactionSPtr->requestName())
+			.parameter("RequestId", serviceTransactionSPtr->requestId_);
 
 		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
 		return true;
@@ -312,6 +313,7 @@ namespace OpcUaStackServer
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())
 			.parameter("TypeId", serviceTransactionSPtr->responseName())
+			.parameter("RequestId", serviceTransactionSPtr->requestId_)
 			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionSPtr->statusCode()));
 
 		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
