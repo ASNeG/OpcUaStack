@@ -522,7 +522,7 @@ namespace OpcUaStackServer
 		if (valueRank) {
 			variableNodeClassSPtr->valueRank().data(*valueRank);
 		} else {
-			variableNodeClassSPtr->valueRank().data((OpcUaInt32)0);
+			variableNodeClassSPtr->valueRank().data((OpcUaInt32)-1);
 		}
 		variableNodeClassSPtr->valueRank().exist(true);
 		
@@ -669,6 +669,7 @@ namespace OpcUaStackServer
 				for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
 					variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
 				}
+				variableTypeNodeClassSPtr->arrayDimensions().exist(true);
 			} catch(boost::bad_lexical_cast &) {
 				Log(Error, "bad_lexical_cast in ArrayDimension in node set")
 					.parameter("NodeId", nodeId);

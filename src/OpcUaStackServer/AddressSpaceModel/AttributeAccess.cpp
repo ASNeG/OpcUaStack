@@ -129,10 +129,12 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_ArrayDimensions:
 			{
-				OpcUaUInt32Array::SPtr arrayDimensions = OpcUaUInt32Array::construct();
 				ArrayDimensionsAttribute* arrayDimensionsAttribute = reinterpret_cast<ArrayDimensionsAttribute*>(&attribute);
-				arrayDimensionsAttribute->data().copyTo(*arrayDimensions);
-				variant.variant(arrayDimensions);
+				for (uint32_t idx=0; idx<arrayDimensionsAttribute->data().size(); idx++) {
+					uint32_t value;
+					arrayDimensionsAttribute->data().get(idx, value);
+					variant.pushBack(value);
+				}
 				break;
 			}
 			case AttributeId_AccessLevel:

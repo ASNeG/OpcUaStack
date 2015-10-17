@@ -67,10 +67,10 @@ namespace OpcUaStackServer
 			case AttributeId_Value: return valueAttribute();
 			case AttributeId_DataType: return dataTypeAttribute();
 			case AttributeId_ValueRank: return valueRankAttribute();
-			case AttributeId_ArrayDimensions: return accessLevelAttribute();
+			case AttributeId_ArrayDimensions: return arrayDimensionsAttribute();
 			case AttributeId_AccessLevel: return accessLevelAttribute();
 			case AttributeId_UserAccessLevel: return userAccessLevelAttribute();
-			case AttributeId_MinimumSamplingInterval: minimumSamplingIntervalAttribute();
+			case AttributeId_MinimumSamplingInterval: return minimumSamplingIntervalAttribute();
 			case AttributeId_Historizing: return historizingAttribute();
 			case AttributeId_Executable: return executableAttribute();
 			case AttributeId_UserExecutable: return userExecutableAttribute();
