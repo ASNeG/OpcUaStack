@@ -93,8 +93,6 @@ namespace OpcUaStackCore
 
 		void typeId(const OpcUaNodeId& typeId);
 		OpcUaNodeId& typeId(void);
-		void body(const OpcUaByteString& body);
-		OpcUaByteString& body(void);
 
 		void copyTo(OpcUaExtensionObject& extensionObject);
 		bool operator!=(const OpcUaExtensionObject& extensionObject) const;
@@ -117,7 +115,6 @@ namespace OpcUaStackCore
 
 		OpcUaNodeId typeId_;
 		ExtensionObjectBase::BSPtr epSPtr_;
-		OpcUaByteString body_;
 	};
 
 	class OpcUaExtensionObjectArray : public OpcUaArray<OpcUaExtensionObject::SPtr, SPtrTypeCoder<OpcUaExtensionObject> >, public ObjectPool<OpcUaExtensionObjectArray> 

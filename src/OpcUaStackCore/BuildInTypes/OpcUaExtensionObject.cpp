@@ -15,7 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -70,7 +72,6 @@ namespace OpcUaStackCore
 	: ObjectPool<OpcUaExtensionObject>()
 	, typeId_()
 	, epSPtr_()
-	, body_()
 	{
 	}
 		
@@ -117,22 +118,10 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	OpcUaExtensionObject::body(const OpcUaByteString& body)
-	{
-		body_ = body;
-	}
-
-	OpcUaByteString& 
-	OpcUaExtensionObject::body(void)
-	{
-		return body_;
-	}
-
-	void 
 	OpcUaExtensionObject::copyTo(OpcUaExtensionObject& extensionObject)
 	{
 		typeId_.copyTo(extensionObject.typeId());
-		body_.copyTo(extensionObject.body());
+		epSPtr_->copyTo(*(ExtensionObjectBase*)&extensionObject);
 	}
 
 	void 
@@ -158,30 +147,42 @@ namespace OpcUaStackCore
 	void 
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
-		typeId_.opcUaBinaryEncode(os);
-		if (!body_.exist()) {
+		if(epSPtr_.get() == NULL)
+		{
 			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)0x00);
-		}
-		else {
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+		} else {
+			typeId_.opcUaBinaryEncode(os);
 			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
-			body_.opcUaBinaryEncode(os);
+
+			boost::asio::streambuf sb;
+			std::ostream osb(&sb);
+			epSPtr_->opcUaBinaryEncode(osb);
+
+			OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
+			OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
+			os << osb.rdbuf();
 		}
 	}
 		
 	void 
 	OpcUaExtensionObject::opcUaBinaryDecode(std::istream& is)
 	{
-		OpcUaByte encodingByte;
+		OpcUaByte encodingMask;
 		typeId_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, encodingByte);
-		if (encodingByte == 0x00) {
-			OpcUaInt32 length;
-			OpcUaNumber::opcUaBinaryDecode(is, length);
+		OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
+
+		ExtensionObjectMap::iterator it;
+		it = extentionObjectMap_.find(typeId_);
+		if (it == extentionObjectMap_.end()) {
+			return;
 		}
-		else if (encodingByte == 0x01) {
-			body_.opcUaBinaryDecode(is);
-		}
+
+		OpcUaUInt32 bufferLength;
+		OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
+		epSPtr_ = it->second->factory();
+		epSPtr_->opcUaBinaryDecode(is);
 	}
 	
 	bool
@@ -191,8 +192,6 @@ namespace OpcUaStackCore
 		if (!typeId_.encode(typeId)) return false;
 		pt.put_child("TypeId", typeId);
 
-		if (!body_.exist()) return false;
-		if (!body_.encode(pt)) return false;
 		return true;
 	}
 
@@ -204,7 +203,6 @@ namespace OpcUaStackCore
 		if (!typeId) return false;
 		if (!typeId_.decode(*typeId)) return false;
 
-		if (!body_.decode(pt)) return false;
 		return true;
 	}
 
