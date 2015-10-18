@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 	int passwordCallback(char* buf, int size, int rwflag, void* u)
 	{
 		if (u == nullptr) return 0;
-		return snprintf(buf, size, "%s", (char*)u);
+		return sprintf(buf, "%s", (char*)u);
 	}
 
 
