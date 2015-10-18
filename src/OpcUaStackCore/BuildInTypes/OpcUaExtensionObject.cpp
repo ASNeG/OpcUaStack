@@ -69,12 +69,39 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::OpcUaExtensionObject(void)
 	: ObjectPool<OpcUaExtensionObject>()
 	, typeId_()
+	, epSPtr_()
 	, body_()
 	{
 	}
 		
 	OpcUaExtensionObject::~OpcUaExtensionObject(void)
 	{
+	}
+
+	bool
+	OpcUaExtensionObject::deregisterFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex) {
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(nodeId, namespaceIndex);
+		return deregisterFactoryElement(opcUaNodeId);
+	}
+
+	bool
+	OpcUaExtensionObject::deregisterFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex) {
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(nodeId, namespaceIndex);
+		return deregisterFactoryElement(opcUaNodeId);
+	}
+
+	bool
+	OpcUaExtensionObject::deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex) {
+		OpcUaNodeId opcUaNodeId;
+		opcUaNodeId.set(buf, bufLen, namespaceIndex);
+		return deregisterFactoryElement(opcUaNodeId);
+	}
+
+	bool
+	OpcUaExtensionObject::deregisterFactoryElement(OpcUaNodeId& opcUaNodeId) {
+		return OpcUaExtensionObject::deleteElement(opcUaNodeId);
 	}
 
 	void 

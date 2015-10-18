@@ -42,6 +42,55 @@ namespace OpcUaStackCore
 	    OpcUaExtensionObject(void);
 		~OpcUaExtensionObject(void);
 
+		template<typename T>
+		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.set(nodeId, namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool registerFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.set(nodeId, namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool registerFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0) {
+			  OpcUaNodeId opcUaNodeId;
+			  opcUaNodeId.set(buf, bufLen, namespaceIndex);
+			  return registerFactoryElement<T>(opcUaNodeId);
+		  }
+
+		template<typename T>
+		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
+			  ExtensionObjectBase::BSPtr epSPtr(T::construct());
+			  return OpcUaExtensionObject::insertElement(opcUaNodeId, epSPtr);
+		  }
+
+		bool deregisterFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
+		bool deregisterFactoryElement(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
+		bool deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
+		bool deregisterFactoryElement(OpcUaNodeId& opcUaNodeId);
+
+		template<typename T>
+		   typename T::SPtr parameter(void) {
+			   if (epSPtr_.get() != NULL) {
+				   return boost::static_pointer_cast<T>(epSPtr_);
+			   }
+
+			   epSPtr_ = findElement(typeId_);
+			   if (epSPtr_.get() == NULL) {
+				   typename T::SPtr epSPtr;
+				   return epSPtr;
+			   }
+
+			   typename T::SPtr epSPtr = T::construct();
+			   epSPtr_ = epSPtr;
+			   return epSPtr;
+		   }
+
 		void typeId(const OpcUaNodeId& typeId);
 		OpcUaNodeId& typeId(void);
 		void body(const OpcUaByteString& body);
@@ -67,6 +116,7 @@ namespace OpcUaStackCore
 		static bool init_;
 
 		OpcUaNodeId typeId_;
+		ExtensionObjectBase::BSPtr epSPtr_;
 		OpcUaByteString body_;
 	};
 
