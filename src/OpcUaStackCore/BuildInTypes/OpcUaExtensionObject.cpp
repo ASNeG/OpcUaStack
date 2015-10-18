@@ -27,6 +27,45 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	bool OpcUaExtensionObject::init_ = false;
+	ExtensionObjectMap OpcUaExtensionObject::extentionObjectMap_;
+
+	bool
+	OpcUaExtensionObject::insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::BSPtr epSPtr)
+	{
+		ExtensionObjectMap::iterator it;
+		it = extentionObjectMap_.find(opcUaNodeId);
+		if (it != extentionObjectMap_.end()) {
+			return false;
+		}
+		extentionObjectMap_.insert(std::make_pair(opcUaNodeId, epSPtr));
+		return true;
+	}
+
+	bool
+	OpcUaExtensionObject::deleteElement(OpcUaNodeId& opcUaNodeId)
+	{
+		ExtensionObjectMap::iterator it;
+		it = extentionObjectMap_.find(opcUaNodeId);
+		if (it == extentionObjectMap_.end()) {
+			return false;
+		}
+		extentionObjectMap_.erase(it);
+		return true;
+	}
+
+	ExtensionObjectBase::BSPtr
+	OpcUaExtensionObject::findElement(OpcUaNodeId& opcUaNodeId)
+	{
+		ExtensionObjectBase::BSPtr epSPtr;
+		ExtensionObjectMap::iterator it;
+		it = extentionObjectMap_.find(opcUaNodeId);
+		if (it != extentionObjectMap_.end()) {
+			epSPtr = it->second;
+		}
+		return epSPtr;
+	}
+
 	OpcUaExtensionObject::OpcUaExtensionObject(void)
 	: ObjectPool<OpcUaExtensionObject>()
 	, typeId_()

@@ -21,7 +21,7 @@
 namespace OpcUaStackCore
 {
 
-  class DLLEXPORT ExtensionObjectBase
+    class DLLEXPORT ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<ExtensionObjectBase> BSPtr;
@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 		virtual BSPtr factory(void) = 0;
 		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
 		virtual void opcUaBinaryDecode(std::istream& is) = 0;
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase) = 0;
 	};
 
 }

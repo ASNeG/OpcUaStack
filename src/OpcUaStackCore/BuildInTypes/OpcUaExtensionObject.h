@@ -19,17 +19,25 @@
 #define __OpcUaStackCore_OpcUaExtensionObject_h__
 
 #include <boost/property_tree/ptree.hpp>
+#include <map>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
+	typedef std::map<OpcUaNodeId,ExtensionObjectBase::BSPtr> ExtensionObjectMap;
+
 	class DLLEXPORT OpcUaExtensionObject : public ObjectPool<OpcUaExtensionObject>
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaExtensionObject> SPtr;
+
+		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::BSPtr epSPtr);
+		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
+		static ExtensionObjectBase::BSPtr findElement(OpcUaNodeId& opcUaNodeId);
 
 	    OpcUaExtensionObject(void);
 		~OpcUaExtensionObject(void);
@@ -55,6 +63,9 @@ namespace OpcUaStackCore
 		bool decode(boost::property_tree::ptree& pt);
 
 	  private:
+		static ExtensionObjectMap extentionObjectMap_;
+		static bool init_;
+
 		OpcUaNodeId typeId_;
 		OpcUaByteString body_;
 	};
