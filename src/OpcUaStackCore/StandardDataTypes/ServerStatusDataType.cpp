@@ -15,18 +15,24 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
 
 namespace OpcUaStackCore
 {
 
 	ServerStatusDataType::ServerStatusDataType(void)
-	: startTime_()
+	: ObjectPool<ServerStatusDataType>()
+	, startTime_()
 	, currentTime_()
 	, serverState_()
 	, buildInfo_()
 	, secondsTillShutdown_()
 	, shutdownReason_()
+	{
+	}
+
+	ServerStatusDataType::~ServerStatusDataType(void)
 	{
 	}
 
@@ -64,6 +70,53 @@ namespace OpcUaStackCore
 	ServerStatusDataType::shutdownReason(void)
 	{
 		return shutdownReason_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ExtensionObjectBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ExtensionObjectBase::BSPtr
+	ServerStatusDataType::ServerStatusDataType::factory(void)
+	{
+		return ServerStatusDataType::construct();
+	}
+
+	void
+	ServerStatusDataType::opcUaBinaryEncode(std::ostream& os) const
+	{
+		startTime_.opcUaBinaryEncode(os);
+		currentTime_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, serverState_);
+		//buildInfo_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, secondsTillShutdown_);
+		shutdownReason_.opcUaBinaryEncode(os);
+	}
+
+	void
+	ServerStatusDataType::opcUaBinaryDecode(std::istream& is)
+	{
+		startTime_.opcUaBinaryDecode(is);
+		currentTime_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, serverState_);
+		//buildInfo_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, secondsTillShutdown_);
+		shutdownReason_.opcUaBinaryDecode(is);
+	}
+
+	void
+	ServerStatusDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		ServerStatusDataType* dst = dynamic_cast<ServerStatusDataType*>(&extensionObjectBase);
+		startTime_.copyTo(dst->startTime_);
+		currentTime_.copyTo(dst->currentTime_);
+		dst->serverState_ = serverState_;
+		//buildInfo.copyTo(dst->buildInfo_);
+		dst->secondsTillShutdown_ = secondsTillShutdown_;
+		shutdownReason_.copyTo(dst->shutdownReason_);
 	}
 
 }
