@@ -18,9 +18,6 @@
 #ifndef __OpcUaStackCore_ServerStatusDataType_h__
 #define __OpcUaStackCore_ServerStatusDataType_h__
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 

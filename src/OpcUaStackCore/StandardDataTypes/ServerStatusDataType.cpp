@@ -91,7 +91,7 @@ namespace OpcUaStackCore
 		startTime_.opcUaBinaryEncode(os);
 		currentTime_.opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, serverState_);
-		//buildInfo_.opcUaBinaryEncode(os);
+		buildInfo_.opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, secondsTillShutdown_);
 		shutdownReason_.opcUaBinaryEncode(os);
 	}
@@ -102,7 +102,7 @@ namespace OpcUaStackCore
 		startTime_.opcUaBinaryDecode(is);
 		currentTime_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, serverState_);
-		//buildInfo_.opcUaBinaryDecode(is);
+		buildInfo_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, secondsTillShutdown_);
 		shutdownReason_.opcUaBinaryDecode(is);
 	}

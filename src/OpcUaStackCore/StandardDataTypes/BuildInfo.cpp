@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	BuildInfo::BuildInfo(void)
-	: productUri_()
+	: ObjectPool<BuildInfo>()
+	, productUri_()
 	, manufacturerName_()
 	, productName_()
 	, softwareVersion_()
@@ -68,6 +69,53 @@ namespace OpcUaStackCore
 	BuildInfo::buildDate(void)
 	{
 		return buildDate_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ExtensionObjectBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ExtensionObjectBase::BSPtr
+	BuildInfo::factory(void)
+	{
+		return BuildInfo::construct();
+	}
+
+	void
+	BuildInfo::opcUaBinaryEncode(std::ostream& os) const
+	{
+		productUri_.opcUaBinaryEncode(os);
+		manufacturerName_.opcUaBinaryEncode(os);
+		productName_.opcUaBinaryEncode(os);
+		softwareVersion_.opcUaBinaryEncode(os);
+		buildNumber_.opcUaBinaryEncode(os);
+		buildDate_.opcUaBinaryEncode(os);
+	}
+
+	void
+	BuildInfo::opcUaBinaryDecode(std::istream& is)
+	{
+		productUri_.opcUaBinaryDecode(is);
+		manufacturerName_.opcUaBinaryDecode(is);
+		productName_.opcUaBinaryDecode(is);
+		softwareVersion_.opcUaBinaryDecode(is);
+		buildNumber_.opcUaBinaryDecode(is);
+		buildDate_.opcUaBinaryDecode(is);
+	}
+
+	void
+	BuildInfo::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
+		productUri_.copyTo(dst->productUri_);
+		manufacturerName_.copyTo(dst->manufacturerName_);
+		productName_.copyTo(dst->productName_);
+		softwareVersion_.copyTo(dst->softwareVersion_);
+		buildNumber_.copyTo(dst->buildNumber_);
+		buildDate_.copyTo(dst->buildDate_);
 	}
 
 }

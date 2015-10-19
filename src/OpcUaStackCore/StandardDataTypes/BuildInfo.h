@@ -18,6 +18,9 @@
 #ifndef __OpcUaStackCore_BuildInfo_h__
 #define __OpcUaStackCore_BuildInfo_h__
 
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
 
@@ -25,10 +28,14 @@ namespace OpcUaStackCore
 {
 
 	class BuildInfo
+	: public ObjectPool<BuildInfo>
+	, public ExtensionObjectBase
 	{
 	  public:
+		typedef boost::shared_ptr<BuildInfo> SPtr;
+
 		BuildInfo(void);
-		~BuildInfo(void);
+		virtual ~BuildInfo(void);
 
 		OpcUaString& productUri(void);
 		OpcUaString& manufacturerName(void);
@@ -36,6 +43,13 @@ namespace OpcUaStackCore
 		OpcUaString& softwareVersion(void);
 		OpcUaString& buildNumber(void);
 		OpcUaDateTime& buildDate(void);
+
+		//- ExtensionObjectBase -----------------------------------------------
+		ExtensionObjectBase::BSPtr factory(void);
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+		void copyTo(ExtensionObjectBase& extensionObjectBase);
+		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
 		OpcUaString productUri_;
