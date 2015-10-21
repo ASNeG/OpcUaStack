@@ -18,7 +18,7 @@
 			<Reference ReferenceType="HasComponent" IsForward="true">ns=1;i=26418</Reference>
 		</References>
 	</UAObject>
-	<UAObject NodeId="ns=1;i=288" BrowseName="1:ServerDiagnostics" WriteMask="0" UserWriteMask="0" EventNotifier="0">
+	<UAObject NodeId="ns=1;i=288" BrowseName="1:ServerDiagnostics" WriteMask="0" UserWriteMask="0" EventNotifier="13">
 		<DisplayName>ServerDiagnostics</DisplayName>
 		<Description>Reports diagnostics about the server.</Description>
 		<References>

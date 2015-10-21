@@ -402,16 +402,11 @@ namespace OpcUaStackServer
 		//
 		// attribute EventNotifier (mandatory)
 		//
-		boost::optional<std::string> eventNotifier = ptree.get_optional<std::string>("<xmlattr>.EventNotifier");
+		boost::optional<OpcUaByte> eventNotifier = ptree.get_optional<OpcUaByte>("<xmlattr>.EventNotifier");
 		if (eventNotifier) {
-			if (*eventNotifier == "1") {
-				objectNodeClassSPtr->eventNotifier().data(1);
-			} else {
-				objectNodeClassSPtr->eventNotifier().data(0);
-			}
-		}
-		else {
-			objectNodeClassSPtr->eventNotifier().data(0);
+			objectNodeClassSPtr->eventNotifier().data(*eventNotifier);
+		} else {
+			objectNodeClassSPtr->eventNotifier().data((OpcUaByte)0);
 		}
 		objectNodeClassSPtr->eventNotifier().exist(true);
 
