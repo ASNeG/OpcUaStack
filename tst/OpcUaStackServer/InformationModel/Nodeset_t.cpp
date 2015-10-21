@@ -195,6 +195,13 @@ BOOST_AUTO_TEST_CASE(Nodeset_New_Node_And_New_Namespace)
 		baseNodeClass = VariableNodeClass::construct();
 		nodeId.set(nodeName.str(), namespaceIndex);
 		baseNodeClass->setNodeId(nodeId);
+
+		OpcUaUInt32Array arrayDimensions;
+		arrayDimensions.resize(2);
+		arrayDimensions.set(0, (uint32_t)1);
+		arrayDimensions.set(1, (uint32_t)2);
+		baseNodeClass->setArrayDimensions(arrayDimensions);
+
 		baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, rootNodeId);
 		rootNodeClass->referenceItemMap().add(ReferenceType_HasComponent, true, nodeId);
 		informationModelRead1->insert(baseNodeClass);

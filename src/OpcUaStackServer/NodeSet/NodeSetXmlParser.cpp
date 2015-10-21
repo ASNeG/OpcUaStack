@@ -564,9 +564,14 @@ namespace OpcUaStackServer
 			boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
 			try {
+				std::vector<std::string> values;
 				for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
-					variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+					values.push_back(*it);
 				} 
+				variableNodeClassSPtr->arrayDimensions().data().resize(values.size());
+				for (uint32_t idx=0; idx<values.size(); idx++) {
+					variableNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(values[idx]));
+				}
 				variableNodeClassSPtr->arrayDimensions().exist(true);
 			} catch(boost::bad_lexical_cast &) {
 				Log(Error, "bad_lexical_cast in ArrayDimension in node set")
@@ -661,8 +666,13 @@ namespace OpcUaStackServer
 			boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
 
 			try {
+				std::vector<std::string> values;
 				for (boost::tokenizer<boost::char_separator<char> >::iterator it = tokens.begin(); it != tokens.end(); ++it) {
-					variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(*it));
+					values.push_back(*it);
+				}
+				variableTypeNodeClassSPtr->arrayDimensions().data().resize(values.size());
+				for (uint32_t idx=0; idx<values.size(); idx++) {
+					variableTypeNodeClassSPtr->arrayDimensions().data().push_back(boost::lexical_cast<OpcUaUInt32>(values[idx]));
 				}
 				variableTypeNodeClassSPtr->arrayDimensions().exist(true);
 			} catch(boost::bad_lexical_cast &) {

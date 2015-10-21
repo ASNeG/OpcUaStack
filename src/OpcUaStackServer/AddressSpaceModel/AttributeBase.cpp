@@ -1019,7 +1019,7 @@ namespace OpcUaStackServer
 	{
 		if (!isPartArrayDimensions()) return false;
 		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
-		attr->data(arrayDimensions);
+		arrayDimensions.copyTo(attr->data());
 		attr->exist(true);
 		return true;
 	}
@@ -1031,7 +1031,7 @@ namespace OpcUaStackServer
 
 		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
 		if (!attr->exist()) return false;
-		arrayDimensions = attr->data();
+		attr->data().copyTo(arrayDimensions);
 		return true;
 	}
 

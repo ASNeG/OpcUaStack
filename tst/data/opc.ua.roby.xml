@@ -1062,7 +1062,7 @@
 			<Reference ReferenceType="HasProperty" IsForward="false">ns=1;i=11478</Reference>
 		</References>
 	</UAObjectType>
-	<UAVariable NodeId="ns=1;i=9758" BrowseName="1:v1" WriteMask="0" UserWriteMask="0" DataType="i=1" ValueRank="0" AccessLevel="1" UserAccessLevel="1" Historizing="false">
+	<UAVariable NodeId="ns=1;i=9758" BrowseName="1:v1" WriteMask="0" UserWriteMask="0" DataType="i=1" ValueRank="0" ArrayDimensions="1,1" AccessLevel="1" UserAccessLevel="1" Historizing="false">
 		<DisplayName>v1</DisplayName>
 		<Description/>
 		<References>
