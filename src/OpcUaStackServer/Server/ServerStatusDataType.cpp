@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 
 		// BuildInfo
 		{
-#if 0
+#if 1
 			OpcUaExtensionObject::SPtr buildInfo = OpcUaExtensionObject::construct();
 			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
 

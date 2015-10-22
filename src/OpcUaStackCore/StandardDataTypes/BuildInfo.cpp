@@ -110,8 +110,6 @@ namespace OpcUaStackCore
 	BuildInfo::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
 		BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
-		if (dst == NULL) std::cout << "MIST" << std::endl;
-		return;
 		productUri_.copyTo(dst->productUri_);
 		manufacturerName_.copyTo(dst->manufacturerName_);
 		productName_.copyTo(dst->productName_);
