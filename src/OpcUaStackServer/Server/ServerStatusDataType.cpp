@@ -16,7 +16,11 @@
  */
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
+#include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
 #include "OpcUaStackServer/Server/ServerStatusDataType.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -40,6 +44,31 @@ namespace OpcUaStackServer
 			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, dataValue);
+		}
+
+		// BuildInfo
+		{
+#if 0
+			OpcUaExtensionObject::SPtr buildInfo = OpcUaExtensionObject::construct();
+			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
+
+			OpcUaNodeId typeId;
+			typeId.set(OpcUaId_BuildInfo_Encoding_DefaultBinary);
+			buildInfo->typeId(typeId);
+			buildInfo->parameter<BuildInfo>()->productUri() = "ProductUri";
+			buildInfo->parameter<BuildInfo>()->manufacturerName() = "ManufacturerName";
+			buildInfo->parameter<BuildInfo>()->productName() = "ProductName";
+			buildInfo->parameter<BuildInfo>()->softwareVersion() = "SoftwareVersion";
+			buildInfo->parameter<BuildInfo>()->buildNumber() = "BuildNumber";
+			buildInfo->parameter<BuildInfo>()->buildDate() = now;
+
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(buildInfo);
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_BuildInfo, AttributeId_Value, dataValue);
+#endif
 		}
 
 		return true;
