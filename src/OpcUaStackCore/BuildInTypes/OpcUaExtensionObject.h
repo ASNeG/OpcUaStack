@@ -74,6 +74,8 @@ namespace OpcUaStackCore
 		bool deregisterFactoryElement(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex = 0);
 		bool deregisterFactoryElement(OpcUaNodeId& opcUaNodeId);
 
+		bool createObject(void);
+		ExtensionObjectBase::BSPtr& get(void);
 		template<typename T>
 		   typename T::SPtr parameter(void) {
 			   if (epSPtr_.get() != NULL) {

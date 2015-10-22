@@ -117,11 +117,30 @@ namespace OpcUaStackCore
 		return typeId_;
 	}
 
+	bool
+	OpcUaExtensionObject::createObject(void)
+	{
+		ExtensionObjectMap::iterator it;
+		it = extentionObjectMap_.find(typeId_);
+		if (it == extentionObjectMap_.end()) {
+			return false;
+		}
+		epSPtr_ = it->second->factory();
+		return true;
+	}
+
+	ExtensionObjectBase::BSPtr&
+	OpcUaExtensionObject::get(void)
+	{
+		return epSPtr_;
+	}
+
 	void 
 	OpcUaExtensionObject::copyTo(OpcUaExtensionObject& extensionObject)
 	{
 		typeId_.copyTo(extensionObject.typeId());
-		epSPtr_->copyTo(*(ExtensionObjectBase*)&extensionObject);
+		if (!extensionObject.createObject()) return;
+		epSPtr_->copyTo(*(ExtensionObjectBase*)extensionObject.get().get());
 	}
 
 	void 
