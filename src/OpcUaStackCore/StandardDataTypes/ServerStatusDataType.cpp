@@ -80,7 +80,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ExtensionObjectBase::BSPtr
-	ServerStatusDataType::ServerStatusDataType::factory(void)
+	ServerStatusDataType::factory(void)
 	{
 		return ServerStatusDataType::construct();
 	}
