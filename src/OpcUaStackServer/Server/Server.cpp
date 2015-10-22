@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/Server/Server.h"
+#include "OpcUaStackServer/Server/ServerStatusDataType.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -267,15 +268,9 @@ namespace OpcUaStackServer
 			bool rc = informationModel_->setValue(OpcUaId_Server_ServerCapabilities_LocaleIdArray, AttributeId_Value, dataValue);
 		}
 
-		// set server status
-		{
-			OpcUaDataValue dataValue;
-			dataValue.variant()->variant((OpcUaInt32)0);
-			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			bool rc = informationModel_->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, dataValue);
-		}
+		// ServerStatusDataType
+		ServerStatusDataType serverStatusDataType;
+		serverStatusDataType.init(informationModel_);
 
 
 		return true;
