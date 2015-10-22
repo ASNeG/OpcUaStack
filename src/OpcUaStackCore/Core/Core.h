@@ -38,7 +38,9 @@ namespace OpcUaStackCore
 
 	  private:
 		void initExtensibleParameter(void);
+		void initExtensionObject(void);
 		void cleanupExtensibleParameter(void);
+		void cleanupExtensionObject(void);
 
 		Config* config_;
 	};

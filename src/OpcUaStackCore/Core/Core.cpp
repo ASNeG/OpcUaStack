@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
+
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
@@ -30,6 +32,9 @@
 #include "OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
+
+#include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
+#include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
 
 namespace OpcUaStackCore
 {
@@ -58,12 +63,14 @@ namespace OpcUaStackCore
 	Core::init(void)
 	{
 		initExtensibleParameter();
+		initExtensionObject();
 		return true;
 	}
 
 	void
 	Core::cleanup(void)
 	{
+		cleanupExtensionObject();
 		cleanupExtensibleParameter();
 	}
 
@@ -87,6 +94,14 @@ namespace OpcUaStackCore
 	}
 
 	void
+	Core::initExtensionObject(void)
+	{
+		OpcUaExtensionObject eo;
+		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ServerStatusDataType>(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
+	}
+
+	void
 	Core::cleanupExtensibleParameter(void)
 	{
 		ExtensibleParameter ep;
@@ -103,6 +118,14 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_ReferenceTypeAttributes);
 		ep.deregisterFactoryElement(OpcUaId_DataTypeAttributes);
 		ep.deregisterFactoryElement(OpcUaId_ViewAttributes);
+	}
+
+	void
+	Core::cleanupExtensionObject(void)
+	{
+		OpcUaExtensionObject eo;
+		eo.deregisterFactoryElement(OpcUaId_BuildInfo_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
 	}
 
 }
