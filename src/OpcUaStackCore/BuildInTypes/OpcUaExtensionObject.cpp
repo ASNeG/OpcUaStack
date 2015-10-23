@@ -138,6 +138,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaExtensionObject::copyTo(OpcUaExtensionObject& extensionObject)
 	{
+		if (!epSPtr_) return;
 		typeId_.copyTo(extensionObject.typeId());
 		if (!extensionObject.createObject()) return;
 		epSPtr_->copyTo(*(ExtensionObjectBase*)extensionObject.get().get());
@@ -146,21 +147,22 @@ namespace OpcUaStackCore
 	void 
 	OpcUaExtensionObject::out(std::ostream& os) const
 	{
-		// FIXME: todo...
+		if (!epSPtr_) return;
+		return epSPtr_->out(os);
 	}
 
 	bool 
 	OpcUaExtensionObject::operator!=(const OpcUaExtensionObject& extensionObject) const
 	{
-		// FIXME: todo
-		return true;
+		return !operator==(extensionObject);
 	}
 
 	bool 
 	OpcUaExtensionObject::operator==(const OpcUaExtensionObject& extensionObject) const
 	{
-		// FIXME: todo
-		return true;
+		if (!epSPtr_) return false;
+		ExtensionObjectBase* extensionObjectBase = const_cast<OpcUaExtensionObject*>(&extensionObject)->get().get();
+		return epSPtr_->equal(*extensionObjectBase);
 	}
 
 	void 
