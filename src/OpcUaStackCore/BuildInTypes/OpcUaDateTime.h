@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 		bool exist(void) const;
 
 		OpcUaDateTime& operator=(const OpcUaUInt64& dateTime); 
+		bool operator==(const OpcUaDateTime& dateTime) const;
 		operator OpcUaUInt64 const (void); 
 		bool fromISOString(const std::string& dateTimeString);
 		std::string toISOString(void);

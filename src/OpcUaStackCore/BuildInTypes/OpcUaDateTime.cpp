@@ -80,6 +80,12 @@ namespace OpcUaStackCore
 		dateTime_ = dateTime;
 		return *this;
 	}
+
+	bool
+	OpcUaDateTime::operator==(const OpcUaDateTime& dateTime) const
+	{
+		return this->dateTime() == dateTime.dateTime();
+	}
 		
 	OpcUaDateTime::operator OpcUaUInt64 const (void)
 	{
