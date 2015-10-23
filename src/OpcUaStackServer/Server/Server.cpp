@@ -19,7 +19,6 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/Server/Server.h"
-#include "OpcUaStackServer/Server/ServerStatusDataType.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -36,6 +35,7 @@ namespace OpcUaStackServer
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()
+	, serverStatusDataType_()
 	{
 	}
 
@@ -67,7 +67,7 @@ namespace OpcUaStackServer
 		rc = rc && readInformationModel();
 
 		Log(Info, "init opc ua server stack information model (data)");
-		rc = rc && setInformationModel();
+		rc = rc && initInformationModel();
 
 		Log(Info, "init opc ua server stack service");
 		rc = rc && initService();
@@ -93,6 +93,9 @@ namespace OpcUaStackServer
 
 		Log(Info, "shutdown opc ua server stack service");
 		shutdownService();
+
+		Log(Info, "shutdown opc ua server stack information model (data)");
+		shutdownInformationModel();
 
 		Log(Info, "shutdown opc ua core stack");
 		Core::cleanup();
@@ -236,8 +239,15 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// information model
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	bool
-	Server::setInformationModel(void)
+	Server::initInformationModel(void)
 	{
 		// replace namespaces by namespace array
 		{
@@ -269,13 +279,24 @@ namespace OpcUaStackServer
 		}
 
 		// ServerStatusDataType
-		ServerStatusDataType serverStatusDataType;
-		serverStatusDataType.init(informationModel_);
-
+		serverStatusDataType_.init(informationModel_);
 
 		return true;
 	}
 
+	bool
+	Server::shutdownInformationModel(void)
+	{
+		serverStatusDataType_.shutdown();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// service
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	bool
 	Server::initService(void)
 	{

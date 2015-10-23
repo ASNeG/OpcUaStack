@@ -25,6 +25,7 @@
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
 #include "OpcUaStackServer/Application/ApplicationManager.h"
+#include "OpcUaStackServer/Server/ServerStatusDataType.h"
 
 namespace OpcUaStackServer
 {
@@ -49,7 +50,8 @@ namespace OpcUaStackServer
 	  private:
 		bool readInformationModel(void);
 		bool writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris);
-		bool setInformationModel(void);
+		bool initInformationModel(void);
+		bool shutdownInformationModel(void);
 		bool initService(void);
 		bool shutdownService(void);
 		bool initSession(void);
@@ -60,6 +62,8 @@ namespace OpcUaStackServer
 		SessionManager sessionManager_;
 		ServiceManager serviceManager_;
 		ApplicationManager applicationManager_;
+
+		ServerStatusDataType serverStatusDataType_;
 	};
 
 }

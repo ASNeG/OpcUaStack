@@ -17,7 +17,6 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
-#include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
 #include "OpcUaStackServer/Server/ServerStatusDataType.h"
 
 using namespace OpcUaStackCore;
@@ -26,6 +25,8 @@ namespace OpcUaStackServer
 {
 
 	ServerStatusDataType::ServerStatusDataType(void)
+	: OpcUaStackCore::ServerStatusDataType()
+	, informationModel_()
 	{
 	}
 
@@ -36,7 +37,87 @@ namespace OpcUaStackServer
 	bool
 	ServerStatusDataType::init(InformationModel::SPtr& informationModel)
 	{
-		// set server status
+		informationModel_ = informationModel;
+		if (!initData()) return false;
+
+		// set ServerStatus
+		{
+			OpcUaExtensionObject::SPtr extensionObject = OpcUaExtensionObject::construct();
+			OpcUaNodeId typeId;
+			typeId.set(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
+			extensionObject->typeId(typeId);
+		    copyTo(*extensionObject->parameter<ServerStatusDataType>().get());
+
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(extensionObject);
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus, AttributeId_Value, dataValue);
+		}
+
+		// set BuildInfo
+		{
+			OpcUaExtensionObject::SPtr extensionObject = OpcUaExtensionObject::construct();
+			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
+
+			OpcUaNodeId typeId;
+			typeId.set(OpcUaId_BuildInfo_Encoding_DefaultBinary);
+			extensionObject->typeId(typeId);
+			buildInfo().copyTo(*extensionObject->parameter<BuildInfo>().get());
+
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(extensionObject);
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_BuildInfo, AttributeId_Value, dataValue);
+		}
+
+		// set Current Time
+		{
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(currentTime());
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_CurrentTime, AttributeId_Value, dataValue);
+		}
+
+		// set SecondsTillShutdown
+		{
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(secondsTillShutdown());
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_SecondsTillShutdown, AttributeId_Value, dataValue);
+		}
+
+		// set ShutdownReason
+		{
+			OpcUaLocalizedText::SPtr value = OpcUaLocalizedText::construct();
+			shutdownReason().copyTo(*value);
+
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(value);
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_ShutdownReason, AttributeId_Value, dataValue);
+		}
+
+		// set StartTime
+		{
+			OpcUaDataValue dataValue;
+			dataValue.variant()->variant(startTime());
+			dataValue.statusCode(Success);
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_StartTime, AttributeId_Value, dataValue);
+		}
+
+		// set State
 		{
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant((OpcUaInt32)0);
@@ -46,34 +127,37 @@ namespace OpcUaStackServer
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, dataValue);
 		}
 
-		// BuildInfo
-		{
-			OpcUaExtensionObject::SPtr buildInfo = OpcUaExtensionObject::construct();
-			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
-
-			OpcUaNodeId typeId;
-			typeId.set(OpcUaId_BuildInfo_Encoding_DefaultBinary);
-			buildInfo->typeId(typeId);
-			buildInfo->parameter<BuildInfo>()->productUri() = "ProductUri";
-			buildInfo->parameter<BuildInfo>()->manufacturerName() = "ManufacturerName";
-			buildInfo->parameter<BuildInfo>()->productName() = "ProductName";
-			buildInfo->parameter<BuildInfo>()->softwareVersion() = "SoftwareVersion";
-			buildInfo->parameter<BuildInfo>()->buildNumber() = "BuildNumber";
-			buildInfo->parameter<BuildInfo>()->buildDate() = now;
-
-			OpcUaDataValue dataValue;
-			dataValue.variant()->variant(buildInfo);
-			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_BuildInfo, AttributeId_Value, dataValue);
-		}
-
 		return true;
 	}
 
 	bool
 	ServerStatusDataType::shutdown(void)
+	{
+		if (!shutdownData()) return false;
+		return true;
+	}
+
+	bool
+	ServerStatusDataType::initData(void)
+	{
+		startTime() = boost::posix_time::microsec_clock::local_time();
+		currentTime() = boost::posix_time::microsec_clock::local_time();
+		serverState() = 0;
+		secondsTillShutdown() = 0;
+		shutdownReason().set("", "");
+
+		buildInfo().productUri() = "urn:ASNeG:OpcUaServer";
+		buildInfo().manufacturerName() = "ASNeG";
+		buildInfo().productName() = "ASNeG OpcUaServer";
+		buildInfo().softwareVersion() = "";											// FIXME
+		buildInfo().buildNumber() = "";												// FIXME
+		buildInfo().buildDate() = boost::posix_time::microsec_clock::local_time();	// FIXME
+
+		return true;
+	}
+
+	bool
+	ServerStatusDataType::shutdownData(void)
 	{
 		return true;
 	}

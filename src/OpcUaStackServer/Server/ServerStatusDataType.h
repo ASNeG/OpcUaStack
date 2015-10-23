@@ -20,11 +20,13 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
 
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServerStatusDataType
+	: public OpcUaStackCore::ServerStatusDataType
 	{
 	  public:
 		ServerStatusDataType(void);
@@ -32,6 +34,12 @@ namespace OpcUaStackServer
 
 		bool init(InformationModel::SPtr& informationModel);
 		bool shutdown(void);
+
+	  private:
+		InformationModel::SPtr informationModel_;
+
+		bool initData(void);
+		bool shutdownData(void);
 	};
 
 }
