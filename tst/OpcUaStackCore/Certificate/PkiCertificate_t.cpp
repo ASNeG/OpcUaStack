@@ -76,12 +76,12 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_store_key)
 	//
 	// store certificate
 	//
-	BOOST_REQUIRE(certificate.toDERFile("../tst/data/certs/ASNeG-Test.der") == true);
+	BOOST_REQUIRE(certificate.toDERFile("../tst/data/ASNeG-Test.der") == true);
 
 	//
 	// store private key
 	//
-	BOOST_REQUIRE(rsaKey.writePEMFile("../tst/data/private/ASNeG-Test.PEM", "") == true);
+	BOOST_REQUIRE(rsaKey.writePEMFile("../tst/data/ASNeG-Test.PEM", "") == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
