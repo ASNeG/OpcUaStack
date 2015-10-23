@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 		~ServerStatusDataType(void);
 
 		bool init(InformationModel::SPtr& informationModel);
+		bool shutdown(void);
 	};
 
 }

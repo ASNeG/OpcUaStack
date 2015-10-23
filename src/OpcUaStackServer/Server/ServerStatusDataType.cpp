@@ -48,7 +48,6 @@ namespace OpcUaStackServer
 
 		// BuildInfo
 		{
-#if 1
 			OpcUaExtensionObject::SPtr buildInfo = OpcUaExtensionObject::construct();
 			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
 
@@ -68,9 +67,14 @@ namespace OpcUaStackServer
 			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_BuildInfo, AttributeId_Value, dataValue);
-#endif
 		}
 
+		return true;
+	}
+
+	bool
+	ServerStatusDataType::shutdown(void)
+	{
 		return true;
 	}
 

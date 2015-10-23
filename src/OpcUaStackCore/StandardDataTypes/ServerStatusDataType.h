@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_ServerStatusDataType_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
@@ -41,11 +42,16 @@ namespace OpcUaStackCore
 		OpcUaUInt32& secondsTillShutdown(void);
 		OpcUaLocalizedText& shutdownReason(void);
 
+		void copyTo(ServerStatusDataType& serverStatusDataType);
+		bool operator==(const ServerStatusDataType& serverStatusDataType) const;
+
 		//- ExtensionObjectBase -----------------------------------------------
 		ExtensionObjectBase::BSPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		void copyTo(ExtensionObjectBase& extensionObjectBase);
+		bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		void out(std::ostream& os);
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:

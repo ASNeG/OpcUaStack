@@ -72,6 +72,30 @@ namespace OpcUaStackCore
 		return shutdownReason_;
 	}
 
+	void
+	ServerStatusDataType::copyTo(ServerStatusDataType& serverStatusDataType)
+	{
+		startTime_.copyTo(serverStatusDataType.startTime_);
+		currentTime_.copyTo(serverStatusDataType.currentTime_);
+		serverStatusDataType.serverState_ = serverState_;
+		buildInfo_.copyTo(serverStatusDataType.buildInfo());
+		serverStatusDataType.secondsTillShutdown_ = secondsTillShutdown_;
+		shutdownReason_.copyTo(serverStatusDataType.shutdownReason_);
+	}
+
+	bool
+	ServerStatusDataType::operator==(const ServerStatusDataType& serverStatusDataType) const
+	{
+		ServerStatusDataType* dst = const_cast<ServerStatusDataType*>(&serverStatusDataType);
+		return
+			startTime_ == dst->startTime() &&
+			currentTime_ == dst->currentTime() &&
+			serverState_ == dst->serverState() &&
+			buildInfo_ == dst->buildInfo() &&
+			secondsTillShutdown_ == dst->secondsTillShutdown() &&
+			shutdownReason_ == dst->shutdownReason();
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -111,12 +135,25 @@ namespace OpcUaStackCore
 	ServerStatusDataType::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
 		ServerStatusDataType* dst = dynamic_cast<ServerStatusDataType*>(&extensionObjectBase);
-		startTime_.copyTo(dst->startTime_);
-		currentTime_.copyTo(dst->currentTime_);
-		dst->serverState_ = serverState_;
-		//buildInfo.copyTo(dst->buildInfo_);
-		dst->secondsTillShutdown_ = secondsTillShutdown_;
-		shutdownReason_.copyTo(dst->shutdownReason_);
+		copyTo(*dst);
+	}
+
+	bool
+	ServerStatusDataType::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		ServerStatusDataType* dst = dynamic_cast<ServerStatusDataType*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	ServerStatusDataType::out(std::ostream& os)
+	{
+		os << "StartTime="; startTime_.out(os);
+		os << ", CurrentTime="; currentTime_.out(os);
+		os << ", ServerState=" << serverState_;
+		os << ", BuildInfo={"; buildInfo_.out(os); os << "}";
+		os << ", SecondsTillShutdown="; os << secondsTillShutdown_;
+		os << ", ShutdownReason="; shutdownReason_.out(os);
 	}
 
 }

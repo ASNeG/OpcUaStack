@@ -71,6 +71,30 @@ namespace OpcUaStackCore
 		return buildDate_;
 	}
 
+	void
+	BuildInfo::copyTo(BuildInfo& buildInfo)
+	{
+		productUri_.copyTo(buildInfo.productUri_);
+		manufacturerName_.copyTo(buildInfo.manufacturerName_);
+		productName_.copyTo(buildInfo.productName_);
+		softwareVersion_.copyTo(buildInfo.softwareVersion_);
+		buildNumber_.copyTo(buildInfo.buildNumber_);
+		buildDate_.copyTo(buildInfo.buildDate_);
+	}
+
+	bool
+	BuildInfo::operator==(const BuildInfo& buildInfo) const
+	{
+		BuildInfo* dst = const_cast<BuildInfo*>(&buildInfo);
+		return
+			productUri_ == dst->productUri() &&
+			manufacturerName_ == dst->manufacturerName() &&
+			productName_ == dst->productName() &&
+			softwareVersion_ == dst->softwareVersion() &&
+			buildNumber_ == dst->buildNumber() &&
+			buildDate_ == dst->buildDate();
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -110,12 +134,25 @@ namespace OpcUaStackCore
 	BuildInfo::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
 		BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
-		productUri_.copyTo(dst->productUri_);
-		manufacturerName_.copyTo(dst->manufacturerName_);
-		productName_.copyTo(dst->productName_);
-		softwareVersion_.copyTo(dst->softwareVersion_);
-		buildNumber_.copyTo(dst->buildNumber_);
-		buildDate_.copyTo(dst->buildDate_);
+		copyTo(*dst);
+	}
+
+	bool
+	BuildInfo::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		BuildInfo* dst = dynamic_cast<BuildInfo*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	BuildInfo::out(std::ostream& os)
+	{
+		os << "ProductUri="; productUri_.out(os);
+		os << ", ManufacturerName="; manufacturerName_.out(os);
+		os << ", ProductName="; productName_.out(os);
+		os << ", SoftwareVersion="; softwareVersion_.out(os);
+		os << ", BuildNumber="; buildNumber_.out(os);
+		os << ", BuildDate="; buildDate_.out(os);
 	}
 
 }
