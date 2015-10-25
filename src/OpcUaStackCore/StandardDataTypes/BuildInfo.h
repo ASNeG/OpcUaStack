@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_BuildInfo_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
@@ -27,7 +28,7 @@
 namespace OpcUaStackCore
 {
 
-	class BuildInfo
+	class DLLEXPORT BuildInfo
 	: public ObjectPool<BuildInfo>
 	, public ExtensionObjectBase
 	{

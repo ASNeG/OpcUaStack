@@ -288,6 +288,7 @@ namespace OpcUaStackServer
 	Server::shutdownInformationModel(void)
 	{
 		serverStatusDataType_.shutdown();
+		return true;
 	}
 
 	// ------------------------------------------------------------------------

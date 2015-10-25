@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ServerStatusDataType_h__
 #define __OpcUaStackCore_ServerStatusDataType_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
@@ -25,7 +26,7 @@
 namespace OpcUaStackCore
 {
 
-	class ServerStatusDataType
+	class DLLEXPORT ServerStatusDataType
 	: public ObjectPool<ServerStatusDataType>
 	, public ExtensionObjectBase
 	{
