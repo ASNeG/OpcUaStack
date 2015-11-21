@@ -48,6 +48,17 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
+		  opcUaBinaryEncodeNumber(char* os, const T& value, bool littleEndian = true)
+		  {
+			  if (littleEndian) {
+				  opcUaBinaryEncodeNumberLE(os, value);
+			  }
+			  else {
+				  opcUaBinaryEncodeNumberBE(os, value);
+			  }
+		  }
+
+		  static void
 		  opcUaBinaryEncodeNumberLE(std::ostream& os, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -56,6 +67,21 @@ namespace OpcUaStackCore
 			  else {
 				  for (uint32_t size=sizeof(T); size>0; size--) {
 					  os.write(((char*)&value)+size-1,1);
+				  }
+			  }
+		  }
+
+		  static void
+		  opcUaBinaryEncodeNumberLE(char* os, const T& value)
+		  {
+			  if (LITTLE_ENDIAN) {
+				  *(T*)os = value;
+			  }
+			  else {
+				  uint32_t pos = 0;
+				  for (uint32_t size=sizeof(T); size>0; size--) {
+					  os[pos] = *(((char*)&value)+size-1);
+					  pos++;
 				  }
 			  }
 		  }
@@ -74,7 +100,33 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
+		  opcUaBinaryEncodeNumberBE(char* os, const T& value)
+		  {
+			  if (LITTLE_ENDIAN) {
+				  uint32_t pos = 0;
+				  for (uint32_t size=sizeof(T); size>0; size--) {
+					  os[pos] = *(((char*)&value)+size-1);
+					  pos++;
+				  }
+			  }
+			  else {
+				  *(T*)os = value;
+			  }
+		  }
+
+		  static void
 		  opcUaBinaryDecodeNumber(std::istream& is, const T& value, bool littleEndian = true)
+		  {
+			  if (littleEndian) {
+				  opcUaBinaryDecodeNumberLE(is, value);
+			  }
+			  else {
+				  opcUaBinaryDecodeNumberBE(is, value);
+			  }
+		  }
+
+		  static void
+		  opcUaBinaryDecodeNumber(char* is, const T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
 				  opcUaBinaryDecodeNumberLE(is, value);
@@ -98,6 +150,21 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
+		  opcUaBinaryDecodeNumberLE(char* is, const T& value)
+		  {
+			  if (LITTLE_ENDIAN) {
+				  value = *(T*)is;
+			  }
+			  else {
+				  uint32_t pos = 0;
+				  for (uint32_t size=sizeof(T); size>0; size--) {
+					  ((char*)&value)[pos] = is[size-1];
+					  pos++;
+				  }
+			  }
+		  }
+
+		  static void
 		  opcUaBinaryDecodeNumberBE(std::istream& is, const T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
@@ -107,6 +174,21 @@ namespace OpcUaStackCore
 			  }
 			  else {
 				  is.read((char*)&value, sizeof(T));
+			  }
+		  }
+
+		  static void
+		  opcUaBinaryDecodeNumberBE(char* is, const T& value)
+		  {
+			  if (LITTLE_ENDIAN) {
+				  uint32_t pos = 0;
+				  for (uint32_t size=sizeof(T); size>0; size--) {
+					  ((char*)&value)[pos] = is[size-1];
+					  pos++;
+				  }
+			  }
+			  else {
+				  value = *(T*)is;
 			  }
 		  }
 

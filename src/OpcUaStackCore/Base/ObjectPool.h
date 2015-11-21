@@ -26,6 +26,27 @@ namespace OpcUaStackCore
 {
 
 	template<typename OBJ>
+	class DLLEXPORT ObjectPoolX
+	{
+	  public:
+	};
+
+	template<typename OBJ>
+	  typename OBJ::SPtr construct(void) {
+		typename OBJ::SPtr object;
+		return object;
+	  }
+
+	template<typename OBJ>
+	  bool construct(typename OBJ::SPtr& object) {
+		return true;
+	  }
+
+
+
+	////////////////////////////////////////////
+	////////////////////////////////////////////
+	template<typename OBJ>
 	class DLLEXPORT ObjectPool
 	: public Object
 	{
