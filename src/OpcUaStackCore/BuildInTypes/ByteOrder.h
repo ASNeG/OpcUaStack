@@ -115,7 +115,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
-		  opcUaBinaryDecodeNumber(std::istream& is, const T& value, bool littleEndian = true)
+		  opcUaBinaryDecodeNumber(std::istream& is, T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
 				  opcUaBinaryDecodeNumberLE(is, value);
@@ -126,7 +126,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
-		  opcUaBinaryDecodeNumber(char* is, const T& value, bool littleEndian = true)
+		  opcUaBinaryDecodeNumber(char* is, T& value, bool littleEndian = true)
 		  {
 			  if (littleEndian) {
 				  opcUaBinaryDecodeNumberLE(is, value);
@@ -137,7 +137,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void 
-		  opcUaBinaryDecodeNumberLE(std::istream& is, const T& value)
+		  opcUaBinaryDecodeNumberLE(std::istream& is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  is.read((char*)&value, sizeof(T));
@@ -150,7 +150,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
-		  opcUaBinaryDecodeNumberLE(char* is, const T& value)
+		  opcUaBinaryDecodeNumberLE(char* is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  value = *(T*)is;
@@ -165,7 +165,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
-		  opcUaBinaryDecodeNumberBE(std::istream& is, const T& value)
+		  opcUaBinaryDecodeNumberBE(std::istream& is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  for (uint32_t size=sizeof(T); size>0; size--) {
@@ -178,7 +178,7 @@ namespace OpcUaStackCore
 		  }
 
 		  static void
-		  opcUaBinaryDecodeNumberBE(char* is, const T& value)
+		  opcUaBinaryDecodeNumberBE(char* is, T& value)
 		  {
 			  if (LITTLE_ENDIAN) {
 				  uint32_t pos = 0;
