@@ -18,23 +18,13 @@
 #ifndef __OpcUaStackCore_ForwardInfoSync_h__
 #define __OpcUaStackCore_ForwardInfoSync_h__
 
+#include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT ForwardContext
-	: public  ObjectPool<ForwardContext>
-	{
-	  public:
-		typedef boost::shared_ptr<ForwardContext> SPtr;
-
-		ForwardContext(void) {}
-		virtual ~ForwardContext(void) {}
-	};
-
 
 	class DLLEXPORT ForwardInfoSync
 	: public  ObjectPool<ForwardInfoSync>
@@ -55,8 +45,8 @@ namespace OpcUaStackCore
 		bool isWriteCallback(void);
 		Callback& writeCallback(void);
 
-		void forwardContext(ForwardContext::SPtr& forwardContext);
-		ForwardContext::SPtr forwardContext(void);
+		void applicationContext(BaseClass::SPtr& applicationContext);
+		BaseClass::SPtr& applicationContext(void);
 
 	  private:
 
@@ -66,7 +56,7 @@ namespace OpcUaStackCore
 		Callback readCallback_;
 		Callback writeCallback_;
 
-		ForwardContext::SPtr forwardContext_;
+		BaseClass::SPtr applicationContext_;
 	};
 
 }
