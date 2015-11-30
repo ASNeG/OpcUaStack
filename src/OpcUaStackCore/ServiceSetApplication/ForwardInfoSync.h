@@ -25,6 +25,17 @@
 namespace OpcUaStackCore
 {
 
+	class DLLEXPORT ForwardContext
+	: public  ObjectPool<ForwardContext>
+	{
+	  public:
+		typedef boost::shared_ptr<ForwardContext> SPtr;
+
+		ForwardContext(void) {}
+		virtual ~ForwardContext(void) {}
+	};
+
+
 	class DLLEXPORT ForwardInfoSync
 	: public  ObjectPool<ForwardInfoSync>
 	{
@@ -44,6 +55,9 @@ namespace OpcUaStackCore
 		bool isWriteCallback(void);
 		Callback& writeCallback(void);
 
+		void forwardContext(ForwardContext::SPtr& forwardContext);
+		ForwardContext::SPtr forwardContext(void);
+
 	  private:
 
 		bool readCallbackFlag_;
@@ -52,6 +66,7 @@ namespace OpcUaStackCore
 		Callback readCallback_;
 		Callback writeCallback_;
 
+		ForwardContext::SPtr forwardContext_;
 	};
 
 }
