@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationWriteContext_h__
 #define __OpcUaStackCore_ApplicationWriteContext_h__
 
+#include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
@@ -32,6 +33,7 @@ namespace OpcUaStackCore
 		uint32_t attributeId_;
 		OpcUaDataValue dataValue_;
 		OpcUaStatusCode statusCode_;
+		BaseClass::SPtr applicationContext_;
 	};
 
 }

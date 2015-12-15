@@ -192,6 +192,7 @@ namespace OpcUaStackServer
 		applicationReadContext.nodeId_ = *readValueId->nodeId();
 		applicationReadContext.attributeId_ = readValueId->attributeId();
 		applicationReadContext.statusCode_ = Success;
+		applicationReadContext.applicationContext_ = forwardInfoSync->applicationContext();
 
 		forwardInfoSync->readCallback()(&applicationReadContext);
 
@@ -317,6 +318,7 @@ namespace OpcUaStackServer
 		applicationWriteContext.attributeId_ = writeValue->attributeId();
 		writeValue->dataValue().copyTo(applicationWriteContext.dataValue_);
 		applicationWriteContext.statusCode_ = Success;
+		applicationWriteContext.applicationContext_ = forwardInfoSync->applicationContext();
 
 		forwardInfoSync->writeCallback()(&applicationWriteContext);
 

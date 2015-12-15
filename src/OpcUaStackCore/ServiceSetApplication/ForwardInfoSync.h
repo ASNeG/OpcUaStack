@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ForwardInfoSync_h__
 #define __OpcUaStackCore_ForwardInfoSync_h__
 
+#include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/os.h"
@@ -44,6 +45,9 @@ namespace OpcUaStackCore
 		bool isWriteCallback(void);
 		Callback& writeCallback(void);
 
+		void applicationContext(BaseClass::SPtr& applicationContext);
+		BaseClass::SPtr& applicationContext(void);
+
 	  private:
 
 		bool readCallbackFlag_;
@@ -52,6 +56,7 @@ namespace OpcUaStackCore
 		Callback readCallback_;
 		Callback writeCallback_;
 
+		BaseClass::SPtr applicationContext_;
 	};
 
 }
