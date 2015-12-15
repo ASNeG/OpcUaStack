@@ -42,16 +42,34 @@ namespace OpcUaStackCore
 		return startTime_;
 	}
 
+	void
+	ServerStatusDataType::startTime(OpcUaDateTime startTime)
+	{
+		startTime_ = startTime;
+	}
+
 	OpcUaDateTime&
 	ServerStatusDataType::currentTime(void)
 	{
 		return currentTime_;
 	}
 
-	OpcUaInt32&
+	void
+	ServerStatusDataType::currentTime(OpcUaDateTime currentTime)
+	{
+		currentTime_ = currentTime;
+	}
+
+	OpcUaUInt32&
 	ServerStatusDataType::serverState(void)
 	{
 		return serverState_;
+	}
+
+	void
+	ServerStatusDataType::serverState(OpcUaUInt32 serverState)
+	{
+		serverState_ = serverState;
 	}
 
 	BuildInfo&
@@ -60,16 +78,34 @@ namespace OpcUaStackCore
 		return buildInfo_;
 	}
 
+	void
+	ServerStatusDataType::buildInfo(BuildInfo buildInfo)
+	{
+		buildInfo_ = buildInfo;
+	}
+
 	OpcUaUInt32&
 	ServerStatusDataType::secondsTillShutdown(void)
 	{
 		return secondsTillShutdown_;
 	}
 
+	void
+	ServerStatusDataType::secondsTillShutdown(OpcUaUInt32 secondsTillShutdown)
+	{
+		secondsTillShutdown_ = secondsTillShutdown;
+	}
+
 	OpcUaLocalizedText&
 	ServerStatusDataType::shutdownReason(void)
 	{
 		return shutdownReason_;
+	}
+
+	void
+	ServerStatusDataType::shutdownReason(OpcUaLocalizedText shutdownReason)
+	{
+		shutdownReason_ = shutdownReason;
 	}
 
 	void

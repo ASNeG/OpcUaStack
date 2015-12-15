@@ -19,8 +19,8 @@
 #define __OpcUaStackCore_ServerStatusDataType_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
@@ -37,11 +37,17 @@ namespace OpcUaStackCore
 		virtual ~ServerStatusDataType(void);
 
 		OpcUaDateTime& startTime(void);
+		void startTime(OpcUaDateTime startTime);
 		OpcUaDateTime& currentTime(void);
-		OpcUaInt32& serverState(void);
+		void currentTime(OpcUaDateTime currentTime);
+		OpcUaUInt32& serverState(void);
+		void serverState(OpcUaUInt32 serverState);
 		BuildInfo& buildInfo(void);
+		void buildInfo(BuildInfo buildInfo);
 		OpcUaUInt32& secondsTillShutdown(void);
+		void secondsTillShutdown(OpcUaUInt32 secondsTillShutdown);
 		OpcUaLocalizedText& shutdownReason(void);
+		void shutdownReason(OpcUaLocalizedText shutdownReason);
 
 		void copyTo(ServerStatusDataType& serverStatusDataType);
 		bool operator==(const ServerStatusDataType& serverStatusDataType) const;
@@ -58,7 +64,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaDateTime startTime_;
 		OpcUaDateTime currentTime_;
-		OpcUaInt32 serverState_;
+		OpcUaUInt32 serverState_;
 		BuildInfo buildInfo_;
 		OpcUaUInt32 secondsTillShutdown_;
 		OpcUaLocalizedText shutdownReason_;
