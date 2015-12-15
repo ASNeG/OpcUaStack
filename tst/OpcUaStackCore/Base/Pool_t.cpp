@@ -16,6 +16,8 @@ class PoolTest
 
 	char buffer[1000];
 };
+
+
 #define NUMBER_TESTS 1000000
 
 BOOST_AUTO_TEST_SUITE(Pool_t)
@@ -213,6 +215,107 @@ BOOST_AUTO_TEST_CASE(Pool_pool_memory)
 	stop = boost::posix_time::microsec_clock::local_time();
 	td = stop - start;
 	std::cout << "Pool Memory 100000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+}
+
+// FIXME: smart pointer destruct
+BOOST_AUTO_TEST_CASE(Pool_allocate_sptr_pool_memory)
+{
+	Pool<PoolTest> pool;
+	PoolTest::SPtr poolTest[100000];
+	boost::posix_time::ptime start;
+	boost::posix_time::ptime stop;
+	boost::posix_time::time_duration td;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS; idx++)  {
+		pool.construct(poolTest[0]);
+		poolTest[0].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory 000001: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS/1000; idx++)  {
+		for (uint32_t j=0; j<1000; j++) pool.construct(poolTest[j]);
+		for (uint32_t j=0; j<1000; j++) poolTest[j].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory 001000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS/10000; idx++)  {
+		for (uint32_t j=0; j<10000; j++) pool.construct(poolTest[j]);
+		for (uint32_t j=0; j<10000; j++) poolTest[j].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory 010000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS/100000; idx++)  {
+		for (uint32_t j=0; j<100000; j++) pool.construct(poolTest[j]);
+		for (uint32_t j=0; j<100000; j++) poolTest[j].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory 100000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(Pool_allocate_sptr_pool_memory_copy)
+{
+	Pool<PoolTest> pool;
+	PoolTest::SPtr poolTest0[100000];
+	PoolTest::SPtr poolTest1[100000];
+	boost::posix_time::ptime start;
+	boost::posix_time::ptime stop;
+	boost::posix_time::time_duration td;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS; idx++)  {
+		pool.construct(poolTest0[0]);
+		poolTest1[0] = poolTest0[0];
+		poolTest0[0].reset();
+		poolTest1[0].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory copy 000001: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS/1000; idx++)  {
+		for (uint32_t j=0; j<1000; j++) pool.construct(poolTest0[j]);
+		for (uint32_t j=0; j<1000; j++) poolTest1[j] = poolTest0[j];
+		for (uint32_t j=0; j<1000; j++) poolTest0[j].reset();
+		for (uint32_t j=0; j<1000; j++) poolTest1[j].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory copy 001000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS/10000; idx++)  {
+		for (uint32_t j=0; j<10000; j++) pool.construct(poolTest0[j]);
+		for (uint32_t j=0; j<10000; j++) poolTest1[j] = poolTest0[j];
+		for (uint32_t j=0; j<10000; j++) poolTest0[j].reset();
+		for (uint32_t j=0; j<10000; j++) poolTest1[j].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory copy 010000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
+
+	start = boost::posix_time::microsec_clock::local_time();
+	for (uint32_t idx=0; idx<NUMBER_TESTS/100000; idx++)  {
+		for (uint32_t j=0; j<100000; j++) pool.construct(poolTest0[j]);
+		for (uint32_t j=0; j<100000; j++) poolTest1[j] = poolTest0[j];
+		for (uint32_t j=0; j<100000; j++) poolTest0[j].reset();
+		for (uint32_t j=0; j<100000; j++) poolTest1[j].reset();
+	}
+	stop = boost::posix_time::microsec_clock::local_time();
+	td = stop - start;
+	std::cout << "Allocate sptr Memory copy 100000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
 
 }
 

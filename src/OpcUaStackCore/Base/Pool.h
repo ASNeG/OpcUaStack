@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include "boost/shared_ptr.hpp"
+#include "boost/bind.hpp"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -82,6 +83,14 @@ namespace OpcUaStackCore
 			char *memory = allocateMemory();
 			if (memory == nullptr) return nullptr;
 			return new (memory) OBJ();
+		}
+
+		void construct(typename OBJ::SPtr& sptr)
+		{
+			sptr = boost::shared_ptr<OBJ>(
+				construct(),
+				boost::bind(&Pool<OBJ>::destroy, this, _1)
+			);
 		}
 
 		void destroy(OBJ* obj)
