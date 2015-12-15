@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
@@ -34,7 +35,9 @@ namespace OpcUaStackCore
 		ApplicationType_DiscoveryServer = 4
 	} ApplicationType;
 
-	class DLLEXPORT ApplicationDescription : public  ObjectPool<ApplicationDescription>
+	class DLLEXPORT ApplicationDescription
+	: public ObjectPool<ApplicationDescription>
+	, public ExtensionObjectBase
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationDescription> SPtr;
@@ -44,20 +47,33 @@ namespace OpcUaStackCore
 
 		void applicationUri(const std::string& applicationUri);
 		std::string applicationUri(void) const;
+		OpcUaString& applicationUri(void);
 		void productUri(const std::string& productUri);
 		std::string productUri(void) const;
+		OpcUaString& productUri(void);
 		OpcUaLocalizedText& applicationName(void);
 		void applicationType(ApplicationType applicationType);
 		ApplicationType applicationType(void) const;
 		void gatewayServerUri(const std::string& gatewayServerUri);
 		std::string gatewayServerUri(void) const;
+		OpcUaString& gatewayServerUri(void);
 		void discoveryProfileUri(const std::string& discoveryProfileUri);
 		std::string discoveryProfileUri(void) const;
+		OpcUaString& discoveryProfileUri(void);
 		void discoveryUrls(OpcUaStringArray::SPtr discoveryUrls);
 		OpcUaStringArray::SPtr discoveryUrls(void) const;
 
+		void copyTo(ApplicationDescription& applicationDescription);
+		bool operator==(const ApplicationDescription& applicationDescription) const;
+
+		//- ExtensionObjectBase -----------------------------------------------
+		ExtensionObjectBase::BSPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		void copyTo(ExtensionObjectBase& extensionObjectBase);
+		bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		void out(std::ostream& os);
+		//- ExtensionObjectBase -----------------------------------------------
 		
 	  private:
 		OpcUaString applicationUri_;
