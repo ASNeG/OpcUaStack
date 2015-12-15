@@ -148,7 +148,7 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::out(std::ostream& os) const
 	{
 		if (!epSPtr_) return;
-		return epSPtr_->out(os);
+		epSPtr_->out(os);
 	}
 
 	bool 
