@@ -27,42 +27,62 @@
 namespace OpcUaStackCore
 {
 
-	template<typename OBJ, uint32_t START_ENTRIES=32, uint32_t GROW_ENTRIES=32, uint32_t MAX_ENTRIES=0>
+	template<
+	    typename OBJ,
+	    uint32_t START_ENTRIES=32,
+	    uint32_t GROW_ENTRIES=32,
+	    uint32_t MAX_USEDENTRIES=0,
+	    uint32_t MAX_FREEENTRIES=0
+	>
 	class Pool
 	: public PoolBase
 	{
 	  public:
 		Pool(void)
-		: PoolBase(sizeof(OBJ), START_ENTRIES, GROW_ENTRIES, MAX_ENTRIES)
+		: PoolBase(sizeof(OBJ), START_ENTRIES, GROW_ENTRIES, MAX_USEDENTRIES, MAX_FREEENTRIES)
+		, usedPoolList_()
 		{
 		}
 
 		virtual ~Pool(void)
 		{
+			while (!usedPoolList_.empty()) {
+				destroy((OBJ*)usedPoolList_.delFirst()->getMemory());
+			}
 		}
 
 		OBJ* construct(void)
 		{
-			char *memory = nullptr; //allocateMemory();
-			if (memory == nullptr) return nullptr;
-			return new (memory) OBJ();
+			PoolListEntry* poolListEntry = allocate();
+			if (poolListEntry == nullptr) return nullptr;
+
+			usedPoolList_.addLast(poolListEntry);
+			return new (poolListEntry->getMemory()) OBJ();
 		}
 
 		inline void construct(typename OBJ::SPtr& sptr)
 		{
+			OBJ* obj = construct();
+			if (obj == nullptr) {
+				sptr.reset();
+				return;
+			}
+
 			sptr = boost::shared_ptr<OBJ>(
-				construct(),
-				boost::bind(&Pool<OBJ>::destroy, this, _1)
+				obj, boost::bind(&Pool<OBJ>::destroy, this, _1)
 			);
 		}
 
 		inline void destroy(OBJ* obj)
 		{
 			obj->~OBJ();
-			//freeMemory((char*)obj);
+			PoolListEntry* poolListEntry = PoolListEntry::MemoryToPoolListEntry((char*)obj);
+			poolListEntry->del();
+			free(poolListEntry);
 		}
 
 	  private:
+		PoolListEntry usedPoolList_;
 	};
 
 }

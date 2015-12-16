@@ -106,6 +106,12 @@ namespace OpcUaStackCore
 		return ((char*)this) + sizeof(PoolListEntry);
 	}
 
+	PoolListEntry*
+	PoolListEntry::MemoryToPoolListEntry(char* memory)
+	{
+		return (PoolListEntry*)(memory - sizeof(PoolListEntry));
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -136,7 +142,7 @@ namespace OpcUaStackCore
 	PoolBase::~PoolBase(void)
 	{
 		while (!freePoolList_.empty()) {
-			//freeMemory((char*)freePoolList_.delFirst());
+			delete (char*)freePoolList_.delFirst();
 		}
 		freeEntries_ = 0;
 	}

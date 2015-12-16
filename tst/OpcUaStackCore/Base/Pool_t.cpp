@@ -223,9 +223,7 @@ BOOST_AUTO_TEST_CASE(Pool_pool_memory)
 	stop = boost::posix_time::microsec_clock::local_time();
 	td = stop - start;
 	std::cout << "Pool Memory 100000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
-
 }
-
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------

@@ -41,7 +41,8 @@ namespace OpcUaStackCore
 		inline PoolListEntry* delFirst(void);
 		inline PoolListEntry* delBefor(void);
 		inline PoolListEntry* delAfter(void);
-		inline char *getMemory(void);
+		char *getMemory(void);
+		static PoolListEntry* MemoryToPoolListEntry(char* memory);
 
 		PoolListEntry* next_;
 		PoolListEntry* last_;
