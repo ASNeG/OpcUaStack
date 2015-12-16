@@ -29,7 +29,22 @@ namespace OpcUaStackCore
 	class PoolListEntry
 	{
 	  public:
+		PoolListEntry(void);
+		~PoolListEntry(void);
+
+		inline bool empty(void);
+		inline void add(PoolListEntry* poolListEntry);
+		inline void addLast(PoolListEntry* poolListEntry);
+		inline void addAfter(PoolListEntry* poolListEntry);
+		inline void addBefor(PoolListEntry* poolListEntry);
+		inline PoolListEntry* del(void);
+		inline PoolListEntry* delFirst(void);
+		inline PoolListEntry* delBefor(void);
+		inline PoolListEntry* delAfter(void);
+		inline char *getMemory(void);
+
 		PoolListEntry* next_;
+		PoolListEntry* last_;
 	};
 
 	typedef PoolListEntry BufferListEntry;
@@ -38,29 +53,26 @@ namespace OpcUaStackCore
 	class DLLEXPORT PoolBase
 	{
 	  public:
-		PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxEntries);
+		PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxUsedEntries, uint32_t maxFreeEntries);
 		virtual ~PoolBase(void);
 
-		char* allocateMemory();
-		void freeMemory(char* memory);
+		PoolListEntry* allocate();
+		void free(PoolListEntry* poolListEntry);
 
-		uint32_t actEntries(void);
+		uint32_t usedEntries(void);
+		uint32_t freeEntries(void);
 
-	  public:
-		void createNewBuffer(uint32_t growEntries);
+	  private:
+		bool grow(uint32_t growEntries);
 
 		uint32_t entrySize_;
-		PoolListEntry* poolListEntry_;
-		BufferListEntry* bufferListEntry_;
-
-		uint32_t maxEntries_;
 		uint32_t startEntries_;
 		uint32_t growEntries_;
-		uint32_t actEntries_;
-
-		char* buffer_;
-		uint32_t bufferLen_;
-		uint32_t bufferPos_;
+		uint32_t maxUsedEntries_;
+		uint32_t maxFreeEntries_;
+		uint32_t freeEntries_;
+		uint32_t usedEntries_;
+		PoolListEntry freePoolList_;
 	};
 
 }

@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 
 		OBJ* construct(void)
 		{
-			char *memory = allocateMemory();
+			char *memory = nullptr; //allocateMemory();
 			if (memory == nullptr) return nullptr;
 			return new (memory) OBJ();
 		}
@@ -59,7 +59,7 @@ namespace OpcUaStackCore
 		inline void destroy(OBJ* obj)
 		{
 			obj->~OBJ();
-			freeMemory((char*)obj);
+			//freeMemory((char*)obj);
 		}
 
 	  private:

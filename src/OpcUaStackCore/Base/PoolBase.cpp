@@ -20,77 +20,171 @@
 namespace OpcUaStackCore
 {
 
-	PoolBase::PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxEntries)
-	: entrySize_(entrySize < sizeof(PoolListEntry) ? sizeof(PoolListEntry) : entrySize)
-	, poolListEntry_(nullptr)
-	, bufferListEntry_(nullptr)
-	, buffer_(nullptr)
-	, bufferLen_(0)
-	, bufferPos_(0)
-	, maxEntries_(maxEntries)
-	, startEntries_(startEntries+1)
-	, growEntries_(growEntries+1)
-	, actEntries_(0)
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	//  PoolListEntry
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	PoolListEntry::PoolListEntry(void)
+	: next_(this)
+	, last_(this)
 	{
-		createNewBuffer(startEntries_);
+	}
+
+	PoolListEntry::~PoolListEntry(void)
+	{
+		del();
+	}
+
+	bool
+	PoolListEntry::empty(void)
+	{
+		return next_ == last_;
+	}
+
+	void
+	PoolListEntry::add(PoolListEntry* poolListEntry)
+	{
+		poolListEntry->next_ = next_;
+		poolListEntry->last_ = this;
+		next_->last_ = poolListEntry;
+		next_ = poolListEntry;
+	}
+
+	void
+	PoolListEntry::addLast(PoolListEntry* poolListEntry)
+	{
+		last_->add(poolListEntry);
+	}
+
+	void
+	PoolListEntry::addAfter(PoolListEntry* poolListEntry)
+	{
+		add(poolListEntry);
+	}
+
+	void
+	PoolListEntry::addBefor(PoolListEntry* poolListEntry)
+	{
+		last_->addAfter(poolListEntry);
+	}
+
+	PoolListEntry*
+	PoolListEntry::del(void)
+	{
+		if (next_ == this && last_ == this) return this;
+		next_->last_ = last_;
+		last_->next_ = next_;
+		next_ = this;
+		last_ = this;
+		return this;
+	}
+
+	PoolListEntry*
+	PoolListEntry::delFirst(void)
+	{
+		return next_->del();
+	}
+
+	PoolListEntry*
+	PoolListEntry::delBefor(void)
+	{
+		return last_->del();
+	}
+
+	PoolListEntry*
+	PoolListEntry::delAfter(void)
+	{
+		return next_->del();
+	}
+
+	char*
+	PoolListEntry::getMemory(void)
+	{
+		return ((char*)this) + sizeof(PoolListEntry);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// PoolBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	PoolBase::PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxUsedEntries, uint32_t maxFreeEntries)
+	: entrySize_(entrySize)
+	, startEntries_(startEntries)
+	, growEntries_(growEntries)
+	, maxUsedEntries_(maxUsedEntries)
+	, maxFreeEntries_(maxFreeEntries)
+	, usedEntries_(0)
+	, freeEntries_(0)
+	, freePoolList_()
+	{
+		if (startEntries_ == 0) startEntries_ = 1;
+		if (growEntries_ == 0) growEntries_ = 1;
+		if (maxFreeEntries_ != 0 && startEntries_ > maxFreeEntries_ ) maxFreeEntries_ = startEntries_;
+
+		entrySize_ += sizeof(PoolListEntry);
+
+		grow(startEntries_);
 	}
 
 	PoolBase::~PoolBase(void)
 	{
-		while (bufferListEntry_ != nullptr) {
-			BufferListEntry* bufferListEntry = bufferListEntry_;
-			bufferListEntry_ = bufferListEntry_->next_;
-			delete [] bufferListEntry;
+		while (!freePoolList_.empty()) {
+			//freeMemory((char*)freePoolList_.delFirst());
 		}
+		freeEntries_ = 0;
 	}
 
 	uint32_t
-	PoolBase::actEntries(void)
+	PoolBase::freeEntries(void)
 	{
-		return actEntries_;
+		return freeEntries_;
 	}
 
-	char*
-	PoolBase::allocateMemory(void)
+	uint32_t
+	PoolBase::usedEntries(void)
 	{
-		if (poolListEntry_ != nullptr) {
-			char *memory = (char*)poolListEntry_;
-			poolListEntry_ = poolListEntry_->next_;
-			return memory;
-		}
+		return usedEntries_;
+	}
 
-		if (bufferLen_ == bufferPos_) {
-			createNewBuffer(growEntries_);
-		}
-
-		if (bufferLen_ == bufferPos_) return nullptr;
-
-		char* memory = &buffer_[bufferPos_];
-		bufferPos_ += entrySize_;
-		return memory;
+	PoolListEntry*
+	PoolBase::allocate(void)
+	{
+		if (freePoolList_.empty() && !grow(growEntries_)) return nullptr;
+		freeEntries_++;
+		usedEntries_++;
+		return freePoolList_.delFirst();
 	}
 
 	void
-	PoolBase::freeMemory(char* memory)
+	PoolBase::free(PoolListEntry* memory)
 	{
-		PoolListEntry *poolListEntry = (PoolListEntry*)memory;
-		poolListEntry->next_ = poolListEntry_;
-		poolListEntry_ = poolListEntry;
+		usedEntries_--;
+		if (maxFreeEntries_ != 0 && freeEntries_ >= maxFreeEntries_) {
+			delete memory;
+			return;
+		}
+
+		freePoolList_.addLast(new (memory) PoolListEntry);
+		freeEntries_++;
 	}
 
-	void
-	PoolBase::createNewBuffer(uint32_t growEntries)
+	bool
+	PoolBase::grow(uint32_t growEntries)
 	{
-		if (maxEntries_ != 0 && maxEntries_ > actEntries_) return;
-
-		actEntries_ += growEntries;
-		bufferLen_ = entrySize_ * growEntries;
-		buffer_ = new char[bufferLen_];
-		bufferPos_ = entrySize_;
-
-		BufferListEntry* bufferListEntry = (BufferListEntry*)buffer_;
-		bufferListEntry->next_ = bufferListEntry_;
-		bufferListEntry_ = bufferListEntry;
+		if (maxUsedEntries_ != 0 && usedEntries_ >= maxUsedEntries_) return false;
+		for (uint32_t idx=0; idx<growEntries; idx++) {
+			char* memory = new char[entrySize_];
+			freePoolList_.addLast(new (memory) PoolListEntry);
+		}
+		freeEntries_ += growEntries;
+		return true;
 	}
 
 }
