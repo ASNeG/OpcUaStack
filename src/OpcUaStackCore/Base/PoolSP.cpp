@@ -15,11 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/Pool.h"
+#include "OpcUaStackCore/Base/PoolSP.h"
 
 namespace OpcUaStackCore
 {
 
 }
-
-

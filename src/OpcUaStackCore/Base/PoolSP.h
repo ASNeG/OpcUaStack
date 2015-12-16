@@ -15,11 +15,32 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/Pool.h"
+#ifndef __OpcUaStackCore_PoolSP_h__
+#define __OpcUaStackCore_PoolSP_h__
+
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
+#if 0
+	template<typename OBJ, uint32_t START_ENTRIES=32, uint32_t GROW_ENTRIES=32, uint32_t MAX_ENTRIES=0>
+	class PoolSP
+	{
+	  public:
+		PoolSP(void)
+		: Pool<OBJ, START_ENTRIES, GROW_ENTRIES, MAX_ENTRIES>()
+		{
+		}
+
+		virtual ~PoolSP(void)
+		{
+		}
+
+	  private:
+	};
+#endif
+
 }
 
-
+#endif

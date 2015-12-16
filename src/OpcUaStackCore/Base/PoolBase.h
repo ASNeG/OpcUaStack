@@ -15,54 +15,52 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_Pool_h__
-#define __OpcUaStackCore_Pool_h__
+#ifndef __OpcUaStackCore_PoolBase_h__
+#define __OpcUaStackCore_PoolBase_h__
 
 #include <stdint.h>
 #include "boost/shared_ptr.hpp"
 #include "boost/bind.hpp"
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/PoolBase.h"
 
 namespace OpcUaStackCore
 {
 
-	template<typename OBJ, uint32_t START_ENTRIES=32, uint32_t GROW_ENTRIES=32, uint32_t MAX_ENTRIES=0>
-	class Pool
-	: public PoolBase
+	class PoolListEntry
 	{
 	  public:
-		Pool(void)
-		: PoolBase(sizeof(OBJ), START_ENTRIES, GROW_ENTRIES, MAX_ENTRIES)
-		{
-		}
+		PoolListEntry* next_;
+	};
 
-		virtual ~Pool(void)
-		{
-		}
+	typedef PoolListEntry BufferListEntry;
 
-		OBJ* construct(void)
-		{
-			char *memory = allocateMemory();
-			if (memory == nullptr) return nullptr;
-			return new (memory) OBJ();
-		}
 
-		inline void construct(typename OBJ::SPtr& sptr)
-		{
-			sptr = boost::shared_ptr<OBJ>(
-				construct(),
-				boost::bind(&Pool<OBJ>::destroy, this, _1)
-			);
-		}
+	class DLLEXPORT PoolBase
+	{
+	  public:
+		PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxEntries);
+		virtual ~PoolBase(void);
 
-		inline void destroy(OBJ* obj)
-		{
-			obj->~OBJ();
-			freeMemory((char*)obj);
-		}
+		char* allocateMemory();
+		void freeMemory(char* memory);
 
-	  private:
+		uint32_t actEntries(void);
+
+	  public:
+		void createNewBuffer(uint32_t growEntries);
+
+		uint32_t entrySize_;
+		PoolListEntry* poolListEntry_;
+		BufferListEntry* bufferListEntry_;
+
+		uint32_t maxEntries_;
+		uint32_t startEntries_;
+		uint32_t growEntries_;
+		uint32_t actEntries_;
+
+		char* buffer_;
+		uint32_t bufferLen_;
+		uint32_t bufferPos_;
 	};
 
 }
