@@ -54,7 +54,13 @@ namespace OpcUaStackCore
 	class DLLEXPORT PoolBase
 	{
 	  public:
-		PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxUsedEntries, uint32_t maxFreeEntries);
+		PoolBase(
+			uint32_t entrySize,
+			uint32_t startEntries,
+			uint32_t growEntries,
+			uint32_t maxUsedEntries,
+			uint32_t maxFreeEntries
+		);
 		virtual ~PoolBase(void);
 
 		PoolListEntry* allocate();
@@ -63,10 +69,14 @@ namespace OpcUaStackCore
 		uint32_t usedEntries(void);
 		uint32_t freeEntries(void);
 
+		virtual void memoryConstructHandler(char* memory) {}
+		virtual void memoryDestructHandler(char* memory) {}
+
 	  private:
 		bool grow(uint32_t growEntries);
 
 		uint32_t entrySize_;
+		uint32_t sharedPointerSize_;
 		uint32_t startEntries_;
 		uint32_t growEntries_;
 		uint32_t maxUsedEntries_;

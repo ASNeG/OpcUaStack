@@ -120,7 +120,13 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	PoolBase::PoolBase(uint32_t entrySize, uint32_t startEntries, uint32_t growEntries, uint32_t maxUsedEntries, uint32_t maxFreeEntries)
+	PoolBase::PoolBase(
+		uint32_t entrySize,
+		uint32_t startEntries,
+		uint32_t growEntries,
+		uint32_t maxUsedEntries,
+		uint32_t maxFreeEntries
+	)
 	: entrySize_(entrySize)
 	, startEntries_(startEntries)
 	, growEntries_(growEntries)
@@ -169,15 +175,16 @@ namespace OpcUaStackCore
 	}
 
 	void
-	PoolBase::free(PoolListEntry* memory)
+	PoolBase::free(PoolListEntry* poolListEntry)
 	{
 		usedEntries_--;
 		if (maxFreeEntries_ != 0 && freeEntries_ >= maxFreeEntries_) {
-			delete memory;
+			memoryDestructHandler(poolListEntry->getMemory());
+			delete (char*)poolListEntry;
 			return;
 		}
 
-		freePoolList_.addLast(new (memory) PoolListEntry);
+		freePoolList_.addLast(new (poolListEntry) PoolListEntry);
 		freeEntries_++;
 	}
 
@@ -187,7 +194,11 @@ namespace OpcUaStackCore
 		if (maxUsedEntries_ != 0 && usedEntries_ >= maxUsedEntries_) return false;
 		for (uint32_t idx=0; idx<growEntries; idx++) {
 			char* memory = new char[entrySize_];
-			freePoolList_.addLast(new (memory) PoolListEntry);
+			PoolListEntry* poolListEntry = new (memory) PoolListEntry();
+
+			memoryConstructHandler(poolListEntry->getMemory());
+
+			freePoolList_.addLast(poolListEntry);
 		}
 		freeEntries_ += growEntries;
 		return true;

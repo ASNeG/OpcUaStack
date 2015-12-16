@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 
 	template<
 	    typename OBJ,
+	    bool USE_SHARED_PTR=false,
 	    uint32_t START_ENTRIES=32,
 	    uint32_t GROW_ENTRIES=32,
 	    uint32_t MAX_USEDENTRIES=0,
@@ -39,7 +40,13 @@ namespace OpcUaStackCore
 	{
 	  public:
 		Pool(void)
-		: PoolBase(sizeof(OBJ), START_ENTRIES, GROW_ENTRIES, MAX_USEDENTRIES, MAX_FREEENTRIES)
+		: PoolBase(
+			sizeof(OBJ) + (USE_SHARED_PTR ? 0 : sizeof(boost::shared_ptr<OBJ>)),
+			START_ENTRIES,
+			GROW_ENTRIES,
+			MAX_USEDENTRIES,
+			MAX_FREEENTRIES
+		)
 		, usedPoolList_()
 		{
 		}
@@ -79,6 +86,16 @@ namespace OpcUaStackCore
 			PoolListEntry* poolListEntry = PoolListEntry::MemoryToPoolListEntry((char*)obj);
 			poolListEntry->del();
 			free(poolListEntry);
+		}
+
+		void memoryConstructHandler(char* memory)
+		{
+			if (!USE_SHARED_PTR) return;
+		}
+
+		void memoryDestructHandler(char* memory)
+		{
+			if (!USE_SHARED_PTR) return;
 		}
 
 	  private:
