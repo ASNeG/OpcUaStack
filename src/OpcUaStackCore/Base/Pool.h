@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 			MAX_FREEENTRIES
 		)
 		, usedPoolList_()
+		, usedEntries_(0)
+		, garbageCollectorEntry_(&usedPoolList_)
 		{
 		}
 
@@ -58,18 +60,35 @@ namespace OpcUaStackCore
 			}
 		}
 
-		OBJ* construct(void)
+		inline OBJ* construct(void)
 		{
+			if (USE_SHARED_PTR) return nullptr;
+
 			PoolListEntry* poolListEntry = allocate();
 			if (poolListEntry == nullptr) return nullptr;
 
-			usedPoolList_.addLast(poolListEntry);
+			addPoolListElement(poolListEntry);
 			return new (poolListEntry->getMemory()) OBJ();
 		}
 
 		inline void construct(typename OBJ::SPtr& sptr)
 		{
-			OBJ* obj = construct();
+#if 0
+			if (!USE_SHARED_PTR) {
+				sptr.reset();
+				return;
+			}
+#endif
+
+			PoolListEntry* poolListEntry = allocate();
+			if (poolListEntry == nullptr) {
+				sptr.reset();
+				return;
+			}
+
+			usedPoolList_.addLast(poolListEntry);
+			usedEntries_++;
+			OBJ* obj = new (poolListEntry->getMemory()) OBJ();
 			if (obj == nullptr) {
 				sptr.reset();
 				return;
@@ -84,22 +103,67 @@ namespace OpcUaStackCore
 		{
 			obj->~OBJ();
 			PoolListEntry* poolListEntry = PoolListEntry::MemoryToPoolListEntry((char*)obj);
-			poolListEntry->del();
+			delPoolListEntry(poolListEntry);
 			free(poolListEntry);
 		}
 
 		void memoryConstructHandler(char* memory)
 		{
 			if (!USE_SHARED_PTR) return;
+			boost::shared_ptr<OBJ>* sptr = (boost::shared_ptr<OBJ>*)memory;
+			OBJ* obj = (OBJ*)(memory + sizeof(boost::shared_ptr<OBJ>));
+			sptr->reset(obj);
 		}
 
 		void memoryDestructHandler(char* memory)
 		{
 			if (!USE_SHARED_PTR) return;
+			boost::shared_ptr<OBJ>* sptr = (boost::shared_ptr<OBJ>*)memory;
+			sptr->reset();
+		}
+
+		void garbageCollector(uint32_t maxEntries)
+		{
+			if (usedEntries_ == 0) return;
+			if (usedPoolList_.empty()) return;
+
+			if (maxEntries < usedEntries_) maxEntries = usedEntries_;
+			for (uint32_t idx=0; idx<maxEntries; idx++) {
+				if (garbageCollectorEntry_ == &usedPoolList_) {
+					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
+				}
+
+				char* memory = garbageCollectorEntry_->getMemory();
+				boost::shared_ptr<OBJ>* sptr = (boost::shared_ptr<OBJ>*)memory;
+				if (sptr->unique()) {
+					delPoolListEntry(garbageCollectorEntry_);
+					destroy(sptr->get());
+				}
+				else {
+					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
+				}
+			}
+		}
+
+		inline void addPoolListElement(PoolListEntry* poolListEntry)
+		{
+			usedEntries_++;
+			usedPoolList_.addLast(poolListEntry);
+		}
+
+		inline void delPoolListEntry(PoolListEntry* poolListEntry)
+		{
+			if (garbageCollectorEntry_ == poolListEntry) {
+				garbageCollectorEntry_ = garbageCollectorEntry_->next_;
+			}
+			usedEntries_--;
+			poolListEntry->del();
 		}
 
 	  private:
-		PoolListEntry usedPoolList_;
+		uint32_t usedEntries_;
+		PoolListEntry* garbageCollectorEntry_;
+		PoolList usedPoolList_;
 	};
 
 }

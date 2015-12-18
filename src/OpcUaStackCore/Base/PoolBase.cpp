@@ -35,69 +35,11 @@ namespace OpcUaStackCore
 
 	PoolListEntry::~PoolListEntry(void)
 	{
-		del();
-	}
-
-	bool
-	PoolListEntry::empty(void)
-	{
-		return next_ == last_;
-	}
-
-	void
-	PoolListEntry::add(PoolListEntry* poolListEntry)
-	{
-		poolListEntry->next_ = next_;
-		poolListEntry->last_ = this;
-		next_->last_ = poolListEntry;
-		next_ = poolListEntry;
-	}
-
-	void
-	PoolListEntry::addLast(PoolListEntry* poolListEntry)
-	{
-		last_->add(poolListEntry);
-	}
-
-	void
-	PoolListEntry::addAfter(PoolListEntry* poolListEntry)
-	{
-		add(poolListEntry);
-	}
-
-	void
-	PoolListEntry::addBefor(PoolListEntry* poolListEntry)
-	{
-		last_->addAfter(poolListEntry);
-	}
-
-	PoolListEntry*
-	PoolListEntry::del(void)
-	{
-		if (next_ == this && last_ == this) return this;
+		if (next_ == this && last_ == this) return;
 		next_->last_ = last_;
 		last_->next_ = next_;
 		next_ = this;
 		last_ = this;
-		return this;
-	}
-
-	PoolListEntry*
-	PoolListEntry::delFirst(void)
-	{
-		return next_->del();
-	}
-
-	PoolListEntry*
-	PoolListEntry::delBefor(void)
-	{
-		return last_->del();
-	}
-
-	PoolListEntry*
-	PoolListEntry::delAfter(void)
-	{
-		return next_->del();
 	}
 
 	char*
@@ -110,6 +52,86 @@ namespace OpcUaStackCore
 	PoolListEntry::MemoryToPoolListEntry(char* memory)
 	{
 		return (PoolListEntry*)(memory - sizeof(PoolListEntry));
+	}
+
+
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// PoolList
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	PoolList::PoolList(void)
+	: PoolListEntry()
+	{
+	}
+
+	PoolList::~PoolList(void)
+	{
+	}
+
+	bool
+	PoolList::empty(void)
+	{
+		return next_ == last_;
+	}
+
+	void
+	PoolList::add(PoolListEntry* poolListEntry)
+	{
+		poolListEntry->next_ = next_;
+		poolListEntry->last_ = this;
+		next_->last_ = poolListEntry;
+		next_ = poolListEntry;
+	}
+
+	void
+	PoolList::addLast(PoolListEntry* poolListEntry)
+	{
+		last_->add(poolListEntry);
+	}
+
+	void
+	PoolList::addAfter(PoolListEntry* poolListEntry)
+	{
+		add(poolListEntry);
+	}
+
+	void
+	PoolList::addBefor(PoolListEntry* poolListEntry)
+	{
+		last_->addAfter(poolListEntry);
+	}
+
+	PoolListEntry*
+	PoolList::del(void)
+	{
+		if (next_ == this && last_ == this) return this;
+		next_->last_ = last_;
+		last_->next_ = next_;
+		next_ = this;
+		last_ = this;
+		return this;
+	}
+
+	PoolListEntry*
+	PoolList::delBefor(void)
+	{
+		return last_->del();
+	}
+
+	PoolListEntry*
+	PoolList::delAfter(void)
+	{
+		return next_->del();
+	}
+	PoolListEntry*
+	PoolList::delFirst(void)
+	{
+		return next_->del();
 	}
 
 

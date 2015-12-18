@@ -32,15 +32,6 @@ namespace OpcUaStackCore
 		PoolListEntry(void);
 		~PoolListEntry(void);
 
-		inline bool empty(void);
-		inline void add(PoolListEntry* poolListEntry);
-		inline void addLast(PoolListEntry* poolListEntry);
-		inline void addAfter(PoolListEntry* poolListEntry);
-		inline void addBefor(PoolListEntry* poolListEntry);
-		inline PoolListEntry* del(void);
-		inline PoolListEntry* delFirst(void);
-		inline PoolListEntry* delBefor(void);
-		inline PoolListEntry* delAfter(void);
 		char *getMemory(void);
 		static PoolListEntry* MemoryToPoolListEntry(char* memory);
 
@@ -48,7 +39,27 @@ namespace OpcUaStackCore
 		PoolListEntry* last_;
 	};
 
+
 	typedef PoolListEntry BufferListEntry;
+
+
+	class PoolList
+	: public PoolListEntry
+	{
+	  public:
+		PoolList(void);
+		~PoolList(void);
+
+		inline bool empty(void);
+		inline void add(PoolListEntry* poolListEntry);
+		inline void addLast(PoolListEntry* poolListEntry);
+		inline void addAfter(PoolListEntry* poolListEntry);
+		inline void addBefor(PoolListEntry* poolListEntry);
+		inline PoolListEntry* del(void);
+		inline PoolListEntry* delBefor(void);
+		inline PoolListEntry* delAfter(void);
+		inline PoolListEntry* delFirst(void);
+	};
 
 
 	class DLLEXPORT PoolBase
@@ -83,7 +94,7 @@ namespace OpcUaStackCore
 		uint32_t maxFreeEntries_;
 		uint32_t freeEntries_;
 		uint32_t usedEntries_;
-		PoolListEntry freePoolList_;
+		PoolList freePoolList_;
 	};
 
 }
