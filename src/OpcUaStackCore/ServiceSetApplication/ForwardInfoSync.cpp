@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	, writeCallbackFlag_(false)
 	, readCallback_()
 	, writeCallback_()
+	, applicationContext_()
 	{
 	}
 
@@ -80,6 +81,18 @@ namespace OpcUaStackCore
 	ForwardInfoSync::writeCallback(void)
 	{
 		return writeCallback_;
+	}
+
+	void
+	ForwardInfoSync::applicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
+	}
+
+	BaseClass::SPtr&
+	ForwardInfoSync::applicationContext(void)
+	{
+		return applicationContext_;
 	}
 
 }
