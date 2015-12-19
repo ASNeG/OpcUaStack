@@ -61,14 +61,14 @@ namespace OpcUaStackCore
 
 		uint32_t size(void);
 
-		inline bool empty(void);
+		bool empty(void);
 
-		inline void addLast(PoolListEntry* poolListEntry);
-		inline void addFirst(PoolListEntry* poolListEntry);
+		void addLast(PoolListEntry* poolListEntry);
+		void addFirst(PoolListEntry* poolListEntry);
 
-		inline PoolListEntry* del(PoolListEntry* poolListEntry);
-		inline PoolListEntry* delFirst(void);
-		inline PoolListEntry* delLast(void);
+		PoolListEntry* del(PoolListEntry* poolListEntry);
+		PoolListEntry* delFirst(void);
+		PoolListEntry* delLast(void);
 
 	  private:
 		uint32_t size_;

@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(Pool_pool_memory)
 //
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-
+#if 0
 BOOST_AUTO_TEST_CASE(Pool_allocate_sptr_pool_memory)
 {
 	Pool<PoolTest> pool;
@@ -332,6 +332,7 @@ BOOST_AUTO_TEST_CASE(Pool_allocate_sptr_pool_memory_copy)
 	std::cout << "Allocate sptr Memory copy 100000: " << NUMBER_TESTS << " " << td.total_milliseconds() << "ms" << std::endl;
 
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 

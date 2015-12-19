@@ -125,7 +125,7 @@ namespace OpcUaStackCore
 
 		void garbageCollectorLoop(uint32_t maxEntries, bool findFirst = false)
 		{
-			if (maxEntries < usedEntries_) maxEntries = usedEntries_;
+			if (maxEntries < usedPoolList_.size()) maxEntries = usedPoolList_.size();
 			for (uint32_t idx=0; idx<maxEntries; idx++) {
 				if (garbageCollectorEntry_ == &usedPoolList_) {
 					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
