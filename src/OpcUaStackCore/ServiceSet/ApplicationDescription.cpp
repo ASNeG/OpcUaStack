@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaString&
-	ApplicationDescription::applicationUri(void)
+	ApplicationDescription::getApplicationUri(void)
 	{
 		return applicationUri_;
 	}
@@ -66,9 +66,15 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaString&
-	ApplicationDescription::productUri(void)
+	ApplicationDescription::getProductUri(void)
 	{
 		return productUri_;
+	}
+
+	void
+	ApplicationDescription::applicationName(OpcUaLocalizedText applicationName)
+	{
+		applicationName_ = applicationName;
 	}
 
 	OpcUaLocalizedText& 
@@ -102,7 +108,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaString&
-	ApplicationDescription::gatewayServerUri(void)
+	ApplicationDescription::getGatewayServerUri(void)
 	{
 		return gatewayServerUri_;
 	}
@@ -120,7 +126,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaString&
-	ApplicationDescription::discoveryProfileUri(void)
+	ApplicationDescription::getDiscoveryProfileUri(void)
 	{
 		return discoveryProfileUri_;
 	}
@@ -140,12 +146,12 @@ namespace OpcUaStackCore
 	void
 	ApplicationDescription::copyTo(ApplicationDescription& applicationDescription)
 	{
-		applicationUri_.copyTo(applicationDescription.applicationUri());
-		productUri_.copyTo(applicationDescription.productUri());
+		applicationUri_.copyTo(applicationDescription.getApplicationUri());
+		productUri_.copyTo(applicationDescription.getProductUri());
 		applicationName_.copyTo(applicationDescription.applicationName());
 		applicationDescription.applicationType(applicationType_);
-		gatewayServerUri_.copyTo(applicationDescription.gatewayServerUri());
-		discoveryProfileUri_.copyTo(applicationDescription.discoveryProfileUri());
+		gatewayServerUri_.copyTo(applicationDescription.getGatewayServerUri());
+		discoveryProfileUri_.copyTo(applicationDescription.getDiscoveryProfileUri());
 		discoveryUrls_->copyTo(*applicationDescription.discoveryUrls());
 	}
 
@@ -154,12 +160,12 @@ namespace OpcUaStackCore
 	{
 		ApplicationDescription* dst = const_cast<ApplicationDescription*>(&applicationDescription);
 		return
-			applicationUri_ == dst->applicationUri() &&
-			productUri_ == dst->productUri() &&
+			applicationUri_ == dst->getApplicationUri() &&
+			productUri_ == dst->getProductUri() &&
 			applicationName_ == dst->applicationName() &&
 			applicationType_ == dst->applicationType() &&
-			gatewayServerUri_ == dst->gatewayServerUri() &&
-			discoveryProfileUri_ == dst->discoveryProfileUri(); // &&
+			gatewayServerUri_ == dst->getGatewayServerUri() &&
+			discoveryProfileUri_ == dst->getDiscoveryProfileUri(); // &&
 			// FIXME: discoveryUrls_ == dst->discoveryUrls();
 	}
 
@@ -227,10 +233,5 @@ namespace OpcUaStackCore
 		os << ", DiscoveryProfileUri="; discoveryProfileUri_.out(os);
 		os << ", DiscoveryUrls="; discoveryUrls_->out(os);
 	}
-
-
-
-
-
 
 }

@@ -47,19 +47,20 @@ namespace OpcUaStackCore
 
 		void applicationUri(const std::string& applicationUri);
 		std::string applicationUri(void) const;
-		OpcUaString& applicationUri(void);
+		OpcUaString& getApplicationUri(void);
 		void productUri(const std::string& productUri);
 		std::string productUri(void) const;
-		OpcUaString& productUri(void);
+		OpcUaString& getProductUri(void);
+		void applicationName(OpcUaLocalizedText applicationName);
 		OpcUaLocalizedText& applicationName(void);
 		void applicationType(ApplicationType applicationType);
 		ApplicationType applicationType(void) const;
 		void gatewayServerUri(const std::string& gatewayServerUri);
 		std::string gatewayServerUri(void) const;
-		OpcUaString& gatewayServerUri(void);
+		OpcUaString& getGatewayServerUri(void);
 		void discoveryProfileUri(const std::string& discoveryProfileUri);
 		std::string discoveryProfileUri(void) const;
-		OpcUaString& discoveryProfileUri(void);
+		OpcUaString& getDiscoveryProfileUri(void);
 		void discoveryUrls(OpcUaStringArray::SPtr discoveryUrls);
 		OpcUaStringArray::SPtr discoveryUrls(void) const;
 
