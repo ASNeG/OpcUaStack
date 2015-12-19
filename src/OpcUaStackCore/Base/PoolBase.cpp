@@ -54,8 +54,49 @@ namespace OpcUaStackCore
 		return (PoolListEntry*)(memory - sizeof(PoolListEntry));
 	}
 
+	void
+	PoolListEntry::add(PoolListEntry* poolListEntry)
+	{
+		poolListEntry->next_ = next_;
+		poolListEntry->last_ = this;
+		next_->last_ = poolListEntry;
+		next_ = poolListEntry;
+	}
 
+	void
+	PoolListEntry::addAfter(PoolListEntry* poolListEntry)
+	{
+		add(poolListEntry);
+	}
 
+	void
+	PoolListEntry::addBefor(PoolListEntry* poolListEntry)
+	{
+		last_->addAfter(poolListEntry);
+	}
+
+	PoolListEntry*
+	PoolListEntry::del(void)
+	{
+		if (next_ == this && last_ == this) return this;
+		next_->last_ = last_;
+		last_->next_ = next_;
+		next_ = this;
+		last_ = this;
+		return this;
+	}
+
+	PoolListEntry*
+	PoolListEntry::delBefor(void)
+	{
+		return last_->del();
+	}
+
+	PoolListEntry*
+	PoolListEntry::delAfter(void)
+	{
+		return next_->del();
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -80,12 +121,9 @@ namespace OpcUaStackCore
 	}
 
 	void
-	PoolList::add(PoolListEntry* poolListEntry)
+	PoolList::addFirst(PoolListEntry* poolListEntry)
 	{
-		poolListEntry->next_ = next_;
-		poolListEntry->last_ = this;
-		next_->last_ = poolListEntry;
-		next_ = poolListEntry;
+		next_->add(poolListEntry);
 	}
 
 	void
@@ -94,44 +132,22 @@ namespace OpcUaStackCore
 		last_->add(poolListEntry);
 	}
 
-	void
-	PoolList::addAfter(PoolListEntry* poolListEntry)
-	{
-		add(poolListEntry);
-	}
-
-	void
-	PoolList::addBefor(PoolListEntry* poolListEntry)
-	{
-		last_->addAfter(poolListEntry);
-	}
-
 	PoolListEntry*
-	PoolList::del(void)
+	PoolList::del(PoolListEntry* poolListEntry)
 	{
-		if (next_ == this && last_ == this) return this;
-		next_->last_ = last_;
-		last_->next_ = next_;
-		next_ = this;
-		last_ = this;
-		return this;
+		return poolListEntry->del();
 	}
 
-	PoolListEntry*
-	PoolList::delBefor(void)
-	{
-		return last_->del();
-	}
-
-	PoolListEntry*
-	PoolList::delAfter(void)
-	{
-		return next_->del();
-	}
 	PoolListEntry*
 	PoolList::delFirst(void)
 	{
 		return next_->del();
+	}
+
+	PoolListEntry*
+	PoolList::delLast(void)
+	{
+		return last_->del();
 	}
 
 

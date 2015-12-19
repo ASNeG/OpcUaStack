@@ -35,13 +35,20 @@ namespace OpcUaStackCore
 		char *getMemory(void);
 		static PoolListEntry* MemoryToPoolListEntry(char* memory);
 
+		inline void add(PoolListEntry* poolListEntry);
+		inline void addAfter(PoolListEntry* poolListEntry);
+		inline void addBefor(PoolListEntry* poolListEntry);
+
+		inline PoolListEntry* del(void);
+		inline PoolListEntry* delBefor(void);
+		inline PoolListEntry* delAfter(void);
+
 		PoolListEntry* next_;
 		PoolListEntry* last_;
 	};
 
 
 	typedef PoolListEntry BufferListEntry;
-
 
 	class PoolList
 	: public PoolListEntry
@@ -51,14 +58,12 @@ namespace OpcUaStackCore
 		~PoolList(void);
 
 		inline bool empty(void);
-		inline void add(PoolListEntry* poolListEntry);
 		inline void addLast(PoolListEntry* poolListEntry);
-		inline void addAfter(PoolListEntry* poolListEntry);
-		inline void addBefor(PoolListEntry* poolListEntry);
-		inline PoolListEntry* del(void);
-		inline PoolListEntry* delBefor(void);
-		inline PoolListEntry* delAfter(void);
+		inline void addFirst(PoolListEntry* poolListEntry);
+
+		inline PoolListEntry* del(PoolListEntry* poolListEntry);
 		inline PoolListEntry* delFirst(void);
+		inline PoolListEntry* delLast(void);
 	};
 
 
