@@ -13,6 +13,18 @@
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
+
+
+   Datastruct Pointer:
+   - PoolListEntry
+   - Object
+
+   Datastruct SmarePointer:
+   - PoolListEntry
+   - SmartPointer
+   - Object
+
+
  */
 
 #ifndef __OpcUaStackCore_Pool_h__
@@ -50,6 +62,7 @@ namespace OpcUaStackCore
 		)
 		, usedPoolList_()
 		, garbageCollectorEntry_(&usedPoolList_)
+	    , nullSPtr_()
 		{
 		}
 
@@ -73,22 +86,16 @@ namespace OpcUaStackCore
 
 		inline typename OBJ::SPtr& constructSPtr(void)
 		{
-			if (!USE_SHARED_PTR) {
-				typename OBJ::SPtr sptr;
-				return sptr;
-			}
+			if (!USE_SHARED_PTR) return nullSPtr_;
 
 			PoolListEntry* poolListEntry = allocate();
-			if (poolListEntry == nullptr) {
-				typename OBJ::SPtr sptr;
-				return sptr;
-			}
+			if (poolListEntry == nullptr) return nullSPtr_;
 
 			usedPoolList_.addLast(poolListEntry);
 			char* memory = poolListEntry->getMemory();
 			typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
 
-			memory += sizeof(OBJ::SPtr);
+			memory += sizeof(typename OBJ::SPtr);
 			OBJ* obj = new (memory) OBJ();
 
 			return *sptr;
@@ -105,9 +112,8 @@ namespace OpcUaStackCore
 		virtual void memoryConstructHandler(char* memory)
 		{
 			if (!USE_SHARED_PTR) return;
-			typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
 			OBJ* obj = (OBJ*)(memory + sizeof(typename OBJ::SPtr));
-			sptr->reset(obj);
+			typename OBJ::SPtr* sptr = new (memory) typename OBJ::SPtr(obj);
 		}
 
 		virtual void memoryDestructHandler(char* memory)
@@ -117,38 +123,48 @@ namespace OpcUaStackCore
 			sptr->reset();
 		}
 
-		virtual void garbageCollector(void)
+		virtual bool garbageCollector(void)
 		{
-			if (!USE_SHARED_PTR) return;
-			garbageCollectorLoop(GARBAGE_COLLECTOR_LOOP_COUNT);
+			if (!USE_SHARED_PTR) return false;
+			return garbageCollectorLoop(GARBAGE_COLLECTOR_LOOP_COUNT);
 		}
 
-		void garbageCollectorLoop(uint32_t maxEntries, bool findFirst = false)
+		bool garbageCollectorLoop(uint32_t maxEntries, bool findFirst = false)
 		{
+			bool elementsFound = true;
+			if (maxEntries == usedPoolList_.size()) maxEntries = usedPoolList_.size();
 			if (maxEntries < usedPoolList_.size()) maxEntries = usedPoolList_.size();
 			for (uint32_t idx=0; idx<maxEntries; idx++) {
 				if (garbageCollectorEntry_ == &usedPoolList_) {
 					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
 				}
+				if (garbageCollectorEntry_ == &usedPoolList_) return false;
 
 				char* memory = garbageCollectorEntry_->getMemory();
 				typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
 				if (sptr->unique()) {
+					elementsFound = true;
+
 					PoolListEntry* poolListEntry = garbageCollectorEntry_;
 					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
+
+					OBJ* obj = (OBJ*)(memory + sizeof(typename OBJ::SPtr));
+					obj->~OBJ();
 
 					usedPoolList_.del(poolListEntry);
 					free(poolListEntry);
 
-					if (findFirst) return;
+					if (findFirst) return true;
 				}
 				else {
 					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
 				}
 			}
+			return elementsFound;
 		}
 
 	  private:
+		typename OBJ::SPtr nullSPtr_;
 		PoolListEntry* garbageCollectorEntry_;
 		PoolList usedPoolList_;
 	};

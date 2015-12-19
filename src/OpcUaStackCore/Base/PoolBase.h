@@ -95,7 +95,7 @@ namespace OpcUaStackCore
 
 		virtual void memoryConstructHandler(char* memory) {}
 		virtual void memoryDestructHandler(char* memory) {}
-		virtual void garbageCollector(void) {}
+		virtual bool garbageCollector(void) {}
 
 	  private:
 		bool grow(uint32_t growEntries);
