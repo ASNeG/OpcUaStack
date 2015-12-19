@@ -79,7 +79,7 @@ namespace OpcUaStackCore
 			PoolListEntry* poolListEntry = allocate();
 			if (poolListEntry == nullptr) return nullptr;
 
-			usedPoolList_.add(poolListEntry);
+			usedPoolList_.addLast(poolListEntry);
 			return new (poolListEntry->getMemory()) OBJ();
 		}
 
@@ -130,22 +130,17 @@ namespace OpcUaStackCore
 
 		bool garbageCollectorLoop(uint32_t maxEntries, bool findFirst = false)
 		{
-			return false;
+			//std::cout << "garbageCollectorLoop" << std::endl;
 			if (maxEntries == usedPoolList_.size()) maxEntries = usedPoolList_.size();
 			if (maxEntries < usedPoolList_.size()) maxEntries = usedPoolList_.size();
 			PoolListEntry* poolListEntry = usedPoolList_.garbageCollector();
 			if (poolListEntry == nullptr) return false;
 
-			bool elementsFound = true;
+			bool elementsFound = false;
 			for (uint32_t idx=0; idx<maxEntries; idx++) {
-				std::cout << usedPoolList_.size() << " idx=" << idx << std::endl;
-
 				char* memory = poolListEntry->getMemory();
-				std::cout << "AAA" << std::endl;
 				typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
-				std::cout << "AAA" << std::endl;
 				if (sptr->unique()) {
-					std::cout << "BBB1" << std::endl;
 					elementsFound = true;
 
 					OBJ* obj = (OBJ*)(memory + sizeof(typename OBJ::SPtr));
@@ -155,12 +150,14 @@ namespace OpcUaStackCore
 					free(poolListEntry);
 
 					if (findFirst) return true;
+
+					poolListEntry = usedPoolList_.garbageCollector();
 				}
 				else {
-					std::cout << "BBB2" << std::endl;
 					poolListEntry = usedPoolList_.garbageCollectorNext();
-					if (poolListEntry == nullptr) return elementsFound;
+
 				}
+				if (poolListEntry == nullptr) return elementsFound;
 			}
 			return elementsFound;
 		}

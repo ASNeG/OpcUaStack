@@ -73,6 +73,8 @@ namespace OpcUaStackCore
 		PoolListEntry* garbageCollector(void);
 		PoolListEntry* garbageCollectorNext(void);
 
+		void log(std::ostream& os);
+
 	  private:
 		PoolListEntry* garbageCollector_;
 		uint32_t size_;
@@ -99,7 +101,7 @@ namespace OpcUaStackCore
 
 		virtual void memoryConstructHandler(char* memory) {}
 		virtual void memoryDestructHandler(char* memory) {}
-		virtual bool garbageCollector(void) {}
+		virtual bool garbageCollector(void) { return false; }
 
 	  private:
 		bool grow(uint32_t growEntries);

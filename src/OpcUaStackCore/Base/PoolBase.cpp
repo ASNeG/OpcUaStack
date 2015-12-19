@@ -194,6 +194,18 @@ namespace OpcUaStackCore
 		else {
 			garbageCollector_ = garbageCollector_->next_;
 		}
+		return garbageCollector_;
+	}
+
+	void
+	PoolList::log(std::ostream& os)
+	{
+		PoolListEntry* poolListEntry = this->next_;
+		while (poolListEntry != this) {
+			os << " " << poolListEntry;
+			poolListEntry = poolListEntry->next_;
+		}
+		os << std::endl;
 	}
 
 	// ------------------------------------------------------------------------
@@ -231,7 +243,9 @@ namespace OpcUaStackCore
 	PoolBase::~PoolBase(void)
 	{
 		while (!freePoolList_.empty()) {
-			delete (char*)freePoolList_.delFirst();
+			PoolListEntry* poolListEntry = freePoolList_.delFirst();
+			memoryDestructHandler(poolListEntry->getMemory());
+			delete (char*)poolListEntry;
 		}
 		freeEntries_ = 0;
 	}
