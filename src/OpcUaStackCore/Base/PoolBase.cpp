@@ -114,6 +114,7 @@ namespace OpcUaStackCore
 	PoolList::PoolList(void)
 	: PoolListEntry()
 	, size_(0)
+	, garbageCollector_(this)
 	{
 	}
 
@@ -136,6 +137,7 @@ namespace OpcUaStackCore
 	void
 	PoolList::addFirst(PoolListEntry* poolListEntry)
 	{
+		if (PoolListEntry::empty()) garbageCollector_ = poolListEntry;
 		size_++;
 		next_->add(poolListEntry);
 	}
@@ -143,6 +145,7 @@ namespace OpcUaStackCore
 	void
 	PoolList::addLast(PoolListEntry* poolListEntry)
 	{
+		if (PoolListEntry::empty()) garbageCollector_ = poolListEntry;
 		size_++;
 		last_->add(poolListEntry);
 	}
@@ -150,6 +153,8 @@ namespace OpcUaStackCore
 	PoolListEntry*
 	PoolList::del(PoolListEntry* poolListEntry)
 	{
+		if (garbageCollector_ == poolListEntry) garbageCollectorNext();
+		if (garbageCollector_ == poolListEntry) garbageCollector_ = this;
 		size_--;
 		return poolListEntry->del();
 	}
@@ -157,6 +162,8 @@ namespace OpcUaStackCore
 	PoolListEntry*
 	PoolList::delFirst(void)
 	{
+		if (garbageCollector_ == next_) garbageCollectorNext();
+		if (garbageCollector_ == next_) garbageCollector_ = this;
 		size_--;
 		return next_->del();
 	}
@@ -164,10 +171,30 @@ namespace OpcUaStackCore
 	PoolListEntry*
 	PoolList::delLast(void)
 	{
+		if (garbageCollector_ == last_) garbageCollectorNext();
+		if (garbageCollector_ == last_) garbageCollector_ = this;
 		size_--;
 		return last_->del();
 	}
 
+	PoolListEntry*
+	PoolList::garbageCollector(void)
+	{
+		if (PoolListEntry::empty()) return nullptr;
+		return garbageCollector_;
+	}
+
+	PoolListEntry*
+	PoolList::garbageCollectorNext(void)
+	{
+		if (PoolListEntry::empty()) return nullptr;
+		if (garbageCollector_->next_ == this) {
+			garbageCollector_ = garbageCollector_->next_->next_;
+		}
+		else {
+			garbageCollector_ = garbageCollector_->next_;
+		}
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

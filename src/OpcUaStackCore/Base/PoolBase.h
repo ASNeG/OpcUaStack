@@ -70,7 +70,11 @@ namespace OpcUaStackCore
 		PoolListEntry* delFirst(void);
 		PoolListEntry* delLast(void);
 
+		PoolListEntry* garbageCollector(void);
+		PoolListEntry* garbageCollectorNext(void);
+
 	  private:
+		PoolListEntry* garbageCollector_;
 		uint32_t size_;
 	};
 
