@@ -12,45 +12,36 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Samuel Huebl (samuel.huebl@asneg.de)
  */
 
-#ifndef __OpcUaStackCore_ServerStatusDataType_h__
-#define __OpcUaStackCore_ServerStatusDataType_h__
+#ifndef __OpcUaStackCore_SemanticChangeStructureDataType_h__
+#define __OpcUaStackCore_SemanticChangeStructureDataType_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ServerStatusDataType
-	: public ObjectPool<ServerStatusDataType>
+	class DLLEXPORT SemanticChangeStructureDataType
+	: public ObjectPool<SemanticChangeStructureDataType>
 	, public ExtensionObjectBase
 	{
 	  public:
-		typedef boost::shared_ptr<ServerStatusDataType> SPtr;
+		typedef boost::shared_ptr<SemanticChangeStructureDataType> SPtr;
 
-		ServerStatusDataType(void);
-		virtual ~ServerStatusDataType(void);
+		SemanticChangeStructureDataType(void);
+		virtual ~SemanticChangeStructureDataType(void);
 
-		OpcUaDateTime& startTime(void);
-		void startTime(OpcUaDateTime startTime);
-		OpcUaDateTime& currentTime(void);
-		void currentTime(OpcUaDateTime currentTime);
-		OpcUaUInt32& serverState(void);
-		void serverState(OpcUaUInt32 serverState);
-		BuildInfo& buildInfo(void);
-		void buildInfo(BuildInfo buildInfo);
-		OpcUaUInt32& secondsTillShutdown(void);
-		void secondsTillShutdown(OpcUaUInt32 secondsTillShutdown);
-		OpcUaLocalizedText& shutdownReason(void);
-		void shutdownReason(OpcUaLocalizedText shutdownReason);
+		OpcUaNodeId& affected(void);
+		void affected(OpcUaNodeId affected);
+		OpcUaNodeId& affectedType(void);
+		void affectedType(OpcUaNodeId affectedType);
 
-		void copyTo(ServerStatusDataType& serverStatusDataType);
-		bool operator==(const ServerStatusDataType& serverStatusDataType) const;
+		void copyTo(SemanticChangeStructureDataType& semanticChangeStructureDataType);
+		bool operator==(const SemanticChangeStructureDataType& semanticChangeStructureDataType) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
 		ExtensionObjectBase::BSPtr factory(void);
@@ -62,14 +53,13 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
-		OpcUaDateTime startTime_;
-		OpcUaDateTime currentTime_;
-		OpcUaUInt32 serverState_;
-		BuildInfo buildInfo_;
-		OpcUaUInt32 secondsTillShutdown_;
-		OpcUaLocalizedText shutdownReason_;
+		OpcUaNodeId affected_;
+		OpcUaNodeId affectedType_;
 	};
 
 }
 
 #endif
+
+
+

@@ -47,6 +47,12 @@ namespace OpcUaStackCore
 		return applicationUri_.value();
 	}
 
+	OpcUaString&
+	ApplicationDescription::getApplicationUri(void)
+	{
+		return applicationUri_;
+	}
+
 	void 
 	ApplicationDescription::productUri(const std::string& productUri)
 	{
@@ -57,6 +63,18 @@ namespace OpcUaStackCore
 	ApplicationDescription::productUri(void) const
 	{
 		return productUri_.value();
+	}
+
+	OpcUaString&
+	ApplicationDescription::getProductUri(void)
+	{
+		return productUri_;
+	}
+
+	void
+	ApplicationDescription::applicationName(OpcUaLocalizedText applicationName)
+	{
+		applicationName_ = applicationName;
 	}
 
 	OpcUaLocalizedText& 
@@ -89,6 +107,12 @@ namespace OpcUaStackCore
 		return gatewayServerUri_.value();
 	}
 
+	OpcUaString&
+	ApplicationDescription::getGatewayServerUri(void)
+	{
+		return gatewayServerUri_;
+	}
+
 	void 
 	ApplicationDescription::discoveryProfileUri(const std::string& discoveryProfileUri)
 	{
@@ -101,6 +125,12 @@ namespace OpcUaStackCore
 		return discoveryProfileUri_.value();
 	}
 
+	OpcUaString&
+	ApplicationDescription::getDiscoveryProfileUri(void)
+	{
+		return discoveryProfileUri_;
+	}
+
 	void 
 	ApplicationDescription::discoveryUrls(OpcUaStringArray::SPtr discoveryUrls)
 	{
@@ -111,6 +141,45 @@ namespace OpcUaStackCore
 	ApplicationDescription::discoveryUrls(void) const
 	{
 		return discoveryUrls_;
+	}
+
+	void
+	ApplicationDescription::copyTo(ApplicationDescription& applicationDescription)
+	{
+		applicationUri_.copyTo(applicationDescription.getApplicationUri());
+		productUri_.copyTo(applicationDescription.getProductUri());
+		applicationName_.copyTo(applicationDescription.applicationName());
+		applicationDescription.applicationType(applicationType_);
+		gatewayServerUri_.copyTo(applicationDescription.getGatewayServerUri());
+		discoveryProfileUri_.copyTo(applicationDescription.getDiscoveryProfileUri());
+		discoveryUrls_->copyTo(*applicationDescription.discoveryUrls());
+	}
+
+	bool
+	ApplicationDescription::operator==(const ApplicationDescription& applicationDescription) const
+	{
+		ApplicationDescription* dst = const_cast<ApplicationDescription*>(&applicationDescription);
+		return
+			applicationUri_ == dst->getApplicationUri() &&
+			productUri_ == dst->getProductUri() &&
+			applicationName_ == dst->applicationName() &&
+			applicationType_ == dst->applicationType() &&
+			gatewayServerUri_ == dst->getGatewayServerUri() &&
+			discoveryProfileUri_ == dst->getDiscoveryProfileUri(); // &&
+			// FIXME: discoveryUrls_ == dst->discoveryUrls();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ExtensionObjectBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ExtensionObjectBase::BSPtr
+	ApplicationDescription::factory(void)
+	{
+		return ApplicationDescription::construct();
 	}
 
 	void 
@@ -137,6 +206,32 @@ namespace OpcUaStackCore
 		discoveryProfileUri_.opcUaBinaryDecode(is);
 		discoveryUrls_->opcUaBinaryDecode(is);
 		applicationType_ = (ApplicationType)applicationType;
+	}
+
+	void
+	ApplicationDescription::copyTo(ExtensionObjectBase& extensionObjectBase)
+	{
+		ApplicationDescription* dst = dynamic_cast<ApplicationDescription*>(&extensionObjectBase);
+		copyTo(*dst);
+	}
+
+	bool
+	ApplicationDescription::equal(ExtensionObjectBase& extensionObjectBase) const
+	{
+		ApplicationDescription* dst = dynamic_cast<ApplicationDescription*>(&extensionObjectBase);
+		return *this == *dst;
+	}
+
+	void
+	ApplicationDescription::out(std::ostream& os)
+	{
+		os << "ApplicationUri="; applicationUri_.out(os);
+		os << ", ProductUri="; productUri_.out(os);
+		os << ", ApplicationName="; applicationName_.out(os);
+		os << ", ApplicationType=" << applicationType_;
+		os << ", GatewayServerUri="; gatewayServerUri_.out(os);
+		os << ", DiscoveryProfileUri="; discoveryProfileUri_.out(os);
+		os << ", DiscoveryUrls="; discoveryUrls_->out(os);
 	}
 
 }

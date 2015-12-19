@@ -12,45 +12,38 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Samuel Huebl (samuel.huebl@asneg.de)
  */
 
-#ifndef __OpcUaStackCore_ServerStatusDataType_h__
-#define __OpcUaStackCore_ServerStatusDataType_h__
+#ifndef __OpcUaStackCore_RedundantServerDataType_h__
+#define __OpcUaStackCore_RedundantServerDataType_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ServerStatusDataType
-	: public ObjectPool<ServerStatusDataType>
+	class DLLEXPORT RedundantServerDataType
+	: public ObjectPool<RedundantServerDataType>
 	, public ExtensionObjectBase
 	{
 	  public:
-		typedef boost::shared_ptr<ServerStatusDataType> SPtr;
+		typedef boost::shared_ptr<RedundantServerDataType> SPtr;
 
-		ServerStatusDataType(void);
-		virtual ~ServerStatusDataType(void);
+		RedundantServerDataType(void);
+		virtual ~RedundantServerDataType(void);
 
-		OpcUaDateTime& startTime(void);
-		void startTime(OpcUaDateTime startTime);
-		OpcUaDateTime& currentTime(void);
-		void currentTime(OpcUaDateTime currentTime);
-		OpcUaUInt32& serverState(void);
-		void serverState(OpcUaUInt32 serverState);
-		BuildInfo& buildInfo(void);
-		void buildInfo(BuildInfo buildInfo);
-		OpcUaUInt32& secondsTillShutdown(void);
-		void secondsTillShutdown(OpcUaUInt32 secondsTillShutdown);
-		OpcUaLocalizedText& shutdownReason(void);
-		void shutdownReason(OpcUaLocalizedText shutdownReason);
-
-		void copyTo(ServerStatusDataType& serverStatusDataType);
-		bool operator==(const ServerStatusDataType& serverStatusDataType) const;
+		OpcUaString& serverId(void);
+		void serverId(OpcUaString serverId);
+        OpcUaByte& serviceLevel(void);
+        void serviceLevel(OpcUaByte serviceLevel);
+		OpcUaInt32& serverState(void);
+		void serverState(OpcUaInt32 serverState);
+		
+		void copyTo(RedundantServerDataType& redundantServerDataType);
+		bool operator==(const RedundantServerDataType& redundantServerDataType) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
 		ExtensionObjectBase::BSPtr factory(void);
@@ -62,12 +55,9 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
-		OpcUaDateTime startTime_;
-		OpcUaDateTime currentTime_;
-		OpcUaUInt32 serverState_;
-		BuildInfo buildInfo_;
-		OpcUaUInt32 secondsTillShutdown_;
-		OpcUaLocalizedText shutdownReason_;
+        OpcUaString serverId_;
+        OpcUaByte serviceLevel_;
+		OpcUaInt32 serverState_;
 	};
 
 }

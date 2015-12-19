@@ -21,9 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
