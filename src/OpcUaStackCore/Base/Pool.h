@@ -33,7 +33,8 @@ namespace OpcUaStackCore
 	    uint32_t START_ENTRIES=32,
 	    uint32_t GROW_ENTRIES=32,
 	    uint32_t MAX_USEDENTRIES=0,
-	    uint32_t MAX_FREEENTRIES=0
+	    uint32_t MAX_FREEENTRIES=0,
+	    uint32_t GARBAGE_COLLECTOR_LOOP_COUNT=32
 	>
 	class Pool
 	: public PoolBase
@@ -48,7 +49,6 @@ namespace OpcUaStackCore
 			MAX_FREEENTRIES
 		)
 		, usedPoolList_()
-		, usedEntries_(0)
 		, garbageCollectorEntry_(&usedPoolList_)
 		{
 		}
@@ -67,66 +67,64 @@ namespace OpcUaStackCore
 			PoolListEntry* poolListEntry = allocate();
 			if (poolListEntry == nullptr) return nullptr;
 
-			addPoolListElement(poolListEntry);
+			usedPoolList_.add(poolListEntry);
 			return new (poolListEntry->getMemory()) OBJ();
 		}
 
-		inline void construct(typename OBJ::SPtr& sptr)
+		inline typename OBJ::SPtr& constructSPtr(void)
 		{
-#if 0
 			if (!USE_SHARED_PTR) {
-				sptr.reset();
-				return;
+				typename OBJ::SPtr sptr;
+				return sptr;
 			}
-#endif
 
 			PoolListEntry* poolListEntry = allocate();
 			if (poolListEntry == nullptr) {
-				sptr.reset();
-				return;
+				typename OBJ::SPtr sptr;
+				return sptr;
 			}
 
 			usedPoolList_.addLast(poolListEntry);
-			usedEntries_++;
-			OBJ* obj = new (poolListEntry->getMemory()) OBJ();
-			if (obj == nullptr) {
-				sptr.reset();
-				return;
-			}
+			char* memory = poolListEntry->getMemory();
+			typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
 
-			sptr = boost::shared_ptr<OBJ>(
-				obj, boost::bind(&Pool<OBJ>::destroy, this, _1)
-			);
+			memory += sizeof(OBJ::SPtr);
+			OBJ* obj = new (memory) OBJ();
+
+			return *sptr;
 		}
 
 		inline void destroy(OBJ* obj)
 		{
 			obj->~OBJ();
 			PoolListEntry* poolListEntry = PoolListEntry::MemoryToPoolListEntry((char*)obj);
-			delPoolListEntry(poolListEntry);
+			usedPoolList_.del(poolListEntry);
 			free(poolListEntry);
 		}
 
-		void memoryConstructHandler(char* memory)
+		virtual void memoryConstructHandler(char* memory)
 		{
 			if (!USE_SHARED_PTR) return;
-			boost::shared_ptr<OBJ>* sptr = (boost::shared_ptr<OBJ>*)memory;
-			OBJ* obj = (OBJ*)(memory + sizeof(boost::shared_ptr<OBJ>));
+			typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
+			OBJ* obj = (OBJ*)(memory + sizeof(typename OBJ::SPtr));
 			sptr->reset(obj);
 		}
 
-		void memoryDestructHandler(char* memory)
+		virtual void memoryDestructHandler(char* memory)
 		{
 			if (!USE_SHARED_PTR) return;
-			boost::shared_ptr<OBJ>* sptr = (boost::shared_ptr<OBJ>*)memory;
+			typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
 			sptr->reset();
 		}
 
-		void garbageCollector(uint32_t maxEntries)
+		virtual void garbageCollector(void)
 		{
-			if (usedEntries_ == 0) return;
-			if (usedPoolList_.empty()) return;
+			if (!USE_SHARED_PTR) return;
+			garbageCollectorLoop(GARBAGE_COLLECTOR_LOOP_COUNT);
+		}
 
+		void garbageCollectorLoop(uint32_t maxEntries, bool findFirst = false)
+		{
 			if (maxEntries < usedEntries_) maxEntries = usedEntries_;
 			for (uint32_t idx=0; idx<maxEntries; idx++) {
 				if (garbageCollectorEntry_ == &usedPoolList_) {
@@ -134,10 +132,15 @@ namespace OpcUaStackCore
 				}
 
 				char* memory = garbageCollectorEntry_->getMemory();
-				boost::shared_ptr<OBJ>* sptr = (boost::shared_ptr<OBJ>*)memory;
+				typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
 				if (sptr->unique()) {
-					delPoolListEntry(garbageCollectorEntry_);
-					destroy(sptr->get());
+					PoolListEntry* poolListEntry = garbageCollectorEntry_;
+					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
+
+					usedPoolList_.del(poolListEntry);
+					free(poolListEntry);
+
+					if (findFirst) return;
 				}
 				else {
 					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
@@ -145,23 +148,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		inline void addPoolListElement(PoolListEntry* poolListEntry)
-		{
-			usedEntries_++;
-			usedPoolList_.addLast(poolListEntry);
-		}
-
-		inline void delPoolListEntry(PoolListEntry* poolListEntry)
-		{
-			if (garbageCollectorEntry_ == poolListEntry) {
-				garbageCollectorEntry_ = garbageCollectorEntry_->next_;
-			}
-			usedEntries_--;
-			poolListEntry->del();
-		}
-
 	  private:
-		uint32_t usedEntries_;
 		PoolListEntry* garbageCollectorEntry_;
 		PoolList usedPoolList_;
 	};

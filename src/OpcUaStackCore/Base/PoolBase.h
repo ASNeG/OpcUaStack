@@ -35,6 +35,8 @@ namespace OpcUaStackCore
 		char *getMemory(void);
 		static PoolListEntry* MemoryToPoolListEntry(char* memory);
 
+		inline bool empty(void);
+
 		inline void add(PoolListEntry* poolListEntry);
 		inline void addAfter(PoolListEntry* poolListEntry);
 		inline void addBefor(PoolListEntry* poolListEntry);
@@ -57,13 +59,19 @@ namespace OpcUaStackCore
 		PoolList(void);
 		~PoolList(void);
 
+		uint32_t size(void);
+
 		inline bool empty(void);
+
 		inline void addLast(PoolListEntry* poolListEntry);
 		inline void addFirst(PoolListEntry* poolListEntry);
 
 		inline PoolListEntry* del(PoolListEntry* poolListEntry);
 		inline PoolListEntry* delFirst(void);
 		inline PoolListEntry* delLast(void);
+
+	  private:
+		uint32_t size_;
 	};
 
 
@@ -87,6 +95,7 @@ namespace OpcUaStackCore
 
 		virtual void memoryConstructHandler(char* memory) {}
 		virtual void memoryDestructHandler(char* memory) {}
+		virtual void garbageCollector(void) {}
 
 	  private:
 		bool grow(uint32_t growEntries);

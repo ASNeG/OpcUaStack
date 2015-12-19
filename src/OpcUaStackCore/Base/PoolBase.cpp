@@ -54,6 +54,12 @@ namespace OpcUaStackCore
 		return (PoolListEntry*)(memory - sizeof(PoolListEntry));
 	}
 
+	bool
+	PoolListEntry::empty(void)
+	{
+		return next_ == last_;
+	}
+
 	void
 	PoolListEntry::add(PoolListEntry* poolListEntry)
 	{
@@ -107,6 +113,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	PoolList::PoolList(void)
 	: PoolListEntry()
+	, size_(0)
 	{
 	}
 
@@ -114,39 +121,50 @@ namespace OpcUaStackCore
 	{
 	}
 
+	uint32_t
+	PoolList::size(void)
+	{
+		return size_;
+	}
+
 	bool
 	PoolList::empty(void)
 	{
-		return next_ == last_;
+		return PoolListEntry::empty();
 	}
 
 	void
 	PoolList::addFirst(PoolListEntry* poolListEntry)
 	{
+		size_++;
 		next_->add(poolListEntry);
 	}
 
 	void
 	PoolList::addLast(PoolListEntry* poolListEntry)
 	{
+		size_++;
 		last_->add(poolListEntry);
 	}
 
 	PoolListEntry*
 	PoolList::del(PoolListEntry* poolListEntry)
 	{
+		size_--;
 		return poolListEntry->del();
 	}
 
 	PoolListEntry*
 	PoolList::delFirst(void)
 	{
+		size_--;
 		return next_->del();
 	}
 
 	PoolListEntry*
 	PoolList::delLast(void)
 	{
+		size_--;
 		return last_->del();
 	}
 
@@ -206,6 +224,7 @@ namespace OpcUaStackCore
 	PoolListEntry*
 	PoolBase::allocate(void)
 	{
+		if (freePoolList_.empty()) garbageCollector();
 		if (freePoolList_.empty() && !grow(growEntries_)) return nullptr;
 		freeEntries_++;
 		usedEntries_++;
