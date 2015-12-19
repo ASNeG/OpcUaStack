@@ -35,11 +35,22 @@
 
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 #include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/ModelChangeStructureDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/RedundantServerDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/SamplingIntervalDiagnosticsDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/SemanticChangeStructureDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/ServiceCounterDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/SessionDiagnosticsDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/SessionSecurityDiagnosticsDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/StatusResult.h"
+#include "OpcUaStackCore/StandardDataTypes/SubscriptionDiagnosticsDataType.h"
+#include "OpcUaStackCore/StandardDataTypes/ServerDiagnosticsSummaryDataType.h"
 
 namespace OpcUaStackCore
 {
 
 	Core::Core(void)
+	: config_()
 	{
 	}
 
@@ -99,6 +110,16 @@ namespace OpcUaStackCore
 		OpcUaExtensionObject eo;
 		eo.registerFactoryElement<BuildInfo>(OpcUaId_BuildInfo_Encoding_DefaultBinary);
 		eo.registerFactoryElement<ServerStatusDataType>(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ModelChangeStructureDataType>(OpcUaId_ModelChangeStructureDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<RedundantServerDataType>(OpcUaId_RedundantServerDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<SamplingIntervalDiagnosticsDataType>(OpcUaId_SamplingIntervalDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<SemanticChangeStructureDataType>(OpcUaId_SemanticChangeStructureDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ServiceCounterDataType>(OpcUaId_ServiceCounterDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<SessionDiagnosticsDataType>(OpcUaId_SessionDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<SessionSecurityDiagnosticsDataType>(OpcUaId_SessionSecurityDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
+		eo.registerFactoryElement<SubscriptionDiagnosticsDataType>(OpcUaId_SubscriptionDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.registerFactoryElement<ServerDiagnosticsSummaryDataType>(OpcUaId_ServerDiagnosticsSummaryDataType_Encoding_DefaultBinary);
 	}
 
 	void
@@ -126,6 +147,16 @@ namespace OpcUaStackCore
 		OpcUaExtensionObject eo;
 		eo.deregisterFactoryElement(OpcUaId_BuildInfo_Encoding_DefaultBinary);
 		eo.deregisterFactoryElement(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ModelChangeStructureDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_RedundantServerDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_SamplingIntervalDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_SemanticChangeStructureDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ServiceCounterDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_SessionDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_SessionSecurityDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_StatusResult_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_SubscriptionDiagnosticsDataType_Encoding_DefaultBinary);
+		eo.deregisterFactoryElement(OpcUaId_ServerDiagnosticsSummaryDataType_Encoding_DefaultBinary);
 	}
 
 }
