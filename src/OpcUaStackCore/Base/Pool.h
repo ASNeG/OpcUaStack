@@ -54,14 +54,13 @@ namespace OpcUaStackCore
 	  public:
 		Pool(void)
 		: PoolBase(
-			sizeof(OBJ) + (USE_SHARED_PTR ? 0 : sizeof(boost::shared_ptr<OBJ>)),
+			sizeof(OBJ) + (USE_SHARED_PTR ? 0 : sizeof(typename OBJ::SPtr)),
 			START_ENTRIES,
 			GROW_ENTRIES,
 			MAX_USEDENTRIES,
 			MAX_FREEENTRIES
 		)
 		, usedPoolList_()
-		, garbageCollectorEntry_(&usedPoolList_)
 	    , nullSPtr_()
 		{
 		}
@@ -131,22 +130,23 @@ namespace OpcUaStackCore
 
 		bool garbageCollectorLoop(uint32_t maxEntries, bool findFirst = false)
 		{
-			bool elementsFound = true;
+			return false;
 			if (maxEntries == usedPoolList_.size()) maxEntries = usedPoolList_.size();
 			if (maxEntries < usedPoolList_.size()) maxEntries = usedPoolList_.size();
+			PoolListEntry* poolListEntry = usedPoolList_.garbageCollector();
+			if (poolListEntry == nullptr) return false;
+
+			bool elementsFound = true;
 			for (uint32_t idx=0; idx<maxEntries; idx++) {
-				if (garbageCollectorEntry_ == &usedPoolList_) {
-					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
-				}
-				if (garbageCollectorEntry_ == &usedPoolList_) return false;
+				std::cout << usedPoolList_.size() << " idx=" << idx << std::endl;
 
-				char* memory = garbageCollectorEntry_->getMemory();
+				char* memory = poolListEntry->getMemory();
+				std::cout << "AAA" << std::endl;
 				typename OBJ::SPtr* sptr = (typename OBJ::SPtr*)memory;
+				std::cout << "AAA" << std::endl;
 				if (sptr->unique()) {
+					std::cout << "BBB1" << std::endl;
 					elementsFound = true;
-
-					PoolListEntry* poolListEntry = garbageCollectorEntry_;
-					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
 
 					OBJ* obj = (OBJ*)(memory + sizeof(typename OBJ::SPtr));
 					obj->~OBJ();
@@ -157,7 +157,9 @@ namespace OpcUaStackCore
 					if (findFirst) return true;
 				}
 				else {
-					garbageCollectorEntry_ = garbageCollectorEntry_->next_;
+					std::cout << "BBB2" << std::endl;
+					poolListEntry = usedPoolList_.garbageCollectorNext();
+					if (poolListEntry == nullptr) return elementsFound;
 				}
 			}
 			return elementsFound;
@@ -165,7 +167,6 @@ namespace OpcUaStackCore
 
 	  private:
 		typename OBJ::SPtr nullSPtr_;
-		PoolListEntry* garbageCollectorEntry_;
 		PoolList usedPoolList_;
 	};
 
