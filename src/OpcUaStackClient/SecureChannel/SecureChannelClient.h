@@ -67,7 +67,7 @@ namespace OpcUaStackClient
 	} SecureChannelClientState;
 
 	class DLLEXPORT SecureChannelClient
-	: public SecureChannel
+	: public SecureChannelOld
 	, public  ObjectPool<SecureChannelClient>
 	{
 	  public:

@@ -75,7 +75,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SecureChannelClient::SecureChannelClient(IOService& ioService)
-	: SecureChannel(ioService)
+	: SecureChannelOld(ioService)
 	, secureChannelIf_(nullptr)
 	, tcpConnector_()
 	, secureChannelClientState_(SecureChannelClientState_Close)
@@ -98,7 +98,7 @@ namespace OpcUaStackClient
 	SecureChannelClient::debugMode(bool debugMode)
 	{
 		debugMode_ = debugMode;
-		SecureChannel::debugMode(debugMode);
+		SecureChannelOld::debugMode(debugMode);
 	}
 
 	void 

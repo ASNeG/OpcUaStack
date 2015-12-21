@@ -22,7 +22,7 @@
 namespace OpcUaStackCore
 {
 
-	SecureChannel::SecureChannel(IOService& ioService)
+	SecureChannelOld::SecureChannelOld(IOService& ioService)
 	: ioService_(&ioService) 
 	, tcpConnection_(ioService.io_service())
 	, partnerAddress_(boost::asio::ip::address::from_string("127.0.0.1"))
@@ -33,40 +33,40 @@ namespace OpcUaStackCore
 	{
 	}
 
-	SecureChannel::~SecureChannel(void)
+	SecureChannelOld::~SecureChannelOld(void)
 	{
 	}
 
 	void 
-	SecureChannel::debugMode(bool debugMode)
+	SecureChannelOld::debugMode(bool debugMode)
 	{
 		debugMode_ = debugMode;
 	}
 
 	ChannelDataBase::SPtr 
-	SecureChannel::channelDataBase(void)
+	SecureChannelOld::channelDataBase(void)
 	{
 		return channelDataBaseSPtr_;
 	}
 
 	TCPConnection& 
-	SecureChannel::tcpConnection(void)
+	SecureChannelOld::tcpConnection(void)
 	{
 		return tcpConnection_;
 	}
 
 	void 
-	SecureChannel::asyncReadMessageHeader(void)
+	SecureChannelOld::asyncReadMessageHeader(void)
 	{
 		tcpConnection_.async_read_exactly(
 			is_,
-			boost::bind(&SecureChannel::handleReadMessageHeader, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
+			boost::bind(&SecureChannelOld::handleReadMessageHeader, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred),
 			8
 		);
 	}
 
 	void 
-	SecureChannel::handleReadMessageHeader(const boost::system::error_code& error, std::size_t bytes_transfered)
+	SecureChannelOld::handleReadMessageHeader(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
 		Log(Debug, "receive message header")
 			.parameter("MessageHeaderLength", bytes_transfered);
@@ -142,7 +142,7 @@ namespace OpcUaStackCore
 	}
 		
 	void 
-	SecureChannel::handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeUnknown(MessageHeader& messageHeader)
 	{
 		std::string messageTypeHexString;
 		OpcUaStackCore::byteSequenceToHexString((uint8_t*)messageHeader.messageTypeString(), 3, messageTypeHexString);
@@ -155,7 +155,7 @@ namespace OpcUaStackCore
 	}
 		
 	void 
-	SecureChannel::handleReadMessageHeaderTypeHello(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeHello(MessageHeader& messageHeader)
 	{
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -165,7 +165,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	SecureChannel::handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeAcknowledge(MessageHeader& messageHeader)
 	{
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -175,7 +175,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	SecureChannel::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeOpenSecureChannel(MessageHeader& messageHeader)
 	{
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -185,7 +185,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SecureChannel::handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeCloseSecureChannel(MessageHeader& messageHeader)
 	{
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -195,7 +195,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SecureChannel::handleReadMessageHeaderTypeError(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeError(MessageHeader& messageHeader)
 	{
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -205,7 +205,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SecureChannel::handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader)
+	SecureChannelOld::handleReadMessageHeaderTypeMessage(MessageHeader& messageHeader)
 	{
 		Log(Error, "handler for message header type not implemented")
 			.parameter("PartnerAddress", partnerAddress_.to_string())
@@ -215,7 +215,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::consumeAll(boost::asio::streambuf& streambuf)
+	SecureChannelOld::consumeAll(boost::asio::streambuf& streambuf)
 	{
 		boost::asio::const_buffer buffer(streambuf.data());
 		std::size_t bufferSize = boost::asio::buffer_size(buffer);

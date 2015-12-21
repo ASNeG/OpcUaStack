@@ -85,7 +85,7 @@ namespace OpcUaStackServer
 	}
 
 	SecureChannelServer::SecureChannelServer(IOService& ioService)
-	: SecureChannel(ioService)
+	: SecureChannelOld(ioService)
 	, secureChannelServerState_(SecureChannelServerState_Close)
 	, channelId_(getUniqueChannelId())
 	, tokenIdVec_()

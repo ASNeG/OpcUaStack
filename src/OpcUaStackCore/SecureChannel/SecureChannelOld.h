@@ -27,11 +27,11 @@ namespace OpcUaStackCore
 {
 	typedef HelloMessage ChannelDataBase;
 
-	class DLLEXPORT SecureChannel
+	class DLLEXPORT SecureChannelOld
 	{
 	  public:
-		SecureChannel(IOService& ioService);
-		~SecureChannel(void);
+		SecureChannelOld(IOService& ioService);
+		~SecureChannelOld(void);
 
 		void debugMode(bool debugMode);
 		ChannelDataBase::SPtr channelDataBase(void);

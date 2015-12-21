@@ -61,7 +61,7 @@ namespace OpcUaStackServer
 	} SecureChannelServerState;
 
 	class DLLEXPORT SecureChannelServer
-	: public SecureChannel
+	: public SecureChannelOld
 	, public  ObjectPool<SecureChannelServer>
 	{
 	  public:
