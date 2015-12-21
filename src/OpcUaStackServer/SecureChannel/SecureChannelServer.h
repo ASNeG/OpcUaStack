@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelOld.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
 #include <list>
 

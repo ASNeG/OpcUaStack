@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelOld.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecurityToken.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnector.h"
