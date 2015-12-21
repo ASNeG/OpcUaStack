@@ -32,12 +32,16 @@ namespace OpcUaStackCore
 		SecureChannel(boost::asio::io_service& io_service);
 		virtual ~SecureChannel(void);
 
+		void debugReadMessageHeader(void);
+
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
 		bool closeFlag_;
 		bool timeout_;
+		bool debug_;
 		boost::asio::streambuf recvBuffer_;
 		boost::asio::streambuf sendBuffer_;
+		boost::asio::ip::tcp::endpoint local_;
 		boost::asio::ip::tcp::endpoint partner_;
 	};
 

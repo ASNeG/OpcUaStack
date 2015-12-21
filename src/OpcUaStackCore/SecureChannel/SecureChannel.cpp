@@ -16,6 +16,8 @@
 
  */
 
+#include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 
 namespace OpcUaStackCore
@@ -28,11 +30,28 @@ namespace OpcUaStackCore
 	, sendBuffer_()
 	, slotTimerElement_(SlotTimerElement::construct())
 	, timeout_(false)
+	, partner_()
+	, local_()
+	, debug_(false)
 	{
 	}
 
 	SecureChannel::~SecureChannel(void)
 	{
+	}
+
+	void
+	SecureChannel::debugReadMessageHeader(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel reads message header")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
 	}
 
 }

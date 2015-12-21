@@ -19,6 +19,8 @@
 #ifndef __OpUaStackCore_SecureChannelBase_h__
 #define __OpUaStackCore_SecureChannelBase_h__
 
+#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+
 namespace OpcUaStackCore
 {
 
@@ -28,6 +30,12 @@ namespace OpcUaStackCore
 		SecureChannelBase(void);
 		virtual ~SecureChannelBase(void);
 
+		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
+
+	  private:
+		void asyncRead(SecureChannel* secureChannel);
+		void handleReadMessageHeader(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
+		void closeChannel(SecureChannel* secureChannel);
 	};
 
 }
