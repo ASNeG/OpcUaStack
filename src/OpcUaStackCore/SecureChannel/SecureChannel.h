@@ -36,6 +36,10 @@ namespace OpcUaStackCore
 		void debugReadHeader(void);
 		void debugReadHello(void);
 		void debugReadAcknowledge(void);
+		void debugReadOpenSecureChannelRequest(void);
+		void debugReadOpenSecureChannelResponse(void);
+		void debugReadCloseSecureChannelRequest(void);
+		void debugReadCloseSecureChannelResponse(void);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 

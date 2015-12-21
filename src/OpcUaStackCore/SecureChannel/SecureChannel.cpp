@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 		std::stringstream ss;
 		std::iostream ios(&recvBuffer_);
 		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read header message")
+		Log(Debug, "opc ua secure channel read Header message")
 			.parameter("Local", local_.address().to_string())
 			.parameter("Partner", partner_.address().to_string())
 			.parameter("Data", ss);
@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 		std::stringstream ss;
 		std::iostream ios(&recvBuffer_);
 		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read hello message")
+		Log(Debug, "opc ua secure channel read Hello message")
 			.parameter("Local", local_.address().to_string())
 			.parameter("Partner", partner_.address().to_string())
 			.parameter("Data", ss);
@@ -77,7 +77,63 @@ namespace OpcUaStackCore
 		std::stringstream ss;
 		std::iostream ios(&recvBuffer_);
 		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read achonledge message")
+		Log(Debug, "opc ua secure channel read Acknowledge message")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
+	}
+
+	void
+	SecureChannel::debugReadOpenSecureChannelRequest(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel read OpenSecureChannelRequest message")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
+	}
+
+	void
+	SecureChannel::debugReadOpenSecureChannelResponse(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel read OpenSecureChannelResponse message")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
+	}
+
+	void
+	SecureChannel::debugReadCloseSecureChannelRequest(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel read CloseSecureChannelRequest message")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
+	}
+
+	void
+	SecureChannel::debugReadCloseSecureChannelResponse(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel read CloseSecureChannelResponse message")
 			.parameter("Local", local_.address().to_string())
 			.parameter("Partner", partner_.address().to_string())
 			.parameter("Data", ss);
