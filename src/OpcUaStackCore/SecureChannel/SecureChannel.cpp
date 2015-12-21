@@ -69,6 +69,20 @@ namespace OpcUaStackCore
 			.parameter("Data", ss);
 	}
 
+	void
+	SecureChannel::debugReadAcknowledge(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel read achonledge message")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
+	}
+
 }
 
 

@@ -17,12 +17,14 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 
 namespace OpcUaStackCore
 {
 
 	SecureChannelBase::SecureChannelBase(void)
+	: asyncWriteCount_(0)
 	{
 	}
 
@@ -97,12 +99,12 @@ namespace OpcUaStackCore
 				asyncReadHello(secureChannel);
 				break;
 			}
-#if 0
 			case MessageType_Acknowledge:
 			{
-				handleReadMessageHeaderTypeAcknowledge(messageHeader);
+				asyncReadAcknowledge(secureChannel);
 				break;
 			}
+#if 0
 			case MessageType_OpenSecureChannel:
 			{
 				handleReadMessageHeaderTypeOpenSecureChannel(messageHeader);
@@ -127,6 +129,13 @@ namespace OpcUaStackCore
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// hello message
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
 	SecureChannelBase::asyncReadHello(SecureChannel* secureChannel)
 	{
@@ -181,10 +190,166 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannelBase::handleReadHello(SecureChannel* secureChannel, HelloMessage& hello)
+	{
+		Log(Error, "opc ua secure channel error, because handleReadHello no implemented")
+			.parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string());
+
+	}
+
+	void
+	SecureChannelBase::asyncWriteHello(SecureChannel* secureChannel, HelloMessage& hello)
+	{
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		hello.opcUaBinaryEncode(ios1);
+
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+		secureChannel->messageHeader_.messageType(MessageType_Hello);
+		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		asyncWriteCount_++;
+		secureChannel->async_write(
+			sb2,
+			sb1,
+			boost::bind(
+				&SecureChannelBase::handleWriteHelloComplete,
+				this,
+				boost::asio::placeholders::error,
+				secureChannel
+			)
+		);
+	}
+
+	void
+	SecureChannelBase::handleWriteHelloComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
+	{
+		asyncWriteCount_--;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// acknowledge message
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::asyncReadAcknowledge(SecureChannel* secureChannel)
+	{
+		secureChannel->async_read_exactly(
+			secureChannel->recvBuffer_,
+			boost::bind(
+				&SecureChannelBase::handleReadAcknowledge,
+				this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred,
+				secureChannel
+			),
+			secureChannel->messageHeader_.messageSize() - 8
+		);
+	}
+
+	void
+	SecureChannelBase::handleReadAcknowledge(
+		const boost::system::error_code& error,
+		std::size_t bytes_transfered,
+		SecureChannel* secureChannel
+	)
+	{
+		// error accurred
+		if (error) {
+			Log(Error, "opc ua secure channel read hello message error; close channel")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel);
+			return;
+		}
+
+		// partner has closed the connection
+		if (bytes_transfered == 0) {
+			Log(Debug, "opc ua secure channel is closed by partner")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// debug output
+		secureChannel->debugReadAcknowledge();
+
+		std::iostream is(&secureChannel->recvBuffer_);
+		AcknowledgeMessage acknowledge;
+		acknowledge.opcUaBinaryDecode(is);
+
+		handleReadAcknowledge(secureChannel, acknowledge);
+	}
+
+	void
+	SecureChannelBase::handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	{
+		Log(Error, "opc ua secure channel error, because handleReadAcknowledge no implemented")
+			.parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string());
+	}
+
+	void
+	SecureChannelBase::asyncWriteAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	{
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		acknowledge.opcUaBinaryEncode(ios1);
+
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+		secureChannel->messageHeader_.messageType(MessageType_Acknowledge);
+		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		asyncWriteCount_++;
+		secureChannel->async_write(
+			sb2,
+			sb1,
+			boost::bind(
+				&SecureChannelBase::handleWriteAcknowledgeComplete,
+				this,
+				boost::asio::placeholders::error,
+				secureChannel
+			)
+		);
+	}
+
+	void
+	SecureChannelBase::handleWriteAcknowledgeComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
+	{
+		asyncWriteCount_--;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// channel functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
 	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
 	{
 		if (close) secureChannel->close();
 		handleDisconnect(secureChannel);
+	}
+
+	void
+	SecureChannelBase::handleDisconnect(SecureChannel* secureChannel)
+	{
+		Log(Error, "opc ua secure channel error, because handleDisconnect no implemented")
+			.parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}
 
 }

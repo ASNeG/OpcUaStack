@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 
 		void debugReadHeader(void);
 		void debugReadHello(void);
+		void debugReadAcknowledge(void);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
