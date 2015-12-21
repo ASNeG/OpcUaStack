@@ -21,6 +21,7 @@
 
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 
 namespace OpcUaStackCore
 {
@@ -32,7 +33,8 @@ namespace OpcUaStackCore
 		SecureChannel(boost::asio::io_service& io_service);
 		virtual ~SecureChannel(void);
 
-		void debugReadMessageHeader(void);
+		void debugReadHeader(void);
+		void debugReadHello(void);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -43,6 +45,8 @@ namespace OpcUaStackCore
 		boost::asio::streambuf sendBuffer_;
 		boost::asio::ip::tcp::endpoint local_;
 		boost::asio::ip::tcp::endpoint partner_;
+
+		MessageHeader messageHeader_;
 	};
 
 }

@@ -18,7 +18,6 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
-#include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 
 namespace OpcUaStackCore
 {
@@ -37,7 +36,7 @@ namespace OpcUaStackCore
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
 			boost::bind(
-				&SecureChannelBase::handleReadMessageHeader,
+				&SecureChannelBase::handleReadHeader,
 				this,
 				boost::asio::placeholders::error,
 				boost::asio::placeholders::bytes_transferred,
@@ -48,7 +47,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleReadMessageHeader(
+	SecureChannelBase::handleReadHeader(
 		const boost::system::error_code& error,
 		std::size_t bytes_transfered,
 		SecureChannel* secureChannel
@@ -56,7 +55,7 @@ namespace OpcUaStackCore
 	{
 		// error accurred
 		if (error) {
-			Log(Error, "opc ua secure channel read message channel error; close channel")
+			Log(Error, "opc ua secure channel read message header error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 
@@ -70,31 +69,35 @@ namespace OpcUaStackCore
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 
-			closeChannel(secureChannel);
+			closeChannel(secureChannel, true);
 			return;
 		}
 
 		// debug output
-		secureChannel->debugReadMessageHeader();
+		secureChannel->debugReadHello();
 
 		// decode message header
 		std::iostream is(&secureChannel->recvBuffer_);
-		MessageHeader messageHeader;
-		messageHeader.opcUaBinaryDecode(is);
+		secureChannel->messageHeader_.opcUaBinaryDecode(is);
 
-		switch(messageHeader.messageType())
+		switch(secureChannel->messageHeader_.messageType())
 		{
-#if 0
 			case MessageType_Unknown:
 			{
-				handleReadMessageHeaderTypeUnknown(messageHeader);
-				break;
+				Log(Error, "opc ua secure channel received unknown message type")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string())
+					.parameter("MessageType", secureChannel->messageHeader_.messageType());
+
+				closeChannel(secureChannel, true);
+				return;
 			}
 			case MessageType_Hello:
 			{
-				handleReadMessageHeaderTypeHello(messageHeader);
+				asyncReadHello(secureChannel);
 				break;
 			}
+#if 0
 			case MessageType_Acknowledge:
 			{
 				handleReadMessageHeaderTypeAcknowledge(messageHeader);
@@ -125,8 +128,62 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::closeChannel(SecureChannel* secureChannel)
+	SecureChannelBase::asyncReadHello(SecureChannel* secureChannel)
 	{
+		secureChannel->async_read_exactly(
+			secureChannel->recvBuffer_,
+			boost::bind(
+				&SecureChannelBase::handleReadHello,
+				this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred,
+				secureChannel
+			),
+			secureChannel->messageHeader_.messageSize() - 8
+		);
+	}
+
+	void
+	SecureChannelBase::handleReadHello(
+		const boost::system::error_code& error,
+		std::size_t bytes_transfered,
+		SecureChannel* secureChannel
+	)
+	{
+		// error accurred
+		if (error) {
+			Log(Error, "opc ua secure channel read hello message error; close channel")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel);
+			return;
+		}
+
+		// partner has closed the connection
+		if (bytes_transfered == 0) {
+			Log(Debug, "opc ua secure channel is closed by partner")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// debug output
+		secureChannel->debugReadHello();
+
+		std::iostream is(&secureChannel->recvBuffer_);
+		HelloMessage hello;
+		hello.opcUaBinaryDecode(is);
+
+		handleReadHello(secureChannel, hello);
+	}
+
+	void
+	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
+	{
+		if (close) secureChannel->close();
 		handleDisconnect(secureChannel);
 	}
 

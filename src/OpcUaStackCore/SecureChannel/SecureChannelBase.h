@@ -20,6 +20,7 @@
 #define __OpUaStackCore_SecureChannelBase_h__
 
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
+#include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 
 namespace OpcUaStackCore
 {
@@ -31,11 +32,16 @@ namespace OpcUaStackCore
 		virtual ~SecureChannelBase(void);
 
 		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
+		virtual void handleReadHello(SecureChannel* secureChannel, HelloMessage& hello) = 0;
 
 	  private:
 		void asyncRead(SecureChannel* secureChannel);
-		void handleReadMessageHeader(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
-		void closeChannel(SecureChannel* secureChannel);
+		void asyncReadHello(SecureChannel* secureChannel);
+
+		void handleReadHeader(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
+		void handleReadHello(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
+
+		void closeChannel(SecureChannel* secureChannel, bool close = false);
 	};
 
 }

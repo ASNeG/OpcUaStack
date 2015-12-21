@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 	, partner_()
 	, local_()
 	, debug_(false)
+	, messageHeader_()
 	{
 	}
 
@@ -41,14 +42,28 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadMessageHeader(void)
+	SecureChannel::debugReadHeader(void)
 	{
 		if (!debug_) return;
 
 		std::stringstream ss;
 		std::iostream ios(&recvBuffer_);
 		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel reads message header")
+		Log(Debug, "opc ua secure channel read header message")
+			.parameter("Local", local_.address().to_string())
+			.parameter("Partner", partner_.address().to_string())
+			.parameter("Data", ss);
+	}
+
+	void
+	SecureChannel::debugReadHello(void)
+	{
+		if (!debug_) return;
+
+		std::stringstream ss;
+		std::iostream ios(&recvBuffer_);
+		OpcUaStackCore::dumpHex(ios, ss);
+		Log(Debug, "opc ua secure channel read hello message")
 			.parameter("Local", local_.address().to_string())
 			.parameter("Partner", partner_.address().to_string())
 			.parameter("Data", ss);
