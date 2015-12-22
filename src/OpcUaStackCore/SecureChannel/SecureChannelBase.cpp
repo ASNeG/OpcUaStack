@@ -723,6 +723,97 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// CloseSecureChannelResponse message
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::asyncReadCloseSecureChannelResponse(SecureChannel* secureChannel)
+	{
+		secureChannel->async_read_exactly(
+			secureChannel->recvBuffer_,
+			boost::bind(
+				&SecureChannelBase::handleReadCloseSecureChannelRequest,
+				this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred,
+				secureChannel
+			),
+			secureChannel->messageHeader_.messageSize() - 8
+		);
+	}
+
+	void
+	SecureChannelBase::handleReadCloseSecureChannelResponse(
+		const boost::system::error_code& error,
+		std::size_t bytes_transfered,
+		SecureChannel* secureChannel
+	)
+	{
+		// error accurred
+		if (error) {
+			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel);
+			return;
+		}
+
+		// partner has closed the connection
+		if (bytes_transfered == 0) {
+			Log(Debug, "opc ua secure channel is closed by partner")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// debug output
+		secureChannel->debugReadCloseSecureChannelRequest();
+
+		std::iostream is(&secureChannel->recvBuffer_);
+
+		OpcUaUInt32 channelId;
+		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+
+		// FIXME: ....
+
+		handleReadCloseSecureChannelResponse(
+			secureChannel,
+			channelId
+		);
+	}
+
+	void
+	SecureChannelBase::handleReadCloseSecureChannelResponse(
+		SecureChannel* secureChannel,
+		uint32_t channelId
+	)
+	{
+		Log(Error, "opc ua secure channel error, because handleReadCloseSecureChannelResponse no implemented")
+			.parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string());
+	}
+
+	void
+	SecureChannelBase::asyncWriteCloseSecureChannelResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME
+	}
+
+	void
+	SecureChannelBase::handleWriteCloseSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
+	{
+		asyncWriteCount_--;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// channel functions
 	//
 	// ------------------------------------------------------------------------
