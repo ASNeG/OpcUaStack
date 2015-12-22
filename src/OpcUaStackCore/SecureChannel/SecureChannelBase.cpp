@@ -814,6 +814,40 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// CloseSecureChannelRequest message
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::asyncReadMessageRequest(SecureChannel* secureChannel)
+	{
+#if 0
+		receiveMessageInfo_.segmentFlag_ = messageHeader.segmentFlag();
+		receiveMessageInfo_.segment_ = (messageHeader.segmentFlag() == 'C');
+		receiveMessageInfo_.first_ = false;
+
+		if (receiveMessageInfo_.secureChannelTransaction_.get() == nullptr) {
+			receiveMessageInfo_.secureChannelTransaction_ = SecureChannelTransaction::construct();
+			receiveMessageInfo_.first_ = true;
+		}
+#endif
+
+		secureChannel->async_read_exactly(
+			secureChannel->recvBuffer_,
+			boost::bind(
+				&SecureChannelBase::handleReadCloseSecureChannelRequest,
+				this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred,
+				secureChannel
+			),
+			secureChannel->messageHeader_.messageSize() - 8
+		);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// channel functions
 	//
 	// ------------------------------------------------------------------------

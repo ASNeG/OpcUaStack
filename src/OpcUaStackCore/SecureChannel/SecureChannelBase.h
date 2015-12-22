@@ -126,6 +126,7 @@ namespace OpcUaStackCore
 		void asyncReadOpenSecureChannelResponse(SecureChannel* secureChannel);
 		void asyncReadCloseSecureChannelRequest(SecureChannel* secureChannel);
 		void asyncReadCloseSecureChannelResponse(SecureChannel* secureChannel);
+		void asyncReadMessageRequest(SecureChannel* secureChannel);
 
 
 		void handleReadHeader(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
