@@ -82,6 +82,11 @@ namespace OpcUaStackCore
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 		void asyncWriteMessageRequest(SecureChannel* secureChannel);
+		void asyncWriteMessageResponse(
+			SecureChannel* secureChannel,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
+		void asyncWriteMessageResponse(SecureChannel* secureChannel);
 
 
 		//
@@ -128,6 +133,12 @@ namespace OpcUaStackCore
 			OpcUaUInt32 securityTokenId,
 			SequenceHeader& sequenceHeader
 		);
+		virtual void handleReadMessageResponse(
+			SecureChannel* secureChannel,
+			uint32_t channelId,
+			OpcUaUInt32 securityTokenId,
+			SequenceHeader& sequenceHeader
+		);
 
 	  private:
 		void asyncRead(SecureChannel* secureChannel);
@@ -138,6 +149,7 @@ namespace OpcUaStackCore
 		void asyncReadCloseSecureChannelRequest(SecureChannel* secureChannel);
 		void asyncReadCloseSecureChannelResponse(SecureChannel* secureChannel);
 		void asyncReadMessageRequest(SecureChannel* secureChannel);
+		void asyncReadMessageResponse(SecureChannel* secureChannel);
 
 
 		void handleReadHeader(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
@@ -148,6 +160,7 @@ namespace OpcUaStackCore
 		void handleReadCloseSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void handleReadCloseSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void asyncReadMessageRequestComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
+		void asyncReadMessageResponseComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 
 
 		void handleWriteAcknowledgeComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
@@ -157,6 +170,7 @@ namespace OpcUaStackCore
 		void handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteCloseSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteMessageRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
+		void handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 
 
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
