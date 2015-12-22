@@ -117,7 +117,12 @@ namespace OpcUaStackCore
 			}
 			case MessageType_CloseSecureChannel:
 			{
-				asyncReadCloseSecureChannel(secureChannel);
+				if (secureChannelType_ == SCT_Client) {
+					//asyncReadCloseSecureChannelRequest(secureChannel);
+				}
+				else {
+					asyncReadCloseSecureChannelRequest(secureChannel);
+				}
 				break;
 			}
 #if 0
@@ -427,7 +432,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		Log(Error, "opc ua secure channel error, because handleReadSecureChannelRequest no implemented")
+		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelRequest no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
 			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}
@@ -571,7 +576,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelResponse& openSecureChannelResponse
 	)
 	{
-		Log(Error, "opc ua secure channel error, because handleReadSecureChannelResponse no implemented")
+		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelResponse no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
 			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}
@@ -627,17 +632,17 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// CloseSecureChannel message
+	// CloseSecureChannelRequest message
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SecureChannelBase::asyncReadCloseSecureChannel(SecureChannel* secureChannel)
+	SecureChannelBase::asyncReadCloseSecureChannelRequest(SecureChannel* secureChannel)
 	{
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
 			boost::bind(
-				&SecureChannelBase::handleReadCloseSecureChannel,
+				&SecureChannelBase::handleReadCloseSecureChannelRequest,
 				this,
 				boost::asio::placeholders::error,
 				boost::asio::placeholders::bytes_transferred,
@@ -648,7 +653,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleReadCloseSecureChannel(
+	SecureChannelBase::handleReadCloseSecureChannelRequest(
 		const boost::system::error_code& error,
 		std::size_t bytes_transfered,
 		SecureChannel* secureChannel
@@ -676,6 +681,43 @@ namespace OpcUaStackCore
 
 		// debug output
 		secureChannel->debugReadCloseSecureChannelRequest();
+
+		std::iostream is(&secureChannel->recvBuffer_);
+
+		OpcUaUInt32 channelId;
+		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+
+		// FIXME: ....
+
+		handleReadCloseSecureChannelRequest(
+			secureChannel,
+			channelId
+		);
+	}
+
+	void
+	SecureChannelBase::handleReadCloseSecureChannelRequest(
+		SecureChannel* secureChannel,
+		uint32_t channelId
+	)
+	{
+		Log(Error, "opc ua secure channel error, because handleReadCloseSecureChannelRequest no implemented")
+			.parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string());
+	}
+
+	void
+	SecureChannelBase::asyncWriteCloseSecureChannelRequest(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME
+	}
+
+	void
+	SecureChannelBase::handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
+	{
+		asyncWriteCount_--;
 	}
 
 	// ------------------------------------------------------------------------

@@ -44,8 +44,17 @@ namespace OpcUaStackCore
 		SecureChannelBase(SecureChannelType secureChannelType);
 		virtual ~SecureChannelBase(void);
 
-		void asyncWriteHello(SecureChannel* secureChannel, HelloMessage& hello);
-		void asyncWriteAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge);
+		//
+		// write methods
+		//
+		void asyncWriteHello(
+			SecureChannel* secureChannel,
+			HelloMessage& hello
+		);
+		void asyncWriteAcknowledge(
+			SecureChannel* secureChannel,
+			AcknowledgeMessage& acknowledge
+		);
 		void asyncWriteOpenSecureChannelRequest(
 			SecureChannel* secureChannel,
 			uint32_t channelId,
@@ -62,10 +71,24 @@ namespace OpcUaStackCore
 			OpcUaNodeId& typeIdResponse,
 			OpenSecureChannelResponse& openSecureChannelResponse
 		);
+		void asyncWriteCloseSecureChannelRequest(
+			SecureChannel* secureChannel
+		);
 
-		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
-		virtual void handleReadHello(SecureChannel* secureChannel, HelloMessage& hello);
-		virtual void handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge);
+		//
+		// handler methods
+		//
+		virtual void handleDisconnect(
+			SecureChannel* secureChannel
+		) = 0;
+		virtual void handleReadHello(
+			SecureChannel* secureChannel,
+			HelloMessage& hello
+		);
+		virtual void handleReadAcknowledge(
+			SecureChannel* secureChannel,
+			AcknowledgeMessage& acknowledge
+		);
 		virtual void handleReadOpenSecureChannelRequest(
 			SecureChannel* secureChannel,
 			uint32_t channelId,
@@ -82,6 +105,10 @@ namespace OpcUaStackCore
 			OpcUaNodeId& typeIdResponse,
 			OpenSecureChannelResponse& openSecureChannelResponse
 		);
+		virtual void handleReadCloseSecureChannelRequest(
+			SecureChannel* secureChannel,
+			uint32_t channelId
+		);
 
 	  private:
 		void asyncRead(SecureChannel* secureChannel);
@@ -89,7 +116,7 @@ namespace OpcUaStackCore
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelResponse(SecureChannel* secureChannel);
-		void asyncReadCloseSecureChannel(SecureChannel* secureChannel);
+		void asyncReadCloseSecureChannelRequest(SecureChannel* secureChannel);
 
 
 		void handleReadHeader(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
@@ -97,13 +124,14 @@ namespace OpcUaStackCore
 		void handleReadAcknowledge(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
-		void handleReadCloseSecureChannel(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
+		void handleReadCloseSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 
 
 		void handleWriteAcknowledgeComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteHelloComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteOpenSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteOpenSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
+		void handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 
 
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
