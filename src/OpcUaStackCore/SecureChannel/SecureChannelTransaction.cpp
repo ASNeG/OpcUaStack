@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 	SecureChannelTransaction::SecureChannelTransaction(void)
 	: is_()
 	, os_()
+	, requestId_(0)
 	{
 	}
 

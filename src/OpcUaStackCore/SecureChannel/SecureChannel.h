@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 
 namespace OpcUaStackCore
 {
@@ -40,6 +41,8 @@ namespace OpcUaStackCore
 		void debugReadOpenSecureChannelResponse(void);
 		void debugReadCloseSecureChannelRequest(void);
 		void debugReadCloseSecureChannelResponse(void);
+		void debugReadMessageRequest(void);
+		void debugReadMessageResponse(void);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -51,7 +54,26 @@ namespace OpcUaStackCore
 		boost::asio::ip::tcp::endpoint local_;
 		boost::asio::ip::tcp::endpoint partner_;
 
+		OpcUaUInt32 channelId_;
+		OpcUaUInt32 securityTokenId_;
+
+		OpcUaNodeId typeId_;
 		MessageHeader messageHeader_;
+		SecureChannelTransaction::SPtr secureChannelTransaction_;
+		SecureChannelTransaction::List secureChannelTransactionList_;
+		bool sendFirstSegment_;
+		bool recvFirstSegment_;
+		bool asyncSend_;
+		OpcUaUInt32 sendSequenceNumber_;
+		OpcUaUInt32 recvSequenceNumber_;
+
+		OpcUaUInt32 receivedBufferSize_;
+		OpcUaUInt32 sendBufferSize_;
+		OpcUaUInt32 maxMessageSize_;
+		OpcUaUInt32 maxChunkCount_;
+
+	  private:
+		void debugRead(const std::string& message);
 	};
 
 }

@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/SecureChannel/MessageDefaults.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 
 namespace OpcUaStackCore
@@ -33,7 +34,24 @@ namespace OpcUaStackCore
 	, partner_()
 	, local_()
 	, debug_(false)
+	, asyncSend_(false)
+	, channelId_(0)
+	, securityTokenId_(0)
+	, typeId_()
 	, messageHeader_()
+
+	, receivedBufferSize_(MessageDefaults::receivedBufferSizeDefault_)
+	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
+	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
+	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
+
+	, secureChannelTransaction_()
+	, secureChannelTransactionList_()
+
+	, sendFirstSegment_(true)
+	, recvFirstSegment_(true)
+	, sendSequenceNumber_(0)
+	, recvSequenceNumber_(0)
 	{
 	}
 
@@ -42,101 +60,79 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadHeader(void)
+	SecureChannel::debugRead(const std::string& message)
 	{
-		if (!debug_) return;
-
 		std::stringstream ss;
 		std::iostream ios(&recvBuffer_);
 		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read Header message")
+		Log(Debug, "opc ua secure channel read")
 			.parameter("Local", local_.address().to_string())
 			.parameter("Partner", partner_.address().to_string())
+			.parameter("Message", message)
 			.parameter("Data", ss);
+	}
+
+	void
+	SecureChannel::debugReadHeader(void)
+	{
+		if (!debug_) return;
+		debugRead("Header");
 	}
 
 	void
 	SecureChannel::debugReadHello(void)
 	{
 		if (!debug_) return;
-
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read Hello message")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
-			.parameter("Data", ss);
+		debugRead("Hello");
 	}
 
 	void
 	SecureChannel::debugReadAcknowledge(void)
 	{
 		if (!debug_) return;
-
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read Acknowledge message")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
-			.parameter("Data", ss);
+		debugRead("Acknowledge");
 	}
 
 	void
 	SecureChannel::debugReadOpenSecureChannelRequest(void)
 	{
 		if (!debug_) return;
-
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read OpenSecureChannelRequest message")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
-			.parameter("Data", ss);
+		debugRead("OpenSecureChannelRequest");
 	}
 
 	void
 	SecureChannel::debugReadOpenSecureChannelResponse(void)
 	{
 		if (!debug_) return;
-
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read OpenSecureChannelResponse message")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
-			.parameter("Data", ss);
+		debugRead("OpenSecureChannelResponse");
 	}
 
 	void
 	SecureChannel::debugReadCloseSecureChannelRequest(void)
 	{
 		if (!debug_) return;
-
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read CloseSecureChannelRequest message")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
-			.parameter("Data", ss);
+		debugRead("CloseSecureChannelRequest");
 	}
 
 	void
 	SecureChannel::debugReadCloseSecureChannelResponse(void)
 	{
 		if (!debug_) return;
+		debugRead("CloseSecureChannelResponse");
+	}
 
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
-		Log(Debug, "opc ua secure channel read CloseSecureChannelResponse message")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
-			.parameter("Data", ss);
+	void
+	SecureChannel::debugReadMessageRequest(void)
+	{
+		if (!debug_) return;
+		debugRead("MessageRequest");
+	}
+
+	void
+	SecureChannel::debugReadMessageResponse(void)
+	{
+		if (!debug_) return;
+		debugRead("MessageResponse");
 	}
 
 }
