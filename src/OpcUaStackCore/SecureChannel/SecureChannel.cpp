@@ -64,16 +64,12 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRead(const std::string& message)
 	{
-		std::stringstream ss;
-		std::iostream ios(&recvBuffer_);
-		OpcUaStackCore::dumpHex(ios, ss);
 		Log(Debug, "opc ua secure channel read")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
 			.parameter("Partner-Address", partner_.address().to_string())
 			.parameter("Partner-Port", partner_.port())
-			.parameter("Message", message)
-			.parameter("Data", ss);
+			.parameter("Message", message);
 	}
 
 	void
@@ -137,6 +133,40 @@ namespace OpcUaStackCore
 	{
 		if (!debug_) return;
 		debugRead("MessageResponse");
+	}
+
+	void
+	SecureChannel::debugWrite(const std::string& message)
+	{
+		Log(Debug, "opc ua secure channel write")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("Message", message);
+	}
+
+	void
+	SecureChannel::debugWriteHeader(void)
+	{
+		if (!debug_) return;
+		debugWrite("Header");
+	}
+
+	void
+	SecureChannel::debugSendHello(HelloMessage& hello)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel send Hello")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ReceivedBufferSize", hello.receivedBufferSize())
+			.parameter("SendBufferSize", hello.sendBufferSize())
+			.parameter("MaxMessageSize", hello.maxMessageSize())
+			.parameter("MaxChunkCount", hello.maxChunkCount())
+			.parameter("EndpointUrl", hello.endpointUrl());
 	}
 
 }

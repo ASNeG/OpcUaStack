@@ -315,6 +315,9 @@ namespace OpcUaStackCore
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
+		// debug output
+		secureChannel->debugSendHello(hello);
+
 		asyncWriteCount_++;
 		secureChannel->async_write(
 			sb2,

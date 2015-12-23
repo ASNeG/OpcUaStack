@@ -45,6 +45,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	SecureChannelClientData secureChannelClientData;
 	secureChannelClientData.endpointUrl("opt.tcp://192.168.122.99:48010");
+	secureChannelClientData.debug(true);
 	BOOST_REQUIRE(secureChannelClient.connect(secureChannelClientData) == true);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
 }

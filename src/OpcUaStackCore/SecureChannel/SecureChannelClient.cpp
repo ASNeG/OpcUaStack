@@ -195,6 +195,8 @@ namespace OpcUaStackCore
 			// FIXME: reconnect...
 			return;
 		}
+
+		secureChannel->local_ = secureChannel->socket().local_endpoint();
 		secureChannelClientIf_->handleConnect(secureChannel);
 
 		Log(Info, "secure channel to server connected")

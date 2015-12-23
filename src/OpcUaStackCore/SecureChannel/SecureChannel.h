@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
+#include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 
 namespace OpcUaStackCore
 {
@@ -48,6 +49,9 @@ namespace OpcUaStackCore
 		void debugReadCloseSecureChannelResponse(void);
 		void debugReadMessageRequest(void);
 		void debugReadMessageResponse(void);
+
+		void debugWriteHeader(void);
+		void debugSendHello(HelloMessage& hello);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -81,6 +85,7 @@ namespace OpcUaStackCore
 
 	  private:
 		void debugRead(const std::string& message);
+		void debugWrite(const std::string& message);
 	};
 
 }
