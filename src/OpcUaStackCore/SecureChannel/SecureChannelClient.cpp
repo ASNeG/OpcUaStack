@@ -21,6 +21,7 @@ namespace OpcUaStackCore
 {
 
 	SecureChannelClient::SecureChannelClient(void)
+	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	{
 	}
 

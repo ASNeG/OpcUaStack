@@ -21,6 +21,7 @@ namespace OpcUaStackCore
 {
 
 	SecureChannelServer::SecureChannelServer(void)
+	: SecureChannelBase(SecureChannelBase::SCT_Server)
 	{
 	}
 

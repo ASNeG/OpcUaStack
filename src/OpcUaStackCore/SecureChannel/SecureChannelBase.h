@@ -32,6 +32,29 @@
 namespace OpcUaStackCore
 {
 
+	class SecureChannelData
+	{
+	  public:
+		SecureChannelData(void);
+		virtual ~SecureChannelData(void);
+
+		void receivedBufferSize(OpcUaUInt32 receivedBufferSize);
+		OpcUaUInt32 receivedBufferSize(void);
+		void sendBufferSize(OpcUaUInt32 sendBufferSize);
+		OpcUaUInt32 sendBufferSize(void);
+		void maxMessageSize(OpcUaUInt32 maxMessageSize);
+		OpcUaUInt32 maxMessageSize(void);
+		void maxChunkCount(OpcUaUInt32 maxChunkCount);
+		OpcUaUInt32 maxChunkCount(void);
+
+	  private:
+		OpcUaUInt32 receivedBufferSize_;
+		OpcUaUInt32 sendBufferSize_;
+		OpcUaUInt32 maxMessageSize_;
+		OpcUaUInt32 maxChunkCount_;
+	};
+
+
 	class SecureChannelBase
 	{
 	  public:

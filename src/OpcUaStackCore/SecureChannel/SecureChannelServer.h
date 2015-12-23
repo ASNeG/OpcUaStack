@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 {
 
 	class SecureChannelServer
+	: public SecureChannelBase
 	{
 	  public:
 		SecureChannelServer(void);

@@ -23,6 +23,80 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelData
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SecureChannelData::SecureChannelData(void)
+	: receivedBufferSize_()
+	, sendBufferSize_()
+	, maxMessageSize_()
+	, maxChunkCount_()
+	{
+	}
+
+	SecureChannelData::~SecureChannelData(void)
+	{
+	}
+
+	void
+	SecureChannelData::receivedBufferSize(OpcUaUInt32 receivedBufferSize)
+	{
+		receivedBufferSize_ = receivedBufferSize;
+	}
+
+	OpcUaUInt32
+	SecureChannelData::receivedBufferSize(void)
+	{
+		return receivedBufferSize_;
+	}
+
+	void
+	SecureChannelData::sendBufferSize(OpcUaUInt32 sendBufferSize)
+	{
+		sendBufferSize_ = sendBufferSize;
+	}
+
+	OpcUaUInt32
+	SecureChannelData::sendBufferSize(void)
+	{
+		return sendBufferSize_;
+	}
+
+	void
+	SecureChannelData::maxMessageSize(OpcUaUInt32 maxMessageSize)
+	{
+		maxMessageSize_ = maxMessageSize;
+	}
+
+	OpcUaUInt32
+	SecureChannelData::maxMessageSize(void)
+	{
+		return maxMessageSize_;
+	}
+
+	void
+	SecureChannelData::maxChunkCount(OpcUaUInt32 maxChunkCount)
+	{
+		maxChunkCount_ = maxChunkCount;
+	}
+
+	OpcUaUInt32
+	SecureChannelData::maxChunkCount(void)
+	{
+		return maxChunkCount_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	SecureChannelBase::SecureChannelBase(SecureChannelType secureChannelType)
 	: asyncWriteCount_(0)
 	, secureChannelType_(secureChannelType)
