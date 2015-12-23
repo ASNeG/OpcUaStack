@@ -24,6 +24,21 @@
 namespace OpcUaStackCore
 {
 
+	class SecureChannelClientData
+	: public SecureChannelData
+	{
+	  public:
+		SecureChannelClientData(void);
+		~SecureChannelClientData(void);
+
+		void endpointUrl(const std::string& endpointUrl);
+		std::string& endpointUrl(void);
+
+	  private:
+		std::string endpointUrl_;
+	};
+
+
 	class SecureChannelClient
 	: public SecureChannelBase
 	{

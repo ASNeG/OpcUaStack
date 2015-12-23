@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
+#include "OpcUaStackCore/SecureChannel/MessageDefaults.h"
 
 namespace OpcUaStackCore
 {
@@ -31,10 +32,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SecureChannelData::SecureChannelData(void)
-	: receivedBufferSize_()
-	, sendBufferSize_()
-	, maxMessageSize_()
-	, maxChunkCount_()
+	: receivedBufferSize_(MessageDefaults::receivedBufferSizeDefault_)
+	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
+	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
+	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
 	{
 	}
 

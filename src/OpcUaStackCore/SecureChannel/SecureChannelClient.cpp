@@ -20,6 +20,41 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelClientData
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SecureChannelClientData::SecureChannelClientData(void)
+	: SecureChannelData()
+	{
+	}
+
+	SecureChannelClientData::~SecureChannelClientData(void)
+	{
+	}
+
+	void
+	SecureChannelClientData::endpointUrl(const std::string& endpointUrl)
+	{
+		endpointUrl_ = endpointUrl;
+	}
+
+	std::string&
+	SecureChannelClientData::endpointUrl(void)
+	{
+		return endpointUrl_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelClient
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	SecureChannelClient::SecureChannelClient(void)
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	{
