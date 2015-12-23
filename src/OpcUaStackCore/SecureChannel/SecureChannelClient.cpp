@@ -129,6 +129,7 @@ namespace OpcUaStackCore
 		secureChannel->maxChunkCount_ = secureChannelClientData.maxChunkCount();
 		secureChannel->endpointUrl_ = secureChannelClientData.endpointUrl();
 		secureChannel->debug_ = secureChannelClientData.debug();
+		secureChannel->debugHeader_ = secureChannelClientData.debugHeader();
 
 		// get ip address from hostname
 		Url url(secureChannelClientData.endpointUrl());
@@ -196,6 +197,7 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		asyncRead(secureChannel);
 		secureChannel->local_ = secureChannel->socket().local_endpoint();
 		secureChannelClientIf_->handleConnect(secureChannel);
 

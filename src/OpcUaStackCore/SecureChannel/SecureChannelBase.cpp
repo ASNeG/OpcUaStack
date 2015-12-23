@@ -37,6 +37,7 @@ namespace OpcUaStackCore
 	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
 	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
 	, debug_(false)
+	, debugHeader_(false)
 	{
 	}
 
@@ -104,6 +105,18 @@ namespace OpcUaStackCore
 		return debug_;
 	}
 
+	void
+	SecureChannelData::debugHeader(bool debugHeader)
+	{
+		debugHeader_ = debugHeader;
+	}
+
+	bool
+	SecureChannelData::debugHeader(void)
+	{
+		return debugHeader_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -164,12 +177,12 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugReadHello();
-
 		// decode message header
 		std::iostream is(&secureChannel->recvBuffer_);
 		secureChannel->messageHeader_.opcUaBinaryDecode(is);
+
+		// debug output
+		secureChannel->debugRecvHeader(secureChannel->messageHeader_);
 
 		switch(secureChannel->messageHeader_.messageType())
 		{
@@ -229,6 +242,16 @@ namespace OpcUaStackCore
 					asyncReadMessageRequest(secureChannel);
 				}
 				break;
+			}
+			default:
+			{
+				Log(Error, "opc ua secure channel received unknown message type")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string())
+					.parameter("MessageType", secureChannel->messageHeader_.messageType());
+
+				closeChannel(secureChannel, true);
+				return;
 			}
 		}
 	}
@@ -316,6 +339,7 @@ namespace OpcUaStackCore
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
 		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendHello(hello);
 
 		asyncWriteCount_++;
@@ -387,12 +411,12 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugReadAcknowledge();
-
 		std::iostream is(&secureChannel->recvBuffer_);
 		AcknowledgeMessage acknowledge;
 		acknowledge.opcUaBinaryDecode(is);
+
+		// debug output
+		secureChannel->debugRecvAcknowledge(acknowledge);
 
 		handleReadAcknowledge(secureChannel, acknowledge);
 	}

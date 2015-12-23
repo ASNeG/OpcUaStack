@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount(void);
 		void debug(bool debug);
 		bool debug(void);
+		void debugHeader(bool debugHeader);
+		bool debugHeader(void);
 
 	  private:
 		OpcUaUInt32 receivedBufferSize_;
@@ -55,6 +57,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxMessageSize_;
 		OpcUaUInt32 maxChunkCount_;
 		bool debug_;
+		bool debugHeader_;
 	};
 
 
@@ -166,8 +169,9 @@ namespace OpcUaStackCore
 			SequenceHeader& sequenceHeader
 		);
 
-	  private:
 		void asyncRead(SecureChannel* secureChannel);
+
+	  private:
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel);

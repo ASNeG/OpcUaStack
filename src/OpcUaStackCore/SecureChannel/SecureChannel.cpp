@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 	, partner_()
 	, local_()
 	, debug_(false)
+	, debugHeader_(false)
 	, asyncSend_(false)
 	, channelId_(0)
 	, securityTokenId_(0)
@@ -73,10 +74,17 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadHeader(void)
+	SecureChannel::debugRecvHeader(MessageHeader& messageHeader)
 	{
-		if (!debug_) return;
-		debugRead("Header");
+		if (!debugHeader_) return;
+		Log(Debug, "opc ua secure channel recv Header")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("SegmentFlag", messageHeader.segmentFlag())
+			.parameter("MessageType", messageHeader.messageType())
+			.parameter("MessageSize", messageHeader.messageSize());
 	}
 
 	void
@@ -87,10 +95,18 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadAcknowledge(void)
+	SecureChannel::debugRecvAcknowledge(AcknowledgeMessage& acknowledge)
 	{
 		if (!debug_) return;
-		debugRead("Acknowledge");
+		Log(Debug, "opc ua secure channel recv Acknowledge")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ReceivedBufferSize", acknowledge.receivedBufferSize())
+			.parameter("SendBufferSize", acknowledge.sendBufferSize())
+			.parameter("MaxMessageSize", acknowledge.maxMessageSize())
+			.parameter("MaxChunkCount", acknowledge.maxChunkCount());
 	}
 
 	void
@@ -147,10 +163,17 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugWriteHeader(void)
+	SecureChannel::debugSendHeader(MessageHeader& messageHeader)
 	{
-		if (!debug_) return;
-		debugWrite("Header");
+		if (!debugHeader_) return;
+		Log(Debug, "opc ua secure channel send Header")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("SegmentFlag", messageHeader.segmentFlag())
+			.parameter("MessageType", messageHeader.messageType())
+			.parameter("MessageSize", messageHeader.messageSize());
 	}
 
 	void

@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
+#include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 
 namespace OpcUaStackCore
 {
@@ -40,9 +41,9 @@ namespace OpcUaStackCore
 		SecureChannel(IOService* ioService);
 		virtual ~SecureChannel(void);
 
-		void debugReadHeader(void);
+		void debugRecvHeader(MessageHeader& messageHeader);
 		void debugReadHello(void);
-		void debugReadAcknowledge(void);
+		void debugRecvAcknowledge(AcknowledgeMessage& acknowledge);
 		void debugReadOpenSecureChannelRequest(void);
 		void debugReadOpenSecureChannelResponse(void);
 		void debugReadCloseSecureChannelRequest(void);
@@ -50,7 +51,7 @@ namespace OpcUaStackCore
 		void debugReadMessageRequest(void);
 		void debugReadMessageResponse(void);
 
-		void debugWriteHeader(void);
+		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
@@ -59,6 +60,7 @@ namespace OpcUaStackCore
 		bool closeFlag_;
 		bool timeout_;
 		bool debug_;
+		bool debugHeader_;
 		boost::asio::streambuf recvBuffer_;
 		boost::asio::streambuf sendBuffer_;
 		boost::asio::ip::tcp::endpoint local_;
