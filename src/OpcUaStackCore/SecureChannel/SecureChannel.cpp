@@ -77,13 +77,25 @@ namespace OpcUaStackCore
 	SecureChannel::debugRecvHeader(MessageHeader& messageHeader)
 	{
 		if (!debugHeader_) return;
+
+		std::string messageType = "Unknown";
+		switch(messageHeader.messageType())
+		{
+			case MessageType_Hello: messageType = "Hello"; break;
+			case MessageType_Acknowledge: messageType = "Acknowledge"; break;
+			case MessageType_OpenSecureChannel: messageType = "OpenSecureChannel"; break;
+			case MessageType_CloseSecureChannel: messageType = "CloseSecureChannel"; break;
+			case MessageType_Error: messageType = "Error"; break;
+			case MessageType_Message: messageType = "Message"; break;
+		}
+
 		Log(Debug, "opc ua secure channel recv Header")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
 			.parameter("Partner-Address", partner_.address().to_string())
 			.parameter("Partner-Port", partner_.port())
 			.parameter("SegmentFlag", messageHeader.segmentFlag())
-			.parameter("MessageType", messageHeader.messageType())
+			.parameter("MessageType", messageType)
 			.parameter("MessageSize", messageHeader.messageSize());
 	}
 
@@ -166,13 +178,25 @@ namespace OpcUaStackCore
 	SecureChannel::debugSendHeader(MessageHeader& messageHeader)
 	{
 		if (!debugHeader_) return;
+
+		std::string messageType = "Unknown";
+		switch(messageHeader.messageType())
+		{
+			case MessageType_Hello: messageType = "Hello"; break;
+			case MessageType_Acknowledge: messageType = "Acknowledge"; break;
+			case MessageType_OpenSecureChannel: messageType = "OpenSecureChannel"; break;
+			case MessageType_CloseSecureChannel: messageType = "CloseSecureChannel"; break;
+			case MessageType_Error: messageType = "Error"; break;
+			case MessageType_Message: messageType = "Message"; break;
+		}
+
 		Log(Debug, "opc ua secure channel send Header")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
 			.parameter("Partner-Address", partner_.address().to_string())
 			.parameter("Partner-Port", partner_.port())
 			.parameter("SegmentFlag", messageHeader.segmentFlag())
-			.parameter("MessageType", messageHeader.messageType())
+			.parameter("MessageType", messageType)
 			.parameter("MessageSize", messageHeader.messageSize());
 	}
 

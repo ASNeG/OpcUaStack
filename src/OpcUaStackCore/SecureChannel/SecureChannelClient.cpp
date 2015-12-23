@@ -123,6 +123,7 @@ namespace OpcUaStackCore
 
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioService_);
+		// FIXME: muss fuer reconnect zwischengespeichert werden....
 		secureChannel->receivedBufferSize_ = secureChannelClientData.receivedBufferSize();
 		secureChannel->sendBufferSize_ = secureChannelClientData.sendBufferSize();
 		secureChannel->maxMessageSize_ = secureChannelClientData.maxMessageSize();
@@ -214,6 +215,19 @@ namespace OpcUaStackCore
 		helloMessage.endpointUrl(secureChannel->endpointUrl_);
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
+	}
+
+	void
+	SecureChannelClient::handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	{
+
+
+#if 0
+		helloMessage.receivedBufferSize(secureChannel->receivedBufferSize_);
+		helloMessage.sendBufferSize(secureChannel->sendBufferSize_);
+		helloMessage.maxMessageSize(secureChannel->maxMessageSize_);
+		helloMessage.maxChunkCount(secureChannel->maxChunkCount_);
+#endif
 	}
 
 	void
