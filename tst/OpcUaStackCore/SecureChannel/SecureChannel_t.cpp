@@ -1,5 +1,6 @@
 
 #include "unittest.h"
+#include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 
 using namespace OpcUaStackCore;
@@ -8,19 +9,18 @@ class SecureChannelClientTest
 : public SecureChannelClientIf
 {
   public:
-	void handleError(SecureChannel* secureChannel)
-  	{
-		std::cout << "handleError" << std::endl;
-	}
-
+	Condition handleConnect_;
 	void handleConnect(SecureChannel* secureChannel)
 	{
 		std::cout << "handleConnect" << std::endl;
+		handleConnect_.conditionValueDec();
 	}
 
+	Condition handleDisconnect_;
 	void handleDisconnect(SecureChannel* secureChannel)
 	{
-		std::cout << "handleConnect" << std::endl;
+		std::cout << "handleDisconnect" << std::endl;
+		handleDisconnect_.conditionValueDec();
 	}
 };
 
@@ -39,9 +39,14 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	ioService.start(1);
 
 	SecureChannelClient secureChannelClient(&ioService);
+	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
 	// client connect to server
-
+	secureChannelClientTest.handleConnect_.condition(1,0);
+	SecureChannelClientData secureChannelClientData;
+	secureChannelClientData.endpointUrl("opt.tcp://192.168.122.99:48010");
+	BOOST_REQUIRE(secureChannelClient.connect(secureChannelClientData) == true);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

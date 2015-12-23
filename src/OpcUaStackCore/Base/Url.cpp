@@ -70,6 +70,14 @@ namespace OpcUaStackCore
 	}
 
 	std::string
+	Url::portToString(void)
+	{
+		std::stringstream ss;
+		ss << port_;
+		return ss.str();
+	}
+
+	std::string
 	Url::path(void)
 	{
 		return path_;

@@ -69,18 +69,6 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClientData::secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf)
-	{
-		secureChannelClientIf_ = secureChannelClientIf;
-	}
-
-	SecureChannelClientIf*
-	SecureChannelClientData::secureChannelClientIf(void)
-	{
-		return secureChannelClientIf_;
-	}
-
-	void
 	SecureChannelClientData::connectTimeout(uint32_t connectTimeout)
 	{
 		connectTimeout_ = connectTimeout;
@@ -104,6 +92,7 @@ namespace OpcUaStackCore
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
 	, ioService_(ioService)
+	, resolver_(ioService->io_service())
 	{
 	}
 
@@ -111,22 +100,26 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	SecureChannelClient::secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf)
+	{
+		secureChannelClientIf_ = secureChannelClientIf;
+	}
+
+	SecureChannelClientIf*
+	SecureChannelClient::secureChannelClientIf(void)
+	{
+		return secureChannelClientIf_;
+	}
+
 	bool
 	SecureChannelClient::connect(SecureChannelClientData& secureChannelClientData)
 	{
-		if (secureChannelClientData.secureChannelClientIf() == nullptr) {
-			Log(Error, "secure channel client parameter invalid")
-				.parameter("EndpointUrl", secureChannelClientData.endpointUrl())
-				.parameter("Parameter", "SecureChannelClientIf");
-			return false;
-		}
-
-		if (secureChannelClientIf_ != nullptr) {
-			Log(Error, "secure channel client already initialized")
+		if (secureChannelClientIf_ == nullptr) {
+			Log(Error, "secure channel client interface invalid")
 				.parameter("EndpointUrl", secureChannelClientData.endpointUrl());
 			return false;
 		}
-		secureChannelClientIf_ = secureChannelClientData.secureChannelClientIf();
 
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioService_);
@@ -140,9 +133,8 @@ namespace OpcUaStackCore
 		// get ip address from hostname
 		Url url(secureChannelClientData.endpointUrl());
 		secureChannel->partner_.port(url.port());
-		boost::asio::ip::tcp::resolver resolver(ioService_->io_service());
-		boost::asio::ip::tcp::resolver::query query(url.host());
-		resolver.async_resolve(
+		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
+		resolver_.async_resolve(
 			query,
 			boost::bind(
 				&SecureChannelClient::resolveComplete,
@@ -163,8 +155,12 @@ namespace OpcUaStackCore
 	)
 	{
 		if (error) {
-			Log(Error, "address resolver error");
-			secureChannelClientIf_->handleError(secureChannel);
+			Log(Error, "address resolver error")
+				.parameter("EndpointUrl", secureChannel->endpointUrl_)
+				.parameter("Message", error.message());
+			secureChannelClientIf_->handleDisconnect(secureChannel);
+
+			// FIXME: reconnect...
 			return;
 		}
 		secureChannel->partner_.address((*endpointIterator).endpoint().address());
@@ -194,6 +190,8 @@ namespace OpcUaStackCore
 			Log(Info, "cannot connect secure channel to server")
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port());
+			secureChannelClientIf_->handleDisconnect(secureChannel);
+
 			// FIXME: reconnect...
 			return;
 		}

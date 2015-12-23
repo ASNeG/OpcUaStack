@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 		std::string protocol(void) const;
 		std::string host(void);
 		int32_t port(void);
+		std::string portToString(void);
 		std::string path(void);
 		std::string query(void);
 		void clear(void);

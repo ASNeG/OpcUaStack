@@ -32,7 +32,6 @@ namespace OpcUaStackCore
 		SecureChannelClientIf(void);
 		virtual ~SecureChannelClientIf(void);
 
-		virtual void handleError(SecureChannel* secureChannel) = 0;
 		virtual void handleConnect(SecureChannel* secureChannel) = 0;
 		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
 	};
@@ -47,15 +46,11 @@ namespace OpcUaStackCore
 
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
-		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
-		SecureChannelClientIf* secureChannelClientIf(void);
 		void connectTimeout(uint32_t connectTimeout);
 		uint32_t connectTimeout(void);
 
 	  private:
 		std::string endpointUrl_;
-		SecureChannelClientIf* secureChannelClientIf_;
-
 		uint32_t connectTimeout_;
 	};
 
@@ -66,6 +61,9 @@ namespace OpcUaStackCore
 	  public:
 		SecureChannelClient(IOService* ioService);
 		~SecureChannelClient(void);
+
+		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
+		SecureChannelClientIf* secureChannelClientIf(void);
 
 		bool connect(SecureChannelClientData& secureChannelClientData);
 
@@ -84,9 +82,8 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel
 		);
 
-
-
 		IOService* ioService_;
+		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelClientIf* secureChannelClientIf_;
 	};
 
