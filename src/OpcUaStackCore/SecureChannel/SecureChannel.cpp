@@ -24,8 +24,8 @@
 namespace OpcUaStackCore
 {
 
-	SecureChannel::SecureChannel(boost::asio::io_service& io_service)
-	: TCPConnection(io_service)
+	SecureChannel::SecureChannel(IOService* ioService)
+	: TCPConnection(ioService->io_service())
 	, state_(S_Init)
 	, closeFlag_(false)
 	, recvBuffer_()

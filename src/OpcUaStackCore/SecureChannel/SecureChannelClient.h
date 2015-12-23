@@ -32,7 +32,9 @@ namespace OpcUaStackCore
 		SecureChannelClientIf(void);
 		virtual ~SecureChannelClientIf(void);
 
-		virtual void handleError(void) = 0;
+		virtual void handleError(SecureChannel* secureChannel) = 0;
+		virtual void handleConnect(SecureChannel* secureChannel) = 0;
+		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
 	};
 
 
@@ -62,10 +64,14 @@ namespace OpcUaStackCore
 	: public SecureChannelBase
 	{
 	  public:
-		SecureChannelClient(boost::asio::io_service& io_service);
+		SecureChannelClient(IOService* ioService);
 		~SecureChannelClient(void);
 
 		bool connect(SecureChannelClientData& secureChannelClientData);
+
+		//- SecureChannelBase -------------------------------------------------
+		void handleDisconnect(SecureChannel* secureChannel);
+		//- SecureChannelBase -------------------------------------------------
 
 	  private:
 		void resolveComplete(
@@ -78,7 +84,9 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel
 		);
 
-		boost::asio::io_service* io_service_;
+
+
+		IOService* ioService_;
 		SecureChannelClientIf* secureChannelClientIf_;
 	};
 

@@ -100,10 +100,10 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelClient::SecureChannelClient(boost::asio::io_service& io_service)
+	SecureChannelClient::SecureChannelClient(IOService* ioService)
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
-	, io_service_(&io_service)
+	, ioService_(ioService)
 	{
 	}
 
@@ -129,7 +129,7 @@ namespace OpcUaStackCore
 		secureChannelClientIf_ = secureChannelClientData.secureChannelClientIf();
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(*io_service_);
+		SecureChannel* secureChannel = new SecureChannel(ioService_);
 		secureChannel->receivedBufferSize_ = secureChannelClientData.receivedBufferSize();
 		secureChannel->sendBufferSize_ = secureChannelClientData.sendBufferSize();
 		secureChannel->maxMessageSize_ = secureChannelClientData.maxMessageSize();
@@ -140,7 +140,7 @@ namespace OpcUaStackCore
 		// get ip address from hostname
 		Url url(secureChannelClientData.endpointUrl());
 		secureChannel->partner_.port(url.port());
-		boost::asio::ip::tcp::resolver resolver(*io_service_);
+		boost::asio::ip::tcp::resolver resolver(ioService_->io_service());
 		boost::asio::ip::tcp::resolver::query query(url.host());
 		resolver.async_resolve(
 			query,
@@ -164,7 +164,7 @@ namespace OpcUaStackCore
 	{
 		if (error) {
 			Log(Error, "address resolver error");
-			secureChannelClientIf_->handleError();
+			secureChannelClientIf_->handleError(secureChannel);
 			return;
 		}
 		secureChannel->partner_.address((*endpointIterator).endpoint().address());
@@ -197,6 +197,7 @@ namespace OpcUaStackCore
 			// FIXME: reconnect...
 			return;
 		}
+		secureChannelClientIf_->handleConnect(secureChannel);
 
 		Log(Info, "secure channel to server connected")
 			.parameter("Address", secureChannel->partner_.address().to_string())
@@ -211,6 +212,12 @@ namespace OpcUaStackCore
 		helloMessage.endpointUrl(secureChannel->endpointUrl_);
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
+	}
+
+	void
+	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
+	{
+		std::cout << "SecureChannelClient::handleDisconnect" << std::endl;
 	}
 
 }

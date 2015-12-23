@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 			S_Hello
 		} State;
 
-		SecureChannel(boost::asio::io_service& io_service);
+		SecureChannel(IOService* ioService);
 		virtual ~SecureChannel(void);
 
 		void debugReadHeader(void);
