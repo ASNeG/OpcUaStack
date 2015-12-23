@@ -26,6 +26,7 @@ namespace OpcUaStackCore
 
 	SecureChannel::SecureChannel(boost::asio::io_service& io_service)
 	: TCPConnection(io_service)
+	, state_(S_Init)
 	, closeFlag_(false)
 	, recvBuffer_()
 	, sendBuffer_()
@@ -44,6 +45,7 @@ namespace OpcUaStackCore
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
 	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
 	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
+	, endpointUrl_()
 
 	, secureChannelTransaction_()
 	, secureChannelTransactionList_()
@@ -66,8 +68,10 @@ namespace OpcUaStackCore
 		std::iostream ios(&recvBuffer_);
 		OpcUaStackCore::dumpHex(ios, ss);
 		Log(Debug, "opc ua secure channel read")
-			.parameter("Local", local_.address().to_string())
-			.parameter("Partner", partner_.address().to_string())
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
 			.parameter("Message", message)
 			.parameter("Data", ss);
 	}

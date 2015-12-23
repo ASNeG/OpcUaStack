@@ -31,6 +31,11 @@ namespace OpcUaStackCore
 	: public TCPConnection
 	{
 	  public:
+		typedef enum {
+			S_Init,
+			S_Hello
+		} State;
+
 		SecureChannel(boost::asio::io_service& io_service);
 		virtual ~SecureChannel(void);
 
@@ -46,6 +51,7 @@ namespace OpcUaStackCore
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
+		State state_;
 		bool closeFlag_;
 		bool timeout_;
 		bool debug_;
@@ -71,6 +77,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 sendBufferSize_;
 		OpcUaUInt32 maxMessageSize_;
 		OpcUaUInt32 maxChunkCount_;
+		std::string endpointUrl_;
 
 	  private:
 		void debugRead(const std::string& message);

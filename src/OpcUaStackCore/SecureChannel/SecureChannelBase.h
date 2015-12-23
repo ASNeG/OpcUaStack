@@ -46,12 +46,15 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxMessageSize(void);
 		void maxChunkCount(OpcUaUInt32 maxChunkCount);
 		OpcUaUInt32 maxChunkCount(void);
+		void debug(bool debug);
+		bool debug(void);
 
 	  private:
 		OpcUaUInt32 receivedBufferSize_;
 		OpcUaUInt32 sendBufferSize_;
 		OpcUaUInt32 maxMessageSize_;
 		OpcUaUInt32 maxChunkCount_;
+		bool debug_;
 	};
 
 

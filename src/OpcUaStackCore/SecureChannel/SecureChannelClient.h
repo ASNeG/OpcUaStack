@@ -19,10 +19,22 @@
 #ifndef __OpUaStackCore_SecureChannelClient_h__
 #define __OpUaStackCore_SecureChannelClient_h__
 
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 
 namespace OpcUaStackCore
 {
+
+	class SecureChannelClientIf
+	{
+	  public:
+		SecureChannelClientIf(void);
+		virtual ~SecureChannelClientIf(void);
+
+		virtual void handleError(void) = 0;
+	};
+
 
 	class SecureChannelClientData
 	: public SecureChannelData
@@ -33,9 +45,16 @@ namespace OpcUaStackCore
 
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
+		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
+		SecureChannelClientIf* secureChannelClientIf(void);
+		void connectTimeout(uint32_t connectTimeout);
+		uint32_t connectTimeout(void);
 
 	  private:
 		std::string endpointUrl_;
+		SecureChannelClientIf* secureChannelClientIf_;
+
+		uint32_t connectTimeout_;
 	};
 
 
@@ -43,8 +62,24 @@ namespace OpcUaStackCore
 	: public SecureChannelBase
 	{
 	  public:
-		SecureChannelClient(void);
+		SecureChannelClient(boost::asio::io_service& io_service);
 		~SecureChannelClient(void);
+
+		bool connect(SecureChannelClientData& secureChannelClientData);
+
+	  private:
+		void resolveComplete(
+			const boost::system::error_code& error,
+			boost::asio::ip::tcp::resolver::iterator endpointIterator,
+			SecureChannel* secureChannel
+		);
+		void connectComplete(
+			const boost::system::error_code& error,
+			SecureChannel* secureChannel
+		);
+
+		boost::asio::io_service* io_service_;
+		SecureChannelClientIf* secureChannelClientIf_;
 	};
 
 }
