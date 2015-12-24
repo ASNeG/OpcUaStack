@@ -128,7 +128,7 @@ namespace OpcUaStackCore
 		else if (strncmp(messageTypeString_, "ACK", 3) == 0) {
 			messageType_ = MessageType_Acknowledge;
 		}
-		else if (strncmp(messageTypeString_, "ACK", 3) == 0) {
+		else if (strncmp(messageTypeString_, "ERR", 3) == 0) {
 			messageType_ = MessageType_Error;
 		}
 		else if (strncmp(messageTypeString_, "OPN", 3) == 0) {

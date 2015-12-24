@@ -313,8 +313,10 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 		HelloMessage hello;
 		hello.opcUaBinaryDecode(is);
+		consumeAll(secureChannel->recvBuffer_);
 
 		handleReadHello(secureChannel, hello);
+		asyncRead(secureChannel);
 	}
 
 	void
@@ -416,6 +418,7 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 		AcknowledgeMessage acknowledge;
 		acknowledge.opcUaBinaryDecode(is);
+		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
 		secureChannel->debugRecvAcknowledge(acknowledge);
@@ -701,6 +704,7 @@ namespace OpcUaStackCore
 			typeIdResponse,
 			openSecureChannelResponse
 		);
+		asyncRead(secureChannel);
 	}
 
 	void
@@ -824,6 +828,7 @@ namespace OpcUaStackCore
 
 		OpcUaUInt32 channelId;
 		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		consumeAll(secureChannel->recvBuffer_);
 
 		// FIXME: ....
 
@@ -831,6 +836,7 @@ namespace OpcUaStackCore
 			secureChannel,
 			channelId
 		);
+		asyncRead(secureChannel);
 	}
 
 	void
@@ -916,6 +922,7 @@ namespace OpcUaStackCore
 
 		OpcUaUInt32 channelId;
 		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		consumeAll(secureChannel->recvBuffer_);
 
 		// FIXME: ....
 
@@ -923,6 +930,7 @@ namespace OpcUaStackCore
 			secureChannel,
 			channelId
 		);
+		asyncRead(secureChannel);
 	}
 
 	void
@@ -1029,6 +1037,7 @@ namespace OpcUaStackCore
 			.parameter("SegmentFlag", secureChannel->messageHeader_.segmentFlag());
 
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
+		consumeAll(secureChannel->recvBuffer_);
 
 		// read next segment
 		if (secureChannel->messageHeader_.segmentFlag() == 'F') {
@@ -1259,6 +1268,7 @@ namespace OpcUaStackCore
 			.parameter("SegmentFlag", secureChannel->messageHeader_.segmentFlag());
 
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
+		consumeAll(secureChannel->recvBuffer_);
 
 		// read next segment
 		if (secureChannel->messageHeader_.segmentFlag() == 'F') {
