@@ -25,49 +25,6 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// SecureChannelClientData
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	SecureChannelClientConfig::SecureChannelClientConfig(void)
-	: SecureChannelConfig()
-	, endpointUrl_("")
-	, connectTimeout_(0)
-	{
-	}
-
-	SecureChannelClientConfig::~SecureChannelClientConfig(void)
-	{
-	}
-
-	void
-	SecureChannelClientConfig::endpointUrl(const std::string& endpointUrl)
-	{
-		endpointUrl_ = endpointUrl;
-	}
-
-	std::string&
-	SecureChannelClientConfig::endpointUrl(void)
-	{
-		return endpointUrl_;
-	}
-
-	void
-	SecureChannelClientConfig::connectTimeout(uint32_t connectTimeout)
-	{
-		connectTimeout_ = connectTimeout;
-	}
-
-	uint32_t
-	SecureChannelClientConfig::connectTimeout(void)
-	{
-		return connectTimeout_;
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// SecureChannelClient
 	//
 	// ------------------------------------------------------------------------

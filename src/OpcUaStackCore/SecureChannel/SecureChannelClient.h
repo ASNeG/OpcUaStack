@@ -21,32 +21,12 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
-#include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelClientConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 
 namespace OpcUaStackCore
 {
-
-	class SecureChannelClientConfig
-	: public SecureChannelConfig
-	{
-	  public:
-		typedef boost::shared_ptr<SecureChannelClientConfig> SPtr;
-
-		SecureChannelClientConfig(void);
-		~SecureChannelClientConfig(void);
-
-		void endpointUrl(const std::string& endpointUrl);
-		std::string& endpointUrl(void);
-		void connectTimeout(uint32_t connectTimeout);
-		uint32_t connectTimeout(void);
-
-	  private:
-		std::string endpointUrl_;
-		uint32_t connectTimeout_;
-	};
-
 
 	class SecureChannelClient
 	: public SecureChannelBase
