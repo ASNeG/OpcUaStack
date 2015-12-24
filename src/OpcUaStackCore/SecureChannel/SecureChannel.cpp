@@ -54,6 +54,8 @@ namespace OpcUaStackCore
 
 	, sendFirstSegment_(true)
 	, recvFirstSegment_(true)
+	, sendRequestId_(0)
+	, recvRequestId_(0)
 	, sendSequenceNumber_(0)
 	, recvSequenceNumber_(0)
 	{
@@ -215,6 +217,20 @@ namespace OpcUaStackCore
 			.parameter("MaxMessageSize", hello.maxMessageSize())
 			.parameter("MaxChunkCount", hello.maxChunkCount())
 			.parameter("EndpointUrl", hello.endpointUrl());
+	}
+
+	void
+	SecureChannel::debugSendOpenSecureChannel(OpenSecureChannelRequest& openSecureChannelRequest)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel send Hello")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("RequestType", openSecureChannelRequest.requestType())
+			.parameter("SecurityMode", openSecureChannelRequest.securityMode())
+			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
 	}
 
 }

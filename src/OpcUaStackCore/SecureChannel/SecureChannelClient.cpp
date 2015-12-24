@@ -201,7 +201,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Info, "cannot connect secure channel to server")
 				.parameter("Address", secureChannel->partner_.address().to_string())
-				.parameter("Port", secureChannel->partner_.port());
+				.parameter("Port", secureChannel->partner_.port())
+				.parameter("Message", error.message());
 			secureChannelClientIf_->handleDisconnect(secureChannel);
 
 			// FIXME: reconnect...
@@ -216,13 +217,15 @@ namespace OpcUaStackCore
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
-		// send hello message
+		// create hello message
 		HelloMessage helloMessage;
 		helloMessage.receivedBufferSize(secureChannel->receivedBufferSize_);
 		helloMessage.sendBufferSize(secureChannel->sendBufferSize_);
 		helloMessage.maxMessageSize(secureChannel->maxMessageSize_);
 		helloMessage.maxChunkCount(secureChannel->maxChunkCount_);
 		helloMessage.endpointUrl(secureChannel->endpointUrl_);
+
+		// send hellp message
 		secureChannel->state_ = SecureChannel::S_Hello;
 		asyncWriteHello(secureChannel, helloMessage);
 	}
@@ -230,14 +233,27 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
+		// set acknowledge parameter in secure channel
+		secureChannel->receivedBufferSize_ = acknowledge.receivedBufferSize();
+		secureChannel->sendBufferSize_ = acknowledge.receivedBufferSize();
+		secureChannel->maxMessageSize_ = acknowledge.maxMessageSize();
+		secureChannel->maxChunkCount_ = acknowledge.maxChunkCount();
+		secureChannel->state_ = SecureChannel::S_Acknowledge;
 
+		// create open secure channel request
+		OpcUaByte clientNonce[1];
+		clientNonce[0] = 0x00;
+		secureChannel->channelId_ = 0;
+		OpenSecureChannelRequest openSecureChannelRequest;
+		openSecureChannelRequest.clientProtocolVersion(0);
+		openSecureChannelRequest.requestType(ISSUE);
+		openSecureChannelRequest.securityMode(None);
+		openSecureChannelRequest.clientNonce(clientNonce, 1);
+		openSecureChannelRequest.requestedLifetime(300000);
 
-#if 0
-		helloMessage.receivedBufferSize(secureChannel->receivedBufferSize_);
-		helloMessage.sendBufferSize(secureChannel->sendBufferSize_);
-		helloMessage.maxMessageSize(secureChannel->maxMessageSize_);
-		helloMessage.maxChunkCount(secureChannel->maxChunkCount_);
-#endif
+		// send open secure channel request
+		secureChannel->state_ = SecureChannel::S_OpenSecureChannel;
+		asyncWriteOpenSecureChannelRequest(secureChannel, openSecureChannelRequest);
 	}
 
 	void

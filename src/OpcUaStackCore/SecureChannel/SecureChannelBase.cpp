@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 #include "OpcUaStackCore/SecureChannel/MessageDefaults.h"
 
@@ -161,7 +162,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read message header error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -226,13 +228,11 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
-#if 0
 			case MessageType_Error:
 			{
-				handleReadMessageHeaderTypeError(messageHeader);
+				asyncReadError(secureChannel);
 				break;
 			}
-#endif
 			case MessageType_Message:
 			{
 				if (secureChannelType_ == SCT_Client) {
@@ -290,7 +290,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read hello message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -395,7 +396,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read hello message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -419,6 +421,7 @@ namespace OpcUaStackCore
 		secureChannel->debugRecvAcknowledge(acknowledge);
 
 		handleReadAcknowledge(secureChannel, acknowledge);
+		asyncRead(secureChannel);
 	}
 
 	void
@@ -495,7 +498,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -540,6 +544,7 @@ namespace OpcUaStackCore
 			typeIdRequest,
 			openSecureChannelRequest
 		);
+		asyncRead(secureChannel);
 	}
 
 	void
@@ -560,10 +565,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelRequest(
 		SecureChannel* secureChannel,
-		uint32_t channelId,
-		SecurityHeader& securityHeader,
-		SequenceHeader& sequenceHeader,
-		OpcUaNodeId& typeIdRequest,
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
@@ -572,19 +573,34 @@ namespace OpcUaStackCore
 		boost::asio::streambuf sb2;
 		std::iostream ios2(&sb2);
 
-		OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
+		SecurityHeader securityHeader;
 		securityHeader.opcUaBinaryEncode(ios1);
 
-		sequenceHeader.opcUaBinaryEncode(ios1);
+		// encode sequence number
+		secureChannel->sendSequenceNumber_++;
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
 
+		// encode request id
+		secureChannel->sendRequestId_++;
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendRequestId_);
+
+		// encode request type id
+		OpcUaNodeId typeIdRequest;
+		typeIdRequest.nodeId(OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
 		typeIdRequest.opcUaBinaryEncode(ios1);
 
+		// encode open secure channel request
 		openSecureChannelRequest.opcUaBinaryEncode(ios1);
 
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendOpenSecureChannel(openSecureChannelRequest);
 
 		asyncWriteCount_++;
 		secureChannel->async_write(
@@ -639,7 +655,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelResponse message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -783,7 +800,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -874,7 +892,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -967,7 +986,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -1149,7 +1169,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -1195,7 +1216,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -1377,7 +1399,8 @@ namespace OpcUaStackCore
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
 			closeChannel(secureChannel);
 			return;
@@ -1385,6 +1408,35 @@ namespace OpcUaStackCore
 
 		asyncWriteMessageResponse(secureChannel);
 	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Error
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::asyncReadError(SecureChannel* secureChannel)
+	{
+		secureChannel->async_read_exactly(
+			secureChannel->recvBuffer_,
+			boost::bind(
+				&SecureChannelBase::asyncReadErrorComplete,
+				this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::bytes_transferred,
+				secureChannel
+			),
+			secureChannel->messageHeader_.messageSize() - 8
+		);
+	}
+
+	void
+	SecureChannelBase::asyncReadErrorComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel)
+	{
+	}
+
 
 
 	// ------------------------------------------------------------------------

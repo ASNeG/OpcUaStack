@@ -25,6 +25,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
+#include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 
 namespace OpcUaStackCore
 {
@@ -35,7 +36,9 @@ namespace OpcUaStackCore
 	  public:
 		typedef enum {
 			S_Init,
-			S_Hello
+			S_Hello,
+			S_Acknowledge,
+			S_OpenSecureChannel,
 		} State;
 
 		SecureChannel(IOService* ioService);
@@ -53,6 +56,7 @@ namespace OpcUaStackCore
 
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
+		void debugSendOpenSecureChannel(OpenSecureChannelRequest& openSecureChannelRequest);
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -77,6 +81,8 @@ namespace OpcUaStackCore
 		bool sendFirstSegment_;
 		bool recvFirstSegment_;
 		bool asyncSend_;
+		OpcUaUInt32 sendRequestId_;
+		OpcUaUInt32 recvRequestId_;
 		OpcUaUInt32 sendSequenceNumber_;
 		OpcUaUInt32 recvSequenceNumber_;
 
