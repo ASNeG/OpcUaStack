@@ -22,21 +22,12 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 
 namespace OpcUaStackCore
 {
-	typedef enum 
-	{
-		ISSUE = 0,
-		RENEW = 1
-	} RequestType;
-
-	typedef enum
-	{
-		None = 1
-	} SecurityMode;
 
 	class DLLEXPORT OpenSecureChannelRequest : public  ObjectPool<OpenSecureChannelRequest>
 	{

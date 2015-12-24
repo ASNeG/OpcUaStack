@@ -31,6 +31,8 @@ namespace OpcUaStackCore
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
 	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
 	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
+	, securityMode_(SM_None)
+	, securityPolicy_(SP_None)
 	, debug_(false)
 	, debugHeader_(false)
 	{
@@ -86,6 +88,30 @@ namespace OpcUaStackCore
 	SecureChannelConfig::maxChunkCount(void)
 	{
 		return maxChunkCount_;
+	}
+
+	void
+	SecureChannelConfig::securityMode(SecurityMode securityMode)
+	{
+		securityMode_ = securityMode;
+	}
+
+	SecurityMode
+	SecureChannelConfig::securityMode(void)
+	{
+		return securityMode_;
+	}
+
+	void
+	SecureChannelConfig::securityPolicy(SecurityPolicy securityPolicy)
+	{
+		securityPolicy_ = securityPolicy;
+	}
+
+	SecurityPolicy
+	SecureChannelConfig::securityPolicy(void)
+	{
+		return securityPolicy_;
 	}
 
 	void

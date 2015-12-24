@@ -23,18 +23,25 @@
 namespace OpcUaStackCore
 {
 
+	typedef enum
+	{
+		RT_ISSUE = 0,
+		RT_RENEW = 1
+	} RequestType;
+
+
 	typedef enum {
-		None,
-		Sign,
-		SignAndEncrypt
+		SM_None = 1,
+		SM_Sign,
+		SM_SignAndEncrypt
 	} SecurityMode;
 
 	typedef enum
 	{
-		None,
-		Basic128Rsa15,
-		Basic256,
-		Basic256Sha256
+		SP_None,
+		SP_Basic128Rsa15,
+		SP_Basic256,
+		SP_Basic256Sha256
 	} SecurityPolicy;
 
 }

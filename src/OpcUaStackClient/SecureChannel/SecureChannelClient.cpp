@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackClient/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelTypes.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
@@ -605,7 +606,7 @@ namespace OpcUaStackClient
 		OpcUaByte clientNonce[1];
 		clientNonce[0] = 0x00;
 		OpenSecureChannelRequest openSecureChannelRequest;
-		openSecureChannelRequest.securityMode(None);
+		openSecureChannelRequest.securityMode(SM_None);
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(300000);
 		openSecureChannelRequest.opcUaBinaryEncode(ios1);

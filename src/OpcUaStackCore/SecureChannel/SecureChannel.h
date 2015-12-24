@@ -92,6 +92,9 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount_;
 		std::string endpointUrl_;
 
+		SecurityMode securityMode_;
+		SecurityPolicy securityPolicy_;
+
 	  private:
 		void debugRead(const std::string& message);
 		void debugWrite(const std::string& message);

@@ -486,6 +486,15 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		SecurityHeader securityHeader;
+		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
+		switch (secureChannel->securityPolicy_)
+		{
+			case SP_None: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None"; break;
+			case SP_Basic128Rsa15: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#xxx"; break;
+			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#xxx"; break;
+			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#xxx"; break;
+		}
+		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
 		securityHeader.opcUaBinaryEncode(ios1);
 
 		// encode sequence number

@@ -80,6 +80,8 @@ namespace OpcUaStackCore
 		secureChannel->sendBufferSize_ = config->sendBufferSize();
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
+		secureChannel->securityMode_ = config->securityMode();
+		secureChannel->securityPolicy_ = config->securityPolicy();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 		secureChannel->debug_ = config->debug();
 		secureChannel->debugHeader_ = config->debugHeader();
@@ -187,8 +189,8 @@ namespace OpcUaStackCore
 		secureChannel->channelId_ = 0;
 		OpenSecureChannelRequest openSecureChannelRequest;
 		openSecureChannelRequest.clientProtocolVersion(0);
-		openSecureChannelRequest.requestType(ISSUE);
-		openSecureChannelRequest.securityMode(None);
+		openSecureChannelRequest.requestType(RT_ISSUE);
+		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
 		openSecureChannelRequest.requestedLifetime(300000);
 

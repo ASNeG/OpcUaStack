@@ -58,6 +58,9 @@ namespace OpcUaStackCore
 	, recvRequestId_(0)
 	, sendSequenceNumber_(0)
 	, recvSequenceNumber_(0)
+
+	, securityMode_(SM_None)
+	, securityPolicy_(SP_None)
 	{
 	}
 
