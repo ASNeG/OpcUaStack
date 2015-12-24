@@ -113,27 +113,38 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	SecureChannelClient::connect(SecureChannelClientConfig& secureChannelClientconfig)
+	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientconfig)
 	{
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
-				.parameter("EndpointUrl", secureChannelClientconfig.endpointUrl());
+				.parameter("EndpointUrl", secureChannelClientconfig->endpointUrl());
 			return false;
 		}
 
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioService_);
-		// FIXME: muss fuer reconnect zwischengespeichert werden....
-		secureChannel->receivedBufferSize_ = secureChannelClientconfig.receivedBufferSize();
-		secureChannel->sendBufferSize_ = secureChannelClientconfig.sendBufferSize();
-		secureChannel->maxMessageSize_ = secureChannelClientconfig.maxMessageSize();
-		secureChannel->maxChunkCount_ = secureChannelClientconfig.maxChunkCount();
-		secureChannel->endpointUrl_ = secureChannelClientconfig.endpointUrl();
-		secureChannel->debug_ = secureChannelClientconfig.debug();
-		secureChannel->debugHeader_ = secureChannelClientconfig.debugHeader();
+		secureChannel->config_ = secureChannelClientconfig;
+		connect(secureChannel);
+		return true;
+	}
+
+
+	void
+	SecureChannelClient::connect(SecureChannel* secureChannel)
+	{
+		SecureChannelClientConfig::SPtr config;
+		config = boost::static_pointer_cast<SecureChannelClientConfig>(secureChannel->config_);
+
+		secureChannel->receivedBufferSize_ = config->receivedBufferSize();
+		secureChannel->sendBufferSize_ = config->sendBufferSize();
+		secureChannel->maxMessageSize_ = config->maxMessageSize();
+		secureChannel->maxChunkCount_ = config->maxChunkCount();
+		secureChannel->endpointUrl_ = config->endpointUrl();
+		secureChannel->debug_ = config->debug();
+		secureChannel->debugHeader_ = config->debugHeader();
 
 		// get ip address from hostname
-		Url url(secureChannelClientconfig.endpointUrl());
+		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
 		resolver_.async_resolve(
@@ -146,7 +157,6 @@ namespace OpcUaStackCore
 				secureChannel
 			)
 		);
-		return true;
 	}
 
 	void

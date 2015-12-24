@@ -68,7 +68,7 @@ namespace OpcUaStackCore
 		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
 		SecureChannelClientIf* secureChannelClientIf(void);
 
-		bool connect(SecureChannelClientConfig& secureChannelClientConfig);
+		bool connect(SecureChannelClientConfig::SPtr secureChannelClientConfig);
 
 		//- SecureChannelBase -------------------------------------------------
 		void handleDisconnect(SecureChannel* secureChannel);
@@ -76,6 +76,7 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
+		void connect(SecureChannel* secureChannel);
 		void resolveComplete(
 			const boost::system::error_code& error,
 			boost::asio::ip::tcp::resolver::iterator endpointIterator,

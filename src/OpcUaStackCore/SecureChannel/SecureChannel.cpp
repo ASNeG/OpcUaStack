@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 	SecureChannel::SecureChannel(IOService* ioService)
 	: TCPConnection(ioService->io_service())
 	, state_(S_Init)
+	, config_()
 	, closeFlag_(false)
 	, recvBuffer_()
 	, sendBuffer_()

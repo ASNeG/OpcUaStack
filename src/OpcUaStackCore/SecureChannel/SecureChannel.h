@@ -57,6 +57,7 @@ namespace OpcUaStackCore
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
 		State state_;
+		Object::SPtr config_;
 		bool closeFlag_;
 		bool timeout_;
 		bool debug_;

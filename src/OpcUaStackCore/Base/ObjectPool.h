@@ -33,14 +33,15 @@ namespace OpcUaStackCore
 
 	template<typename OBJ>
 	  typename OBJ::SPtr construct(void) {
-		typename OBJ::SPtr object;
-		return object;
+		return typename OBJ::SPtr(new OBJ());
 	  }
 
+#if 0
 	template<typename OBJ>
 	  bool construct(typename OBJ::SPtr& object) {
 		return true;
 	  }
+#endif
 
 
 
