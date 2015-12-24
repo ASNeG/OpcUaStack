@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelData::SecureChannelData(void)
+	SecureChannelConfig::SecureChannelConfig(void)
 	: receivedBufferSize_(MessageDefaults::receivedBufferSizeDefault_)
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
 	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
@@ -41,78 +41,78 @@ namespace OpcUaStackCore
 	{
 	}
 
-	SecureChannelData::~SecureChannelData(void)
+	SecureChannelConfig::~SecureChannelConfig(void)
 	{
 	}
 
 	void
-	SecureChannelData::receivedBufferSize(OpcUaUInt32 receivedBufferSize)
+	SecureChannelConfig::receivedBufferSize(OpcUaUInt32 receivedBufferSize)
 	{
 		receivedBufferSize_ = receivedBufferSize;
 	}
 
 	OpcUaUInt32
-	SecureChannelData::receivedBufferSize(void)
+	SecureChannelConfig::receivedBufferSize(void)
 	{
 		return receivedBufferSize_;
 	}
 
 	void
-	SecureChannelData::sendBufferSize(OpcUaUInt32 sendBufferSize)
+	SecureChannelConfig::sendBufferSize(OpcUaUInt32 sendBufferSize)
 	{
 		sendBufferSize_ = sendBufferSize;
 	}
 
 	OpcUaUInt32
-	SecureChannelData::sendBufferSize(void)
+	SecureChannelConfig::sendBufferSize(void)
 	{
 		return sendBufferSize_;
 	}
 
 	void
-	SecureChannelData::maxMessageSize(OpcUaUInt32 maxMessageSize)
+	SecureChannelConfig::maxMessageSize(OpcUaUInt32 maxMessageSize)
 	{
 		maxMessageSize_ = maxMessageSize;
 	}
 
 	OpcUaUInt32
-	SecureChannelData::maxMessageSize(void)
+	SecureChannelConfig::maxMessageSize(void)
 	{
 		return maxMessageSize_;
 	}
 
 	void
-	SecureChannelData::maxChunkCount(OpcUaUInt32 maxChunkCount)
+	SecureChannelConfig::maxChunkCount(OpcUaUInt32 maxChunkCount)
 	{
 		maxChunkCount_ = maxChunkCount;
 	}
 
 	OpcUaUInt32
-	SecureChannelData::maxChunkCount(void)
+	SecureChannelConfig::maxChunkCount(void)
 	{
 		return maxChunkCount_;
 	}
 
 	void
-	SecureChannelData::debug(bool debug)
+	SecureChannelConfig::debug(bool debug)
 	{
 		debug_ = debug;
 	}
 
 	bool
-	SecureChannelData::debug(void)
+	SecureChannelConfig::debug(void)
 	{
 		return debug_;
 	}
 
 	void
-	SecureChannelData::debugHeader(bool debugHeader)
+	SecureChannelConfig::debugHeader(bool debugHeader)
 	{
 		debugHeader_ = debugHeader;
 	}
 
 	bool
-	SecureChannelData::debugHeader(void)
+	SecureChannelConfig::debugHeader(void)
 	{
 		return debugHeader_;
 	}

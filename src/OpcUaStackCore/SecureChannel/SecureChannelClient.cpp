@@ -45,37 +45,37 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelClientData::SecureChannelClientData(void)
-	: SecureChannelData()
+	SecureChannelClientConfig::SecureChannelClientConfig(void)
+	: SecureChannelConfig()
 	, endpointUrl_("")
 	, connectTimeout_(0)
 	{
 	}
 
-	SecureChannelClientData::~SecureChannelClientData(void)
+	SecureChannelClientConfig::~SecureChannelClientConfig(void)
 	{
 	}
 
 	void
-	SecureChannelClientData::endpointUrl(const std::string& endpointUrl)
+	SecureChannelClientConfig::endpointUrl(const std::string& endpointUrl)
 	{
 		endpointUrl_ = endpointUrl;
 	}
 
 	std::string&
-	SecureChannelClientData::endpointUrl(void)
+	SecureChannelClientConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
 	}
 
 	void
-	SecureChannelClientData::connectTimeout(uint32_t connectTimeout)
+	SecureChannelClientConfig::connectTimeout(uint32_t connectTimeout)
 	{
 		connectTimeout_ = connectTimeout;
 	}
 
 	uint32_t
-	SecureChannelClientData::connectTimeout(void)
+	SecureChannelClientConfig::connectTimeout(void)
 	{
 		return connectTimeout_;
 	}
@@ -113,27 +113,27 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	SecureChannelClient::connect(SecureChannelClientData& secureChannelClientData)
+	SecureChannelClient::connect(SecureChannelClientConfig& secureChannelClientconfig)
 	{
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
-				.parameter("EndpointUrl", secureChannelClientData.endpointUrl());
+				.parameter("EndpointUrl", secureChannelClientconfig.endpointUrl());
 			return false;
 		}
 
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioService_);
 		// FIXME: muss fuer reconnect zwischengespeichert werden....
-		secureChannel->receivedBufferSize_ = secureChannelClientData.receivedBufferSize();
-		secureChannel->sendBufferSize_ = secureChannelClientData.sendBufferSize();
-		secureChannel->maxMessageSize_ = secureChannelClientData.maxMessageSize();
-		secureChannel->maxChunkCount_ = secureChannelClientData.maxChunkCount();
-		secureChannel->endpointUrl_ = secureChannelClientData.endpointUrl();
-		secureChannel->debug_ = secureChannelClientData.debug();
-		secureChannel->debugHeader_ = secureChannelClientData.debugHeader();
+		secureChannel->receivedBufferSize_ = secureChannelClientconfig.receivedBufferSize();
+		secureChannel->sendBufferSize_ = secureChannelClientconfig.sendBufferSize();
+		secureChannel->maxMessageSize_ = secureChannelClientconfig.maxMessageSize();
+		secureChannel->maxChunkCount_ = secureChannelClientconfig.maxChunkCount();
+		secureChannel->endpointUrl_ = secureChannelClientconfig.endpointUrl();
+		secureChannel->debug_ = secureChannelClientconfig.debug();
+		secureChannel->debugHeader_ = secureChannelClientconfig.debugHeader();
 
 		// get ip address from hostname
-		Url url(secureChannelClientData.endpointUrl());
+		Url url(secureChannelClientconfig.endpointUrl());
 		secureChannel->partner_.port(url.port());
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
 		resolver_.async_resolve(

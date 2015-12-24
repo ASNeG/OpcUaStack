@@ -32,11 +32,14 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannelData
+	class SecureChannelConfig
+	: public Object
 	{
 	  public:
-		SecureChannelData(void);
-		virtual ~SecureChannelData(void);
+		typedef boost::shared_ptr<SecureChannelConfig> SPtr;
+
+		SecureChannelConfig(void);
+		virtual ~SecureChannelConfig(void);
 
 		void receivedBufferSize(OpcUaUInt32 receivedBufferSize);
 		OpcUaUInt32 receivedBufferSize(void);

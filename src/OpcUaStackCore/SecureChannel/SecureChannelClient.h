@@ -38,12 +38,14 @@ namespace OpcUaStackCore
 	};
 
 
-	class SecureChannelClientData
-	: public SecureChannelData
+	class SecureChannelClientConfig
+	: public SecureChannelConfig
 	{
 	  public:
-		SecureChannelClientData(void);
-		~SecureChannelClientData(void);
+		typedef boost::shared_ptr<SecureChannelClientConfig> SPtr;
+
+		SecureChannelClientConfig(void);
+		~SecureChannelClientConfig(void);
 
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
@@ -66,7 +68,7 @@ namespace OpcUaStackCore
 		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
 		SecureChannelClientIf* secureChannelClientIf(void);
 
-		bool connect(SecureChannelClientData& secureChannelClientData);
+		bool connect(SecureChannelClientConfig& secureChannelClientConfig);
 
 		//- SecureChannelBase -------------------------------------------------
 		void handleDisconnect(SecureChannel* secureChannel);

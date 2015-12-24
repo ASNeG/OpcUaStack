@@ -51,11 +51,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	secureChannelClientTest.handleEstablished_.condition(1,0);
-	SecureChannelClientData secureChannelClientData;
-	secureChannelClientData.endpointUrl("opt.tcp://192.168.122.99:48010");
-	secureChannelClientData.debug(false);
-	secureChannelClientData.debugHeader(true);
-	BOOST_REQUIRE(secureChannelClient.connect(secureChannelClientData) == true);
+	SecureChannelClientConfig secureChannelClientConfig;
+	secureChannelClientConfig.endpointUrl("opt.tcp://192.168.122.99:48010");
+	secureChannelClientConfig.debug(false);
+	secureChannelClientConfig.debugHeader(true);
+	BOOST_REQUIRE(secureChannelClient.connect(secureChannelClientConfig) == true);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(secureChannelClientTest.handleEstablished_.waitForCondition(1000) == true);
 }
