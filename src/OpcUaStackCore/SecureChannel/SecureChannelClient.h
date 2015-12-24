@@ -21,6 +21,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 

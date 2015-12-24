@@ -27,8 +27,8 @@ namespace OpcUaStackCore
 	class SecureChannelClientIf
 	{
 	  public:
-		SecureChannelClientIf(void);
-		virtual ~SecureChannelClientIf(void);
+		SecureChannelClientIf(void) {}
+		virtual ~SecureChannelClientIf(void) {}
 
 		virtual void handleConnect(SecureChannel* secureChannel) = 0;
 		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
