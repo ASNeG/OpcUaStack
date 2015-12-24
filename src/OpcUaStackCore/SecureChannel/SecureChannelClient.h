@@ -21,22 +21,11 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 
 namespace OpcUaStackCore
 {
-
-	class SecureChannelClientIf
-	{
-	  public:
-		SecureChannelClientIf(void);
-		virtual ~SecureChannelClientIf(void);
-
-		virtual void handleConnect(SecureChannel* secureChannel) = 0;
-		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
-		virtual void handleEstablished(SecureChannel* secureChannel) = 0;
-	};
-
 
 	class SecureChannelClientConfig
 	: public SecureChannelConfig
