@@ -1445,8 +1445,38 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncReadErrorComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel)
 	{
-	}
+		// error occurred
+		if (error) {
+			Log(Error, "opc ua secure channel read error message error; close channel")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
 
+			closeChannel(secureChannel);
+			return;
+		}
+
+		// partner has closed the connection
+		if (bytes_transfered == 0) {
+			Log(Debug, "opc ua secure channel is closed by partner")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// encode error message
+		std::iostream is(&secureChannel->recvBuffer_);
+		ErrorMessage errorMessage;
+		errorMessage.opcUaBinaryDecode(is);
+
+		Log(Error, "opc ua secure channel read error message; close channel")
+		    .parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string())
+			.parameter("Message", OpcUaStatusCodeMap::shortString((OpcUaStatusCode)errorMessage.error()));
+		closeChannel(secureChannel, true);
+	}
 
 
 	// ------------------------------------------------------------------------

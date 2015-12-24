@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"
+#include "OpcUaStackCore/SecureChannel/ErrorMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 #include "OpcUaStackCore/SecureChannel/CloseSecureChannelRequest.h"
