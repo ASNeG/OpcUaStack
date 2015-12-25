@@ -16,36 +16,26 @@
 
  */
 
-#ifndef __OpUaStackCore_SecureChannelServerConfig_h__
-#define __OpUaStackCore_SecureChannelServerConfig_h__
+#ifndef __OpUaStackCore_SecureChannelServerIf_h__
+#define __OpUaStackCore_SecureChannelServerIf_h__
 
-#include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 
 namespace OpcUaStackCore
 {
 
-	class SecureChannelServerConfig
-	: public SecureChannelConfig
+	class SecureChannelServerIf
 	{
 	  public:
-		typedef boost::shared_ptr<SecureChannelServerConfig> SPtr;
+		SecureChannelServerIf(void) {}
+		virtual ~SecureChannelServerIf(void) {}
 
-		SecureChannelServerConfig(void);
-		~SecureChannelServerConfig(void);
-
-		void endpointUrl(const std::string& endpointUrl);
-		std::string& endpointUrl(void);
-		void securityMode(SecurityMode securityMode);
-		SecurityMode securityMode(void);
-		void securityPolicy(SecurityPolicy securityPolicy);
-		SecurityPolicy securityPolicy(void);
-
-	  private:
-		std::string endpointUrl_;
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
+		virtual void handleConnect(SecureChannel* secureChannel) = 0;
+		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
+		virtual void handleMessageRequest(SecureChannel* secureChannel) = 0;
 	};
 
 }
 
 #endif
+

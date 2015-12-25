@@ -3,6 +3,7 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+//#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 
 using namespace OpcUaStackCore;
@@ -28,10 +29,38 @@ class SecureChannelClientTest
 	Condition handleMessageResponse_;
 	void handleMessageResponse(SecureChannel* secureChannel)
 	{
-		std::cout << "handleMessageRequest" << std::endl;
+		std::cout << "handleMessageResponse" << std::endl;
 		handleMessageResponse_.conditionValueDec();
 	}
 };
+
+#if 0
+class SecureChannelServerTest
+: public SecureChannelServerIf
+{
+  public:
+	Condition handleConnect_;
+	void handleConnect(SecureChannel* secureChannel)
+	{
+		std::cout << "handleConnect" << std::endl;
+		handleConnect_.conditionValueDec();
+	}
+
+	Condition handleDisconnect_;
+	void handleDisconnect(SecureChannel* secureChannel)
+	{
+		std::cout << "handleDisconnect" << std::endl;
+		handleDisconnect_.conditionValueDec();
+	}
+
+	Condition handleMessageRequest_;
+	void handleMessageRequest(SecureChannel* secureChannel)
+	{
+		std::cout << "handleMessageRequest" << std::endl;
+		handleMessageRequest_.conditionValueDec();
+	}
+};
+#endif
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
 

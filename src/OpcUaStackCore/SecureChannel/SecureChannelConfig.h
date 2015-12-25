@@ -43,10 +43,6 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxMessageSize(void);
 		void maxChunkCount(OpcUaUInt32 maxChunkCount);
 		OpcUaUInt32 maxChunkCount(void);
-		void securityMode(SecurityMode securityMode);
-		SecurityMode securityMode(void);
-		void securityPolicy(SecurityPolicy securityPolicy);
-		SecurityPolicy securityPolicy(void);
 		void debug(bool debug);
 		bool debug(void);
 		void debugHeader(bool debugHeader);
@@ -59,9 +55,6 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxChunkCount_;
 		bool debug_;
 		bool debugHeader_;
-
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
 	};
 
 }

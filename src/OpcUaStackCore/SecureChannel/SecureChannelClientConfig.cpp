@@ -30,6 +30,8 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::SecureChannelClientConfig(void)
 	: SecureChannelConfig()
 	, endpointUrl_("")
+	, securityMode_(SM_None)
+	, securityPolicy_(SP_None)
 	, connectTimeout_(0)
 	{
 	}
@@ -48,6 +50,30 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
+	}
+
+	void
+	SecureChannelClientConfig::securityMode(SecurityMode securityMode)
+	{
+		securityMode_ = securityMode;
+	}
+
+	SecurityMode
+	SecureChannelClientConfig::securityMode(void)
+	{
+		return securityMode_;
+	}
+
+	void
+	SecureChannelClientConfig::securityPolicy(SecurityPolicy securityPolicy)
+	{
+		securityPolicy_ = securityPolicy;
+	}
+
+	SecurityPolicy
+	SecureChannelClientConfig::securityPolicy(void)
+	{
+		return securityPolicy_;
 	}
 
 	void

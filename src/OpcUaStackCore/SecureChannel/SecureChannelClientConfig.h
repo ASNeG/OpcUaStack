@@ -35,11 +35,18 @@ namespace OpcUaStackCore
 
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
+		void securityMode(SecurityMode securityMode);
+		SecurityMode securityMode(void);
+		void securityPolicy(SecurityPolicy securityPolicy);
+		SecurityPolicy securityPolicy(void);
 		void connectTimeout(uint32_t connectTimeout);
 		uint32_t connectTimeout(void);
 
 	  private:
 		std::string endpointUrl_;
+		SecurityMode securityMode_;
+		SecurityPolicy securityPolicy_;
+
 		uint32_t connectTimeout_;
 	};
 
