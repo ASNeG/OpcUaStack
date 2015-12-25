@@ -110,10 +110,6 @@ namespace OpcUaStackCore
 		);
 		virtual void handleReadOpenSecureChannelResponse(
 			SecureChannel* secureChannel,
-			uint32_t channelId,
-			SecurityHeader& securityHeader,
-			SequenceHeader& sequenceHeader,
-			OpcUaNodeId& typeIdResponse,
 			OpenSecureChannelResponse& openSecureChannelResponse
 		);
 		virtual void handleReadCloseSecureChannelRequest(

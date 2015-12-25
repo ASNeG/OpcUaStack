@@ -28,8 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SecurityToken::SecurityToken(void)
-	: channelId_()
-	, tokenId_()
+	: channelId_(0)
+	, tokenId_(0)
 	, createAt_()
 	, revisedLifetime_()
 	{

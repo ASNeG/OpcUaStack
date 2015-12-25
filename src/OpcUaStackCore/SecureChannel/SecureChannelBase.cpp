@@ -591,9 +591,6 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugReadOpenSecureChannelResponse();
-
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		OpcUaUInt32 channelId;
@@ -602,9 +599,13 @@ namespace OpcUaStackCore
 		SecurityHeader securityHeader;
 		securityHeader.opcUaBinaryDecode(is);
 
-		SequenceHeader sequenceHeader;
-		sequenceHeader.opcUaBinaryDecode(is);
+		// encode sequence number
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
 
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_);
+
+		// encode type id
 		OpcUaNodeId typeIdResponse;
 		typeIdResponse.opcUaBinaryDecode(is);
 
@@ -612,12 +613,11 @@ namespace OpcUaStackCore
 		openSecureChannelResponse.opcUaBinaryDecode(is);
 		consumeAll(secureChannel->recvBuffer_);
 
+		// debug output
+		secureChannel->debugReadOpenSecureChannel(openSecureChannelResponse);
+
 		handleReadOpenSecureChannelResponse(
 			secureChannel,
-			channelId,
-			securityHeader,
-			sequenceHeader,
-			typeIdResponse,
 			openSecureChannelResponse
 		);
 		asyncRead(secureChannel);
@@ -626,10 +626,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleReadOpenSecureChannelResponse(
 		SecureChannel* secureChannel,
-		uint32_t channelId,
-		SecurityHeader& securityHeader,
-		SequenceHeader& sequenceHeader,
-		OpcUaNodeId& typeIdResponse,
 		OpenSecureChannelResponse& openSecureChannelResponse
 	)
 	{
@@ -1012,7 +1008,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode token id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->securityTokenId_);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
@@ -1243,7 +1239,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode token id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->securityTokenId_);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;

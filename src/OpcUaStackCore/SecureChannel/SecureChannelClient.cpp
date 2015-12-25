@@ -200,9 +200,25 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannelClient::handleReadOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
+	{
+		// set security parameter
+		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
+		secureChannel->channelId_ = securityToken->channelId();
+		secureChannel->tokenId_ = securityToken->tokenId();
+		secureChannel->createAt_ = securityToken->createAt();
+		secureChannel->revisedLifetime_ = securityToken->revisedLifetime();
+
+		std::cout << "SecureChannelClient::handleConnect" << std::endl;
+		secureChannel->state_ = SecureChannel::S_Established;
+		secureChannelClientIf_->handleEstablished(secureChannel);
+	}
+
+	void
 	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
 	{
 		std::cout << "SecureChannelClient::handleDisconnect" << std::endl;
+		secureChannelClientIf_->handleDisconnect(secureChannel);
 	}
 
 }

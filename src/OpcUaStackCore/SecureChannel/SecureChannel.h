@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
+#include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -39,6 +40,7 @@ namespace OpcUaStackCore
 			S_Hello,
 			S_Acknowledge,
 			S_OpenSecureChannel,
+			S_Established,
 		} State;
 
 		SecureChannel(IOService* ioService);
@@ -48,7 +50,7 @@ namespace OpcUaStackCore
 		void debugReadHello(void);
 		void debugRecvAcknowledge(AcknowledgeMessage& acknowledge);
 		void debugReadOpenSecureChannelRequest(void);
-		void debugReadOpenSecureChannelResponse(void);
+		void debugReadOpenSecureChannel(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugReadCloseSecureChannelRequest(void);
 		void debugReadCloseSecureChannelResponse(void);
 		void debugReadMessageRequest(void);
@@ -57,6 +59,7 @@ namespace OpcUaStackCore
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
 		void debugSendOpenSecureChannel(OpenSecureChannelRequest& openSecureChannelRequest);
+
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
@@ -72,7 +75,9 @@ namespace OpcUaStackCore
 		boost::asio::ip::tcp::endpoint partner_;
 
 		OpcUaUInt32 channelId_;
-		OpcUaUInt32 securityTokenId_;
+		OpcUaUInt32 tokenId_;
+		UtcTime createAt_;
+		OpcUaInt32 revisedLifetime_;
 
 		OpcUaNodeId typeId_;
 		MessageHeader messageHeader_;

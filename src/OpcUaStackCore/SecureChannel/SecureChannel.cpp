@@ -38,10 +38,13 @@ namespace OpcUaStackCore
 	, debug_(false)
 	, debugHeader_(false)
 	, asyncSend_(false)
-	, channelId_(0)
-	, securityTokenId_(0)
 	, typeId_()
 	, messageHeader_()
+
+	, channelId_(0)
+	, tokenId_(0)
+	, createAt_()
+	, revisedLifetime_(0)
 
 	, receivedBufferSize_(MessageDefaults::receivedBufferSizeDefault_)
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
@@ -135,10 +138,18 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadOpenSecureChannelResponse(void)
+	SecureChannel::debugReadOpenSecureChannel(OpenSecureChannelResponse& openSecureChannelResponse)
 	{
 		if (!debug_) return;
-		debugRead("OpenSecureChannelResponse");
+		Log(Debug, "opc ua secure channel recv OpenSecureChannelResponse")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", openSecureChannelResponse.securityToken()->channelId())
+			.parameter("TokenId", openSecureChannelResponse.securityToken()->channelId())
+			.parameter("CreateAt", openSecureChannelResponse.securityToken()->createAt())
+			.parameter("RevisedTime", openSecureChannelResponse.securityToken()->revisedLifetime());
 	}
 
 	void
@@ -231,10 +242,13 @@ namespace OpcUaStackCore
 			.parameter("Local-Port", local_.port())
 			.parameter("Partner-Address", partner_.address().to_string())
 			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_)
 			.parameter("RequestType", openSecureChannelRequest.requestType())
 			.parameter("SecurityMode", openSecureChannelRequest.securityMode())
 			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
 	}
+
+
 
 }
 
