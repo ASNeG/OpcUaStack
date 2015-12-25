@@ -174,10 +174,17 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadMessageResponse(void)
+	SecureChannel::debugReadMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
 		if (!debug_) return;
-		debugRead("MessageResponse");
+		Log(Debug, "opc ua secure channel recv MessageResponse")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_)
+			.parameter("ResponseType", secureChannelTransaction->responseTypeNodeId_.toString())
+			.parameter("RequestId", secureChannelTransaction->requestId_);
 	}
 
 	void

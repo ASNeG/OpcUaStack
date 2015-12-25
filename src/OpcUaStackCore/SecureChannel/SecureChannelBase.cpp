@@ -1205,16 +1205,11 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugReadMessageResponse();
-
 		std::iostream ios(&secureChannel->recvBuffer_);
 
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(ios, channelId);
+		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->channelId_);
 
-		OpcUaUInt32 securityTokenId;
-		OpcUaNumber::opcUaBinaryDecode(ios, securityTokenId);
+		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
 
 		SequenceHeader sequenceHeader;
 		sequenceHeader.opcUaBinaryDecode(ios);
@@ -1223,40 +1218,26 @@ namespace OpcUaStackCore
 			secureChannel->typeId_.opcUaBinaryDecode(ios);
 		}
 
-		Log(Debug, "opc ua secure channel read message request")
-			.parameter("ChannelId", channelId)
-			.parameter("MessageType", secureChannel->typeId_)
-			.parameter("RequestId", sequenceHeader.requestId())
-			.parameter("SequenceNumber", sequenceHeader.sequenceNumber())
-			.parameter("SegmentFlag", secureChannel->messageHeader_.segmentFlag());
-
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
 		consumeAll(secureChannel->recvBuffer_);
 
+		// debug output
+		secureChannel->debugReadMessageResponse(secureChannel->secureChannelTransaction_);
+
 		// read next segment
-		if (secureChannel->messageHeader_.segmentFlag() == 'F') {
+		if (secureChannel->messageHeader_.segmentFlag() != 'F') {
 			asyncRead(secureChannel);
 			return;
 		}
 
 		// message is completed
 		secureChannel->secureChannelTransaction_.reset();
-		handleReadMessageResponse(
-			secureChannel,
-			channelId,
-			securityTokenId,
-			sequenceHeader
-		);
+		handleReadMessageResponse(secureChannel);
 		asyncRead(secureChannel);
 	}
 
 	void
-	SecureChannelBase::handleReadMessageResponse(
-		SecureChannel* secureChannel,
-		uint32_t channelId,
-		OpcUaUInt32 securityTokenId,
-		SequenceHeader& sequenceHeader
-	)
+	SecureChannelBase::handleReadMessageResponse(SecureChannel* secureChannel)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadMessageResponse no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())

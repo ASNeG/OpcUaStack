@@ -126,12 +126,7 @@ namespace OpcUaStackCore
 			OpcUaUInt32 securityTokenId,
 			SequenceHeader& sequenceHeader
 		);
-		virtual void handleReadMessageResponse(
-			SecureChannel* secureChannel,
-			uint32_t channelId,
-			OpcUaUInt32 securityTokenId,
-			SequenceHeader& sequenceHeader
-		);
+		virtual void handleReadMessageResponse(SecureChannel* secureChannel);
 
 		void asyncRead(SecureChannel* secureChannel);
 

@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 		void debugReadCloseSecureChannelRequest(void);
 		void debugReadCloseSecureChannelResponse(void);
 		void debugReadMessageRequest(void);
-		void debugReadMessageResponse(void);
+		void debugReadMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);

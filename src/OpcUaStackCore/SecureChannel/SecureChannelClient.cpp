@@ -226,6 +226,12 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannelClient::handleReadMessageResponse(SecureChannel* secureChannel)
+	{
+		secureChannelClientIf_->handleMessageResponse(secureChannel);
+	}
+
+	void
 	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
 	{
 		secureChannelClientIf_->handleDisconnect(secureChannel);

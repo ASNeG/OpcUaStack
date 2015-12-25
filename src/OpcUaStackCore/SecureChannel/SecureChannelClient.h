@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		void handleDisconnect(SecureChannel* secureChannel);
 		void handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge);
 		void handleReadOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse);
+		void handleReadMessageResponse(SecureChannel* secureChannel);
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
