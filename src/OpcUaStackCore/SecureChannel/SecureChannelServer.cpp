@@ -117,7 +117,7 @@ namespace OpcUaStackCore
 
 			return;
 		}
-		secureChannel->local_.address((*endpointIterator).endpoint().address());
+		secureChannel->local_ = ((*endpointIterator).endpoint());
 
 		// open connection from client to server
 		if (tcpAcceptor_ == nullptr) {
@@ -127,6 +127,8 @@ namespace OpcUaStackCore
 
 			tcpAcceptor_ = new TCPAcceptor(ioService_->io_service(), secureChannel->local_);
 			tcpAcceptor_->listen();
+
+			secureChannelServerIf_->handleEndpointOpen();
 		}
 
 		secureChannel->state_ = SecureChannel::S_Accepting;
@@ -179,8 +181,54 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelServer::handleReadHello(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	SecureChannelServer::handleReadHello(SecureChannel* secureChannel, HelloMessage& hello)
 	{
+		AcknowledgeMessage acknowledge;
+
+		// check protocol version
+		if (hello.protocolVersion() != 0) {
+			Log(Error, "receive invalid protocol version in hello request");
+			// FIXME:
+		}
+		acknowledge.protocolVersion(0);
+
+		// check received buffer size
+		if (hello.receivedBufferSize() > secureChannel->receivedBufferSize_) {
+			acknowledge.receivedBufferSize(secureChannel->receivedBufferSize_);
+		}
+		else {
+			acknowledge.receivedBufferSize(hello.receivedBufferSize());
+		}
+		secureChannel->receivedBufferSize_ = acknowledge.receivedBufferSize();
+
+		// check send buffer size
+		if (hello.sendBufferSize() > secureChannel->sendBufferSize_) {
+			acknowledge.sendBufferSize(secureChannel->sendBufferSize_);
+		}
+		else {
+			acknowledge.sendBufferSize(hello.sendBufferSize());
+		}
+		secureChannel->sendBufferSize_ = acknowledge.sendBufferSize();
+
+		// check max message size
+		if (hello.maxMessageSize() > secureChannel->maxMessageSize_) {
+			acknowledge.maxMessageSize(secureChannel->maxMessageSize_);
+		}
+		else {
+			acknowledge.maxMessageSize(hello.maxMessageSize());
+		}
+		secureChannel->maxMessageSize_ = acknowledge.maxMessageSize();
+
+		// check max chunk count
+		if (hello.maxChunkCount() > secureChannel->maxChunkCount_) {
+			acknowledge.maxChunkCount(secureChannel->maxChunkCount_);
+		}
+		else {
+			acknowledge.maxChunkCount(hello.maxChunkCount());
+		}
+		secureChannel->maxChunkCount_ = acknowledge.maxChunkCount();
+
+		asyncWriteAcknowledge(secureChannel, acknowledge);
 	}
 
 	void

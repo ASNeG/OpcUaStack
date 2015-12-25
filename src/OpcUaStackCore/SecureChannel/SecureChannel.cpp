@@ -109,10 +109,19 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadHello(void)
+	SecureChannel::debugReadHello(HelloMessage& hello)
 	{
 		if (!debug_) return;
-		debugRead("Hello");
+		Log(Debug, "opc ua secure channel send Hello")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ReceivedBufferSize", hello.receivedBufferSize())
+			.parameter("SendBufferSize", hello.sendBufferSize())
+			.parameter("MaxMessageSize", hello.maxMessageSize())
+			.parameter("MaxChunkCount", hello.maxChunkCount())
+			.parameter("EndpointUrl", hello.endpointUrl());
 	}
 
 	void
@@ -238,6 +247,21 @@ namespace OpcUaStackCore
 			.parameter("MaxMessageSize", hello.maxMessageSize())
 			.parameter("MaxChunkCount", hello.maxChunkCount())
 			.parameter("EndpointUrl", hello.endpointUrl());
+	}
+
+	void
+	SecureChannel::debugSendAcknowledge(AcknowledgeMessage& acknowledge)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel send Acknowledge")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ReceivedBufferSize", acknowledge.receivedBufferSize())
+			.parameter("SendBufferSize", acknowledge.sendBufferSize())
+			.parameter("MaxMessageSize", acknowledge.maxMessageSize())
+			.parameter("MaxChunkCount", acknowledge.maxChunkCount());
 	}
 
 	void

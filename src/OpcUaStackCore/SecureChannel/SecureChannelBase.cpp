@@ -216,13 +216,13 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugReadHello();
-
 		std::iostream is(&secureChannel->recvBuffer_);
 		HelloMessage hello;
 		hello.opcUaBinaryDecode(is);
 		consumeAll(secureChannel->recvBuffer_);
+
+		// debug output
+		secureChannel->debugReadHello(hello);
 
 		handleReadHello(secureChannel, hello);
 		asyncRead(secureChannel);
@@ -356,6 +356,10 @@ namespace OpcUaStackCore
 		secureChannel->messageHeader_.messageType(MessageType_Acknowledge);
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendAcknowledge(acknowledge);
 
 		asyncWriteCount_++;
 		secureChannel->async_write(

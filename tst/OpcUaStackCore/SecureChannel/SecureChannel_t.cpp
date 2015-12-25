@@ -58,6 +58,20 @@ class SecureChannelServerTest
 		std::cout << "handleMessageRequest" << std::endl;
 		handleMessageRequest_.conditionValueDec();
 	}
+
+	Condition handleEndpointOpen_;
+	void handleEndpointOpen(void)
+	{
+		std::cout << "handleEndpointOpen" << std::endl;
+		handleEndpointOpen_.conditionValueDec();
+	}
+
+	Condition handleEndpointClose_;
+	void handleEndpointClose(void)
+	{
+		std::cout << "handleEndpointClose" << std::endl;
+		handleEndpointClose_.conditionValueDec();
+	}
 };
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
@@ -82,11 +96,13 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
 	// server open endpoint
+	secureChannelServerTest.handleEndpointOpen_.condition(1,0);
 	SecureChannelServerConfig::SPtr secureChannelServerConfig = construct<SecureChannelServerConfig>();
 	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
 	secureChannelServerConfig->debug(false);
 	secureChannelServerConfig->debugHeader(true);
 	secureChannelServer.accept(secureChannelServerConfig);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(1000) == true);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
