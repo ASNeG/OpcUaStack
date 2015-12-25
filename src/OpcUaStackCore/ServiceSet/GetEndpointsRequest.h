@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 
 namespace OpcUaStackCore
 {
@@ -34,6 +35,8 @@ namespace OpcUaStackCore
 		GetEndpointsRequest(void);
 		virtual ~GetEndpointsRequest(void);
 
+		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
+		RequestHeader::SPtr requestHeader(void) const;
 		void endpointUrl(const OpcUaString& endpointUrl);
 		void endpointUrl(const std::string& endpointUrl);
 		OpcUaString& endpointUrl(void);
@@ -46,6 +49,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		RequestHeader::SPtr requestHeaderSPtr_;
 		OpcUaString endpointUrl_;
 		OpcUaStringArray::SPtr localeIdArraySPtr_;
 		OpcUaStringArray::SPtr profileUriArraySPtr_;

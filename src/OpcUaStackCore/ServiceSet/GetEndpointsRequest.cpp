@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 	GetEndpointsRequest::GetEndpointsRequest(void)
 	: ObjectPool<GetEndpointsRequest>()
+	, requestHeaderSPtr_(RequestHeader::construct())
 	, endpointUrl_()
 	, localeIdArraySPtr_(OpcUaStringArray::construct())
 	, profileUriArraySPtr_(OpcUaStringArray::construct())
@@ -38,6 +39,18 @@ namespace OpcUaStackCore
 
 	GetEndpointsRequest::~GetEndpointsRequest(void)
 	{
+	}
+
+	void
+	GetEndpointsRequest::requestHeader(const RequestHeader::SPtr requestHeaderSPtr)
+	{
+		requestHeaderSPtr_ = requestHeaderSPtr;
+	}
+
+	RequestHeader::SPtr
+	GetEndpointsRequest::requestHeader(void) const
+	{
+		return requestHeaderSPtr_;
 	}
 
 	void 
@@ -85,6 +98,7 @@ namespace OpcUaStackCore
 	void 
 	GetEndpointsRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
+		requestHeaderSPtr_->opcUaBinaryEncode(os);
 		endpointUrl_.opcUaBinaryEncode(os);
 		localeIdArraySPtr_->opcUaBinaryEncode(os);
 		profileUriArraySPtr_->opcUaBinaryEncode(os);
@@ -93,6 +107,7 @@ namespace OpcUaStackCore
 	void 
 	GetEndpointsRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		requestHeaderSPtr_->opcUaBinaryDecode(is);
 		endpointUrl_.opcUaBinaryDecode(is);
 		localeIdArraySPtr_->opcUaBinaryDecode(is);
 		profileUriArraySPtr_->opcUaBinaryDecode(is);
