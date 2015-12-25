@@ -33,14 +33,14 @@ class SecureChannelClientTest
 	}
 };
 
-BOOST_AUTO_TEST_SUITE(SecureChannel_)
+BOOST_AUTO_TEST_SUITE(SecureChannelRead_)
 
 BOOST_AUTO_TEST_CASE(SecureChannel)
 {
-	std::cout << "SecureChannel_t" << std::endl;
+	std::cout << "SecureChannelRead_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
+BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelClientTest secureChannelClientTest;
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	ioService.stop();
 }
 
-BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
+BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect_with_a_second_channel)
 {
 	OpcUaStackCore::SecureChannel* secureChannel1;
 	OpcUaStackCore::SecureChannel* secureChannel2;
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	ioService.stop();
 }
 
-BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnect)
+BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_SendRequest_ReceiveResponse_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelClientTest secureChannelClientTest;

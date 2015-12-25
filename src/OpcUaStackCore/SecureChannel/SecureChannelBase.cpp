@@ -1215,7 +1215,8 @@ namespace OpcUaStackCore
 		sequenceHeader.opcUaBinaryDecode(ios);
 
 		if (secureChannel->recvFirstSegment_) {
-			secureChannel->typeId_.opcUaBinaryDecode(ios);
+			secureChannel->secureChannelTransaction_ = construct<SecureChannelTransaction>();
+			secureChannel->secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(ios);
 		}
 
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
