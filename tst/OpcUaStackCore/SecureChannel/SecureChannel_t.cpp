@@ -22,13 +22,6 @@ class SecureChannelClientTest
 		std::cout << "handleDisconnect" << std::endl;
 		handleDisconnect_.conditionValueDec();
 	}
-
-	Condition handleEstablished_;
-	void handleEstablished(SecureChannel* secureChannel)
-	{
-		std::cout << "handleEstablished" << std::endl;
-		handleEstablished_.conditionValueDec();
-	}
 };
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
@@ -40,6 +33,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel)
 
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 {
+	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelClientTest secureChannelClientTest;
 
 	IOService ioService;
@@ -50,14 +44,18 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
-	secureChannelClientTest.handleEstablished_.condition(1,0);
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
-	BOOST_REQUIRE(secureChannelClient.connect(secureChannelClientConfig) == true);
+	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
+	BOOST_REQUIRE(secureChannel != nullptr);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(secureChannelClientTest.handleEstablished_.waitForCondition(1000) == true);
+
+	// diconnect
+	secureChannelClientTest.handleDisconnect_.condition(1,0);
+	secureChannelClient.disconnect(secureChannel);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

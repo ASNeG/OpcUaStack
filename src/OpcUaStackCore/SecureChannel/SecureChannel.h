@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 			S_Hello,
 			S_Acknowledge,
 			S_OpenSecureChannel,
+			S_CloseSecureChannel,
 			S_Established,
 		} State;
 

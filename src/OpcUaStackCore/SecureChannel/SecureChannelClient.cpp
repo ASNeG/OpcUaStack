@@ -53,20 +53,33 @@ namespace OpcUaStackCore
 		return secureChannelClientIf_;
 	}
 
-	bool
+	SecureChannel*
 	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientconfig)
 	{
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
 				.parameter("EndpointUrl", secureChannelClientconfig->endpointUrl());
-			return false;
+			return nullptr;
 		}
 
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioService_);
 		secureChannel->config_ = secureChannelClientconfig;
 		connect(secureChannel);
-		return true;
+		return secureChannel;
+	}
+
+	void SecureChannelClient::disconnect(SecureChannel* secureChannel)
+	{
+		if (secureChannel->state_ != SecureChannel::S_Established) {
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
+		}
+
+		// send close secure channel request
+		secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+		asyncWriteCloseSecureChannelRequest(secureChannel);
 	}
 
 
@@ -154,7 +167,6 @@ namespace OpcUaStackCore
 
 		asyncRead(secureChannel);
 		secureChannel->local_ = secureChannel->socket().local_endpoint();
-		secureChannelClientIf_->handleConnect(secureChannel);
 
 		Log(Info, "secure channel to server connected")
 			.parameter("Address", secureChannel->partner_.address().to_string())
@@ -211,7 +223,7 @@ namespace OpcUaStackCore
 
 		std::cout << "SecureChannelClient::handleConnect" << std::endl;
 		secureChannel->state_ = SecureChannel::S_Established;
-		secureChannelClientIf_->handleEstablished(secureChannel);
+		secureChannelClientIf_->handleConnect(secureChannel);
 	}
 
 	void

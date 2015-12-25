@@ -38,7 +38,8 @@ namespace OpcUaStackCore
 		void secureChannelClientIf(SecureChannelClientIf* secureChannelClientIf);
 		SecureChannelClientIf* secureChannelClientIf(void);
 
-		bool connect(SecureChannelClientConfig::SPtr secureChannelClientConfig);
+		SecureChannel* connect(SecureChannelClientConfig::SPtr secureChannelClientConfig);
+		void disconnect(SecureChannel* secureChannel);
 
 		//- SecureChannelBase -------------------------------------------------
 		void handleDisconnect(SecureChannel* secureChannel);

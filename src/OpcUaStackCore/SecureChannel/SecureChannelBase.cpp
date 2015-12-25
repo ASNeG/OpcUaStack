@@ -767,13 +767,37 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+
+		// encode channel id
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+
+		// encode MessageHeader
+		secureChannel->messageHeader_.messageType(MessageType_CloseSecureChannel);
+		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+
+		secureChannel->async_write(
+			sb2, sb1,
+			boost::bind(
+				&SecureChannelBase::handleWriteCloseSecureChannelResponseComplete,
+				this,
+				boost::asio::placeholders::error,
+				secureChannel
+			)
+		);
 	}
 
 	void
 	SecureChannelBase::handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
-		asyncWriteCount_--;
+		secureChannel->socket().cancel();
 	}
 
 	// ------------------------------------------------------------------------
@@ -861,13 +885,37 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME
+		boost::asio::streambuf sb1;
+		std::iostream ios1(&sb1);
+		boost::asio::streambuf sb2;
+		std::iostream ios2(&sb2);
+
+		// encode channel id
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
+
+		// encode MessageHeader
+		secureChannel->messageHeader_.messageType(MessageType_CloseSecureChannel);
+		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+
+		secureChannel->async_write(
+			sb2, sb1,
+			boost::bind(
+				&SecureChannelBase::handleWriteCloseSecureChannelResponseComplete,
+				this,
+				boost::asio::placeholders::error,
+				secureChannel
+			)
+		);
 	}
 
 	void
 	SecureChannelBase::handleWriteCloseSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
-		asyncWriteCount_--;
+		secureChannel->socket().cancel();
 	}
 
 	// ------------------------------------------------------------------------
