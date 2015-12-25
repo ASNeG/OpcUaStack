@@ -40,6 +40,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel)
 	std::cout << "SecureChannel_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
@@ -155,5 +156,6 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 
 	ioService.stop();
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()

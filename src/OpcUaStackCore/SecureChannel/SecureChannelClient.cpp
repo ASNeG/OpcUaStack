@@ -128,7 +128,9 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 			secureChannelClientIf_->handleDisconnect(secureChannel);
 
+			secureChannel->state_ == SecureChannel::S_Reconnecting;
 			// FIXME: reconnect...
+
 			return;
 		}
 		secureChannel->partner_.address((*endpointIterator).endpoint().address());
@@ -137,6 +139,7 @@ namespace OpcUaStackCore
 		Log(Info, "connect secure channel to server")
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
+		secureChannel->state_ = SecureChannel::S_Connecting;
 		secureChannel->socket().async_connect(
 			secureChannel->partner_,
 			boost::bind(
@@ -161,7 +164,9 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 			secureChannelClientIf_->handleDisconnect(secureChannel);
 
+			secureChannel->state_ == SecureChannel::S_Reconnecting;
 			// FIXME: reconnect...
+
 			return;
 		}
 
@@ -234,12 +239,19 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
 	{
+		Log(Info, "secure channel to server closed")
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
+
 		secureChannelClientIf_->handleDisconnect(secureChannel);
 		if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) {
 			delete secureChannel;
 			return;
 		}
 
+		secureChannelClientIf_->handleDisconnect(secureChannel);
+
+		secureChannel->state_ == SecureChannel::S_Reconnecting;
 		// FIXME: reconnect...
 	}
 

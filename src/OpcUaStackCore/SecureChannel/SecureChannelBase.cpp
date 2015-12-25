@@ -67,7 +67,9 @@ namespace OpcUaStackCore
 	{
 		// error accurred
 		if (error) {
-			Log(Error, "opc ua secure channel read message header error; close channel")
+			LogLevel logLevel = Error;
+			if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) logLevel = Debug;
+			Log(logLevel, "opc ua secure channel read message header error; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
