@@ -231,10 +231,10 @@ namespace OpcUaStackCore
 		secureChannelClientIf_->handleDisconnect(secureChannel);
 		if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) {
 			delete secureChannel;
+			return;
 		}
-		else {
-			// FIXME: reconnect...
-		}
+
+		// FIXME: reconnect...
 	}
 
 }
