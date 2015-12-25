@@ -221,7 +221,6 @@ namespace OpcUaStackCore
 		secureChannel->createAt_ = securityToken->createAt();
 		secureChannel->revisedLifetime_ = securityToken->revisedLifetime();
 
-		std::cout << "SecureChannelClient::handleConnect" << std::endl;
 		secureChannel->state_ = SecureChannel::S_Established;
 		secureChannelClientIf_->handleConnect(secureChannel);
 	}
@@ -229,8 +228,13 @@ namespace OpcUaStackCore
 	void
 	SecureChannelClient::handleDisconnect(SecureChannel* secureChannel)
 	{
-		std::cout << "SecureChannelClient::handleDisconnect" << std::endl;
 		secureChannelClientIf_->handleDisconnect(secureChannel);
+		if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) {
+			delete secureChannel;
+		}
+		else {
+			// FIXME: reconnect...
+		}
 	}
 
 }

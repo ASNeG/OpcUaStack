@@ -56,6 +56,50 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
+
+	ioService.stop();
+}
+
+BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
+{
+	OpcUaStackCore::SecureChannel* secureChannel1;
+	OpcUaStackCore::SecureChannel* secureChannel2;
+	SecureChannelClientTest secureChannelClientTest;
+
+	IOService ioService;
+	ioService.start(1);
+
+	SecureChannelClient secureChannelClient(&ioService);
+	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
+
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
+	secureChannelClientConfig->debug(false);
+	secureChannelClientConfig->debugHeader(true);
+
+	// client connect to server
+	secureChannelClientTest.handleConnect_.condition(1,0);
+	secureChannel1 = secureChannelClient.connect(secureChannelClientConfig);
+	BOOST_REQUIRE(secureChannel1 != nullptr);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
+
+	// client connect to server
+	secureChannelClientTest.handleConnect_.condition(1,0);
+	secureChannel2 = secureChannelClient.connect(secureChannelClientConfig);
+	BOOST_REQUIRE(secureChannel2 != nullptr);
+	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
+
+	// diconnect
+	secureChannelClientTest.handleDisconnect_.condition(1,0);
+	secureChannelClient.disconnect(secureChannel1);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
+
+	// diconnect
+	secureChannelClientTest.handleDisconnect_.condition(1,0);
+	secureChannelClient.disconnect(secureChannel2);
+	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
+
+	ioService.stop();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
