@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
+#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 
 namespace OpcUaStackCore
 {
@@ -49,9 +50,21 @@ namespace OpcUaStackCore
 		//- SecureChannelBase -------------------------------------------------
 
 	  private:
+		void accept(SecureChannel* secureChannel);
+		void resolveComplete(
+			const boost::system::error_code& error,
+			boost::asio::ip::tcp::resolver::iterator endpointIterator,
+			SecureChannel* secureChannel
+		);
+		void acceptComplete(
+			const boost::system::error_code& error,
+			SecureChannel* secureChannel
+		);
+
 		IOService* ioService_;
 		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelServerIf* secureChannelServerIf_;
+		TCPAcceptor* tcpAcceptor_;
 	};
 
 }

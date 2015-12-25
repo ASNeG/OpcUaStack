@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 
 namespace OpcUaStackCore
@@ -25,6 +27,7 @@ namespace OpcUaStackCore
 	, secureChannelServerIf_(nullptr)
 	, ioService_(ioService)
 	, resolver_(ioService->io_service())
+	, tcpAcceptor_(nullptr)
 	{
 	}
 
@@ -47,11 +50,127 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
 	{
+		if (secureChannelServerIf_ == nullptr) {
+			Log(Error, "secure channel server interface invalid")
+				.parameter("EndpointUrl", secureChannelServerConfig->endpointUrl());
+			return;
+		}
+
+		// create new secure channel
+		SecureChannel* secureChannel = new SecureChannel(ioService_);
+		secureChannel->config_ = secureChannelServerConfig;
+		accept(secureChannel);
+		return;
 	}
 
 	void
 	SecureChannelServer::disconnect(SecureChannel* secureChannel)
 	{
+	}
+
+	void
+	SecureChannelServer::accept(SecureChannel* secureChannel)
+	{
+		SecureChannelServerConfig::SPtr config;
+		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+
+		secureChannel->receivedBufferSize_ = config->receivedBufferSize();
+		secureChannel->sendBufferSize_ = config->sendBufferSize();
+		secureChannel->maxMessageSize_ = config->maxMessageSize();
+		secureChannel->maxChunkCount_ = config->maxChunkCount();
+		secureChannel->securityMode_ = config->securityMode();
+		secureChannel->securityPolicy_ = config->securityPolicy();
+		secureChannel->endpointUrl_ = config->endpointUrl();
+		secureChannel->debug_ = config->debug();
+		secureChannel->debugHeader_ = config->debugHeader();
+
+		// get ip address from hostname
+		Url url(config->endpointUrl());
+		secureChannel->partner_.port(url.port());
+		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
+		resolver_.async_resolve(
+			query,
+			boost::bind(
+				&SecureChannelServer::resolveComplete,
+				this,
+				boost::asio::placeholders::error(),
+				boost::asio::placeholders::iterator,
+				secureChannel
+			)
+		);
+	}
+
+	void
+	SecureChannelServer::resolveComplete(
+		const boost::system::error_code& error,
+		boost::asio::ip::tcp::resolver::iterator endpointIterator,
+		SecureChannel* secureChannel
+	)
+	{
+		if (error) {
+			Log(Error, "address resolver error")
+				.parameter("EndpointUrl", secureChannel->endpointUrl_)
+				.parameter("Message", error.message());
+			secureChannelServerIf_->handleDisconnect(secureChannel);
+
+			// FIXME: error
+
+			return;
+		}
+		secureChannel->local_.address((*endpointIterator).endpoint().address());
+
+		// open connection from client to server
+		if (tcpAcceptor_ == nullptr) {
+			Log(Info, "secure channel endpoint open")
+				.parameter("Address", secureChannel->local_.address().to_string())
+				.parameter("Port", secureChannel->local_.port());
+
+			tcpAcceptor_ = new TCPAcceptor(ioService_->io_service(), secureChannel->local_);
+			tcpAcceptor_->listen();
+		}
+
+		secureChannel->state_ = SecureChannel::S_Accepting;
+		tcpAcceptor_->async_accept(
+			secureChannel->socket(),
+			boost::bind(
+				&SecureChannelServer::acceptComplete,
+				this,
+				boost::asio::placeholders::error,
+				secureChannel
+			)
+		);
+	}
+
+	void
+	SecureChannelServer::acceptComplete(
+		const boost::system::error_code& error,
+		SecureChannel* secureChannel
+	)
+	{
+		if (error) {
+			Log(Info, "cannot accept secure channel from client")
+				.parameter("Address", secureChannel->partner_.address().to_string())
+				.parameter("Port", secureChannel->partner_.port())
+				.parameter("Message", error.message());
+			secureChannelServerIf_->handleDisconnect(secureChannel);
+
+			// FIXME: error
+
+			return;
+		}
+
+		secureChannel->partner_ = secureChannel->socket().remote_endpoint();
+
+		Log(Info, "accepted new secure channel from client")
+			.parameter("Address", secureChannel->partner_.address().to_string())
+			.parameter("Port", secureChannel->partner_.port());
+
+		secureChannel->state_ = SecureChannel::S_Connected;
+		asyncRead(secureChannel);
+
+		SecureChannelServerConfig::SPtr config;
+		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		accept(config);
 	}
 
 	void

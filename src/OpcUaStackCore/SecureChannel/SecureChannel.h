@@ -38,7 +38,9 @@ namespace OpcUaStackCore
 		typedef enum {
 			S_Init,
 			S_Connecting,
+			S_Connected,
 			S_Reconnecting,
+			S_Accepting,
 			S_Hello,
 			S_Acknowledge,
 			S_OpenSecureChannel,

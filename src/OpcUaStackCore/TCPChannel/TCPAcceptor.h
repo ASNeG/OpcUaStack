@@ -31,9 +31,10 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<TCPAcceptor> SPtr;
 
-		TCPAcceptor(boost::asio::io_service& io_service,boost::asio::ip::address& addressString, uint32_t port);
-		TCPAcceptor(boost::asio::io_service& io_service,std::string& addressString, uint32_t port);
-		TCPAcceptor(const boost::asio::io_service& io_service,const std::string& addressString, const uint32_t port);
+		TCPAcceptor(boost::asio::io_service& io_service, boost::asio::ip::tcp::endpoint& endpoint);
+		TCPAcceptor(boost::asio::io_service& io_service, boost::asio::ip::address& addressString, uint32_t port);
+		TCPAcceptor(boost::asio::io_service& io_service, std::string& addressString, uint32_t port);
+		TCPAcceptor(const boost::asio::io_service& io_service, const std::string& addressString, const uint32_t port);
 		TCPAcceptor(boost::asio::io_service& io_service,uint32_t port);
 		~TCPAcceptor(void);
 

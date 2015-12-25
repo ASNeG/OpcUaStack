@@ -20,6 +20,12 @@
 namespace OpcUaStackCore
 {
 
+	TCPAcceptor::TCPAcceptor(boost::asio::io_service& io_service, boost::asio::ip::tcp::endpoint& endpoint)
+	: endpoint_(endpoint)
+	, acceptor_(io_service,endpoint_)
+	{
+	}
+
 	TCPAcceptor::TCPAcceptor(boost::asio::io_service& io_service, boost::asio::ip::address& address, uint32_t port)
 	: endpoint_(address, (unsigned short)port)
 	, acceptor_(io_service,endpoint_)

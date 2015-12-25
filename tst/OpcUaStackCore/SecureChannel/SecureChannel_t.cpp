@@ -67,22 +67,31 @@ BOOST_AUTO_TEST_CASE(SecureChannel)
 	std::cout << "SecureChannel_t" << std::endl;
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
+	SecureChannelServerTest secureChannelServerTest;
 	SecureChannelClientTest secureChannelClientTest;
 
 	IOService ioService;
 	ioService.start(1);
 
+	SecureChannelServer secureChannelServer(&ioService);
 	SecureChannelClient secureChannelClient(&ioService);
+	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
+
+	// server open endpoint
+	SecureChannelServerConfig::SPtr secureChannelServerConfig = construct<SecureChannelServerConfig>();
+	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
+	secureChannelServerConfig->debug(false);
+	secureChannelServerConfig->debugHeader(true);
+	secureChannelServer.accept(secureChannelServerConfig);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
-	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
+	secureChannelClientConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
 	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
@@ -97,6 +106,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	ioService.stop();
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 {
 	OpcUaStackCore::SecureChannel* secureChannel1;
