@@ -20,13 +20,59 @@
 namespace OpcUaStackCore
 {
 
-	SecureChannelServer::SecureChannelServer(void)
+	SecureChannelServer::SecureChannelServer(IOService* ioService)
 	: SecureChannelBase(SecureChannelBase::SCT_Server)
+	, secureChannelServerIf_(nullptr)
+	, ioService_(ioService)
+	, resolver_(ioService->io_service())
 	{
 	}
 
 	SecureChannelServer::~SecureChannelServer(void)
 	{
+	}
+
+	void
+	SecureChannelServer::secureChannelServerIf(SecureChannelServerIf* secureChannelServerIf)
+	{
+		secureChannelServerIf_ = secureChannelServerIf;
+	}
+
+	SecureChannelServerIf*
+	SecureChannelServer::secureChannelServerIf(void)
+	{
+		return secureChannelServerIf_;
+	}
+
+	void
+	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
+	{
+	}
+
+	void
+	SecureChannelServer::disconnect(SecureChannel* secureChannel)
+	{
+	}
+
+	void
+	SecureChannelServer::handleDisconnect(SecureChannel* secureChannel)
+	{
+	}
+
+	void
+	SecureChannelServer::handleReadHello(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	{
+	}
+
+	void
+	SecureChannelServer::handleReadOpenSecureChannelRequest(SecureChannel* secureChannel, OpenSecureChannelRequest& openSecureChannelRequest)
+	{
+	}
+
+	void
+	SecureChannelServer::handleReadMessageRequest(SecureChannel* secureChannel)
+	{
+
 	}
 
 }

@@ -19,6 +19,10 @@
 #ifndef __OpUaStackCore_SecureChannelServer_h__
 #define __OpUaStackCore_SecureChannelServer_h__
 
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
 
 namespace OpcUaStackCore
@@ -28,8 +32,26 @@ namespace OpcUaStackCore
 	: public SecureChannelBase
 	{
 	  public:
-		SecureChannelServer(void);
+		SecureChannelServer(IOService* ioService);
 		~SecureChannelServer(void);
+
+		void secureChannelServerIf(SecureChannelServerIf* secureChannelServerIf);
+		SecureChannelServerIf* secureChannelServerIf(void);
+
+		void accept(SecureChannelServerConfig::SPtr secureChannelServerConfig);
+		void disconnect(SecureChannel* secureChannel);
+
+		//- SecureChannelBase -------------------------------------------------
+		void handleDisconnect(SecureChannel* secureChannel);
+		void handleReadHello(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge);
+		void handleReadOpenSecureChannelRequest(SecureChannel* secureChannel, OpenSecureChannelRequest& openSecureChannelRequest);
+		void handleReadMessageRequest(SecureChannel* secureChannel);
+		//- SecureChannelBase -------------------------------------------------
+
+	  private:
+		IOService* ioService_;
+		boost::asio::ip::tcp::resolver resolver_;
+		SecureChannelServerIf* secureChannelServerIf_;
 	};
 
 }

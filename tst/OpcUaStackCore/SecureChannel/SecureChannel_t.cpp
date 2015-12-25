@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
-//#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 
 using namespace OpcUaStackCore;
@@ -34,7 +34,6 @@ class SecureChannelClientTest
 	}
 };
 
-#if 0
 class SecureChannelServerTest
 : public SecureChannelServerIf
 {
@@ -60,7 +59,6 @@ class SecureChannelServerTest
 		handleMessageRequest_.conditionValueDec();
 	}
 };
-#endif
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
 
