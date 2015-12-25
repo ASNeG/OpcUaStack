@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
 
 namespace OpcUaStackCore
 {
@@ -35,6 +36,8 @@ namespace OpcUaStackCore
 		GetEndpointsResponse(void);
 		virtual ~GetEndpointsResponse(void);
 
+		void responseHeader(const ResponseHeader::SPtr responseHeader);
+		ResponseHeader::SPtr responseHeader(void) const;
 		void endpoints(const EndpointDescriptionArray::SPtr endpoints);
 		EndpointDescriptionArray::SPtr endpoints(void) const;
 
@@ -42,6 +45,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		ResponseHeader::SPtr responseHeader_;
 		EndpointDescriptionArray::SPtr endpointArraySPtr_;
 	};
 

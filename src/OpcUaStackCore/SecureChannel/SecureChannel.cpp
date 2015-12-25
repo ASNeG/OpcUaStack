@@ -248,7 +248,19 @@ namespace OpcUaStackCore
 			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
 	}
 
-
+	void
+	SecureChannel::debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel send MessageRequest")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_)
+			.parameter("RequestType", secureChannelTransaction->requestTypeNodeId_.toString())
+			.parameter("RequestId", secureChannelTransaction->requestId_);
+	}
 
 }
 

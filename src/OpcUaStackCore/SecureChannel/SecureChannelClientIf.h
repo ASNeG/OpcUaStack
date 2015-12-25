@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 
 		virtual void handleConnect(SecureChannel* secureChannel) = 0;
 		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
+		virtual void handleMessageResponse(SecureChannel* secureChannel) = 0;
 	};
 
 }

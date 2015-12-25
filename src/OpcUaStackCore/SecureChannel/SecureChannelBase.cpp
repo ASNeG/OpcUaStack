@@ -1082,13 +1082,16 @@ namespace OpcUaStackCore
 		}
 
 		// encode MessageHeader
-		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
-		messageHeaderSPtr->messageType(MessageType_Message);
-		messageHeaderSPtr->segmentFlag(segmentFlag);
-		messageHeaderSPtr->messageSize(packetSize);
-		messageHeaderSPtr->opcUaBinaryEncode(ios2);
+		secureChannel->messageHeader_.messageType(MessageType_Message);
+		secureChannel->messageHeader_.segmentFlag(segmentFlag);
+		secureChannel->messageHeader_.messageSize(packetSize);
+		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
-		std::iostream ios(&secureChannelTransaction->os_);
+		//std::iostream ios(&secureChannelTransaction->os_);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendMessageRequest(secureChannelTransaction);
 
 		secureChannel->asyncSend_ = true;
 

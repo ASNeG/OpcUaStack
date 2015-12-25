@@ -30,12 +30,25 @@ namespace OpcUaStackCore
 
 	GetEndpointsResponse::GetEndpointsResponse(void)
 	: ObjectPool<GetEndpointsResponse>()
+	, responseHeader_(ResponseHeader::construct())
 	, endpointArraySPtr_(EndpointDescriptionArray::construct())
 	{
 	}
 
 	GetEndpointsResponse::~GetEndpointsResponse(void)
 	{
+	}
+
+	void
+	GetEndpointsResponse::responseHeader(const ResponseHeader::SPtr requestHeader)
+	{
+		responseHeader_ = requestHeader;
+	}
+
+	ResponseHeader::SPtr
+	GetEndpointsResponse::responseHeader(void) const
+	{
+		return responseHeader_;
 	}
 
 	void 
@@ -53,12 +66,14 @@ namespace OpcUaStackCore
 	void 
 	GetEndpointsResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
+		responseHeader_->opcUaBinaryEncode(os);
 		endpointArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	GetEndpointsResponse::opcUaBinaryDecode(std::istream& is)
 	{
+		responseHeader_->opcUaBinaryDecode(is);
 		endpointArraySPtr_->opcUaBinaryDecode(is);
 	}
 

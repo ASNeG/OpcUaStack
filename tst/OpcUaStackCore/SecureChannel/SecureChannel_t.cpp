@@ -24,6 +24,13 @@ class SecureChannelClientTest
 		std::cout << "handleDisconnect" << std::endl;
 		handleDisconnect_.conditionValueDec();
 	}
+
+	Condition handleMessageResponse_;
+	void handleMessageResponse(SecureChannel* secureChannel)
+	{
+		std::cout << "handleMessageRequest" << std::endl;
+		handleMessageResponse_.conditionValueDec();
+	}
 };
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
@@ -129,13 +136,17 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	boost::asio::streambuf sb;
 	std::iostream os(&sb);
 	GetEndpointsRequest getEndpointsRequest;
+	getEndpointsRequest.endpointUrl("opt.tcp://192.168.122.99:48010");
 	getEndpointsRequest.opcUaBinaryEncode(os);
 
 	SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 	secureChannelTransaction->requestTypeNodeId_. nodeId((uint32_t)OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary);
 	secureChannelTransaction->requestId_ = 123;
 	secureChannelTransaction->osAppend(sb);
+
+	secureChannelClientTest.handleMessageResponse_.condition(1,0);
 	secureChannelClient.asyncWriteMessageRequest(secureChannel, secureChannelTransaction);
+	BOOST_REQUIRE(secureChannelClientTest.handleMessageResponse_.waitForCondition(1000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);

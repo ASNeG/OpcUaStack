@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
 		void debugSendOpenSecureChannel(OpenSecureChannelRequest& openSecureChannelRequest);
+		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
