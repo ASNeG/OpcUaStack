@@ -873,58 +873,44 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugRecvMessageRequest();
+		std::iostream is(&secureChannel->recvBuffer_);
 
-		std::iostream ios(&secureChannel->recvBuffer_);
-
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(ios, channelId);
+		// get channel id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
 
 		OpcUaUInt32 securityTokenId;
-		OpcUaNumber::opcUaBinaryDecode(ios, securityTokenId);
+		OpcUaNumber::opcUaBinaryDecode(is, securityTokenId);
 
-		SequenceHeader sequenceHeader;
-		sequenceHeader.opcUaBinaryDecode(ios);
+		// encode sequence number
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
+
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_);
 
 		if (secureChannel->recvFirstSegment_) {
-			secureChannel->typeId_.opcUaBinaryDecode(ios);
+			secureChannel->secureChannelTransaction_->requestTypeNodeId_.opcUaBinaryDecode(is);
 		}
-
-		Log(Debug, "opc ua secure channel read message request")
-			.parameter("ChannelId", channelId)
-			.parameter("MessageType", secureChannel->typeId_)
-			.parameter("RequestId", sequenceHeader.requestId())
-			.parameter("SequenceNumber", sequenceHeader.sequenceNumber())
-			.parameter("SegmentFlag", secureChannel->messageHeader_.segmentFlag());
 
 		secureChannel->secureChannelTransaction_->isAppend(secureChannel->recvBuffer_);
 		consumeAll(secureChannel->recvBuffer_);
 
+		// debug output
+		secureChannel->debugRecvMessageRequest(secureChannel->secureChannelTransaction_);
+
 		// read next segment
-		if (secureChannel->messageHeader_.segmentFlag() == 'F') {
+		if (secureChannel->messageHeader_.segmentFlag() != 'F') {
 			asyncRead(secureChannel);
 			return;
 		}
 
 		// message is completed
+		handleRecvMessageRequest(secureChannel);
 		secureChannel->secureChannelTransaction_.reset();
-		handleRecvMessageRequest(
-			secureChannel,
-			channelId,
-			securityTokenId,
-			sequenceHeader
-		);
 		asyncRead(secureChannel);
 	}
 
 	void
-	SecureChannelBase::handleRecvMessageRequest(
-		SecureChannel* secureChannel,
-		uint32_t channelId,
-		OpcUaUInt32 securityTokenId,
-		SequenceHeader& sequenceHeader
-	)
+	SecureChannelBase::handleRecvMessageRequest(SecureChannel* secureChannel)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadMessageRequest no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
@@ -989,7 +975,6 @@ namespace OpcUaStackCore
 		secureChannel->messageHeader_.messageSize(packetSize);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
-		//std::iostream ios(&secureChannelTransaction->os_);
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
@@ -1117,7 +1102,6 @@ namespace OpcUaStackCore
 		sequenceHeader.opcUaBinaryDecode(ios);
 
 		if (secureChannel->recvFirstSegment_) {
-			secureChannel->secureChannelTransaction_ = construct<SecureChannelTransaction>();
 			secureChannel->secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(ios);
 		}
 
@@ -1134,8 +1118,8 @@ namespace OpcUaStackCore
 		}
 
 		// message is completed
-		secureChannel->secureChannelTransaction_.reset();
 		handleRecvMessageResponse(secureChannel);
+		secureChannel->secureChannelTransaction_.reset();
 		asyncRead(secureChannel);
 	}
 
@@ -1206,7 +1190,9 @@ namespace OpcUaStackCore
 		messageHeaderSPtr->messageSize(packetSize);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
-		std::iostream ios(&secureChannelTransaction->os_);
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendMessageResponse(secureChannelTransaction);
 
 		secureChannel->asyncSend_ = true;
 

@@ -310,7 +310,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::handleRecvMessageRequest(SecureChannel* secureChannel)
 	{
-
+		secureChannelServerIf_->handleMessageRequest(secureChannel);
 	}
 
 }

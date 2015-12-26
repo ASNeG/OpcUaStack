@@ -58,6 +58,7 @@ namespace OpcUaStackCore
 		void debugRecvOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugRecvCloseSecureChannelRequest(void);
 		void debugRecvMessageRequest(void);
+		void debugRecvMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
 		void debugRecvMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
 		void debugSendHeader(MessageHeader& messageHeader);
@@ -66,6 +67,7 @@ namespace OpcUaStackCore
 		void debugSendOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest);
 		void debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
+		void debugSendMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
 
 

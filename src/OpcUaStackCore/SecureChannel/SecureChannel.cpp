@@ -190,6 +190,20 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannel::debugRecvMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel recv MessageRequest")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_)
+			.parameter("ResponseType", secureChannelTransaction->responseTypeNodeId_.toString())
+			.parameter("RequestId", secureChannelTransaction->requestId_);
+	}
+
+	void
 	SecureChannel::debugRecvMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
 		if (!debug_) return;
@@ -312,6 +326,20 @@ namespace OpcUaStackCore
 			.parameter("Partner-Port", partner_.port())
 			.parameter("ChannelId", channelId_)
 			.parameter("RequestType", secureChannelTransaction->requestTypeNodeId_.toString())
+			.parameter("RequestId", secureChannelTransaction->requestId_);
+	}
+
+	void
+	SecureChannel::debugSendMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel send MessageResponse")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_)
+			.parameter("ResponseType", secureChannelTransaction->responseTypeNodeId_.toString())
 			.parameter("RequestId", secureChannelTransaction->requestId_);
 	}
 

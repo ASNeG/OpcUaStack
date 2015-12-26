@@ -38,6 +38,11 @@ class SecureChannelServerTest
 : public SecureChannelServerIf
 {
   public:
+	SecureChannelServerTest(void)
+    : secureChannelServer_(nullptr)
+  	{
+    }
+
 	Condition handleConnect_;
 	void handleConnect(SecureChannel* secureChannel)
 	{
@@ -57,6 +62,21 @@ class SecureChannelServerTest
 	{
 		std::cout << "handleMessageRequest server" << std::endl;
 		handleMessageRequest_.conditionValueDec();
+
+		if (secureChannelServer_ == nullptr) return;
+
+		// send request
+		boost::asio::streambuf sb;
+		std::iostream os(&sb);
+		GetEndpointsRequest getEndpointsRequest;
+		getEndpointsRequest.endpointUrl("opc.tcp://127.0.0.1:48012");
+		getEndpointsRequest.opcUaBinaryEncode(os);
+
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		secureChannelTransaction->responseTypeNodeId_. nodeId((uint32_t)OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
+		secureChannelTransaction->osAppend(sb);
+
+		secureChannelServer_->asyncWriteMessageResponse(secureChannel, secureChannelTransaction);
 	}
 
 	Condition handleEndpointOpen_;
@@ -72,6 +92,8 @@ class SecureChannelServerTest
 		std::cout << "handleEndpointClose server" << std::endl;
 		handleEndpointClose_.conditionValueDec();
 	}
+
+	SecureChannelServer* secureChannelServer_;
 };
 
 BOOST_AUTO_TEST_SUITE(SecureChannel_)
@@ -202,6 +224,8 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	SecureChannelClient secureChannelClient(&ioService);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
+
+	secureChannelServerTest.secureChannelServer_ = &secureChannelServer;
 
 	// server open endpoint
 	secureChannelServerTest.handleEndpointOpen_.condition(1,0);
