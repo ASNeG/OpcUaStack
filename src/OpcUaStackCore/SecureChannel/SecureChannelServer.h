@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 		SecureChannelServerIf* secureChannelServerIf(void);
 
 		void accept(SecureChannelServerConfig::SPtr secureChannelServerConfig);
+		void disconnect(void);
 		void disconnect(SecureChannel* secureChannel);
 
 		//- SecureChannelBase -------------------------------------------------

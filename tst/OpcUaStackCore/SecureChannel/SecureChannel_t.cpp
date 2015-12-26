@@ -145,6 +145,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
 
+	// disconnect server socket
+	secureChannelServerTest.handleEndpointClose_.condition(1,0);
+	secureChannelServer.disconnect();
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
+
 	ioService.stop();
 }
 
@@ -207,6 +212,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	secureChannelClient.disconnect(secureChannel2);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
+
+	// disconnect server socket
+	secureChannelServerTest.handleEndpointClose_.condition(1,0);
+	secureChannelServer.disconnect();
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
 
 	ioService.stop();
 }
@@ -272,6 +282,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	secureChannelClient.disconnect(secureChannel);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
+
+	// disconnect server socket
+	secureChannelServerTest.handleEndpointClose_.condition(1,0);
+	secureChannelServer.disconnect();
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
 
 	ioService.stop();
 }

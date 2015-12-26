@@ -64,6 +64,12 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannelServer::disconnect(void)
+	{
+		if (tcpAcceptor_ != nullptr) tcpAcceptor_->cancel();
+	}
+
+	void
 	SecureChannelServer::disconnect(SecureChannel* secureChannel)
 	{
 		secureChannel->socket().cancel();
@@ -156,9 +162,8 @@ namespace OpcUaStackCore
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
-			secureChannelServerIf_->handleDisconnect(secureChannel);
 
-			// FIXME: error
+			secureChannelServerIf_->handleEndpointClose();
 
 			return;
 		}
