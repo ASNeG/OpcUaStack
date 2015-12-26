@@ -46,7 +46,7 @@ namespace OpcUaStackCore
 		virtual ~SecureChannelBase(void);
 
 		//
-		// write methods
+		// send methods
 		//
 		void asyncWriteHello(
 			SecureChannel* secureChannel,
@@ -87,46 +87,43 @@ namespace OpcUaStackCore
 
 
 		//
-		// handler methods
+		// receiver methods
 		//
 		virtual void handleDisconnect(
 			SecureChannel* secureChannel
 		) = 0;
-		virtual void handleReadHello(
+		virtual void handleRecvHello(
 			SecureChannel* secureChannel,
 			HelloMessage& hello
 		);
-		virtual void handleReadAcknowledge(
+		virtual void handleRecvAcknowledge(
 			SecureChannel* secureChannel,
 			AcknowledgeMessage& acknowledge
 		);
-		virtual void handleReadOpenSecureChannelRequest(
+		virtual void handleRecvOpenSecureChannelRequest(
 			SecureChannel* secureChannel,
-			uint32_t channelId,
-			SecurityHeader& securityHeader,
-			SequenceHeader& sequenceHeader,
-			OpcUaNodeId& typeIdRequest,
+			OpcUaUInt32 channelId,
 			OpenSecureChannelRequest& openSecureChannelRequest
 		);
-		virtual void handleReadOpenSecureChannelResponse(
+		virtual void handleRecvOpenSecureChannelResponse(
 			SecureChannel* secureChannel,
 			OpenSecureChannelResponse& openSecureChannelResponse
 		);
-		virtual void handleReadCloseSecureChannelRequest(
+		virtual void handleRecvCloseSecureChannelRequest(
 			SecureChannel* secureChannel,
 			uint32_t channelId
 		);
-		virtual void handleReadCloseSecureChannelResponse(
+		virtual void handleRecvCloseSecureChannelResponse(
 			SecureChannel* secureChannel,
 			uint32_t channelId
 		);
-		virtual void handleReadMessageRequest(
+		virtual void handleRecvMessageRequest(
 			SecureChannel* secureChannel,
 			uint32_t channelId,
 			OpcUaUInt32 securityTokenId,
 			SequenceHeader& sequenceHeader
 		);
-		virtual void handleReadMessageResponse(SecureChannel* secureChannel);
+		virtual void handleRecvMessageResponse(SecureChannel* secureChannel);
 
 		void asyncRead(SecureChannel* secureChannel);
 

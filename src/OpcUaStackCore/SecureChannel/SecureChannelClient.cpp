@@ -191,7 +191,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClient::handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	SecureChannelClient::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
 		// set acknowledge parameter in secure channel
 		secureChannel->receivedBufferSize_ = acknowledge.receivedBufferSize();
@@ -217,7 +217,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClient::handleReadOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
+	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
 	{
 		// set security parameter
 		SecurityToken::SPtr securityToken = openSecureChannelResponse.securityToken();
@@ -231,7 +231,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelClient::handleReadMessageResponse(SecureChannel* secureChannel)
+	SecureChannelClient::handleRecvMessageResponse(SecureChannel* secureChannel)
 	{
 		secureChannelClientIf_->handleMessageResponse(secureChannel);
 	}

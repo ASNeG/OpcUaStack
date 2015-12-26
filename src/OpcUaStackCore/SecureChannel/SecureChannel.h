@@ -52,14 +52,14 @@ namespace OpcUaStackCore
 		virtual ~SecureChannel(void);
 
 		void debugRecvHeader(MessageHeader& messageHeader);
-		void debugReadHello(HelloMessage& hello);
+		void debugRecvHello(HelloMessage& hello);
 		void debugRecvAcknowledge(AcknowledgeMessage& acknowledge);
-		void debugReadOpenSecureChannelRequest(void);
-		void debugReadOpenSecureChannel(OpenSecureChannelResponse& openSecureChannelResponse);
-		void debugReadCloseSecureChannelRequest(void);
-		void debugReadCloseSecureChannelResponse(void);
-		void debugReadMessageRequest(void);
-		void debugReadMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
+		void debugRecvOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest, OpcUaUInt32 channelId);
+		void debugRecvOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
+		void debugRecvCloseSecureChannelRequest(void);
+		void debugRecvCloseSecureChannelResponse(void);
+		void debugRecvMessageRequest(void);
+		void debugRecvMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);

@@ -222,14 +222,14 @@ namespace OpcUaStackCore
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
-		secureChannel->debugReadHello(hello);
+		secureChannel->debugRecvHello(hello);
 
-		handleReadHello(secureChannel, hello);
+		handleRecvHello(secureChannel, hello);
 		asyncRead(secureChannel);
 	}
 
 	void
-	SecureChannelBase::handleReadHello(SecureChannel* secureChannel, HelloMessage& hello)
+	SecureChannelBase::handleRecvHello(SecureChannel* secureChannel, HelloMessage& hello)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadHello no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
@@ -332,12 +332,12 @@ namespace OpcUaStackCore
 		// debug output
 		secureChannel->debugRecvAcknowledge(acknowledge);
 
-		handleReadAcknowledge(secureChannel, acknowledge);
+		handleRecvAcknowledge(secureChannel, acknowledge);
 		asyncRead(secureChannel);
 	}
 
 	void
-	SecureChannelBase::handleReadAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
+	SecureChannelBase::handleRecvAcknowledge(SecureChannel* secureChannel, AcknowledgeMessage& acknowledge)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadAcknowledge no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
@@ -431,20 +431,22 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugReadOpenSecureChannelRequest();
-
 		std::iostream is(&secureChannel->recvBuffer_);
 
+		// get channel id
 		OpcUaUInt32 channelId;
 		OpcUaNumber::opcUaBinaryDecode(is, channelId);
 
 		SecurityHeader securityHeader;
 		securityHeader.opcUaBinaryDecode(is);
 
-		SequenceHeader sequenceHeader;
-		sequenceHeader.opcUaBinaryDecode(is);
+		// encode sequence number
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
 
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_);
+
+		// encode type id
 		OpcUaNodeId typeIdRequest;
 		typeIdRequest.opcUaBinaryDecode(is);
 
@@ -452,24 +454,21 @@ namespace OpcUaStackCore
 		openSecureChannelRequest.opcUaBinaryDecode(is);
 		consumeAll(secureChannel->recvBuffer_);
 
-		handleReadOpenSecureChannelRequest(
+		// debug output
+		secureChannel->debugRecvOpenSecureChannelRequest(openSecureChannelRequest, channelId);
+
+		handleRecvOpenSecureChannelRequest(
 			secureChannel,
 			channelId,
-			securityHeader,
-			sequenceHeader,
-			typeIdRequest,
 			openSecureChannelRequest
 		);
 		asyncRead(secureChannel);
 	}
 
 	void
-	SecureChannelBase::handleReadOpenSecureChannelRequest(
+	SecureChannelBase::handleRecvOpenSecureChannelRequest(
 		SecureChannel* secureChannel,
-		uint32_t channelId,
-		SecurityHeader& securityHeader,
-		SequenceHeader& sequenceHeader,
-		OpcUaNodeId& typeIdRequest,
+		OpcUaUInt32 channelId,
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
@@ -599,8 +598,8 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		// get channel id
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
 
 		SecurityHeader securityHeader;
 		securityHeader.opcUaBinaryDecode(is);
@@ -620,9 +619,9 @@ namespace OpcUaStackCore
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
-		secureChannel->debugReadOpenSecureChannel(openSecureChannelResponse);
+		secureChannel->debugRecvOpenSecureChannelResponse(openSecureChannelResponse);
 
-		handleReadOpenSecureChannelResponse(
+		handleRecvOpenSecureChannelResponse(
 			secureChannel,
 			openSecureChannelResponse
 		);
@@ -630,7 +629,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleReadOpenSecureChannelResponse(
+	SecureChannelBase::handleRecvOpenSecureChannelResponse(
 		SecureChannel* secureChannel,
 		OpenSecureChannelResponse& openSecureChannelResponse
 	)
@@ -740,7 +739,7 @@ namespace OpcUaStackCore
 		}
 
 		// debug output
-		secureChannel->debugReadCloseSecureChannelRequest();
+		secureChannel->debugRecvCloseSecureChannelRequest();
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
@@ -750,7 +749,7 @@ namespace OpcUaStackCore
 
 		// FIXME: ....
 
-		handleReadCloseSecureChannelRequest(
+		handleRecvCloseSecureChannelRequest(
 			secureChannel,
 			channelId
 		);
@@ -758,7 +757,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleReadCloseSecureChannelRequest(
+	SecureChannelBase::handleRecvCloseSecureChannelRequest(
 		SecureChannel* secureChannel,
 		uint32_t channelId
 	)
@@ -858,7 +857,7 @@ namespace OpcUaStackCore
 		}
 
 		// debug output
-		secureChannel->debugReadCloseSecureChannelRequest();
+		secureChannel->debugRecvCloseSecureChannelRequest();
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
@@ -868,7 +867,7 @@ namespace OpcUaStackCore
 
 		// FIXME: ....
 
-		handleReadCloseSecureChannelResponse(
+		handleRecvCloseSecureChannelResponse(
 			secureChannel,
 			channelId
 		);
@@ -876,7 +875,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleReadCloseSecureChannelResponse(
+	SecureChannelBase::handleRecvCloseSecureChannelResponse(
 		SecureChannel* secureChannel,
 		uint32_t channelId
 	)
@@ -978,7 +977,7 @@ namespace OpcUaStackCore
 		}
 
 		// debug output
-		secureChannel->debugReadMessageRequest();
+		secureChannel->debugRecvMessageRequest();
 
 		std::iostream ios(&secureChannel->recvBuffer_);
 
@@ -1013,7 +1012,7 @@ namespace OpcUaStackCore
 
 		// message is completed
 		secureChannel->secureChannelTransaction_.reset();
-		handleReadMessageRequest(
+		handleRecvMessageRequest(
 			secureChannel,
 			channelId,
 			securityTokenId,
@@ -1023,7 +1022,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleReadMessageRequest(
+	SecureChannelBase::handleRecvMessageRequest(
 		SecureChannel* secureChannel,
 		uint32_t channelId,
 		OpcUaUInt32 securityTokenId,
@@ -1229,7 +1228,7 @@ namespace OpcUaStackCore
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
-		secureChannel->debugReadMessageResponse(secureChannel->secureChannelTransaction_);
+		secureChannel->debugRecvMessageResponse(secureChannel->secureChannelTransaction_);
 
 		// read next segment
 		if (secureChannel->messageHeader_.segmentFlag() != 'F') {
@@ -1239,12 +1238,12 @@ namespace OpcUaStackCore
 
 		// message is completed
 		secureChannel->secureChannelTransaction_.reset();
-		handleReadMessageResponse(secureChannel);
+		handleRecvMessageResponse(secureChannel);
 		asyncRead(secureChannel);
 	}
 
 	void
-	SecureChannelBase::handleReadMessageResponse(SecureChannel* secureChannel)
+	SecureChannelBase::handleRecvMessageResponse(SecureChannel* secureChannel)
 	{
 		Log(Error, "opc ua secure channel error, because handleReadMessageResponse no implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())

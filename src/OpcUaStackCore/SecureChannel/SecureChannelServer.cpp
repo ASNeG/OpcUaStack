@@ -181,7 +181,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelServer::handleReadHello(SecureChannel* secureChannel, HelloMessage& hello)
+	SecureChannelServer::handleRecvHello(SecureChannel* secureChannel, HelloMessage& hello)
 	{
 		AcknowledgeMessage acknowledge;
 
@@ -232,12 +232,12 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelServer::handleReadOpenSecureChannelRequest(SecureChannel* secureChannel, OpenSecureChannelRequest& openSecureChannelRequest)
+	SecureChannelServer::handleRecvOpenSecureChannelRequest(SecureChannel* secureChannel, OpcUaUInt32 channelId, OpenSecureChannelRequest& openSecureChannelRequest)
 	{
 	}
 
 	void
-	SecureChannelServer::handleReadMessageRequest(SecureChannel* secureChannel)
+	SecureChannelServer::handleRecvMessageRequest(SecureChannel* secureChannel)
 	{
 
 	}

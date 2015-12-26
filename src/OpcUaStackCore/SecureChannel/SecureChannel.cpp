@@ -109,7 +109,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadHello(HelloMessage& hello)
+	SecureChannel::debugRecvHello(HelloMessage& hello)
 	{
 		if (!debug_) return;
 		Log(Debug, "opc ua secure channel send Hello")
@@ -140,14 +140,21 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadOpenSecureChannelRequest(void)
+	SecureChannel::debugRecvOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest, OpcUaUInt32 channelId)
 	{
 		if (!debug_) return;
-		debugRead("OpenSecureChannelRequest");
+		Log(Debug, "opc ua secure channel recv OpenSecureChannelRequest")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_)
+			.parameter("SecurityMode", openSecureChannelRequest.securityMode())
+			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
 	}
 
 	void
-	SecureChannel::debugReadOpenSecureChannel(OpenSecureChannelResponse& openSecureChannelResponse)
+	SecureChannel::debugRecvOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse)
 	{
 		if (!debug_) return;
 		Log(Debug, "opc ua secure channel recv OpenSecureChannelResponse")
@@ -162,28 +169,28 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugReadCloseSecureChannelRequest(void)
+	SecureChannel::debugRecvCloseSecureChannelRequest(void)
 	{
 		if (!debug_) return;
 		debugRead("CloseSecureChannelRequest");
 	}
 
 	void
-	SecureChannel::debugReadCloseSecureChannelResponse(void)
+	SecureChannel::debugRecvCloseSecureChannelResponse(void)
 	{
 		if (!debug_) return;
 		debugRead("CloseSecureChannelResponse");
 	}
 
 	void
-	SecureChannel::debugReadMessageRequest(void)
+	SecureChannel::debugRecvMessageRequest(void)
 	{
 		if (!debug_) return;
 		debugRead("MessageRequest");
 	}
 
 	void
-	SecureChannel::debugReadMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
+	SecureChannel::debugRecvMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
 		if (!debug_) return;
 		Log(Debug, "opc ua secure channel recv MessageResponse")
