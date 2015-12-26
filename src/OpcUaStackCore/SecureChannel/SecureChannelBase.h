@@ -67,9 +67,6 @@ namespace OpcUaStackCore
 		void asyncWriteCloseSecureChannelRequest(
 			SecureChannel* secureChannel
 		);
-		void asyncWriteCloseSecureChannelResponse(
-			SecureChannel* secureChannel
-		);
 		void asyncWriteMessageRequest(
 			SecureChannel* secureChannel,
 			SecureChannelTransaction::SPtr secureChannelTransaction
@@ -109,10 +106,6 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel,
 			uint32_t channelId
 		);
-		virtual void handleRecvCloseSecureChannelResponse(
-			SecureChannel* secureChannel,
-			uint32_t channelId
-		);
 		virtual void handleRecvMessageRequest(
 			SecureChannel* secureChannel,
 			uint32_t channelId,
@@ -129,7 +122,6 @@ namespace OpcUaStackCore
 		void asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelResponse(SecureChannel* secureChannel);
 		void asyncReadCloseSecureChannelRequest(SecureChannel* secureChannel);
-		void asyncReadCloseSecureChannelResponse(SecureChannel* secureChannel);
 		void asyncReadMessageRequest(SecureChannel* secureChannel);
 		void asyncReadMessageResponse(SecureChannel* secureChannel);
 		void asyncReadError(SecureChannel* secureChannel);
@@ -141,7 +133,6 @@ namespace OpcUaStackCore
 		void handleReadOpenSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void handleReadOpenSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void handleReadCloseSecureChannelRequest(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
-		void handleReadCloseSecureChannelResponse(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void asyncReadMessageRequestComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void asyncReadMessageResponseComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
 		void asyncReadErrorComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel);
@@ -152,7 +143,6 @@ namespace OpcUaStackCore
 		void handleWriteOpenSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteOpenSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
-		void handleWriteCloseSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteMessageRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 

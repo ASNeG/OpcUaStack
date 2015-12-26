@@ -129,12 +129,7 @@ namespace OpcUaStackCore
 			}
 			case MessageType_CloseSecureChannel:
 			{
-				if (secureChannelType_ == SCT_Client) {
-					//asyncReadCloseSecureChannelRequest(secureChannel);
-				}
-				else {
-					asyncReadCloseSecureChannelRequest(secureChannel);
-				}
+				asyncReadCloseSecureChannelRequest(secureChannel);
 				break;
 			}
 			case MessageType_Error:
@@ -810,7 +805,7 @@ namespace OpcUaStackCore
 		secureChannel->async_write(
 			sb2, sb1,
 			boost::bind(
-				&SecureChannelBase::handleWriteCloseSecureChannelResponseComplete,
+				&SecureChannelBase::handleWriteCloseSecureChannelRequestComplete,
 				this,
 				boost::asio::placeholders::error,
 				secureChannel
@@ -824,123 +819,6 @@ namespace OpcUaStackCore
 		secureChannel->socket().cancel();
 	}
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// CloseSecureChannelResponse message
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	void
-	SecureChannelBase::asyncReadCloseSecureChannelResponse(SecureChannel* secureChannel)
-	{
-		secureChannel->async_read_exactly(
-			secureChannel->recvBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleReadCloseSecureChannelRequest,
-				this,
-				boost::asio::placeholders::error,
-				boost::asio::placeholders::bytes_transferred,
-				secureChannel
-			),
-			secureChannel->messageHeader_.messageSize() - 8
-		);
-	}
-
-	void
-	SecureChannelBase::handleReadCloseSecureChannelResponse(
-		const boost::system::error_code& error,
-		std::size_t bytes_transfered,
-		SecureChannel* secureChannel
-	)
-	{
-		// error occurred
-		if (error) {
-			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string())
-				.parameter("Message", error.message());
-
-			closeChannel(secureChannel);
-			return;
-		}
-
-		// partner has closed the connection
-		if (bytes_transfered == 0) {
-			Log(Debug, "opc ua secure channel is closed by partner")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
-
-			closeChannel(secureChannel, true);
-			return;
-		}
-
-		// debug output
-		secureChannel->debugRecvCloseSecureChannelRequest();
-
-		std::iostream is(&secureChannel->recvBuffer_);
-
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
-		consumeAll(secureChannel->recvBuffer_);
-
-		// FIXME: ....
-
-		handleRecvCloseSecureChannelResponse(
-			secureChannel,
-			channelId
-		);
-		asyncRead(secureChannel);
-	}
-
-	void
-	SecureChannelBase::handleRecvCloseSecureChannelResponse(
-		SecureChannel* secureChannel,
-		uint32_t channelId
-	)
-	{
-		Log(Error, "opc ua secure channel error, because handleReadCloseSecureChannelResponse no implemented")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
-	}
-
-	void
-	SecureChannelBase::asyncWriteCloseSecureChannelResponse(
-		SecureChannel* secureChannel
-	)
-	{
-		boost::asio::streambuf sb1;
-		std::iostream ios1(&sb1);
-		boost::asio::streambuf sb2;
-		std::iostream ios2(&sb2);
-
-		// encode channel id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
-
-		// encode MessageHeader
-		secureChannel->messageHeader_.messageType(MessageType_CloseSecureChannel);
-		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
-		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
-
-		// debug output
-		secureChannel->debugSendHeader(secureChannel->messageHeader_);
-
-		secureChannel->async_write(
-			sb2, sb1,
-			boost::bind(
-				&SecureChannelBase::handleWriteCloseSecureChannelResponseComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
-		);
-	}
-
-	void
-	SecureChannelBase::handleWriteCloseSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
-	{
-		secureChannel->socket().cancel();
-	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

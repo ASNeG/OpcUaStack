@@ -183,13 +183,6 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugRecvCloseSecureChannelResponse(void)
-	{
-		if (!debug_) return;
-		debugRead("CloseSecureChannelResponse");
-	}
-
-	void
 	SecureChannel::debugRecvMessageRequest(void)
 	{
 		if (!debug_) return;

@@ -57,7 +57,6 @@ namespace OpcUaStackCore
 		void debugRecvOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest, OpcUaUInt32 channelId);
 		void debugRecvOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugRecvCloseSecureChannelRequest(void);
-		void debugRecvCloseSecureChannelResponse(void);
 		void debugRecvMessageRequest(void);
 		void debugRecvMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
