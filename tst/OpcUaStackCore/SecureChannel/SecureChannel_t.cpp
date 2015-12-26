@@ -126,49 +126,70 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	ioService.stop();
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 {
 	OpcUaStackCore::SecureChannel* secureChannel1;
 	OpcUaStackCore::SecureChannel* secureChannel2;
 	SecureChannelClientTest secureChannelClientTest;
+	SecureChannelServerTest secureChannelServerTest;
 
 	IOService ioService;
 	ioService.start(1);
 
+	SecureChannelServer secureChannelServer(&ioService);
 	SecureChannelClient secureChannelClient(&ioService);
+	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
+	// server open endpoint
+	secureChannelServerTest.handleEndpointOpen_.condition(1,0);
+	SecureChannelServerConfig::SPtr secureChannelServerConfig = construct<SecureChannelServerConfig>();
+	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48011");
+	secureChannelServerConfig->debug(false);
+	secureChannelServerConfig->debugHeader(true);
+	secureChannelServer.accept(secureChannelServerConfig);
+	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(1000) == true);
+
+	// set client endpoint
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
-	secureChannelClientConfig->endpointUrl("opt.tcp://192.168.122.99:48010");
+	secureChannelClientConfig->endpointUrl("opt.tcp://127.0.0.1:48011");
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
+	secureChannelServerTest.handleConnect_.condition(1,0);
 	secureChannel1 = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel1 != nullptr);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
+	secureChannelServerTest.handleConnect_.condition(1,0);
 	secureChannel2 = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel2 != nullptr);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
+	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel1);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
+	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel2);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
 
 	ioService.stop();
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
