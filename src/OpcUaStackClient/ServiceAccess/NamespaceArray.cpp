@@ -28,7 +28,7 @@ namespace OpcUaStackClient
 	{
 	}
 
-	NamespaceArray::NamespaceArray(Session::SPtr session)
+	NamespaceArray::NamespaceArray(SessionOld::SPtr session)
 	: namespaceVec_()
 	, session_(session)
 	{
@@ -39,7 +39,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	NamespaceArray::session(Session::SPtr session)
+	NamespaceArray::session(SessionOld::SPtr session)
 	{
 		session_ = session;
 	}

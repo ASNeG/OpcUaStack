@@ -53,7 +53,7 @@ namespace OpcUaStackClient
 		ioService_.stop();
 	}
 
-	Session::SPtr 
+	SessionOld::SPtr 
 	SessionManager::getNewSession(
 		const std::string& prefixSessionConfig, Config& sessionConfig,
 		const std::string& prefixSecureChannelConfig, Config& secureChannelConfig,
@@ -61,10 +61,10 @@ namespace OpcUaStackClient
 		bool newSecureChannel)
 	{
 		bool rc;
-		Session::SPtr sessionSPtr;
+		SessionOld::SPtr sessionSPtr;
 
 		// create session
-		session_ = Session::construct(ioService_);
+		session_ = SessionOld::construct(ioService_);
 		rc = SessionConfig::initial(session_, prefixSessionConfig, &sessionConfig);
 		if (!rc) {
 			Log(Error, "cannot create client session");

@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(Session_open)
 	secureChannelConfig.setValue("TestConfig.EndpointUrl", "opc.tcp://127.0.0.1:8888");
 	secureChannelConfig.setValue("TestConfig.SecurityPolicyUri", "http://opcfoundation.org/UA/SecurityPolicy#None");
 
-	Session::SPtr session = client.sessionManager().getNewSession(
+	SessionOld::SPtr session = client.sessionManager().getNewSession(
 		"TestConfig", sessionConfig,
 		"TestConfig", secureChannelConfig,
 		&sessionTestHandler

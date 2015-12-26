@@ -29,7 +29,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	Session::Session(IOService& ioService)
+	SessionOld::SessionOld(IOService& ioService)
 	: sessionId_()
 	, communicationState_(CS_Disconnect)
 	, requestTimeout_(3000)
@@ -47,45 +47,45 @@ namespace OpcUaStackClient
 	{
 		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
-			boost::bind(&Session::pendingQueueTimeout, this, _1)
+			boost::bind(&SessionOld::pendingQueueTimeout, this, _1)
 		);
 
 		// set timer callback
 		timer_->callback().reset(
-			boost::bind(&Session::timeout, this)
+			boost::bind(&SessionOld::timeout, this)
 		);
 	}
 
-	Session::~Session(void)
+	SessionOld::~SessionOld(void)
 	{
 	}
 
 	OpcUaStackCore::ApplicationDescription::SPtr
-	Session::applicationDescription(void)
+	SessionOld::applicationDescription(void)
 	{
 		return applicatinDescriptionSPtr_;
 	}
 
 	CreateSessionParameter&
-	Session::createSessionParameter(void)
+	SessionOld::createSessionParameter(void)
 	{
 		return createSessionParameter_;
 	}
 
 	void
-	Session::sessionIf(SessionIf *sessionIf)
+	SessionOld::sessionIf(SessionIf *sessionIf)
 	{
 		sessionIf_ = sessionIf;
 	}
 
 	void
-	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
+	SessionOld::sessionManagerIf(SessionManagerIf* sessionManagerIf)
 	{
 		sessionManagerIf_ = sessionManagerIf;
 	}
 
 	bool 
-	Session::registerService(OpcUaNodeId& typeId, Component* component)
+	SessionOld::registerService(OpcUaNodeId& typeId, Component* component)
 	{
 		ServiceSetMap::iterator it;
 		it = serviceSetMap_.find(typeId);
@@ -102,7 +102,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::deregisterService(OpcUaNodeId& typeId)
+	SessionOld::deregisterService(OpcUaNodeId& typeId)
 	{
 		ServiceSetMap::iterator it;
 		it = serviceSetMap_.find(typeId);
@@ -118,13 +118,13 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::open(void)
+	SessionOld::open(void)
 	{
 		if (sessionManagerIf_ != nullptr) sessionManagerIf_->connectToSecureChannel();
 	}
 
 	void
-	Session::close(void)
+	SessionOld::close(void)
 	{
 	}
 
@@ -138,7 +138,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	Session::receive(Message::SPtr message)
+	SessionOld::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
@@ -179,7 +179,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::pendingQueueTimeout(Object::SPtr object)
+	SessionOld::pendingQueueTimeout(Object::SPtr object)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
 
@@ -194,7 +194,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::pendingQueueClose(void)
+	SessionOld::pendingQueueClose(void)
 	{
 		std::vector<uint32_t>::iterator it;
 		std::vector<uint32_t> keys;
@@ -212,7 +212,7 @@ namespace OpcUaStackClient
 	}
 
 	bool
-	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		if (sessionIf_ == nullptr) {
 			Log(Error, "interface sessionIf is empty")
@@ -280,7 +280,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Session::sendCreateSessionRequest(void)
+	SessionOld::sendCreateSessionRequest(void)
 	{
 		Log(Debug, "send create session request");
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
@@ -302,7 +302,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sendActivateSessionRequest(void)
+	SessionOld::sendActivateSessionRequest(void)
 	{
 		Log(Debug, "send activate session request");
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
@@ -340,7 +340,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	Session::handleSecureChannelConnect(void)
+	SessionOld::handleSecureChannelConnect(void)
 	{
 		Log(Debug, "receive secure channel connect")
 			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
@@ -378,7 +378,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	Session::handleSecureChannelDisconnect(void)
+	SessionOld::handleSecureChannelDisconnect(void)
 	{
 		Log(Info, "session close")
 			.parameter("SessionId", sessionId_)
@@ -415,7 +415,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::receive(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receive(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		// receive message from secure channel
 
@@ -448,7 +448,7 @@ namespace OpcUaStackClient
 	}
 
 	bool
-	Session::receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		stopTimer();
 
@@ -497,7 +497,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		stopTimer();
 
@@ -566,7 +566,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Session::receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveServiceFault(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		// FIXME: timer could be running ...
 
@@ -586,13 +586,13 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sessionReconnectAfterTimeout(void)
+	SessionOld::sessionReconnectAfterTimeout(void)
 	{
 		startTimer(reconnectTimeout_);
 	}
 
 	void
-	Session::sessionOpen(void)
+	SessionOld::sessionOpen(void)
 	{
 		Log(Info, "session open")
 			.parameter("SessionId", sessionId_)
@@ -603,7 +603,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sessionClose(void)
+	SessionOld::sessionClose(void)
 	{
 		Log(Info, "session close")
 			.parameter("SessionId", sessionId_)
@@ -615,7 +615,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sessionReactivate(void)
+	SessionOld::sessionReactivate(void)
 	{
 	    Log(Info, "session reactivate")
 			.parameter("SessionId", sessionId_)
@@ -626,19 +626,19 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::startTimer(uint32_t timeout)
+	SessionOld::startTimer(uint32_t timeout)
 	{
 		timer_->start(timeout);
 	}
 
 	void
-	Session::stopTimer(void)
+	SessionOld::stopTimer(void)
 	{
 		timer_->stop(timer_);
 	}
 
 	void
-	Session::timeout(void)
+	SessionOld::timeout(void)
 	{
 		Log(Debug, "timeout")
 			.parameter("SessionId", sessionId_)

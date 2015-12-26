@@ -30,7 +30,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT SessionConfig
 	{
 	  public:
-		static bool initial(Session::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
+		static bool initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
 	};
 
 }

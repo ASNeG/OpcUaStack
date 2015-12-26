@@ -59,15 +59,15 @@ namespace OpcUaStackClient
 		uint32_t maxResponseMessageSize_;
 	};
 
-	class DLLEXPORT Session 
-	: public  OpcUaStackCore::ObjectPool<Session>
+	class DLLEXPORT SessionOld 
+	: public  OpcUaStackCore::ObjectPool<SessionOld>
 	, public Component
 	{
 	  public:
-		typedef boost::shared_ptr<Session> SPtr;
+		typedef boost::shared_ptr<SessionOld> SPtr;
 
-		Session(IOService& ioService);
-		~Session(void);
+		SessionOld(IOService& ioService);
+		~SessionOld(void);
 
 		bool registerService(OpcUaNodeId& typeId, Component* component);
 		bool deregisterService(OpcUaNodeId& typeId);

@@ -28,15 +28,15 @@ namespace OpcUaStackClient
 	{
 	  public:
 		NamespaceArray(void);
-		NamespaceArray(Session::SPtr session);
+		NamespaceArray(SessionOld::SPtr session);
 		~NamespaceArray(void);
 
-		void session(Session::SPtr session);
+		void session(SessionOld::SPtr session);
 		bool readSync(void);
 		std::vector<std::string>& namespaceVec(void);
 
 	  private:
-		Session::SPtr session_;
+		SessionOld::SPtr session_;
 		std::vector<std::string> namespaceVec_;
 	};
 

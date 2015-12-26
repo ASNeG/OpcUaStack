@@ -25,7 +25,7 @@ namespace OpcUaStackClient
 {
 
 	bool 
-	SessionConfig::initial(Session::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
+	SessionConfig::initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
 	{
 		uint32_t uint32Value;
 		std::string stringValue;

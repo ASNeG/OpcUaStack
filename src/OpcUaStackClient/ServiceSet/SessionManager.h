@@ -42,7 +42,7 @@ namespace OpcUaStackClient
 		void start(void);
 		void stop(void);
 
-		Session::SPtr getNewSession(
+		SessionOld::SPtr getNewSession(
 			const std::string& prefixSessionConfig, Config& sessionConfig, 
 			const std::string& prefixSecureChannelConfig, Config& secureChannelConfig, 
 			SessionIf* sessionIf,
@@ -68,7 +68,7 @@ namespace OpcUaStackClient
 		IOService ioService_;
 
 		SecureChannelClient::SPtr secureChannel_;
-		Session::SPtr session_;
+		SessionOld::SPtr session_;
 	};
 
 }

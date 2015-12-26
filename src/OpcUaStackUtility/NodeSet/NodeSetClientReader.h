@@ -145,7 +145,7 @@ namespace OpcUaStackUtility
 		ConditionBool condition_;
 		
 		uint32_t operationTimeout_;
-		Session::SPtr session_;
+		SessionOld::SPtr session_;
 		bool error_;
 
 		typedef std::set<OpcUaNodeId> NodeIdSet;
