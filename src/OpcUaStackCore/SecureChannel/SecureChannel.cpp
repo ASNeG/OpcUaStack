@@ -174,7 +174,12 @@ namespace OpcUaStackCore
 	SecureChannel::debugRecvCloseSecureChannelRequest(void)
 	{
 		if (!debug_) return;
-		debugRead("CloseSecureChannelRequest");
+		Log(Debug, "opc ua secure channel recv OpenSecureChannelRequest")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", channelId_);
 	}
 
 	void

@@ -118,8 +118,10 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
+	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleDisconnect_.waitForCondition(1000) == true);
 
 	ioService.stop();
 }

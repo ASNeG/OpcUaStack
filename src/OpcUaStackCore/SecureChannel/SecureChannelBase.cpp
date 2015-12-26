@@ -757,14 +757,14 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// debug output
-		secureChannel->debugRecvCloseSecureChannelRequest();
-
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		OpcUaUInt32 channelId;
 		OpcUaNumber::opcUaBinaryDecode(is, channelId);
 		consumeAll(secureChannel->recvBuffer_);
+
+		// debug output
+		secureChannel->debugRecvCloseSecureChannelRequest();
 
 		// FIXME: ....
 

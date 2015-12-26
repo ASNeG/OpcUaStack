@@ -66,6 +66,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::disconnect(SecureChannel* secureChannel)
 	{
+		secureChannel->socket().cancel();
+		secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 	}
 
 	void
@@ -178,6 +180,14 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::handleDisconnect(SecureChannel* secureChannel)
 	{
+		Log(Info, "secure channel closed")
+			.parameter("Local-Address", secureChannel->local_.address().to_string())
+			.parameter("Local-Port", secureChannel->local_.port())
+			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
+			.parameter("Partner-Port", secureChannel->partner_.port());
+
+		secureChannelServerIf_->handleDisconnect(secureChannel);
+		delete secureChannel;
 	}
 
 	void
@@ -282,6 +292,19 @@ namespace OpcUaStackCore
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
 
 		secureChannelServerIf_->handleConnect(secureChannel);
+	}
+
+	void
+	SecureChannelServer::handleRecvCloseSecureChannelRequest(SecureChannel* secureChannel, uint32_t channelId)
+	{
+		Log(Debug, "close secure channel, because receive close secure channel from partner")
+			.parameter("Local-Address", secureChannel->local_.address().to_string())
+			.parameter("Local-Port", secureChannel->local_.port())
+			.parameter("Partner-Address", secureChannel->partner_.address().to_string())
+			.parameter("Partner-Port", secureChannel->partner_.port());
+
+		secureChannel->socket().cancel();
+		secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 	}
 
 	void
