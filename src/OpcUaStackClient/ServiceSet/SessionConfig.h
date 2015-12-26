@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionOld.h"
 
 using namespace OpcUaStackCore;
 

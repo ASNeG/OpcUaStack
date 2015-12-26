@@ -19,7 +19,7 @@
 #define __OpcUaStackClient_NamespaceArray_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionOld.h"
 
 namespace OpcUaStackClient
 {
