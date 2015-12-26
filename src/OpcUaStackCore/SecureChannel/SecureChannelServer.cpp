@@ -280,6 +280,8 @@ namespace OpcUaStackCore
 
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
+
+		secureChannelServerIf_->handleConnect(secureChannel);
 	}
 
 	void

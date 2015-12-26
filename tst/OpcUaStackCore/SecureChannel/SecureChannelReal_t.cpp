@@ -7,7 +7,7 @@
 
 using namespace OpcUaStackCore;
 
-class SecureChannelClientTest
+class SecureChannelClientRealTest
 : public SecureChannelClientIf
 {
   public:
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel)
 BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
-	SecureChannelClientTest secureChannelClientTest;
+	SecureChannelClientRealTest secureChannelClientTest;
 
 	IOService ioService;
 	ioService.start(1);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect_with_a_second_channel)
 {
 	OpcUaStackCore::SecureChannel* secureChannel1;
 	OpcUaStackCore::SecureChannel* secureChannel2;
-	SecureChannelClientTest secureChannelClientTest;
+	SecureChannelClientRealTest secureChannelClientTest;
 
 	IOService ioService;
 	ioService.start(1);
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect_with_a_second_channel)
 BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_SendRequest_ReceiveResponse_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
-	SecureChannelClientTest secureChannelClientTest;
+	SecureChannelClientRealTest secureChannelClientTest;
 
 	IOService ioService;
 	ioService.start(1);

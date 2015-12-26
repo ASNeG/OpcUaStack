@@ -15,21 +15,21 @@ class SecureChannelClientTest
 	Condition handleConnect_;
 	void handleConnect(SecureChannel* secureChannel)
 	{
-		std::cout << "handleConnect" << std::endl;
+		std::cout << "handleConnect client" << std::endl;
 		handleConnect_.conditionValueDec();
 	}
 
 	Condition handleDisconnect_;
 	void handleDisconnect(SecureChannel* secureChannel)
 	{
-		std::cout << "handleDisconnect" << std::endl;
+		std::cout << "handleDisconnect client" << std::endl;
 		handleDisconnect_.conditionValueDec();
 	}
 
 	Condition handleMessageResponse_;
 	void handleMessageResponse(SecureChannel* secureChannel)
 	{
-		std::cout << "handleMessageResponse" << std::endl;
+		std::cout << "handleMessageResponse client" << std::endl;
 		handleMessageResponse_.conditionValueDec();
 	}
 };
@@ -41,35 +41,35 @@ class SecureChannelServerTest
 	Condition handleConnect_;
 	void handleConnect(SecureChannel* secureChannel)
 	{
-		std::cout << "handleConnect" << std::endl;
+		std::cout << "handleConnect server" << std::endl;
 		handleConnect_.conditionValueDec();
 	}
 
 	Condition handleDisconnect_;
 	void handleDisconnect(SecureChannel* secureChannel)
 	{
-		std::cout << "handleDisconnect" << std::endl;
+		std::cout << "handleDisconnect server" << std::endl;
 		handleDisconnect_.conditionValueDec();
 	}
 
 	Condition handleMessageRequest_;
 	void handleMessageRequest(SecureChannel* secureChannel)
 	{
-		std::cout << "handleMessageRequest" << std::endl;
+		std::cout << "handleMessageRequest server" << std::endl;
 		handleMessageRequest_.conditionValueDec();
 	}
 
 	Condition handleEndpointOpen_;
 	void handleEndpointOpen(void)
 	{
-		std::cout << "handleEndpointOpen" << std::endl;
+		std::cout << "handleEndpointOpen server" << std::endl;
 		handleEndpointOpen_.conditionValueDec();
 	}
 
 	Condition handleEndpointClose_;
 	void handleEndpointClose(void)
 	{
-		std::cout << "handleEndpointClose" << std::endl;
+		std::cout << "handleEndpointClose server" << std::endl;
 		handleEndpointClose_.conditionValueDec();
 	}
 };
@@ -106,6 +106,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
+	secureChannelServerTest.handleConnect_.condition(1,0);
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
 	secureChannelClientConfig->debug(false);
@@ -113,6 +114,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	secureChannel = secureChannelClient.connect(secureChannelClientConfig);
 	BOOST_REQUIRE(secureChannel != nullptr);
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
 
 	// diconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
