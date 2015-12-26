@@ -524,7 +524,7 @@ namespace OpcUaStackCore
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
-		secureChannel->debugSendOpenSecureChannel(openSecureChannelRequest);
+		secureChannel->debugSendOpenSecureChannelRequest(openSecureChannelRequest);
 
 		asyncWriteCount_++;
 		secureChannel->async_write(
@@ -642,10 +642,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(
 		SecureChannel* secureChannel,
-		uint32_t channelId,
-		SecurityHeader& securityHeader,
-		SequenceHeader& sequenceHeader,
-		OpcUaNodeId& typeIdResponse,
 		OpenSecureChannelResponse& openSecureChannelResponse
 	)
 	{
@@ -654,12 +650,31 @@ namespace OpcUaStackCore
 		boost::asio::streambuf sb2;
 		std::iostream ios2(&sb2);
 
-		OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
+		// encode security header
+		SecurityHeader securityHeader;
+		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
+		switch (secureChannel->securityPolicy_)
+		{
+			case SP_None: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None"; break;
+			case SP_Basic128Rsa15: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#xxx"; break;
+			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#xxx"; break;
+			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#xxx"; break;
+		}
+		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
 		securityHeader.opcUaBinaryEncode(ios1);
 
-		sequenceHeader.opcUaBinaryEncode(ios1);
+		// encode sequence number
+		secureChannel->sendSequenceNumber_++;
+		OpcUaNumber::opcUaBinaryDecode(ios1, secureChannel->recvSequenceNumber_);
 
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(ios1, secureChannel->recvRequestId_);
+
+		// encode response type id
+		OpcUaNodeId typeIdResponse;
+		typeIdResponse.nodeId(OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
 		typeIdResponse.opcUaBinaryEncode(ios1);
 
 		openSecureChannelResponse.opcUaBinaryEncode(ios1);
@@ -667,6 +682,10 @@ namespace OpcUaStackCore
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
+
+		// debug output
+		secureChannel->debugSendHeader(secureChannel->messageHeader_);
+		secureChannel->debugSendOpenSecureChannelResponse(openSecureChannelResponse);
 
 		asyncWriteCount_++;
 		secureChannel->async_write(

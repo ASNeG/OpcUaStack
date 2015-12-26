@@ -234,6 +234,52 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::handleRecvOpenSecureChannelRequest(SecureChannel* secureChannel, OpcUaUInt32 channelId, OpenSecureChannelRequest& openSecureChannelRequest)
 	{
+		// check parameter
+		bool success = true;
+		if (openSecureChannelRequest.requestType() == RT_ISSUE) {
+			if (secureChannel->channelId_ != 0) {
+				success = false;
+				Log(Error, "receive invalid request type in OpenSecureChannelRequest")
+					.parameter("Local-Address", secureChannel->local_.address().to_string())
+					.parameter("Local-Port", secureChannel->local_.port())
+					.parameter("Partner-Address", secureChannel->partner_.address().to_string())
+					.parameter("Partner-Port", secureChannel->partner_.port())
+					.parameter("RequestedType", openSecureChannelRequest.requestType());
+			}
+			secureChannel->gChannelId_++;
+			secureChannel->channelId_ = secureChannel->gChannelId_;
+		}
+		else {
+			if (secureChannel->channelId_ != channelId) {
+				success = false;
+				Log(Error, "receive invalid channel id in OpenSecureChannelRequest")
+					.parameter("Local-Address", secureChannel->local_.address().to_string())
+					.parameter("Local-Port", secureChannel->local_.port())
+					.parameter("Partner-Address", secureChannel->partner_.address().to_string())
+					.parameter("Partner-Port", secureChannel->partner_.port())
+					.parameter("ChannelId", channelId);
+			}
+		}
+		if (!success) {
+			// FIXME: error
+		}
+
+		// create new security token
+		secureChannel->tokenIdVec_.push_back(std::rand());
+
+		// create open secure channel response
+		OpenSecureChannelResponse openSecureChannelResponse;
+		OpcUaByte serverNonce[1];
+		serverNonce[0] = 0x01;
+		openSecureChannelResponse.securityToken()->channelId(secureChannel->channelId_);
+		openSecureChannelResponse.securityToken()->tokenId(secureChannel->tokenIdVec_[secureChannel->tokenIdVec_.size()-1]);
+		openSecureChannelResponse.securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
+		openSecureChannelResponse.securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
+		openSecureChannelResponse.responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
+		openSecureChannelResponse.serverNonce(serverNonce, 1);
+
+		// send open secure channel response
+		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
 	}
 
 	void

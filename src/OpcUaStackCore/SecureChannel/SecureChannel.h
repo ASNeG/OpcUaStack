@@ -64,8 +64,10 @@ namespace OpcUaStackCore
 		void debugSendHeader(MessageHeader& messageHeader);
 		void debugSendHello(HelloMessage& hello);
 		void debugSendAcknowledge(AcknowledgeMessage& acknowledge);
-		void debugSendOpenSecureChannel(OpenSecureChannelRequest& openSecureChannelRequest);
+		void debugSendOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest);
+		void debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
+
 
 
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
@@ -83,6 +85,7 @@ namespace OpcUaStackCore
 
 		OpcUaUInt32 channelId_;
 		OpcUaUInt32 tokenId_;
+		std::vector<OpcUaUInt32> tokenIdVec_;
 		UtcTime createAt_;
 		OpcUaInt32 revisedLifetime_;
 
@@ -106,6 +109,8 @@ namespace OpcUaStackCore
 
 		SecurityMode securityMode_;
 		SecurityPolicy securityPolicy_;
+
+		static OpcUaUInt32 gChannelId_;
 
 	  private:
 		void debugRead(const std::string& message);

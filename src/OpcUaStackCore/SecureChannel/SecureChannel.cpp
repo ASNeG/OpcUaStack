@@ -24,6 +24,8 @@
 namespace OpcUaStackCore
 {
 
+	OpcUaUInt32 SecureChannel::gChannelId_ = 0;
+
 	SecureChannel::SecureChannel(IOService* ioService)
 	: TCPConnection(ioService->io_service())
 	, state_(S_Init)
@@ -272,10 +274,10 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannel::debugSendOpenSecureChannel(OpenSecureChannelRequest& openSecureChannelRequest)
+	SecureChannel::debugSendOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest)
 	{
 		if (!debug_) return;
-		Log(Debug, "opc ua secure channel send Hello")
+		Log(Debug, "opc ua secure channel send OpenSecureChannelRequest")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
 			.parameter("Partner-Address", partner_.address().to_string())
@@ -284,6 +286,21 @@ namespace OpcUaStackCore
 			.parameter("RequestType", openSecureChannelRequest.requestType())
 			.parameter("SecurityMode", openSecureChannelRequest.securityMode())
 			.parameter("RequestedLifetime", openSecureChannelRequest.requestedLifetime());
+	}
+
+	void
+	SecureChannel::debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse)
+	{
+		if (!debug_) return;
+		Log(Debug, "opc ua secure channel send OpenSecureChannelResponse")
+			.parameter("Local-Address", local_.address().to_string())
+			.parameter("Local-Port", local_.port())
+			.parameter("Partner-Address", partner_.address().to_string())
+			.parameter("Partner-Port", partner_.port())
+			.parameter("ChannelId", openSecureChannelResponse.securityToken()->channelId())
+			.parameter("TokenId", openSecureChannelResponse.securityToken()->channelId())
+			.parameter("CreateAt", openSecureChannelResponse.securityToken()->createAt())
+			.parameter("RevisedTime", openSecureChannelResponse.securityToken()->revisedLifetime());
 	}
 
 	void

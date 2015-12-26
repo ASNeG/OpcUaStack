@@ -62,10 +62,6 @@ namespace OpcUaStackCore
 		);
 		void asyncWriteOpenSecureChannelResponse(
 			SecureChannel* secureChannel,
-			uint32_t channelId,
-			SecurityHeader& securityHeader,
-			SequenceHeader& sequenceHeader,
-			OpcUaNodeId& typeIdResponse,
 			OpenSecureChannelResponse& openSecureChannelResponse
 		);
 		void asyncWriteCloseSecureChannelRequest(
