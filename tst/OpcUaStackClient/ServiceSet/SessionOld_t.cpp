@@ -31,14 +31,14 @@ class AttributeServiceHandler
 	 Condition attributeServiceWriteResponseCondition_;
 };
 
-BOOST_AUTO_TEST_SUITE(Session_)
+BOOST_AUTO_TEST_SUITE(SessionOld_)
 
-BOOST_AUTO_TEST_CASE(Session_)
+BOOST_AUTO_TEST_CASE(SessionOld_)
 {
-	std::cout << "Session_t" << std::endl;
+	std::cout << "SessionOld_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(Session_open)
+BOOST_AUTO_TEST_CASE(SessionOld_open)
 {
 	AttributeServiceHandler attributeServiceHandler;
 	SessionTestHandler sessionTestHandler;
