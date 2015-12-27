@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;
@@ -35,6 +36,8 @@ namespace OpcUaStackClient
 	, secureChannel_(nullptr)
 
 	, requestHandle_(0)
+	, sessionTimeout_(0)
+	, maxResponseMessageSize_(0)
 	{
 	}
 
@@ -102,6 +105,21 @@ namespace OpcUaStackClient
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
 	}
 
+	void
+	Session::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	{
+		std::iostream ios(&secureChannelTransaction->is_);
+		CreateSessionResponse createSessionResponse;
+		createSessionResponse.opcUaBinaryDecode(ios);
+
+		sessionTimeout_ = createSessionResponse.receivedSessionTimeout();
+		maxResponseMessageSize_ = createSessionResponse.maxRequestMessageSize();
+
+		Log(Debug, "session recv CreateSessionResponse")
+		    .parameter("SessionName", sessionConfig_->sessionName_);
+
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -136,6 +154,16 @@ namespace OpcUaStackClient
 	Session::handleMessageResponse(SecureChannel* secureChannel)
 	{
 		std::cout << "handleMessageResponse" << std::endl;
+
+		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())
+		{
+			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
+			{
+				recvCreateSessionResponse(secureChannel->secureChannelTransaction_);
+				break;
+			}
+		}
+
 	}
 
 }
