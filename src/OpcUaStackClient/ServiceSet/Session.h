@@ -30,7 +30,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT Session
 	{
 	  public:
-		typedef std::shared_ptr<Session> SPtr;
+		typedef boost::shared_ptr<Session> SPtr;
 
 		Session(IOService& ioService);
 		~Session(void);

@@ -32,4 +32,11 @@ namespace OpcUaStackClient
 	{
 	}
 
+	Session::SPtr
+	ServiceSetManager::createSession(void)
+	{
+		Session::SPtr session;
+		return session;
+	}
+
 }

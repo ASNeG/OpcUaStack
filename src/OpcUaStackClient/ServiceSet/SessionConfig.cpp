@@ -14,30 +14,20 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_ServiceSetManager_h__
-#define __OpcUaStackClient_ServiceSetManager_h__
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
 
-using namespace OpcUaStackCore;
+#include "OpcUaStackClient/ServiceSet/SessionConfig.h"
+
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT ServiceSetManager
+	SessionConfig::SessionConfig(void)
 	{
-	  public:
-		ServiceSetManager(IOService& ioService);
-		~ServiceSetManager(void);
+	}
 
-		Session::SPtr createSession(void);
-
-	  private:
-		IOService* ioService_;
-	};
+	SessionConfig::~SessionConfig(void)
+	{
+	}
 
 }
-
-#endif
