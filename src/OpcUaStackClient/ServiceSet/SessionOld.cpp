@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackClient/ServiceSet/SessionOld.h"
+#include "OpcUaStackClient/ServiceSet/SessionBase.h"
 
 using namespace OpcUaStackCore;
 
@@ -599,7 +600,8 @@ namespace OpcUaStackClient
 			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
-		sessionIf_->sessionStateUpdate(SS_Connect);
+		SessionBase sessionBase;
+		sessionIf_->sessionStateUpdate(sessionBase, SS_Connect);
 	}
 
 	void
@@ -610,7 +612,8 @@ namespace OpcUaStackClient
 			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
-		sessionIf_->sessionStateUpdate(SS_Disconnect);
+		SessionBase session;
+		sessionIf_->sessionStateUpdate(session, SS_Disconnect);
 		pendingQueueClose();
 	}
 
@@ -622,7 +625,8 @@ namespace OpcUaStackClient
 			.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
-	    sessionIf_->sessionStateUpdate(SS_Reactivate);
+	    SessionBase session;
+	    sessionIf_->sessionStateUpdate(session, SS_Reactivate);
 	}
 
 	void

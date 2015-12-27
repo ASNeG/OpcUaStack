@@ -1009,7 +1009,7 @@ namespace OpcUaStackUtility
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	NodeSetClientReader::sessionStateUpdate(SessionState sessionState)
+	NodeSetClientReader::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
 		switch (sessionState)
 		{

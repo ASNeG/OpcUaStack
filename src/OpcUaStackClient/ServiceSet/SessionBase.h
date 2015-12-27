@@ -14,33 +14,22 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_Session_h__
-#define __OpcUaStackClient_Session_h__
+#ifndef __OpcUaStackClient_SessionBase_h__
+#define __OpcUaStackClient_SessionBase_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
-#include "OpcUaStackClient/ServiceSet/SessionBase.h"
-
-using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT Session
-	: public SessionBase
+	class DLLEXPORT SessionBase
 	{
 	  public:
-		typedef boost::shared_ptr<Session> SPtr;
+		typedef boost::shared_ptr<SessionBase> SPtr;
 
-		Session(IOService& ioService);
-		~Session(void);
-
-
-
-	  private:
-		IOService* ioService_;
+		SessionBase(void) {}
+		virtual ~SessionBase(void) {}
 	};
 
 }

@@ -54,7 +54,7 @@ namespace OpcUaStackClient
 		//
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
-		void sessionStateUpdate(SessionState sessionState)
+		void sessionStateUpdate(SessionBase& session, SessionState sessionState)
 		{
 			sessionState_ = sessionState;
 			sessionUpdateCondition_.conditionValueDec();

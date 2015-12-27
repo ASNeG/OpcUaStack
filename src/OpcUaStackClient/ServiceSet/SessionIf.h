@@ -20,6 +20,7 @@
 
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackClient/ServiceSet/SessionBase.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,7 +38,7 @@ namespace OpcUaStackClient
 	  public:
 		virtual ~SessionIf(void) {}
 
-		virtual void sessionStateUpdate(SessionState sessionState) = 0;
+		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState) = 0;
 	};
 
 }

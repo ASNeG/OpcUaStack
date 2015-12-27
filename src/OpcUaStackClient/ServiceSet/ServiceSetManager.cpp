@@ -39,4 +39,9 @@ namespace OpcUaStackClient
 		return session;
 	}
 
+	void
+	ServiceSetManager::destroySession(Session::SPtr session)
+	{
+	}
+
 }

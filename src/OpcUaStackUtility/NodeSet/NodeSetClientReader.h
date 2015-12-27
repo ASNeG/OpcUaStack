@@ -58,7 +58,7 @@ namespace OpcUaStackUtility
 		NodeSetNamespace& nodeSetNamespace(void);
 
 		//- SessionIf interface -----------------------------------------------
-		void sessionStateUpdate(SessionState sessionState);
+		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
 		//- SessionIf interface -----------------------------------------------
 
 	  private:

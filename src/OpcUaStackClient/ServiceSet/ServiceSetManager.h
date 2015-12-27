@@ -33,6 +33,7 @@ namespace OpcUaStackClient
 		~ServiceSetManager(void);
 
 		Session::SPtr createSession(void);
+		void destroySession(Session::SPtr session);
 
 	  private:
 		IOService* ioService_;
