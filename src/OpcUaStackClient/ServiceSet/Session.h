@@ -36,14 +36,6 @@ namespace OpcUaStackClient
 	, public SecureChannelClientIf
 	{
 	  public:
-		typedef enum
-		{
-			S_Init,
-			S_SecureChannelConnecting,
-			S_SecureChannelConnected,
-			S_SecureChannelDisconnect,
-			S_SecureChannelDisconnecting,
-		} State;
 		typedef boost::shared_ptr<Session> SPtr;
 
 		Session(IOService& ioService);
@@ -62,7 +54,6 @@ namespace OpcUaStackClient
 
 	  private:
 		IOService* ioService_;
-		State state_;
 		SessionIf* sessionIf_;
 		SecureChannel* secureChannel_;
 		SecureChannelClient secureChannelClient_;

@@ -25,7 +25,6 @@ namespace OpcUaStackClient
 
 	Session::Session(IOService& ioService)
 	: ioService_(&ioService)
-	, state_(S_Init)
 	, sessionIf_(nullptr)
 	, sessionConfig_()
 	, secureChannelClient_(&ioService)
@@ -62,19 +61,16 @@ namespace OpcUaStackClient
 	{
 		sessionConfig_ = sessionConfig;
 
-		state_ = S_SecureChannelConnecting;
-		secureChannelClient_.secureChannelClientIf(this, SS_Connect);
+		secureChannelClient_.secureChannelClientIf(this);
 		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig);
 	}
 
 	void
 	Session::asyncDisconnect(void)
 	{
-		if (state_ == S_SecureChannelConnected) {
-			state_ = S_SecureChannelDisconnecting;
-			secureChannelClient_.disconnect(secureChannel_, SS_Disconnect);
-			return;
-		}
+
+		secureChannelClient_.disconnect(secureChannel_);
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -87,9 +83,6 @@ namespace OpcUaStackClient
 	void
 	Session::handleConnect(SecureChannel* secureChannel)
 	{
-		std::cout <<  "handleConnect" << std::endl;
-
-		state_ = S_SecureChannelConnected;
 		if (sessionConfig_.get() == nullptr) {
 			if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Connect);
 			return;
@@ -101,9 +94,6 @@ namespace OpcUaStackClient
 	void
 	Session::handleDisconnect(SecureChannel* secureChannel)
 	{
-		std::cout << "handleDisconnect" << std::endl;
-
-		state_ = S_SecureChannelDisconnect;
 		if (sessionConfig_.get() == nullptr) {
 			if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Disconnect);
 			return;
