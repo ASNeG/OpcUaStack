@@ -21,7 +21,9 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
+#include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,10 +39,19 @@ namespace OpcUaStackClient
 		Session(IOService& ioService);
 		~Session(void);
 
+		void asyncConnect(SecureChannelConfig::SPtr& secureChannelConfig);
+		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelConfig::SPtr& secureChannelConfig);
 
+		//- SecureChannelClientIf ---------------------------------------------
+		virtual void handleConnect(SecureChannel* secureChannel);
+		virtual void handleDisconnect(SecureChannel* secureChannel);
+		virtual void handleMessageResponse(SecureChannel* secureChannel);
+		//- SecureChannelClientIf ---------------------------------------------
 
 	  private:
 		IOService* ioService_;
+		SessionConfig::SPtr sessionConfig_;
+		SecureChannelConfig::SPtr secureChannelConfig_;
 	};
 
 }

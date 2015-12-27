@@ -17,8 +17,8 @@
 #ifndef __OpcUaStackClient_SessionConfig_h__
 #define __OpcUaStackClient_SessionConfig_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-
 
 namespace OpcUaStackClient
 {
@@ -26,6 +26,8 @@ namespace OpcUaStackClient
 	class DLLEXPORT SessionConfig
 	{
 	  public:
+		typedef boost::shared_ptr<SessionConfig> SPtr;
+
 		SessionConfig(void);
 		~SessionConfig(void);
 
