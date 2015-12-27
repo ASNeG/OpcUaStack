@@ -76,6 +76,7 @@ BOOST_AUTO_TEST_CASE(Subscription_)
 	std::cout << "Subscription_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(Subscription_create_delete_sync)
 {
 	SessionTestHandler sessionTestHandler;
@@ -233,6 +234,7 @@ BOOST_AUTO_TEST_CASE(Subscription_create_delete_async)
 	client.stop();
 	client.cleanup();
 }
+#endif
 #endif
 
 BOOST_AUTO_TEST_SUITE_END()

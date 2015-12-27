@@ -40,6 +40,7 @@ BOOST_AUTO_TEST_CASE(AttributeService_)
 	std::cout << "AttributeService_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(AttributeService_open)
 {
 	AttributeServiceHandler attributeServiceHandler;
@@ -243,5 +244,6 @@ BOOST_AUTO_TEST_CASE(AttributeService_write)
 	client.stop();
 	client.cleanup();
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()

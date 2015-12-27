@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 
@@ -32,20 +33,26 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT Session
 	: public SessionBase
+	, public SecureChannelClientIf
 	{
 	  public:
 		typedef enum
 		{
 			S_Init,
-			S_ConnectingSecureChannel,
+			S_SecureChannelConnecting,
+			S_SecureChannelConnected,
+			S_SecureChannelDisconnect,
+			S_SecureChannelDisconnecting,
 		} State;
 		typedef boost::shared_ptr<Session> SPtr;
 
 		Session(IOService& ioService);
 		~Session(void);
 
+		void sessionIf(SessionIf* sessionIf);
 		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
+		void asyncDisconnect(void);
 
 		//- SecureChannelClientIf ---------------------------------------------
 		virtual void handleConnect(SecureChannel* secureChannel);
@@ -56,6 +63,8 @@ namespace OpcUaStackClient
 	  private:
 		IOService* ioService_;
 		State state_;
+		SessionIf* sessionIf_;
+		SecureChannel* secureChannel_;
 		SecureChannelClient secureChannelClient_;
 		SessionConfig::SPtr sessionConfig_;
 	};

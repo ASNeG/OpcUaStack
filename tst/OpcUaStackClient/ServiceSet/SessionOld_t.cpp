@@ -38,6 +38,7 @@ BOOST_AUTO_TEST_CASE(SessionOld_)
 	std::cout << "SessionOld_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(SessionOld_open)
 {
 	AttributeServiceHandler attributeServiceHandler;
@@ -118,5 +119,6 @@ BOOST_AUTO_TEST_CASE(SessionOld_open)
 	client.stop();
 	client.cleanup();
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
