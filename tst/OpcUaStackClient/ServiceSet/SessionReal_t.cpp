@@ -1,6 +1,7 @@
 
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Condition.h"
+#include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 #ifdef REAL_SERVER
@@ -65,6 +66,9 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 
 BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 {
+	Core core;
+	core.init();
+
 	IOService ioService;
 	ioService.start(1);
 
@@ -81,7 +85,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 	sessionConfig->sessionName_ = "urn:127.0.0.1:ASNeG.de:ASNeG-Client";
 	sessionConfig->applicationDescription_->applicationUri("urn:127.0.0.1:ASNeG.de:ASNeG-Client");
 	sessionConfig->applicationDescription_->productUri("urn:ASNeG.de:ASNeG-Client");
-	sessionConfig->applicationDescription_->applicationName().set("de", "ASNeG-Client");
+	sessionConfig->applicationDescription_->applicationName().set("en", "ASNeG-Client");
 
 	// init session
 	Session session(ioService);

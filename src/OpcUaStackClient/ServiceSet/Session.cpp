@@ -20,6 +20,9 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;
@@ -38,6 +41,8 @@ namespace OpcUaStackClient
 	, requestHandle_(0)
 	, sessionTimeout_(0)
 	, maxResponseMessageSize_(0)
+
+	, authenticationToken_()
 	{
 	}
 
@@ -78,9 +83,7 @@ namespace OpcUaStackClient
 	void
 	Session::asyncDisconnect(void)
 	{
-
 		secureChannelClient_.disconnect(secureChannel_);
-
 	}
 
 	void
@@ -114,10 +117,55 @@ namespace OpcUaStackClient
 
 		sessionTimeout_ = createSessionResponse.receivedSessionTimeout();
 		maxResponseMessageSize_ = createSessionResponse.maxRequestMessageSize();
+		authenticationToken_ = createSessionResponse.authenticationToken();
 
 		Log(Debug, "session recv CreateSessionResponse")
-		    .parameter("SessionName", sessionConfig_->sessionName_);
+		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("AuthenticationToken", authenticationToken_);
 
+		sendActivateSessionRequest();
+	}
+
+	void
+	Session::sendActivateSessionRequest(void)
+	{
+		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
+		std::iostream ios(&secureChannelTransaction->os_);
+
+		OpcUaString::SPtr localeIdSPtr = OpcUaString::construct();
+		*localeIdSPtr = "en";
+
+		ActivateSessionRequest activateSessionRequest;
+		activateSessionRequest.requestHeader()->requestHandle(++requestHandle_);
+		activateSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
+		activateSessionRequest.localeIds()->resize(1);
+		activateSessionRequest.localeIds()->push_back(localeIdSPtr);
+
+		// user identity token
+		activateSessionRequest.userIdentityToken()->parameterTypeId().nodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		AnonymousIdentityToken::SPtr anonymousIdentityToken = activateSessionRequest.userIdentityToken()->parameter<AnonymousIdentityToken>();
+		anonymousIdentityToken->policyId("Anonymous_Policy");
+		activateSessionRequest.opcUaBinaryEncode(ios);
+
+		Log(Debug, "session send ActivateSessionRequest")
+		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("AuthenticationToken", authenticationToken_);
+		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
+	}
+
+	void
+	Session::recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	{
+		std::iostream ios(&secureChannelTransaction->is_);
+		ActivateSessionResponse activateSessionResponse;
+		activateSessionResponse.opcUaBinaryDecode(ios);
+
+		Log(Debug, "session recv ActivateSessionResponse")
+		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("AuthenticationToken", authenticationToken_);
+
+		if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Connect);
 	}
 
 	// ------------------------------------------------------------------------
@@ -142,12 +190,7 @@ namespace OpcUaStackClient
 	void
 	Session::handleDisconnect(SecureChannel* secureChannel)
 	{
-		if (sessionConfig_.get() == nullptr) {
-			if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Disconnect);
-			return;
-		}
-
-		//  FIXME: delete session
+		if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Disconnect);
 	}
 
 	void
@@ -160,6 +203,11 @@ namespace OpcUaStackClient
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
 				recvCreateSessionResponse(secureChannel->secureChannelTransaction_);
+				break;
+			}
+			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
+			{
+				recvActivateSessionResponse(secureChannel->secureChannelTransaction_);
 				break;
 			}
 		}

@@ -55,6 +55,8 @@ namespace OpcUaStackClient
 	  private:
 		void sendCreateSessionRequest(void);
 		void recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void sendActivateSessionRequest();
+		void recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 
 		IOService* ioService_;
 		SessionIf* sessionIf_;
@@ -64,8 +66,10 @@ namespace OpcUaStackClient
 		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
 
 		OpcUaUInt32 requestHandle_;
-		OpcUaUInt32 sessionTimeout_;
+		OpcUaDouble sessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
+
+		OpcUaNodeId authenticationToken_;
 	};
 
 }
