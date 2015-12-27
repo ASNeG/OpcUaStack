@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
@@ -34,6 +35,8 @@ namespace OpcUaStackClient
 	: ioService_(&ioService)
 	, sessionIf_(nullptr)
 	, sessionConfig_()
+
+	, secureChannelConnect_(false)
 	, secureChannelClientConfig_()
 	, secureChannelClient_(&ioService)
 	, secureChannel_(nullptr)
@@ -82,8 +85,11 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::asyncDisconnect(void)
+	Session::asyncDisconnect(bool deleteSubscriptions)
 	{
+		if (secureChannelConnect_) {
+			sendCloseSessionRequest(deleteSubscriptions);
+		}
 		secureChannelClient_.disconnect(secureChannel_);
 	}
 
@@ -171,6 +177,25 @@ namespace OpcUaStackClient
 		if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Connect);
 	}
 
+	void
+	Session::sendCloseSessionRequest(bool deleteSubscriptions)
+	{
+		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
+		secureChannelTransaction->requestId_ = ++requestId_;
+		std::iostream ios(&secureChannelTransaction->os_);
+
+		CloseSessionRequest closeSessionRequest;
+		closeSessionRequest.requestHeader()->requestHandle(++requestHandle_);
+		closeSessionRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
+		closeSessionRequest.deleteSubscriptions(deleteSubscriptions);
+
+		Log(Debug, "session send CloseSessionRequest")
+		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("AuthenticationToken", authenticationToken_);
+		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -181,6 +206,7 @@ namespace OpcUaStackClient
 	void
 	Session::handleConnect(SecureChannel* secureChannel)
 	{
+		secureChannelConnect_ = true;
 		if (sessionConfig_.get() == nullptr) {
 			if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Connect);
 			return;
@@ -193,6 +219,7 @@ namespace OpcUaStackClient
 	void
 	Session::handleDisconnect(SecureChannel* secureChannel)
 	{
+		secureChannelConnect_ = false;
 		if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Disconnect);
 	}
 
@@ -206,12 +233,12 @@ namespace OpcUaStackClient
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
 			{
 				recvCreateSessionResponse(secureChannel->secureChannelTransaction_);
-				break;
+				return;
 			}
 			case OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary:
 			{
 				recvActivateSessionResponse(secureChannel->secureChannelTransaction_);
-				break;
+				return;
 			}
 		}
 
