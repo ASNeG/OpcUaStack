@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef _OpcUaStackClient_SessionConfig_h__
-#define _OpcUaStackClient_SessionConfig_h__
+#ifndef _OpcUaStackClient_SessionConfigReader_h__
+#define _OpcUaStackClient_SessionConfigReader_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
@@ -27,7 +27,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SessionConfig
+	class DLLEXPORT SessionConfigReader
 	{
 	  public:
 		static bool initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);

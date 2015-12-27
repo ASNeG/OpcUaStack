@@ -65,7 +65,7 @@ namespace OpcUaStackClient
 
 		// create session
 		session_ = SessionOld::construct(ioService_);
-		rc = SessionConfig::initial(session_, prefixSessionConfig, &sessionConfig);
+		rc = SessionConfigReader::initial(session_, prefixSessionConfig, &sessionConfig);
 		if (!rc) {
 			Log(Error, "cannot create client session");
 			return sessionSPtr;
