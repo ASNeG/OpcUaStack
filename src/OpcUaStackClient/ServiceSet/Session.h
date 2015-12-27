@@ -69,6 +69,7 @@ namespace OpcUaStackClient
 		OpcUaDouble sessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
 
+		OpcUaUInt32 requestId_;
 		OpcUaNodeId authenticationToken_;
 	};
 

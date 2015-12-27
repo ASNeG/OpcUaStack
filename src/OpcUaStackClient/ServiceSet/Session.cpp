@@ -42,6 +42,7 @@ namespace OpcUaStackClient
 	, sessionTimeout_(0)
 	, maxResponseMessageSize_(0)
 
+	, requestId_(0)
 	, authenticationToken_()
 	{
 	}
@@ -91,6 +92,7 @@ namespace OpcUaStackClient
 	{
 		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
 
 		CreateSessionRequest createSessionRequest;
@@ -131,6 +133,7 @@ namespace OpcUaStackClient
 	{
 		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
+		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
 
 		OpcUaString::SPtr localeIdSPtr = OpcUaString::construct();

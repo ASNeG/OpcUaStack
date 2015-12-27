@@ -1005,7 +1005,7 @@ namespace OpcUaStackCore
 		}
 		else {
 			secureChannel->secureChannelTransactionList_.pop_front();
-			secureChannel->sendFirstSegment_ = false;
+			secureChannel->sendFirstSegment_ = true;
 
 			secureChannel->async_write(
 				sb2, sb1, secureChannelTransaction->os_,
@@ -1219,7 +1219,7 @@ namespace OpcUaStackCore
 		}
 		else {
 			secureChannel->secureChannelTransactionList_.pop_front();
-			secureChannel->sendFirstSegment_ = false;
+			secureChannel->sendFirstSegment_ = true;
 
 			secureChannel->async_write(
 				sb2, sb1, secureChannelTransaction->os_,
