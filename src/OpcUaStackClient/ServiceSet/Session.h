@@ -45,6 +45,7 @@ namespace OpcUaStackClient
 		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncDisconnect(bool deleteSubscriptions = true);
+		void asyncCancel(uint32_t requestHandle);
 
 		//- SecureChannelClientIf ---------------------------------------------
 		virtual void handleConnect(SecureChannel* secureChannel);
@@ -58,6 +59,7 @@ namespace OpcUaStackClient
 		void sendActivateSessionRequest(void);
 		void recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		void sendCloseSessionRequest(bool deleteSubscriptions);
+		void sendCancelRequest(uint32_t requestHandle);
 
 		IOService* ioService_;
 		SessionIf* sessionIf_;

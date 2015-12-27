@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
@@ -87,10 +88,18 @@ namespace OpcUaStackClient
 	void
 	Session::asyncDisconnect(bool deleteSubscriptions)
 	{
-		if (secureChannelConnect_) {
+		if (secureChannelConnect_ && sessionConfig_.get() != nullptr) {
 			sendCloseSessionRequest(deleteSubscriptions);
 		}
 		secureChannelClient_.disconnect(secureChannel_);
+	}
+
+	void
+	Session::asyncCancel(uint32_t requestHandle)
+	{
+		if (secureChannelConnect_) {
+			sendCancelRequest(requestHandle);
+		}
 	}
 
 	void
@@ -191,6 +200,25 @@ namespace OpcUaStackClient
 		closeSessionRequest.deleteSubscriptions(deleteSubscriptions);
 
 		Log(Debug, "session send CloseSessionRequest")
+		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("AuthenticationToken", authenticationToken_);
+		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
+	}
+
+	void
+	Session::sendCancelRequest(uint32_t requestHandle)
+	{
+		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
+		secureChannelTransaction->requestId_ = ++requestId_;
+		std::iostream ios(&secureChannelTransaction->os_);
+
+		CancelRequest cancelRequest;
+		cancelRequest.requestHeader()->requestHandle(++requestHandle_);
+		cancelRequest.requestHeader()->sessionAuthenticationToken() = authenticationToken_;
+		cancelRequest.requestHandle(requestHandle);
+
+		Log(Debug, "session send CancelRequest")
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
