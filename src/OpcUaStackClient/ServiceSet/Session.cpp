@@ -16,6 +16,9 @@
  */
 
 
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;
@@ -27,8 +30,11 @@ namespace OpcUaStackClient
 	: ioService_(&ioService)
 	, sessionIf_(nullptr)
 	, sessionConfig_()
+	, secureChannelClientConfig_()
 	, secureChannelClient_(&ioService)
 	, secureChannel_(nullptr)
+
+	, requestHandle_(0)
 	{
 	}
 
@@ -60,6 +66,7 @@ namespace OpcUaStackClient
 	Session::asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		sessionConfig_ = sessionConfig;
+		secureChannelClientConfig_ = secureChannelClientConfig;
 
 		secureChannelClient_.secureChannelClientIf(this);
 		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig);
@@ -71,6 +78,28 @@ namespace OpcUaStackClient
 
 		secureChannelClient_.disconnect(secureChannel_);
 
+	}
+
+	void
+	Session::sendCreateSessionRequest(void)
+	{
+		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
+		std::iostream ios(&secureChannelTransaction->os_);
+
+		CreateSessionRequest createSessionRequest;
+		createSessionRequest.requestHeader()->requestHandle(++requestHandle_);
+		createSessionRequest.clientDescription(sessionConfig_->applicationDescription_);
+		createSessionRequest.endpointUrl(secureChannelClientConfig_->endpointUrl());
+		createSessionRequest.sessionName(sessionConfig_->sessionName_);
+		createSessionRequest.clientNonce((OpcUaStackCore::OpcUaByte*)"\000", 1);
+		createSessionRequest.requestSessionTimeout(sessionConfig_->sessionTimeout_);
+		createSessionRequest.maxResponseMessageSize(sessionConfig_->maxResponseMessageSize_);
+		createSessionRequest.opcUaBinaryEncode(ios);
+
+		Log(Debug, "session send CreateSessionRequest")
+		    .parameter("SessionName", sessionConfig_->sessionName_);
+		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------
@@ -88,7 +117,8 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		// FIXME: create session
+		// create CreateSessionRequest
+		sendCreateSessionRequest();
 	}
 
 	void
@@ -98,6 +128,8 @@ namespace OpcUaStackClient
 			if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Disconnect);
 			return;
 		}
+
+		//  FIXME: delete session
 	}
 
 	void

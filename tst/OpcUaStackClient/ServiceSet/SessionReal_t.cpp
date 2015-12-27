@@ -63,6 +63,45 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 	ioService.stop();
 }
 
+BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
+{
+	IOService ioService;
+	ioService.start(1);
+
+	SessionTestReal sessionTestReal;
+
+	// set secure channel configuration
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	secureChannelClientConfig->endpointUrl(REAL_SERVER_URI);
+	secureChannelClientConfig->debug(false);
+	secureChannelClientConfig->debugHeader(true);
+
+	// set session configuration
+	SessionConfig::SPtr sessionConfig = construct<SessionConfig>();
+	sessionConfig->sessionName_ = "urn:127.0.0.1:ASNeG.de:ASNeG-Client";
+	sessionConfig->applicationDescription_->applicationUri("urn:127.0.0.1:ASNeG.de:ASNeG-Client");
+	sessionConfig->applicationDescription_->productUri("urn:ASNeG.de:ASNeG-Client");
+	sessionConfig->applicationDescription_->applicationName().set("de", "ASNeG-Client");
+
+	// init session
+	Session session(ioService);
+	session.sessionIf(&sessionTestReal);
+
+	// connect session
+	sessionTestReal.sessionStateUpdate_.condition(1,0);
+	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Connect);
+
+	// disconnect session
+	sessionTestReal.sessionStateUpdate_.condition(1,0);
+	session.asyncDisconnect();
+	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Disconnect);
+
+	ioService.stop();
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 #endif

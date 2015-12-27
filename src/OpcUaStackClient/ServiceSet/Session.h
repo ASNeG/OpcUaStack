@@ -53,11 +53,16 @@ namespace OpcUaStackClient
 		//- SecureChannelClientIf ---------------------------------------------
 
 	  private:
+		void sendCreateSessionRequest(void);
+
 		IOService* ioService_;
 		SessionIf* sessionIf_;
 		SecureChannel* secureChannel_;
 		SecureChannelClient secureChannelClient_;
 		SessionConfig::SPtr sessionConfig_;
+		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
+
+		OpcUaUInt32 requestHandle_;
 	};
 
 }

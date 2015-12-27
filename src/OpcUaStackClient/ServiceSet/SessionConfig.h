@@ -19,6 +19,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
@@ -30,6 +33,11 @@ namespace OpcUaStackClient
 
 		SessionConfig(void);
 		~SessionConfig(void);
+
+		ApplicationDescription::SPtr applicationDescription_;
+		std::string sessionName_;
+		uint32_t sessionTimeout_;
+		uint32_t maxResponseMessageSize_;
 
 	};
 

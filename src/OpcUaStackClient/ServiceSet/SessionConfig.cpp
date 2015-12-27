@@ -23,7 +23,12 @@ namespace OpcUaStackClient
 {
 
 	SessionConfig::SessionConfig(void)
+	: applicationDescription_(construct<ApplicationDescription>())
+	, sessionName_("urn:127.0.0.1:ASNeG.de:ASNeG-Client")
+	, sessionTimeout_(3600000)
+	, maxResponseMessageSize_(1000000)
 	{
+		applicationDescription_->applicationType(ApplicationType_Client);
 	}
 
 	SessionConfig::~SessionConfig(void)
