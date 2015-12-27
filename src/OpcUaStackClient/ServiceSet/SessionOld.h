@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_Session_h__
-#define __OpcUaStackClient_Session_h__
+#ifndef __OpcUaStackClient_SessionOld_h__
+#define __OpcUaStackClient_SessionOld_h__
 
 #include <stdint.h>
 #include <string>
