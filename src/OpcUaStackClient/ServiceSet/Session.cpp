@@ -25,8 +25,9 @@ namespace OpcUaStackClient
 
 	Session::Session(IOService& ioService)
 	: ioService_(&ioService)
+	, state_(S_Init)
 	, sessionConfig_()
-	, secureChannelConfig_()
+	, secureChannelClient_(&ioService)
 	{
 	}
 
@@ -42,17 +43,19 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Session::asyncConnect(SecureChannelConfig::SPtr& secureChannelConfig)
+	Session::asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		SessionConfig::SPtr sessionConfig;
-		asyncConnect(sessionConfig, secureChannelConfig);
+		asyncConnect(sessionConfig, secureChannelClientConfig);
 	}
 
 	void
-	Session::asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelConfig::SPtr& secureChannelConfig)
+	Session::asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		sessionConfig_ = sessionConfig;
-		secureChannelConfig_ = secureChannelConfig;
+
+		state_ = S_ConnectingSecureChannel;
+		secureChannelClient_.connect(secureChannelClientConfig);
 	}
 
 	// ------------------------------------------------------------------------
@@ -65,16 +68,19 @@ namespace OpcUaStackClient
 	void
 	Session::handleConnect(SecureChannel* secureChannel)
 	{
+		std::cout <<  "handleConnect" << std::endl;
 	}
 
 	void
 	Session::handleDisconnect(SecureChannel* secureChannel)
 	{
+		std::cout << "handleDisconnect" << std::endl;
 	}
 
 	void
 	Session::handleMessageResponse(SecureChannel* secureChannel)
 	{
+		std::cout << "handleMessageResponse" << std::endl;
 	}
 
 }

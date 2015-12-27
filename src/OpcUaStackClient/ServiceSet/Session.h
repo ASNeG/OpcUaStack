@@ -34,13 +34,18 @@ namespace OpcUaStackClient
 	: public SessionBase
 	{
 	  public:
+		typedef enum
+		{
+			S_Init,
+			S_ConnectingSecureChannel,
+		} State;
 		typedef boost::shared_ptr<Session> SPtr;
 
 		Session(IOService& ioService);
 		~Session(void);
 
-		void asyncConnect(SecureChannelConfig::SPtr& secureChannelConfig);
-		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelConfig::SPtr& secureChannelConfig);
+		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
+		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 
 		//- SecureChannelClientIf ---------------------------------------------
 		virtual void handleConnect(SecureChannel* secureChannel);
@@ -50,8 +55,9 @@ namespace OpcUaStackClient
 
 	  private:
 		IOService* ioService_;
+		State state_;
+		SecureChannelClient secureChannelClient_;
 		SessionConfig::SPtr sessionConfig_;
-		SecureChannelConfig::SPtr secureChannelConfig_;
 	};
 
 }
