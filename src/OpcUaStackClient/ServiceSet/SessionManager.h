@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelClientConfig.h"
-#include "OpcUaStackClient/ServiceSet/SessionConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionConfigReader.h"
 #include "OpcUaStackClient/ServiceSet/SessionManagerIf.h"
 
 namespace OpcUaStackClient

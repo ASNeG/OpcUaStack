@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackClient/ServiceSet/SessionConfig.h"
+#include "OpcUaStackClient/ServiceSet/SessionConfigReader.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Config.h"
 
@@ -24,7 +24,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	bool 
+	bool
 	SessionConfig::initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
 	{
 		uint32_t uint32Value;

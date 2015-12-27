@@ -17,6 +17,7 @@
 #ifndef __OpcUaStackClient_Session_h__
 #define __OpcUaStackClient_Session_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
@@ -29,14 +30,13 @@ namespace OpcUaStackClient
 	class DLLEXPORT Session
 	{
 	  public:
+		typedef std::shared_ptr<Session> SPtr;
+
 		Session(IOService& ioService);
 		~Session(void);
 
-		void secureChannelConnect(SecureChannelClientConfig::SPtr secureChannelClientConfig);
-
 	  private:
 		IOService* ioService_;
-		SecureChannelClient secureChannelClient_;
 	};
 
 }

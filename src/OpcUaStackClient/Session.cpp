@@ -25,18 +25,11 @@ namespace OpcUaStackClient
 
 	Session::Session(IOService& ioService)
 	: ioService_(&ioService)
-	, secureChannelClient_(ioService)
 	{
 	}
 
 	Session::~Session(void)
 	{
-	}
-
-	void
-	Session::secureChannelConnect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
-	{
-		secureChannelClient_.connect(secureChannelClientConfig_);
 	}
 
 }
