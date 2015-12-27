@@ -109,11 +109,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	SecureChannelServerTest secureChannelServerTest;
 	SecureChannelClientTest secureChannelClientTest;
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
-	SecureChannelServer secureChannelServer(&ioService);
-	SecureChannelClient secureChannelClient(&ioService);
+	SecureChannelServer secureChannelServer(&ioThread);
+	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	secureChannelServer.disconnect();
 	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
@@ -160,11 +160,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	SecureChannelClientTest secureChannelClientTest;
 	SecureChannelServerTest secureChannelServerTest;
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
-	SecureChannelServer secureChannelServer(&ioService);
-	SecureChannelClient secureChannelClient(&ioService);
+	SecureChannelServer secureChannelServer(&ioThread);
+	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	secureChannelServer.disconnect();
 	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
 BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnect)
@@ -227,11 +227,11 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	SecureChannelClientTest secureChannelClientTest;
 	SecureChannelServerTest secureChannelServerTest;
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
-	SecureChannelServer secureChannelServer(&ioService);
-	SecureChannelClient secureChannelClient(&ioService);
+	SecureChannelServer secureChannelServer(&ioThread);
+	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelServer.secureChannelServerIf(&secureChannelServerTest);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	secureChannelServer.disconnect();
 	BOOST_REQUIRE(secureChannelServerTest.handleEndpointClose_.waitForCondition(1000) == true);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

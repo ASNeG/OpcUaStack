@@ -18,7 +18,7 @@
 #define __OpcUaStackClient_ServiceSetManager_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;
@@ -29,14 +29,14 @@ namespace OpcUaStackClient
 	class DLLEXPORT ServiceSetManager
 	{
 	  public:
-		ServiceSetManager(IOService& ioService);
+		ServiceSetManager(IOThread* ioThread);
 		~ServiceSetManager(void);
 
 		Session::SPtr createSession(void);
 		void destroySession(Session::SPtr session);
 
 	  private:
-		IOService* ioService_;
+		IOThread* ioThread_;
 	};
 
 }

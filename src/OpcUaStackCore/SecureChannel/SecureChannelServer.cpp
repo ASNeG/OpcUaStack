@@ -22,11 +22,11 @@
 namespace OpcUaStackCore
 {
 
-	SecureChannelServer::SecureChannelServer(IOService* ioService)
+	SecureChannelServer::SecureChannelServer(IOThread* ioThread)
 	: SecureChannelBase(SecureChannelBase::SCT_Server)
 	, secureChannelServerIf_(nullptr)
-	, ioService_(ioService)
-	, resolver_(ioService->io_service())
+	, ioThread_(ioThread)
+	, resolver_(ioThread->ioService()->io_service())
 	, tcpAcceptor_(nullptr)
 	{
 	}
@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 		}
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(ioService_);
+		SecureChannel* secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelServerConfig;
 		accept(secureChannel);
 		return;
@@ -133,7 +133,7 @@ namespace OpcUaStackCore
 				.parameter("Address", secureChannel->local_.address().to_string())
 				.parameter("Port", secureChannel->local_.port());
 
-			tcpAcceptor_ = new TCPAcceptor(ioService_->io_service(), secureChannel->local_);
+			tcpAcceptor_ = new TCPAcceptor(ioThread_->ioService()->io_service(), secureChannel->local_);
 			tcpAcceptor_->listen();
 
 			secureChannelServerIf_->handleEndpointOpen();

@@ -23,8 +23,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	ServiceSetManager::ServiceSetManager(IOService& ioService)
-	: ioService_(&ioService)
+	ServiceSetManager::ServiceSetManager(IOThread* ioThread)
+	: ioThread_(ioThread)
 	{
 	}
 
@@ -35,7 +35,7 @@ namespace OpcUaStackClient
 	Session::SPtr
 	ServiceSetManager::createSession(void)
 	{
-		Session::SPtr session;
+		Session::SPtr session = construct<Session>(ioThread_);
 		return session;
 	}
 

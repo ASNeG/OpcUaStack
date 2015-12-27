@@ -26,8 +26,9 @@ namespace OpcUaStackCore
 
 	OpcUaUInt32 SecureChannel::gChannelId_ = 0;
 
-	SecureChannel::SecureChannel(IOService* ioService)
-	: TCPConnection(ioService->io_service())
+	SecureChannel::SecureChannel(IOThread* ioThread)
+	: ioThread_(ioThread)
+	, TCPConnection(ioThread->ioService()->io_service())
 	, state_(S_Init)
 	, config_()
 	, closeFlag_(false)

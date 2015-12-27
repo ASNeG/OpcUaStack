@@ -29,11 +29,11 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelClient::SecureChannelClient(IOService* ioService)
+	SecureChannelClient::SecureChannelClient(IOThread* ioThread)
 	: SecureChannelBase(SecureChannelBase::SCT_Client)
 	, secureChannelClientIf_(nullptr)
-	, ioService_(ioService)
-	, resolver_(ioService->io_service())
+	, ioThread_(ioThread)
+	, resolver_(ioThread->ioService()->io_service())
 	{
 	}
 
@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 		}
 
 		// create new secure channel
-		SecureChannel* secureChannel = new SecureChannel(ioService_);
+		SecureChannel* secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelClientconfig;
 		connect(secureChannel);
 		return secureChannel;

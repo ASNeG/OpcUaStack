@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	: public SecureChannelBase
 	{
 	  public:
-		SecureChannelServer(IOService* ioService);
+		SecureChannelServer(IOThread* ioThread);
 		~SecureChannelServer(void);
 
 		void secureChannelServerIf(SecureChannelServerIf* secureChannelServerIf);
@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel
 		);
 
-		IOService* ioService_;
+		IOThread* ioThread_;
 		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelServerIf* secureChannelServerIf_;
 		TCPAcceptor* tcpAcceptor_;

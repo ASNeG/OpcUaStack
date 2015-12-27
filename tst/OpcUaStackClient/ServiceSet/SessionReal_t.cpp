@@ -34,8 +34,8 @@ BOOST_AUTO_TEST_CASE(SessionReal_)
 
 BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 {
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
 	SessionTestReal sessionTestReal;
 
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 	secureChannelClientConfig->debugHeader(true);
 
 	// init session
-	Session session(ioService);
+	Session session(&ioThread);
 	session.sessionIf(&sessionTestReal);
 
 	// connect session
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Disconnect);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
 BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
@@ -69,8 +69,8 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 	Core core;
 	core.init();
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
 	SessionTestReal sessionTestReal;
 
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 	sessionConfig->applicationDescription_->applicationName().set("en", "ASNeG-Client");
 
 	// init session
-	Session session(ioService);
+	Session session(&ioThread);
 	session.sessionIf(&sessionTestReal);
 
 	// connect session
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Disconnect);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

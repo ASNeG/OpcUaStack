@@ -33,22 +33,22 @@ class SecureChannelClientRealTest
 	}
 };
 
-BOOST_AUTO_TEST_SUITE(SecureChannelRead_)
+BOOST_AUTO_TEST_SUITE(SecureChannelReal_)
 
 BOOST_AUTO_TEST_CASE(SecureChannel)
 {
-	std::cout << "SecureChannelRead_t" << std::endl;
+	std::cout << "SecureChannelReal_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect)
+BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelClientRealTest secureChannelClientTest;
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
-	SecureChannelClient secureChannelClient(&ioService);
+	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
 	// client connect to server
@@ -66,19 +66,19 @@ BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect)
 	secureChannelClient.disconnect(secureChannel);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
-BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect_with_a_second_channel)
+BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_Disconnect_with_a_second_channel)
 {
 	OpcUaStackCore::SecureChannel* secureChannel1;
 	OpcUaStackCore::SecureChannel* secureChannel2;
 	SecureChannelClientRealTest secureChannelClientTest;
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
-	SecureChannelClient secureChannelClient(&ioService);
+	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
@@ -108,18 +108,18 @@ BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_Disconnect_with_a_second_channel)
 	secureChannelClient.disconnect(secureChannel2);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
-BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_SendRequest_ReceiveResponse_Disconnect)
+BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_SendRequest_ReceiveResponse_Disconnect)
 {
 	OpcUaStackCore::SecureChannel* secureChannel;
 	SecureChannelClientRealTest secureChannelClientTest;
 
-	IOService ioService;
-	ioService.start(1);
+	IOThread ioThread;
+	ioThread.startup();
 
-	SecureChannelClient secureChannelClient(&ioService);
+	SecureChannelClient secureChannelClient(&ioThread);
 	secureChannelClient.secureChannelClientIf(&secureChannelClientTest);
 
 	// client connect to server
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(SecureChannelRead_Connect_SendRequest_ReceiveResponse_Disco
 	secureChannelClient.disconnect(secureChannel);
 	BOOST_REQUIRE(secureChannelClientTest.handleDisconnect_.waitForCondition(1000) == true);
 
-	ioService.stop();
+	ioThread.shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

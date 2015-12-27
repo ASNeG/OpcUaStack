@@ -19,7 +19,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
@@ -38,7 +38,7 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<Session> SPtr;
 
-		Session(IOService& ioService);
+		Session(IOThread* ioThread);
 		~Session(void);
 
 		void sessionIf(SessionIf* sessionIf);
@@ -61,7 +61,7 @@ namespace OpcUaStackClient
 		void sendCloseSessionRequest(bool deleteSubscriptions);
 		void sendCancelRequest(uint32_t requestHandle);
 
-		IOService* ioService_;
+		IOThread* ioThread_;
 		SessionIf* sessionIf_;
 		SecureChannel* secureChannel_;
 		bool secureChannelConnect_;

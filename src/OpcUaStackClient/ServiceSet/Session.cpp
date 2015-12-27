@@ -32,14 +32,14 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	Session::Session(IOService& ioService)
-	: ioService_(&ioService)
+	Session::Session(IOThread* ioThread)
+	: ioThread_(ioThread)
 	, sessionIf_(nullptr)
 	, sessionConfig_()
 
 	, secureChannelConnect_(false)
 	, secureChannelClientConfig_()
-	, secureChannelClient_(&ioService)
+	, secureChannelClient_(ioThread_)
 	, secureChannel_(nullptr)
 
 	, requestHandle_(0)

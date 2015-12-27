@@ -20,7 +20,7 @@
 #define __OpcUaStackCore_SecureChannel_h__
 
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
-#include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 			S_Established,
 		} State;
 
-		SecureChannel(IOService* ioService);
+		SecureChannel(IOThread* ioThread);
 		virtual ~SecureChannel(void);
 
 		void debugRecvHeader(MessageHeader& messageHeader);
@@ -70,7 +70,7 @@ namespace OpcUaStackCore
 		void debugSendMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
 
-
+		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
 		State state_;
