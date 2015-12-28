@@ -19,9 +19,12 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
+#include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
@@ -33,6 +36,7 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT Session
 	: public SessionBase
+	, public Component
 	, public SecureChannelClientIf
 	{
 	  public:
@@ -53,6 +57,10 @@ namespace OpcUaStackClient
 		virtual void handleMessageResponse(SecureChannel* secureChannel);
 		//- SecureChannelClientIf ---------------------------------------------
 
+		// - Component -------------------------------------------------------
+		void receive(Message::SPtr message);
+		// - Component -------------------------------------------------------
+
 	  private:
 		void sendCreateSessionRequest(void);
 		void recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
@@ -60,11 +68,14 @@ namespace OpcUaStackClient
 		void recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		void sendCloseSessionRequest(bool deleteSubscriptions);
 		void sendCancelRequest(uint32_t requestHandle);
+		void pendingQueueTimeout(Object::SPtr object);
+		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
 
 		IOThread* ioThread_;
 		SessionIf* sessionIf_;
 		SecureChannel* secureChannel_;
 		bool secureChannelConnect_;
+		bool sessionConnect_;
 		SecureChannelClient secureChannelClient_;
 		SessionConfig::SPtr sessionConfig_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
@@ -72,9 +83,12 @@ namespace OpcUaStackClient
 		OpcUaUInt32 requestHandle_;
 		OpcUaDouble sessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
+		uint32_t requestTimeout_;
 
 		OpcUaUInt32 requestId_;
 		OpcUaNodeId authenticationToken_;
+
+		PendingQueue pendingQueue_;
 	};
 
 }

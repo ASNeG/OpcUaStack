@@ -27,6 +27,7 @@ namespace OpcUaStackClient
 	, sessionName_("urn:127.0.0.1:ASNeG.de:ASNeG-Client")
 	, sessionTimeout_(3600000)
 	, maxResponseMessageSize_(16777216)
+	, requestTimeout_(3000)
 	{
 		applicationDescription_->applicationType(ApplicationType_Client);
 	}

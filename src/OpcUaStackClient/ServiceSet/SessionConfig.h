@@ -36,6 +36,7 @@ namespace OpcUaStackClient
 
 		ApplicationDescription::SPtr applicationDescription_;
 		std::string sessionName_;
+		uint32_t requestTimeout_;
 		uint32_t sessionTimeout_;
 		uint32_t maxResponseMessageSize_;
 

@@ -33,7 +33,6 @@ namespace OpcUaStackClient
 		~ServiceSetManager(void);
 
 		Session::SPtr createSession(void);
-		void destroySession(Session::SPtr session);
 
 	  private:
 		IOThread* ioThread_;
