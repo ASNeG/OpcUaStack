@@ -2,7 +2,7 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
-#include "OpcUaStackClient/ServiceSet/AttributeService.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
 
 #ifdef REAL_SERVER
 
@@ -14,7 +14,6 @@ class SubscriptionRealTest
 {
   public:
 	SessionState sessionState_;
-
 	Condition sessionStateUpdate_;
 	void sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
@@ -23,6 +22,91 @@ class SubscriptionRealTest
 		sessionStateUpdate_.conditionValueDec();
 	}
 };
+
+class SubscriptionRealTestSubscriptionManager
+: public SubscriptionManagerIf
+, public SubscriptionServiceIf
+, public SubscriptionServicePublishIf
+{
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SubscriptionManagerIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	Condition dataChangeNotification_;
+	void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
+	{
+		dataChangeNotification_.conditionValueDec();
+	}
+
+	SubscriptionState subscriptionState_;
+	Condition subscriptionStateUpdate_;
+    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
+    {
+    	subscriptionState_ = subscriptionState;
+    	subscriptionStateUpdate_.conditionValueDec();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // SubscriptionServicePublishIf
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    Condition subscriptionServiceCreateSubscriptionResponse_;
+    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
+    {
+    	subscriptionServiceCreateSubscriptionResponse_.conditionValueDec();
+    }
+
+    Condition subscriptionServiceModifySubscriptionResponse_;
+    void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
+    {
+    	subscriptionServiceModifySubscriptionResponse_.conditionValueDec();
+    }
+
+    Condition subscriptionServiceTransferSubscriptionsResponse_;
+    void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
+    {
+    	subscriptionServiceTransferSubscriptionsResponse_.conditionValueDec();
+    }
+
+    Condition subscriptionServiceDeleteSubscriptionsResponse_;
+    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+    {
+    	subscriptionServiceDeleteSubscriptionsResponse_.conditionValueDec();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // SubscriptionServiceIf
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    Condition subscriptionServiceSetPublishingModeResponse_;
+    void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode)
+    {
+    	subscriptionServiceSetPublishingModeResponse_.conditionValueDec();
+    }
+
+    Condition subscriptionServicePublishResponse_;
+    void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish)
+    {
+    	subscriptionServicePublishResponse_.conditionValueDec();
+    }
+
+    Condition subscriptionServiceRepublishResponse_;
+    void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
+    {
+    	subscriptionServiceRepublishResponse_.conditionValueDec();
+    }
+
+};
+
 
 BOOST_AUTO_TEST_SUITE(SubscriptionReal_)
 
@@ -56,6 +140,15 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_read)
 	SubscriptionRealTest attributeRealTest;
 	Session session(&ioThread);
 	session.sessionIf(&attributeRealTest);
+
+	// init subscription manager
+	SubscriptionRealTestSubscriptionManager subscriptionRealTestSubscriptionManager;
+	SubscriptionManager subscriptionManager;
+	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
+	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);
+	subscriptionManager.subscriptionServicePublishIf(&subscriptionRealTestSubscriptionManager);
+	subscriptionManager.componentSession(session.component());
+
 
 	// connect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);
