@@ -108,7 +108,7 @@ namespace OpcUaStackClient
     		DeleteSubscriptionsResponse::SPtr res = serviceTransactionDeleteSubscriptions->response();
 
     		if (req->subscriptionIds()->size() != res->results()->size()) {
-    			Log(Error, "Invalid number of entries in delete subscription response")
+    			Log(Error, "subscription delete subscription response error, because invalid number of entries in response")
     				.parameter("ExpectedSize", req->subscriptionIds()->size())
     				.parameter("ReceivedSize", res->results()->size());
     		}
@@ -140,7 +140,7 @@ namespace OpcUaStackClient
 
     	// check transaction status code
     	if (serviceTransactionPublish->statusCode() != Success) {
-    		Log(Error, "received publish response error")
+    		Log(Error, "subscription publish response error")
     			.parameter("StatsCode", OpcUaStatusCodeMap::shortString(serviceTransactionPublish->statusCode()));
     		sendPublishRequests();
     		return;
@@ -168,7 +168,7 @@ namespace OpcUaStackClient
     	SubscriptionSet::iterator it;
     	it = subscriptionSet_.find(subscriptionId);
     	if (it != subscriptionSet_.end()) {
-    		Log(Error, "cannot create subscription, because subscription already exist")
+    		Log(Error, "subscription create subscription response, because subscription already exist")
     			.parameter("SubscriptionId", subscriptionId);
     		return;
     	}
@@ -189,7 +189,7 @@ namespace OpcUaStackClient
     	SubscriptionSet::iterator it;
     	it = subscriptionSet_.find(subscriptionId);
     	if (it == subscriptionSet_.end()) {
-    	    Log(Error, "cannot delete subscription, because subscription not exist")
+    	    Log(Error, "subscription delete subscription response error, because subscription not exist")
     	    	.parameter("SubscriptionId", subscriptionId);
     	    return;
     	}
@@ -226,7 +226,7 @@ namespace OpcUaStackClient
     				dataChangeNotification(notify);
     				break;
     			default:
-    				Log(Error, "receive unknown notification type in publish response")
+    				Log(Error, "subscription publish response error, because notification type in publish response unknown")
     				    .parameter("NotificationTypeId", notify->parameterTypeId().toString());
     				break;
     		}
