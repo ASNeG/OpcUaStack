@@ -28,6 +28,7 @@ class SubscriptionRealTestSubscriptionManager
 , public SubscriptionServiceIf
 , public SubscriptionServicePublishIf
 {
+  public:
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -115,7 +116,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_)
 	std::cout << "SubscriptionReal_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(SubscriptionReal_async_read)
+BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 {
 	Core core;
 	core.init();
@@ -137,9 +138,15 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_read)
 	sessionConfig->applicationDescription_->applicationName().set("en", "ASNeG-Client");
 
 	// init session
-	SubscriptionRealTest attributeRealTest;
+	SubscriptionRealTest subscriptionRealTest;
 	Session session(&ioThread);
-	session.sessionIf(&attributeRealTest);
+	session.sessionIf(&subscriptionRealTest);
+
+	// connect session
+	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
+	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Connect);
 
 	// init subscription manager
 	SubscriptionRealTestSubscriptionManager subscriptionRealTestSubscriptionManager;
@@ -149,18 +156,20 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_read)
 	subscriptionManager.subscriptionServicePublishIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.componentSession(session.component());
 
+	// create subscription
+	ServiceTransactionCreateSubscription::SPtr readTrx = construct<ServiceTransactionCreateSubscription>();
+	CreateSubscriptionRequest::SPtr req = readTrx->request();
+	subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
+	subscriptionManager.send(readTrx);
+	BOOST_REQUIRE(subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
 
-	// connect session
-	attributeRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
-	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Connect);
+	// delete subscription
 
 	// disconnect session
-	attributeRealTest.sessionStateUpdate_.condition(1,0);
+	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
 	session.asyncDisconnect();
-	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Disconnect);
 
 	ioThread.shutdown();
 }
