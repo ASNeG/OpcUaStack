@@ -282,7 +282,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	MonitoredItemCreateResult::SPtr createMonResult;
 	monCreateRes->results()->get(0, createMonResult);
 
-	BOOST_REQUIRE(monitoredItemRealTestSubscriptionManager.dataChangeNotification_.waitForCondition(20000) == true);
+	BOOST_REQUIRE(monitoredItemRealTestSubscriptionManager.dataChangeNotification_.waitForCondition(1000) == true);
 
 
 	// ------------------------------------------------------------------------

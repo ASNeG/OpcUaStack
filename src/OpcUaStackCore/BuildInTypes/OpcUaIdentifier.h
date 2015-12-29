@@ -2058,4 +2058,32 @@
 #define OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary 1000004
 #define OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary 1000005
 
+#include <map>
+#include <stdint.h>
+#include <string>
+#include "OpcUaStackCore/Base/os.h"
+
+namespace OpcUaStackCore
+{
+
+	class DLLEXPORT OpcUaIdMap
+	{
+	  public:
+		typedef std::map<uint32_t, std::string> IdMap;
+		static std::string string(uint32_t opcUaId);
+
+	  private:
+		static void initial(void);
+		static void insert(uint32_t opcUaId, const std::string& string);
+
+		static bool mapExist_;
+		static IdMap idMap_;
+
+		OpcUaIdMap(void);
+		~OpcUaIdMap(void);
+	};
+
+}
+
+
 #endif
