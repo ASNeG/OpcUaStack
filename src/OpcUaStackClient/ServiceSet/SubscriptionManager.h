@@ -42,6 +42,8 @@ namespace OpcUaStackClient
 		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
+		virtual void sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+
 	    //- SubscriptionServicePublish ----------------------------------------
 	    virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
 	    virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish);
@@ -53,7 +55,8 @@ namespace OpcUaStackClient
 	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
 	    void createSubscription(uint32_t subscriptionId);
-	    void deleteSubscription(uint32_t subscriptionId);
+	    void deleteSubscriptionRequest(uint32_t subscriptionId);
+	    void deleteSubscriptionRespone(uint32_t subscriptionId, OpcUaStatusCode statusCode);
 	    void sendPublishRequests(void);
 
 	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);
@@ -63,6 +66,7 @@ namespace OpcUaStackClient
 	    uint32_t actPublishCount_;
 	    typedef std::set<uint32_t> SubscriptionSet;
 	    SubscriptionSet subscriptionSet_;
+	    SubscriptionSet subscriptionSetPendingDelete_;
 	    SubscriptionServiceIf* subscriptionServiceIf_;
 	    SubscriptionManagerIf* subscriptionManagerIf_;
 	};

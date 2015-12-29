@@ -29,6 +29,7 @@ namespace OpcUaStackClient
 	, subscriptionServiceIf_(NULL)
 	, subscriptionManagerIf_(NULL)
 	, subscriptionSet_()
+	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
 	, actPublishCount_(0)
 	{
@@ -107,6 +108,11 @@ namespace OpcUaStackClient
     	}
     }
 
+    void
+    SubscriptionManager::sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+    {
+    	DeleteSubscriptionsRequest::SPtr req = serviceTransactionDeleteSubscriptions->request();
+    }
 
     void
     SubscriptionManager::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
@@ -129,7 +135,7 @@ namespace OpcUaStackClient
     				req->subscriptionIds()->get(pos, subscriptionId);
 
     				if (statusCode == Success) {
-    					deleteSubscription(subscriptionId);
+    					deleteSubscriptionRequest(subscriptionId);
     				}
     			}
     		}
@@ -192,7 +198,7 @@ namespace OpcUaStackClient
     }
 
     void
-    SubscriptionManager::deleteSubscription(uint32_t subscriptionId)
+    SubscriptionManager::deleteSubscriptionRequest(uint32_t subscriptionId)
     {
     	SubscriptionSet::iterator it;
     	it = subscriptionSet_.find(subscriptionId);
@@ -206,6 +212,11 @@ namespace OpcUaStackClient
     		subscriptionManagerIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
     	}
     	subscriptionSet_.erase(it);
+    }
+
+    void
+    SubscriptionManager::deleteSubscriptionRespone(uint32_t subscriptionId, OpcUaStatusCode statusCode)
+    {
     }
 
     void
