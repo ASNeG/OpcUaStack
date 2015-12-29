@@ -224,7 +224,6 @@ namespace OpcUaStackClient
     SubscriptionManager::receivePublishResponse(const PublishResponse::SPtr& publishResponse)
     {
     	uint32_t count = publishResponse->notificationMessage()->notificationData()->size();
-    	std::cout << ">>" << count << std::endl;
     	for (uint32_t idx=0; idx<count; idx++) {
     		ExtensibleParameter::SPtr notify;
     		publishResponse->notificationMessage()->notificationData()->get(idx, notify);
