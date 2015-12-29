@@ -2070,7 +2070,8 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef std::map<uint32_t, std::string> IdMap;
-		static std::string string(uint32_t opcUaId);
+		static std::string shortString(uint32_t opcUaId);
+		static std::string longString(uint32_t opcUaId);
 
 	  private:
 		static void initial(void);

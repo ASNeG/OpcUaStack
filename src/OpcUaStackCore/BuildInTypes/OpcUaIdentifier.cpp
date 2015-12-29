@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	OpcUaIdMap::IdMap OpcUaIdMap::idMap_;
 
 	std::string
-	OpcUaIdMap::string(uint32_t opcUaId)
+	OpcUaIdMap::shortString(uint32_t opcUaId)
 	{
 		initial();
 		IdMap::iterator it = idMap_.find(opcUaId);
@@ -40,6 +40,22 @@ namespace OpcUaStackCore
 			return "";
 		}
 		return it->second;
+	}
+
+	std::string
+	OpcUaIdMap::longString(uint32_t opcUaId)
+	{
+		std::stringstream ss;
+
+		initial();
+		IdMap::iterator it = idMap_.find(opcUaId);
+		if (it == idMap_.end()) {
+			ss << "(" << opcUaId << ")";
+		}
+		else {
+			ss <<  it->second << " (" << opcUaId << ")";
+		}
+		return ss.str();
 	}
 
 	void
