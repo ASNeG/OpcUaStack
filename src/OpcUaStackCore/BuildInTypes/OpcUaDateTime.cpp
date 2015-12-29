@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	boost::posix_time::ptime OpcUaDateTime::nullTime_ = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime OpcUaDateTime::nullTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	OpcUaDateTime::OpcUaDateTime(void)
 	: dateTime_(0)
