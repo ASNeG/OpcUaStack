@@ -2075,7 +2075,7 @@ namespace OpcUaStackCore
 
 	  private:
 		static void initial(void);
-		static void insert(uint32_t opcUaId, const std::string& string);
+		static void insert(const std::string& string, uint32_t opcUaId);
 
 		static bool mapExist_;
 		static IdMap idMap_;
