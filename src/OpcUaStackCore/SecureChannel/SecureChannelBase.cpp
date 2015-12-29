@@ -1098,8 +1098,11 @@ namespace OpcUaStackCore
 
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
 
-		SequenceHeader sequenceHeader;
-		sequenceHeader.opcUaBinaryDecode(ios);
+		// encode sequence number
+		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
+
+		// encode request id
+		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvRequestId_);
 
 		if (secureChannel->recvFirstSegment_) {
 			secureChannel->secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(ios);

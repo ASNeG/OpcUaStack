@@ -275,6 +275,7 @@ namespace OpcUaStackClient
 	void
 	Session::handleMessageResponse(SecureChannel* secureChannel)
 	{
+		secureChannel->secureChannelTransaction_->requestId_ = secureChannel->recvRequestId_;
 		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
@@ -370,6 +371,7 @@ namespace OpcUaStackClient
 		Object::SPtr objectSPtr = pendingQueue_.remove(responseHeader->requestHandle());
 		if (objectSPtr.get() == nullptr) {
 			Log(Error, "session pending queue error, because element not exist")
+				.parameter("RequestId", secureChannelTransaction->requestId_)
 				.parameter("SessionName", sessionConfig_->sessionName_)
 				.parameter("AuthenticationToken", authenticationToken_)
 				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_)
@@ -384,7 +386,7 @@ namespace OpcUaStackClient
 		serviceTransaction->statusCode(responseHeader->serviceResult());
 
 		Log(Debug, "session receive response")
-		    .parameter("RequestId", serviceTransaction->requestId_)
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
 	    	.parameter("SessionName", sessionConfig_->sessionName_)
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("TrxId", serviceTransaction->transactionId())
