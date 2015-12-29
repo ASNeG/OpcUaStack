@@ -62,20 +62,20 @@ namespace OpcUaStackClient
 		virtual void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
 		void subscriptionServicePublishIf(SubscriptionServicePublishIf* subscriptionServicePublishIf);
 
-		void sendSync(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-		void send(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-		void sendSync(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-		void send(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-		void sendSync(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-		void send(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-		void sendSync(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
-		void send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
-		void sendSync(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
-		void send(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
-		void sendSync(ServiceTransactionPublish::SPtr serviceTransactionPublish);
-		void send(ServiceTransactionPublish::SPtr serviceTransactionPublish);
-		void sendSync(ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
-		void send(ServiceTransactionRepublish::SPtr serviceTransactionRepublish);
+		void sendSync(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void send(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void sendSync(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void send(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void sendSync(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void send(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void sendSync(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void send(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void sendSync(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void send(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void sendSync(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void send(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void sendSync(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+		void send(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
 
 		//- Component -----------------------------------------------------------------
 		virtual void receive(Message::SPtr message);

@@ -52,7 +52,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
+	SubscriptionService::sendSync(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->sync(true);
 		serviceTransactionCreateSubscription->conditionBool().conditionInit();
@@ -61,14 +61,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
+	SubscriptionService::send(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->componentService(this);
 		componentSession_->send(serviceTransactionCreateSubscription);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
+	SubscriptionService::sendSync(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->sync(true);
 		serviceTransactionModifySubscription->conditionBool().conditionInit();
@@ -77,14 +77,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
+	SubscriptionService::send(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->componentService(this);
 		componentSession_->send(serviceTransactionModifySubscription);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
+	SubscriptionService::sendSync(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->sync(true);
 		serviceTransactionTransferSubscriptions->conditionBool().conditionInit();
@@ -93,14 +93,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
+	SubscriptionService::send(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->componentService(this);
 		componentSession_->send(serviceTransactionTransferSubscriptions);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+	SubscriptionService::sendSync(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->sync(true);
 		serviceTransactionDeleteSubscriptions->conditionBool().conditionInit();
@@ -109,14 +109,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+	SubscriptionService::send(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->componentService(this);
 		componentSession_->send(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode)
+	SubscriptionService::sendSync(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->sync(true);
 		serviceTransactionSetPublishingMode->conditionBool().conditionInit();
@@ -125,14 +125,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode)
+	SubscriptionService::send(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->componentService(this);
 		componentSession_->send(serviceTransactionSetPublishingMode);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionPublish::SPtr serviceTransactionPublish)
+	SubscriptionService::sendSync(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->sync(true);
 		serviceTransactionPublish->conditionBool().conditionInit();
@@ -141,14 +141,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionPublish::SPtr serviceTransactionPublish)
+	SubscriptionService::send(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->componentService(this);
 		componentSession_->send(serviceTransactionPublish);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
+	SubscriptionService::sendSync(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->sync(true);
 		serviceTransactionRepublish->conditionBool().conditionInit();
@@ -157,7 +157,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
+	SubscriptionService::send(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->componentService(this);
 		componentSession_->send(serviceTransactionRepublish);
