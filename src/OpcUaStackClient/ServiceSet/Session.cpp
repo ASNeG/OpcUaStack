@@ -133,6 +133,7 @@ namespace OpcUaStackClient
 		createSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send CreateSessionRequest")
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
 	}
@@ -149,6 +150,7 @@ namespace OpcUaStackClient
 		authenticationToken_ = createSessionResponse.authenticationToken();
 
 		Log(Debug, "session recv CreateSessionResponse")
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
 
@@ -179,6 +181,7 @@ namespace OpcUaStackClient
 		activateSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send ActivateSessionRequest")
+		.parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
@@ -192,6 +195,7 @@ namespace OpcUaStackClient
 		activateSessionResponse.opcUaBinaryDecode(ios);
 
 		Log(Debug, "session recv ActivateSessionResponse")
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
 
@@ -214,6 +218,7 @@ namespace OpcUaStackClient
 		closeSessionRequest.opcUaBinaryEncode(ios);
 
 		Log(Debug, "session send CloseSessionRequest")
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
@@ -233,6 +238,7 @@ namespace OpcUaStackClient
 		cancelRequest.requestHandle(requestHandle);
 
 		Log(Debug, "session send CancelRequest")
+		    .parameter("RequestId", secureChannelTransaction->requestId_)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_);
 		secureChannelClient_.asyncWriteMessageRequest(secureChannel_, secureChannelTransaction);
@@ -269,8 +275,6 @@ namespace OpcUaStackClient
 	void
 	Session::handleMessageResponse(SecureChannel* secureChannel)
 	{
-		std::cout << "handleMessageResponse" << std::endl;
-
 		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:
@@ -302,7 +306,9 @@ namespace OpcUaStackClient
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		serviceTransaction->calcRequestTimeout(requestTimeout);
 
+		uint32_t requestId = ++requestId_;
 		Log(Debug, "session send request")
+		    .parameter("RequestId", requestId)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_)
 		    .parameter("TrxId", serviceTransaction->transactionId())
@@ -317,7 +323,7 @@ namespace OpcUaStackClient
 
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		secureChannelTransaction->requestTypeNodeId_ = serviceTransaction->nodeTypeRequest();
-		secureChannelTransaction->requestId_ = ++requestId_;
+		secureChannelTransaction->requestId_ = requestId;
 		std::iostream ios(&secureChannelTransaction->os_);
 
 		RequestHeader::SPtr requestHeader = serviceTransaction->requestHeader();
@@ -342,6 +348,7 @@ namespace OpcUaStackClient
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
 
 		Log(Debug, "session send request timeout")
+		    .parameter("RequestId", serviceTransaction->requestId_)
 	    	.parameter("SessionName", sessionConfig_->sessionName_)
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("TrxId", serviceTransaction->transactionId())
@@ -377,6 +384,7 @@ namespace OpcUaStackClient
 		serviceTransaction->statusCode(responseHeader->serviceResult());
 
 		Log(Debug, "session receive response")
+		    .parameter("RequestId", serviceTransaction->requestId_)
 	    	.parameter("SessionName", sessionConfig_->sessionName_)
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("TrxId", serviceTransaction->transactionId())
