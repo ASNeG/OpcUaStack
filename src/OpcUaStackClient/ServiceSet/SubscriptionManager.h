@@ -38,11 +38,24 @@ namespace OpcUaStackClient
 		uint32_t publishCount(void);
 		void subscriptionManagerIf(SubscriptionManagerIf* subscriptionManagerIf);
 
+		void sendSync(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void send(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
+		void sendSync(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void send(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription);
+		void sendSync(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void send(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions);
+		void sendSync(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void send(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
+		void sendSync(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void send(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode);
+		void sendSync(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void send(ServiceTransactionPublish::SPtr& serviceTransactionPublish);
+		void sendSync(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+		void send(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish);
+
 		//- Component -----------------------------------------------------------------
 		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
-
-		virtual void sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
 	    //- SubscriptionServicePublish ----------------------------------------
 	    virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode);
@@ -54,9 +67,10 @@ namespace OpcUaStackClient
 	    void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
 	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
+	    void sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions);
 	    void createSubscription(uint32_t subscriptionId);
 	    void deleteSubscriptionRequest(uint32_t subscriptionId);
-	    void deleteSubscriptionRespone(uint32_t subscriptionId, OpcUaStatusCode statusCode);
+	    void deleteSubscriptionResponse(uint32_t subscriptionId);
 	    void sendPublishRequests(void);
 
 	    void receivePublishResponse(const PublishResponse::SPtr& publishResponse);

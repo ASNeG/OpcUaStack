@@ -112,7 +112,6 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->componentService(this);
-		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
 		componentSession_->send(serviceTransactionDeleteSubscriptions);
 	}
 

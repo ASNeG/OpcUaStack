@@ -81,8 +81,6 @@ namespace OpcUaStackClient
 		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
-		virtual void sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) = 0;
-
 	  private:
 		Component* componentSession_;
 

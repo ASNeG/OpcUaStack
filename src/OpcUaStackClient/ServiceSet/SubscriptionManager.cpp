@@ -61,6 +61,99 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// send
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SubscriptionManager::sendSync(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	{
+		SubscriptionService::sendSync(serviceTransactionCreateSubscription);
+	}
+	void
+	SubscriptionManager:: send(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	{
+		SubscriptionService::send(serviceTransactionCreateSubscription);
+	}
+
+	void
+	SubscriptionManager:: sendSync(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	{
+		SubscriptionService::sendSync(serviceTransactionModifySubscription);
+	}
+
+	void
+	SubscriptionManager:: send(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	{
+		SubscriptionService::send(serviceTransactionModifySubscription);
+	}
+
+	void
+	SubscriptionManager:: sendSync(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	{
+		SubscriptionService::sendSync(serviceTransactionTransferSubscriptions);
+	}
+
+	void
+	SubscriptionManager:: send(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	{
+		SubscriptionService::send(serviceTransactionTransferSubscriptions);
+	}
+
+	void
+	SubscriptionManager::sendSync(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	{
+		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
+		SubscriptionService::sendSync(serviceTransactionDeleteSubscriptions);
+	}
+
+	void
+	SubscriptionManager::send(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	{
+		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
+		SubscriptionService::send(serviceTransactionDeleteSubscriptions);
+	}
+
+	void
+	SubscriptionManager:: sendSync(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	{
+		SubscriptionService::sendSync(serviceTransactionSetPublishingMode);
+	}
+
+	void
+	SubscriptionManager:: send(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	{
+		SubscriptionService::send(serviceTransactionSetPublishingMode);
+	}
+
+	void
+	SubscriptionManager:: sendSync(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	{
+		SubscriptionService::sendSync(serviceTransactionPublish);
+	}
+
+	void
+	SubscriptionManager:: send(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	{
+		SubscriptionService::send(serviceTransactionPublish);
+	}
+
+	void
+	SubscriptionManager:: sendSync(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	{
+		SubscriptionService::sendSync(serviceTransactionRepublish);
+	}
+
+	void
+	SubscriptionManager:: send(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	{
+		SubscriptionService::send(serviceTransactionRepublish);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// Component
 	//
 	// ------------------------------------------------------------------------
@@ -109,36 +202,34 @@ namespace OpcUaStackClient
     }
 
     void
-    SubscriptionManager::sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+    SubscriptionManager::sendDeleteSubscriptions(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
     {
     	DeleteSubscriptionsRequest::SPtr req = serviceTransactionDeleteSubscriptions->request();
+    	for (uint32_t pos=0; pos<req->subscriptionIds()->size(); pos++) {
+    		uint32_t subscriptionId;
+    		req->subscriptionIds()->get(pos, subscriptionId);
+    		deleteSubscriptionRequest(subscriptionId);
+    	}
     }
 
     void
     SubscriptionManager::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
     {
-    	if (serviceTransactionDeleteSubscriptions->statusCode() == Success) {
-    		DeleteSubscriptionsRequest::SPtr req = serviceTransactionDeleteSubscriptions->request();
-    		DeleteSubscriptionsResponse::SPtr res = serviceTransactionDeleteSubscriptions->response();
+    	if (serviceTransactionDeleteSubscriptions->statusCode() != Success) {
+        	DeleteSubscriptionsRequest::SPtr req = serviceTransactionDeleteSubscriptions->request();
+        	for (uint32_t pos=0; pos<req->subscriptionIds()->size(); pos++) {
+        		uint32_t subscriptionId;
+        		req->subscriptionIds()->get(pos, subscriptionId);
+        		subscriptionSet_.insert(subscriptionId);
+        	}
+        	return;
+    	}
 
-    		if (req->subscriptionIds()->size() != res->results()->size()) {
-    			Log(Error, "subscription delete subscription response error, because invalid number of entries in response")
-    				.parameter("ExpectedSize", req->subscriptionIds()->size())
-    				.parameter("ReceivedSize", res->results()->size());
-    		}
-    		else {
-    			for (uint32_t pos=0; pos<res->results()->size(); pos++) {
-    				OpcUaStatusCode statusCode;
-    				res->results()->get(pos, statusCode);
-
-    				uint32_t subscriptionId;
-    				req->subscriptionIds()->get(pos, subscriptionId);
-
-    				if (statusCode == Success) {
-    					deleteSubscriptionRequest(subscriptionId);
-    				}
-    			}
-    		}
+        DeleteSubscriptionsRequest::SPtr req = serviceTransactionDeleteSubscriptions->request();
+        for (uint32_t pos=0; pos<req->subscriptionIds()->size(); pos++) {
+            uint32_t subscriptionId;
+            req->subscriptionIds()->get(pos, subscriptionId);
+            deleteSubscriptionResponse(subscriptionId);
         }
     }
 
@@ -207,16 +298,15 @@ namespace OpcUaStackClient
     	    	.parameter("SubscriptionId", subscriptionId);
     	    return;
     	}
-
-   		if (subscriptionManagerIf_ != NULL) {
-    		subscriptionManagerIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
-    	}
     	subscriptionSet_.erase(it);
     }
 
     void
-    SubscriptionManager::deleteSubscriptionRespone(uint32_t subscriptionId, OpcUaStatusCode statusCode)
+    SubscriptionManager::deleteSubscriptionResponse(uint32_t subscriptionId)
     {
+   		if (subscriptionManagerIf_ != NULL) {
+    		subscriptionManagerIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
+    	}
     }
 
     void
@@ -225,7 +315,7 @@ namespace OpcUaStackClient
     	while (actPublishCount_ < publishCount_) {
     		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
     		trx->requestTimeout(60000); // FIXME:
-    		send(trx);
+    		SubscriptionService::send(trx);
 
     		actPublishCount_++;
     	}
