@@ -317,6 +317,7 @@ namespace OpcUaStackClient
 
 		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
 		secureChannelTransaction->requestTypeNodeId_ = serviceTransaction->nodeTypeRequest();
+		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
 
 		RequestHeader::SPtr requestHeader = serviceTransaction->requestHeader();
