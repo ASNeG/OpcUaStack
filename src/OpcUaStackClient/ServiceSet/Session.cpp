@@ -298,7 +298,9 @@ namespace OpcUaStackClient
 	void
 	Session::receive(Message::SPtr message)
 	{
+		uint32_t requestTimeout = requestTimeout_;
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		serviceTransaction->calcRequestTimeout(requestTimeout);
 
 		Log(Debug, "session send request")
 		    .parameter("SessionName", sessionConfig_->sessionName_)
@@ -320,11 +322,9 @@ namespace OpcUaStackClient
 		RequestHeader::SPtr requestHeader = serviceTransaction->requestHeader();
 		requestHeader->requestHandle(serviceTransaction->transactionId());
 		requestHeader->sessionAuthenticationToken() = authenticationToken_;
+		requestHeader->timeoutHint(requestTimeout);
 		requestHeader->opcUaBinaryEncode(ios);
 		serviceTransaction->opcUaBinaryEncodeRequest(ios);
-
-		uint32_t requestTimeout = requestTimeout_;
-		serviceTransaction->calcRequestTimeout(requestTimeout);
 
 		pendingQueue_.insert(
 			serviceTransaction->transactionId(),

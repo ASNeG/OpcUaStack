@@ -3,6 +3,7 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
+#include "OpcUaStackClient/ServiceSet/MonitoredItemService.h"
 
 #ifdef REAL_SERVER
 
@@ -27,6 +28,7 @@ class MonitoredItemRealTestSubscriptionManager
 : public SubscriptionManagerIf
 , public SubscriptionServiceIf
 , public SubscriptionServicePublishIf
+, public MonitoredItemServiceIf
 {
   public:
 	// ------------------------------------------------------------------------
@@ -104,6 +106,43 @@ class MonitoredItemRealTestSubscriptionManager
     void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
     {
     	subscriptionServiceRepublishResponse_.conditionValueDec();
+    }
+
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // MonitoredItemServiceIf
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    Condition monitoredItemServiceCreateMonitoredItemsResponse_;
+    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
+    {
+    	monitoredItemServiceCreateMonitoredItemsResponse_.conditionValueDec();
+    }
+
+    Condition monitoredItemServiceDeleteMonitoredItemsResponse_;
+    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
+    {
+    	monitoredItemServiceDeleteMonitoredItemsResponse_.conditionValueDec();
+    }
+
+    Condition monitoredItemServiceModifyMonitoredItemsResponse_;
+    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
+    {
+    	monitoredItemServiceModifyMonitoredItemsResponse_.conditionValueDec();
+    }
+
+    Condition monitoredItemServiceSetMonitoringModeResponse_;
+    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
+    {
+    	monitoredItemServiceSetMonitoringModeResponse_.conditionValueDec();
+    }
+
+    Condition monitoredItemServiceSetTriggeringResponse_;
+    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
+    {
+    	monitoredItemServiceSetTriggeringResponse_.conditionValueDec();
     }
 
 };
@@ -201,6 +240,59 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	BOOST_REQUIRE(createTrx->responseHeader()->serviceResult() == 0);
 	CreateSubscriptionResponse::SPtr createRes = createTrx->response();
 	uint32_t subscriptionId = createRes->subscriptionId();
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// init monitored item service
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	MonitoredItemService monitoredItemService;
+	monitoredItemService.monitoredItemServiceIf(&monitoredItemRealTestSubscriptionManager);
+	monitoredItemService.componentSession(session.component());
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// create monitored item
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = construct<ServiceTransactionCreateMonitoredItems>();
+	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
+	monCreateReq->subscriptionId(subscriptionId);
+
+	MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = MonitoredItemCreateRequest::construct();
+	monitoredItemCreateRequest->itemToMonitor().nodeId()->set((uint32_t)2258);
+	monitoredItemCreateRequest->requestedParameters().clientHandle(2258);
+
+	monCreateReq->itemsToCreate()->resize(1);
+	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
+
+	monitoredItemRealTestSubscriptionManager.dataChangeNotification_.condition(1, 0);
+	monitoredItemRealTestSubscriptionManager.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1, 0);
+	monitoredItemService.send(monCreateTrx);
+
+	BOOST_REQUIRE(monitoredItemRealTestSubscriptionManager.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
+	CreateMonitoredItemsResponse::SPtr monCreateRes = monCreateTrx->response();
+	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
+	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
+
+	MonitoredItemCreateResult::SPtr createMonResult;
+	monCreateRes->results()->get(0, createMonResult);
+
+	BOOST_REQUIRE(monitoredItemRealTestSubscriptionManager.dataChangeNotification_.waitForCondition(20000) == true);
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// delete monitored item request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 	, timeoutHint_()
 	{
 		sessionAuthenticationToken_.nodeId((OpcUaInt32)0);
-		time_.dateTime(boost::posix_time::microsec_clock::local_time());
+		time_.dateTime(boost::posix_time::microsec_clock::universal_time());
 		requestHandle_ = 0;
 		returnDisagnostics_ = 0;
 		timeoutHint_ = 0;
