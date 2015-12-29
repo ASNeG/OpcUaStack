@@ -306,7 +306,7 @@ namespace OpcUaStackClient
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_)
 		    .parameter("TrxId", serviceTransaction->transactionId())
-		    .parameter("NodeType", serviceTransaction->nodeTypeRequest());
+		    .parameter("RequestType", OpcUaIdMap::longString(serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()));
 
 		if (!sessionConnect_) {
 			serviceTransaction->statusCode(BadSessionClosed);
@@ -380,7 +380,7 @@ namespace OpcUaStackClient
 	    	.parameter("SessionName", sessionConfig_->sessionName_)
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("TrxId", serviceTransaction->transactionId())
-			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
+			.parameter("ResponseType", OpcUaIdMap::longString(serviceTransaction->nodeTypeResponse().nodeId<uint32_t>()))
 			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
 
 		Component* componentService = serviceTransaction->componentService();
