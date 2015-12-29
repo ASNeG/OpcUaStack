@@ -312,6 +312,7 @@ namespace OpcUaStackClient
     void
     SubscriptionManager::sendPublishRequests(void)
     {
+    	if (subscriptionSet_.size() == 0) return;
     	while (actPublishCount_ < publishCount_) {
     		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
     		trx->requestTimeout(60000); // FIXME:
