@@ -96,11 +96,23 @@ namespace OpcUaStackClient
 		}
 
 		secureChannelClient_.secureChannelClientIf(this);
-		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig);
+		ioThread_->run(boost::bind(&Session::asyncConnectInternal, this));
+	}
+
+	void
+	Session::asyncConnectInternal(void)
+	{
+		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
 	}
 
 	void
 	Session::asyncDisconnect(bool deleteSubscriptions)
+	{
+		ioThread_->run(boost::bind(&Session::asyncDisconnectInternal, this, deleteSubscriptions));
+	}
+
+	void
+	Session::asyncDisconnectInternal(bool deleteSubscriptions)
 	{
 		if (secureChannelConnect_ && sessionConfig_.get() != nullptr) {
 			sendCloseSessionRequest(deleteSubscriptions);
@@ -110,6 +122,12 @@ namespace OpcUaStackClient
 
 	void
 	Session::asyncCancel(uint32_t requestHandle)
+	{
+		ioThread_->run(boost::bind(&Session::asyncCancelInternal, this, requestHandle));
+	}
+
+	void
+	Session::asyncCancelInternal(uint32_t requestHandle)
 	{
 		if (secureChannelConnect_) {
 			sendCancelRequest(requestHandle);

@@ -62,6 +62,10 @@ namespace OpcUaStackClient
 		// - Component -------------------------------------------------------
 
 	  private:
+		void asyncConnectInternal(void);
+		void asyncDisconnectInternal(bool deleteSubscriptions);
+		void asyncCancelInternal(uint32_t requestHandle);
+
 		void sendCreateSessionRequest(void);
 		void recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction);
 		void sendActivateSessionRequest(void);
