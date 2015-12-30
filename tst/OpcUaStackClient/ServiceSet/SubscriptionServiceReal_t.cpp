@@ -121,8 +121,10 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	Core core;
 	core.init();
 
-	IOThread ioThread;
-	ioThread.startup();
+	IOThread ioThread1;
+	IOThread ioThread2;
+	ioThread1.startup();
+	ioThread2.startup();
 
 	// set secure channel configuration
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
@@ -139,7 +141,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 
 	// init session
 	SubscriptionRealTest subscriptionRealTest;
-	Session session(&ioThread);
+	Session session(&ioThread1);
 	session.sessionIf(&subscriptionRealTest);
 
 	// connect session
@@ -151,6 +153,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	// init subscription manager
 	SubscriptionRealTestSubscriptionManager subscriptionRealTestSubscriptionManager;
 	SubscriptionManager subscriptionManager;
+	subscriptionManager.ioThread(&ioThread2);
 	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServicePublishIf(&subscriptionRealTestSubscriptionManager);
@@ -182,7 +185,8 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Disconnect);
 
-	ioThread.shutdown();
+	ioThread1.shutdown();
+	ioThread2.shutdown();
 }
 
 BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscriptions)
@@ -190,8 +194,9 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	Core core;
 	core.init();
 
-	IOThread ioThread;
-	ioThread.startup();
+	IOThread ioThread1;
+	IOThread ioThread2;
+	ioThread1.startup();
 
 	// set secure channel configuration
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
@@ -208,7 +213,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 
 	// init session
 	SubscriptionRealTest subscriptionRealTest;
-	Session session(&ioThread);
+	Session session(&ioThread1);
 	session.sessionIf(&subscriptionRealTest);
 
 	// connect session
@@ -220,6 +225,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	// init subscription manager
 	SubscriptionRealTestSubscriptionManager subscriptionRealTestSubscriptionManager;
 	SubscriptionManager subscriptionManager;
+	subscriptionManager.ioThread(&ioThread2);
 	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServicePublishIf(&subscriptionRealTestSubscriptionManager);
@@ -259,7 +265,8 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Disconnect);
 
-	ioThread.shutdown();
+	ioThread1.shutdown();
+	ioThread2.shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

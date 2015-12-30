@@ -336,7 +336,7 @@ namespace OpcUaStackClient
 		if (!sessionConnect_) {
 			serviceTransaction->statusCode(BadSessionClosed);
 			Component* componentService = serviceTransaction->componentService();
-			componentService->send(serviceTransaction);
+			componentService->sendAsync(serviceTransaction);
 			return;
 		}
 
@@ -375,7 +375,7 @@ namespace OpcUaStackClient
 
 		serviceTransaction->statusCode(BadTimeout);
 		Component* componentService = serviceTransaction->componentService();
-		componentService->send(serviceTransaction);
+		componentService->sendAsync(serviceTransaction);
 	}
 
 	void
