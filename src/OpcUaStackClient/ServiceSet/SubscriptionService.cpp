@@ -64,7 +64,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->componentService(this);
-		componentSession_->send(serviceTransactionCreateSubscription);
+		componentSession_->sendAsync(serviceTransactionCreateSubscription);
 	}
 
 	void
@@ -80,7 +80,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->componentService(this);
-		componentSession_->send(serviceTransactionModifySubscription);
+		componentSession_->sendAsync(serviceTransactionModifySubscription);
 	}
 
 	void
@@ -96,7 +96,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->componentService(this);
-		componentSession_->send(serviceTransactionTransferSubscriptions);
+		componentSession_->sendAsync(serviceTransactionTransferSubscriptions);
 	}
 
 	void
@@ -112,7 +112,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->componentService(this);
-		componentSession_->send(serviceTransactionDeleteSubscriptions);
+		componentSession_->sendAsync(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
@@ -128,7 +128,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->componentService(this);
-		componentSession_->send(serviceTransactionSetPublishingMode);
+		componentSession_->sendAsync(serviceTransactionSetPublishingMode);
 	}
 
 	void
@@ -144,7 +144,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->componentService(this);
-		componentSession_->send(serviceTransactionPublish);
+		componentSession_->sendAsync(serviceTransactionPublish);
 	}
 
 	void
@@ -160,7 +160,7 @@ namespace OpcUaStackClient
 	SubscriptionService::send(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->componentService(this);
-		componentSession_->send(serviceTransactionRepublish);
+		componentSession_->sendAsync(serviceTransactionRepublish);
 	}
 
 	void
