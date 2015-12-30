@@ -59,7 +59,7 @@ namespace OpcUaStackClient
 	{
 		serviceTransactionCall->componentService(this);
 		OpcUaNodeId nodeId;
-		componentSession_->send(serviceTransactionCall);
+		componentSession_->sendAsync(serviceTransactionCall);
 	}
 
 
