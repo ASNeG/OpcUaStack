@@ -52,13 +52,11 @@ namespace OpcUaStackClient
 		serviceTransactionCreateMonitoredItems->conditionBool().conditionInit();
 		send(serviceTransactionCreateMonitoredItems);
 		serviceTransactionCreateMonitoredItems->conditionBool().waitForCondition();
-		Log(Debug, "receive create monitored items response");
 	}
 
 	void
 	MonitoredItemService::send(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
-		Log(Debug, "send create monitored items request");
 		serviceTransactionCreateMonitoredItems->componentService(this);
 		componentSession_->send(serviceTransactionCreateMonitoredItems);
 	}
@@ -70,13 +68,11 @@ namespace OpcUaStackClient
 		serviceTransactionDeleteMonitoredItems->conditionBool().conditionInit();
 		send(serviceTransactionDeleteMonitoredItems);
 		serviceTransactionDeleteMonitoredItems->conditionBool().waitForCondition();
-		Log(Debug, "receive delete monitored items response");
 	}
 
 	void
 	MonitoredItemService::send(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
-		Log(Debug, "send delete monitored items request");
 		serviceTransactionDeleteMonitoredItems->componentService(this);
 		componentSession_->send(serviceTransactionDeleteMonitoredItems);
 	}
@@ -88,13 +84,11 @@ namespace OpcUaStackClient
 		serviceTransactionModifyMonitoredItems->conditionBool().conditionInit();
 		send(serviceTransactionModifyMonitoredItems);
 		serviceTransactionModifyMonitoredItems->conditionBool().waitForCondition();
-		Log(Debug, "receive modify monitored items response");
 	}
 
 	void
 	MonitoredItemService::send(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
-		Log(Debug, "send modify monitored items request");
 		serviceTransactionModifyMonitoredItems->componentService(this);
 		componentSession_->send(serviceTransactionModifyMonitoredItems);
 	}
@@ -106,13 +100,11 @@ namespace OpcUaStackClient
 		serviceTransactionSetMonitoringMode->conditionBool().conditionInit();
 		send(serviceTransactionSetMonitoringMode);
 		serviceTransactionSetMonitoringMode->conditionBool().waitForCondition();
-		Log(Debug, "receive set monitoring mode response");
 	}
 
 	void
 	MonitoredItemService::send(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
-		Log(Debug, "send set monitoring mode request");
 		serviceTransactionSetMonitoringMode->componentService(this);
 		componentSession_->send(serviceTransactionSetMonitoringMode);
 	}
@@ -124,13 +116,11 @@ namespace OpcUaStackClient
 		serviceTransactionSetTriggering->conditionBool().conditionInit();
 		send(serviceTransactionSetTriggering);
 		serviceTransactionSetTriggering->conditionBool().waitForCondition();
-		Log(Debug, "receive set triggering response");
 	}
 
 	void
 	MonitoredItemService::send(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
-		Log(Debug, "send set triggering request");
 		serviceTransactionSetTriggering->componentService(this);
 		componentSession_->send(serviceTransactionSetTriggering);
 	}
@@ -150,7 +140,6 @@ namespace OpcUaStackClient
 		{
 			case OpcUaId_CreateMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				Log(Debug, "receive create monitored items response");
 				if (monitoredItemServiceIf_ != nullptr) {
 					monitoredItemServiceIf_->monitoredItemServiceCreateMonitoredItemsResponse(
 						boost::static_pointer_cast<ServiceTransactionCreateMonitoredItems>(serviceTransaction)
@@ -161,7 +150,6 @@ namespace OpcUaStackClient
 
 			case OpcUaId_DeleteMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				Log(Debug, "receive delete monitored items response");
 				if (monitoredItemServiceIf_ != nullptr) {
 					monitoredItemServiceIf_->monitoredItemServiceDeleteMonitoredItemsResponse(
 						boost::static_pointer_cast<ServiceTransactionDeleteMonitoredItems>(serviceTransaction)
@@ -172,7 +160,6 @@ namespace OpcUaStackClient
 
 			case OpcUaId_ModifyMonitoredItemsResponse_Encoding_DefaultBinary:
 			{
-				Log(Debug, "receive modify monitored items response");
 				if (monitoredItemServiceIf_ != nullptr) {
 					monitoredItemServiceIf_->monitoredItemServiceModifyMonitoredItemsResponse(
 						boost::static_pointer_cast<ServiceTransactionModifyMonitoredItems>(serviceTransaction)
@@ -183,7 +170,6 @@ namespace OpcUaStackClient
 
 			case OpcUaId_SetMonitoringModeResponse_Encoding_DefaultBinary:
 			{
-				Log(Debug, "receive set monitoring response");
 				if (monitoredItemServiceIf_ != nullptr) {
 					monitoredItemServiceIf_->monitoredItemServiceSetMonitoringModeResponse(
 						boost::static_pointer_cast<ServiceTransactionSetMonitoringMode>(serviceTransaction)
@@ -194,7 +180,6 @@ namespace OpcUaStackClient
 
 			case OpcUaId_SetTriggeringResponse_Encoding_DefaultBinary:
 			{
-				Log(Debug, "receive set triggering response");
 				if (monitoredItemServiceIf_ != nullptr) {
 					monitoredItemServiceIf_->monitoredItemServiceSetTriggeringResponse(
 						boost::static_pointer_cast<ServiceTransactionSetTriggering>(serviceTransaction)
@@ -204,7 +189,7 @@ namespace OpcUaStackClient
 			}
 
 			default:
-				Log(Error, "call service received unknown message type")
+				Log(Error, "monitored item service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
 				break;
 		}
