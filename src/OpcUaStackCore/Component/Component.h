@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Component/Message.h"
 
 namespace OpcUaStackCore
@@ -37,6 +38,7 @@ namespace OpcUaStackCore
 		
 		static Component* getComponent(const std::string& componentName);
 
+		void ioThread(IOThread* ioThread);
 		void ioService(IOService* ioService);
 		IOService* ioService(void);
 		void componentName(const std::string& componentName);

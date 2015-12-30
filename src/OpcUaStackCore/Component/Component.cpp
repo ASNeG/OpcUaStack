@@ -64,6 +64,12 @@ namespace OpcUaStackCore
 	{
 		removeComponent(componentName_);
 	}
+
+	void
+	Component::ioThread(IOThread* ioThread)
+	{
+		ioService_ = ioThread->ioService().get();
+	}
 		
 	void 
 	Component::ioService(IOService* ioService)
