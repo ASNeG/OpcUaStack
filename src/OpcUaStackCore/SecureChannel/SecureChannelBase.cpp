@@ -35,7 +35,6 @@ namespace OpcUaStackCore
 	SecureChannelBase::SecureChannelBase(SecureChannelType secureChannelType)
 	: asyncWriteCount_(0)
 	, secureChannelType_(secureChannelType)
-	, mutex_()
 	{
 	}
 

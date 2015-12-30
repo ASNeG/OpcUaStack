@@ -53,6 +53,8 @@ namespace OpcUaStackClient
 	, requestTimeout_(3000)
 	, pendingQueue_(*ioThread->ioService().get())
 	{
+		Component::ioThread(ioThread);
+
 		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
 			boost::bind(&Session::pendingQueueTimeout, this, _1)
@@ -390,7 +392,7 @@ namespace OpcUaStackClient
 			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
 
 		Component* componentService = serviceTransaction->componentService();
-		componentService->send(serviceTransaction);
+		componentService->sendAsync(serviceTransaction);
 	}
 
 }
