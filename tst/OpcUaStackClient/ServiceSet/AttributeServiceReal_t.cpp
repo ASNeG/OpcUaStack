@@ -59,8 +59,10 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	Core core;
 	core.init();
 
-	IOThread ioThread;
-	ioThread.startup();
+	IOThread ioThread1;
+	IOThread ioThread2;
+	ioThread1.startup();
+	ioThread2.startup();
 
 	// set secure channel configuration
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
@@ -77,7 +79,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 
 	// init session
 	AttributeRealTest attributeRealTest;
-	Session session(&ioThread);
+	Session session(&ioThread1);
 	session.sessionIf(&attributeRealTest);
 
 	// connect session
@@ -90,6 +92,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 
 	AttributeRealServiceHandler attributeRealServiceHandler;
 	AttributeService attributeService;
+	attributeService.ioThread(&ioThread2);
 	attributeService.attributeServiceIf(&attributeRealServiceHandler);
 	attributeService.componentSession(session.component());
 
@@ -124,7 +127,8 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Disconnect);
 
-	ioThread.shutdown();
+	ioThread1.shutdown();
+	ioThread2.shutdown();
 }
 
 BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
@@ -132,8 +136,10 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 	Core core;
 	core.init();
 
-	IOThread ioThread;
-	ioThread.startup();
+	IOThread ioThread1;
+	IOThread ioThread2;
+	ioThread1.startup();
+	ioThread2.startup();
 
 	// set secure channel configuration
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
@@ -150,7 +156,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 
 	// init session
 	AttributeRealTest attributeRealTest;
-	Session session(&ioThread);
+	Session session(&ioThread1);
 	session.sessionIf(&attributeRealTest);
 
 	// connect session
@@ -160,9 +166,9 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Connect);
 
 	// init attribute service
-
 	AttributeRealServiceHandler attributeRealServiceHandler;
 	AttributeService attributeService;
+	attributeService.ioThread(&ioThread2);
 	attributeService.attributeServiceIf(&attributeRealServiceHandler);
 	attributeService.componentSession(session.component());
 
@@ -195,7 +201,8 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Disconnect);
 
-	ioThread.shutdown();
+	ioThread1.shutdown();
+	ioThread2.shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
