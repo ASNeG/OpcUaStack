@@ -197,6 +197,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	IOThread ioThread1;
 	IOThread ioThread2;
 	ioThread1.startup();
+	ioThread2.startup();
 
 	// set secure channel configuration
 	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
