@@ -145,6 +145,7 @@ namespace OpcUaStackCore
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
 		void consumeAll(boost::asio::streambuf& streambuf);
 
+		boost::mutex mutex_;
 		SecureChannelType secureChannelType_;
 		uint32_t asyncWriteCount_;
 	};

@@ -311,7 +311,6 @@ namespace OpcUaStackClient
 		    .parameter("RequestId", requestId)
 		    .parameter("SessionName", sessionConfig_->sessionName_)
 		    .parameter("AuthenticationToken", authenticationToken_)
-		    .parameter("TrxId", serviceTransaction->transactionId())
 		    .parameter("RequestType", OpcUaIdMap::longString(serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()));
 
 		if (!sessionConnect_) {
@@ -334,7 +333,7 @@ namespace OpcUaStackClient
 		serviceTransaction->opcUaBinaryEncodeRequest(ios);
 
 		pendingQueue_.insert(
-			serviceTransaction->transactionId(),
+			secureChannelTransaction->requestId_,
 			serviceTransaction,
 			requestTimeout
 		);
@@ -351,7 +350,6 @@ namespace OpcUaStackClient
 		    .parameter("RequestId", serviceTransaction->requestId_)
 	    	.parameter("SessionName", sessionConfig_->sessionName_)
 	    	.parameter("AuthenticationToken", authenticationToken_)
-			.parameter("TrxId", serviceTransaction->transactionId())
 			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
 			.parameter("RequestHandle", serviceTransaction->transactionId());
 
@@ -367,7 +365,7 @@ namespace OpcUaStackClient
 		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 		responseHeader->opcUaBinaryDecode(ios);
 
-		Object::SPtr objectSPtr = pendingQueue_.remove(responseHeader->requestHandle());
+		Object::SPtr objectSPtr = pendingQueue_.remove(secureChannelTransaction->requestId_);
 		if (objectSPtr.get() == nullptr) {
 			Log(Error, "session pending queue error, because element not exist")
 				.parameter("RequestId", secureChannelTransaction->requestId_)
@@ -388,7 +386,6 @@ namespace OpcUaStackClient
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
 	    	.parameter("SessionName", sessionConfig_->sessionName_)
 	    	.parameter("AuthenticationToken", authenticationToken_)
-			.parameter("TrxId", serviceTransaction->transactionId())
 			.parameter("ResponseType", OpcUaIdMap::longString(serviceTransaction->nodeTypeResponse().nodeId<uint32_t>()))
 			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
 
