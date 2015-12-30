@@ -58,7 +58,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 		serviceTransactionRead->componentService(this); 
-		componentSession_->send(serviceTransactionRead);
+		componentSession_->sendAsync(serviceTransactionRead);
 	}
 
 	void 
@@ -74,7 +74,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
 		serviceTransactionWrite->componentService(this); 
-		componentSession_->send(serviceTransactionWrite);
+		componentSession_->sendAsync(serviceTransactionWrite);
 	}
 
 	void 
@@ -90,7 +90,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 		serviceTransactionHistoryRead->componentService(this); 
-		componentSession_->send(serviceTransactionHistoryRead);
+		componentSession_->sendAsync(serviceTransactionHistoryRead);
 	}
 
 	void 
@@ -106,7 +106,7 @@ namespace OpcUaStackClient
 	AttributeService::send(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
 		serviceTransactionHistoryUpdate->componentService(this); 
-		componentSession_->send(serviceTransactionHistoryUpdate);
+		componentSession_->sendAsync(serviceTransactionHistoryUpdate);
 	}
 
 	void 
