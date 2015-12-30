@@ -15,8 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/Log.h"
+#include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 #include <iostream>
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -92,8 +94,10 @@ namespace OpcUaStackCore
 
 	Log::~Log(void)
 	{
+		std::string threadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
+
 		if (logIf() != nullptr) {
-			std::string message = message_;
+			std::string message = "[" + threadId + "] " + message_;
 			if (parameter_ != "") {
 				message += " : " + parameter_;
 			}
@@ -102,7 +106,7 @@ namespace OpcUaStackCore
 			}
 		}
 
-		std::cout << logLevel() << " " << message_;
+		std::cout << logLevel() << " [" << threadId << "] " << message_;
 		if  (parameter_ != "") {
 			std::cout << ": " << parameter_;
 		}
