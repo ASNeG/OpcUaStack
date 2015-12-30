@@ -58,7 +58,7 @@ namespace OpcUaStackClient
 	MonitoredItemService::send(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
 		serviceTransactionCreateMonitoredItems->componentService(this);
-		componentSession_->send(serviceTransactionCreateMonitoredItems);
+		componentSession_->sendAsync(serviceTransactionCreateMonitoredItems);
 	}
 
 	void
@@ -74,7 +74,7 @@ namespace OpcUaStackClient
 	MonitoredItemService::send(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
 		serviceTransactionDeleteMonitoredItems->componentService(this);
-		componentSession_->send(serviceTransactionDeleteMonitoredItems);
+		componentSession_->sendAsync(serviceTransactionDeleteMonitoredItems);
 	}
 
 	void
@@ -90,7 +90,7 @@ namespace OpcUaStackClient
 	MonitoredItemService::send(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
 		serviceTransactionModifyMonitoredItems->componentService(this);
-		componentSession_->send(serviceTransactionModifyMonitoredItems);
+		componentSession_->sendAsync(serviceTransactionModifyMonitoredItems);
 	}
 
 	void
@@ -106,7 +106,7 @@ namespace OpcUaStackClient
 	MonitoredItemService::send(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
 		serviceTransactionSetMonitoringMode->componentService(this);
-		componentSession_->send(serviceTransactionSetMonitoringMode);
+		componentSession_->sendAsync(serviceTransactionSetMonitoringMode);
 	}
 
 	void
@@ -122,7 +122,7 @@ namespace OpcUaStackClient
 	MonitoredItemService::send(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
 		serviceTransactionSetTriggering->componentService(this);
-		componentSession_->send(serviceTransactionSetTriggering);
+		componentSession_->sendAsync(serviceTransactionSetTriggering);
 	}
 
 	void
