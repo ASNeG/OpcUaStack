@@ -160,8 +160,12 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	Core core;
 	core.init();
 
-	IOThread ioThread;
-	ioThread.startup();
+	IOThread ioThread1;
+	IOThread ioThread2;
+	IOThread ioThread3;
+	ioThread1.startup();
+	ioThread2.startup();
+	ioThread3.startup();
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -196,7 +200,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MonitoredItemRealTest monitoredItemRealTest;
-	Session session(&ioThread);
+	Session session(&ioThread1);
 	session.sessionIf(&monitoredItemRealTest);
 
 	// ------------------------------------------------------------------------
@@ -220,6 +224,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	MonitoredItemRealTestSubscriptionManager monitoredItemRealTestSubscriptionManager;
 	SubscriptionManager subscriptionManager;
+	subscriptionManager.ioThread(&ioThread2);
 	subscriptionManager.subscriptionManagerIf(&monitoredItemRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&monitoredItemRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServicePublishIf(&monitoredItemRealTestSubscriptionManager);
@@ -249,6 +254,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MonitoredItemService monitoredItemService;
+	monitoredItemService.ioThread(&ioThread3);
 	monitoredItemService.monitoredItemServiceIf(&monitoredItemRealTestSubscriptionManager);
 	monitoredItemService.componentSession(session.component());
 
@@ -322,7 +328,9 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	BOOST_REQUIRE(monitoredItemRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monitoredItemRealTest.sessionState_ == SS_Disconnect);
 
-	ioThread.shutdown();
+	ioThread1.shutdown();
+	ioThread2.shutdown();
+	ioThread3.shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()
