@@ -28,6 +28,12 @@ namespace OpcUaStackCore
 		bool startup(void);
 		bool shutdown(void);
 
+		template<typename HANDLER>
+		    void run(HANDLER handler)
+			{
+				ioService_->run(handler);
+			}
+
 	  private:
 		void createIOService(void);
 		void deleteIOService(void);
