@@ -58,7 +58,7 @@ namespace OpcUaStackClient
 	QueryService::send(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
 		serviceTransactionQueryFirst->componentService(this);
-		componentSession_->send(serviceTransactionQueryFirst);
+		componentSession_->sendAsync(serviceTransactionQueryFirst);
 	}
 
 	void
@@ -74,7 +74,7 @@ namespace OpcUaStackClient
 	QueryService::send(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
 		serviceTransactionQueryNext->componentService(this);
-		componentSession_->send(serviceTransactionQueryNext);
+		componentSession_->sendAsync(serviceTransactionQueryNext);
 	}
 
 
