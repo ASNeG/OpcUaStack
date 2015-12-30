@@ -275,7 +275,6 @@ namespace OpcUaStackClient
 	void
 	Session::handleMessageResponse(SecureChannel* secureChannel)
 	{
-		secureChannel->secureChannelTransaction_->requestId_ = secureChannel->recvRequestId_;
 		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_CreateSessionResponse_Encoding_DefaultBinary:

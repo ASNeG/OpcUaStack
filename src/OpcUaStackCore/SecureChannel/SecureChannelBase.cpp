@@ -885,7 +885,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvRequestId_);
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->requestId_);
 
 		if (secureChannel->recvFirstSegment_) {
 			secureChannel->secureChannelTransaction_->requestTypeNodeId_.opcUaBinaryDecode(is);
@@ -1102,7 +1102,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvRequestId_);
+		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->secureChannelTransaction_->requestId_);
 
 		if (secureChannel->recvFirstSegment_) {
 			secureChannel->secureChannelTransaction_->responseTypeNodeId_.opcUaBinaryDecode(ios);
