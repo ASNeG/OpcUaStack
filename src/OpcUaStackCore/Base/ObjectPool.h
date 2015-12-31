@@ -32,19 +32,20 @@ namespace OpcUaStackCore
 	};
 
 	template<typename OBJ>
-	  typename OBJ::SPtr construct(void) {
+	  typename OBJ::SPtr constructSPtr(void) {
 		return typename OBJ::SPtr(new OBJ());
 	  }
 
 	template<typename OBJ, typename P1>
-	  typename OBJ::SPtr construct(P1& p1) {
+	  typename OBJ::SPtr constructSPtr(P1& p1) {
 		return typename OBJ::SPtr(new OBJ(p1));
 	  }
 
 	template<typename OBJ, typename P1>
-	  typename OBJ::SPtr construct(P1* p1) {
+	  typename OBJ::SPtr constructSPtr(P1* p1) {
 		return typename OBJ::SPtr(new OBJ(p1));
 	  }
+
 
 	////////////////////////////////////////////
 	////////////////////////////////////////////
