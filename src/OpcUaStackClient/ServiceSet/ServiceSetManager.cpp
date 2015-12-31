@@ -34,8 +34,8 @@ namespace OpcUaStackClient
 	: mode_(SessionService::M_SecureChannelAndSession)
 	, ioThreadName_("Session")
 	, sessionIf_(nullptr)
-	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>().get())
-	, session_(constructSPtr<SessionConfig>().get())
+	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>())
+	, session_(constructSPtr<SessionConfig>())
 	{
 	}
 
@@ -88,6 +88,7 @@ namespace OpcUaStackClient
 		Log(Debug, "service set manager starts io thread")
 		    .parameter("IOThreadName", ioThreadName);
 		ioThread = constructSPtr<IOThread>();
+		ioThreadMap_.insert(std::make_pair(ioThreadName, ioThread));
 		ioThread->startup();
 	}
 
@@ -138,6 +139,7 @@ namespace OpcUaStackClient
 	ServiceSetManager::discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig)
 	{
 		// create discovery service
+		createIOThread(discoveryServiceConfig.ioThreadName_);
 		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName_);
 		DiscoveryService::SPtr discoveryService = constructSPtr<DiscoveryService>(ioThread.get());
 
