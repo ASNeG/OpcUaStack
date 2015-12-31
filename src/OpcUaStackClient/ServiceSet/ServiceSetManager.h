@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/DiscoveryService.h"
 
 using namespace OpcUaStackCore;
 
@@ -42,13 +43,30 @@ namespace OpcUaStackClient
 	};
 
 
+	class DLLEXPORT DiscoveryServiceConfig
+	{
+	  public:
+		typedef boost::shared_ptr<DiscoveryServiceConfig> SPtr;
+
+		DiscoveryServiceConfig(void);
+		~DiscoveryServiceConfig(void);
+
+		std::string ioThreadName_;
+		DiscoveryServiceIf* discoveryServiceIf_;
+	};
+
+
 	class DLLEXPORT ServiceSetManager
 	{
 	  public:
 		ServiceSetManager(void);
 		~ServiceSetManager(void);
 
-		Session::SPtr createSession(SessionServiceConfig& sessionServiceConfig);
+		// session
+		SessionService::SPtr createSession(SessionServiceConfig& sessionServiceConfig);
+
+		// discovery
+		DiscoveryService::SPtr discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig);
 
 	  private:
 		IOThread::SPtr getIOThread(const std::string ioThreadName);

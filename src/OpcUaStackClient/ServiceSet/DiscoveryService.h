@@ -43,11 +43,15 @@ namespace OpcUaStackClient
 	: public Component
 	{
 	  public:
-		boost::shared_ptr<DiscoveryService> SPtr;
+		typedef boost::shared_ptr<DiscoveryService> SPtr;
 
-		DiscoveryService(void);
+		DiscoveryService(IOThread* ioThread);
 		~DiscoveryService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			DiscoveryServiceIf* discoveryServiceIf
+		);
 		void componentSession(Component* componentSession);
 		void discoveryServiceIf(DiscoveryServiceIf* discoveryServiceIf);
 

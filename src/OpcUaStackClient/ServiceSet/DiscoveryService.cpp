@@ -23,14 +23,26 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	DiscoveryService::DiscoveryService(void)
-	: componentSession_(nullptr)
+	DiscoveryService::DiscoveryService(IOThread* ioThread)
+	: Component()
+	, componentSession_(nullptr)
 	, discoveryServiceIf_(nullptr)
 	{
+		Component::ioThread(ioThread);
 	}
 
 	DiscoveryService::~DiscoveryService(void)
 	{
+	}
+
+	void
+	DiscoveryService::setConfiguration(
+		Component* componentSession,
+		DiscoveryServiceIf* discoveryServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		discoveryServiceIf_ = discoveryServiceIf;
 	}
 
 	void 

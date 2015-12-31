@@ -114,6 +114,8 @@ namespace OpcUaStackClient
 		PendingQueue pendingQueue_;
 	};
 
+	typedef Session SessionService;
+
 }
 
 #endif

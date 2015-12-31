@@ -46,6 +46,23 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// DiscoveryServiceConfig
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	DiscoveryServiceConfig::DiscoveryServiceConfig(void)
+	: ioThreadName_("Discovery")
+	, discoveryServiceIf_(nullptr)
+	{
+	}
+
+	DiscoveryServiceConfig::~DiscoveryServiceConfig(void)
+	{
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// ServiceSetManager
 	//
 	// ------------------------------------------------------------------------
@@ -98,23 +115,39 @@ namespace OpcUaStackClient
 		return ioThread;
 	}
 
-	Session::SPtr
+	SessionService::SPtr
 	ServiceSetManager::createSession(SessionServiceConfig& sessionServiceConfig)
 	{
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName_);
 		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName_);
-		Session::SPtr session = constructSPtr<Session>(ioThread.get());
+		SessionService::SPtr sessionService = constructSPtr<SessionService>(ioThread.get());
 
 		// set session configuration
-		session->setConfiguration(
+		sessionService->setConfiguration(
 			sessionServiceConfig.mode_,
 			sessionServiceConfig.sessionIf_,
 			sessionServiceConfig.secureChannelClient_,
 			sessionServiceConfig.session_
 		);
 
-		return session;
+		return sessionService;
+	}
+
+	DiscoveryService::SPtr
+	ServiceSetManager::discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig)
+	{
+		// create discovery service
+		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName_);
+		DiscoveryService::SPtr discoveryService = constructSPtr<DiscoveryService>(ioThread.get());
+
+		// set discovery configuration
+		discoveryService->setConfiguration(
+			sessionService->component(),
+			discoveryServiceConfig.discoveryServiceIf_
+		);
+
+		return discoveryService;
 	}
 
 }
