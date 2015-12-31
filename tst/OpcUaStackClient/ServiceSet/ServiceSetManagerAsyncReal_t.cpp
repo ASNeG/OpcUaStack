@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_)
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_secureChannel_connect_disconnect)
 {
 	ServiceSetManager serviceSetManager;
-	SessionIfTestHandler sessionIfTestHandler;
+	SessionServiceIfTestHandler sessionIfTestHandler;
 	SessionServiceConfig sessionServiceConfig;
 
 	// set secure channel configuration
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_secureChannel_connect_disconnect
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
-	SessionIfTestHandler sessionIfTestHandler;
+	SessionServiceIfTestHandler sessionIfTestHandler;
 	SessionServiceConfig sessionServiceConfig;
 
 	// set secure channel configuration

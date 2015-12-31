@@ -21,19 +21,19 @@
 namespace OpcUaStackClient
 {
 
-	SessionIfTestHandler::SessionIfTestHandler(void)
+	SessionServiceIfTestHandler::SessionServiceIfTestHandler(void)
 	: SessionServiceIf()
 	, sessionStateUpdate_()
 	, sessionState_(SS_Disconnect)
 	{
 	}
 
-	SessionIfTestHandler::~SessionIfTestHandler(void)
+	SessionServiceIfTestHandler::~SessionServiceIfTestHandler(void)
 	{
 	}
 
 	void
-	SessionIfTestHandler::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	SessionServiceIfTestHandler::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
 		sessionState_ = sessionState;
 		sessionStateUpdate_.conditionValueDec();

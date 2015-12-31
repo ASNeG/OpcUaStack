@@ -42,12 +42,12 @@ namespace OpcUaStackClient
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState) = 0;
 	};
 
-	class DLLEXPORT SessionIfTestHandler
+	class DLLEXPORT SessionServiceIfTestHandler
 	: public SessionServiceIf
 	{
 	  public:
-		SessionIfTestHandler(void);
-		virtual ~SessionIfTestHandler(void);
+		SessionServiceIfTestHandler(void);
+		virtual ~SessionServiceIfTestHandler(void);
 
 		SessionState sessionState_;
 		Condition sessionStateUpdate_;
