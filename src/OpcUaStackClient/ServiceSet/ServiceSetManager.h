@@ -20,28 +20,13 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/DiscoveryService.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-
-	class DLLEXPORT SessionServiceConfig
-	{
-	  public:
-		typedef boost::shared_ptr<SessionServiceConfig> SPtr;
-
-		SessionServiceConfig(void);
-		~SessionServiceConfig(void);
-
-		SessionService::Mode mode_;
-		std::string ioThreadName_;
-		SessionServiceIf* sessionServiceIf_;
-		SecureChannelClientConfig::SPtr secureChannelClient_;
-		SessionConfig::SPtr session_;
-	};
-
 
 	class DLLEXPORT DiscoveryServiceConfig
 	{

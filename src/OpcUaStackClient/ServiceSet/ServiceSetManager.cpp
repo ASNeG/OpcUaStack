@@ -26,26 +26,6 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// SessionServiceConfig
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	SessionServiceConfig::SessionServiceConfig(void)
-	: mode_(SessionService::M_SecureChannelAndSession)
-	, ioThreadName_("Session")
-	, sessionServiceIf_(nullptr)
-	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>())
-	, session_(constructSPtr<SessionConfig>())
-	{
-	}
-
-	SessionServiceConfig::~SessionServiceConfig(void)
-	{
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// DiscoveryServiceConfig
 	//
 	// ------------------------------------------------------------------------
