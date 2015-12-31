@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT SessionTestHandler
-	: public SessionIf
+	: public SessionServiceIf
 	, public SessionManagerIf
 	{
 	  public:
@@ -50,7 +50,7 @@ namespace OpcUaStackClient
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------
 		//
-		// SessionIf
+		// SessionServiceIf
 		//
 		// ------------------------------------------------------------------------
 		// ------------------------------------------------------------------------

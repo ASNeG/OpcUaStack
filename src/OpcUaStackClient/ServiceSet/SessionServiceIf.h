@@ -34,16 +34,16 @@ namespace OpcUaStackClient
 		SS_Reactivate
 	} SessionState;
 
-	class DLLEXPORT SessionIf
+	class DLLEXPORT SessionServiceIf
 	{
 	  public:
-		virtual ~SessionIf(void) {}
+		virtual ~SessionServiceIf(void) {}
 
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState) = 0;
 	};
 
 	class DLLEXPORT SessionIfTestHandler
-	: public SessionIf
+	: public SessionServiceIf
 	{
 	  public:
 		SessionIfTestHandler(void);

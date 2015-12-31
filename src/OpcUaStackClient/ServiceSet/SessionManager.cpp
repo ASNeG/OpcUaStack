@@ -57,7 +57,7 @@ namespace OpcUaStackClient
 	SessionManager::getNewSession(
 		const std::string& prefixSessionConfig, Config& sessionConfig,
 		const std::string& prefixSecureChannelConfig, Config& secureChannelConfig,
-		SessionIf* sessionIf,
+		SessionServiceIf* sessionServiceIf,
 		bool newSecureChannel)
 	{
 		bool rc;
@@ -71,7 +71,7 @@ namespace OpcUaStackClient
 			return sessionSPtr;
 		}
 		session_->sessionManagerIf(this);
-		session_->sessionIf(sessionIf);
+		session_->sessionServiceIf(sessionServiceIf);
 
 		// create secure channel
 		secureChannel_ = SecureChannelClient::construct(ioService_);

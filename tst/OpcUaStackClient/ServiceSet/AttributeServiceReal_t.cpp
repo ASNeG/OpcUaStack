@@ -10,7 +10,7 @@ using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 class AttributeRealTest
-: public SessionIf
+: public SessionServiceIf
 {
   public:
 	SessionState sessionState_;
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	// init session
 	AttributeRealTest attributeRealTest;
 	SessionService sessionService(&ioThread1);
-	sessionService.sessionIf(&attributeRealTest);
+	sessionService.sessionServiceIf(&attributeRealTest);
 
 	// connect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 	// init session
 	AttributeRealTest attributeRealTest;
 	SessionService sessionService(&ioThread1);
-	sessionService.sessionIf(&attributeRealTest);
+	sessionService.sessionServiceIf(&attributeRealTest);
 
 	// connect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);

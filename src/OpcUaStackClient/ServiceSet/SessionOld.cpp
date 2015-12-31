@@ -41,7 +41,7 @@ namespace OpcUaStackClient
 	, applicatinDescriptionSPtr_(OpcUaStackCore::ApplicationDescription::construct())
 	, createSessionParameter_()
 	, sessionManagerIf_(nullptr)
-	, sessionIf_(nullptr)
+	, sessionServiceIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	, activateSessionResponseSPtr_(OpcUaStackCore::ActivateSessionResponse::construct())
 	, timer_(Timer::construct(ioService))
@@ -74,9 +74,9 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SessionOld::sessionIf(SessionIf *sessionIf)
+	SessionOld::sessionServiceIf(SessionServiceIf *sessionServiceIf)
 	{
-		sessionIf_ = sessionIf;
+		sessionServiceIf_ = sessionServiceIf;
 	}
 
 	void
@@ -215,7 +215,7 @@ namespace OpcUaStackClient
 	bool
 	SessionOld::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		if (sessionIf_ == nullptr) {
+		if (sessionServiceIf_ == nullptr) {
 			Log(Error, "interface sessionIf is empty")
 				.parameter("EndpointUrl", createSessionParameter_.endpointUrl_)
 				.parameter("SessionName", createSessionParameter_.sessionName_)
@@ -601,7 +601,7 @@ namespace OpcUaStackClient
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
 		SessionBase sessionBase;
-		sessionIf_->sessionStateUpdate(sessionBase, SS_Connect);
+		sessionServiceIf_->sessionStateUpdate(sessionBase, SS_Connect);
 	}
 
 	void
@@ -613,7 +613,7 @@ namespace OpcUaStackClient
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
 		SessionBase session;
-		sessionIf_->sessionStateUpdate(session, SS_Disconnect);
+		sessionServiceIf_->sessionStateUpdate(session, SS_Disconnect);
 		pendingQueueClose();
 	}
 
@@ -626,7 +626,7 @@ namespace OpcUaStackClient
 			.parameter("SessionName", createSessionParameter_.sessionName_);
 
 	    SessionBase session;
-	    sessionIf_->sessionStateUpdate(session, SS_Reactivate);
+	    sessionServiceIf_->sessionStateUpdate(session, SS_Reactivate);
 	}
 
 	void

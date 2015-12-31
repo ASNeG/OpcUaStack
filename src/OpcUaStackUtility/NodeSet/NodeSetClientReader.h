@@ -36,7 +36,7 @@ namespace OpcUaStackUtility
 
 	class DLLEXPORT NodeSetClientReader 
 	: public NodeSetBaseParser
-	, public SessionIf
+	, public SessionServiceIf
 	{
 	  public:
 		NodeSetClientReader(void);

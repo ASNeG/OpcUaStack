@@ -33,7 +33,7 @@ namespace OpcUaStackClient
 	SessionServiceConfig::SessionServiceConfig(void)
 	: mode_(SessionService::M_SecureChannelAndSession)
 	, ioThreadName_("Session")
-	, sessionIf_(nullptr)
+	, sessionServiceIf_(nullptr)
 	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>())
 	, session_(constructSPtr<SessionConfig>())
 	{
@@ -127,7 +127,7 @@ namespace OpcUaStackClient
 		// set session configuration
 		sessionService->setConfiguration(
 			sessionServiceConfig.mode_,
-			sessionServiceConfig.sessionIf_,
+			sessionServiceConfig.sessionServiceIf_,
 			sessionServiceConfig.secureChannelClient_,
 			sessionServiceConfig.session_
 		);

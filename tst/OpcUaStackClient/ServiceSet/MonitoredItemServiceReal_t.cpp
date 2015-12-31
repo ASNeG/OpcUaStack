@@ -11,7 +11,7 @@ using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 class MonitoredItemRealTest
-: public SessionIf
+: public SessionServiceIf
 {
   public:
 	SessionState sessionState_;
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	MonitoredItemRealTest monitoredItemRealTest;
 	SessionService sessionService(&ioThread1);
-	sessionService.sessionIf(&monitoredItemRealTest);
+	sessionService.sessionServiceIf(&monitoredItemRealTest);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

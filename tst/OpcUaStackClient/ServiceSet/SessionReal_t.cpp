@@ -10,7 +10,7 @@ using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 class SessionTestReal
-: public SessionIf
+: public SessionServiceIf
 {
   public:
 	SessionState sessionState_;
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 
 	// init session
 	SessionService sessionService(&ioThread);
-	sessionService.sessionIf(&sessionTestReal);
+	sessionService.sessionServiceIf(&sessionTestReal);
 
 	// connect session
 	sessionTestReal.sessionStateUpdate_.condition(1,0);
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 
 	// init session
 	SessionService sessionService(&ioThread);
-	sessionService.sessionIf(&sessionTestReal);
+	sessionService.sessionServiceIf(&sessionTestReal);
 
 	// connect session
 	sessionTestReal.sessionStateUpdate_.condition(1,0);

@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_secureChannel_connect_disconnect
 
 	// set secure channel configuration
 	sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
-	sessionServiceConfig.sessionIf_ = &sessionIfTestHandler;
+	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 
 	// create session
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_discovery_GetEndpoints)
 
 	// set secure channel configuration
 	sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
-	sessionServiceConfig.sessionIf_ = &sessionIfTestHandler;
+	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 
 	// create session

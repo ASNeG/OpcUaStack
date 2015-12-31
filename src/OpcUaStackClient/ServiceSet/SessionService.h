@@ -53,13 +53,13 @@ namespace OpcUaStackClient
 
 		void setConfiguration(
 			Mode mode,
-			SessionIf* sessionIf,
+			SessionServiceIf* sessionServiceIf,
 			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 			SessionConfig::SPtr& sessionConfig
 		);
 
 
-		void sessionIf(SessionIf* sessionIf);
+		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void asyncConnect(void);
 		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
@@ -95,7 +95,7 @@ namespace OpcUaStackClient
 
 
 		IOThread* ioThread_;
-		SessionIf* sessionIf_;
+		SessionServiceIf* sessionServiceIf_;
 		SecureChannel* secureChannel_;
 		bool secureChannelConnect_;
 		bool sessionConnect_;

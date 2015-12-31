@@ -10,7 +10,7 @@ using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
 class SubscriptionRealTest
-: public SessionIf
+: public SessionServiceIf
 {
   public:
 	SessionState sessionState_;
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	// init session
 	SubscriptionRealTest subscriptionRealTest;
 	SessionService sessionService(&ioThread1);
-	sessionService.sessionIf(&subscriptionRealTest);
+	sessionService.sessionServiceIf(&subscriptionRealTest);
 
 	// connect session
 	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	// init session
 	SubscriptionRealTest subscriptionRealTest;
 	SessionService sessionService(&ioThread1);
-	sessionService.sessionIf(&subscriptionRealTest);
+	sessionService.sessionServiceIf(&subscriptionRealTest);
 
 	// connect session
 	subscriptionRealTest.sessionStateUpdate_.condition(1,0);

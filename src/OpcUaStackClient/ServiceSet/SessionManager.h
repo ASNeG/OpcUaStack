@@ -45,7 +45,7 @@ namespace OpcUaStackClient
 		SessionOld::SPtr getNewSession(
 			const std::string& prefixSessionConfig, Config& sessionConfig, 
 			const std::string& prefixSecureChannelConfig, Config& secureChannelConfig, 
-			SessionIf* sessionIf,
+			SessionServiceIf* sessionServiceIf,
 			bool newSecureChannel = false
 		);
 		void deleteSession(void);

@@ -34,7 +34,7 @@ namespace OpcUaStackClient
 
 	SessionService::SessionService(IOThread* ioThread)
 	: mode_(M_SecureChannelAndSession)
-	, sessionIf_(nullptr)
+	, sessionServiceIf_(nullptr)
 	, sessionConfig_()
 	, secureChannelClientConfig_()
 
@@ -70,13 +70,13 @@ namespace OpcUaStackClient
 	void
 	SessionService::setConfiguration(
 		Mode mode,
-		SessionIf* sessionIf,
+		SessionServiceIf* sessionServiceIf,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 		SessionConfig::SPtr& sessionConfig
 	)
 	{
 		mode_ = mode;
-		sessionIf_ = sessionIf;
+		sessionServiceIf_ = sessionServiceIf;
 		secureChannelClientConfig_ = secureChannelClientConfig;
 		sessionConfig_ = sessionConfig;
 	}
@@ -89,15 +89,15 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SessionService::sessionIf(SessionIf* sessionIf)
+	SessionService::sessionServiceIf(SessionServiceIf* sessionServiceIf)
 	{
-		sessionIf_ = sessionIf;
+		sessionServiceIf_ = sessionServiceIf;
 	}
 
 	void
 	SessionService::asyncConnect(void)
 	{
-		assert(sessionIf_ != nullptr);
+		assert(sessionServiceIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
 
 		if (mode_ == M_SecureChannel) {
@@ -251,7 +251,7 @@ namespace OpcUaStackClient
 		    .parameter("AuthenticationToken", authenticationToken_);
 
 		sessionConnect_ = true;
-		if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Connect);
+		if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Connect);
 	}
 
 	void
@@ -307,7 +307,7 @@ namespace OpcUaStackClient
 	{
 		secureChannelConnect_ = true;
 		if (sessionConfig_.get() == nullptr) {
-			if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Connect);
+			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Connect);
 			return;
 		}
 
@@ -320,7 +320,7 @@ namespace OpcUaStackClient
 	{
 		secureChannelConnect_ = false;
 		sessionConnect_ = false;
-		if (sessionIf_) sessionIf_->sessionStateUpdate(*this, SS_Disconnect);
+		if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Disconnect);
 	}
 
 	void

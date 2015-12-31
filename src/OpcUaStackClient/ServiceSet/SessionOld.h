@@ -79,7 +79,7 @@ namespace OpcUaStackClient
 		void handleSecureChannelDisconnect(void);
 
 		OpcUaStackCore::ApplicationDescription::SPtr applicationDescription(void);
-		void sessionIf(SessionIf* sessionIf);
+		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 
 		bool receive(SecureChannelTransaction::SPtr secureChannelTransaction);
@@ -122,7 +122,7 @@ namespace OpcUaStackClient
 		uint32_t requestHandle_;
 		OpcUaStackCore::ApplicationDescription::SPtr applicatinDescriptionSPtr_;
 		CreateSessionParameter createSessionParameter_;
-		SessionIf* sessionIf_;
+		SessionServiceIf* sessionServiceIf_;
 		SessionManagerIf* sessionManagerIf_;
 
 		OpcUaStackCore::CreateSessionResponse::SPtr createSessionResponseSPtr_;

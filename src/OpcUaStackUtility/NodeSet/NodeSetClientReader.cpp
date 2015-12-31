@@ -27,7 +27,7 @@ namespace OpcUaStackUtility
 {
 
 	NodeSetClientReader::NodeSetClientReader(void)
-	: SessionIf()
+	: SessionServiceIf()
 	, client_()
 	, nodeSetNamespace_()
 	, condition_()
