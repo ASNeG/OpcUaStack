@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 
 using namespace OpcUaStackCore;
 

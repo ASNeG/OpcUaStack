@@ -116,7 +116,7 @@ namespace OpcUaStackClient
 	}
 
 	SessionService::SPtr
-	ServiceSetManager::createSession(SessionServiceConfig& sessionServiceConfig)
+	ServiceSetManager::sessionService(SessionServiceConfig& sessionServiceConfig)
 	{
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName_);

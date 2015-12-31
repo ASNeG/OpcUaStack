@@ -19,7 +19,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/DiscoveryService.h"
 
 using namespace OpcUaStackCore;
@@ -63,7 +63,7 @@ namespace OpcUaStackClient
 		~ServiceSetManager(void);
 
 		// session
-		SessionService::SPtr createSession(SessionServiceConfig& sessionServiceConfig);
+		SessionService::SPtr sessionService(SessionServiceConfig& sessionServiceConfig);
 
 		// discovery
 		DiscoveryService::SPtr discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig);
