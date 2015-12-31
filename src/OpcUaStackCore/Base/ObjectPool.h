@@ -31,6 +31,46 @@ namespace OpcUaStackCore
 	  public:
 	};
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// pointer
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	template<typename OBJ>
+	  OBJ* construct(void) {
+		return new OBJ();
+	  }
+
+	template<typename OBJ, typename P1>
+	  OBJ* construct(P1& p1) {
+		return new OBJ(p1);
+	  }
+
+	template<typename OBJ, typename P1>
+	  OBJ* construct(const P1& p1) {
+		return new OBJ(p1);
+	  }
+
+	template<typename OBJ, typename P1>
+	  OBJ* construct(P1* p1) {
+		return new OBJ(p1);
+	  }
+
+	template<typename OBJ, typename P1>
+	  OBJ* construct(const P1* p1) {
+		return new OBJ(p1);
+	  }
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// smart pointer
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	template<typename OBJ>
 	  typename OBJ::SPtr constructSPtr(void) {
 		return typename OBJ::SPtr(new OBJ());
@@ -42,9 +82,21 @@ namespace OpcUaStackCore
 	  }
 
 	template<typename OBJ, typename P1>
+	  typename OBJ::SPtr constructSPtr(const P1& p1) {
+		return typename OBJ::SPtr(new OBJ(p1));
+	  }
+
+	template<typename OBJ, typename P1>
 	  typename OBJ::SPtr constructSPtr(P1* p1) {
 		return typename OBJ::SPtr(new OBJ(p1));
 	  }
+
+	template<typename OBJ, typename P1>
+	  typename OBJ::SPtr constructSPtr(const P1* p1) {
+		return typename OBJ::SPtr(new OBJ(p1));
+	  }
+
+
 
 
 	////////////////////////////////////////////
