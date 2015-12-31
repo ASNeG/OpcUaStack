@@ -9,7 +9,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_)
 	std::cout << "ServiceSetManagerAsyncReal_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_xx)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_secureChannel_connect_disconnect)
 {
 }
 
