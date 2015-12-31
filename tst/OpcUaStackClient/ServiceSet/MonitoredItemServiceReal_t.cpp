@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl(REAL_SERVER_URI);
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(false);
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	SessionConfig::SPtr sessionConfig = construct<SessionConfig>();
+	SessionConfig::SPtr sessionConfig = constructSPtr<SessionConfig>();
 	sessionConfig->sessionName_ = "urn:127.0.0.1:ASNeG.de:ASNeG-Client";
 	sessionConfig->applicationDescription_->applicationUri("urn:127.0.0.1:ASNeG.de:ASNeG-Client");
 	sessionConfig->applicationDescription_->productUri("urn:ASNeG.de:ASNeG-Client");
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ServiceTransactionCreateSubscription::SPtr createTrx = construct<ServiceTransactionCreateSubscription>();
+	ServiceTransactionCreateSubscription::SPtr createTrx = constructSPtr<ServiceTransactionCreateSubscription>();
 	CreateSubscriptionRequest::SPtr createReq = createTrx->request();
 	monitoredItemRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
 	subscriptionManager.send(createTrx);
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = construct<ServiceTransactionCreateMonitoredItems>();
+	ServiceTransactionCreateMonitoredItems::SPtr monCreateTrx = constructSPtr<ServiceTransactionCreateMonitoredItems>();
 	CreateMonitoredItemsRequest::SPtr monCreateReq = monCreateTrx->request();
 	monCreateReq->subscriptionId(subscriptionId);
 
@@ -307,7 +307,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ServiceTransactionDeleteSubscriptions::SPtr deleteTrx = construct<ServiceTransactionDeleteSubscriptions>();
+	ServiceTransactionDeleteSubscriptions::SPtr deleteTrx = constructSPtr<ServiceTransactionDeleteSubscriptions>();
 	DeleteSubscriptionsRequest::SPtr deleteReq = deleteTrx->request();
 	deleteReq->subscriptionIds()->resize(1);
 	deleteReq->subscriptionIds()->set(0, subscriptionId);

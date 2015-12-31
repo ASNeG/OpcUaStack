@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 
 	// server open endpoint
 	secureChannelServerTest.handleEndpointOpen_.condition(1,0);
-	SecureChannelServerConfig::SPtr secureChannelServerConfig = construct<SecureChannelServerConfig>();
+	SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
 	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
 	secureChannelServerConfig->debug(false);
 	secureChannelServerConfig->debugHeader(true);
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	secureChannelServerTest.handleConnect_.condition(1,0);
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://127.0.0.1:48010");
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 
 	// server open endpoint
 	secureChannelServerTest.handleEndpointOpen_.condition(1,0);
-	SecureChannelServerConfig::SPtr secureChannelServerConfig = construct<SecureChannelServerConfig>();
+	SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
 	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48011");
 	secureChannelServerConfig->debug(false);
 	secureChannelServerConfig->debugHeader(true);
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect_with_a_second_channel)
 	BOOST_REQUIRE(secureChannelServerTest.handleEndpointOpen_.waitForCondition(1000) == true);
 
 	// set client endpoint
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opt.tcp://127.0.0.1:48011");
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 
 	// server open endpoint
 	secureChannelServerTest.handleEndpointOpen_.condition(1,0);
-	SecureChannelServerConfig::SPtr secureChannelServerConfig = construct<SecureChannelServerConfig>();
+	SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
 	secureChannelServerConfig->endpointUrl("opt.tcp://127.0.0.1:48012");
 	secureChannelServerConfig->debug(false);
 	secureChannelServerConfig->debugHeader(true);
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	// client connect to server
 	secureChannelClientTest.handleConnect_.condition(1,0);
 	secureChannelServerTest.handleConnect_.condition(1,0);
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl("opc.tcp://127.0.0.1:48012");
 	secureChannelClientConfig->debug(true);
 	secureChannelClientConfig->debugHeader(true);
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_SendRequest_ReceiveResponse_Disconnec
 	getEndpointsRequest.endpointUrl("opc.tcp://127.0.0.1:48012");
 	getEndpointsRequest.opcUaBinaryEncode(os);
 
-	SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
+	SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 	secureChannelTransaction->requestTypeNodeId_. nodeId((uint32_t)OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary);
 	secureChannelTransaction->requestId_ = 123;
 	secureChannelTransaction->osAppend(sb);

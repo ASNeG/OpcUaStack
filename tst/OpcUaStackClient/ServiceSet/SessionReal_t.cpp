@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 	SessionTestReal sessionTestReal;
 
 	// set secure channel configuration
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl(REAL_SERVER_URI);
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
@@ -75,13 +75,13 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 	SessionTestReal sessionTestReal;
 
 	// set secure channel configuration
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl(REAL_SERVER_URI);
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(true);
 
 	// set session configuration
-	SessionConfig::SPtr sessionConfig = construct<SessionConfig>();
+	SessionConfig::SPtr sessionConfig = constructSPtr<SessionConfig>();
 	sessionConfig->sessionName_ = "urn:127.0.0.1:ASNeG.de:ASNeG-Client";
 	sessionConfig->applicationDescription_->applicationUri("urn:127.0.0.1:ASNeG.de:ASNeG-Client");
 	sessionConfig->applicationDescription_->productUri("urn:ASNeG.de:ASNeG-Client");

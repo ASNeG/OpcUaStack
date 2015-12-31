@@ -65,13 +65,13 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	ioThread2.startup();
 
 	// set secure channel configuration
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl(REAL_SERVER_URI);
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(false);
 
 	// set session configuration
-	SessionConfig::SPtr sessionConfig = construct<SessionConfig>();
+	SessionConfig::SPtr sessionConfig = constructSPtr<SessionConfig>();
 	sessionConfig->sessionName_ = "urn:127.0.0.1:ASNeG.de:ASNeG-Client";
 	sessionConfig->applicationDescription_->applicationUri("urn:127.0.0.1:ASNeG.de:ASNeG-Client");
 	sessionConfig->applicationDescription_->productUri("urn:ASNeG.de:ASNeG-Client");
@@ -142,13 +142,13 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 	ioThread2.startup();
 
 	// set secure channel configuration
-	SecureChannelClientConfig::SPtr secureChannelClientConfig = construct<SecureChannelClientConfig>();
+	SecureChannelClientConfig::SPtr secureChannelClientConfig = constructSPtr<SecureChannelClientConfig>();
 	secureChannelClientConfig->endpointUrl(REAL_SERVER_URI);
 	secureChannelClientConfig->debug(false);
 	secureChannelClientConfig->debugHeader(false);
 
 	// set session configuration
-	SessionConfig::SPtr sessionConfig = construct<SessionConfig>();
+	SessionConfig::SPtr sessionConfig = constructSPtr<SessionConfig>();
 	sessionConfig->sessionName_ = "urn:127.0.0.1:ASNeG.de:ASNeG-Client";
 	sessionConfig->applicationDescription_->applicationUri("urn:127.0.0.1:ASNeG.de:ASNeG-Client");
 	sessionConfig->applicationDescription_->productUri("urn:ASNeG.de:ASNeG-Client");
