@@ -34,8 +34,8 @@ namespace OpcUaStackClient
 	: mode_(Session::M_SecureChannelAndSession)
 	, ioThreadName_("Session")
 	, sessionIf_(nullptr)
-	, secureChannelClient_(construct<SecureChannelClientConfig>().get())
-	, session_(construct<SessionConfig>().get())
+	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>().get())
+	, session_(constructSPtr<SessionConfig>().get())
 	{
 	}
 
@@ -70,7 +70,7 @@ namespace OpcUaStackClient
 
 		Log(Debug, "service set manager starts io thread")
 		    .parameter("IOThreadName", ioThreadName);
-		ioThread = construct<IOThread>();
+		ioThread = constructSPtr<IOThread>();
 		ioThread->startup();
 	}
 
@@ -104,7 +104,7 @@ namespace OpcUaStackClient
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName_);
 		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName_);
-		Session::SPtr session = construct<Session>(ioThread.get());
+		Session::SPtr session = constructSPtr<Session>(ioThread.get());
 
 		// set session configuration
 		session->setConfiguration(

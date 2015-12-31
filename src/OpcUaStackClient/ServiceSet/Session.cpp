@@ -168,7 +168,7 @@ namespace OpcUaStackClient
 	void
 	Session::sendCreateSessionRequest(void)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
@@ -211,7 +211,7 @@ namespace OpcUaStackClient
 	void
 	Session::sendActivateSessionRequest(void)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
@@ -257,7 +257,7 @@ namespace OpcUaStackClient
 	void
 	Session::sendCloseSessionRequest(bool deleteSubscriptions)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
@@ -278,7 +278,7 @@ namespace OpcUaStackClient
 	void
 	Session::sendCancelRequest(uint32_t requestHandle)
 	{
-		SecureChannelTransaction::SPtr secureChannelTransaction = construct<SecureChannelTransaction>();
+		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
