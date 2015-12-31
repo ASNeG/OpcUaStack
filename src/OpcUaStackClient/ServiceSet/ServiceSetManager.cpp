@@ -16,12 +16,32 @@
  */
 
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionServiceConfig
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SessionServiceConfig::SessionServiceConfig(void)
+	: mode_(Session::M_SecureChannelAndSession)
+	, ioThreadName_("Session")
+	, sessionIf_(nullptr)
+	, secureChannelClient_(construct<SecureChannelClientConfig>().get())
+	, session_(construct<SessionConfig>().get())
+	{
+	}
+
+	SessionServiceConfig::~SessionServiceConfig(void)
+	{
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -37,15 +57,35 @@ namespace OpcUaStackClient
 
 	ServiceSetManager::~ServiceSetManager(void)
 	{
+		while (ioThreadMap_.size() != 0) {
+			destroyIOThread(ioThreadMap_.begin()->first);
+		}
 	}
 
 	void
-	ServiceSetManager::setIOThread(const std::string ioThreadName, IOThread::SPtr ioThread)
+	ServiceSetManager::createIOThread(const std::string ioThreadName)
+	{
+		IOThread::SPtr ioThread = getIOThread(ioThreadName);
+		if (ioThread.get() != nullptr) return;
+
+		Log(Debug, "service set manager starts io thread")
+		    .parameter("IOThreadName", ioThreadName);
+		ioThread = construct<IOThread>();
+		ioThread->startup();
+	}
+
+	void
+	ServiceSetManager::destroyIOThread(const std::string ioThreadName)
 	{
 		IOThread::Map::iterator it;
 		it = ioThreadMap_.find(ioThreadName);
-		if (it != ioThreadMap_.end()) return;
-		ioThreadMap_.insert(std::make_pair(ioThreadName, ioThread));
+		if (it == ioThreadMap_.end()) return;
+
+		Log(Debug, "service set manager stops io thread")
+		    .parameter("IOThreadName", ioThreadName);
+		IOThread::SPtr ioThread = it->second;
+		ioThread->shutdown();
+		ioThreadMap_.erase(it);
 	}
 
 	IOThread::SPtr
@@ -56,6 +96,25 @@ namespace OpcUaStackClient
 		it = ioThreadMap_.find(ioThreadName);
 		if (it != ioThreadMap_.end()) ioThread = it->second;
 		return ioThread;
+	}
+
+	Session::SPtr
+	ServiceSetManager::createSession(SessionServiceConfig& sessionServiceConfig)
+	{
+		// create new session
+		createIOThread(sessionServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName_);
+		Session::SPtr session = construct<Session>(ioThread.get());
+
+		// set session configuration
+		session->setConfiguration(
+			sessionServiceConfig.mode_,
+			sessionServiceConfig.sessionIf_,
+			sessionServiceConfig.secureChannelClient_,
+			sessionServiceConfig.session_
+		);
+
+		return session;
 	}
 
 }

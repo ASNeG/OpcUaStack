@@ -26,16 +26,35 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	class DLLEXPORT SessionServiceConfig
+	{
+	  public:
+		typedef boost::shared_ptr<SessionServiceConfig> SPtr;
+
+		SessionServiceConfig(void);
+		~SessionServiceConfig(void);
+
+		Session::Mode mode_;
+		std::string ioThreadName_;
+		SessionIf* sessionIf_;
+		SecureChannelClientConfig::SPtr secureChannelClient_;
+		SessionConfig::SPtr session_;
+	};
+
+
 	class DLLEXPORT ServiceSetManager
 	{
 	  public:
 		ServiceSetManager(void);
 		~ServiceSetManager(void);
 
-		void setIOThread(const std::string ioThreadName, IOThread::SPtr ioThread);
-		IOThread::SPtr getIOThread(const std::string ioThreadName);
+		Session::SPtr createSession(SessionServiceConfig& sessionServiceConfig);
 
 	  private:
+		IOThread::SPtr getIOThread(const std::string ioThreadName);
+		void createIOThread(const std::string ioThreadName);
+		void destroyIOThread(const std::string ioThreadName);
+
 		IOThread::Map ioThreadMap_;
 	};
 
