@@ -33,13 +33,15 @@ namespace OpcUaStackClient
 {
 
 	Session::Session(IOThread* ioThread)
-	: ioThread_(ioThread)
+	: mode_(M_SecureChannelAndSession)
 	, sessionIf_(nullptr)
 	, sessionConfig_()
+	, secureChannelClientConfig_()
 
+	, ioThread_(ioThread)
 	, secureChannelConnect_(false)
 	, sessionConnect_(false)
-	, secureChannelClientConfig_()
+
 	, secureChannelClient_(ioThread_)
 	, secureChannel_(nullptr)
 
@@ -65,6 +67,20 @@ namespace OpcUaStackClient
 	{
 	}
 
+	void
+	Session::setConfiguration(
+		Mode mode,
+		SessionIf* sessionIf,
+		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
+		SessionConfig::SPtr& sessionConfig
+	)
+	{
+		mode_ = mode;
+		sessionIf_ = sessionIf;
+		secureChannelClientConfig_ = secureChannelClientConfig;
+		sessionConfig_ = sessionConfig;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -76,6 +92,21 @@ namespace OpcUaStackClient
 	Session::sessionIf(SessionIf* sessionIf)
 	{
 		sessionIf_ = sessionIf;
+	}
+
+	void
+	Session::asyncConnect(void)
+	{
+		assert(sessionIf_ != nullptr);
+		assert(secureChannelClientConfig_.get() != nullptr);
+
+		if (mode_ == M_SecureChannel) {
+			asyncConnect(secureChannelClientConfig_);
+		}
+		else {
+			assert(sessionConfig_.get() != nullptr);
+			asyncConnect(sessionConfig_, secureChannelClientConfig_);
+		}
 	}
 
 	void

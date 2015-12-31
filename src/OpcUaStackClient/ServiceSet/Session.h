@@ -42,10 +42,25 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<Session> SPtr;
 
+		typedef enum
+		{
+			M_SecureChannel,
+			M_SecureChannelAndSession
+		} Mode;
+
 		Session(IOThread* ioThread);
 		~Session(void);
 
+		void setConfiguration(
+			Mode mode,
+			SessionIf* sessionIf,
+			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
+			SessionConfig::SPtr& sessionConfig
+		);
+
+
 		void sessionIf(SessionIf* sessionIf);
+		void asyncConnect(void);
 		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncDisconnect(bool deleteSubscriptions = true);
@@ -74,6 +89,10 @@ namespace OpcUaStackClient
 		void sendCancelRequest(uint32_t requestHandle);
 		void pendingQueueTimeout(Object::SPtr object);
 		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+
+		// configuration
+		Mode mode_;
+
 
 		IOThread* ioThread_;
 		SessionIf* sessionIf_;
