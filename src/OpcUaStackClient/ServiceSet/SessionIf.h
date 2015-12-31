@@ -45,6 +45,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT SessionIfTestHandler
 	: public SessionIf
 	{
+	  public:
 		SessionIfTestHandler(void);
 		virtual ~SessionIfTestHandler(void);
 
