@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include <iostream>
 
 using namespace OpcUaStackCore;

@@ -30,7 +30,7 @@
 #include "OpcUaStackCore/Utility/Timer.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
-#include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackClient/SecureChannel/SecureChannelTransaction.h"
 

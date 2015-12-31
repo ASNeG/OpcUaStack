@@ -16,7 +16,7 @@
  */
 
 
-#include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 
 namespace OpcUaStackClient
 {

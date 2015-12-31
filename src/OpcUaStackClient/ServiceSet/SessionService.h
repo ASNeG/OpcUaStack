@@ -25,7 +25,7 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClientIf.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackClient/ServiceSet/SessionBase.h"
 #include "OpcUaStackClient/ServiceSet/SessionConfig.h"
 

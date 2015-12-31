@@ -24,7 +24,7 @@
 #include "OpcUaStackCore/Base/ConditionBool.h"
 #include "OpcUaStackCore/ServiceSet/ReferenceDescription.h"
 #include "OpcUaStackClient/Client/Client.h"
-#include "OpcUaStackClient/ServiceSet/SessionIf.h"
+#include "OpcUaStackClient/ServiceSet/SessionServiceIf.h"
 #include "OpcUaStackServer/NodeSet/NodeSetBaseParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
