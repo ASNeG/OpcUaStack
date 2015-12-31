@@ -23,8 +23,15 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	ServiceSetManager::ServiceSetManager(IOThread* ioThread)
-	: ioThread_(ioThread)
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ServiceSetManager
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ServiceSetManager::ServiceSetManager(void)
+	: ioThreadMap_()
 	{
 	}
 
@@ -32,11 +39,23 @@ namespace OpcUaStackClient
 	{
 	}
 
-	Session::SPtr
-	ServiceSetManager::createSession(void)
+	void
+	ServiceSetManager::setIOThread(const std::string ioThreadName, IOThread::SPtr ioThread)
 	{
-		Session::SPtr session = construct<Session>(ioThread_);
-		return session;
+		IOThread::Map::iterator it;
+		it = ioThreadMap_.find(ioThreadName);
+		if (it != ioThreadMap_.end()) return;
+		ioThreadMap_.insert(std::make_pair(ioThreadName, ioThread));
+	}
+
+	IOThread::SPtr
+	ServiceSetManager::getIOThread(const std::string ioThreadName)
+	{
+		IOThread::SPtr ioThread;
+		IOThread::Map::iterator it;
+		it = ioThreadMap_.find(ioThreadName);
+		if (it != ioThreadMap_.end()) ioThread = it->second;
+		return ioThread;
 	}
 
 }

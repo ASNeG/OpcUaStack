@@ -29,13 +29,14 @@ namespace OpcUaStackClient
 	class DLLEXPORT ServiceSetManager
 	{
 	  public:
-		ServiceSetManager(IOThread* ioThread);
+		ServiceSetManager(void);
 		~ServiceSetManager(void);
 
-		Session::SPtr createSession(void);
+		void setIOThread(const std::string ioThreadName, IOThread::SPtr ioThread);
+		IOThread::SPtr getIOThread(const std::string ioThreadName);
 
 	  private:
-		IOThread* ioThread_;
+		IOThread::Map ioThreadMap_;
 	};
 
 }

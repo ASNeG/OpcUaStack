@@ -15,6 +15,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<IOThread> SPtr;
+		typedef std::map<std::string, IOThread::SPtr> Map;
 
 		IOThread(void);
 		~IOThread(void);
