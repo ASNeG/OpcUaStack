@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	uint32_t pos;
 	OpcUaString::SPtr localeIdSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	ActivateSessionRequest::SPtr activateSessionRequestSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Response)
 {
 	uint32_t pos;
 	MessageHeader::SPtr messageHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	ActivateSessionResponse::SPtr activateSessionResponseSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;

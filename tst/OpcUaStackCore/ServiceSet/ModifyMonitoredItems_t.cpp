@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Request)
 	MonitoringParameters monitoringParameters;
 	OpcUaString::SPtr opcUaStringSPtr;
 	ModifyMonitoredItemsRequest::SPtr modifyMonitoredItemsRequestSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// stream
 	boost::asio::streambuf sb1;
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Response)
 	boost::posix_time::ptime ptime;
 	
 	// test-time
-	ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	// stream
 	boost::asio::streambuf sb1;

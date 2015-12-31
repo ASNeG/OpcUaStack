@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadEventDetails)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	ReadEventDetails details1, details2;
 
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadRawModifiedDetails)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	ReadRawModifiedDetails details1, details2;
 
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadProcessedDetails)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	OpcUaNodeId::SPtr nodeIdSPtr;
 	ReadProcessedDetails details1, details2;
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(HistoryReadDetails_ReadAtTimeDetails)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	UtcTime utcTime;
 	ReadAtTimeDetails details1, details2;

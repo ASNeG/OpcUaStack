@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(Filter_AggregateResult)
 	std::iostream ios(&sb);
 
 	AggregateFilterResult filter1, filter2; 
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// encode
 	filter1.revisedStartTime(ptime);

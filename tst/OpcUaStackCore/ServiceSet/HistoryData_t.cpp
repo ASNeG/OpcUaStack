@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	OpcUaDataValue::SPtr value;
 	HistoryData data1, data2;
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	OpcUaDataValue::SPtr value;
 	ModificationInfo::SPtr modificationInfo;

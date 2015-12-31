@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	MessageHeader::SPtr messageHeaderSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	GetEndpointsRequest::SPtr getEndpointsRequestSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// stream
 	boost::asio::streambuf sb1;
@@ -98,15 +98,16 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	OpcUaStackCore::dumpHex(ios);
 	
 	std::stringstream ss;
-	ss << "4d 53 47 46 7d 00 00 00  d9 7a 25 09 01 00 00 00"
+	ss << "4d 53 47 46 9a 00 00 00  d9 7a 25 09 01 00 00 00"
 	   << "36 00 00 00 04 00 00 00  01 00 ac 01 04 01 00 0d"
 	   << "44 55 b2 8d 2f b7 4f 86  4f 0a f5 94 5d d8 33 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 ff"
-	   << "ff ff ff e0 93 04 00 00  00 00 0b 00 00 00 45 6e"
-	   << "64 70 6f 69 6e 74 55 72  6c 01 00 00 00 0a 00 00"
-	   << "00 54 65 73 74 53 74 72  69 6e 67 01 00 00 00 0a"
-	   << "00 00 00 54 65 73 74 53  74 72 69 6e 67";
-
+	   << "ff ff ff e0 93 04 00 00  00 00 00 00 3c d4 8b 95"
+	   << "e7 43 d1 01 00 00 00 00  00 00 00 00 ff ff ff ff"
+	   << "00 00 00 00 00 00 00 0b  00 00 00 45 6e 64 70 6f"
+	   << "69 6e 74 55 72 6c 01 00  00 00 0a 00 00 00 54 65"
+	   << "73 74 53 74 72 69 6e 67  01 00 00 00 0a 00 00 00"
+	   << "54 65 73 74 53 74 72 69  6e 67";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -174,7 +175,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	boost::posix_time::ptime ptime;
 	
 	// test-time
-	ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	// stream
 	boost::asio::streambuf sb1;
@@ -256,31 +257,33 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 
 	std::stringstream ss;
 	ss << "4d 53 47 46 8b 01 00 00  d9 7a 25 09 01 00 00 00"
-	   << "36 00 00 00 04 00 00 00  01 00 af 01 00 00 00 00"
-	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
-	   << "00 00 00 00 01 00 00 00  1f 00 00 00 6f 70 74 2e"
-	   << "74 63 70 3a 2f 2f 6c 6f  63 61 6c 68 6f 73 74 3a"
-	   << "34 38 31 2f 30 2e 30 2e  30 2e 30 1e 00 00 00 75"
-	   << "72 6e 3a 6c 6f 63 61 6c  68 6f 73 74 3a 63 6f 6d"
-	   << "70 79 6e 79 3a 55 6e 69  74 74 65 73 74 14 00 00"
-	   << "00 75 72 6e 3a 63 6f 6d  70 61 6e 79 3a 55 6e 69"
-	   << "74 74 65 73 74 02 10 00  00 00 63 6f 6d 70 61 6e"
-	   << "79 20 55 6e 69 74 74 65  73 74 00 00 00 00 ff ff"
-	   << "ff ff ff ff ff ff 01 00  00 00 20 00 00 00 6f 70"
-	   << "74 2e 74 63 70 3a 2f 2f  6c 6f 63 61 6c 68 6f 73"
-	   << "74 3a 34 38 34 31 2f 30  2e 30 2e 30 2e 30 0a 00"
-	   << "00 00 30 31 32 33 34 35  36 37 38 39 01 00 00 00"
-	   << "2f 00 00 00 68 74 74 70  3a 2f 2f 6f 70 63 66 6f"
-	   << "75 6e 64 61 74 69 6f 6e  2e 6f 72 67 2f 55 41 2f"
-	   << "53 65 63 75 72 69 74 79  50 6f 6c 69 63 79 23 4e"
-	   << "6f 6e 65 01 00 00 00 0a  00 00 00 4f 70 63 55 61"
-	   << "53 74 61 63 6b 00 00 00  00 ff ff ff ff ff ff ff"
-	   << "ff ff ff ff ff 41 00 00  00 68 74 74 70 3a 2f 2f"
-	   << "6f 70 63 66 6f 75 6e 64  61 74 69 6f 6e 2e 6f 72"
-	   << "67 2f 55 41 2d 50 72 6f  66 69 6c 65 2f 54 72 61"
-	   << "6e 73 70 6f 72 74 2f 75  61 74 63 70 2d 75 61 73"
-	   << "63 2d 75 61 62 69 6e 61  72 79 00";
-
+       << "4d 53 47 46 a3 01 00 00  d9 7a 25 09 01 00 00 00"
+       << "36 00 00 00 04 00 00 00  01 00 af 01 00 00 00 00"
+       << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
+       << "00 00 00 00 e6 f9 cf bb  f0 43 d1 01 00 00 00 00"
+       << "00 00 00 00 00 00 00 00  00 00 00 00 01 00 00 00"
+       << "1f 00 00 00 6f 70 74 2e  74 63 70 3a 2f 2f 6c 6f"
+       << "63 61 6c 68 6f 73 74 3a  34 38 31 2f 30 2e 30 2e"
+       << "30 2e 30 1e 00 00 00 75  72 6e 3a 6c 6f 63 61 6c"
+       << "68 6f 73 74 3a 63 6f 6d  70 79 6e 79 3a 55 6e 69"
+       << "74 74 65 73 74 14 00 00  00 75 72 6e 3a 63 6f 6d"
+       << "70 61 6e 79 3a 55 6e 69  74 74 65 73 74 02 10 00"
+       << "00 00 63 6f 6d 70 61 6e  79 20 55 6e 69 74 74 65"
+       << "73 74 00 00 00 00 ff ff  ff ff ff ff ff ff 01 00"
+       << "00 00 20 00 00 00 6f 70  74 2e 74 63 70 3a 2f 2f"
+       << "6c 6f 63 61 6c 68 6f 73  74 3a 34 38 34 31 2f 30"
+       << "2e 30 2e 30 2e 30 0a 00  00 00 30 31 32 33 34 35"
+       << "36 37 38 39 01 00 00 00  2f 00 00 00 68 74 74 70"
+       << "3a 2f 2f 6f 70 63 66 6f  75 6e 64 61 74 69 6f 6e"
+       << "2e 6f 72 67 2f 55 41 2f  53 65 63 75 72 69 74 79"
+       << "50 6f 6c 69 63 79 23 4e  6f 6e 65 01 00 00 00 0a"
+       << "00 00 00 4f 70 63 55 61  53 74 61 63 6b 00 00 00"
+       << "00 ff ff ff ff ff ff ff  ff ff ff ff ff 41 00 00"
+       << "00 68 74 74 70 3a 2f 2f  6f 70 63 66 6f 75 6e 64"
+       << "61 74 69 6f 6e 2e 6f 72  67 2f 55 41 2d 50 72 6f"
+       << "66 69 6c 65 2f 54 72 61  6e 73 70 6f 72 74 2f 75"
+       << "61 74 63 70 2d 75 61 73  63 2d 75 61 62 69 6e 61"
+       << "72 79 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader

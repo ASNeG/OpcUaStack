@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(Read_Request)
 	ReadRequest::SPtr readRequestSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// stream
 	boost::asio::streambuf sb1;
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 	boost::posix_time::ptime ptime, ptime1, ptime2;
 	
 	// test-time
-	ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	ptime1 = boost::posix_time::from_iso_string("20020131T100001,123456789");
 	ptime2 = boost::posix_time::from_iso_string("20020131T100001,123456789");
 
@@ -245,8 +245,8 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 	ss << "4d 53 47 46 52 00 00 00  d9 7a 25 09 01 00 00 00"
 	   << "36 00 00 00 04 00 00 00  01 00 7a 02 00 00 00 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
-	   << "00 00 00 00 01 00 00 00  0d 0a 00 80 a0 43 00 9d"
-	   << "eb 76 d9 a9 c1 01 00 9d  eb 76 d9 a9 c1 01 00 00"
+	   << "00 00 00 00 01 00 00 00  0d 0a 00 80 a0 43 00 7d"
+	   << "20 0c 3e aa c1 01 00 7d  20 0c 3e aa c1 01 00 00"
 	   << "00 00";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);

@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 {
 	uint32_t pos;
 	MessageHeader::SPtr messageHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	CloseSessionRequest::SPtr closeSessionRequestSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 {
 	uint32_t pos;
 	MessageHeader::SPtr messageHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	CloseSessionResponse::SPtr closeSessionResponseSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;

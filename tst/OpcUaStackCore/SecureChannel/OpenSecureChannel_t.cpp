@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_)
 BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 {
 	uint32_t pos;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpenSecureChannelRequest::SPtr openSecureChannelRequestSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	SecurityHeader::SPtr securityHeaderSPtr;
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 {
 	uint32_t pos;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpenSecureChannelResponse::SPtr openSecureChannelResponseSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	SecurityHeader::SPtr securityHeaderSPtr;

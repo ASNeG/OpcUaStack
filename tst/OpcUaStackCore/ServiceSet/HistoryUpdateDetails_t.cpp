@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteRawModifiedDetails)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	DeleteRawModifiedDetails details1, details2;
 
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteAtTimeDetails)
 	boost::asio::streambuf sb;
 	std::iostream ios(&sb);
 	
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 
 	UtcTime utcTime;
 	DeleteAtTimeDetails details1, details2;

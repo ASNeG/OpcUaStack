@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 	DataChangeNotification::SPtr dataChangeNotificationSPtr;
 	MonitoredItemNotification::SPtr monitoredItemNotificationSPtr;
 	ExtensibleParameter::SPtr notificationDataSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// stream
 	boost::asio::streambuf sb;
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 	EventField::SPtr eventFieldSPtr;
 	EventFieldList::SPtr eventFieldListSPtr;
 	ExtensibleParameter::SPtr notificationDataSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// stream
 	boost::asio::streambuf sb;
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_StatusChangeNotficiation)
 	StatusChangeNotification::SPtr statusChangeNotificationSPtr;
 	OpcUaStatusCode statusCode;
 	ExtensibleParameter::SPtr notificationDataSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	
 	// stream
 	boost::asio::streambuf sb;

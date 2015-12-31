@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 {
 	RequestHeader::SPtr requestHeader = RequestHeader::construct();
 	MessageHeader::SPtr messageHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	DeleteReferencesRequest::SPtr deleteReferencesRequestSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 {
 	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
 	MessageHeader::SPtr messageHeaderSPtr;
-	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T120000.000000000");
+	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	DeleteReferencesResponse::SPtr deleteReferencesResponseSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
