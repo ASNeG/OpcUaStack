@@ -2,7 +2,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 
 #ifdef REAL_SERVER
 
@@ -46,18 +46,18 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_secure_channel)
 	secureChannelClientConfig->debugHeader(true);
 
 	// init session
-	Session session(&ioThread);
-	session.sessionIf(&sessionTestReal);
+	SessionService sessionService(&ioThread);
+	sessionService.sessionIf(&sessionTestReal);
 
 	// connect session
 	sessionTestReal.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(secureChannelClientConfig);
+	sessionService.asyncConnect(secureChannelClientConfig);
 	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Connect);
 
 	// disconnect session
 	sessionTestReal.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Disconnect);
 
@@ -88,18 +88,18 @@ BOOST_AUTO_TEST_CASE(SessionReal_connect_disconnect_session)
 	sessionConfig->applicationDescription_->applicationName().set("en", "ASNeG-Client");
 
 	// init session
-	Session session(&ioThread);
-	session.sessionIf(&sessionTestReal);
+	SessionService sessionService(&ioThread);
+	sessionService.sessionIf(&sessionTestReal);
 
 	// connect session
 	sessionTestReal.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	sessionService.asyncConnect(sessionConfig, secureChannelClientConfig);
 	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Connect);
 
 	// disconnect session
 	sessionTestReal.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(sessionTestReal.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(sessionTestReal.sessionState_ == SS_Disconnect);
 

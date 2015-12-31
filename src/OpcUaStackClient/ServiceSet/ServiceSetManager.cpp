@@ -31,7 +31,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SessionServiceConfig::SessionServiceConfig(void)
-	: mode_(Session::M_SecureChannelAndSession)
+	: mode_(SessionService::M_SecureChannelAndSession)
 	, ioThreadName_("Session")
 	, sessionIf_(nullptr)
 	, secureChannelClient_(constructSPtr<SecureChannelClientConfig>().get())

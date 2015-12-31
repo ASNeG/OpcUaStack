@@ -34,13 +34,13 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT Session
+	class DLLEXPORT SessionService
 	: public SessionBase
 	, public Component
 	, public SecureChannelClientIf
 	{
 	  public:
-		typedef boost::shared_ptr<Session> SPtr;
+		typedef boost::shared_ptr<SessionService> SPtr;
 
 		typedef enum
 		{
@@ -48,8 +48,8 @@ namespace OpcUaStackClient
 			M_SecureChannelAndSession
 		} Mode;
 
-		Session(IOThread* ioThread);
-		~Session(void);
+		SessionService(IOThread* ioThread);
+		~SessionService(void);
 
 		void setConfiguration(
 			Mode mode,
@@ -113,8 +113,6 @@ namespace OpcUaStackClient
 
 		PendingQueue pendingQueue_;
 	};
-
-	typedef Session SessionService;
 
 }
 

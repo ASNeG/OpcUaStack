@@ -35,7 +35,7 @@ namespace OpcUaStackClient
 		SessionServiceConfig(void);
 		~SessionServiceConfig(void);
 
-		Session::Mode mode_;
+		SessionService::Mode mode_;
 		std::string ioThreadName_;
 		SessionIf* sessionIf_;
 		SecureChannelClientConfig::SPtr secureChannelClient_;

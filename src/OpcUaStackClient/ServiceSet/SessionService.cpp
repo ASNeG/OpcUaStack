@@ -25,14 +25,14 @@
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	Session::Session(IOThread* ioThread)
+	SessionService::SessionService(IOThread* ioThread)
 	: mode_(M_SecureChannelAndSession)
 	, sessionIf_(nullptr)
 	, sessionConfig_()
@@ -59,16 +59,16 @@ namespace OpcUaStackClient
 
 		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
-			boost::bind(&Session::pendingQueueTimeout, this, _1)
+			boost::bind(&SessionService::pendingQueueTimeout, this, _1)
 		);
 	}
 
-	Session::~Session(void)
+	SessionService::~SessionService(void)
 	{
 	}
 
 	void
-	Session::setConfiguration(
+	SessionService::setConfiguration(
 		Mode mode,
 		SessionIf* sessionIf,
 		SecureChannelClientConfig::SPtr& secureChannelClientConfig,
@@ -89,13 +89,13 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Session::sessionIf(SessionIf* sessionIf)
+	SessionService::sessionIf(SessionIf* sessionIf)
 	{
 		sessionIf_ = sessionIf;
 	}
 
 	void
-	Session::asyncConnect(void)
+	SessionService::asyncConnect(void)
 	{
 		assert(sessionIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
@@ -110,14 +110,14 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
+	SessionService::asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		SessionConfig::SPtr sessionConfig;
 		asyncConnect(sessionConfig, secureChannelClientConfig);
 	}
 
 	void
-	Session::asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig)
+	SessionService::asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig)
 	{
 		sessionConfig_ = sessionConfig;
 		secureChannelClientConfig_ = secureChannelClientConfig;
@@ -127,23 +127,23 @@ namespace OpcUaStackClient
 		}
 
 		secureChannelClient_.secureChannelClientIf(this);
-		ioThread_->run(boost::bind(&Session::asyncConnectInternal, this));
+		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this));
 	}
 
 	void
-	Session::asyncConnectInternal(void)
+	SessionService::asyncConnectInternal(void)
 	{
 		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
 	}
 
 	void
-	Session::asyncDisconnect(bool deleteSubscriptions)
+	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
-		ioThread_->run(boost::bind(&Session::asyncDisconnectInternal, this, deleteSubscriptions));
+		ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions));
 	}
 
 	void
-	Session::asyncDisconnectInternal(bool deleteSubscriptions)
+	SessionService::asyncDisconnectInternal(bool deleteSubscriptions)
 	{
 		if (secureChannelConnect_ && sessionConfig_.get() != nullptr) {
 			sendCloseSessionRequest(deleteSubscriptions);
@@ -152,13 +152,13 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::asyncCancel(uint32_t requestHandle)
+	SessionService::asyncCancel(uint32_t requestHandle)
 	{
-		ioThread_->run(boost::bind(&Session::asyncCancelInternal, this, requestHandle));
+		ioThread_->run(boost::bind(&SessionService::asyncCancelInternal, this, requestHandle));
 	}
 
 	void
-	Session::asyncCancelInternal(uint32_t requestHandle)
+	SessionService::asyncCancelInternal(uint32_t requestHandle)
 	{
 		if (secureChannelConnect_) {
 			sendCancelRequest(requestHandle);
@@ -166,7 +166,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sendCreateSessionRequest(void)
+	SessionService::sendCreateSessionRequest(void)
 	{
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CreateSessionRequest_Encoding_DefaultBinary);
@@ -190,7 +190,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionService::recvCreateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionResponse createSessionResponse;
@@ -209,7 +209,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sendActivateSessionRequest(void)
+	SessionService::sendActivateSessionRequest(void)
 	{
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary);
@@ -239,7 +239,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionService::recvActivateSessionResponse(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		ActivateSessionResponse activateSessionResponse;
@@ -255,7 +255,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sendCloseSessionRequest(bool deleteSubscriptions)
+	SessionService::sendCloseSessionRequest(bool deleteSubscriptions)
 	{
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
@@ -276,7 +276,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::sendCancelRequest(uint32_t requestHandle)
+	SessionService::sendCancelRequest(uint32_t requestHandle)
 	{
 		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		secureChannelTransaction->requestTypeNodeId_.nodeId(OpcUaId_CloseSessionRequest_Encoding_DefaultBinary);
@@ -303,7 +303,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Session::handleConnect(SecureChannel* secureChannel)
+	SessionService::handleConnect(SecureChannel* secureChannel)
 	{
 		secureChannelConnect_ = true;
 		if (sessionConfig_.get() == nullptr) {
@@ -316,7 +316,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::handleDisconnect(SecureChannel* secureChannel)
+	SessionService::handleDisconnect(SecureChannel* secureChannel)
 	{
 		secureChannelConnect_ = false;
 		sessionConnect_ = false;
@@ -324,7 +324,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::handleMessageResponse(SecureChannel* secureChannel)
+	SessionService::handleMessageResponse(SecureChannel* secureChannel)
 	{
 		switch (secureChannel->secureChannelTransaction_->responseTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
@@ -351,7 +351,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	Session::receive(Message::SPtr message)
+	SessionService::receive(Message::SPtr message)
 	{
 		uint32_t requestTimeout = requestTimeout_;
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
@@ -393,7 +393,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::pendingQueueTimeout(Object::SPtr object)
+	SessionService::pendingQueueTimeout(Object::SPtr object)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(object);
 
@@ -410,7 +410,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionService::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();

@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
 
 #ifdef REAL_SERVER
@@ -141,12 +141,12 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 
 	// init session
 	SubscriptionRealTest subscriptionRealTest;
-	Session session(&ioThread1);
-	session.sessionIf(&subscriptionRealTest);
+	SessionService sessionService(&ioThread1);
+	sessionService.sessionIf(&subscriptionRealTest);
 
 	// connect session
 	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	sessionService.asyncConnect(sessionConfig, secureChannelClientConfig);
 	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Connect);
 
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServicePublishIf(&subscriptionRealTestSubscriptionManager);
-	subscriptionManager.componentSession(session.component());
+	subscriptionManager.componentSession(sessionService.component());
 
 	// create subscription
 	ServiceTransactionCreateSubscription::SPtr createTrx = constructSPtr<ServiceTransactionCreateSubscription>();
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 
 	// disconnect session
 	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Disconnect);
 
@@ -214,12 +214,12 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 
 	// init session
 	SubscriptionRealTest subscriptionRealTest;
-	Session session(&ioThread1);
-	session.sessionIf(&subscriptionRealTest);
+	SessionService sessionService(&ioThread1);
+	sessionService.sessionIf(&subscriptionRealTest);
 
 	// connect session
 	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	sessionService.asyncConnect(sessionConfig, secureChannelClientConfig);
 	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Connect);
 
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServicePublishIf(&subscriptionRealTestSubscriptionManager);
-	subscriptionManager.componentSession(session.component());
+	subscriptionManager.componentSession(sessionService.component());
 
 	// create subscription
 	ServiceTransactionCreateSubscription::SPtr createTrx = constructSPtr<ServiceTransactionCreateSubscription>();
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 
 	// disconnect session
 	subscriptionRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(subscriptionRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subscriptionRealTest.sessionState_ == SS_Disconnect);
 

@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
 #include "OpcUaStackClient/ServiceSet/MonitoredItemService.h"
 
@@ -200,8 +200,8 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MonitoredItemRealTest monitoredItemRealTest;
-	Session session(&ioThread1);
-	session.sessionIf(&monitoredItemRealTest);
+	SessionService sessionService(&ioThread1);
+	sessionService.sessionIf(&monitoredItemRealTest);
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	monitoredItemRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	sessionService.asyncConnect(sessionConfig, secureChannelClientConfig);
 	BOOST_REQUIRE(monitoredItemRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monitoredItemRealTest.sessionState_ == SS_Connect);
 
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	subscriptionManager.subscriptionManagerIf(&monitoredItemRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&monitoredItemRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServicePublishIf(&monitoredItemRealTestSubscriptionManager);
-	subscriptionManager.componentSession(session.component());
+	subscriptionManager.componentSession(sessionService.component());
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	MonitoredItemService monitoredItemService;
 	monitoredItemService.ioThread(&ioThread3);
 	monitoredItemService.monitoredItemServiceIf(&monitoredItemRealTestSubscriptionManager);
-	monitoredItemService.componentSession(session.component());
+	monitoredItemService.componentSession(sessionService.component());
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -324,7 +324,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	monitoredItemRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(monitoredItemRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(monitoredItemRealTest.sessionState_ == SS_Disconnect);
 

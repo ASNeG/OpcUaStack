@@ -1,7 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackClient/ServiceSet/Session.h"
+#include "OpcUaStackClient/ServiceSet/SessionService.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
 #ifdef REAL_SERVER
@@ -79,12 +79,12 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 
 	// init session
 	AttributeRealTest attributeRealTest;
-	Session session(&ioThread1);
-	session.sessionIf(&attributeRealTest);
+	SessionService sessionService(&ioThread1);
+	sessionService.sessionIf(&attributeRealTest);
 
 	// connect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	sessionService.asyncConnect(sessionConfig, secureChannelClientConfig);
 	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Connect);
 
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	AttributeService attributeService;
 	attributeService.ioThread(&ioThread2);
 	attributeService.attributeServiceIf(&attributeRealServiceHandler);
-	attributeService.componentSession(session.component());
+	attributeService.componentSession(sessionService.component());
 
 	// read value
 	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 
 	// disconnect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Disconnect);
 
@@ -156,12 +156,12 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 
 	// init session
 	AttributeRealTest attributeRealTest;
-	Session session(&ioThread1);
-	session.sessionIf(&attributeRealTest);
+	SessionService sessionService(&ioThread1);
+	sessionService.sessionIf(&attributeRealTest);
 
 	// connect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncConnect(sessionConfig, secureChannelClientConfig);
+	sessionService.asyncConnect(sessionConfig, secureChannelClientConfig);
 	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Connect);
 
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 	AttributeService attributeService;
 	attributeService.ioThread(&ioThread2);
 	attributeService.attributeServiceIf(&attributeRealServiceHandler);
-	attributeService.componentSession(session.component());
+	attributeService.componentSession(sessionService.component());
 
 	// read value
 	ServiceTransactionRead::SPtr readTrx = ServiceTransactionRead::construct();
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 
 	// disconnect session
 	attributeRealTest.sessionStateUpdate_.condition(1,0);
-	session.asyncDisconnect();
+	sessionService.asyncDisconnect();
 	BOOST_REQUIRE(attributeRealTest.sessionStateUpdate_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(attributeRealTest.sessionState_ == SS_Disconnect);
 
