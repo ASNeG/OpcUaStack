@@ -79,6 +79,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	stringSPtr = OpcUaString::construct();
 	stringSPtr->value("TestString");
 
+	getEndpointsRequestSPtr->requestHeader()->time(ptime);
 	getEndpointsRequestSPtr->endpointUrl("EndpointUrl");
 	getEndpointsRequestSPtr->localeIds()->set(stringSPtr);
 	getEndpointsRequestSPtr->profileUris()->set(stringSPtr);
@@ -102,8 +103,8 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	   << "36 00 00 00 04 00 00 00  01 00 ac 01 04 01 00 0d"
 	   << "44 55 b2 8d 2f b7 4f 86  4f 0a f5 94 5d d8 33 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 ff"
-	   << "ff ff ff e0 93 04 00 00  00 00 00 00 3c d4 8b 95"
-	   << "e7 43 d1 01 00 00 00 00  00 00 00 00 ff ff ff ff"
+	   << "ff ff ff e0 93 04 00 00  00 00 00 00 00 00 00 00"
+	   << "00 00 00 00 00 00 00 00  00 00 00 00 ff ff ff ff"
 	   << "00 00 00 00 00 00 00 0b  00 00 00 45 6e 64 70 6f"
 	   << "69 6e 74 55 72 6c 01 00  00 00 0a 00 00 00 54 65"
 	   << "73 74 53 74 72 69 6e 67  01 00 00 00 0a 00 00 00"
@@ -207,6 +208,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 
 	// build 
 	getEndpointsResponseSPtr = GetEndpointsResponse::construct();
+	getEndpointsResponseSPtr->responseHeader()->time(ptime);
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -256,11 +258,10 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 8b 01 00 00  d9 7a 25 09 01 00 00 00"
-       << "4d 53 47 46 a3 01 00 00  d9 7a 25 09 01 00 00 00"
+	ss << "4d 53 47 46 a3 01 00 00  d9 7a 25 09 01 00 00 00"
        << "36 00 00 00 04 00 00 00  01 00 af 01 00 00 00 00"
        << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
-       << "00 00 00 00 e6 f9 cf bb  f0 43 d1 01 00 00 00 00"
+       << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
        << "00 00 00 00 00 00 00 00  00 00 00 00 01 00 00 00"
        << "1f 00 00 00 6f 70 74 2e  74 63 70 3a 2f 2f 6c 6f"
        << "63 61 6c 68 6f 73 74 3a  34 38 31 2f 30 2e 30 2e"
