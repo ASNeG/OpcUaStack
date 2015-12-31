@@ -46,15 +46,6 @@ namespace OpcUaStackCore
 		return typename OBJ::SPtr(new OBJ(p1));
 	  }
 
-#if 0
-	template<typename OBJ>
-	  bool construct(typename OBJ::SPtr& object) {
-		return true;
-	  }
-#endif
-
-
-
 	////////////////////////////////////////////
 	////////////////////////////////////////////
 	template<typename OBJ>
