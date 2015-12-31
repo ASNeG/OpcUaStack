@@ -14,39 +14,28 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
-#ifndef __OpcUaStackClient_ServiceSetManager_h__
-#define __OpcUaStackClient_ServiceSetManager_h__
+#ifndef __OpcUaStackClient_DiscoveryServiceConfig_h__
+#define __OpcUaStackClient_DiscoveryServiceConfig_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackClient/ServiceSet/SessionService.h"
-#include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/DiscoveryService.h"
-#include "OpcUaStackClient/ServiceSet/DiscoveryServiceConfig.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT ServiceSetManager
+	class DLLEXPORT DiscoveryServiceConfig
 	{
 	  public:
-		ServiceSetManager(void);
-		~ServiceSetManager(void);
+		typedef boost::shared_ptr<DiscoveryServiceConfig> SPtr;
 
-		// session
-		SessionService::SPtr sessionService(SessionServiceConfig& sessionServiceConfig);
+		DiscoveryServiceConfig(void);
+		~DiscoveryServiceConfig(void);
 
-		// discovery
-		DiscoveryService::SPtr discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig);
-
-	  private:
-		IOThread::SPtr getIOThread(const std::string ioThreadName);
-		void createIOThread(const std::string ioThreadName);
-		void destroyIOThread(const std::string ioThreadName);
-
-		IOThread::Map ioThreadMap_;
+		std::string ioThreadName_;
+		DiscoveryServiceIf* discoveryServiceIf_;
 	};
 
 }
