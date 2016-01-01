@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	req->readValueIdArray()->set(readValueIdSPtr);
 
 	attributeRealServiceHandler.attributeServiceReadResponseCondition_.condition(1, 0);
-	attributeService.send(readTrx);
+	attributeService.asyncSend(readTrx);
 	BOOST_REQUIRE(attributeRealServiceHandler.attributeServiceReadResponseCondition_.waitForCondition(1000) == true);
 
 	BOOST_REQUIRE(attributeRealServiceHandler.serviceTransactionRead_->responseHeader()->serviceResult() == 0);

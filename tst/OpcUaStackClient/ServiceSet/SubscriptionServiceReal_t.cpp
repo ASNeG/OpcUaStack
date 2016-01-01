@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	ServiceTransactionCreateSubscription::SPtr createTrx = constructSPtr<ServiceTransactionCreateSubscription>();
 	CreateSubscriptionRequest::SPtr createReq = createTrx->request();
 	subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
-	subscriptionManager.send(createTrx);
+	subscriptionManager.asyncSend(createTrx);
 	BOOST_REQUIRE(subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(createTrx->responseHeader()->serviceResult() == 0);
 	CreateSubscriptionResponse::SPtr createRes = createTrx->response();
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 	deleteReq->subscriptionIds()->resize(1);
 	deleteReq->subscriptionIds()->set(0, subscriptionId);
 	subscriptionRealTestSubscriptionManager.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
-	subscriptionManager.send(deleteTrx);
+	subscriptionManager.asyncSend(deleteTrx);
 	BOOST_REQUIRE(subscriptionRealTestSubscriptionManager.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(deleteTrx->responseHeader()->serviceResult() == 0);
 
@@ -236,14 +236,14 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	ServiceTransactionCreateSubscription::SPtr createTrx = constructSPtr<ServiceTransactionCreateSubscription>();
 	CreateSubscriptionRequest::SPtr createReq = createTrx->request();
 	subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
-	subscriptionManager.send(createTrx);
+	subscriptionManager.asyncSend(createTrx);
 	BOOST_REQUIRE(subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(createTrx->responseHeader()->serviceResult() == 0);
 	CreateSubscriptionResponse::SPtr createRes = createTrx->response();
 	uint32_t subscriptionId1 = createRes->subscriptionId();
 
 	subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
-	subscriptionManager.send(createTrx);
+	subscriptionManager.asyncSend(createTrx);
 	BOOST_REQUIRE(subscriptionRealTestSubscriptionManager.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(createTrx->responseHeader()->serviceResult() == 0);
 	createRes = createTrx->response();
@@ -256,7 +256,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 	deleteReq->subscriptionIds()->set(0, subscriptionId1);
 	deleteReq->subscriptionIds()->set(1, subscriptionId2);
 	subscriptionRealTestSubscriptionManager.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
-	subscriptionManager.send(deleteTrx);
+	subscriptionManager.asyncSend(deleteTrx);
 	BOOST_REQUIRE(subscriptionRealTestSubscriptionManager.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(deleteTrx->responseHeader()->serviceResult() == 0);
 

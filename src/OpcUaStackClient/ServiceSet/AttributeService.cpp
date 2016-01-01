@@ -62,7 +62,7 @@ namespace OpcUaStackClient
 	{
 		serviceTransactionRead->sync(true);
 		serviceTransactionRead->conditionBool().conditionInit();
-		send(serviceTransactionRead);
+		asyncSend(serviceTransactionRead);
 		serviceTransactionRead->conditionBool().waitForCondition();
 	}
 
@@ -78,7 +78,7 @@ namespace OpcUaStackClient
 	{
 		serviceTransactionWrite->sync(true);
 		serviceTransactionWrite->conditionBool().conditionInit();
-		send(serviceTransactionWrite);
+		asyncSend(serviceTransactionWrite);
 		serviceTransactionWrite->conditionBool().waitForCondition();
 	}
 
@@ -94,7 +94,7 @@ namespace OpcUaStackClient
 	{
 		serviceTransactionHistoryRead->sync(true);
 		serviceTransactionHistoryRead->conditionBool().conditionInit();
-		send(serviceTransactionHistoryRead);
+		asyncSend(serviceTransactionHistoryRead);
 		serviceTransactionHistoryRead->conditionBool().waitForCondition();
 	}
 
@@ -110,7 +110,7 @@ namespace OpcUaStackClient
 	{
 		serviceTransactionHistoryUpdate->sync(true);
 		serviceTransactionHistoryUpdate->conditionBool().conditionInit();
-		send(serviceTransactionHistoryUpdate);
+		asyncSend(serviceTransactionHistoryUpdate);
 		serviceTransactionHistoryUpdate->conditionBool().waitForCondition();
 	}
 

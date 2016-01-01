@@ -52,112 +52,112 @@ namespace OpcUaStackClient
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	SubscriptionService::syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->sync(true);
 		serviceTransactionCreateSubscription->conditionBool().conditionInit();
-		send(serviceTransactionCreateSubscription);
+		asyncSend(serviceTransactionCreateSubscription);
 		serviceTransactionCreateSubscription->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
+	SubscriptionService::asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
 		serviceTransactionCreateSubscription->componentService(this);
 		componentSession_->sendAsync(serviceTransactionCreateSubscription);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	SubscriptionService::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->sync(true);
 		serviceTransactionModifySubscription->conditionBool().conditionInit();
-		send(serviceTransactionModifySubscription);
+		asyncSend(serviceTransactionModifySubscription);
 		serviceTransactionModifySubscription->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
+	SubscriptionService::asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
 		serviceTransactionModifySubscription->componentService(this);
 		componentSession_->sendAsync(serviceTransactionModifySubscription);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	SubscriptionService::syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->sync(true);
 		serviceTransactionTransferSubscriptions->conditionBool().conditionInit();
-		send(serviceTransactionTransferSubscriptions);
+		asyncSend(serviceTransactionTransferSubscriptions);
 		serviceTransactionTransferSubscriptions->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
+	SubscriptionService::asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
 		serviceTransactionTransferSubscriptions->componentService(this);
 		componentSession_->sendAsync(serviceTransactionTransferSubscriptions);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	SubscriptionService::syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->sync(true);
 		serviceTransactionDeleteSubscriptions->conditionBool().conditionInit();
-		send(serviceTransactionDeleteSubscriptions);
+		asyncSend(serviceTransactionDeleteSubscriptions);
 		serviceTransactionDeleteSubscriptions->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
+	SubscriptionService::asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		serviceTransactionDeleteSubscriptions->componentService(this);
 		componentSession_->sendAsync(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	SubscriptionService::syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->sync(true);
 		serviceTransactionSetPublishingMode->conditionBool().conditionInit();
-		send(serviceTransactionSetPublishingMode);
+		asyncSend(serviceTransactionSetPublishingMode);
 		serviceTransactionSetPublishingMode->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
+	SubscriptionService::asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
 		serviceTransactionSetPublishingMode->componentService(this);
 		componentSession_->sendAsync(serviceTransactionSetPublishingMode);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	SubscriptionService::syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->sync(true);
 		serviceTransactionPublish->conditionBool().conditionInit();
-		send(serviceTransactionPublish);
+		asyncSend(serviceTransactionPublish);
 		serviceTransactionPublish->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
+	SubscriptionService::asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
 		serviceTransactionPublish->componentService(this);
 		componentSession_->sendAsync(serviceTransactionPublish);
 	}
 
 	void
-	SubscriptionService::sendSync(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	SubscriptionService::syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->sync(true);
 		serviceTransactionRepublish->conditionBool().conditionInit();
-		send(serviceTransactionRepublish);
+		asyncSend(serviceTransactionRepublish);
 		serviceTransactionRepublish->conditionBool().waitForCondition();
 	}
 
 	void
-	SubscriptionService::send(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
+	SubscriptionService::asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
 		serviceTransactionRepublish->componentService(this);
 		componentSession_->sendAsync(serviceTransactionRepublish);
