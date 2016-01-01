@@ -74,7 +74,9 @@ namespace OpcUaStackClient
 	}
 
 	SessionService::SPtr
-	ServiceSetManager::sessionService(SessionServiceConfig& sessionServiceConfig)
+	ServiceSetManager::sessionService(
+		SessionServiceConfig& sessionServiceConfig
+	)
 	{
 		// create new session
 		createIOThread(sessionServiceConfig.ioThreadName_);
@@ -93,7 +95,16 @@ namespace OpcUaStackClient
 	}
 
 	DiscoveryService::SPtr
-	ServiceSetManager::discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig)
+	ServiceSetManager::discoveryService(SessionService::SPtr& sessionService)
+	{
+		DiscoveryServiceConfig discoveryServiceConfig;
+		return discoveryService(sessionService, discoveryServiceConfig);
+	}
+
+	DiscoveryService::SPtr
+	ServiceSetManager::discoveryService(
+		SessionService::SPtr& sessionService,
+		DiscoveryServiceConfig& discoveryServiceConfig)
 	{
 		// create discovery service
 		createIOThread(discoveryServiceConfig.ioThreadName_);

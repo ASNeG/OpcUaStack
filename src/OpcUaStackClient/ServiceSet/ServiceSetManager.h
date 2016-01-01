@@ -36,10 +36,18 @@ namespace OpcUaStackClient
 		~ServiceSetManager(void);
 
 		// session
-		SessionService::SPtr sessionService(SessionServiceConfig& sessionServiceConfig);
+		SessionService::SPtr sessionService(
+			SessionServiceConfig& sessionServiceConfig
+		);
 
 		// discovery
-		DiscoveryService::SPtr discoveryService(SessionService::SPtr& sessionService, DiscoveryServiceConfig& discoveryServiceConfig);
+		DiscoveryService::SPtr discoveryService(
+			SessionService::SPtr& sessionService
+		);
+		DiscoveryService::SPtr discoveryService(
+			SessionService::SPtr& sessionService,
+			DiscoveryServiceConfig& discoveryServiceConfig
+		);
 
 	  private:
 		IOThread::SPtr getIOThread(const std::string ioThreadName);

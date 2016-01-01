@@ -5,7 +5,7 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Discovery_)
+BOOST_AUTO_TEST_SUITE()
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_)
 {
@@ -40,8 +40,20 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints
 	DiscoveryServiceConfig discoveryServiceConfig;
 	discoveryServiceConfig.discoveryServiceIf_ = &discoveryServiceIfTestHandler;
 	discoveryService = serviceSetManager.discoveryService(sessionService, discoveryServiceConfig);
+	BOOST_REQUIRE(discoveryService.get() != nullptr);
 
-	// send GetEndpointsRequest
+	// create and send GetEndpointsRequest
+	ServiceTransactionGetEndpoints::SPtr trx;
+	trx = constructSPtr<ServiceTransactionGetEndpoints>();
+	GetEndpointsRequest::SPtr req = trx->request();
+	req->endpointUrl(REAL_SERVER_URI);
+
+	discoveryServiceIfTestHandler.discoveryServiceGetEndpointsResponse_.condition(1,0);
+	discoveryService->asyncSend(trx);
+	discoveryServiceIfTestHandler.discoveryServiceGetEndpointsResponse_.waitForCondition(1000);
+	GetEndpointsResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->endpoints()->size() > 0);
 
 	// disconnect secure channel
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);

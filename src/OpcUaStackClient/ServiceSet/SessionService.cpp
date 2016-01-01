@@ -357,15 +357,26 @@ namespace OpcUaStackClient
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		serviceTransaction->calcRequestTimeout(requestTimeout);
 
+		uint32_t requestType = serviceTransaction->nodeTypeRequest().nodeId<uint32_t>();
 		uint32_t requestId = ++requestId_;
 		Log(Debug, "session send request")
 		    .parameter("RequestId", requestId)
-		    .parameter("SessionName", sessionConfig_->sessionName_)
+		    .parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
 		    .parameter("AuthenticationToken", authenticationToken_)
-		    .parameter("RequestType", OpcUaIdMap::longString(serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()));
+		    .parameter("RequestType", OpcUaIdMap::longString(requestType));
 
-		if (!sessionConnect_) {
+		if (!sessionConnect_ &&
+			requestType != OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary &&
+			requestType != OpcUaId_FindServersRequest_Encoding_DefaultBinary
+		) {
 			serviceTransaction->statusCode(BadSessionClosed);
+			Component* componentService = serviceTransaction->componentService();
+			componentService->sendAsync(serviceTransaction);
+			return;
+		}
+
+		if (!secureChannelConnect_) {
+			serviceTransaction->statusCode(BadSecureChannelClosed);
 			Component* componentService = serviceTransaction->componentService();
 			componentService->sendAsync(serviceTransaction);
 			return;
@@ -399,7 +410,7 @@ namespace OpcUaStackClient
 
 		Log(Debug, "session send request timeout")
 		    .parameter("RequestId", serviceTransaction->requestId_)
-	    	.parameter("SessionName", sessionConfig_->sessionName_)
+	    	.parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
 			.parameter("RequestHandle", serviceTransaction->transactionId());
@@ -420,7 +431,7 @@ namespace OpcUaStackClient
 		if (objectSPtr.get() == nullptr) {
 			Log(Error, "session pending queue error, because element not exist")
 				.parameter("RequestId", secureChannelTransaction->requestId_)
-				.parameter("SessionName", sessionConfig_->sessionName_)
+				.parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
 				.parameter("AuthenticationToken", authenticationToken_)
 				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_)
 				.parameter("RequestHandle", responseHeader->requestHandle());
@@ -435,7 +446,7 @@ namespace OpcUaStackClient
 
 		Log(Debug, "session receive response")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
-	    	.parameter("SessionName", sessionConfig_->sessionName_)
+	    	.parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("ResponseType", OpcUaIdMap::longString(serviceTransaction->nodeTypeResponse().nodeId<uint32_t>()))
 			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
