@@ -65,7 +65,7 @@ namespace OpcUaStackClient
 		req->timestampsToReturn(2);
 		req->readValueIdArray()->set(readValueIdSPtr);
 
-		attributeService.sendSync(readTrx);
+		attributeService.syncSend(readTrx);
 
 		//
 		// check response

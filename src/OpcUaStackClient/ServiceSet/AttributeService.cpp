@@ -46,7 +46,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::sendSync(ServiceTransactionRead::SPtr serviceTransactionRead)
+	AttributeService::syncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 		serviceTransactionRead->sync(true);
 		serviceTransactionRead->conditionBool().conditionInit();
@@ -55,14 +55,14 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::send(ServiceTransactionRead::SPtr serviceTransactionRead)
+	AttributeService::asyncSend(ServiceTransactionRead::SPtr serviceTransactionRead)
 	{
 		serviceTransactionRead->componentService(this); 
 		componentSession_->sendAsync(serviceTransactionRead);
 	}
 
 	void 
-	AttributeService::sendSync(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	AttributeService::syncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
 		serviceTransactionWrite->sync(true);
 		serviceTransactionWrite->conditionBool().conditionInit();
@@ -71,14 +71,14 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::send(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	AttributeService::asyncSend(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
 		serviceTransactionWrite->componentService(this); 
 		componentSession_->sendAsync(serviceTransactionWrite);
 	}
 
 	void 
-	AttributeService::sendSync(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
+	AttributeService::syncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 		serviceTransactionHistoryRead->sync(true);
 		serviceTransactionHistoryRead->conditionBool().conditionInit();
@@ -87,14 +87,14 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::send(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
+	AttributeService::asyncSend(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 		serviceTransactionHistoryRead->componentService(this); 
 		componentSession_->sendAsync(serviceTransactionHistoryRead);
 	}
 
 	void 
-	AttributeService::sendSync(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
+	AttributeService::syncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
 		serviceTransactionHistoryUpdate->sync(true);
 		serviceTransactionHistoryUpdate->conditionBool().conditionInit();
@@ -103,7 +103,7 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	AttributeService::send(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
+	AttributeService::asyncSend(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
 		serviceTransactionHistoryUpdate->componentService(this); 
 		componentSession_->sendAsync(serviceTransactionHistoryUpdate);

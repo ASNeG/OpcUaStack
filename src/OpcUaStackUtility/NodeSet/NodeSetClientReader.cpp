@@ -509,7 +509,7 @@ namespace OpcUaStackUtility
 			req->readValueIdArray()->push_back(readValueIdSPtr);
 		}
 
-		attributeService.sendSync(readTrx);
+		attributeService.syncSend(readTrx);
 
 		//
 		// check response

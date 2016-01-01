@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 
 	req->readValueIdArray()->set(readValueIdSPtr);
 
-	attributeService.sendSync(readTrx);
+	attributeService.syncSend(readTrx);
 
 	BOOST_REQUIRE(readTrx->responseHeader()->serviceResult() == 0);
 	ReadResponse::SPtr readResponse = readTrx->response();
