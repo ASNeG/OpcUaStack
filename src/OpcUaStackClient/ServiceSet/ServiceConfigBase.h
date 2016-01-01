@@ -14,32 +14,28 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
+#ifndef __OpcUaStackClient_ServiceConfigBase_h__
+#define __OpcUaStackClient_ServiceConfigBase_h__
 
-
-#include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/ServiceSet/AttributeServiceConfig.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// AttributeServiceConfig
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	AttributeServiceConfig::AttributeServiceConfig(void)
-	: ServiceConfigBase("Attribute")
-	, attributeServiceIf_(nullptr)
+	class DLLEXPORT ServiceConfigBase
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<ServiceConfigBase> SPtr;
 
-	AttributeServiceConfig::~AttributeServiceConfig(void)
-	{
-	}
+		ServiceConfigBase(const std::string& ioThreadName);
+		virtual ~ServiceConfigBase(void);
+
+		std::string ioThreadName_;
+	};
 
 }
 
+#endif

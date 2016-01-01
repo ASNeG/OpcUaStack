@@ -17,7 +17,7 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/ServiceSet/AttributeServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
 using namespace OpcUaStackCore;
 
@@ -27,17 +27,16 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// AttributeServiceConfig
+	// ServiceConfigBase
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	AttributeServiceConfig::AttributeServiceConfig(void)
-	: ServiceConfigBase("Attribute")
-	, attributeServiceIf_(nullptr)
+	ServiceConfigBase::ServiceConfigBase(const std::string& ioThreadName)
+	: ioThreadName_(ioThreadName)
 	{
 	}
 
-	AttributeServiceConfig::~AttributeServiceConfig(void)
+	ServiceConfigBase::~ServiceConfigBase(void)
 	{
 	}
 

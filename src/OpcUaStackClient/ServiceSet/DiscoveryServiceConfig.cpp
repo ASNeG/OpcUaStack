@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DiscoveryServiceConfig::DiscoveryServiceConfig(void)
-	: ioThreadName_("Discovery")
+	: ServiceConfigBase("Discovery")
 	, discoveryServiceIf_(nullptr)
 	{
 	}

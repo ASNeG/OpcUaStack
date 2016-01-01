@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/DiscoveryService.h"
+#include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
 using namespace OpcUaStackCore;
 
@@ -27,14 +28,14 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT DiscoveryServiceConfig
+	: public ServiceConfigBase
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryServiceConfig> SPtr;
 
 		DiscoveryServiceConfig(void);
-		~DiscoveryServiceConfig(void);
+		virtual ~DiscoveryServiceConfig(void);
 
-		std::string ioThreadName_;
 		DiscoveryServiceIf* discoveryServiceIf_;
 	};
 

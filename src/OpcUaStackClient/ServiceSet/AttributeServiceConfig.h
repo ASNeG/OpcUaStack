@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
+#include "OpcUaStackClient/ServiceSet/ServiceConfigBase.h"
 
 using namespace OpcUaStackCore;
 
@@ -27,6 +28,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT AttributeServiceConfig
+	: public ServiceConfigBase
 	{
 	  public:
 		typedef boost::shared_ptr<AttributeServiceConfig> SPtr;
@@ -34,7 +36,6 @@ namespace OpcUaStackClient
 		AttributeServiceConfig(void);
 		~AttributeServiceConfig(void);
 
-		std::string ioThreadName_;
 		AttributeServiceIf* attributeServiceIf_;
 	};
 
