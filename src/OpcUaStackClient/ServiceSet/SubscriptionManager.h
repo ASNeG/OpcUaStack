@@ -20,7 +20,7 @@
 
 #include <set>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionManagerIf.h"
 
 namespace OpcUaStackClient

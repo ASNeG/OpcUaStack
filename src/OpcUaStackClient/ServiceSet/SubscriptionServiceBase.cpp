@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
 
 using namespace OpcUaStackCore;
 
