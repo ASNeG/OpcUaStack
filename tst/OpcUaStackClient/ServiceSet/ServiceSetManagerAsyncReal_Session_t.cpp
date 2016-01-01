@@ -5,14 +5,14 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Discovery_)
+BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Session_Discovery_)
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_Discovery_)
 {
-	std::cout << "ServiceSetManagerAsyncReal_Discovery_t" << std::endl;
+	std::cout << "ServiceSetManagerAsyncReal_Session_Discovery_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_Discovery_discovery_GetEndpoints)
 {
 	DiscoveryServiceIfTestHandler discoveryServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
