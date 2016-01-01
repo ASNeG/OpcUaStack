@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription)
 
 	// init subscription manager
 	SubscriptionRealTestSubscriptionManager subscriptionRealTestSubscriptionManager;
-	SubscriptionManager subscriptionManager;
+	SubscriptionService subscriptionManager;
 	subscriptionManager.ioThread(&ioThread2);
 	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(SubscriptionReal_async_create_delete_subscription_2_subscri
 
 	// init subscription manager
 	SubscriptionRealTestSubscriptionManager subscriptionRealTestSubscriptionManager;
-	SubscriptionManager subscriptionManager;
+	SubscriptionService subscriptionManager;
 	subscriptionManager.ioThread(&ioThread2);
 	subscriptionManager.subscriptionManagerIf(&subscriptionRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&subscriptionRealTestSubscriptionManager);

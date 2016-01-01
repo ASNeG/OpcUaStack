@@ -26,13 +26,13 @@
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT SubscriptionManager
+	class DLLEXPORT SubscriptionService
 	: public SubscriptionServiceBase
 	, public SubscriptionServicePublishIf
 	{
 	  public:
-		SubscriptionManager(void);
-		virtual ~SubscriptionManager(void);
+		SubscriptionService(void);
+		virtual ~SubscriptionService(void);
 
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
