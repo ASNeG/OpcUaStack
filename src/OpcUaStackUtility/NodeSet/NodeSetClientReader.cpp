@@ -125,10 +125,12 @@ namespace OpcUaStackUtility
 	bool 
 	NodeSetClientReader::readNamespaceArray(void)
 	{
+#if 0 // FIXME:
 		NamespaceArray namespaceArray(session_);
 		if (!namespaceArray.readSync()) return false;
 		nodeSetNamespace_.clear();
 		nodeSetNamespace_.decodeNamespaceUris(namespaceArray.namespaceVec());
+#endif
 		return true;
 	}
 
@@ -488,6 +490,7 @@ namespace OpcUaStackUtility
 		std::vector<AttributeId>& attributeIdVec, 
 		std::vector<OpcUaDataValue::SPtr>& dataValueVec)
 	{
+#if 0 // FIXME:
 		AttributeService attributeService;
 		attributeService.componentSession(session_->component());
 
@@ -561,7 +564,7 @@ namespace OpcUaStackUtility
 			}
 			dataValueVec.push_back(dataValue);
 		}
-
+#endif
 		return true;
 	}
 

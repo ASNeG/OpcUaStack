@@ -23,14 +23,26 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	AttributeService::AttributeService(void)
-	: componentSession_(nullptr)
+	AttributeService::AttributeService(IOThread* ioThread)
+	: Component()
+	, componentSession_(nullptr)
 	, attributeServiceIf_(nullptr)
 	{
+		Component::ioThread(ioThread);
 	}
 
 	AttributeService::~AttributeService(void)
 	{
+	}
+
+	void
+	AttributeService::setConfiguration(
+		Component* componentSession,
+		AttributeServiceIf* attributeServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		attributeServiceIf_ = attributeServiceIf;
 	}
 
 	void 

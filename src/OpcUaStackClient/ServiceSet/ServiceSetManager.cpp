@@ -120,4 +120,30 @@ namespace OpcUaStackClient
 		return discoveryService;
 	}
 
+	AttributeService::SPtr
+	ServiceSetManager::attributeService(SessionService::SPtr& sessionService)
+	{
+		AttributeServiceConfig attributeServiceConfig;
+		return attributeService(sessionService, attributeServiceConfig);
+	}
+
+	AttributeService::SPtr
+	ServiceSetManager::attributeService(
+		SessionService::SPtr& sessionService,
+		AttributeServiceConfig& attributeServiceConfig)
+	{
+		// create attribute service
+		createIOThread(attributeServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(attributeServiceConfig.ioThreadName_);
+		AttributeService::SPtr attributeService = constructSPtr<AttributeService>(ioThread.get());
+
+		// set attribute configuration
+		attributeService->setConfiguration(
+			sessionService->component(),
+			attributeServiceConfig.attributeServiceIf_
+		);
+
+		return attributeService;
+	}
+
 }

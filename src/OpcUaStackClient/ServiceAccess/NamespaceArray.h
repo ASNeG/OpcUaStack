@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 		~NamespaceArray(void);
 
 		void session(SessionOld::SPtr session);
-		bool readSync(void);
+		bool readSync(IOThread* ioThread);
 		std::vector<std::string>& namespaceVec(void);
 
 	  private:

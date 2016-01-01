@@ -28,14 +28,19 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient 
 {
 
-	class DLLEXPORT AttributeService : public Component
+	class DLLEXPORT AttributeService
+	: public Component
 	{
 	  public:
-		boost::shared_ptr<AttributeService> SPtr;
+		typedef boost::shared_ptr<AttributeService> SPtr;
 
-		AttributeService(void);
+		AttributeService(IOThread* ioThread);
 		~AttributeService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			AttributeServiceIf* attributeServiceIf
+		);
 		void componentSession(Component* componentSession);
 		void attributeServiceIf(AttributeServiceIf* attributeServiceIf);
 

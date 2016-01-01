@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_SessionIf_h__
-#define __OpcUaStackClient_SessionIf_h__
+#ifndef __OpcUaStackClient_DiscoveryServiceIf_h__
+#define __OpcUaStackClient_DiscoveryServiceIf_h__
 
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"

@@ -91,8 +91,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_async_read)
 	// init attribute service
 
 	AttributeRealServiceHandler attributeRealServiceHandler;
-	AttributeService attributeService;
-	attributeService.ioThread(&ioThread2);
+	AttributeService attributeService(&ioThread2);
 	attributeService.attributeServiceIf(&attributeRealServiceHandler);
 	attributeService.componentSession(sessionService.component());
 
@@ -167,8 +166,7 @@ BOOST_AUTO_TEST_CASE(AttributeReal_sync_read)
 
 	// init attribute service
 	AttributeRealServiceHandler attributeRealServiceHandler;
-	AttributeService attributeService;
-	attributeService.ioThread(&ioThread2);
+	AttributeService attributeService(&ioThread2);
 	attributeService.attributeServiceIf(&attributeRealServiceHandler);
 	attributeService.componentSession(sessionService.component());
 

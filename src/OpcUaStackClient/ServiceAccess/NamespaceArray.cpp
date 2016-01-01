@@ -44,10 +44,10 @@ namespace OpcUaStackClient
 		session_ = session;
 	}
 	bool
-	NamespaceArray::readSync(void)
+	NamespaceArray::readSync(IOThread* ioThread)
 	{
 		namespaceVec_.clear();
-		AttributeService attributeService;
+		AttributeService attributeService(ioThread);
 		attributeService.componentSession(session_->component());
 
 		//

@@ -23,6 +23,8 @@
 #include "OpcUaStackClient/ServiceSet/SessionServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackClient/ServiceSet/DiscoveryServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/AttributeService.h"
+#include "OpcUaStackClient/ServiceSet/AttributeServiceConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -48,6 +50,16 @@ namespace OpcUaStackClient
 			SessionService::SPtr& sessionService,
 			DiscoveryServiceConfig& discoveryServiceConfig
 		);
+
+		// attribute
+		AttributeService::SPtr attributeService(
+			SessionService::SPtr& sessionService
+		);
+		AttributeService::SPtr attributeService(
+			SessionService::SPtr& sessionService,
+			AttributeServiceConfig& attributeServiceConfig
+		);
+
 
 	  private:
 		IOThread::SPtr getIOThread(const std::string ioThreadName);
