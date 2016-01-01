@@ -27,7 +27,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT SubscriptionManager
-	: public SubscriptionService
+	: public SubscriptionServiceBase
 	, public SubscriptionServicePublishIf
 	{
 	  public:

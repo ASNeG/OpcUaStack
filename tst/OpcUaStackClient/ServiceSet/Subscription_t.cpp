@@ -3,7 +3,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackClient/Client/Client.h"
 #include "OpcUaStackClient/ServiceSet/SessionTestHandler.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;

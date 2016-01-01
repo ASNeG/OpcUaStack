@@ -2,7 +2,7 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 
 #ifdef REAL_SERVER
 

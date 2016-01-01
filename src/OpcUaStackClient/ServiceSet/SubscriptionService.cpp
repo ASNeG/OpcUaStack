@@ -17,7 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionManager.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
 
 using namespace OpcUaStackCore;
 
@@ -25,7 +25,7 @@ namespace OpcUaStackClient
 {
 
 	SubscriptionManager::SubscriptionManager(void)
-	: SubscriptionService()
+	: SubscriptionServiceBase()
 	, subscriptionServiceIf_(NULL)
 	, subscriptionManagerIf_(NULL)
 	, subscriptionSet_()
@@ -68,86 +68,86 @@ namespace OpcUaStackClient
 	void
 	SubscriptionManager::syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
-		SubscriptionService::syncSend(serviceTransactionCreateSubscription);
+		SubscriptionServiceBase::syncSend(serviceTransactionCreateSubscription);
 	}
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription)
 	{
-		SubscriptionService::asyncSend(serviceTransactionCreateSubscription);
+		SubscriptionServiceBase::asyncSend(serviceTransactionCreateSubscription);
 	}
 
 	void
 	SubscriptionManager::syncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
-		SubscriptionService::syncSend(serviceTransactionModifySubscription);
+		SubscriptionServiceBase::syncSend(serviceTransactionModifySubscription);
 	}
 
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionModifySubscription::SPtr& serviceTransactionModifySubscription)
 	{
-		SubscriptionService::asyncSend(serviceTransactionModifySubscription);
+		SubscriptionServiceBase::asyncSend(serviceTransactionModifySubscription);
 	}
 
 	void
 	SubscriptionManager::syncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
-		SubscriptionService::syncSend(serviceTransactionTransferSubscriptions);
+		SubscriptionServiceBase::syncSend(serviceTransactionTransferSubscriptions);
 	}
 
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionTransferSubscriptions::SPtr& serviceTransactionTransferSubscriptions)
 	{
-		SubscriptionService::asyncSend(serviceTransactionTransferSubscriptions);
+		SubscriptionServiceBase::asyncSend(serviceTransactionTransferSubscriptions);
 	}
 
 	void
 	SubscriptionManager::syncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
-		SubscriptionService::syncSend(serviceTransactionDeleteSubscriptions);
+		SubscriptionServiceBase::syncSend(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionDeleteSubscriptions::SPtr& serviceTransactionDeleteSubscriptions)
 	{
 		sendDeleteSubscriptions(serviceTransactionDeleteSubscriptions);
-		SubscriptionService::asyncSend(serviceTransactionDeleteSubscriptions);
+		SubscriptionServiceBase::asyncSend(serviceTransactionDeleteSubscriptions);
 	}
 
 	void
 	SubscriptionManager::syncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
-		SubscriptionService::syncSend(serviceTransactionSetPublishingMode);
+		SubscriptionServiceBase::syncSend(serviceTransactionSetPublishingMode);
 	}
 
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionSetPublishingMode::SPtr& serviceTransactionSetPublishingMode)
 	{
-		SubscriptionService::asyncSend(serviceTransactionSetPublishingMode);
+		SubscriptionServiceBase::asyncSend(serviceTransactionSetPublishingMode);
 	}
 
 	void
 	SubscriptionManager::syncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
-		SubscriptionService::syncSend(serviceTransactionPublish);
+		SubscriptionServiceBase::syncSend(serviceTransactionPublish);
 	}
 
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionPublish::SPtr& serviceTransactionPublish)
 	{
-		SubscriptionService::asyncSend(serviceTransactionPublish);
+		SubscriptionServiceBase::asyncSend(serviceTransactionPublish);
 	}
 
 	void
 	SubscriptionManager::syncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
-		SubscriptionService::syncSend(serviceTransactionRepublish);
+		SubscriptionServiceBase::syncSend(serviceTransactionRepublish);
 	}
 
 	void
 	SubscriptionManager::asyncSend(ServiceTransactionRepublish::SPtr& serviceTransactionRepublish)
 	{
-		SubscriptionService::asyncSend(serviceTransactionRepublish);
+		SubscriptionServiceBase::asyncSend(serviceTransactionRepublish);
 	}
 
 
@@ -189,7 +189,7 @@ namespace OpcUaStackClient
 			}
 		}
 
-		SubscriptionService::receive(message);
+		SubscriptionServiceBase::receive(message);
 	}
 
     void
@@ -316,7 +316,7 @@ namespace OpcUaStackClient
     	while (actPublishCount_ < publishCount_) {
     		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
     		trx->requestTimeout(60000); // FIXME:
-    		SubscriptionService::asyncSend(trx);
+    		SubscriptionServiceBase::asyncSend(trx);
 
     		actPublishCount_++;
     	}

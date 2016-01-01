@@ -49,14 +49,14 @@ namespace OpcUaStackClient
         virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
 	};
 
-	class DLLEXPORT SubscriptionService
+	class DLLEXPORT SubscriptionServiceBase
 	: public Component
 	{
 	  public:
-		boost::shared_ptr<SubscriptionService> SPtr;
+		boost::shared_ptr<SubscriptionServiceBase> SPtr;
 
-		SubscriptionService(void);
-		~SubscriptionService(void);
+		SubscriptionServiceBase(void);
+		~SubscriptionServiceBase(void);
 
 		virtual void componentSession(Component* componentSession);
 		virtual void subscriptionServiceIf(SubscriptionServiceIf* subscriptionServiceIf);
