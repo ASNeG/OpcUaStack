@@ -59,6 +59,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_secureChannel_connect_disconnect
 // ----------------------------------------------------------------------------
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_discovery_GetEndpoints)
 {
+	DiscoveryServiceIfTestHandler discoveryServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
 	SessionServiceIfTestHandler sessionIfTestHandler;
 	SessionServiceConfig sessionServiceConfig;
@@ -82,7 +83,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_discovery_GetEndpoints)
 	// create discovery service
 	DiscoveryService::SPtr discoveryService;
 	DiscoveryServiceConfig discoveryServiceConfig;
-	discoveryServiceConfig.discoveryServiceIf_ = nullptr;
+	discoveryServiceConfig.discoveryServiceIf_ = &discoveryServiceIfTestHandler;
 	discoveryService = serviceSetManager.discoveryService(sessionService, discoveryServiceConfig);
 
 	// send GetEndpointsRequest

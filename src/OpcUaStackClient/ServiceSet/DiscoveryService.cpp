@@ -41,7 +41,6 @@ namespace OpcUaStackClient
 		DiscoveryServiceIf* discoveryServiceIf
 	)
 	{
-		assert(discoveryServiceIf != nullptr);
 		this->componentSession(componentSession);
 		discoveryServiceIf_ = discoveryServiceIf;
 	}
@@ -55,7 +54,6 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryService::discoveryServiceIf(DiscoveryServiceIf* discoveryServiceIf)
 	{
-		assert(discoveryServiceIf != nullptr);
 		discoveryServiceIf_ = discoveryServiceIf;
 	}
 

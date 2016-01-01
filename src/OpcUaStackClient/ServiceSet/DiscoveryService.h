@@ -20,24 +20,13 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
-#include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 #include "OpcUaStackClient/ServiceSet/SessionService.h"
+#include "OpcUaStackClient/ServiceSet/DiscoveryServiceIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient 
 {
-
-	class DLLEXPORT DiscoveryServiceIf
-	{
-	  public:
-		DiscoveryServiceIf(void) {}
-		virtual ~DiscoveryServiceIf(void) {}
-
-        virtual void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers) {};
-        virtual void discoveryServiceGetEndpointsResponse(ServiceTransactionGetEndpoints::SPtr serviceTransactionGetEndpoints) {};
-        virtual void discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer) {};
-	};
 
 	class DLLEXPORT DiscoveryService
 	: public Component

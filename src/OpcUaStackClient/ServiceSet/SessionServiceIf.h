@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_SessionIf_h__
-#define __OpcUaStackClient_SessionIf_h__
+#ifndef __OpcUaStackClient_SessionServiceIf_h__
+#define __OpcUaStackClient_SessionServiceIf_h__
 
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
