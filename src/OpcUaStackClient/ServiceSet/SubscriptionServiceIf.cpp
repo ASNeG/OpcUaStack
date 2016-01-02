@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 	, subscriptionServiceTransferSubscriptionsResponse_()
 	, subscriptionServiceDeleteSubscriptionsResponse_()
 	, subscriptionServiceSetPublishingModeResponse_()
-	, subscriptionServiceSetPublishingModeResponse_()
 	, subscriptionServiceRepublishResponse_()
 	{
 	}
