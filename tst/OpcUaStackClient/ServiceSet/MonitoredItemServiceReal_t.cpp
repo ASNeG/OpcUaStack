@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(MonitoredItemReal_async_create_delete_subscription)
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MonitoredItemRealTestSubscriptionManager monitoredItemRealTestSubscriptionManager;
-	SubscriptionService subscriptionManager;
+	SubscriptionService subscriptionManager(&ioThread2);
 	subscriptionManager.ioThread(&ioThread2);
 	subscriptionManager.subscriptionManagerIf(&monitoredItemRealTestSubscriptionManager);
 	subscriptionManager.subscriptionServiceIf(&monitoredItemRealTestSubscriptionManager);

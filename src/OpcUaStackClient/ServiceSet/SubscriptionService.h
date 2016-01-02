@@ -31,9 +31,14 @@ namespace OpcUaStackClient
 	, public SubscriptionServicePublishIf
 	{
 	  public:
-		SubscriptionService(void);
+		SubscriptionService(IOThread* ioThread);
 		virtual ~SubscriptionService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			uint32_t publishCount,
+			SubscriptionServiceIf* subscriptionServiceIf
+		);
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
 		void subscriptionManagerIf(SubscriptionManagerIf* subscriptionManagerIf);

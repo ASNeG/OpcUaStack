@@ -24,7 +24,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	SubscriptionService::SubscriptionService(void)
+	SubscriptionService::SubscriptionService(IOThread* ioThread)
 	: SubscriptionServiceBase()
 	, subscriptionServiceIf_(NULL)
 	, subscriptionManagerIf_(NULL)
@@ -33,11 +33,24 @@ namespace OpcUaStackClient
 	, publishCount_(5)
 	, actPublishCount_(0)
 	{
+		Component::ioThread(ioThread);
 		subscriptionServicePublishIf(this);
 	}
 
 	SubscriptionService::~SubscriptionService(void)
 	{
+	}
+
+	void
+	SubscriptionService::setConfiguration(
+		Component* componentSession,
+		uint32_t publishCount,
+		SubscriptionServiceIf* subscriptionServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		publishCount_ = publishCount;
+		subscriptionServiceIf_ = subscriptionServiceIf;
 	}
 
 	void

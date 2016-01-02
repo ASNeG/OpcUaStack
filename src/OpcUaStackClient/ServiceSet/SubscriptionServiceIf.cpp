@@ -25,8 +25,6 @@ namespace OpcUaStackClient
 	, subscriptionServiceModifySubscriptionResponse_()
 	, subscriptionServiceTransferSubscriptionsResponse_()
 	, subscriptionServiceDeleteSubscriptionsResponse_()
-	, subscriptionServiceSetPublishingModeResponse_()
-	, subscriptionServiceRepublishResponse_()
 	{
 	}
 
@@ -57,24 +55,6 @@ namespace OpcUaStackClient
     SubscriptionServiceIfTestHandler::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
     {
     	subscriptionServiceDeleteSubscriptionsResponse_.conditionValueDec();
-    }
-
-    void
-    SubscriptionServiceIfTestHandler::subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode)
-    {
-    	subscriptionServiceSetPublishingModeResponse_.conditionValueDec();
-    }
-
-    void
-    SubscriptionServiceIfTestHandler::subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish)
-    {
-    	subscriptionServicePublishResponse_.conditionValueDec();
-    }
-
-    void
-    SubscriptionServiceIfTestHandler::subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish)
-    {
-    	subscriptionServiceRepublishResponse_.conditionValueDec();
     }
 
 }

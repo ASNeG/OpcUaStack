@@ -37,6 +37,7 @@ namespace OpcUaStackClient
 		virtual ~SubscriptionServiceConfig(void);
 
 		SubscriptionServiceIf* subscriptionServiceIf_;
+		uint32_t publishCount_;
 	};
 
 }

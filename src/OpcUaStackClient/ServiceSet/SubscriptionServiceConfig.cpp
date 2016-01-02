@@ -34,6 +34,7 @@ namespace OpcUaStackClient
 	SubscriptionServiceConfig::SubscriptionServiceConfig(void)
 	: ServiceConfigBase("Subscription")
 	, subscriptionServiceIf_(nullptr)
+	, publishCount_(5)
 	{
 	}
 

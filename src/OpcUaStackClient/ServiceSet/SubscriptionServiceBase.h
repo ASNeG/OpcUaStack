@@ -21,33 +21,12 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SessionOld.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionServiceIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-
-	class DLLEXPORT SubscriptionServiceIf
-	{
-	  public:
-		virtual ~SubscriptionServiceIf(void) {}
-
-        virtual void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription) {};
-        virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription) {};
-        virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions) {};
-        virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) {};
-    };
-
-	class DLLEXPORT SubscriptionServicePublishIf
-	{
-	  public:
-		virtual ~SubscriptionServicePublishIf(void) {}
-
-        virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
-        virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
-        virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
-	};
 
 	class DLLEXPORT SubscriptionServiceBase
 	: public Component
@@ -83,7 +62,6 @@ namespace OpcUaStackClient
 
 	  private:
 		Component* componentSession_;
-
 		SubscriptionServiceIf* subscriptionServiceIf_;
 		SubscriptionServicePublishIf* subscriptionServicePublishIf_;
 	};
