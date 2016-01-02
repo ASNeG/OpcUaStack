@@ -88,7 +88,6 @@ namespace OpcUaStackClient
 	    typedef std::set<uint32_t> SubscriptionSet;
 	    SubscriptionSet subscriptionSet_;
 	    SubscriptionSet subscriptionSetPendingDelete_;
-	    SubscriptionServiceIf* subscriptionServiceIf_;
 	    SubscriptionManagerIf* subscriptionManagerIf_;
 	};
 

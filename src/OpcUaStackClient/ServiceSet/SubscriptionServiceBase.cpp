@@ -26,6 +26,7 @@ namespace OpcUaStackClient
 	SubscriptionServiceBase::SubscriptionServiceBase(void)
 	: componentSession_(nullptr)
 	, subscriptionServiceIf_(nullptr)
+	, subscriptionServicePublishIf_(nullptr)
 	{
 	}
 
@@ -179,7 +180,7 @@ namespace OpcUaStackClient
 			case OpcUaId_CreateSubscriptionResponse_Encoding_DefaultBinary:
 			{
 				if (subscriptionServiceIf_ != nullptr) {
-					subscriptionServiceIf_->subscriptionServiceCreateSubscriptionResponse(
+ 					subscriptionServiceIf_->subscriptionServiceCreateSubscriptionResponse(
 						boost::static_pointer_cast<ServiceTransactionCreateSubscription>(serviceTransaction)
 					);
 				}

@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 
 	SubscriptionService::SubscriptionService(IOThread* ioThread)
 	: SubscriptionServiceBase()
-	, subscriptionServiceIf_(NULL)
 	, subscriptionManagerIf_(NULL)
 	, subscriptionSet_()
 	, subscriptionSetPendingDelete_()
@@ -50,7 +49,7 @@ namespace OpcUaStackClient
 	{
 		this->componentSession(componentSession);
 		publishCount_ = publishCount;
-		subscriptionServiceIf_ = subscriptionServiceIf;
+		this->subscriptionServiceIf(subscriptionServiceIf);
 	}
 
 	void
