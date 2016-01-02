@@ -26,6 +26,10 @@ namespace OpcUaStackClient
 	, subscriptionServiceModifySubscriptionResponse_()
 	, subscriptionServiceTransferSubscriptionsResponse_()
 	, subscriptionServiceDeleteSubscriptionsResponse_()
+
+	, dataChangeNotification_()
+	, subscriptionStateUpdate_()
+	, subscriptionState_(SS_Close)
 	{
 	}
 
@@ -57,5 +61,18 @@ namespace OpcUaStackClient
     {
     	subscriptionServiceDeleteSubscriptionsResponse_.conditionValueDec();
     }
+
+	void
+	SubscriptionServiceIfTestHandler::dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
+	{
+		dataChangeNotification_.conditionValueDec();
+	}
+
+	void
+	SubscriptionServiceIfTestHandler::subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
+	{
+		subscriptionState_ = subscriptionState;
+		subscriptionStateUpdate_.conditionValueDec();
+	}
 
 }

@@ -20,11 +20,17 @@
 
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/MonitoredItemNotification.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
+
+	typedef enum {
+		SS_Close,
+		SS_Open,
+	} SubscriptionState;
 
 	class DLLEXPORT SubscriptionServiceIf
 	{
@@ -36,6 +42,9 @@ namespace OpcUaStackClient
 	    virtual void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription) {};
 	    virtual void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions) {};
 	    virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) {};
+
+		virtual void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem) {};
+		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId) {};
 	};
 
 	class DLLEXPORT SubscriptionServiceIfTestHandler
@@ -53,6 +62,12 @@ namespace OpcUaStackClient
 	    void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
 	    Condition subscriptionServiceDeleteSubscriptionsResponse_;
 	    void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+
+	    Condition dataChangeNotification_;
+		virtual void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+		SubscriptionState subscriptionState_;
+		Condition subscriptionStateUpdate_;
+		virtual void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 	};
 
 }

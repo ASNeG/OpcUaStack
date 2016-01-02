@@ -24,12 +24,6 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-
-	typedef enum {
-		SS_Close,
-		SS_Open,
-	} SubscriptionState;
-
 	class SubscriptionManagerIf
 	{
 	  public:
