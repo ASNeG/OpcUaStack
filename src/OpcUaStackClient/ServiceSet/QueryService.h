@@ -21,35 +21,32 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/QueryServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SessionOld.h"
+#include "OpcUaStackClient/ServiceSet/QueryServiceIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient 
 {
 
-	class DLLEXPORT QueryServiceIf
-	{
-	  public:
-        virtual void queryServiceQueryFirstResponse(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst) {};
-        virtual void queryServiceQueryNextResponse(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext) {};
-	};
-
 	class DLLEXPORT QueryService : public Component
 	{
 	  public:
-		boost::shared_ptr<QueryService> SPtr;
+		typedef boost::shared_ptr<QueryService> SPtr;
 
-		QueryService(void);
+		QueryService(IOThread* ioThread);
 		~QueryService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			QueryServiceIf* queryServiceIf
+		);
 		void componentSession(Component* componentSession);
 		void queryServiceIf(QueryServiceIf* queryServiceIf);
 
-		void sendSync(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
-		void send(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
-		void sendSync(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
-		void send(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
+		void syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
+		void asyncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst);
+		void syncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
+		void asyncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext);
 
 		//- Component -----------------------------------------------------------------
 		void receive(Message::SPtr message);

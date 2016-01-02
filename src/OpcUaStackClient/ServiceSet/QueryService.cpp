@@ -23,14 +23,25 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	QueryService::QueryService(void)
+	QueryService::QueryService(IOThread* ioThread)
 	: componentSession_(nullptr)
 	, queryServiceIf_(nullptr)
 	{
+		Component::ioThread(ioThread);
 	}
 
 	QueryService::~QueryService(void)
 	{
+	}
+
+	void
+	QueryService::setConfiguration(
+		Component* componentSession,
+		QueryServiceIf* queryServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		queryServiceIf_ = queryServiceIf;
 	}
 
 	void 
@@ -46,32 +57,32 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	QueryService::sendSync(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
+	QueryService::syncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
 		serviceTransactionQueryFirst->sync(true);
 		serviceTransactionQueryFirst->conditionBool().conditionInit();
-		send(serviceTransactionQueryFirst);
+		asyncSend(serviceTransactionQueryFirst);
 		serviceTransactionQueryFirst->conditionBool().waitForCondition();
 	}
 
 	void 
-	QueryService::send(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
+	QueryService::asyncSend(ServiceTransactionQueryFirst::SPtr serviceTransactionQueryFirst)
 	{
 		serviceTransactionQueryFirst->componentService(this);
 		componentSession_->sendAsync(serviceTransactionQueryFirst);
 	}
 
 	void
-	QueryService::sendSync(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
+	QueryService::syncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
 		serviceTransactionQueryNext->sync(true);
 		serviceTransactionQueryNext->conditionBool().conditionInit();
-		send(serviceTransactionQueryNext);
+		asyncSend(serviceTransactionQueryNext);
 		serviceTransactionQueryNext->conditionBool().waitForCondition();
 	}
 
 	void
-	QueryService::send(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
+	QueryService::asyncSend(ServiceTransactionQueryNext::SPtr serviceTransactionQueryNext)
 	{
 		serviceTransactionQueryNext->componentService(this);
 		componentSession_->sendAsync(serviceTransactionQueryNext);
