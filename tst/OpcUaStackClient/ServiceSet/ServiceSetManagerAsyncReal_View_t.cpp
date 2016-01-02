@@ -1,0 +1,79 @@
+#include "unittest.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
+
+using namespace OpcUaStackClient;
+
+#ifdef REAL_SERVER
+
+BOOST_AUTO_TEST_SUITE()
+
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_)
+{
+	std::cout << "ServiceSetManagerAsyncReal_View_t" << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints)
+{
+	ViewServiceIfTestHandler viewServiceIfTestHandler;
+	ServiceSetManager serviceSetManager;
+	SessionServiceIfTestHandler sessionIfTestHandler;
+	SessionServiceConfig sessionServiceConfig;
+
+	// set secure channel configuration
+	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+
+	// create session
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect secure channel
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+
+	// create view service
+	ViewService::SPtr viewService;
+	ViewServiceConfig viewServiceConfig;
+	viewServiceConfig.viewServiceIf_ = &viewServiceIfTestHandler;
+	viewService = serviceSetManager.viewService(sessionService, viewServiceConfig);
+	BOOST_REQUIRE(viewService.get() != nullptr);
+
+	// call view
+	ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
+	BrowseRequest::SPtr req = trx->request();
+	req->nodesToBrowse()->resize(1);
+
+	BrowseDescription::SPtr browseDescription = BrowseDescription::construct();
+	browseDescription->nodeId()->set(84, 0);
+	browseDescription->browseDirection(BrowseDirection_Both);
+	browseDescription->nodeClassMask(0xFFFFFFFF);
+	browseDescription->resultMask(0xFFFFFFFF);
+	req->nodesToBrowse()->push_back(browseDescription);
+
+	viewServiceIfTestHandler.viewServiceBrowseResponse_.condition(1,0);
+	viewService->asyncSend(trx);
+	BOOST_REQUIRE(viewServiceIfTestHandler.viewServiceBrowseResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
+
+	BrowseResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(res->results()->size() == 1);
+
+	BrowseResult::SPtr browseResult;
+	res->results()->get(0, browseResult);
+	BOOST_REQUIRE(browseResult->statusCode() == Success);
+	BOOST_REQUIRE(browseResult->references()->size() > 0);
+
+	// disconnect secure channel
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+}
+
+
+BOOST_AUTO_TEST_SUITE_END()
+
+#endif
