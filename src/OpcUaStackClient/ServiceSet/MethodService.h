@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 	: public Component
 	{
 	  public:
-		boost::shared_ptr<MethodService> SPtr;
+		typedef boost::shared_ptr<MethodService> SPtr;
 
 		MethodService(IOThread* ioThread);
 		~MethodService(void);
@@ -48,7 +48,7 @@ namespace OpcUaStackClient
 		void asyncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
 
 		//- Component -----------------------------------------------------------------
-		void receive(OpcUaNodeId& typeId, Message::SPtr message);
+		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
 	  private:

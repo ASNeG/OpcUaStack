@@ -75,7 +75,7 @@ namespace OpcUaStackClient
 
 
 	void 
-	MethodService::receive(OpcUaNodeId& typeId, Message::SPtr message)
+	MethodService::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		
@@ -85,7 +85,7 @@ namespace OpcUaStackClient
 			return;
 		}
 		
-		switch (typeId.nodeId<uint32_t>()) 
+		switch (serviceTransaction->nodeTypeResponse().nodeId<uint32_t>())
 		{
 			case OpcUaId_CallResponse_Encoding_DefaultBinary:
 			{
