@@ -193,13 +193,39 @@ namespace OpcUaStackClient
 		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName_);
 		MonitoredItemService::SPtr monitoredItemService = constructSPtr<MonitoredItemService>(ioThread.get());
 
-		// set subscription configuration
+		// set monitored item configuration
 		monitoredItemService->setConfiguration(
 			sessionService->component(),
 			monitoredItemServiceConfig.monitoredItemServiceIf_
 		);
 
 		return monitoredItemService;
+	}
+
+	MethodService::SPtr
+	ServiceSetManager::methodService(SessionService::SPtr& sessionService)
+	{
+		MethodServiceConfig methodServiceConfig;
+		return methodService(sessionService, methodServiceConfig);
+	}
+
+	MethodService::SPtr
+	ServiceSetManager::methodService(
+		SessionService::SPtr& sessionService,
+		MethodServiceConfig& methodServiceConfig)
+	{
+		// create monitored item service
+		createIOThread(methodServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(methodServiceConfig.ioThreadName_);
+		MethodService::SPtr methodService = constructSPtr<MethodService>(ioThread.get());
+
+		// set method configuration
+		methodService->setConfiguration(
+			sessionService->component(),
+			methodServiceConfig.methodServiceIf_
+		);
+
+		return methodService;
 	}
 
 }
