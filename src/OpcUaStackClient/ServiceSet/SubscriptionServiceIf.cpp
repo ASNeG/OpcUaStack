@@ -21,7 +21,8 @@
 namespace OpcUaStackClient
 {
 	SubscriptionServiceIfTestHandler::SubscriptionServiceIfTestHandler(void)
-	: subscriptionServiceCreateSubscriptionResponse_()
+	: SubscriptionServiceIf()
+	, subscriptionServiceCreateSubscriptionResponse_()
 	, subscriptionServiceModifySubscriptionResponse_()
 	, subscriptionServiceTransferSubscriptionsResponse_()
 	, subscriptionServiceDeleteSubscriptionsResponse_()
