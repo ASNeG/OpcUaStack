@@ -254,4 +254,30 @@ namespace OpcUaStackClient
 		return viewService;
 	}
 
+	QueryService::SPtr
+	ServiceSetManager::queryService(SessionService::SPtr& sessionService)
+	{
+		QueryServiceConfig queryServiceConfig;
+		return queryService(sessionService, queryServiceConfig);
+	}
+
+	QueryService::SPtr
+	ServiceSetManager::queryService(
+		SessionService::SPtr& sessionService,
+		QueryServiceConfig& queryServiceConfig)
+	{
+		// create query service
+		createIOThread(queryServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(queryServiceConfig.ioThreadName_);
+		QueryService::SPtr queryService = constructSPtr<QueryService>(ioThread.get());
+
+		// set query configuration
+		queryService->setConfiguration(
+			sessionService->component(),
+			queryServiceConfig.queryServiceIf_
+		);
+
+		return queryService;
+	}
+
 }

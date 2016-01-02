@@ -33,6 +33,8 @@
 #include "OpcUaStackClient/ServiceSet/MethodServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/ViewService.h"
 #include "OpcUaStackClient/ServiceSet/ViewServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/QueryService.h"
+#include "OpcUaStackClient/ServiceSet/QueryServiceConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -104,6 +106,14 @@ namespace OpcUaStackClient
 			ViewServiceConfig& viewServiceConfig
 		);
 
+		// query
+		QueryService::SPtr queryService(
+			SessionService::SPtr& sessionService
+		);
+		QueryService::SPtr queryService(
+			SessionService::SPtr& sessionService,
+			QueryServiceConfig& queryServiceConfig
+		);
 
 	  private:
 		IOThread::SPtr getIOThread(const std::string ioThreadName);
