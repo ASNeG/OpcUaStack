@@ -51,24 +51,6 @@ class SubscriptionServiceHandler
 //
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-class SubscriptionManagerHandler
-: public SubscriptionManagerIf
- {
-   public:
-	 void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
-	 {
-		 changeNotification_.conditionValueDec();
-	 }
-
-	 void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
-	 {
-		 stateUpdate_.conditionValueDec();
-	 }
-
-	 Condition changeNotification_;
-	 Condition stateUpdate_;
- };
-
 BOOST_AUTO_TEST_SUITE(Subscription_)
 
 BOOST_AUTO_TEST_CASE(Subscription_)

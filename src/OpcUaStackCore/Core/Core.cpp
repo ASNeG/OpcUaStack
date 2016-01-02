@@ -49,6 +49,8 @@
 namespace OpcUaStackCore
 {
 
+	bool Core::init_ = false;
+
 	Core::Core(void)
 	: config_()
 	{
@@ -73,6 +75,8 @@ namespace OpcUaStackCore
 	bool
 	Core::init(void)
 	{
+		if (init_) return true;
+		init_ = true;
 		initExtensibleParameter();
 		initExtensionObject();
 		return true;

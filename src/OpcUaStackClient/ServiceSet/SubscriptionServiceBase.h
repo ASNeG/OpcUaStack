@@ -69,9 +69,11 @@ namespace OpcUaStackClient
 		virtual void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
 
+	  protected:
+		SubscriptionServiceIf* subscriptionServiceIf_;
+
 	  private:
 		Component* componentSession_;
-		SubscriptionServiceIf* subscriptionServiceIf_;
 		SubscriptionServicePublishIf* subscriptionServicePublishIf_;
 	};
 

@@ -26,7 +26,6 @@ namespace OpcUaStackClient
 
 	SubscriptionService::SubscriptionService(IOThread* ioThread)
 	: SubscriptionServiceBase()
-	, subscriptionManagerIf_(NULL)
 	, subscriptionSet_()
 	, subscriptionSetPendingDelete_()
 	, publishCount_(5)
@@ -62,12 +61,6 @@ namespace OpcUaStackClient
 	SubscriptionService::publishCount(void)
 	{
 		return publishCount_;
-	}
-
-	void
-	SubscriptionService::subscriptionManagerIf(SubscriptionManagerIf* subscriptionManagerIf)
-	{
-		subscriptionManagerIf_ = subscriptionManagerIf;
 	}
 
 	// ------------------------------------------------------------------------
@@ -291,8 +284,8 @@ namespace OpcUaStackClient
     	}
 
     	subscriptionSet_.insert(subscriptionId);
-   		if (subscriptionManagerIf_ != NULL) {
-    		subscriptionManagerIf_->subscriptionStateUpdate(SS_Open, subscriptionId);
+   		if (subscriptionServiceIf_ != NULL) {
+    		subscriptionServiceIf_->subscriptionStateUpdate(SS_Open, subscriptionId);
     	}
 
     	if (subscriptionSet_.size() != 1) return;
@@ -316,8 +309,8 @@ namespace OpcUaStackClient
     void
     SubscriptionService::deleteSubscriptionResponse(uint32_t subscriptionId)
     {
-   		if (subscriptionManagerIf_ != NULL) {
-    		subscriptionManagerIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
+   		if (subscriptionServiceIf_ != NULL) {
+    		subscriptionServiceIf_->subscriptionStateUpdate(SS_Close, subscriptionId);
     	}
     }
 
@@ -368,8 +361,8 @@ namespace OpcUaStackClient
     		MonitoredItemNotification::SPtr monitoredItem;
     		dataChange->monitoredItems()->get(idx, monitoredItem);
 
-    		if (subscriptionManagerIf_ != NULL) {
-    			subscriptionManagerIf_->dataChangeNotification(monitoredItem);
+    		if (subscriptionServiceIf_ != NULL) {
+    			subscriptionServiceIf_->dataChangeNotification(monitoredItem);
     		}
     	}
     }

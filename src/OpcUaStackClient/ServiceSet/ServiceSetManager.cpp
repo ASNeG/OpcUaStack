@@ -17,6 +17,7 @@
 
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;
@@ -27,6 +28,8 @@ namespace OpcUaStackClient
 	ServiceSetManager::ServiceSetManager(void)
 	: ioThreadMap_()
 	{
+		Core core;
+		core.init();
 	}
 
 	ServiceSetManager::~ServiceSetManager(void)

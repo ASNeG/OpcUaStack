@@ -21,7 +21,6 @@
 #include <set>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/SubscriptionServiceBase.h"
-#include "OpcUaStackClient/ServiceSet/SubscriptionManagerIf.h"
 
 namespace OpcUaStackClient
 {
@@ -43,7 +42,6 @@ namespace OpcUaStackClient
 		);
 		void publishCount(uint32_t publishCount);
 		uint32_t publishCount(void);
-		void subscriptionManagerIf(SubscriptionManagerIf* subscriptionManagerIf);
 
 		void syncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
 		void asyncSend(ServiceTransactionCreateSubscription::SPtr& serviceTransactionCreateSubscription);
@@ -88,7 +86,6 @@ namespace OpcUaStackClient
 	    typedef std::set<uint32_t> SubscriptionSet;
 	    SubscriptionSet subscriptionSet_;
 	    SubscriptionSet subscriptionSetPendingDelete_;
-	    SubscriptionManagerIf* subscriptionManagerIf_;
 	};
 
 }

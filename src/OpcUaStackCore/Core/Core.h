@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		void cleanupExtensibleParameter(void);
 		void cleanupExtensionObject(void);
 
+		static bool init_;
 		Config* config_;
 	};
 

@@ -9,22 +9,6 @@
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
 
-class MonitoredItemHandler
-: public SubscriptionManagerIf
-{
-  public:
-	void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem) {
-		monitoredItem_ = monitoredItem;
-		dataChangeNotificationCondition_.conditionValueDec();
-
-		std::cout << monitoredItem->dataValue() << std::endl;
-	}
-
-	MonitoredItemNotification::SPtr monitoredItem_;
-	Condition dataChangeNotificationCondition_;
-};
-
-
 BOOST_AUTO_TEST_SUITE(MonitoredItem_)
 
 BOOST_AUTO_TEST_CASE(MonitoredItem_)
