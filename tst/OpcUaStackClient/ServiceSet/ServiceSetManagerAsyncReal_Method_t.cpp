@@ -62,7 +62,21 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
 
 	methodServiceIfTestHandler.methodServiceCallResponse_.condition(1,0);
 	methodService->asyncSend(trx);
-	methodServiceIfTestHandler.methodServiceCallResponse_.waitForCondition(1000);
+	BOOST_REQUIRE(methodServiceIfTestHandler.methodServiceCallResponse_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
+
+	CallResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(res->results()->size() == 1);
+
+	CallMethodResult::SPtr callMethodResult;
+	res->results()->get(0, callMethodResult);
+
+	BOOST_REQUIRE(callMethodResult->outputArguments()->size() == 1);
+	OpcUaVariant::SPtr outArgument1;
+	callMethodResult->outputArguments()->get(0, outArgument1);
+	BOOST_REQUIRE(outArgument1->variantType() == OpcUaId_Double);
+
+	OpcUaDouble doubleNumber = outArgument1->get<OpcUaDouble>();
 
 	// disconnect secure channel
 	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
