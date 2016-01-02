@@ -28,6 +28,15 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	class DLLEXPORT SubscriptionServicePublishIf
+	{
+	  public:
+		virtual ~SubscriptionServicePublishIf(void) {}
+		virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
+		virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
+		virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
+	};
+
 	class DLLEXPORT SubscriptionServiceBase
 	: public Component
 	{

@@ -61,7 +61,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_
 	subscriptionService->asyncSend(subDeleteTrx);
 	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
-	std::cout << "XXXXXXXXXXXXXXXX:  " << subDeleteRes->results()->size() << std::endl;
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	OpcUaStatusCode statusCode;
 	subDeleteRes->results()->get(0, statusCode);

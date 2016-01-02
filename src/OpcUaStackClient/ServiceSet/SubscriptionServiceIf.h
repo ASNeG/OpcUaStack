@@ -38,15 +38,6 @@ namespace OpcUaStackClient
 	    virtual void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions) {};
 	};
 
-	class DLLEXPORT SubscriptionServicePublishIf
-	{
-	  public:
-		virtual ~SubscriptionServicePublishIf(void) {}
-	    virtual void subscriptionServiceSetPublishingModeResponse(ServiceTransactionSetPublishingMode::SPtr serviceTransactionSetPublishingMode) {};
-	    virtual void subscriptionServicePublishResponse(ServiceTransactionPublish::SPtr serviceTransactionPublish) {};
-	    virtual void subscriptionServiceRepublishResponse(ServiceTransactionRepublish::SPtr serviceTransactionRepublish) {};
-	};
-
 	class DLLEXPORT SubscriptionServiceIfTestHandler
 	: public SubscriptionServiceIf
 	{
