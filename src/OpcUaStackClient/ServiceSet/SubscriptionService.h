@@ -31,6 +31,8 @@ namespace OpcUaStackClient
 	, public SubscriptionServicePublishIf
 	{
 	  public:
+		typedef boost::shared_ptr<SubscriptionService> SPtr;
+
 		SubscriptionService(IOThread* ioThread);
 		virtual ~SubscriptionService(void);
 

@@ -25,6 +25,8 @@
 #include "OpcUaStackClient/ServiceSet/DiscoveryServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 #include "OpcUaStackClient/ServiceSet/AttributeServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionService.h"
+#include "OpcUaStackClient/ServiceSet/SubscriptionServiceConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -58,6 +60,15 @@ namespace OpcUaStackClient
 		AttributeService::SPtr attributeService(
 			SessionService::SPtr& sessionService,
 			AttributeServiceConfig& attributeServiceConfig
+		);
+
+		// subscription
+		SubscriptionService::SPtr subscriptionService(
+			SessionService::SPtr& sessionService
+		);
+		SubscriptionService::SPtr subscriptionService(
+			SessionService::SPtr& sessionService,
+			SubscriptionServiceConfig& subscriptionServiceConfig
 		);
 
 

@@ -146,4 +146,31 @@ namespace OpcUaStackClient
 		return attributeService;
 	}
 
+	SubscriptionService::SPtr
+	ServiceSetManager::subscriptionService(SessionService::SPtr& sessionService)
+	{
+		SubscriptionServiceConfig subscriptionServiceConfig;
+		return subscriptionService(sessionService, subscriptionServiceConfig);
+	}
+
+	SubscriptionService::SPtr
+	ServiceSetManager::subscriptionService(
+		SessionService::SPtr& sessionService,
+		SubscriptionServiceConfig& subscriptionServiceConfig)
+	{
+		// create attribute service
+		createIOThread(subscriptionServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(subscriptionServiceConfig.ioThreadName_);
+		SubscriptionService::SPtr subscriptionService = constructSPtr<SubscriptionService>(ioThread.get());
+
+		// set subscription configuration
+		subscriptionService->setConfiguration(
+			sessionService->component(),
+			subscriptionServiceConfig.publishCount_,
+			subscriptionServiceConfig.subscriptionServiceIf_
+		);
+
+		return subscriptionService;
+	}
+
 }
