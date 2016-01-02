@@ -21,47 +21,38 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SessionOld.h"
+#include "OpcUaStackClient/ServiceSet/MonitoredItemServiceIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-
-	class DLLEXPORT MonitoredItemServiceIf
-	{
-	  public:
-		virtual ~MonitoredItemServiceIf(void) {}
-
-        virtual void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems) {};
-        virtual void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems) {};
-        virtual void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems) {};
-        virtual void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode) {};
-        virtual void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering) {};
-	};
-
 	class DLLEXPORT MonitoredItemService
 	: public Component
 	{
 	  public:
-		boost::shared_ptr<MonitoredItemService> SPtr;
+		typedef boost::shared_ptr<MonitoredItemService> SPtr;
 
-		MonitoredItemService(void);
+		MonitoredItemService(IOThread* ioThread);
 		~MonitoredItemService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			MonitoredItemServiceIf* monitoredItemServiceIf
+		);
 		void componentSession(Component* componentSession);
 		void monitoredItemServiceIf(MonitoredItemServiceIf* monitoredItemServiceIf);
 
-		void sendSync(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-		void send(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
-		void sendSync(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-		void send(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
-		void sendSync(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-		void send(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
-		void sendSync(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-		void send(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
-		void sendSync(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
-		void send(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		void syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+		void asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+		void syncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+		void asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+		void syncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+		void asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+		void syncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+		void asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+		void syncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+		void asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
 
 		//- Component -----------------------------------------------------------------
 		void receive(Message::SPtr message);

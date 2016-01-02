@@ -23,14 +23,25 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	MonitoredItemService::MonitoredItemService(void)
+	MonitoredItemService::MonitoredItemService(IOThread* ioThread)
 	: componentSession_(nullptr)
 	, monitoredItemServiceIf_(nullptr)
 	{
+		Component::ioThread(ioThread);
 	}
 
 	MonitoredItemService::~MonitoredItemService(void)
 	{
+	}
+
+	void
+	MonitoredItemService::setConfiguration(
+		Component* componentSession,
+		MonitoredItemServiceIf* monitoredItemServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		monitoredItemServiceIf_ = monitoredItemServiceIf;
 	}
 
 	void
@@ -46,80 +57,80 @@ namespace OpcUaStackClient
 	}
 
 	void
-	MonitoredItemService::sendSync(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
+	MonitoredItemService::syncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
 		serviceTransactionCreateMonitoredItems->sync(true);
 		serviceTransactionCreateMonitoredItems->conditionBool().conditionInit();
-		send(serviceTransactionCreateMonitoredItems);
+		asyncSend(serviceTransactionCreateMonitoredItems);
 		serviceTransactionCreateMonitoredItems->conditionBool().waitForCondition();
 	}
 
 	void
-	MonitoredItemService::send(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
+	MonitoredItemService::asyncSend(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems)
 	{
 		serviceTransactionCreateMonitoredItems->componentService(this);
 		componentSession_->sendAsync(serviceTransactionCreateMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::sendSync(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
+	MonitoredItemService::syncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
 		serviceTransactionDeleteMonitoredItems->sync(true);
 		serviceTransactionDeleteMonitoredItems->conditionBool().conditionInit();
-		send(serviceTransactionDeleteMonitoredItems);
+		asyncSend(serviceTransactionDeleteMonitoredItems);
 		serviceTransactionDeleteMonitoredItems->conditionBool().waitForCondition();
 	}
 
 	void
-	MonitoredItemService::send(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
+	MonitoredItemService::asyncSend(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
 	{
 		serviceTransactionDeleteMonitoredItems->componentService(this);
 		componentSession_->sendAsync(serviceTransactionDeleteMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::sendSync(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
+	MonitoredItemService::syncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
 		serviceTransactionModifyMonitoredItems->sync(true);
 		serviceTransactionModifyMonitoredItems->conditionBool().conditionInit();
-		send(serviceTransactionModifyMonitoredItems);
+		asyncSend(serviceTransactionModifyMonitoredItems);
 		serviceTransactionModifyMonitoredItems->conditionBool().waitForCondition();
 	}
 
 	void
-	MonitoredItemService::send(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
+	MonitoredItemService::asyncSend(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
 	{
 		serviceTransactionModifyMonitoredItems->componentService(this);
 		componentSession_->sendAsync(serviceTransactionModifyMonitoredItems);
 	}
 
 	void
-	MonitoredItemService::sendSync(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
+	MonitoredItemService::syncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
 		serviceTransactionSetMonitoringMode->sync(true);
 		serviceTransactionSetMonitoringMode->conditionBool().conditionInit();
-		send(serviceTransactionSetMonitoringMode);
+		asyncSend(serviceTransactionSetMonitoringMode);
 		serviceTransactionSetMonitoringMode->conditionBool().waitForCondition();
 	}
 
 	void
-	MonitoredItemService::send(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
+	MonitoredItemService::asyncSend(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
 	{
 		serviceTransactionSetMonitoringMode->componentService(this);
 		componentSession_->sendAsync(serviceTransactionSetMonitoringMode);
 	}
 
 	void
-	MonitoredItemService::sendSync(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
+	MonitoredItemService::syncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
 		serviceTransactionSetTriggering->sync(true);
 		serviceTransactionSetTriggering->conditionBool().conditionInit();
-		send(serviceTransactionSetTriggering);
+		asyncSend(serviceTransactionSetTriggering);
 		serviceTransactionSetTriggering->conditionBool().waitForCondition();
 	}
 
 	void
-	MonitoredItemService::send(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
+	MonitoredItemService::asyncSend(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
 	{
 		serviceTransactionSetTriggering->componentService(this);
 		componentSession_->sendAsync(serviceTransactionSetTriggering);

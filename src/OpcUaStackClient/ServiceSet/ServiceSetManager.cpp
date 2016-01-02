@@ -161,7 +161,7 @@ namespace OpcUaStackClient
 		SessionService::SPtr& sessionService,
 		SubscriptionServiceConfig& subscriptionServiceConfig)
 	{
-		// create attribute service
+		// create subscription service
 		createIOThread(subscriptionServiceConfig.ioThreadName_);
 		IOThread::SPtr ioThread = getIOThread(subscriptionServiceConfig.ioThreadName_);
 		SubscriptionService::SPtr subscriptionService = constructSPtr<SubscriptionService>(ioThread.get());
@@ -174,6 +174,32 @@ namespace OpcUaStackClient
 		);
 
 		return subscriptionService;
+	}
+
+	MonitoredItemService::SPtr
+	ServiceSetManager::monitoredItemService(SessionService::SPtr& sessionService)
+	{
+		MonitoredItemServiceConfig monitoredItemServiceConfig;
+		return monitoredItemService(sessionService, monitoredItemServiceConfig);
+	}
+
+	MonitoredItemService::SPtr
+	ServiceSetManager::monitoredItemService(
+		SessionService::SPtr& sessionService,
+		MonitoredItemServiceConfig& monitoredItemServiceConfig)
+	{
+		// create monitored item service
+		createIOThread(monitoredItemServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName_);
+		MonitoredItemService::SPtr monitoredItemService = constructSPtr<MonitoredItemService>(ioThread.get());
+
+		// set subscription configuration
+		monitoredItemService->setConfiguration(
+			sessionService->component(),
+			monitoredItemServiceConfig.monitoredItemServiceIf_
+		);
+
+		return monitoredItemService;
 	}
 
 }
