@@ -23,14 +23,25 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	MethodService::MethodService(void)
+	MethodService::MethodService(IOThread* ioThread)
 	: componentSession_(nullptr)
 	, methodServiceIf_(nullptr)
 	{
+		Component::ioThread(ioThread);
 	}
 
 	MethodService::~MethodService(void)
 	{
+	}
+
+	void
+	MethodService::setConfiguration(
+		Component* componentSession,
+		MethodServiceIf* methodServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		methodServiceIf_ = methodServiceIf;
 	}
 
 	void 
@@ -46,16 +57,16 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	MethodService::sendSync(ServiceTransactionCall::SPtr serviceTransactionCall)
+	MethodService::syncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
 	{
 		serviceTransactionCall->sync(true);
 		serviceTransactionCall->conditionBool().conditionInit();
-		send(serviceTransactionCall);
+		asyncSend(serviceTransactionCall);
 		serviceTransactionCall->conditionBool().waitForCondition();
 	}
 
 	void 
-	MethodService::send(ServiceTransactionCall::SPtr serviceTransactionCall)
+	MethodService::asyncSend(ServiceTransactionCall::SPtr serviceTransactionCall)
 	{
 		serviceTransactionCall->componentService(this);
 		OpcUaNodeId nodeId;

@@ -21,20 +21,12 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SessionOld.h"
+#include "OpcUaStackClient/ServiceSet/MethodServiceIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient 
 {
-
-	class DLLEXPORT MethodServiceIf
-	{
-	  public:
-		virtual ~MethodServiceIf(void) {}
-
-        virtual void methodServiceCallResponse(ServiceTransactionCall::SPtr serviceTransactionCall) {};
-	};
 
 	class DLLEXPORT MethodService
 	: public Component
@@ -42,14 +34,18 @@ namespace OpcUaStackClient
 	  public:
 		boost::shared_ptr<MethodService> SPtr;
 
-		MethodService(void);
+		MethodService(IOThread* ioThread);
 		~MethodService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			MethodServiceIf* methodServiceIf
+		);
 		void componentSession(Component* componentSession);
 		void methodServiceIf(MethodServiceIf* methodServiceIf);
 
-		void sendSync(ServiceTransactionCall::SPtr serviceTransactionRead);
-		void send(ServiceTransactionCall::SPtr serviceTransactionRead);
+		void syncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
+		void asyncSend(ServiceTransactionCall::SPtr serviceTransactionRead);
 
 		//- Component -----------------------------------------------------------------
 		void receive(OpcUaNodeId& typeId, Message::SPtr message);
