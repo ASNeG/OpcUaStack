@@ -228,4 +228,30 @@ namespace OpcUaStackClient
 		return methodService;
 	}
 
+	ViewService::SPtr
+	ServiceSetManager::viewService(SessionService::SPtr& sessionService)
+	{
+		ViewServiceConfig viewServiceConfig;
+		return viewService(sessionService, viewServiceConfig);
+	}
+
+	ViewService::SPtr
+	ServiceSetManager::viewService(
+		SessionService::SPtr& sessionService,
+		ViewServiceConfig& viewServiceConfig)
+	{
+		// create view service
+		createIOThread(viewServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(viewServiceConfig.ioThreadName_);
+		ViewService::SPtr viewService = constructSPtr<ViewService>(ioThread.get());
+
+		// set view configuration
+		viewService->setConfiguration(
+			sessionService->component(),
+			viewServiceConfig.viewServiceIf_
+		);
+
+		return viewService;
+	}
+
 }

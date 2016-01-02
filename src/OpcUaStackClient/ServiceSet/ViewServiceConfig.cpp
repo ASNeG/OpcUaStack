@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ViewServiceConfig::ViewServiceConfig(void)
-	: ServiceConfigBase("Discovery")
+	: ServiceConfigBase("View")
 	, viewServiceIf_(nullptr)
 	{
 	}

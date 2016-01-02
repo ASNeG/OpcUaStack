@@ -32,7 +32,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MonitoredItemServiceConfig::MonitoredItemServiceConfig(void)
-	: ServiceConfigBase("Subscription")
+	: ServiceConfigBase("MonitoredItem")
 	, monitoredItemServiceIf_(nullptr)
 	{
 	}

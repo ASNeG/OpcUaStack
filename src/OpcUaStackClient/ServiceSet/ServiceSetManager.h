@@ -31,6 +31,8 @@
 #include "OpcUaStackClient/ServiceSet/MonitoredItemServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/MethodService.h"
 #include "OpcUaStackClient/ServiceSet/MethodServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/ViewService.h"
+#include "OpcUaStackClient/ServiceSet/ViewServiceConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -91,6 +93,15 @@ namespace OpcUaStackClient
 		MethodService::SPtr methodService(
 			SessionService::SPtr& sessionService,
 			MethodServiceConfig& methodServiceConfig
+		);
+
+		// view
+		ViewService::SPtr viewService(
+			SessionService::SPtr& sessionService
+		);
+		ViewService::SPtr viewService(
+			SessionService::SPtr& sessionService,
+			ViewServiceConfig& viewServiceConfig
 		);
 
 
