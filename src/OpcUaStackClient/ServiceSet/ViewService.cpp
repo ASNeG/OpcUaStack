@@ -23,14 +23,25 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	ViewService::ViewService(void)
+	ViewService::ViewService(IOThread* ioThread)
 	: componentSession_(nullptr)
 	, viewServiceIf_(nullptr)
 	{
+		Component::ioThread(ioThread);
 	}
 
 	ViewService::~ViewService(void)
 	{
+	}
+
+	void
+	ViewService::setConfiguration(
+		Component* componentSession,
+		ViewServiceIf* viewServiceIf
+	)
+	{
+		this->componentSession(componentSession);
+		viewServiceIf_ = viewServiceIf;
 	}
 
 	void 
@@ -46,16 +57,16 @@ namespace OpcUaStackClient
 	}
 
 	void 
-	ViewService::sendSync(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+	ViewService::syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
 	{
 		serviceTransactionBrowse->sync(true);
 		serviceTransactionBrowse->conditionBool().conditionInit();
-		send(serviceTransactionBrowse);
+		asyncSend(serviceTransactionBrowse);
 		serviceTransactionBrowse->conditionBool().waitForCondition();
 	}
 
 	void 
-	ViewService::send(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+	ViewService::asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
 	{
 		serviceTransactionBrowse->componentService(this); 
 		OpcUaNodeId nodeId;
@@ -63,16 +74,16 @@ namespace OpcUaStackClient
 	}
 
 	void
-	ViewService::sendSync(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+	ViewService::syncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
 	{
 		serviceTransactionBrowseNext->sync(true);
 		serviceTransactionBrowseNext->conditionBool().conditionInit();
-		send(serviceTransactionBrowseNext);
+		asyncSend(serviceTransactionBrowseNext);
 		serviceTransactionBrowseNext->conditionBool().waitForCondition();
 	}
 
 	void
-	ViewService::send(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+	ViewService::asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
 	{
 		serviceTransactionBrowseNext->componentService(this);
 		OpcUaNodeId nodeId;

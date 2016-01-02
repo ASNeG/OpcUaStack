@@ -163,7 +163,8 @@ namespace OpcUaStackUtility
 		OpcUaByteString::SPtr continuationPoint
 	)
 	{
-		ViewService viewService;
+		IOThread ioThread;
+		ViewService viewService(&ioThread);  // FIXME: error......
 		viewService.componentSession(session_->component());
 
 		ServiceTransactionBrowseNext::SPtr browseNextTrx = ServiceTransactionBrowseNext::construct();
@@ -172,7 +173,7 @@ namespace OpcUaStackUtility
 		req->continuationPoints()->resize(1);
 		req->continuationPoints()->push_back(continuationPoint);
 
-		viewService.sendSync(browseNextTrx);
+		viewService.syncSend(browseNextTrx);
 
 		//
 		// check response
@@ -262,7 +263,8 @@ namespace OpcUaStackUtility
 		ReferenceDescription::Vec& referenceDescriptionVec
 	)
 	{
-		ViewService viewService;
+		IOThread ioThread;
+		ViewService viewService(&ioThread);  // FIXME: error....
 		viewService.componentSession(session_->component());
 
 		//
@@ -281,7 +283,7 @@ namespace OpcUaStackUtility
 			req->nodesToBrowse()->push_back(browseDescription);
 		}
 
-		viewService.sendSync(browseTrx);
+		viewService.syncSend(browseTrx);
 
 		//
 		// check response

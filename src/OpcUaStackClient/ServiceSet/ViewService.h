@@ -33,17 +33,20 @@ namespace OpcUaStackClient
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;
 
-		ViewService(void);
+		ViewService(IOThread* ioThread);
 		~ViewService(void);
 
+		void setConfiguration(
+			Component* componentSession,
+			ViewServiceIf* viewServiceIf
+		);
 		void componentSession(Component* componentSession);
 		void viewServiceIf(ViewServiceIf* viewServiceIf);
 
-		void sendSync(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-		void send(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-
-		void sendSync(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
-		void send(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		void syncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+		void asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+		void syncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		void asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
 
 
 		//- Component -----------------------------------------------------------------
