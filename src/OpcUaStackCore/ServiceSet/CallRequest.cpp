@@ -66,14 +66,14 @@ namespace OpcUaStackCore
 	void 
 	CallRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
+		//requestHeaderSPtr_->opcUaBinaryEncode(os);
 		callMethodRequestArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	CallRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
+		//requestHeaderSPtr_->opcUaBinaryDecode(is);
 		callMethodRequestArraySPtr_->opcUaBinaryDecode(is);
 	}
 }
