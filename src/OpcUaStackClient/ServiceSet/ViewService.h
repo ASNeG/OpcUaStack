@@ -21,19 +21,12 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/ServiceSet/ViewServiceTransaction.h"
-#include "OpcUaStackClient/ServiceSet/SessionOld.h"
+#include "OpcUaStackClient/ServiceSet/ViewServiceIf.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient 
 {
-
-	class DLLEXPORT ViewServiceIf
-	{
-	  public:
-        virtual void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse) {};
-        virtual void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext) {};
-	};
 
 	class DLLEXPORT ViewService : public Component
 	{
