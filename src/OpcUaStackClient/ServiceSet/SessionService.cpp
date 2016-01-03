@@ -41,6 +41,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	SessionTransaction::SessionTransaction(void)
 	: condition_()
+	, statusCode_(Success)
 	{
 	}
 
@@ -68,6 +69,7 @@ namespace OpcUaStackClient
 	, secureChannelClient_(ioThread_)
 	, secureChannel_(nullptr)
 
+	, sessionTransaction_()
 	, requestHandle_(0)
 	, sessionTimeout_(0)
 	, maxResponseMessageSize_(0)
@@ -153,6 +155,16 @@ namespace OpcUaStackClient
 		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this));
 	}
 
+	OpcUaStatusCode
+	SessionService::syncConnect(void)
+	{
+		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
+		sessionTransaction->condition_.condition(1,0);
+		// FIXME: ...
+		sessionTransaction->condition_.waitForCondition();
+		return sessionTransaction->statusCode_;
+	}
+
 	void
 	SessionService::asyncConnectInternal(void)
 	{
@@ -164,6 +176,13 @@ namespace OpcUaStackClient
 	{
 		ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions));
 	}
+
+	OpcUaStatusCode
+	SessionService::syncDisconnect(bool deleteSubscriptions)
+	{
+		return Success;
+	}
+
 
 	void
 	SessionService::asyncDisconnectInternal(bool deleteSubscriptions)

@@ -49,6 +49,7 @@ namespace OpcUaStackClient
 		~SessionTransaction(void);
 
 		Condition condition_;
+		OpcUaStatusCode statusCode_;
 	};
 
 	class DLLEXPORT SessionService
@@ -65,6 +66,11 @@ namespace OpcUaStackClient
 			M_SecureChannelAndSession
 		} Mode;
 
+		typedef enum
+		{
+			S_Init
+		} State;
+
 		SessionService(IOThread* ioThread);
 		~SessionService(void);
 
@@ -78,9 +84,11 @@ namespace OpcUaStackClient
 
 		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void asyncConnect(void);
+		OpcUaStatusCode syncConnect(void);
 		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncDisconnect(bool deleteSubscriptions = true);
+		OpcUaStatusCode syncDisconnect(bool deleteSubscriptions = true);
 		void asyncCancel(uint32_t requestHandle);
 
 		//- SecureChannelClientIf ---------------------------------------------
@@ -120,6 +128,7 @@ namespace OpcUaStackClient
 		SessionConfig::SPtr sessionConfig_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
 
+		SessionTransaction::SPtr sessionTransaction_;
 		OpcUaUInt32 requestHandle_;
 		OpcUaDouble sessionTimeout_;
 		OpcUaUInt32 maxResponseMessageSize_;
