@@ -280,4 +280,30 @@ namespace OpcUaStackClient
 		return queryService;
 	}
 
+	NodeManagementService::SPtr
+	ServiceSetManager::nodeManagementService(SessionService::SPtr& sessionService)
+	{
+		NodeManagementServiceConfig nodeManagementServiceConfig;
+		return nodeManagementService(sessionService, nodeManagementServiceConfig);
+	}
+
+	NodeManagementService::SPtr
+	ServiceSetManager::nodeManagementService(
+		SessionService::SPtr& sessionService,
+		NodeManagementServiceConfig& nodeManagementServiceConfig)
+	{
+		// create node mangement service
+		createIOThread(nodeManagementServiceConfig.ioThreadName_);
+		IOThread::SPtr ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName_);
+		NodeManagementService::SPtr nodeManagementService = constructSPtr<NodeManagementService>(ioThread.get());
+
+		// set node management configuration
+		nodeManagementService->setConfiguration(
+			sessionService->component(),
+			nodeManagementServiceConfig.nodeManagementServiceIf_
+		);
+
+		return nodeManagementService;
+	}
+
 }

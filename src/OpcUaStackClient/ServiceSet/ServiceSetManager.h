@@ -35,6 +35,8 @@
 #include "OpcUaStackClient/ServiceSet/ViewServiceConfig.h"
 #include "OpcUaStackClient/ServiceSet/QueryService.h"
 #include "OpcUaStackClient/ServiceSet/QueryServiceConfig.h"
+#include "OpcUaStackClient/ServiceSet/NodeManagementService.h"
+#include "OpcUaStackClient/ServiceSet/NodeManagementServiceConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -113,6 +115,15 @@ namespace OpcUaStackClient
 		QueryService::SPtr queryService(
 			SessionService::SPtr& sessionService,
 			QueryServiceConfig& queryServiceConfig
+		);
+
+		// node management
+		NodeManagementService::SPtr nodeManagementService(
+			SessionService::SPtr& sessionService
+		);
+		NodeManagementService::SPtr nodeManagementService(
+			SessionService::SPtr& sessionService,
+			NodeManagementServiceConfig& nodeManagementServiceConfig
 		);
 
 	  private:
