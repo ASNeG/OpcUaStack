@@ -122,37 +122,29 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnect(void)
 	{
+		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this));
+	}
+
+	void
+	SessionService::asyncConnectInternal(void)
+	{
 		assert(sessionServiceIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
 
 		if (mode_ == M_SecureChannel) {
-			asyncConnect(secureChannelClientConfig_);
+			sessionConfig_.reset();
+			assert(sessionConfig_.get() == nullptr);
 		}
 		else {
 			assert(sessionConfig_.get() != nullptr);
-			asyncConnect(sessionConfig_, secureChannelClientConfig_);
 		}
-	}
 
-	void
-	SessionService::asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig)
-	{
-		SessionConfig::SPtr sessionConfig;
-		asyncConnect(sessionConfig, secureChannelClientConfig);
-	}
-
-	void
-	SessionService::asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig)
-	{
-		sessionConfig_ = sessionConfig;
-		secureChannelClientConfig_ = secureChannelClientConfig;
-
-		if (sessionConfig.get() != nullptr) {
-			requestTimeout_ = sessionConfig->requestTimeout_;
+		if (sessionConfig_.get() != nullptr) {
+			requestTimeout_ = sessionConfig_->requestTimeout_;
 		}
 
 		secureChannelClient_.secureChannelClientIf(this);
-		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this));
+		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
 	}
 
 	OpcUaStatusCode
@@ -163,12 +155,6 @@ namespace OpcUaStackClient
 		// FIXME: ...
 		sessionTransaction->condition_.waitForCondition();
 		return sessionTransaction->statusCode_;
-	}
-
-	void
-	SessionService::asyncConnectInternal(void)
-	{
-		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
 	}
 
 	void

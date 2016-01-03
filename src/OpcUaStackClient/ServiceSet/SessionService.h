@@ -85,8 +85,6 @@ namespace OpcUaStackClient
 		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void asyncConnect(void);
 		OpcUaStatusCode syncConnect(void);
-		void asyncConnect(SecureChannelClientConfig::SPtr& secureChannelClientConfig);
-		void asyncConnect(SessionConfig::SPtr& sessionConfig, SecureChannelClientConfig::SPtr& secureChannelClientConfig);
 		void asyncDisconnect(bool deleteSubscriptions = true);
 		OpcUaStatusCode syncDisconnect(bool deleteSubscriptions = true);
 		void asyncCancel(uint32_t requestHandle);
