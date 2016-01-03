@@ -171,23 +171,45 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncDisconnect(bool deleteSubscriptions)
 	{
-		ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, deleteSubscriptions));
+		SessionTransaction::SPtr sessionTransaction;
+		ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions));
+	}
+
+	void
+	SessionService::asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions)
+	{
+		if (!secureChannelConnect_) {
+			if (sessionTransaction.get() != nullptr) {
+				sessionTransaction->statusCode_ = Success;
+				sessionTransaction->condition_.conditionValueDec();
+			}
+			return;
+		}
+
+		if (sessionTransaction.get() != nullptr) {
+			if (sessionTransaction_.get() != nullptr) {
+				sessionTransaction->statusCode_ = BadTooManyOperations;
+				sessionTransaction->condition_.conditionValueDec();
+				return;
+			}
+			sessionTransaction_ = sessionTransaction;
+		}
+
+		if (secureChannelConnect_ && sessionConfig_.get() != nullptr) {
+			sendCloseSessionRequest(deleteSubscriptions);
+		}
+		secureChannelClient_.disconnect(secureChannel_);
 	}
 
 	OpcUaStatusCode
 	SessionService::syncDisconnect(bool deleteSubscriptions)
 	{
-		return Success;
-	}
-
-
-	void
-	SessionService::asyncDisconnectInternal(bool deleteSubscriptions)
-	{
-		if (secureChannelConnect_ && sessionConfig_.get() != nullptr) {
-			sendCloseSessionRequest(deleteSubscriptions);
-		}
-		secureChannelClient_.disconnect(secureChannel_);
+		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
+		sessionTransaction->operation_ = SessionTransaction::OP_Disconnect;
+		sessionTransaction->condition_.condition(1,0);
+		ioThread_->run(boost::bind(&SessionService::asyncDisconnectInternal, this, sessionTransaction, deleteSubscriptions));
+		sessionTransaction->condition_.waitForCondition();
+		return sessionTransaction->statusCode_;
 	}
 
 	void

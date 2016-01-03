@@ -32,10 +32,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 	BOOST_REQUIRE(sessionService->syncConnect() == Success);
 
 	// disconnect session
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 

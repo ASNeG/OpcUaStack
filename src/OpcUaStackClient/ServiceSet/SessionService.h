@@ -103,7 +103,7 @@ namespace OpcUaStackClient
 
 	  private:
 		void asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction);
-		void asyncDisconnectInternal(bool deleteSubscriptions);
+		void asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);
 
 		void sendCreateSessionRequest(void);
