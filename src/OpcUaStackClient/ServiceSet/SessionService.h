@@ -34,6 +34,23 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
+	class SessionTransaction
+	{
+	  public:
+		typedef enum
+		{
+			OP_Connect,
+			OP_Disconnect
+		} Operation;
+
+		typedef boost::shared_ptr<SessionTransaction> SPtr;
+
+		SessionTransaction(void);
+		~SessionTransaction(void);
+
+		Condition condition_;
+	};
+
 	class DLLEXPORT SessionService
 	: public SessionBase
 	, public Component
