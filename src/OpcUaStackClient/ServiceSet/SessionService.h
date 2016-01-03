@@ -39,6 +39,7 @@ namespace OpcUaStackClient
 	  public:
 		typedef enum
 		{
+			OP_None,
 			OP_Connect,
 			OP_Disconnect
 		} Operation;
@@ -48,6 +49,7 @@ namespace OpcUaStackClient
 		SessionTransaction(void);
 		~SessionTransaction(void);
 
+		Operation operation_;
 		Condition condition_;
 		OpcUaStatusCode statusCode_;
 	};
@@ -100,7 +102,7 @@ namespace OpcUaStackClient
 		// - Component -------------------------------------------------------
 
 	  private:
-		void asyncConnectInternal(void);
+		void asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction);
 		void asyncDisconnectInternal(bool deleteSubscriptions);
 		void asyncCancelInternal(uint32_t requestHandle);
 

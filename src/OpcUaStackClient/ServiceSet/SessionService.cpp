@@ -122,12 +122,22 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnect(void)
 	{
-		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this));
+		SessionTransaction::SPtr sessionTransaction;
+		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction));
 	}
 
 	void
-	SessionService::asyncConnectInternal(void)
+	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
+		if (sessionTransaction.get() != nullptr) {
+			if (sessionTransaction_.get() != nullptr) {
+				sessionTransaction->statusCode_ = BadTooManyOperations;
+				sessionTransaction->condition_.conditionValueDec();
+				return;
+			}
+			sessionTransaction_ = sessionTransaction;
+		}
+
 		assert(sessionServiceIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
 
@@ -151,8 +161,9 @@ namespace OpcUaStackClient
 	SessionService::syncConnect(void)
 	{
 		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
+		sessionTransaction->operation_ = SessionTransaction::OP_Connect;
 		sessionTransaction->condition_.condition(1,0);
-		// FIXME: ...
+		ioThread_->run(boost::bind(&SessionService::asyncConnectInternal, this, sessionTransaction));
 		sessionTransaction->condition_.waitForCondition();
 		return sessionTransaction->statusCode_;
 	}
@@ -280,6 +291,13 @@ namespace OpcUaStackClient
 
 		sessionConnect_ = true;
 		if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Connect);
+
+		if (sessionTransaction_.get() != nullptr) {
+			sessionTransaction_->statusCode_ = Success;
+			sessionTransaction_->condition_.conditionValueDec();
+			sessionTransaction_.reset();
+			return;
+		}
 	}
 
 	void
@@ -336,6 +354,14 @@ namespace OpcUaStackClient
 		secureChannelConnect_ = true;
 		if (sessionConfig_.get() == nullptr) {
 			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Connect);
+
+			if (sessionTransaction_.get() != nullptr) {
+				sessionTransaction_->statusCode_ = Success;
+				sessionTransaction_->condition_.conditionValueDec();
+				sessionTransaction_.reset();
+				return;
+			}
+
 			return;
 		}
 
@@ -349,6 +375,18 @@ namespace OpcUaStackClient
 		secureChannelConnect_ = false;
 		sessionConnect_ = false;
 		if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Disconnect);
+
+		if (sessionTransaction_.get() != nullptr) {
+			if (sessionTransaction_->operation_ == SessionTransaction::OP_Connect) {
+				sessionTransaction_->statusCode_ = BadSessionClosed;
+			}
+			else {
+				sessionTransaction_->statusCode_ = Success;
+			}
+			sessionTransaction_->condition_.conditionValueDec();
+			sessionTransaction_.reset();
+			return;
+		}
 	}
 
 	void
