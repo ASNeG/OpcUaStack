@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -108,11 +109,13 @@ namespace OpcUaStackCore
 		if (runningThreads_ == numberThreads_) {
 			startCondition_.notify_one();
 		}
+		Log(Debug, "start thread").parameter("ThreadId", boost::this_thread::get_id());
 		startMutex_.unlock();
 
 		io_service_.run();
 
 		stopMutex_.lock();
+		Log(Debug, "stop thread").parameter("ThreadId", boost::this_thread::get_id());
 		runningThreads_--;
 		if (runningThreads_ == 0) {
 			stopCondition_.notify_one();
