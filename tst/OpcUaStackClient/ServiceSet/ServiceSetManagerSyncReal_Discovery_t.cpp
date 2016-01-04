@@ -7,12 +7,12 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE()
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Discovery_)
 {
-	std::cout << "ServiceSetManagerAsyncReal_Discovery_t" << std::endl;
+	std::cout << "ServiceSetManagerSyncReal_Discovery_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Discovery_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
 	DiscoveryServiceIfTestHandler discoveryServiceIfTestHandler;

@@ -7,12 +7,12 @@ using namespace OpcUaStackClient;
 
 BOOST_AUTO_TEST_SUITE()
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Method_)
 {
-	std::cout << "ServiceSetManagerAsyncReal_Method_t" << std::endl;
+	std::cout << "ServiceSetManagerSyncReal_Method_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Method_discovery_GetEndpoints)
 {
 	ServiceSetManager serviceSetManager;
 	MethodServiceIfTestHandler methodServiceIfTestHandler;
@@ -29,10 +29,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionService->syncConnect() == Success);
 
 	// create method service
 	MethodService::SPtr methodService;
@@ -60,9 +57,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
 	req->methodsToCall()->resize(1);
 	req->methodsToCall()->set(0, callMethodRequest);
 
-	methodServiceIfTestHandler.methodServiceCallResponse_.condition(1,0);
-	methodService->asyncSend(trx);
-	BOOST_REQUIRE(methodServiceIfTestHandler.methodServiceCallResponse_.waitForCondition(1000) == true);
+	methodService->syncSend(trx);
 	BOOST_REQUIRE(trx->responseHeader()->serviceResult() == Success);
 
 	CallResponse::SPtr res = trx->response();
@@ -79,10 +74,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Method_discovery_GetEndpoints)
 	OpcUaDouble doubleNumber = outArgument1->get<OpcUaDouble>();
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 
