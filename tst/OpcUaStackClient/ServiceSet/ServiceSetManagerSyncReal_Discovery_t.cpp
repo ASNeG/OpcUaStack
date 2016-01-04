@@ -18,7 +18,6 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints
 	DiscoveryServiceIfTestHandler discoveryServiceIfTestHandler;
 	SessionServiceIfTestHandler sessionIfTestHandler;
 
-
 	// set secure channel configuration
 	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
@@ -31,10 +30,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionService->syncConnect() == Success);
 
 	// create discovery service
 	DiscoveryService::SPtr discoveryService;
@@ -49,18 +45,13 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Discovery_discovery_GetEndpoints
 	GetEndpointsRequest::SPtr req = trx->request();
 	req->endpointUrl(REAL_SERVER_URI);
 
-	discoveryServiceIfTestHandler.discoveryServiceGetEndpointsResponse_.condition(1,0);
-	discoveryService->asyncSend(trx);
-	discoveryServiceIfTestHandler.discoveryServiceGetEndpointsResponse_.waitForCondition(1000);
+	discoveryService->syncSend(trx);
 	GetEndpointsResponse::SPtr res = trx->response();
 	BOOST_REQUIRE(trx->statusCode() == Success);
 	BOOST_REQUIRE(res->endpoints()->size() > 0);
 
 	// disconnect secure channel
-	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 
