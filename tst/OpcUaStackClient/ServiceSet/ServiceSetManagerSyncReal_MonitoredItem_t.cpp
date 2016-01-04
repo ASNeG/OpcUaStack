@@ -5,14 +5,14 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_MonitoredItem)
+BOOST_AUTO_TEST_SUITE(ServiceSetManagerSyncReal_MonitoredItem)
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem)
 {
-	std::cout << "ServiceSetManagerAsyncReal_MonitoredItem_t" << std::endl;
+	std::cout << "ServiceSetManagerSyncReal_MonitoredItem_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_MonitoredItem_create_delete)
 {
 	OpcUaStatusCode statusCode;
 	ServiceSetManager serviceSetManager;
@@ -31,10 +31,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionService->syncConnect() == Success);
 
 	// create subscription service
 	SubscriptionServiceConfig subscriptionServiceConfig;
@@ -46,9 +43,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	ServiceTransactionCreateSubscription::SPtr subCreateTrx = ServiceTransactionCreateSubscription::construct();
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
-	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
-	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
+	subscriptionService->syncSend(subCreateTrx);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
@@ -71,9 +66,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	monCreateReq->itemsToCreate()->resize(1);
 	monCreateReq->itemsToCreate()->set(0, monitoredItemCreateRequest);
 	subscriptionServiceIfTestHandler.dataChangeNotification_.condition(1, 0);
-	monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.condition(1,0);
-	monitoredItemService->asyncSend(monCreateTrx);
-	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceCreateMonitoredItemsResponse_.waitForCondition(1000) == true);
+	monitoredItemService->syncSend(monCreateTrx);
 	BOOST_REQUIRE(monCreateTrx->statusCode() == Success);
 	BOOST_REQUIRE(monCreateRes->results()->size() == 1);
 
@@ -92,9 +85,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 
 	monDeleteReq->monitoredItemIds()->resize(1);
 	monDeleteReq->monitoredItemIds()->set(0, createMonResult->monitoredItemId());
-	monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.condition(1,0);
-	monitoredItemService->asyncSend(monDeleteTrx);
-	BOOST_REQUIRE(monitoredItemServiceIfTestHandler.monitoredItemServiceDeleteMonitoredItemsResponse_.waitForCondition(1000) == true);
+	monitoredItemService->syncSend(monDeleteTrx);
 	BOOST_REQUIRE(monDeleteTrx->statusCode() == Success);
 
 	DeleteMonitoredItemsResponse::SPtr monDeleteRes = monDeleteTrx->response();
@@ -109,19 +100,14 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
-	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
+	subscriptionService->syncSend(subDeleteTrx);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	subDeleteRes->results()->get(0, statusCode);
 	BOOST_REQUIRE(statusCode == Success);
 
 	// disconnect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 
