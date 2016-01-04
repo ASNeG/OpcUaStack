@@ -16,14 +16,13 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 {
 	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 	SessionServiceConfig sessionServiceConfig;
 
 	// set secure channel configuration
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 
-	// create session
+	// create session service
 	SessionService::SPtr sessionService;
 	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
@@ -39,14 +38,13 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 {
 	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
-	SessionServiceIfTestHandler sessionIfTestHandler;
 	SessionServiceConfig sessionServiceConfig;
 
 	// set secure channel configuration
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 
-	// create session
+	// create session service
 	SessionService::SPtr sessionService;
 	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
 	BOOST_REQUIRE(sessionService.get() != nullptr);
