@@ -5,14 +5,14 @@ using namespace OpcUaStackClient;
 
 #ifdef REAL_SERVER
 
-BOOST_AUTO_TEST_SUITE(ServiceSetManagerAsyncReal_Subscription)
+BOOST_AUTO_TEST_SUITE(ServiceSetManagerSyncReal_Subscription)
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscription)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscription)
 {
-	std::cout << "ServiceSetManagerAsyncReal_Subscription_t" << std::endl;
+	std::cout << "ServiceSetManagerSyncReal_Subscription_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_delete)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Subscriptionsubscription_create_delete)
 {
 	ServiceSetManager serviceSetManager;
 	SessionServiceIfTestHandler sessionServiceIfTestHandler;
@@ -29,10 +29,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_
 	BOOST_REQUIRE(sessionService.get() != nullptr);
 
 	// connect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncConnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Connect);
+	BOOST_REQUIRE(sessionService->syncConnect() == Success);
 
 	// create subscription service
 	SubscriptionService::SPtr subscriptionService;
@@ -44,9 +41,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_
 	ServiceTransactionCreateSubscription::SPtr subCreateTrx = ServiceTransactionCreateSubscription::construct();
 	CreateSubscriptionRequest::SPtr subCreateReq = subCreateTrx->request();
 	CreateSubscriptionResponse::SPtr subCreateRes = subCreateTrx->response();
-	subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.condition(1,0);
-	subscriptionService->asyncSend(subCreateTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceCreateSubscriptionResponse_.waitForCondition(1000) == true);
+	subscriptionService->syncSend(subCreateTrx);
 	BOOST_REQUIRE(subCreateTrx->responseHeader()->serviceResult() == Success);
 	uint32_t subscriptionId = subCreateRes->subscriptionId();
 
@@ -56,9 +51,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_
 	DeleteSubscriptionsResponse::SPtr subDeleteRes = subDeleteTrx->response();
 	subDeleteReq->subscriptionIds()->resize(1);
 	subDeleteReq->subscriptionIds()->set(0, subscriptionId);
-	subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.condition(1,0);
-	subscriptionService->asyncSend(subDeleteTrx);
-	BOOST_REQUIRE(subscriptionServiceIfTestHandler.subscriptionServiceDeleteSubscriptionsResponse_.waitForCondition(1000) == true);
+	subscriptionService->syncSend(subDeleteTrx);
 	BOOST_REQUIRE(subDeleteTrx->responseHeader()->serviceResult() == Success);
 	BOOST_REQUIRE(subDeleteRes->results()->size() == 1);
 	OpcUaStatusCode statusCode;
@@ -66,10 +59,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Subscriptionsubscription_create_
 	BOOST_REQUIRE(statusCode == Success);
 
 	// disconnect secure channel
-	sessionServiceIfTestHandler.sessionStateUpdate_.condition(1,0);
-	sessionService->asyncDisconnect();
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
-	BOOST_REQUIRE(sessionServiceIfTestHandler.sessionState_ == SS_Disconnect);
+	BOOST_REQUIRE(sessionService->syncDisconnect() == Success);
 }
 
 
