@@ -34,7 +34,7 @@ namespace OpcUaStackCore
 	}
 
 	IOService::~IOService(void)
-	{		
+	{
 	}
 
 	void 
