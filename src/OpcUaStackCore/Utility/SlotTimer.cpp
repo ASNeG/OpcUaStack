@@ -342,7 +342,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SlotTimer::SlotTimer(void)
-	: slotArray1_(255, 1)
+	: ioService_(nullptr)
+	, slotArray1_(255, 1)
 	, slotArray2_(64, 255*1)
 	, slotArray3_(64, 255*1*64)
 	, slotArray4_(64, 255*1*64*64)
