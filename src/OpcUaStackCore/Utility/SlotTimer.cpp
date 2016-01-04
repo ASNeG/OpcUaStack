@@ -464,9 +464,9 @@ namespace OpcUaStackCore
 	{
 		running_ = true;
 		ioService_ = ioService;
-		startTime_ = boost::posix_time::microsec_clock::local_time();
+		startTime_ = boost::posix_time::microsec_clock::universal_time();
 
-		timer_ = new boost::asio::deadline_timer(ioService_->io_service(), boost::posix_time::milliseconds(0));
+		timer_ = new boost::asio::deadline_timer(ioService->io_service(), boost::posix_time::milliseconds(0));
 		timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
 	}
 		
@@ -474,7 +474,7 @@ namespace OpcUaStackCore
 	SlotTimer::stopSlotTimerLoop(void)
 	{
 		running_ = false;
-		IOService::msecSleep(20);
+		IOService::msecSleep(100);
 		delete timer_;
 		timer_ = nullptr;
 	}

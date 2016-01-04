@@ -90,9 +90,8 @@ namespace OpcUaStackCore
 		if (slotTimer_.get() != nullptr) return;
 
 		slotTimerCreateFlag_ = true;
-		SlotTimer::SPtr slotTimer = constructSPtr<SlotTimer>();
-		slotTimer->startSlotTimerLoop(ioService_.get());
-		slotTimer_ = slotTimer;
+		slotTimer_ = constructSPtr<SlotTimer>();
+		slotTimer_->startSlotTimerLoop(ioService_.get());
 	}
 
 	void

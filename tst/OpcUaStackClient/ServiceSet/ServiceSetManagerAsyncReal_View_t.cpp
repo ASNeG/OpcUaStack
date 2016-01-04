@@ -14,12 +14,12 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_View_discovery_GetEndpoints)
 {
-	ViewServiceIfTestHandler viewServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
+	ViewServiceIfTestHandler viewServiceIfTestHandler;
 	SessionServiceIfTestHandler sessionIfTestHandler;
-	SessionServiceConfig sessionServiceConfig;
 
 	// set secure channel configuration
+	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 
