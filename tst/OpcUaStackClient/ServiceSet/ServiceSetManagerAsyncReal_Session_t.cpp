@@ -14,11 +14,11 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_)
 
 BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Session_session_connect_disconnect)
 {
-	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 	ServiceSetManager serviceSetManager;
-	SessionServiceConfig sessionServiceConfig;
+	SessionServiceIfTestHandler sessionServiceIfTestHandler;
 
 	// set secure channel configuration
+	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 
