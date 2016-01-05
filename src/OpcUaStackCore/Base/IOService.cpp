@@ -63,7 +63,7 @@ namespace OpcUaStackCore
 
 		// wait until all threads have been started
 		startMutex_.lock();
-		while (runningThreads_ != runningThreads_) startCondition_.wait(startMutex_);
+		while (runningThreads_ != numberThreads_) startCondition_.wait(startMutex_);
 		startMutex_.unlock();
 	}
 
