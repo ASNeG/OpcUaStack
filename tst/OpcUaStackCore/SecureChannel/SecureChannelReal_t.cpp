@@ -5,6 +5,8 @@
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 
+#ifdef REAL_SERVER
+
 using namespace OpcUaStackCore;
 
 class SecureChannelClientRealTest
@@ -157,3 +159,5 @@ BOOST_AUTO_TEST_CASE(SecureChannelReal_Connect_SendRequest_ReceiveResponse_Disco
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
