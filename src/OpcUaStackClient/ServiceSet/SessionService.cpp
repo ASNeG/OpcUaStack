@@ -277,7 +277,7 @@ namespace OpcUaStackClient
 		secureChannelTransaction->requestId_ = ++requestId_;
 		std::iostream ios(&secureChannelTransaction->os_);
 
-		OpcUaString::SPtr localeIdSPtr = OpcUaString::construct();
+		OpcUaString::SPtr localeIdSPtr = constructSPtr<OpcUaString>();
 		*localeIdSPtr = "en";
 
 		ActivateSessionRequest activateSessionRequest;

@@ -60,7 +60,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		OpcUaString::SPtr stringValue = OpcUaString::construct();
+		OpcUaString::SPtr stringValue = constructSPtr<OpcUaString>();
 		*stringValue = namespaceName;
 		dataValue.variant()->pushBack(stringValue);
 		dataValue.statusCode(Success);
@@ -76,7 +76,7 @@ namespace OpcUaStackServer
 		OpcUaDataValue dataValue;
 		std::vector<std::string>::iterator it;
 		for (it = namespaceNameVec.begin(); it != namespaceNameVec.end(); it++) {
-			OpcUaString::SPtr stringValue = OpcUaString::construct();
+			OpcUaString::SPtr stringValue = constructSPtr<OpcUaString>();
 			*stringValue = *it;
 			dataValue.variant()->pushBack(stringValue);
 		}
@@ -97,7 +97,7 @@ namespace OpcUaStackServer
 
 		std::vector<std::string>::iterator it;
 		for (it = namespaceNameVec.begin(); it != namespaceNameVec.end(); it++) {
-			OpcUaString::SPtr stringValue = OpcUaString::construct();
+			OpcUaString::SPtr stringValue = constructSPtr<OpcUaString>();
 			*stringValue = *it;
 			dataValue.variant()->pushBack(stringValue);
 		}

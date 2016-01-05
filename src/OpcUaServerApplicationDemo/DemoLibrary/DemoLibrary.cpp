@@ -288,9 +288,7 @@ namespace OpcUaServerApplicationDemo
 
 		// String
 		nodeId.set(222, namespaceIndex_);
-		OpcUaString::SPtr str = OpcUaString::construct();
-		str->value("string");
-		dataValue = createDataValue();
+		OpcUaString::SPtr str = constructSPtr<OpcUaString>();
 		dataValue->variant()->variant(str);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
 
@@ -298,7 +296,7 @@ namespace OpcUaServerApplicationDemo
 		nodeId.set(223, namespaceIndex_);
 		dataValue = createDataValue();
 		for (uint32_t pos=0; pos<3;pos++) {
-			OpcUaString::SPtr str = OpcUaString::construct();
+			OpcUaString::SPtr str = constructSPtr<OpcUaString>();
 			str->value("string");
 			dataValue->variant()->pushBack(str);
 		}
@@ -306,7 +304,7 @@ namespace OpcUaServerApplicationDemo
 
 		// ByteString
 		nodeId.set(224, namespaceIndex_);
-		OpcUaByteString::SPtr bstr = OpcUaByteString::construct();
+		OpcUaByteString::SPtr bstr = constructSPtr<OpcUaByteString>();
 		bstr->value("string");
 		dataValue = createDataValue();
 		dataValue->variant()->variant(bstr);
@@ -316,7 +314,7 @@ namespace OpcUaServerApplicationDemo
 		nodeId.set(225, namespaceIndex_);
 		dataValue = createDataValue();
 		for (uint32_t pos=0; pos<3;pos++) {
-			OpcUaByteString::SPtr bstr = OpcUaByteString::construct();
+			OpcUaByteString::SPtr bstr = constructSPtr<OpcUaByteString>();
 			bstr->value("string");
 			dataValue->variant()->pushBack(bstr);
 		}
@@ -358,7 +356,7 @@ namespace OpcUaServerApplicationDemo
 
 		// GUID
 		nodeId.set(230, namespaceIndex_);
-		OpcUaGuid::SPtr guid = OpcUaGuid::construct();
+		OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
 		*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 		dataValue = createDataValue();
 		dataValue->variant()->variant(guid);
@@ -368,7 +366,7 @@ namespace OpcUaServerApplicationDemo
 		nodeId.set(231, namespaceIndex_);
 		dataValue = createDataValue();
 		for (uint32_t pos=0; pos<3;pos++) {
-			OpcUaGuid::SPtr guid = OpcUaGuid::construct();
+			OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
 			*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 			dataValue->variant()->pushBack(guid);
 		}
@@ -586,7 +584,7 @@ namespace OpcUaServerApplicationDemo
 		}
 		if (timerInterval_ == 0) return;
 
-		slotTimerElement_ = SlotTimerElement::construct();
+		slotTimerElement_ = constructSPtr<SlotTimerElement>();
 		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), timerInterval_);
 		slotTimer_.start(slotTimerElement_);
@@ -599,7 +597,7 @@ namespace OpcUaServerApplicationDemo
 		OpcUaUInt32 loopTime(1111);
 		loopTime_->variant()->variant(loopTime);
 
-		slotTimerElement_ = SlotTimerElement::construct();
+		slotTimerElement_ = constructSPtr<SlotTimerElement>();
 		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), 1111);
 		slotTimer_.start(slotTimerElement_);

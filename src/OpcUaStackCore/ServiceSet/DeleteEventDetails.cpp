@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	DeleteEventDetails::DeleteEventDetails(void)
 	: ObjectPool<DeleteEventDetails>()
 	, nodeId_()
-	, eventIdArraySPtr_(OpcUaByteStringArray::construct())
+	, eventIdArraySPtr_(constructSPtr<OpcUaByteStringArray>())
 	{
 	}
 

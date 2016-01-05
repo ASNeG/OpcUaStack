@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	DeleteAtTimeDetails::DeleteAtTimeDetails(void)
 	: ObjectPool<DeleteAtTimeDetails>()
 	, nodeId_()
-	, reqTimeArraySPtr_(UtcTimeArray::construct())
+	, reqTimeArraySPtr_(constructSPtr<UtcTimeArray>())
 	{
 	}
 

@@ -162,7 +162,7 @@ namespace OpcUaStackCore
 
 		  static void opcUaBinaryDecode(std::istream& is, boost::shared_ptr<T>& value)
 		  {
-			  value = T::construct();
+			  value = constructSPtr<T>();
 			  value->opcUaBinaryDecode(is);
 		  }
 
@@ -179,7 +179,7 @@ namespace OpcUaStackCore
 
 		  static boost::shared_ptr<T> copy( boost::shared_ptr<T>& sourceValue, boost::shared_ptr<T>& destValue)
 		  {
-			  destValue = T::construct();
+			  destValue = constructSPtr<T>();
 			  sourceValue->copyTo(*destValue);
 			  return destValue;
 		  }

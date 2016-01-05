@@ -39,7 +39,7 @@ namespace OpcUaStackServer
 	, baseNodeClass_()
 	, attribute_(nullptr)
 	, dataValue_()
-	, slotTimerElement_(SlotTimerElement::construct())
+	, slotTimerElement_(constructSPtr<SlotTimerElement>())
 	{
 	}
 

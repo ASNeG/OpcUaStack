@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	PublishResponse::PublishResponse(void)
 	: ObjectPool<PublishResponse>()
 	, subscriptionId_()
-	, availableSequenceNumberArraySPtr_(OpcUaUInt32Array::construct())
+	, availableSequenceNumberArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	, moreNotifications_()
 	, notficiationMessageSPtr_(NotificationMessage::construct())
 	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())

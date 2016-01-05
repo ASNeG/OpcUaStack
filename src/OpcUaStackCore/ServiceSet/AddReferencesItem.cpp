@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 		: sourceNodeIdSPtr_(OpcUaNodeId::construct()),
 		referenceTypeIdSPtr_(OpcUaNodeId::construct()),
 		isForward_(false),
-		targetServerUriSPtr_(OpcUaString::construct()),
+		targetServerUriSPtr_(constructSPtr<OpcUaString>()),
 		targetNodeIdSPtr_(OpcUaExpandedNodeId::construct()),
 		targetNodeClassSPtr_(NodeClass::construct())
 	{

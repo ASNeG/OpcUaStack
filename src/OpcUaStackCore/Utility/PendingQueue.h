@@ -3,7 +3,6 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Object.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Utility/Timer.h"
 
@@ -11,7 +10,6 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT PendingQueueElement
-	: public ObjectPool<PendingQueueElement>
 	{
 	  public:
 		typedef boost::shared_ptr<PendingQueueElement> SPtr;

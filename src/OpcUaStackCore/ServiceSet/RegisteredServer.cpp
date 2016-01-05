@@ -32,10 +32,10 @@ namespace OpcUaStackCore
 	: ObjectPool<RegisteredServer>()
 	, serverUri_()
 	, productUri_()
-	, serverNameArraySPtr_(OpcUaStringArray::construct())
+	, serverNameArraySPtr_(constructSPtr<OpcUaStringArray>())
 	, serverType_()
 	, gatewayServerUri_()
-	, discoveryUrlArraySPtr_(OpcUaStringArray::construct())
+	, discoveryUrlArraySPtr_(constructSPtr<OpcUaStringArray>())
 	, semaphoreFilePath_()
 	, isOnline_()
 	{

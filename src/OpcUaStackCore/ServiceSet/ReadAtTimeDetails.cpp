@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	ReadAtTimeDetails::ReadAtTimeDetails(void)
 	: ObjectPool<ReadAtTimeDetails>()
-	, reqTimeArraySPtr_(UtcTimeArray::construct())
+	, reqTimeArraySPtr_(constructSPtr<UtcTimeArray>())
 	{
 	}
 

@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 	: ObjectPool<SetTriggeringRequest>()
 	, subscriptionId_()
 	, triggeringItemId_()
-	, linksToAddArraySPtr_(OpcUaUInt32Array::construct())
-	, linksToRemoveArraySPtr_(OpcUaUInt32Array::construct())
+	, linksToAddArraySPtr_(constructSPtr<OpcUaUInt32Array>())
+	, linksToRemoveArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{
 	}
 

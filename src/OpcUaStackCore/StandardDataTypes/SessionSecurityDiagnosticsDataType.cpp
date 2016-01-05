@@ -24,7 +24,7 @@ namespace OpcUaStackCore
 	: ObjectPool<SessionSecurityDiagnosticsDataType>()
 	, sessionId_()
 	, clientUserIdOfSession_()
-	, clientUserIdHistory_(OpcUaStringArray::construct())
+	, clientUserIdHistory_(constructSPtr<OpcUaStringArray>())
 	, authenticationMechanism_()
 	, encoding_()
 	, transportProtocol_()

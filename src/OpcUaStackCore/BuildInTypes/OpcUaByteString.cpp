@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaByteString::OpcUaByteString(void)
-	:  ObjectPool<OpcUaByteString>()
+	: Object()
 	, length_(-1)
 	, value_(NULL)
 	{

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	TransferSubscriptionsRequest::TransferSubscriptionsRequest(void)
 	: ObjectPool<TransferSubscriptionsRequest>()
-	, subscriptionIdArraySPtr_(OpcUaUInt32Array::construct())
+	, subscriptionIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	, sendInitialValues_()
 	{
 	}

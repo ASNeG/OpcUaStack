@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaString : public ObjectPool<OpcUaString>
+	class DLLEXPORT OpcUaString
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaString> SPtr;
@@ -67,7 +68,8 @@ namespace OpcUaStackCore
 		std::string value_; 
 	};
 
-	class OpcUaStringArray : public OpcUaArray<OpcUaString::SPtr, SPtrTypeCoder<OpcUaString> >, public ObjectPool<OpcUaStringArray> 
+	class OpcUaStringArray
+	: public OpcUaArray<OpcUaString::SPtr, SPtrTypeCoder<OpcUaString> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaStringArray> SPtr;

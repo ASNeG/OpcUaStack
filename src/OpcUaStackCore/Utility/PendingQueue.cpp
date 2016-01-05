@@ -1,3 +1,4 @@
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 
 namespace OpcUaStackCore
@@ -11,7 +12,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	PendingQueueElement::PendingQueueElement(IOService& ioService)
-	: timer_(Timer::construct(ioService))
+	: timer_(constructSPtr<Timer>(ioService))
 	{
 	}
 	
@@ -84,7 +85,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		PendingQueueElement::SPtr pendingQueueElement = PendingQueueElement::construct(*ioService_);
+		PendingQueueElement::SPtr pendingQueueElement = constructSPtr<PendingQueueElement>(*ioService_);
 		pendingQueueElement->key(key);
 		pendingQueueElement->element(object);
 		pendingQueueElement->timer()->callback().reset(boost::bind(&PendingQueue::onTimeout, this, key));

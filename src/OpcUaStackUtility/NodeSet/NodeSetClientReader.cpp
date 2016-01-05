@@ -244,7 +244,7 @@ namespace OpcUaStackUtility
 			Log(Debug, "browse continuation point found")
 				.parameter("NodeId", nodeId);
 
-			OpcUaByteString::SPtr continuationPoint = OpcUaByteString::construct();
+			OpcUaByteString::SPtr continuationPoint = constructSPtr<OpcUaByteString>();
 			browseResult->continuationPoint().copyTo(*continuationPoint);
 
 			if (!browse(nodeId, referenceDescription, continuationPoint)) return false;
@@ -358,7 +358,7 @@ namespace OpcUaStackUtility
 				Log(Debug, "browse continuation point found")
 					.parameter("NodeId", *browseDescription->nodeId());
 
-				OpcUaByteString::SPtr continuationPoint = OpcUaByteString::construct();
+				OpcUaByteString::SPtr continuationPoint = constructSPtr<OpcUaByteString>();
 				browseResult->continuationPoint().copyTo(*continuationPoint);
 
 				if (!browse(nodeIdVec[pos], referenceDescriptionVec[pos], continuationPoint)) return false;

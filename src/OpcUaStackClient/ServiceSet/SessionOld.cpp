@@ -44,7 +44,7 @@ namespace OpcUaStackClient
 	, sessionServiceIf_(nullptr)
 	, createSessionResponseSPtr_(OpcUaStackCore::CreateSessionResponse::construct())
 	, activateSessionResponseSPtr_(OpcUaStackCore::ActivateSessionResponse::construct())
-	, timer_(Timer::construct(ioService))
+	, timer_(constructSPtr<Timer>(ioService))
 	{
 		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
@@ -313,7 +313,7 @@ namespace OpcUaStackClient
 		activateSessionRequestSPtr->requestHeader()->requestHandle(++requestHandle_);
 		activateSessionRequestSPtr->requestHeader()->sessionAuthenticationToken() = createSessionResponseSPtr_->authenticationToken();
 
-		OpcUaString::SPtr localeIdSPtr = OpcUaString::construct();
+		OpcUaString::SPtr localeIdSPtr = constructSPtr<OpcUaString>();
 		*localeIdSPtr = "en";
 		activateSessionRequestSPtr->localeIds()->resize(1);
 		activateSessionRequestSPtr->localeIds()->push_back(localeIdSPtr);

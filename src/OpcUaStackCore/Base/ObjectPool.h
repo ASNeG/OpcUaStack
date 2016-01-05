@@ -98,7 +98,7 @@ namespace OpcUaStackCore
 
 
 
-
+//#if 0
 	////////////////////////////////////////////
 	////////////////////////////////////////////
 	template<typename OBJ>
@@ -228,6 +228,7 @@ namespace OpcUaStackCore
 		{
 		}
 	};
+//#endif
 
 }
 

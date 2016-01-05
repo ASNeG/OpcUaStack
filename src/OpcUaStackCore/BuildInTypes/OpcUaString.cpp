@@ -31,15 +31,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaString::OpcUaString(void)
-	: ObjectPool<OpcUaString>()
+	: Object()
 	, exist_(false)
 	, value_()
 	{
 	}
 
 	OpcUaString::OpcUaString(const std::string& value)
-	: ObjectPool<OpcUaString>()
-	, exist_(true)
+	: exist_(true)
 	, value_(value)
 	{
 	}

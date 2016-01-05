@@ -35,7 +35,7 @@ namespace OpcUaStackCore
 		value_(OpcUaDataValue::construct()),
 		dataType_(OpcUaNodeId::construct()),
 		valueRank_(-1),
-		arrayDimensions_(OpcUaUInt32Array::construct()),
+		arrayDimensions_(constructSPtr<OpcUaUInt32Array>()),
 		accessLevel_(0),
 		userAccessLevel_(0),
 		minimumSamplingInterval_(),

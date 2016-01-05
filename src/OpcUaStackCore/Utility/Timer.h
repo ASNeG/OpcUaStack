@@ -4,14 +4,12 @@
 #include <boost/asio.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Callback.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Timer
-	: public ObjectPool<Timer>
 	{
 	  public:
 		typedef boost::shared_ptr<Timer> SPtr;

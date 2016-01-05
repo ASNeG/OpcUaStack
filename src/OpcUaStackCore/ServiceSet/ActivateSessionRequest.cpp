@@ -24,7 +24,7 @@ namespace OpcUaStackCore
 	: requestHeaderSPtr_(RequestHeader::construct())
 	, clientSignature_(SignatureData::construct())
 	, signedSoftwareCertificate_(SignedSoftwareCertificateArray::construct())
-	, localeIds_(LocaleIdArray::construct())
+	, localeIds_(constructSPtr<LocaleIdArray>())
 	, userIdentityToken_(ExtensibleParameter::construct())
 	, userTokenSignature_(SignatureData::construct())
 	{

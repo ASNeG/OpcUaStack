@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 	: ObjectPool<GetEndpointsRequest>()
 	, requestHeaderSPtr_(RequestHeader::construct())
 	, endpointUrl_()
-	, localeIdArraySPtr_(OpcUaStringArray::construct())
-	, profileUriArraySPtr_(OpcUaStringArray::construct())
+	, localeIdArraySPtr_(constructSPtr<OpcUaStringArray>())
+	, profileUriArraySPtr_(constructSPtr<OpcUaStringArray>())
 	{
 	}
 

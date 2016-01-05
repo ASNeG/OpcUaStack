@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	SetPublishingModeRequest::SetPublishingModeRequest(void)
 	: ObjectPool<SetPublishingModeRequest>()
 	, publishingEnabled_()
-	, subscriptionIdArraySPtr_(OpcUaUInt32Array::construct())
+	, subscriptionIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{
 	}
 

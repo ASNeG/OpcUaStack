@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 	, clientDescription_(ApplicationDescription::construct())
 	, serverUri_()
 	, endpointUri_()
-	, localeIds_(OpcUaStringArray::construct())
+	, localeIds_(constructSPtr<OpcUaStringArray>())
 	, actualSessionTimeout_()
 	, maxResponseMessageSize_()
 	, clientConnectionTime_()

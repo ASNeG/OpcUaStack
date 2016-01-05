@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 
 	Subscription::Subscription(void)
 	: subscriptionId_(uniqueSubscriptionId())
-	, slotTimerElement_(SlotTimerElement::construct())
+	, slotTimerElement_(constructSPtr<SlotTimerElement>())
 	, retransmissionQueue_()
 	, monitorManager_()
 	{

@@ -429,7 +429,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaGuid:
 			{
-				OpcUaGuid::SPtr value = OpcUaGuid::construct();
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaGuid::SPtr opcUaGuidSPtr = boost::static_pointer_cast<OpcUaGuid>(opcUaVariantSPtr.objectSPtr_);
 				opcUaGuidSPtr->copyTo(*value);
@@ -438,7 +438,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaByteString:
 			{
-				OpcUaByteString::SPtr value = OpcUaByteString::construct();
+				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaByteString::SPtr opcUaByteStringSPtr = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr.objectSPtr_);
 				opcUaByteStringSPtr->copyTo(*value);
@@ -447,7 +447,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaString:
 			{
-				OpcUaString::SPtr value = OpcUaString::construct();
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaString::SPtr opcUaStringSPtr = boost::static_pointer_cast<OpcUaString>(opcUaVariantSPtr.objectSPtr_);
 				opcUaStringSPtr->copyTo(*value);
@@ -892,7 +892,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+				OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 				opcUaGuidSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaGuidSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaGuid;
@@ -903,7 +903,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
+				OpcUaByteString::SPtr opcUaByteStringSPtr = constructSPtr<OpcUaByteString>();
 				opcUaByteStringSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaByteStringSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaByteString;
@@ -914,7 +914,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+				OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 				opcUaStringSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaStringSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaString;
@@ -1248,7 +1248,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+				OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 				if (!opcUaGuidSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaGuidSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaGuid;
@@ -1259,7 +1259,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
+				OpcUaByteString::SPtr opcUaByteStringSPtr = constructSPtr<OpcUaByteString>();
 				if (!opcUaByteStringSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaByteStringSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaByteString;
@@ -1270,7 +1270,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+				OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 				if (!opcUaStringSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaStringSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaString;

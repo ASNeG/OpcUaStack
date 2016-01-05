@@ -11,7 +11,6 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT IOThread
-	: public ObjectPool<IOThread>
 	{
 	  public:
 		typedef boost::shared_ptr<IOThread> SPtr;

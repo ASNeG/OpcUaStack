@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	BrowseNextRequest::BrowseNextRequest(void)
 	: ObjectPool<BrowseNextRequest>()
 	, releaseContinuationPoints_()
-	, continuationPointArraySPtr_(OpcUaByteStringArray::construct())
+	, continuationPointArraySPtr_(constructSPtr<OpcUaByteStringArray>())
 	{
 	}
 

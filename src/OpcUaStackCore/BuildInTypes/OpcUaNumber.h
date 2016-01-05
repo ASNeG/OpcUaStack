@@ -24,94 +24,93 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumberTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaBooleanArray
-	: public OpcUaArray<OpcUaBoolean, NumberTypeCoder<OpcUaBoolean> >
-	, public ObjectPool<OpcUaBooleanArray>
+	: public Object
+	, public OpcUaArray<OpcUaBoolean, NumberTypeCoder<OpcUaBoolean> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaBooleanArray> SPtr;
 	};
 
 	class DLLEXPORT OpcUaSByteArray
-	: public OpcUaArray<OpcUaSByte, NumberTypeCoder<OpcUaSByte> >
-	, public ObjectPool<OpcUaSByteArray>
+	: public Object
+	, public OpcUaArray<OpcUaSByte, NumberTypeCoder<OpcUaSByte> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaSByteArray> SPtr;
 	};
 
 	class DLLEXPORT OpcUaByteArray
-	: public OpcUaArray<OpcUaByte, NumberTypeCoder<OpcUaByte> >
-	, public ObjectPool<OpcUaByteArray>
+	: public Object
+	, public OpcUaArray<OpcUaByte, NumberTypeCoder<OpcUaByte> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaByteArray> SPtr;
 	};
 
 	class DLLEXPORT OpcUaInt16Array
-	: public OpcUaArray<OpcUaInt16, NumberTypeCoder<OpcUaInt16> >
-	, public ObjectPool<OpcUaInt16Array>
+	: public Object
+	, public OpcUaArray<OpcUaInt16, NumberTypeCoder<OpcUaInt16> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaInt16Array> SPtr;
 	};
 
 	class DLLEXPORT OpcUaUInt16Array
-	: public OpcUaArray<OpcUaUInt16, NumberTypeCoder<OpcUaUInt16> >
-	, public ObjectPool<OpcUaUInt16Array>
+	: public Object
+	, public OpcUaArray<OpcUaUInt16, NumberTypeCoder<OpcUaUInt16> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaUInt16Array> SPtr;
 	};
 
 	class DLLEXPORT OpcUaInt32Array
-	: public OpcUaArray<OpcUaInt32, NumberTypeCoder<OpcUaInt32> >
-	, public ObjectPool<OpcUaInt32Array>
+	: public Object
+	, public OpcUaArray<OpcUaInt32, NumberTypeCoder<OpcUaInt32> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaInt32Array> SPtr;
 	};
 
 	class DLLEXPORT OpcUaUInt32Array
-	: public OpcUaArray<OpcUaUInt32, NumberTypeCoder<OpcUaUInt32> >
-	, public ObjectPool<OpcUaUInt32Array>
+	: public Object
+	, public OpcUaArray<OpcUaUInt32, NumberTypeCoder<OpcUaUInt32> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaUInt32Array> SPtr;
 	};
 
 	class DLLEXPORT OpcUaInt64Array
-	: public OpcUaArray<OpcUaInt64, NumberTypeCoder<OpcUaInt64> >
-	, public ObjectPool<OpcUaInt64Array>
+	: public Object
+	, public OpcUaArray<OpcUaInt64, NumberTypeCoder<OpcUaInt64> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaInt64Array> SPtr;
 	};
 	
 	class DLLEXPORT OpcUaUInt64Array
-	: public OpcUaArray<OpcUaUInt64, NumberTypeCoder<OpcUaUInt64> >
-	, public ObjectPool<OpcUaUInt64Array>
+	: public Object
+	, public OpcUaArray<OpcUaUInt64, NumberTypeCoder<OpcUaUInt64> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaUInt64Array> SPtr;
 	};
 
 	class DLLEXPORT OpcUaFloatArray
-	: public OpcUaArray<OpcUaFloat, NumberTypeCoder<OpcUaFloat> >
-	, public ObjectPool<OpcUaFloatArray>
+	: public Object
+	, public OpcUaArray<OpcUaFloat, NumberTypeCoder<OpcUaFloat> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaFloatArray> SPtr;
 	};
 
 	class DLLEXPORT OpcUaDoubleArray
-	: public OpcUaArray<OpcUaDouble, NumberTypeCoder<OpcUaDouble> >
-	, public ObjectPool<OpcUaDoubleArray>
+	: public Object
+	, public OpcUaArray<OpcUaDouble, NumberTypeCoder<OpcUaDouble> >
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDoubleArray> SPtr;

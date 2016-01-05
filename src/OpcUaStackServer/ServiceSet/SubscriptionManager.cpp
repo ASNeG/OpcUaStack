@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 
 	SubscriptionManager::SubscriptionManager(void)
 	: ioService_(nullptr)
-	, slotTimer_(SlotTimer::construct())
+	, slotTimer_(constructSPtr<SlotTimer>())
 	, minPublishingInterval_(10)
 	, minLifetimeCount_(2)
     , minMaxKeepAliveCount_(2)

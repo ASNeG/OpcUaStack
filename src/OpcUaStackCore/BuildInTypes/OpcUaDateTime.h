@@ -63,7 +63,8 @@ namespace OpcUaStackCore
 		OpcUaUInt64 dateTime_;
 	};
 
-	class OpcUaDateTimeArray : public OpcUaArray<OpcUaDateTime>, public ObjectPool<OpcUaDateTimeArray> 
+	class OpcUaDateTimeArray
+	: public OpcUaArray<OpcUaDateTime>
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDateTimeArray> SPtr;

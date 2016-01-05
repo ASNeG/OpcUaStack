@@ -139,7 +139,7 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->applicationDescription()->discoveryUrls()->resize(discoveryUrls.size());
 			for (std::vector<std::string>::iterator it = discoveryUrls.begin(); it != discoveryUrls.end(); it++) {
-				OpcUaString::SPtr url = OpcUaString::construct();
+				OpcUaString::SPtr url = constructSPtr<OpcUaString>();
 				*url = *it;
 				endpointDescription->applicationDescription()->discoveryUrls()->push_back(url);
 			}

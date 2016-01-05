@@ -269,7 +269,7 @@ namespace OpcUaStackServer
 		{
 			OpcUaDataValue dataValue;
 			informationModel_->getValue(OpcUaId_Server_ServerCapabilities_LocaleIdArray, AttributeId_Value, dataValue);
-			OpcUaString::SPtr stringValue = OpcUaString::construct();
+			OpcUaString::SPtr stringValue = constructSPtr<OpcUaString>();
 			*stringValue = "en";
 			dataValue.variant()->pushBack(stringValue);
 			dataValue.statusCode(Success);

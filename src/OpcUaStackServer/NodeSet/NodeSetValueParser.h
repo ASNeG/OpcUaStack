@@ -88,7 +88,7 @@ namespace OpcUaStackServer
 					if (rc) variant.variant(variantValueVec);
 				}
 				else {
-					typename T::SPtr value = T::construct();
+					typename T::SPtr value = constructSPtr<T>();
 					rc = decode(ptreeValue.front().second, value, tag);
 					if (rc) variant.variant(value);
 				}
@@ -150,7 +150,7 @@ namespace OpcUaStackServer
 						return false;
 					}
 
-					typename T::SPtr value = T::construct();
+					typename T::SPtr value = constructSPtr<T>();
 					if (!decode(it->second, value, tag)) {
 						Log(Error, "decode error")
 							.parameter("Tag", tag);

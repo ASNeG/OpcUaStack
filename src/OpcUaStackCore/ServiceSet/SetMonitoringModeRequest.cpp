@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: ObjectPool<SetMonitoringModeRequest>()
 	, subscriptionId_()
 	, monitoringMode_()
-	, monitoredItemIdArraySPtr_(OpcUaUInt32Array::construct())
+	, monitoredItemIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{
 	}
 

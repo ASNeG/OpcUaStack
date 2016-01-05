@@ -22,8 +22,9 @@ namespace OpcUaStackServer
 {
 
 	MonitorManager::MonitorManager(void)
-	: monitorItemMap_()
-	, slotTimer_(SlotTimer::construct())
+	: ioService_(nullptr)
+	, monitorItemMap_()
+	, slotTimer_(constructSPtr<SlotTimer>())
 	{
 	}
 

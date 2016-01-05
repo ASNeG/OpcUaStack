@@ -88,12 +88,12 @@ namespace OpcUaStackCore
 	OpcUaNodeIdBase::set(const std::string& nodeId, OpcUaUInt16 namespaceIndex)
 	{
 		if (nodeId.length() == 36 && nodeId.substr(8,1) == "-" && nodeId.substr(13,1) == "-" && nodeId.substr(18,1) == "-" && nodeId.substr(23,1) == "-") {
-			OpcUaGuid::SPtr opcUaGuidSPtr = OpcUaGuid::construct();
+			OpcUaGuid::SPtr opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 			*opcUaGuidSPtr = nodeId;
 			nodeIdValue_ = opcUaGuidSPtr;
 		}
 		else {
-			OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+			OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 			*opcUaStringSPtr = nodeId;
 			nodeIdValue_ = opcUaStringSPtr;
 		}
@@ -103,7 +103,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaNodeIdBase::set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex)
 	{
-		OpcUaByteString::SPtr opcUaByteStringSPtr = OpcUaByteString::construct();
+		OpcUaByteString::SPtr opcUaByteStringSPtr = constructSPtr<OpcUaByteString>();
 		opcUaByteStringSPtr->value(buf, bufLen);
 		namespaceIndex_ = namespaceIndex;
 		nodeIdValue_ = opcUaByteStringSPtr;
@@ -172,7 +172,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaString:
 			{
 				OpcUaString::SPtr value = boost::get<OpcUaString::SPtr>(nodeIdValue_);
-				OpcUaString::SPtr newValue = OpcUaString::construct();
+				OpcUaString::SPtr newValue = constructSPtr<OpcUaString>();
 				value->copyTo(*newValue);
 				opcUaNodeIdBase.nodeId(newValue);
 				break;
@@ -180,7 +180,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaGuid:
 			{
 				OpcUaGuid::SPtr value = boost::get<OpcUaGuid::SPtr>(nodeIdValue_);
-				OpcUaGuid::SPtr newValue = OpcUaGuid::construct();
+				OpcUaGuid::SPtr newValue = constructSPtr<OpcUaGuid>();
 				value->copyTo(*newValue);
 				opcUaNodeIdBase.nodeId(newValue);
 				break;
@@ -188,7 +188,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaByteString:
 			{
 				OpcUaByteString::SPtr value = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
-				OpcUaByteString::SPtr newValue = OpcUaByteString::construct();
+				OpcUaByteString::SPtr newValue = constructSPtr<OpcUaByteString>();
 				value->copyTo(*newValue);
 				opcUaNodeIdBase.nodeId(newValue);
 				break;
@@ -396,7 +396,7 @@ namespace OpcUaStackCore
 			}
 			case 0x03:
 			{
-				OpcUaString::SPtr value = OpcUaString::construct();
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
 				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
 				value->opcUaBinaryDecode(is);
 				nodeIdValue_ = value;
@@ -404,7 +404,7 @@ namespace OpcUaStackCore
 			}
 			case 0x04:
 			{
-				OpcUaGuid::SPtr value = OpcUaGuid::construct();
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
 				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
 				value->opcUaBinaryDecode(is);
 				nodeIdValue_ = value;
@@ -412,7 +412,7 @@ namespace OpcUaStackCore
 			}
 			case 0x05:
 			{
-				OpcUaByteString::SPtr value = OpcUaByteString::construct();
+				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
 				OpcUaNumber::opcUaBinaryDecode(is, namespaceIndex_);
 				value->opcUaBinaryDecode(is);
 				nodeIdValue_ = value;
@@ -498,7 +498,7 @@ namespace OpcUaStackCore
 			posEnd = nodeIdString.length();
 
 			try {
-				OpcUaString::SPtr value = OpcUaString::construct();
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
 				*value = nodeIdString.substr(posBegin, posEnd-posBegin); 
 				nodeId(value);
 			} catch (boost::bad_lexical_cast&)
@@ -518,7 +518,7 @@ namespace OpcUaStackCore
 			posEnd = nodeIdString.length();
 
 			try {
-				OpcUaGuid::SPtr value = OpcUaGuid::construct();
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
 				*value = nodeIdString.substr(posBegin, posEnd-posBegin);
 				nodeId(value);
 			} catch (boost::bad_lexical_cast&)

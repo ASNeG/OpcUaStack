@@ -71,7 +71,7 @@ namespace OpcUaStackCore
 		if (ioService_.get() != nullptr) return;
 
 		ioServiceCreateFlag_ = true;
-		ioService_ = IOService::construct();
+		ioService_ = constructSPtr<IOService>();
 		ioService_->start(numberThreads_);
 	}
 
