@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CreateSessionRequest
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	OpcUaByte clientNonce[1];
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CreateSessionResponse
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	createSessionResponseSPtr = CreateSessionResponse::construct();
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
 	endpointDescriptionSPtr->applicationDescription()->applicationType(ApplicationType_Server);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
-	opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
@@ -272,7 +272,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
 	endpointDescriptionSPtr->applicationDescription()->applicationType(ApplicationType_Server);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
-	opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
@@ -298,7 +298,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
 	endpointDescriptionSPtr->applicationDescription()->applicationType(ApplicationType_Server);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
-	opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);

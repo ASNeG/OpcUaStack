@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE(IOThread_)
 
 BOOST_AUTO_TEST_CASE(IOThread_StartStop)
 {
-	IOThread::SPtr ioThread = IOThread::construct();
+	IOThread::SPtr ioThread = constructSPtr<IOThread>();
 
 	BOOST_REQUIRE(ioThread->startup() == true);
 	BOOST_REQUIRE(ioThread->shutdown() == true);
@@ -38,8 +38,8 @@ BOOST_AUTO_TEST_CASE(IOThread_StartStop)
 BOOST_AUTO_TEST_CASE(IOThread_ExpireFromNow)
 {
 	IOThreadTest ioThreadTest;
-	IOThread::SPtr ioThread = IOThread::construct();
-	SlotTimerElement::SPtr slotTimerElement = SlotTimerElement::construct();
+	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	SlotTimerElement::SPtr slotTimerElement = constructSPtr<SlotTimerElement>();
 
 	BOOST_REQUIRE(ioThread->startup() == true);
 

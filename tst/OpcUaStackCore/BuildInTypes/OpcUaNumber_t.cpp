@@ -117,8 +117,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArraySPtr)
 	std::stringstream ss;
 	OpcUaBooleanArray::SPtr value1, value2;
 
-	value1 = OpcUaBooleanArray::construct();
-	value2 = OpcUaBooleanArray::construct();
+	value1 = constructSPtr<OpcUaBooleanArray>();
+	value2 = constructSPtr<OpcUaBooleanArray>();
 
 	value1->resize(3);
 	value1->set(0, true);
@@ -143,8 +143,8 @@ BOOST_AUTO_TEST_CASE(OpcUaNumber_OpcUaBooleanArraySPtr_ptree)
 	boost::property_tree::ptree pt;
 	OpcUaBooleanArray::SPtr value1, value2;
 
-	value1 = OpcUaBooleanArray::construct();
-	value2 = OpcUaBooleanArray::construct();
+	value1 = constructSPtr<OpcUaBooleanArray>();
+	value2 = constructSPtr<OpcUaBooleanArray>();
 
 	value1->resize(3);
 	value1->set(0, true);

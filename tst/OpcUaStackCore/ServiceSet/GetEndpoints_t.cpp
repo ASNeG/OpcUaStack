@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	getEndpointsRequestSPtr = GetEndpointsRequest::construct();
 
 	// build RequestHeader
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 	requestHeader->timeoutHint(300000);
 	
 	// build Parameter
-	stringSPtr = OpcUaString::construct();
+	stringSPtr = constructSPtr<OpcUaString>();
 	stringSPtr->value("TestString");
 
 	getEndpointsRequestSPtr->requestHeader()->time(ptime);
@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
 	endpointDescriptionSPtr->applicationDescription()->applicationType(ApplicationType_Server);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
-	opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);

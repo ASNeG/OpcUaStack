@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	findServersRequestSPtr = FindServersRequest::construct();
 
 	// build RequestHeader
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	findServersRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	findServersRequestSPtr->requestHeader()->timeoutHint(300000);
 	
 	// build Parameter
-	stringSPtr = OpcUaString::construct();
+	stringSPtr = constructSPtr<OpcUaString>();
 	stringSPtr->value("TestString");
 
 	findServersRequestSPtr->endpointUrl("EndpointUrl");
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
 	applicationDescriptionSPtr->applicationType(ApplicationType_Server);
 	applicationDescriptionSPtr->discoveryUrls()->resize(1);
-	opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	applicationDescriptionSPtr->discoveryUrls()->set(0, opcUaStringSPtr);
 	

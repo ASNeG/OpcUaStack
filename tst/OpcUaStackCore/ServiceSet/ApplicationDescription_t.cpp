@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
 	applicationDescriptionSPtr->applicationType(ApplicationType_Server);
 	applicationDescriptionSPtr->discoveryUrls()->resize(1);
-	opcUaStringSPtr = OpcUaString::construct();
+	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	applicationDescriptionSPtr->discoveryUrls()->set(0, opcUaStringSPtr);
 	applicationDescriptionSPtr->opcUaBinaryEncode(ios);

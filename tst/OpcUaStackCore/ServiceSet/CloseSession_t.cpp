@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CloseSessionRequest
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	closeSessionRequestSPtr = CloseSessionRequest::construct();
 

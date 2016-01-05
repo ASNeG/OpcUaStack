@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	modifySubscriptionRequestSPtr = ModifySubscriptionRequest::construct();
 
 	// build RequestHeader
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);

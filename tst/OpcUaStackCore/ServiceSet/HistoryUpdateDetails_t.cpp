@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 	DeleteEventDetails details1, details2;
 
 	// encode
-	byteStringSPtr = OpcUaByteString::construct();
+	byteStringSPtr = constructSPtr<OpcUaByteString>();
 	byteStringSPtr->value("", 0);
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_DeleteEventDetails)
 	BOOST_REQUIRE(details2.nodeId().nodeId<OpcUaUInt32>() == 123);
 
 	BOOST_REQUIRE(details2.eventId()->size() == 1);
-	byteStringSPtr = OpcUaByteString::construct();
+	byteStringSPtr = constructSPtr<OpcUaByteString>();
 	details2.eventId()->get(byteStringSPtr);
 	BOOST_REQUIRE(byteStringSPtr->exist() == true);
 	BOOST_REQUIRE(byteStringSPtr->size() == 0);

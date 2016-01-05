@@ -2,12 +2,16 @@
 #include "OpcUaStackCore/Utility/Timer.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Base/Condition.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 
 using namespace OpcUaStackCore;
 
-class TimerTestObject : public ObjectPool<TimerTestObject>
+class TimerTestObject
+: public Object
 {
   public:
+	typedef boost::shared_ptr<TimerTestObject> SPtr;
+
 	uint32_t id_;
 };
 
@@ -71,7 +75,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stopSPtr)
 	ioService.start(1);
 
 	TimerTest timerTest;
-	Timer::SPtr timer = Timer::construct(ioService);
+	Timer::SPtr timer = constructSPtr<Timer>(ioService);
 	timer->callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
@@ -107,7 +111,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_expire_stop_sptr)
 	ioService.start(1);
 
 	TimerTest timerTest;
-	Timer::SPtr timer = Timer::construct(ioService);
+	Timer::SPtr timer = constructSPtr<Timer>(ioService);
 	timer->callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
@@ -125,7 +129,7 @@ BOOST_AUTO_TEST_CASE(Timer_start_stop_remove)
 	ioService.start(1);
 
 	TimerTest timerTest;
-	Timer::SPtr timer = Timer::construct(ioService);
+	Timer::SPtr timer = constructSPtr<Timer>(ioService);;
 	timer->callback().reset(boost::bind(&TimerTest::onTimeout, &timerTest));
 
 	timerTest.onTimeoutCondition_.condition(0, 1);
@@ -143,9 +147,9 @@ BOOST_AUTO_TEST_CASE(Timer_start_expire_stop_sptr_parameter)
 	IOService ioService;
 	ioService.start(1);
 
-	TimerTestObject::SPtr timerTestObject(TimerTestObject::construct()); 
+	TimerTestObject::SPtr timerTestObject(constructSPtr<TimerTestObject>());
 	TimerTest timerTest;
-	Timer::SPtr timer = Timer::construct(ioService);
+	Timer::SPtr timer = constructSPtr<Timer>(ioService);;
 	timer->callback().reset(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
 
 	timerTest.onTimeoutParameterCondition_.condition(0, 1);
@@ -163,9 +167,9 @@ BOOST_AUTO_TEST_CASE(Timer_start_stop_remove_parameter)
 	IOService ioService;
 	ioService.start(1);
 
-	TimerTestObject::SPtr timerTestObject(TimerTestObject::construct()); 
+	TimerTestObject::SPtr timerTestObject(constructSPtr<TimerTestObject>());
 	TimerTest timerTest;
-	Timer::SPtr timer = Timer::construct(ioService);
+	Timer::SPtr timer = constructSPtr<Timer>(ioService);;
 	timer->callback().reset(boost::bind(&TimerTest::onTimeoutParameter, &timerTest, timerTestObject));
 
 	timerTest.onTimeoutParameterCondition_.condition(0, 1);

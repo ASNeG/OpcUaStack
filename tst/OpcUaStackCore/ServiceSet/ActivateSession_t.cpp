@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode ActivateSessionRequest
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	activateSessionRequestSPtr = ActivateSessionRequest::construct();
 
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Request)
 	activateSessionRequestSPtr->requestHeader()->timeoutHint(10000);
 
 	activateSessionRequestSPtr->localeIds()->resize(1);
-	localeIdSPtr = OpcUaString::construct();
+	localeIdSPtr = constructSPtr<OpcUaString>();
 	*localeIdSPtr = "en";
 	activateSessionRequestSPtr->localeIds()->push_back(localeIdSPtr);
 

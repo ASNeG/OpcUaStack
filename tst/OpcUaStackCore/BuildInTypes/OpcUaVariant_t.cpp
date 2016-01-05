@@ -290,7 +290,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaGuid)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaGuid::SPtr guidSPtr = OpcUaGuid::construct();
+	OpcUaGuid::SPtr guidSPtr = constructSPtr<OpcUaGuid>();
 
 	*guidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	value1.variant(guidSPtr);
@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaNodeId)
 	OpcUaVariant value1, value2;
 	OpcUaNodeId::SPtr nodeIdSPtr = OpcUaNodeId::construct();
 
-	OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("ABC");
 
 	nodeIdSPtr->namespaceIndex(123);
@@ -347,7 +347,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExpandedNodeId)
 	OpcUaVariant value1, value2;
 	OpcUaExpandedNodeId::SPtr nodeIdSPtr = OpcUaExpandedNodeId::construct();
 
-	OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("ABC");
 
 	nodeIdSPtr->namespaceIndex(123);
@@ -413,7 +413,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaString)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaString::SPtr stringSPtr = OpcUaString::construct();
+	OpcUaString::SPtr stringSPtr = constructSPtr<OpcUaString>();
 
 	stringSPtr->value("text");
 	value1.variant(stringSPtr);
@@ -430,7 +430,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaString_copyTo)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaString::SPtr stringSPtr = OpcUaString::construct();
+	OpcUaString::SPtr stringSPtr = constructSPtr<OpcUaString>();
 
 	stringSPtr->value("text");
 	value1.variant(stringSPtr);
@@ -458,7 +458,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaByteString)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaByteString::SPtr byteStringSPtr = OpcUaByteString::construct();
+	OpcUaByteString::SPtr byteStringSPtr = constructSPtr<OpcUaByteString>();
 
 	byteStringSPtr->value("text", 4);
 	value1.variant(byteStringSPtr);
@@ -734,17 +734,17 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_string)
 	OpcUaVariantValue::Vec variantVec1, variantVec2;
 	OpcUaVariantValue variantValue1, variantValue2;
 	
-	string1 = OpcUaString::construct();
+	string1 = constructSPtr<OpcUaString>();
 	string1->value("Dies ist der erste string");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);
 
-	string1 = OpcUaString::construct();
+	string1 = constructSPtr<OpcUaString>();
 	string1->value("Dies ist der zweite string");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);
 
-	string1 = OpcUaString::construct();
+	string1 = constructSPtr<OpcUaString>();
 	string1->value("Dies ist der dritte string");
 	variantValue1.variant(string1);
 	variantVec1.push_back(variantValue1);

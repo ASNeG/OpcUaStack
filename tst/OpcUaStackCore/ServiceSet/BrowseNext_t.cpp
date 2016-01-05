@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Request)
 	browseNextRequestSPtr = BrowseNextRequest::construct();
 
 	// build RequestHeader
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Request)
 	requestHeader->timeoutHint(300000);
 
 	// build Parameters
-	continuationPointSPtr = OpcUaByteString::construct();
+	continuationPointSPtr = constructSPtr<OpcUaByteString>();
 	continuationPointSPtr->value("", 0);
 	browseNextRequestSPtr->releaseContinuationPoints(true);
 	browseNextRequestSPtr->continuationPoints()->set(continuationPointSPtr);
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Request)
 	
 	BOOST_REQUIRE(browseNextRequestSPtr->releaseContinuationPoints() == true);
 	BOOST_REQUIRE(browseNextRequestSPtr->continuationPoints()->size() == 1);
-	continuationPointSPtr = OpcUaByteString::construct();
+	continuationPointSPtr = constructSPtr<OpcUaByteString>();
 	browseNextRequestSPtr->continuationPoints()->get(continuationPointSPtr);
 	BOOST_REQUIRE(continuationPointSPtr->size() == 0);
 }

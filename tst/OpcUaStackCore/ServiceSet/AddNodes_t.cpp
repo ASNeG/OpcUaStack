@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode AddNodesRequest
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
 	OpcUaByte clientNonce[1];

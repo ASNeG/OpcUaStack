@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	registerServerRequestSPtr = RegisterServerRequest::construct();
 
 	// build RequestHeader
-	opcUaGuidSPtr = OpcUaGuid::construct();
+	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
 	registerServerRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	registerServerRequestSPtr->requestHeader()->timeoutHint(300000);
 	
 	// build RegisteredServer
-	stringSPtr = OpcUaString::construct();
+	stringSPtr = constructSPtr<OpcUaString>();
 	stringSPtr->value("TestString");
 
 	registerServerRequestSPtr->server().serverUri("Uri1");

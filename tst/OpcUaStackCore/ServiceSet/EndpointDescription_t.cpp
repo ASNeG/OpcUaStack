@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
 	endpointDescriptionSPtr->applicationDescription()->applicationType(ApplicationType_Server);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
-	OpcUaString::SPtr opcUaStringSPtr = OpcUaString::construct();
+	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
