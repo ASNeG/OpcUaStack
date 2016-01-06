@@ -188,7 +188,7 @@ namespace OpcUaStackServer
 			ReferenceDescription::SPtr referenceDescription = ReferenceDescription::construct();
 			referenceDescriptionVec.push_back(referenceDescription);
 
-			OpcUaExpandedNodeId::SPtr targetNodeId = OpcUaExpandedNodeId::construct();
+			OpcUaExpandedNodeId::SPtr targetNodeId = constructSPtr<OpcUaExpandedNodeId>();
 			baseNodeClassTarget->nodeId().data().copyTo(*targetNodeId);
 			referenceDescription->expandedNodeId(targetNodeId);
 			referenceTypeNodeId.copyTo(*referenceDescription->referenceTypeId());

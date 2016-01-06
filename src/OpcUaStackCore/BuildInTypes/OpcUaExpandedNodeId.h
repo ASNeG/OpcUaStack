@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaExpandedNodeId
-	: public ObjectPool<OpcUaExpandedNodeId>
+	: public Object
 	, public OpcUaNodeIdBase
 	{
 	  public:

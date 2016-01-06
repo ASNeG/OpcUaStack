@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	GetNodeReferenceRequest::GetNodeReferenceRequest(void)
 	: ObjectPool<GetNodeReferenceRequest>()
-	, nodes_(OpcUaNodeIdArray::construct())
+	, nodes_(constructSPtr<OpcUaNodeIdArray>())
 	{
 	}
 

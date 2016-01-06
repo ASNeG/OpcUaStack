@@ -32,11 +32,11 @@ namespace OpcUaStackCore
 	: ObjectPool<ReferenceDescription>()
 	, referenceTypeIdSPtr_(OpcUaNodeId::construct())
 	, isForward_()
-	, nodeIdSPtr_(OpcUaExpandedNodeId::construct())
+	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, browseName_()
 	, displayName_()
 	, nodeClass_()
-	, typeDefinitionSPtr_(OpcUaExpandedNodeId::construct())
+	, typeDefinitionSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	{
 	}
 

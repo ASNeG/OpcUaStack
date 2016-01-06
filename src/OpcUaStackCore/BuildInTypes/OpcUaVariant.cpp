@@ -470,7 +470,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaExpandedNodeId:
 			{
-				OpcUaExpandedNodeId::SPtr value = OpcUaExpandedNodeId::construct();
+				OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = boost::static_pointer_cast<OpcUaExpandedNodeId>(opcUaVariantSPtr.objectSPtr_);
 				opcUaExpandedNodeIdSPtr->copyTo(*value);
@@ -925,7 +925,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = OpcUaXmlElement::construct();
+				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = constructSPtr<OpcUaXmlElement>();
 				opcUaXmlElementSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaXmlElementSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaXmlElement;
@@ -947,7 +947,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = OpcUaExpandedNodeId::construct();
+				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = constructSPtr<OpcUaExpandedNodeId>();
 				opcUaExpandedNodeIdSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaExpandedNodeIdSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExpandedNodeId;
@@ -1281,7 +1281,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = OpcUaXmlElement::construct();
+				OpcUaXmlElement::SPtr opcUaXmlElementSPtr = constructSPtr<OpcUaXmlElement>();
 				if (!opcUaXmlElementSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaXmlElementSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaXmlElement;
@@ -1303,7 +1303,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = OpcUaExpandedNodeId::construct();
+				OpcUaExpandedNodeId::SPtr opcUaExpandedNodeIdSPtr = constructSPtr<OpcUaExpandedNodeId>();
 				if (opcUaExpandedNodeIdSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaExpandedNodeIdSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExpandedNodeId;

@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaExpandedNodeId::OpcUaExpandedNodeId(void)
-	: ObjectPool<OpcUaExpandedNodeId>()
+	: Object()
 	, OpcUaNodeIdBase()
 	, namespaceUri_()
 	, serverIndex_()

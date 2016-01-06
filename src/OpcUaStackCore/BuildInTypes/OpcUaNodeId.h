@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 	class OpcUaNodeIdArray
 	: public OpcUaArray<OpcUaNodeId::SPtr
 	, SPtrTypeCoder<OpcUaNodeId> >
-	, public ObjectPool<OpcUaNodeIdArray>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaNodeIdArray> SPtr;

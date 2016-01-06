@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterForwardRequest::RegisterForwardRequest(void)
 	: ObjectPool<RegisterForwardRequest>()
-	, nodesToRegisterArraySPtr_(OpcUaNodeIdArray::construct())
+	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
 	, forwardInfoSync_(ForwardInfoSync::construct())
 	{
 	}

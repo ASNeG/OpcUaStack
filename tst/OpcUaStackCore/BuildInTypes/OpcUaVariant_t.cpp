@@ -308,7 +308,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaXmlElement)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaXmlElement::SPtr xmlElementSPtr = OpcUaXmlElement::construct();
+	OpcUaXmlElement::SPtr xmlElementSPtr = constructSPtr<OpcUaXmlElement>();
 
 	value1.variant(xmlElementSPtr);
 	
@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExpandedNodeId)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaExpandedNodeId::SPtr nodeIdSPtr = OpcUaExpandedNodeId::construct();
+	OpcUaExpandedNodeId::SPtr nodeIdSPtr = constructSPtr<OpcUaExpandedNodeId>();
 
 	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("ABC");

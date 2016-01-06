@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	OpcUaXmlElement::OpcUaXmlElement(void)
-	: ObjectPool<OpcUaXmlElement>()
+	: Object()
 	{
 	}
 

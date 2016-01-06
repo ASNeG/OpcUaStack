@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	, startTime_()
 	, endTime_()
 	, resampleInterval_()
-	, aggregateTypeArraySPtr_(OpcUaNodeIdArray::construct())
+	, aggregateTypeArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
 	, aggregateConfiguration_()
 	{
 	}

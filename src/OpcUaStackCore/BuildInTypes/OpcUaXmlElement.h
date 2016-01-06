@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaXmlElement : public ObjectPool<OpcUaXmlElement>
+	class DLLEXPORT OpcUaXmlElement
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaXmlElement> SPtr;

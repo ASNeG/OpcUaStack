@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	NodeTypeDescription::NodeTypeDescription(void)
 	: ObjectPool<NodeTypeDescription>()
-	, typeDefinitionNodeSPtr_(OpcUaExpandedNodeId::construct())
+	, typeDefinitionNodeSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, includeSubtypes_()
 	, dataToReturnArraySPtr_(QueryDataDescriptionArray::construct()) 
 	{

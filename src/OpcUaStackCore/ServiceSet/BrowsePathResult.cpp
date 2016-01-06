@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: ObjectPool<BrowsePathResult>()
 	, statusCode_()
 	, targetArraySPtr_(RelativePathElementArray::construct())
-	, targetIdSPtr_(OpcUaExpandedNodeId::construct())
+	, targetIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, remainingPathIndex_()
 	{
 	}

@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	UnregisterNodesRequest::UnregisterNodesRequest(void)
 	: ObjectPool<UnregisterNodesRequest>()
-	, nodesToUnregisterArraySPtr_(OpcUaNodeIdArray::construct())
+	, nodesToUnregisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
 	{
 	}
 
