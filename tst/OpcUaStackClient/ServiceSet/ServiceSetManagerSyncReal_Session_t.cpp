@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.session_->sessionName_(REAL_SESSION_NAME);
 
 	// create session service
 	SessionService::SPtr sessionService;
@@ -43,6 +44,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 	// set secure channel configuration
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.session_->sessionName_(REAL_SESSION_NAME);
 
 	// create session service
 	SessionService::SPtr sessionService;

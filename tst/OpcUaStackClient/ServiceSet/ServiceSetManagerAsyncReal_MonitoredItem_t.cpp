@@ -24,6 +24,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_MonitoredItem_create_delete)
 	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.session_->sessionName_(REAL_SESSION_NAME);
 
 	// create session
 	SessionService::SPtr sessionService;

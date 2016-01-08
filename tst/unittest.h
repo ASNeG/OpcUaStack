@@ -6,6 +6,8 @@
 
 #undef REAL_SERVER  
 #define REAL_SERVER_URI "opt.tcp://192.168.122.99:48010"
+//#define REAL_SESSION_NAME "urn:127.0.0.1:ASNeG.de:ASNeG-Client
+#define REAL_SESSION_NAME "urn:127.0.0.1:Company:Company-Client"
 
 //#define BOOST_TEST_MAIN
 #ifdef WIN32
