@@ -80,9 +80,8 @@ namespace OpcUaStackClient
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
 
 		// create session
-		SessionService::SPtr sessionService;
-		sessionService = serviceSetManager_.sessionService(sessionServiceConfig);
-		assert(sessionService.get() != nullptr);
+		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
+		assert(sessionService_.get() != nullptr);
 
 		// connect session
 		sessionStateUpdateCallback_ = callback;
@@ -93,7 +92,14 @@ namespace OpcUaStackClient
 	VBIClient::syncDisconnect(void)
 	{
 		// connect session
-		return sessionService_->syncDisconnect();
+		OpcUaStatusCode statusCode = sessionService_->syncDisconnect();
+		return statusCode;
+	}
+
+	void
+	VBIClient::asyncDisconnect(void)
+	{
+		sessionService_->asyncDisconnect();
 	}
 
 	void

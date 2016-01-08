@@ -48,12 +48,13 @@ namespace OpcUaStackClient
 		void asyncConnect(Callback& callback, ConnectContext& connectContext);
 		template<typename HANDLER>
 		    void asyncConnect(HANDLER handler, ConnectContext& connectContext) {
-				Callback callback = handler;
-				asyncConnect(handler, connectContext);
+				Callback callback(handler);
+				asyncConnect(callback, connectContext);
 			}
 
 
 		OpcUaStatusCode syncDisconnect(void);
+		void asyncDisconnect(void);
 		void asyncDisconnect(Callback& callback);
 		template<typename HANDLER>
 		    void asyncDisconnect(HANDLER handler) {
