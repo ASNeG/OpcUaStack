@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
-#include "OpcUaStackClient/ValueBasedInterface/ConnectContext.h"
+#include "OpcUaStackClient/ValueBasedInterface/VBIContext.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;

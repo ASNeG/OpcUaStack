@@ -15,17 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackClient/ValueBasedInterface/ConnectContext.h"
+#ifndef __OpcUaStackClient_VBIContext_h__
+#define __OpcUaStackClient_VBIContext_h__
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
+
+using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaStackClient
 {
 
-	ConnectContext::ConnectContext(void)
+	class DLLEXPORT ConnectContext
 	{
-	}
+	  public:
+		ConnectContext(void);
+		~ConnectContext(void);
 
-	ConnectContext::~ConnectContext(void)
-	{
-	}
+		std::string endpointUrl_;
+		std::string sessionName_;
+	};
 
 }
+
+#endif
