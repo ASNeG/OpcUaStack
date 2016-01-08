@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE(SecureChannelClient_)
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_)
 {
-	std::cout << "SecureChanneClientl_t" << std::endl;
+	std::cout << "SecureChannelClient_t" << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(SecureChannelClient_open)

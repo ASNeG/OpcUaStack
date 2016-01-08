@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_discovery_GetEndpoints)
 	SessionServiceConfig sessionServiceConfig;
 	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
-	sessionServiceConfig.session_->sessionName_(REAL_SESSION_NAME);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
 
 	// create session service
 	SessionService::SPtr sessionService;
