@@ -22,6 +22,7 @@ namespace OpcUaStackClient
 
 	VBIClient::VBIClient(void)
 	: serviceSetManager_()
+	, ioThreadName_("VBIClient")
 	, sessionService_()
 	, sessionStateUpdateCallback_()
 	{
@@ -29,6 +30,12 @@ namespace OpcUaStackClient
 
 	VBIClient::~VBIClient(void)
 	{
+	}
+
+	void
+	VBIClient::ioThreadName(const std::string& ioThreadName)
+	{
+		ioThreadName_ = ioThreadName;
 	}
 
 	// ------------------------------------------------------------------------
@@ -52,6 +59,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
+		sessionServiceConfig.ioThreadName(ioThreadName_);
 
 		// create session service
 		SessionService::SPtr sessionService;
@@ -84,12 +92,16 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	VBIClient::syncDisconnect(void)
 	{
-		return Success;
+		// connect session
+		return sessionService_->syncDisconnect();
 	}
 
 	void
 	VBIClient::asyncDisconnect(Callback& callback)
 	{
+		// disconnect session
+		sessionStateUpdateCallback_ = callback;
+		sessionService_->asyncDisconnect();
 	}
 
 	// ------------------------------------------------------------------------

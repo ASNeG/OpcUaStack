@@ -35,6 +35,8 @@ namespace OpcUaStackClient
 		VBIClient(void);
 		~VBIClient(void);
 
+		void ioThreadName(const std::string& ioThreadName);
+
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		//
@@ -90,6 +92,7 @@ namespace OpcUaStackClient
 		// END SessionServiceIf
 
 		ServiceSetManager serviceSetManager_;
+		std::string ioThreadName_;
 
 		SessionService::SPtr sessionService_;
 		Callback sessionStateUpdateCallback_;
