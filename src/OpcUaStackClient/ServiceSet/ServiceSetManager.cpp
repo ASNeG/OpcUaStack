@@ -82,8 +82,8 @@ namespace OpcUaStackClient
 	)
 	{
 		// create new session
-		createIOThread(sessionServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName_);
+		createIOThread(sessionServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(sessionServiceConfig.ioThreadName());
 		SessionService::SPtr sessionService = constructSPtr<SessionService>(ioThread.get());
 
 		// set session configuration
@@ -110,8 +110,8 @@ namespace OpcUaStackClient
 		DiscoveryServiceConfig& discoveryServiceConfig)
 	{
 		// create discovery service
-		createIOThread(discoveryServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName_);
+		createIOThread(discoveryServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(discoveryServiceConfig.ioThreadName());
 		DiscoveryService::SPtr discoveryService = constructSPtr<DiscoveryService>(ioThread.get());
 
 		// set discovery configuration
@@ -136,8 +136,8 @@ namespace OpcUaStackClient
 		AttributeServiceConfig& attributeServiceConfig)
 	{
 		// create attribute service
-		createIOThread(attributeServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(attributeServiceConfig.ioThreadName_);
+		createIOThread(attributeServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(attributeServiceConfig.ioThreadName());
 		AttributeService::SPtr attributeService = constructSPtr<AttributeService>(ioThread.get());
 
 		// set attribute configuration
@@ -162,8 +162,8 @@ namespace OpcUaStackClient
 		SubscriptionServiceConfig& subscriptionServiceConfig)
 	{
 		// create subscription service
-		createIOThread(subscriptionServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(subscriptionServiceConfig.ioThreadName_);
+		createIOThread(subscriptionServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(subscriptionServiceConfig.ioThreadName());
 		SubscriptionService::SPtr subscriptionService = constructSPtr<SubscriptionService>(ioThread.get());
 
 		// set subscription configuration
@@ -189,8 +189,8 @@ namespace OpcUaStackClient
 		MonitoredItemServiceConfig& monitoredItemServiceConfig)
 	{
 		// create monitored item service
-		createIOThread(monitoredItemServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName_);
+		createIOThread(monitoredItemServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(monitoredItemServiceConfig.ioThreadName());
 		MonitoredItemService::SPtr monitoredItemService = constructSPtr<MonitoredItemService>(ioThread.get());
 
 		// set monitored item configuration
@@ -215,8 +215,8 @@ namespace OpcUaStackClient
 		MethodServiceConfig& methodServiceConfig)
 	{
 		// create monitored item service
-		createIOThread(methodServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(methodServiceConfig.ioThreadName_);
+		createIOThread(methodServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(methodServiceConfig.ioThreadName());
 		MethodService::SPtr methodService = constructSPtr<MethodService>(ioThread.get());
 
 		// set method configuration
@@ -241,8 +241,8 @@ namespace OpcUaStackClient
 		ViewServiceConfig& viewServiceConfig)
 	{
 		// create view service
-		createIOThread(viewServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(viewServiceConfig.ioThreadName_);
+		createIOThread(viewServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(viewServiceConfig.ioThreadName());
 		ViewService::SPtr viewService = constructSPtr<ViewService>(ioThread.get());
 
 		// set view configuration
@@ -267,8 +267,8 @@ namespace OpcUaStackClient
 		QueryServiceConfig& queryServiceConfig)
 	{
 		// create query service
-		createIOThread(queryServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(queryServiceConfig.ioThreadName_);
+		createIOThread(queryServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(queryServiceConfig.ioThreadName());
 		QueryService::SPtr queryService = constructSPtr<QueryService>(ioThread.get());
 
 		// set query configuration
@@ -293,8 +293,8 @@ namespace OpcUaStackClient
 		NodeManagementServiceConfig& nodeManagementServiceConfig)
 	{
 		// create node mangement service
-		createIOThread(nodeManagementServiceConfig.ioThreadName_);
-		IOThread::SPtr ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName_);
+		createIOThread(nodeManagementServiceConfig.ioThreadName());
+		IOThread::SPtr ioThread = getIOThread(nodeManagementServiceConfig.ioThreadName());
 		NodeManagementService::SPtr nodeManagementService = constructSPtr<NodeManagementService>(ioThread.get());
 
 		// set node management configuration

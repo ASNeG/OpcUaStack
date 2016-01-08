@@ -33,6 +33,10 @@ namespace OpcUaStackClient
 		ServiceConfigBase(const std::string& ioThreadName);
 		virtual ~ServiceConfigBase(void);
 
+	    void ioThreadName(const std::string& ioThreadName);
+	    std::string ioThreadName(void);
+
+	   private:
 		std::string ioThreadName_;
 	};
 

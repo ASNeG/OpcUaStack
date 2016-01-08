@@ -40,5 +40,17 @@ namespace OpcUaStackClient
 	{
 	}
 
+    void
+    ServiceConfigBase::ioThreadName(const std::string& ioThreadName)
+    {
+    	ioThreadName_ = ioThreadName;
+    }
+
+    std::string
+    ServiceConfigBase::ioThreadName(void)
+    {
+    	return ioThreadName_;
+    }
+
 }
 
