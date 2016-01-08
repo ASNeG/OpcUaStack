@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
+#include "OpcUaStackClient/ValueBasedInterface/ConnectContext.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
@@ -28,6 +29,7 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT VBIClient
+	: public SessionServiceIf
 	{
 	  public:
 		VBIClient(void);
@@ -40,13 +42,14 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		OpcUaStatusCode syncConnect(void);
-		void asyncConnect(Callback& callback);
+		OpcUaStatusCode syncConnect(ConnectContext& connectContext);
+		void asyncConnect(Callback& callback, ConnectContext& connectContext);
 		template<typename HANDLER>
-		    void asyncConnect(HANDLER handler) {
+		    void asyncConnect(HANDLER handler, ConnectContext& connectContext) {
 				Callback callback = handler;
-				asyncConnect(handler);
+				asyncConnect(handler, connectContext);
 			}
+
 
 		OpcUaStatusCode syncDisconnect(void);
 		void asyncDisconnect(Callback& callback);
@@ -72,6 +75,7 @@ namespace OpcUaStackClient
 				asyncRead(nodeId, handler);
 			}
 
+
 		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
 		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback);
 		template<typename HANDLER>
@@ -81,6 +85,14 @@ namespace OpcUaStackClient
 			}
 
 	  private:
+		// BEGIN SessionServiceIf
+		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		// END SessionServiceIf
+
+		ServiceSetManager serviceSetManager_;
+
+		SessionService::SPtr sessionService_;
+		Callback sessionStateUpdateCallback_;
 	};
 
 }

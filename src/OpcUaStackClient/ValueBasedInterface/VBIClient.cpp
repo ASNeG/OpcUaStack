@@ -21,6 +21,9 @@ namespace OpcUaStackClient
 {
 
 	VBIClient::VBIClient(void)
+	: serviceSetManager_()
+	, sessionService_()
+	, sessionStateUpdateCallback_()
 	{
 	}
 
@@ -35,15 +38,47 @@ namespace OpcUaStackClient
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	OpcUaStatusCode
-	VBIClient::syncConnect(void)
+	void
+	VBIClient::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
-		return Success;
+		sessionStateUpdateCallback_(session, sessionState);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncConnect(ConnectContext& connectContext)
+	{
+		// set secure channel configuration
+		SessionServiceConfig sessionServiceConfig;
+		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
+		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
+
+		// create session service
+		SessionService::SPtr sessionService;
+		sessionService = serviceSetManager_.sessionService(sessionServiceConfig);
+		assert(sessionService.get() != nullptr);
+
+		// connect to opc ua server
+		return sessionService->syncConnect();
 	}
 
 	void
-	VBIClient::asyncConnect(Callback& callback)
+	VBIClient::asyncConnect(Callback& callback, ConnectContext& connectContext)
 	{
+		// set secure channel configuration
+		SessionServiceConfig sessionServiceConfig;
+		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
+		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
+
+		// create session
+		SessionService::SPtr sessionService;
+		sessionService = serviceSetManager_.sessionService(sessionServiceConfig);
+		assert(sessionService.get() != nullptr);
+
+		// connect session
+		sessionStateUpdateCallback_ = callback;
+		sessionService_->asyncConnect();
 	}
 
 	OpcUaStatusCode

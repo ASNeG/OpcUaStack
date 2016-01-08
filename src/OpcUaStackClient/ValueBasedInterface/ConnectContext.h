@@ -32,6 +32,9 @@ namespace OpcUaStackClient
 	  public:
 		ConnectContext(void);
 		~ConnectContext(void);
+
+		std::string endpointUrl_;
+		std::string sessionName_;
 	};
 
 }
