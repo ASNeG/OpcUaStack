@@ -28,4 +28,26 @@ namespace OpcUaStackClient
 	{
 	}
 
+	OpcUaStatusCode
+	VBIClient::syncConnect(void)
+	{
+		return Success;
+	}
+
+	void
+	VBIClient::asyncConnect(void)
+	{
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncDisconnect(void)
+	{
+		return Success;
+	}
+
+	void
+	VBIClient::asyncDisconnect(void)
+	{
+	}
+
 }

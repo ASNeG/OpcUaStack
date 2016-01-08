@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_VBIClient_h__
-#define __OpcUaStackClient_VBIClient_h__
+#ifndef __OpcUaStackClient_SyncConnectContext_h__
+#define __OpcUaStackClient_SyncConnectContext_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
@@ -27,19 +27,11 @@ using namespace OpcUaStackClient;
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT VBIClient
+	class DLLEXPORT SyncConnectContext
 	{
 	  public:
-		VBIClient(void);
-		~VBIClient(void);
-
-		OpcUaStatusCode syncConnect(void);
-		void asyncConnect(void);
-
-		OpcUaStatusCode syncDisconnect(void);
-		void asyncDisconnect(void);
-
-	  private:
+		SyncConnectContext(void);
+		~SyncConnectContext(void);
 	};
 
 }
