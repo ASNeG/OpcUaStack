@@ -42,7 +42,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncConnect(void)
+	VBIClient::asyncConnect(Callback& callback)
 	{
 	}
 
@@ -53,7 +53,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncDisconnect(void)
+	VBIClient::asyncDisconnect(Callback& callback)
 	{
 	}
 

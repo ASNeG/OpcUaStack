@@ -41,10 +41,20 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		OpcUaStatusCode syncConnect(void);
-		void asyncConnect(void);
+		void asyncConnect(Callback& callback);
+		template<typename HANDLER>
+		    void asyncConnect(HANDLER handler) {
+				Callback callback = handler;
+				asyncConnect(handler);
+			}
 
 		OpcUaStatusCode syncDisconnect(void);
-		void asyncDisconnect(void);
+		void asyncDisconnect(Callback& callback);
+		template<typename HANDLER>
+		    void asyncDisconnect(HANDLER handler) {
+				Callback callback = handler;
+				asyncDisconnect(callback);
+			}
 
 
 		// --------------------------------------------------------------------
@@ -57,8 +67,7 @@ namespace OpcUaStackClient
 		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
 		void asyncRead(OpcUaNodeId& nodeId, Callback& callback);
 		template<typename HANDLER>
-		    void asyncRead(OpcUaNodeId& nodeId, HANDLER handler)
-			{
+		    void asyncRead(OpcUaNodeId& nodeId, HANDLER handler) {
 				Callback callback = handler;
 				asyncRead(nodeId, handler);
 			}
@@ -66,8 +75,7 @@ namespace OpcUaStackClient
 		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
 		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback);
 		template<typename HANDLER>
-		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler)
-			{
+		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler) {
 				Callback callback = handler;
 				asyncWrite(nodeId, dataValue, handler);
 			}
