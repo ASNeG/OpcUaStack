@@ -36,4 +36,64 @@ namespace OpcUaStackClient
 	{
 	}
 
+	void
+	SessionConfig::applicationDescription(ApplicationDescription::SPtr& applicationDescription)
+	{
+		applicationDescription_ = applicationDescription;
+	}
+
+	ApplicationDescription::SPtr&
+	SessionConfig::applicationDescription(void)
+	{
+		return applicationDescription_;
+	}
+
+	void
+	SessionConfig::sessionName(const std::string& sessionName)
+	{
+		sessionName_ = sessionName;
+	}
+
+	std::string&
+	SessionConfig::sessionName(void)
+	{
+		return sessionName_;
+	}
+
+	void
+	SessionConfig::requestTimeout(uint32_t requestTimeout)
+	{
+		requestTimeout_ = requestTimeout;
+	}
+
+	uint32_t
+	SessionConfig::requestTimeout(void)
+	{
+		return requestTimeout_;
+	}
+
+	void
+	SessionConfig::sessionTimeout(uint32_t sessionTimeout)
+	{
+		sessionTimeout_ = sessionTimeout;
+	}
+
+	uint32_t
+	SessionConfig::sessionTimeout(void)
+	{
+		return sessionTimeout_;
+	}
+
+	void
+	SessionConfig::maxResponseMessageSize(uint32_t maxResponseMessageSize)
+	{
+		maxResponseMessageSize_ = maxResponseMessageSize;
+	}
+
+	uint32_t
+	SessionConfig::maxResponseMessageSize(void)
+	{
+		return maxResponseMessageSize_;
+	}
+
 }
