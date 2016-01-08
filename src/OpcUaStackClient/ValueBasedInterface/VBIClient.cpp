@@ -28,6 +28,13 @@ namespace OpcUaStackClient
 	{
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaStatusCode
 	VBIClient::syncConnect(void)
 	{
@@ -47,6 +54,35 @@ namespace OpcUaStackClient
 
 	void
 	VBIClient::asyncDisconnect(void)
+	{
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// AttributeService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+	{
+		return Success;
+	}
+
+	void
+	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback)
+	{
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+	{
+		return Success;
+	}
+
+	void
+	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback)
 	{
 	}
 

@@ -33,11 +33,44 @@ namespace OpcUaStackClient
 		VBIClient(void);
 		~VBIClient(void);
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// SessionService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		OpcUaStatusCode syncConnect(void);
 		void asyncConnect(void);
 
 		OpcUaStatusCode syncDisconnect(void);
 		void asyncDisconnect(void);
+
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// AttributeService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
+		void asyncRead(OpcUaNodeId& nodeId, Callback& callback);
+		template<typename HANDLER>
+		    void asyncRead(OpcUaNodeId& nodeId, HANDLER handler)
+			{
+				Callback callback = handler;
+				asyncRead(nodeId, handler);
+			}
+
+		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
+		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback);
+		template<typename HANDLER>
+		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler)
+			{
+				Callback callback = handler;
+				asyncWrite(nodeId, dataValue, handler);
+			}
 
 	  private:
 	};
