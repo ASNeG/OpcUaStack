@@ -427,7 +427,9 @@ namespace OpcUaStackCore
 		if (debug_) Log(Debug, "slot timer loop");
 
 		if (error) {
-			Log(Error, "slot timer error");
+			if (running_) {
+				Log(Error, "slot timer error");
+			}
 			running_ = false;
 			ownSPtr_.reset();
 			return;
