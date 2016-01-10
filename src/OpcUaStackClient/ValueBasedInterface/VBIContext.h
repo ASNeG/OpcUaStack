@@ -37,6 +37,14 @@ namespace OpcUaStackClient
 		std::string sessionName_;
 	};
 
+
+	class DLLEXPORT ReadContext
+	{
+	  public:
+		ReadContext(void);
+		~ReadContext(void);
+	};
+
 }
 
 #endif

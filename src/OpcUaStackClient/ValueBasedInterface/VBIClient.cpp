@@ -123,11 +123,25 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
 	{
+		ReadContext readContext;
+		return syncRead(nodeId, dataValue, readContext);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, ReadContext& readContext)
+	{
 		return Success;
 	}
 
 	void
 	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback)
+	{
+		ReadContext readContext;
+		asyncRead(nodeId, callback, readContext);
+	}
+
+	void
+	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback, ReadContext& readContext)
 	{
 	}
 
@@ -138,7 +152,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback)
+	VBIClient::asyncWrite(Callback& callback, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
 	{
 	}
 

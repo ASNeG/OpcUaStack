@@ -70,17 +70,26 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
+
+		// read
 		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
+		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, ReadContext& readContext);
 		void asyncRead(OpcUaNodeId& nodeId, Callback& callback);
 		template<typename HANDLER>
 		    void asyncRead(OpcUaNodeId& nodeId, HANDLER handler) {
 				Callback callback = handler;
 				asyncRead(nodeId, handler);
 			}
+		void asyncRead(OpcUaNodeId& nodeId, Callback& callback, ReadContext& readContext);
+		template<typename HANDLER>
+			void asyncRead(OpcUaNodeId& nodeId, HANDLER handler, ReadContext& readContext) {
+				Callback callback = handler;
+				asyncRead(nodeId, handler, readContext);
+			}
 
 
 		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
-		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback);
+		void asyncWrite(Callback& callback, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
 		template<typename HANDLER>
 		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler) {
 				Callback callback = handler;
