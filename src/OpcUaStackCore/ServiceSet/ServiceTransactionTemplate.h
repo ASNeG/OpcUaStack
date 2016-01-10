@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		  static std::string name(void);
 
 		  ServiceTransactionTemplate(void);
-		  ~ServiceTransactionTemplate(void);
+		  virtual ~ServiceTransactionTemplate(void);
 
 		  ServiceTransaction::SPtr constructTransaction(void);
 

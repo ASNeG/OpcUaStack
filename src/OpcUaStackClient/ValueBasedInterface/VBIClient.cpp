@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
+#include "OpcUaStackClient/ValueBasedInterface/VBITransaction.h"
 
 namespace OpcUaStackClient
 {
@@ -24,12 +25,17 @@ namespace OpcUaStackClient
 	: serviceSetManager_()
 	, ioThreadName_("VBIClient")
 	, sessionService_()
+	, attributeService_()
 	, sessionStateUpdateCallback_()
+
+	, defaultReadContext_()
+	, defaultWriteContext_()
 	{
 	}
 
 	VBIClient::~VBIClient(void)
 	{
+		attributeService_.reset();
 		sessionService_.reset();
 		sessionStateUpdateCallback_.reset();
 	}
@@ -55,6 +61,9 @@ namespace OpcUaStackClient
 		}
 	}
 
+	//
+	// connect
+	//
 	OpcUaStatusCode
 	VBIClient::syncConnect(ConnectContext& connectContext)
 	{
@@ -92,6 +101,10 @@ namespace OpcUaStackClient
 		sessionService_->asyncConnect();
 	}
 
+
+	//
+	// disconnect
+	//
 	OpcUaStatusCode
 	VBIClient::syncDisconnect(void)
 	{
@@ -113,6 +126,7 @@ namespace OpcUaStackClient
 		sessionService_->asyncDisconnect();
 	}
 
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -120,16 +134,61 @@ namespace OpcUaStackClient
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+
+	//
+	// read
+	//
+    void
+    VBIClient::attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead)
+    {
+    	VBITransactionRead::SPtr trx = boost::static_pointer_cast<VBITransactionRead>(serviceTransactionRead);
+
+		if (trx->callback_.exist()) {
+			//trx->callback_(...);
+		}
+    }
+
+	ReadContext&
+	VBIClient::defaultReadContext(void)
+	{
+		return defaultReadContext_;
+	}
+
 	OpcUaStatusCode
 	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
 	{
-		ReadContext readContext;
-		return syncRead(nodeId, dataValue, readContext);
+		return syncRead(nodeId, dataValue, defaultReadContext_);
 	}
 
 	OpcUaStatusCode
 	VBIClient::syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, ReadContext& readContext)
 	{
+		if (attributeService_.get() == nullptr) {
+			// create attribute service
+			AttributeServiceConfig attributeServiceConfig;
+			attributeServiceConfig.attributeServiceIf_ = this;
+			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+			assert(attributeService_.get() != nullptr);
+		}
+
+		// create and send ReadRequest
+		VBITransactionRead::SPtr trx;
+		trx = constructSPtr<VBITransactionRead>();
+		ReadRequest::SPtr req = trx->request();
+		ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+		readValueIdSPtr->nodeId()->copyFrom(nodeId);
+		readValueIdSPtr->attributeId(readContext.attributeId_);
+		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
+		req->readValueIdArray()->set(readValueIdSPtr);
+
+		attributeService_->syncSend(trx);
+
+		if (trx->statusCode() != Success) return trx->statusCode();
+		ReadResponse::SPtr res = trx->response();
+		if (res->dataValueArray()->size() != 1) return BadUnexpectedError;
+		OpcUaDataValue::SPtr dataValueSPtr;
+		res->dataValueArray()->get(0, dataValueSPtr);
+		dataValue.copyFrom(*dataValueSPtr);
 		return Success;
 	}
 
@@ -145,15 +204,63 @@ namespace OpcUaStackClient
 	{
 	}
 
+
+	//
+	// write
+	//
+	void
+	VBIClient::attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite)
+	{
+	}
+
+	WriteContext&
+	VBIClient::defaultWriteContext(void)
+	{
+		return defaultWriteContext_;
+	}
+
 	OpcUaStatusCode
 	VBIClient::syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+	{
+		WriteContext writeContext;
+		return syncWrite(nodeId, dataValue, writeContext);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, WriteContext& writeContext)
 	{
 		return Success;
 	}
 
 	void
-	VBIClient::asyncWrite(Callback& callback, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue)
+	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback)
+	{
+		WriteContext writeContext;
+		asyncWrite(nodeId, dataValue, callback);
+	}
+
+	void
+	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback, WriteContext& writeContext)
 	{
 	}
+
+
+	//
+	// history read
+	//
+	void
+	VBIClient::attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
+	{
+	}
+	// FIXME: todo
+
+	//
+	//
+	//
+	void
+	VBIClient::attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
+	{
+	}
+	// FIXME: todo
 
 }

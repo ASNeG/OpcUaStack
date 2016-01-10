@@ -20,4 +20,13 @@
 namespace OpcUaStackClient
 {
 
+	VBITransactionRead::VBITransactionRead(void)
+	: callback_()
+	{
+	}
+
+	VBITransactionRead::~VBITransactionRead(void)
+	{
+	}
+
 }

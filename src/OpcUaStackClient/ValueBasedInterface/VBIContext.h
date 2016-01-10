@@ -43,6 +43,16 @@ namespace OpcUaStackClient
 	  public:
 		ReadContext(void);
 		~ReadContext(void);
+
+		OpcUaInt32 attributeId_;
+	};
+
+
+	class DLLEXPORT WriteContext
+	{
+	  public:
+		WriteContext(void);
+		~WriteContext(void);
 	};
 
 }

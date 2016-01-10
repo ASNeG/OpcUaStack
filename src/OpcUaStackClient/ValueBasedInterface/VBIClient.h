@@ -30,6 +30,7 @@ namespace OpcUaStackClient
 
 	class DLLEXPORT VBIClient
 	: public SessionServiceIf
+	, public AttributeServiceIf
 	{
 	  public:
 		VBIClient(void);
@@ -72,6 +73,7 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 
 		// read
+		ReadContext& defaultReadContext(void);
 		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
 		OpcUaStatusCode syncRead(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, ReadContext& readContext);
 		void asyncRead(OpcUaNodeId& nodeId, Callback& callback);
@@ -88,12 +90,21 @@ namespace OpcUaStackClient
 			}
 
 
+		// write
+		WriteContext& defaultWriteContext(void);
 		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
-		void asyncWrite(Callback& callback, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue);
+		OpcUaStatusCode syncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, WriteContext& writeContext);
+		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback);
 		template<typename HANDLER>
 		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler) {
 				Callback callback = handler;
-				asyncWrite(nodeId, dataValue, handler);
+				asyncWrite(nodeId, dataValue, callback);
+			}
+		void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback, WriteContext& writeContext);
+		template<typename HANDLER>
+		    void asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, HANDLER handler, WriteContext& writeContext) {
+				Callback callback = handler;
+				asyncWrite(nodeId, dataValue, callback, writeContext);
 			}
 
 	  private:
@@ -101,11 +112,23 @@ namespace OpcUaStackClient
 		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
 		// END SessionServiceIf
 
+		// BEGIN AttributeServiceIf
+        void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
+		void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite);
+		void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
+		void attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
+
+		// END AttributeServiceIf
+
 		ServiceSetManager serviceSetManager_;
 		std::string ioThreadName_;
 
 		SessionService::SPtr sessionService_;
+		AttributeService::SPtr attributeService_;
 		Callback sessionStateUpdateCallback_;
+
+		ReadContext defaultReadContext_;
+		WriteContext defaultWriteContext_;
 	};
 
 }

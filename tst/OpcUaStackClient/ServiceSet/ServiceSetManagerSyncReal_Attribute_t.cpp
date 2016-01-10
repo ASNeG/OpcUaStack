@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Attribute_discovery_GetEndpoints)
 	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
-	// create and send GetEndpointsRequest
+	// create and send ReadRequest
 	ServiceTransactionRead::SPtr trx;
 	trx = constructSPtr<ServiceTransactionRead>();
 	ReadRequest::SPtr req = trx->request();

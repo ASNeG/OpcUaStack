@@ -26,6 +26,19 @@ using namespace OpcUaStackClient;
 
 namespace OpcUaStackClient
 {
+
+	class DLLEXPORT VBITransactionRead
+	: public ServiceTransactionRead
+	{
+	  public:
+		typedef boost::shared_ptr<VBITransactionRead> SPtr;
+
+		VBITransactionRead(void);
+		virtual ~VBITransactionRead(void);
+
+		Callback callback_;
+	};
+
 }
 
 #endif
