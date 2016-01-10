@@ -155,6 +155,12 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	void
+	OpcUaNodeIdBase::copyFrom(OpcUaNodeIdBase& opcUaNodeIdBase)
+	{
+		opcUaNodeIdBase.copyTo(*this);
+	}
+
 	void 
 	OpcUaNodeIdBase::copyTo(OpcUaNodeIdBase& opcUaNodeIdBase) 
 	{
