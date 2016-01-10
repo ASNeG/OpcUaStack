@@ -99,7 +99,7 @@ namespace OpcUaStackCore
 	{
 		if (slotTimerCreateFlag_) {
 			slotTimerCreateFlag_ = false;
-			slotTimer_->stopSlotTimerLoop(slotTimer_);
+			slotTimer_->stopSlotTimerLoopSync();
 		}
 		slotTimer_.reset();
 	}

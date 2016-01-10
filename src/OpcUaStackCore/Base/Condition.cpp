@@ -30,6 +30,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	Condition::initEvent(void)
+	{
+		condition(1, 0);
+	}
+
 	void 
 	Condition::condition(uint32_t conditionValue, uint32_t conditionValueTrue)
 	{
@@ -71,6 +77,12 @@ namespace OpcUaStackCore
 		return conditionValue_;
 	}
 
+	void
+	Condition::sendEvent(void)
+	{
+		conditionValueDec();
+	}
+
 	void 
 	Condition::conditionValueInc(void)
 	{
@@ -91,6 +103,18 @@ namespace OpcUaStackCore
 			condition_.notify_one();
 		}
 		mutex_.unlock();
+	}
+
+	void
+	Condition::waitForEvent(void)
+	{
+		waitForCondition();
+	}
+
+	void
+	Condition::waitForEvent(uint32_t msec)
+	{
+		waitForCondition(msec);
 	}
 
 	void 

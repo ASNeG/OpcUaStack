@@ -6,6 +6,7 @@
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Base/Condition.h"
 
 namespace OpcUaStackCore 
 {
@@ -96,6 +97,7 @@ namespace OpcUaStackCore
 
 		void startSlotTimerLoop(IOService* ioService);
 		void stopSlotTimerLoop(void);
+		void stopSlotTimerLoopSync(void);
 		void stopSlotTimerLoop(SlotTimer::SPtr onwSPtr);
 
 		void insert(SlotTimerElement::SPtr slotTimerElement);
@@ -122,6 +124,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime startTime_;
 		uint32_t nextTick_;
 
+		Condition stopCondition_;
 		SlotTimer::SPtr ownSPtr_;
 	};
 
