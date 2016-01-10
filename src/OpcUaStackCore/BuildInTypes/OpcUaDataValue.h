@@ -57,6 +57,7 @@ namespace OpcUaStackCore
 		OpcUaInt16 serverPicoseconds(void);
 		void reset(void);
 
+		void copyFrom(OpcUaDataValue& dataValue);
 		void copyTo(OpcUaDataValue& dataValue);
 		bool trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);
 		bool trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);

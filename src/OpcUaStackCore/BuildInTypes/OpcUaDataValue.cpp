@@ -187,6 +187,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
+	OpcUaDataValue::copyFrom(OpcUaDataValue& dataValue)
+	{
+		dataValue.copyTo(*this);
+	}
+
+	void
 	OpcUaDataValue::copyTo(OpcUaDataValue& dataValue)
 	{
 		if (opcUaVariantSPtr_.get() != NULL) {
