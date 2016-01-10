@@ -30,14 +30,19 @@ namespace OpcUaStackCore
 		Condition(uint32_t conditionValue = 0, uint32_t conditionValueTrue = 0);
 		virtual ~Condition(void);
 
+		void initEvent(void);
 		void condition(uint32_t conditionValue, uint32_t conditionValueTrue);
 		void conditionValueTrue(uint32_t conditionValueTrue);
 		uint32_t conditionValueTrue(void);
 		void conditionValue(uint32_t conditionValue);
 		uint32_t conditionValue(void);
+
+		void sendEvent(void);
 		void conditionValueInc(void);
 		void conditionValueDec(void);
 
+		void waitForEvent(void);
+		void waitForEvent(uint32_t msec);
 		void waitForCondition(void);
 		bool waitForCondition(uint32_t msec);
 
