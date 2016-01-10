@@ -354,6 +354,7 @@ namespace OpcUaStackCore
 	, running_(false)
 	, ownSPtr_()
 	, debug_(false)
+	, stopCondition_()
 	{
 		slotArray5_.next(nullptr);
 		slotArray4_.next(&slotArray5_);
@@ -431,11 +432,13 @@ namespace OpcUaStackCore
 				Log(Error, "slot timer error");
 			}
 			running_ = false;
+			stopCondition_.sendEvent();
 			ownSPtr_.reset();
 			return;
 		}
 
 		if (running_ == false) {
+			stopCondition_.sendEvent();
 			ownSPtr_.reset();
 			return;
 		}
@@ -477,6 +480,16 @@ namespace OpcUaStackCore
 	{
 		running_ = false;
 		IOService::msecSleep(100);
+		delete timer_;
+		timer_ = nullptr;
+	}
+
+	void
+	SlotTimer::stopSlotTimerLoopSync(void)
+	{
+		stopCondition_.initEvent();
+		running_ = false;
+		stopCondition_.waitForEvent();
 		delete timer_;
 		timer_ = nullptr;
 	}
