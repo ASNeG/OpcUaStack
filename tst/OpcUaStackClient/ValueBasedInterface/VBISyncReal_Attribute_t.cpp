@@ -15,7 +15,6 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_)
 
 BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_read)
 {
-	OpcUaStatusCode statusCode;
 	VBIClient client;
 
 	// connect session

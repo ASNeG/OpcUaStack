@@ -111,10 +111,10 @@ namespace OpcUaStackCore
 		waitForCondition();
 	}
 
-	void
+	bool
 	Condition::waitForEvent(uint32_t msec)
 	{
-		waitForCondition(msec);
+		return waitForCondition(msec);
 	}
 
 	void 

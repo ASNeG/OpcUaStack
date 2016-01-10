@@ -32,8 +32,10 @@ namespace OpcUaStackClient
 	  public:
 		VBIClientHandlerTest(void)
 	    : clientHandle_(0)
+	    , statusCode_(Success)
 	    , sessionState_(SS_Disconnect)
 	    , sessionStateUpdate_()
+	    , readComplete_()
 	    {
 	    }
 		~VBIClientHandlerTest(void)
@@ -41,13 +43,24 @@ namespace OpcUaStackClient
 		}
 
 		uint32_t clientHandle_;
+		OpcUaNodeId nodeId_;
+		OpcUaStatusCode statusCode_;
+		OpcUaDataValue dataValue_;
 
 		SessionState sessionState_;
 		Condition sessionStateUpdate_;
 		void sessionStateUpdate(uint32_t clientHandle, SessionBase& session, SessionState sessionState) {
 			clientHandle_ = clientHandle;
 			sessionState_ = sessionState;
-			sessionStateUpdate_.conditionValueDec();
+			sessionStateUpdate_.sendEvent();
+		}
+
+		Condition readComplete_;
+		void readComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
+			statusCode_ = statusCode;
+			nodeId_ = nodeId;
+			dataValue_ = dataValue;
+			readComplete_.sendEvent();
 		}
 
 	};

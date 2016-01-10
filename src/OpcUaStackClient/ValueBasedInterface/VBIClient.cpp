@@ -144,7 +144,28 @@ namespace OpcUaStackClient
     	VBITransactionRead::SPtr trx = boost::static_pointer_cast<VBITransactionRead>(serviceTransactionRead);
 
 		if (trx->callback_.exist()) {
-			//trx->callback_(...);
+			OpcUaNodeId nodeId;
+			OpcUaDataValue dataValue;
+
+			if (trx->statusCode() != Success) {
+				trx->callback_(trx->statusCode(), nodeId, dataValue);
+				return;
+			}
+			ReadResponse::SPtr res = trx->response();
+			if (res->dataValueArray()->size() != 1) {
+				trx->callback_(BadUnexpectedError, nodeId, dataValue);
+				return;
+			}
+			OpcUaDataValue::SPtr dataValueSPtr;
+			res->dataValueArray()->get(0, dataValueSPtr);
+			dataValue.copyFrom(*dataValueSPtr);
+
+			ReadRequest::SPtr req = trx->request();
+			ReadValueId::SPtr readValueIdSPtr;
+			req->readValueIdArray()->get(0, readValueIdSPtr);
+			readValueIdSPtr->nodeId()->copyTo(nodeId);
+
+			trx->callback_(Success, nodeId, dataValue);
 		}
     }
 
@@ -195,13 +216,31 @@ namespace OpcUaStackClient
 	void
 	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback)
 	{
-		ReadContext readContext;
-		asyncRead(nodeId, callback, readContext);
+		asyncRead(nodeId, callback, defaultReadContext_);
 	}
 
 	void
 	VBIClient::asyncRead(OpcUaNodeId& nodeId, Callback& callback, ReadContext& readContext)
 	{
+		if (attributeService_.get() == nullptr) {
+			// create attribute service
+			AttributeServiceConfig attributeServiceConfig;
+			attributeServiceConfig.attributeServiceIf_ = this;
+			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+			assert(attributeService_.get() != nullptr);
+		}
+
+		// create and send ReadRequest
+		VBITransactionRead::SPtr trx = constructSPtr<VBITransactionRead>();
+		trx->callback_ = callback;
+		ReadRequest::SPtr req = trx->request();
+		ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+		readValueIdSPtr->nodeId()->copyFrom(nodeId);
+		readValueIdSPtr->attributeId(readContext.attributeId_);
+		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
+		req->readValueIdArray()->set(readValueIdSPtr);
+
+		attributeService_->asyncSend(trx);
 	}
 
 

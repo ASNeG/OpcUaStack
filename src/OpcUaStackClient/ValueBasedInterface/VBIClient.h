@@ -80,13 +80,13 @@ namespace OpcUaStackClient
 		template<typename HANDLER>
 		    void asyncRead(OpcUaNodeId& nodeId, HANDLER handler) {
 				Callback callback = handler;
-				asyncRead(nodeId, handler);
+				asyncRead(nodeId, callback);
 			}
 		void asyncRead(OpcUaNodeId& nodeId, Callback& callback, ReadContext& readContext);
 		template<typename HANDLER>
 			void asyncRead(OpcUaNodeId& nodeId, HANDLER handler, ReadContext& readContext) {
 				Callback callback = handler;
-				asyncRead(nodeId, handler, readContext);
+				asyncRead(nodeId, callback, readContext);
 			}
 
 

@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 		void conditionValueDec(void);
 
 		void waitForEvent(void);
-		void waitForEvent(uint32_t msec);
+		bool waitForEvent(uint32_t msec);
 		void waitForCondition(void);
 		bool waitForCondition(uint32_t msec);
 
