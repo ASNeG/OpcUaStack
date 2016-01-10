@@ -427,23 +427,24 @@ namespace OpcUaStackCore
 	{
 		if (debug_) Log(Debug, "slot timer loop");
 
+		mutex_.lock();
 		if (error) {
 			if (running_) {
 				Log(Error, "slot timer error");
 			}
 			running_ = false;
 			stopCondition_.sendEvent();
+			mutex_.unlock();
 			ownSPtr_.reset();
 			return;
 		}
 
 		if (running_ == false) {
 			stopCondition_.sendEvent();
+			mutex_.unlock();
 			ownSPtr_.reset();
 			return;
 		}
-
-		boost::mutex::scoped_lock g(mutex_);
 
 		boost::posix_time::time_duration diff = boost::posix_time::microsec_clock::local_time() - startTime_;
 		uint64_t actTick = diff.total_milliseconds() / 10;
@@ -451,10 +452,19 @@ namespace OpcUaStackCore
 		if (nextTick_ > actTick) {
 			timer_->expires_at(timer_->expires_at() + boost::posix_time::millisec(10));
 			timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+			mutex_.unlock();
 			return;
 		}
 
 		uint64_t nextTick = slotArray1_.run(&mutex_);
+
+		if (running_ == false) {
+			stopCondition_.sendEvent();
+			mutex_.unlock();
+			ownSPtr_.reset();
+			return;
+		}
+
 		if (nextTick > actTick) {
 			timer_->expires_at(timer_->expires_at() + boost::posix_time::millisec(10));
 		}
@@ -462,6 +472,7 @@ namespace OpcUaStackCore
 			timer_->expires_at(timer_->expires_at());
 		}
 		timer_->async_wait(boost::bind(&SlotTimer::loop, this, boost::asio::placeholders::error));
+		mutex_.unlock();
 	}
 
 	void 
@@ -487,8 +498,12 @@ namespace OpcUaStackCore
 	void
 	SlotTimer::stopSlotTimerLoopSync(void)
 	{
+		mutex_.lock();
 		stopCondition_.initEvent();
 		running_ = false;
+		timer_->cancel();
+		mutex_.unlock();
+
 		stopCondition_.waitForEvent();
 		delete timer_;
 		timer_ = nullptr;
