@@ -30,6 +30,8 @@ namespace OpcUaStackClient
 
 	VBIClient::~VBIClient(void)
 	{
+		sessionService_.reset();
+		sessionStateUpdateCallback_.reset();
 	}
 
 	void
@@ -48,7 +50,9 @@ namespace OpcUaStackClient
 	void
 	VBIClient::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
-		sessionStateUpdateCallback_(session, sessionState);
+		if (sessionStateUpdateCallback_.exist()) {
+			sessionStateUpdateCallback_(session, sessionState);
+		}
 	}
 
 	OpcUaStatusCode
@@ -62,12 +66,12 @@ namespace OpcUaStackClient
 		sessionServiceConfig.ioThreadName(ioThreadName_);
 
 		// create session service
-		SessionService::SPtr sessionService;
-		sessionService = serviceSetManager_.sessionService(sessionServiceConfig);
-		assert(sessionService.get() != nullptr);
+		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
+		assert(sessionService_.get() != nullptr);
 
 		// connect to opc ua server
-		return sessionService->syncConnect();
+		sessionStateUpdateCallback_.reset();
+		return sessionService_->syncConnect();
 	}
 
 	void
@@ -92,8 +96,7 @@ namespace OpcUaStackClient
 	VBIClient::syncDisconnect(void)
 	{
 		// connect session
-		OpcUaStatusCode statusCode = sessionService_->syncDisconnect();
-		return statusCode;
+		return sessionService_->syncDisconnect();
 	}
 
 	void

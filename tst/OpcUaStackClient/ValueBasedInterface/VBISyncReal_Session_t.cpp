@@ -15,7 +15,6 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Session_)
 
 BOOST_AUTO_TEST_CASE(VBISyncReal_Session_session_connect_disconnect)
 {
-#if 0
 	OpcUaStatusCode statusCode;
 	VBIClient client;
 
@@ -27,12 +26,10 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Session_session_connect_disconnect)
 
 	// disconnect session
 	BOOST_REQUIRE(client.syncDisconnect() == Success);
-#endif
 }
 
 BOOST_AUTO_TEST_CASE(VBISyncReal_Session_session_connect_disconnect_two_times)
 {
-#if 0
 	OpcUaStatusCode statusCode;
 	VBIClient client;
 
@@ -50,7 +47,6 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Session_session_connect_disconnect_two_times)
 
 	// disconnect session
 	BOOST_REQUIRE(client.syncDisconnect() == Success);
-#endif
 }
 
 
