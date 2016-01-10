@@ -52,6 +52,13 @@ namespace OpcUaStackCore
 		reset();
 	}
 
+	bool
+	Callback::exist(void)
+	{
+		if (callbackBaseSPtr_.get() == nullptr) return false;
+		return true;
+	}
+
 	void
 	Callback::reset(void)
 	{
