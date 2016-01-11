@@ -30,6 +30,7 @@ namespace OpcUaStackClient
 
 	, defaultReadContext_()
 	, defaultWriteContext_()
+	, createSubscriptionRequest_()
 	{
 	}
 
@@ -373,5 +374,43 @@ namespace OpcUaStackClient
 	{
 	}
 	// FIXME: todo
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SubscriptionService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+	void
+	VBIClient::subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
+	{
+	}
+
+	void
+	VBIClient::subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
+	{
+	}
+
+	void
+	VBIClient::subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
+	{
+	}
+
+	void
+	VBIClient::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+	{
+	}
+
+	void
+	VBIClient::dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
+	{
+	}
+
+    void
+    VBIClient::subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
+    {
+    }
 
 }

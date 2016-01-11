@@ -31,6 +31,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT VBIClient
 	: public SessionServiceIf
 	, public AttributeServiceIf
+	, public SubscriptionServiceIf
 	{
 	  public:
 		VBIClient(void);
@@ -121,6 +122,13 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
+		void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+		void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+		void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+		void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+
+		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 
 	  private:
 		// BEGIN SessionServiceIf
@@ -144,6 +152,7 @@ namespace OpcUaStackClient
 
 		ReadContext defaultReadContext_;
 		WriteContext defaultWriteContext_;
+		CreateSubscriptionRequest createSubscriptionRequest_;
 	};
 
 }

@@ -57,6 +57,13 @@ namespace OpcUaStackClient
 		OpcUaInt32 attributeId_;
 	};
 
+	class DLLEXPORT CreateSubscriptionContext
+	{
+	  public:
+		CreateSubscriptionContext(void);
+		~CreateSubscriptionContext(void);
+	};
+
 }
 
 #endif

@@ -71,4 +71,20 @@ namespace OpcUaStackClient
 	{
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// CreateSubscriptionContext
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	CreateSubscriptionContext::CreateSubscriptionContext(void)
+	{
+	}
+
+	CreateSubscriptionContext::~CreateSubscriptionContext(void)
+	{
+	}
+
 }
