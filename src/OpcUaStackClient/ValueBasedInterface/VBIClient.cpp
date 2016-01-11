@@ -136,9 +136,9 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	//
+	// ------------------------------------------------------------------------
 	// read
-	//
+	// ------------------------------------------------------------------------
     void
     VBIClient::attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead)
     {
@@ -245,9 +245,9 @@ namespace OpcUaStackClient
 	}
 
 
-	//
+	// ------------------------------------------------------------------------
 	// write
-	//
+	// ------------------------------------------------------------------------
 	void
 	VBIClient::attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite)
 	{
@@ -357,18 +357,18 @@ namespace OpcUaStackClient
 	}
 
 
-	//
+	// ------------------------------------------------------------------------
 	// history read
-	//
+	// ------------------------------------------------------------------------
 	void
 	VBIClient::attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead)
 	{
 	}
 	// FIXME: todo
 
-	//
-	//
-	//
+	// ------------------------------------------------------------------------
+	// history update
+	// ------------------------------------------------------------------------
 	void
 	VBIClient::attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate)
 	{
@@ -384,33 +384,51 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 
 	void
-	VBIClient::subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
-	{
-	}
-
-	void
-	VBIClient::subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
-	{
-	}
-
-	void
-	VBIClient::subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
-	{
-	}
-
-	void
-	VBIClient::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
-	{
-	}
-
-	void
 	VBIClient::dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
 	{
+		// FIXME: todo
 	}
 
     void
     VBIClient::subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
     {
+    	// FIXME: todo
     }
+
+    // ------------------------------------------------------------------------
+    // CreateSubscription
+    // ------------------------------------------------------------------------
+	void
+	VBIClient::subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
+	{
+	}
+	// FIXME: todo
+
+	// ------------------------------------------------------------------------
+	// ModifySubscription
+	// ------------------------------------------------------------------------
+	void
+	VBIClient::subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription)
+	{
+	}
+	// FIXME: todo
+
+	// ------------------------------------------------------------------------
+	// TransferSubscription
+	// ------------------------------------------------------------------------
+	void
+	VBIClient::subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions)
+	{
+	}
+	// FIXME: todo
+
+	// ------------------------------------------------------------------------
+	// DeleteSubscription
+	// ------------------------------------------------------------------------
+	void
+	VBIClient::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
+	{
+	}
+	// FIXME: todo
 
 }
