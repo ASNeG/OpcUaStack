@@ -53,6 +53,8 @@ namespace OpcUaStackClient
 	  public:
 		WriteContext(void);
 		~WriteContext(void);
+
+		OpcUaInt32 attributeId_;
 	};
 
 }

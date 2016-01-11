@@ -39,6 +39,18 @@ namespace OpcUaStackClient
 		Callback callback_;
 	};
 
+	class DLLEXPORT VBITransactionWrite
+	: public ServiceTransactionWrite
+	{
+	  public:
+		typedef boost::shared_ptr<VBITransactionWrite> SPtr;
+
+		VBITransactionWrite(void);
+		virtual ~VBITransactionWrite(void);
+
+		Callback callback_;
+	};
+
 }
 
 #endif

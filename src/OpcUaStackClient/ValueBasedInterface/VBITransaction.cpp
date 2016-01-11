@@ -29,4 +29,14 @@ namespace OpcUaStackClient
 	{
 	}
 
+
+	VBITransactionWrite::VBITransactionWrite(void)
+	: callback_()
+	{
+	}
+
+	VBITransactionWrite::~VBITransactionWrite(void)
+	{
+	}
+
 }

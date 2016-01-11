@@ -34,6 +34,27 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_read)
 	BOOST_REQUIRE(client.syncDisconnect() == Success);
 }
 
+BOOST_AUTO_TEST_CASE(VBISyncReal_Attribute_write)
+{
+	VBIClient client;
+
+	// connect session
+	ConnectContext connectContext;
+	connectContext.endpointUrl_ = REAL_SERVER_URI;
+	connectContext.sessionName_ = REAL_SESSION_NAME;
+	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
+
+	// write
+	OpcUaNodeId nodeId;
+	OpcUaDataValue dataValue;
+	dataValue.variant()->set((OpcUaBoolean)1);
+	nodeId.set("Demo.Static.Scalar.Boolean", 2);
+	BOOST_REQUIRE(client.syncWrite(nodeId, dataValue) == Success);
+
+	// disconnect session
+	BOOST_REQUIRE(client.syncDisconnect() == Success);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
