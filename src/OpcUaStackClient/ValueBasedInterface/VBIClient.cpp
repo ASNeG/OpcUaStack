@@ -301,8 +301,8 @@ namespace OpcUaStackClient
 		}
 
 		// create and send WriteRequest
-		ServiceTransactionWrite::SPtr trx;
-		trx = constructSPtr<ServiceTransactionWrite>();
+		VBITransactionWrite::SPtr trx;
+		trx = constructSPtr<VBITransactionWrite>();
 		WriteRequest::SPtr req = trx->request();
 
 		WriteValue::SPtr writeValue = WriteValue::construct();
@@ -331,6 +331,28 @@ namespace OpcUaStackClient
 	void
 	VBIClient::asyncWrite(OpcUaNodeId& nodeId, OpcUaDataValue& dataValue, Callback& callback, WriteContext& writeContext)
 	{
+		if (attributeService_.get() == nullptr) {
+			// create attribute service
+			AttributeServiceConfig attributeServiceConfig;
+			attributeServiceConfig.attributeServiceIf_ = this;
+			attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+			assert(attributeService_.get() != nullptr);
+		}
+
+		// create and send WriteRequest
+		VBITransactionWrite::SPtr trx;
+		trx = constructSPtr<VBITransactionWrite>();
+		trx->callback_ = callback;
+		WriteRequest::SPtr req = trx->request();
+
+		WriteValue::SPtr writeValue = WriteValue::construct();
+		writeValue->nodeId()->copyFrom(nodeId);
+		writeValue->attributeId(writeContext.attributeId_);
+		writeValue->dataValue().copyFrom(dataValue);
+		req->writeValueArray()->resize(1);
+		req->writeValueArray()->set(writeValue);
+
+		attributeService_->asyncSend(trx);
 	}
 
 

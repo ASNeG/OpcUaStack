@@ -36,6 +36,7 @@ namespace OpcUaStackClient
 	    , sessionState_(SS_Disconnect)
 	    , sessionStateUpdate_()
 	    , readComplete_()
+	    , writeComplete_()
 	    {
 	    }
 		~VBIClientHandlerTest(void)
@@ -61,6 +62,13 @@ namespace OpcUaStackClient
 			nodeId_ = nodeId;
 			dataValue_ = dataValue;
 			readComplete_.sendEvent();
+		}
+
+		Condition writeComplete_;
+		void writeComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId) {
+			statusCode_ = statusCode;
+			nodeId_ = nodeId;
+			writeComplete_.sendEvent();
 		}
 
 	};
