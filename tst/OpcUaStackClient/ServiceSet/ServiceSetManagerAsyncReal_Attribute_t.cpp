@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_)
 	std::cout << "ServiceSetManagerAsyncReal_Attribute_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_discovery_GetEndpoints)
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_read)
 {
 	SessionServiceIfTestHandler sessionIfTestHandler;
 	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
@@ -42,7 +42,65 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_discovery_GetEndpoints
 	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
 	BOOST_REQUIRE(attributeService.get() != nullptr);
 
-	// create and send GetEndpointsRequest
+	// create and send WriteRequest
+	ServiceTransactionWrite::SPtr trx;
+	trx = constructSPtr<ServiceTransactionWrite>();
+	WriteRequest::SPtr req = trx->request();
+
+	OpcUaBoolean value = 1;
+	WriteValue::SPtr writeValue = WriteValue::construct();
+	writeValue->nodeId()->set("Demo.Static.Scalar.Boolean", 2);
+	writeValue->attributeId((OpcUaInt32) 13);
+	writeValue->dataValue().variant()->set(value);
+	req->writeValueArray()->resize(1);
+	req->writeValueArray()->set(writeValue);
+
+	attributeServiceIfTestHandler.attributeServiceWriteResponse_.condition(1,0);
+	attributeService->asyncSend(trx);
+	attributeServiceIfTestHandler.attributeServiceWriteResponse_.waitForCondition(1000);
+	WriteResponse::SPtr res = trx->response();
+	BOOST_REQUIRE(trx->statusCode() == Success);
+	BOOST_REQUIRE(res->results()->size() == 1);
+
+	// disconnect secure channel
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	sessionService->asyncDisconnect();
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Disconnect);
+}
+
+
+BOOST_AUTO_TEST_CASE(ServiceSetManagerAsyncReal_Attribute_write)
+{
+	SessionServiceIfTestHandler sessionIfTestHandler;
+	AttributeServiceIfTestHandler attributeServiceIfTestHandler;
+	ServiceSetManager serviceSetManager;
+
+	// set secure channel configuration
+	SessionServiceConfig sessionServiceConfig;
+	sessionServiceConfig.sessionServiceIf_ = &sessionIfTestHandler;
+	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
+	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+
+	// create session
+	SessionService::SPtr sessionService;
+	sessionService = serviceSetManager.sessionService(sessionServiceConfig);
+	BOOST_REQUIRE(sessionService.get() != nullptr);
+
+	// connect secure channel
+	sessionIfTestHandler.sessionStateUpdate_.condition(1,0);
+	sessionService->asyncConnect();
+	BOOST_REQUIRE(sessionIfTestHandler.sessionStateUpdate_.waitForCondition(1000) == true);
+	BOOST_REQUIRE(sessionIfTestHandler.sessionState_ == SS_Connect);
+
+	// create attribute service
+	AttributeService::SPtr attributeService;
+	AttributeServiceConfig attributeServiceConfig;
+	attributeServiceConfig.attributeServiceIf_ = &attributeServiceIfTestHandler;
+	attributeService = serviceSetManager.attributeService(sessionService, attributeServiceConfig);
+	BOOST_REQUIRE(attributeService.get() != nullptr);
+
+	// create and send ReadRequest
 	ServiceTransactionRead::SPtr trx;
 	trx = constructSPtr<ServiceTransactionRead>();
 	ReadRequest::SPtr req = trx->request();

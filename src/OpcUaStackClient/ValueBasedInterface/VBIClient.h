@@ -107,6 +107,21 @@ namespace OpcUaStackClient
 				asyncWrite(nodeId, dataValue, callback, writeContext);
 			}
 
+		// history read
+		// FIXME: todo
+
+		// history write
+		// FIXME: todo
+
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// SubscriptionService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
 	  private:
 		// BEGIN SessionServiceIf
 		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
