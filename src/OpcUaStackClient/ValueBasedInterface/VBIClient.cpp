@@ -26,17 +26,20 @@ namespace OpcUaStackClient
 	, ioThreadName_("VBIClient")
 	, sessionService_()
 	, attributeService_()
+	, subscriptionService_()
 	, sessionStateUpdateCallback_()
 
 	, defaultReadContext_()
 	, defaultWriteContext_()
-	, createSubscriptionRequest_()
+	, defaultCreateSubscriptionContext_()
+	, defaultDeleteSubscriptionContext_()
 	{
 	}
 
 	VBIClient::~VBIClient(void)
 	{
 		attributeService_.reset();
+		subscriptionService_.reset();
 		sessionService_.reset();
 		sessionStateUpdateCallback_.reset();
 	}
@@ -401,8 +404,82 @@ namespace OpcUaStackClient
 	void
 	VBIClient::subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription)
 	{
+    	VBITransactionCreateSubscription::SPtr trx = boost::static_pointer_cast<VBITransactionCreateSubscription>(serviceTransactionCreateSubscription);
+
+		if (trx->callback_.exist()) {
+			if (trx->statusCode() != Success) {
+				trx->callback_(trx->statusCode(), 0);
+				return;
+			}
+			if (trx->responseHeader()->serviceResult() != Success) {
+				trx->callback_(trx->responseHeader()->serviceResult(), 0);
+				return;
+			}
+
+			CreateSubscriptionResponse::SPtr res = trx->response();
+			trx->callback_(Success, res->subscriptionId());
+		}
 	}
-	// FIXME: todo
+
+	CreateSubscriptionContext&
+	VBIClient::defaultCreateSubscriptionContext(void)
+	{
+		return defaultCreateSubscriptionContext_;
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncCreateSubscription(uint32_t& subscriptionId)
+	{
+		return syncCreateSubscription(subscriptionId, defaultCreateSubscriptionContext_);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncCreateSubscription(uint32_t& subscriptionId, CreateSubscriptionContext& createSubscriptionContext)
+	{
+		if (subscriptionService_.get() == nullptr) {
+			// create subscription service
+			SubscriptionServiceConfig subscriptionServiceConfig;
+			subscriptionServiceConfig.subscriptionServiceIf_ = this;
+			subscriptionService_ = serviceSetManager_.subscriptionService(sessionService_, subscriptionServiceConfig);
+			assert(subscriptionService_.get() != nullptr);
+		}
+
+		VBITransactionCreateSubscription::SPtr trx = constructSPtr<VBITransactionCreateSubscription>();
+		CreateSubscriptionRequest::SPtr req = trx->request();
+
+		ServiceTransactionCreateSubscription::SPtr t = trx;
+		subscriptionService_->syncSend(t);
+		if (trx->statusCode() != Success) return trx->statusCode();
+		if (trx->responseHeader()->serviceResult() != Success) return trx->responseHeader()->serviceResult();
+		CreateSubscriptionResponse::SPtr res = trx->response();
+		subscriptionId = res->subscriptionId();
+		return Success;
+	}
+
+	void
+	VBIClient::asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback)
+	{
+		asyncCreateSubscription(subscriptionId, callback, defaultCreateSubscriptionContext_);
+	}
+
+	void
+	VBIClient::asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback, CreateSubscriptionContext& createSubscriptionContext)
+	{
+		if (subscriptionService_.get() == nullptr) {
+			// create subscription service
+			SubscriptionServiceConfig subscriptionServiceConfig;
+			subscriptionServiceConfig.subscriptionServiceIf_ = this;
+			subscriptionService_ = serviceSetManager_.subscriptionService(sessionService_, subscriptionServiceConfig);
+			assert(subscriptionService_.get() != nullptr);
+		}
+
+		VBITransactionCreateSubscription::SPtr trx = constructSPtr<VBITransactionCreateSubscription>();
+		trx->callback_ = callback;
+		CreateSubscriptionRequest::SPtr req = trx->request();
+
+		ServiceTransactionCreateSubscription::SPtr t = trx;
+		subscriptionService_->asyncSend(t);
+	}
 
 	// ------------------------------------------------------------------------
 	// ModifySubscription

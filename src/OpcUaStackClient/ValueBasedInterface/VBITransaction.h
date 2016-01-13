@@ -27,6 +27,13 @@ using namespace OpcUaStackClient;
 namespace OpcUaStackClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// AttributeService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	class DLLEXPORT VBITransactionRead
 	: public ServiceTransactionRead
 	{
@@ -47,6 +54,37 @@ namespace OpcUaStackClient
 
 		VBITransactionWrite(void);
 		virtual ~VBITransactionWrite(void);
+
+		Callback callback_;
+	};
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SubscriptionService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	class DLLEXPORT VBITransactionCreateSubscription
+	: public ServiceTransactionCreateSubscription
+	{
+	  public:
+		typedef boost::shared_ptr<VBITransactionCreateSubscription> SPtr;
+
+		VBITransactionCreateSubscription(void);
+		virtual ~VBITransactionCreateSubscription(void);
+
+		Callback callback_;
+	};
+
+	class DLLEXPORT VBITransactionDeleteSubscription
+	: public ServiceTransactionDeleteSubscriptions
+	{
+	  public:
+		typedef boost::shared_ptr<VBITransactionDeleteSubscription> SPtr;
+
+		VBITransactionDeleteSubscription(void);
+		virtual ~VBITransactionDeleteSubscription(void);
 
 		Callback callback_;
 	};

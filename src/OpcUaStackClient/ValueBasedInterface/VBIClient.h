@@ -122,13 +122,32 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
-		void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
-		void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
-		void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
 
-		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
-	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
+		// create subscription
+		CreateSubscriptionContext& defaultCreateSubscriptionContext(void);
+		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId);
+		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId, CreateSubscriptionContext& createSubscriptionContext);
+		void asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback);
+		template<typename HANDLER>
+		    void asyncCreateSubscription(uint32_t& subscriptionId, HANDLER handler) {
+				Callback callback = handler;
+				asyncCreateSubscription(subscriptionId, callback);
+			}
+		void asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback, CreateSubscriptionContext& createSubscriptionContext);
+		template<typename HANDLER>
+		    void asyncCreateSubscription(uint32_t& subscriptionId, HANDLER handler, CreateSubscriptionContext& createSubscriptionContext) {
+				Callback callback = handler;
+				asyncCreateSubscription(subscriptionId, callback, createSubscriptionContext);
+			}
+
+		// delete subscription
+		// FIXME: todo
+
+		// modify subscription
+		// FIXME: todo
+
+		// transfer subscription
+		// FIXME: todo
 
 	  private:
 		// BEGIN SessionServiceIf
@@ -140,19 +159,29 @@ namespace OpcUaStackClient
 		void attributeServiceWriteResponse(ServiceTransactionWrite::SPtr serviceTransactionWrite);
 		void attributeServiceHistoryReadResponse(ServiceTransactionHistoryRead::SPtr serviceTransactionHistoryRead);
 		void attributeServiceHistoryUpdateResponse(ServiceTransactionHistoryUpdate::SPtr serviceTransactionHistoryUpdate);
-
 		// END AttributeServiceIf
+
+		// BEGIN SubscriptionServiceIf
+		void subscriptionServiceCreateSubscriptionResponse(ServiceTransactionCreateSubscription::SPtr serviceTransactionCreateSubscription);
+		void subscriptionServiceModifySubscriptionResponse(ServiceTransactionModifySubscription::SPtr serviceTransactionModifySubscription);
+		void subscriptionServiceTransferSubscriptionsResponse(ServiceTransactionTransferSubscriptions::SPtr serviceTransactionTransferSubscriptions);
+		void subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions);
+		void dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem);
+	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
+		// END SubscriptionServiceIf
 
 		ServiceSetManager serviceSetManager_;
 		std::string ioThreadName_;
 
 		SessionService::SPtr sessionService_;
 		AttributeService::SPtr attributeService_;
+		SubscriptionService::SPtr subscriptionService_;
 		Callback sessionStateUpdateCallback_;
 
 		ReadContext defaultReadContext_;
 		WriteContext defaultWriteContext_;
-		CreateSubscriptionRequest createSubscriptionRequest_;
+		CreateSubscriptionContext defaultCreateSubscriptionContext_;
+		DeleteSubscriptionContext defaultDeleteSubscriptionContext_;
 	};
 
 }

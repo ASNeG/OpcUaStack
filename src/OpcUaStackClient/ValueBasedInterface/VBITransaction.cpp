@@ -20,6 +20,13 @@
 namespace OpcUaStackClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// AttributeService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	VBITransactionRead::VBITransactionRead(void)
 	: callback_()
 	{
@@ -36,6 +43,32 @@ namespace OpcUaStackClient
 	}
 
 	VBITransactionWrite::~VBITransactionWrite(void)
+	{
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SubscriptionService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	VBITransactionCreateSubscription::VBITransactionCreateSubscription(void)
+	: callback_()
+	{
+	}
+
+	VBITransactionCreateSubscription::~VBITransactionCreateSubscription(void)
+	{
+	}
+
+	VBITransactionDeleteSubscription::VBITransactionDeleteSubscription(void)
+	: callback_()
+	{
+	}
+
+	VBITransactionDeleteSubscription::~VBITransactionDeleteSubscription(void)
 	{
 	}
 

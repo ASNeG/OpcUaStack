@@ -64,6 +64,13 @@ namespace OpcUaStackClient
 		~CreateSubscriptionContext(void);
 	};
 
+	class DLLEXPORT DeleteSubscriptionContext
+	{
+	  public:
+		DeleteSubscriptionContext(void);
+		~DeleteSubscriptionContext(void);
+	};
+
 }
 
 #endif

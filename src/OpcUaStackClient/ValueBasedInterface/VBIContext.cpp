@@ -87,4 +87,19 @@ namespace OpcUaStackClient
 	{
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DeleteSubscriptionContext
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	DeleteSubscriptionContext::DeleteSubscriptionContext(void)
+	{
+	}
+
+	DeleteSubscriptionContext::~DeleteSubscriptionContext(void)
+	{
+	}
+
 }
