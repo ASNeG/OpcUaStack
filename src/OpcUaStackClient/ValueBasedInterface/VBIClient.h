@@ -127,17 +127,17 @@ namespace OpcUaStackClient
 		CreateSubscriptionContext& defaultCreateSubscriptionContext(void);
 		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId);
 		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId, CreateSubscriptionContext& createSubscriptionContext);
-		void asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback);
+		void asyncCreateSubscription(Callback& callback);
 		template<typename HANDLER>
-		    void asyncCreateSubscription(uint32_t& subscriptionId, HANDLER handler) {
+		    void asyncCreateSubscription(HANDLER handler) {
 				Callback callback = handler;
-				asyncCreateSubscription(subscriptionId, callback);
+				asyncCreateSubscription(callback);
 			}
-		void asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback, CreateSubscriptionContext& createSubscriptionContext);
+		void asyncCreateSubscription(Callback& callback, CreateSubscriptionContext& createSubscriptionContext);
 		template<typename HANDLER>
-		    void asyncCreateSubscription(uint32_t& subscriptionId, HANDLER handler, CreateSubscriptionContext& createSubscriptionContext) {
+		    void asyncCreateSubscription(HANDLER handler, CreateSubscriptionContext& createSubscriptionContext) {
 				Callback callback = handler;
-				asyncCreateSubscription(subscriptionId, callback, createSubscriptionContext);
+				asyncCreateSubscription(callback, createSubscriptionContext);
 			}
 
 		// delete subscription

@@ -35,8 +35,11 @@ namespace OpcUaStackClient
 	    , statusCode_(Success)
 	    , sessionState_(SS_Disconnect)
 	    , sessionStateUpdate_()
+	    , subscriptionId_(0)
+
 	    , readComplete_()
 	    , writeComplete_()
+	    , createSubscriptionComplete_()
 	    {
 	    }
 		~VBIClientHandlerTest(void)
@@ -69,6 +72,14 @@ namespace OpcUaStackClient
 			statusCode_ = statusCode;
 			nodeId_ = nodeId;
 			writeComplete_.sendEvent();
+		}
+
+		uint32_t subscriptionId_;
+		Condition createSubscriptionComplete_;
+		void createSubscriptionComplete(OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			createSubscriptionComplete_.sendEvent();
 		}
 
 	};

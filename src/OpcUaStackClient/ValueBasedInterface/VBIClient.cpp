@@ -445,6 +445,7 @@ namespace OpcUaStackClient
 		}
 
 		VBITransactionCreateSubscription::SPtr trx = constructSPtr<VBITransactionCreateSubscription>();
+		trx->callback_.reset();
 		CreateSubscriptionRequest::SPtr req = trx->request();
 
 		ServiceTransactionCreateSubscription::SPtr t = trx;
@@ -457,13 +458,13 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback)
+	VBIClient::asyncCreateSubscription(Callback& callback)
 	{
-		asyncCreateSubscription(subscriptionId, callback, defaultCreateSubscriptionContext_);
+		asyncCreateSubscription(callback, defaultCreateSubscriptionContext_);
 	}
 
 	void
-	VBIClient::asyncCreateSubscription(uint32_t& subscriptionId, Callback& callback, CreateSubscriptionContext& createSubscriptionContext)
+	VBIClient::asyncCreateSubscription(Callback& callback, CreateSubscriptionContext& createSubscriptionContext)
 	{
 		if (subscriptionService_.get() == nullptr) {
 			// create subscription service
