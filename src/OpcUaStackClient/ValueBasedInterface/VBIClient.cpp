@@ -641,23 +641,23 @@ namespace OpcUaStackClient
 			monitoredItemCreateRequest->itemToMonitor().nodeId()->copyTo(nodeId);
 
 			if (trx->statusCode() != Success) {
-				trx->callback_(trx->statusCode(), 0, nodeId);
+				trx->callback_(trx->statusCode(), nodeId, 0);
 				return;
 			}
 			if (trx->responseHeader()->serviceResult() != Success) {
-				trx->callback_(trx->responseHeader()->serviceResult(), 0, nodeId);
+				trx->callback_(trx->responseHeader()->serviceResult(), nodeId, 0);
 				return;
 			}
 
 			CreateMonitoredItemsResponse::SPtr res = trx->response();
 			if (res->results()->size() != 1) {
-				trx->callback_(BadUnexpectedError, 0, nodeId);
+				trx->callback_(BadUnexpectedError, nodeId, 0);
 				return;
 			}
 
 			MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
 			res->results()->get(0, monitoredItemCreateResult);
-			trx->callback_(Success, monitoredItemCreateResult->monitoredItemId(), nodeId);
+			trx->callback_(Success, nodeId, monitoredItemCreateResult->monitoredItemId());
 		}
 	}
 

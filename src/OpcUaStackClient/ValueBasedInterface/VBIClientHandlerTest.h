@@ -97,7 +97,7 @@ namespace OpcUaStackClient
 		Condition createMonitoredItemComplete_;
 		void createMonitoredItemComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
 			statusCode_ = statusCode;
-			nodeId_ = nodeId;
+			nodeId_.copyFrom(nodeId);
 			monitoredItemId_ = monitoredItemId;
 			createMonitoredItemComplete_.sendEvent();
 		}
