@@ -175,19 +175,19 @@ namespace OpcUaStackClient
 
 		// create monitored item
 		CreateMonitoredItemContext& defaultCreateMonitoredItemContext(void);
-		OpcUaStatusCode syncCreateMonitoredItem(uint32_t& monitoredItemId);
-		OpcUaStatusCode syncCreateMonitoredItem(uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext);
-		void asyncCreateMonitoredItem(Callback& callback);
+		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId);
+		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext);
+		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback);
 		template<typename HANDLER>
-		    void asyncCreateMonitoredItem(HANDLER handler) {
+		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, HANDLER handler) {
 				Callback callback = handler;
-				asyncCreateMonitoredItem(callback);
+				asyncCreateMonitoredItem(nodeId, subscriptionId, callback);
 			}
-		void asyncCreateMonitoredItem(Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext);
+		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext);
 		template<typename HANDLER>
-		    void asyncCreateMonitoredItem(HANDLER handler, CreateMonitoredItemContext& createMonitoredItemContext) {
+		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, HANDLER handler, CreateMonitoredItemContext& createMonitoredItemContext) {
 				Callback callback = handler;
-				asyncCreateMonitoredItem(callback, createMonitoredItemContext);
+				asyncCreateMonitoredItem(nodeId, subscriptionId, callback, createMonitoredItemContext);
 			}
 
 		// delete monitored item

@@ -634,24 +634,30 @@ namespace OpcUaStackClient
 	   	VBITransactionCreateMonitoredItem::SPtr trx = boost::static_pointer_cast<VBITransactionCreateMonitoredItem>(serviceTransactionCreateMonitoredItems);
 
 		if (trx->callback_.exist()) {
+			OpcUaNodeId nodeId;
+			CreateMonitoredItemsRequest::SPtr req = trx->request();
+			MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
+			req->itemsToCreate()->get(0, monitoredItemCreateRequest);
+			monitoredItemCreateRequest->itemToMonitor().nodeId()->copyTo(nodeId);
+
 			if (trx->statusCode() != Success) {
-				trx->callback_(trx->statusCode(), 0);
+				trx->callback_(trx->statusCode(), 0, nodeId);
 				return;
 			}
 			if (trx->responseHeader()->serviceResult() != Success) {
-				trx->callback_(trx->responseHeader()->serviceResult(), 0);
+				trx->callback_(trx->responseHeader()->serviceResult(), 0, nodeId);
 				return;
 			}
 
 			CreateMonitoredItemsResponse::SPtr res = trx->response();
 			if (res->results()->size() != 1) {
-				trx->callback_(BadUnexpectedError, 0);
+				trx->callback_(BadUnexpectedError, 0, nodeId);
 				return;
 			}
 
 			MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
 			res->results()->get(0, monitoredItemCreateResult);
-			trx->callback_(Success, monitoredItemCreateResult->monitoredItemId());
+			trx->callback_(Success, monitoredItemCreateResult->monitoredItemId(), nodeId);
 		}
 	}
 
@@ -662,13 +668,13 @@ namespace OpcUaStackClient
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncCreateMonitoredItem(uint32_t& monitoredItemId)
+	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId)
 	{
-		return syncCreateMonitoredItem(monitoredItemId, defaultCreateMonitoredItemContext_);
+		return syncCreateMonitoredItem(nodeId, subscriptionId, monitoredItemId, defaultCreateMonitoredItemContext_);
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncCreateMonitoredItem(uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext)
+	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext)
 	{
 		if (monitoredItemService_.get() == nullptr) {
 			// create monitoredItem service
@@ -681,6 +687,19 @@ namespace OpcUaStackClient
 		VBITransactionCreateMonitoredItem::SPtr trx = constructSPtr<VBITransactionCreateMonitoredItem>();
 		trx->callback_.reset();
 		CreateMonitoredItemsRequest::SPtr req = trx->request();
+		req->subscriptionId(subscriptionId);
+		req->itemsToCreate()->resize(1);
+
+		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
+		monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+		monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
+		monitoredItemCreateRequest->itemToMonitor().attributeId(createMonitoredItemContext.attributeId_);
+		monitoredItemCreateRequest->requestedParameters().clientHandle(createMonitoredItemContext.clientHandle_);
+		monitoredItemCreateRequest->requestedParameters().samplingInterval(createMonitoredItemContext.samplingInterval_);
+		monitoredItemCreateRequest->requestedParameters().filter(createMonitoredItemContext.filter_);
+		monitoredItemCreateRequest->requestedParameters().queueSize(createMonitoredItemContext.queueSize_);
+		monitoredItemCreateRequest->requestedParameters().discardOldest(createMonitoredItemContext.discardOldest_);
+		req->itemsToCreate()->set(0, monitoredItemCreateRequest);
 
 		ServiceTransactionCreateMonitoredItems::SPtr t = trx;
 		monitoredItemService_->syncSend(t);
@@ -696,13 +715,13 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncCreateMonitoredItem(Callback& callback)
+	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback)
 	{
-		asyncCreateMonitoredItem(callback, defaultCreateMonitoredItemContext_);
+		asyncCreateMonitoredItem(nodeId, subscriptionId, callback, defaultCreateMonitoredItemContext_);
 	}
 
 	void
-	VBIClient::asyncCreateMonitoredItem(Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext)
+	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext)
 	{
 		if (monitoredItemService_.get() == nullptr) {
 			// create monitoredItem service
@@ -715,6 +734,19 @@ namespace OpcUaStackClient
 		VBITransactionCreateMonitoredItem::SPtr trx = constructSPtr<VBITransactionCreateMonitoredItem>();
 		trx->callback_ = callback;
 		CreateMonitoredItemsRequest::SPtr req = trx->request();
+		req->subscriptionId(subscriptionId);
+		req->itemsToCreate()->resize(1);
+
+		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
+		monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+		monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
+		monitoredItemCreateRequest->itemToMonitor().attributeId(createMonitoredItemContext.attributeId_);
+		monitoredItemCreateRequest->requestedParameters().clientHandle(createMonitoredItemContext.clientHandle_);
+		monitoredItemCreateRequest->requestedParameters().samplingInterval(createMonitoredItemContext.samplingInterval_);
+		monitoredItemCreateRequest->requestedParameters().filter(createMonitoredItemContext.filter_);
+		monitoredItemCreateRequest->requestedParameters().queueSize(createMonitoredItemContext.queueSize_);
+		monitoredItemCreateRequest->requestedParameters().discardOldest(createMonitoredItemContext.discardOldest_);
+		req->itemsToCreate()->set(0, monitoredItemCreateRequest);
 
 		ServiceTransactionCreateMonitoredItems::SPtr t = trx;
 		monitoredItemService_->asyncSend(t);

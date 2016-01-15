@@ -83,6 +83,13 @@ namespace OpcUaStackClient
 	  public:
 		CreateMonitoredItemContext(void);
 		~CreateMonitoredItemContext(void);
+
+		OpcUaUInt32 clientHandle_;
+		OpcUaDouble samplingInterval_;
+		ExtensibleParameter filter_;
+		OpcUaUInt32 queueSize_;
+		OpcUaBoolean discardOldest_;
+		OpcUaUInt32 attributeId_;
 	};
 
 	class DLLEXPORT DeleteMonitoredItemContext
