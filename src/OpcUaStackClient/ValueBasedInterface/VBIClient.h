@@ -141,7 +141,21 @@ namespace OpcUaStackClient
 			}
 
 		// delete subscription
-		// FIXME: todo
+		DeleteSubscriptionContext& defaultDeleteSubscriptionContext(void);
+		OpcUaStatusCode syncDeleteSubscription(uint32_t subscriptionId);
+		OpcUaStatusCode syncDeleteSubscription(uint32_t subscriptionId, DeleteSubscriptionContext& deleteSubscriptionContext);
+		void asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback);
+		template<typename HANDLER>
+		    void asyncDeleteSubscription(uint32_t subscriptionId, HANDLER handler) {
+				Callback callback = handler;
+				asyncDeleteSubscription(subscriptionId, callback);
+			}
+		void asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback, DeleteSubscriptionContext& deleteSubscriptionContext);
+		template<typename HANDLER>
+		    void asyncDeleteSubscription(uint32_t subscriptionId, HANDLER handler, DeleteSubscriptionContext& deleteSubscriptionContext) {
+				Callback callback = handler;
+				asyncDeleteSubscription(subscriptionId, callback, deleteSubscriptionContext);
+			}
 
 		// modify subscription
 		// FIXME: todo

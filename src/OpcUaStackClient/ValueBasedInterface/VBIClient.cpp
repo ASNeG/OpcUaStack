@@ -447,6 +447,12 @@ namespace OpcUaStackClient
 		VBITransactionCreateSubscription::SPtr trx = constructSPtr<VBITransactionCreateSubscription>();
 		trx->callback_.reset();
 		CreateSubscriptionRequest::SPtr req = trx->request();
+		req->requestedPublishingInterval(createSubscriptionContext.requestedPublishingInterval_);
+		req->requestedLifetimeCount(createSubscriptionContext.requestedLifetimeCount_);
+		req->requestedMaxKeepAliveCount(createSubscriptionContext.requestedMaxKeepAliveCount_);
+		req->maxNotificationsPerPublish(createSubscriptionContext.maxNotificationsPerPublish_);
+		req->publishingEnabled(createSubscriptionContext.publishingEnabled_);
+		req->priority(createSubscriptionContext.priority_);
 
 		ServiceTransactionCreateSubscription::SPtr t = trx;
 		subscriptionService_->syncSend(t);
@@ -477,6 +483,12 @@ namespace OpcUaStackClient
 		VBITransactionCreateSubscription::SPtr trx = constructSPtr<VBITransactionCreateSubscription>();
 		trx->callback_ = callback;
 		CreateSubscriptionRequest::SPtr req = trx->request();
+		req->requestedPublishingInterval(createSubscriptionContext.requestedPublishingInterval_);
+		req->requestedLifetimeCount(createSubscriptionContext.requestedLifetimeCount_);
+		req->requestedMaxKeepAliveCount(createSubscriptionContext.requestedMaxKeepAliveCount_);
+		req->maxNotificationsPerPublish(createSubscriptionContext.maxNotificationsPerPublish_);
+		req->publishingEnabled(createSubscriptionContext.publishingEnabled_);
+		req->priority(createSubscriptionContext.priority_);
 
 		ServiceTransactionCreateSubscription::SPtr t = trx;
 		subscriptionService_->asyncSend(t);
@@ -507,6 +519,36 @@ namespace OpcUaStackClient
 	VBIClient::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
 	{
 	}
-	// FIXME: todo
+
+	DeleteSubscriptionContext&
+	VBIClient::defaultDeleteSubscriptionContext(void)
+	{
+		return defaultDeleteSubscriptionContext_;
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncDeleteSubscription(uint32_t subscriptionId)
+	{
+		return syncDeleteSubscription(subscriptionId, defaultDeleteSubscriptionContext_);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncDeleteSubscription(uint32_t subscriptionId, DeleteSubscriptionContext& deleteSubscriptionContext)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	void
+	VBIClient::asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback)
+	{
+		asyncDeleteSubscription(subscriptionId, callback, defaultDeleteSubscriptionContext_);
+	}
+
+	void
+	VBIClient::asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback, DeleteSubscriptionContext& deleteSubscriptionContext)
+	{
+		// FIXME: todo
+	}
 
 }

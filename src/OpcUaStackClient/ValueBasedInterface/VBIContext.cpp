@@ -80,6 +80,12 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	CreateSubscriptionContext::CreateSubscriptionContext(void)
+	: requestedPublishingInterval_(100)
+	, requestedLifetimeCount_(2400)
+	, requestedMaxKeepAliveCount_(10)
+	, maxNotificationsPerPublish_(65536)
+	, publishingEnabled_(true)
+	, priority_(0)
 	{
 	}
 

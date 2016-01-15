@@ -62,6 +62,13 @@ namespace OpcUaStackClient
 	  public:
 		CreateSubscriptionContext(void);
 		~CreateSubscriptionContext(void);
+
+		OpcUaDouble requestedPublishingInterval_;
+		OpcUaUInt32 requestedLifetimeCount_;
+		OpcUaUInt32 requestedMaxKeepAliveCount_;
+		OpcUaUInt32 maxNotificationsPerPublish_;
+		OpcUaBoolean publishingEnabled_;
+		OpcUaByte priority_;
 	};
 
 	class DLLEXPORT DeleteSubscriptionContext
