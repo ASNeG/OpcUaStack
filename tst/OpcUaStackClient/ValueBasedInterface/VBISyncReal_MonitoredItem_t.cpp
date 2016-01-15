@@ -34,6 +34,9 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_session_connect_disconnect)
 	uint32_t monitoredItemId;
 	BOOST_REQUIRE(client.syncCreateMonitoredItem(nodeId, subscriptionId, monitoredItemId) == Success);
 
+	// delete monitored item
+	BOOST_REQUIRE(client.syncDeleteMonitoredItem(subscriptionId, monitoredItemId) == Success);
+
 	// delete subscription
 	BOOST_REQUIRE(client.syncDeleteSubscription(subscriptionId) == Success);
 

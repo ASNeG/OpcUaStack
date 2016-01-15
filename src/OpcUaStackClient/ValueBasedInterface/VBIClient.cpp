@@ -677,7 +677,7 @@ namespace OpcUaStackClient
 	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext)
 	{
 		if (monitoredItemService_.get() == nullptr) {
-			// create monitoredItem service
+			// monitoredItem service
 			MonitoredItemServiceConfig monitoredItemServiceConfig;
 			monitoredItemServiceConfig.monitoredItemServiceIf_ = this;
 			monitoredItemService_ = serviceSetManager_.monitoredItemService(sessionService_, monitoredItemServiceConfig);
@@ -724,7 +724,7 @@ namespace OpcUaStackClient
 	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext)
 	{
 		if (monitoredItemService_.get() == nullptr) {
-			// create monitoredItem service
+			// monitoredItem service
 			MonitoredItemServiceConfig monitoredItemServiceConfig;
 			monitoredItemServiceConfig.monitoredItemServiceIf_ = this;
 			monitoredItemService_ = serviceSetManager_.monitoredItemService(sessionService_, monitoredItemServiceConfig);
@@ -758,22 +758,126 @@ namespace OpcUaStackClient
     void
     VBIClient::monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems)
     {
-    	// FIXME: todo
+	   	VBITransactionDeleteMonitoredItem::SPtr trx = boost::static_pointer_cast<VBITransactionDeleteMonitoredItem>(serviceTransactionDeleteMonitoredItems);
+
+		if (trx->callback_.exist()) {
+			uint32_t subscriptionId;
+			uint32_t monitoredItemId;
+			DeleteMonitoredItemsRequest::SPtr req = trx->request();
+			subscriptionId = req->subscriptionId();
+			req->monitoredItemIds()->get(0, monitoredItemId);
+
+			if (trx->statusCode() != Success) {
+				trx->callback_(trx->statusCode(), subscriptionId, monitoredItemId);
+				return;
+			}
+			if (trx->responseHeader()->serviceResult() != Success) {
+				trx->callback_(trx->responseHeader()->serviceResult(), subscriptionId, monitoredItemId);
+				return;
+			}
+
+			DeleteMonitoredItemsResponse::SPtr res = trx->response();
+			if (res->results()->size() != 1) {
+				trx->callback_(BadUnexpectedError, subscriptionId, monitoredItemId);
+				return;
+			}
+
+			OpcUaStatusCode statusCode;
+			res->results()->get(0, statusCode);
+			trx->callback_(statusCode, subscriptionId, monitoredItemId);
+		}
     }
 
+	DeleteMonitoredItemContext&
+	VBIClient::defaultDeleteMonitoredItemContext(void)
+	{
+		return defaultDeleteMonitoredItemContext_;
+	}
+	OpcUaStatusCode
+	VBIClient::syncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId)
+	{
+		return syncDeleteMonitoredItem(subscriptionId, monitoredItemId, defaultDeleteMonitoredItemContext_);
+	}
+
+	OpcUaStatusCode
+	VBIClient::syncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, DeleteMonitoredItemContext& deleteMonitoredItemContext)
+	{
+		if (monitoredItemService_.get() == nullptr) {
+			// monitoredItem service
+			MonitoredItemServiceConfig monitoredItemServiceConfig;
+			monitoredItemServiceConfig.monitoredItemServiceIf_ = this;
+			monitoredItemService_ = serviceSetManager_.monitoredItemService(sessionService_, monitoredItemServiceConfig);
+			assert(monitoredItemService_.get() != nullptr);
+		}
+
+		VBITransactionDeleteMonitoredItem::SPtr trx = constructSPtr<VBITransactionDeleteMonitoredItem>();
+		trx->callback_.reset();
+		DeleteMonitoredItemsRequest::SPtr req = trx->request();
+		req->subscriptionId(subscriptionId);
+		req->monitoredItemIds()->resize(1);
+		req->monitoredItemIds()->set(0, monitoredItemId);
+
+		ServiceTransactionDeleteMonitoredItems::SPtr t = trx;
+		monitoredItemService_->syncSend(t);
+		if (trx->statusCode() != Success) return trx->statusCode();
+		if (trx->responseHeader()->serviceResult() != Success) return trx->responseHeader()->serviceResult();
+		DeleteMonitoredItemsResponse::SPtr res = trx->response();
+		if (res->results()->size() != 1) return BadUnexpectedError;
+
+		OpcUaStatusCode statusCode;
+		res->results()->get(0, statusCode);
+		return statusCode;
+	}
+
+	void
+	VBIClient::asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, Callback& callback)
+	{
+		asyncDeleteMonitoredItem(subscriptionId, monitoredItemId, callback, defaultDeleteMonitoredItemContext_);
+	}
+
+	void
+	VBIClient::asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, Callback& callback, DeleteMonitoredItemContext& deleteMonitoredItemContext)
+	{
+		if (monitoredItemService_.get() == nullptr) {
+			// monitoredItem service
+			MonitoredItemServiceConfig monitoredItemServiceConfig;
+			monitoredItemServiceConfig.monitoredItemServiceIf_ = this;
+			monitoredItemService_ = serviceSetManager_.monitoredItemService(sessionService_, monitoredItemServiceConfig);
+			assert(monitoredItemService_.get() != nullptr);
+		}
+
+		VBITransactionDeleteMonitoredItem::SPtr trx = constructSPtr<VBITransactionDeleteMonitoredItem>();
+		trx->callback_ = callback;
+		DeleteMonitoredItemsRequest::SPtr req = trx->request();
+		req->subscriptionId(subscriptionId);
+		req->monitoredItemIds()->resize(1);
+		req->monitoredItemIds()->set(0, monitoredItemId);
+
+		ServiceTransactionDeleteMonitoredItems::SPtr t = trx;
+		monitoredItemService_->asyncSend(t);
+	}
+
+	// ------------------------------------------------------------------------
+	// ModifyMonitoredItem
+	// ------------------------------------------------------------------------
     void
     VBIClient::monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems)
     {
     	// FIXME: todo
     }
 
+	// ------------------------------------------------------------------------
+	// SetMonitoringMode
+	// ------------------------------------------------------------------------
     void
     VBIClient::monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode)
     {
     	// FIXME: todo
     }
 
-
+	// ------------------------------------------------------------------------
+	// SetTriggering
+	// ------------------------------------------------------------------------
     void
     VBIClient::monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering)
     {

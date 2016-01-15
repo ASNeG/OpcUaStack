@@ -191,7 +191,21 @@ namespace OpcUaStackClient
 			}
 
 		// delete monitored item
-		// FIXME: todo
+		DeleteMonitoredItemContext& defaultDeleteMonitoredItemContext(void);
+		OpcUaStatusCode syncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId);
+		OpcUaStatusCode syncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, DeleteMonitoredItemContext& deleteMonitoredItemContext);
+		void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, Callback& callback);
+		template<typename HANDLER>
+		    void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, HANDLER handler) {
+				Callback callback = handler;
+				asyncDeleteMonitoredItem(subscriptionId, monitoredItemId, callback);
+			}
+		void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, Callback& callback, DeleteMonitoredItemContext& deleteMonitoredItemContext);
+		template<typename HANDLER>
+		    void asyncDeleteMonitoredItem(uint32_t subscriptionId, uint32_t monitoredItemId, HANDLER handler, DeleteMonitoredItemContext& deleteMonitoredItemContext) {
+				Callback callback = handler;
+				asyncDeleteMonitoredItem(subscriptionId, monitoredItemId, callback, deleteMonitoredItemContext);
+			}
 
 		// modify monitored item
 		// FIXME: todo

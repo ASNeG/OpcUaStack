@@ -103,8 +103,9 @@ namespace OpcUaStackClient
 		}
 
 		Condition deleteMonitoredItemComplete_;
-		void deleteMonitoredItemComplete(OpcUaStatusCode statusCode, uint32_t monitoredItemId) {
+		void deleteMonitoredItemComplete(OpcUaStatusCode statusCode, uint32_t subscriptionId, uint32_t monitoredItemId) {
 			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
 			monitoredItemId_ = monitoredItemId;
 			deleteMonitoredItemComplete_.sendEvent();
 		}
