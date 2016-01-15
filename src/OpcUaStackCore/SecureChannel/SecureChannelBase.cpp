@@ -1346,6 +1346,10 @@ namespace OpcUaStackCore
 		}
 		secureChannel->asyncSendStop_ = false;
 
+		// cleanup send queue
+		secureChannel->secureChannelTransactionList_.clear();
+
+		// signal disconnect to session
 		handleDisconnect(secureChannel);
 	}
 
