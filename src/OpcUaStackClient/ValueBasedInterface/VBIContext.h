@@ -78,6 +78,20 @@ namespace OpcUaStackClient
 		~DeleteSubscriptionContext(void);
 	};
 
+	class DLLEXPORT CreateMonitoredItemContext
+	{
+	  public:
+		CreateMonitoredItemContext(void);
+		~CreateMonitoredItemContext(void);
+	};
+
+	class DLLEXPORT DeleteMonitoredItemContext
+	{
+	  public:
+		DeleteMonitoredItemContext(void);
+		~DeleteMonitoredItemContext(void);
+	};
+
 }
 
 #endif

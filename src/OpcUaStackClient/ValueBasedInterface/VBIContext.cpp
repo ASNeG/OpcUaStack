@@ -108,4 +108,34 @@ namespace OpcUaStackClient
 	{
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// CreateMonitoredItemContext
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	CreateMonitoredItemContext::CreateMonitoredItemContext(void)
+	{
+	}
+
+	CreateMonitoredItemContext::~CreateMonitoredItemContext(void)
+	{
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DeleteMonitoredItemContext
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	DeleteMonitoredItemContext::DeleteMonitoredItemContext(void)
+	{
+	}
+
+	DeleteMonitoredItemContext::~DeleteMonitoredItemContext(void)
+	{
+	}
+
 }

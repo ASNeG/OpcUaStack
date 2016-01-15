@@ -36,11 +36,14 @@ namespace OpcUaStackClient
 	    , sessionState_(SS_Disconnect)
 	    , sessionStateUpdate_()
 	    , subscriptionId_(0)
+	    , monitoredItemId_(0)
 
 	    , readComplete_()
 	    , writeComplete_()
 	    , createSubscriptionComplete_()
 	    , deleteSubscriptionComplete_()
+	    , createMonitoredItemComplete_()
+	    , deleteMonitoredItemComplete_()
 	    {
 	    }
 		~VBIClientHandlerTest(void)
@@ -88,6 +91,21 @@ namespace OpcUaStackClient
 			statusCode_ = statusCode;
 			subscriptionId_ = subscriptionId;
 			deleteSubscriptionComplete_.sendEvent();
+		}
+
+		uint32_t monitoredItemId_;
+		Condition createMonitoredItemComplete_;
+		void createMonitoredItemComplete(OpcUaStatusCode statusCode, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			createMonitoredItemComplete_.sendEvent();
+		}
+
+		Condition deleteMonitoredItemComplete_;
+		void deleteMonitoredItemComplete(OpcUaStatusCode statusCode, uint32_t monitoredItemId) {
+			statusCode_ = statusCode;
+			monitoredItemId_ = monitoredItemId;
+			deleteMonitoredItemComplete_.sendEvent();
 		}
 
 	};

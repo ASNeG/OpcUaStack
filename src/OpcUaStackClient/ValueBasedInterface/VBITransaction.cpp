@@ -72,4 +72,30 @@ namespace OpcUaStackClient
 	{
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// MonitoredItemService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	VBITransactionCreateMonitoredItem::VBITransactionCreateMonitoredItem(void)
+	: callback_()
+	{
+	}
+
+	VBITransactionCreateMonitoredItem::~VBITransactionCreateMonitoredItem(void)
+	{
+	}
+
+	VBITransactionDeleteMonitoredItem::VBITransactionDeleteMonitoredItem(void)
+	: callback_()
+	{
+	}
+
+	VBITransactionDeleteMonitoredItem::~VBITransactionDeleteMonitoredItem(void)
+	{
+	}
+
 }

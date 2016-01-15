@@ -89,6 +89,39 @@ namespace OpcUaStackClient
 		Callback callback_;
 	};
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// MonitoredItemService
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	class DLLEXPORT VBITransactionCreateMonitoredItem
+	: public ServiceTransactionCreateMonitoredItems
+	{
+	  public:
+		typedef boost::shared_ptr<VBITransactionCreateMonitoredItem> SPtr;
+
+		VBITransactionCreateMonitoredItem(void);
+		virtual ~VBITransactionCreateMonitoredItem(void);
+
+		Callback callback_;
+	};
+
+	class DLLEXPORT VBITransactionDeleteMonitoredItem
+	: public ServiceTransactionDeleteMonitoredItems
+	{
+	  public:
+		typedef boost::shared_ptr<VBITransactionDeleteMonitoredItem> SPtr;
+
+		VBITransactionDeleteMonitoredItem(void);
+		virtual ~VBITransactionDeleteMonitoredItem(void);
+
+		Callback callback_;
+	};
+
+
 }
 
 #endif

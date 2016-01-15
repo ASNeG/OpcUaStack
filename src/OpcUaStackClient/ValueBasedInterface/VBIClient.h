@@ -32,6 +32,7 @@ namespace OpcUaStackClient
 	: public SessionServiceIf
 	, public AttributeServiceIf
 	, public SubscriptionServiceIf
+	, public MonitoredItemServiceIf
 	{
 	  public:
 		VBIClient(void);
@@ -163,6 +164,44 @@ namespace OpcUaStackClient
 		// transfer subscription
 		// FIXME: todo
 
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// MonitoredItemService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
+		// create monitored item
+		CreateMonitoredItemContext& defaultCreateMonitoredItemContext(void);
+		OpcUaStatusCode syncCreateMonitoredItem(uint32_t& monitoredItemId);
+		OpcUaStatusCode syncCreateMonitoredItem(uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext);
+		void asyncCreateMonitoredItem(Callback& callback);
+		template<typename HANDLER>
+		    void asyncCreateMonitoredItem(HANDLER handler) {
+				Callback callback = handler;
+				asyncCreateMonitoredItem(callback);
+			}
+		void asyncCreateMonitoredItem(Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext);
+		template<typename HANDLER>
+		    void asyncCreateMonitoredItem(HANDLER handler, CreateMonitoredItemContext& createMonitoredItemContext) {
+				Callback callback = handler;
+				asyncCreateMonitoredItem(callback, createMonitoredItemContext);
+			}
+
+		// delete monitored item
+		// FIXME: todo
+
+		// modify monitored item
+		// FIXME: todo
+
+		// set monitoring mode
+		// FIXME: todo
+
+		// set triggering
+		// FIXME: todo
+
 	  private:
 		// BEGIN SessionServiceIf
 		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
@@ -184,18 +223,29 @@ namespace OpcUaStackClient
 	    void subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId);
 		// END SubscriptionServiceIf
 
+	    // BEGIN MonitoredItemServiceIf
+	    void monitoredItemServiceCreateMonitoredItemsResponse(ServiceTransactionCreateMonitoredItems::SPtr serviceTransactionCreateMonitoredItems);
+	    void monitoredItemServiceDeleteMonitoredItemsResponse(ServiceTransactionDeleteMonitoredItems::SPtr serviceTransactionDeleteMonitoredItems);
+	    void monitoredItemServiceModifyMonitoredItemsResponse(ServiceTransactionModifyMonitoredItems::SPtr serviceTransactionModifyMonitoredItems);
+	    void monitoredItemServiceSetMonitoringModeResponse(ServiceTransactionSetMonitoringMode::SPtr serviceTransactionSetMonitoringMode);
+	    void monitoredItemServiceSetTriggeringResponse(ServiceTransactionSetTriggering::SPtr serviceTransactionSetTriggering);
+	    // END MonitoredItemServiceIf
+
 		ServiceSetManager serviceSetManager_;
 		std::string ioThreadName_;
 
 		SessionService::SPtr sessionService_;
 		AttributeService::SPtr attributeService_;
 		SubscriptionService::SPtr subscriptionService_;
+		MonitoredItemService::SPtr monitoredItemService_;
 		Callback sessionStateUpdateCallback_;
 
 		ReadContext defaultReadContext_;
 		WriteContext defaultWriteContext_;
 		CreateSubscriptionContext defaultCreateSubscriptionContext_;
 		DeleteSubscriptionContext defaultDeleteSubscriptionContext_;
+		CreateMonitoredItemContext defaultCreateMonitoredItemContext_;
+		DeleteMonitoredItemContext defaultDeleteMonitoredItemContext_;
 	};
 
 }
