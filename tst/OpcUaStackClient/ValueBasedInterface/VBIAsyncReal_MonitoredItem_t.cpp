@@ -53,6 +53,18 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
 	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
 
+	// delete monitored item
+	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
+	client.asyncDeleteMonitoredItem(
+		subscriptionId,
+		monitoredItemId,
+		boost::bind(&VBIClientHandlerTest::deleteMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
+	);
+	BOOST_REQUIRE(vbiClientHandlerTest.deleteMonitoredItemComplete_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	BOOST_REQUIRE(monitoredItemId == vbiClientHandlerTest.monitoredItemId_);
+	BOOST_REQUIRE(subscriptionId == vbiClientHandlerTest.subscriptionId_);
+
 	// delete subscription
 	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
 	client.asyncDeleteSubscription(
