@@ -38,6 +38,17 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Subscription_create_delete)
 	);
 	BOOST_REQUIRE(vbiClientHandlerTest.createSubscriptionComplete_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
+
+	// delete subscription
+	vbiClientHandlerTest.deleteSubscriptionComplete_.initEvent();
+	client.asyncDeleteSubscription(
+		subscriptionId,
+		boost::bind(&VBIClientHandlerTest::deleteSubscriptionComplete, &vbiClientHandlerTest, _1, _2)
+	);
+	BOOST_REQUIRE(vbiClientHandlerTest.deleteSubscriptionComplete_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
+	BOOST_REQUIRE(vbiClientHandlerTest.subscriptionId_ == subscriptionId);
 
 	// disconnect session
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();

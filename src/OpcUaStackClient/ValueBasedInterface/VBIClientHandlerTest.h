@@ -40,6 +40,7 @@ namespace OpcUaStackClient
 	    , readComplete_()
 	    , writeComplete_()
 	    , createSubscriptionComplete_()
+	    , deleteSubscriptionComplete_()
 	    {
 	    }
 		~VBIClientHandlerTest(void)
@@ -80,6 +81,13 @@ namespace OpcUaStackClient
 			statusCode_ = statusCode;
 			subscriptionId_ = subscriptionId;
 			createSubscriptionComplete_.sendEvent();
+		}
+
+		Condition deleteSubscriptionComplete_;
+		void deleteSubscriptionComplete(OpcUaStatusCode statusCode, uint32_t subscriptionId) {
+			statusCode_ = statusCode;
+			subscriptionId_ = subscriptionId;
+			deleteSubscriptionComplete_.sendEvent();
 		}
 
 	};
