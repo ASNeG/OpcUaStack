@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 	, debug_(false)
 	, debugHeader_(false)
 	, asyncSend_(false)
+	, asyncSendStop_(false)
 	, typeId_()
 	, messageHeader_()
 

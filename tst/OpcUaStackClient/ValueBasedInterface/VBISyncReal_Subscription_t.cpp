@@ -24,11 +24,9 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_session_connect_disconnect)
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
 
-#if 0
 	// create subscription
 	uint32_t subscriptionId;
 	BOOST_REQUIRE(client.syncCreateSubscription(subscriptionId) == Success);
-#endif
 
 	// disconnect session
 	BOOST_REQUIRE(client.syncDisconnect() == Success);

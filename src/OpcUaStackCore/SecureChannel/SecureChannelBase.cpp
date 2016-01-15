@@ -1024,6 +1024,12 @@ namespace OpcUaStackCore
 	{
 		secureChannel->asyncSend_ = false;
 
+		// the secure channel is closed
+		if (secureChannel->asyncSendStop_) {
+			closeChannel(secureChannel);
+			return;
+		}
+
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
@@ -1241,6 +1247,12 @@ namespace OpcUaStackCore
 	{
 		secureChannel->asyncSend_ = false;
 
+		// the secure channel is closed
+		if (secureChannel->asyncSendStop_) {
+			closeChannel(secureChannel);
+			return;
+		}
+
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
@@ -1326,6 +1338,14 @@ namespace OpcUaStackCore
 	SecureChannelBase::closeChannel(SecureChannel* secureChannel, bool close)
 	{
 		if (close) secureChannel->close();
+
+		// cleanup sender
+		if (secureChannel->asyncSend_) {
+			secureChannel->asyncSendStop_ = true;
+			return;
+		}
+		secureChannel->asyncSendStop_ = false;
+
 		handleDisconnect(secureChannel);
 	}
 

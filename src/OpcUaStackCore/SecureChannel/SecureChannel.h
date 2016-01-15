@@ -97,6 +97,7 @@ namespace OpcUaStackCore
 		bool sendFirstSegment_;
 		bool recvFirstSegment_;
 		bool asyncSend_;
+		bool asyncSendStop_;
 		OpcUaUInt32 sendRequestId_;
 		OpcUaUInt32 recvRequestId_;
 		OpcUaUInt32 sendSequenceNumber_;
