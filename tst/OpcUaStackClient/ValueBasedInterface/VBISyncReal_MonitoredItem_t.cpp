@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_)
 	std::cout << "VBISyncReal_MonitoredItem_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_session_connect_disconnect)
+BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_create_delete)
 {
 	OpcUaStatusCode statusCode;
 	VBIClient client;
@@ -33,6 +33,45 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_session_connect_disconnect)
 	nodeId.set((OpcUaUInt32)2258);
 	uint32_t monitoredItemId;
 	BOOST_REQUIRE(client.syncCreateMonitoredItem(nodeId, subscriptionId, monitoredItemId) == Success);
+
+	// delete monitored item
+	BOOST_REQUIRE(client.syncDeleteMonitoredItem(subscriptionId, monitoredItemId) == Success);
+
+	// delete subscription
+	BOOST_REQUIRE(client.syncDeleteSubscription(subscriptionId) == Success);
+
+	// disconnect session
+	BOOST_REQUIRE(client.syncDisconnect() == Success);
+}
+
+BOOST_AUTO_TEST_CASE(VBISyncReal_MonitoredItem_create_delete_callback)
+{
+	VBIClientHandlerTest vbiClientHandlerTest;
+	OpcUaStatusCode statusCode;
+	VBIClient client;
+
+	// connect session
+	ConnectContext connectContext;
+	connectContext.endpointUrl_ = REAL_SERVER_URI;
+	connectContext.sessionName_ = REAL_SESSION_NAME;
+	BOOST_REQUIRE(client.syncConnect(connectContext) == Success);
+
+	// set data change callback
+	client.setDataChangeCallback(
+		boost::bind(&VBIClientHandlerTest::dataChangeCallback, &vbiClientHandlerTest, _1, _2)
+	);
+
+	// create subscription
+	uint32_t subscriptionId;
+	BOOST_REQUIRE(client.syncCreateSubscription(subscriptionId) == Success);
+
+	// create monitored item
+	OpcUaNodeId nodeId;
+	nodeId.set((OpcUaUInt32)2258);
+	uint32_t monitoredItemId;
+	vbiClientHandlerTest.dataChangeCallback_.initEvent();
+	BOOST_REQUIRE(client.syncCreateMonitoredItem(nodeId, subscriptionId, monitoredItemId) == Success);
+	BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(1000) == true);
 
 	// delete monitored item
 	BOOST_REQUIRE(client.syncDeleteMonitoredItem(subscriptionId, monitoredItemId) == Success);
