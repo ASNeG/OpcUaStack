@@ -518,6 +518,33 @@ namespace OpcUaStackClient
 	void
 	VBIClient::subscriptionServiceDeleteSubscriptionsResponse(ServiceTransactionDeleteSubscriptions::SPtr serviceTransactionDeleteSubscriptions)
 	{
+    	VBITransactionDeleteSubscription::SPtr trx = boost::static_pointer_cast<VBITransactionDeleteSubscription>(serviceTransactionDeleteSubscriptions);
+
+		if (trx->callback_.exist()) {
+			if (trx->statusCode() != Success) {
+				trx->callback_(trx->statusCode(), 0);
+				return;
+			}
+			if (trx->responseHeader()->serviceResult() != Success) {
+				trx->callback_(trx->responseHeader()->serviceResult(), 0);
+				return;
+			}
+
+			uint32_t subscriptionId;
+			DeleteSubscriptionsRequest::SPtr req = trx->request();
+			req->subscriptionIds()->get(0, subscriptionId);
+
+
+			DeleteSubscriptionsResponse::SPtr res = trx->response();
+			if (res->results()->size() != 1) {
+				trx->callback_(BadUnexpectedError, subscriptionId);
+				return;
+			}
+			OpcUaStatusCode statusCode;
+			res->results()->get(0, statusCode);
+
+			trx->callback_(statusCode, subscriptionId);
+		}
 	}
 
 	DeleteSubscriptionContext&
@@ -535,7 +562,24 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	VBIClient::syncDeleteSubscription(uint32_t subscriptionId, DeleteSubscriptionContext& deleteSubscriptionContext)
 	{
-		// FIXME: todo
+		if (subscriptionService_.get() == nullptr) {
+			// delete subscription service
+			SubscriptionServiceConfig subscriptionServiceConfig;
+			subscriptionServiceConfig.subscriptionServiceIf_ = this;
+			subscriptionService_ = serviceSetManager_.subscriptionService(sessionService_, subscriptionServiceConfig);
+			assert(subscriptionService_.get() != nullptr);
+		}
+
+		VBITransactionDeleteSubscription::SPtr trx = constructSPtr<VBITransactionDeleteSubscription>();
+		trx->callback_.reset();
+		DeleteSubscriptionsRequest::SPtr req = trx->request();
+		req->subscriptionIds()->resize(1);
+		req->subscriptionIds()->set(0, subscriptionId);
+
+		ServiceTransactionDeleteSubscriptions::SPtr t = trx;
+		subscriptionService_->syncSend(t);
+		if (trx->statusCode() != Success) return trx->statusCode();
+		if (trx->responseHeader()->serviceResult() != Success) return trx->responseHeader()->serviceResult();
 		return Success;
 	}
 
@@ -548,7 +592,22 @@ namespace OpcUaStackClient
 	void
 	VBIClient::asyncDeleteSubscription(uint32_t subscriptionId, Callback& callback, DeleteSubscriptionContext& deleteSubscriptionContext)
 	{
-		// FIXME: todo
+		if (subscriptionService_.get() == nullptr) {
+			// create subscription service
+			SubscriptionServiceConfig subscriptionServiceConfig;
+			subscriptionServiceConfig.subscriptionServiceIf_ = this;
+			subscriptionService_ = serviceSetManager_.subscriptionService(sessionService_, subscriptionServiceConfig);
+			assert(subscriptionService_.get() != nullptr);
+		}
+
+		VBITransactionDeleteSubscription::SPtr trx = constructSPtr<VBITransactionDeleteSubscription>();
+		trx->callback_ = callback;
+		DeleteSubscriptionsRequest::SPtr req = trx->request();
+		req->subscriptionIds()->resize(1);
+		req->subscriptionIds()->set(0, subscriptionId);
+
+		ServiceTransactionDeleteSubscriptions::SPtr t = trx;
+		subscriptionService_->asyncSend(t);
 	}
 
 }
