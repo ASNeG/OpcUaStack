@@ -124,6 +124,19 @@ namespace OpcUaStackClient
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 
+		template<typename HANDLER>
+		  void setSubscriptionChangeCallback(HANDLER handler) {
+			  Callback callback = handler;
+			  setSubscriptionChangeCallback(callback);
+		  }
+		void setSubscriptionChangeCallback(Callback& callback);
+		template<typename HANDLER>
+		  void setDataChangeCallback(HANDLER handler) {
+			  Callback callback = handler;
+			  setDataChangeCallback(callback);
+		  }
+		void setDataChangeCallback(Callback& callback);
+
 		// create subscription
 		CreateSubscriptionContext& defaultCreateSubscriptionContext(void);
 		OpcUaStatusCode syncCreateSubscription(uint32_t& subscriptionId);
@@ -252,7 +265,10 @@ namespace OpcUaStackClient
 		AttributeService::SPtr attributeService_;
 		SubscriptionService::SPtr subscriptionService_;
 		MonitoredItemService::SPtr monitoredItemService_;
+
 		Callback sessionStateUpdateCallback_;
+		Callback subscriptionChangeCallback_;
+		Callback dataChangeCallback_;
 
 		ReadContext defaultReadContext_;
 		WriteContext defaultWriteContext_;

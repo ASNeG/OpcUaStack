@@ -40,6 +40,8 @@ namespace OpcUaStackClient
 
 	    , readComplete_()
 	    , writeComplete_()
+	    , subscriptionChangeCallback_()
+	    , dataChangeCallback_()
 	    , createSubscriptionComplete_()
 	    , deleteSubscriptionComplete_()
 	    , createMonitoredItemComplete_()
@@ -54,7 +56,17 @@ namespace OpcUaStackClient
 		OpcUaNodeId nodeId_;
 		OpcUaStatusCode statusCode_;
 		OpcUaDataValue dataValue_;
+		uint32_t subscriptionId_;
+		uint32_t monitoredItemId_;
+		SubscriptionState subscriptionState_;
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// SessionService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		SessionState sessionState_;
 		Condition sessionStateUpdate_;
 		void sessionStateUpdate(uint32_t clientHandle, SessionBase& session, SessionState sessionState) {
@@ -63,6 +75,13 @@ namespace OpcUaStackClient
 			sessionStateUpdate_.sendEvent();
 		}
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// AttributeService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		Condition readComplete_;
 		void readComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, OpcUaDataValue& dataValue) {
 			statusCode_ = statusCode;
@@ -78,7 +97,29 @@ namespace OpcUaStackClient
 			writeComplete_.sendEvent();
 		}
 
-		uint32_t subscriptionId_;
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// SubscriptionService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		Condition subscriptionChangeCallback_;
+		void subscriptionChangeCallback(SubscriptionState subscriptionState, uint32_t subscriptionId)
+		{
+			subscriptionState_ = subscriptionState;
+			subscriptionId_ = subscriptionId;
+			subscriptionChangeCallback_.sendEvent();
+		}
+
+		Condition dataChangeCallback_;
+		void dataChangeCallback(OpcUaUInt32 clientHandle, OpcUaDataValue& dataValue)
+		{
+			clientHandle_ = clientHandle;
+			dataValue_.copyFrom(dataValue);
+			dataChangeCallback_.sendEvent();
+		}
+
 		Condition createSubscriptionComplete_;
 		void createSubscriptionComplete(OpcUaStatusCode statusCode, uint32_t subscriptionId) {
 			statusCode_ = statusCode;
@@ -93,7 +134,13 @@ namespace OpcUaStackClient
 			deleteSubscriptionComplete_.sendEvent();
 		}
 
-		uint32_t monitoredItemId_;
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// MonitoredItemService
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		Condition createMonitoredItemComplete_;
 		void createMonitoredItemComplete(OpcUaStatusCode statusCode, OpcUaNodeId& nodeId, uint32_t monitoredItemId) {
 			statusCode_ = statusCode;

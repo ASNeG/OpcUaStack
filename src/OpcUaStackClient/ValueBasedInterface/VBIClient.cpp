@@ -30,6 +30,8 @@ namespace OpcUaStackClient
 	, monitoredItemService_()
 
 	, sessionStateUpdateCallback_()
+	, subscriptionChangeCallback_()
+	, dataChangeCallback_()
 
 	, defaultReadContext_()
 	, defaultWriteContext_()
@@ -393,16 +395,34 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 
 	void
-	VBIClient::dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
+	VBIClient::subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
 	{
-		// FIXME: todo
+	    if (subscriptionChangeCallback_.exist()) {
+	    	subscriptionChangeCallback_(subscriptionState, subscriptionId);
+	    }
 	}
 
-    void
-    VBIClient::subscriptionStateUpdate(SubscriptionState subscriptionState, uint32_t subscriptionId)
-    {
-    	// FIXME: todo
-    }
+
+	void
+	VBIClient::dataChangeNotification(const MonitoredItemNotification::SPtr& monitoredItem)
+	{
+		if (dataChangeCallback_.exist()) {
+			dataChangeCallback_(monitoredItem->clientHandle(), monitoredItem->dataValue());
+		}
+	}
+
+
+	void
+	VBIClient::setSubscriptionChangeCallback(Callback& callback)
+	{
+		subscriptionChangeCallback_ = callback;
+	}
+
+	void
+	VBIClient::setDataChangeCallback(Callback& callback)
+	{
+		dataChangeCallback_ = callback;
+	}
 
     // ------------------------------------------------------------------------
     // CreateSubscription
