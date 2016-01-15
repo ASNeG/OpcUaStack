@@ -28,6 +28,9 @@ BOOST_AUTO_TEST_CASE(VBISyncReal_Subscription_session_connect_disconnect)
 	uint32_t subscriptionId;
 	BOOST_REQUIRE(client.syncCreateSubscription(subscriptionId) == Success);
 
+	// delete subscription
+	BOOST_REQUIRE(client.syncDeleteSubscription(subscriptionId) == Success);
+
 	// disconnect session
 	BOOST_REQUIRE(client.syncDisconnect() == Success);
 }
