@@ -116,8 +116,7 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	CreateMonitoredItemContext::CreateMonitoredItemContext(void)
-	: clientHandle_()
-	, samplingInterval_(500)
+	: samplingInterval_(500)
 	, filter_()
 	, queueSize_(1)
 	, discardOldest_(true)

@@ -188,19 +188,19 @@ namespace OpcUaStackClient
 
 		// create monitored item
 		CreateMonitoredItemContext& defaultCreateMonitoredItemContext(void);
-		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId);
-		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext);
-		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback);
+		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, uint32_t& monitoredItemId);
+		OpcUaStatusCode syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext);
+		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, Callback& callback);
 		template<typename HANDLER>
-		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, HANDLER handler) {
+		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, HANDLER handler) {
 				Callback callback = handler;
-				asyncCreateMonitoredItem(nodeId, subscriptionId, callback);
+				asyncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, callback);
 			}
-		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext);
+		void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext);
 		template<typename HANDLER>
-		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, HANDLER handler, CreateMonitoredItemContext& createMonitoredItemContext) {
+		    void asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, HANDLER handler, CreateMonitoredItemContext& createMonitoredItemContext) {
 				Callback callback = handler;
-				asyncCreateMonitoredItem(nodeId, subscriptionId, callback, createMonitoredItemContext);
+				asyncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, callback, createMonitoredItemContext);
 			}
 
 		// delete monitored item

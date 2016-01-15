@@ -84,7 +84,6 @@ namespace OpcUaStackClient
 		CreateMonitoredItemContext(void);
 		~CreateMonitoredItemContext(void);
 
-		OpcUaUInt32 clientHandle_;
 		OpcUaDouble samplingInterval_;
 		ExtensibleParameter filter_;
 		OpcUaUInt32 queueSize_;

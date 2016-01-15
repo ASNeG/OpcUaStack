@@ -41,12 +41,14 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete)
 	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
 
 	// create monitored item
+	uint32_t clientHandle = 334455;
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
 	vbiClientHandlerTest.createMonitoredItemComplete_.initEvent();
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
+		clientHandle,
 		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
 	);
 	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
@@ -116,6 +118,7 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	uint32_t subscriptionId = vbiClientHandlerTest.subscriptionId_;
 
 	// create monitored item
+	uint32_t clientHandle = 332201;
 	OpcUaNodeId nodeId;
 	nodeId.set((OpcUaUInt32)2258);
 	vbiClientHandlerTest.dataChangeCallback_.initEvent();
@@ -123,12 +126,14 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	client.asyncCreateMonitoredItem(
 		nodeId,
 		subscriptionId,
+		clientHandle,
 		boost::bind(&VBIClientHandlerTest::createMonitoredItemComplete, &vbiClientHandlerTest, _1, _2, _3)
 	);
 	BOOST_REQUIRE(vbiClientHandlerTest.createMonitoredItemComplete_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.statusCode_ == Success);
 	uint32_t monitoredItemId = vbiClientHandlerTest.monitoredItemId_;
 	BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(1000) == true);
+	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == clientHandle);
 
 	// delete monitored item
 	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();

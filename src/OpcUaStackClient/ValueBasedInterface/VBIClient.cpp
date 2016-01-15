@@ -688,13 +688,13 @@ namespace OpcUaStackClient
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId)
+	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, uint32_t& monitoredItemId)
 	{
-		return syncCreateMonitoredItem(nodeId, subscriptionId, monitoredItemId, defaultCreateMonitoredItemContext_);
+		return syncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, monitoredItemId, defaultCreateMonitoredItemContext_);
 	}
 
 	OpcUaStatusCode
-	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext)
+	VBIClient::syncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, uint32_t& monitoredItemId, CreateMonitoredItemContext& createMonitoredItemContext)
 	{
 		if (monitoredItemService_.get() == nullptr) {
 			// monitoredItem service
@@ -714,7 +714,7 @@ namespace OpcUaStackClient
 		monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 		monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
 		monitoredItemCreateRequest->itemToMonitor().attributeId(createMonitoredItemContext.attributeId_);
-		monitoredItemCreateRequest->requestedParameters().clientHandle(createMonitoredItemContext.clientHandle_);
+		monitoredItemCreateRequest->requestedParameters().clientHandle(clientHandle);
 		monitoredItemCreateRequest->requestedParameters().samplingInterval(createMonitoredItemContext.samplingInterval_);
 		monitoredItemCreateRequest->requestedParameters().filter(createMonitoredItemContext.filter_);
 		monitoredItemCreateRequest->requestedParameters().queueSize(createMonitoredItemContext.queueSize_);
@@ -735,13 +735,13 @@ namespace OpcUaStackClient
 	}
 
 	void
-	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback)
+	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, Callback& callback)
 	{
-		asyncCreateMonitoredItem(nodeId, subscriptionId, callback, defaultCreateMonitoredItemContext_);
+		asyncCreateMonitoredItem(nodeId, subscriptionId, clientHandle, callback, defaultCreateMonitoredItemContext_);
 	}
 
 	void
-	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext)
+	VBIClient::asyncCreateMonitoredItem(OpcUaNodeId& nodeId, uint32_t subscriptionId, uint32_t clientHandle, Callback& callback, CreateMonitoredItemContext& createMonitoredItemContext)
 	{
 		if (monitoredItemService_.get() == nullptr) {
 			// monitoredItem service
@@ -761,7 +761,7 @@ namespace OpcUaStackClient
 		monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
 		monitoredItemCreateRequest->itemToMonitor().nodeId()->copyFrom(nodeId);
 		monitoredItemCreateRequest->itemToMonitor().attributeId(createMonitoredItemContext.attributeId_);
-		monitoredItemCreateRequest->requestedParameters().clientHandle(createMonitoredItemContext.clientHandle_);
+		monitoredItemCreateRequest->requestedParameters().clientHandle(clientHandle);
 		monitoredItemCreateRequest->requestedParameters().samplingInterval(createMonitoredItemContext.samplingInterval_);
 		monitoredItemCreateRequest->requestedParameters().filter(createMonitoredItemContext.filter_);
 		monitoredItemCreateRequest->requestedParameters().queueSize(createMonitoredItemContext.queueSize_);
