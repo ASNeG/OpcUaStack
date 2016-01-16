@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_SecureChannel_h__
-#define __OpcUaStackCore_SecureChannel_h__
+#ifndef __OpcUaStackCore_SecureChannelOld_h__
+#define __OpcUaStackCore_SecureChannelOld_h__
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"

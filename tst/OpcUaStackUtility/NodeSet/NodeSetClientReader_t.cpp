@@ -1,5 +1,6 @@
 #include "unittest.h"
 
+#if 0
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
@@ -308,3 +309,4 @@ BOOST_AUTO_TEST_CASE(NodeSetClientReader_readClient_writeFile)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif

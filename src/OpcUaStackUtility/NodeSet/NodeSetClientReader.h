@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackUtility_NodeSetClientReader_h__
 #define __OpcUaStackUtility_NodeSetClientReader_h__
 
+#if 0
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Log.h"
@@ -153,5 +154,6 @@ namespace OpcUaStackUtility
 	};
 
 }
+#endif
 
 #endif

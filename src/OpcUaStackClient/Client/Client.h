@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackClient/ServiceSet/SessionManager.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 namespace OpcUaStackClient
 {
@@ -32,15 +32,15 @@ namespace OpcUaStackClient
 		Client(void);
 	    ~Client(void);
 
-		bool init(void);
+		bool startup(void);
 		void shutdown(void);
 		bool start(void);
 		void stop(void);
 
-		SessionManager& sessionManager(void);
+		ServiceSetManager& serviceSetManager(void);
 
 	  public:
-		SessionManager sessionManager_;
+		ServiceSetManager serviceSetManager_;
 	};
 
 }

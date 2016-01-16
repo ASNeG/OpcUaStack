@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#if 0
 #include "OpcUaStackUtility/NodeSet/NodeSetClientReader.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
@@ -1032,3 +1033,4 @@ namespace OpcUaStackUtility
 	}
 
 }
+#endif

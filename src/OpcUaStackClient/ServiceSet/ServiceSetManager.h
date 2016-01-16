@@ -49,6 +49,9 @@ namespace OpcUaStackClient
 		ServiceSetManager(void);
 		~ServiceSetManager(void);
 
+		void start(void) {}
+		void stop(void) {}
+
 		// session
 		SessionService::SPtr sessionService(
 			SessionServiceConfig& sessionServiceConfig

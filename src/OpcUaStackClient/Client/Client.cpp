@@ -25,7 +25,7 @@ namespace OpcUaStackClient
 		
 	Client::Client(void)
 	: Core()
-	, sessionManager_()
+	, serviceSetManager_()
 	{
 	}
 
@@ -34,7 +34,7 @@ namespace OpcUaStackClient
 	}
 
 	bool 
-	Client::init(void)
+	Client::startup(void)
 	{
 		bool rc = true;
 
@@ -53,20 +53,20 @@ namespace OpcUaStackClient
 	bool 
 	Client::start(void)
 	{
-		sessionManager_.start();
+		serviceSetManager_.start();
 		return true;
 	}
 
 	void 
 	Client::stop(void)
 	{
-		sessionManager_.stop();
+		serviceSetManager_.stop();
 	}
 
-	SessionManager& 
-	Client::sessionManager(void)
+	ServiceSetManager&
+	Client::serviceSetManager(void)
 	{
-		return sessionManager_;
+		return serviceSetManager_;
 	}
 
 }
