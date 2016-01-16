@@ -248,10 +248,26 @@ namespace OpcUaStackClient
     {
     	actPublishCount_--;
 
+		// the session is closed. delete all subscriptions
+		if (serviceTransactionPublish->statusCode() == BadSessionClosed) {
+			std::vector<uint32_t> subscriptionIdVec_;
+			SubscriptionSet::iterator it;
+			for (it = subscriptionSet_.begin(); it != subscriptionSet_.end(); it++) {
+				subscriptionIdVec_.push_back(*it);
+			}
+
+			std::vector<uint32_t>::iterator sIt;
+			for (sIt = subscriptionIdVec_.begin(); sIt != subscriptionIdVec_.end(); sIt++) {
+				deleteSubscriptionRequest(*sIt);
+				deleteSubscriptionResponse(*sIt);
+			}
+		}
+
     	// check transaction status code
     	if (serviceTransactionPublish->statusCode() != Success) {
     		Log(Error, "subscription publish response error")
     			.parameter("StatsCode", OpcUaStatusCodeMap::shortString(serviceTransactionPublish->statusCode()));
+
     		sendPublishRequests();
     		return;
     	}
