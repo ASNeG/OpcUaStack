@@ -438,7 +438,7 @@ namespace OpcUaStackClient
 	SessionService::handleDisconnect(SecureChannel* secureChannel)
 	{
 		secureChannelState_ = SCS_Disconnected;
-		if (sessionConfig_.get() == nullptr) {
+		if (sessionConfig_.get() != nullptr) {
 			if (sessionConfig_->reconnectTimeout() != 0) {
 
 				// start reconnect timer
@@ -559,7 +559,10 @@ namespace OpcUaStackClient
 			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
 			.parameter("RequestHandle", serviceTransaction->transactionId());
 
-		serviceTransaction->statusCode(BadTimeout);
+		OpcUaStatusCode statusCode = BadTimeout;
+		if (!sessionConnect_) statusCode = BadSessionClosed;
+
+		serviceTransaction->statusCode(statusCode);
 		Component* componentService = serviceTransaction->componentService();
 		componentService->sendAsync(serviceTransaction);
 	}
