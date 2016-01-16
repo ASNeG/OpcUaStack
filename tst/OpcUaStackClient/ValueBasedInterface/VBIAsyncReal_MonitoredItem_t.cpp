@@ -139,10 +139,12 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_MonitoredItem_create_delete_callback)
 	BOOST_REQUIRE(vbiClientHandlerTest.dataChangeCallback_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == clientHandle);
 
+#if 0
 	while (true) {
 		vbiClientHandlerTest.dataChangeCallback_.initEvent();
 		vbiClientHandlerTest.dataChangeCallback_.waitForEvent(1000);
 	}
+#endif
 
 	// delete monitored item
 	vbiClientHandlerTest.deleteMonitoredItemComplete_.initEvent();
