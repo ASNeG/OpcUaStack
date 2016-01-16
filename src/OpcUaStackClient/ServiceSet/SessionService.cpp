@@ -62,8 +62,9 @@ namespace OpcUaStackClient
 	, sessionConfig_()
 	, secureChannelClientConfig_()
 
+	, secureChannelState_(SCS_Disconnected)
+
 	, ioThread_(ioThread)
-	, secureChannelConnect_(false)
 	, sessionConnect_(false)
 
 	, secureChannelClient_(ioThread_)
@@ -129,14 +130,21 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
-		if (sessionTransaction.get() != nullptr) {
-			if (sessionTransaction_.get() != nullptr) {
-				sessionTransaction->statusCode_ = BadTooManyOperations;
+		// check secure channel state
+		if (secureChannelState_ != SCS_Disconnected) {
+			Log(Error, "connect operation in invalid state")
+			    .parameter("SessionName", sessionConfig_->sessionName_)
+				.parameter("SecureChannelState", secureChannelState_);
+
+			if (sessionTransaction.get() != nullptr) {
+				sessionTransaction->statusCode_ = BadInvalidState;
 				sessionTransaction->condition_.conditionValueDec();
-				return;
 			}
-			sessionTransaction_ = sessionTransaction;
+			return;
 		}
+
+		// set session transaction
+		sessionTransaction_ = sessionTransaction;
 
 		assert(sessionServiceIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
@@ -153,6 +161,7 @@ namespace OpcUaStackClient
 			requestTimeout_ = sessionConfig_->requestTimeout_;
 		}
 
+		secureChannelState_ = SCS_Connecting;
 		secureChannelClient_.secureChannelClientIf(this);
 		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
 	}
@@ -178,7 +187,23 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncDisconnectInternal(SessionTransaction::SPtr& sessionTransaction, bool deleteSubscriptions)
 	{
-		if (!secureChannelConnect_) {
+		// check secure channel state
+		if (secureChannelState_ == SCS_Disconnecting || secureChannelState_ == SCS_Disconnected) {
+			Log(Error, "disconnect operation in invalid state")
+			    .parameter("SessionName", sessionConfig_->sessionName_)
+				.parameter("SecureChannelState", secureChannelState_);
+
+			if (sessionTransaction.get() != nullptr) {
+				sessionTransaction->statusCode_ = BadInvalidState;
+				sessionTransaction->condition_.conditionValueDec();
+			}
+			return;
+		}
+
+		if (secureChannelState_ == SCS_DisconnectedWait) {
+			// FIXME: todo
+
+			secureChannelState_ = SCS_Disconnected;
 			if (sessionTransaction.get() != nullptr) {
 				sessionTransaction->statusCode_ = Success;
 				sessionTransaction->condition_.conditionValueDec();
@@ -186,18 +211,24 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		if (sessionTransaction.get() != nullptr) {
+		// check if a connect operation is running - stop the connect operation
+		if (secureChannelState_ == SCS_Connecting) {
 			if (sessionTransaction_.get() != nullptr) {
-				sessionTransaction->statusCode_ = BadTooManyOperations;
-				sessionTransaction->condition_.conditionValueDec();
-				return;
+				sessionTransaction_->statusCode_ = BadSessionClosed;
+				sessionTransaction_->condition_.conditionValueDec();
+				sessionTransaction_.reset();
 			}
-			sessionTransaction_ = sessionTransaction;
 		}
 
-		if (secureChannelConnect_ && sessionConfig_.get() != nullptr) {
+		// set session transaction
+		sessionTransaction_ = sessionTransaction;
+
+		// FIXME: onl if session is acvitated...
+		if (secureChannelState_ == SCS_Connected && sessionConfig_.get() != nullptr) {
 			sendCloseSessionRequest(deleteSubscriptions);
 		}
+
+		secureChannelState_ = SCS_Disconnecting;
 		secureChannelClient_.disconnect(secureChannel_);
 	}
 
@@ -221,7 +252,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncCancelInternal(uint32_t requestHandle)
 	{
-		if (secureChannelConnect_) {
+		// FIXME: only if session is activated
+		if (secureChannelState_ == SCS_Connected) {
 			sendCancelRequest(requestHandle);
 		}
 	}
@@ -373,8 +405,9 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleConnect(SecureChannel* secureChannel)
 	{
-		secureChannelConnect_ = true;
+		secureChannelState_ = SCS_Connected;
 		if (sessionConfig_.get() == nullptr) {
+
 			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Connect);
 
 			if (sessionTransaction_.get() != nullptr) {
@@ -394,7 +427,8 @@ namespace OpcUaStackClient
 	void
 	SessionService::handleDisconnect(SecureChannel* secureChannel)
 	{
-		secureChannelConnect_ = false;
+		secureChannelState_ = SCS_Disconnected;
+
 		sessionConnect_ = false;
 		if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Disconnect);
 
@@ -463,7 +497,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		if (!secureChannelConnect_) {
+		if (secureChannelState_ != SCS_Connected) {
 			serviceTransaction->statusCode(BadSecureChannelClosed);
 			Component* componentService = serviceTransaction->componentService();
 			componentService->sendAsync(serviceTransaction);

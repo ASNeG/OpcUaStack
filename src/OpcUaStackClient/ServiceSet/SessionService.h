@@ -70,8 +70,12 @@ namespace OpcUaStackClient
 
 		typedef enum
 		{
-			S_Init
-		} State;
+			SCS_Disconnected,
+			SCS_DisconnectedWait,
+			SCS_Connecting,
+			SCS_Connected,
+			SCS_Disconnecting
+		} SecureChannelState;
 
 		SessionService(IOThread* ioThread);
 		~SessionService(void);
@@ -118,11 +122,11 @@ namespace OpcUaStackClient
 		// configuration
 		Mode mode_;
 
+		SecureChannelState secureChannelState_;
 
 		IOThread* ioThread_;
 		SessionServiceIf* sessionServiceIf_;
 		SecureChannel* secureChannel_;
-		bool secureChannelConnect_;
 		bool sessionConnect_;
 		SecureChannelClient secureChannelClient_;
 		SessionConfig::SPtr sessionConfig_;
