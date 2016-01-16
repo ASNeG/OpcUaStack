@@ -29,7 +29,7 @@ namespace OpcUaStackClient
 	, subscriptionService_()
 	, monitoredItemService_()
 
-	, sessionStateUpdateCallback_()
+	, sessionChangeCallback_()
 	, subscriptionChangeCallback_()
 	, dataChangeCallback_()
 
@@ -49,7 +49,10 @@ namespace OpcUaStackClient
 		sessionService_.reset();
 		monitoredItemService_.reset();
 
-		sessionStateUpdateCallback_.reset();
+		sessionChangeCallback_.reset();
+		subscriptionChangeCallback_.reset();
+		dataChangeCallback_.reset();
+
 	}
 
 	void
@@ -66,10 +69,16 @@ namespace OpcUaStackClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
+	VBIClient::setSessionChangeCallback(Callback& callback)
+	{
+		sessionChangeCallback_ = callback;
+	}
+
+	void
 	VBIClient::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
-		if (sessionStateUpdateCallback_.exist()) {
-			sessionStateUpdateCallback_(session, sessionState);
+		if (sessionChangeCallback_.exist()) {
+			sessionChangeCallback_(session, sessionState);
 		}
 	}
 
@@ -91,28 +100,26 @@ namespace OpcUaStackClient
 		assert(sessionService_.get() != nullptr);
 
 		// connect to opc ua server
-		sessionStateUpdateCallback_.reset();
 		return sessionService_->syncConnect();
 	}
 
 	void
-	VBIClient::asyncConnect(Callback& callback, ConnectContext& connectContext)
+	VBIClient::asyncConnect(ConnectContext& connectContext)
 	{
 		// set secure channel configuration
 		SessionServiceConfig sessionServiceConfig;
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(connectContext.endpointUrl_);
 		sessionServiceConfig.session_->sessionName(connectContext.sessionName_);
+		sessionServiceConfig.ioThreadName(ioThreadName_);
 
-		// create session
+		// create session service
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
 		assert(sessionService_.get() != nullptr);
 
-		// connect session
-		sessionStateUpdateCallback_ = callback;
+		// connect to opc ua server
 		sessionService_->asyncConnect();
 	}
-
 
 	//
 	// disconnect
@@ -129,15 +136,6 @@ namespace OpcUaStackClient
 	{
 		sessionService_->asyncDisconnect();
 	}
-
-	void
-	VBIClient::asyncDisconnect(Callback& callback)
-	{
-		// disconnect session
-		sessionStateUpdateCallback_ = callback;
-		sessionService_->asyncDisconnect();
-	}
-
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

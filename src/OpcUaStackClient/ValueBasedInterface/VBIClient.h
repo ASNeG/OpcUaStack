@@ -47,23 +47,18 @@ namespace OpcUaStackClient
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		OpcUaStatusCode syncConnect(ConnectContext& connectContext);
-		void asyncConnect(Callback& callback, ConnectContext& connectContext);
 		template<typename HANDLER>
-		    void asyncConnect(HANDLER handler, ConnectContext& connectContext) {
-				Callback callback(handler);
-				asyncConnect(callback, connectContext);
-			}
+		  void setSessionChangeCallback(HANDLER handler) {
+			  Callback callback = handler;
+			  setSessionChangeCallback(callback);
+		  }
+		void setSessionChangeCallback(Callback& callback);
 
+		OpcUaStatusCode syncConnect(ConnectContext& connectContext);
+		void asyncConnect(ConnectContext& connectContext);
 
 		OpcUaStatusCode syncDisconnect(void);
 		void asyncDisconnect(void);
-		void asyncDisconnect(Callback& callback);
-		template<typename HANDLER>
-		    void asyncDisconnect(HANDLER handler) {
-				Callback callback = handler;
-				asyncDisconnect(callback);
-			}
 
 
 		// --------------------------------------------------------------------
@@ -266,7 +261,9 @@ namespace OpcUaStackClient
 		SubscriptionService::SPtr subscriptionService_;
 		MonitoredItemService::SPtr monitoredItemService_;
 
-		Callback sessionStateUpdateCallback_;
+		Callback sessionCompleteCallback_;
+
+		Callback sessionChangeCallback_;
 		Callback subscriptionChangeCallback_;
 		Callback dataChangeCallback_;
 

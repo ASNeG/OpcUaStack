@@ -18,15 +18,17 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_read)
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
+	// set session change callback
+	client.setSessionChangeCallback(
+		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	);
+
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
-	client.asyncConnect(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2),
-		connectContext
-	);
+	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
@@ -56,15 +58,17 @@ BOOST_AUTO_TEST_CASE(VBIAsyncReal_Attribute_write)
 	VBIClientHandlerTest vbiClientHandlerTest;
 	VBIClient client;
 
+	// set session change callback
+	client.setSessionChangeCallback(
+		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2)
+	);
+
 	// connect session
 	ConnectContext connectContext;
 	connectContext.endpointUrl_ = REAL_SERVER_URI;
 	connectContext.sessionName_ = REAL_SESSION_NAME;
 	vbiClientHandlerTest.sessionStateUpdate_.initEvent();
-	client.asyncConnect(
-		boost::bind(&VBIClientHandlerTest::sessionStateUpdate, &vbiClientHandlerTest, (uint32_t)1234, _1, _2),
-		connectContext
-	);
+	client.asyncConnect(connectContext);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionStateUpdate_.waitForEvent(1000) == true);
 	BOOST_REQUIRE(vbiClientHandlerTest.sessionState_ == SS_Connect);
 	BOOST_REQUIRE(vbiClientHandlerTest.clientHandle_ == 1234);
