@@ -45,6 +45,7 @@ BOOST_AUTO_TEST_CASE(ServiceSetManagerSyncReal_Session_session_connect_disconnec
 	sessionServiceConfig.sessionServiceIf_ = &sessionServiceIfTestHandler;
 	sessionServiceConfig.secureChannelClient_->endpointUrl(REAL_SERVER_URI);
 	sessionServiceConfig.session_->sessionName(REAL_SESSION_NAME);
+	sessionServiceConfig.session_->reconnectTimeout(0);
 
 	// create session service
 	SessionService::SPtr sessionService;
