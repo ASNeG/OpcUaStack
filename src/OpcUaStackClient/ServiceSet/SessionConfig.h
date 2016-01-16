@@ -42,6 +42,8 @@ namespace OpcUaStackClient
 		uint32_t requestTimeout(void);
 		void sessionTimeout(uint32_t sessionTimeout);
 		uint32_t sessionTimeout(void);
+		void reconnectTimeout(uint32_t sessionTimeout);
+		uint32_t reconnectTimeout(void);
 		void maxResponseMessageSize(uint32_t maxResponseMessageSize);
 		uint32_t maxResponseMessageSize(void);
 
@@ -50,6 +52,7 @@ namespace OpcUaStackClient
 		std::string sessionName_;
 		uint32_t requestTimeout_;
 		uint32_t sessionTimeout_;
+		uint32_t reconnectTimeout_;
 		uint32_t maxResponseMessageSize_;
 
 	};

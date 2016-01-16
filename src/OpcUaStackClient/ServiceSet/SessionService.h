@@ -20,6 +20,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Utility/PendingQueue.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelClient.h"
@@ -118,6 +119,7 @@ namespace OpcUaStackClient
 		void sendCancelRequest(uint32_t requestHandle);
 		void pendingQueueTimeout(Object::SPtr object);
 		void receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void reconnectTimeout(void);
 
 		// configuration
 		Mode mode_;
@@ -131,6 +133,7 @@ namespace OpcUaStackClient
 		SecureChannelClient secureChannelClient_;
 		SessionConfig::SPtr sessionConfig_;
 		SecureChannelClientConfig::SPtr secureChannelClientConfig_;
+		SlotTimerElement::SPtr slotTimerElement_;
 
 		SessionTransaction::SPtr sessionTransaction_;
 		OpcUaUInt32 requestHandle_;

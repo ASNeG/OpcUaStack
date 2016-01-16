@@ -26,6 +26,7 @@ namespace OpcUaStackClient
 	: applicationDescription_(constructSPtr<ApplicationDescription>())
 	, sessionName_("urn:127.0.0.1:ASNeG.de:ASNeG-Client")
 	, sessionTimeout_(3600000)
+	, reconnectTimeout_(5000)
 	, maxResponseMessageSize_(16777216)
 	, requestTimeout_(3000)
 	{
@@ -82,6 +83,18 @@ namespace OpcUaStackClient
 	SessionConfig::sessionTimeout(void)
 	{
 		return sessionTimeout_;
+	}
+
+	void
+	SessionConfig::reconnectTimeout(uint32_t reconnectTimeout)
+	{
+		reconnectTimeout_ = reconnectTimeout;
+	}
+
+	uint32_t
+	SessionConfig::reconnectTimeout(void)
+	{
+		return reconnectTimeout_;
 	}
 
 	void

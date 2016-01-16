@@ -65,6 +65,7 @@ namespace OpcUaStackClient
 	, secureChannelState_(SCS_Disconnected)
 
 	, ioThread_(ioThread)
+	, slotTimerElement_()
 	, sessionConnect_(false)
 
 	, secureChannelClient_(ioThread_)
@@ -82,6 +83,7 @@ namespace OpcUaStackClient
 	, pendingQueue_(*ioThread->ioService().get())
 	{
 		Component::ioThread(ioThread);
+		slotTimerElement_ = constructSPtr<SlotTimerElement>();
 
 		// init pending queue callback
 		pendingQueue_.timeoutCallback().reset(
@@ -118,6 +120,14 @@ namespace OpcUaStackClient
 	SessionService::sessionServiceIf(SessionServiceIf* sessionServiceIf)
 	{
 		sessionServiceIf_ = sessionServiceIf;
+	}
+
+	void
+	SessionService::reconnectTimeout(void)
+	{
+		secureChannelState_ = SCS_Disconnected;
+		SessionTransaction::SPtr sessionTransaction;
+		asyncConnectInternal(sessionTransaction);
 	}
 
 	void
@@ -201,7 +211,7 @@ namespace OpcUaStackClient
 		}
 
 		if (secureChannelState_ == SCS_DisconnectedWait) {
-			// FIXME: todo
+			ioThread_->slotTimer()->stop(slotTimerElement_);
 
 			secureChannelState_ = SCS_Disconnected;
 			if (sessionTransaction.get() != nullptr) {
@@ -428,6 +438,18 @@ namespace OpcUaStackClient
 	SessionService::handleDisconnect(SecureChannel* secureChannel)
 	{
 		secureChannelState_ = SCS_Disconnected;
+		if (sessionConfig_.get() == nullptr) {
+			if (sessionConfig_->reconnectTimeout() != 0) {
+
+				// start reconnect timer
+				slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
+				slotTimerElement_->callback().reset(
+					boost::bind(&SessionService::reconnectTimeout, this)
+				);
+				ioThread_->slotTimer()->start(slotTimerElement_);
+				secureChannelState_ = SCS_DisconnectedWait;
+			}
+		}
 
 		sessionConnect_ = false;
 		if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Disconnect);
