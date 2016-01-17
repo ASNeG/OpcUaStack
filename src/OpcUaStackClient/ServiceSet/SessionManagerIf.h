@@ -27,7 +27,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class SessionManagerIf
+	class DLLEXPORT SessionManagerIf
 	{
 	  public:
 		virtual void connectToSecureChannel(void) = 0; 

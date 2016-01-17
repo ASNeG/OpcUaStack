@@ -35,7 +35,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class SessionTransaction
+	class DLLEXPORT SessionTransaction
 	{
 	  public:
 		typedef enum
