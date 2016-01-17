@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SessionAuthenticationToken : public  ObjectPool<SessionAuthenticationToken>
+	class DLLEXPORT SessionAuthenticationToken
+	: public  ObjectPool<SessionAuthenticationToken>
 	{
 	  public:
 		SessionAuthenticationToken(void);

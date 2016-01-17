@@ -29,7 +29,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpenSecureChannelRequest : public  ObjectPool<OpenSecureChannelRequest>
+	class DLLEXPORT OpenSecureChannelRequest
+	: public  ObjectPool<OpenSecureChannelRequest>
 	{
 	  public:
 		typedef boost::shared_ptr<OpenSecureChannelRequest> SPtr;

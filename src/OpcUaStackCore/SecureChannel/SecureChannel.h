@@ -31,7 +31,7 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannel
+	class DLLEXPORT SecureChannel
 	: public TCPConnection
 	{
 	  public:

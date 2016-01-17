@@ -28,7 +28,7 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannelClient
+	class DLLEXPORT SecureChannelClient
 	: public SecureChannelBase
 	{
 	  public:

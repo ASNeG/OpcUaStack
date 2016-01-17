@@ -35,7 +35,8 @@ namespace OpcUaStackCore
 		MessageType_Message
 	} MessageType;
 
-	class DLLEXPORT MessageHeader : public  ObjectPool<MessageHeader>
+	class DLLEXPORT MessageHeader
+	: public  ObjectPool<MessageHeader>
 	{
 	  public:
 		typedef boost::shared_ptr<MessageHeader> SPtr;

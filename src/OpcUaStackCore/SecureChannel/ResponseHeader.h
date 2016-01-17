@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ResponseHeader : public  ObjectPool<ResponseHeader>
+	class DLLEXPORT ResponseHeader
+	: public  ObjectPool<ResponseHeader>
 	{
 	  public:
 		typedef boost::shared_ptr<ResponseHeader> SPtr;

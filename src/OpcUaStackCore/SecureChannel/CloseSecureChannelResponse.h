@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 	
-	class DLLEXPORT CloseSecureChannelResponse : public  ObjectPool<CloseSecureChannelResponse>
+	class DLLEXPORT CloseSecureChannelResponse
+	: public  ObjectPool<CloseSecureChannelResponse>
 	{
 	  public:
 		CloseSecureChannelResponse(void);

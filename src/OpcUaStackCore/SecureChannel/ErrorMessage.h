@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ErrorMessage : public  ObjectPool<ErrorMessage>
+	class DLLEXPORT ErrorMessage
+	: public  ObjectPool<ErrorMessage>
 	{
 	  public:
 		ErrorMessage(void);

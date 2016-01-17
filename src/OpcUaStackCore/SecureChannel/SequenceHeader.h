@@ -25,7 +25,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SequenceHeader : public  ObjectPool<SequenceHeader>
+	class DLLEXPORT SequenceHeader
+	: public  ObjectPool<SequenceHeader>
 	{
 	  public:
 		typedef boost::shared_ptr<SequenceHeader> SPtr;
