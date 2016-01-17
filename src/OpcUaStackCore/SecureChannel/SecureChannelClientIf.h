@@ -24,7 +24,7 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannelClientIf
+	class DLLEXPORT SecureChannelClientIf
 	{
 	  public:
 		SecureChannelClientIf(void) {}

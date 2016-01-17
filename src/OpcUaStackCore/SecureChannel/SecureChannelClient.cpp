@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 			boost::bind(
 				&SecureChannelClient::resolveComplete,
 				this,
-				boost::asio::placeholders::error(),
+				boost::asio::placeholders::error,
 				boost::asio::placeholders::iterator,
 				secureChannel
 			)
@@ -128,7 +128,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 			secureChannelClientIf_->handleDisconnect(secureChannel);
 
-			secureChannel->state_ == SecureChannel::S_Reconnecting;
+			secureChannel->state_ = SecureChannel::S_Reconnecting;
 			// FIXME: reconnect...
 
 			return;
@@ -164,7 +164,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 			secureChannelClientIf_->handleDisconnect(secureChannel);
 
-			secureChannel->state_ == SecureChannel::S_Reconnecting;
+			secureChannel->state_ = SecureChannel::S_Reconnecting;
 			// FIXME: reconnect...
 
 			return;
@@ -251,7 +251,7 @@ namespace OpcUaStackCore
 
 		secureChannelClientIf_->handleDisconnect(secureChannel);
 
-		secureChannel->state_ == SecureChannel::S_Reconnecting;
+		secureChannel->state_ = SecureChannel::S_Reconnecting;
 		// FIXME: reconnect...
 	}
 

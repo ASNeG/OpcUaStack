@@ -29,7 +29,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		typedef boost::shared_ptr<ServiceConfigBase> SPtr;
-
+		 
 		ServiceConfigBase(const std::string& ioThreadName);
 		virtual ~ServiceConfigBase(void);
 

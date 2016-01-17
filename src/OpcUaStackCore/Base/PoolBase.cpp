@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include "OpcUaStackCore/Base/PoolBase.h"
 
 namespace OpcUaStackCore

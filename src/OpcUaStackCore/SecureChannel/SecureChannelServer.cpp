@@ -101,7 +101,7 @@ namespace OpcUaStackCore
 			boost::bind(
 				&SecureChannelServer::resolveComplete,
 				this,
-				boost::asio::placeholders::error(),
+				boost::asio::placeholders::error,
 				boost::asio::placeholders::iterator,
 				secureChannel
 			)

@@ -89,7 +89,7 @@ namespace OpcUaStackCore
 			openSSLError();
 			return false;
 		}
-		if (length > *lengthDER) {
+		if ((uint32_t)length > *lengthDER) {
 			openSSLError("external DER buffer to small");
 			return false;
 		}

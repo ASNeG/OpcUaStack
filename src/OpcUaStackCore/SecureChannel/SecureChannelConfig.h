@@ -26,7 +26,7 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannelConfig
+	class DLLEXPORT SecureChannelConfig
 	: public Object
 	{
 	  public:

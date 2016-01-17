@@ -33,7 +33,7 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannelBase
+	class DLLEXPORT SecureChannelBase
 	{
 	  public:
 		typedef enum
