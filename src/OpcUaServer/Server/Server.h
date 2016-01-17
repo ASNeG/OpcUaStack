@@ -22,7 +22,6 @@
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackServer/Server/Server.h"
-#include "OpcUaStackClient/Client/Client.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
 
 #include <string>
@@ -50,7 +49,6 @@ namespace OpcUaServer
 		std::string configurationFile_;
 		Config* config_;
 		OpcUaStackServer::Server server_;
-		OpcUaStackClient::Client client_;
 		FileLogger fileLogger_;
 
 		ApplicationManager applicationManager_;
