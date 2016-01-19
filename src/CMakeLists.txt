@@ -44,7 +44,13 @@ option(
 
 option(
     USE_OpcUaServer
-    "build opc ua server library"
+    "build opc ua application server"
+    ON
+)
+
+option(
+    USE_OpcUaClient
+    "build opc ua client"
     ON
 )
 
@@ -99,6 +105,10 @@ endif ()
 
 if (USE_OpcUaServer)
     include(OpcUaServer/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaClient)
+    include(OpcUaClient/CMakeLists.txt) 
 endif ()
 
 if (USE_OpcUaServerApplicationDemo)
