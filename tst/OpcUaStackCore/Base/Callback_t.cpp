@@ -13,6 +13,7 @@ class Callback_Test {
 	int run3(int p1, int p2);
 	int run4(int p1, int p2, int p3);
 	int run5(int p1, int p2, int p3, int p4);
+	int run6(int p1, int p2, int p3, int p4, int p5);
 
 	uint32_t run_;
 	uint32_t run1_;
@@ -20,6 +21,7 @@ class Callback_Test {
 	uint32_t run3_;
 	uint32_t run4_;
 	uint32_t run5_;
+	uint32_t run6_;
 };
 
 Callback_Test::Callback_Test(void)
@@ -29,6 +31,7 @@ Callback_Test::Callback_Test(void)
 , run3_(0)
 , run4_(0)
 , run5_(0)
+, run6_(0)
 {
 }
 
@@ -83,6 +86,19 @@ Callback_Test::run5(int p1, int p2, int p3, int p4)
 			  << " P4=" << p4
 			  << std::endl;
 	run5_++;
+	return p1;
+}
+
+int
+Callback_Test::run6(int p1, int p2, int p3, int p4, int p5)
+{
+	std::cout << "P1=" << p1
+			  << " P2=" << p2
+			  << " P3=" << p3
+			  << " P4=" << p4
+			  << " P5=" << p5
+			  << std::endl;
+	run6_++;
 	return p1;
 }
 
@@ -270,6 +286,14 @@ BOOST_AUTO_TEST_CASE(Callback_callback_with_2_parameter_2_value)
     Callback callback(boost::bind(&Callback_Test::run5,&callback_Test,123,345,_1,_2));
     callback(111,222);
     BOOST_REQUIRE(callback_Test.run5_ == 1);
+}
+
+BOOST_AUTO_TEST_CASE(Callback_callback_with_2_parameter_3_value)
+{
+	Callback_Test callback_Test;
+    Callback callback(boost::bind(&Callback_Test::run6,&callback_Test,123,345,678,_1,_2));
+    callback(111,222);
+    BOOST_REQUIRE(callback_Test.run6_ == 1);
 }
 
 BOOST_AUTO_TEST_CASE(Callback_callback_with_3_parameter_1_value)

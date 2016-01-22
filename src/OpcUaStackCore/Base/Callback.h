@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,7 +38,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R>
-	  class CallbackParameter0 : public CallbackBase
+	  class CallbackParameter0
+	  : public CallbackBase
 	  {
 		public:
 		  CallbackParameter0(void);
@@ -47,7 +48,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename A1>
-	  class CallbackParameter1 : public CallbackBase
+	  class CallbackParameter1
+	  : public CallbackBase
 	  {
   		public:
 		  CallbackParameter1(void);
@@ -56,7 +58,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename A1, typename A2>
-      class CallbackParameter2 : public CallbackBase
+      class CallbackParameter2
+      : public CallbackBase
       {
 		public:
     	  CallbackParameter2(void);
@@ -65,7 +68,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename A1, typename A2, typename A3>
-      class CallbackParameter3 : public CallbackBase
+      class CallbackParameter3
+      : public CallbackBase
       {
 		public:
     	  CallbackParameter3(void);
@@ -74,7 +78,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename A1, typename A2, typename A3, typename A4>
-      class CallbackParameter4 : public CallbackBase
+      class CallbackParameter4
+      : public CallbackBase
       {
         public:
     	  CallbackParameter4(void);
@@ -84,7 +89,8 @@ namespace OpcUaStackCore
 
  
 	template<typename R, typename F>
-      class CallbackHandler0 : public CallbackParameter0<R>
+      class CallbackHandler0
+      : public CallbackParameter0<R>
       {
         public:
 	      typedef boost::_bi::bind_t<R,boost::_mfi::mf0<R,F>,boost::_bi::list1<boost::_bi::value<F*> > > HANDLER;
@@ -97,7 +103,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename F, typename V1>
-      class CallbackHandler0_1 : public CallbackParameter0<R>
+      class CallbackHandler0_1
+      : public CallbackParameter0<R>
       {
         public:
   	      typedef boost::_bi::bind_t<R,boost::_mfi::mf1<R,F,V1>,boost::_bi::list2<boost::_bi::value<F*>,
@@ -110,7 +117,8 @@ namespace OpcUaStackCore
       };
 
     template<typename R, typename F, typename V1, typename V2>
-      class CallbackHandler0_2 : public CallbackParameter0<R>
+      class CallbackHandler0_2
+      : public CallbackParameter0<R>
       {
         public:
           typedef boost::_bi::bind_t<R,boost::_mfi::mf2<R,F,V1,V2>,boost::_bi::list3<boost::_bi::value<F*>,
@@ -124,7 +132,8 @@ namespace OpcUaStackCore
       };
 
     template<typename R, typename F, typename V1, typename V2, typename V3>
-     class CallbackHandler0_3 : public CallbackParameter0<R>
+     class CallbackHandler0_3
+     : public CallbackParameter0<R>
      {
        public:
       	 typedef boost::_bi::bind_t<R,boost::_mfi::mf3<R,F,V1,V2,V3>,boost::_bi::list4<boost::_bi::value<F*>,
@@ -140,7 +149,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename F, typename V1, typename V2, typename V3, typename V4>
-      class CallbackHandler0_4 : public CallbackParameter0<R>
+      class CallbackHandler0_4
+      : public CallbackParameter0<R>
       {
        public:
          typedef boost::_bi::bind_t<R,boost::_mfi::mf4<R,F,V1,V2,V3,V4>,boost::_bi::list5<boost::_bi::value<F*>,
@@ -157,7 +167,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename F, typename A1>
-      class CallbackHandler1 : public CallbackParameter1<R,A1>
+      class CallbackHandler1
+      : public CallbackParameter1<R,A1>
       {
         public:
 	      typedef boost::_bi::bind_t<R,boost::_mfi::mf1<R,F,A1>,boost::_bi::list2<boost::_bi::value<F*>, boost::arg<1> > > HANDLER;
@@ -170,7 +181,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename F, typename V1, typename A1>
-      class CallbackHandler1_1 : public CallbackParameter1<R,A1>
+      class CallbackHandler1_1
+      : public CallbackParameter1<R,A1>
       {
         public:
     	  typedef boost::_bi::bind_t<R,boost::_mfi::mf2<R,F,V1,A1>,boost::_bi::list3<boost::_bi::value<F*>,
@@ -185,7 +197,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename F, typename V1, typename V2, typename A1>
-      class CallbackHandler1_2 : public CallbackParameter1<R,A1>
+      class CallbackHandler1_2
+      : public CallbackParameter1<R,A1>
       {
         public:
       	  typedef boost::_bi::bind_t<R,boost::_mfi::mf3<R,F,V1,V2,A1>,boost::_bi::list4<boost::_bi::value<F*>,
@@ -201,7 +214,8 @@ namespace OpcUaStackCore
 
 
 	template<typename R, typename F, typename V1, typename V2, typename V3, typename A1>
-      class CallbackHandler1_3 : public CallbackParameter1<R,A1>
+      class CallbackHandler1_3
+      : public CallbackParameter1<R,A1>
       {
         public:
         	typedef boost::_bi::bind_t<R,boost::_mfi::mf4<R,F,V1,V2,V3,A1>,boost::_bi::list5<boost::_bi::value<F*>,
@@ -266,6 +280,24 @@ namespace OpcUaStackCore
       	  HANDLER handler_;
       };
 
+	template<typename R, typename F, typename V1, typename V2, typename V3, typename A1, typename A2>
+      class CallbackHandler2_3
+      : public CallbackParameter2<R,A1,A2>
+      {
+        public:
+      	  typedef boost::_bi::bind_t<R,boost::_mfi::mf5<R,F,V1,V2,V3,A1,A2>,boost::_bi::list6<boost::_bi::value<F*>,
+      	          boost::_bi::value<V1>,
+      	          boost::_bi::value<V2>,
+      	          boost::_bi::value<V3>,
+      		      boost::arg<1>,
+      		  	  boost::arg<2> > > HANDLER;
+      	  CallbackHandler2_3(HANDLER handler);
+      	  virtual R operator()(A1 a1,A2 a2) const;
+
+        private:
+      	  HANDLER handler_;
+      };
+
 
 	template<typename R, typename F, typename A1, typename A2, typename A3>
       class CallbackHandler3
@@ -306,7 +338,10 @@ namespace OpcUaStackCore
       {
         public:
           typedef boost::_bi::bind_t<R,boost::_mfi::mf4<R,F,A1,A2,A3,A4>,boost::_bi::list5<boost::_bi::value<F*>,
-     	    	  boost::arg<1>, boost::arg<2>, boost::arg<3>, boost::arg<4> > > HANDLER;
+     	    	  boost::arg<1>,
+     	    	  boost::arg<2>,
+     	    	  boost::arg<3>,
+     	    	  boost::arg<4> > > HANDLER;
       	  CallbackHandler4(HANDLER handler);
       	  virtual R operator()(A1 a1,A2 a2,A3 a3,A4 a4) const;
 
@@ -372,6 +407,13 @@ namespace OpcUaStackCore
 	      Callback(boost::_bi::bind_t<R,boost::_mfi::mf4<R,F,V1,V2,A1,A2>,boost::_bi::list5<boost::_bi::value<F*>,
 	    		   boost::_bi::value<V1>,
 	    		   boost::_bi::value<V2>,
+	  		       boost::arg<1>,
+	  		       boost::arg<2> > > handler);
+		template<typename R, typename F, typename V1, typename V2, typename V3, typename A1, typename A2>
+	      Callback(boost::_bi::bind_t<R,boost::_mfi::mf5<R,F,V1,V2,V3,A1,A2>,boost::_bi::list6<boost::_bi::value<F*>,
+	    		   boost::_bi::value<V1>,
+	    		   boost::_bi::value<V2>,
+	    		   boost::_bi::value<V3>,
 	  		       boost::arg<1>,
 	  		       boost::arg<2> > > handler);
 
@@ -445,6 +487,13 @@ namespace OpcUaStackCore
 	      void reset(boost::_bi::bind_t<R,boost::_mfi::mf4<R,F,V1,V2,A1,A2>,boost::_bi::list5<boost::_bi::value<F*>,
 	    		     boost::_bi::value<V1>,
 	    		     boost::_bi::value<V2>,
+	  		         boost::arg<1>,
+	  		         boost::arg<2> > > handler);
+		template<typename R, typename F, typename V1, typename V2, typename V3, typename A1, typename A2>
+	      void reset(boost::_bi::bind_t<R,boost::_mfi::mf5<R,F,V1,V2,V3,A1,A2>,boost::_bi::list6<boost::_bi::value<F*>,
+	    		     boost::_bi::value<V1>,
+	    		     boost::_bi::value<V2>,
+	    		     boost::_bi::value<V3>,
 	  		         boost::arg<1>,
 	  		         boost::arg<2> > > handler);
 
