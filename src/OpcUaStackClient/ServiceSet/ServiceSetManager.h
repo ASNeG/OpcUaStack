@@ -52,6 +52,9 @@ namespace OpcUaStackClient
 		void start(void) {}
 		void stop(void) {}
 
+		void registerIOThread(const std::string ioThreadName, IOThread::SPtr ioThread);
+		void deregisterIOThread(const std::string ioThreadName);
+
 		// session
 		SessionService::SPtr sessionService(
 			SessionServiceConfig& sessionServiceConfig

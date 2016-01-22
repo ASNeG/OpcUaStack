@@ -40,6 +40,22 @@ namespace OpcUaStackClient
 	}
 
 	void
+	ServiceSetManager::registerIOThread(const std::string ioThreadName, IOThread::SPtr ioThread)
+	{
+		Log(Debug, "service set manager register io thread")
+		    .parameter("IOThreadName", ioThreadName);
+		ioThreadMap_.insert(std::make_pair(ioThreadName, ioThread));
+	}
+
+	void
+	ServiceSetManager::deregisterIOThread(const std::string ioThreadName)
+	{
+		Log(Debug, "service set manager deregister io thread")
+		    .parameter("IOThreadName", ioThreadName);
+		ioThreadMap_.erase(ioThreadName);
+	}
+
+	void
 	ServiceSetManager::createIOThread(const std::string ioThreadName)
 	{
 		IOThread::SPtr ioThread = getIOThread(ioThreadName);
