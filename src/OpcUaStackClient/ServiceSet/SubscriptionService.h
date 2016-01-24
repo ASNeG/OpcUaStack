@@ -38,6 +38,7 @@ namespace OpcUaStackClient
 		void setConfiguration(
 			Component* componentSession,
 			uint32_t publishCount,
+			uint32_t requestTimeout,
 			SubscriptionServiceIf* subscriptionServiceIf
 		);
 		void publishCount(uint32_t publishCount);
@@ -83,6 +84,7 @@ namespace OpcUaStackClient
 
 	    uint32_t publishCount_;
 	    uint32_t actPublishCount_;
+	    uint32_t requestTimeout_;
 	    typedef std::set<uint32_t> SubscriptionSet;
 	    SubscriptionSet subscriptionSet_;
 	    SubscriptionSet subscriptionSetPendingDelete_;

@@ -186,6 +186,7 @@ namespace OpcUaStackClient
 		subscriptionService->setConfiguration(
 			sessionService->component(),
 			subscriptionServiceConfig.publishCount_,
+			subscriptionServiceConfig.requestTimeout_,
 			subscriptionServiceConfig.subscriptionServiceIf_
 		);
 

@@ -35,6 +35,7 @@ namespace OpcUaStackClient
 	: ServiceConfigBase("Subscription")
 	, subscriptionServiceIf_(nullptr)
 	, publishCount_(5)
+	, requestTimeout_(60000)
 	{
 	}
 
