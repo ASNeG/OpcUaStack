@@ -168,6 +168,13 @@ namespace OpcUaStackCore
 	  {
       }
     
+    template<typename R, typename F, typename V1, typename V2, typename A1, typename A2, typename A3>
+      CallbackHandler3_2<R,F,V1,V2,A1,A2,A3>::CallbackHandler3_2(HANDLER handler) 
+      : CallbackParameter3<R,A1,A2,A3>()
+      , handler_(handler)
+      {
+      }
+    
 	template<typename R, typename F, typename A1, typename A2, typename A3, typename A4>
       CallbackHandler4<R,F,A1,A2,A3,A4>::CallbackHandler4(HANDLER handler) 
       : CallbackParameter4<R,A1,A2,A3,A4>()
@@ -283,6 +290,13 @@ namespace OpcUaStackCore
     template<typename R, typename F, typename V1, typename A1, typename A2, typename A3>
       R
       CallbackHandler3_1<R,F,V1,A1,A2,A3>::operator()(A1 a1, A2 a2,A3 a3) const
+      {
+          return handler_(a1,a2,a3);
+      }
+  
+  	template<typename R, typename F, typename V1, typename V2, typename A1, typename A2, typename A3>
+      R
+      CallbackHandler3_2<R,F,V1,V2,A1,A2,A3>::operator()(A1 a1, A2 a2, A3 a3) const
       {
           return handler_(a1,a2,a3);
       }
@@ -428,6 +442,17 @@ namespace OpcUaStackCore
       {
           callbackBaseSPtr_.reset(new CallbackHandler3_1<R,F,V1,A1,A2,A3>(handler));
       }
+    
+     template<typename R, typename F, typename V1, typename V2, typename A1, typename A2, typename A3>
+      Callback::Callback(boost::_bi::bind_t<R,boost::_mfi::mf5<R,F,V1,V2,A1,A2,A3>,boost::_bi::list6<boost::_bi::value<F*>,
+                         boost::_bi::value<V1>, 
+                         boost::_bi::value<V2>,
+                         boost::arg<1>, 
+                         boost::arg<2>,
+                         boost::arg<3> > > handler)
+      {
+          callbackBaseSPtr_.reset(new CallbackHandler3_2<R,F,V1,V2,A1,A2,A3>(handler));
+      }   
     
     template<typename R, typename F, typename A1, typename A2, typename A3, typename A4>
       Callback::Callback(boost::_bi::bind_t<R,boost::_mfi::mf4<R,F,A1,A2,A3,A4>,boost::_bi::list5<boost::_bi::value<F*>, 
@@ -583,6 +608,18 @@ namespace OpcUaStackCore
                       boost::arg<3> > > handler)
       {
           callbackBaseSPtr_.reset(new CallbackHandler3_1<R,F,V1,A1,A2,A3>(handler));
+      }
+ 
+     template<typename R, typename F, typename V1, typename V2, typename A1, typename A2, typename A3>
+      void
+      Callback::reset(boost::_bi::bind_t<R,boost::_mfi::mf5<R,F,V1,V2,A1,A2,A3>,boost::_bi::list6<boost::_bi::value<F*>,
+                      boost::_bi::value<V1>, 
+                      boost::_bi::value<V2>,
+                      boost::arg<1>, 
+                      boost::arg<2>,
+                      boost::arg<3> > > handler)
+      {
+          callbackBaseSPtr_.reset(new CallbackHandler3_2<R,F,V1,V2,A1,A2,A3>(handler));
       }
     
     template<typename R, typename F, typename A1, typename A2, typename A3, typename A4>
