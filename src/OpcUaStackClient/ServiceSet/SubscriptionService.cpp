@@ -43,11 +43,13 @@ namespace OpcUaStackClient
 	SubscriptionService::setConfiguration(
 		Component* componentSession,
 		uint32_t publishCount,
+		uint32_t requestTimeout,
 		SubscriptionServiceIf* subscriptionServiceIf
 	)
 	{
 		this->componentSession(componentSession);
 		publishCount_ = publishCount;
+		requestTimeout_ = requestTimeout;
 		this->subscriptionServiceIf(subscriptionServiceIf);
 	}
 
@@ -336,7 +338,7 @@ namespace OpcUaStackClient
     	if (subscriptionSet_.size() == 0) return;
     	while (actPublishCount_ < publishCount_) {
     		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
-    		trx->requestTimeout(60000); // FIXME:
+    		trx->requestTimeout(requestTimeout_);
     		SubscriptionServiceBase::asyncSend(trx);
 
     		actPublishCount_++;

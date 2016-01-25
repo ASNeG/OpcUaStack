@@ -38,6 +38,7 @@ namespace OpcUaStackClient
 
 		SubscriptionServiceIf* subscriptionServiceIf_;
 		uint32_t publishCount_;
+		uint32_t requestTimeout_;
 	};
 
 }
