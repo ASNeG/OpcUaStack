@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/ServiceSet/SessionManager.h"
+#include "OpcUaStackServer/ServiceSet/SessionManagerOld.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/ServiceSet/MethodService.h"
 #include "OpcUaStackServer/ServiceSet/NodeManagementService.h"
@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 		ServiceManager(void);
 		~ServiceManager(void);
 
-		bool init(SessionManager& sessionManager);
+		bool init(SessionManagerOld& sessionManager);
 		bool informatinModel(InformationModel::SPtr informatinModel);
 		bool ioService(IOService* ioService);
 		bool init(void);

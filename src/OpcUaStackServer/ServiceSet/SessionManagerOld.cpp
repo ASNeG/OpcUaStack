@@ -15,25 +15,25 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackServer/ServiceSet/SessionManager.h"
+#include "OpcUaStackServer/ServiceSet/SessionManagerOld.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
 namespace OpcUaStackServer
 {
 
-	SessionManager* SessionManager::instance_ = nullptr;
+	SessionManagerOld* SessionManagerOld::instance_ = nullptr;
 	
-	SessionManager* 
-	SessionManager::instance(void)
+	SessionManagerOld*
+	SessionManagerOld::instance(void)
 	{
 		if (instance_ == NULL) {
-			instance_ = new SessionManager();
+			instance_ = new SessionManagerOld();
 		}
 		return instance_;
 	}
 
-	SessionManager::SessionManager(void)
+	SessionManagerOld::SessionManagerOld(void)
 	: shutdown_()
 	, prefixSessionConfig_("")
 	, prefixSecureChannelConfig_("") 
@@ -47,31 +47,31 @@ namespace OpcUaStackServer
 	{
 	}
 
-	SessionManager::~SessionManager(void)
+	SessionManagerOld::~SessionManagerOld(void)
 	{
 	}
 
 	void 
-	SessionManager::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
+	SessionManagerOld::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
 	{
 		transactionManagerSPtr_ = transactionManagerSPtr;
 	}
 
 	void 
-	SessionManager::discoveryService(DiscoveryService::SPtr discoveryService)
+	SessionManagerOld::discoveryService(DiscoveryService::SPtr discoveryService)
 	{
 		discoveryService_ = discoveryService;
 		discoveryService_->discoveryManagerIf(this);
 	}
 
 	void
-	SessionManager::ioService(IOService* ioService)
+	SessionManagerOld::ioService(IOService* ioService)
 	{
 		ioService_ = ioService;
 	}
 
 	void
-	SessionManager::openServerSocket(
+	SessionManagerOld::openServerSocket(
 		const std::string& prefixSessionConfig, Config& sessionConfig, 
 		const std::string& prefixSecureChannelConfig, Config& secureChannelConfig
 	)
@@ -96,7 +96,7 @@ namespace OpcUaStackServer
 
 
 	void 
-	SessionManager::closeServerSocket(void)
+	SessionManagerOld::closeServerSocket(void)
 	{
 		shutdown_.start();
 		closeListenerSocket();
@@ -104,7 +104,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	SessionManager::readConfiguration(void)
+	SessionManagerOld::readConfiguration(void)
 	{
 		// get secure channel configuration
 		boost::optional<Config> childSecureChannelConfig = secureChannelConfig_->getChild(prefixSecureChannelConfig_);
@@ -139,7 +139,7 @@ namespace OpcUaStackServer
 	}
 
 	SessionOld::SPtr
-	SessionManager::createSession(void)
+	SessionManagerOld::createSession(void)
 	{
 		SessionOld::SPtr session = SessionOld::construct();
 		session->transactionManager(transactionManagerSPtr_);
@@ -157,7 +157,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	SessionManager::openListenerSocket(void)
+	SessionManagerOld::openListenerSocket(void)
 	{
 		std::string host = url_.host();
 		boost::asio::io_service& io_service = ioService_->io_service();
@@ -172,14 +172,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	SessionManager::closeListenerSocket(void)
+	SessionManagerOld::closeListenerSocket(void)
 	{
 		tcpAcceptor_->close();
 		return true;
 	}
 
 	void 
-	SessionManager::acceptNewChannel(void)
+	SessionManagerOld::acceptNewChannel(void)
 	{
 		SecureChannelServer::SPtr secureChannel;
 		bool rc;
@@ -201,12 +201,12 @@ namespace OpcUaStackServer
 		// accept new channel
 		tcpAcceptor_->async_accept(
 			secureChannel->tcpConnection().socket(),
-			boost::bind(&SessionManager::handleAccept, this, boost::asio::placeholders::error, secureChannel)
+			boost::bind(&SessionManagerOld::handleAccept, this, boost::asio::placeholders::error, secureChannel)
 		);
 	}
 
 	void 
-	SessionManager::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
+	SessionManagerOld::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
 	{
 		if (shutdown_.isStart()) {
 			shutdown_.ready();
@@ -250,7 +250,7 @@ namespace OpcUaStackServer
 	}
 
 	SessionOld::SPtr
-	SessionManager::getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist)
+	SessionManagerOld::getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist)
 	{
 		SessionOld::SPtr session = sessionMap_.get(authenticationToken);
 		if (session.get() == nullptr && createIfNotExist) {
@@ -264,7 +264,7 @@ namespace OpcUaStackServer
 	}
 	
 	SecureChannelServer::SPtr 
-	SessionManager::getSecureChannel(OpcUaUInt32 secureChannelId)
+	SessionManagerOld::getSecureChannel(OpcUaUInt32 secureChannelId)
 	{
 		SecureChannelServer::SPtr secureChannel = secureChannelMap_.get(secureChannelId);
 		return secureChannel;
@@ -278,19 +278,19 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::connect(OpcUaUInt32 channelId)
+	SessionManagerOld::connect(OpcUaUInt32 channelId)
 	{
 		secureChannelMap_.connect(channelId);
 	}
 	
 	void 
-	SessionManager::disconnect(OpcUaUInt32 channelId)
+	SessionManagerOld::disconnect(OpcUaUInt32 channelId)
 	{
 		secureChannelMap_.disconnect(channelId);
 	}
 		
 	bool 
-	SessionManager::secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManagerOld::secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<uint32_t>())
 		{
@@ -319,7 +319,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManagerOld::sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {
@@ -333,7 +333,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	SessionManager::sessionDelete(uint32_t authenticationToken)
+	SessionManagerOld::sessionDelete(uint32_t authenticationToken)
 	{
 		sessionMap_.remove(authenticationToken);
 	}
@@ -346,7 +346,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManager::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManagerOld::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {

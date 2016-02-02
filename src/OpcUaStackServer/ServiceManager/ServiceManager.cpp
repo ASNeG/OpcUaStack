@@ -46,7 +46,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServiceManager::init(SessionManager& sessionManager)
+	ServiceManager::init(SessionManagerOld& sessionManager)
 	{
 		//
 		// attribute service

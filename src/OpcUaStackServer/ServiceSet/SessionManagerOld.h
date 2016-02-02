@@ -39,19 +39,19 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionManager 
+	class DLLEXPORT SessionManagerOld
 	: public SecureChannelManagerIf
 	, public SessionManagerIf
 	, public DiscoveryManagerIf
 	{
 	  public:
-		static SessionManager* instance_;
-		static SessionManager* instance(void);
+		static SessionManagerOld* instance_;
+		static SessionManagerOld* instance(void);
 
-		typedef boost::shared_ptr<SessionManager> SPtr;
+		typedef boost::shared_ptr<SessionManagerOld> SPtr;
 
-		SessionManager(void);
-		virtual ~SessionManager(void);
+		SessionManagerOld(void);
+		virtual ~SessionManagerOld(void);
 
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void discoveryService(DiscoveryService::SPtr discoveryService);
