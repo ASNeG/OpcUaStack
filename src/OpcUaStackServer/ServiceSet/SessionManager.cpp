@@ -138,10 +138,10 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	Session::SPtr
+	SessionOld::SPtr
 	SessionManager::createSession(void)
 	{
-		Session::SPtr session = Session::construct();
+		SessionOld::SPtr session = SessionOld::construct();
 		session->transactionManager(transactionManagerSPtr_);
 		session->sessionManagerIf(this);
 		bool rc = SessionConfig::initial(session, prefixSessionConfig_, sessionConfig_);
@@ -150,7 +150,7 @@ namespace OpcUaStackServer
 				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
 				.parameter("ParameterPath", prefixSessionConfig_);
 			
-			Session::SPtr session;
+			SessionOld::SPtr session;
 			return session;
 		}
 		return session;
@@ -249,10 +249,10 @@ namespace OpcUaStackServer
 		acceptNewChannel();
 	}
 
-	Session::SPtr 
+	SessionOld::SPtr
 	SessionManager::getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist)
 	{
-		Session::SPtr session = sessionMap_.get(authenticationToken);
+		SessionOld::SPtr session = sessionMap_.get(authenticationToken);
 		if (session.get() == nullptr && createIfNotExist) {
 			Log(Debug, "session not exist")
 				.parameter("AuthenticationToken", authenticationToken);
@@ -300,7 +300,7 @@ namespace OpcUaStackServer
 			}
 		}
 
-		Session::SPtr session = getSession(secureChannelTransaction->authenticationToken_, true);
+		SessionOld::SPtr session = getSession(secureChannelTransaction->authenticationToken_, true);
 		if (session.get() != nullptr) {
 			return session->message(secureChannelTransaction);
 		}

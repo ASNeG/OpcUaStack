@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackServer/ServiceSet/Session.h"
+#include "OpcUaStackServer/ServiceSet/SessionOld.h"
 
 using namespace OpcUaStackCore;
 
@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<SessionElement> SPtr;
 
 		OpcUaUInt32 authenticationToken_;
-		Session::SPtr session_;
+		SessionOld::SPtr session_;
 	};
 
 
@@ -47,9 +47,9 @@ namespace OpcUaStackServer
 		~SessionMap(void);
 
 		uint32_t size(void);
-		bool insert(OpcUaInt32 authenticationToken, Session::SPtr session);
+		bool insert(OpcUaInt32 authenticationToken, SessionOld::SPtr session);
 		bool remove(OpcUaInt32 authenticationToken);
-		Session::SPtr get(OpcUaInt32 authenticationToken);
+		SessionOld::SPtr get(OpcUaInt32 authenticationToken);
 
 	  private:
 		SessionElement::SPtr sessionElement(OpcUaInt32 authenticationToken);

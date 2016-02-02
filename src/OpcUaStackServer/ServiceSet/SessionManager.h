@@ -85,8 +85,8 @@ namespace OpcUaStackServer
 
 		SecureChannelServer::SPtr getSecureChannel(OpcUaUInt32 secureChannelId);
 
-		Session::SPtr getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist = false);
-		Session::SPtr createSession(void);
+		SessionOld::SPtr getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist = false);
+		SessionOld::SPtr createSession(void);
 
 		// function to handle secure channel
 		void acceptNewChannel(void);

@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackServer/ServiceSet/Session.h"
+#include "OpcUaStackServer/ServiceSet/SessionOld.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Utility.h"
@@ -31,12 +31,12 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer 
 {
 
-	boost::mutex Session::mutex_;
-	OpcUaUInt32 Session::uniqueSessionId_ = 0;
-	OpcUaUInt32 Session::uniqueAuthenticationToken_ = 0;
+	boost::mutex SessionOld::mutex_;
+	OpcUaUInt32 SessionOld::uniqueSessionId_ = 0;
+	OpcUaUInt32 SessionOld::uniqueAuthenticationToken_ = 0;
 	
 	OpcUaUInt32 
-	Session::getUniqueSessionId(void)
+	SessionOld::getUniqueSessionId(void)
 	{
 		boost::mutex::scoped_lock g(mutex_);
 		uniqueSessionId_++;
@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaUInt32 
-	Session::getUniqueAuthenticationToken(void)
+	SessionOld::getUniqueAuthenticationToken(void)
 	{
 		boost::mutex::scoped_lock g(mutex_);
 		uniqueAuthenticationToken_++;
@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 	}
 
 
-	Session::Session(void)
+	SessionOld::SessionOld(void)
 	: Component()
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
@@ -64,7 +64,7 @@ namespace OpcUaStackServer
 		componentName("Session");
 	}
 
-	Session::~Session(void)
+	SessionOld::~SessionOld(void)
 	{
 		Log(Info, "session destruct")
 			.parameter("SessionId", sessionId_)
@@ -72,37 +72,37 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Session::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
+	SessionOld::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
 	{
 		transactionManagerSPtr_ = transactionManagerSPtr;
 	}
 
 	void 
-	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
+	SessionOld::sessionManagerIf(SessionManagerIf* sessionManagerIf)
 	{
 		sessionManagerIf_ = sessionManagerIf;
 	}
 
 	OpcUaUInt32 
-	Session::sessionId(void)
+	SessionOld::sessionId(void)
 	{
 		return sessionId_;
 	}
 
 	OpcUaUInt32 
-	Session::authenticationToken(void)
+	SessionOld::authenticationToken(void)
 	{
 		return authenticationToken_;
 	}
 
 	void 
-	Session::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
+	SessionOld::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
 	{
 		endpointDescriptionArray_ = endpointDescriptionArray;
 	}
 
 	bool 
-	Session::message(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::message(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
@@ -142,7 +142,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCreateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveCreateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		// FIXME: authenticationToken in secureChannelTransaction must be 0
 
@@ -182,7 +182,7 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	Session::receiveActivateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveActivateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		// FIXME: if authenticationToken in the secureChannelTransaction contains 0 then 
 		//        the session has a new sechure channel
@@ -217,7 +217,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	Session::activateSessionRequestError(
+	SessionOld::activateSessionRequestError(
 		ActivateSessionRequest& activateSessionRequest,
 		SecureChannelTransaction::SPtr secureChannelTransaction,
 		OpcUaStatusCode statusCode,
@@ -239,7 +239,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCloseSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveCloseSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		CloseSessionRequest closeSessionRequest;
@@ -256,14 +256,14 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCancelRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveCancelRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		std::cout << "not implemented..." << std::endl;
 		return false;
 	}
 
 	bool 
-	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionOld::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		if (sessionState_ != SessionState_Ready) {
 			Log(Error, "receive message request in invalid state")
@@ -307,7 +307,7 @@ namespace OpcUaStackServer
 	}
 
 	void  
-	Session::receive(Message::SPtr message)
+	SessionOld::receive(Message::SPtr message)
 	{
 		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
 		Log(Debug, "receive response in session")

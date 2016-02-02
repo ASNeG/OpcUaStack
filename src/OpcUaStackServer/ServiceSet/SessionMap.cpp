@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	SessionMap::insert(OpcUaInt32 authenticationToken, Session::SPtr session)
+	SessionMap::insert(OpcUaInt32 authenticationToken, SessionOld::SPtr session)
 	{
 		SessionElement::SPtr sessionElement = this->sessionElement(authenticationToken);
 		if (sessionElement.get() != nullptr) {
@@ -68,7 +68,7 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	Session::SPtr 
+	SessionOld::SPtr
 	SessionMap::get(OpcUaInt32 authenticationToken)
 	{
 		SessionElement::SPtr sessionElement = this->sessionElement(authenticationToken);
@@ -76,7 +76,7 @@ namespace OpcUaStackServer
 			return sessionElement->session_;
 		}
 
-		Session::SPtr session;
+		SessionOld::SPtr session;
 		return session;
 	}
 
