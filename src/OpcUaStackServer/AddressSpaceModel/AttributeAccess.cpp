@@ -27,7 +27,7 @@ namespace OpcUaStackServer
 		{
 			case AttributeId_NodeId:
 			{
-				OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+				OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
 				NodeIdAttribute* nodeIdAttribute = reinterpret_cast<NodeIdAttribute*>(&attribute);
 				nodeIdAttribute->data().copyTo(*nodeId);
 				variant.variant(nodeId);
@@ -115,7 +115,7 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_DataType:
 			{
-				OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+				OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
  				DataTypeAttribute* dataTypeAttribute = reinterpret_cast<DataTypeAttribute*>(&attribute);
 				dataTypeAttribute->data().copyTo(*nodeId);
 				variant.variant(nodeId);

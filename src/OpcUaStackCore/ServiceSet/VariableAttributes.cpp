@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 		displayName_(OpcUaLocalizedText::construct()),
 		description_(OpcUaLocalizedText::construct()),
 		value_(OpcUaDataValue::construct()),
-		dataType_(OpcUaNodeId::construct()),
+		dataType_(),
 		valueRank_(-1),
 		arrayDimensions_(constructSPtr<OpcUaUInt32Array>()),
 		accessLevel_(0),
@@ -43,6 +43,8 @@ namespace OpcUaStackCore
 		writeMask_(),
 		userWriteMask_()
 	{
+		dataType_ = constructSPtr<OpcUaNodeId>();
+
 		specifiedAttributes_ |= SpecifiedAttributes_Description;
 		specifiedAttributes_ |= SpecifiedAttributes_DisplayName;
 		specifiedAttributes_ |= SpecifiedAttributes_Value;

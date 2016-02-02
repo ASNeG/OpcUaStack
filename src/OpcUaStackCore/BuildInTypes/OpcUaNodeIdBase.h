@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 	typedef boost::variant<OpcUaNodeIdNullType, OpcUaUInt32,OpcUaString::SPtr,OpcUaGuid::SPtr,OpcUaByteString::SPtr> OpcUaNodeIdValue;
 
 	class DLLEXPORT OpcUaNodeIdBase
+	: public Object
 	{
 	  public:
 	    OpcUaNodeIdBase(void);

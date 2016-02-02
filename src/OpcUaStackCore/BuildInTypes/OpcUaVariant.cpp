@@ -461,7 +461,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaNodeId:
 			{
-				OpcUaNodeId::SPtr value = OpcUaNodeId::construct();
+				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaNodeId::SPtr opcUaNodeIdSPtr = boost::static_pointer_cast<OpcUaNodeId>(opcUaVariantSPtr.objectSPtr_);
 				opcUaNodeIdSPtr->copyTo(*value);
@@ -936,7 +936,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaNodeId::SPtr opcUaNodeIdSPtr = OpcUaNodeId::construct();
+				OpcUaNodeId::SPtr opcUaNodeIdSPtr = constructSPtr<OpcUaNodeId>();
 				opcUaNodeIdSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaNodeIdSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaNodeId;
@@ -1292,7 +1292,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaNodeId::SPtr opcUaNodeIdSPtr = OpcUaNodeId::construct();
+				OpcUaNodeId::SPtr opcUaNodeIdSPtr = constructSPtr<OpcUaNodeId>();
 				if (!opcUaNodeIdSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaNodeIdSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaNodeId;

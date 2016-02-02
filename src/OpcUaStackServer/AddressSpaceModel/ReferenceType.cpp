@@ -92,7 +92,7 @@ namespace OpcUaStackServer
 		if (referenceType != ReferenceType_Unknown) return typeNodeId(referenceType);
 
 		// parse type nodeid 
-		OpcUaNodeId::SPtr nodeId = OpcUaNodeId::construct();
+		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
 		if (!nodeId->fromString(referenceTypeString)) {
 			OpcUaNodeId::SPtr nodeIdTmp;
 			return nodeIdTmp;
@@ -170,7 +170,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasPropertyTypeNodeId(void)
 	{
 		if (hasPropertyTypeNodeId_.get() == nullptr) {
-			hasPropertyTypeNodeId_ = OpcUaNodeId::construct();
+			hasPropertyTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasPropertyTypeNodeId_->nodeId(OpcUaId_HasProperty);
 		}
 		return hasPropertyTypeNodeId_;
@@ -180,7 +180,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasComponentTypeNodeId(void)
 	{
 		if (hasComponentTypeNodeId_.get() == nullptr) {
-			hasComponentTypeNodeId_ = OpcUaNodeId::construct();
+			hasComponentTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasComponentTypeNodeId_->nodeId(OpcUaId_HasComponent);
 		}
 		return hasComponentTypeNodeId_;
@@ -190,7 +190,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasModellingRuleTypeNodeId(void)
 	{
 		if (hasModellingRuleTypeNodeId_.get() == nullptr) {
-			hasModellingRuleTypeNodeId_ = OpcUaNodeId::construct();
+			hasModellingRuleTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasModellingRuleTypeNodeId_->nodeId(OpcUaId_HasModellingRule);
 		}
 		return hasModellingRuleTypeNodeId_;
@@ -200,7 +200,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasTypeDefinitionTypeNodeId(void)
 	{
 		if (hasTypeDefinitionTypeNodeId_.get() == nullptr) {
-			hasTypeDefinitionTypeNodeId_ = OpcUaNodeId::construct();
+			hasTypeDefinitionTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasTypeDefinitionTypeNodeId_->nodeId(OpcUaId_HasTypeDefinition);
 		}
 		return hasTypeDefinitionTypeNodeId_;
@@ -210,7 +210,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasModelParentTypeNodeId(void)
 	{
 		if (hasModelParentTypeNodeId_.get() == nullptr) {
-			hasModelParentTypeNodeId_ = OpcUaNodeId::construct();
+			hasModelParentTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasModelParentTypeNodeId_->nodeId(OpcUaId_HasModelParent); 
 		}
 		return hasModelParentTypeNodeId_;
@@ -220,7 +220,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasEventSourceTypeNodeId(void)
 	{
 		if (hasEventSourceTypeNodeId_.get() == nullptr) {
-			hasEventSourceTypeNodeId_ = OpcUaNodeId::construct();
+			hasEventSourceTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasEventSourceTypeNodeId_->nodeId(OpcUaId_HasEventSource);
 		}
 		return hasEventSourceTypeNodeId_;
@@ -230,7 +230,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasNotifierTypeNodeId(void)
 	{
 		if (hasNotifierTypeNodeId_.get() == nullptr) {
-			hasNotifierTypeNodeId_ = OpcUaNodeId::construct();
+			hasNotifierTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasNotifierTypeNodeId_->nodeId(OpcUaId_HasNotifier);
 		}
 		return hasNotifierTypeNodeId_;
@@ -240,7 +240,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::organizesTypeNodeId(void)
 	{
 		if (organizesTypeNodeId_.get() == nullptr) {
-			organizesTypeNodeId_ = OpcUaNodeId::construct();
+			organizesTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			organizesTypeNodeId_->nodeId(OpcUaId_Organizes);
 		}
 		return organizesTypeNodeId_;
@@ -250,7 +250,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasDescriptionTypeNodeId(void)
 	{
 		if (hasDescriptionTypeNodeId_.get() == nullptr) {
-			hasDescriptionTypeNodeId_ = OpcUaNodeId::construct();
+			hasDescriptionTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasDescriptionTypeNodeId_->nodeId(OpcUaId_HasDescription);
 		}
 		return hasDescriptionTypeNodeId_;
@@ -260,7 +260,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasEncodingTypeNodeId(void)
 	{
 		if (hasEncodingTypeNodeId_.get() == nullptr) {
-			hasEncodingTypeNodeId_ = OpcUaNodeId::construct();
+			hasEncodingTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasEncodingTypeNodeId_->nodeId(OpcUaId_HasEncoding);
 		}
 		return hasEncodingTypeNodeId_;
@@ -270,7 +270,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hasSubtypeTypeNodeId(void)
 	{
 		if (hasSubtypeTypeNodeId_.get() == nullptr) {
-			hasSubtypeTypeNodeId_ = OpcUaNodeId::construct();
+			hasSubtypeTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hasSubtypeTypeNodeId_->nodeId(OpcUaId_HasSubtype);
 		}
 		return hasSubtypeTypeNodeId_;
@@ -280,7 +280,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::nodeIdTypeNodeId(void)
 	{
 		if (nodeIdTypeNodeId_.get() == nullptr) {
-			nodeIdTypeNodeId_ = OpcUaNodeId::construct();
+			nodeIdTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			nodeIdTypeNodeId_->nodeId(OpcUaId_NodeId);
 		}
 		return nodeIdTypeNodeId_;
@@ -290,7 +290,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::generateEventsTypeNodeId(void)
 	{
 		if (generateEventsTypeNodeId_.get() == nullptr) {
-			generateEventsTypeNodeId_ = OpcUaNodeId::construct();
+			generateEventsTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			generateEventsTypeNodeId_->nodeId(OpcUaId_GeneratesEvent);
 		}
 		return generateEventsTypeNodeId_;
@@ -300,7 +300,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::alwaysGeneratesEventTypeNodeId(void)
 	{
 		if (alwaysGeneratesEventTypeNodeId_.get() == nullptr) {
-			alwaysGeneratesEventTypeNodeId_ = OpcUaNodeId::construct();
+			alwaysGeneratesEventTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			alwaysGeneratesEventTypeNodeId_->nodeId(OpcUaId_AlwaysGeneratesEvent);
 		}
 		return alwaysGeneratesEventTypeNodeId_;
@@ -310,7 +310,7 @@ namespace OpcUaStackServer
 	ReferenceTypeMap::hierarchicalReferencesTypeNodeId(void)
 	{
 		if (hierarchicalReferencesTypeNodeId_.get() == nullptr) {
-			hierarchicalReferencesTypeNodeId_ = OpcUaNodeId::construct();
+			hierarchicalReferencesTypeNodeId_ = constructSPtr<OpcUaNodeId>();
 			hierarchicalReferencesTypeNodeId_->nodeId(OpcUaId_HierarchicalReferences);
 		}
 		return hierarchicalReferencesTypeNodeId_;

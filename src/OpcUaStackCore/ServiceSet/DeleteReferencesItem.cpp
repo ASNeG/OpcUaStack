@@ -29,12 +29,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteReferencesItem::DeleteReferencesItem(void)
-		: sourceNodeIdSPtr_(OpcUaNodeId::construct()),
-		referenceTypeIdSPtr_(OpcUaNodeId::construct()),
-		isForward_(false),
-		targetNodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>()),
-		deleteBidirectional_(false)
+	: sourceNodeIdSPtr_()
+	, referenceTypeIdSPtr_()
+	, isForward_(false)
+	, targetNodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
+	, deleteBidirectional_(false)
 	{
+		sourceNodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	DeleteReferencesItem::~DeleteReferencesItem(void)

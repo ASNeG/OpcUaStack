@@ -28,8 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaExpandedNodeId::OpcUaExpandedNodeId(void)
-	: Object()
-	, OpcUaNodeIdBase()
+	: OpcUaNodeIdBase()
 	, namespaceUri_()
 	, serverIndex_()
 	{

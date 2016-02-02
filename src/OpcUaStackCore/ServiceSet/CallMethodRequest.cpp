@@ -30,10 +30,12 @@ namespace OpcUaStackCore
 
 	CallMethodRequest::CallMethodRequest(void)
 	: ObjectPool<CallMethodRequest>()
-	, objectIdSPtr_(OpcUaNodeId::construct())
-	, methodIdSPtr_(OpcUaNodeId::construct())
+	, objectIdSPtr_()
+	, methodIdSPtr_()
 	, inputArgumentArraySPtr_(OpcUaVariantArray::construct())
 	{
+		objectIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		methodIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	CallMethodRequest::~CallMethodRequest(void)

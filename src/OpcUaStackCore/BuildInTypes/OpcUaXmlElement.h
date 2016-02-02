@@ -46,7 +46,6 @@ namespace OpcUaStackCore
 
 	class OpcUaXmlElementArray
 	: public OpcUaArray<OpcUaXmlElement::SPtr, SPtrTypeCoder<OpcUaXmlElement> >
-	, public ObjectPool<OpcUaXmlElementArray>
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaXmlElementArray> SPtr;

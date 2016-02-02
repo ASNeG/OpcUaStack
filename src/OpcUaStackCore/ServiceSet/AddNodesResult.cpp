@@ -29,8 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	AddNodesResult::AddNodesResult(void)
 	: statusCode_()
-	, addedNodeIdSPtr_(OpcUaNodeId::construct())
+	, addedNodeIdSPtr_()
 	{
+		addedNodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	AddNodesResult::~AddNodesResult(void)

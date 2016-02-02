@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaNodeId)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaNodeId::SPtr nodeIdSPtr = OpcUaNodeId::construct();
+	OpcUaNodeId::SPtr nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 
 	OpcUaString::SPtr opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("ABC");

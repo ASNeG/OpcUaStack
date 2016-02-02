@@ -295,7 +295,7 @@ namespace OpcUaStackServer
 			}
 
 			// check if the reference is included in the alias map 
-			OpcUaNodeId::SPtr referenceTypeNodeId = OpcUaNodeId::construct();
+			OpcUaNodeId::SPtr referenceTypeNodeId = constructSPtr<OpcUaNodeId>();
 			bool alias = nodeSetAlias_.map(*referenceTypeString, *referenceTypeNodeId);
 			
 			// check if the reference is an standard reference type
@@ -831,7 +831,7 @@ namespace OpcUaStackServer
 		if (methodDeclarationId) {
 			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
 
-			OpcUaNodeId::SPtr referenceTypeNodeId = OpcUaNodeId::construct();
+			OpcUaNodeId::SPtr referenceTypeNodeId = constructSPtr<OpcUaNodeId>();
 			referenceTypeNodeId = ReferenceTypeMap::stringToNodeId("HasTypeDefinition");
 			referenceItem->isForward_ = true;
 

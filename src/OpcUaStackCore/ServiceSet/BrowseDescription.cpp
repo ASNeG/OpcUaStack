@@ -30,13 +30,15 @@ namespace OpcUaStackCore
 
 	BrowseDescription::BrowseDescription(void)
 	: ObjectPool<BrowseDescription>()
-	, nodeIdSPtr_(OpcUaNodeId::construct())
+	, nodeIdSPtr_()
 	, browseDirection_()
-	, referenceTypeIdSPtr_(OpcUaNodeId::construct())
+	, referenceTypeIdSPtr_()
 	, includeSubtypes_()
 	, nodeClassMask_()
 	, resultMask_()
 	{
+		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
+		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	BrowseDescription::~BrowseDescription(void)

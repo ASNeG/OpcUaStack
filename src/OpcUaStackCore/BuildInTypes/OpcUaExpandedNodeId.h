@@ -29,8 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaExpandedNodeId
-	: public Object
-	, public OpcUaNodeIdBase
+	: public OpcUaNodeIdBase
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaExpandedNodeId> SPtr;

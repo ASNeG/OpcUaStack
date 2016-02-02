@@ -36,7 +36,8 @@ namespace OpcUaStackCore
 
 
 	OpcUaNodeIdBase::OpcUaNodeIdBase(void)
-	: namespaceIndex_(0)
+	: Object()
+	, namespaceIndex_(0)
 	, nodeIdValue_()
 	{
 	}
