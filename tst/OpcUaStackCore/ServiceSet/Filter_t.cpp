@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	typeIdSPtr->nodeId((OpcUaUInt32)321);
 
 	string = "ABC";
-	qualifiedNameSPtr = OpcUaQualifiedName::construct();
+	qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
 	qualifiedNameSPtr->namespaceIndex(123),
 	qualifiedNameSPtr->name(string);
 

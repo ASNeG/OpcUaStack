@@ -479,7 +479,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaQualifiedName:
 			{
-				OpcUaQualifiedName::SPtr value = OpcUaQualifiedName::construct();
+				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = boost::static_pointer_cast<OpcUaQualifiedName>(opcUaVariantSPtr.objectSPtr_);
 				opcUaQualifiedNameSPtr->copyTo(*value);
@@ -958,7 +958,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = OpcUaQualifiedName::construct();
+				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
 				opcUaQualifiedNameSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaQualifiedNameSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaQualifiedName;
@@ -1314,7 +1314,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = OpcUaQualifiedName::construct();
+				OpcUaQualifiedName::SPtr opcUaQualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
 				if (!opcUaQualifiedNameSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaQualifiedNameSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaQualifiedName;

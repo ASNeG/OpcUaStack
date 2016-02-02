@@ -31,9 +31,9 @@ namespace OpcUaStackCore
 	CallMethodResult::CallMethodResult(void)
 	: ObjectPool<CallMethodResult>()
 	, statusCode_()
-	, inputArgumentResultArraySPtr_(OpcUaStatusCodeArray::construct())
-	, inputArgumentDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
-	, outputArgumentArraySPtr_(OpcUaVariantArray::construct())
+	, inputArgumentResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, inputArgumentDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, outputArgumentArraySPtr_(constructSPtr<OpcUaVariantArray>())
 	{
 	}
 

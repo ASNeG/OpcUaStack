@@ -30,9 +30,11 @@ namespace OpcUaStackCore
 
 	SetPublishingModeResponse::SetPublishingModeResponse(void)
 	: ObjectPool<SetPublishingModeResponse>()
-	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, statusCodeArraySPtr_()
+	, diagnosticInfoArraySPtr_()
 	{
+		statusCodeArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
 	}
 
 	SetPublishingModeResponse::~SetPublishingModeResponse(void)

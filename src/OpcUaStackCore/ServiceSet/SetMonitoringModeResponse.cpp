@@ -30,9 +30,11 @@ namespace OpcUaStackCore
 
 	SetMonitoringModeResponse::SetMonitoringModeResponse(void)
 	: ObjectPool<SetMonitoringModeResponse>()
-	, resultArraySPtr_(OpcUaStatusCodeArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, resultArraySPtr_()
+	, diagnosticInfoArraySPtr_()
 	{
+		resultArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
 	}
 
 	SetMonitoringModeResponse::~SetMonitoringModeResponse(void)

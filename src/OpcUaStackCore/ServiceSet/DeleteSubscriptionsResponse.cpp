@@ -30,9 +30,11 @@ namespace OpcUaStackCore
 
 	DeleteSubscriptionsResponse::DeleteSubscriptionsResponse(void)
 	: ObjectPool<DeleteSubscriptionsResponse>()
-	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, statusCodeArraySPtr_()
+	, diagnosticInfoArraySPtr_()
 	{
+		statusCodeArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
 	}
 
 	DeleteSubscriptionsResponse::~DeleteSubscriptionsResponse(void)

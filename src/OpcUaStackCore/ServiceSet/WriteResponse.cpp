@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	WriteResponse::WriteResponse(void)
 	: ObjectPool<WriteResponse>()
-	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

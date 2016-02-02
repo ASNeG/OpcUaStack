@@ -29,15 +29,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesItem::AddNodesItem(void)
-		: parentNodeId_(constructSPtr<OpcUaExpandedNodeId>()),
-		referenceTypeId_(),
-		requestedNewNodeId_(constructSPtr<OpcUaExpandedNodeId>()),
-		browseName_(OpcUaQualifiedName::construct()),
-		nodeClass_(NodeClass::construct()),
-		nodeAttributes_(),
-		typeDefinition_(constructSPtr<OpcUaExpandedNodeId>())
+	: parentNodeId_(constructSPtr<OpcUaExpandedNodeId>())
+	, referenceTypeId_(constructSPtr<OpcUaNodeId>())
+	, requestedNewNodeId_(constructSPtr<OpcUaExpandedNodeId>())
+	, browseName_(constructSPtr<OpcUaQualifiedName>())
+	, nodeClass_(constructSPtr<NodeClass>())
+	, nodeAttributes_()
+	, typeDefinition_(constructSPtr<OpcUaExpandedNodeId>())
 	{
-		referenceTypeId_ = constructSPtr<OpcUaNodeId>();;
 	}
 
 	AddNodesItem::~AddNodesItem(void)

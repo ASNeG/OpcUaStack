@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaQualifiedName : public ObjectPool<OpcUaQualifiedName>
+	class DLLEXPORT OpcUaQualifiedName
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaQualifiedName> SPtr;

@@ -30,14 +30,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaQualifiedName::OpcUaQualifiedName(void)
-	: ObjectPool<OpcUaQualifiedName>()
+	: Object()
 	, namespaceIndex_(0)
 	, name_()
 	{
 	}
 
 	OpcUaQualifiedName::OpcUaQualifiedName(const std::string& name, OpcUaInt16 namespaceIndex)
-	: ObjectPool<OpcUaQualifiedName>()
+	: Object()
 	, namespaceIndex_(namespaceIndex)
 	, name_(name)
 	{

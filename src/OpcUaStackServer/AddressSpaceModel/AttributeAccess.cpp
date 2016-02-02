@@ -41,7 +41,7 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_BrowseName:
 			{
-				OpcUaQualifiedName::SPtr browseName = OpcUaQualifiedName::construct();
+				OpcUaQualifiedName::SPtr browseName = constructSPtr<OpcUaQualifiedName>();
 				BrowseNameAttribute* browseNameAttribute = reinterpret_cast<BrowseNameAttribute*>(&attribute);
 				browseNameAttribute->data().copyTo(*browseName);
 				variant.variant(browseName);

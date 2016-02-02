@@ -392,7 +392,7 @@ namespace OpcUaServerApplicationDemo
 
 		// QualifiedName
 		nodeId.set(234, namespaceIndex_);
-		OpcUaQualifiedName::SPtr qualifiedName = OpcUaQualifiedName::construct();
+		OpcUaQualifiedName::SPtr qualifiedName = constructSPtr<OpcUaQualifiedName>();
 		qualifiedName->set("Name", 1);
 		dataValue = createDataValue();
 		dataValue->variant()->variant(qualifiedName);
@@ -402,7 +402,7 @@ namespace OpcUaServerApplicationDemo
 		nodeId.set(235, namespaceIndex_);
 		dataValue = createDataValue();
 		for (uint32_t pos=0; pos<3;pos++) {
-			OpcUaQualifiedName::SPtr qualifiedName = OpcUaQualifiedName::construct();
+			OpcUaQualifiedName::SPtr qualifiedName = constructSPtr<OpcUaQualifiedName>();
 			qualifiedName->set("Name", pos);
 			dataValue->variant()->pushBack(qualifiedName);
 		}

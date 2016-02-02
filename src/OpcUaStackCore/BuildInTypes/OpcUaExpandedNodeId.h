@@ -70,7 +70,6 @@ namespace OpcUaStackCore
 
 	class OpcUaExpandedNodeIdArray
 	: public OpcUaArray<OpcUaExpandedNodeId::SPtr, SPtrTypeCoder<OpcUaExpandedNodeId> >
-	, public ObjectPool<OpcUaExpandedNodeId>
 	{
   	  public:
 		boost::shared_ptr<OpcUaExpandedNodeIdArray> SPtr;
