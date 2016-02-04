@@ -88,11 +88,20 @@ namespace OpcUaStackCore
 	}
 
 	ExtensibleParameter::ExtensibleParameter(void)
+	: parameterTypeId_()
+	, epSPtr_()
 	{
 	}
 
 	ExtensibleParameter::~ExtensibleParameter(void)
 	{
+	}
+
+	void
+	ExtensibleParameter::clear(void)
+	{
+		parameterTypeId_.clear();
+		epSPtr_.reset();
 	}
 
 	OpcUaNodeId& 
