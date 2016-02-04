@@ -15,8 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
+
 #ifndef __OpcUaClient_ClientService_h__
 #define __OpcUaClient_ClientService_h__
+
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
@@ -27,7 +31,10 @@ namespace OpcUaClient
 		ClientService(void);
 		~ClientService(void);
 
+
+
 	  private:
+		VBIClient vbiClient_;
 	};
 
 }

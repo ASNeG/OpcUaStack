@@ -22,6 +22,7 @@ namespace OpcUaClient
 {
 
 	ClientService::ClientService(void)
+	: vbiClient_()
 	{
 	}
 
