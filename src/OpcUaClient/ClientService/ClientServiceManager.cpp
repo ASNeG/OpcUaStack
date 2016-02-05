@@ -15,16 +15,16 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
 {
 
-	ClientService::ClientService(void)
+	ClientServiceManager::ClientServiceManager(void)
 	{
 	}
 
-	ClientService::~ClientService(void)
+	ClientServiceManager::~ClientServiceManager(void)
 	{
 	}
 
