@@ -82,12 +82,12 @@ namespace OpcUaStackCore
 	}
 
 	void
-	PkiCertificateInfo::validTime(const uint64_t validTime)
+	PkiCertificateInfo::validTime(const uint32_t validTime)
 	{
 		validTime_ = validTime;
 	}
 
-	uint64_t
+	uint32_t
 	PkiCertificateInfo::validTime(void)
 	{
 		return validTime_;

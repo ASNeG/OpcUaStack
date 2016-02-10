@@ -41,15 +41,15 @@ namespace OpcUaStackCore
 		std::vector<std::string>& dnsNames(void);
 		void email(const std::string& email);
 		std::string& email(void);
-		void validTime(const uint64_t validTime);
-		uint64_t validTime(void);
+		void validTime(const uint32_t validTime);
+		uint32_t validTime(void);
 
 	  private:
 	    std::string URI_;
 	    std::vector<std::string> ipAddresses_;
 	    std::vector<std::string> dnsNames_;
 	    std::string email_;
-	    uint64_t validTime_;
+	    uint32_t validTime_;
 	};
 
 }
