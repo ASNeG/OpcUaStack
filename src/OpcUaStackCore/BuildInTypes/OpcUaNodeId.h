@@ -29,8 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT OpcUaNodeId
-	: public ObjectPool<OpcUaNodeId>
-	, public OpcUaNodeIdBase
+	: public OpcUaNodeIdBase
 	{
 	  public:
 		typedef boost::optional<OpcUaNodeId&> Opt;

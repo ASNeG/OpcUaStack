@@ -681,7 +681,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	{
 		AddNodesResult::SPtr addNodesResultSPtr = AddNodesResult::construct();
 		addNodesResultSPtr->statusCode(Success);
-		OpcUaNodeId::SPtr addedNodeIdSPtr = OpcUaNodeId::construct(); 
+		OpcUaNodeId::SPtr addedNodeIdSPtr = constructSPtr<OpcUaNodeId>();
 		addedNodeIdSPtr->set(11, 130);
 		addNodesResultSPtr->addedNodeId(addedNodeIdSPtr);
 		addNodesResultArraySPtr->set(0, addNodesResultSPtr);		

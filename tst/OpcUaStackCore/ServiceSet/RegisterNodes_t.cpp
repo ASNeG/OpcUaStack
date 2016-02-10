@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 	requestHeader->timeoutHint(300000);
 
 	// build Parameter
-	nodeIdSPtr = OpcUaNodeId::construct();
+	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 	nodeIdSPtr->namespaceIndex(2);
 	nodeIdSPtr->nodeId<OpcUaUInt32>(123);
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(registerNodesRequestSPtr->nodesToRegister()->size() == 1);
-	nodeIdSPtr = OpcUaNodeId::construct();
+	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 	registerNodesRequestSPtr->nodesToRegister()->get(nodeIdSPtr);
 	BOOST_REQUIRE(nodeIdSPtr->namespaceIndex() == 2);
 	BOOST_REQUIRE(nodeIdSPtr->nodeId<OpcUaUInt32>() == 123);
@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 	responseHeader->serviceResult(statusCode);
 	
 	// build Parameter
-	nodeIdSPtr = OpcUaNodeId::construct();
+	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 	nodeIdSPtr->namespaceIndex(2);
 	nodeIdSPtr->nodeId<OpcUaUInt32>(123);
 
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(registerNodesResponseSPtr->registeredNodeIds()->size() == 1);
-	nodeIdSPtr = OpcUaNodeId::construct();
+	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 	registerNodesResponseSPtr->registeredNodeIds()->get(nodeIdSPtr);
 	BOOST_REQUIRE(nodeIdSPtr->namespaceIndex() == 2);
 	BOOST_REQUIRE(nodeIdSPtr->nodeId<OpcUaUInt32>() == 123);

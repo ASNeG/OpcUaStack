@@ -29,9 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteNodesItem::DeleteNodesItem(void)
-		: nodeIdSPtr_(OpcUaNodeId::construct()),
-		deleteTargetReferences_(false)
+	: nodeIdSPtr_()
+	, deleteTargetReferences_(false)
 	{
+		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	DeleteNodesItem::~DeleteNodesItem(void)

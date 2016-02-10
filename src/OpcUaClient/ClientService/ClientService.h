@@ -15,20 +15,24 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SessionConfig_h__
-#define __OpcUaStackServer_SessionConfig_h__
+#include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackServer/ServiceSet/SessionOld.h"
+#ifndef __OpcUaClient_ClientService_h__
+#define __OpcUaClient_ClientService_h__
 
-namespace OpcUaStackServer
+using namespace OpcUaStackClient;
+
+namespace OpcUaClient
 {
 
-	class DLLEXPORT SessionConfig
+	class ClientService
 	{
 	  public:
-		static bool initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
+		ClientService(void);
+		~ClientService(void);
+
+	  private:
+		VBIClient vbiClient_;
 	};
 
 }

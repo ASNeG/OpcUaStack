@@ -30,10 +30,10 @@ namespace OpcUaStackCore
 
 	SetTriggeringResponse::SetTriggeringResponse(void)
 	: ObjectPool<SetTriggeringResponse>()
-	, addResultArraySPtr_(OpcUaStatusCodeArray::construct())
-	, addDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
-	, removeResultArraySPtr_(OpcUaStatusCodeArray::construct())
-	, removeDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, addResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, addDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, removeResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, removeDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

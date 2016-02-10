@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 
 	EventFilterResult::EventFilterResult(void)
 	: ObjectPool<EventFilterResult>()
-	, selectClauseResultArraySPtr_(OpcUaStatusCodeArray::construct())
-	, selectClauseDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, selectClauseResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, selectClauseDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	, whereClauseResult_()
 	{
 	}

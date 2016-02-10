@@ -30,11 +30,12 @@ namespace OpcUaStackCore
 
 	SimpleAttributeOperand::SimpleAttributeOperand(void)
 	: ObjectPool<SimpleAttributeOperand>()
-	, typeIdSPtr_(OpcUaNodeId::construct())
+	, typeIdSPtr_()
 	, browsePathArraySPtr_(OpcUaQualifiedNameArray::construct())
 	, attributeId_()
 	, indexRange_()
 	{
+		typeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	SimpleAttributeOperand::~SimpleAttributeOperand(void)

@@ -30,11 +30,12 @@ namespace OpcUaStackCore
 
 	WriteValue::WriteValue(void)
 	: ObjectPool<WriteValue>()
-	, nodeIdSPtr_(OpcUaNodeId::construct())
+	, nodeIdSPtr_()
 	, attributeId_()
 	, indexRange_()
 	, dataValue_()
 	{
+		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	WriteValue::~WriteValue(void)

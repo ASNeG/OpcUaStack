@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	ReferenceDescription::ReferenceDescription(void)
 	: ObjectPool<ReferenceDescription>()
-	, referenceTypeIdSPtr_(OpcUaNodeId::construct())
+	, referenceTypeIdSPtr_()
 	, isForward_()
 	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, browseName_()
@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 	, nodeClass_()
 	, typeDefinitionSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	{
+		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	ReferenceDescription::~ReferenceDescription(void)

@@ -27,11 +27,26 @@ using namespace OpcUaStackClient;
 namespace OpcUaStackClient
 {
 
+	class DLLEXPORT ContextParameter
+	{
+	  public:
+		typedef std::vector<ContextParameter> Vec;
+
+		ContextParameter(void);
+		~ContextParameter(void);
+
+		std::string parameter_;
+		std::string value_;
+	};
+
 	class DLLEXPORT ConnectContext
 	{
 	  public:
 		ConnectContext(void);
 		~ConnectContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		std::string endpointUrl_;
 		std::string sessionName_;
@@ -44,6 +59,9 @@ namespace OpcUaStackClient
 		ReadContext(void);
 		~ReadContext(void);
 
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
+
 		OpcUaInt32 attributeId_;
 	};
 
@@ -54,6 +72,9 @@ namespace OpcUaStackClient
 		WriteContext(void);
 		~WriteContext(void);
 
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
+
 		OpcUaInt32 attributeId_;
 	};
 
@@ -62,6 +83,9 @@ namespace OpcUaStackClient
 	  public:
 		CreateSubscriptionContext(void);
 		~CreateSubscriptionContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		OpcUaDouble requestedPublishingInterval_;
 		OpcUaUInt32 requestedLifetimeCount_;
@@ -76,6 +100,9 @@ namespace OpcUaStackClient
 	  public:
 		DeleteSubscriptionContext(void);
 		~DeleteSubscriptionContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 	};
 
 	class DLLEXPORT CreateMonitoredItemContext
@@ -83,6 +110,9 @@ namespace OpcUaStackClient
 	  public:
 		CreateMonitoredItemContext(void);
 		~CreateMonitoredItemContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 
 		OpcUaDouble samplingInterval_;
 		ExtensibleParameter filter_;
@@ -96,6 +126,9 @@ namespace OpcUaStackClient
 	  public:
 		DeleteMonitoredItemContext(void);
 		~DeleteMonitoredItemContext(void);
+
+		void reset(void);
+		bool setContextParameter(ContextParameter::Vec& contextParameterVec);
 	};
 
 }

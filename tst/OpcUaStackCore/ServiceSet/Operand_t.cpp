@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(Operand_SimpleAttribute)
 	SimpleAttributeOperand simpleAttributeOperand1, simpleAttributeOperand2;
 	
 	// encode
-	qualifiedNameSPtr = OpcUaQualifiedName::construct();
+	qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
 	string.value("ABC");
 	qualifiedNameSPtr->name(string);
 	qualifiedNameSPtr->namespaceIndex(12);

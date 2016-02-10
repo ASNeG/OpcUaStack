@@ -29,7 +29,8 @@ namespace OpcUaStackCore
 
 	typedef std::map<OpcUaNodeId,ExtensibleParameterBase::BSPtr> ExtensibleParameterMap;
 
-	class DLLEXPORT ExtensibleParameter : public  ObjectPool<ExtensibleParameter>
+	class DLLEXPORT ExtensibleParameter
+	: public  ObjectPool<ExtensibleParameter>
 	{
 	  public:
 		typedef boost::shared_ptr<ExtensibleParameter> SPtr;
@@ -40,6 +41,8 @@ namespace OpcUaStackCore
 
 		ExtensibleParameter(void);
 		~ExtensibleParameter(void);
+
+		void clear(void);
 
 		template<typename T>
 		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {

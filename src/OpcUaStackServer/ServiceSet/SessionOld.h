@@ -42,15 +42,15 @@ namespace OpcUaStackServer
 	} SessionState;
 
 
-	class DLLEXPORT Session 
-	: public OpcUaStackCore::ObjectPool<Session>
+	class DLLEXPORT SessionOld
+	: public OpcUaStackCore::ObjectPool<SessionOld>
 	, public Component
 	{
 	  public:
-		Session(void);
-		~Session(void);
+		SessionOld(void);
+		~SessionOld(void);
 
-		typedef boost::shared_ptr<Session> SPtr;
+		typedef boost::shared_ptr<SessionOld> SPtr;
 
 		void transactionManager(TransactionManager::SPtr transactionManager);
 

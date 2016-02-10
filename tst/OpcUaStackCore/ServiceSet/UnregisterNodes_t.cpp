@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	requestHeader->timeoutHint(300000);
 
 	// build Parameter
-	nodeIdSPtr = OpcUaNodeId::construct();
+	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 	nodeIdSPtr->namespaceIndex(2);
 	nodeIdSPtr->nodeId<OpcUaUInt32>(123);
 
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	BOOST_REQUIRE(requestHeader->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(unregisterNodesRequestSPtr->nodesToUnregister()->size() == 1);
-	nodeIdSPtr = OpcUaNodeId::construct();
+	nodeIdSPtr = constructSPtr<OpcUaNodeId>();
 	unregisterNodesRequestSPtr->nodesToUnregister()->get(nodeIdSPtr);
 	BOOST_REQUIRE(nodeIdSPtr->namespaceIndex() == 2);
 	BOOST_REQUIRE(nodeIdSPtr->nodeId<OpcUaUInt32>() == 123);

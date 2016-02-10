@@ -31,8 +31,8 @@ namespace OpcUaStackCore
 	ParsingResult::ParsingResult(void)
 	: ObjectPool<ParsingResult>()
 	, statusCode_()
-	, dataStatusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
-	, dataDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, dataStatusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, dataDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

@@ -26,7 +26,7 @@ namespace OpcUaStackServer
 {
 
 	bool 
-	SessionConfig::initial(Session::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
+	SessionConfig::initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
 	{
 		if (config == nullptr) config = Config::instance();
 

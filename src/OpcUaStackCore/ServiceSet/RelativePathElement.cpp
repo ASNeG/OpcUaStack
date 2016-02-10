@@ -30,11 +30,12 @@ namespace OpcUaStackCore
 
 	RelativePathElement::RelativePathElement(void)
 	: ObjectPool<RelativePathElement>()
-	, referenceTypeIdSPtr_(OpcUaNodeId::construct())
+	, referenceTypeIdSPtr_()
 	, isInverse_()
 	, includeSubtypes_()
 	, targetName_()
 	{
+		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	RelativePathElement::~RelativePathElement(void)

@@ -36,13 +36,21 @@ namespace OpcUaStackCore
 
 
 	OpcUaNodeIdBase::OpcUaNodeIdBase(void)
-	: namespaceIndex_(0)
+	: Object()
+	, namespaceIndex_(0)
 	, nodeIdValue_()
 	{
 	}
 
 	OpcUaNodeIdBase::~OpcUaNodeIdBase(void)
 	{
+	}
+
+	void
+	OpcUaNodeIdBase::clear(void)
+	{
+		namespaceIndex_ = 0;
+		nodeIdValue_ = OpcUaNodeIdValue();
 	}
 
 	OpcUaNodeIdValue&

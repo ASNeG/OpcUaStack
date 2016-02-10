@@ -33,9 +33,9 @@ namespace OpcUaStackCore
 	, subscriptionId_()
 	, availableSequenceNumberArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	, moreNotifications_()
-	, notficiationMessageSPtr_(NotificationMessage::construct())
-	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, notficiationMessageSPtr_(constructSPtr<NotificationMessage>())
+	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

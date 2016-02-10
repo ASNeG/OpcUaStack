@@ -1,3 +1,4 @@
+
 /*
    Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
@@ -15,22 +16,18 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SessionConfig_h__
-#define __OpcUaStackServer_SessionConfig_h__
+#include "OpcUaClient/ClientService/ClientService.h"
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackServer/ServiceSet/SessionOld.h"
-
-namespace OpcUaStackServer
+namespace OpcUaClient
 {
 
-	class DLLEXPORT SessionConfig
+	ClientService::ClientService(void)
+	: vbiClient_()
 	{
-	  public:
-		static bool initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
-	};
+	}
+
+	ClientService::~ClientService(void)
+	{
+	}
 
 }
-
-#endif

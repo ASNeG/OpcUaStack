@@ -11,7 +11,7 @@ project	(OpcUaStack)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(VERSION_MAJOR "1" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
-set(VERSION_PATCH "7" CACHE STRING "patch version")
+set(VERSION_PATCH "8" CACHE STRING "patch version")
 
 set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
 set(LIB_DIR "usr/lib" CACHE STRING "library directory")

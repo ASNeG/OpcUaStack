@@ -28,8 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaNodeId::OpcUaNodeId(void)
-	: ObjectPool<OpcUaNodeId>()
-	, OpcUaNodeIdBase()
+	: OpcUaNodeIdBase()
 	{
 	}
 

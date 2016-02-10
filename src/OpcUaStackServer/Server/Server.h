@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/ServiceSet/SessionManager.h"
+#include "OpcUaStackServer/ServiceSet/SessionManagerOld.h"
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
 #include "OpcUaStackServer/Application/ApplicationManager.h"
 #include "OpcUaStackServer/Server/ServerStatusDataType.h"
@@ -59,7 +59,7 @@ namespace OpcUaStackServer
 
 		IOService ioService_;
 		InformationModel::SPtr informationModel_;
-		SessionManager sessionManager_;
+		SessionManagerOld sessionManager_;
 		ServiceManager serviceManager_;
 		ApplicationManager applicationManager_;
 

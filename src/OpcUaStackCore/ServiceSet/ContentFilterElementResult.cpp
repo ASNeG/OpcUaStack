@@ -31,9 +31,9 @@ namespace OpcUaStackCore
 	ContentFilterElementResult::ContentFilterElementResult(void)
 	: ObjectPool<ContentFilterElementResult>()
 	, statusCode_()
-	, operandStatusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
-	, operandDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
-	, elementDiagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())	
+	, operandStatusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, operandDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, elementDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

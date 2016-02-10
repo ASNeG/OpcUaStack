@@ -55,12 +55,12 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	EventFilter filter1, filter2;
 
 	// encode
-	typeIdSPtr = OpcUaNodeId::construct();
+	typeIdSPtr = constructSPtr<OpcUaNodeId>();
 	typeIdSPtr->namespaceIndex(123);
 	typeIdSPtr->nodeId((OpcUaUInt32)321);
 
 	string = "ABC";
-	qualifiedNameSPtr = OpcUaQualifiedName::construct();
+	qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
 	qualifiedNameSPtr->namespaceIndex(123),
 	qualifiedNameSPtr->name(string);
 

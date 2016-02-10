@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	RegisterForwardResponse::RegisterForwardResponse(void)
 	: ObjectPool<RegisterForwardResponse>()
-	, statusCodeArraySPtr_(OpcUaStatusCodeArray::construct())
+	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
 	{
 	}
 

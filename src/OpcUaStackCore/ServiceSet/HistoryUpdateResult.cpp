@@ -31,9 +31,11 @@ namespace OpcUaStackCore
 	HistoryUpdateResult::HistoryUpdateResult(void)
 	: ObjectPool<HistoryUpdateResult>()
 	, statusCode_()
-	, operationResultArraySPtr_(OpcUaStatusCodeArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, operationResultArraySPtr_()
+	, diagnosticInfoArraySPtr_()
 	{
+		operationResultArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
+		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
 	}
 
 	HistoryUpdateResult::~HistoryUpdateResult(void)

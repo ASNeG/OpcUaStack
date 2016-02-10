@@ -78,11 +78,11 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	variantSPtr = OpcUaVariant::construct();
 	variantSPtr->variant((OpcUaUInt32)2);
 
-	objectIdSPtr = OpcUaNodeId::construct();
+	objectIdSPtr = constructSPtr<OpcUaNodeId>();
 	objectIdSPtr->namespaceIndex(0);
 	objectIdSPtr->nodeId((OpcUaUInt32)2782);
 
-	methodIdSPtr = OpcUaNodeId::construct();
+	methodIdSPtr = constructSPtr<OpcUaNodeId>();
 	methodIdSPtr->namespaceIndex(0);
 	methodIdSPtr->nodeId((OpcUaUInt32)3875);
 	

@@ -30,12 +30,13 @@ namespace OpcUaStackCore
 
 	AttributeOperand::AttributeOperand(void)
 	: ObjectPool<AttributeOperand>()
-	, nodeIdSPtr_(OpcUaNodeId::construct())
+	, nodeIdSPtr_()
 	, alias_()
 	, browsePath_()
 	, attributeId_()
 	, indexRange_()
 	{
+		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	AttributeOperand::~AttributeOperand(void)

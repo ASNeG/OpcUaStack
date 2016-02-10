@@ -30,9 +30,10 @@ namespace OpcUaStackCore
 
 	BrowsePath::BrowsePath(void)
 	: ObjectPool<BrowsePath>()
-	, startingNodeSPtr_(OpcUaNodeId::construct())
+	, startingNodeSPtr_()
 	, relativePath_()
 	{
+		startingNodeSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	BrowsePath::~BrowsePath(void)

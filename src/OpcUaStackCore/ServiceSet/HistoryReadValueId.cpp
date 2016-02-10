@@ -30,11 +30,12 @@ namespace OpcUaStackCore
 
 	HistoryReadValueId::HistoryReadValueId(void)
 	: ObjectPool<HistoryReadValueId>()
-	, nodeIdSPtr_(OpcUaNodeId::construct())
+	, nodeIdSPtr_()
 	, indexRange_()
 	, dataEncoding_()
 	, continuationPoint_()
 	{
+		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	HistoryReadValueId::~HistoryReadValueId(void)

@@ -31,11 +31,12 @@ namespace OpcUaStackCore
 
 	ReadValueId::ReadValueId(void)
 	: ObjectPool<ReadValueId>()
-	, nodeIdSPtr_(OpcUaNodeId::construct())
+	, nodeIdSPtr_()
 	, attributeId_(AttributeId_Value)
 	, indexRange_()
 	, dataEncoding_()
 	{
+		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	ReadValueId::~ReadValueId(void)
