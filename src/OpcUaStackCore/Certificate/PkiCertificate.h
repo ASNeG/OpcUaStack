@@ -29,12 +29,33 @@
 namespace OpcUaStackCore
 {
 
+	class DLLEXPORT PkiExtensionEntry
+	{
+	  public:
+		typedef std::vector<PkiExtensionEntry> Vec;
+
+		PkiExtensionEntry(void);
+		PkiExtensionEntry(const std::string& key, const std::string& value);
+		~PkiExtensionEntry(void);
+
+		void key(const std::string& key);
+		std::string& key(void);
+		void value(const std::string& value);
+		std::string& value(void);
+
+	  private:
+		std::string key_;
+		std::string value_;
+	};
+
 	class DLLEXPORT PkiCertificate
 	: public PkiError
 	{
 	  public:
 		static bool loadCryptoStrings_;
 		static std::list<std::string> cryptoStringErrorList_;
+		static PkiExtensionEntry::Vec pkiEntensionEntryVec_;
+		static bool init_;
 
 		PkiCertificate(void);
 		~PkiCertificate(void);
