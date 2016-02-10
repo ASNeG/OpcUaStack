@@ -32,6 +32,12 @@ namespace OpcUaStackCore
 	}
 
 	void
+	PkiError::clear(void)
+	{
+		errorList_.clear();
+	}
+
+	void
 	PkiError::openSSLError(void)
 	{
 	    ERR_load_crypto_strings();
