@@ -24,7 +24,7 @@ namespace OpcUaStackCore
     : URI_("")
     , ipAddresses_()
     , dnsNames_()
-    , email_("")
+    , emails_()
     , validTime_(0)
 	{
 	}
@@ -70,15 +70,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	PkiCertificateInfo::email(const std::string& email)
+	PkiCertificateInfo::email(const std::vector<std::string>& emails)
 	{
-		email_ = email;
+		emails_ = emails;
 	}
 
-	std::string&
+	std::vector<std::string>&
 	PkiCertificateInfo::email(void)
 	{
-		return email_;
+		return emails_;
 	}
 
 	void

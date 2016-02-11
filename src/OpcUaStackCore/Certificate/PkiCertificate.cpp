@@ -343,42 +343,48 @@ namespace OpcUaStackCore
             }
         }
 
-	 #ifdef CREATE_EXTENSIONS
-	        if (!bError)
-	        {
-	            // add subjectAltName
-	            UaString subjectAltNameValue;
-	            if ( !info.URI.isEmpty() )
-	            {
-	                subjectAltNameValue += "URI:";
-	                subjectAltNameValue += info.URI; // URI is absolutely mandatory
-	            }
-	            for (OpcUa_UInt32 i = 0; i < info.DNSNames.length(); i++)
-	            {
-	                subjectAltNameValue += ",DNS:";
-	                subjectAltNameValue += info.DNSNames[i];
-	            }
-	            for (OpcUa_UInt32 i = 0; i < info.IPAddresses.length(); i++)
-	            {
-	                subjectAltNameValue += ",IP:";
-	                subjectAltNameValue += info.IPAddresses[i];
-	            }
-	            if ( !info.eMail.isEmpty() )
-	            {
-	                subjectAltNameValue += ",email:";
-	                subjectAltNameValue += info.eMail;
-	            }
-	            X509_EXTENSION *pExt = X509V3_EXT_conf ( NULL, &ctx, (char*)"subjectAltName", ( char* ) subjectAltNameValue.toUtf8() );
-	            if (!pExt) {bError = true; addOpenSSLError();}
-	            else
-	            {
-	                resultCode = X509_add_ext ( m_pCert, pExt, -1 );
-	                if (!resultCode) {bError = true; addOpenSSLError();}
-	                X509_EXTENSION_free ( pExt );
-	            }
-	        }
-	#endif
+        if (success) {
+        	std::vector<std::string>::iterator it;
+        	std::string subjectAltNameValue;
 
+        	// add URI
+        	subjectAltNameValue += "URI:";
+        	subjectAltNameValue += pkiCertificateInfo.URI();
+
+        	// added DNS
+        	for (it = pkiCertificateInfo.dnsNames().begin(); it != pkiCertificateInfo.dnsNames().end(); it++) {
+        		subjectAltNameValue += ",DNS:";
+        		subjectAltNameValue += *it;
+        	}
+
+        	// added IP
+        	for (it = pkiCertificateInfo.ipAddresses().begin(); it != pkiCertificateInfo.ipAddresses().end(); it++) {
+        		subjectAltNameValue += ",IP:";
+        		subjectAltNameValue += *it;
+        	}
+
+        	// added email
+        	for (it = pkiCertificateInfo.email().begin(); it != pkiCertificateInfo.email().end(); it++) {
+        		subjectAltNameValue += ",email:";
+        		subjectAltNameValue += *it;
+        	}
+
+            X509_EXTENSION *pExt = X509V3_EXT_conf(NULL, &ctx, (char*)"subjectAltName", (char*)subjectAltNameValue.c_str());
+            if (!pExt) {
+            	success = false;
+                openSSLError();
+            }
+            else
+            {
+                resultCode = X509_add_ext(x509Cert_, pExt, -1);
+                if (!resultCode) {
+                	success = false;
+                    openSSLError();
+                }
+                X509_EXTENSION_free (pExt);
+            }
+
+        }
 
 	    if (success) {
 	        // sign the certificate
@@ -387,7 +393,8 @@ namespace OpcUaStackCore
 	        	success = false;
 	        	openSSLError();
 	        }
-	        else {
+
+	        if (success) {
 	        	EVP_PKEY* pKey = issuerPrivateKey.privateKey();
 	            resultCode = X509_sign(x509Cert_, pKey, digest);
 	            if (!resultCode) {
