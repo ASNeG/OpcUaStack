@@ -47,6 +47,7 @@ namespace OpcUaClient
 		static std::string actualSession_;
 		static bool parse(uint32_t argc, char** argv, Command::Vec& commandVec);
 		static bool parseCommand(uint32_t argc, char** argv, uint32_t idx);
+		static bool parseSession(uint32_t argc, char** argv, uint32_t idx);
 
 		void cmd(const Cmd cmd);
 		Cmd cmd(void);

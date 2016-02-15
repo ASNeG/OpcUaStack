@@ -47,11 +47,17 @@ namespace OpcUaClient
 			std::string para = argv[idx];
 			boost::algorithm::trim(para);
 
-			// new command
+			// command parameter
 			if (boost::algorithm::to_upper_copy(para) == "-COMMAND") {
 				if (!parseCommand(argc, argv, idx)) return false;
 				idx++;
 				commandVec.push_back(actualCommand_);
+			}
+
+			// session parameter
+			else if (boost::algorithm::to_upper_copy(para) == "-SESSION") {
+				if (!parseSession(argc, argv, idx)) return false;
+				idx++;
 			}
 
 			std::cout << (uint32_t)idx << std::string(". ") << para << std::endl;
@@ -84,6 +90,19 @@ namespace OpcUaClient
 			return false;
 		}
 
+		return true;
+	}
+
+	bool
+	Command::parseSession(uint32_t argc, char** argv, uint32_t idx)
+	{
+		if (idx+1 >= argc) {
+			errorString_ << "command error near " << argv[idx];
+			return false;
+		}
+		std::string para = argv[idx+1];
+		boost::algorithm::trim(para);
+		actualCommand_->session(para);
 		return true;
 	}
 
