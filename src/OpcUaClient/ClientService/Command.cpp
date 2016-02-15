@@ -29,6 +29,28 @@ namespace OpcUaClient
 	{
 	}
 
+	bool
+	Command::parseCommand(uint32_t argc, char** argv, Command::Vec& commandVec)
+	{
+		for (uint32_t idx=0; idx<argc; idx++) {
+			std::string para(argv[idx]);
+			std::cout << idx + ". " << para << std::endl;
+		}
+		return true;
+	}
+
+	void
+	Command::cmd(const Cmd cmd)
+	{
+		cmd_ = cmd;
+	}
+
+	Command::Cmd
+	Command::cmd(void)
+	{
+		return cmd_;
+	}
+
 }
 
 

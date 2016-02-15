@@ -18,14 +18,36 @@
 #ifndef __OpcUaClient_Command_h__
 #define __OpcUaClient_Command_h__
 
+#include <boost/shared_ptr.hpp>
+#include <vector>
+#include <stdint.h>
+
 namespace OpcUaClient
 {
 
 	class Command
 	{
 	  public:
+		typedef boost::shared_ptr<Command> SPtr;
+		typedef std::vector<Command::SPtr> Vec;
+
+		typedef enum
+		{
+			Cmd_Unknown,
+			Cmd_Connect,
+			Cmd_Disconnect,
+		} Cmd;
+
 		Command(void);
 		~Command(void);
+
+		static bool parseCommand(uint32_t argc, char** argv, Command::Vec& commandVec);
+
+		void cmd(const Cmd cmd);
+		Cmd cmd(void);
+
+	  private:
+		Cmd cmd_;
 	};
 
 }
