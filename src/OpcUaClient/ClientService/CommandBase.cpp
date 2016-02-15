@@ -23,11 +23,37 @@ namespace OpcUaClient
 {
 
 	CommandBase::CommandBase(void)
+	: cmd_(Cmd_Unknown)
+	, session_("")
 	{
 	}
 
 	CommandBase::~CommandBase(void)
 	{
+	}
+
+	void
+	CommandBase::cmd(const Cmd cmd)
+	{
+		cmd_ = cmd;
+	}
+
+	CommandBase::Cmd
+	CommandBase::cmd(void)
+	{
+		return cmd_;
+	}
+
+	void
+	CommandBase::session(const std::string& session)
+	{
+		session_ = session;
+	}
+
+	std::string&
+	CommandBase::session(void)
+	{
+		return session_;
 	}
 
 }

@@ -18,17 +18,38 @@
 #ifndef __OpcUaClient_CommandBase_h__
 #define __OpcUaClient_CommandBase_h__
 
+#include <boost/shared_ptr.hpp>
+
 namespace OpcUaClient
 {
 
 	class CommandBase
 	{
 	  public:
+		typedef boost::shared_ptr<CommandBase> SPtr;
+		typedef enum
+		{
+			Cmd_Unknown,
+			Cmd_Connect,
+			Cmd_Disconnect,
+		} Cmd;
 
 		CommandBase(void);
-		~CommandBase(void);
+		virtual ~CommandBase(void);
+
+		//- CommandBase interface ---------------------------------------------
+		virtual SPtr createCommand(void) = 0;
+		virtual bool validateCommand(void) = 0;
+		//- CommandBase interface ---------------------------------------------
+
+		void cmd(const Cmd cmd);
+		Cmd cmd(void);
+		void session(const std::string& session);
+		std::string& session(void);
 
 	  private:
+		Cmd cmd_;
+		std::string session_;
 
 	};
 
