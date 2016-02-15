@@ -16,23 +16,20 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
+#include "OpcUaClient/ClientService/Command.h"
 
 namespace OpcUaClient
 {
 
-	ClientService::ClientService(void)
+	Command::Command(void)
 	{
 	}
 
-	ClientService::~ClientService(void)
+	Command::~Command(void)
 	{
-	}
-
-	int
-	ClientService::run(uint32_t argc, char** argv)
-	{
-		return 0;
 	}
 
 }
+
+
+

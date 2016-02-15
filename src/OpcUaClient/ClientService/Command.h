@@ -1,4 +1,3 @@
-
 /*
    Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
@@ -16,23 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
+#ifndef __OpcUaClient_Command_h__
+#define __OpcUaClient_Command_h__
 
 namespace OpcUaClient
 {
 
-	ClientService::ClientService(void)
+	class Command
 	{
-	}
-
-	ClientService::~ClientService(void)
-	{
-	}
-
-	int
-	ClientService::run(uint32_t argc, char** argv)
-	{
-		return 0;
-	}
+	  public:
+		Command(void);
+		~Command(void);
+	};
 
 }
+
+#endif

@@ -31,8 +31,7 @@ namespace OpcUaClient
 		ClientService(void);
 		~ClientService(void);
 
-	  private:
-		VBIClient vbiClient_;
+		int run(uint32_t argc, char** argv);
 	};
 
 }

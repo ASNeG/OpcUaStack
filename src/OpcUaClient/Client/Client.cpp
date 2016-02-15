@@ -15,10 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaClient/ClientService/ClientService.h"
 
+using namespace OpcUaClient;
 
 int main(int argc, char**argv) {
-	return 0;
+	ClientService clientService;
+	return clientService.run(argc, argv);
 }
 
 
