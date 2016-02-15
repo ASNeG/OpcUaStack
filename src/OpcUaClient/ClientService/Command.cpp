@@ -16,12 +16,22 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string.hpp>
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/Command.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
+	std::stringstream Command::errorString_;
+ 	Command::SPtr Command::actualCommand_ = constructSPtr<Command>();
+	std::string Command::actualSession_ = "Main";
+
 	Command::Command(void)
+	: cmd_(Cmd_Unknown)
+	, session_("")
 	{
 	}
 
@@ -30,12 +40,50 @@ namespace OpcUaClient
 	}
 
 	bool
-	Command::parseCommand(uint32_t argc, char** argv, Command::Vec& commandVec)
+	Command::parse(uint32_t argc, char** argv, Command::Vec& commandVec)
 	{
-		for (uint32_t idx=0; idx<argc; idx++) {
-			std::string para(argv[idx]);
-			std::cout << idx + ". " << para << std::endl;
+		std::cout << "START:" << std::endl;
+		for (uint32_t idx=1; idx<argc; idx++) {
+			std::string para = argv[idx];
+			boost::algorithm::trim(para);
+
+			// new command
+			if (boost::algorithm::to_upper_copy(para) == "-COMMAND") {
+				if (!parseCommand(argc, argv, idx)) return false;
+				idx++;
+				commandVec.push_back(actualCommand_);
+			}
+
+			std::cout << (uint32_t)idx << std::string(". ") << para << std::endl;
 		}
+
+		//-Command connect -Session "TestSession" -EndpointUrl ${EndpointUrl} \
+		//-Command disconnect -Session "TestSession"
+
+		return true;
+	}
+
+	bool
+	Command::parseCommand(uint32_t argc, char** argv, uint32_t idx)
+	{
+		actualCommand_ = constructSPtr<Command>();
+		actualCommand_->session(actualSession_);
+
+		if (idx+1 >= argc) {
+			errorString_ << "command error near " << argv[idx];
+			return false;
+		}
+		std::string para = argv[idx+1];
+		boost::algorithm::trim(para);
+		boost::algorithm::to_upper(para);
+
+		if (para == "CONNECT") actualCommand_->cmd(Command::Cmd_Connect);
+		else if (para == "DISCONNECT") actualCommand_->cmd(Command::Cmd_Disconnect);
+		else {
+			errorString_ << "command " << para << " unknown";
+			return false;
+		}
+
 		return true;
 	}
 
@@ -49,6 +97,18 @@ namespace OpcUaClient
 	Command::cmd(void)
 	{
 		return cmd_;
+	}
+
+	void
+	Command::session(const std::string& session)
+	{
+		session_ = session;
+	}
+
+	std::string&
+	Command::session(void)
+	{
+		return session_;
 	}
 
 }

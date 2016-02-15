@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 #include <stdint.h>
+#include <sstream>
 
 namespace OpcUaClient
 {
@@ -41,13 +42,20 @@ namespace OpcUaClient
 		Command(void);
 		~Command(void);
 
-		static bool parseCommand(uint32_t argc, char** argv, Command::Vec& commandVec);
+		static std::stringstream errorString_;
+		static Command::SPtr actualCommand_;
+		static std::string actualSession_;
+		static bool parse(uint32_t argc, char** argv, Command::Vec& commandVec);
+		static bool parseCommand(uint32_t argc, char** argv, uint32_t idx);
 
 		void cmd(const Cmd cmd);
 		Cmd cmd(void);
+		void session(const std::string& session);
+		std::string& session(void);
 
 	  private:
 		Cmd cmd_;
+		std::string session_;
 	};
 
 }

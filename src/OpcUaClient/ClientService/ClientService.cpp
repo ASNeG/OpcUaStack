@@ -35,7 +35,8 @@ namespace OpcUaClient
 	{
 		// parse command line
 		Command::Vec commandVec;
-		if (!Command::parseCommand(argc, argv, commandVec)) {
+		if (!Command::parse(argc, argv, commandVec)) {
+			std::cerr << Command::errorString_.str() << std::endl;
 			return -1;
 		}
 		return 0;
