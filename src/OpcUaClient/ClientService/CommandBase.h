@@ -1,4 +1,3 @@
-
 /*
    Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
 
@@ -16,18 +15,23 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandParser.h"
-
+#ifndef __OpcUaClient_CommandBase_h__
+#define __OpcUaClient_CommandBase_h__
 
 namespace OpcUaClient
 {
 
-	CommandParser::CommandParser(void)
+	class CommandBase
 	{
-	}
+	  public:
 
-	CommandParser::~CommandParser(void)
-	{
-	}
+		CommandBase(void);
+		~CommandBase(void);
+
+	  private:
+
+	};
 
 }
+
+#endif

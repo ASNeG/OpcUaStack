@@ -16,17 +16,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandParser.h"
+#include "OpcUaClient/ClientService/CommandBase.h"
 
 
 namespace OpcUaClient
 {
 
-	CommandParser::CommandParser(void)
+	CommandBase::CommandBase(void)
 	{
 	}
 
-	CommandParser::~CommandParser(void)
+	CommandBase::~CommandBase(void)
 	{
 	}
 
