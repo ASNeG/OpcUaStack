@@ -21,11 +21,42 @@ namespace OpcUaClient
 {
 
 	ParameterFlags::ParameterFlags(void)
+	: flagMap_()
 	{
 	}
 
 	ParameterFlags::~ParameterFlags(void)
 	{
+	}
+
+	void
+	ParameterFlags::addParameter(uint32_t parameterId)
+	{
+		FlagMap::iterator it;
+		it = flagMap_.find(parameterId);
+		if (it == flagMap_.end()) {
+			flagMap_.insert(std::make_pair(parameterId, 1));
+		}
+		else {
+			it->second = it->second + 1;
+		}
+	}
+	bool
+	ParameterFlags::existParameter(uint32_t parameterId)
+	{
+		FlagMap::iterator it;
+		it = flagMap_.find(parameterId);
+		if (it == flagMap_.end()) return false;
+		return true;
+	}
+
+	uint32_t
+	ParameterFlags::getParameter(uint32_t parameterId)
+	{
+		FlagMap::iterator it;
+		it = flagMap_.find(parameterId);
+		if (it == flagMap_.end()) return 0;
+		return it->second;
 	}
 
 }
