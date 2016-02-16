@@ -16,7 +16,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/Client/ClientService.h"
+#include "OpcUaClient/Client/ClientApplication.h"
 #include "OpcUaClient/ClientCommand/CommandParser.h"
 
 // commands
@@ -28,16 +28,16 @@
 namespace OpcUaClient
 {
 
-	ClientService::ClientService(void)
+	ClientApplication::ClientApplication(void)
 	{
 	}
 
-	ClientService::~ClientService(void)
+	ClientApplication::~ClientApplication(void)
 	{
 	}
 
 	int
-	ClientService::run(uint32_t argc, char** argv)
+	ClientApplication::run(uint32_t argc, char** argv)
 	{
 		// register command in command factory
 		CommandParser::addCommand("CONNECT", constructSPtr<CommandConnect>());

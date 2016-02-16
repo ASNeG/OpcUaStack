@@ -15,21 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
+#ifndef __OpcUaClient_ClientApplication_h__
+#define __OpcUaClient_ClientApplication_h__
 
-#ifndef __OpcUaClient_ClientService_h__
-#define __OpcUaClient_ClientService_h__
-
-using namespace OpcUaStackClient;
+#include <stdint.h>
 
 namespace OpcUaClient
 {
 
-	class ClientService
+	class ClientApplication
 	{
 	  public:
-		ClientService(void);
-		~ClientService(void);
+		ClientApplication(void);
+		~ClientApplication(void);
 
 		int run(uint32_t argc, char** argv);
 	};
