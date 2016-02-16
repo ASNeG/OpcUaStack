@@ -16,8 +16,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/CommandConnect.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
