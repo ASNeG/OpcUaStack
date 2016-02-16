@@ -39,6 +39,7 @@ namespace OpcUaClient
 	CommandConnect::createCommand(void)
 	{
 		CommandBase::SPtr commandBase = constructSPtr<CommandConnect>();
+		return commandBase;
 	}
 
 	bool

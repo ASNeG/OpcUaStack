@@ -16,39 +16,44 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
-#include "OpcUaClient/ClientService/CommandParser.h"
-
-// commands
-#include "OpcUaClient/ClientService/CommandConnect.h"
+#include <sstream>
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/CommandDisconnect.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientService::ClientService(void)
+	CommandDisconnect::CommandDisconnect(void)
+	: CommandBase(CommandBase::Cmd_Connect)
 	{
 	}
 
-	ClientService::~ClientService(void)
+	CommandDisconnect::~CommandDisconnect(void)
 	{
 	}
 
-	int
-	ClientService::run(uint32_t argc, char** argv)
+	CommandBase::SPtr
+	CommandDisconnect::createCommand(void)
 	{
-		// register command in command factory
-		CommandParser::addCommand("CONNECT", constructSPtr<CommandConnect>());
-		CommandParser::addCommand("DISCONNECT", constructSPtr<CommandConnect>());
+		CommandBase::SPtr commandBase = constructSPtr<CommandDisconnect>();
+		return commandBase;
+	}
 
-		// parse command line
-		CommandParser commandParser;
-		CommandBase::Vec commandBaseVec;
-		if (!commandParser.parse(argc, argv, commandBaseVec)) {
-			std::cerr << commandParser.errorString() << std::endl;
-			return -1;
-		}
-		return 0;
+	bool
+	CommandDisconnect::validateCommand(void)
+	{
+		return true;
+	}
+
+	bool
+	CommandDisconnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
+	{
+		std::stringstream ss;
+		ss << "invalid parameter " << parameterName;
+		errorMessage(ss.str());
+		return false;
 	}
 
 }
