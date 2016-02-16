@@ -16,38 +16,39 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/lexical_cast.hpp>
 #include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientService/CommandRead.h"
+#include "OpcUaClient/ClientService/CommandDelay.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	CommandRead::CommandRead(void)
-	: CommandBase(CommandBase::Cmd_Read)
-	, nodeIdVec_()
+	CommandDelay::CommandDelay(void)
+	: CommandBase(CommandBase::Cmd_Connect)
+	, timeout_(0)
 	{
 	}
 
-	CommandRead::~CommandRead(void)
+	CommandDelay::~CommandDelay(void)
 	{
 	}
 
 	CommandBase::SPtr
-	CommandRead::createCommand(void)
+	CommandDelay::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandRead>();
+		CommandBase::SPtr commandBase = constructSPtr<CommandDelay>();
 		return commandBase;
 	}
 
 	bool
-	CommandRead::validateCommand(void)
+	CommandDelay::validateCommand(void)
 	{
-		if (nodeIdVec_.size() == 0) {
+		if (timeout_ == 0) {
 			std::stringstream ss;
-			ss << "neeed at least one node id parameter";
+			ss << "need timeout parameter";
 			errorMessage(ss.str());
 			return false;
 		}
@@ -55,17 +56,19 @@ namespace OpcUaClient
 	}
 
 	bool
-	CommandRead::addParameter(const std::string& parameterName, const std::string& parameterValue)
+	CommandDelay::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
-		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
-			if (!nodeId->fromString(parameterValue)) {
+		if (parameterName == "-TIMEOUT") {
+			try {
+				timeout_ = boost::lexical_cast<uint32_t>(parameterValue);
+			}
+			catch (...)
+			{
 				std::stringstream ss;
-				ss << "node id parameter invalid (" << parameterValue << ")";
+				ss << "timeout parameter invalid (" << parameterValue << ")";
 				errorMessage(ss.str());
 				return false;
-			}
-			nodeIdVec_.push_back(nodeId);
+		    }
 		}
 		else {
 			std::stringstream ss;
@@ -76,10 +79,10 @@ namespace OpcUaClient
 		return true;
 	}
 
-	OpcUaNodeId::Vec&
-	CommandRead::nodeIdVec(void)
+	uint32_t
+	CommandDelay::timeout(void)
 	{
-		return nodeIdVec_;
+		return timeout_;
 	}
 
 }
