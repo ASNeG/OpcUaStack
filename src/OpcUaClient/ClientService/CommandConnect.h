@@ -15,44 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandBase_h__
-#define __OpcUaClient_CommandBase_h__
+#ifndef __OpcUaClient_CommandConnect_h__
+#define __OpcUaClient_CommandConnect_h__
 
 #include <boost/shared_ptr.hpp>
-#include <stdint.h>
+#include "OpcUaClient/ClientService/CommandBase.h"
 
 namespace OpcUaClient
 {
 
-	class CommandBase
+	class CommandConnect
+	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandBase> SPtr;
-		typedef enum
-		{
-			Cmd_Unknown,
-			Cmd_Connect,
-			Cmd_Disconnect,
-		} Cmd;
+		typedef boost::shared_ptr<CommandConnect> SPtr;
 
-		CommandBase(void);
-		virtual ~CommandBase(void);
+		CommandConnect(void);
+		virtual ~CommandConnect(void);
 
-		//- CommandBase interface ---------------------------------------------
-		virtual SPtr createCommand(void) = 0;
-		virtual bool validateCommand(void) = 0;
-		virtual bool addParameter(uint32_t argc, char** argv, uint32_t idx) = 0;
-		//- CommandBase interface ---------------------------------------------
-
-		void cmd(const Cmd cmd);
-		Cmd cmd(void);
-		void session(const std::string& session);
-		std::string& session(void);
+		//- CommandConnect interface ---------------------------------------------
+		virtual CommandBase::SPtr createCommand(void);
+		virtual bool validateCommand(void);
+		bool addParameter(uint32_t argc, char** argv, uint32_t idx);
+		//- CommandConnect interface ---------------------------------------------
 
 	  private:
-		Cmd cmd_;
-		std::string session_;
-
 	};
 
 }

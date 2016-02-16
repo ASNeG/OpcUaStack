@@ -16,44 +16,36 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandBase.h"
+#include "OpcUaClient/ClientService/CommandConnect.h"
 
 
 namespace OpcUaClient
 {
 
-	CommandBase::CommandBase(void)
-	: cmd_(Cmd_Unknown)
-	, session_("Main")
+	CommandConnect::CommandConnect(void)
 	{
 	}
 
-	CommandBase::~CommandBase(void)
+	CommandConnect::~CommandConnect(void)
 	{
 	}
 
-	void
-	CommandBase::cmd(const Cmd cmd)
+	CommandBase::SPtr
+	CommandConnect::createCommand(void)
 	{
-		cmd_ = cmd;
+		CommandBase::SPtr commandBase = constructSPtr<CommandConnect>();
 	}
 
-	CommandBase::Cmd
-	CommandBase::cmd(void)
+	bool
+	CommandConnect::validateCommand(void)
 	{
-		return cmd_;
+		return true;
 	}
 
-	void
-	CommandBase::session(const std::string& session)
+	bool
+	CommandConnect::addParameter(uint32_t argc, char** argv, uint32_t idx)
 	{
-		session_ = session;
-	}
-
-	std::string&
-	CommandBase::session(void)
-	{
-		return session_;
+		return true;
 	}
 
 }
