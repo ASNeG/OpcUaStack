@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	EventFilterResult::EventFilterResult(void)
-	: ObjectPool<EventFilterResult>()
+	: Object()
 	, selectClauseResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
 	, selectClauseDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	, whereClauseResult_()
@@ -76,10 +76,10 @@ namespace OpcUaStackCore
 		return whereClauseResult_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	EventFilterResult::factory(void)
 	{
-		return EventFilterResult::construct();
+		return constructSPtr<EventFilterResult>();
 	}
 
 	void 

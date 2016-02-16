@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	EventFilter::EventFilter(void)
-	: ObjectPool<EventFilter>()
-	, selectClausesArraySPtr_(SimpleAttributeOperandArray::construct())
+	: Object()
+	, selectClausesArraySPtr_(constructSPtr<SimpleAttributeOperandArray>())
 	, whereClause_()
 	{
 	}
@@ -63,10 +63,10 @@ namespace OpcUaStackCore
 		return whereClause_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	EventFilter::factory(void)
 	{
-		return EventFilter::construct();
+		return constructSPtr<EventFilter>();
 	}
 
 	void 

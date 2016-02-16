@@ -28,7 +28,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT StatusChangeNotification : public  ObjectPool<StatusChangeNotification>, public ExtensibleParameterBase
+	class DLLEXPORT StatusChangeNotification
+	: public Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<StatusChangeNotification> SPtr;
@@ -45,7 +47,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:

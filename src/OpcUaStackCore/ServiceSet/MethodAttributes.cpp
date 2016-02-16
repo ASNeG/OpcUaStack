@@ -28,7 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	MethodAttributes::MethodAttributes(void)
-	: ExtensibleParameterBase()
+	: Object()
+	, ExtensibleParameterBase()
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
@@ -131,10 +132,10 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	MethodAttributes::factory(void)
 	{
-		return MethodAttributes::construct();
+		return constructSPtr<MethodAttributes>();
 	}
 			
 	void 

@@ -28,7 +28,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ViewAttributes::ViewAttributes(void)
-	: specifiedAttributes_()
+	: Object()
+	, ExtensibleParameterBase()
+	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
 	, containsNoLoops_(false)
@@ -130,10 +132,10 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ViewAttributes::factory(void)
 	{
-		return ViewAttributes::construct();
+		return constructSPtr<ViewAttributes>();
 	}
 			
 	void 

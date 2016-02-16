@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RegisterServerResponse::RegisterServerResponse(void)
-	: ObjectPool<RegisterServerResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
+	: Object()
+	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
 	{
 	}
 

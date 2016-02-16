@@ -29,7 +29,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT EventFilterResult : public  ObjectPool<EventFilterResult>, public ExtensibleParameterBase
+	class DLLEXPORT EventFilterResult
+	: public Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<EventFilterResult> SPtr;
@@ -48,7 +50,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:

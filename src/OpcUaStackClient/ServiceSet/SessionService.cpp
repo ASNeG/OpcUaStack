@@ -571,7 +571,7 @@ namespace OpcUaStackClient
 	SessionService::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
-		ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+		ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 		responseHeader->opcUaBinaryDecode(ios);
 
 		Object::SPtr objectSPtr = pendingQueue_.remove(secureChannelTransaction->requestId_);

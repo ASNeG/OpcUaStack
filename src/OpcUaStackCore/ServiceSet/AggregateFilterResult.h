@@ -27,7 +27,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AggregateFilterResult : public  ObjectPool<AggregateFilterResult>, public ExtensibleParameterBase
+	class DLLEXPORT AggregateFilterResult
+	: public  Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<AggregateFilterResult> SPtr;
@@ -45,7 +47,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:

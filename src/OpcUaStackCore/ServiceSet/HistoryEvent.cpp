@@ -50,10 +50,10 @@ namespace OpcUaStackCore
 		return eventArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	HistoryEvent::factory(void)
 	{
-		return HistoryEvent::construct();
+		return constructSPtr<HistoryEvent>();
 	}
 
 	void 

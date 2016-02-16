@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT HistoryUpdateResponse : public  ObjectPool<HistoryUpdateResponse>
+	class DLLEXPORT HistoryUpdateResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryUpdateResponse> SPtr;

@@ -86,7 +86,7 @@ namespace OpcUaStackCore
 
 	class OpcUaDataValueArray
 	: public OpcUaArray<OpcUaDataValue::SPtr, SPtrTypeCoder<OpcUaDataValue> >
-	, public ObjectPool<OpcUaDataValueArray>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDataValueArray> SPtr;

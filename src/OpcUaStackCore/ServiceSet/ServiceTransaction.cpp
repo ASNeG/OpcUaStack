@@ -123,7 +123,7 @@ namespace OpcUaStackCore
 	ServiceTransaction::responseHeader(void)
 	{
 		if (responseHeader_.get() == nullptr) {
-			responseHeader_ = ResponseHeader::construct();
+			responseHeader_ = constructSPtr<ResponseHeader>();
 		}
 		return responseHeader_;
 	}

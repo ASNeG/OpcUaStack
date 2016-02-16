@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaDiagnosticInfo::OpcUaDiagnosticInfo(void)
-	:  ObjectPool<OpcUaDiagnosticInfo>()
+	: Object()
 	, symbolicId_(-1)
 	, namespaceUri_(-1)
 	, localizedText_(-1)		

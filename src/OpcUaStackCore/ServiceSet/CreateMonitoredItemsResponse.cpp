@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	CreateMonitoredItemsResponse::CreateMonitoredItemsResponse(void)
-	: ObjectPool<CreateMonitoredItemsResponse>()
-	, resultArraySPtr_(MonitoredItemCreateResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, resultArraySPtr_(constructSPtr<MonitoredItemCreateResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

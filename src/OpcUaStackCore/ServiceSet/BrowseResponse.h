@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT BrowseResponse : public ObjectPool<BrowseResponse>
+	class DLLEXPORT BrowseResponse
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseResponse> SPtr;

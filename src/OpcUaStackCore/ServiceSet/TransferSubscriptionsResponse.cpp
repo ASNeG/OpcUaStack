@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	TransferSubscriptionsResponse::TransferSubscriptionsResponse(void)
-	: ObjectPool<TransferSubscriptionsResponse>()
-	, transferResultArraySPtr_(TransferResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, transferResultArraySPtr_(constructSPtr<TransferResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

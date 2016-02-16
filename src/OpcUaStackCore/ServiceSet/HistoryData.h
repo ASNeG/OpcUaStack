@@ -27,7 +27,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT HistoryData : public  ObjectPool<HistoryData>, public ExtensibleParameterBase
+	class DLLEXPORT HistoryData
+	: public  Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryData> SPtr;
@@ -42,7 +44,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:

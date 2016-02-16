@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AnonymousIdentityToken::AnonymousIdentityToken(void)
+	: Object()
+	, ExtensibleParameterBase()
 	{
 	}
 
@@ -47,10 +49,10 @@ namespace OpcUaStackCore
 		return policyId_.value();
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	AnonymousIdentityToken::factory(void)
 	{
-		return AnonymousIdentityToken::construct();
+		return constructSPtr<AnonymousIdentityToken>();
 	}
 
 		

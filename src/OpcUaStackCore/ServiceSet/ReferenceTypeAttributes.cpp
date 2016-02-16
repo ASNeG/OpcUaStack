@@ -28,15 +28,16 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ReferenceTypeAttributes::ReferenceTypeAttributes(void)
-		: ExtensibleParameterBase(),
-		specifiedAttributes_(),
-		displayName_(constructSPtr<OpcUaLocalizedText>()),
-		description_(constructSPtr<OpcUaLocalizedText>()),
-		isAbstract_(false),
-		inverseName_(constructSPtr<OpcUaLocalizedText>()),
-		symmetric_(false),
-		writeMask_(),
-		userWriteMask_()
+	: Object()
+	, ExtensibleParameterBase()
+	, specifiedAttributes_()
+	, displayName_(constructSPtr<OpcUaLocalizedText>())
+	, description_(constructSPtr<OpcUaLocalizedText>())
+	, isAbstract_(false)
+	, inverseName_(constructSPtr<OpcUaLocalizedText>())
+	, symmetric_(false)
+	, writeMask_()
+	, userWriteMask_()
 	{
 		specifiedAttributes_ |= SpecifiedAttributes_Description;
 		specifiedAttributes_ |= SpecifiedAttributes_DisplayName;
@@ -147,10 +148,10 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ReferenceTypeAttributes::factory(void)
 	{
-		return ReferenceTypeAttributes::construct();
+		return constructSPtr<ReferenceTypeAttributes>();
 	}
 			
 	void 

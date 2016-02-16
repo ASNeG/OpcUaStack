@@ -28,17 +28,18 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VariableTypeAttributes::VariableTypeAttributes(void)
-		: ExtensibleParameterBase()
-		, specifiedAttributes_()
-	    , displayName_(constructSPtr<OpcUaLocalizedText>())
-	    , description_(constructSPtr<OpcUaLocalizedText>())
-	    , value_(constructSPtr<OpcUaDataValue>())
-	    , dataType_()
-	    , valueRank_(-1)
-	    , arrayDimensions_(constructSPtr<OpcUaUInt32Array>())
-	    , isAbstract_(false)
-	    , writeMask_()
-	    , userWriteMask_()
+	: Object()
+	, ExtensibleParameterBase()
+	, specifiedAttributes_()
+	, displayName_(constructSPtr<OpcUaLocalizedText>())
+	, description_(constructSPtr<OpcUaLocalizedText>())
+	, value_(constructSPtr<OpcUaDataValue>())
+	, dataType_()
+	, valueRank_(-1)
+	, arrayDimensions_(constructSPtr<OpcUaUInt32Array>())
+	, isAbstract_(false)
+	, writeMask_()
+	, userWriteMask_()
 	{
 		dataType_ = constructSPtr<OpcUaNodeId>();
 
@@ -181,10 +182,10 @@ namespace OpcUaStackCore
 		return userWriteMask_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	VariableTypeAttributes::factory(void)
 	{
-		return VariableTypeAttributes::construct();
+		return constructSPtr<VariableTypeAttributes>();
 	}
 			
 	void 

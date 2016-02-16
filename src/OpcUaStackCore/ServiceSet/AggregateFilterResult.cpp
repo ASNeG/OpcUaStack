@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	AggregateFilterResult::AggregateFilterResult(void)
-	: ObjectPool<AggregateFilterResult>()
+	: Object()
 	, revisedStartTime_()
 	, revisedProcessingInterval_()
 	{
@@ -69,10 +69,10 @@ namespace OpcUaStackCore
 		return revisedProcessingInterval_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	AggregateFilterResult::factory(void)
 	{
-		return AggregateFilterResult::construct();
+		return constructSPtr<AggregateFilterResult>();
 	}
 
 	void 

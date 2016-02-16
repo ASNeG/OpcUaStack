@@ -29,13 +29,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SimpleAttributeOperand::SimpleAttributeOperand(void)
-	: ObjectPool<SimpleAttributeOperand>()
-	, typeIdSPtr_()
+	: Object()
+	, typeIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, browsePathArraySPtr_(constructSPtr<OpcUaQualifiedNameArray>())
 	, attributeId_()
 	, indexRange_()
 	{
-		typeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	SimpleAttributeOperand::~SimpleAttributeOperand(void)
@@ -90,10 +89,10 @@ namespace OpcUaStackCore
 		return indexRange_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	SimpleAttributeOperand::factory(void)
 	{
-		return SimpleAttributeOperand::construct();
+		return constructSPtr<SimpleAttributeOperand>();
 	}
 
 	void 

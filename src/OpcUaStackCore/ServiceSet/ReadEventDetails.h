@@ -28,7 +28,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ReadEventDetails : public  ObjectPool<ReadEventDetails>, public ExtensibleParameterBase
+	class DLLEXPORT ReadEventDetails
+	: public Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<ReadEventDetails> SPtr;
@@ -51,7 +53,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 
 	  private:

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteEventDetails::DeleteEventDetails(void)
-	: ObjectPool<DeleteEventDetails>()
+	: Object()
 	, nodeId_()
 	, eventIdArraySPtr_(constructSPtr<OpcUaByteStringArray>())
 	{
@@ -63,10 +63,10 @@ namespace OpcUaStackCore
 		return eventIdArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	DeleteEventDetails::factory(void)
 	{
-		return DeleteEventDetails::construct();
+		return constructSPtr<DeleteEventDetails>();
 	}
 
 	void 

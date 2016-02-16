@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadResponse::ReadResponse(void)
-	: ObjectPool<ReadResponse>()
-	, dataValueArraySPtr_(OpcUaDataValueArray::construct())
-	,  diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, dataValueArraySPtr_(constructSPtr<OpcUaDataValueArray>())
+	,  diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

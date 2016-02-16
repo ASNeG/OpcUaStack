@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	UpdateStructureDataDetails::UpdateStructureDataDetails(void)
-	: ObjectPool<UpdateStructureDataDetails>()
+	: Object()
 	, nodeId_()
 	, performInsertReplace_()
-	, updateValueArraySPtr_(OpcUaDataValueArray::construct())
+	, updateValueArraySPtr_(constructSPtr<OpcUaDataValueArray>())
 	{
 	}
 
@@ -77,10 +77,10 @@ namespace OpcUaStackCore
 	}
 
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	UpdateStructureDataDetails::factory(void)
 	{
-		return UpdateStructureDataDetails::construct();
+		return constructSPtr<UpdateStructureDataDetails>();
 	}
 
 	void 

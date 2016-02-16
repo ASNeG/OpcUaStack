@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaDiagnosticInfo : public ObjectPool<OpcUaDiagnosticInfo>
+	class DLLEXPORT OpcUaDiagnosticInfo
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDiagnosticInfo> SPtr;
@@ -69,7 +70,9 @@ namespace OpcUaStackCore
 		// FIXME: DiagnosticInfo
 	};
 
-	class OpcUaDiagnosticInfoArray : public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >, public ObjectPool<OpcUaDiagnosticInfoArray> 
+	class OpcUaDiagnosticInfoArray
+	: public OpcUaArray<OpcUaDiagnosticInfo::SPtr, SPtrTypeCoder<OpcUaDiagnosticInfo> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDiagnosticInfoArray> SPtr;

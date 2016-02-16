@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	CreateSessionResponse::CreateSessionResponse(void)
-	: responseHeader_(ResponseHeader::construct())
+	: Object()
+	, responseHeader_(constructSPtr<ResponseHeader>())
 	, sessionId_()
 	, authenticationToken_()
 	, receivedSessionTimeout_()

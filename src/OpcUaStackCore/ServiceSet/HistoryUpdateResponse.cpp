@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryUpdateResponse::HistoryUpdateResponse(void)
-	: ObjectPool<HistoryUpdateResponse>()
-	, resultArraySPtr_(HistoryUpdateResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, resultArraySPtr_(constructSPtr<HistoryUpdateResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

@@ -29,7 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	StatusChangeNotification::StatusChangeNotification(void)
-	: ObjectPool<StatusChangeNotification>()
+	: Object()
+	, ExtensibleParameterBase()
 	, statusCode_()
 	, diagnosticInfo_()
 	{
@@ -63,10 +64,10 @@ namespace OpcUaStackCore
 		return diagnosticInfo_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	StatusChangeNotification::factory(void)
 	{
-		return StatusChangeNotification::construct();
+		return constructSPtr<StatusChangeNotification>();
 	}
 
 	void 

@@ -27,7 +27,7 @@
 namespace OpcUaStackCore
 {
 
-	typedef std::map<OpcUaNodeId,ExtensibleParameterBase::BSPtr> ExtensibleParameterMap;
+	typedef std::map<OpcUaNodeId,ExtensibleParameterBase::SPtr> ExtensibleParameterMap;
 
 	class DLLEXPORT ExtensibleParameter
 	: public  ObjectPool<ExtensibleParameter>
@@ -35,9 +35,9 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<ExtensibleParameter> SPtr;
 
-		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::BSPtr epSPtr);
+		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::SPtr epSPtr);
 		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
-		static ExtensibleParameterBase::BSPtr findElement(OpcUaNodeId& opcUaNodeId);
+		static ExtensibleParameterBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
 
 		ExtensibleParameter(void);
 		~ExtensibleParameter(void);
@@ -67,7 +67,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
-			  ExtensibleParameterBase::BSPtr epSPtr(T::construct());
+			  ExtensibleParameterBase::SPtr epSPtr(constructSPtr<T>());
 			  return ExtensibleParameter::insertElement(opcUaNodeId, epSPtr);
 		  }
 
@@ -91,7 +91,7 @@ namespace OpcUaStackCore
 				   return epSPtr;
 			   }
 
-			   typename T::SPtr epSPtr = T::construct();
+			   typename T::SPtr epSPtr = constructSPtr<T>();
 			   epSPtr_ = epSPtr;
 			   return epSPtr;
 		   }
@@ -104,7 +104,7 @@ namespace OpcUaStackCore
 		static bool init_;
 
 		OpcUaNodeId parameterTypeId_;
-		ExtensibleParameterBase::BSPtr epSPtr_;
+		ExtensibleParameterBase::SPtr epSPtr_;
 	};
 
 	class ExtensibleParameterArray : public OpcUaArray<ExtensibleParameter::SPtr, SPtrTypeCoder<ExtensibleParameter> >, public ObjectPool<ExtensibleParameterArray> 
