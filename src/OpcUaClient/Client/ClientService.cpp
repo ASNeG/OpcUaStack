@@ -16,14 +16,14 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
-#include "OpcUaClient/ClientService/CommandParser.h"
+#include "OpcUaClient/Client/ClientService.h"
+#include "OpcUaClient/ClientCommand/CommandParser.h"
 
 // commands
-#include "OpcUaClient/ClientService/CommandConnect.h"
-#include "OpcUaClient/ClientService/CommandDisconnect.h"
-#include "OpcUaClient/ClientService/CommandRead.h"
-#include "OpcUaClient/ClientService/CommandDelay.h"
+#include "OpcUaClient/ClientCommand/CommandConnect.h"
+#include "OpcUaClient/ClientCommand/CommandDisconnect.h"
+#include "OpcUaClient/ClientCommand/CommandRead.h"
+#include "OpcUaClient/ClientCommand/CommandDelay.h"
 
 namespace OpcUaClient
 {

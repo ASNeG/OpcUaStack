@@ -16,42 +16,60 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/lexical_cast.hpp>
 #include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientService/CommandConnect.h"
+#include "OpcUaClient/ClientCommand/CommandDelay.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	CommandConnect::CommandConnect(void)
+	CommandDelay::CommandDelay(void)
 	: CommandBase(CommandBase::Cmd_Connect)
-	, endpointUrl_("opc.tcp://127.0.0.1:4841")
+	, timeout_(0)
 	{
 	}
 
-	CommandConnect::~CommandConnect(void)
+	CommandDelay::~CommandDelay(void)
 	{
 	}
 
 	CommandBase::SPtr
-	CommandConnect::createCommand(void)
+	CommandDelay::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandConnect>();
+		CommandBase::SPtr commandBase = constructSPtr<CommandDelay>();
 		return commandBase;
 	}
 
 	bool
-	CommandConnect::validateCommand(void)
+	CommandDelay::validateCommand(void)
 	{
+		if (timeout_ == 0) {
+			std::stringstream ss;
+			ss << "need timeout parameter";
+			errorMessage(ss.str());
+			return false;
+		}
 		return true;
 	}
 
 	bool
-	CommandConnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
+	CommandDelay::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
-		if (parameterName == "-ENDPOINTURL") endpointUrl_ = parameterValue;
+		if (parameterName == "-TIMEOUT") {
+			try {
+				timeout_ = boost::lexical_cast<uint32_t>(parameterValue);
+			}
+			catch (...)
+			{
+				std::stringstream ss;
+				ss << "timeout parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+		    }
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -61,10 +79,10 @@ namespace OpcUaClient
 		return true;
 	}
 
-	std::string&
-	CommandConnect::endpointUrl(void)
+	uint32_t
+	CommandDelay::timeout(void)
 	{
-		return endpointUrl_;
+		return timeout_;
 	}
 
 }

@@ -15,37 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandRead_h__
-#define __OpcUaClient_CommandRead_h__
+#ifndef __OpcUaClient_CommandDisconnect_h__
+#define __OpcUaClient_CommandDisconnect_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaClient/ClientService/CommandBase.h"
-
-using namespace OpcUaStackCore;
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {
 
-	class CommandRead
+	class CommandDisconnect
 	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandRead> SPtr;
+		typedef boost::shared_ptr<CommandDisconnect> SPtr;
 
-		CommandRead(void);
-		virtual ~CommandRead(void);
+		CommandDisconnect(void);
+		virtual ~CommandDisconnect(void);
 
-		//- CommandRead interface ---------------------------------------------
+		//- CommandDisconnect interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);
 		virtual bool validateCommand(void);
 		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
-		//- CommandRead interface ---------------------------------------------
-
-		OpcUaNodeId::Vec& nodeIdVec(void);
+		//- CommandDisconnect interface ---------------------------------------------
 
 	  private:
-		OpcUaNodeId::Vec nodeIdVec_;
 	};
 
 }

@@ -16,7 +16,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandBase.h"
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 
 namespace OpcUaClient

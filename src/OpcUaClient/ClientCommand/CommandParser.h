@@ -18,7 +18,7 @@
 #ifndef __OpcUaClient_CommandParser_h__
 #define __OpcUaClient_CommandParser_h__
 
-#include "OpcUaClient/ClientService/CommandBase.h"
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {

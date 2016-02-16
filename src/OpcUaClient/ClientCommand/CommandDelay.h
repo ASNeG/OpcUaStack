@@ -15,34 +15,34 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandConnect_h__
-#define __OpcUaClient_CommandConnect_h__
+#ifndef __OpcUaClient_CommandDelay_h__
+#define __OpcUaClient_CommandDelay_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaClient/ClientService/CommandBase.h"
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {
 
-	class CommandConnect
+	class CommandDelay
 	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandConnect> SPtr;
+		typedef boost::shared_ptr<CommandDelay> SPtr;
 
-		CommandConnect(void);
-		virtual ~CommandConnect(void);
+		CommandDelay(void);
+		virtual ~CommandDelay(void);
 
-		//- CommandConnect interface ---------------------------------------------
+		//- CommandDelay interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);
 		virtual bool validateCommand(void);
 		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
-		//- CommandConnect interface ---------------------------------------------
+		//- CommandDelay interface ---------------------------------------------
 
-		std::string& endpointUrl(void);
+		uint32_t timeout(void);
 
 	  private:
-		std::string endpointUrl_;
+		uint32_t timeout_;
 	};
 
 }

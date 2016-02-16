@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
+#include "OpcUaClient/Client/ClientService.h"
 
 using namespace OpcUaClient;
 

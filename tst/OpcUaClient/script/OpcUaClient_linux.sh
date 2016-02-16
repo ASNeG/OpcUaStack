@@ -7,4 +7,4 @@ OpcUaClient \
  -Command Read -NodeId "ns=1;s=node1" -NodeId "ns1;s=node2" \
  -Command Delay -Timeout 1000 \
  -Command Read -NodeId "ns=1;s=node1" -NodeId "ns1;s=node2" \
- -Command Disconnect -Session "TestSession"
+ -Command Disconnect 

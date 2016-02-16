@@ -18,7 +18,7 @@
 
 #include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientService/CommandDisconnect.h"
+#include "OpcUaClient/ClientCommand/CommandDisconnect.h"
 
 using namespace OpcUaStackCore;
 

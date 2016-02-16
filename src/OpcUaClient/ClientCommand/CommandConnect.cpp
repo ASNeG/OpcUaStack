@@ -18,55 +18,40 @@
 
 #include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientService/CommandRead.h"
+#include "OpcUaClient/ClientCommand/CommandConnect.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	CommandRead::CommandRead(void)
-	: CommandBase(CommandBase::Cmd_Read)
-	, nodeIdVec_()
+	CommandConnect::CommandConnect(void)
+	: CommandBase(CommandBase::Cmd_Connect)
+	, endpointUrl_("opc.tcp://127.0.0.1:4841")
 	{
 	}
 
-	CommandRead::~CommandRead(void)
+	CommandConnect::~CommandConnect(void)
 	{
 	}
 
 	CommandBase::SPtr
-	CommandRead::createCommand(void)
+	CommandConnect::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandRead>();
+		CommandBase::SPtr commandBase = constructSPtr<CommandConnect>();
 		return commandBase;
 	}
 
 	bool
-	CommandRead::validateCommand(void)
+	CommandConnect::validateCommand(void)
 	{
-		if (nodeIdVec_.size() == 0) {
-			std::stringstream ss;
-			ss << "neeed at least one node id parameter";
-			errorMessage(ss.str());
-			return false;
-		}
 		return true;
 	}
 
 	bool
-	CommandRead::addParameter(const std::string& parameterName, const std::string& parameterValue)
+	CommandConnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
-		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
-			if (!nodeId->fromString(parameterValue)) {
-				std::stringstream ss;
-				ss << "node id parameter invalid (" << parameterValue << ")";
-				errorMessage(ss.str());
-				return false;
-			}
-			nodeIdVec_.push_back(nodeId);
-		}
+		if (parameterName == "-ENDPOINTURL") endpointUrl_ = parameterValue;
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -76,10 +61,10 @@ namespace OpcUaClient
 		return true;
 	}
 
-	OpcUaNodeId::Vec&
-	CommandRead::nodeIdVec(void)
+	std::string&
+	CommandConnect::endpointUrl(void)
 	{
-		return nodeIdVec_;
+		return endpointUrl_;
 	}
 
 }

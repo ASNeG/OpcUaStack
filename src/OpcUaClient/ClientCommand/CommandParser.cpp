@@ -18,7 +18,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <sstream>
-#include "OpcUaClient/ClientService/CommandParser.h"
+#include "OpcUaClient/ClientCommand/CommandParser.h"
 
 
 namespace OpcUaClient

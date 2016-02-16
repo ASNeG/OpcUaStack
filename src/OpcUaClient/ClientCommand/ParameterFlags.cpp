@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ParameterFlags.h"
+#include "OpcUaClient/ClientCommand/ParameterFlags.h"
 
 namespace OpcUaClient
 {
