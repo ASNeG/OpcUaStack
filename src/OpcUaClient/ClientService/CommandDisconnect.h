@@ -36,7 +36,7 @@ namespace OpcUaClient
 		//- CommandDisconnect interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);
 		virtual bool validateCommand(void);
-		bool addParameter(const std::string& parameterName, const std::string& parameterValue);
+		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
 		//- CommandDisconnect interface ---------------------------------------------
 
 	  private:

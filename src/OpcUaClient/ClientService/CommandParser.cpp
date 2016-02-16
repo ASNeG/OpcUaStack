@@ -93,6 +93,8 @@ namespace OpcUaClient
 			std::string para = argv[idx];
 			boost::algorithm::trim(para);
 
+			//std::cout << "Para:" << para << std::endl;
+
 			// command parameter
 			if (boost::algorithm::to_upper_copy(para) == "-COMMAND") {
 				if (!parseCommand(argc, argv, idx)) return false;
@@ -200,8 +202,15 @@ namespace OpcUaClient
 		// get parameter value (command name)
 		std::string value = argv[idx+1];
 		boost::algorithm::trim(value);
+		boost::algorithm::to_upper(para);
 
-		actualCommandBase_->addParameter(para, value);
+		if (!actualCommandBase_->addParameter(para, value)) {
+			std::stringstream ss;
+			ss << "cannot add parameter " << para << " in command " << actualCommandBase_->command() << ": " ;
+			ss << actualCommandBase_->errorMessage();
+			errorString(ss.str());
+			return false;
+		}
 		return true;
 	}
 

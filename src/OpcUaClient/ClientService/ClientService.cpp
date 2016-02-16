@@ -22,6 +22,7 @@
 // commands
 #include "OpcUaClient/ClientService/CommandConnect.h"
 #include "OpcUaClient/ClientService/CommandDisconnect.h"
+#include "OpcUaClient/ClientService/CommandRead.h"
 
 namespace OpcUaClient
 {
@@ -39,7 +40,8 @@ namespace OpcUaClient
 	{
 		// register command in command factory
 		CommandParser::addCommand("CONNECT", constructSPtr<CommandConnect>());
-		CommandParser::addCommand("DISCONNECT", constructSPtr<CommandConnect>());
+		CommandParser::addCommand("DISCONNECT", constructSPtr<CommandDisconnect>());
+		CommandParser::addCommand("READ", constructSPtr<CommandRead>());
 
 		// parse command line
 		CommandParser commandParser;

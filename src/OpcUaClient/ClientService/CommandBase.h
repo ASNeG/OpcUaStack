@@ -38,6 +38,7 @@ namespace OpcUaClient
 			Cmd_Unknown,
 			Cmd_Connect,
 			Cmd_Disconnect,
+			Cmd_Read,
 		} Cmd;
 
 		CommandBase(void);

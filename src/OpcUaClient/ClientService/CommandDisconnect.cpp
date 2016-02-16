@@ -26,7 +26,7 @@ namespace OpcUaClient
 {
 
 	CommandDisconnect::CommandDisconnect(void)
-	: CommandBase(CommandBase::Cmd_Connect)
+	: CommandBase(CommandBase::Cmd_Disconnect)
 	{
 	}
 
