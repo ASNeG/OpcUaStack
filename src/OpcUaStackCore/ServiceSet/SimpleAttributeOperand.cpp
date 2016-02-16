@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	SimpleAttributeOperand::SimpleAttributeOperand(void)
 	: ObjectPool<SimpleAttributeOperand>()
 	, typeIdSPtr_()
-	, browsePathArraySPtr_(OpcUaQualifiedNameArray::construct())
+	, browsePathArraySPtr_(constructSPtr<OpcUaQualifiedNameArray>())
 	, attributeId_()
 	, indexRange_()
 	{

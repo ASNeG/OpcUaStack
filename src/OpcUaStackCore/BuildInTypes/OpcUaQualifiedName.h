@@ -72,7 +72,9 @@ namespace OpcUaStackCore
 		OpcUaString name_;
 	};
 
-	class OpcUaQualifiedNameArray : public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >, public ObjectPool<OpcUaQualifiedNameArray> 
+	class OpcUaQualifiedNameArray
+	: public OpcUaArray<OpcUaQualifiedName::SPtr, SPtrTypeCoder<OpcUaQualifiedName> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaQualifiedNameArray> SPtr;

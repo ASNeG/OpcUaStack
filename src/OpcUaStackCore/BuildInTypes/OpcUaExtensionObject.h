@@ -30,7 +30,8 @@ namespace OpcUaStackCore
 
 	typedef std::map<OpcUaNodeId,ExtensionObjectBase::BSPtr> ExtensionObjectMap;
 
-	class DLLEXPORT OpcUaExtensionObject : public ObjectPool<OpcUaExtensionObject>
+	class DLLEXPORT OpcUaExtensionObject
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaExtensionObject> SPtr;
@@ -119,7 +120,9 @@ namespace OpcUaStackCore
 		ExtensionObjectBase::BSPtr epSPtr_;
 	};
 
-	class OpcUaExtensionObjectArray : public OpcUaArray<OpcUaExtensionObject::SPtr, SPtrTypeCoder<OpcUaExtensionObject> >, public ObjectPool<OpcUaExtensionObjectArray> 
+	class OpcUaExtensionObjectArray
+	: public OpcUaArray<OpcUaExtensionObject::SPtr, SPtrTypeCoder<OpcUaExtensionObject> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaExtensionObjectArray> SPtr;

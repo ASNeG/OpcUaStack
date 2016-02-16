@@ -30,8 +30,8 @@ namespace OpcUaStackCore
 	ObjectAttributes::ObjectAttributes(void)
 		: ExtensibleParameterBase(),
 		specifiedAttributes_(),
-		displayName_(OpcUaLocalizedText::construct()),
-		description_(OpcUaLocalizedText::construct()),
+		displayName_(constructSPtr<OpcUaLocalizedText>()),
+		description_(constructSPtr<OpcUaLocalizedText>()),
 		eventNotifier_(),
 		writeMask_(),
 		userWriteMask_()

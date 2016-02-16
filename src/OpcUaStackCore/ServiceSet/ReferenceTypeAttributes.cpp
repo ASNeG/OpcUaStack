@@ -30,10 +30,10 @@ namespace OpcUaStackCore
 	ReferenceTypeAttributes::ReferenceTypeAttributes(void)
 		: ExtensibleParameterBase(),
 		specifiedAttributes_(),
-		displayName_(OpcUaLocalizedText::construct()),
-		description_(OpcUaLocalizedText::construct()),
+		displayName_(constructSPtr<OpcUaLocalizedText>()),
+		description_(constructSPtr<OpcUaLocalizedText>()),
 		isAbstract_(false),
-		inverseName_(OpcUaLocalizedText::construct()),
+		inverseName_(constructSPtr<OpcUaLocalizedText>()),
 		symmetric_(false),
 		writeMask_(),
 		userWriteMask_()

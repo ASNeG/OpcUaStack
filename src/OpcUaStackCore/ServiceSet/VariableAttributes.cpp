@@ -28,20 +28,20 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VariableAttributes::VariableAttributes(void)
-		: ExtensibleParameterBase()
-		, specifiedAttributes_(),
-		displayName_(OpcUaLocalizedText::construct()),
-		description_(OpcUaLocalizedText::construct()),
-		value_(OpcUaDataValue::construct()),
-		dataType_(),
-		valueRank_(-1),
-		arrayDimensions_(constructSPtr<OpcUaUInt32Array>()),
-		accessLevel_(0),
-		userAccessLevel_(0),
-		minimumSamplingInterval_(),
-		historizing_(false),
-		writeMask_(),
-		userWriteMask_()
+	: ExtensibleParameterBase()
+	, specifiedAttributes_()
+	, displayName_(constructSPtr<OpcUaLocalizedText>())
+	, description_(constructSPtr<OpcUaLocalizedText>())
+	, value_(OpcUaDataValue::construct())
+	, dataType_()
+	, valueRank_(-1)
+	, arrayDimensions_(constructSPtr<OpcUaUInt32Array>())
+	, accessLevel_(0)
+	, userAccessLevel_(0)
+	, minimumSamplingInterval_()
+	, historizing_(false)
+	, writeMask_()
+	, userWriteMask_()
 	{
 		dataType_ = constructSPtr<OpcUaNodeId>();
 

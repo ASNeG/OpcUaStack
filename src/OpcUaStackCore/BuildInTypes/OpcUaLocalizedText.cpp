@@ -29,14 +29,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaLocalizedText::OpcUaLocalizedText(void)
-	: ObjectPool<OpcUaLocalizedText>()
+	: Object()
 	, locale_()
 	, text_()
 	{
 	}
 
 	OpcUaLocalizedText::OpcUaLocalizedText(const std::string& locale, const std::string& text)
-	: ObjectPool<OpcUaLocalizedText>()
+	: Object()
 	, locale_(locale)
 	, text_(text)
 	{
