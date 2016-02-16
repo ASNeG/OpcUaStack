@@ -34,11 +34,18 @@ namespace OpcUaClient
 		CommandParser(void);
 		~CommandParser(void);
 
-		bool parse(uint32_t argc, char** argv, CommandBase::Vec& commandVec);
+		bool parse(uint32_t argc, char** argv, CommandBase::Vec& commandBaseVec);
+		void errorString(const std::string& errorString);
+		std::string& errorString(void);
 
 	  private:
 		bool parseCommand(uint32_t argc, char** argv, uint32_t idx);
 		bool parseSession(uint32_t argc, char** argv, uint32_t idx);
+		bool parseParameter(uint32_t argc, char** argv, uint32_t idx);
+
+		std::string errorString_;
+		CommandBase::SPtr actualCommandBase_;
+		std::string session_;
 
 	};
 

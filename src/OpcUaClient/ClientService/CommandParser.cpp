@@ -16,6 +16,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string.hpp>
+#include <sstream>
 #include "OpcUaClient/ClientService/CommandParser.h"
 
 
@@ -60,6 +62,8 @@ namespace OpcUaClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	CommandParser::CommandParser(void)
+	: actualCommandBase_()
+	, session_("OpcUaClient")
 	{
 	}
 
@@ -68,16 +72,90 @@ namespace OpcUaClient
 	}
 
 	bool
-	CommandParser::parse(uint32_t argc, char** argv, CommandBase::Vec& commandVec)
+	CommandParser::parse(uint32_t argc, char** argv, CommandBase::Vec& commandBaseVec)
 	{
-		// FIXME: todo
+		// check number of parameters in command line
+		if (argc < 2) {
+			errorString("command must have at least one parameter");
+			return false;
+		}
+
+		// check first parameter
+		std::string para = argv[1];
+		boost::algorithm::trim(para);
+		if (boost::algorithm::to_upper_copy(para) != "-COMMAND") {
+			errorString("first parameter must be a command");
+			return false;
+		}
+
+		// read all parameters from command line
+		for (uint32_t idx=1; idx<argc; idx++) {
+			std::string para = argv[idx];
+			boost::algorithm::trim(para);
+
+			// command parameter
+			if (boost::algorithm::to_upper_copy(para) == "-COMMAND") {
+				if (!parseCommand(argc, argv, idx)) return false;
+				idx++;
+				commandBaseVec.push_back(actualCommandBase_);
+			}
+
+			// session parameter
+			else if (boost::algorithm::to_upper_copy(para) == "-SESSION") {
+				if (!parseSession(argc, argv, idx)) return false;
+				idx++;
+			}
+
+			// other parameter
+			else {
+				if (!parseParameter(argc, argv, idx)) return false;
+				idx++;
+			}
+
+			std::cout << (uint32_t)idx << std::string(". ") << para << std::endl;
+		}
 		return true;
 	}
 
 	bool
 	CommandParser::parseCommand(uint32_t argc, char** argv, uint32_t idx)
 	{
-		// FIXME: todo
+		if (idx+1 >= argc) {
+			errorString("command parameter requires an additional parameter");
+			return false;
+		}
+
+		// get parameter name (command)
+		std::string para = argv[idx];
+		boost::algorithm::trim(para);
+		boost::algorithm::to_upper(para);
+
+		// get parameter value (command name)
+		std::string value = argv[idx+1];
+		boost::algorithm::trim(value);
+		boost::algorithm::to_upper(value);
+
+		// find factory element
+		CommandBase::SPtr commandBase;
+		commandBase = getCommand(value);
+		if (commandBase.get() == NULL) {
+			std::stringstream ss;
+			ss << "the command " << value << " is unknown";
+			errorString(ss.str());
+			return false;
+		}
+
+		// create new command
+		actualCommandBase_ = commandBase->createCommand();
+		if (actualCommandBase_.get() == NULL) {
+			std::stringstream ss;
+			ss << "internal error, because cannot create the command " << value;
+			errorString(ss.str());
+			return false;
+		}
+
+		actualCommandBase_->session(session_);
+
 		return true;
 	}
 
@@ -86,6 +164,25 @@ namespace OpcUaClient
 	{
 		// FIXME: todo
 		return true;
+	}
+
+	bool
+	CommandParser::parseParameter(uint32_t argc, char** argv, uint32_t idx)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	void
+	CommandParser::errorString(const std::string& errorString)
+	{
+		errorString_ = errorString;
+	}
+
+	std::string&
+	CommandParser::errorString(void)
+	{
+		return errorString_;
 	}
 
 }

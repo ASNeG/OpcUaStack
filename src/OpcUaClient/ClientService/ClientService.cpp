@@ -17,7 +17,7 @@
  */
 
 #include "OpcUaClient/ClientService/ClientService.h"
-#include "OpcUaClient/ClientService/Command.h"
+#include "OpcUaClient/ClientService/CommandParser.h"
 
 namespace OpcUaClient
 {
@@ -34,9 +34,10 @@ namespace OpcUaClient
 	ClientService::run(uint32_t argc, char** argv)
 	{
 		// parse command line
-		Command::Vec commandVec;
-		if (!Command::parse(argc, argv, commandVec)) {
-			std::cerr << Command::errorString_.str() << std::endl;
+		CommandParser commandParser;
+		CommandBase::Vec commandBaseVec;
+		if (!commandParser.parse(argc, argv, commandBaseVec)) {
+			std::cerr << commandParser.errorString() << std::endl;
 			return -1;
 		}
 		return 0;
