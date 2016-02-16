@@ -19,6 +19,9 @@
 #include "OpcUaClient/ClientService/ClientService.h"
 #include "OpcUaClient/ClientService/CommandParser.h"
 
+// commands
+#include "OpcUaClient/ClientService/CommandConnect.h"
+
 namespace OpcUaClient
 {
 
@@ -33,6 +36,9 @@ namespace OpcUaClient
 	int
 	ClientService::run(uint32_t argc, char** argv)
 	{
+		// register command in command factory
+		CommandParser::addCommand("CONNECT", constructSPtr<CommandConnect>());
+
 		// parse command line
 		CommandParser commandParser;
 		CommandBase::Vec commandBaseVec;

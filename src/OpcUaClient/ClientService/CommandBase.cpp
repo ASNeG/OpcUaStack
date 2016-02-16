@@ -26,6 +26,7 @@ namespace OpcUaClient
 	: cmd_(Cmd_Unknown)
 	, session_("Main")
 	, errorMessage_()
+	, parameterFlags_()
 	{
 	}
 
@@ -85,6 +86,12 @@ namespace OpcUaClient
 	CommandBase::errorMessage(void)
 	{
 		return errorMessage_;
+	}
+
+	ParameterFlags&
+	CommandBase::parameterFlags(void)
+	{
+		return parameterFlags_;
 	}
 
 }

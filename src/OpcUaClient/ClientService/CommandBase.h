@@ -22,6 +22,7 @@
 #include <stdint.h>
 #include <vector>
 #include <map>
+#include "OpcUaClient/ClientService/ParameterFlags.h"
 
 namespace OpcUaClient
 {
@@ -57,8 +58,10 @@ namespace OpcUaClient
 		std::string& session(void);
 		void errorMessage(const std::string& errorMessage);
 		std::string& errorMessage(void);
+		ParameterFlags& parameterFlags(void);
 
 	  private:
+		ParameterFlags parameterFlags_;
 		Cmd cmd_;
 		std::string command_;
 		std::string session_;

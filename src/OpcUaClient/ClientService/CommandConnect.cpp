@@ -16,6 +16,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/CommandConnect.h"
 
@@ -49,7 +50,20 @@ namespace OpcUaClient
 	bool
 	CommandConnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
+		if (parameterName == "-ENDPOINTURL") endpointUrl_ = parameterValue;
+		else {
+			std::stringstream ss;
+			ss << "invalid parameter " << parameterName;
+			errorMessage(ss.str());
+			return false;
+		}
 		return true;
+	}
+
+	std::string&
+	CommandConnect::endpointUrl(void)
+	{
+		return endpointUrl_;
 	}
 
 }

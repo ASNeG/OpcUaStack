@@ -39,6 +39,8 @@ namespace OpcUaClient
 		bool addParameter(const std::string& parameterName, const std::string& parameterValue);
 		//- CommandConnect interface ---------------------------------------------
 
+		std::string& endpointUrl(void);
+
 	  private:
 		std::string endpointUrl_;
 	};
