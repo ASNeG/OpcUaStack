@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	EventField::EventField(void)
 	: ObjectPool<EventField>()
-	, variantSPtr_(OpcUaVariant::construct())
+	, variantSPtr_(constructSPtr<OpcUaVariant>())
 	{
 	}
 

@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 	sourceTimestamp.dateTime(ptime1);
 	serverTimestamp.dateTime(ptime2);
 
-	dataValueSPtr = OpcUaDataValue::construct();
+	dataValueSPtr = constructSPtr<OpcUaDataValue>();
 	dataValueSPtr->variant()->variant((OpcUaFloat)321);
 	dataValueSPtr->sourceTimestamp(sourceTimestamp);
 	dataValueSPtr->serverTimestamp(serverTimestamp);
@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(Read_Response)
 
 	BOOST_REQUIRE(readResponseSPtr->dataValueArray()->size() == 1);
 
-	dataValueSPtr = OpcUaDataValue::construct();
+	dataValueSPtr = constructSPtr<OpcUaDataValue>();
 	readResponseSPtr->dataValueArray()->get(dataValueSPtr);
 	BOOST_REQUIRE(dataValueSPtr->variant()->variantType() == OpcUaBuildInType_OpcUaFloat);
 	BOOST_REQUIRE(dataValueSPtr->variant()->variant<OpcUaFloat>() == 321);

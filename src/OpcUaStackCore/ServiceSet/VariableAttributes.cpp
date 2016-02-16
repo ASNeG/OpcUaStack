@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	, specifiedAttributes_()
 	, displayName_(constructSPtr<OpcUaLocalizedText>())
 	, description_(constructSPtr<OpcUaLocalizedText>())
-	, value_(OpcUaDataValue::construct())
+	, value_(constructSPtr<OpcUaDataValue>())
 	, dataType_()
 	, valueRank_(-1)
 	, arrayDimensions_(constructSPtr<OpcUaUInt32Array>())

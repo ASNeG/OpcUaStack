@@ -130,7 +130,7 @@ namespace OpcUaServerApplicationDemo
 	DemoLibrary::createDataValue(void)
 	{
 		OpcUaDataValue::SPtr dataValue;
-		dataValue = OpcUaDataValue::construct();
+		dataValue = constructSPtr<OpcUaDataValue>();
 		dataValue->statusCode(Success);
 		dataValue->sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 		dataValue->serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));

@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateDataDetails)
 	UpdateDataDetails details1, details2;
 
 	// encode
-	valueSPtr = OpcUaDataValue::construct();
+	valueSPtr = constructSPtr<OpcUaDataValue>();;
 	valueSPtr->statusCode((OpcUaStatusCode)Success);
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateDataDetails)
 	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Insert);
 	
 	BOOST_REQUIRE(details2.updateValue()->size() == 1);
-	valueSPtr = OpcUaDataValue::construct();
+	valueSPtr = constructSPtr<OpcUaDataValue>();;
 	details2.updateValue()->get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateStructureDataDetails)
 	UpdateStructureDataDetails details1, details2;
 
 	// encode
-	valueSPtr = OpcUaDataValue::construct();
+	valueSPtr = constructSPtr<OpcUaDataValue>();;
 	valueSPtr->statusCode((OpcUaStatusCode)Success);
 
 	details1.nodeId().namespaceIndex((OpcUaInt16)1);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdateDetails_UpdateStructureDataDetails)
 	BOOST_REQUIRE(details2.performInsertReplace() == PerformUpdateEnumeration_Remove);
 	
 	BOOST_REQUIRE(details2.updateValue()->size() == 1);
-	valueSPtr = OpcUaDataValue::construct();
+	valueSPtr = constructSPtr<OpcUaDataValue>();;
 	details2.updateValue()->get(valueSPtr);
 	BOOST_REQUIRE(valueSPtr->statusCode() == Success);
 }

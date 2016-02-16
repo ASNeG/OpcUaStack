@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaDataValue::OpcUaDataValue(void)
-	:  ObjectPool<OpcUaDataValue>()
+	:  Object()
 	, opcUaVariantSPtr_()
 	, opcUaStatusCode_()
 	, sourceTimestamp_()		
@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 	OpcUaDataValue::variant(void)
 	{
 		if (opcUaVariantSPtr_.get() == nullptr) {
-			opcUaVariantSPtr_ = OpcUaVariant::construct();
+			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 		}
 		return opcUaVariantSPtr_;
 	}
@@ -268,7 +268,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is,encodingMask);
 
 		if ((encodingMask & 0x01) == 0x01) {
-			opcUaVariantSPtr_ = OpcUaVariant::construct();
+			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 			opcUaVariantSPtr_->opcUaBinaryDecode(is);
 		}
 		if ((encodingMask & 0x02) == 0x02) {
@@ -334,7 +334,7 @@ namespace OpcUaStackCore
 		boost::optional<boost::property_tree::ptree&> value;
 		value = pt.get_child_optional("Value");
 		if (value) {
-			opcUaVariantSPtr_ = OpcUaVariant::construct();
+			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
 			if (!opcUaVariantSPtr_->decode(*value, type, isArray)) return false;
 		}
 

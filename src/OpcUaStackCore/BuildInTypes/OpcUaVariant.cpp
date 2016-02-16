@@ -1359,7 +1359,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaVariant::OpcUaVariant(void)
-	:  ObjectPool<OpcUaVariant>()
+	:  Object()
 	, variantValueVec_()
 	, arrayLength_(-1)
 	, arrayDimensionsVec_()

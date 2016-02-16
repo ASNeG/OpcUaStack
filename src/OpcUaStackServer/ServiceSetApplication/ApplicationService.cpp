@@ -85,7 +85,7 @@ namespace OpcUaStackServer
 		// register forward
 		registerForwardResponse->statusCodeArray()->resize(registerForwardRequest->nodesToRegister()->size());
 		for (uint32_t idx = 0; idx < registerForwardRequest->nodesToRegister()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
+			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
 			registerForwardResponse->statusCodeArray()->set(idx, Success);
 
 			OpcUaNodeId::SPtr nodeId;

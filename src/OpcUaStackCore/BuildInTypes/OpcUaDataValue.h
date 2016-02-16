@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 	} DataChangeTrigger;
 
 	class DLLEXPORT OpcUaDataValue
-	: public ObjectPool<OpcUaDataValue>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDataValue> SPtr;

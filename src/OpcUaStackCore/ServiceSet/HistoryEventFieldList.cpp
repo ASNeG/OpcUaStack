@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryEventFieldList::HistoryEventFieldList(void)
 	: ObjectPool<HistoryEventFieldList>()
-	, eventFieldArraySPtr_(OpcUaVariantArray::construct())
+	, eventFieldArraySPtr_(constructSPtr<OpcUaVariantArray>())
 	{
 	}
 
