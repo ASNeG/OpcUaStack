@@ -36,7 +36,7 @@ namespace OpcUaClient
 		//- CommandConnect interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);
 		virtual bool validateCommand(void);
-		bool addParameter(uint32_t argc, char** argv, uint32_t idx);
+		bool addParameter(const std::string& parameterName, const std::string& parameterValue);
 		//- CommandConnect interface ---------------------------------------------
 
 	  private:

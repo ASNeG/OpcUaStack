@@ -111,8 +111,6 @@ namespace OpcUaClient
 				if (!parseParameter(argc, argv, idx)) return false;
 				idx++;
 			}
-
-			std::cout << (uint32_t)idx << std::string(". ") << para << std::endl;
 		}
 		return true;
 	}
@@ -120,15 +118,22 @@ namespace OpcUaClient
 	bool
 	CommandParser::parseCommand(uint32_t argc, char** argv, uint32_t idx)
 	{
+		// The last command was completely read. The parameters are now checked.
+		if (actualCommandBase_.get() != NULL) {
+			if (!actualCommandBase_->validateCommand()) {
+				std::stringstream ss;
+				ss << "command " << actualCommandBase_->command() << " error: "
+				   << actualCommandBase_->errorMessage();
+				errorString(ss.str());
+				return false;
+			}
+		}
+
+		// check number of parameters in command line
 		if (idx+1 >= argc) {
 			errorString("command parameter requires an additional parameter");
 			return false;
 		}
-
-		// get parameter name (command)
-		std::string para = argv[idx];
-		boost::algorithm::trim(para);
-		boost::algorithm::to_upper(para);
 
 		// get parameter value (command name)
 		std::string value = argv[idx+1];
@@ -155,21 +160,48 @@ namespace OpcUaClient
 		}
 
 		actualCommandBase_->session(session_);
-
+		actualCommandBase_->command(value);
 		return true;
 	}
 
 	bool
 	CommandParser::parseSession(uint32_t argc, char** argv, uint32_t idx)
 	{
-		// FIXME: todo
+		// check number of parameters in command line
+		if (idx+1 >= argc) {
+			errorString("session parameter requires an additional parameter");
+			return false;
+		}
+
+		// get parameter value (session name)
+		std::string value = argv[idx+1];
+		boost::algorithm::trim(value);
+
+		actualCommandBase_->session(value);
 		return true;
 	}
 
 	bool
 	CommandParser::parseParameter(uint32_t argc, char** argv, uint32_t idx)
 	{
-		// FIXME: todo
+		// get parameter name (command)
+		std::string para = argv[idx];
+		boost::algorithm::trim(para);
+		boost::algorithm::to_upper(para);
+
+		// check number of parameters in command line
+		if (idx+1 >= argc) {
+			std::stringstream ss;
+			ss << "parameter " << para << " requires an additional parameter";
+			errorString(ss.str());
+			return false;
+		}
+
+		// get parameter value (command name)
+		std::string value = argv[idx+1];
+		boost::algorithm::trim(value);
+
+		actualCommandBase_->addParameter(para, value);
 		return true;
 	}
 

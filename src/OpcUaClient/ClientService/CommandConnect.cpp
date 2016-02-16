@@ -44,7 +44,7 @@ namespace OpcUaClient
 	}
 
 	bool
-	CommandConnect::addParameter(uint32_t argc, char** argv, uint32_t idx)
+	CommandConnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		return true;
 	}

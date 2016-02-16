@@ -46,11 +46,13 @@ namespace OpcUaClient
 		//- CommandBase interface ---------------------------------------------
 		virtual SPtr createCommand(void) = 0;
 		virtual bool validateCommand(void) = 0;
-		virtual bool addParameter(uint32_t argc, char** argv, uint32_t idx) = 0;
+		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue) = 0;
 		//- CommandBase interface ---------------------------------------------
 
 		void cmd(const Cmd cmd);
 		Cmd cmd(void);
+		void command(const std::string& command);
+		std::string& command(void);
 		void session(const std::string& session);
 		std::string& session(void);
 		void errorMessage(const std::string& errorMessage);
@@ -58,6 +60,7 @@ namespace OpcUaClient
 
 	  private:
 		Cmd cmd_;
+		std::string command_;
 		std::string session_;
 		std::string errorMessage_;
 
