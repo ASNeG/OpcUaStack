@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Request)
 
 BOOST_AUTO_TEST_CASE(BrowseNext_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	browseNextResponseSPtr = BrowseNextResponse::construct();
+	browseNextResponseSPtr = constructSPtr<BrowseNextResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_BrowseNextResponse_Encoding_DefaultBinary);
 
 	// decode 
-	browseNextResponseSPtr = BrowseNextResponse::construct();
+	browseNextResponseSPtr = constructSPtr<BrowseNextResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	browseNextResponseSPtr->opcUaBinaryDecode(ios);
 
