@@ -23,6 +23,7 @@ namespace OpcUaClient
 {
 
 	CommandConnect::CommandConnect(void)
+	: CommandBase(CommandBase::Cmd_Connect)
 	{
 	}
 

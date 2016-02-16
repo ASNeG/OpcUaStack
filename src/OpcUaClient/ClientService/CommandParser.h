@@ -18,17 +18,27 @@
 #ifndef __OpcUaClient_CommandParser_h__
 #define __OpcUaClient_CommandParser_h__
 
+#include "OpcUaClient/ClientService/CommandBase.h"
+
 namespace OpcUaClient
 {
 
 	class CommandParser
 	{
 	  public:
+		typedef CommandBase::Map CommandFactory;
+		static CommandFactory commandFactory_;
+		static bool addCommand(const std::string& commandName, CommandBase::SPtr commandBase);
+		static CommandBase::SPtr getCommand(const std::string& commandName);
 
 		CommandParser(void);
 		~CommandParser(void);
 
+		bool parse(uint32_t argc, char** argv, CommandBase::Vec& commandVec);
+
 	  private:
+		bool parseCommand(uint32_t argc, char** argv, uint32_t idx);
+		bool parseSession(uint32_t argc, char** argv, uint32_t idx);
 
 	};
 

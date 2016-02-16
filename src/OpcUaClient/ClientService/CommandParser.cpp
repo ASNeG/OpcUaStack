@@ -22,12 +22,70 @@
 namespace OpcUaClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// CommandParser - static
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	CommandParser::CommandFactory CommandParser::commandFactory_;
+
+	bool
+	CommandParser::addCommand(const std::string& commandName, CommandBase::SPtr commandBase)
+	{
+		CommandFactory::iterator it;
+		it = commandFactory_.find(commandName);
+		if (it != commandFactory_.end()) return false;
+		commandFactory_.insert(std::make_pair(commandName, commandBase));
+		return true;
+	}
+
+	CommandBase::SPtr
+	CommandParser::getCommand(const std::string& commandName)
+	{
+		CommandFactory::iterator it;
+		it = commandFactory_.find(commandName);
+		if (it != commandFactory_.end()) return it->second;
+		CommandBase::SPtr commandBase;
+		return commandBase;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// CommandParser
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	CommandParser::CommandParser(void)
 	{
 	}
 
 	CommandParser::~CommandParser(void)
 	{
+	}
+
+	bool
+	CommandParser::parse(uint32_t argc, char** argv, CommandBase::Vec& commandVec)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	CommandParser::parseCommand(uint32_t argc, char** argv, uint32_t idx)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	CommandParser::parseSession(uint32_t argc, char** argv, uint32_t idx)
+	{
+		// FIXME: todo
+		return true;
 	}
 
 }

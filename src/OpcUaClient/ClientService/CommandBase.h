@@ -20,6 +20,8 @@
 
 #include <boost/shared_ptr.hpp>
 #include <stdint.h>
+#include <vector>
+#include <map>
 
 namespace OpcUaClient
 {
@@ -28,6 +30,8 @@ namespace OpcUaClient
 	{
 	  public:
 		typedef boost::shared_ptr<CommandBase> SPtr;
+		typedef std::vector<CommandBase::SPtr> Vec;
+		typedef std::map<std::string, CommandBase::SPtr> Map;
 		typedef enum
 		{
 			Cmd_Unknown,
@@ -36,6 +40,7 @@ namespace OpcUaClient
 		} Cmd;
 
 		CommandBase(void);
+		CommandBase(Cmd cmd);
 		virtual ~CommandBase(void);
 
 		//- CommandBase interface ---------------------------------------------
@@ -48,10 +53,13 @@ namespace OpcUaClient
 		Cmd cmd(void);
 		void session(const std::string& session);
 		std::string& session(void);
+		void errorMessage(const std::string& errorMessage);
+		std::string& errorMessage(void);
 
 	  private:
 		Cmd cmd_;
 		std::string session_;
+		std::string errorMessage_;
 
 	};
 

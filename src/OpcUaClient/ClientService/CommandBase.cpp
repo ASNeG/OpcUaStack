@@ -25,6 +25,13 @@ namespace OpcUaClient
 	CommandBase::CommandBase(void)
 	: cmd_(Cmd_Unknown)
 	, session_("Main")
+	, errorMessage_()
+	{
+	}
+
+	CommandBase::CommandBase(Cmd cmd)
+	: cmd_(cmd)
+	, session_("Main")
 	{
 	}
 
@@ -54,6 +61,18 @@ namespace OpcUaClient
 	CommandBase::session(void)
 	{
 		return session_;
+	}
+
+	void
+	CommandBase::errorMessage(const std::string& errorMessage)
+	{
+		errorMessage_ = errorMessage;
+	}
+
+	std::string&
+	CommandBase::errorMessage(void)
+	{
+		return errorMessage_;
 	}
 
 }
