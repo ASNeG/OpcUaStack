@@ -15,34 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandConnect_h__
-#define __OpcUaClient_CommandConnect_h__
-
-#include <boost/shared_ptr.hpp>
-#include "OpcUaClient/ClientService/CommandBase.h"
+#include "OpcUaClient/ClientService/ParameterFlags.h"
 
 namespace OpcUaClient
 {
 
-	class CommandConnect
-	: public CommandBase
+	ParameterFlags::ParameterFlags(void)
 	{
-	  public:
-		typedef boost::shared_ptr<CommandConnect> SPtr;
+	}
 
-		CommandConnect(void);
-		virtual ~CommandConnect(void);
-
-		//- CommandConnect interface ---------------------------------------------
-		virtual CommandBase::SPtr createCommand(void);
-		virtual bool validateCommand(void);
-		bool addParameter(const std::string& parameterName, const std::string& parameterValue);
-		//- CommandConnect interface ---------------------------------------------
-
-	  private:
-		std::string endpointUrl_;
-	};
+	ParameterFlags::~ParameterFlags(void)
+	{
+	}
 
 }
-
-#endif

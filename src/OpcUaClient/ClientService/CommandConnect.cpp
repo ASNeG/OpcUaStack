@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,6 +26,7 @@ namespace OpcUaClient
 
 	CommandConnect::CommandConnect(void)
 	: CommandBase(CommandBase::Cmd_Connect)
+	, endpointUrl_("opc.tcp://127.0.0.1:4841")
 	{
 	}
 
