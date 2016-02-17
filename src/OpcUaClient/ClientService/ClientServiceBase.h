@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaClient/ClientCommand/CommandBase.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
 {
@@ -30,7 +31,18 @@ namespace OpcUaClient
 		typedef boost::shared_ptr<ClientServiceBase> SPtr;
 
 		ClientServiceBase(void);
-		~ClientServiceBase(void);
+		virtual ~ClientServiceBase(void);
+
+		//- ClientServiceBase interface ---------------------------------------
+		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase) = 0;
+		//- ClientServiceBase interface ---------------------------------------
+
+		void errorMessage(const std::string& errorMessage);
+		std::string& errorMessage(void);
+
+      private:
+		std::string errorMessage_;
+
 	};
 
 }

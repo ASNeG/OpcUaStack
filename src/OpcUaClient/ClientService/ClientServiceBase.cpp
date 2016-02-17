@@ -22,11 +22,24 @@ namespace OpcUaClient
 {
 
 	ClientServiceBase::ClientServiceBase(void)
+	: errorMessage_("")
 	{
 	}
 
 	ClientServiceBase::~ClientServiceBase(void)
 	{
+	}
+
+	void
+	ClientServiceBase::errorMessage(const std::string& errorMessage)
+	{
+		errorMessage_ = errorMessage;
+	}
+
+	std::string&
+	ClientServiceBase::errorMessage(void)
+	{
+		return errorMessage_;
 	}
 
 }

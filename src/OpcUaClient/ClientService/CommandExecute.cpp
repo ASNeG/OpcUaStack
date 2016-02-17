@@ -23,6 +23,7 @@ namespace OpcUaClient
 
 	CommandExecute::CommandExecute(void)
 	: errorString_("")
+	, clientServiceManager_()
 	{
 	}
 

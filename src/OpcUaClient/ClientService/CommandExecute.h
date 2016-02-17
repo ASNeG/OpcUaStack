@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaClient/ClientCommand/CommandBase.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
 {
@@ -27,8 +28,6 @@ namespace OpcUaClient
 	class CommandExecute
 	{
 	  public:
-		typedef boost::shared_ptr<CommandExecute> SPtr;
-
 		CommandExecute(void);
 		~CommandExecute(void);
 
@@ -39,6 +38,7 @@ namespace OpcUaClient
 
 	  private:
 		std::string errorString_;
+		ClientServiceManager clientServiceManager_;
 	};
 
 }
