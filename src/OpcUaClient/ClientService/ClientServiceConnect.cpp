@@ -15,8 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
@@ -28,6 +30,12 @@ namespace OpcUaClient
 
 	ClientServiceConnect::~ClientServiceConnect(void)
 	{
+	}
+
+	ClientServiceBase::SPtr
+	ClientServiceConnect::createClientService(void)
+	{
+		return constructSPtr<ClientServiceConnect>();
 	}
 
 	bool

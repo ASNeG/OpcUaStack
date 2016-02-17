@@ -19,7 +19,7 @@
 #define __OpcUaClient_ClientServiceConnect_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaClient/ClientCommand/CommandBase.h"
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
@@ -35,6 +35,7 @@ namespace OpcUaClient
 		virtual ~ClientServiceConnect(void);
 
 		//- ClientServiceConnect interface ---------------------------------------
+		virtual ClientServiceBase::SPtr createClientService(void);
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase);
 		//- ClientServiceConnect interface ---------------------------------------
 

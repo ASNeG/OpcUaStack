@@ -19,6 +19,7 @@
 #define __OpcUaClient_ClientServiceBase_h__
 
 #include <boost/shared_ptr.hpp>
+#include <map>
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -29,11 +30,13 @@ namespace OpcUaClient
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceBase> SPtr;
+		typedef std::map<uint32_t, ClientServiceBase::SPtr> Map;
 
 		ClientServiceBase(void);
 		virtual ~ClientServiceBase(void);
 
 		//- ClientServiceBase interface ---------------------------------------
+		virtual SPtr createClientService(void) = 0;
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase) = 0;
 		//- ClientServiceBase interface ---------------------------------------
 

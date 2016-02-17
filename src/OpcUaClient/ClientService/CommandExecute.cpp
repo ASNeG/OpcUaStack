@@ -21,6 +21,43 @@
 namespace OpcUaClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ClientServiceExecute - static
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	CommandExecute::ClientServiceFactory CommandExecute::clientServiceFactory_;
+
+	bool
+	CommandExecute::addClientService(uint32_t command, ClientServiceBase::SPtr clientServiceBase)
+	{
+		ClientServiceFactory::iterator it;
+		it = clientServiceFactory_.find(command);
+		if (it != clientServiceFactory_.end()) return false;
+		clientServiceFactory_.insert(std::make_pair(command, clientServiceBase));
+		return true;
+	}
+
+	ClientServiceBase::SPtr
+	CommandExecute::getClientService(uint32_t command)
+	{
+		ClientServiceFactory::iterator it;
+		it = clientServiceFactory_.find(command);
+		if (it != clientServiceFactory_.end()) return it->second;
+		ClientServiceBase::SPtr clientServiceBase;
+		return clientServiceBase;
+	}
+
+
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
+//
+// CommandParser
+//
+// ------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 	CommandExecute::CommandExecute(void)
 	: errorString_("")
 	, clientServiceManager_()

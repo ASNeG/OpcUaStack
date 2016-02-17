@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaClient/ClientCommand/CommandBase.h"
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
@@ -28,6 +29,11 @@ namespace OpcUaClient
 	class CommandExecute
 	{
 	  public:
+		typedef ClientServiceBase::Map ClientServiceFactory;
+		static ClientServiceFactory clientServiceFactory_;
+		static bool addClientService(uint32_t command, ClientServiceBase::SPtr clientServiceBase);
+		static ClientServiceBase::SPtr getClientService(uint32_t command);
+
 		CommandExecute(void);
 		~CommandExecute(void);
 
