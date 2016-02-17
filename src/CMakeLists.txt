@@ -8,6 +8,7 @@ project	(OpcUaStack)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(VERSION_MAJOR "1" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
 set(VERSION_PATCH "8" CACHE STRING "patch version")

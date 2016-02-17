@@ -16,19 +16,88 @@
  */
 
 #include <openssl/err.h>
+#include <openssl/pkcs12.h>
+#include <openssl/pem.h>
+#include <openssl/x509v3.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Certificate/PkiCertificate.h"
 
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// PkiExtensionEntry
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	PkiExtensionEntry::PkiExtensionEntry(void)
+	: key_("")
+	, value_("")
+	{
+	}
+
+	PkiExtensionEntry::PkiExtensionEntry(const std::string& key, const std::string& value)
+	: key_(key)
+	, value_(value)
+	{
+	}
+
+	PkiExtensionEntry::~PkiExtensionEntry(void)
+	{
+	}
+
+	void
+	PkiExtensionEntry::key(const std::string& key)
+	{
+		key_ = key;
+	}
+
+	std::string&
+	PkiExtensionEntry::key(void)
+	{
+		return key_;
+	}
+
+	void
+	PkiExtensionEntry::value(const std::string& value)
+	{
+		value_ = value;
+	}
+
+	std::string&
+	PkiExtensionEntry::value(void)
+	{
+		return value_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// PkiCertificate
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	bool PkiCertificate::loadCryptoStrings_ = false;
 	std::list<std::string> PkiCertificate::cryptoStringErrorList_;
-
+	PkiExtensionEntry::Vec PkiCertificate::pkiEntensionEntryVec_;
+	bool PkiCertificate::init_ = false;
 
 	PkiCertificate::PkiCertificate(void)
 	: x509Cert_(nullptr)
 	{
+		if (!init_) {
+			init_ = true;
+
+			// set pki extension entry
+			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("basicConstraints", "critical, CA:FALSE"));
+			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("nsComment", "\"Generated with OpcUaStack using OpenSSL\""));
+			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("subjectKeyIdentifier", "hash"));
+			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("authorityKeyIdentifier", "keyid, issuer:always"));
+			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("keyUsage", "critical, nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment, keyCertSign"));
+			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("extendedKeyUsage", "critical, serverAuth,clientAuth"));
+		}
 	}
 
 	PkiCertificate::~PkiCertificate(void)
@@ -243,62 +312,79 @@ namespace OpcUaStackCore
             EVP_PKEY_free( pKey );
         }
 
-	 #ifdef CREATE_EXTENSIONS
-	        X509V3_CTX ctx;
-	        X509V3_set_ctx ( &ctx, m_pCert, m_pCert, NULL, NULL, 0 );
-	        if (!bError)
-	        {
-	            X509_EXTENSION *pExt = 0;
+        //
+        // extension data
+        //
+        X509V3_CTX ctx;
+        X509V3_set_ctx(&ctx, x509Cert_, x509Cert_, NULL, NULL, 0);
+        if (success) {
+        	X509_EXTENSION *pExt = 0;
+            for (uint32_t idx = 0; idx < pkiEntensionEntryVec_.size(); idx++ )
+            {
+                pExt = X509V3_EXT_conf(
+                	NULL, &ctx,
+                	(char*)pkiEntensionEntryVec_[idx].key().c_str(),
+                	(char*)pkiEntensionEntryVec_[idx].value().c_str(
+                ));
+                if (!pExt) {
+                	success = false;
+                	openSSLError();
+                }
+                else
+                {
+                    resultCode = X509_add_ext(x509Cert_, pExt, -1);
+                    if (!resultCode)
+                    {
+                    	success = false;
+                    	openSSLError();
+                    }
+                    X509_EXTENSION_free (pExt);
+                }
+            }
+        }
 
-	            /* add x509v3 extensions as specified */
-	            for ( int i = 0; i < EXT_COUNT; i++ )
-	            {
-	                pExt = X509V3_EXT_conf ( NULL, &ctx, (char*)ext_ent[i].key, (char*)ext_ent[i].value );
-	                if (!pExt) {bError = true; addOpenSSLError();}
-	                else
-	                {
-	                    resultCode = X509_add_ext ( m_pCert, pExt, -1 );
-	                    if (!resultCode) {bError = true; addOpenSSLError();}
-	                    X509_EXTENSION_free ( pExt );
-	                }
-	            }
-	        }
+        if (success) {
+        	std::vector<std::string>::iterator it;
+        	std::string subjectAltNameValue;
 
-	        if (!bError)
-	        {
-	            // add subjectAltName
-	            UaString subjectAltNameValue;
-	            if ( !info.URI.isEmpty() )
-	            {
-	                subjectAltNameValue += "URI:";
-	                subjectAltNameValue += info.URI; // URI is absolutely mandatory
-	            }
-	            for (OpcUa_UInt32 i = 0; i < info.DNSNames.length(); i++)
-	            {
-	                subjectAltNameValue += ",DNS:";
-	                subjectAltNameValue += info.DNSNames[i];
-	            }
-	            for (OpcUa_UInt32 i = 0; i < info.IPAddresses.length(); i++)
-	            {
-	                subjectAltNameValue += ",IP:";
-	                subjectAltNameValue += info.IPAddresses[i];
-	            }
-	            if ( !info.eMail.isEmpty() )
-	            {
-	                subjectAltNameValue += ",email:";
-	                subjectAltNameValue += info.eMail;
-	            }
-	            X509_EXTENSION *pExt = X509V3_EXT_conf ( NULL, &ctx, (char*)"subjectAltName", ( char* ) subjectAltNameValue.toUtf8() );
-	            if (!pExt) {bError = true; addOpenSSLError();}
-	            else
-	            {
-	                resultCode = X509_add_ext ( m_pCert, pExt, -1 );
-	                if (!resultCode) {bError = true; addOpenSSLError();}
-	                X509_EXTENSION_free ( pExt );
-	            }
-	        }
-	#endif
+        	// add URI
+        	subjectAltNameValue += "URI:";
+        	subjectAltNameValue += pkiCertificateInfo.URI();
 
+        	// added DNS
+        	for (it = pkiCertificateInfo.dnsNames().begin(); it != pkiCertificateInfo.dnsNames().end(); it++) {
+        		subjectAltNameValue += ",DNS:";
+        		subjectAltNameValue += *it;
+        	}
+
+        	// added IP
+        	for (it = pkiCertificateInfo.ipAddresses().begin(); it != pkiCertificateInfo.ipAddresses().end(); it++) {
+        		subjectAltNameValue += ",IP:";
+        		subjectAltNameValue += *it;
+        	}
+
+        	// added email
+        	for (it = pkiCertificateInfo.email().begin(); it != pkiCertificateInfo.email().end(); it++) {
+        		subjectAltNameValue += ",email:";
+        		subjectAltNameValue += *it;
+        	}
+
+            X509_EXTENSION *pExt = X509V3_EXT_conf(NULL, &ctx, (char*)"subjectAltName", (char*)subjectAltNameValue.c_str());
+            if (!pExt) {
+            	success = false;
+                openSSLError();
+            }
+            else
+            {
+                resultCode = X509_add_ext(x509Cert_, pExt, -1);
+                if (!resultCode) {
+                	success = false;
+                    openSSLError();
+                }
+                X509_EXTENSION_free (pExt);
+            }
+
+        }
 
 	    if (success) {
 	        // sign the certificate
@@ -307,7 +393,8 @@ namespace OpcUaStackCore
 	        	success = false;
 	        	openSSLError();
 	        }
-	        else {
+
+	        if (success) {
 	        	EVP_PKEY* pKey = issuerPrivateKey.privateKey();
 	            resultCode = X509_sign(x509Cert_, pKey, digest);
 	            if (!resultCode) {

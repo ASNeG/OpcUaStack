@@ -71,7 +71,10 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_store_key)
 	BOOST_REQUIRE(rsaKey.getPublicKey(subjectPublicKey) == true);
 
 	PkiCertificate certificate;
-	BOOST_REQUIRE(certificate.createNewCertificate(info, identity, subjectPublicKey, identity, issuerPrivateKey) == true);
+	BOOST_REQUIRE(
+		certificate.createNewCertificate(
+			info, identity, subjectPublicKey, identity, issuerPrivateKey
+		) == true);
 
 	//
 	// store certificate
