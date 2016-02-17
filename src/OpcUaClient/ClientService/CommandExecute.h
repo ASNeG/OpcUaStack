@@ -19,6 +19,7 @@
 #define __OpcUaClient_CommandExecute_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {
@@ -30,6 +31,14 @@ namespace OpcUaClient
 
 		CommandExecute(void);
 		~CommandExecute(void);
+
+		bool run(CommandBase::Vec& commandBase);
+
+		void errorString(const std::string& errorString);
+		std::string& errorString(void);
+
+	  private:
+		std::string errorString_;
 	};
 
 }

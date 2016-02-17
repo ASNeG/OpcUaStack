@@ -15,38 +15,25 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandExecute.h"
+#ifndef __OpcUaClient_ClientServiceBase_h__
+#define __OpcUaClient_ClientServiceBase_h__
 
+#include <boost/shared_ptr.hpp>
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {
 
-	CommandExecute::CommandExecute(void)
-	: errorString_("")
+	class ClientServiceBase
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<ClientServiceBase> SPtr;
 
-	CommandExecute::~CommandExecute(void)
-	{
-	}
-
-	bool
-	CommandExecute::run(CommandBase::Vec& commandBase)
-	{
-		return true;
-	}
-
-	void
-	CommandExecute::errorString(const std::string& errorString)
-	{
-		errorString_ = errorString;
-	}
-
-	std::string&
-	CommandExecute::errorString(void)
-	{
-		return errorString_;
-	}
+		ClientServiceBase(void);
+		~ClientServiceBase(void);
+	};
 
 }
+
+#endif
 

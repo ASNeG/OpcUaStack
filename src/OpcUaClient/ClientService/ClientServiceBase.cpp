@@ -15,37 +15,18 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandExecute.h"
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
 
 
 namespace OpcUaClient
 {
 
-	CommandExecute::CommandExecute(void)
-	: errorString_("")
+	ClientServiceBase::ClientServiceBase(void)
 	{
 	}
 
-	CommandExecute::~CommandExecute(void)
+	ClientServiceBase::~ClientServiceBase(void)
 	{
-	}
-
-	bool
-	CommandExecute::run(CommandBase::Vec& commandBase)
-	{
-		return true;
-	}
-
-	void
-	CommandExecute::errorString(const std::string& errorString)
-	{
-		errorString_ = errorString;
-	}
-
-	std::string&
-	CommandExecute::errorString(void)
-	{
-		return errorString_;
 	}
 
 }

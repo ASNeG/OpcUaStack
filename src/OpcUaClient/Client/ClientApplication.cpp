@@ -18,6 +18,7 @@
 
 #include "OpcUaClient/Client/ClientApplication.h"
 #include "OpcUaClient/ClientCommand/CommandParser.h"
+#include "OpcUaClient/ClientService/CommandExecute.h"
 
 // commands
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
@@ -54,6 +55,11 @@ namespace OpcUaClient
 		}
 
 		// execute command line
+		CommandExecute commandExecute;
+		if (commandExecute.run(commandBaseVec)) {
+			std::cerr << commandExecute.errorString() << std::endl;
+			return -1;
+		}
 
 		return 0;
 	}
