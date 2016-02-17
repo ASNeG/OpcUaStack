@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	// encode OpenSecureChannel
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x01;
-	openSecureChannelResponseSPtr = OpenSecureChannelResponse::construct();
+	openSecureChannelResponseSPtr = constructSPtr<OpenSecureChannelResponse>();
 	openSecureChannelResponseSPtr->securityToken(securityTokenSPtr);
 	openSecureChannelResponseSPtr->responseHeader()->time(ptime);
 	openSecureChannelResponseSPtr->serverNonce( clientNonce, 1);
@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
 
 	// decode OpenSecureChannel
-	openSecureChannelResponseSPtr = OpenSecureChannelResponse::construct();
+	openSecureChannelResponseSPtr = constructSPtr<OpenSecureChannelResponse>();
 	openSecureChannelResponseSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelResponseSPtr->serverNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelResponseSPtr->securityToken()->channelId() == 153451225);
