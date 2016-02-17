@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <sstream>
 #include "OpcUaClient/ClientService/ClientServiceExecute.h"
 
 
@@ -69,8 +70,35 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceExecute::run(CommandBase::Vec& commandBase)
+	ClientServiceExecute::run(CommandBase::Vec& commandBaseVec)
 	{
+		uint32_t idx = 0;
+		while (idx < commandBaseVec.size())
+		{
+			CommandBase::SPtr commandBase = commandBaseVec[idx];
+
+			// find factory element
+			ClientServiceBase::SPtr clientServiceBase;
+			clientServiceBase = getClientService(commandBase->cmd());
+			if (clientServiceBase.get() == NULL) {
+				std::stringstream ss;
+				ss << "the client service for the command " << commandBase->command() << " is unknown";
+				errorString(ss.str());
+				return false;
+			}
+
+			// run client service
+			if (!clientServiceBase->run(clientServiceManager_, *commandBase.get())) {
+				std::stringstream ss;
+				ss << "client service for command " << commandBase->command() << " error: "
+				   << clientServiceBase->errorMessage();
+				errorString(ss.str());
+				return false;
+			}
+
+			idx++;
+		}
+
 		return true;
 	}
 

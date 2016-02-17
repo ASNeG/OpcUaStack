@@ -37,7 +37,7 @@ namespace OpcUaClient
 		ClientServiceExecute(void);
 		~ClientServiceExecute(void);
 
-		bool run(CommandBase::Vec& commandBase);
+		bool run(CommandBase::Vec& commandBaseVec);
 
 		void errorString(const std::string& errorString);
 		std::string& errorString(void);

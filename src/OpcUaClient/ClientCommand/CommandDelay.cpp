@@ -27,7 +27,7 @@ namespace OpcUaClient
 {
 
 	CommandDelay::CommandDelay(void)
-	: CommandBase(CommandBase::Cmd_Connect)
+	: CommandBase(CommandBase::Cmd_Delay)
 	, timeout_(0)
 	{
 	}
