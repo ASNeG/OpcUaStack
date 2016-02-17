@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandExecute_h__
-#define __OpcUaClient_CommandExecute_h__
+#ifndef __OpcUaClient_ClientServiceExecute_h__
+#define __OpcUaClient_ClientServiceExecute_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaClient/ClientCommand/CommandBase.h"
@@ -26,7 +26,7 @@
 namespace OpcUaClient
 {
 
-	class CommandExecute
+	class ClientServiceExecute
 	{
 	  public:
 		typedef ClientServiceBase::Map ClientServiceFactory;
@@ -34,8 +34,8 @@ namespace OpcUaClient
 		static bool addClientService(uint32_t command, ClientServiceBase::SPtr clientServiceBase);
 		static ClientServiceBase::SPtr getClientService(uint32_t command);
 
-		CommandExecute(void);
-		~CommandExecute(void);
+		ClientServiceExecute(void);
+		~ClientServiceExecute(void);
 
 		bool run(CommandBase::Vec& commandBase);
 

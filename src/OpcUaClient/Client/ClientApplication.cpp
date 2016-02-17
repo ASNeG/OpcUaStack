@@ -18,7 +18,7 @@
 
 #include "OpcUaClient/Client/ClientApplication.h"
 #include "OpcUaClient/ClientCommand/CommandParser.h"
-#include "OpcUaClient/ClientService/CommandExecute.h"
+#include "OpcUaClient/ClientService/ClientServiceExecute.h"
 
 // commands
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
@@ -50,7 +50,7 @@ namespace OpcUaClient
 		CommandParser::addCommand("DELAY", constructSPtr<CommandDelay>());
 
 		// register service in service factory
-		CommandExecute::addClientService(CommandBase::Cmd_Connect, constructSPtr<ClientServiceConnect>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Connect, constructSPtr<ClientServiceConnect>());
 
 		// parse command line
 		CommandParser commandParser;
@@ -60,10 +60,10 @@ namespace OpcUaClient
 			return -1;
 		}
 
-		// execute command line
-		CommandExecute commandExecute;
-		if (commandExecute.run(commandBaseVec)) {
-			std::cerr << commandExecute.errorString() << std::endl;
+		// execute commands from command line line
+		ClientServiceExecute clientServiceExecute;
+		if (clientServiceExecute.run(commandBaseVec)) {
+			std::cerr << clientServiceExecute.errorString() << std::endl;
 			return -1;
 		}
 

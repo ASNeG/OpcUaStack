@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/CommandExecute.h"
+#include "OpcUaClient/ClientService/ClientServiceExecute.h"
 
 
 namespace OpcUaClient
@@ -28,10 +28,10 @@ namespace OpcUaClient
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	CommandExecute::ClientServiceFactory CommandExecute::clientServiceFactory_;
+	ClientServiceExecute::ClientServiceFactory ClientServiceExecute::clientServiceFactory_;
 
 	bool
-	CommandExecute::addClientService(uint32_t command, ClientServiceBase::SPtr clientServiceBase)
+	ClientServiceExecute::addClientService(uint32_t command, ClientServiceBase::SPtr clientServiceBase)
 	{
 		ClientServiceFactory::iterator it;
 		it = clientServiceFactory_.find(command);
@@ -41,7 +41,7 @@ namespace OpcUaClient
 	}
 
 	ClientServiceBase::SPtr
-	CommandExecute::getClientService(uint32_t command)
+	ClientServiceExecute::getClientService(uint32_t command)
 	{
 		ClientServiceFactory::iterator it;
 		it = clientServiceFactory_.find(command);
@@ -58,30 +58,30 @@ namespace OpcUaClient
 //
 // ------------------------------------------------------------------------
 // ------------------------------------------------------------------------
-	CommandExecute::CommandExecute(void)
+	ClientServiceExecute::ClientServiceExecute(void)
 	: errorString_("")
 	, clientServiceManager_()
 	{
 	}
 
-	CommandExecute::~CommandExecute(void)
+	ClientServiceExecute::~ClientServiceExecute(void)
 	{
 	}
 
 	bool
-	CommandExecute::run(CommandBase::Vec& commandBase)
+	ClientServiceExecute::run(CommandBase::Vec& commandBase)
 	{
 		return true;
 	}
 
 	void
-	CommandExecute::errorString(const std::string& errorString)
+	ClientServiceExecute::errorString(const std::string& errorString)
 	{
 		errorString_ = errorString;
 	}
 
 	std::string&
-	CommandExecute::errorString(void)
+	ClientServiceExecute::errorString(void)
 	{
 		return errorString_;
 	}
