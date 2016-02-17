@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Request)
 
 BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	historyUpdateResponseSPtr = HistoryUpdateResponse::construct();
+	historyUpdateResponseSPtr = constructSPtr<HistoryUpdateResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(HistoryUpdate_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_HistoryUpdateResponse_Encoding_DefaultBinary);
 
 	// decode 
-	historyUpdateResponseSPtr = HistoryUpdateResponse::construct();
+	historyUpdateResponseSPtr = constructSPtr<HistoryUpdateResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	historyUpdateResponseSPtr->opcUaBinaryDecode(ios);
 

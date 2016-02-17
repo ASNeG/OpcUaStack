@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 
 BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;

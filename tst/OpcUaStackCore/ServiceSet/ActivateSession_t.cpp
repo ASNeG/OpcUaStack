@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode ActivateSessionResponse
-	activateSessionResponseSPtr = ActivateSessionResponse::construct();
+	activateSessionResponseSPtr = constructSPtr<ActivateSessionResponse>();
 
 	activateSessionResponseSPtr->responseHeader()->time(ptime);
 	activateSessionResponseSPtr->responseHeader()->requestHandle(1);
@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE(ActivateSession_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
 
 	//decode ActivateSessionResponse
-	activateSessionResponseSPtr = ActivateSessionResponse::construct();
+	activateSessionResponseSPtr = constructSPtr<ActivateSessionResponse>();
 	activateSessionResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(activateSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);

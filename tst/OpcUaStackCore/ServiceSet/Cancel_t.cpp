@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CancelResponse
-	cancelResponseSPtr = CancelResponse::construct();
+	cancelResponseSPtr = constructSPtr<CancelResponse>();
 
 	cancelResponseSPtr->responseHeader()->time(ptime);
 	cancelResponseSPtr->responseHeader()->requestHandle(1);
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CancelResponse_Encoding_DefaultBinary);
 
 	//decode CancelResponse
-	cancelResponseSPtr = CancelResponse::construct();
+	cancelResponseSPtr = constructSPtr<CancelResponse>();
 	cancelResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(cancelResponseSPtr->responseHeader()->time().dateTime() == ptime);

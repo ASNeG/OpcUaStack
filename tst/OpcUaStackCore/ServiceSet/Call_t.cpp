@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CallResponse
-	callResponseSPtr = CallResponse::construct();
+	callResponseSPtr = constructSPtr<CallResponse>();
 
 	// build ResponseHeader
 	callResponseSPtr->responseHeader()->time(ptime);
@@ -274,7 +274,7 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CallResponse_Encoding_DefaultBinary);
 
 	// decode CallResponse
-	callResponseSPtr = CallResponse::construct();
+	callResponseSPtr = constructSPtr<CallResponse>();
 	callResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(callResponseSPtr->responseHeader()->time().dateTime() == ptime);
