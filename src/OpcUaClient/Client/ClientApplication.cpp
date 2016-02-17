@@ -52,6 +52,9 @@ namespace OpcUaClient
 			std::cerr << commandParser.errorString() << std::endl;
 			return -1;
 		}
+
+		// execute command line
+
 		return 0;
 	}
 
