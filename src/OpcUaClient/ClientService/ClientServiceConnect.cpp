@@ -42,6 +42,8 @@ namespace OpcUaClient
 	ClientServiceConnect::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
 	{
 		// FIXME: todo
+		std::cout << "run connect..." << std::endl;
+
 		return true;
 	}
 
