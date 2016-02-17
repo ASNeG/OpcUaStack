@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	EventNotificationList::EventNotificationList(void)
-	: ObjectPool<EventNotificationList>()
-	, eventFieldListArraySPtr_(EventFieldListArray::construct())
+	: Object()
+	, eventFieldListArraySPtr_(constructSPtr<EventFieldListArray>())
 	{
 	}
 
@@ -51,10 +51,10 @@ namespace OpcUaStackCore
 		return eventFieldListArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	EventNotificationList::factory(void)
 	{
-		return EventNotificationList::construct();
+		return constructSPtr<EventNotificationList>();
 	}
 
 	void 

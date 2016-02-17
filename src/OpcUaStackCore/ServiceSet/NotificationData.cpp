@@ -48,10 +48,10 @@ namespace OpcUaStackCore
 		switch(typeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_DataChangeNotification_Encoding_DefaultBinary: 
-				dataChangeNotificationSPtr_ = DataChangeNotification::construct();
+				dataChangeNotificationSPtr_ = constructSPtr<DataChangeNotification>();
 				break;
 			case OpcUaId_StatusChangeNotification_Encoding_DefaultBinary: 
-				statusChangeNotificationSPtr_ = StatusChangeNotification::construct();
+				statusChangeNotificationSPtr_ = constructSPtr<StatusChangeNotification>();
 				break;
 		}
 	}
@@ -124,11 +124,11 @@ namespace OpcUaStackCore
 		switch(typeId_.nodeId<OpcUaUInt32>())
 		{
 			case OpcUaId_DataChangeNotification_Encoding_DefaultBinary: 
-				dataChangeNotificationSPtr_ = DataChangeNotification::construct();
+				dataChangeNotificationSPtr_ = constructSPtr<DataChangeNotification>();
 				dataChangeNotificationSPtr_->opcUaBinaryDecode(is);
 				break;
 			case OpcUaId_StatusChangeNotification_Encoding_DefaultBinary: 
-				statusChangeNotificationSPtr_ = StatusChangeNotification::construct();
+				statusChangeNotificationSPtr_ = constructSPtr<StatusChangeNotification>();
 				statusChangeNotificationSPtr_->opcUaBinaryDecode(is);
 				break;
 		}

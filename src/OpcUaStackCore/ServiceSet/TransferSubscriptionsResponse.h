@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT TransferSubscriptionsResponse : public ObjectPool<TransferSubscriptionsResponse>
+	class DLLEXPORT TransferSubscriptionsResponse
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<TransferSubscriptionsResponse> SPtr;

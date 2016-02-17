@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(CallMethod_CallMethodRequest)
 	std::iostream ios(&sb);
 
 	// encode
-	variantSPtr = OpcUaVariant::construct();
+	variantSPtr = constructSPtr<OpcUaVariant>();
 	variantSPtr->variant((OpcUaFloat)321);
 
 	objectIdSPtr = constructSPtr<OpcUaNodeId>();
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(CallMethod_CallMethodRequest)
 	BOOST_REQUIRE(callMethodRequest2.methodId()->nodeId<OpcUaUInt32>() == 12);
 	
 	BOOST_REQUIRE(callMethodRequest2.inputArguments()->size() == 1);
-	variantSPtr = OpcUaVariant::construct();
+	variantSPtr = constructSPtr<OpcUaVariant>();
 	callMethodRequest2.inputArguments()->get(variantSPtr);
 	BOOST_REQUIRE(variantSPtr->variant<OpcUaFloat>() == 321);
 }
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(CallMethod_CallMethodResult)
 	std::iostream ios(&sb);
 
 	// encode
-	variantSPtr = OpcUaVariant::construct();
+	variantSPtr = constructSPtr<OpcUaVariant>();
 	variantSPtr->variant((OpcUaFloat)321);
 
 	callMethodResult1.statusCode((OpcUaStatusCode) 1);
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(CallMethod_CallMethodResult)
 	BOOST_REQUIRE(statusCode == 2);
 
 	BOOST_REQUIRE(callMethodResult2.outputArguments()->size() == 1);
-	variantSPtr = OpcUaVariant::construct();
+	variantSPtr = constructSPtr<OpcUaVariant>();
 	callMethodResult2.outputArguments()->get(variantSPtr);
 	BOOST_REQUIRE(variantSPtr->variant<OpcUaFloat>() == 321);
 }

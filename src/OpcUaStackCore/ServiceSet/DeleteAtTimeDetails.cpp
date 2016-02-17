@@ -29,7 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteAtTimeDetails::DeleteAtTimeDetails(void)
-	: ObjectPool<DeleteAtTimeDetails>()
+	: Object()
+	, ExtensibleParameterBase()
 	, nodeId_()
 	, reqTimeArraySPtr_(constructSPtr<UtcTimeArray>())
 	{
@@ -63,10 +64,10 @@ namespace OpcUaStackCore
 		return reqTimeArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	DeleteAtTimeDetails::factory(void)
 	{
-		return DeleteAtTimeDetails::construct();
+		return constructSPtr<DeleteAtTimeDetails>();
 	}
 
 	void 

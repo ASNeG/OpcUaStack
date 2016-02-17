@@ -29,11 +29,11 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	QueryFirstResponse::QueryFirstResponse(void)
-	: ObjectPool<QueryFirstResponse>()
-	, queryDataSetArraySPtr_(QueryDataSetArray::construct())
+	: Object()
+	, queryDataSetArraySPtr_(constructSPtr<QueryDataSetArray>())
 	, continuationPoint_()
-	, parsingResultArraySPtr_(ParsingResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	, parsingResultArraySPtr_(constructSPtr<ParsingResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	, filterResult_()
 	{
 	}

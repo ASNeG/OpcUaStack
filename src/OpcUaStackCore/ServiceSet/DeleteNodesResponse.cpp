@@ -28,8 +28,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteNodesResponse::DeleteNodesResponse(void)
-	: deleteNodesResultArraySPtr_(DeleteNodesResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, deleteNodesResultArraySPtr_(constructSPtr<DeleteNodesResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

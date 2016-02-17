@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 
 BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 sequenceNumber;
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build TransferSubscriptionsResponse
-	transferSubscriptionsResponseSPtr = TransferSubscriptionsResponse::construct();
+	transferSubscriptionsResponseSPtr = constructSPtr<TransferSubscriptionsResponse>();
 	responseHeader->time(ptime);
 	responseHeader->requestHandle(133);
 	responseHeader->serviceResult((OpcUaStatusCode)Success);
@@ -274,7 +274,7 @@ BOOST_AUTO_TEST_CASE(TransferSubscriptions_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_TransferSubscriptionsResponse_Encoding_DefaultBinary);
 
 	// decode TransferSubscriptionsResponse
-	transferSubscriptionsResponseSPtr = TransferSubscriptionsResponse::construct();
+	transferSubscriptionsResponseSPtr = constructSPtr<TransferSubscriptionsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	transferSubscriptionsResponseSPtr->opcUaBinaryDecode(ios);
 

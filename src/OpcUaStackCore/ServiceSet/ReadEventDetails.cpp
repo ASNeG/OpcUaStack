@@ -29,11 +29,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadEventDetails::ReadEventDetails(void)
-	: ObjectPool<ReadEventDetails>()
+	: Object()
+	, ExtensibleParameterBase()
 	, numValuesPerNode_()
 	, startTime_()
 	, endTime_()
-	, filterSPtr_(ExtensibleParameter::construct())
+	, filterSPtr_(constructSPtr<ExtensibleParameter>())
 	{
 	}
 
@@ -101,10 +102,10 @@ namespace OpcUaStackCore
 		return filterSPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ReadEventDetails::factory(void)
 	{
-		return ReadEventDetails::construct();
+		return constructSPtr<ReadEventDetails>();
 	}
 
 	void 

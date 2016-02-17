@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 
 		// set ServerStatus
 		{
-			OpcUaExtensionObject::SPtr extensionObject = OpcUaExtensionObject::construct();
+			OpcUaExtensionObject::SPtr extensionObject = constructSPtr<OpcUaExtensionObject>();
 			OpcUaNodeId typeId;
 			typeId.set(OpcUaId_ServerStatusDataType_Encoding_DefaultBinary);
 			extensionObject->typeId(typeId);
@@ -58,7 +58,7 @@ namespace OpcUaStackServer
 
 		// set BuildInfo
 		{
-			OpcUaExtensionObject::SPtr extensionObject = OpcUaExtensionObject::construct();
+			OpcUaExtensionObject::SPtr extensionObject = constructSPtr<OpcUaExtensionObject>();
 			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
 
 			OpcUaNodeId typeId;
@@ -96,7 +96,7 @@ namespace OpcUaStackServer
 
 		// set ShutdownReason
 		{
-			OpcUaLocalizedText::SPtr value = OpcUaLocalizedText::construct();
+			OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
 			shutdownReason().copyTo(*value);
 
 			OpcUaDataValue dataValue;

@@ -101,7 +101,7 @@ namespace OpcUaStackServer
 		// read values
 		readResponse->dataValueArray()->resize(readRequest->readValueIdArray()->size());
 		for (uint32_t idx = 0; idx < readRequest->readValueIdArray()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue = OpcUaDataValue::construct();
+			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
 			readResponse->dataValueArray()->set(idx, dataValue);
 
 			// determine node information

@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	CallResponse::CallResponse(void)
-	: ObjectPool<CallResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
-	, callMethodResultArraySPtr_(CallMethodResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
+	, callMethodResultArraySPtr_(constructSPtr<CallMethodResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

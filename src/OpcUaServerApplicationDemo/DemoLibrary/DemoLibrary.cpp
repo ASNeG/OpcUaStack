@@ -130,7 +130,7 @@ namespace OpcUaServerApplicationDemo
 	DemoLibrary::createDataValue(void)
 	{
 		OpcUaDataValue::SPtr dataValue;
-		dataValue = OpcUaDataValue::construct();
+		dataValue = constructSPtr<OpcUaDataValue>();
 		dataValue->statusCode(Success);
 		dataValue->sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 		dataValue->serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
@@ -322,7 +322,7 @@ namespace OpcUaServerApplicationDemo
 
 		// LocalizedText
 		nodeId.set(226, namespaceIndex_);
-		OpcUaLocalizedText::SPtr ltext = OpcUaLocalizedText::construct();
+		OpcUaLocalizedText::SPtr ltext = constructSPtr<OpcUaLocalizedText>();
 		ltext->set("de", "text");
 		dataValue = createDataValue();
 		dataValue->variant()->variant(ltext);
@@ -332,7 +332,7 @@ namespace OpcUaServerApplicationDemo
 		nodeId.set(227, namespaceIndex_);
 		dataValue = createDataValue();
 		for (uint32_t pos=0; pos<3;pos++) {
-			OpcUaLocalizedText::SPtr bstr = OpcUaLocalizedText::construct();
+			OpcUaLocalizedText::SPtr bstr = constructSPtr<OpcUaLocalizedText>();
 			ltext->set("de", "text");
 			dataValue->variant()->pushBack(ltext);
 		}

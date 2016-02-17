@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 	std::iostream ios(&sb);
 
 	// build EventFieldList
-	variantSPtr = OpcUaVariant::construct();
+	variantSPtr = constructSPtr<OpcUaVariant>();
 	variantSPtr->variant((OpcUaInt32)123);
 	
 	eventFieldSPtr = EventField::construct();

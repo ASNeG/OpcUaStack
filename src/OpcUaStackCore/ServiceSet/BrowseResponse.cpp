@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowseResponse::BrowseResponse(void)
-	: ObjectPool<BrowseResponse>()
-	, resultArraySPtr_(BrowseResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, resultArraySPtr_(constructSPtr<BrowseResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

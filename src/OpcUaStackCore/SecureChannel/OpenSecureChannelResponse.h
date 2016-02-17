@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 {
 	
 	class DLLEXPORT OpenSecureChannelResponse
-	: public  ObjectPool<OpenSecureChannelResponse>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpenSecureChannelResponse> SPtr;

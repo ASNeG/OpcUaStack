@@ -488,7 +488,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				OpcUaLocalizedText::SPtr value = OpcUaLocalizedText::construct();
+				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
 				OpcUaVariantSPtr opcUaVariantSPtr = boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = boost::static_pointer_cast<OpcUaLocalizedText>(opcUaVariantSPtr.objectSPtr_);
 				opcUaLocalizedTextSPtr->copyTo(*value);
@@ -497,7 +497,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaExtensionObject:
 			{
-				OpcUaExtensionObject::SPtr value = OpcUaExtensionObject::construct();
+				OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
 				OpcUaVariantSPtr opcUaVariantSPtr =  boost::get<OpcUaVariantSPtr>(variantValue_);
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = boost::static_pointer_cast<OpcUaExtensionObject>(opcUaVariantSPtr.objectSPtr_);
 				opcUaExtensionObjectSPtr->copyTo(*value);
@@ -969,7 +969,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = OpcUaLocalizedText::construct();
+				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = constructSPtr<OpcUaLocalizedText>();
 				opcUaLocalizedTextSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaLocalizedTextSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaLocalizedText;
@@ -980,7 +980,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = OpcUaExtensionObject::construct();
+				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
 				opcUaExtensionObjectSPtr->opcUaBinaryDecode(is);
 				val.objectSPtr_ = opcUaExtensionObjectSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExtensionObject;
@@ -1325,7 +1325,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = OpcUaLocalizedText::construct();
+				OpcUaLocalizedText::SPtr opcUaLocalizedTextSPtr = constructSPtr<OpcUaLocalizedText>();
 				if (!opcUaLocalizedTextSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaLocalizedTextSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaLocalizedText;
@@ -1336,7 +1336,7 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
-				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = OpcUaExtensionObject::construct();
+				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
 				if (!opcUaExtensionObjectSPtr->decode(pt)) return false;
 				val.objectSPtr_ = opcUaExtensionObjectSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExtensionObject;
@@ -1359,7 +1359,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaVariant::OpcUaVariant(void)
-	:  ObjectPool<OpcUaVariant>()
+	:  Object()
 	, variantValueVec_()
 	, arrayLength_(-1)
 	, arrayDimensionsVec_()

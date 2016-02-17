@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(RegisterNodes_Request)
 
 BOOST_AUTO_TEST_CASE(RegisterNodes_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;

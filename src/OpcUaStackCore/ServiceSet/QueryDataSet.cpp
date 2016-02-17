@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: ObjectPool<QueryDataSet>()
 	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, typeDefinitionNodeSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, valueArraySPtr_(OpcUaVariantArray::construct())
+	, valueArraySPtr_(constructSPtr<OpcUaVariantArray>())
 	{
 	}
 

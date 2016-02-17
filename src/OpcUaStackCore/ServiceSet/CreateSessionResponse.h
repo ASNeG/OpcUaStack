@@ -32,7 +32,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CreateSessionResponse : public  ObjectPool<CreateSessionResponse>
+	class DLLEXPORT CreateSessionResponse
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<CreateSessionResponse> SPtr;

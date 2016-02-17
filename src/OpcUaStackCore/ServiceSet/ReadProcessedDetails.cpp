@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadProcessedDetails::ReadProcessedDetails(void)
-	: ObjectPool<ReadProcessedDetails>()
+	: Object()
 	, startTime_()
 	, endTime_()
 	, resampleInterval_()
@@ -114,10 +114,10 @@ namespace OpcUaStackCore
 		return aggregateConfiguration_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ReadProcessedDetails::factory(void)
 	{
-		return ReadProcessedDetails::construct();
+		return constructSPtr<ReadProcessedDetails>();
 	}
 
 	void 

@@ -21,9 +21,10 @@ namespace OpcUaStackCore
 {
 
 	OpenSecureChannelResponse::OpenSecureChannelResponse(void)
-	: responseHeaderSPtr_(ResponseHeader::construct())
+	: Object()
+	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
 	, serverProtocolVersion_(0)
-	, securityTokenSPtr_(SecurityToken::construct())
+	, securityTokenSPtr_(constructSPtr<SecurityToken>())
 	, serverNonce_()
 	{
 	}

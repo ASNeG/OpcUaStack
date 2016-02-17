@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Request)
 
 BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -207,7 +207,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	getEndpointsResponseSPtr = GetEndpointsResponse::construct();
+	getEndpointsResponseSPtr = constructSPtr<GetEndpointsResponse>();
 	getEndpointsResponseSPtr->responseHeader()->time(ptime);
 
 	// build ResponseHeader
@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
 
 	// decode 
-	getEndpointsResponseSPtr = GetEndpointsResponse::construct();
+	getEndpointsResponseSPtr = constructSPtr<GetEndpointsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	getEndpointsResponseSPtr->opcUaBinaryDecode(ios);
 

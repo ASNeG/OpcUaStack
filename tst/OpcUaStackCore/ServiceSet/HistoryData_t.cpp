@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	HistoryData data1, data2;
 
 	// encode
-	value = OpcUaDataValue::construct();
+	value = constructSPtr<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
 	data1.dataValues()->set(value);
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryData)
 	// decode
 	data2.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(data2.dataValues()->size() == 1);
-	value = OpcUaDataValue::construct();
+	value = constructSPtr<OpcUaDataValue>();;
 	data2.dataValues()->get(value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	HistoryModifiedData data1, data2;
 	
 	// encode
-	value = OpcUaDataValue::construct();
+	value = constructSPtr<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
 	modificationInfo = ModificationInfo::construct();
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	data2.opcUaBinaryDecode(ios);
 	
 	BOOST_REQUIRE(data2.dataValues()->size() == 1);
-	value = OpcUaDataValue::construct();
+	value = constructSPtr<OpcUaDataValue>();;
 	data2.dataValues()->get(value);
 	BOOST_REQUIRE(value->statusCode() == Success);
 

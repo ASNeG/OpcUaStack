@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	GetEndpointsResponse::GetEndpointsResponse(void)
-	: ObjectPool<GetEndpointsResponse>()
-	, responseHeader_(ResponseHeader::construct())
-	, endpointArraySPtr_(EndpointDescriptionArray::construct())
+	: Object()
+	, responseHeader_(constructSPtr<ResponseHeader>())
+	, endpointArraySPtr_(constructSPtr<EndpointDescriptionArray>())
 	{
 	}
 

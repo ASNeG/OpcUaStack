@@ -52,7 +52,7 @@ namespace OpcUaStackCore
 	}
 
 	bool 
-	ExtensibleParameter::insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::BSPtr epSPtr)
+	ExtensibleParameter::insertElement(OpcUaNodeId& opcUaNodeId, ExtensibleParameterBase::SPtr epSPtr)
 	{
 		ExtensibleParameterMap::iterator it;
 		it = extensibleParameterMap_.find(opcUaNodeId);
@@ -75,10 +75,10 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ExtensibleParameter::findElement(OpcUaNodeId& opcUaNodeId)
 	{
-		ExtensibleParameterBase::BSPtr epSPtr;
+		ExtensibleParameterBase::SPtr epSPtr;
 		ExtensibleParameterMap::iterator it;
 		it = extensibleParameterMap_.find(opcUaNodeId);
 		if (it != extensibleParameterMap_.end()) {

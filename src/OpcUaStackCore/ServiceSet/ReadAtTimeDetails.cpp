@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadAtTimeDetails::ReadAtTimeDetails(void)
-	: ObjectPool<ReadAtTimeDetails>()
+	: Object()
 	, reqTimeArraySPtr_(constructSPtr<UtcTimeArray>())
 	{
 	}
@@ -50,10 +50,10 @@ namespace OpcUaStackCore
 		return reqTimeArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ReadAtTimeDetails::factory(void)
 	{
-		return ReadAtTimeDetails::construct();
+		return constructSPtr<ReadAtTimeDetails>();
 	}
 
 	void 

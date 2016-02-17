@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	qualifiedNameSPtr->namespaceIndex(123),
 	qualifiedNameSPtr->name(string);
 
-	simpleAttributeOperandSPtr = SimpleAttributeOperand::construct();
+	simpleAttributeOperandSPtr = constructSPtr<SimpleAttributeOperand>();
 	simpleAttributeOperandSPtr->typeId(typeIdSPtr);
 	simpleAttributeOperandSPtr->browsePath()->set(qualifiedNameSPtr);
 	simpleAttributeOperandSPtr->attributeId((OpcUaUInt32)123);

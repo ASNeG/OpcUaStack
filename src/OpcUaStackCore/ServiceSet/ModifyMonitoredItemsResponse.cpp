@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ModifyMonitoredItemsResponse::ModifyMonitoredItemsResponse(void)
-	: ObjectPool<ModifyMonitoredItemsResponse>()
-	, resultArraySPtr_(MonitoredItemModifyResultArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, resultArraySPtr_(constructSPtr<MonitoredItemModifyResultArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 
