@@ -114,10 +114,10 @@ namespace OpcUaStackCore
 		return returnBoolean_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ReadRawModifiedDetails::factory(void)
 	{
-		return ReadRawModifiedDetails::construct();
+		return constructSPtr<ReadRawModifiedDetails>();
 	}
 
 	void 

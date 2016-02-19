@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_DisplayName:
 			{
-				OpcUaLocalizedText::SPtr displayName = OpcUaLocalizedText::construct();
+				OpcUaLocalizedText::SPtr displayName = constructSPtr<OpcUaLocalizedText>();
 				DisplayNameAttribute* displayNameAttribute = reinterpret_cast<DisplayNameAttribute*>(&attribute);
 				displayNameAttribute->data().copyTo(*displayName);
 				variant.variant(displayName);
@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_Description:
 			{
-				OpcUaLocalizedText::SPtr description = OpcUaLocalizedText::construct();
+				OpcUaLocalizedText::SPtr description = constructSPtr<OpcUaLocalizedText>();
 				DescriptionAttribute* descriptionAttribute = reinterpret_cast<DescriptionAttribute*>(&attribute);
 				descriptionAttribute->data().copyTo(*description);
 				variant.variant(description);
@@ -89,7 +89,7 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_InverseName:
 			{
-				OpcUaLocalizedText::SPtr inverseName = OpcUaLocalizedText::construct();
+				OpcUaLocalizedText::SPtr inverseName = constructSPtr<OpcUaLocalizedText>();
 				InverseNameAttribute* inverseNameAttribute = reinterpret_cast<InverseNameAttribute*>(&attribute);
 				inverseNameAttribute->data().copyTo(*inverseName);
 				variant.variant(inverseName);

@@ -29,11 +29,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	UpdateEventDetails::UpdateEventDetails(void)
-	: ObjectPool<UpdateEventDetails>()
+	: Object()
+	, ExtensibleParameterBase()
 	, nodeId_()
 	, performInsertReplace_()
 	, filter_()
-	, eventDataArraySPtr_(EventFieldListArray::construct())
+	, eventDataArraySPtr_(constructSPtr<EventFieldListArray>())
 	{
 	}
 
@@ -89,10 +90,10 @@ namespace OpcUaStackCore
 		return eventDataArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	UpdateEventDetails::factory(void)
 	{
-		return UpdateEventDetails::construct();
+		return constructSPtr<UpdateEventDetails>();
 	}
 
 	void 

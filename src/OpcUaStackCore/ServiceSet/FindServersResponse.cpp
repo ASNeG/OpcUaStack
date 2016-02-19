@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	FindServersResponse::FindServersResponse(void)
-	: ObjectPool<FindServersResponse>()
-	, responseHeaderSPtr_(ResponseHeader::construct())
-	, serverArraySPtr_(ApplicationDescriptionArray::construct())
+	: Object()
+	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
+	, serverArraySPtr_(constructSPtr<ApplicationDescriptionArray>())
 	{
 	}
 

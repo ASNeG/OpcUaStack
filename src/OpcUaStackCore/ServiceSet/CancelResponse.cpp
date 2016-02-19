@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	CancelResponse::CancelResponse(void)
-	: responseHeader_(ResponseHeader::construct())
+	: Object()
+	, responseHeader_(constructSPtr<ResponseHeader>())
 	{
 	}
 

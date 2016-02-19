@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	findServersResponseSPtr = FindServersResponse::construct();
+	findServersResponseSPtr = constructSPtr<FindServersResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_FindServersResponse_Encoding_DefaultBinary);
 
 	// decode 
-	findServersResponseSPtr = FindServersResponse::construct();
+	findServersResponseSPtr = constructSPtr<FindServersResponse>();
 	findServersResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(findServersResponseSPtr->responseHeader()->time().dateTime() == ptime);

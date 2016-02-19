@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Request)
 
 BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaStatusCode statusCode;
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build ModifyMonitoredItemsResponse
-	modifyMonitoredItemsResponseSPtr = ModifyMonitoredItemsResponse::construct();
+	modifyMonitoredItemsResponseSPtr = constructSPtr<ModifyMonitoredItemsResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE(ModifyMonitoredItems_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ModifyMonitoredItemsResponse_Encoding_DefaultBinary);
 
 	// decode ModifyMonitoredItemsResponse
-	modifyMonitoredItemsResponseSPtr = ModifyMonitoredItemsResponse::construct();
+	modifyMonitoredItemsResponseSPtr = constructSPtr<ModifyMonitoredItemsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	modifyMonitoredItemsResponseSPtr->opcUaBinaryDecode(ios);
 

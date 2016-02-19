@@ -496,7 +496,7 @@ namespace OpcUaStackServer
 		//
 		// decode Value (mandatory)
 		//
-		OpcUaVariant::SPtr variant = OpcUaVariant::construct();
+		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
 		OpcUaDataValue dataValue;
 		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
@@ -631,7 +631,7 @@ namespace OpcUaStackServer
 		//
 		// decode Value (mandatory)
 		//
-		OpcUaVariant::SPtr variant = OpcUaVariant::construct();
+		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
 		OpcUaDataValue dataValue;
 		dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
 		dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());

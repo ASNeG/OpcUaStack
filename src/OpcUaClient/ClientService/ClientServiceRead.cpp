@@ -1,6 +1,5 @@
-
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,18 +15,37 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientService.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientService/ClientServiceRead.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientService::ClientService(void)
-	: vbiClient_()
+	ClientServiceRead::ClientServiceRead(void)
+	: ClientServiceBase()
 	{
 	}
 
-	ClientService::~ClientService(void)
+	ClientServiceRead::~ClientServiceRead(void)
 	{
+	}
+
+	ClientServiceBase::SPtr
+	ClientServiceRead::createClientService(void)
+	{
+		return constructSPtr<ClientServiceRead>();
+	}
+
+	bool
+	ClientServiceRead::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	{
+		// FIXME: todo
+		std::cout << "run read..." << std::endl;
+
+		return true;
 	}
 
 }
+

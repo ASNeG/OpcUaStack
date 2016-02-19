@@ -21,18 +21,18 @@
 namespace OpcUaStackCore
 {
 
-  class DLLEXPORT ExtensibleParameterBase
-	{
+    class DLLEXPORT ExtensibleParameterBase
+    {
 	  public:
-		typedef boost::shared_ptr<ExtensibleParameterBase> BSPtr;
+        typedef boost::shared_ptr<ExtensibleParameterBase> SPtr;
 
-		ExtensibleParameterBase(void) {}
-		virtual ~ExtensibleParameterBase(void) {}
+        ExtensibleParameterBase(void) {}
+	    virtual ~ExtensibleParameterBase(void) {}
 
-		virtual BSPtr factory(void) = 0;
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
-	};
+	    virtual SPtr factory(void) = 0;
+	    virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
+	    virtual void opcUaBinaryDecode(std::istream& is) = 0;
+    };
 
 }
 

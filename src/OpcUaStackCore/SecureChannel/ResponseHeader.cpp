@@ -21,10 +21,11 @@ namespace OpcUaStackCore
 {
 
 	ResponseHeader::ResponseHeader(void)
-	: time_()
+	: Object()
+	, time_()
 	, requestHandle_()
 	, serviceResult_()
-	, diagnosticInfoSPtr_(OpcUaDiagnosticInfo::construct())
+	, diagnosticInfoSPtr_(constructSPtr<OpcUaDiagnosticInfo>())
 	, stringTableSPtr_(constructSPtr<OpcUaStringArray>())
 	{
 		time_.dateTime(boost::posix_time::microsec_clock::local_time());

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	LiteralOperand::LiteralOperand(void)
-	: ObjectPool<LiteralOperand>()
+	: Object()
 	, variant_()
 	{
 	}
@@ -50,10 +50,10 @@ namespace OpcUaStackCore
 		return variant_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	LiteralOperand::factory(void)
 	{
-		return LiteralOperand::construct();
+		return constructSPtr<LiteralOperand>();
 	}
 
 	void 

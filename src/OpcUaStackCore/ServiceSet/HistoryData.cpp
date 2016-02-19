@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryData::HistoryData(void)
-	: ObjectPool<HistoryData>()
-	, dataValueArraySPtr_(OpcUaDataValueArray::construct())
+	: Object()
+	, dataValueArraySPtr_(constructSPtr<OpcUaDataValueArray>())
 	{
 	}
 
@@ -50,10 +50,10 @@ namespace OpcUaStackCore
 		return dataValueArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	HistoryData::factory(void)
 	{
-		return HistoryData::construct();
+		return constructSPtr<HistoryData>();
 	}
 
 	void 

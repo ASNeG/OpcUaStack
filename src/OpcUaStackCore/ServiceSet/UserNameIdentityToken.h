@@ -26,7 +26,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT UserNameIdentityToken : public  ObjectPool<UserNameIdentityToken>, public ExtensibleParameterBase
+	class DLLEXPORT UserNameIdentityToken
+	: public Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<UserNameIdentityToken> SPtr;
@@ -44,7 +46,7 @@ namespace OpcUaStackCore
 		std::string encryptionAlgorithm(void) const;
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		virtual void opcUaBinaryEncode(std::ostream& os) const;
 		virtual void opcUaBinaryDecode(std::istream& is);
 		//- ExtensibleParameterBase -------------------------------------------

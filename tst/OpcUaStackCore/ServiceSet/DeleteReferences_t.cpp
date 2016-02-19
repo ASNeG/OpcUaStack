@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 
 	// add  DeleteReferencesItem node
 	{
-		DeleteReferencesItem::SPtr deleteReferencesItemSPtr = DeleteReferencesItem::construct();
+		DeleteReferencesItem::SPtr deleteReferencesItemSPtr = constructSPtr<DeleteReferencesItem>();
 		deleteReferencesItemSPtr->sourceNodeId()->set(11, 130);
 		deleteReferencesItemSPtr->referenceTypeId()->set(12, 130);
 		deleteReferencesItemSPtr->isForward(false);
@@ -193,7 +193,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 
 BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;

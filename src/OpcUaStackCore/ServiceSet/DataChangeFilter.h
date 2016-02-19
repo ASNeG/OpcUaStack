@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		OpcUaDouble deadbandValue(void);
 		
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 
 		void opcUaBinaryEncode(std::ostream& os) const;

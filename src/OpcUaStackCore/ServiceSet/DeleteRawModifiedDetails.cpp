@@ -29,7 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteRawModifiedDetails::DeleteRawModifiedDetails(void)
-	: ObjectPool<DeleteRawModifiedDetails>()
+	: Object()
+	, ExtensibleParameterBase()
 	, nodeId_()
 	, isDeleteModified_()
 	, startTime_()
@@ -101,10 +102,10 @@ namespace OpcUaStackCore
 		return endTime_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	DeleteRawModifiedDetails::factory(void)
 	{
-		return DeleteRawModifiedDetails::construct();
+		return constructSPtr<DeleteRawModifiedDetails>();
 	}
 
 	void 

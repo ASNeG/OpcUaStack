@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	ActivateSessionResponse::ActivateSessionResponse(void)
-	: responseHeader_(ResponseHeader::construct())
+	: Object()
+	, responseHeader_(constructSPtr<ResponseHeader>())
 	, serverNonce_()
 	, results_(constructSPtr<OpcUaStatusCodeArray>())
 	, diagnosticInfos_(constructSPtr<OpcUaDiagnosticInfoArray>())

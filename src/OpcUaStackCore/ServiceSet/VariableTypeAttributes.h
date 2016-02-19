@@ -28,7 +28,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT VariableTypeAttributes : public  ObjectPool<VariableTypeAttributes>, public ExtensibleParameterBase
+	class DLLEXPORT VariableTypeAttributes
+	: public  Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<VariableTypeAttributes> SPtr;
@@ -37,7 +39,7 @@ namespace OpcUaStackCore
 		virtual ~VariableTypeAttributes(void);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		virtual void opcUaBinaryEncode(std::ostream& os) const;
 		virtual void opcUaBinaryDecode(std::istream& is);
 		//- ExtensibleParameterBase -------------------------------------------

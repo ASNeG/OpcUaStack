@@ -15,10 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaClient/Client/ClientApplication.h"
 
+using namespace OpcUaClient;
 
 int main(int argc, char**argv) {
-	return 0;
+	ClientApplication clientApplication;
+	return clientApplication.run(argc, argv);
 }
 
 

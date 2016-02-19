@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 
-	createSessionResponseSPtr = CreateSessionResponse::construct();
+	createSessionResponseSPtr = constructSPtr<CreateSessionResponse>();
 
 	createSessionResponseSPtr->responseHeader()->time(ptime);
 	createSessionResponseSPtr->responseHeader()->requestHandle(1);
@@ -432,7 +432,7 @@ BOOST_AUTO_TEST_CASE(CreateSession_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
 
 	//decode CreateSessionResponse
-	createSessionResponseSPtr = CreateSessionResponse::construct();
+	createSessionResponseSPtr = constructSPtr<CreateSessionResponse>();
 	createSessionResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(createSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);

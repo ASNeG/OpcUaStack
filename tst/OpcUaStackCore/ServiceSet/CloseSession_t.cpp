@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CloseSessionResponse
-	closeSessionResponseSPtr = CloseSessionResponse::construct();
+	closeSessionResponseSPtr = constructSPtr<CloseSessionResponse>();
 
 	closeSessionResponseSPtr->responseHeader()->time(ptime);
 	closeSessionResponseSPtr->responseHeader()->requestHandle(1);
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CloseSessionResponse_Encoding_DefaultBinary);
 
 	//decode CloseSessionResponse
-	closeSessionResponseSPtr = CloseSessionResponse::construct();
+	closeSessionResponseSPtr = constructSPtr<CloseSessionResponse>();
 	closeSessionResponseSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);

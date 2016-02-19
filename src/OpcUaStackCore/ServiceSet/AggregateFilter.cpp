@@ -29,7 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	AggregateFilter::AggregateFilter(void)
-	: ObjectPool<AggregateFilter>()
+	: Object()
+	, ExtensibleParameterBase()
 	, startTime_()
 	, aggregateType_()
 	, processingInterval_()
@@ -94,10 +95,10 @@ namespace OpcUaStackCore
 		return aggregateConfiguration_;
 	}
 	
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	AggregateFilter::factory(void)
 	{
-		return AggregateFilter::construct();
+		return constructSPtr<AggregateFilter>();
 	}
 
 	void 

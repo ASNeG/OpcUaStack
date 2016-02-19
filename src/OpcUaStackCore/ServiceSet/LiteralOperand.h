@@ -27,7 +27,9 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT LiteralOperand : public  ObjectPool<LiteralOperand>, public ExtensibleParameterBase
+	class DLLEXPORT LiteralOperand
+	: public  Object
+	, public ExtensibleParameterBase
 	{
 	  public:
 		typedef boost::shared_ptr<LiteralOperand> SPtr;
@@ -39,7 +41,7 @@ namespace OpcUaStackCore
 		OpcUaVariant& value(void);
 
 		//- ExtensibleParameterBase -------------------------------------------
-		virtual ExtensibleParameterBase::BSPtr factory(void);
+		virtual ExtensibleParameterBase::SPtr factory(void);
 		//- ExtensibleParameterBase -------------------------------------------
 		
 		void opcUaBinaryEncode(std::ostream& os) const;

@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaExtensionObject::OpcUaExtensionObject(void)
-	: ObjectPool<OpcUaExtensionObject>()
+	: Object()
 	, typeId_()
 	, epSPtr_()
 	{

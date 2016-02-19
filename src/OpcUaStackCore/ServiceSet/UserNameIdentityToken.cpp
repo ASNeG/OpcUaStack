@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	UserNameIdentityToken::UserNameIdentityToken(void)
+	: Object()
+	, ExtensibleParameterBase()
 	{
 	}
 
@@ -84,10 +86,10 @@ namespace OpcUaStackCore
 	}
 
 	
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	UserNameIdentityToken::factory(void)
 	{
-		return UserNameIdentityToken::construct();
+		return constructSPtr<UserNameIdentityToken>();
 	}
 
 	void 

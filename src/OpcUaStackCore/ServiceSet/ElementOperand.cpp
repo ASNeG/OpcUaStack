@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ElementOperand::ElementOperand(void)
-	: ObjectPool<ElementOperand>()
+	: Object()
 	, index_()
 	{
 	}
@@ -50,10 +50,10 @@ namespace OpcUaStackCore
 		return index_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	ElementOperand::factory(void)
 	{
-		return ElementOperand::construct();
+		return constructSPtr<ElementOperand>();
 	}
 
 	void 

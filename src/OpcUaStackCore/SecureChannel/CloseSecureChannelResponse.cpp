@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	CloseSecureChannelResponse::CloseSecureChannelResponse(void)
-	: responseHeaderSPtr_(ResponseHeader::construct())
+	: Object()
+	, responseHeaderSPtr_(constructSPtr<ResponseHeader>())
 	{
 	}
 		

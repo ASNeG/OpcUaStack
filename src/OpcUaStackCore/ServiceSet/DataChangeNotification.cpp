@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DataChangeNotification::DataChangeNotification(void)
-	: ObjectPool<DataChangeNotification>()
-	, monitoredItemNotificationArraySPtr_(MonitoredItemNotificationArray::construct())
-	, diagnosticInfoArraySPtr_(OpcUaDiagnosticInfoArray::construct())
+	: Object()
+	, monitoredItemNotificationArraySPtr_(constructSPtr<MonitoredItemNotificationArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 
@@ -63,10 +63,10 @@ namespace OpcUaStackCore
 		return diagnosticInfoArraySPtr_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	DataChangeNotification::factory(void)
 	{
-		return DataChangeNotification::construct();
+		return constructSPtr<DataChangeNotification>();
 	}
 
 	void 

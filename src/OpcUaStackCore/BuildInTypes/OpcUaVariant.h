@@ -132,7 +132,7 @@ namespace OpcUaStackCore
 
 
 	class DLLEXPORT OpcUaVariant
-	: public ObjectPool<OpcUaVariant>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaVariant> SPtr;
@@ -244,7 +244,7 @@ namespace OpcUaStackCore
 
 	class OpcUaVariantArray
 	: public OpcUaArray<OpcUaVariant::SPtr, SPtrTypeCoder<OpcUaVariant> >
-	, public ObjectPool<OpcUaVariantArray>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaVariantArray> SPtr;

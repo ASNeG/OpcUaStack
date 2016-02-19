@@ -76,10 +76,10 @@ namespace OpcUaStackCore
 		return deadbandValue_;
 	}
 
-	ExtensibleParameterBase::BSPtr 
+	ExtensibleParameterBase::SPtr
 	DataChangeFilter::factory(void)
 	{
-		return DataChangeFilter::construct();
+		return constructSPtr<DataChangeFilter>();
 	}
 
 	void 

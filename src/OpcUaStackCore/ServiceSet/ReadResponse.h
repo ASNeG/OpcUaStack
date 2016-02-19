@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ReadResponse : public  ObjectPool<ReadResponse>
+	class DLLEXPORT ReadResponse
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ReadResponse> SPtr;

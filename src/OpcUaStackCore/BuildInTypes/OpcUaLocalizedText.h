@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT OpcUaLocalizedText : public ObjectPool<OpcUaLocalizedText>
+	class DLLEXPORT OpcUaLocalizedText
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaLocalizedText> SPtr;
@@ -66,7 +67,9 @@ namespace OpcUaStackCore
 	};
 
 
-	class OpcUaLocalizedTextArray : public OpcUaArray<OpcUaLocalizedText::SPtr, SPtrTypeCoder<OpcUaLocalizedText> >, public ObjectPool<OpcUaLocalizedTextArray> 
+	class OpcUaLocalizedTextArray
+	: public OpcUaArray<OpcUaLocalizedText::SPtr, SPtrTypeCoder<OpcUaLocalizedText> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaLocalizedTextArray> SPtr;

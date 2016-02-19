@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 
 BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 {
-	ResponseHeader::SPtr responseHeader = ResponseHeader::construct();
+	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode DeleteNodesResponse
-	deleteNodesResponseSPtr = DeleteNodesResponse::construct();
+	deleteNodesResponseSPtr = constructSPtr<DeleteNodesResponse>();
 
 	responseHeader->time(ptime);
 	responseHeader->requestHandle(1);
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteNodesResponse_Encoding_DefaultBinary);
 
 	//decode DeleteNodesResponse
-	deleteNodesResponseSPtr = DeleteNodesResponse::construct();
+	deleteNodesResponseSPtr = constructSPtr<DeleteNodesResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	deleteNodesResponseSPtr->opcUaBinaryDecode(ios);
 

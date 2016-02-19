@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,26 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackClient/ValueBasedInterface/VBIClient.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
-#ifndef __OpcUaClient_ClientService_h__
-#define __OpcUaClient_ClientService_h__
-
-using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
 
-	class ClientService
+	ClientServiceManager::ClientServiceManager(void)
 	{
-	  public:
-		ClientService(void);
-		~ClientService(void);
+	}
 
-	  private:
-		VBIClient vbiClient_;
-	};
+	ClientServiceManager::~ClientServiceManager(void)
+	{
+	}
 
 }
 
-#endif

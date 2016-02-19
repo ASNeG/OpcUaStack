@@ -389,7 +389,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaLocalizedText)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaLocalizedText::SPtr localizedTextPtr = OpcUaLocalizedText::construct();
+	OpcUaLocalizedText::SPtr localizedTextPtr = constructSPtr<OpcUaLocalizedText>();
 
 	OpcUaString locale;
 	OpcUaString text;
@@ -478,7 +478,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaExtensionObject)
 {
 	std::stringstream ss;
 	OpcUaVariant value1, value2;
-	OpcUaExtensionObject::SPtr extensionObjectSPtr = OpcUaExtensionObject::construct();
+	OpcUaExtensionObject::SPtr extensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
 
 	value1.variant(extensionObjectSPtr);
 	
