@@ -227,7 +227,7 @@ namespace OpcUaClient
 	CommandParser::help(const std::string& command)
 	{
 		std::cout
-		  << "OpcUaClient [-help] [-Command <Command> [-<ParameterName> <ParameterVariable>]*]*\n"
+		  << "OpcUaClient [-help [<CommandName>]] [-Command <CommandName> [-<ParameterName> <ParameterVariable>]*]*\n"
 		  << "\n"
 		  << "Commands:\n";
 
