@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,19 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_ClientService_h__
-#define __OpcUaClient_ClientService_h__
+#ifndef __OpcUaClient_CommandDisconnect_h__
+#define __OpcUaClient_CommandDisconnect_h__
 
-//using namespace OpcUaStackClient;
+#include <boost/shared_ptr.hpp>
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {
 
-	class ClientService
+	class CommandDisconnect
+	: public CommandBase
 	{
 	  public:
-		ClientService(void);
-		~ClientService(void);
+		typedef boost::shared_ptr<CommandDisconnect> SPtr;
+
+		CommandDisconnect(void);
+		virtual ~CommandDisconnect(void);
+
+		//- CommandDisconnect interface ---------------------------------------------
+		virtual CommandBase::SPtr createCommand(void);
+		virtual bool validateCommand(void);
+		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
+		//- CommandDisconnect interface ---------------------------------------------
 
 	  private:
 	};

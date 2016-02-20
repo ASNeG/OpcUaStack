@@ -15,18 +15,36 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientService/ClientServiceDisconnect.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	ClientServiceDisconnect::ClientServiceDisconnect(void)
+	: ClientServiceBase()
 	{
 	}
 
-	ClientServiceManager::~ClientServiceManager(void)
+	ClientServiceDisconnect::~ClientServiceDisconnect(void)
 	{
+	}
+
+	ClientServiceBase::SPtr
+	ClientServiceDisconnect::createClientService(void)
+	{
+		return constructSPtr<ClientServiceDisconnect>();
+	}
+
+	bool
+	ClientServiceDisconnect::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	{
+		// FIXME: todo
+		std::cout << "run disconnect..." << std::endl;
+
+		return true;
 	}
 
 }

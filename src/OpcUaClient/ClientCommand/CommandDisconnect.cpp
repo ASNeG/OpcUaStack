@@ -1,3 +1,4 @@
+
 /*
    Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
@@ -15,19 +16,44 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#include <sstream>
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientCommand/CommandDisconnect.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	CommandDisconnect::CommandDisconnect(void)
+	: CommandBase(CommandBase::Cmd_Disconnect)
 	{
 	}
 
-	ClientServiceManager::~ClientServiceManager(void)
+	CommandDisconnect::~CommandDisconnect(void)
 	{
+	}
+
+	CommandBase::SPtr
+	CommandDisconnect::createCommand(void)
+	{
+		CommandBase::SPtr commandBase = constructSPtr<CommandDisconnect>();
+		return commandBase;
+	}
+
+	bool
+	CommandDisconnect::validateCommand(void)
+	{
+		return true;
+	}
+
+	bool
+	CommandDisconnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
+	{
+		std::stringstream ss;
+		ss << "invalid parameter " << parameterName;
+		errorMessage(ss.str());
+		return false;
 	}
 
 }
-

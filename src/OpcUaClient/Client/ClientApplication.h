@@ -15,19 +15,23 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#ifndef __OpcUaClient_ClientApplication_h__
+#define __OpcUaClient_ClientApplication_h__
 
+#include <stdint.h>
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	class ClientApplication
 	{
-	}
+	  public:
+		ClientApplication(void);
+		~ClientApplication(void);
 
-	ClientServiceManager::~ClientServiceManager(void)
-	{
-	}
+		int run(uint32_t argc, char** argv);
+	};
 
 }
 
+#endif

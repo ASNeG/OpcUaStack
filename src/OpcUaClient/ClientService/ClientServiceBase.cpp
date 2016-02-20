@@ -15,18 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
 
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	ClientServiceBase::ClientServiceBase(void)
+	: errorMessage_("")
 	{
 	}
 
-	ClientServiceManager::~ClientServiceManager(void)
+	ClientServiceBase::~ClientServiceBase(void)
 	{
+	}
+
+	void
+	ClientServiceBase::errorMessage(const std::string& errorMessage)
+	{
+		errorMessage_ = errorMessage;
+	}
+
+	std::string&
+	ClientServiceBase::errorMessage(void)
+	{
+		return errorMessage_;
 	}
 
 }

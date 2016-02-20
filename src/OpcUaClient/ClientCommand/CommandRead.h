@@ -15,24 +15,39 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_ClientServiceManager_h__
-#define __OpcUaClient_ClientServiceManager_h__
+#ifndef __OpcUaClient_CommandRead_h__
+#define __OpcUaClient_CommandRead_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaClient/ClientCommand/CommandBase.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	class ClientServiceManager
+	class CommandRead
+	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<ClientServiceManager> SPtr;
+		typedef boost::shared_ptr<CommandRead> SPtr;
 
-		ClientServiceManager(void);
-		~ClientServiceManager(void);
+		CommandRead(void);
+		virtual ~CommandRead(void);
+
+		//- CommandRead interface ---------------------------------------------
+		virtual CommandBase::SPtr createCommand(void);
+		virtual bool validateCommand(void);
+		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
+		//- CommandRead interface ---------------------------------------------
+
+		OpcUaNodeId::Vec& nodeIdVec(void);
+
+	  private:
+		OpcUaNodeId::Vec nodeIdVec_;
 	};
 
 }
 
 #endif
-

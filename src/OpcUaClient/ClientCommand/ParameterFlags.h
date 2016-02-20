@@ -15,19 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#ifndef __OpcUaClient_ParameterFlags_h__
+#define __OpcUaClient_ParameterFlags_h__
 
+#include <stdint.h>
+#include <map>
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	class ParameterFlags
 	{
-	}
+	  public:
+		ParameterFlags(void);
+		~ParameterFlags(void);
 
-	ClientServiceManager::~ClientServiceManager(void)
-	{
-	}
+		void addParameter(uint32_t parameterId);
+		bool existParameter(uint32_t parameterId);
+		uint32_t getParameter(uint32_t parameterId);
+
+	  private:
+		typedef std::map<uint32_t, uint32_t> FlagMap;
+		FlagMap flagMap_;
+
+	};
 
 }
 
+#endif

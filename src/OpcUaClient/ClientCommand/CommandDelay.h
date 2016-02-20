@@ -15,19 +15,36 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#ifndef __OpcUaClient_CommandDelay_h__
+#define __OpcUaClient_CommandDelay_h__
 
+#include <boost/shared_ptr.hpp>
+#include "OpcUaClient/ClientCommand/CommandBase.h"
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	class CommandDelay
+	: public CommandBase
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<CommandDelay> SPtr;
 
-	ClientServiceManager::~ClientServiceManager(void)
-	{
-	}
+		CommandDelay(void);
+		virtual ~CommandDelay(void);
+
+		//- CommandDelay interface ---------------------------------------------
+		virtual CommandBase::SPtr createCommand(void);
+		virtual bool validateCommand(void);
+		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
+		//- CommandDelay interface ---------------------------------------------
+
+		uint32_t timeout(void);
+
+	  private:
+		uint32_t timeout_;
+	};
 
 }
 
+#endif

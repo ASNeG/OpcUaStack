@@ -15,19 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#ifndef __OpcUaClient_ClientServiceDisconnect_h__
+#define __OpcUaClient_ClientServiceDisconnect_h__
 
+#include <boost/shared_ptr.hpp>
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	class ClientServiceDisconnect
+	: public ClientServiceBase
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<ClientServiceDisconnect> SPtr;
 
-	ClientServiceManager::~ClientServiceManager(void)
-	{
-	}
+		ClientServiceDisconnect(void);
+		virtual ~ClientServiceDisconnect(void);
+
+		//- ClientServiceDisconnect interface ---------------------------------------
+		virtual ClientServiceBase::SPtr createClientService(void);
+		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase);
+		//- ClientServiceDisconnect interface ---------------------------------------
+
+      private:
+
+	};
 
 }
+
+#endif
 

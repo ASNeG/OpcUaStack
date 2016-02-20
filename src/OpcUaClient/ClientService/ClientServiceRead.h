@@ -15,19 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#ifndef __OpcUaClient_ClientServiceRead_h__
+#define __OpcUaClient_ClientServiceRead_h__
 
+#include <boost/shared_ptr.hpp>
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	class ClientServiceRead
+	: public ClientServiceBase
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<ClientServiceRead> SPtr;
 
-	ClientServiceManager::~ClientServiceManager(void)
-	{
-	}
+		ClientServiceRead(void);
+		virtual ~ClientServiceRead(void);
+
+		//- ClientServiceRead interface ---------------------------------------
+		virtual ClientServiceBase::SPtr createClientService(void);
+		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase);
+		//- ClientServiceRead interface ---------------------------------------
+
+      private:
+
+	};
 
 }
+
+#endif
 

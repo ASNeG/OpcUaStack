@@ -15,18 +15,36 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientServiceManager.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientService/ClientServiceConnect.h"
 
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientServiceManager::ClientServiceManager(void)
+	ClientServiceConnect::ClientServiceConnect(void)
+	: ClientServiceBase()
 	{
 	}
 
-	ClientServiceManager::~ClientServiceManager(void)
+	ClientServiceConnect::~ClientServiceConnect(void)
 	{
+	}
+
+	ClientServiceBase::SPtr
+	ClientServiceConnect::createClientService(void)
+	{
+		return constructSPtr<ClientServiceConnect>();
+	}
+
+	bool
+	ClientServiceConnect::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	{
+		// FIXME: todo
+		std::cout << "run connect..." << std::endl;
+
+		return true;
 	}
 
 }
