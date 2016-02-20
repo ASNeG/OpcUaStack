@@ -32,9 +32,9 @@ namespace OpcUaClient
 		ClientServiceManager(void);
 		~ClientServiceManager(void);
 
-		ClientAccessObject::SPtr getClientAccess(const std::string& clientAccessObjectName);
-		ClientAccessObject::SPtr createClientAccess(const std::string& clientAccessObjectName);
-		ClientAccessObject::SPtr getOrCreateClientAccess(const std::string& clientAccessObjectName);
+		ClientAccessObject::SPtr getClientAccessObject(const std::string& clientAccessObjectName);
+		ClientAccessObject::SPtr createClientAccessObject(const std::string& clientAccessObjectName);
+		ClientAccessObject::SPtr getOrCreateClientAccessObject(const std::string& clientAccessObjectName);
 
 	  private:
 		ClientAccessObject::Map clientAccessObjectMap_;

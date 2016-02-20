@@ -39,7 +39,7 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceDelay::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	ClientServiceDelay::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		// FIXME: todo
 		std::cout << "run delay..." << std::endl;

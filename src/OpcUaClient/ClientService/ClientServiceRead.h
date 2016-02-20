@@ -36,7 +36,7 @@ namespace OpcUaClient
 
 		//- ClientServiceRead interface ---------------------------------------
 		virtual ClientServiceBase::SPtr createClientService(void);
-		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase);
+		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
 		//- ClientServiceRead interface ---------------------------------------
 
       private:

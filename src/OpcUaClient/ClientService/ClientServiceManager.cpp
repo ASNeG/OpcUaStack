@@ -33,7 +33,7 @@ namespace OpcUaClient
 	}
 
 	ClientAccessObject::SPtr
-	ClientServiceManager::getClientAccess(const std::string& clientAccessObjectName)
+	ClientServiceManager::getClientAccessObject(const std::string& clientAccessObjectName)
 	{
 		ClientAccessObject::Map::iterator it;
 		it = clientAccessObjectMap_.find(clientAccessObjectName);
@@ -44,7 +44,7 @@ namespace OpcUaClient
 	}
 
 	ClientAccessObject::SPtr
-	ClientServiceManager::createClientAccess(const std::string& clientAccessObjectName)
+	ClientServiceManager::createClientAccessObject(const std::string& clientAccessObjectName)
 	{
 		ClientAccessObject::SPtr clientAccessObject;
 		ClientAccessObject::Map::iterator it;
@@ -53,19 +53,19 @@ namespace OpcUaClient
 
 			return clientAccessObject;
 		}
-		ClientAccessObject = constructSPtr<ClientAccessObject>();
+		clientAccessObject = constructSPtr<ClientAccessObject>();
 		clientAccessObjectMap_.insert(std::make_pair(clientAccessObjectName, clientAccessObject));
 		return clientAccessObject;
 	}
 
 
 	ClientAccessObject::SPtr
-	ClientServiceManager::getOrCreateClientAccess(const std::string& clientAccessObjectName)
+	ClientServiceManager::getOrCreateClientAccessObject(const std::string& clientAccessObjectName)
 	{
 		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = getClientAccess(clientAccessObjectName);
+		clientAccessObject = getClientAccessObject(clientAccessObjectName);
 		if (clientAccessObject.get() != nullptr) return clientAccessObject;
-		return createClientAccess(clientAccessObjectName);
+		return createClientAccessObject(clientAccessObjectName);
 	}
 
 }

@@ -15,7 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/shared_ptr.hpp>
+#include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientCommand/CommandConnect.h"
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 
 using namespace OpcUaStackCore;
@@ -39,12 +42,21 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceConnect::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	ClientServiceConnect::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		std::cout << "run connect..." << std::endl;
+
 		CommandConnect::SPtr commandConnect = boost::static_pointer_cast<CommandConnect>(commandBase);
 
-		// create new client object
+		// create new or get existing client object
+		ClientAccessObject::SPtr clientAccessObject;
+		clientAccessObject = clientServiceManager.getOrCreateClientAccessObject(commandConnect->session());
+		if (clientAccessObject.get() == nullptr) {
+			std::stringstream ss;
+			ss << "create client access object failed for session " << commandConnect->session();
+			errorMessage(ss.str());
+			return false;
+		}
 
 		return true;
 	}

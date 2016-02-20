@@ -39,7 +39,7 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceRead::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	ClientServiceRead::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		// FIXME: todo
 		std::cout << "run read..." << std::endl;

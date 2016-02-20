@@ -39,7 +39,7 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceDisconnect::run(ClientServiceManager& clientServiceManager, CommandBase& commandBase)
+	ClientServiceDisconnect::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		// FIXME: todo
 		std::cout << "run disconnect..." << std::endl;

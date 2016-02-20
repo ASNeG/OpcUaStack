@@ -88,7 +88,7 @@ namespace OpcUaClient
 			}
 
 			// run client service
-			if (!clientServiceBase->run(clientServiceManager_, *commandBase.get())) {
+			if (!clientServiceBase->run(clientServiceManager_, commandBase)) {
 				std::stringstream ss;
 				ss << "client service for command " << commandBase->command() << " error: "
 				   << clientServiceBase->errorMessage();

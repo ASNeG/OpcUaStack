@@ -37,7 +37,7 @@ namespace OpcUaClient
 
 		//- ClientServiceBase interface ---------------------------------------
 		virtual SPtr createClientService(void) = 0;
-		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase& commandBase) = 0;
+		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase) = 0;
 		//- ClientServiceBase interface ---------------------------------------
 
 		void errorMessage(const std::string& errorMessage);
