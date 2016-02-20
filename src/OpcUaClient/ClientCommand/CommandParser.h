@@ -42,6 +42,7 @@ namespace OpcUaClient
 		bool parseCommand(uint32_t argc, char** argv, uint32_t idx);
 		bool parseSession(uint32_t argc, char** argv, uint32_t idx);
 		bool parseParameter(uint32_t argc, char** argv, uint32_t idx);
+		void help(const std::string& command);
 
 		std::string errorString_;
 		CommandBase::SPtr actualCommandBase_;

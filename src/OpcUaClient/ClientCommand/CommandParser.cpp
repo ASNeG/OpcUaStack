@@ -83,8 +83,11 @@ namespace OpcUaClient
 		// check first parameter
 		std::string para = argv[1];
 		boost::algorithm::trim(para);
-		if (boost::algorithm::to_upper_copy(para) != "-COMMAND") {
-			errorString("first parameter must be a command");
+		if (
+		    boost::algorithm::to_upper_copy(para) != "-COMMAND" &&
+		    boost::algorithm::to_upper_copy(para) != "-HELP"
+		) {
+			errorString("first parameter must be a command or help");
 			return false;
 		}
 
@@ -106,6 +109,12 @@ namespace OpcUaClient
 			else if (boost::algorithm::to_upper_copy(para) == "-SESSION") {
 				if (!parseSession(argc, argv, idx)) return false;
 				idx++;
+			}
+
+			// help
+			else if (boost::algorithm::to_upper_copy(para) == "-HELP") {
+				help("");
+				exit(1);
 			}
 
 			// other parameter
@@ -215,6 +224,22 @@ namespace OpcUaClient
 	}
 
 	void
+	CommandParser::help(const std::string& command)
+	{
+		std::cout
+		  << "OpcUaClient [-help] [-Command <Command> [-<ParameterName> <ParameterVariable>]*]*\n"
+		  << "\n"
+		  << "Commands:\n";
+
+		CommandFactory::iterator it;
+		for (it = commandFactory_.begin(); it != commandFactory_.end();  it++) {
+			std::cout << it->first << std::endl;
+		}
+
+		std::cout << std::endl;
+	}
+
+	void
 	CommandParser::errorString(const std::string& errorString)
 	{
 		errorString_ = errorString;
@@ -225,5 +250,7 @@ namespace OpcUaClient
 	{
 		return errorString_;
 	}
+
+
 
 }
