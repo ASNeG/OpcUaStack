@@ -20,6 +20,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include <map>
+#include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
+
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
@@ -32,6 +35,10 @@ namespace OpcUaClient
 
 		ClientAccessObject(void);
 		~ClientAccessObject(void);
+
+	  public:
+		ServiceSetManager serviceSetManager_;
+		SessionService::SPtr sessionService_;
 	};
 
 }

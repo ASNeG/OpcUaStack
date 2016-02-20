@@ -22,6 +22,8 @@ namespace OpcUaClient
 {
 
 	ClientAccessObject::ClientAccessObject(void)
+	: serviceSetManager_()
+	, sessionService_()
 	{
 	}
 

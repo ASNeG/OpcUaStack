@@ -58,7 +58,39 @@ namespace OpcUaClient
 			return false;
 		}
 
+		// set secure channel configuration
+		SessionServiceConfig sessionServiceConfig;
+		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.secureChannelClient_->endpointUrl(commandConnect->endpointUrl());
+		sessionServiceConfig.session_->sessionName(commandConnect->session());
+
+		// create session
+		if (clientAccessObject->sessionService_.get() == nullptr) {
+			clientAccessObject->sessionService_ = clientAccessObject->serviceSetManager_.sessionService(sessionServiceConfig);
+			if (clientAccessObject->sessionService_.get() == nullptr) {
+				std::stringstream ss;
+				ss << "create session service failed for session " << commandConnect->session();
+				return false;
+			}
+		}
+
+		// connect session
+		OpcUaStatusCode statusCode;
+		statusCode = clientAccessObject->sessionService_->syncConnect();
+		if (statusCode != Success) {
+			std::stringstream ss;
+			ss << "connect to opc ua server " << commandConnect->endpointUrl()
+			   <<  " error for session " << commandConnect->session();
+			return false;
+		}
+
 		return true;
+	}
+
+	void
+	ClientServiceConnect::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	{
+		// FIXME: todo
 	}
 
 }
