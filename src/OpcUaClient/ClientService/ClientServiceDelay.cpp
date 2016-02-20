@@ -15,8 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/thread/thread.hpp>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientService/ClientServiceDelay.h"
+#include "OpcUaClient/ClientCommand/CommandDelay.h"
 
 using namespace OpcUaStackCore;
 
@@ -41,8 +44,11 @@ namespace OpcUaClient
 	bool
 	ClientServiceDelay::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		// FIXME: todo
 		std::cout << "run delay..." << std::endl;
+
+		CommandDelay::SPtr commandDelay = boost::static_pointer_cast<CommandDelay>(commandBase);
+
+		boost::this_thread::sleep(boost::posix_time::milliseconds(commandDelay->timeout()));
 
 		return true;
 	}
