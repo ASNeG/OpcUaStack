@@ -29,12 +29,17 @@ using namespace OpcUaStackCore;
 
 int main(int argc, char** argv)
 {
+	Environment::installDir(INSTALL_DIR);
+	Environment::binDir(BIN_DIR);
+	Environment::confDir(CONF_DIR);
+	Environment::logDir(LOG_DIR);
+
 	OpcUaServer::ServerApplication serverApplication;
 #if WIN32
-	OpcUaServer::WindowsService* ws = OpcUaServer::WindowsService::instance();
+	OpcUaServer::WindowsService* service = OpcUaServer::WindowsService::instance();
 #else
-	OpcUaServer::LinuxService* ws = OpcUaServer::LinuxService::instance();
+	OpcUaServer::LinuxService* service = OpcUaServer::LinuxService::instance();
 #endif
-	ws->serverApplicationIf(&serverApplication);
-	ws->main("OpcUaServer", argc, argv);
+	service->serverApplicationIf(&serverApplication);
+	service->main("OpcUaServer", argc, argv);
 }

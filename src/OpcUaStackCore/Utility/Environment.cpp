@@ -8,6 +8,11 @@
 namespace OpcUaStackCore
 {
 
+	std::string Environment::installDir_ = "";
+	std::string Environment::binDir_ = "";
+	std::string Environment::confDir_ = "";
+	std::string Environment::logDir_ = "";
+
 	Environment::Environment(void)
 	{
 	}
@@ -64,6 +69,54 @@ namespace OpcUaStackCore
 	{
 		boost::filesystem::path path(relativePath);
 		return boost::filesystem::absolute(path).string();
+	}
+
+	void
+	Environment::installDir(const std::string& installDir)
+	{
+		installDir_ = installDir;
+	}
+
+	std::string&
+	Environment::installDir(void)
+	{
+		return installDir_;
+	}
+
+	void
+	Environment::binDir(const std::string& binDir)
+	{
+		binDir_ = binDir;
+	}
+
+	std::string&
+	Environment::binDir(void)
+	{
+		return binDir_;
+	}
+
+	void
+	Environment::confDir(const std::string& confDir)
+	{
+		confDir_ = confDir;
+	}
+
+	std::string&
+	Environment::confDir(void)
+	{
+		return confDir_;
+	}
+
+	void
+	Environment::logDir(const std::string& logDir)
+	{
+		logDir_ = logDir;
+	}
+
+	std::string&
+	Environment::logDir(void)
+	{
+		return logDir_;
 	}
 
 }
