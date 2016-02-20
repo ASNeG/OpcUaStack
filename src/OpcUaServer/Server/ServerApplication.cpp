@@ -31,7 +31,6 @@ namespace OpcUaServer
 	: ServerApplicationIf()
 	, running_(false)
 	, serviceName_("")
-	, installationPath_("")
 	, server_()
 	{
 	}
@@ -44,30 +43,35 @@ namespace OpcUaServer
 	ServerApplication::serviceName(const std::string& serviceName, unsigned int argc, char** argv)
 	{
 		serviceName_ = serviceName;
-		installationPath_ = Environment::getInstallationPath(Environment::binDir());
 		
-		// if we are on windows the installation directory of a component can
-		// differ from the installation directory of the opc ua server. In this
-		// case, we must determine the installation directory of the component.
-		boost::filesystem::path installDirectory(installationPath_);
-		if (installDirectory.has_leaf()) {
-			installDirectory.remove_leaf();
-			installDirectory /= serviceName_;
+		//
+		// <InstallationPath>/<BIN_DIR>/OpcUaServer
+		// <InstallationPath>/<CONF_DIR>/<ServiceName/OpcUaServer.xml
+		// <InstallationPath>/<LOG_DIR>/<ServiceName>/OpcUaServer.log
+		//
 
-			if (boost::filesystem::exists(installDirectory)) {
-				installationPath_ = installDirectory.string();
-			}
-		}
-
-		// determine the path of the configuration file
+		// It was only passed the service name
 		if (argc == 1) {
-		    configFileName_ = installationPath_
+			// The configuration file must be exist relative to the binary.
+			Environment::installDir(Environment::getInstallationPathRelative(Environment::binDir()));
+
+			// determine the path of the configuration file
+		    configFileName_ = Environment::installDir()
 				+ std::string("/") + Environment::confDir()
-				+ std::string("/") + serviceName_ 
+				+ std::string("/") + serviceName_
 				+ std::string("/OpcUaServer.xml");
 		}
+
+		// It was passed the service name and die path and name of the
+		// configuration file
 		else if (argc == 2) {
+			// The configuration file is given
 			configFileName_ = argv[1];
+			Environment::installDir(
+				Environment::getInstallationPathAbsolute(
+					serviceName_, configFileName_,Environment::confDir()
+			    )
+		    );
 		}
 	}
 
@@ -79,7 +83,7 @@ namespace OpcUaServer
 		config->alias("@BIN_DIR@", Environment::binDir());
 		config->alias("@CONF_DIR@", Environment::confDir());
 		config->alias("@LOG_DIR@", Environment::logDir());
-		config->alias("@INSTALL_DIR@", installationPath_);
+		config->alias("@INSTALL_DIR@", Environment::installDir());
 
 		return true;
 	}

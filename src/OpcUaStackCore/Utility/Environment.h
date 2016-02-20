@@ -18,7 +18,12 @@ namespace OpcUaStackCore
 		static std::string confDir_;
 		static std::string logDir_;
 
-		static std::string getInstallationPath(const std::string& binaryDirectory);
+		static std::string getInstallationPathRelative(const std::string& binaryDirectory);
+		static std::string getInstallationPathAbsolute(
+			const std::string& serviceName,
+			const std::string& configFileName,
+			const std::string& confDirectory
+		);
 		static std::string getCurrentPath(void);
 		static void setCurrentPath(const std::string& currentPath);
 		static std::string getAbsolutePath(const std::string& relativePath);

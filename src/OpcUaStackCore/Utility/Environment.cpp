@@ -22,7 +22,9 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	Environment::getInstallationPath(const std::string& binaryDirectory)
+	Environment::getInstallationPathRelative(
+		const std::string& binaryDirectory
+	)
 	{
 		std::string application = "";
 #ifdef WIN32
@@ -42,13 +44,41 @@ namespace OpcUaStackCore
 
 		while (binaryPath.begin() != binaryPath.end()) {
 			if (applicationPath.leaf() != binaryPath.leaf()) {
-				applicationPath = "invalid_application_path";
+				applicationPath = "invalid_installation_path";
 				break;
 			}
 			applicationPath.remove_leaf();
 			binaryPath.remove_leaf();
 		}
 		return applicationPath.string();
+	}
+
+	std::string
+	Environment::getInstallationPathAbsolute(
+		const std::string& serviceName,
+		const std::string& configFileName,
+		const std::string& confDirectory
+	)
+	{
+		boost::filesystem::path confFilePath(configFileName);
+		boost::filesystem::path confPath(confDirectory);
+
+		confFilePath = confFilePath.branch_path();
+
+		if (confFilePath.leaf().string() != serviceName) {
+			return std::string("invalid_installation_path_1");
+		}
+		confFilePath.remove_leaf();
+
+		while (confPath.begin() != confPath.end()) {
+			if (confFilePath.leaf() != confPath.leaf()) {
+				return "invalid_installation_path_2";
+			}
+			confFilePath.remove_leaf();
+			confPath.remove_leaf();
+		}
+
+		return confFilePath.string();
 	}
 
 	std::string 

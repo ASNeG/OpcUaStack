@@ -40,7 +40,6 @@ namespace OpcUaServer
 		OpcUaServer::Server server_;
 		std::string serviceName_;
 		std::string configFileName_;
-		std::string installationPath_;
 		bool running_;
 	};
 }
