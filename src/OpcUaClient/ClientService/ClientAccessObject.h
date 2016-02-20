@@ -24,14 +24,14 @@
 namespace OpcUaClient
 {
 
-	class ClientAccess
+	class ClientAccessObject
 	{
 	  public:
-		typedef boost::shared_ptr<ClientAccess> SPtr;
-		typedef std::map<std::string, ClientAccess::SPtr> Map;
+		typedef boost::shared_ptr<ClientAccessObject> SPtr;
+		typedef std::map<std::string, ClientAccessObject::SPtr> Map;
 
-		ClientAccess(void);
-		~ClientAccess(void);
+		ClientAccessObject(void);
+		~ClientAccessObject(void);
 	};
 
 }

@@ -19,7 +19,7 @@
 #define __OpcUaClient_ClientServiceManager_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaClient/ClientService/ClientAccess.h"
+#include "OpcUaClient/ClientService/ClientAccessObject.h"
 
 namespace OpcUaClient
 {
@@ -32,12 +32,12 @@ namespace OpcUaClient
 		ClientServiceManager(void);
 		~ClientServiceManager(void);
 
-		ClientAccess::SPtr getClientAccess(const std::string& clientAccessName);
-		ClientAccess::SPtr createClientAccess(const std::string& clientAccessName);
-		ClientAccess::SPtr getOrCreateClientAccess(const std::string& clientAccessName);
+		ClientAccessObject::SPtr getClientAccess(const std::string& clientAccessObjectName);
+		ClientAccessObject::SPtr createClientAccess(const std::string& clientAccessObjectName);
+		ClientAccessObject::SPtr getOrCreateClientAccess(const std::string& clientAccessObjectName);
 
 	  private:
-		ClientAccess::Map clientAccessMap_;
+		ClientAccessObject::Map clientAccessObjectMap_;
 	};
 
 }

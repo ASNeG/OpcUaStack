@@ -24,7 +24,7 @@ namespace OpcUaClient
 {
 
 	ClientServiceManager::ClientServiceManager(void)
-	: clientAccessMap_()
+	: clientAccessObjectMap_()
 	{
 	}
 
@@ -32,40 +32,40 @@ namespace OpcUaClient
 	{
 	}
 
-	ClientAccess::SPtr
-	ClientServiceManager::getClientAccess(const std::string& clientAccessName)
+	ClientAccessObject::SPtr
+	ClientServiceManager::getClientAccess(const std::string& clientAccessObjectName)
 	{
-		ClientAccess::Map::iterator it;
-		it = clientAccessMap_.find(clientAccessName);
-		if (it != clientAccessMap_.end()) return it->second;
+		ClientAccessObject::Map::iterator it;
+		it = clientAccessObjectMap_.find(clientAccessObjectName);
+		if (it != clientAccessObjectMap_.end()) return it->second;
 
-		ClientAccess::SPtr clientAccess;
-		return clientAccess;
+		ClientAccessObject::SPtr clientAccessObject;
+		return clientAccessObject;
 	}
 
-	ClientAccess::SPtr
-	ClientServiceManager::createClientAccess(const std::string& clientAccessName)
+	ClientAccessObject::SPtr
+	ClientServiceManager::createClientAccess(const std::string& clientAccessObjectName)
 	{
-		ClientAccess::SPtr clientAccess;
-		ClientAccess::Map::iterator it;
-		it = clientAccessMap_.find(clientAccessName);
-		if (it != clientAccessMap_.end()) {
+		ClientAccessObject::SPtr clientAccessObject;
+		ClientAccessObject::Map::iterator it;
+		it = clientAccessObjectMap_.find(clientAccessObjectName);
+		if (it != clientAccessObjectMap_.end()) {
 
-			return clientAccess;
+			return clientAccessObject;
 		}
-		ClientAccess = constructSPtr<ClientAccess>();
-		clientAccessMap_.insert(std::make_pair(clientAccessName, clientAccess));
-		return clientAccess;
+		ClientAccessObject = constructSPtr<ClientAccessObject>();
+		clientAccessObjectMap_.insert(std::make_pair(clientAccessObjectName, clientAccessObject));
+		return clientAccessObject;
 	}
 
 
-	ClientAccess::SPtr
-	ClientServiceManager::getOrCreateClientAccess(const std::string& clientAccessName)
+	ClientAccessObject::SPtr
+	ClientServiceManager::getOrCreateClientAccess(const std::string& clientAccessObjectName)
 	{
-		ClientAccess::SPtr clientAccess;
-		clientAccess = getClientAccess(clientAccessName);
-		if (clientAccess.get() != nullptr) return clientAccess;
-		return createClientAccess(clientAccessName);
+		ClientAccessObject::SPtr clientAccessObject;
+		clientAccessObject = getClientAccess(clientAccessObjectName);
+		if (clientAccessObject.get() != nullptr) return clientAccessObject;
+		return createClientAccess(clientAccessObjectName);
 	}
 
 }

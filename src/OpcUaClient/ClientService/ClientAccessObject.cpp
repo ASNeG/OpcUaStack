@@ -15,17 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientService/ClientAccess.h"
+#include "OpcUaClient/ClientService/ClientAccessObject.h"
 
 
 namespace OpcUaClient
 {
 
-	ClientAccess::ClientAccess(void)
+	ClientAccessObject::ClientAccessObject(void)
 	{
 	}
 
-	ClientAccess::~ClientAccess(void)
+	ClientAccessObject::~ClientAccessObject(void)
 	{
 	}
 
