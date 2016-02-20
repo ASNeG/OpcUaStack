@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EndpointUrl=opc.tcp://192.168.0.142:4841
+EndpointUrl=opc.tcp://127.0.0.1:8888
 
 OpcUaClient \
  -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \

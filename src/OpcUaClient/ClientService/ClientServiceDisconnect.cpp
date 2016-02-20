@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientCommand/CommandDisconnect.h"
 #include "OpcUaClient/ClientService/ClientServiceDisconnect.h"
 
 using namespace OpcUaStackCore;
@@ -41,8 +42,34 @@ namespace OpcUaClient
 	bool
 	ClientServiceDisconnect::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		// FIXME: todo
 		std::cout << "run disconnect..." << std::endl;
+		CommandDisconnect::SPtr commandDisconnect = boost::static_pointer_cast<CommandDisconnect>(commandBase);
+
+		// create new or get existing client object
+		ClientAccessObject::SPtr clientAccessObject;
+		clientAccessObject = clientServiceManager.getClientAccessObject(commandDisconnect->session());
+		if (clientAccessObject.get() == nullptr) {
+			std::stringstream ss;
+			ss << "get client access object failed for session " << commandDisconnect->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		// check session
+		if (clientAccessObject->sessionService_.get() == nullptr) {
+			std::stringstream ss;
+			ss << "session object not exist " << commandDisconnect->session();
+			return false;
+		}
+
+		// connect session
+		OpcUaStatusCode statusCode;
+		statusCode = clientAccessObject->sessionService_->syncDisconnect();
+		if (statusCode != Success) {
+			std::stringstream ss;
+			ss << "disconnect to opc ua server error for session " << commandDisconnect->session();
+			return false;
+		}
 
 		return true;
 	}
