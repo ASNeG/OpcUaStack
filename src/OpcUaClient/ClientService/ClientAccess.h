@@ -19,6 +19,7 @@
 #define __OpcUaClient_ClientAccess_h__
 
 #include <boost/shared_ptr.hpp>
+#include <map>
 
 namespace OpcUaClient
 {
@@ -27,6 +28,7 @@ namespace OpcUaClient
 	{
 	  public:
 		typedef boost::shared_ptr<ClientAccess> SPtr;
+		typedef std::map<std::string, ClientAccess::SPtr> Map;
 
 		ClientAccess(void);
 		~ClientAccess(void);
