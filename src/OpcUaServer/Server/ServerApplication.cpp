@@ -18,7 +18,6 @@
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include "BuildConfig.h"
 #include "OpcUaServer/Server/ServerApplication.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -45,7 +44,7 @@ namespace OpcUaServer
 	ServerApplication::serviceName(const std::string& serviceName, unsigned int argc, char** argv)
 	{
 		serviceName_ = serviceName;
-		installationPath_ = Environment::getInstallationPath(BIN_DIR);
+		installationPath_ = Environment::getInstallationPath(Environment::binDir());
 		
 		// if we are on windows the installation directory of a component can
 		// differ from the installation directory of the opc ua server. In this
@@ -63,7 +62,7 @@ namespace OpcUaServer
 		// determine the path of the configuration file
 		if (argc == 1) {
 		    configFileName_ = installationPath_
-				+ std::string("/") + std::string(CONF_DIR)
+				+ std::string("/") + Environment::confDir()
 				+ std::string("/") + serviceName_ 
 				+ std::string("/OpcUaServer.xml");
 		}
@@ -77,9 +76,9 @@ namespace OpcUaServer
 	{
 		// set global config alias variables
 		Config* config = Config::instance();
-		config->alias("@BIN_DIR@", std::string(CONF_DIR));
-		config->alias("@CONF_DIR@", std::string(CONF_DIR));
-		config->alias("@LOG_DIR@", std::string(LOG_DIR));
+		config->alias("@BIN_DIR@", Environment::binDir());
+		config->alias("@CONF_DIR@", Environment::confDir());
+		config->alias("@LOG_DIR@", Environment::logDir());
 		config->alias("@INSTALL_DIR@", installationPath_);
 
 		return true;
