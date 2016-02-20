@@ -76,6 +76,16 @@ namespace OpcUaClient
 		return true;
 	}
 
+	std::string
+	CommandRead::help(void)
+	{
+		std::stringstream ss;
+		ss << "  -Read: Reads one ore more data values from a opc ua server\n"
+		   << "    -Session (0..1): Name of the session. (Default: Main)\n"
+		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n";
+		return ss.str();
+	}
+
 	OpcUaNodeId::Vec&
 	CommandRead::nodeIdVec(void)
 	{

@@ -79,6 +79,15 @@ namespace OpcUaClient
 		return true;
 	}
 
+	std::string
+	CommandDelay::help(void)
+	{
+		std::stringstream ss;
+		ss << "  -Delay: Stops the application for a defined period\n"
+		   << "    -Timeout (1): Time in milli seconds\n";
+		return ss.str();
+	}
+
 	uint32_t
 	CommandDelay::timeout(void)
 	{

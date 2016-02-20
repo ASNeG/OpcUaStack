@@ -61,6 +61,16 @@ namespace OpcUaClient
 		return true;
 	}
 
+	std::string
+	CommandConnect::help(void)
+	{
+		std::stringstream ss;
+		ss << "  -Connect: Open a new connection to a opc ua server\n"
+		   << "    -Session (0..1): Name of the session. (Default: Main)\n"
+		   << "    -EndpointUrl (0..1): Endpoint Url of the server. (Default: opt.tcp://127.0.0.1:4841)\n";
+		return ss.str();
+	}
+
 	std::string&
 	CommandConnect::endpointUrl(void)
 	{

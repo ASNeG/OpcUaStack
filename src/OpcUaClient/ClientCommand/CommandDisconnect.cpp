@@ -56,4 +56,13 @@ namespace OpcUaClient
 		return false;
 	}
 
+	std::string
+	CommandDisconnect::help(void)
+	{
+		std::stringstream ss;
+		ss << "  -Disconnect: Close a existing connection to a opc ua server\n"
+		   << "    -Session (0..1): Name of the session.\n";
+		return ss.str();
+	}
+
 }

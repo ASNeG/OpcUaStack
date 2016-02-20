@@ -50,6 +50,7 @@ namespace OpcUaClient
 		virtual SPtr createCommand(void) = 0;
 		virtual bool validateCommand(void) = 0;
 		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue) = 0;
+		virtual std::string help(void) = 0;
 		//- CommandBase interface ---------------------------------------------
 
 		void cmd(const Cmd cmd);

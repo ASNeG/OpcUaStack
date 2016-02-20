@@ -37,6 +37,7 @@ namespace OpcUaClient
 		virtual CommandBase::SPtr createCommand(void);
 		virtual bool validateCommand(void);
 		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
+		virtual std::string help(void);
 		//- CommandDisconnect interface ---------------------------------------------
 
 	  private:
