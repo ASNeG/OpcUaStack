@@ -30,11 +30,11 @@ namespace OpcUaStackCore
 
 	ReadRawModifiedDetails::ReadRawModifiedDetails(void)
 	: ObjectPool<ReadRawModifiedDetails>()
-	, isReadModified_()
+	, isReadModified_(false)
 	, startTime_()
 	, endTime_()
-	, numValuesPerNode_()
-	, returnBoolean_()
+	, numValuesPerNode_(0)
+	, returnBoolean_(true)
 	{
 	}
 
