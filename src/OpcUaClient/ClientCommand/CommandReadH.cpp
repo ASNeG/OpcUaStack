@@ -27,7 +27,7 @@ namespace OpcUaClient
 {
 
 	CommandReadH::CommandReadH(void)
-	: CommandBase(CommandBase::Cmd_Read)
+	: CommandBase(CommandBase::Cmd_ReadH)
 	, nodeIdVec_()
 	, attributeIdVec_()
 	{

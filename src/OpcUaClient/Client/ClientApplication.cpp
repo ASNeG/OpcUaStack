@@ -32,6 +32,7 @@
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
 #include "OpcUaClient/ClientService/ClientServiceDisconnect.h"
 #include "OpcUaClient/ClientService/ClientServiceRead.h"
+#include "OpcUaClient/ClientService/ClientServiceReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceDelay.h"
 
 namespace OpcUaClient
@@ -60,6 +61,7 @@ namespace OpcUaClient
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Connect, constructSPtr<ClientServiceConnect>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Disconnect, constructSPtr<ClientServiceDisconnect>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Read, constructSPtr<ClientServiceRead>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_ReadH, constructSPtr<ClientServiceReadH>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Delay, constructSPtr<ClientServiceDelay>());
 
 		// parse command line
