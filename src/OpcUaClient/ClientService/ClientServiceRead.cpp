@@ -42,8 +42,7 @@ namespace OpcUaClient
 	bool
 	ClientServiceRead::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		std::cout << "run read..." << std::endl;
-
+		OpcUaStatusCode statusCode;
 		CommandRead::SPtr commandRead = boost::static_pointer_cast<CommandRead>(commandBase);
 
 		// create new or get existing client object
@@ -74,10 +73,46 @@ namespace OpcUaClient
 		}
 
 		// create read request
+		ServiceTransactionRead::SPtr trx;
+		trx = constructSPtr<ServiceTransactionRead>();
+		ReadRequest::SPtr req = trx->request();
+		req->readValueIdArray()->resize(commandRead->nodeIdVec().size());
+		for (uint32_t idx=0; idx<commandRead->nodeIdVec().size(); idx++) {
+			ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+			readValueIdSPtr->nodeId()->copyFrom(*commandRead->nodeIdVec()[idx]);
+			readValueIdSPtr->attributeId(commandRead->attributeIdVec()[idx]);
+			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
+			req->readValueIdArray()->push_back(readValueIdSPtr);
+		}
 
 		// send read request
+		attributeService->syncSend(trx);
 
 		// process read response
+		statusCode = trx->statusCode();
+		if (statusCode != Success) {
+			std::stringstream ss;
+			ss << "read error: "
+			   << " Session=" << commandRead->session()
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
+			errorMessage(ss.str());
+			return false;
+		}
+
+		ReadResponse::SPtr res = trx->response();
+		if (res->dataValueArray()->size() == 0) {
+			std::stringstream ss;
+			ss << "read response length error: "
+			   << " Session=" << commandRead->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		for (uint32_t idx=0; idx<res->dataValueArray()->size(); idx++) {
+			OpcUaDataValue::SPtr dataValue;
+			res->dataValueArray()->get(idx, dataValue);
+			dataValue->out(std::cout); std::cout << std::endl;
+		}
 
 		return true;
 	}

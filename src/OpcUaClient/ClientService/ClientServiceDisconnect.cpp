@@ -59,6 +59,7 @@ namespace OpcUaClient
 		if (clientAccessObject->sessionService_.get() == nullptr) {
 			std::stringstream ss;
 			ss << "session object not exist " << commandDisconnect->session();
+			errorMessage(ss.str());
 			return false;
 		}
 
@@ -67,7 +68,10 @@ namespace OpcUaClient
 		statusCode = clientAccessObject->sessionService_->syncDisconnect();
 		if (statusCode != Success) {
 			std::stringstream ss;
-			ss << "disconnect to opc ua server error for session " << commandDisconnect->session();
+			ss << "disconnect error: "
+			   << " Session=" << commandDisconnect->session()
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
+			errorMessage(ss.str());
 			return false;
 		}
 

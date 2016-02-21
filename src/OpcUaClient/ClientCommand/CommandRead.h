@@ -44,9 +44,11 @@ namespace OpcUaClient
 		//- CommandRead interface ---------------------------------------------
 
 		OpcUaNodeId::Vec& nodeIdVec(void);
+		std::vector<uint32_t>& attributeIdVec(void);
 
 	  private:
 		OpcUaNodeId::Vec nodeIdVec_;
+		std::vector<uint32_t> attributeIdVec_;
 	};
 
 }

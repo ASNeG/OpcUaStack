@@ -70,6 +70,7 @@ namespace OpcUaClient
 			if (clientAccessObject->sessionService_.get() == nullptr) {
 				std::stringstream ss;
 				ss << "create session service failed for session " << commandConnect->session();
+				errorMessage(ss.str());
 				return false;
 			}
 		}
@@ -79,8 +80,11 @@ namespace OpcUaClient
 		statusCode = clientAccessObject->sessionService_->syncConnect();
 		if (statusCode != Success) {
 			std::stringstream ss;
-			ss << "connect to opc ua server " << commandConnect->endpointUrl()
-			   <<  " error for session " << commandConnect->session();
+			ss << "connect error:"
+			   << " EndpointUrl="<< commandConnect->endpointUrl()
+			   << " Session=" << commandConnect->session()
+			   << " StatusCode="<< OpcUaStatusCodeMap::shortString(statusCode);
+			errorMessage(ss.str());
 			return false;
 		}
 
