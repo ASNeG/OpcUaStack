@@ -27,7 +27,7 @@ namespace OpcUaClient
 {
 
 	CommandWrite::CommandWrite(void)
-	: CommandBase(CommandBase::Cmd_Read)
+	: CommandBase(CommandBase::Cmd_Write)
 	, nodeIdVec_()
 	, dataValueVec_()
 	, attributeIdVec_()
