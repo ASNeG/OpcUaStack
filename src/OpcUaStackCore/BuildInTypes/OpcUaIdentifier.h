@@ -130,7 +130,6 @@
 #define OpcUaId_AddNodesRequest 486
 #define OpcUaId_AddNodesResponse 489
 #define OpcUaId_AddReferencesItem 379
-#define OpcUaId_AddReferencesRequest 492
 #define OpcUaId_AddReferencesResponse 495
 #define OpcUaId_DeleteNodesItem 382
 #define OpcUaId_DeleteNodesRequest 498

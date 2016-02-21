@@ -16,6 +16,8 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaClient/ClientCommand/CommandReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
 
@@ -79,6 +81,13 @@ namespace OpcUaClient
 		ServiceTransactionHistoryRead::SPtr trx;
 		trx = constructSPtr<ServiceTransactionHistoryRead>();
 		HistoryReadRequest::SPtr req = trx->request();
+
+		ReadRawModifiedDetails::SPtr readDetails;
+		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
+		readDetails->startTime(commandReadH->startTime());
+		readDetails->endTime(commandReadH->endTime());
+
 		req->nodesToRead()->resize(commandReadH->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandReadH->nodeIdVec().size(); idx++) {
 			HistoryReadValueId::SPtr readValueId = HistoryReadValueId::construct();
@@ -111,9 +120,32 @@ namespace OpcUaClient
 		}
 
 		for (uint32_t idx=0; idx<res->results()->size(); idx++) {
-			HistoryReadResultArray::SPtr readResultArray;
-			//res->results()->get(idx, readResultArray);
-			//dataValue->out(std::cout); std::cout << std::endl;
+			HistoryReadResult::SPtr readResult;
+			res->results()->get(idx, readResult);
+			if (readResult->statusCode() != Success) {
+				std::cout << "Status=" << OpcUaStatusCodeMap::shortString(readResult->statusCode()) << std::endl;;
+				continue;
+			}
+
+
+			OpcUaNodeId typeId = readResult->historyData()->parameterTypeId();
+			uint32_t id = typeId.nodeId<OpcUaUInt32>();
+			if (id != OpcUaId_HistoryData_Encoding_DefaultBinary) {
+				std::stringstream ss;
+				ss << "receive invalid message type: "
+				   << " Session=" << commandReadH->session()
+				   << " TypeNodeId=" << typeId.toString();
+				errorMessage(ss.str());
+				return false;
+			}
+
+			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
+			for (uint32_t idx=0; idx<historyData->dataValues()->size(); idx++) {
+				OpcUaDataValue::SPtr dataValue;
+				historyData->dataValues()->get(idx, dataValue);
+				dataValue->out(std::cout); std::cout << std::endl;
+
+			}
 		}
 
 		return true;

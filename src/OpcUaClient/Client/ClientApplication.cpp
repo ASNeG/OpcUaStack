@@ -39,11 +39,14 @@ namespace OpcUaClient
 {
 
 	ClientApplication::ClientApplication(void)
+	: core_()
 	{
+		core_.init();
 	}
 
 	ClientApplication::~ClientApplication(void)
 	{
+		core_.cleanup();
 	}
 
 	int

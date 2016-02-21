@@ -19,6 +19,9 @@
 #define __OpcUaClient_ClientApplication_h__
 
 #include <stdint.h>
+#include "OpcUaStackCore/Core/Core.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
@@ -30,6 +33,9 @@ namespace OpcUaClient
 		~ClientApplication(void);
 
 		int run(uint32_t argc, char** argv);
+
+	  private:
+		Core core_;
 	};
 
 }

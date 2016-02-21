@@ -33,6 +33,7 @@
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/ServiceSet/HistoryData.h"
 
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 #include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
@@ -109,6 +110,7 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
 
 		ep.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		ep.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
 	}
 
 	void
@@ -148,6 +150,7 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_ViewAttributes);
 
 		ep.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
 	}
 
 	void
