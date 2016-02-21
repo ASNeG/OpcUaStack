@@ -24,6 +24,8 @@
 #include "OpcUaClient/ClientCommand/CommandConnect.h"
 #include "OpcUaClient/ClientCommand/CommandDisconnect.h"
 #include "OpcUaClient/ClientCommand/CommandRead.h"
+#include "OpcUaClient/ClientCommand/CommandReadH.h"
+#include "OpcUaClient/ClientCommand/CommandWrite.h"
 #include "OpcUaClient/ClientCommand/CommandDelay.h"
 
 // services
@@ -50,6 +52,8 @@ namespace OpcUaClient
 		CommandParser::addCommand("CONNECT", constructSPtr<CommandConnect>());
 		CommandParser::addCommand("DISCONNECT", constructSPtr<CommandDisconnect>());
 		CommandParser::addCommand("READ", constructSPtr<CommandRead>());
+		CommandParser::addCommand("WRITE", constructSPtr<CommandWrite>());
+		CommandParser::addCommand("READH", constructSPtr<CommandReadH>());
 		CommandParser::addCommand("DELAY", constructSPtr<CommandDelay>());
 
 		// register service in service factory

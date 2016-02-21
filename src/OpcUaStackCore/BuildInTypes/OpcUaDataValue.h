@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaDataValue> SPtr;
+		typedef std::vector<OpcUaDataValue::SPtr> Vec;
 
 	    OpcUaDataValue(void);
 		~OpcUaDataValue(void);

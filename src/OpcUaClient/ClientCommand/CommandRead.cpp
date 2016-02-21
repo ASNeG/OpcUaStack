@@ -106,7 +106,7 @@ namespace OpcUaClient
 	{
 		std::stringstream ss;
 		ss << "  -Read: Reads one ore more data values from a opc ua server\n"
-		   << "    -Session (0..1): Name of the session. (Default: Main)\n"
+		   << "    -Session (0..1): Name of the session.\n"
 		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n"
 		   << "      -AttributeId (0..1): Attribute Identifier to read. (Default: 13)\n";
 		return ss.str();

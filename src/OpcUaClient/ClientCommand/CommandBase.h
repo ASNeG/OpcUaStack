@@ -39,6 +39,8 @@ namespace OpcUaClient
 			Cmd_Connect,
 			Cmd_Disconnect,
 			Cmd_Read,
+			Cmd_Write,
+			Cmd_ReadH,
 			Cmd_Delay,
 		} Cmd;
 
