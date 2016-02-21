@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaClient/ClientCommand/CommandRead.h"
 #include "OpcUaClient/ClientService/ClientServiceRead.h"
 
 using namespace OpcUaStackCore;
@@ -41,8 +42,42 @@ namespace OpcUaClient
 	bool
 	ClientServiceRead::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		// FIXME: todo
 		std::cout << "run read..." << std::endl;
+
+		CommandRead::SPtr commandRead = boost::static_pointer_cast<CommandRead>(commandBase);
+
+		// create new or get existing client object
+		ClientAccessObject::SPtr clientAccessObject;
+		clientAccessObject = clientServiceManager.getClientAccessObject(commandRead->session());
+		if (clientAccessObject.get() == nullptr) {
+			std::stringstream ss;
+			ss << "get client access object failed for session " << commandRead->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		// check session
+		if (clientAccessObject->sessionService_.get() == nullptr) {
+			std::stringstream ss;
+			ss << "session object not exist " << commandRead->session();
+			return false;
+		}
+
+		// get or create attribute service
+		AttributeService::SPtr attributeService;
+		attributeService = clientAccessObject->getOrCreateAttributeService();
+		if (attributeService.get() == nullptr) {
+			std::stringstream ss;
+			ss << "get client attribute service failed for session " << commandRead->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		// create read request
+
+		// send read request
+
+		// process read response
 
 		return true;
 	}

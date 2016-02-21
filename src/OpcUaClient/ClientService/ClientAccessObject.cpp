@@ -24,11 +24,27 @@ namespace OpcUaClient
 	ClientAccessObject::ClientAccessObject(void)
 	: serviceSetManager_()
 	, sessionService_()
+	, attributeService_()
 	{
 	}
 
 	ClientAccessObject::~ClientAccessObject(void)
 	{
+	}
+
+	AttributeService::SPtr
+	ClientAccessObject::getOrCreateAttributeService(void)
+	{
+		if (attributeService_.get() != nullptr ) {
+			return attributeService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return attributeService_;
+		}
+
+		attributeService_ = serviceSetManager_.attributeService(sessionService_);
+		return attributeService_;
 	}
 
 }

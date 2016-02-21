@@ -36,9 +36,14 @@ namespace OpcUaClient
 		ClientAccessObject(void);
 		~ClientAccessObject(void);
 
+		AttributeService::SPtr getOrCreateAttributeService(void);
+
 	  public:
 		ServiceSetManager serviceSetManager_;
+
 		SessionService::SPtr sessionService_;
+
+		AttributeService::SPtr attributeService_;
 	};
 
 }
