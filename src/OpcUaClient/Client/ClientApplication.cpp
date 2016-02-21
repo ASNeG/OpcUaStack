@@ -68,11 +68,12 @@ namespace OpcUaClient
 
 		// execute commands from command line line
 		ClientServiceExecute clientServiceExecute;
-		if (clientServiceExecute.run(commandBaseVec)) {
+		if (!clientServiceExecute.run(commandBaseVec)) {
 			std::cerr << clientServiceExecute.errorString() << std::endl;
 			return -1;
 		}
 
+		std::cout << "OK" << std::endl;
 		return 0;
 	}
 

@@ -44,8 +44,6 @@ namespace OpcUaClient
 	bool
 	ClientServiceConnect::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		std::cout << "run connect..." << std::endl;
-
 		CommandConnect::SPtr commandConnect = boost::static_pointer_cast<CommandConnect>(commandBase);
 
 		// create new or get existing client object

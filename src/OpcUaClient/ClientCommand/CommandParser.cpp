@@ -188,6 +188,7 @@ namespace OpcUaClient
 		std::string value = argv[idx+1];
 		boost::algorithm::trim(value);
 
+		session_ = value;
 		actualCommandBase_->session(value);
 		return true;
 	}

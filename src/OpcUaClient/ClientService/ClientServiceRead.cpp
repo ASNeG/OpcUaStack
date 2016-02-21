@@ -50,7 +50,8 @@ namespace OpcUaClient
 		clientAccessObject = clientServiceManager.getClientAccessObject(commandRead->session());
 		if (clientAccessObject.get() == nullptr) {
 			std::stringstream ss;
-			ss << "get client access object failed for session " << commandRead->session();
+			ss << "get client access object failed:"
+			   << " Session=" << commandRead->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -58,7 +59,8 @@ namespace OpcUaClient
 		// check session
 		if (clientAccessObject->sessionService_.get() == nullptr) {
 			std::stringstream ss;
-			ss << "session object not exist " << commandRead->session();
+			ss << "session object not exist: "
+			   << " Session=" << commandRead->session();
 			return false;
 		}
 
@@ -67,7 +69,8 @@ namespace OpcUaClient
 		attributeService = clientAccessObject->getOrCreateAttributeService();
 		if (attributeService.get() == nullptr) {
 			std::stringstream ss;
-			ss << "get client attribute service failed for session " << commandRead->session();
+			ss << "get client attribute service failed"
+			   << " Session=" << commandRead->session();
 			errorMessage(ss.str());
 			return false;
 		}

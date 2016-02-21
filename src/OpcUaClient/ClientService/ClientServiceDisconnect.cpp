@@ -42,7 +42,6 @@ namespace OpcUaClient
 	bool
 	ClientServiceDisconnect::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		std::cout << "run disconnect..." << std::endl;
 		CommandDisconnect::SPtr commandDisconnect = boost::static_pointer_cast<CommandDisconnect>(commandBase);
 
 		// create new or get existing client object

@@ -44,8 +44,6 @@ namespace OpcUaClient
 	bool
 	ClientServiceDelay::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		std::cout << "run delay..." << std::endl;
-
 		CommandDelay::SPtr commandDelay = boost::static_pointer_cast<CommandDelay>(commandBase);
 
 		boost::this_thread::sleep(boost::posix_time::milliseconds(commandDelay->timeout()));
