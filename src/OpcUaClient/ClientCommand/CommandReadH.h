@@ -19,6 +19,7 @@
 #define __OpcUaClient_CommandReadH_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 
@@ -44,11 +45,13 @@ namespace OpcUaClient
 		//- CommandReadH interface ---------------------------------------------
 
 		OpcUaNodeId::Vec& nodeIdVec(void);
-		std::vector<uint32_t>& attributeIdVec(void);
+		boost::posix_time::ptime& startTime(void);
+		boost::posix_time::ptime& endTime(void);
 
 	  private:
 		OpcUaNodeId::Vec nodeIdVec_;
-		std::vector<uint32_t> attributeIdVec_;
+		boost::posix_time::ptime startTime_;
+		boost::posix_time::ptime endTime_;
 	};
 
 }

@@ -29,8 +29,11 @@ namespace OpcUaClient
 	CommandReadH::CommandReadH(void)
 	: CommandBase(CommandBase::Cmd_ReadH)
 	, nodeIdVec_()
-	, attributeIdVec_()
+	, startTime_()
+	, endTime_()
 	{
+		startTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
+		endTime_ = boost::posix_time::microsec_clock::universal_time();
 	}
 
 	CommandReadH::~CommandReadH(void)
@@ -68,29 +71,42 @@ namespace OpcUaClient
 				return false;
 			}
 			nodeIdVec_.push_back(nodeId);
-			attributeIdVec_.push_back(13);
 		}
-		else if (parameterName == "-ATTRIBUTEID") {
-			uint32_t attributeId;
-			try {
-				attributeId = boost::lexical_cast<uint32_t>(parameterValue);
+		else if (parameterName == "-STARTTIME") {
+			std::string value = parameterValue;
+			boost::algorithm::to_upper(value);
+			if (value == "NOW") {
+				startTime_ = boost::posix_time::microsec_clock::universal_time();
 			}
-			catch (...)
-			{
-				std::stringstream ss;
-				ss << "AttributeID parameter invalid (" << parameterValue << ")";
-				errorMessage(ss.str());
-				return false;
-		    }
-
-			if (attributeIdVec_.size() == 0) {
-				std::stringstream ss;
-				ss << "cannot add AttributeId, because NodeId not exist";
-				errorMessage(ss.str());
-				return false;
+			else {
+				try {
+					startTime_ = boost::posix_time::from_iso_string(parameterValue);
+				} catch (...)
+				{
+					std::stringstream ss;
+					ss << "start time parameter invalid (" << parameterValue << ")";
+					errorMessage(ss.str());
+					return false;
+				}
 			}
-
-			attributeIdVec_[attributeIdVec_.size()-1] = attributeId;
+		}
+		else if (parameterName == "-ENDTIME") {
+			std::string value = parameterValue;
+			boost::algorithm::to_upper(value);
+			if (value == "NOW") {
+				endTime_ = boost::posix_time::microsec_clock::universal_time();
+			}
+			else {
+				try {
+					endTime_ = boost::posix_time::from_iso_string(parameterValue);
+				} catch (...)
+				{
+					std::stringstream ss;
+					ss << "end time parameter invalid (" << parameterValue << ")";
+					errorMessage(ss.str());
+					return false;
+				}
+			}
 		}
 		else {
 			std::stringstream ss;
@@ -107,10 +123,15 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -ReadH: Read one ore more historical data values from a opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n"
-		   << "      -StartTime (1) start time of data\n"
-		   << "      -StopTime (1) stop time of data\n"
-		   << "      -AttributeId (0..1): Attribute Identifier to read. (Default: 13)\n";
+		   << "    -StartTime (0..1) start time of data (Default: 16010101T000000)\n"
+		   << "     Format:\n"
+		   << "       ISO Format (Example: 16010101T000000.0)\n"
+		   << "       Now (Example: Now)\n"
+		   << "    -EndTime (0..1) end time of data ISO Format (Default: Now)\n"
+		   << "     Format:\n"
+		   << "       ISO Format (Example: 16010101T120000.0)\n"
+		   << "       Now (Example: Now)\n"
+		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n";
 		return ss.str();
 	}
 
@@ -120,10 +141,16 @@ namespace OpcUaClient
 		return nodeIdVec_;
 	}
 
-	std::vector<uint32_t>&
-	CommandReadH::attributeIdVec(void)
+	boost::posix_time::ptime&
+	CommandReadH::startTime(void)
 	{
-		return attributeIdVec_;
+		return startTime_;
+	}
+
+	boost::posix_time::ptime&
+	CommandReadH::endTime(void)
+	{
+		return endTime_;
 	}
 
 }
