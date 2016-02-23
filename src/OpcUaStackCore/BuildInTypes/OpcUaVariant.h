@@ -109,22 +109,24 @@ namespace OpcUaStackCore
 			  return boost::static_pointer_cast<VAL>(val.objectSPtr_);
 		  }
 
-		  void copyTo(OpcUaVariantValue& variantValue);
+		bool fromString(const std::string& string);
+		bool fromString(OpcUaBuildInType type, const std::string& string);
+		void copyTo(OpcUaVariantValue& variantValue);
 
-		  void out(std::ostream& os) const;
-		  friend std::ostream& operator<<(std::ostream& os, const OpcUaVariantValue& value) {
-			  value.out(os);
-			  return os;
-		  }
+		void out(std::ostream& os) const;
+		friend std::ostream& operator<<(std::ostream& os, const OpcUaVariantValue& value) {
+			value.out(os);
+			return os;
+		}
 
-		  bool operator!=(OpcUaVariantValue& variantValue);
-		  bool operator==(OpcUaVariantValue& variantValue);
+		bool operator!=(OpcUaVariantValue& variantValue);
+		bool operator==(OpcUaVariantValue& variantValue);
 
-		  void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
-		  void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
+		void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
+		void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
 
-		  bool encode(boost::property_tree::ptree& pt, OpcUaBuildInType opcUaBuildInType) const;
-		  bool decode(boost::property_tree::ptree& pt, OpcUaBuildInType opcUaBuildInType);
+		bool encode(boost::property_tree::ptree& pt, OpcUaBuildInType opcUaBuildInType) const;
+		bool decode(boost::property_tree::ptree& pt, OpcUaBuildInType opcUaBuildInType);
 
 	  private:
 		OpcUaVariantValueType variantValue_;
