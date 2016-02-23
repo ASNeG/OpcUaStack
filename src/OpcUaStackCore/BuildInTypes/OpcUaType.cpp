@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
 
 namespace OpcUaStackCore
@@ -56,34 +57,37 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaBuildInType
-	OpcUaBuildInTypeMap::string2BuildInType(const std::string& type)
+	OpcUaBuildInTypeMap::string2BuildInType(const std::string& typeString)
 	{
-		if (type == "Unknown") return OpcUaBuildInType_Unknown;
-		else if (type == "Boolean") return OpcUaBuildInType_OpcUaBoolean;
-		else if (type == "SByte") return OpcUaBuildInType_OpcUaSByte;
-		else if (type == "Byte") return OpcUaBuildInType_OpcUaByte;
-		else if (type == "Int16") return OpcUaBuildInType_OpcUaInt16;
-		else if (type == "UInt16") return OpcUaBuildInType_OpcUaUInt16;
-		else if (type == "Int32") return OpcUaBuildInType_OpcUaInt32;
-		else if (type == "UInt32") return OpcUaBuildInType_OpcUaUInt32;
-		else if (type == "Int64") return OpcUaBuildInType_OpcUaInt64;
-		else if (type == "UInt64") return OpcUaBuildInType_OpcUaUInt64;
-		else if (type == "Float") return OpcUaBuildInType_OpcUaFloat;
-		else if (type == "Double") return OpcUaBuildInType_OpcUaDouble;
-		else if (type == "String") return OpcUaBuildInType_OpcUaString;
-		else if (type == "DateTime") return OpcUaBuildInType_OpcUaDateTime;
-		else if (type == "Guid") return OpcUaBuildInType_OpcUaGuid;
-		else if (type == "ByteString") return OpcUaBuildInType_OpcUaByteString;
-		else if (type == "XmlElement") return OpcUaBuildInType_OpcUaXmlElement;
-		else if (type == "NodeId") return OpcUaBuildInType_OpcUaNodeId;
-		else if (type == "ExpandedNodeId") return OpcUaBuildInType_OpcUaExpandedNodeId;
-		else if (type == "StatusCode") return OpcUaBuildInType_OpcUaStatusCode;
-		else if (type == "QualifiedName") return OpcUaBuildInType_OpcUaQualifiedName;
-		else if (type == "LocalizedText") return OpcUaBuildInType_OpcUaLocalizedText;
-		else if (type == "ExtensionObject") return OpcUaBuildInType_OpcUaExtensionObject;
-		else if (type == "DataValue") return OpcUaBuildInType_OpcUaDataValue;
-		else if (type == "Variant") return OpcUaBuildInType_OpcUaVariant;
-		else if (type == "DiagnosticInfo") return OpcUaBuildInType_OpcUaDiagnosticInfo;
+		std::string type = typeString;
+		boost::to_upper(type);
+
+		if (type == "UNKNOWN") return OpcUaBuildInType_Unknown;
+		else if (type == "BOOLEAN") return OpcUaBuildInType_OpcUaBoolean;
+		else if (type == "SBYTE") return OpcUaBuildInType_OpcUaSByte;
+		else if (type == "BYTE") return OpcUaBuildInType_OpcUaByte;
+		else if (type == "INT16") return OpcUaBuildInType_OpcUaInt16;
+		else if (type == "UINT16") return OpcUaBuildInType_OpcUaUInt16;
+		else if (type == "INT32") return OpcUaBuildInType_OpcUaInt32;
+		else if (type == "UINT32") return OpcUaBuildInType_OpcUaUInt32;
+		else if (type == "INT64") return OpcUaBuildInType_OpcUaInt64;
+		else if (type == "UINT64") return OpcUaBuildInType_OpcUaUInt64;
+		else if (type == "FLOAT") return OpcUaBuildInType_OpcUaFloat;
+		else if (type == "DOUBLE") return OpcUaBuildInType_OpcUaDouble;
+		else if (type == "STRING") return OpcUaBuildInType_OpcUaString;
+		else if (type == "DATETIME") return OpcUaBuildInType_OpcUaDateTime;
+		else if (type == "GUID") return OpcUaBuildInType_OpcUaGuid;
+		else if (type == "BYTESTRING") return OpcUaBuildInType_OpcUaByteString;
+		else if (type == "XMLELEMENT") return OpcUaBuildInType_OpcUaXmlElement;
+		else if (type == "NODEID") return OpcUaBuildInType_OpcUaNodeId;
+		else if (type == "EXPANDEDNODEID") return OpcUaBuildInType_OpcUaExpandedNodeId;
+		else if (type == "STATUSCODE") return OpcUaBuildInType_OpcUaStatusCode;
+		else if (type == "QUALIFIEDNAME") return OpcUaBuildInType_OpcUaQualifiedName;
+		else if (type == "LOCALIZEDTEXT") return OpcUaBuildInType_OpcUaLocalizedText;
+		else if (type == "EXTENSIONOBJECT") return OpcUaBuildInType_OpcUaExtensionObject;
+		else if (type == "DATAVALUE") return OpcUaBuildInType_OpcUaDataValue;
+		else if (type == "VARIANT") return OpcUaBuildInType_OpcUaVariant;
+		else if (type == "DIAGNOSTICINFO") return OpcUaBuildInType_OpcUaDiagnosticInfo;
 		else return OpcUaBuildInType_Unknown;
 	}
 
