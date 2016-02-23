@@ -54,11 +54,24 @@ namespace OpcUaStackCore
 		return it->second;
 	}
 
+	OpcUaStatusCode
+	OpcUaStatusCodeMap::statusCode(const std::string& statusCodeString)
+	{
+		initial();
+		StatusCodeReverseMap::iterator it = reverseStatusCodeMap_.find(statusCodeString);
+		if (it == longStatusCodeMap_.end()) {
+			return BadStatusCodeUnknown;
+		}
+		return it->second;
+	}
+
 	void 
 	OpcUaStatusCodeMap::insert(OpcUaStatusCode statusCode, const std::string& shortStatusCodeString, const std::string& longStatusCodeString)
 	{
 		shortStatusCodeMap_.insert(std::make_pair(statusCode, shortStatusCodeString));
 		longStatusCodeMap_.insert(std::make_pair(statusCode, longStatusCodeString));
+
+		reverseStatusCodeMap_.insert(std::make_pair(shortStatusCodeString, statusCode));
 	}
 
 	void

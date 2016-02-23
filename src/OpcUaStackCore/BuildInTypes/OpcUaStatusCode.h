@@ -244,6 +244,8 @@ namespace OpcUaStackCore
 		BadWouldBlock =							0x80B50000,
 		BadSyntaxError =						0x80B60000,
 		BadMaxConnectionsReached =				0x80B70000,
+
+		BadStatusCodeUnknown =					0xFFFFFFFF,
 	} OpcUaStatusCode;
 
 
@@ -251,8 +253,11 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef std::map<OpcUaStatusCode, std::string> StatusCodeMap;
+		typedef std::map<std::string,OpcUaStatusCode> StatusCodeReverseMap;
+
 		static std::string shortString(OpcUaStatusCode statusCode);
 		static std::string longString(OpcUaStatusCode statusCode);
+		static OpcUaStatusCode statusCode(const std::string& statusCodeString);
 
 	  private:
 		static void initial(void);
@@ -261,6 +266,7 @@ namespace OpcUaStackCore
 		static bool mapExist_;
 		static StatusCodeMap shortStatusCodeMap_;
 		static StatusCodeMap longStatusCodeMap_;
+		static StatusCodeReverseMap reverseStatusCodeMap_;
 
 		OpcUaStatusCodeMap(void);
 		~OpcUaStatusCodeMap(void);
