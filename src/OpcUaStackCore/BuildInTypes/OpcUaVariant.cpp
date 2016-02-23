@@ -517,7 +517,7 @@ namespace OpcUaStackCore
 			case  OpcUaBuildInType_OpcUaStatusCode:
 			{
 				OpcUaStatusCode value = OpcUaStatusCodeMap::statusCode(string);
-				if (value != OpcUaStatusCode::BadStatusCodeUnknown) {
+				if (value != BadStatusCodeUnknown) {
 					Log(Error, "invalid status code value")
 						.parameter("Value", string);
 					return false;

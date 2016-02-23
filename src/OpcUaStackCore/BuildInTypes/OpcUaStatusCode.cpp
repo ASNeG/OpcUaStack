@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 	bool OpcUaStatusCodeMap::mapExist_ = false;
 	OpcUaStatusCodeMap::StatusCodeMap OpcUaStatusCodeMap::shortStatusCodeMap_;
 	OpcUaStatusCodeMap::StatusCodeMap OpcUaStatusCodeMap::longStatusCodeMap_;
+	OpcUaStatusCodeMap::StatusCodeReverseMap OpcUaStatusCodeMap::reverseStatusCodeMap_;
 
 	std::string 
 	OpcUaStatusCodeMap::shortString(OpcUaStatusCode statusCode)
@@ -59,7 +60,7 @@ namespace OpcUaStackCore
 	{
 		initial();
 		StatusCodeReverseMap::iterator it = reverseStatusCodeMap_.find(statusCodeString);
-		if (it == longStatusCodeMap_.end()) {
+		if (it == reverseStatusCodeMap_.end()) {
 			return BadStatusCodeUnknown;
 		}
 		return it->second;

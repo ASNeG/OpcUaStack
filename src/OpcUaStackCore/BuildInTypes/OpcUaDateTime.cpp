@@ -96,6 +96,8 @@ namespace OpcUaStackCore
 	OpcUaDateTime::fromISOString(const std::string& dateTimeString)
 	{
 		std::stringstream ss;
+
+		// do not delete this memory by yourself
 		boost::posix_time::time_input_facet* facet = new boost::posix_time::time_input_facet();
 		facet->set_iso_extended_format();
 		ss.imbue(std::locale(ss.getloc(), facet));
@@ -103,7 +105,6 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime timeFromString; 
 		ss >> timeFromString;
 		dateTime(timeFromString);
-		delete facet;
 		return true;
 	}
 
