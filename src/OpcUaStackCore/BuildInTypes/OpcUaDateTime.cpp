@@ -103,6 +103,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime timeFromString; 
 		ss >> timeFromString;
 		dateTime(timeFromString);
+		delete facet;
 		return true;
 	}
 
