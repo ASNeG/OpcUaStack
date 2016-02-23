@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		void reset(void);
 		bool exist(void) const;
 
+		bool fromHexString(const std::string& hexString);
 		std::string toHexString(void) const;
 		OpcUaByteString& operator=(const std::string& string); 
 		operator std::string const (void); 

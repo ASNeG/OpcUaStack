@@ -232,6 +232,18 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaByteString::fromHexString(const std::string& hexString)
+	{
+		if (hexString.length() < 1) return true;
+		if (hexString.length() % 2 != 0) return false;
+
+		length_ = hexString.length()/2;
+		value_ = (OpcUaByte*)malloc(length_);
+		OpcUaStackCore::hexStringToByteSequence(hexString, value_);
+		return true;
+	}
+
 	std::string 
 	OpcUaByteString::toHexString(void) const
 	{
