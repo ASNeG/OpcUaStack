@@ -249,7 +249,8 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 		if (length_ > 0) {
-			OpcUaStackCore::dumpHex((const char *)value_, (const uint32_t)length_, ss);
+		    OpcUaStackCore::byteSequenceToHexString((const uint8_t *)value_, (const uint32_t)length_, ss);
+			//OpcUaStackCore::dumpHex((const char *)value_, (const uint32_t)length_, ss);
 		}
 		return ss.str();
 	}
