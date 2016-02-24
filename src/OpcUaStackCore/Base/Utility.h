@@ -33,11 +33,12 @@ namespace OpcUaStackCore
 
 	DLLEXPORT void dumpHex(std::streambuf& sb, std::ostream& os = std::cout);
 	DLLEXPORT void dumpHex(std::iostream& ios, std::ostream& os = std::cout);
-	DLLEXPORT void dumpHex(const char* buf, const uint32_t bufLen, std::ostream& os = std::cout);
+	DLLEXPORT void dumpHex(const char* buf, const uint32_t bufLen, std::ostream& os = std::cout, bool info = true);
 
 	DLLEXPORT void hexStringToByteSequence(const std::string& hexString, uint8_t* byteSequence);
 	DLLEXPORT void hexStringToStream(const std::string& hexString, std::iostream& ios);
 	DLLEXPORT void byteSequenceToHexString(const uint8_t* byteSequence, uint32_t byteSequenceLength, std::string& hexString);
+	DLLEXPORT void byteSequenceToHexString(const uint8_t* byteSequence, uint32_t byteSequenceLength, std::iostream& ios);
 
 	DLLEXPORT bool compare(std::iostream& ios, const std::string& string, uint32_t& pos);
 }

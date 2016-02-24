@@ -222,6 +222,13 @@ namespace OpcUaStackCore
 		}
 	}
 
+	void byteSequenceToHexString(const uint8_t* byteSequence, uint32_t byteSequenceLength, std::iostream& ios)
+	{
+		std::string out;
+		byteSequenceToHexString(byteSequence, byteSequenceLength, out);
+		ios << out;
+	}
+
 	bool compare(std::iostream& ios, const std::string& string, uint32_t& pos)
 	{
 		uint32_t ct = count(ios);
