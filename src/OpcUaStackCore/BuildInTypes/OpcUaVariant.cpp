@@ -351,7 +351,7 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariantValue::fromString(OpcUaBuildInType type, const std::string& string)
 	{
-		switch (variantType())
+		switch (type)
 		{
 			case  OpcUaBuildInType_OpcUaBoolean:
 			{
@@ -606,6 +606,9 @@ namespace OpcUaStackCore
 			}
 			default:
 			{
+				Log(Error, "unknown data type")
+					.parameter("Value", string);
+				return false;
 				return false;
 			}
 		}
