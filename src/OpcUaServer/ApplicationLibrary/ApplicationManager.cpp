@@ -103,7 +103,7 @@ namespace OpcUaServer
 			    .parameter("ConfigFile", *configFileName);
 
 			// create application library instance
-			ApplicationLibrary::SPtr applicationLibrary = ApplicationLibrary::construct();
+			ApplicationLibrary::SPtr applicationLibrary = constructSPtr<ApplicationLibrary>();
 			applicationLibrary->applicationInfo(applicationInfo);
 			if (!applicationLibrary->startup()) {
 				return false;
@@ -112,6 +112,8 @@ namespace OpcUaServer
 			// call startup function
 			ApplicationIf* applicationIf;
 			applicationIf = applicationLibrary->applicationIf();
+			applicationIf->config(config_);
+			applicationIf->applicationInfo(&applicationLibrary->applicationInfo());
 
 			applicationLibraryMap_.insert(
 				std::make_pair(*applicationName, applicationLibrary)

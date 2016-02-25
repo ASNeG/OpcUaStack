@@ -33,7 +33,7 @@ namespace OpcUaServer
 {
 
 	class ApplicationLibrary
-	: public  ObjectPool<ApplicationLibrary>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationLibrary> SPtr;
