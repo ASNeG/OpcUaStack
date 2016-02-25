@@ -221,6 +221,9 @@ namespace OpcUaStackCore
 			  return variantValueVec_[pos].variantSPtr<VAL>();
 		  }
 
+		bool fromString(const std::string& string);
+		bool fromString(OpcUaBuildInType type, bool isArray, const std::string& string);
+
 		void copyTo(OpcUaVariant& variant);
 
 		bool operator==(OpcUaVariant& variant);

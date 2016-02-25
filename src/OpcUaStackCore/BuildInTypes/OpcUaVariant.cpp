@@ -1755,6 +1755,47 @@ namespace OpcUaStackCore
 		return variantValueVec_[0].variantType();
 	}
 
+	bool
+	OpcUaVariant::fromString(const std::string& string)
+	{
+		// split string into type and variable
+		size_t pos = string.find(":");
+		if (pos == std::string::npos) return false;
+
+		std::string typeString = string.substr(0, pos);
+		std::string valueString = string.substr(pos+1, string.length()-pos-1);
+		bool isArray = false;
+
+		// type can be an array
+		if (typeString.length() > 5) {
+			std::string substr = typeString.substr(typeString.length()-5, 5);
+			boost::to_upper(substr);
+			if (substr == "ARRAY") {
+				isArray = true;
+				typeString = typeString.substr(0, typeString.length()-5);
+			}
+		}
+
+		// get build in type
+		OpcUaBuildInType type = OpcUaBuildInTypeMap::string2BuildInType(typeString);
+
+		// create build in type
+		return fromString(type, isArray, valueString);
+	}
+
+	bool
+	OpcUaVariant::fromString(OpcUaBuildInType type, bool isArray, const std::string& string)
+	{
+		// FIXME: read array
+		if (isArray) return false;
+
+		OpcUaVariantValue variantValue;
+		if (!variantValue.fromString(type, string)) return false;
+		clear();
+		variantValueVec_[0] = variantValue;
+		return true;
+	}
+
 	void 
 	OpcUaVariant::copyTo(OpcUaVariant& variant)
 	{
