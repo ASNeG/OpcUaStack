@@ -1814,6 +1814,12 @@ namespace OpcUaStackCore
 		variant.arrayDimension(arrayDimensionsVec_);
 	}
 
+	void
+	OpcUaVariant::copyFrom(OpcUaVariant& variant)
+	{
+		variant.copyTo(*this);
+	}
+
 	bool 
 	OpcUaVariant::operator==(OpcUaVariant& variant)
 	{

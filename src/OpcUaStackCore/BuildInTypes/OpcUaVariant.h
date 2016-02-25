@@ -225,6 +225,7 @@ namespace OpcUaStackCore
 		bool fromString(OpcUaBuildInType type, bool isArray, const std::string& string);
 
 		void copyTo(OpcUaVariant& variant);
+		void copyFrom(OpcUaVariant& variant);
 
 		bool operator==(OpcUaVariant& variant);
 		bool operator!=(OpcUaVariant& variant);
