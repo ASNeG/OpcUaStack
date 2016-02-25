@@ -30,10 +30,6 @@
     
   </Logging>
   
-  <Application>
-      <ApplicationLibrary>OpcUaServerApplicationDemo</ApplicationLibrary>
-  </Application>
-  
   <Endpoints>
     <EndpointDescription>
 	  <EndpointUrl>opc.tcp://0.0.0.0:8888/0.0.0.0</EndpointUrl>
@@ -82,6 +78,13 @@
 	</EndpointDescription>
 	-->
   </Endpoints>
+  
+  <Applications>
+    <Name>ASNeG-Demo</name>  
+    <Library>OpcUaServerApplicationDemo</Application>
+    <Config></Config>
+  </Applications>
+  
   
   <InformationModel>
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.xml</NodeSetFile>
