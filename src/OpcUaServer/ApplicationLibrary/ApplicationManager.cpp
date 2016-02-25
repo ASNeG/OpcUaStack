@@ -16,7 +16,10 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/Application/ApplicationInfo.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
+
+using namespace OpcUaStackServer;
 
 namespace OpcUaServer
 {
@@ -37,30 +40,71 @@ namespace OpcUaServer
 	{
 		std::string configurationFileName = config_->getValue("Global.ConfigurationFileName", "Unknown");
 
+		// get list of all configured applications
 		std::vector<Config> applicationVec;
-		config_->getChilds("OpcUaServer.Application", applicationVec);
+		config_->getChilds("OpcUaServer.Applications.Application", applicationVec);
 		if (applicationVec.size() == 0) {
 			Log(Info, "no application in configuration available")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", "OpcUaServer.Application");
+				.parameter("ParameterPath", "OpcUaServer.Applications.Application");
 			return true;
 		}
 
+		// parse all applications
 		std::vector<Config>::iterator it;
 		for (it = applicationVec.begin(); it != applicationVec.end(); it++) {
-			boost::optional<std::string> moduleName = it->getValue("ApplicationLibrary");
-			if (!moduleName) {
+			ApplicationInfo applicationInfo;
+
+			// parse application name
+			boost::optional<std::string> applicationName = it->getValue("Name");
+			if (!applicationName) {
+				Log(Info, "no application name in configuration available")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", "OpcUaServer.Applications.Application.Name");
+				return false;
+			}
+			applicationInfo.applicationName(*applicationName);
+
+			// parse library name
+			boost::optional<std::string> libraryName = it->getValue("Library");
+			if (!libraryName) {
 				Log(Info, "no application library in configuration available")
 					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", "OpcUaServer.Application.ApplicationLibrary");
+					.parameter("ApplicationName", applicationName)
+					.parameter("ParameterPath", "OpcUaServer.Applications.Application.Library");
+				return false;
+			}
+			applicationInfo.libraryName(*libraryName);
+
+			// parse config
+			boost::optional<std::string> configFileName = it->getValue("Config");
+			if (!configFileName) {
+				Log(Info, "no configuration file in configuration available")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ApplicationName", applicationName)
+					.parameter("ParameterPath", "OpcUaServer.Applications.Application.Config");
+				return false;
+			}
+			applicationInfo.configFileName(*configFileName);
+
+			// check application name
+			ApplicationLibrary::Map::iterator it;
+			it = applicationLibraryMap_.find(*applicationName);
+			if (it != applicationLibraryMap_.end()) {
+				Log(Info, "duplicate application found in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ApplicationName", applicationName);
 				return false;
 			}
 
 			Log(Info, "load application library")
-			    .parameter("ModuleName", *moduleName);
+			    .parameter("ApplicationName", *applicationName)
+				.parameter("LibraryName", *libraryName)
+			    .parameter("ConfigFile", *configFileName);
 
+			// create application library instance
 			ApplicationLibrary::SPtr applicationLibrary = ApplicationLibrary::construct();
-			applicationLibrary->moduleName(*moduleName);
+			applicationLibrary->applicationInfo(applicationInfo);
 			if (!applicationLibrary->startup()) {
 				return false;
 			}
@@ -70,7 +114,7 @@ namespace OpcUaServer
 			applicationIf = applicationLibrary->applicationIf();
 
 			applicationLibraryMap_.insert(
-				std::make_pair(*moduleName, applicationLibrary)
+				std::make_pair(*applicationName, applicationLibrary)
 			);
 
 		}

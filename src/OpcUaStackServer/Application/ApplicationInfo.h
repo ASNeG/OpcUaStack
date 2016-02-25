@@ -31,11 +31,11 @@ namespace OpcUaStackServer
 		virtual ~ApplicationInfo(void);
 
 		void applicationName(const std::string& applicationName);
-		std::string& applicationName(void);
+		std::string applicationName(void);
 		void libraryName(const std::string& libraryName);
-		std::string& libraryName(void);
+		std::string libraryName(void);
 		void configFileName(const std::string& configFileName);
-		std::string& configFileName(void);
+		std::string configFileName(void);
 
 	  private:
 		std::string applicationName_;

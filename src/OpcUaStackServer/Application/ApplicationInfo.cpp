@@ -21,6 +21,9 @@ namespace OpcUaStackServer
 {
 
 	ApplicationInfo::ApplicationInfo(void)
+	: applicationName_("")
+	, libraryName_("")
+	, configFileName_("")
 	{
 	}
 
@@ -34,7 +37,7 @@ namespace OpcUaStackServer
 		applicationName_ = applicationName;
 	}
 
-	std::string&
+	std::string
 	ApplicationInfo::applicationName(void)
 	{
 		return applicationName_;
@@ -46,7 +49,7 @@ namespace OpcUaStackServer
 		libraryName_ = libraryName;
 	}
 
-	std::string&
+	std::string
 	ApplicationInfo::libraryName(void)
 	{
 		return libraryName_;
@@ -58,7 +61,7 @@ namespace OpcUaStackServer
 		configFileName_ = configFileName;
 	}
 
-	std::string&
+	std::string
 	ApplicationInfo::configFileName(void)
 	{
 		return configFileName_;

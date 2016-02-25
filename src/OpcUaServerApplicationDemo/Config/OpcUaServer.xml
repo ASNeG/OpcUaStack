@@ -80,9 +80,11 @@
   </Endpoints>
   
   <Applications>
-    <Name>ASNeG-Demo</name>  
-    <Library>OpcUaServerApplicationDemo</Application>
-    <Config></Config>
+    <Application>
+      <Name>ASNeG-Demo</name>  
+      <Library>OpcUaServerApplicationDemo</Application>
+      <Config></Config>
+    </Application>
   </Applications>
   
   
