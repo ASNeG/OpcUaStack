@@ -80,12 +80,17 @@ namespace OpcUaClient
 			attributeIdVec_.push_back(13);
 		}
 		else if (parameterName == "-VALUE") {
-			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
+			OpcUaVariant variant;
+			if (!variant.fromString(parameterValue)) {
+				std::stringstream ss;
+				ss << "value parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
 
-			// FIXME: todo
-			double value = 1.1;
+			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
 			OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
-			dataValue->variant()->set(value);
+			dataValue->variant()->copyFrom(variant);
 			dataValue->sourceTimestamp(dateTime);
 			dataValue->serverTimestamp(dateTime);
 			dataValue->statusCode(Success);

@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
 
@@ -329,6 +330,290 @@ namespace OpcUaStackCore
 			}
 		}
 		return false;
+	}
+
+	bool
+	OpcUaVariantValue::fromString(const std::string& string)
+	{
+		// get type and value
+		size_t pos = string.find(":");
+		if (pos == std::string::npos) return false;
+		std::string typeString = string.substr(0, pos);
+		std::string valueString = string.substr(pos+1,string.length()-pos-1);
+
+		// get build in type
+		OpcUaBuildInType type = OpcUaBuildInTypeMap::string2BuildInType(typeString);
+
+		// create build in type
+		return fromString(type, valueString);
+	}
+
+	bool
+	OpcUaVariantValue::fromString(OpcUaBuildInType type, const std::string& string)
+	{
+		switch (type)
+		{
+			case  OpcUaBuildInType_OpcUaBoolean:
+			{
+				std::string stringValue = string;
+				boost::to_upper(stringValue);
+				OpcUaBoolean value;
+				if (stringValue == "TRUE") value = true;
+				else value = false;
+			    variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte value;
+				try {
+					value = (OpcUaSByte)boost::lexical_cast<OpcUaInt16>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaByte value;
+				try {
+					value = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaInt16:
+			{
+				OpcUaInt16 value;
+				try {
+					value = boost::lexical_cast<OpcUaInt16>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value;
+				try {
+					value = boost::lexical_cast<OpcUaUInt16>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 value;
+				try {
+					value = boost::lexical_cast<OpcUaInt32>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value;
+				try {
+					value = boost::lexical_cast<OpcUaUInt32>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaInt64:
+			{
+				OpcUaInt64 value;
+				try {
+					value = boost::lexical_cast<OpcUaInt64>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaUInt64:
+			{
+				OpcUaUInt64 value;
+				try {
+					value = boost::lexical_cast<OpcUaUInt64>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat value;
+				try {
+					value = boost::lexical_cast<OpcUaFloat>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble value;
+				try {
+					value = boost::lexical_cast<OpcUaDouble>(string);
+				} catch(boost::bad_lexical_cast& e) {
+					Log(Error, "bad_lexical_cast")
+						.parameter("Value", string)
+						.parameter("What", e.what());
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime value;
+				if (!value.fromISOString(string)) {
+					Log(Error, "invalid time value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaStatusCode:
+			{
+				OpcUaStatusCode value = OpcUaStatusCodeMap::statusCode(string);
+				if (value == BadStatusCodeUnknown) {
+					Log(Error, "invalid status code value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				if (!value->value(string)) {
+					Log(Error, "invalid guid value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+				if (!value->fromHexString(string)) {
+					Log(Error, "invalid hex string value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+				value->value(string);
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaXmlElement:
+			{
+				// FIXME: actualy not used
+				return false;
+				break;
+			}
+
+			case  OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				if (!value->fromString(string)) {
+					Log(Error, "invalid node id value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				return false;
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				if (!value->fromString(string)) {
+					Log(Error, "invalid qualified name value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+				if (!value->fromString(string)) {
+					Log(Error, "invalid localized text value")
+						.parameter("Value", string);
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case  OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				return false;
+				break;
+			}
+			default:
+			{
+				Log(Error, "unknown data type")
+					.parameter("Value", string);
+				return false;
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	void 
@@ -1470,6 +1755,47 @@ namespace OpcUaStackCore
 		return variantValueVec_[0].variantType();
 	}
 
+	bool
+	OpcUaVariant::fromString(const std::string& string)
+	{
+		// split string into type and variable
+		size_t pos = string.find(":");
+		if (pos == std::string::npos) return false;
+
+		std::string typeString = string.substr(0, pos);
+		std::string valueString = string.substr(pos+1, string.length()-pos-1);
+		bool isArray = false;
+
+		// type can be an array
+		if (typeString.length() > 5) {
+			std::string substr = typeString.substr(typeString.length()-5, 5);
+			boost::to_upper(substr);
+			if (substr == "ARRAY") {
+				isArray = true;
+				typeString = typeString.substr(0, typeString.length()-5);
+			}
+		}
+
+		// get build in type
+		OpcUaBuildInType type = OpcUaBuildInTypeMap::string2BuildInType(typeString);
+
+		// create build in type
+		return fromString(type, isArray, valueString);
+	}
+
+	bool
+	OpcUaVariant::fromString(OpcUaBuildInType type, bool isArray, const std::string& string)
+	{
+		// FIXME: read array
+		if (isArray) return false;
+
+		OpcUaVariantValue variantValue;
+		if (!variantValue.fromString(type, string)) return false;
+		clear();
+		variantValueVec_[0] = variantValue;
+		return true;
+	}
+
 	void 
 	OpcUaVariant::copyTo(OpcUaVariant& variant)
 	{
@@ -1486,6 +1812,12 @@ namespace OpcUaStackCore
 
 		variant.arrayLength(arrayLength_);
 		variant.arrayDimension(arrayDimensionsVec_);
+	}
+
+	void
+	OpcUaVariant::copyFrom(OpcUaVariant& variant)
+	{
+		variant.copyTo(*this);
 	}
 
 	bool 

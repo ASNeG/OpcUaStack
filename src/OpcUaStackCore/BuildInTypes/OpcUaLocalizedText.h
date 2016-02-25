@@ -48,6 +48,7 @@ namespace OpcUaStackCore
 
 		void copyTo(OpcUaLocalizedText& localizedText);
 
+		bool fromString(const std::string& string);
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaLocalizedText& value) {
 			value.out(os);

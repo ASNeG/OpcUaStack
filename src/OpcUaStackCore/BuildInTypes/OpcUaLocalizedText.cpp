@@ -102,6 +102,23 @@ namespace OpcUaStackCore
 		text_.copyTo(localizedText.text());
 	}
 
+	bool
+	OpcUaLocalizedText::fromString(const std::string& string)
+	{
+		size_t pos = string.find(",");
+		if (pos == std::string::npos) {
+			locale("");
+			text(string);
+		}
+		else {
+			std::string localeString = string.substr(0, pos);
+			std::string textString = string.substr(pos+1, string.length()-pos-1);
+			locale(localeString);
+			text(textString);
+		}
+		return true;
+	}
+
 	bool 
 	OpcUaLocalizedText::operator!=(const OpcUaLocalizedText& opcUaLocalizedText) const
 	{

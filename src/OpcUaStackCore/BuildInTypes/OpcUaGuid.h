@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 		void data4(OpcUaByte value[8]);
 		OpcUaByte* data4(void) const;
 
+		bool value(const std::string& string);
 		OpcUaGuid& operator=(const std::string& string); 
 		operator std::string const (void); 
 

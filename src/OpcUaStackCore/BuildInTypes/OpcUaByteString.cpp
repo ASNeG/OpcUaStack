@@ -232,12 +232,25 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaByteString::fromHexString(const std::string& hexString)
+	{
+		if (hexString.length() < 1) return true;
+		if (hexString.length() % 2 != 0) return false;
+
+		length_ = hexString.length()/2;
+		value_ = (OpcUaByte*)malloc(length_);
+		OpcUaStackCore::hexStringToByteSequence(hexString, value_);
+		return true;
+	}
+
 	std::string 
 	OpcUaByteString::toHexString(void) const
 	{
 		std::stringstream ss;
 		if (length_ > 0) {
-			OpcUaStackCore::dumpHex((const char *)value_, (const uint32_t)length_, ss);
+		    OpcUaStackCore::byteSequenceToHexString((const uint8_t *)value_, (const uint32_t)length_, ss);
+			//OpcUaStackCore::dumpHex((const char *)value_, (const uint32_t)length_, ss);
 		}
 		return ss.str();
 	}

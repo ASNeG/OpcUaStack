@@ -96,6 +96,18 @@ namespace OpcUaStackCore
 		os << str;
 	}
 
+	bool
+	OpcUaGuid::value(const std::string& string)
+	{
+		if (string.length() != 36) return false;
+		hexStringToByteSequence(string.substr(0,8), (uint8_t*)&data1_);
+		hexStringToByteSequence(string.substr(9,4), (uint8_t*)&data2_);
+		hexStringToByteSequence(string.substr(14,4), (uint8_t*)&data3_);
+		hexStringToByteSequence(string.substr(19,4), data4_);
+		hexStringToByteSequence(string.substr(24,12), &data4_[2]);
+		return true;
+	}
+
 	OpcUaGuid& 
 	OpcUaGuid::operator=(const std::string& string)
 	{
