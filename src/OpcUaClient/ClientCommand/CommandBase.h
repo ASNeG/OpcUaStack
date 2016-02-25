@@ -42,6 +42,10 @@ namespace OpcUaClient
 			Cmd_Write,
 			Cmd_ReadH,
 			Cmd_Delay,
+			Cmd_SubscriptionStart,
+			Cmd_SubscriptionStop,
+			Cmd_MonitorItemStart,
+			Cmd_MonitorItemStop,
 		} Cmd;
 
 		CommandBase(void);
