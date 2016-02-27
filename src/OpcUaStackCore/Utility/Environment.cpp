@@ -1,4 +1,5 @@
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 #include "OpcUaStackCore/Utility/Environment.h"
 
 #ifdef WIN32
@@ -147,6 +148,17 @@ namespace OpcUaStackCore
 	Environment::logDir(void)
 	{
 		return logDir_;
+	}
+
+	std::string
+	Environment::subst(const std::string& string)
+	{
+		std::string str = string;
+		boost::replace_all(str, "@INSTALL_DIR@", installDir_);
+		boost::replace_all(str, "@BIN_DIR@", binDir_);
+		boost::replace_all(str, "@CONF_DIR@", confDir_);
+		boost::replace_all(str, "@LOG_DIR@", logDir_);
+		return str;
 	}
 
 }
