@@ -34,6 +34,33 @@ namespace OpcUaClient
 	}
 
 	AttributeService::SPtr
+	ClientAccessObject::createAttributeService(AttributeServiceConfig& attributeServiceConfig)
+	{
+		return serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+	}
+
+	AttributeService::SPtr
+	ClientAccessObject::createAttributeService(void)
+	{
+		return serviceSetManager_.attributeService(sessionService_);
+	}
+
+	AttributeService::SPtr
+	ClientAccessObject::getOrCreateAttributeService(AttributeServiceConfig& attributeServiceConfig)
+	{
+		if (attributeService_.get() != nullptr ) {
+			return attributeService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return attributeService_;
+		}
+
+		attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
+		return attributeService_;
+	}
+
+	AttributeService::SPtr
 	ClientAccessObject::getOrCreateAttributeService(void)
 	{
 		if (attributeService_.get() != nullptr ) {
@@ -46,6 +73,33 @@ namespace OpcUaClient
 
 		attributeService_ = serviceSetManager_.attributeService(sessionService_);
 		return attributeService_;
+	}
+
+	ViewService::SPtr
+	ClientAccessObject::createViewService(ViewServiceConfig& viewServiceConfig)
+	{
+		return serviceSetManager_.viewService(sessionService_, viewServiceConfig);
+	}
+
+	ViewService::SPtr
+	ClientAccessObject::createViewService(void)
+	{
+		return serviceSetManager_.viewService(sessionService_);
+	}
+
+	ViewService::SPtr
+	ClientAccessObject::getOrCreateViewService(ViewServiceConfig& viewServiceConfig)
+	{
+		if (viewService_.get() != nullptr ) {
+			return viewService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return viewService_;
+		}
+
+		viewService_ = serviceSetManager_.viewService(sessionService_, viewServiceConfig);
+		return viewService_;
 	}
 
 	ViewService::SPtr

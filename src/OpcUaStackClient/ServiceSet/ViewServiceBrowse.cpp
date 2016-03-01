@@ -24,7 +24,8 @@ namespace OpcUaStackClient
 {
 
 	ViewServiceBrowse::ViewServiceBrowse(void)
-	: viewServiceBrowseIf_(nullptr)
+	: ViewServiceIf()
+	, viewServiceBrowseIf_(nullptr)
 	, viewService_()
 	, nodeId_()
 	{
@@ -38,10 +39,18 @@ namespace OpcUaStackClient
 	ViewServiceBrowse::viewService(ViewService::SPtr& viewService)
 	{
 		viewService_ = viewService;
+		viewService_->viewServiceIf(this);
 	}
 
 	void
 	ViewServiceBrowse::nodeId(OpcUaNodeId& nodeId)
+	{
+		nodeId_ = constructSPtr<OpcUaNodeId>();
+		nodeId_->copyFrom(nodeId);
+	}
+
+	void
+	ViewServiceBrowse::nodeId(OpcUaNodeId::SPtr& nodeId)
 	{
 		nodeId_ = nodeId;
 	}
@@ -55,7 +64,28 @@ namespace OpcUaStackClient
 	void
 	ViewServiceBrowse::asyncBrowse(void)
 	{
-		// FIXME: todo
+		ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
+		BrowseRequest::SPtr req = trx->request();
+
+		req->nodesToBrowse()->resize(1);
+		BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
+		browseDescription->nodeId(nodeId_);
+		browseDescription->browseDirection(BrowseDirection_Both);
+		browseDescription->nodeClassMask(0xFFFFFFFF);
+		browseDescription->resultMask(0xFFFFFFFF);
+		req->nodesToBrowse()->push_back(browseDescription);
+
+		viewService_->asyncSend(trx);
 	}
+
+    void
+    ViewServiceBrowse::viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
+    {
+    	std::cout << "browse response..." << std::endl;    }
+
+    void
+    ViewServiceBrowse::viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+    {
+    }
 
 }

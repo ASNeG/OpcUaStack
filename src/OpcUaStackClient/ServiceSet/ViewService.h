@@ -28,7 +28,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient 
 {
 
-	class DLLEXPORT ViewService : public Component
+	class DLLEXPORT ViewService
+	: public Component
 	{
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;

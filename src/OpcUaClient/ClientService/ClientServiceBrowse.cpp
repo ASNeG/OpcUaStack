@@ -26,6 +26,7 @@ namespace OpcUaClient
 
 	ClientServiceBrowse::ClientServiceBrowse(void)
 	: ClientServiceBase()
+	, browseCompleted_()
 	{
 	}
 
@@ -66,7 +67,7 @@ namespace OpcUaClient
 
 		// get or create view service
 		ViewService::SPtr viewService;
-		viewService = clientAccessObject->getOrCreateViewService();
+		viewService = clientAccessObject->createViewService();
 		if (viewService.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client view service failed"
@@ -75,7 +76,15 @@ namespace OpcUaClient
 			return false;
 		}
 
-		// FIXME: todo
+		// browse opc ua server information model
+		ViewServiceBrowse viewServiceBrowse;
+		viewServiceBrowse.viewService(viewService);
+		viewServiceBrowse.nodeId(commandBrowse->nodeId());
+		viewServiceBrowse.viewServiceBrowseIf(this);
+		viewServiceBrowse.asyncBrowse();
+
+		// wait for the end of the browse command
+		browseCompleted_.waitForCondition();
 
 		return true;
 	}

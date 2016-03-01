@@ -36,8 +36,15 @@ namespace OpcUaClient
 		ClientAccessObject(void);
 		~ClientAccessObject(void);
 
+		AttributeService::SPtr createAttributeService(void);
+		AttributeService::SPtr createAttributeService(AttributeServiceConfig& attributeServiceConfig);
 		AttributeService::SPtr getOrCreateAttributeService(void);
+		AttributeService::SPtr getOrCreateAttributeService(AttributeServiceConfig& attributeServiceConfig);
+
+		ViewService::SPtr createViewService(void);
+		ViewService::SPtr createViewService(ViewServiceConfig& viewServiceConfig);
 		ViewService::SPtr getOrCreateViewService(void);
+		ViewService::SPtr getOrCreateViewService(ViewServiceConfig& viewServiceConfig);
 
 	  public:
 		ServiceSetManager serviceSetManager_;

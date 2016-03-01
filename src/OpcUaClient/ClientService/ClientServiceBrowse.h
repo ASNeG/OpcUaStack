@@ -19,14 +19,18 @@
 #define __OpcUaClient_ClientServiceBrowse_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
+
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
 
 	class ClientServiceBrowse
 	: public ClientServiceBase
+	, public ViewServiceBrowseIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceBrowse> SPtr;
@@ -40,7 +44,7 @@ namespace OpcUaClient
 		//- ClientServiceBrowse interface ---------------------------------------
 
       private:
-
+		ConditionBool browseCompleted_;
 	};
 
 }

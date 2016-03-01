@@ -35,6 +35,7 @@ namespace OpcUaStackClient
 
 
 	class DLLEXPORT ViewServiceBrowse
+	: public ViewServiceIf
 	{
 	  public:
 		typedef boost::shared_ptr<ViewServiceBrowse> SPtr;
@@ -44,14 +45,20 @@ namespace OpcUaStackClient
 
 		void viewService(ViewService::SPtr& viewService);
 		void nodeId(OpcUaNodeId& nodeId);
+		void nodeId(OpcUaNodeId::SPtr& nodeId);
 		void viewServiceBrowseIf(ViewServiceBrowseIf* viewServiceBrowseIf);
 
 		void asyncBrowse(void);
 
+		//- ViewServiceIf -----------------------------------------------------
+	    virtual void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+	    virtual void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+	    //- ViewServiceIf -----------------------------------------------------
+
 	  private:
-		ViewServiceBrowseIf* viewServiceBrowseIf_;
 		ViewService::SPtr viewService_;
-		OpcUaNodeId nodeId_;
+		ViewServiceBrowseIf* viewServiceBrowseIf_;
+		OpcUaNodeId::SPtr nodeId_;
 	};
 
 }
