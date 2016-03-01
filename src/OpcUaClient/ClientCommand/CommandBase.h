@@ -46,6 +46,7 @@ namespace OpcUaClient
 			Cmd_SubscriptionStop,
 			Cmd_MonitorItemStart,
 			Cmd_MonitorItemStop,
+			Cmd_NodeSet,
 		} Cmd;
 
 		CommandBase(void);

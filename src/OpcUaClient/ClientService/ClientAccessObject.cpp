@@ -25,6 +25,7 @@ namespace OpcUaClient
 	: serviceSetManager_()
 	, sessionService_()
 	, attributeService_()
+	, viewService_()
 	{
 	}
 
@@ -45,6 +46,21 @@ namespace OpcUaClient
 
 		attributeService_ = serviceSetManager_.attributeService(sessionService_);
 		return attributeService_;
+	}
+
+	ViewService::SPtr
+	ClientAccessObject::getOrCreateViewService(void)
+	{
+		if (viewService_.get() != nullptr ) {
+			return viewService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return viewService_;
+		}
+
+		viewService_ = serviceSetManager_.viewService(sessionService_);
+		return viewService_;
 	}
 
 }

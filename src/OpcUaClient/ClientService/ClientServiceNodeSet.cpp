@@ -64,7 +64,6 @@ namespace OpcUaClient
 			return false;
 		}
 
-#if 0
 		// get or create attribute service
 		AttributeService::SPtr attributeService;
 		attributeService = clientAccessObject->getOrCreateAttributeService();
@@ -76,48 +75,18 @@ namespace OpcUaClient
 			return false;
 		}
 
-		// create read request
-		ServiceTransactionRead::SPtr trx;
-		trx = constructSPtr<ServiceTransactionRead>();
-		ReadRequest::SPtr req = trx->request();
-		req->readValueIdArray()->resize(commandNodeSet->nodeIdVec().size());
-		for (uint32_t idx=0; idx<commandNodeSet->nodeIdVec().size(); idx++) {
-			ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
-			readValueIdSPtr->nodeId()->copyFrom(*commandNodeSet->nodeIdVec()[idx]);
-			readValueIdSPtr->attributeId(commandNodeSet->attributeIdVec()[idx]);
-			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
-			req->readValueIdArray()->push_back(readValueIdSPtr);
-		}
-
-		// send read request
-		attributeService->syncSend(trx);
-
-		// process read response
-		statusCode = trx->statusCode();
-		if (statusCode != Success) {
+		// get or create view service
+		ViewService::SPtr viewService;
+		viewService = clientAccessObject->getOrCreateViewService();
+		if (viewService.get() == nullptr) {
 			std::stringstream ss;
-			ss << "read error: "
-			   << " Session=" << commandNodeSet->session()
-			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
-			errorMessage(ss.str());
-			return false;
-		}
-
-		ReadResponse::SPtr res = trx->response();
-		if (res->dataValueArray()->size() == 0) {
-			std::stringstream ss;
-			ss << "read response length error: "
+			ss << "get client view service failed"
 			   << " Session=" << commandNodeSet->session();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		for (uint32_t idx=0; idx<res->dataValueArray()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue;
-			res->dataValueArray()->get(idx, dataValue);
-			dataValue->out(std::cout); std::cout << std::endl;
-		}
-#endif
+		// FIXME: todo
 
 		return true;
 	}
