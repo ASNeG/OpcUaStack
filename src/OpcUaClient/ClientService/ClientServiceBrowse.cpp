@@ -89,5 +89,44 @@ namespace OpcUaClient
 		return true;
 	}
 
+	void
+	ClientServiceBrowse::done(OpcUaStatusCode statusCode)
+	{
+		browseCompleted_.conditionTrue();
+		std::cout << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
+	}
+
+	void
+	ClientServiceBrowse::browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray)
+	{
+		std::cout << nodeId->toString() << std::endl;
+		referenceDescriptionArrayOut(referenceDescriptionArray);
+	}
+
+	void
+	ClientServiceBrowse::browseNextResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray)
+	{
+		referenceDescriptionArrayOut(referenceDescriptionArray);
+	}
+
+	void
+	ClientServiceBrowse::referenceDescriptionArrayOut(ReferenceDescriptionArray::SPtr& referenceDescriptionArray)
+	{
+		for (uint32_t idx=0; idx<referenceDescriptionArray->size(); idx++) {
+			ReferenceDescription::SPtr referenceDescription;
+			referenceDescriptionArray->get(idx, referenceDescription);
+
+			std::cout << "   "
+				<< " " << referenceDescription->nodeClass()
+				<< " " << referenceDescription->expandedNodeId()->toString()
+				<< " " << referenceDescription->typeDefinition()->toString()
+				<< " " << referenceDescription->referenceTypeId()->toString()
+				<< " " << (referenceDescription->isForward() == 0x01 ? "true" : "true")
+				<< " " << referenceDescription->displayName().toString()
+				<< " " << referenceDescription->browseName().toString()
+				<< std::endl;
+		}
+	}
+
 }
 

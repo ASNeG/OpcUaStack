@@ -133,6 +133,14 @@ namespace OpcUaStackCore
 			text_ == const_cast<OpcUaLocalizedText*>(&opcUaLocalizedText)->text();
 	}
 
+	std::string
+	OpcUaLocalizedText::toString(void)
+	{
+		std::stringstream ss;
+		out(ss);
+		return ss.str();
+	}
+
 	void 
 	OpcUaLocalizedText::out(std::ostream& os) const
 	{

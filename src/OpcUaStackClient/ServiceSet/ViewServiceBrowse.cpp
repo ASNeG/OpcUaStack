@@ -81,11 +81,143 @@ namespace OpcUaStackClient
     void
     ViewServiceBrowse::viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
     {
-    	std::cout << "browse response..." << std::endl;    }
+    	std::cout << "browse response..." << std::endl;
+
+    	OpcUaStatusCode statusCode;
+    	BrowseResponse::SPtr res = serviceTransactionBrowse->response();
+    	BrowseRequest::SPtr req = serviceTransactionBrowse->request();
+
+    	// check response
+    	statusCode = serviceTransactionBrowse->responseHeader()->serviceResult();
+    	if (statusCode != Success) {
+    		Log(Error, "browse response error")
+    			.parameter("NodeId", nodeId_->toString())
+    			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+    		viewServiceBrowseIf_->done(statusCode);
+    		return;
+    	}
+
+    	// check browse results
+    	if (res->results()->size() != 1) {
+    		Log(Error, "result array size in browse response error")
+				.parameter("NodeId", nodeId_->toString())
+    			.parameter("ArraySize", res->results()->size());
+    		viewServiceBrowseIf_->done(BadCommunicationError);
+    		return;
+    	}
+
+		// check response data
+		BrowseResult::SPtr browseResult;
+		res->results()->get(0, browseResult);
+		statusCode = browseResult->statusCode();
+		if (statusCode != Success) {
+			Log(Error, "result node in browse response error")
+				.parameter("NodeId", nodeId_->toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+			viewServiceBrowseIf_->done(statusCode);
+			return;
+		}
+
+		// process browse response
+		ReferenceDescriptionArray::SPtr references = browseResult->references();
+		viewServiceBrowseIf_->browseResult(nodeId_, references);
+
+		if (references->size() == 0) {
+			viewServiceBrowseIf_->done(Success);
+			return;
+		}
+
+		// browse next references
+		for (uint32_t idx = 0; idx < references->size(); idx++) {
+			ReferenceDescription::SPtr referenceDescription;
+			references->get(idx, referenceDescription);
+		}
+
+		// check continuation point
+		if (browseResult->continuationPoint().exist()) {
+			asyncBrowseNext(browseResult->continuationPoint());
+			return;
+		}
+
+		viewServiceBrowseIf_->done(Success);
+    }
+
+    void
+    ViewServiceBrowse::asyncBrowseNext(OpcUaByteString& continuationPoint)
+    {
+    	ServiceTransactionBrowseNext::SPtr trx = constructSPtr<ServiceTransactionBrowseNext>();
+		BrowseNextRequest::SPtr req = trx->request();
+
+		OpcUaByteString::SPtr cp = constructSPtr<OpcUaByteString>();
+		continuationPoint.copyTo(*cp);
+		req->continuationPoints()->resize(1);
+		req->continuationPoints()->set(0, cp);
+
+		viewService_->asyncSend(trx);
+    }
 
     void
     ViewServiceBrowse::viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
     {
+    	std::cout << "browse next response..." << std::endl;
+
+    	OpcUaStatusCode statusCode;
+    	BrowseNextResponse::SPtr res = serviceTransactionBrowseNext->response();
+    	BrowseNextRequest::SPtr req = serviceTransactionBrowseNext->request();
+
+    	// check response
+    	statusCode = serviceTransactionBrowseNext->responseHeader()->serviceResult();
+    	if (statusCode != Success) {
+    		Log(Error, "browse next response error")
+    			.parameter("NodeId", nodeId_->toString())
+    			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+    		viewServiceBrowseIf_->done(statusCode);
+    		return;
+    	}
+
+    	// check browse results
+    	if (res->results()->size() != 1) {
+    		Log(Error, "result array size in browse next response error")
+				.parameter("NodeId", nodeId_->toString())
+    			.parameter("ArraySize", res->results()->size());
+    		viewServiceBrowseIf_->done(BadCommunicationError);
+    		return;
+    	}
+
+		// check response data
+		BrowseResult::SPtr browseResult;
+		res->results()->get(0, browseResult);
+		statusCode = browseResult->statusCode();
+		if (statusCode != Success) {
+			Log(Error, "result node in browse next response error")
+				.parameter("NodeId", nodeId_->toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+			viewServiceBrowseIf_->done(statusCode);
+			return;
+		}
+
+		// process browse response
+		ReferenceDescriptionArray::SPtr references = browseResult->references();
+		viewServiceBrowseIf_->browseNextResult(nodeId_, references);
+
+		if (references->size() == 0) {
+			viewServiceBrowseIf_->done(Success);
+			return;
+		}
+
+		// browse next references
+		for (uint32_t idx = 0; idx < references->size(); idx++) {
+			ReferenceDescription::SPtr referenceDescription;
+			references->get(idx, referenceDescription);
+		}
+
+		// check continuation point
+		if (browseResult->continuationPoint().exist()) {
+			asyncBrowseNext(browseResult->continuationPoint());
+			return;
+		}
+
+		viewServiceBrowseIf_->done(Success);
     }
 
 }

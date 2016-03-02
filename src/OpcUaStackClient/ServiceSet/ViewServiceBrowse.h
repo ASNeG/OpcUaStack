@@ -31,6 +31,10 @@ namespace OpcUaStackClient
 	  public:
 		ViewServiceBrowseIf(void) {}
 		virtual ~ViewServiceBrowseIf(void) {}
+
+		virtual void done(OpcUaStatusCode statusCode) = 0;
+		virtual void browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray) = 0;
+		virtual void browseNextResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray) = 0;
 	};
 
 
@@ -56,6 +60,8 @@ namespace OpcUaStackClient
 	    //- ViewServiceIf -----------------------------------------------------
 
 	  private:
+	    void asyncBrowseNext(OpcUaByteString& continuationPoint);
+
 		ViewService::SPtr viewService_;
 		ViewServiceBrowseIf* viewServiceBrowseIf_;
 		OpcUaNodeId::SPtr nodeId_;

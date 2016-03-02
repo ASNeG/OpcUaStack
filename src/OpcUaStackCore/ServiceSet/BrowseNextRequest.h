@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT BrowseNextRequest : public  ObjectPool<BrowseNextRequest>
+	class DLLEXPORT BrowseNextRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseNextRequest> SPtr;

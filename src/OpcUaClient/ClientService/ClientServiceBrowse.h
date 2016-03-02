@@ -43,7 +43,15 @@ namespace OpcUaClient
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
 		//- ClientServiceBrowse interface ---------------------------------------
 
+		//- ViewServiceBrowseIf -----------------------------------------------
+		virtual void done(OpcUaStatusCode statusCode);
+		virtual void browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray);
+		virtual void browseNextResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray);
+		//- ViewServiceBrowseIf -----------------------------------------------
+
       private:
+		void referenceDescriptionArrayOut(ReferenceDescriptionArray::SPtr& referenceDescriptionArray);
+
 		ConditionBool browseCompleted_;
 	};
 

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowseNextRequest::BrowseNextRequest(void)
-	: ObjectPool<BrowseNextRequest>()
+	: Object()
 	, releaseContinuationPoints_()
 	, continuationPointArraySPtr_(constructSPtr<OpcUaByteStringArray>())
 	{
