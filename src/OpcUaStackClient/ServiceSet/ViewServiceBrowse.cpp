@@ -28,6 +28,7 @@ namespace OpcUaStackClient
 	, viewServiceBrowseIf_(nullptr)
 	, viewService_()
 	, nodeId_()
+	, referenceDescriptionVec_()
 	{
 	}
 
@@ -64,6 +65,8 @@ namespace OpcUaStackClient
 	void
 	ViewServiceBrowse::asyncBrowse(void)
 	{
+		referenceDescriptionVec_.clear();
+
 		ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
 		BrowseRequest::SPtr req = trx->request();
 
@@ -81,8 +84,6 @@ namespace OpcUaStackClient
     void
     ViewServiceBrowse::viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse)
     {
-    	std::cout << "browse response..." << std::endl;
-
     	OpcUaStatusCode statusCode;
     	BrowseResponse::SPtr res = serviceTransactionBrowse->response();
     	BrowseRequest::SPtr req = serviceTransactionBrowse->request();
@@ -120,9 +121,9 @@ namespace OpcUaStackClient
 
 		// process browse response
 		ReferenceDescriptionArray::SPtr references = browseResult->references();
-		viewServiceBrowseIf_->browseResult(nodeId_, references);
 
 		if (references->size() == 0) {
+			viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
 			viewServiceBrowseIf_->done(Success);
 			return;
 		}
@@ -131,6 +132,7 @@ namespace OpcUaStackClient
 		for (uint32_t idx = 0; idx < references->size(); idx++) {
 			ReferenceDescription::SPtr referenceDescription;
 			references->get(idx, referenceDescription);
+			referenceDescriptionVec_.push_back(referenceDescription);
 		}
 
 		// check continuation point
@@ -139,6 +141,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
+		viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
 		viewServiceBrowseIf_->done(Success);
     }
 
@@ -159,8 +162,6 @@ namespace OpcUaStackClient
     void
     ViewServiceBrowse::viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
     {
-    	std::cout << "browse next response..." << std::endl;
-
     	OpcUaStatusCode statusCode;
     	BrowseNextResponse::SPtr res = serviceTransactionBrowseNext->response();
     	BrowseNextRequest::SPtr req = serviceTransactionBrowseNext->request();
@@ -198,9 +199,9 @@ namespace OpcUaStackClient
 
 		// process browse response
 		ReferenceDescriptionArray::SPtr references = browseResult->references();
-		viewServiceBrowseIf_->browseNextResult(nodeId_, references);
 
 		if (references->size() == 0) {
+			viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
 			viewServiceBrowseIf_->done(Success);
 			return;
 		}
@@ -209,6 +210,7 @@ namespace OpcUaStackClient
 		for (uint32_t idx = 0; idx < references->size(); idx++) {
 			ReferenceDescription::SPtr referenceDescription;
 			references->get(idx, referenceDescription);
+			referenceDescriptionVec_.push_back(referenceDescription);
 		}
 
 		// check continuation point
@@ -217,6 +219,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
+		viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
 		viewServiceBrowseIf_->done(Success);
     }
 

@@ -97,24 +97,13 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceBrowse::browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray)
+	ClientServiceBrowse::browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec)
 	{
 		std::cout << nodeId->toString() << std::endl;
-		referenceDescriptionArrayOut(referenceDescriptionArray);
-	}
 
-	void
-	ClientServiceBrowse::browseNextResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& referenceDescriptionArray)
-	{
-		referenceDescriptionArrayOut(referenceDescriptionArray);
-	}
-
-	void
-	ClientServiceBrowse::referenceDescriptionArrayOut(ReferenceDescriptionArray::SPtr& referenceDescriptionArray)
-	{
-		for (uint32_t idx=0; idx<referenceDescriptionArray->size(); idx++) {
-			ReferenceDescription::SPtr referenceDescription;
-			referenceDescriptionArray->get(idx, referenceDescription);
+		ReferenceDescription::Vec::iterator it;
+		for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
+			ReferenceDescription::SPtr referenceDescription = *it;
 
 			std::cout << "   "
 				<< " " << referenceDescription->nodeClass()
