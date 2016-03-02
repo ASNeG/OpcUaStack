@@ -28,7 +28,8 @@ namespace OpcUaStackClient
 	, viewServiceBrowseIf_(nullptr)
 	, viewService_()
 	, nodeIdVec_()
-	, referenceDescriptionVec_()
+	, referenceDescriptionVecVec_()
+	, continuationPointVec_()
 	{
 	}
 
@@ -58,18 +59,19 @@ namespace OpcUaStackClient
 	void
 	ViewServiceBrowse::asyncBrowse(void)
 	{
-		referenceDescriptionVec_.clear();
-
 		ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
 		BrowseRequest::SPtr req = trx->request();
 
-		req->nodesToBrowse()->resize(1);
-		BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
-		browseDescription->nodeId(nodeIdVec_[0]);
-		browseDescription->browseDirection(BrowseDirection_Both);
-		browseDescription->nodeClassMask(0xFFFFFFFF);
-		browseDescription->resultMask(0xFFFFFFFF);
-		req->nodesToBrowse()->push_back(browseDescription);
+		req->nodesToBrowse()->resize(nodeIdVec_.size());
+
+		for (uint32_t idx = 0; idx < nodeIdVec_.size(); idx++) {
+			BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
+			browseDescription->nodeId(nodeIdVec_[0]);
+			browseDescription->browseDirection(BrowseDirection_Both);
+			browseDescription->nodeClassMask(0xFFFFFFFF);
+			browseDescription->resultMask(0xFFFFFFFF);
+			req->nodesToBrowse()->push_back(browseDescription);
+		}
 
 		viewService_->asyncSend(trx);
 	}
@@ -85,69 +87,90 @@ namespace OpcUaStackClient
     	statusCode = serviceTransactionBrowse->responseHeader()->serviceResult();
     	if (statusCode != Success) {
     		Log(Error, "browse response error")
-    			.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
     		viewServiceBrowseIf_->done(statusCode);
     		return;
     	}
 
     	// check browse results
-    	if (res->results()->size() != 1) {
+    	if (res->results()->size() != nodeIdVec_.size()) {
     		Log(Error, "result array size in browse response error")
-				.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("ArraySize", res->results()->size());
     		viewServiceBrowseIf_->done(BadCommunicationError);
     		return;
     	}
 
-		// check response data
-		BrowseResult::SPtr browseResult;
-		res->results()->get(0, browseResult);
-		statusCode = browseResult->statusCode();
-		if (statusCode != Success) {
-			Log(Error, "result node in browse response error")
-				.parameter("NodeId", nodeIdVec_[0]->toString())
-				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-			viewServiceBrowseIf_->done(statusCode);
-			return;
-		}
+		OpcUaNodeId::Vec tmpNodeIdVec;
+		std::vector<ReferenceDescription::Vec> tmpReferenceDescriptionVecVec;
+		std::vector<std::string> tmpContinuationPointVec;
 
-		// process browse response
-		ReferenceDescriptionArray::SPtr references = browseResult->references();
+    	for (uint32_t pos = 0; pos < nodeIdVec_.size(); pos++)
+    	{
+    		// check response data
+    		BrowseResult::SPtr browseResult;
+    		res->results()->get(pos, browseResult);
+    		statusCode = browseResult->statusCode();
+    		if (statusCode != Success) {
+    			Log(Error, "result node in browse response error")
+					.parameter("NodeId", nodeIdVec_[pos]->toString())
+					.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+    			viewServiceBrowseIf_->done(statusCode);
+    			return;
+    		}
 
-		if (references->size() == 0) {
-			viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
-			viewServiceBrowseIf_->done(Success);
-			return;
-		}
+    		// process browse response
+    		ReferenceDescription::Vec referenceDescriptionVec;
+    		ReferenceDescriptionArray::SPtr references = browseResult->references();
 
-		// browse next references
-		for (uint32_t idx = 0; idx < references->size(); idx++) {
-			ReferenceDescription::SPtr referenceDescription;
-			references->get(idx, referenceDescription);
-			referenceDescriptionVec_.push_back(referenceDescription);
-		}
+    		// no reference available
+    		if (references->size() == 0) {
+    			viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
+    			continue;
+    		}
 
-		// check continuation point
-		if (browseResult->continuationPoint().exist()) {
-			asyncBrowseNext(browseResult->continuationPoint());
-			return;
-		}
+    		// browse next references
+    		for (uint32_t idx = 0; idx < references->size(); idx++) {
+    			ReferenceDescription::SPtr referenceDescription;
+    			references->get(idx, referenceDescription);
+    			referenceDescriptionVec.push_back(referenceDescription);
+    		}
 
-		viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
+    		// check continuation point
+    		if (browseResult->continuationPoint().exist()) {
+        		tmpNodeIdVec.push_back(nodeIdVec_[pos]);
+        		tmpReferenceDescriptionVecVec.push_back(referenceDescriptionVec);
+        		tmpContinuationPointVec.push_back(browseResult->continuationPoint().toHexString());
+    			continue;
+    		}
+
+    		viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
+    	}
+
+    	// browse next
+    	if (!tmpNodeIdVec.empty()) {
+    		nodeIdVec_ = tmpNodeIdVec;
+    		referenceDescriptionVecVec_ = tmpReferenceDescriptionVecVec;
+    		continuationPointVec_ = tmpContinuationPointVec;
+    		asyncBrowseNext();
+    		return;
+    	}
+
 		viewServiceBrowseIf_->done(Success);
     }
 
     void
-    ViewServiceBrowse::asyncBrowseNext(OpcUaByteString& continuationPoint)
+    ViewServiceBrowse::asyncBrowseNext(void)
     {
     	ServiceTransactionBrowseNext::SPtr trx = constructSPtr<ServiceTransactionBrowseNext>();
 		BrowseNextRequest::SPtr req = trx->request();
 
-		OpcUaByteString::SPtr cp = constructSPtr<OpcUaByteString>();
-		continuationPoint.copyTo(*cp);
-		req->continuationPoints()->resize(1);
-		req->continuationPoints()->set(0, cp);
+		req->continuationPoints()->resize(continuationPointVec_.size());
+
+		for (uint32_t pos = 0; pos < continuationPointVec_.size(); pos++) {
+			OpcUaByteString::SPtr continuationPoint = constructSPtr<OpcUaByteString>();
+			continuationPoint->fromHexString(continuationPointVec_[pos]);
+			req->continuationPoints()->set(pos, continuationPoint);
+		}
 
 		viewService_->asyncSend(trx);
     }
@@ -163,56 +186,79 @@ namespace OpcUaStackClient
     	statusCode = serviceTransactionBrowseNext->responseHeader()->serviceResult();
     	if (statusCode != Success) {
     		Log(Error, "browse next response error")
-    			.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
     		viewServiceBrowseIf_->done(statusCode);
     		return;
     	}
 
     	// check browse results
-    	if (res->results()->size() != 1) {
+    	if (res->results()->size() != nodeIdVec_.size()) {
     		Log(Error, "result array size in browse next response error")
-				.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("ArraySize", res->results()->size());
     		viewServiceBrowseIf_->done(BadCommunicationError);
     		return;
     	}
 
-		// check response data
-		BrowseResult::SPtr browseResult;
-		res->results()->get(0, browseResult);
-		statusCode = browseResult->statusCode();
-		if (statusCode != Success) {
-			Log(Error, "result node in browse next response error")
-				.parameter("NodeId", nodeIdVec_[0]->toString())
-				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-			viewServiceBrowseIf_->done(statusCode);
-			return;
-		}
+		OpcUaNodeId::Vec tmpNodeIdVec;
+		std::vector<ReferenceDescription::Vec> tmpReferenceDescriptionVecVec;
+		std::vector<std::string> tmpContinuationPointVec;
 
-		// process browse response
-		ReferenceDescriptionArray::SPtr references = browseResult->references();
+    	for (uint32_t pos = 0; pos < nodeIdVec_.size(); pos++)
+    	{
 
-		if (references->size() == 0) {
-			viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
-			viewServiceBrowseIf_->done(Success);
-			return;
-		}
+    		// check response data
+    		BrowseResult::SPtr browseResult;
+    		res->results()->get(pos, browseResult);
+    		statusCode = browseResult->statusCode();
+    		if (statusCode != Success) {
+    			Log(Error, "result node in browse next response error")
+					.parameter("NodeId", nodeIdVec_[pos]->toString())
+					.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
+    			viewServiceBrowseIf_->done(statusCode);
+    			return;
+    		}
 
-		// browse next references
-		for (uint32_t idx = 0; idx < references->size(); idx++) {
-			ReferenceDescription::SPtr referenceDescription;
-			references->get(idx, referenceDescription);
-			referenceDescriptionVec_.push_back(referenceDescription);
-		}
+      		// process browse response
+        	ReferenceDescriptionArray::SPtr references = browseResult->references();
 
-		// check continuation point
-		if (browseResult->continuationPoint().exist()) {
-			asyncBrowseNext(browseResult->continuationPoint());
-			return;
-		}
+        	// no reference available
+        	if (references->size() == 0) {
+        		viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+        		continue;
+        	}
 
-		viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
+        	// browse next references
+        	ReferenceDescription::Vec referenceDescriptionVec;
+        	for (uint32_t idx = 0; idx < references->size(); idx++) {
+        		ReferenceDescription::SPtr referenceDescription;
+        		references->get(idx, referenceDescription);
+        		referenceDescriptionVec.push_back(referenceDescription);
+        	}
+
+        	// check continuation point
+        	if (browseResult->continuationPoint().exist()) {
+            	tmpNodeIdVec.push_back(nodeIdVec_[pos]);
+            	tmpReferenceDescriptionVecVec.push_back(referenceDescriptionVec);
+            	tmpContinuationPointVec.push_back(browseResult->continuationPoint().toHexString());
+        		continue;
+        	}
+
+        	ReferenceDescription::Vec::iterator it;
+        	for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
+        		referenceDescriptionVecVec_[pos].push_back(*it);
+        	}
+        	viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+    	}
+
+    	// browse next
+    	if (!tmpNodeIdVec.empty()) {
+    		nodeIdVec_ = tmpNodeIdVec;
+    		referenceDescriptionVecVec_ = tmpReferenceDescriptionVecVec;
+    		continuationPointVec_ = tmpContinuationPointVec;
+    		asyncBrowseNext();
+    		return;
+    	}
+
 		viewServiceBrowseIf_->done(Success);
     }
 

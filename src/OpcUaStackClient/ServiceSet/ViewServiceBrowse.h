@@ -58,13 +58,14 @@ namespace OpcUaStackClient
 	    //- ViewServiceIf -----------------------------------------------------
 
 	  private:
-	    void asyncBrowseNext(OpcUaByteString& continuationPoint);
+	    void asyncBrowseNext(void);
 
 		ViewService::SPtr viewService_;
 		ViewServiceBrowseIf* viewServiceBrowseIf_;
 
 		OpcUaNodeId::Vec nodeIdVec_;
-		ReferenceDescription::Vec referenceDescriptionVec_;
+		std::vector<ReferenceDescription::Vec> referenceDescriptionVecVec_;
+		std::vector<std::string> continuationPointVec_;
 	};
 
 }
