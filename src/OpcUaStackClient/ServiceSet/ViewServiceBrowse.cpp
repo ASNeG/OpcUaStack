@@ -64,9 +64,9 @@ namespace OpcUaStackClient
 
 		req->nodesToBrowse()->resize(nodeIdVec_.size());
 
-		for (uint32_t idx = 0; idx < nodeIdVec_.size(); idx++) {
+		for (uint32_t pos = 0; pos < nodeIdVec_.size(); pos++) {
 			BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
-			browseDescription->nodeId(nodeIdVec_[0]);
+			browseDescription->nodeId(nodeIdVec_[pos]);
 			browseDescription->browseDirection(BrowseDirection_Both);
 			browseDescription->nodeClassMask(0xFFFFFFFF);
 			browseDescription->resultMask(0xFFFFFFFF);
