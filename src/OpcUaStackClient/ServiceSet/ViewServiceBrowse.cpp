@@ -27,7 +27,7 @@ namespace OpcUaStackClient
 	: ViewServiceIf()
 	, viewServiceBrowseIf_(nullptr)
 	, viewService_()
-	, nodeId_()
+	, nodeIdVec_()
 	, referenceDescriptionVec_()
 	{
 	}
@@ -44,16 +44,9 @@ namespace OpcUaStackClient
 	}
 
 	void
-	ViewServiceBrowse::nodeId(OpcUaNodeId& nodeId)
+	ViewServiceBrowse::nodeIdVec(OpcUaNodeId::Vec& nodeIdVec)
 	{
-		nodeId_ = constructSPtr<OpcUaNodeId>();
-		nodeId_->copyFrom(nodeId);
-	}
-
-	void
-	ViewServiceBrowse::nodeId(OpcUaNodeId::SPtr& nodeId)
-	{
-		nodeId_ = nodeId;
+		nodeIdVec_ = nodeIdVec;
 	}
 
 	void
@@ -72,7 +65,7 @@ namespace OpcUaStackClient
 
 		req->nodesToBrowse()->resize(1);
 		BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
-		browseDescription->nodeId(nodeId_);
+		browseDescription->nodeId(nodeIdVec_[0]);
 		browseDescription->browseDirection(BrowseDirection_Both);
 		browseDescription->nodeClassMask(0xFFFFFFFF);
 		browseDescription->resultMask(0xFFFFFFFF);
@@ -92,7 +85,7 @@ namespace OpcUaStackClient
     	statusCode = serviceTransactionBrowse->responseHeader()->serviceResult();
     	if (statusCode != Success) {
     		Log(Error, "browse response error")
-    			.parameter("NodeId", nodeId_->toString())
+    			.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
     		viewServiceBrowseIf_->done(statusCode);
     		return;
@@ -101,7 +94,7 @@ namespace OpcUaStackClient
     	// check browse results
     	if (res->results()->size() != 1) {
     		Log(Error, "result array size in browse response error")
-				.parameter("NodeId", nodeId_->toString())
+				.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("ArraySize", res->results()->size());
     		viewServiceBrowseIf_->done(BadCommunicationError);
     		return;
@@ -113,7 +106,7 @@ namespace OpcUaStackClient
 		statusCode = browseResult->statusCode();
 		if (statusCode != Success) {
 			Log(Error, "result node in browse response error")
-				.parameter("NodeId", nodeId_->toString())
+				.parameter("NodeId", nodeIdVec_[0]->toString())
 				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
 			viewServiceBrowseIf_->done(statusCode);
 			return;
@@ -123,7 +116,7 @@ namespace OpcUaStackClient
 		ReferenceDescriptionArray::SPtr references = browseResult->references();
 
 		if (references->size() == 0) {
-			viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
+			viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
 			viewServiceBrowseIf_->done(Success);
 			return;
 		}
@@ -141,7 +134,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
+		viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
 		viewServiceBrowseIf_->done(Success);
     }
 
@@ -170,7 +163,7 @@ namespace OpcUaStackClient
     	statusCode = serviceTransactionBrowseNext->responseHeader()->serviceResult();
     	if (statusCode != Success) {
     		Log(Error, "browse next response error")
-    			.parameter("NodeId", nodeId_->toString())
+    			.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
     		viewServiceBrowseIf_->done(statusCode);
     		return;
@@ -179,7 +172,7 @@ namespace OpcUaStackClient
     	// check browse results
     	if (res->results()->size() != 1) {
     		Log(Error, "result array size in browse next response error")
-				.parameter("NodeId", nodeId_->toString())
+				.parameter("NodeId", nodeIdVec_[0]->toString())
     			.parameter("ArraySize", res->results()->size());
     		viewServiceBrowseIf_->done(BadCommunicationError);
     		return;
@@ -191,7 +184,7 @@ namespace OpcUaStackClient
 		statusCode = browseResult->statusCode();
 		if (statusCode != Success) {
 			Log(Error, "result node in browse next response error")
-				.parameter("NodeId", nodeId_->toString())
+				.parameter("NodeId", nodeIdVec_[0]->toString())
 				.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
 			viewServiceBrowseIf_->done(statusCode);
 			return;
@@ -201,7 +194,7 @@ namespace OpcUaStackClient
 		ReferenceDescriptionArray::SPtr references = browseResult->references();
 
 		if (references->size() == 0) {
-			viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
+			viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
 			viewServiceBrowseIf_->done(Success);
 			return;
 		}
@@ -219,7 +212,7 @@ namespace OpcUaStackClient
 			return;
 		}
 
-		viewServiceBrowseIf_->browseResult(nodeId_, referenceDescriptionVec_);
+		viewServiceBrowseIf_->browseResult(nodeIdVec_[0], referenceDescriptionVec_);
 		viewServiceBrowseIf_->done(Success);
     }
 

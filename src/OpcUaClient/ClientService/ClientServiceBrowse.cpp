@@ -79,7 +79,7 @@ namespace OpcUaClient
 		// browse opc ua server information model
 		ViewServiceBrowse viewServiceBrowse;
 		viewServiceBrowse.viewService(viewService);
-		viewServiceBrowse.nodeId(commandBrowse->nodeId());
+		viewServiceBrowse.nodeIdVec(commandBrowse->nodeIdVec());
 		viewServiceBrowse.viewServiceBrowseIf(this);
 		viewServiceBrowse.asyncBrowse();
 

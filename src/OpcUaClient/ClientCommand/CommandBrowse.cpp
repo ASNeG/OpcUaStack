@@ -28,8 +28,7 @@ namespace OpcUaClient
 
 	CommandBrowse::CommandBrowse(void)
 	: CommandBase(CommandBase::Cmd_Browse)
-	, nodeId_()
-	, nodeIdExist_(false)
+	, nodeIdVec_()
 	{
 	}
 
@@ -47,8 +46,10 @@ namespace OpcUaClient
 	bool
 	CommandBrowse::validateCommand(void)
 	{
-		if (!nodeIdExist_) {
-			nodeId_.set((OpcUaUInt32)84, (OpcUaUInt16)0);
+		if (nodeIdVec_.size() == 0) {
+			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			nodeId->set((OpcUaUInt32)84, (OpcUaUInt16)0);
+			nodeIdVec_.push_back(nodeId);
 		}
 		return true;
 	}
@@ -57,12 +58,14 @@ namespace OpcUaClient
 	CommandBrowse::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NODEID") {
-			if (!nodeId_.fromString(parameterValue)) {
+			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+			if (!nodeId->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "node id parameter invalid (" << parameterValue << ")";
 				errorMessage(ss.str());
 				return false;
 			}
+			nodeIdVec_.push_back(nodeId);
 		}
 		else {
 			std::stringstream ss;
@@ -79,14 +82,14 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -Browse: Browse nodes from a opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -NodeId (0..1): Start node id\n";
+		   << "    -NodeId (0..N): Start node id\n";
 		return ss.str();
 	}
 
-	OpcUaNodeId&
-	CommandBrowse::nodeId(void)
+	OpcUaNodeId::Vec&
+	CommandBrowse::nodeIdVec(void)
 	{
-		return nodeId_;
+		return nodeIdVec_;
 	}
 
 }

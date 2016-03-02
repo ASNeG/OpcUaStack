@@ -47,8 +47,7 @@ namespace OpcUaStackClient
 		~ViewServiceBrowse(void);
 
 		void viewService(ViewService::SPtr& viewService);
-		void nodeId(OpcUaNodeId& nodeId);
-		void nodeId(OpcUaNodeId::SPtr& nodeId);
+		void nodeIdVec(OpcUaNodeId::Vec& nodeIdVec);
 		void viewServiceBrowseIf(ViewServiceBrowseIf* viewServiceBrowseIf);
 
 		void asyncBrowse(void);
@@ -64,7 +63,7 @@ namespace OpcUaStackClient
 		ViewService::SPtr viewService_;
 		ViewServiceBrowseIf* viewServiceBrowseIf_;
 
-		OpcUaNodeId::SPtr nodeId_;
+		OpcUaNodeId::Vec nodeIdVec_;
 		ReferenceDescription::Vec referenceDescriptionVec_;
 	};
 

@@ -43,11 +43,10 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandBrowse interface ---------------------------------------------
 
-		OpcUaNodeId& nodeId(void);
+		OpcUaNodeId::Vec& nodeIdVec(void);
 
 	  private:
-		OpcUaNodeId nodeId_;
-		bool nodeIdExist_;
+		OpcUaNodeId::Vec nodeIdVec_;
 	};
 
 }
