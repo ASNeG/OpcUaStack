@@ -36,6 +36,8 @@ namespace OpcUaStackCore
 		static std::string& confDir(void);
 		static void logDir(const std::string& logDir);
 		static std::string& logDir(void);
+
+		static std::string subst(const std::string& string);
 	};
 
 }

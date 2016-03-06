@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,7 +23,8 @@ namespace OpcUaServer
 {
 
 	ApplicationLibrary::ApplicationLibrary(void)
-	: moduleName_("")
+	: Object()
+	, applicationInfo_()
 	, dynamicLibrary_()
 	, initFunction_(nullptr)
 	, applicationIf_(nullptr)
@@ -35,9 +36,15 @@ namespace OpcUaServer
 	}
 
 	void
-	ApplicationLibrary::moduleName(const std::string& moduleName)
+	ApplicationLibrary::applicationInfo(const ApplicationInfo& applicationInfo)
 	{
-		moduleName_ = moduleName;
+		applicationInfo_ = applicationInfo;
+	}
+
+	ApplicationInfo&
+	ApplicationLibrary::applicationInfo(void)
+	{
+		return applicationInfo_;
 	}
 
 	ApplicationLibrary::InitFunction*
@@ -56,7 +63,7 @@ namespace OpcUaServer
 	ApplicationLibrary::startup(void)
 	{
 		// load library
-		if (!dynamicLibrary_.open(moduleName_)) {
+		if (!dynamicLibrary_.open(applicationInfo_.libraryName())) {
 			return false;
 		}
 
@@ -69,7 +76,8 @@ namespace OpcUaServer
 		(*initFunction_)(&applicationIf_);
 		if (applicationIf_ == NULL) {
 			Log(Error, "init function library error")
-			    .parameter("ModuleName", moduleName_);
+			    .parameter("ApplicationName", applicationInfo_.applicationName())
+			    .parameter("LibraryName", applicationInfo_.libraryName());
 			return false;
 		}
 

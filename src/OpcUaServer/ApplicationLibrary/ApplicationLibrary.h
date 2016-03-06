@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackServer/Application/ApplicationInfo.h"
 #include "OpcUaServer/ApplicationLibrary/DynamicLibrary.h"
 
 #include <map>
@@ -32,7 +33,7 @@ namespace OpcUaServer
 {
 
 	class ApplicationLibrary
-	: public  ObjectPool<ApplicationLibrary>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationLibrary> SPtr;
@@ -42,7 +43,8 @@ namespace OpcUaServer
 		ApplicationLibrary(void);
 		~ApplicationLibrary(void);
 
-		void moduleName(const std::string& moduleName);
+		void applicationInfo(const ApplicationInfo& applicationInfo);
+		ApplicationInfo& applicationInfo(void);
 		InitFunction* initFunction(void);
 		ApplicationIf* applicationIf(void);
 
@@ -50,8 +52,8 @@ namespace OpcUaServer
 		bool shutdown(void);
 
 	  private:
+		ApplicationInfo applicationInfo_;
 		InitFunction* initFunction_;
-		std::string moduleName_;
 		DynamicLibrary dynamicLibrary_;
 		ApplicationIf* applicationIf_;
 	};

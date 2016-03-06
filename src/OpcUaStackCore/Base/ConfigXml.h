@@ -19,8 +19,9 @@
 #define __OpcUaStackCore_ConfigXml_h__
 
 #include <boost/property_tree/ptree.hpp>
-#include "OpcUaStackCore/Base/os.h"
 #include <string>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ConfigIf.h"
 
 namespace OpcUaStackCore
 {
@@ -34,10 +35,12 @@ namespace OpcUaStackCore
 		bool write(const std::string& configFileName);
 		bool read(const std::string& configFileName);
 		bool parse(const std::string& configFileName, bool writeToConfig = false);
+		bool parse(const std::string& configFileName, ConfigIf* configIf);
 		std::string errorMessage(void);
 		boost::property_tree::ptree& ptree(void);
 		void ptree(boost::property_tree::ptree& ptree);
 		void writeToConfig(void);
+		void writeToConfig(ConfigIf* configIf);
 
 	  private:
 		std::string configFileName_;
