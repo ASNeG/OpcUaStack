@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 		virtual ~ConfigIf(void) {}
 
 		virtual void child(boost::property_tree::ptree& child) = 0;
-		virtual bool setValue(const std::string& path, const std::string& value) = 0;
+		virtual bool addValue(const std::string& path, const std::string& value) = 0;
 	};
 
 }

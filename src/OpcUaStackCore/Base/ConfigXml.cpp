@@ -81,6 +81,29 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	ConfigXml::parse(const std::string& configFileName, ConfigIf* configIf)
+	{
+		configFileName_ = configFileName;
+		errorMessage_ = "";
+
+		// read configuration from xml file
+		try
+		{
+			boost::property_tree::read_xml(configFileName, ptree_, boost::property_tree::xml_parser::trim_whitespace);
+		}
+		catch (const boost::property_tree::xml_parser_error& e)
+		{
+			errorMessage_ = std::string(e.what());
+			return false;
+		}
+
+		// write property tree to configuration
+		this->writeToConfig(configIf);
+
+		return true;
+	}
+
 	std::string
 	ConfigXml::errorMessage(void)
 	{
@@ -106,6 +129,14 @@ namespace OpcUaStackCore
 		Config* config = Config::instance();
 		config->child(ptree_);
 		config->addValue("Global.ConfigurationFileName", configFileName_);
+	}
+
+	void
+	ConfigXml::writeToConfig(ConfigIf* configIf)
+	{
+		// write property tree into configuration
+		configIf->child(ptree_);
+		configIf->addValue("Global.ConfigurationFileName", configFileName_);
 	}
 
 }
