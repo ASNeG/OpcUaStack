@@ -44,12 +44,14 @@ namespace OpcUaStackCore
 	}
 
 	Config::Config(void)
-	: child_()
+	: ConfigIf()
+	, child_()
 	{
 	}
 
 	Config::Config(boost::property_tree::ptree& child)
-	: child_(child)
+	: ConfigIf()
+	, child_(child)
 	{
 	}
 

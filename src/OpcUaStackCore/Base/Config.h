@@ -23,11 +23,13 @@
 #include <vector>
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ConfigIf.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Config 
+	: public ConfigIf
 	{
 	  public:
 		typedef std::map<std::string, std::string> AliasMap;
