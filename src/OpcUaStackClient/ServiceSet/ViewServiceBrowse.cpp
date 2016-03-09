@@ -29,6 +29,7 @@ namespace OpcUaStackClient
 	, viewService_()
 	, nodeIdVec_()
 	, direction_(BrowseDirection_Both)
+	, recursive_(false)
 	, referenceDescriptionVecVec_()
 	, continuationPointVec_()
 	{
@@ -55,6 +56,12 @@ namespace OpcUaStackClient
 	ViewServiceBrowse::direction(BrowseDirectionEnum direction)
 	{
 		direction_ = direction;
+	}
+
+	void
+	ViewServiceBrowse::recursive(bool recursive)
+	{
+		recursive_ = recursive;
 	}
 
 	void

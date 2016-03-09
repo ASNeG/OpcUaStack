@@ -47,10 +47,12 @@ namespace OpcUaClient
 
 		OpcUaNodeId::Vec& nodeIdVec(void);
 		BrowseDirectionEnum direction(void);
+		bool recursive(void);
 
 	  private:
 		OpcUaNodeId::Vec nodeIdVec_;
 		BrowseDirectionEnum direction_;
+		bool recursive_;
 	};
 
 }

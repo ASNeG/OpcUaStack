@@ -30,6 +30,7 @@ namespace OpcUaClient
 	: CommandBase(CommandBase::Cmd_Browse)
 	, nodeIdVec_()
 	, direction_(BrowseDirection_Both)
+	, recursive_(false)
 	{
 	}
 
@@ -87,6 +88,22 @@ namespace OpcUaClient
 				return false;
 			}
 		}
+		else if (parameterName == "-RECURSIVE") {
+			std::string value = parameterValue;
+			boost::to_upper(value);
+			if (value == "ON") {
+				recursive_ = true;
+			}
+			else if (value == "OFF") {
+				recursive_ = false;
+			}
+			else {
+				std::stringstream ss;
+				ss << "node id parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -106,7 +123,10 @@ namespace OpcUaClient
 		   << "    -Direction (0..1): Direction type filter of reference. (Default Both)\n"
 		   << "       Forward - Get only forward references\n"
 		   << "       Inverse - Get only inverse references\n"
-		   << "       Both    - Get forward and inverse references\n";
+		   << "       Both    - Get forward and inverse references\n"
+		   << "    - Recursive (0..1): Browse recursive\n"
+		   << "       On  - browse recursive is on\n"
+		   << "       Off - browse recursive is off\n";
 		return ss.str();
 	}
 
@@ -120,6 +140,12 @@ namespace OpcUaClient
 	CommandBrowse::direction(void)
 	{
 		return direction_;
+	}
+
+	bool
+	CommandBrowse::recursive(void)
+	{
+		return recursive_;
 	}
 
 }
