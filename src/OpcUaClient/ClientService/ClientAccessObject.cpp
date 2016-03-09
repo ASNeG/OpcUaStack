@@ -117,5 +117,47 @@ namespace OpcUaClient
 		return viewService_;
 	}
 
+	MethodService::SPtr
+	ClientAccessObject::createMethodService(MethodServiceConfig& methodServiceConfig)
+	{
+		return serviceSetManager_.methodService(sessionService_, methodServiceConfig);
+	}
+
+	MethodService::SPtr
+	ClientAccessObject::createMethodService(void)
+	{
+		return serviceSetManager_.methodService(sessionService_);
+	}
+
+	MethodService::SPtr
+	ClientAccessObject::getOrCreateMethodService(MethodServiceConfig& methodServiceConfig)
+	{
+		if (methodService_.get() != nullptr ) {
+			return methodService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return methodService_;
+		}
+
+		methodService_ = serviceSetManager_.methodService(sessionService_, methodServiceConfig);
+		return methodService_;
+	}
+
+	MethodService::SPtr
+	ClientAccessObject::getOrCreateMethodService(void)
+	{
+		if (methodService_.get() != nullptr ) {
+			return methodService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return methodService_;
+		}
+
+		methodService_ = serviceSetManager_.methodService(sessionService_);
+		return methodService_;
+	}
+
 }
 

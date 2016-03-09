@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientCommand/CommandWrite.h"
+#include "OpcUaClient/ClientCommand/CommandFunction.h"
 #include "OpcUaClient/ClientService/ClientServiceFunction.h"
 
 using namespace OpcUaStackCore;
@@ -43,15 +43,15 @@ namespace OpcUaClient
 	ClientServiceFunction::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		OpcUaStatusCode statusCode;
-		CommandWrite::SPtr commandWrite = boost::static_pointer_cast<CommandWrite>(commandBase);
+		CommandFunction::SPtr commandFunction = boost::static_pointer_cast<CommandFunction>(commandBase);
 
 		// create new or get existing client object
 		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = clientServiceManager.getClientAccessObject(commandWrite->session());
+		clientAccessObject = clientServiceManager.getClientAccessObject(commandFunction->session());
 		if (clientAccessObject.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client access object failed:"
-			   << " Session=" << commandWrite->session();
+			   << " Session=" << commandFunction->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -60,64 +60,81 @@ namespace OpcUaClient
 		if (clientAccessObject->sessionService_.get() == nullptr) {
 			std::stringstream ss;
 			ss << "session object not exist: "
-			   << " Session=" << commandWrite->session();
+			   << " Session=" << commandFunction->session();
 			return false;
 		}
 
-		// get or create attribute service
-		AttributeService::SPtr attributeService;
-		attributeService = clientAccessObject->getOrCreateAttributeService();
-		if (attributeService.get() == nullptr) {
+		// get or create method service
+		MethodService::SPtr methodService;
+		methodService = clientAccessObject->getOrCreateMethodService();
+		if (methodService.get() == nullptr) {
 			std::stringstream ss;
-			ss << "get client attribute service failed"
-			   << " Session=" << commandWrite->session();
+			ss << "get client method service failed"
+			   << " Session=" << commandFunction->session();
 			errorMessage(ss.str());
 			return false;
 		}
 
-#if 0
-		// create read request
-		ServiceTransactionWrite::SPtr trx;
-		trx = constructSPtr<ServiceTransactionWrite>();
-		WriteRequest::SPtr req = trx->request();
-		req->writeValueArray()->resize(commandWrite->nodeIdVec().size());
-		for (uint32_t idx=0; idx<commandWrite->nodeIdVec().size(); idx++) {
-			WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
-			writeValue->nodeId()->copyFrom(*commandWrite->nodeIdVec()[idx]);
-			writeValue->attributeId(commandWrite->attributeIdVec()[idx]);
-			writeValue->dataValue().copyFrom(*commandWrite->dataValueVec()[idx]);
-			req->writeValueArray()->push_back(writeValue);
+		// create method request
+		ServiceTransactionCall::SPtr trx;
+		trx = constructSPtr<ServiceTransactionCall>();
+		CallRequest::SPtr req = trx->request();
+
+		CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
+		callMethodRequest->objectId()->copyFrom(commandFunction->objectNodeId());
+		callMethodRequest->methodId()->copyFrom(commandFunction->functionNodeId());
+		callMethodRequest->inputArguments()->resize(commandFunction->inputValueVec().size());
+		for (uint32_t idx=0; idx<commandFunction->inputValueVec().size(); idx++) {
+			callMethodRequest->inputArguments()->set(idx, commandFunction->inputValueVec()[idx]);
 		}
 
-		// send read request
-		attributeService->syncSend(trx);
+		ServiceTransactionCall::SPtr trx;
+		trx = constructSPtr<ServiceTransactionCall>();
+		CallRequest::SPtr req = trx->request();
+		req->methodsToCall()->resize(1);
+		req->methodsToCall()->set(0, callMethodRequest);
 
-		// process read response
+		// send read request
+	    methodService->syncSend(trx);
+
+		// process function response
 		statusCode = trx->statusCode();
 		if (statusCode != Success) {
 			std::stringstream ss;
-			ss << "read error: "
-			   << " Session=" << commandWrite->session()
+			ss << "function error: "
+			   << " Session=" << commandFunction->session()
 			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
 			errorMessage(ss.str());
 			return false;
 		}
 
-		WriteResponse::SPtr res = trx->response();
+		CallResponse::SPtr res = trx->response();
 		if (res->results()->size() == 0) {
 			std::stringstream ss;
-			ss << "write response length error: "
-			   << " Session=" << commandWrite->session();
+			ss << "function response length error: "
+			   << " Session=" << commandFunction->session();
 			errorMessage(ss.str());
 			return false;
 		}
 
 		for (uint32_t idx=0; idx<res->results()->size(); idx++) {
-			OpcUaStatusCode statusCode;
-			res->results()->get(idx, statusCode);
-			std::cout << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
+			CallMethodResult::SPtr callMethodResult;
+			res->results()->get(idx, callMethodResult);
+
+			if (callMethodResult->statusCode() != Success) {
+				std::cout << OpcUaStatusCodeMap::shortString(callMethodResult->statusCode()) << std::endl;
+				return false;
+			}
+
+			uint32_t args = callMethodResult->outputArguments()->size();
+			for (uint32_t pos = 0; pos < args; pos++) {
+				OpcUaVariant::SPtr variant;
+				callMethodResult->outputArguments()->get(pos, variant);
+				variant->out(std::cout); std::cout << std::endl;
+			}
+
+			std::cout << OpcUaStatusCodeMap::shortString(callMethodResult->statusCode()) << std::endl;
 		}
-#endif
 
 		return true;
 	}

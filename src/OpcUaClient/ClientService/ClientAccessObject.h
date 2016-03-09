@@ -46,6 +46,11 @@ namespace OpcUaClient
 		ViewService::SPtr getOrCreateViewService(void);
 		ViewService::SPtr getOrCreateViewService(ViewServiceConfig& viewServiceConfig);
 
+		MethodService::SPtr createMethodService(void);
+		MethodService::SPtr createMethodService(MethodServiceConfig& methodServiceConfig);
+		MethodService::SPtr getOrCreateMethodService(void);
+		MethodService::SPtr getOrCreateMethodService(MethodServiceConfig& methodServiceConfig);
+
 	  public:
 		ServiceSetManager serviceSetManager_;
 
@@ -54,6 +59,8 @@ namespace OpcUaClient
 		AttributeService::SPtr attributeService_;
 
 		ViewService::SPtr viewService_;
+
+		MethodService::SPtr methodService_;
 	};
 
 }

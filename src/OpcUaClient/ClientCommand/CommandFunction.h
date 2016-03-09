@@ -20,7 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 
 using namespace OpcUaStackCore;
@@ -46,12 +46,12 @@ namespace OpcUaClient
 
 		OpcUaNodeId& functionNodeId(void);
 		OpcUaNodeId& objectNodeId(void);
-		OpcUaDataValue::Vec& inputValueVec(void);
+		OpcUaVariant::Vec& inputVariantVec(void);
 
 	  private:
 		OpcUaNodeId functionNodeId_;
 		OpcUaNodeId objectNodeId_;
-		OpcUaDataValue::Vec inputValueVec_;
+		OpcUaVariant::Vec inputVariantVec_;
 	};
 
 }

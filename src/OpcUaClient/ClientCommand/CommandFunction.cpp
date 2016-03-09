@@ -30,7 +30,7 @@ namespace OpcUaClient
 	: CommandBase(CommandBase::Cmd_Write)
 	, functionNodeId_()
 	, objectNodeId_()
-	, inputValueVec_()
+	, inputVariantVec_()
 	{
 	}
 
@@ -85,21 +85,15 @@ namespace OpcUaClient
 			}
 		}
 		else if (parameterName == "-INPUTVALUE") {
-			OpcUaVariant variant;
-			if (!variant.fromString(parameterValue)) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			if (!variant->fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "input value parameter invalid (" << parameterValue << ")";
 				errorMessage(ss.str());
 				return false;
 			}
 
-			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
-			OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
-			dataValue->variant()->copyFrom(variant);
-			dataValue->sourceTimestamp(dateTime);
-			dataValue->serverTimestamp(dateTime);
-			dataValue->statusCode(Success);
-			inputValueVec_.push_back(dataValue);
+			inputVariantVec_.push_back(variant);
 		}
 		else {
 			std::stringstream ss;
@@ -134,10 +128,10 @@ namespace OpcUaClient
 		return objectNodeId_;
 	}
 
-	OpcUaDataValue::Vec&
-	CommandFunction::inputValueVec(void)
+	OpcUaVariant::Vec&
+	CommandFunction::inputVariantVec(void)
 	{
-		return inputValueVec_;
+		return inputVariantVec_;
 	}
 
 }
