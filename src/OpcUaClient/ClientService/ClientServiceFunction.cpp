@@ -76,21 +76,17 @@ namespace OpcUaClient
 		}
 
 		// create method request
-		ServiceTransactionCall::SPtr trx;
-		trx = constructSPtr<ServiceTransactionCall>();
+		ServiceTransactionCall::SPtr trx = constructSPtr<ServiceTransactionCall>();
 		CallRequest::SPtr req = trx->request();
 
 		CallMethodRequest::SPtr callMethodRequest = constructSPtr<CallMethodRequest>();
 		callMethodRequest->objectId()->copyFrom(commandFunction->objectNodeId());
 		callMethodRequest->methodId()->copyFrom(commandFunction->functionNodeId());
-		callMethodRequest->inputArguments()->resize(commandFunction->inputValueVec().size());
-		for (uint32_t idx=0; idx<commandFunction->inputValueVec().size(); idx++) {
-			callMethodRequest->inputArguments()->set(idx, commandFunction->inputValueVec()[idx]);
+		callMethodRequest->inputArguments()->resize(commandFunction->inputVariantVec().size());
+		for (uint32_t idx=0; idx<commandFunction->inputVariantVec().size(); idx++) {
+			callMethodRequest->inputArguments()->set(idx, commandFunction->inputVariantVec()[idx]);
 		}
 
-		ServiceTransactionCall::SPtr trx;
-		trx = constructSPtr<ServiceTransactionCall>();
-		CallRequest::SPtr req = trx->request();
 		req->methodsToCall()->resize(1);
 		req->methodsToCall()->set(0, callMethodRequest);
 

@@ -29,6 +29,7 @@
 #include "OpcUaClient/ClientCommand/CommandDelay.h"
 #include "OpcUaClient/ClientCommand/CommandNodeSet.h"
 #include "OpcUaClient/ClientCommand/CommandBrowse.h"
+#include "OpcUaClient/ClientCommand/CommandFunction.h"
 
 // services
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
@@ -39,6 +40,7 @@
 #include "OpcUaClient/ClientService/ClientServiceDelay.h"
 #include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
 #include "OpcUaClient/ClientService/ClientServiceBrowse.h"
+#include "OpcUaClient/ClientService/ClientServiceFunction.h"
 
 namespace OpcUaClient
 {
@@ -66,6 +68,7 @@ namespace OpcUaClient
 		CommandParser::addCommand("DELAY", constructSPtr<CommandDelay>());
 		CommandParser::addCommand("NODESET", constructSPtr<CommandNodeSet>());
 		CommandParser::addCommand("BROWSE", constructSPtr<CommandBrowse>());
+		CommandParser::addCommand("FUNCTION", constructSPtr<CommandFunction>());
 
 		// register service in service factory
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Connect, constructSPtr<ClientServiceConnect>());
@@ -76,6 +79,7 @@ namespace OpcUaClient
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Delay, constructSPtr<ClientServiceDelay>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSet, constructSPtr<ClientServiceNodeSet>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Browse, constructSPtr<ClientServiceBrowse>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_Function, constructSPtr<ClientServiceFunction>());
 
 		// parse command line
 		CommandParser commandParser;

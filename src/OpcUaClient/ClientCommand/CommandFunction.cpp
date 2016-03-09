@@ -27,7 +27,7 @@ namespace OpcUaClient
 {
 
 	CommandFunction::CommandFunction(void)
-	: CommandBase(CommandBase::Cmd_Write)
+	: CommandBase(CommandBase::Cmd_Function)
 	, functionNodeId_()
 	, objectNodeId_()
 	, inputVariantVec_()
@@ -77,7 +77,7 @@ namespace OpcUaClient
 			}
 		}
 		else if (parameterName == "-OBJECTNODEID") {
-			if (!functionNodeId_.fromString(parameterValue)) {
+			if (!objectNodeId_.fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "function node id parameter invalid (" << parameterValue << ")";
 				errorMessage(ss.str());
