@@ -48,6 +48,7 @@ namespace OpcUaStackClient
 
 		void viewService(ViewService::SPtr& viewService);
 		void nodeIdVec(OpcUaNodeId::Vec& nodeIdVec);
+		void direction(BrowseDirectionEnum direction);
 		void viewServiceBrowseIf(ViewServiceBrowseIf* viewServiceBrowseIf);
 
 		void asyncBrowse(void);
@@ -64,6 +65,7 @@ namespace OpcUaStackClient
 		ViewServiceBrowseIf* viewServiceBrowseIf_;
 
 		OpcUaNodeId::Vec nodeIdVec_;
+		BrowseDirectionEnum direction_;
 		std::vector<ReferenceDescription::Vec> referenceDescriptionVecVec_;
 		std::vector<std::string> continuationPointVec_;
 	};

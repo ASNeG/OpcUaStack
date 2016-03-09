@@ -29,6 +29,7 @@ namespace OpcUaClient
 	CommandBrowse::CommandBrowse(void)
 	: CommandBase(CommandBase::Cmd_Browse)
 	, nodeIdVec_()
+	, direction_(BrowseDirection_Both)
 	{
 	}
 
@@ -67,6 +68,25 @@ namespace OpcUaClient
 			}
 			nodeIdVec_.push_back(nodeId);
 		}
+		else if (parameterName == "-DIRECTION") {
+			std::string value = parameterValue;
+			boost::to_upper(value);
+			if (value == "FORWARD") {
+				direction_ = BrowseDirection_Forward;
+			}
+			else if (value == "INVERSE") {
+				direction_ = BrowseDirection_Inverse;
+			}
+			else if (value == "BOTH") {
+				direction_ = BrowseDirection_Both;
+			}
+			else {
+				std::stringstream ss;
+				ss << "node id parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -82,7 +102,11 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -Browse: Browse nodes from a opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -NodeId (0..N): Start node id\n";
+		   << "    -NodeId (0..N): Start node id\n"
+		   << "    -Direction (0..1): Direction type filter of reference. (Default Both)\n"
+		   << "       Forward - Get only forward references\n"
+		   << "       Inverse - Get only inverse references\n"
+		   << "       Both    - Get forward and inverse references\n";
 		return ss.str();
 	}
 
@@ -90,6 +114,12 @@ namespace OpcUaClient
 	CommandBrowse::nodeIdVec(void)
 	{
 		return nodeIdVec_;
+	}
+
+	BrowseDirectionEnum
+	CommandBrowse::direction(void)
+	{
+		return direction_;
 	}
 
 }

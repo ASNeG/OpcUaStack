@@ -1,7 +1,6 @@
 #!/bin/bash
 
-EndpointUrl=opc.tcp://127.0.0.1:4841
-
+. ./TestConfig.sh
 
 OpcUaClient \
  -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \
@@ -12,4 +11,9 @@ OpcUaClient \
 OpcUaClient \
  -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \
  -Command Browse -NodeId "i=84" -NodeId "i=85" -NodeId "i=87" \
+ -Command Disconnect
+
+OpcUaClient \
+ -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \
+ -Command Browse -NodeId "i=84" -NodeId "i=85" -NodeId "i=87" -Direction "Forward" \
  -Command Disconnect

@@ -28,6 +28,7 @@ namespace OpcUaStackClient
 	, viewServiceBrowseIf_(nullptr)
 	, viewService_()
 	, nodeIdVec_()
+	, direction_(BrowseDirection_Both)
 	, referenceDescriptionVecVec_()
 	, continuationPointVec_()
 	{
@@ -51,6 +52,12 @@ namespace OpcUaStackClient
 	}
 
 	void
+	ViewServiceBrowse::direction(BrowseDirectionEnum direction)
+	{
+		direction_ = direction;
+	}
+
+	void
 	ViewServiceBrowse::viewServiceBrowseIf(ViewServiceBrowseIf* viewServiceBrowseIf)
 	{
 		viewServiceBrowseIf_ = viewServiceBrowseIf;
@@ -67,7 +74,7 @@ namespace OpcUaStackClient
 		for (uint32_t pos = 0; pos < nodeIdVec_.size(); pos++) {
 			BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
 			browseDescription->nodeId(nodeIdVec_[pos]);
-			browseDescription->browseDirection(BrowseDirection_Both);
+			browseDescription->browseDirection(direction_);
 			browseDescription->nodeClassMask(0xFFFFFFFF);
 			browseDescription->resultMask(0xFFFFFFFF);
 			req->nodesToBrowse()->push_back(browseDescription);

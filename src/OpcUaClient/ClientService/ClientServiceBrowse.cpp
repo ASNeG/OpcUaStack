@@ -80,6 +80,7 @@ namespace OpcUaClient
 		ViewServiceBrowse viewServiceBrowse;
 		viewServiceBrowse.viewService(viewService);
 		viewServiceBrowse.nodeIdVec(commandBrowse->nodeIdVec());
+		viewServiceBrowse.direction(commandBrowse->direction());
 		viewServiceBrowse.viewServiceBrowseIf(this);
 		viewServiceBrowse.asyncBrowse();
 
