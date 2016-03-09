@@ -138,6 +138,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<OpcUaVariant> SPtr;
+		typedef std::vector<OpcUaVariant::SPtr> Vec;
 
 	    OpcUaVariant(void);
 		virtual ~OpcUaVariant(void);
