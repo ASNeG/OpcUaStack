@@ -27,16 +27,25 @@ namespace OpcUaStackClient
 	: ViewServiceIf()
 	, viewServiceBrowseIf_(nullptr)
 	, viewService_()
+	, maxNodesInBrowse_(20)
 	, nodeIdVec_()
 	, direction_(BrowseDirection_Both)
 	, recursive_(false)
 	, referenceDescriptionVecVec_()
 	, continuationPointVec_()
+	, nodeIdToReadSet_()
+	, nodeIdProcessedSet_()
 	{
 	}
 
 	ViewServiceBrowse::~ViewServiceBrowse(void)
 	{
+	}
+
+	void
+	ViewServiceBrowse::maxNodesInBrowse(uint32_t maxNodesInBrowse)
+	{
+		maxNodesInBrowse_ = maxNodesInBrowse;
 	}
 
 	void
@@ -102,7 +111,7 @@ namespace OpcUaStackClient
     	if (statusCode != Success) {
     		Log(Error, "browse response error")
     			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-    		viewServiceBrowseIf_->done(statusCode);
+    		done(statusCode);
     		return;
     	}
 
@@ -110,7 +119,7 @@ namespace OpcUaStackClient
     	if (res->results()->size() != nodeIdVec_.size()) {
     		Log(Error, "result array size in browse response error")
     			.parameter("ArraySize", res->results()->size());
-    		viewServiceBrowseIf_->done(BadCommunicationError);
+    		done(BadCommunicationError);
     		return;
     	}
 
@@ -128,7 +137,7 @@ namespace OpcUaStackClient
     			Log(Error, "result node in browse response error")
 					.parameter("NodeId", nodeIdVec_[pos]->toString())
 					.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-    			viewServiceBrowseIf_->done(statusCode);
+    			done(statusCode);
     			return;
     		}
 
@@ -138,7 +147,7 @@ namespace OpcUaStackClient
 
     		// no reference available
     		if (references->size() == 0) {
-    			viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
+    			this->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
     			continue;
     		}
 
@@ -157,7 +166,7 @@ namespace OpcUaStackClient
     			continue;
     		}
 
-    		viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
+    		this->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
     	}
 
     	// browse next
@@ -169,7 +178,7 @@ namespace OpcUaStackClient
     		return;
     	}
 
-		viewServiceBrowseIf_->done(Success);
+		done(Success);
     }
 
     void
@@ -190,7 +199,9 @@ namespace OpcUaStackClient
     }
 
     void
-    ViewServiceBrowse::viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
+    ViewServiceBrowse::viewServiceBrowseNextResponse(
+    	ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext
+    )
     {
     	OpcUaStatusCode statusCode;
     	BrowseNextResponse::SPtr res = serviceTransactionBrowseNext->response();
@@ -201,7 +212,7 @@ namespace OpcUaStackClient
     	if (statusCode != Success) {
     		Log(Error, "browse next response error")
     			.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-    		viewServiceBrowseIf_->done(statusCode);
+    		done(statusCode);
     		return;
     	}
 
@@ -209,7 +220,7 @@ namespace OpcUaStackClient
     	if (res->results()->size() != nodeIdVec_.size()) {
     		Log(Error, "result array size in browse next response error")
     			.parameter("ArraySize", res->results()->size());
-    		viewServiceBrowseIf_->done(BadCommunicationError);
+    		done(BadCommunicationError);
     		return;
     	}
 
@@ -228,7 +239,7 @@ namespace OpcUaStackClient
     			Log(Error, "result node in browse next response error")
 					.parameter("NodeId", nodeIdVec_[pos]->toString())
 					.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-    			viewServiceBrowseIf_->done(statusCode);
+    			done(statusCode);
     			return;
     		}
 
@@ -237,7 +248,7 @@ namespace OpcUaStackClient
 
         	// no reference available
         	if (references->size() == 0) {
-        		viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+        		this->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
         		continue;
         	}
 
@@ -261,7 +272,7 @@ namespace OpcUaStackClient
         	for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
         		referenceDescriptionVecVec_[pos].push_back(*it);
         	}
-        	viewServiceBrowseIf_->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+        	this->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
     	}
 
     	// browse next
@@ -273,7 +284,65 @@ namespace OpcUaStackClient
     		return;
     	}
 
-		viewServiceBrowseIf_->done(Success);
+		done(Success);
     }
+
+	void
+	ViewServiceBrowse::done(OpcUaStatusCode statusCode)
+	{
+		if (statusCode != Success && viewServiceBrowseIf_ != nullptr) {
+			viewServiceBrowseIf_->done(statusCode);
+		}
+
+		if (recursive_ && nodeIdToReadSet_.size() != 0) {
+			nodeIdVec_.clear();
+			std::set<OpcUaNodeId>::iterator it;
+			for (it = nodeIdToReadSet_.begin(); it != nodeIdToReadSet_.end(); it++) {
+				if (nodeIdVec_.size() >= maxNodesInBrowse_) break;
+
+				OpcUaNodeId tmp = *it;
+				OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+				nodeId->copyFrom(tmp);
+				nodeIdVec_.push_back(nodeId);
+			}
+
+			asyncBrowse();
+			return;
+		}
+
+		if (viewServiceBrowseIf_ != nullptr) {
+			viewServiceBrowseIf_->done(statusCode);
+		}
+	}
+
+	void
+	ViewServiceBrowse::browseResult(
+		OpcUaNodeId::SPtr& nodeId,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
+	{
+		if (recursive_) {
+			nodeIdToReadSet_.erase(*nodeId);
+			nodeIdProcessedSet_.insert(*nodeId);
+
+			ReferenceDescription::Vec::iterator it;
+			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
+				OpcUaNodeId refNodeId;
+				refNodeId.nodeIdValue((*it)->expandedNodeId()->nodeIdValue());
+				refNodeId.namespaceIndex((*it)->expandedNodeId()->namespaceIndex());
+
+				if (nodeIdProcessedSet_.find(refNodeId) != nodeIdProcessedSet_.end()) {
+					continue;
+				}
+
+				nodeIdToReadSet_.insert(refNodeId);
+			}
+		}
+
+		// process browse result
+		if (viewServiceBrowseIf_ != nullptr) {
+			viewServiceBrowseIf_->browseResult(nodeId, referenceDescriptionVec);
+		}
+	}
 
 }

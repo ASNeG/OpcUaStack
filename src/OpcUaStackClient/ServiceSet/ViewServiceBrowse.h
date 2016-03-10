@@ -46,6 +46,7 @@ namespace OpcUaStackClient
 		ViewServiceBrowse(void);
 		~ViewServiceBrowse(void);
 
+		void maxNodesInBrowse(uint32_t maxNodesInBrowse);
 		void viewService(ViewService::SPtr& viewService);
 		void nodeIdVec(OpcUaNodeId::Vec& nodeIdVec);
 		void direction(BrowseDirectionEnum direction);
@@ -61,15 +62,22 @@ namespace OpcUaStackClient
 
 	  private:
 	    void asyncBrowseNext(void);
+		void done(OpcUaStatusCode statusCode);
+		void browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec);
 
 		ViewService::SPtr viewService_;
 		ViewServiceBrowseIf* viewServiceBrowseIf_;
 
+		uint32_t maxNodesInBrowse_;
 		OpcUaNodeId::Vec nodeIdVec_;
 		BrowseDirectionEnum direction_;
 		bool recursive_;
 		std::vector<ReferenceDescription::Vec> referenceDescriptionVecVec_;
 		std::vector<std::string> continuationPointVec_;
+
+		std::set<OpcUaNodeId> nodeIdToReadSet_;
+		std::set<OpcUaNodeId> nodeIdProcessedSet_;
+
 	};
 
 }
