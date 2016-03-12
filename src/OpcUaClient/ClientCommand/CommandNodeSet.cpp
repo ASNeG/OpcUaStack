@@ -47,6 +47,7 @@ namespace OpcUaClient
 	bool
 	CommandNodeSet::validateCommand(void)
 	{
+		std::cout << "......" << std::endl;
 		if (!nodeIdExist_) {
 			nodeId_.set((OpcUaUInt32)84, (OpcUaUInt16)0);
 		}
@@ -63,6 +64,7 @@ namespace OpcUaClient
 				errorMessage(ss.str());
 				return false;
 			}
+			nodeIdExist_ = true;
 		}
 		else {
 			std::stringstream ss;

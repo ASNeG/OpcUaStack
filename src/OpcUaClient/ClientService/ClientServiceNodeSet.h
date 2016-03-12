@@ -19,6 +19,7 @@
 #define __OpcUaClient_ClientServiceNodeSet_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -27,6 +28,7 @@ namespace OpcUaClient
 
 	class ClientServiceNodeSet
 	: public ClientServiceBase
+	, public ViewServiceBrowseIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceNodeSet> SPtr;
@@ -34,13 +36,23 @@ namespace OpcUaClient
 		ClientServiceNodeSet(void);
 		virtual ~ClientServiceNodeSet(void);
 
-		//- ClientServiceNodeSet interface ---------------------------------------
+		//- ClientServiceNodeSet interface ------------------------------------
 		virtual ClientServiceBase::SPtr createClientService(void);
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
-		//- ClientServiceNodeSet interface ---------------------------------------
+		//- ClientServiceNodeSet interface ------------------------------------
+
+		//- ViewServiceBrowseIf -----------------------------------------------
+		virtual void done(OpcUaStatusCode statusCode);
+		virtual void browseResult(
+			OpcUaStatusCode statusCode,
+			OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		//- ViewServiceBrowseIf -----------------------------------------------
 
       private:
-
+		ConditionBool browseCompleted_;
+		AttributeService::SPtr attributeService_;
 	};
 
 }

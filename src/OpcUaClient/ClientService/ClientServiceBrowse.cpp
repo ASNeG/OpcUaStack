@@ -99,9 +99,13 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceBrowse::browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec)
+	ClientServiceBrowse::browseResult(
+		OpcUaStatusCode statusCode,
+		OpcUaNodeId::SPtr& nodeId,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
-		std::cout << nodeId->toString() << std::endl;
+		std::cout << nodeId->toString() << " " << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
 
 		ReferenceDescription::Vec::iterator it;
 		for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {

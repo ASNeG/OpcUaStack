@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaClient/ClientCommand/CommandNodeSet.h"
 #include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
 
@@ -26,6 +27,8 @@ namespace OpcUaClient
 
 	ClientServiceNodeSet::ClientServiceNodeSet(void)
 	: ClientServiceBase()
+	, browseCompleted_()
+	, attributeService_()
 	{
 	}
 
@@ -65,9 +68,8 @@ namespace OpcUaClient
 		}
 
 		// get or create attribute service
-		AttributeService::SPtr attributeService;
-		attributeService = clientAccessObject->getOrCreateAttributeService();
-		if (attributeService.get() == nullptr) {
+		attributeService_ = clientAccessObject->getOrCreateAttributeService();
+		if (attributeService_.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client attribute service failed"
 			   << " Session=" << commandNodeSet->session();
@@ -77,7 +79,7 @@ namespace OpcUaClient
 
 		// get or create view service
 		ViewService::SPtr viewService;
-		viewService = clientAccessObject->getOrCreateViewService();
+		viewService = clientAccessObject->createViewService();
 		if (viewService.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client view service failed"
@@ -86,9 +88,51 @@ namespace OpcUaClient
 			return false;
 		}
 
-		// FIXME: todo
+		// browse opc ua server information model
+		OpcUaNodeId::Vec nodeIdVec;
+		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+		nodeId->copyFrom(commandNodeSet->nodeId());
+		nodeIdVec.push_back(nodeId);
+		commandNodeSet->validateCommand();
+		std::cout << "XXXX" << commandNodeSet->nodeId().toString() << std::endl;
+		std::cout << "XXXX" << nodeId->toString() << std::endl;
+
+		ViewServiceBrowse viewServiceBrowse;
+		viewServiceBrowse.viewService(viewService);
+		viewServiceBrowse.nodeIdVec(nodeIdVec);
+		viewServiceBrowse.recursive(true);
+		viewServiceBrowse.viewServiceBrowseIf(this);
+		viewServiceBrowse.asyncBrowse();
+
+		// wait for the end of the browse command
+		browseCompleted_.waitForCondition();
 
 		return true;
+	}
+
+	void
+	ClientServiceNodeSet::done(OpcUaStatusCode statusCode)
+	{
+		browseCompleted_.conditionTrue();
+		std::cout << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
+	}
+
+	void
+	ClientServiceNodeSet::browseResult(
+		OpcUaStatusCode statusCode,
+		OpcUaNodeId::SPtr& nodeId,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
+	{
+		// check status code
+		if (statusCode != Success) {
+			Log(Error, "browse result node error")
+				.parameter("NodeId", nodeId->toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return;
+		}
+
+		std::cout << "browseResult.." << std::endl;
 	}
 
 }

@@ -45,7 +45,11 @@ namespace OpcUaClient
 
 		//- ViewServiceBrowseIf -----------------------------------------------
 		virtual void done(OpcUaStatusCode statusCode);
-		virtual void browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec);
+		virtual void browseResult(
+			OpcUaStatusCode statusCode,
+			OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
 		//- ViewServiceBrowseIf -----------------------------------------------
 
       private:
