@@ -92,6 +92,7 @@ namespace OpcUaClient
 		}
 
 		// read all parameters from command line
+		bool parseParameter = false;
 		for (uint32_t idx=1; idx<argc; idx++) {
 			std::string para = argv[idx];
 			boost::algorithm::trim(para);
@@ -119,17 +120,19 @@ namespace OpcUaClient
 
 			// other parameter
 			else {
-				if (!parseParameter(argc, argv, idx)) return false;
+				if (!this->parseParameter(argc, argv, idx)) return false;
 				idx++;
 			}
 		}
+
+		if (!validateCommand()) return false;
+
 		return true;
 	}
 
 	bool
-	CommandParser::parseCommand(uint32_t argc, char** argv, uint32_t idx)
+	CommandParser::validateCommand(void)
 	{
-		// The last command was completely read. The parameters are now checked.
 		if (actualCommandBase_.get() != NULL) {
 			if (!actualCommandBase_->validateCommand()) {
 				std::stringstream ss;
@@ -139,6 +142,14 @@ namespace OpcUaClient
 				return false;
 			}
 		}
+		return true;
+	}
+
+	bool
+	CommandParser::parseCommand(uint32_t argc, char** argv, uint32_t idx)
+	{
+		// The last command was completely read. The parameters are now checked.
+		if (!validateCommand()) return false;
 
 		// check number of parameters in command line
 		if (idx+1 >= argc) {
