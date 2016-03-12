@@ -129,25 +129,23 @@ namespace OpcUaStackClient
 
     	for (uint32_t pos = 0; pos < nodeIdVec_.size(); pos++)
     	{
+    		ReferenceDescription::Vec referenceDescriptionVec;
+
     		// check response data
     		BrowseResult::SPtr browseResult;
     		res->results()->get(pos, browseResult);
     		statusCode = browseResult->statusCode();
     		if (statusCode != Success) {
-    			Log(Error, "result node in browse response error")
-					.parameter("NodeId", nodeIdVec_[pos]->toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-    			done(statusCode);
-    			return;
+    			this->browseResult(statusCode, nodeIdVec_[pos], referenceDescriptionVec);
+    			continue;
     		}
 
     		// process browse response
-    		ReferenceDescription::Vec referenceDescriptionVec;
     		ReferenceDescriptionArray::SPtr references = browseResult->references();
 
     		// no reference available
     		if (references->size() == 0) {
-    			this->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
+    			this->browseResult(Success, nodeIdVec_[pos], referenceDescriptionVec);
     			continue;
     		}
 
@@ -166,7 +164,7 @@ namespace OpcUaStackClient
     			continue;
     		}
 
-    		this->browseResult(nodeIdVec_[pos], referenceDescriptionVec);
+    		this->browseResult(Success, nodeIdVec_[pos], referenceDescriptionVec);
     	}
 
     	// browse next
@@ -236,11 +234,8 @@ namespace OpcUaStackClient
     		res->results()->get(pos, browseResult);
     		statusCode = browseResult->statusCode();
     		if (statusCode != Success) {
-    			Log(Error, "result node in browse next response error")
-					.parameter("NodeId", nodeIdVec_[pos]->toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-    			done(statusCode);
-    			return;
+           		this->browseResult(statusCode, nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+            	continue;
     		}
 
       		// process browse response
@@ -248,7 +243,7 @@ namespace OpcUaStackClient
 
         	// no reference available
         	if (references->size() == 0) {
-        		this->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+        		this->browseResult(Success, nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
         		continue;
         	}
 
@@ -272,7 +267,7 @@ namespace OpcUaStackClient
         	for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
         		referenceDescriptionVecVec_[pos].push_back(*it);
         	}
-        	this->browseResult(nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
+        	this->browseResult(Success, nodeIdVec_[pos], referenceDescriptionVecVec_[pos]);
     	}
 
     	// browse next
@@ -317,6 +312,7 @@ namespace OpcUaStackClient
 
 	void
 	ViewServiceBrowse::browseResult(
+		OpcUaStatusCode statusCode,
 		OpcUaNodeId::SPtr& nodeId,
 		ReferenceDescription::Vec& referenceDescriptionVec
 	)
@@ -341,7 +337,7 @@ namespace OpcUaStackClient
 
 		// process browse result
 		if (viewServiceBrowseIf_ != nullptr) {
-			viewServiceBrowseIf_->browseResult(nodeId, referenceDescriptionVec);
+			viewServiceBrowseIf_->browseResult(statusCode, nodeId, referenceDescriptionVec);
 		}
 	}
 

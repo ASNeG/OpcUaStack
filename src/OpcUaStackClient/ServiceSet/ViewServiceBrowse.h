@@ -33,7 +33,11 @@ namespace OpcUaStackClient
 		virtual ~ViewServiceBrowseIf(void) {}
 
 		virtual void done(OpcUaStatusCode statusCode) = 0;
-		virtual void browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec) = 0;
+		virtual void browseResult(
+			OpcUaStatusCode statusCode,
+			OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		) = 0;
 	};
 
 
@@ -63,7 +67,11 @@ namespace OpcUaStackClient
 	  private:
 	    void asyncBrowseNext(void);
 		void done(OpcUaStatusCode statusCode);
-		void browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec);
+		void browseResult(
+			OpcUaStatusCode statusCode,
+			OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
 
 		ViewService::SPtr viewService_;
 		ViewServiceBrowseIf* viewServiceBrowseIf_;
