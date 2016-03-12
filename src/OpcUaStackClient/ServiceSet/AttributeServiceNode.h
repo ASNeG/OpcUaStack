@@ -47,35 +47,20 @@ namespace OpcUaStackClient
 
 		void attributeService(AttributeService::SPtr& attributeService);
 		void attributeServiceBrowseIf(AttributeServiceNodeIf* attributeServiceBrowseIf);
+		void nodeId(OpcUaNodeId& nodeId);
 
 		void asyncRead(void);
 
 		//- AttributeServiceIf -----------------------------------------------------
-	    virtual void attributeServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-	    virtual void attributeServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+	    //virtual void attributeServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
+	    //virtual void attributeServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
 	    //- AttributeServiceIf -----------------------------------------------------
 
 	  private:
-	    void asyncReadNext(void);
-		void done(OpcUaStatusCode statusCode);
-		void browseResult(
-			OpcUaStatusCode statusCode,
-			OpcUaNodeId::SPtr& nodeId,
-			ReferenceDescription::Vec& referenceDescriptionVec
-		);
-
 		AttributeService::SPtr attributeService_;
 		AttributeServiceNodeIf* attributeServiceBrowseIf_;
 
-		uint32_t maxNodesInBrowse_;
-		OpcUaNodeId::Vec nodeIdVec_;
-		BrowseDirectionEnum direction_;
-		bool recursive_;
-		std::vector<ReferenceDescription::Vec> referenceDescriptionVecVec_;
-		std::vector<std::string> continuationPointVec_;
-
-		std::set<OpcUaNodeId> nodeIdToReadSet_;
-		std::set<OpcUaNodeId> nodeIdProcessedSet_;
+		OpcUaNodeId nodeId_;
 
 	};
 
