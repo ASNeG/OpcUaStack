@@ -49,7 +49,7 @@ namespace OpcUaStackClient
 		~AttributeServiceNode(void);
 
 		void attributeService(AttributeService::SPtr& attributeService);
-		void attributeServiceBrowseIf(AttributeServiceNodeIf* attributeServiceBrowseIf);
+		void attributeServiceNodeIf(AttributeServiceNodeIf* attributeServiceNodeIf);
 		void nodeId(OpcUaNodeId& nodeId);
 		void attributeIds(
 			AttributeId& attributeId1

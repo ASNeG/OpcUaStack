@@ -2,7 +2,7 @@
 
 . ./TestConfig.sh
 
-OpcUaClient \
+gdb --args OpcUaClient \
  -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \
  -Command NodeSet
 # -Command Disconnect 

@@ -144,16 +144,35 @@ namespace OpcUaClient
 		ReferenceDescription::SPtr& referenceDescription
 	)
 	{
+		OpcUaNodeId readNodeId;
+		readNodeId.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+		readNodeId.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+		std::cout << "read ..." << readNodeId.toString() << std::endl;
+
+		AttributeServiceNode attributeServiceNode;
+		attributeServiceNode.attributeService(attributeService_);
+		attributeServiceNode.nodeId(readNodeId);
+		attributeServiceNode.attributeIds(referenceDescription->nodeClass());
+		attributeServiceNode.attributeServiceNodeIf(this);
+
+		readCompleted_.conditionInit();
+		attributeServiceNode.asyncReadNode();
+
+		// wait for the end of the browse command
+		readCompleted_.waitForCondition();
 	}
 
 	void
 	ClientServiceNodeSet::attributeServiceNodeDone(OpcUaStatusCode statusCode)
 	{
+		readCompleted_.conditionTrue();
+		std::cout << "StatusCode=" << statusCode << std::endl;
 	}
 
 	void
 	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
 	{
+		std::cout << ".." << std::endl;
 	}
 
 }

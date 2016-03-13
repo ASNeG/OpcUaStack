@@ -30,6 +30,7 @@ namespace OpcUaClient
 	class ClientServiceNodeSet
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
+	, public AttributeServiceNodeIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceNodeSet> SPtr;

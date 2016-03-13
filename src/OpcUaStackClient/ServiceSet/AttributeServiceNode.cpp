@@ -44,9 +44,9 @@ namespace OpcUaStackClient
 	}
 
 	void
-	AttributeServiceNode::attributeServiceBrowseIf(AttributeServiceNodeIf* attributeServiceBrowseIf)
+	AttributeServiceNode::attributeServiceNodeIf(AttributeServiceNodeIf* attributeServiceNodeIf)
 	{
-		attributeServiceNodeIf_ = attributeServiceBrowseIf;
+		attributeServiceNodeIf_ = attributeServiceNodeIf;
 	}
 
 	void
@@ -200,8 +200,6 @@ namespace OpcUaStackClient
 		    	return;
 			}
 		}
-
-		asyncReadNode();
 	}
 
 	void
