@@ -18,6 +18,8 @@
 #ifndef __OpcUaStackCore_AttributeId_h__
 #define __OpcUaStackCore_AttributeId_h__
 
+#include <stdint.h>
+
 namespace OpcUaStackCore
 {
 
@@ -46,6 +48,21 @@ namespace OpcUaStackCore
 		AttributeId_Executable = 21,
 		AttributeId_UserExecutable = 22,
 	} AttributeId;
+
+
+	class AttributeIdMask
+	{
+	  public:
+		AttributeIdMask(void);
+		~AttributeIdMask(void);
+
+		void add(const AttributeId attributeId);
+		void del(const AttributeId attributeId);
+		bool exist(const AttributeId attributeId);
+
+	  public:
+		uint32_t attributeIdMask_;
+	};
 
 }
 
