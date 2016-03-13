@@ -32,8 +32,8 @@ namespace OpcUaStackClient
 		ViewServiceBrowseIf(void) {}
 		virtual ~ViewServiceBrowseIf(void) {}
 
-		virtual void done(OpcUaStatusCode statusCode) = 0;
-		virtual void browseResult(
+		virtual void viewServiceBrowseDone(OpcUaStatusCode statusCode) = 0;
+		virtual void viewServiceBrowseResult(
 			OpcUaStatusCode statusCode,
 			OpcUaNodeId::SPtr& nodeId,
 			ReferenceDescription::Vec& referenceDescriptionVec

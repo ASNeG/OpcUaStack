@@ -33,8 +33,8 @@ namespace OpcUaStackClient
 		AttributeServiceNodeIf(void) {}
 		virtual ~AttributeServiceNodeIf(void) {}
 
-		virtual void done(OpcUaStatusCode statusCode) = 0;
-		virtual void readResult(OpcUaDataValue::SPtr& dataValue) = 0;
+		virtual void attributeServiceNodeDone(OpcUaStatusCode statusCode) = 0;
+		virtual void attributeServiceNodeResult(OpcUaDataValue::SPtr& dataValue) = 0;
 	};
 
 
@@ -84,7 +84,7 @@ namespace OpcUaStackClient
 
 	  private:
 		AttributeService::SPtr attributeService_;
-		AttributeServiceNodeIf* attributeServiceBrowseIf_;
+		AttributeServiceNodeIf* attributeServiceNodeIf_;
 
 		OpcUaNodeId nodeId_;
 		std::vector<AttributeId> attributeIdVec_;

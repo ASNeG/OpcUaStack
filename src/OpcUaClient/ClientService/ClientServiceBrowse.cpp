@@ -92,14 +92,14 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceBrowse::done(OpcUaStatusCode statusCode)
+	ClientServiceBrowse::viewServiceBrowseDone(OpcUaStatusCode statusCode)
 	{
 		browseCompleted_.conditionTrue();
 		std::cout << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
 	}
 
 	void
-	ClientServiceBrowse::browseResult(
+	ClientServiceBrowse::viewServiceBrowseResult(
 		OpcUaStatusCode statusCode,
 		OpcUaNodeId::SPtr& nodeId,
 		ReferenceDescription::Vec& referenceDescriptionVec

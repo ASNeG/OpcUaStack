@@ -286,7 +286,7 @@ namespace OpcUaStackClient
 	ViewServiceBrowse::done(OpcUaStatusCode statusCode)
 	{
 		if (statusCode != Success && viewServiceBrowseIf_ != nullptr) {
-			viewServiceBrowseIf_->done(statusCode);
+			viewServiceBrowseIf_->viewServiceBrowseDone(statusCode);
 		}
 
 		if (recursive_ && nodeIdToReadSet_.size() != 0) {
@@ -306,7 +306,7 @@ namespace OpcUaStackClient
 		}
 
 		if (viewServiceBrowseIf_ != nullptr) {
-			viewServiceBrowseIf_->done(statusCode);
+			viewServiceBrowseIf_->viewServiceBrowseDone(statusCode);
 		}
 	}
 
@@ -337,7 +337,7 @@ namespace OpcUaStackClient
 
 		// process browse result
 		if (viewServiceBrowseIf_ != nullptr) {
-			viewServiceBrowseIf_->browseResult(statusCode, nodeId, referenceDescriptionVec);
+			viewServiceBrowseIf_->viewServiceBrowseResult(statusCode, nodeId, referenceDescriptionVec);
 		}
 	}
 

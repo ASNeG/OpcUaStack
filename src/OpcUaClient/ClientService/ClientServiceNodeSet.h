@@ -42,8 +42,8 @@ namespace OpcUaClient
 		//- ClientServiceNodeSet interface ------------------------------------
 
 		//- ViewServiceBrowseIf -----------------------------------------------
-		virtual void done(OpcUaStatusCode statusCode);
-		virtual void browseResult(
+		virtual void viewServiceBrowseDone(OpcUaStatusCode statusCode);
+		virtual void viewServiceBrowseResult(
 			OpcUaStatusCode statusCode,
 			OpcUaNodeId::SPtr& nodeId,
 			ReferenceDescription::Vec& referenceDescriptionVec

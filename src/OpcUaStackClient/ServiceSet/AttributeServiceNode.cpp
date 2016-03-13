@@ -25,7 +25,7 @@ namespace OpcUaStackClient
 
 	AttributeServiceNode::AttributeServiceNode(void)
 	: AttributeServiceIf()
-	, attributeServiceBrowseIf_(nullptr)
+	, attributeServiceNodeIf_(nullptr)
 	, attributeService_()
 	, nodeId_()
 	, attributeIdVec_()
@@ -46,7 +46,7 @@ namespace OpcUaStackClient
 	void
 	AttributeServiceNode::attributeServiceBrowseIf(AttributeServiceNodeIf* attributeServiceBrowseIf)
 	{
-		attributeServiceBrowseIf_ = attributeServiceBrowseIf;
+		attributeServiceNodeIf_ = attributeServiceBrowseIf;
 	}
 
 	void
@@ -150,7 +150,7 @@ namespace OpcUaStackClient
 	    if (statusCode != Success) {
 	    	Log(Error, "read node response error")
 	    		.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode));
-	    	attributeServiceBrowseIf_->done(statusCode);
+	    	attributeServiceNodeIf_->attributeServiceNodeDone(statusCode);
 	    	return;
 	    }
 
@@ -158,7 +158,7 @@ namespace OpcUaStackClient
     	if (res->dataValueArray()->size() != attributeIdVec_.size()) {
     		Log(Error, "result array size in read node response error")
     			.parameter("ArraySize", res->dataValueArray()->size());
-    		attributeServiceBrowseIf_->done(BadCommunicationError);
+    		attributeServiceNodeIf_->attributeServiceNodeDone(BadCommunicationError);
     		return;
     	}
 
@@ -167,10 +167,10 @@ namespace OpcUaStackClient
     	{
     		OpcUaDataValue::SPtr dataValue;
     		res->dataValueArray()->get(pos, dataValue);
-    		attributeServiceBrowseIf_->readResult(dataValue);
+    		attributeServiceNodeIf_->attributeServiceNodeResult(dataValue);
     	}
 
-    	attributeServiceBrowseIf_->done(Success);
+    	attributeServiceNodeIf_->attributeServiceNodeDone(Success);
 	}
 
 }
