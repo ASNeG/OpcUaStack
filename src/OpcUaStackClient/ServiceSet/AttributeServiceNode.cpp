@@ -121,41 +121,73 @@ namespace OpcUaStackClient
 	}
 
 	void
-	AttributeServiceNode::asyncReadNode(NodeClassType nodeClassType)
+	AttributeServiceNode::attributeIds(NodeClassType nodeClassType)
 	{
 		attributeIdVec_.clear();
+
+		// set common attributes
+		attributeIdVec_.push_back(AttributeId_BrowseName);
+		attributeIdVec_.push_back(AttributeId_DisplayName);
+		attributeIdVec_.push_back(AttributeId_Description);
+		attributeIdVec_.push_back(AttributeId_WriteMask);
+		attributeIdVec_.push_back(AttributeId_UserWriteMask);
+
+		// set node class specific attributes
 		switch (nodeClassType)
 		{
 			case NodeClassType_Object:
 			{
+				attributeIdVec_.push_back(AttributeId_EventNotifier);
 				break;
 			}
 			case NodeClassType_Variable:
 			{
+				attributeIdVec_.push_back(AttributeId_AccessLevel);
+				attributeIdVec_.push_back(AttributeId_ArrayDimensions);
+				attributeIdVec_.push_back(AttributeId_DataType);
+				attributeIdVec_.push_back(AttributeId_Historizing);
+				attributeIdVec_.push_back(AttributeId_MinimumSamplingInterval);
+				attributeIdVec_.push_back(AttributeId_UserAccessLevel);
+				attributeIdVec_.push_back(AttributeId_Value);
+				attributeIdVec_.push_back(AttributeId_ValueRank);
 				break;
 			}
 			case NodeClassType_Method:
 			{
+				attributeIdVec_.push_back(AttributeId_Executable);
+				attributeIdVec_.push_back(AttributeId_UserExecutable);
 				break;
 			}
 			case NodeClassType_ObjectType:
 			{
+				attributeIdVec_.push_back(AttributeId_IsAbstract);
 				break;
 			}
 			case NodeClassType_VariableType:
 			{
+				attributeIdVec_.push_back(AttributeId_ArrayDimensions);
+				attributeIdVec_.push_back(AttributeId_DataType);
+				attributeIdVec_.push_back(AttributeId_IsAbstract);
+				attributeIdVec_.push_back(AttributeId_Value);
+				attributeIdVec_.push_back(AttributeId_ValueRank);
 				break;
 			}
 			case NodeClassType_ReferenceType:
 			{
+				attributeIdVec_.push_back(AttributeId_InverseName);
+				attributeIdVec_.push_back(AttributeId_IsAbstract);
+				attributeIdVec_.push_back(AttributeId_Symmetric);
 				break;
 			}
 			case NodeClassType_DataType:
 			{
+				attributeIdVec_.push_back(AttributeId_IsAbstract);
 				break;
 			}
 			case NodeClassType_View:
 			{
+				attributeIdVec_.push_back(AttributeId_ContainsNoLoops);
+				attributeIdVec_.push_back(AttributeId_EventNotifier);
 				break;
 			}
 			default:
@@ -168,6 +200,8 @@ namespace OpcUaStackClient
 		    	return;
 			}
 		}
+
+		asyncReadNode();
 	}
 
 	void

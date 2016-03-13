@@ -76,9 +76,9 @@ namespace OpcUaStackClient
 			AttributeId& attributeId4,
 			AttributeId& attributeId5
 		);
+		void attributeIds(NodeClassType nodeClassType);
 
 		void asyncReadNode(void);
-		void asyncReadNode(NodeClassType nodeClassType);
 
 		//- AttributeServiceIf -----------------------------------------------------
 	    virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
