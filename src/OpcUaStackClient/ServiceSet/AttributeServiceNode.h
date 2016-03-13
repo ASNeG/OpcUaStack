@@ -19,6 +19,7 @@
 #define __OpcUaStackClient_AttributeServiceNode_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
 using namespace OpcUaStackCore;
@@ -33,6 +34,7 @@ namespace OpcUaStackClient
 		virtual ~AttributeServiceNodeIf(void) {}
 
 		virtual void done(OpcUaStatusCode statusCode) = 0;
+		virtual void readResult(OpcUaDataValue::SPtr& dataValue) = 0;
 	};
 
 
@@ -48,12 +50,36 @@ namespace OpcUaStackClient
 		void attributeService(AttributeService::SPtr& attributeService);
 		void attributeServiceBrowseIf(AttributeServiceNodeIf* attributeServiceBrowseIf);
 		void nodeId(OpcUaNodeId& nodeId);
+		void attributeIds(
+			AttributeId& attributeId1
+		);
+		void attributeIds(
+			AttributeId& attributeId1,
+			AttributeId& attributeId2
+		);
+		void attributeIds(
+			AttributeId& attributeId1,
+			AttributeId& attributeId2,
+			AttributeId& attributeId3
+		);
+		void attributeIds(
+			AttributeId& attributeId1,
+			AttributeId& attributeId2,
+			AttributeId& attributeId3,
+			AttributeId& attributeId4
+		);
+		void attributeIds(
+			AttributeId& attributeId1,
+			AttributeId& attributeId2,
+			AttributeId& attributeId3,
+			AttributeId& attributeId4,
+			AttributeId& attributeId5
+		);
 
-		void asyncRead(void);
+		void asyncReadNode(void);
 
 		//- AttributeServiceIf -----------------------------------------------------
-	    //virtual void attributeServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
-	    //virtual void attributeServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+	    virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
 	    //- AttributeServiceIf -----------------------------------------------------
 
 	  private:
@@ -61,6 +87,7 @@ namespace OpcUaStackClient
 		AttributeServiceNodeIf* attributeServiceBrowseIf_;
 
 		OpcUaNodeId nodeId_;
+		std::vector<AttributeId> attributeIdVec_;
 
 	};
 

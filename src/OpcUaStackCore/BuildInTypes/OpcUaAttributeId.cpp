@@ -50,4 +50,15 @@ namespace OpcUaStackCore
     	return false;
     }
 
+    void
+    AttributeIdMask::get(AttributeIdMask::Vec& attributeIdMaskVec)
+    {
+    	for (uint32_t idx = 0; idx <= 22; idx++) {
+    		uint32_t tmp = 1 << idx;
+    		if ((attributeIdMask_ & tmp) == tmp) {
+    			attributeIdMaskVec.push_back((AttributeId)idx);
+    		}
+    	}
+    }
+
 }

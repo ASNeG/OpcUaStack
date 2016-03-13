@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_AttributeId_h__
 
 #include <stdint.h>
+#include <vector>
 
 namespace OpcUaStackCore
 {
@@ -53,12 +54,15 @@ namespace OpcUaStackCore
 	class AttributeIdMask
 	{
 	  public:
+		typedef std::vector<AttributeId> Vec;
+
 		AttributeIdMask(void);
 		~AttributeIdMask(void);
 
 		void add(const AttributeId attributeId);
 		void del(const AttributeId attributeId);
 		bool exist(const AttributeId attributeId);
+		void get(AttributeIdMask::Vec& attributeIdMaskVec);
 
 	  public:
 		uint32_t attributeIdMask_;

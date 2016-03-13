@@ -94,8 +94,6 @@ namespace OpcUaClient
 		nodeId->copyFrom(commandNodeSet->nodeId());
 		nodeIdVec.push_back(nodeId);
 		commandNodeSet->validateCommand();
-		std::cout << "XXXX" << commandNodeSet->nodeId().toString() << std::endl;
-		std::cout << "XXXX" << nodeId->toString() << std::endl;
 
 		ViewServiceBrowse viewServiceBrowse;
 		viewServiceBrowse.viewService(viewService);
