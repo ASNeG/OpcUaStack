@@ -60,6 +60,7 @@ namespace OpcUaStackClient
 		AttributeId& attributeId1
 	)
 	{
+		attributeIdVec_.clear();
 		attributeIdVec_.push_back(attributeId1);
 	}
 
@@ -69,6 +70,7 @@ namespace OpcUaStackClient
 		AttributeId& attributeId2
 	)
 	{
+		attributeIdVec_.clear();
 		attributeIdVec_.push_back(attributeId1);
 		attributeIdVec_.push_back(attributeId2);
 	}
@@ -80,6 +82,7 @@ namespace OpcUaStackClient
 		AttributeId& attributeId3
 	)
 	{
+		attributeIdVec_.clear();
 		attributeIdVec_.push_back(attributeId1);
 		attributeIdVec_.push_back(attributeId2);
 		attributeIdVec_.push_back(attributeId3);
@@ -93,6 +96,7 @@ namespace OpcUaStackClient
 		AttributeId& attributeId4
 	)
 	{
+		attributeIdVec_.clear();
 		attributeIdVec_.push_back(attributeId1);
 		attributeIdVec_.push_back(attributeId2);
 		attributeIdVec_.push_back(attributeId3);
@@ -108,11 +112,62 @@ namespace OpcUaStackClient
 		AttributeId& attributeId5
 	)
 	{
+		attributeIdVec_.clear();
 		attributeIdVec_.push_back(attributeId1);
 		attributeIdVec_.push_back(attributeId2);
 		attributeIdVec_.push_back(attributeId3);
 		attributeIdVec_.push_back(attributeId4);
 		attributeIdVec_.push_back(attributeId5);
+	}
+
+	void
+	AttributeServiceNode::asyncReadNode(NodeClassType nodeClassType)
+	{
+		attributeIdVec_.clear();
+		switch (nodeClassType)
+		{
+			case NodeClassType_Object:
+			{
+				break;
+			}
+			case NodeClassType_Variable:
+			{
+				break;
+			}
+			case NodeClassType_Method:
+			{
+				break;
+			}
+			case NodeClassType_ObjectType:
+			{
+				break;
+			}
+			case NodeClassType_VariableType:
+			{
+				break;
+			}
+			case NodeClassType_ReferenceType:
+			{
+				break;
+			}
+			case NodeClassType_DataType:
+			{
+				break;
+			}
+			case NodeClassType_View:
+			{
+				break;
+			}
+			default:
+			{
+				OpcUaStatusCode statusCode = BadInvalidArgument;
+		    	Log(Error, "node class error in read node request")
+		    		.parameter("StatusCode", OpcUaStatusCodeMap::longString(statusCode))
+		    		.parameter("NodeClass", nodeClassType);
+		    	attributeServiceNodeIf_->attributeServiceNodeDone(statusCode);
+		    	return;
+			}
+		}
 	}
 
 	void
@@ -167,7 +222,7 @@ namespace OpcUaStackClient
     	{
     		OpcUaDataValue::SPtr dataValue;
     		res->dataValueArray()->get(pos, dataValue);
-    		attributeServiceNodeIf_->attributeServiceNodeResult(dataValue);
+    		attributeServiceNodeIf_->attributeServiceNodeResult(attributeIdVec_[pos], dataValue);
     	}
 
     	attributeServiceNodeIf_->attributeServiceNodeDone(Success);

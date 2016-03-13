@@ -28,6 +28,7 @@ namespace OpcUaClient
 	ClientServiceNodeSet::ClientServiceNodeSet(void)
 	: ClientServiceBase()
 	, browseCompleted_()
+	, readCompleted_()
 	, attributeService_()
 	{
 	}
@@ -130,7 +131,29 @@ namespace OpcUaClient
 			return;
 		}
 
-		std::cout << "browseResult.." << std::endl;
+		ReferenceDescription::Vec::iterator it;
+		for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
+			ReferenceDescription::SPtr referenceDescription = *it;
+			readNodeAttributes(nodeId, referenceDescription);
+		}
+	}
+
+	void
+	ClientServiceNodeSet::readNodeAttributes(
+		OpcUaNodeId::SPtr& nodeId,
+		ReferenceDescription::SPtr& referenceDescription
+	)
+	{
+	}
+
+	void
+	ClientServiceNodeSet::attributeServiceNodeDone(OpcUaStatusCode statusCode)
+	{
+	}
+
+	void
+	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
+	{
 	}
 
 }

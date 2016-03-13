@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
+#include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -50,8 +51,22 @@ namespace OpcUaClient
 		);
 		//- ViewServiceBrowseIf -----------------------------------------------
 
+		//- AttributeServiceNodeIf --------------------------------------------
+		virtual void attributeServiceNodeDone(OpcUaStatusCode statusCode);
+		virtual void attributeServiceNodeResult(
+			AttributeId attributeId,
+			OpcUaDataValue::SPtr& dataValue
+		);
+		//- AttributeServiceNodeId --------------------------------------------
+
       private:
+		void readNodeAttributes(
+			OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescription::SPtr& referenceDescription
+		);
+
 		ConditionBool browseCompleted_;
+		ConditionBool readCompleted_;
 		AttributeService::SPtr attributeService_;
 	};
 

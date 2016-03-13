@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 #include "OpcUaStackClient/ServiceSet/AttributeService.h"
 
 using namespace OpcUaStackCore;
@@ -34,7 +35,7 @@ namespace OpcUaStackClient
 		virtual ~AttributeServiceNodeIf(void) {}
 
 		virtual void attributeServiceNodeDone(OpcUaStatusCode statusCode) = 0;
-		virtual void attributeServiceNodeResult(OpcUaDataValue::SPtr& dataValue) = 0;
+		virtual void attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue) = 0;
 	};
 
 
@@ -77,6 +78,7 @@ namespace OpcUaStackClient
 		);
 
 		void asyncReadNode(void);
+		void asyncReadNode(NodeClassType nodeClassType);
 
 		//- AttributeServiceIf -----------------------------------------------------
 	    virtual void attributeServiceReadResponse(ServiceTransactionRead::SPtr serviceTransactionRead);
