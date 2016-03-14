@@ -4,5 +4,5 @@
 
 OpcUaClient \
  -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \
- -Command Read		-NodeId "i=2991" 
-# -Command Disconnect 
+ -Command Read		-NodeId "i=1234" \
+ -Command Disconnect 

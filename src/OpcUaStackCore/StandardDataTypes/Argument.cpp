@@ -22,12 +22,11 @@ namespace OpcUaStackCore
 
 	Argument::Argument(void)
 	: Object()
-	, productUri_()
-	, manufacturerName_()
-	, productName_()
-	, softwareVersion_()
-	, buildNumber_()
-	, buildDate_()
+	, name_()
+	, dataType_()
+	, valueRank_(-1)
+	, arrayDimensions_()
+	, description_()
 	{
 	}
 
@@ -35,64 +34,67 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaString&
-	Argument::productUri(void)
-	{
-		return productUri_;
-	}
 
 	OpcUaString&
-	Argument::manufacturerName(void)
+	Argument::name(void)
 	{
-		return manufacturerName_;
+		return name_;
 	}
 
-	OpcUaString&
-	Argument::productName(void)
+	OpcUaNodeId&
+	Argument::dataType(void)
 	{
-		return productName_;
+		return dataType_;
 	}
 
-	OpcUaString&
-	Argument::softwareVersion(void)
+	OpcUaInt32&
+	Argument::valueRank(void)
 	{
-		return softwareVersion_;
+		return valueRank_;
 	}
 
-	OpcUaString&
-	Argument::buildNumber(void)
+	OpcUaUInt32Array::SPtr&
+	Argument::arrayDimensions(void)
 	{
-		return buildNumber_;
+		return arrayDimensions_;
 	}
 
-	OpcUaDateTime&
-	Argument::buildDate(void)
+	OpcUaLocalizedText&
+	Argument::description(void)
 	{
-		return buildDate_;
+		return description_;
 	}
 
 	void
-	Argument::copyTo(Argument& buildInfo)
+	Argument::copyTo(Argument& argument)
 	{
-		productUri_.copyTo(buildInfo.productUri_);
-		manufacturerName_.copyTo(buildInfo.manufacturerName_);
-		productName_.copyTo(buildInfo.productName_);
-		softwareVersion_.copyTo(buildInfo.softwareVersion_);
-		buildNumber_.copyTo(buildInfo.buildNumber_);
-		buildDate_.copyTo(buildInfo.buildDate_);
+		name_.copyTo(argument.name_);
+		dataType_.copyTo(argument.dataType_);
+		argument.valueRank_ = valueRank_;
+		if (arrayDimensions_.get() != nullptr) {
+			arrayDimensions_->copyTo(*argument.arrayDimensions_);
+		}
+		description_.copyTo(argument.description_);
 	}
 
 	bool
-	Argument::operator==(const Argument& buildInfo) const
+	Argument::operator==(const Argument& argument) const
 	{
-		Argument* dst = const_cast<Argument*>(&buildInfo);
+		Argument* dst = const_cast<Argument*>(&argument);
+
+		if (arrayDimensions_.get() == nullptr && dst->arrayDimensions().get() != nullptr) {
+			return false;
+		}
+		if (arrayDimensions_.get() != nullptr && dst->arrayDimensions().get() == nullptr) {
+			return false;
+		}
+		if (*arrayDimensions_ == *dst->arrayDimensions()) return false;
+
 		return
-			productUri_ == dst->productUri() &&
-			manufacturerName_ == dst->manufacturerName() &&
-			productName_ == dst->productName() &&
-			softwareVersion_ == dst->softwareVersion() &&
-			buildNumber_ == dst->buildNumber() &&
-			buildDate_ == dst->buildDate();
+			name_ == dst->name() &&
+			dataType_ == dst->dataType() &&
+			valueRank_ == dst->valueRank() &&
+			description_ == dst->description();
 	}
 
 	// ------------------------------------------------------------------------
@@ -111,23 +113,28 @@ namespace OpcUaStackCore
 	void
 	Argument::opcUaBinaryEncode(std::ostream& os) const
 	{
-		productUri_.opcUaBinaryEncode(os);
-		manufacturerName_.opcUaBinaryEncode(os);
-		productName_.opcUaBinaryEncode(os);
-		softwareVersion_.opcUaBinaryEncode(os);
-		buildNumber_.opcUaBinaryEncode(os);
-		buildDate_.opcUaBinaryEncode(os);
+		name_.opcUaBinaryEncode(os);
+		dataType_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, valueRank_);
+		if (arrayDimensions_.get() == nullptr) {
+			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaInt32)-1);
+		}
+		else {
+			arrayDimensions_->opcUaBinaryEncode(os);
+		}
+		description_.opcUaBinaryEncode(os);
 	}
 
 	void
 	Argument::opcUaBinaryDecode(std::istream& is)
 	{
-		productUri_.opcUaBinaryDecode(is);
-		manufacturerName_.opcUaBinaryDecode(is);
-		productName_.opcUaBinaryDecode(is);
-		softwareVersion_.opcUaBinaryDecode(is);
-		buildNumber_.opcUaBinaryDecode(is);
-		buildDate_.opcUaBinaryDecode(is);
+		arrayDimensions_ = constructSPtr<OpcUaUInt32Array>();
+
+		name_.opcUaBinaryDecode(is);
+		dataType_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, valueRank_);
+		arrayDimensions_->opcUaBinaryDecode(is);
+		description_.opcUaBinaryDecode(is);
 	}
 
 	void
@@ -147,12 +154,11 @@ namespace OpcUaStackCore
 	void
 	Argument::out(std::ostream& os)
 	{
-		os << "ProductUri="; productUri_.out(os);
-		os << ", ManufacturerName="; manufacturerName_.out(os);
-		os << ", ProductName="; productName_.out(os);
-		os << ", SoftwareVersion="; softwareVersion_.out(os);
-		os << ", BuildNumber="; buildNumber_.out(os);
-		os << ", BuildDate="; buildDate_.out(os);
+		os << "Name="; name_.out(os);
+		os << ", DataType=" << dataType_;
+		os << ", ValueRank=" << valueRank_;
+		os << ", ArrayDimensions="; arrayDimensions_->out(os);
+		os << ", Description="; description_.out(os);
 	}
 
 }

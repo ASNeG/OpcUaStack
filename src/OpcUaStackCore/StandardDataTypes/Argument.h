@@ -36,15 +36,14 @@ namespace OpcUaStackCore
 		Argument(void);
 		virtual ~Argument(void);
 
-		OpcUaString& productUri(void);
-		OpcUaString& manufacturerName(void);
-		OpcUaString& productName(void);
-		OpcUaString& softwareVersion(void);
-		OpcUaString& buildNumber(void);
-		OpcUaDateTime& buildDate(void);
+		OpcUaString& name(void);
+		OpcUaNodeId& dataType(void);
+		OpcUaInt32& valueRank(void);
+		OpcUaUInt32Array::SPtr& arrayDimensions(void);
+		OpcUaLocalizedText& description(void);
 
-		void copyTo(Argument& buildInfo);
-		bool operator==(const Argument& buildInfo) const;
+		void copyTo(Argument& argument);
+		bool operator==(const Argument& argument) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
 		ExtensionObjectBase::BSPtr factory(void);
@@ -56,12 +55,11 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:
-		OpcUaString productUri_;
-		OpcUaString manufacturerName_;
-		OpcUaString productName_;
-		OpcUaString softwareVersion_;
-		OpcUaString buildNumber_;
-		OpcUaDateTime buildDate_;
+		OpcUaString name_;
+		OpcUaNodeId dataType_;
+		OpcUaInt32 valueRank_;
+		OpcUaUInt32Array::SPtr arrayDimensions_;
+		OpcUaLocalizedText description_;
 	};
 
 }
