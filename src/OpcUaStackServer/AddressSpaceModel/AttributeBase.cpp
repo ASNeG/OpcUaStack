@@ -78,6 +78,163 @@ namespace OpcUaStackServer
 		}
 	}
 
+	bool
+	AttributeBase::set(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
+	{
+		if (dataValue.get() == nullptr) return false;
+		OpcUaVariant::SPtr variant = dataValue->variant();
+		if (variant.get() == nullptr) return false;
+		if (variant->variantType() == 0) return false;
+
+		std::cout << "AttributeId=" << attributeId << std::endl;
+		//std::cout << "DataValue="; dataValue->out(std::cout); std::cout << std::endl;
+
+		switch (attributeId)
+		{
+			case AttributeId_NodeId:
+			{
+				if (!isPartNodeId()) return false;
+				OpcUaNodeId::SPtr nodeId = variant->variantSPtr<OpcUaNodeId>();
+				return setNodeId(*nodeId);
+			}
+			case AttributeId_NodeClass:
+			{
+				if (!isPartNodeClass()) return false;
+			    NodeClassType nodeClassType = variant->variantSPtr<NodeClass>()->nodeClassType();
+				return setNodeClass(nodeClassType);
+			}
+			case AttributeId_BrowseName:
+			{
+				if (!isPartBrowseName()) return false;
+				OpcUaQualifiedName::SPtr browseName = variant->variantSPtr<OpcUaQualifiedName>();
+				return setBrowseName(*browseName);
+			}
+			case AttributeId_DisplayName:
+			{
+				if (!isPartDisplayName()) return false;
+				OpcUaLocalizedText::SPtr displayName = variant->variantSPtr<OpcUaLocalizedText>();
+				return setDisplayName(*displayName);
+			}
+			case AttributeId_Description:
+			{
+				if (!isPartDescription()) return false;
+				OpcUaLocalizedText::SPtr description = variant->variantSPtr<OpcUaLocalizedText>();
+				return setDescription(*description);
+			}
+			case AttributeId_WriteMask:
+			{
+				if (!isPartWriteMask()) return false;
+				OpcUaUInt32 writeMask = variant->variant<OpcUaUInt32>();
+				return setWriteMask(writeMask);
+			}
+			case AttributeId_UserWriteMask:
+			{
+				if (!isPartUserWriteMask()) return false;
+				OpcUaUInt32 userWriteMask = variant->variant<OpcUaUInt32>();
+				return setUserWriteMask(userWriteMask);
+			}
+			case AttributeId_IsAbstract:
+			{
+				if (!isPartIsAbstract()) return false;
+				OpcUaBoolean isAbstract = variant->variant<OpcUaBoolean>();
+				return setIsAbstract(isAbstract);
+			}
+			case AttributeId_Symmetric:
+			{
+				if (!isPartSymmetric()) return false;
+				OpcUaBoolean symmetric = variant->variant<OpcUaBoolean>();
+				return setSymmetric(symmetric);
+			}
+			case AttributeId_InverseName:
+			{
+				if (!isPartInverseName()) return false;
+				OpcUaLocalizedText::SPtr inverseName = variant->variantSPtr<OpcUaLocalizedText>();
+				return setInverseName(*inverseName);
+			}
+			case AttributeId_ContainsNoLoops:
+			{
+				if (!isPartContainsNoLoops()) return false;
+				OpcUaBoolean containsNoLoops = variant->variant<OpcUaBoolean>();
+				return setContainsNoLoops(containsNoLoops);
+			}
+			case AttributeId_EventNotifier:
+			{
+				if (!isPartEventNotifier()) return false;
+				OpcUaByte eventNotifier = variant->variant<OpcUaByte>();
+				return setEventNotifier(eventNotifier);
+			}
+			case AttributeId_Value:
+			{
+				return false;
+				// FIXME:
+				//if (!isPartValue()) return false;
+				//return setValue(*dataValue);
+			}
+			case AttributeId_DataType:
+			{
+				if (!isPartDataType()) return false;
+				OpcUaNodeId::SPtr dataType = variant->variantSPtr<OpcUaNodeId>();
+				return setDataType(*dataType);
+			}
+			case AttributeId_ValueRank:
+			{
+				if (!isPartValueRank()) return false;
+				OpcUaInt32 valueRank = variant->variant<OpcUaInt32>();
+				return setValueRank(valueRank);
+			}
+			case AttributeId_ArrayDimensions:
+			{
+				if (!isPartArrayDimensions()) return false;
+				OpcUaUInt32Array::SPtr arrayDimensions = constructSPtr<OpcUaUInt32Array>();
+				arrayDimensions->resize(variant->arrayLength());
+				for (uint32_t idx = 0; idx < variant->arrayLength(); idx++) {
+					OpcUaUInt32 arrayDimension = variant->get<OpcUaUInt32>(idx);
+					arrayDimensions->push_back(arrayDimension);
+				}
+				return setArrayDimensions(*arrayDimensions);
+			}
+			case AttributeId_AccessLevel:
+			{
+				if (!isPartAccessLevel()) return false;
+				OpcUaByte accessLevel = variant->variant<OpcUaByte>();
+				return setAccessLevel(accessLevel);
+			}
+			case AttributeId_UserAccessLevel:
+			{
+				if (!isPartUserAccessLevel()) return false;
+				OpcUaByte userAccessLevel = variant->variant<OpcUaByte>();
+				return setUserAccessLevel(userAccessLevel);
+			}
+			case AttributeId_MinimumSamplingInterval:
+			{
+				if (!isPartMinimumSamplingInterval()) return false;
+				OpcUaDouble minimumSamplingInterval = variant->variant<OpcUaDouble>();
+				return setMinimumSamplingInterval(minimumSamplingInterval);
+			}
+			case AttributeId_Historizing:
+			{
+				if (!isPartHistorizing()) return false;
+				OpcUaBoolean historizing = variant->variant<OpcUaBoolean>();
+				return setHistorizing(historizing);
+			}
+			case AttributeId_Executable:
+			{
+				if (!isPartExecutable()) return false;
+				OpcUaBoolean executable = variant->variant<OpcUaBoolean>();
+				return setExecutable(executable);
+			}
+			case AttributeId_UserExecutable:
+			{
+				if (!isPartUserExecutable()) return false;
+				OpcUaBoolean userExecutable = variant->variant<OpcUaBoolean>();
+				return setUserExecutable(userExecutable);
+			}
+		    default: return false;
+		}
+
+		return false;
+	}
+
 	//
 	// node id
 	//
