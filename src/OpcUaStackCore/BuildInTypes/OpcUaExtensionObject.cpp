@@ -70,8 +70,10 @@ namespace OpcUaStackCore
 
 	OpcUaExtensionObject::OpcUaExtensionObject(void)
 	: Object()
+	, style_(S_None)
 	, typeId_()
 	, epSPtr_()
+	, byteString_()
 	{
 	}
 		
@@ -105,6 +107,23 @@ namespace OpcUaStackCore
 		return OpcUaExtensionObject::deleteElement(opcUaNodeId);
 	}
 
+	void
+	OpcUaExtensionObject::reset(void)
+	{
+		style_ = S_None;
+		typeId_.reset();
+		epSPtr_.reset();
+		byteString_.reset();
+	}
+
+	void
+	OpcUaExtensionObject::typeId(OpcUaUInt32 typeId)
+	{
+		OpcUaNodeId typeNodeId;
+		typeNodeId.set(typeId);
+		this->typeId(typeNodeId);
+	}
+
 	void 
 	OpcUaExtensionObject::typeId(const OpcUaNodeId& typeId)
 	{
@@ -117,6 +136,25 @@ namespace OpcUaStackCore
 		return typeId_;
 	}
 
+	OpcUaExtensionObject::Style
+	OpcUaExtensionObject::style(void)
+	{
+		return style_;
+	}
+
+	void
+	OpcUaExtensionObject::byteString(OpcUaByteString::SPtr& byteString)
+	{
+		style_ = S_ByteString;
+		byteString_ = byteString;
+	}
+
+	OpcUaByteString::SPtr
+	OpcUaExtensionObject::byteString(void)
+	{
+		return byteString_;
+	}
+
 	bool
 	OpcUaExtensionObject::createObject(void)
 	{
@@ -125,6 +163,7 @@ namespace OpcUaStackCore
 		if (it == extentionObjectMap_.end()) {
 			return false;
 		}
+		style_ = S_Type;
 		epSPtr_ = it->second->factory();
 		return true;
 	}
@@ -138,17 +177,38 @@ namespace OpcUaStackCore
 	void 
 	OpcUaExtensionObject::copyTo(OpcUaExtensionObject& extensionObject)
 	{
-		if (!epSPtr_) return;
-		typeId_.copyTo(extensionObject.typeId());
-		if (!extensionObject.createObject()) return;
-		epSPtr_->copyTo(*(ExtensionObjectBase*)extensionObject.get().get());
+		if (style_ == S_None) {
+			return;
+		}
+
+		if (style_ == S_ByteString) {
+			if (byteString_.get() == nullptr) return;
+			typeId_.copyTo(extensionObject.typeId());
+			OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+			byteString_->copyTo(*byteString);
+			extensionObject.byteString(byteString);
+		}
+
+		else {
+			if (!epSPtr_) return;
+			typeId_.copyTo(extensionObject.typeId());
+			if (!extensionObject.createObject()) return;
+			epSPtr_->copyTo(*(ExtensionObjectBase*)extensionObject.get().get());
+		}
 	}
 
 	void 
 	OpcUaExtensionObject::out(std::ostream& os) const
 	{
 		if (!epSPtr_) return;
-		epSPtr_->out(os);
+
+		if (style_ == S_ByteString) {
+			if (byteString_.get() == nullptr) return;
+			byteString_->out(os);
+		}
+		else {
+			epSPtr_->out(os);
+		}
 	}
 
 	bool 
@@ -161,29 +221,64 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::operator==(const OpcUaExtensionObject& extensionObject) const
 	{
 		if (!epSPtr_) return false;
-		ExtensionObjectBase* extensionObjectBase = const_cast<OpcUaExtensionObject*>(&extensionObject)->get().get();
-		return epSPtr_->equal(*extensionObjectBase);
+
+		if (style_ == S_ByteString) {
+			OpcUaByteString* byteString = const_cast<OpcUaExtensionObject*>(&extensionObject)->byteString().get();
+
+			if (byteString_.get() == nullptr && byteString == nullptr) return true;
+			if (byteString_.get() == nullptr) return false;
+			if (byteString == nullptr) return false;
+
+			return (*byteString_ == *byteString);
+		}
+
+		else {
+			ExtensionObjectBase* extensionObjectBase = const_cast<OpcUaExtensionObject*>(&extensionObject)->get().get();
+			return epSPtr_->equal(*extensionObjectBase);
+		}
 	}
 
 	void 
 	OpcUaExtensionObject::opcUaBinaryEncode(std::ostream& os) const
 	{
-		if(epSPtr_.get() == NULL)
-		{
+		if (style_ == S_None) {
 			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
 			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
-		} else {
-			typeId_.opcUaBinaryEncode(os);
-			OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+		}
 
-			boost::asio::streambuf sb;
-			std::ostream osb(&sb);
-			epSPtr_->opcUaBinaryEncode(osb);
+		else if (style_ == S_ByteString) {
+			if (byteString_.get() == nullptr) {
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			}
 
-			OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
-			OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
-			os << osb.rdbuf();
+			else {
+				typeId_.opcUaBinaryEncode(os);
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+				byteString_->opcUaBinaryEncode(os);
+			}
+		}
+
+		else {
+			if(epSPtr_.get() == NULL)
+			{
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x00);
+			} else {
+				typeId_.opcUaBinaryEncode(os);
+				OpcUaNumber::opcUaBinaryEncode(os, (OpcUaByte)0x01);
+
+				boost::asio::streambuf sb;
+				std::ostream osb(&sb);
+				epSPtr_->opcUaBinaryEncode(osb);
+
+				OpcUaUInt32 bufferLength = OpcUaStackCore::count(sb);
+				OpcUaNumber::opcUaBinaryEncode(os, bufferLength);
+				os << osb.rdbuf();
+			}
 		}
 	}
 		
@@ -194,12 +289,25 @@ namespace OpcUaStackCore
 		typeId_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
 
-		ExtensionObjectMap::iterator it;
-		it = extentionObjectMap_.find(typeId_);
-		if (it == extentionObjectMap_.end()) {
+		if (encodingMask == 0x00) {
+			style_ = S_None;
 			return;
 		}
 
+		ExtensionObjectMap::iterator it;
+		it = extentionObjectMap_.find(typeId_);
+		if (it == extentionObjectMap_.end()) {
+
+			// Extension object unknown - read extension data as raw byte string
+
+			style_ = S_ByteString;
+			byteString_ = constructSPtr<OpcUaByteString>();
+			byteString_->opcUaBinaryDecode(is);
+
+			return;
+		}
+
+		style_ = S_Type;
 		OpcUaUInt32 bufferLength;
 		OpcUaNumber::opcUaBinaryDecode(is, bufferLength);
 		epSPtr_ = it->second->factory();
