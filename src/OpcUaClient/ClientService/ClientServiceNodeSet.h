@@ -21,8 +21,11 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
+
+using namespace OpcUaStackServer;
 
 namespace OpcUaClient
 {
@@ -69,6 +72,7 @@ namespace OpcUaClient
 		ConditionBool browseCompleted_;
 		ConditionBool readCompleted_;
 		AttributeService::SPtr attributeService_;
+		BaseNodeClass::SPtr baseNodeClass_;
 	};
 
 }
