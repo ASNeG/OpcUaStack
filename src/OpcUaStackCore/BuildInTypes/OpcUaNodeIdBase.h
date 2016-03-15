@@ -46,7 +46,7 @@ namespace OpcUaStackCore
 	    OpcUaNodeIdBase(void);
 		virtual ~OpcUaNodeIdBase(void);
 
-		void clear(void);
+		void reset(void);
 
 		OpcUaNodeIdValue& nodeIdValue(void);
 		void nodeIdValue(OpcUaNodeIdValue& nodeIdValue);

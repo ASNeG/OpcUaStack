@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	OpcUaNodeIdBase::clear(void)
+	OpcUaNodeIdBase::reset(void)
 	{
 		namespaceIndex_ = 0;
 		nodeIdValue_ = OpcUaNodeIdValue();
