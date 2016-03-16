@@ -156,7 +156,6 @@ namespace OpcUaClient
 		OpcUaNodeId readNodeId;
 		readNodeId.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
 		readNodeId.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
-		std::cout << "read ..." << readNodeId.toString() << std::endl;
 
 		switch (referenceDescription->nodeClass())
 		{
