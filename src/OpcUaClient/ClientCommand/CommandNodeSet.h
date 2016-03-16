@@ -43,11 +43,7 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandNodeSet interface ---------------------------------------------
 
-		OpcUaNodeId& nodeId(void);
-
 	  private:
-		OpcUaNodeId nodeId_;
-		bool nodeIdExist_;
 	};
 
 }

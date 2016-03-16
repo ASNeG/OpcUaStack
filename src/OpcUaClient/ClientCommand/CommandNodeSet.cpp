@@ -28,8 +28,6 @@ namespace OpcUaClient
 
 	CommandNodeSet::CommandNodeSet(void)
 	: CommandBase(CommandBase::Cmd_NodeSet)
-	, nodeId_()
-	, nodeIdExist_(false)
 	{
 	}
 
@@ -47,32 +45,16 @@ namespace OpcUaClient
 	bool
 	CommandNodeSet::validateCommand(void)
 	{
-		std::cout << "......" << std::endl;
-		if (!nodeIdExist_) {
-			nodeId_.set((OpcUaUInt32)84, (OpcUaUInt16)0);
-		}
 		return true;
 	}
 
 	bool
 	CommandNodeSet::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
-		if (parameterName == "-NODEID") {
-			if (!nodeId_.fromString(parameterValue)) {
-				std::stringstream ss;
-				ss << "node id parameter invalid (" << parameterValue << ")";
-				errorMessage(ss.str());
-				return false;
-			}
-			nodeIdExist_ = true;
-		}
-		else {
-			std::stringstream ss;
-			ss << "invalid parameter " << parameterName;
-			errorMessage(ss.str());
-			return false;
-		}
-		return true;
+		std::stringstream ss;
+		ss << "invalid parameter " << parameterName;
+		errorMessage(ss.str());
+		return false;
 	}
 
 	std::string
@@ -80,15 +62,8 @@ namespace OpcUaClient
 	{
 		std::stringstream ss;
 		ss << "  -NodeSet: Reads nodes from a opc ua server\n"
-		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -NodeId (0..1): Start node id\n";
+		   << "    -Session (0..1): Name of the session.\n";
 		return ss.str();
-	}
-
-	OpcUaNodeId&
-	CommandNodeSet::nodeId(void)
-	{
-		return nodeId_;
 	}
 
 }

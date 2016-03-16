@@ -39,6 +39,10 @@ namespace OpcUaClient
 	, readCompleted_()
 	, attributeService_()
 	, baseNodeClass_()
+	, readNodeId_()
+	, informationModel_()
+	, browseStatusCode_(Success)
+	, readStatusCode_(Success)
 	{
 	}
 
@@ -98,10 +102,22 @@ namespace OpcUaClient
 			return false;
 		}
 
+		// create start node
+		OpcUaNodeId rootNodeId;
+		rootNodeId.set((OpcUaUInt32)84);
+		if (!createRootNode(rootNodeId)) {
+			std::stringstream ss;
+			ss << "create start node error"
+			   << " Session=" << commandNodeSet->session()
+			   << " StartNodeId=" << rootNodeId.toString();
+			errorMessage(ss.str());
+			return false;
+		}
+
 		// browse opc ua server information model
 		OpcUaNodeId::Vec nodeIdVec;
 		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
-		nodeId->copyFrom(commandNodeSet->nodeId());
+		nodeId->copyFrom(rootNodeId);
 		nodeIdVec.push_back(nodeId);
 		commandNodeSet->validateCommand();
 
@@ -112,8 +128,16 @@ namespace OpcUaClient
 		viewServiceBrowse.viewServiceBrowseIf(this);
 		viewServiceBrowse.asyncBrowse();
 
-		// wait for the end of the browse command
+		// wait for the end of the browse request
 		browseCompleted_.waitForCondition();
+		if (browseStatusCode_ != Success) {
+			std::stringstream ss;
+			ss << "browse error"
+			   << " Session=" << commandNodeSet->session()
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
+			errorMessage(ss.str());
+			return false;
+		}
 
 		return true;
 	}
@@ -121,8 +145,12 @@ namespace OpcUaClient
 	void
 	ClientServiceNodeSet::viewServiceBrowseDone(OpcUaStatusCode statusCode)
 	{
+		Log(Debug, "browse done")
+		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+
+		browseStatusCode_ = statusCode;
 		browseCompleted_.conditionTrue();
-		std::cout << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
+
 	}
 
 	void
@@ -140,24 +168,43 @@ namespace OpcUaClient
 			return;
 		}
 
+		// get node from information model
+		BaseNodeClass::SPtr baseNodeClass;
+		baseNodeClass = informationModel_.find(nodeId);
+		if (baseNodeClass.get() == nullptr) {
+			Log(Error, "node id not exist in browse request")
+				.parameter("NodeId", nodeId->toString());
+			return;
+		}
+
 		ReferenceDescription::Vec::iterator it;
 		for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
 			ReferenceDescription::SPtr referenceDescription = *it;
-			readNodeAttributes(nodeId, referenceDescription);
+
+			// read all node attributes
+			OpcUaStatusCode statusCode;
+			readNodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+			readNodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+			statusCode = readNodeAttributes(nodeId, referenceDescription->nodeClass());
+
+			// add reference to node
+			if (statusCode == Success) {
+				;
+			}
 		}
 	}
 
-	void
+	OpcUaStatusCode
 	ClientServiceNodeSet::readNodeAttributes(
-		OpcUaNodeId::SPtr& nodeId,
-		ReferenceDescription::SPtr& referenceDescription
+		OpcUaNodeId::SPtr& parentNodeId,
+		NodeClassType nodeClassType
 	)
 	{
-		OpcUaNodeId readNodeId;
-		readNodeId.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
-		readNodeId.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+		// check if node already exist
+		BaseNodeClass::SPtr baseNodeClass = informationModel_.find(readNodeId_);
+		if (baseNodeClass.get() != nullptr) return BadNodeIdExists;
 
-		switch (referenceDescription->nodeClass())
+		switch (nodeClassType)
 		{
 			case NodeClassType_Object:
 			{
@@ -202,38 +249,72 @@ namespace OpcUaClient
 			default:
 			{
 				Log(Error, "invalid node class parameter found in reference")
-					.parameter("ParentNodeId", nodeId->toString())
-					.parameter("NodeId", readNodeId.toString())
-					.parameter("NodeClassType", referenceDescription->nodeClass());
-				return;
+					.parameter("ParentNodeId", parentNodeId->toString())
+					.parameter("NodeId", readNodeId_.toString())
+					.parameter("NodeClassType", nodeClassType);
+				return BadViewParameterMismatch;
 			}
 		}
 
+		// create read node request information
 		AttributeServiceNode attributeServiceNode;
 		attributeServiceNode.attributeService(attributeService_);
-		attributeServiceNode.nodeId(readNodeId);
-		attributeServiceNode.attributeIds(referenceDescription->nodeClass());
+		attributeServiceNode.nodeId(readNodeId_);
+		attributeServiceNode.attributeIds(nodeClassType);
 		attributeServiceNode.attributeServiceNodeIf(this);
 
+		// send read node request
 		readCompleted_.conditionInit();
 		attributeServiceNode.asyncReadNode();
 
-		// wait for the end of the browse command
+		// wait for the end of the read node request
 		readCompleted_.waitForCondition();
+
+		// insert new node
+		if (readStatusCode_ == Success) {
+			baseNodeClass_->setNodeId(readNodeId_);
+			informationModel_.insert(baseNodeClass_);
+		}
+		return readStatusCode_;
 	}
 
 	void
 	ClientServiceNodeSet::attributeServiceNodeDone(OpcUaStatusCode statusCode)
 	{
+		if (statusCode != Success) {
+			Log(Error, "read node attributes error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+		}
+		readStatusCode_ = statusCode;
 		readCompleted_.conditionTrue();
-		std::cout << "StatusCode=" << statusCode << std::endl;
 	}
 
 	void
 	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
 	{
-		std::cout << ".." << std::endl;
 		baseNodeClass_->set(attributeId, dataValue);
+	}
+
+	bool
+	ClientServiceNodeSet::createRootNode(OpcUaNodeId& rootNodeId)
+	{
+		baseNodeClass_ = constructSPtr<ObjectNodeClass>();
+
+		baseNodeClass_->setNodeId(rootNodeId);
+		OpcUaQualifiedName browseName("Root");
+		baseNodeClass_->setBrowseName(browseName);
+		OpcUaLocalizedText displayName("Root", "en");
+		baseNodeClass_->setDisplayName(displayName);
+		OpcUaUInt32 writeMask = 0;
+		baseNodeClass_->setWriteMask(writeMask);
+		OpcUaUInt32 userWriteMask = 0;
+		baseNodeClass_->setUserWriteMask(userWriteMask);
+		OpcUaByte eventNotifier = 0x00;
+		baseNodeClass_->setEventNotifier(eventNotifier);
+
+		informationModel_.insert(baseNodeClass_);
+		return true;
 	}
 
 }

@@ -22,6 +22,7 @@
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -64,15 +65,21 @@ namespace OpcUaClient
 		//- AttributeServiceNodeId --------------------------------------------
 
       private:
-		void readNodeAttributes(
+		OpcUaStatusCode readNodeAttributes(
 			OpcUaNodeId::SPtr& nodeId,
-			ReferenceDescription::SPtr& referenceDescription
+			NodeClassType nodeClassType
 		);
+		bool createRootNode(OpcUaNodeId& rootNodeId);
 
+		OpcUaNodeId readNodeId_;
 		ConditionBool browseCompleted_;
 		ConditionBool readCompleted_;
 		AttributeService::SPtr attributeService_;
 		BaseNodeClass::SPtr baseNodeClass_;
+		InformationModel informationModel_;
+
+		OpcUaStatusCode browseStatusCode_;
+		OpcUaStatusCode readStatusCode_;
 	};
 
 }
