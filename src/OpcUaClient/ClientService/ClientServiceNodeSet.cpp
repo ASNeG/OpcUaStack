@@ -189,7 +189,22 @@ namespace OpcUaClient
 
 			// add reference to node
 			if (statusCode == Success) {
-				;
+				ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+
+				referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+				referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+				referenceItem->isForward_ = referenceDescription->isForward();
+
+				// replace local namespace by global namespace index
+				// FIXME:
+				//uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+				//uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
+				//referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
+
+				baseNodeClass->referenceItemMap().add(
+					*referenceDescription->referenceTypeId(),
+					referenceItem
+				);
 			}
 		}
 	}
