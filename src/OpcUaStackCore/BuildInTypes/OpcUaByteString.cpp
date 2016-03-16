@@ -58,6 +58,7 @@ namespace OpcUaStackCore
 	OpcUaByteString::value(const OpcUaByte* value, OpcUaInt32 length)
 	{
 		reset();
+		if (length < 0) return;
 		value_ = (OpcUaByte*)malloc(length);
 		memcpy(value_, value, length);
 		length_ = length;
@@ -167,14 +168,14 @@ namespace OpcUaStackCore
 	void 
 	OpcUaByteString::out(std::ostream& os) const
 	{
-		os << length_ << "-";
-		uint32_t length = length_;
+		os << length_;
+		int32_t length = length_;
 		if (length_ > 15) length = 15;
 
 		if (length > 0) {
 			std::string str;
 			byteSequenceToHexString((const uint8_t*) value_, length, str);
-			os << str;
+			os << "-" << str;
 			if (length_ != length) os << "..."; 
 		}
 	}
