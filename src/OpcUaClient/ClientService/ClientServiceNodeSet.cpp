@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
@@ -25,6 +26,8 @@
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ViewNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
+#include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaClient/ClientCommand/CommandNodeSet.h"
 #include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
 
@@ -135,6 +138,39 @@ namespace OpcUaClient
 			ss << "browse error"
 			   << " Session=" << commandNodeSet->session()
 			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
+			errorMessage(ss.str());
+			return false;
+		}
+		informationModel_.checkForwardReferences();
+
+		// write nodeset to file
+		bool rc;
+		NodeSetXmlParser nodeSetXmlParserWrite;
+		std::vector<std::string> namespaceUris;
+		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, namespaceUris);
+		if (!rc) {
+			std::stringstream ss;
+			ss << "write nodeset initial function error"
+			   << " Session=" << commandNodeSet->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		ConfigXml configXmlWrite;
+		rc = nodeSetXmlParserWrite.encode(configXmlWrite.ptree());
+		if (!rc) {
+			std::stringstream ss;
+			ss << "write nodeset encode function error"
+			   << " Session=" << commandNodeSet->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		rc = configXmlWrite.write("xx.xml");
+		if (!rc) {
+			std::stringstream ss;
+			ss << "write nodeset error"
+			   << " Session=" << commandNodeSet->session();
 			errorMessage(ss.str());
 			return false;
 		}
