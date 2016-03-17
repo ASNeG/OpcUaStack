@@ -43,7 +43,7 @@ namespace OpcUaClient
 	, attributeService_()
 	, baseNodeClass_()
 	, readNodeId_()
-	, informationModel_()
+	, informationModel_(constructSPtr<InformationModel>())
 	, browseStatusCode_(Success)
 	, readStatusCode_(Success)
 	{
@@ -141,7 +141,7 @@ namespace OpcUaClient
 			errorMessage(ss.str());
 			return false;
 		}
-		informationModel_.checkForwardReferences();
+		informationModel_->checkForwardReferences();
 
 		// write nodeset to file
 		bool rc;
@@ -166,7 +166,7 @@ namespace OpcUaClient
 			return false;
 		}
 
-		rc = configXmlWrite.write("xx.xml");
+		rc = configXmlWrite.write("NodeSet.xml");
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset error"
@@ -206,7 +206,7 @@ namespace OpcUaClient
 
 		// get node from information model
 		BaseNodeClass::SPtr baseNodeClass;
-		baseNodeClass = informationModel_.find(nodeId);
+		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() == nullptr) {
 			Log(Error, "node id not exist in browse request")
 				.parameter("NodeId", nodeId->toString());
@@ -252,7 +252,7 @@ namespace OpcUaClient
 	)
 	{
 		// check if node already exist
-		BaseNodeClass::SPtr baseNodeClass = informationModel_.find(readNodeId_);
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readNodeId_);
 		if (baseNodeClass.get() != nullptr) return BadNodeIdExists;
 
 		switch (nodeClassType)
@@ -324,7 +324,7 @@ namespace OpcUaClient
 		// insert new node
 		if (readStatusCode_ == Success) {
 			baseNodeClass_->setNodeId(readNodeId_);
-			informationModel_.insert(baseNodeClass_);
+			informationModel_->insert(baseNodeClass_);
 		}
 		return readStatusCode_;
 	}
@@ -364,7 +364,7 @@ namespace OpcUaClient
 		OpcUaByte eventNotifier = 0x00;
 		baseNodeClass_->setEventNotifier(eventNotifier);
 
-		informationModel_.insert(baseNodeClass_);
+		informationModel_->insert(baseNodeClass_);
 		return true;
 	}
 

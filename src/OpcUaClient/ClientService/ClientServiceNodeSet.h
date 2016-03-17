@@ -76,7 +76,7 @@ namespace OpcUaClient
 		ConditionBool readCompleted_;
 		AttributeService::SPtr attributeService_;
 		BaseNodeClass::SPtr baseNodeClass_;
-		InformationModel informationModel_;
+		InformationModel::SPtr informationModel_;
 
 		OpcUaStatusCode browseStatusCode_;
 		OpcUaStatusCode readStatusCode_;
