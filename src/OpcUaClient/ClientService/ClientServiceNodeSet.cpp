@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
@@ -38,14 +39,17 @@ namespace OpcUaClient
 
 	ClientServiceNodeSet::ClientServiceNodeSet(void)
 	: ClientServiceBase()
+	, state_(S_Init)
 	, browseCompleted_()
 	, readCompleted_()
 	, attributeService_()
 	, baseNodeClass_()
 	, readNodeId_()
 	, informationModel_(constructSPtr<InformationModel>())
+	, serverNamespaceArray_()
 	, browseStatusCode_(Success)
 	, readStatusCode_(Success)
+	, readNamespaceArrayStatusCode_(Success)
 	{
 	}
 
@@ -105,7 +109,20 @@ namespace OpcUaClient
 			return false;
 		}
 
+		// read namespace array
+		state_ = S_ReadNamespaceArray;
+		statusCode = readNamespaceArray();
+		if (statusCode != Success) {
+			std::stringstream ss;
+			ss << "read namespace array error"
+			   << " Session=" << commandNodeSet->session()
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
+			errorMessage(ss.str());
+			return false;
+		}
+
 		// create start node
+		state_ = S_Browse;
 		OpcUaNodeId rootNodeId;
 		rootNodeId.set((OpcUaUInt32)84);
 		if (!createRootNode(rootNodeId)) {
@@ -141,10 +158,13 @@ namespace OpcUaClient
 			errorMessage(ss.str());
 			return false;
 		}
+
+		state_ = S_CheckReferences;
 		informationModel_->checkForwardReferences();
 
 		// write nodeset to file
 		bool rc;
+		state_ = S_WriteNodeSet;
 		NodeSetXmlParser nodeSetXmlParserWrite;
 		std::vector<std::string> namespaceUris;
 		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, namespaceUris);
@@ -329,6 +349,30 @@ namespace OpcUaClient
 		return readStatusCode_;
 	}
 
+	OpcUaStatusCode
+	ClientServiceNodeSet::readNamespaceArray(void)
+	{
+		Log(Debug, "read namespace array");
+
+		readNodeId_.set(2255);
+
+		// create read node request information
+		AttributeServiceNode attributeServiceNode;
+		attributeServiceNode.attributeService(attributeService_);
+		attributeServiceNode.nodeId(readNodeId_);
+		attributeServiceNode.attributeIds(AttributeId_Value);
+		attributeServiceNode.attributeServiceNodeIf(this);
+
+		// send read node request
+		readCompleted_.conditionInit();
+		attributeServiceNode.asyncReadNode();
+
+		// wait for the end of the read node request
+		readCompleted_.waitForCondition();
+		if (readStatusCode_ != Success) return readStatusCode_;
+		return readNamespaceArrayStatusCode_;
+	}
+
 	void
 	ClientServiceNodeSet::attributeServiceNodeDone(OpcUaStatusCode statusCode)
 	{
@@ -344,7 +388,40 @@ namespace OpcUaClient
 	void
 	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
 	{
-		baseNodeClass_->set(attributeId, dataValue);
+		if (state_ == S_ReadNamespaceArray) {
+			readNamespaceArrayStatusCode_ = dataValue->statusCode();
+			if (readNamespaceArrayStatusCode_ != Success) {
+				Log(Error, "read namespace array data error")
+					.parameter("ReadNodeId", readNodeId_.toString())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+				return;
+			}
+
+			if (!dataValue->variant()->isArray()) {
+				readNamespaceArrayStatusCode_ = BadTypeMismatch;
+				Log(Error, "read namespace array array error")
+					.parameter("ReadNodeId", readNodeId_.toString())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+				return;
+			}
+
+			if (dataValue->variant()->variantType() != OpcUaBuildInType_OpcUaString) {
+				readNamespaceArrayStatusCode_ = BadTypeMismatch;
+				Log(Error, "read namespace array type error")
+					.parameter("ReadNodeId", readNodeId_.toString())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+				return;
+			}
+#if 0
+			NamespaceArray namespaceArray(session_);
+			if (!namespaceArray.readSync()) return false;
+			nodeSetNamespace_.clear();
+			nodeSetNamespace_.decodeNamespaceUris(namespaceArray.namespaceVec());
+#endif
+		}
+		else {
+			baseNodeClass_->set(attributeId, dataValue);
+		}
 	}
 
 	bool

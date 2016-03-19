@@ -52,29 +52,29 @@ namespace OpcUaStackClient
 		void attributeServiceNodeIf(AttributeServiceNodeIf* attributeServiceNodeIf);
 		void nodeId(OpcUaNodeId& nodeId);
 		void attributeIds(
-			AttributeId& attributeId1
+			const AttributeId& attributeId1
 		);
 		void attributeIds(
-			AttributeId& attributeId1,
-			AttributeId& attributeId2
+			const AttributeId& attributeId1,
+			const AttributeId& attributeId2
 		);
 		void attributeIds(
-			AttributeId& attributeId1,
-			AttributeId& attributeId2,
-			AttributeId& attributeId3
+			const AttributeId& attributeId1,
+			const AttributeId& attributeId2,
+			const AttributeId& attributeId3
 		);
 		void attributeIds(
-			AttributeId& attributeId1,
-			AttributeId& attributeId2,
-			AttributeId& attributeId3,
-			AttributeId& attributeId4
+			const AttributeId& attributeId1,
+			const AttributeId& attributeId2,
+			const AttributeId& attributeId3,
+			const AttributeId& attributeId4
 		);
 		void attributeIds(
-			AttributeId& attributeId1,
-			AttributeId& attributeId2,
-			AttributeId& attributeId3,
-			AttributeId& attributeId4,
-			AttributeId& attributeId5
+			const AttributeId& attributeId1,
+			const AttributeId& attributeId2,
+			const AttributeId& attributeId3,
+			const AttributeId& attributeId4,
+			const AttributeId& attributeId5
 		);
 		void attributeIds(NodeClassType nodeClassType);
 

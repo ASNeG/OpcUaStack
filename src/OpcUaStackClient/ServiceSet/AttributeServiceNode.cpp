@@ -57,7 +57,7 @@ namespace OpcUaStackClient
 
 	void
 	AttributeServiceNode::attributeIds(
-		AttributeId& attributeId1
+		const AttributeId& attributeId1
 	)
 	{
 		attributeIdVec_.clear();
@@ -66,8 +66,8 @@ namespace OpcUaStackClient
 
 	void
 	AttributeServiceNode::attributeIds(
-		AttributeId& attributeId1,
-		AttributeId& attributeId2
+		const AttributeId& attributeId1,
+		const AttributeId& attributeId2
 	)
 	{
 		attributeIdVec_.clear();
@@ -77,9 +77,9 @@ namespace OpcUaStackClient
 
 	void
 	AttributeServiceNode::attributeIds(
-		AttributeId& attributeId1,
-		AttributeId& attributeId2,
-		AttributeId& attributeId3
+		const AttributeId& attributeId1,
+		const AttributeId& attributeId2,
+		const AttributeId& attributeId3
 	)
 	{
 		attributeIdVec_.clear();
@@ -90,10 +90,10 @@ namespace OpcUaStackClient
 
 	void
 	AttributeServiceNode::attributeIds(
-		AttributeId& attributeId1,
-		AttributeId& attributeId2,
-		AttributeId& attributeId3,
-		AttributeId& attributeId4
+		const AttributeId& attributeId1,
+		const AttributeId& attributeId2,
+		const AttributeId& attributeId3,
+		const AttributeId& attributeId4
 	)
 	{
 		attributeIdVec_.clear();
@@ -105,11 +105,11 @@ namespace OpcUaStackClient
 
 	void
 	AttributeServiceNode::attributeIds(
-		AttributeId& attributeId1,
-		AttributeId& attributeId2,
-		AttributeId& attributeId3,
-		AttributeId& attributeId4,
-		AttributeId& attributeId5
+		const AttributeId& attributeId1,
+		const AttributeId& attributeId2,
+		const AttributeId& attributeId3,
+		const AttributeId& attributeId4,
+		const AttributeId& attributeId5
 	)
 	{
 		attributeIdVec_.clear();

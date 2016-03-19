@@ -39,6 +39,14 @@ namespace OpcUaClient
 	  public:
 		typedef boost::shared_ptr<ClientServiceNodeSet> SPtr;
 
+		typedef enum {
+			S_Init,
+			S_ReadNamespaceArray,
+			S_Browse,
+			S_CheckReferences,
+			S_WriteNodeSet
+		} State;
+
 		ClientServiceNodeSet(void);
 		virtual ~ClientServiceNodeSet(void);
 
@@ -69,17 +77,21 @@ namespace OpcUaClient
 			OpcUaNodeId::SPtr& nodeId,
 			NodeClassType nodeClassType
 		);
+		OpcUaStatusCode readNamespaceArray(void);
 		bool createRootNode(OpcUaNodeId& rootNodeId);
 
+		State state_;
 		OpcUaNodeId readNodeId_;
 		ConditionBool browseCompleted_;
 		ConditionBool readCompleted_;
 		AttributeService::SPtr attributeService_;
 		BaseNodeClass::SPtr baseNodeClass_;
 		InformationModel::SPtr informationModel_;
+		std::vector<std::string> serverNamespaceArray_;
 
 		OpcUaStatusCode browseStatusCode_;
 		OpcUaStatusCode readStatusCode_;
+		OpcUaStatusCode readNamespaceArrayStatusCode_;
 	};
 
 }
