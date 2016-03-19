@@ -252,10 +252,9 @@ namespace OpcUaClient
 				referenceItem->isForward_ = referenceDescription->isForward();
 
 				// replace local namespace by global namespace index
-				// FIXME:
-				//uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
-				//uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
-				//referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
+				uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+				uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
+				referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
 
 				baseNodeClass->referenceItemMap().add(
 					*referenceDescription->referenceTypeId(),
@@ -404,45 +403,51 @@ namespace OpcUaClient
 	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
 	{
 		if (state_ == S_ReadNamespaceArray) {
-			readNamespaceArrayStatusCode_ = dataValue->statusCode();
-			if (readNamespaceArrayStatusCode_ != Success) {
-				Log(Error, "read namespace array data error")
-					.parameter("ReadNodeId", readNodeId_.toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
-				return;
-			}
-
-			if (!dataValue->variant()->isArray()) {
-				readNamespaceArrayStatusCode_ = BadTypeMismatch;
-				Log(Error, "read namespace array array error")
-					.parameter("ReadNodeId", readNodeId_.toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
-				return;
-			}
-
-			if (dataValue->variant()->variantType() != OpcUaBuildInType_OpcUaString) {
-				readNamespaceArrayStatusCode_ = BadTypeMismatch;
-				Log(Error, "read namespace array type error")
-					.parameter("ReadNodeId", readNodeId_.toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
-				return;
-			}
-
-			std::vector<std::string> serverNamespaceArray;
-			for (uint32_t idx = 0; idx < dataValue->variant()->arrayLength(); idx++) {
-				OpcUaString::SPtr namespaceIndexName;
-				namespaceIndexName = dataValue->variant()->variantSPtr<OpcUaString>(idx);
-				serverNamespaceArray.push_back(namespaceIndexName->value());
-
-				Log(Debug, "read namespace index name")
-				    .parameter("NamespaceIndexName", namespaceIndexName->value());
-			}
-
-			nodeSetNamespace_.decodeNamespaceUris(serverNamespaceArray);
+			handleNamespaceArray(dataValue);
 		}
 		else {
 			baseNodeClass_->set(attributeId, dataValue);
 		}
+	}
+
+	void
+	ClientServiceNodeSet::handleNamespaceArray(OpcUaDataValue::SPtr& dataValue)
+	{
+		readNamespaceArrayStatusCode_ = dataValue->statusCode();
+		if (readNamespaceArrayStatusCode_ != Success) {
+			Log(Error, "read namespace array data error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+			return;
+		}
+
+		if (!dataValue->variant()->isArray()) {
+			readNamespaceArrayStatusCode_ = BadTypeMismatch;
+			Log(Error, "read namespace array array error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+			return;
+		}
+
+		if (dataValue->variant()->variantType() != OpcUaBuildInType_OpcUaString) {
+			readNamespaceArrayStatusCode_ = BadTypeMismatch;
+			Log(Error, "read namespace array type error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+			return;
+		}
+
+		std::vector<std::string> serverNamespaceArray;
+		for (uint32_t idx = 0; idx < dataValue->variant()->arrayLength(); idx++) {
+			OpcUaString::SPtr namespaceIndexName;
+			namespaceIndexName = dataValue->variant()->variantSPtr<OpcUaString>(idx);
+			serverNamespaceArray.push_back(namespaceIndexName->value());
+
+			Log(Debug, "read namespace index name")
+			    .parameter("NamespaceIndexName", namespaceIndexName->value());
+		}
+
+		nodeSetNamespace_.decodeNamespaceUris(serverNamespaceArray);
 	}
 
 	bool

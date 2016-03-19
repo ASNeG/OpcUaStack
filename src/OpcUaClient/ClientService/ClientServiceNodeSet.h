@@ -79,6 +79,7 @@ namespace OpcUaClient
 			NodeClassType nodeClassType
 		);
 		OpcUaStatusCode readNamespaceArray(void);
+		void handleNamespaceArray(OpcUaDataValue::SPtr& dataValue);
 		bool createRootNode(OpcUaNodeId& rootNodeId);
 
 		State state_;
