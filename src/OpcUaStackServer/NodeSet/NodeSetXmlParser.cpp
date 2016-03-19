@@ -901,6 +901,8 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::encode(boost::property_tree::ptree& ptree)
 	{
 		boost::property_tree::ptree uaNodeSetTree;
+		boost::property_tree::ptree uaNodeSetTree1;
+
 
 		if (!encodeUAObject(uaNodeSetTree)) {
 			return false;
@@ -930,8 +932,9 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		encodeNamespaces(uaNodeSetTree);
-		
+		encodeNamespaces(uaNodeSetTree1);
+
+		ptree.put_child("UANodeSet", uaNodeSetTree1);
 		ptree.add_child("UANodeSet", uaNodeSetTree);
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
