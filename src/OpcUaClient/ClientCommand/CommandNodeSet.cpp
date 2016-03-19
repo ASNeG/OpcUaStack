@@ -28,7 +28,7 @@ namespace OpcUaClient
 
 	CommandNodeSet::CommandNodeSet(void)
 	: CommandBase(CommandBase::Cmd_NodeSet)
-	, namespaceNameVec_()
+	, namespaceUriVec_()
 	, nodeSetName_("NodeSet.xml")
 	{
 	}
@@ -53,8 +53,8 @@ namespace OpcUaClient
 	bool
 	CommandNodeSet::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
-		if (parameterName == "-NAMESPACENAME") {
-			namespaceNameVec_.push_back(parameterValue);
+		if (parameterName == "-NAMESPACEURI") {
+			namespaceUriVec_.push_back(parameterValue);
 		}
 		else if (parameterName == "-NODESETNAME") {
 			nodeSetName_ = parameterValue;
@@ -74,15 +74,15 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -NodeSet: Reads nodes from a opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -NamespaceName (0..N): Namespaces to write into node set file.\n"
+		   << "    -NamespaceUri (0..N): Namespaces to write into node set file.\n"
 		   << "    -NodeSetName (0..1): Name of node set file (Default: NodeSet.xml)\n";
 		return ss.str();
 	}
 
 	std::vector<std::string>&
-	CommandNodeSet::namespaceNameVec(void)
+	CommandNodeSet::namespaceUriVec(void)
 	{
-		return namespaceNameVec_;
+		return namespaceUriVec_;
 	}
 
 	std::string&

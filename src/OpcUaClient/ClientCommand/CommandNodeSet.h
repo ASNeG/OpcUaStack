@@ -43,11 +43,11 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandNodeSet interface ---------------------------------------------
 
-		std::vector<std::string>& namespaceNameVec(void);
+		std::vector<std::string>& namespaceUriVec(void);
 		std::string& nodeSetName(void);
 
 	  private:
-		std::vector<std::string> namespaceNameVec_;
+		std::vector<std::string> namespaceUriVec_;
 		std::string nodeSetName_;
 	};
 

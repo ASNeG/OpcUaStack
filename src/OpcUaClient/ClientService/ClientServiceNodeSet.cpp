@@ -166,8 +166,7 @@ namespace OpcUaClient
 		bool rc;
 		state_ = S_WriteNodeSet;
 		NodeSetXmlParser nodeSetXmlParserWrite;
-		std::vector<std::string> namespaceUris;
-		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, namespaceUris);
+		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, commandNodeSet->namespaceUriVec());
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset initial function error"
@@ -186,7 +185,7 @@ namespace OpcUaClient
 			return false;
 		}
 
-		rc = configXmlWrite.write("NodeSet.xml");
+		rc = configXmlWrite.write(commandNodeSet->nodeSetName());
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset error"
