@@ -36,6 +36,12 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<OpcUaExtensionObject> SPtr;
 
+		typedef enum {
+			S_None,
+			S_Type,
+			S_ByteString
+		} Style;
+
 		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::BSPtr epSPtr);
 		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
 		static ExtensionObjectBase::BSPtr findElement(OpcUaNodeId& opcUaNodeId);
@@ -43,6 +49,7 @@ namespace OpcUaStackCore
 	    OpcUaExtensionObject(void);
 		~OpcUaExtensionObject(void);
 
+		void reset(void);
 		template<typename T>
 		  bool registerFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0) {
 			  OpcUaNodeId opcUaNodeId;
@@ -78,6 +85,16 @@ namespace OpcUaStackCore
 		bool createObject(void);
 		ExtensionObjectBase::BSPtr& get(void);
 		template<typename T>
+		   typename T::SPtr parameter(OpcUaUInt32 typeId) {
+				this->typeId(typeId);
+				return parameter<T>();
+			}
+		template<typename T>
+		   typename T::SPtr parameter(const OpcUaNodeId& typeNodeId) {
+				typeId(typeNodeId);
+				return parameter<T>();
+			}
+		template<typename T>
 		   typename T::SPtr parameter(void) {
 			   if (epSPtr_.get() != NULL) {
 				   return boost::static_pointer_cast<T>(epSPtr_);
@@ -90,12 +107,18 @@ namespace OpcUaStackCore
 			   }
 
 			   typename T::SPtr epSPtr = T::construct();
+			   style_ = S_Type;
 			   epSPtr_ = epSPtr;
 			   return epSPtr;
 		   }
 
-		void typeId(const OpcUaNodeId& typeId);
+		void typeId(OpcUaUInt32 typeId);
+		void typeId(const OpcUaNodeId& typeNodeId);
 		OpcUaNodeId& typeId(void);
+
+		Style style(void);
+		void byteString(OpcUaByteString::SPtr& byteString);
+		OpcUaByteString::SPtr byteString(void);
 
 		void copyTo(OpcUaExtensionObject& extensionObject);
 		bool operator!=(const OpcUaExtensionObject& extensionObject) const;
@@ -116,8 +139,10 @@ namespace OpcUaStackCore
 		static ExtensionObjectMap extentionObjectMap_;
 		static bool init_;
 
+		Style style_;
 		OpcUaNodeId typeId_;
 		ExtensionObjectBase::BSPtr epSPtr_;
+		OpcUaByteString::SPtr byteString_;
 	};
 
 	class OpcUaExtensionObjectArray

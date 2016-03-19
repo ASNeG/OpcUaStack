@@ -21,8 +21,10 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaClient/ClientCommand/CommandBase.h"
+#include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
@@ -44,9 +46,13 @@ namespace OpcUaClient
 		//- CommandBrowse interface ---------------------------------------------
 
 		OpcUaNodeId::Vec& nodeIdVec(void);
+		BrowseDirectionEnum direction(void);
+		bool recursive(void);
 
 	  private:
 		OpcUaNodeId::Vec nodeIdVec_;
+		BrowseDirectionEnum direction_;
+		bool recursive_;
 	};
 
 }

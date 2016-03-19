@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	ReadResponse::ReadResponse(void)
 	: Object()
 	, dataValueArraySPtr_(constructSPtr<OpcUaDataValueArray>())
-	,  diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
 	}
 

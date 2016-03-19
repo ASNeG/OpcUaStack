@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build
-	browseNextRequestSPtr = BrowseNextRequest::construct();
+	browseNextRequestSPtr = constructSPtr<BrowseNextRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(BrowseNext_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_BrowseNextRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	browseNextRequestSPtr = BrowseNextRequest::construct();
+	browseNextRequestSPtr = constructSPtr<BrowseNextRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	browseNextRequestSPtr->opcUaBinaryDecode(ios);
 

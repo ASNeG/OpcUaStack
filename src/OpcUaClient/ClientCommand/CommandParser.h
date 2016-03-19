@@ -39,6 +39,7 @@ namespace OpcUaClient
 		std::string& errorString(void);
 
 	  private:
+		bool validateCommand(void);
 		bool parseCommand(uint32_t argc, char** argv, uint32_t idx);
 		bool parseSession(uint32_t argc, char** argv, uint32_t idx);
 		bool parseParameter(uint32_t argc, char** argv, uint32_t idx);

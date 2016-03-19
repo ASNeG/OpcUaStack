@@ -80,6 +80,8 @@ namespace OpcUaClient
 		ViewServiceBrowse viewServiceBrowse;
 		viewServiceBrowse.viewService(viewService);
 		viewServiceBrowse.nodeIdVec(commandBrowse->nodeIdVec());
+		viewServiceBrowse.direction(commandBrowse->direction());
+		viewServiceBrowse.recursive(commandBrowse->recursive());
 		viewServiceBrowse.viewServiceBrowseIf(this);
 		viewServiceBrowse.asyncBrowse();
 
@@ -90,16 +92,20 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceBrowse::done(OpcUaStatusCode statusCode)
+	ClientServiceBrowse::viewServiceBrowseDone(OpcUaStatusCode statusCode)
 	{
 		browseCompleted_.conditionTrue();
 		std::cout << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
 	}
 
 	void
-	ClientServiceBrowse::browseResult(OpcUaNodeId::SPtr& nodeId, ReferenceDescription::Vec& referenceDescriptionVec)
+	ClientServiceBrowse::viewServiceBrowseResult(
+		OpcUaStatusCode statusCode,
+		OpcUaNodeId::SPtr& nodeId,
+		ReferenceDescription::Vec& referenceDescriptionVec
+	)
 	{
-		std::cout << nodeId->toString() << std::endl;
+		std::cout << nodeId->toString() << " " << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
 
 		ReferenceDescription::Vec::iterator it;
 		for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {

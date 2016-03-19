@@ -41,6 +41,9 @@ namespace OpcUaStackServer
 
 		Attribute* attribute(AttributeId attributeId);
 
+		// global setter methods
+		bool set(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue);
+
 		//
 		// attribute node id
 		//

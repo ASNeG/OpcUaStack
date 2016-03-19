@@ -100,7 +100,7 @@ namespace OpcUaStackCore
 	void
 	ExtensibleParameter::clear(void)
 	{
-		parameterTypeId_.clear();
+		parameterTypeId_.reset();
 		epSPtr_.reset();
 	}
 

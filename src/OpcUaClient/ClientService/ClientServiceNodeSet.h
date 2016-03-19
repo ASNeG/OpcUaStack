@@ -19,28 +19,79 @@
 #define __OpcUaClient_ClientServiceNodeSet_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
+#include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
+
+using namespace OpcUaStackServer;
 
 namespace OpcUaClient
 {
 
 	class ClientServiceNodeSet
 	: public ClientServiceBase
+	, public ViewServiceBrowseIf
+	, public AttributeServiceNodeIf
 	{
 	  public:
 		typedef boost::shared_ptr<ClientServiceNodeSet> SPtr;
 
+		typedef enum {
+			S_Init,
+			S_ReadNamespaceArray,
+			S_Browse,
+			S_CheckReferences,
+			S_WriteNodeSet
+		} State;
+
 		ClientServiceNodeSet(void);
 		virtual ~ClientServiceNodeSet(void);
 
-		//- ClientServiceNodeSet interface ---------------------------------------
+		//- ClientServiceNodeSet interface ------------------------------------
 		virtual ClientServiceBase::SPtr createClientService(void);
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
-		//- ClientServiceNodeSet interface ---------------------------------------
+		//- ClientServiceNodeSet interface ------------------------------------
+
+		//- ViewServiceBrowseIf -----------------------------------------------
+		virtual void viewServiceBrowseDone(OpcUaStatusCode statusCode);
+		virtual void viewServiceBrowseResult(
+			OpcUaStatusCode statusCode,
+			OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescription::Vec& referenceDescriptionVec
+		);
+		//- ViewServiceBrowseIf -----------------------------------------------
+
+		//- AttributeServiceNodeIf --------------------------------------------
+		virtual void attributeServiceNodeDone(OpcUaStatusCode statusCode);
+		virtual void attributeServiceNodeResult(
+			AttributeId attributeId,
+			OpcUaDataValue::SPtr& dataValue
+		);
+		//- AttributeServiceNodeId --------------------------------------------
 
       private:
+		OpcUaStatusCode readNodeAttributes(
+			OpcUaNodeId::SPtr& nodeId,
+			NodeClassType nodeClassType
+		);
+		OpcUaStatusCode readNamespaceArray(void);
+		bool createRootNode(OpcUaNodeId& rootNodeId);
 
+		State state_;
+		OpcUaNodeId readNodeId_;
+		ConditionBool browseCompleted_;
+		ConditionBool readCompleted_;
+		AttributeService::SPtr attributeService_;
+		BaseNodeClass::SPtr baseNodeClass_;
+		InformationModel::SPtr informationModel_;
+		std::vector<std::string> serverNamespaceArray_;
+
+		OpcUaStatusCode browseStatusCode_;
+		OpcUaStatusCode readStatusCode_;
+		OpcUaStatusCode readNamespaceArrayStatusCode_;
 	};
 
 }

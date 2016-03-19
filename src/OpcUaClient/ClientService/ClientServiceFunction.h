@@ -15,45 +15,32 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_ClientServiceBrowse_h__
-#define __OpcUaClient_ClientServiceBrowse_h__
+#ifndef __OpcUaClient_ClientServiceFunction_h__
+#define __OpcUaClient_ClientServiceFunction_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
-
-using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
 
-	class ClientServiceBrowse
+	class ClientServiceFunction
 	: public ClientServiceBase
-	, public ViewServiceBrowseIf
 	{
 	  public:
-		typedef boost::shared_ptr<ClientServiceBrowse> SPtr;
+		typedef boost::shared_ptr<ClientServiceFunction> SPtr;
 
-		ClientServiceBrowse(void);
-		virtual ~ClientServiceBrowse(void);
+		ClientServiceFunction(void);
+		virtual ~ClientServiceFunction(void);
 
-		//- ClientServiceBrowse interface ---------------------------------------
+		//- ClientServiceFunction interface ---------------------------------------
 		virtual ClientServiceBase::SPtr createClientService(void);
 		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
-		//- ClientServiceBrowse interface ---------------------------------------
-
-		//- ViewServiceBrowseIf -----------------------------------------------
-		virtual void viewServiceBrowseDone(OpcUaStatusCode statusCode);
-		virtual void viewServiceBrowseResult(
-			OpcUaStatusCode statusCode,
-			OpcUaNodeId::SPtr& nodeId,
-			ReferenceDescription::Vec& referenceDescriptionVec
-		);
-		//- ViewServiceBrowseIf -----------------------------------------------
+		//- ClientServiceFunction interface ---------------------------------------
 
       private:
-		ConditionBool browseCompleted_;
+
 	};
 
 }

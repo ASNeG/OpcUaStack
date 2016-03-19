@@ -15,11 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandNodeSet_h__
-#define __OpcUaClient_CommandNodeSet_h__
+#ifndef __OpcUaClient_CommandFunction_h__
+#define __OpcUaClient_CommandFunction_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 
 using namespace OpcUaStackCore;
@@ -27,23 +28,30 @@ using namespace OpcUaStackCore;
 namespace OpcUaClient
 {
 
-	class CommandNodeSet
+	class CommandFunction
 	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandNodeSet> SPtr;
+		typedef boost::shared_ptr<CommandFunction> SPtr;
 
-		CommandNodeSet(void);
-		virtual ~CommandNodeSet(void);
+		CommandFunction(void);
+		virtual ~CommandFunction(void);
 
-		//- CommandNodeSet interface ---------------------------------------------
+		//- CommandFunction interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);
 		virtual bool validateCommand(void);
 		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
 		virtual std::string help(void);
-		//- CommandNodeSet interface ---------------------------------------------
+		//- CommandFunction interface ---------------------------------------------
+
+		OpcUaNodeId& functionNodeId(void);
+		OpcUaNodeId& objectNodeId(void);
+		OpcUaVariant::Vec& inputVariantVec(void);
 
 	  private:
+		OpcUaNodeId functionNodeId_;
+		OpcUaNodeId objectNodeId_;
+		OpcUaVariant::Vec inputVariantVec_;
 	};
 
 }

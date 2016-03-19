@@ -108,8 +108,11 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	bool 
-	InformationModelNodeSet::initial(NodeSetBaseParser& nodeSetBaseParser, InformationModel::SPtr informationModelSPtr, std::vector<std::string>& namespaceUris)
+	bool
+	InformationModelNodeSet::initial(
+		NodeSetBaseParser& nodeSetBaseParser,
+		InformationModel& informationModel,
+		std::vector<std::string>& namespaceUris)
 	{
 		std::set<uint16_t>::iterator it0;
 		std::set<uint16_t> namespaceIndexSet;
@@ -128,8 +131,8 @@ namespace OpcUaStackServer
 		// copy nodes from information model to parser
 		InformationModelMap::iterator it2;
 		for (
-			it2 = informationModelSPtr->informationModelMap().begin();
-			it2 != informationModelSPtr->informationModelMap().end();
+			it2 = informationModel.informationModelMap().begin();
+			it2 != informationModel.informationModelMap().end();
 			it2++
 		)
 		{
@@ -202,6 +205,19 @@ namespace OpcUaStackServer
 		}
 
 		return true;
+	}
+
+	bool 
+	InformationModelNodeSet::initial(
+		NodeSetBaseParser& nodeSetBaseParser,
+		InformationModel::SPtr informationModelSPtr,
+		std::vector<std::string>& namespaceUris)
+	{
+		return initial(
+			nodeSetBaseParser,
+			*informationModelSPtr,
+			namespaceUris
+		);
 	}
 
 	bool 

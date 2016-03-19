@@ -18,6 +18,9 @@
 #ifndef __OpcUaStackCore_AttributeId_h__
 #define __OpcUaStackCore_AttributeId_h__
 
+#include <stdint.h>
+#include <vector>
+
 namespace OpcUaStackCore
 {
 
@@ -46,6 +49,24 @@ namespace OpcUaStackCore
 		AttributeId_Executable = 21,
 		AttributeId_UserExecutable = 22,
 	} AttributeId;
+
+
+	class AttributeIdMask
+	{
+	  public:
+		typedef std::vector<AttributeId> Vec;
+
+		AttributeIdMask(void);
+		~AttributeIdMask(void);
+
+		void add(const AttributeId attributeId);
+		void del(const AttributeId attributeId);
+		bool exist(const AttributeId attributeId);
+		void get(AttributeIdMask::Vec& attributeIdMaskVec);
+
+	  public:
+		uint32_t attributeIdMask_;
+	};
 
 }
 
