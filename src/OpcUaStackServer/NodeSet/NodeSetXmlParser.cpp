@@ -903,7 +903,6 @@ namespace OpcUaStackServer
 		boost::property_tree::ptree uaNodeSetTree;
 		boost::property_tree::ptree uaNodeSetTree1;
 
-
 		if (!encodeUAObject(uaNodeSetTree)) {
 			return false;
 		}
