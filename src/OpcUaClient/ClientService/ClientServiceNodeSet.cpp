@@ -46,7 +46,7 @@ namespace OpcUaClient
 	, baseNodeClass_()
 	, readNodeId_()
 	, informationModel_(constructSPtr<InformationModel>())
-	, serverNamespaceArray_()
+	, nodeSetNamespace_()
 	, browseStatusCode_(Success)
 	, readStatusCode_(Success)
 	, readNamespaceArrayStatusCode_(Success)
@@ -343,6 +343,21 @@ namespace OpcUaClient
 
 		// insert new node
 		if (readStatusCode_ == Success) {
+			uint16_t localNamepaceIndex;
+			uint16_t globalNamespaceIndex;
+
+			// replace local namespace by global namespace index in nodeid
+			localNamepaceIndex = readNodeId_.namespaceIndex();
+			globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
+			readNodeId_.namespaceIndex(globalNamespaceIndex);
+
+			// replace local namespace by global namespace index in browsename
+			if (baseNodeClass_->getBrowseName()) {
+				baseNodeClass_->getBrowseName()->namespaceIndex();
+				globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
+				baseNodeClass_->getBrowseName()->namespaceIndex(globalNamespaceIndex);
+			}
+
 			baseNodeClass_->setNodeId(readNodeId_);
 			informationModel_->insert(baseNodeClass_);
 		}
@@ -413,17 +428,17 @@ namespace OpcUaClient
 				return;
 			}
 
+			std::vector<std::string> serverNamespaceArray;
 			for (uint32_t idx = 0; idx < dataValue->variant()->arrayLength(); idx++) {
 				OpcUaString::SPtr namespaceIndexName;
 				namespaceIndexName = dataValue->variant()->variantSPtr<OpcUaString>(idx);
-				serverNamespaceArray_.push_back(namespaceIndexName->value());
+				serverNamespaceArray.push_back(namespaceIndexName->value());
 
 				Log(Debug, "read namespace index name")
 				    .parameter("NamespaceIndexName", namespaceIndexName->value());
 			}
 
-			NodeSetNamespace nodeSetNamespace;
-			nodeSetNamespace.decodeNamespaceUris(serverNamespaceArray_);
+			nodeSetNamespace_.decodeNamespaceUris(serverNamespaceArray);
 		}
 		else {
 			baseNodeClass_->set(attributeId, dataValue);

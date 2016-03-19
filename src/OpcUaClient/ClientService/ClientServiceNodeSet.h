@@ -23,6 +23,7 @@
 #include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -87,7 +88,7 @@ namespace OpcUaClient
 		AttributeService::SPtr attributeService_;
 		BaseNodeClass::SPtr baseNodeClass_;
 		InformationModel::SPtr informationModel_;
-		std::vector<std::string> serverNamespaceArray_;
+		NodeSetNamespace nodeSetNamespace_;
 
 		OpcUaStatusCode browseStatusCode_;
 		OpcUaStatusCode readStatusCode_;
