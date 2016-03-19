@@ -412,12 +412,18 @@ namespace OpcUaClient
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
 				return;
 			}
-#if 0
-			NamespaceArray namespaceArray(session_);
-			if (!namespaceArray.readSync()) return false;
-			nodeSetNamespace_.clear();
-			nodeSetNamespace_.decodeNamespaceUris(namespaceArray.namespaceVec());
-#endif
+
+			for (uint32_t idx = 0; idx < dataValue->variant()->arrayLength(); idx++) {
+				OpcUaString::SPtr namespaceIndexName;
+				namespaceIndexName = dataValue->variant()->variantSPtr<OpcUaString>(idx);
+				serverNamespaceArray_.push_back(namespaceIndexName->value());
+
+				Log(Debug, "read namespace index name")
+				    .parameter("NamespaceIndexName", namespaceIndexName->value());
+			}
+
+			NodeSetNamespace nodeSetNamespace;
+			nodeSetNamespace.decodeNamespaceUris(serverNamespaceArray_);
 		}
 		else {
 			baseNodeClass_->set(attributeId, dataValue);
