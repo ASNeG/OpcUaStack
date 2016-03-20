@@ -381,9 +381,6 @@ namespace OpcUaStackServer
 	NodeSetValueParser::encodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls)
 	{
 		xmls_ = xmls;
-		if (xmls != "") {
-			xmls_.append(":");
-		}
 
 		bool rc = false;
 		std::string dataTypeString;
