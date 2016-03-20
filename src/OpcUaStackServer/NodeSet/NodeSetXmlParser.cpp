@@ -945,10 +945,13 @@ namespace OpcUaStackServer
 		ptree.put_child("UANodeSet", nodeSet);
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+		ptree.put("UaNodeSet.<xmlattr>.xmlns:uax", "http://opcfoundation.org/UA/2008/02/Types.xsd");
 		ptree.put("UANodeSet.<xmlattr>.Version", "1.02");
 		ptree.put("UANodeSet.<xmlattr>.LastModified", "2013-03-06T05:36:44.0862658Z");
 		ptree.put("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2011/03/UANodeSet.xsd");
 		ptree.put("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
+
 
 		return true;
 	}
