@@ -27,7 +27,7 @@
 #include "OpcUaClient/ClientCommand/CommandReadH.h"
 #include "OpcUaClient/ClientCommand/CommandWrite.h"
 #include "OpcUaClient/ClientCommand/CommandDelay.h"
-#include "OpcUaClient/ClientCommand/CommandNodeSet.h"
+#include "OpcUaClient/ClientCommand/CommandNodeSetServer.h"
 #include "OpcUaClient/ClientCommand/CommandBrowse.h"
 #include "OpcUaClient/ClientCommand/CommandFunction.h"
 
@@ -66,7 +66,7 @@ namespace OpcUaClient
 		CommandParser::addCommand("WRITE", constructSPtr<CommandWrite>());
 		CommandParser::addCommand("READH", constructSPtr<CommandReadH>());
 		CommandParser::addCommand("DELAY", constructSPtr<CommandDelay>());
-		CommandParser::addCommand("NODESET", constructSPtr<CommandNodeSet>());
+		CommandParser::addCommand("NODESETSERVER", constructSPtr<CommandNodeSetServer>());
 		CommandParser::addCommand("BROWSE", constructSPtr<CommandBrowse>());
 		CommandParser::addCommand("FUNCTION", constructSPtr<CommandFunction>());
 

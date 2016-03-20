@@ -19,39 +19,39 @@
 #include <boost/lexical_cast.hpp>
 #include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientCommand/CommandNodeSet.h"
+#include "OpcUaClient/ClientCommand/CommandNodeSetServer.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	CommandNodeSet::CommandNodeSet(void)
+	CommandNodeSetServer::CommandNodeSetServer(void)
 	: CommandBase(CommandBase::Cmd_NodeSet)
 	, namespaceUriVec_()
 	, nodeSetName_("NodeSet.xml")
 	{
 	}
 
-	CommandNodeSet::~CommandNodeSet(void)
+	CommandNodeSetServer::~CommandNodeSetServer(void)
 	{
 	}
 
 	CommandBase::SPtr
-	CommandNodeSet::createCommand(void)
+	CommandNodeSetServer::createCommand(void)
 	{
-		CommandBase::SPtr commandBase = constructSPtr<CommandNodeSet>();
+		CommandBase::SPtr commandBase = constructSPtr<CommandNodeSetServer>();
 		return commandBase;
 	}
 
 	bool
-	CommandNodeSet::validateCommand(void)
+	CommandNodeSetServer::validateCommand(void)
 	{
 		return true;
 	}
 
 	bool
-	CommandNodeSet::addParameter(const std::string& parameterName, const std::string& parameterValue)
+	CommandNodeSetServer::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NAMESPACEURI") {
 			namespaceUriVec_.push_back(parameterValue);
@@ -69,10 +69,10 @@ namespace OpcUaClient
 	}
 
 	std::string
-	CommandNodeSet::help(void)
+	CommandNodeSetServer::help(void)
 	{
 		std::stringstream ss;
-		ss << "  -NodeSet: Reads nodes from a opc ua server\n"
+		ss << "  -NodeSetServer: Reads nodes from a opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
 		   << "    -NamespaceUri (0..N): Namespaces to write into node set file.\n"
 		   << "    -NodeSetName (0..1): Name of node set file (Default: NodeSet.xml)\n";
@@ -80,13 +80,13 @@ namespace OpcUaClient
 	}
 
 	std::vector<std::string>&
-	CommandNodeSet::namespaceUriVec(void)
+	CommandNodeSetServer::namespaceUriVec(void)
 	{
 		return namespaceUriVec_;
 	}
 
 	std::string&
-	CommandNodeSet::nodeSetName(void)
+	CommandNodeSetServer::nodeSetName(void)
 	{
 		return nodeSetName_;
 	}

@@ -27,14 +27,14 @@ using namespace OpcUaStackCore;
 namespace OpcUaClient
 {
 
-	class CommandNodeSet
+	class CommandNodeSetServer
 	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandNodeSet> SPtr;
+		typedef boost::shared_ptr<CommandNodeSetServer> SPtr;
 
-		CommandNodeSet(void);
-		virtual ~CommandNodeSet(void);
+		CommandNodeSetServer(void);
+		virtual ~CommandNodeSetServer(void);
 
 		//- CommandNodeSet interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);

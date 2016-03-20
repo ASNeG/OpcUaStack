@@ -29,7 +29,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/ViewNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
-#include "OpcUaClient/ClientCommand/CommandNodeSet.h"
+#include "OpcUaClient/ClientCommand/CommandNodeSetServer.h"
 #include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
 
 using namespace OpcUaStackCore;
@@ -67,15 +67,15 @@ namespace OpcUaClient
 	ClientServiceNodeSet::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		OpcUaStatusCode statusCode;
-		CommandNodeSet::SPtr commandNodeSet = boost::static_pointer_cast<CommandNodeSet>(commandBase);
+		CommandNodeSetServer::SPtr commandNodeSetServer = boost::static_pointer_cast<CommandNodeSetServer>(commandBase);
 
 		// create new or get existing client object
 		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = clientServiceManager.getClientAccessObject(commandNodeSet->session());
+		clientAccessObject = clientServiceManager.getClientAccessObject(commandNodeSetServer->session());
 		if (clientAccessObject.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client access object failed:"
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -84,7 +84,7 @@ namespace OpcUaClient
 		if (clientAccessObject->sessionService_.get() == nullptr) {
 			std::stringstream ss;
 			ss << "session object not exist: "
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			return false;
 		}
 
@@ -93,7 +93,7 @@ namespace OpcUaClient
 		if (attributeService_.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client attribute service failed"
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -104,7 +104,7 @@ namespace OpcUaClient
 		if (viewService.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client view service failed"
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -115,7 +115,7 @@ namespace OpcUaClient
 		if (statusCode != Success) {
 			std::stringstream ss;
 			ss << "read namespace array error"
-			   << " Session=" << commandNodeSet->session()
+			   << " Session=" << commandNodeSetServer->session()
 			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
 			errorMessage(ss.str());
 			return false;
@@ -128,7 +128,7 @@ namespace OpcUaClient
 		if (!createRootNode(rootNodeId)) {
 			std::stringstream ss;
 			ss << "create start node error"
-			   << " Session=" << commandNodeSet->session()
+			   << " Session=" << commandNodeSetServer->session()
 			   << " StartNodeId=" << rootNodeId.toString();
 			errorMessage(ss.str());
 			return false;
@@ -139,7 +139,7 @@ namespace OpcUaClient
 		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
 		nodeId->copyFrom(rootNodeId);
 		nodeIdVec.push_back(nodeId);
-		commandNodeSet->validateCommand();
+		commandNodeSetServer->validateCommand();
 
 		ViewServiceBrowse viewServiceBrowse;
 		viewServiceBrowse.viewService(viewService);
@@ -153,7 +153,7 @@ namespace OpcUaClient
 		if (browseStatusCode_ != Success) {
 			std::stringstream ss;
 			ss << "browse error"
-			   << " Session=" << commandNodeSet->session()
+			   << " Session=" << commandNodeSetServer->session()
 			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
 			errorMessage(ss.str());
 			return false;
@@ -166,11 +166,11 @@ namespace OpcUaClient
 		bool rc;
 		state_ = S_WriteNodeSet;
 		NodeSetXmlParser nodeSetXmlParserWrite;
-		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, commandNodeSet->namespaceUriVec());
+		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, commandNodeSetServer->namespaceUriVec());
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset initial function error"
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -180,16 +180,16 @@ namespace OpcUaClient
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset encode function error"
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		rc = configXmlWrite.write(commandNodeSet->nodeSetName());
+		rc = configXmlWrite.write(commandNodeSetServer->nodeSetName());
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset error"
-			   << " Session=" << commandNodeSet->session();
+			   << " Session=" << commandNodeSetServer->session();
 			errorMessage(ss.str());
 			return false;
 		}
