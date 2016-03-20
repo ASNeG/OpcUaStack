@@ -30,14 +30,14 @@
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaClient/ClientCommand/CommandNodeSetServer.h"
-#include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
+#include "OpcUaClient/ClientService/ClientServiceNodeSetServer.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientServiceNodeSet::ClientServiceNodeSet(void)
+	ClientServiceNodeSetServer::ClientServiceNodeSetServer(void)
 	: ClientServiceBase()
 	, state_(S_Init)
 	, browseCompleted_()
@@ -53,18 +53,18 @@ namespace OpcUaClient
 	{
 	}
 
-	ClientServiceNodeSet::~ClientServiceNodeSet(void)
+	ClientServiceNodeSetServer::~ClientServiceNodeSetServer(void)
 	{
 	}
 
 	ClientServiceBase::SPtr
-	ClientServiceNodeSet::createClientService(void)
+	ClientServiceNodeSetServer::createClientService(void)
 	{
-		return constructSPtr<ClientServiceNodeSet>();
+		return constructSPtr<ClientServiceNodeSetServer>();
 	}
 
 	bool
-	ClientServiceNodeSet::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
+	ClientServiceNodeSetServer::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		OpcUaStatusCode statusCode;
 		CommandNodeSetServer::SPtr commandNodeSetServer = boost::static_pointer_cast<CommandNodeSetServer>(commandBase);
@@ -198,7 +198,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::viewServiceBrowseDone(OpcUaStatusCode statusCode)
+	ClientServiceNodeSetServer::viewServiceBrowseDone(OpcUaStatusCode statusCode)
 	{
 		Log(Debug, "browse done")
 		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
@@ -209,7 +209,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::viewServiceBrowseResult(
+	ClientServiceNodeSetServer::viewServiceBrowseResult(
 		OpcUaStatusCode statusCode,
 		OpcUaNodeId::SPtr& nodeId,
 		ReferenceDescription::Vec& referenceDescriptionVec
@@ -264,7 +264,7 @@ namespace OpcUaClient
 	}
 
 	OpcUaStatusCode
-	ClientServiceNodeSet::readNodeAttributes(
+	ClientServiceNodeSetServer::readNodeAttributes(
 		OpcUaNodeId::SPtr& parentNodeId,
 		NodeClassType nodeClassType
 	)
@@ -363,7 +363,7 @@ namespace OpcUaClient
 	}
 
 	OpcUaStatusCode
-	ClientServiceNodeSet::readNamespaceArray(void)
+	ClientServiceNodeSetServer::readNamespaceArray(void)
 	{
 		Log(Debug, "read namespace array");
 
@@ -387,7 +387,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::attributeServiceNodeDone(OpcUaStatusCode statusCode)
+	ClientServiceNodeSetServer::attributeServiceNodeDone(OpcUaStatusCode statusCode)
 	{
 		if (statusCode != Success) {
 			Log(Error, "read node attributes error")
@@ -399,7 +399,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
+	ClientServiceNodeSetServer::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
 	{
 		if (state_ == S_ReadNamespaceArray) {
 			handleNamespaceArray(dataValue);
@@ -410,7 +410,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::handleNamespaceArray(OpcUaDataValue::SPtr& dataValue)
+	ClientServiceNodeSetServer::handleNamespaceArray(OpcUaDataValue::SPtr& dataValue)
 	{
 		readNamespaceArrayStatusCode_ = dataValue->statusCode();
 		if (readNamespaceArrayStatusCode_ != Success) {
@@ -450,7 +450,7 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceNodeSet::createRootNode(OpcUaNodeId& rootNodeId)
+	ClientServiceNodeSetServer::createRootNode(OpcUaNodeId& rootNodeId)
 	{
 		baseNodeClass_ = constructSPtr<ObjectNodeClass>();
 

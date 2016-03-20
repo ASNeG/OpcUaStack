@@ -32,13 +32,13 @@ using namespace OpcUaStackServer;
 namespace OpcUaClient
 {
 
-	class ClientServiceNodeSet
+	class ClientServiceNodeSetServer
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
 	, public AttributeServiceNodeIf
 	{
 	  public:
-		typedef boost::shared_ptr<ClientServiceNodeSet> SPtr;
+		typedef boost::shared_ptr<ClientServiceNodeSetServer> SPtr;
 
 		typedef enum {
 			S_Init,
@@ -48,8 +48,8 @@ namespace OpcUaClient
 			S_WriteNodeSet
 		} State;
 
-		ClientServiceNodeSet(void);
-		virtual ~ClientServiceNodeSet(void);
+		ClientServiceNodeSetServer(void);
+		virtual ~ClientServiceNodeSetServer(void);
 
 		//- ClientServiceNodeSet interface ------------------------------------
 		virtual ClientServiceBase::SPtr createClientService(void);

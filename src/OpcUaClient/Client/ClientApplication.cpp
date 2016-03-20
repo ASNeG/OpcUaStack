@@ -38,7 +38,7 @@
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceWrite.h"
 #include "OpcUaClient/ClientService/ClientServiceDelay.h"
-#include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
+#include "OpcUaClient/ClientService/ClientServiceNodeSetServer.h"
 #include "OpcUaClient/ClientService/ClientServiceBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceFunction.h"
 
@@ -77,7 +77,7 @@ namespace OpcUaClient
 		ClientServiceExecute::addClientService(CommandBase::Cmd_ReadH, constructSPtr<ClientServiceReadH>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Write, constructSPtr<ClientServiceWrite>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Delay, constructSPtr<ClientServiceDelay>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSet, constructSPtr<ClientServiceNodeSet>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSet, constructSPtr<ClientServiceNodeSetServer>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Browse, constructSPtr<ClientServiceBrowse>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Function, constructSPtr<ClientServiceFunction>());
 
