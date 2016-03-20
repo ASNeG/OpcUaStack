@@ -413,8 +413,8 @@
     </References>
 	<Value>
       <uax:LocalizedText>
-	    <Locale>de</Locale>
-		<Text>LocalizedText</Text>
+	    <uax:Locale>de</uax:Locale>
+		<uax:Text>LocalizedText</uax:Text>
 	  </uax:LocalizedText>
     </Value>
   </UAVariable>
