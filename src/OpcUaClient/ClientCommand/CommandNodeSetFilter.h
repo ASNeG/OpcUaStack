@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandNodeSetServer_h__
-#define __OpcUaClient_CommandNodeSetServer_h__
+#ifndef __OpcUaClient_CommandNodeSetFilter_h__
+#define __OpcUaClient_CommandNodeSetFilter_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
@@ -27,14 +27,14 @@ using namespace OpcUaStackCore;
 namespace OpcUaClient
 {
 
-	class CommandNodeSetServer
+	class CommandNodeSetFilter
 	: public CommandBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandNodeSetServer> SPtr;
+		typedef boost::shared_ptr<CommandNodeSetFilter> SPtr;
 
-		CommandNodeSetServer(void);
-		virtual ~CommandNodeSetServer(void);
+		CommandNodeSetFilter(void);
+		virtual ~CommandNodeSetFilter(void);
 
 		//- CommandNodeSet interface ---------------------------------------------
 		virtual CommandBase::SPtr createCommand(void);
@@ -44,11 +44,13 @@ namespace OpcUaClient
 		//- CommandNodeSet interface ---------------------------------------------
 
 		std::vector<std::string>& namespaceUriVec(void);
-		std::string& nodeSetName(void);
+		std::string& srcNodeSetName(void);
+		std::string& dstNodeSetName(void);
 
 	  private:
 		std::vector<std::string> namespaceUriVec_;
-		std::string nodeSetName_;
+		std::string srcNodeSetName_;
+		std::string dstNodeSetName_;
 	};
 
 }
