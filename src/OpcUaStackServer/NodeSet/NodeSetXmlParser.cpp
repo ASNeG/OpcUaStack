@@ -1211,7 +1211,7 @@ namespace OpcUaStackServer
 				else {
 					if (dataValue->statusCode() == Success) {
 						NodeSetValueParser nodeSetValueParser;
-						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()), "uax");
 					}
 				}
 			}
@@ -1293,7 +1293,7 @@ namespace OpcUaStackServer
 				else {
 					if (dataValue->statusCode() == Success) {
 						NodeSetValueParser nodeSetValueParser;
-						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()), "uax");
 					}
 				}
 			}

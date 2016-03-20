@@ -578,12 +578,12 @@ namespace OpcUaStackServer
 	{
 		std::string text = value->text().value();
 		if (text != "") {
-			ptree.put(tag + ".Text", text);
+			ptree.put(tag + std::string(".") + addxmls("Text"), text);
 		}
 
 		std::string locale = value->locale().value();
 		if (text != "") {
-			ptree.put(tag + ".Locale", locale);
+			ptree.put(tag + std::string(".") + addxmls("Locale"), locale);
 		}
 		return true;
 	}
@@ -592,7 +592,7 @@ namespace OpcUaStackServer
 	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag)
 	{
 		std::string guidString = *value;
-		std::string localTag = tag + std::string(".String");
+		std::string localTag = tag + std::string(".") + addxmls(std::string("String"));
 		ptree.put(localTag, guidString);
 		return true;
 	}
@@ -600,7 +600,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag)
 	{
-		std::string localTag = tag + std::string(".Identifier");
+		std::string localTag = tag + std::string(".") + addxmls(std::string("Identifier"));
 		ptree.put(localTag, value->toString());
 		return true;
 	}
@@ -611,11 +611,11 @@ namespace OpcUaStackServer
 		if (value->namespaceIndex() != 0 ) {
 			std::stringstream ss;
 			ss << value->namespaceIndex();;
-			std::string localTag = tag + std::string(".NamespaceIndex");
+			std::string localTag = tag + std::string(".") + addxmls(std::string("NamespaceIndex"));
 			ptree.put(localTag, ss.str());
 		}
 
-		std::string localTag = tag + std::string(".Identifier");
+		std::string localTag = tag + std::string(".") + addxmls(std::string("Identifier"));
 		ptree.put(localTag, value->name().value());
 		return true;
 	}
