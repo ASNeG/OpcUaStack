@@ -3,4 +3,4 @@
 . ./TestConfig.sh
 
 OpcUaClient \
- -Command NodeSetFilter	-SrcNodeSetName "data/NodeSet-Static.xml" -DstNodeSetName "NodeSet-Static.xml" -NamespaceUri "http://yourorganisation.org/Test-Server/"  
+ -Command NodeSetFilter	-SrcNodeSetName "data/NodeSetTest1.xml" -DstNodeSetName "NodeSet-Static.xml" -NamespaceUri "http://yourorganisation.org/Test-Server/"  
