@@ -612,7 +612,7 @@ namespace OpcUaStackServer
 			ptree.put(localTag, ss.str());
 		}
 
-		std::string localTag = tag + std::string(".") + addxmls(std::string("Identifier"));
+		std::string localTag = tag + std::string(".") + addxmls(std::string("Name"));
 		ptree.put(localTag, value->name().value());
 		return true;
 	}
