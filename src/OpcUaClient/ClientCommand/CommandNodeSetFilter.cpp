@@ -27,7 +27,7 @@ namespace OpcUaClient
 {
 
 	CommandNodeSetFilter::CommandNodeSetFilter(void)
-	: CommandBase(CommandBase::Cmd_NodeSet)
+	: CommandBase(CommandBase::Cmd_NodeSetFilter)
 	, namespaceUriVec_()
 	, srcNodeSetName_("")
 	, dstNodeSetName_("NodeSet.xml")

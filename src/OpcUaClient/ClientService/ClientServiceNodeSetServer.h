@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_ClientServiceNodeSet_h__
-#define __OpcUaClient_ClientServiceNodeSet_h__
+#ifndef __OpcUaClient_ClientServiceNodeSetServer_h__
+#define __OpcUaClient_ClientServiceNodeSetServer_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"

@@ -27,7 +27,7 @@ namespace OpcUaClient
 {
 
 	CommandNodeSetServer::CommandNodeSetServer(void)
-	: CommandBase(CommandBase::Cmd_NodeSet)
+	: CommandBase(CommandBase::Cmd_NodeSetServer)
 	, namespaceUriVec_()
 	, nodeSetName_("NodeSet.xml")
 	{

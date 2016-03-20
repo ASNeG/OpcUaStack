@@ -74,7 +74,7 @@ namespace OpcUaClient
 		rc = configXmlRead.read(commandNodeSetFilter->srcNodeSetName());
 		if (!rc) {
 			std::stringstream ss;
-			ss << "write nodeset error"
+			ss << "read nodeset error"
 			   << " SrcNodeSetName=" << commandNodeSetFilter->srcNodeSetName();
 			errorMessage(ss.str());
 			return false;
