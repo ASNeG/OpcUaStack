@@ -933,8 +933,16 @@ namespace OpcUaStackServer
 
 		encodeNamespaces(uaNodeSetTree1);
 
-		ptree.put_child("UANodeSet", uaNodeSetTree1);
-		ptree.add_child("UANodeSet", uaNodeSetTree);
+		boost::property_tree::ptree nodeSet;
+		boost::property_tree::ptree::iterator it;
+		for (it = uaNodeSetTree1.begin(); it != uaNodeSetTree1.end(); it++) {
+			nodeSet.push_back(*it);
+		}
+		for (it = uaNodeSetTree.begin(); it != uaNodeSetTree.end(); it++) {
+			nodeSet.push_back(*it);
+		}
+
+		ptree.put_child("UANodeSet", nodeSet);
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
 		ptree.put("UANodeSet.<xmlattr>.Version", "1.02");
