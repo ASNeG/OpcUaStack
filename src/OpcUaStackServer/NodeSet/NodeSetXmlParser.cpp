@@ -1160,22 +1160,6 @@ namespace OpcUaStackServer
 			node.put("<xmlattr>.DataType", dataTypeNodeId.toString());
 
 			//
-			// encode Value
-			//
-			if (!variableNodeClassSPtr->isNullValue()) {
-				boost::optional<OpcUaDataValue&> dataValue = variableNodeClassSPtr->getValue();
-				if (!dataValue) {
-					// nothing to do
-				}
-				else {
-					if (dataValue->statusCode() == Success) {
-						NodeSetValueParser nodeSetValueParser;
-						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
-					}
-				}
-			}		
-
-			//
 			// attribute ValueRank (mandatory)
 			//
 			node.put("<xmlattr>.ValueRank", variableNodeClassSPtr->valueRank().data());
@@ -1216,6 +1200,21 @@ namespace OpcUaStackServer
 			//
 			if (!encodeReferences(variableNodeClassSPtr, node)) return false;
 
+			//
+			// encode Value
+			//
+			if (!variableNodeClassSPtr->isNullValue()) {
+				boost::optional<OpcUaDataValue&> dataValue = variableNodeClassSPtr->getValue();
+				if (!dataValue) {
+					// nothing to do
+				}
+				else {
+					if (dataValue->statusCode() == Success) {
+						NodeSetValueParser nodeSetValueParser;
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
+					}
+				}
+			}
 
 			// 
 			// Standard Properties
@@ -1260,16 +1259,6 @@ namespace OpcUaStackServer
 			node.put("<xmlattr>.DataType", dataTypeNodeId.toString());
 
 			//
-			// encode Value
-			//
-			if (variableTypeNodeClassSPtr->value().exist()) {
-				OpcUaDataValue& dataValue = variableTypeNodeClassSPtr->value().data();
-				if (dataValue.statusCode() != Success) break;
-				NodeSetValueParser nodeSetValueParser;
-				nodeSetValueParser.encodeValue(nodeId, node, *dataValue.variant());
-			}	
-
-			//
 			// attribute ValueRank (mandatory)
 			//
 			node.put("<xmlattr>.ValueRank", variableTypeNodeClassSPtr->valueRank().data());
@@ -1292,6 +1281,22 @@ namespace OpcUaStackServer
 			// encode References
 			//
 			if (!encodeReferences(variableTypeNodeClassSPtr, node)) return false;
+
+			//
+			// encode Value
+			//
+			if (!variableTypeNodeClassSPtr->isNullValue()) {
+				boost::optional<OpcUaDataValue&> dataValue = variableTypeNodeClassSPtr->getValue();
+				if (!dataValue) {
+					// nothing to do
+				}
+				else {
+					if (dataValue->statusCode() == Success) {
+						NodeSetValueParser nodeSetValueParser;
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
+					}
+				}
+			}
 
 			// 
 			// Standard Properties
