@@ -242,24 +242,28 @@ namespace OpcUaClient
 			readNodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
 			statusCode = readNodeAttributes(nodeId, referenceDescription->nodeClass());
 
-			// add reference to node
-			if (statusCode == Success) {
-				ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
-
-				referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
-				referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
-				referenceItem->isForward_ = referenceDescription->isForward();
-
-				// replace local namespace by global namespace index
-				uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
-				uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
-				referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
-
-				baseNodeClass->referenceItemMap().add(
-					*referenceDescription->referenceTypeId(),
-					referenceItem
-				);
+			if (statusCode != Success && statusCode != BadNodeIdExists) {
+				Log(Warning, "browse result node error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				continue;
 			}
+
+			// add reference to node
+			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+
+			referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
+			referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());
+			referenceItem->isForward_ = referenceDescription->isForward();
+
+			// replace local namespace by global namespace index
+			uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+			uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
+			referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
+
+			baseNodeClass->referenceItemMap().add(
+				*referenceDescription->referenceTypeId(),
+				referenceItem
+			);
 		}
 	}
 
