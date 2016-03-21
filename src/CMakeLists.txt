@@ -38,12 +38,6 @@ option(
 )
 
 option(
-    USE_OpcUaStackUtility
-    "build opc ua utility library"
-    ON
-)
-
-option(
     USE_OpcUaServer
     "build opc ua application server"
     ON
@@ -98,10 +92,6 @@ endif ()
 
 if (USE_OpcUaStackServer)
     include(OpcUaStackServer/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackUtility)
-    include(OpcUaStackUtility/CMakeLists.txt) 
 endif ()
 
 if (USE_OpcUaServer)
