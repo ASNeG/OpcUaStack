@@ -129,7 +129,7 @@ namespace OpcUaStackServer
 		for (it1 = namespaceUris.begin(); it1 != namespaceUris.end(); it1++) {
 			uint16_t namespaceIndex = nodeSetNamespace.mapToGlobalNamespaceIndex(*it1);
 			namespaceIndexSet.insert(namespaceIndex);
-			Log(Debug, "skip namespace")
+			Log(Debug, "write namespace")
 				.parameter("NamespaceUri", *it1)
 				.parameter("GlobalNamespaceIndex", namespaceIndex);
 		}
