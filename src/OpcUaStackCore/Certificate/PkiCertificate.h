@@ -67,11 +67,22 @@ namespace OpcUaStackCore
 			PkiIdentity& issuerPkiIdentity,
 			PkiPrivateKey& issuerPrivateKey
 		);
+		bool getCertificate(
+			PkiCertificateInfo& pkiCertificateInfo,
+			PkiIdentity& subjectPkiIdentity,
+			PkiPublicKey& subjectPkiPublicKey,
+			PkiIdentity& issuerPkiIdentity,
+			PkiPrivateKey& issuerPrivateKey
+		);
 		bool toDERFile(const std::string& derFileName);
 		bool fromDERFile(const std::string& derFileName);
 
 	  private:
+		bool getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);
+
 		X509 *x509Cert_;
+
+		time_t startTime_;
 	};
 
 }
