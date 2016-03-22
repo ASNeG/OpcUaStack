@@ -452,92 +452,17 @@ namespace OpcUaStackCore
 				openSSLError();
 			}
 
-			// get domain component
-			//success = success && getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);
+			success = success && getX509Name(name, NID_domainComponent, subjectPkiIdentity.domainComponent());
+			success = success && getX509Name(name, NID_commonName, subjectPkiIdentity.commonName());
+			success = success && getX509Name(name, NID_organizationName, subjectPkiIdentity.organization());
+			success = success && getX509Name(name, NID_organizationalUnitName, subjectPkiIdentity.organizationUnit());
+			success = success && getX509Name(name, NID_localityName, subjectPkiIdentity.locality());
+			success = success && getX509Name(name, NID_stateOrProvinceName, subjectPkiIdentity.state());
+			success = success && getX509Name(name, NID_countryName, subjectPkiIdentity.country());
 		}
 
 
 #if 0
-		// set subject name
-		//
-		if (success) {
-	           ret.commonName       = getNameEntryByNID ( pName, NID_commonName );
-	            ret.organization     = getNameEntryByNID ( pName, NID_organizationName );
-	            ret.organizationUnit = getNameEntryByNID ( pName, NID_organizationalUnitName );
-	            ret.locality         = getNameEntryByNID ( pName, NID_localityName );
-	            ret.state            = getNameEntryByNID ( pName, NID_stateOrProvinceName );
-	            ret.country          = getNameEntryByNID ( pName, NID_countryName );
-	            ret.domainComponent  = getNameEntryByNID ( pName, NID_domainComponent );
-
-
-
-
-	        // set domain component
-	        resultCode = X509_NAME_add_entry_by_txt (
-	        	x509Name, "DC", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.domainComponent().c_str(), -1, -1, 0
-	        );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set country
-            resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "C", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.country().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set state
-            resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "ST", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.state().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set locality
-            resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "L", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.locality().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set organization
-            resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "O", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.organization().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set organization unit
-            resultCode = X509_NAME_add_entry_by_txt (
-               	x509Name, "OU", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.organizationUnit().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set common name
-            resultCode = X509_NAME_add_entry_by_txt (
-               x509Name, "CN", MBSTRING_UTF8, (const unsigned char*)subjectPkiIdentity.commonName().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            if (success) {
-            	resultCode = X509_set_subject_name(x509Cert_, x509Name);
-            	if (!resultCode) {
-            		success = false;
-            		openSSLError();
-            	}
-            }
-
-	        X509_NAME_free (x509Name);
-		}
 
 		//
 		// set issuer name
