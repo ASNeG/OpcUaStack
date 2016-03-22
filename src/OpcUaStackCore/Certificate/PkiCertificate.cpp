@@ -452,6 +452,7 @@ namespace OpcUaStackCore
 				openSSLError();
 			}
 
+
 			success = success && getX509Name(name, NID_domainComponent, subjectPkiIdentity.domainComponent());
 			success = success && getX509Name(name, NID_commonName, subjectPkiIdentity.commonName());
 			success = success && getX509Name(name, NID_organizationName, subjectPkiIdentity.organization());
@@ -460,84 +461,28 @@ namespace OpcUaStackCore
 			success = success && getX509Name(name, NID_stateOrProvinceName, subjectPkiIdentity.state());
 			success = success && getX509Name(name, NID_countryName, subjectPkiIdentity.country());
 		}
+		std::cout << "AAA" << std::endl;
+
+
+		// get issuer name
+		if (success) {
+			X509_NAME* name = X509_get_issuer_name(x509Cert_);
+			if (name == nullptr) {
+				success = false;
+				openSSLError();
+			}
+
+			success = success && getX509Name(name, NID_domainComponent, issuerPkiIdentity.domainComponent());
+			success = success && getX509Name(name, NID_commonName, issuerPkiIdentity.commonName());
+			success = success && getX509Name(name, NID_organizationName, issuerPkiIdentity.organization());
+			success = success && getX509Name(name, NID_organizationalUnitName, issuerPkiIdentity.organizationUnit());
+			success = success && getX509Name(name, NID_localityName, issuerPkiIdentity.locality());
+			success = success && getX509Name(name, NID_stateOrProvinceName, issuerPkiIdentity.state());
+			success = success && getX509Name(name, NID_countryName, issuerPkiIdentity.country());
+		}
 
 
 #if 0
-
-		//
-		// set issuer name
-		//
-		if (success) {
-			X509_NAME* x509Name = nullptr;
-	        x509Name = X509_NAME_new();
-
-	        // set domain component
-	        resultCode = X509_NAME_add_entry_by_txt (
-	        	x509Name, "DC", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.domainComponent().c_str(), -1, -1, 0
-	        );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set country
-            resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "C", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.country().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set state
-            resultCode = X509_NAME_add_entry_by_txt (
-            	x509Name, "ST", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.state().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set locality
-            resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "L", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.locality().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set organization
-            resultCode = X509_NAME_add_entry_by_txt (
-                x509Name, "O", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.organization().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set organization unit
-            resultCode = X509_NAME_add_entry_by_txt (
-               	x509Name, "OU", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.organizationUnit().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            // set common name
-            resultCode = X509_NAME_add_entry_by_txt (
-               x509Name, "CN", MBSTRING_UTF8, (const unsigned char*)issuerPkiIdentity.commonName().c_str(), -1, -1, 0
-            );
-            if (!resultCode) {
-            	openSSLError();
-            }
-
-            if (success) {
-            	resultCode = X509_set_issuer_name(x509Cert_, x509Name);
-            	if (!resultCode) {
-            		success = false;
-            		openSSLError();
-            	}
-            }
-
-	        X509_NAME_free (x509Name);
-		}
-
 		// set valid time range
         if (success) {
             X509_gmtime_adj(X509_get_notBefore(x509Cert_), 0);
@@ -681,7 +626,7 @@ namespace OpcUaStackCore
 
 		char* buffer = nullptr;
 		int bufferLen = -1;
-		bufferLen = ASN1_STRING_to_UTF8((unsigned char**)buffer, string);
+		bufferLen = ASN1_STRING_to_UTF8((unsigned char**)&buffer, string);
 		if (bufferLen < 0) {
 			openSSLError();
 			return false;
@@ -702,8 +647,7 @@ namespace OpcUaStackCore
 	    }
 
 	    BIO* bio = BIO_new(BIO_s_file());
-	    if (bio == nullptr)
-	    {
+	    if (bio == nullptr) {
 	    	openSSLError();
 	    	return false;
 	    }
@@ -735,8 +679,7 @@ namespace OpcUaStackCore
 		}
 
 	    BIO* bio = BIO_new(BIO_s_file());
-	    if (bio == nullptr)
-	    {
+	    if (bio == nullptr) {
 	    	openSSLError();
 	    	return false;
 	    }
