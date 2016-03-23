@@ -296,7 +296,7 @@ namespace OpcUaStackCore
 
 		// set valid time range
         if (success) {
-            X509_gmtime_adj(X509_get_notBefore(x509Cert_), 0);
+            X509_gmtime_adj(X509_get_notBefore(x509Cert_), (long)pkiCertificateInfo.startTime());
             X509_gmtime_adj(X509_get_notAfter(x509Cert_), (long)pkiCertificateInfo.validTime());
         }
 
@@ -461,8 +461,6 @@ namespace OpcUaStackCore
 			success = success && getX509Name(name, NID_stateOrProvinceName, subjectPkiIdentity.state());
 			success = success && getX509Name(name, NID_countryName, subjectPkiIdentity.country());
 		}
-		std::cout << "AAA" << std::endl;
-
 
 		// get issuer name
 		if (success) {
@@ -481,6 +479,16 @@ namespace OpcUaStackCore
 			success = success && getX509Name(name, NID_countryName, issuerPkiIdentity.country());
 		}
 
+		if (success) {
+			ASN1_TIME* notBefore = X509_get_notBefore(x509Cert_);
+			if (notBefore == nullptr) {
+				success = false;
+				openSSLError();
+			}
+			else {
+				//asn1TimeToTime(&pkiCertificateInfo., notBefore);
+			}
+		}
 
 #if 0
 		// set valid time range

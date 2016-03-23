@@ -40,6 +40,8 @@ namespace OpcUaStackCore
 		std::vector<std::string>& dnsNames(void);
 		void email(const std::vector<std::string>& email);
 		std::vector<std::string>& email(void);
+		void startTime(const uint32_t startTime);
+		uint32_t startTime(void);
 		void validTime(const uint32_t validTime);
 		uint32_t validTime(void);
 
@@ -48,6 +50,7 @@ namespace OpcUaStackCore
 	    std::vector<std::string> ipAddresses_;
 	    std::vector<std::string> dnsNames_;
 	    std::vector<std::string> emails_;
+	    uint32_t startTime_;
 	    uint32_t validTime_;
 	};
 
