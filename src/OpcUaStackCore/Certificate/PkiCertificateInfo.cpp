@@ -25,6 +25,7 @@ namespace OpcUaStackCore
     , ipAddresses_()
     , dnsNames_()
     , emails_()
+	, startTime_(0)
     , validTime_(0)
 	{
 	}
@@ -79,6 +80,18 @@ namespace OpcUaStackCore
 	PkiCertificateInfo::email(void)
 	{
 		return emails_;
+	}
+
+	void
+	PkiCertificateInfo::startTime(const uint32_t startTime)
+	{
+		startTime_ = startTime;
+	}
+
+	uint32_t
+	PkiCertificateInfo::startTime(void)
+	{
+		return startTime_;
 	}
 
 	void

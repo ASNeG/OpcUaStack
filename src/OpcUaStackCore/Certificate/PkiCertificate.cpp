@@ -86,6 +86,7 @@ namespace OpcUaStackCore
 
 	PkiCertificate::PkiCertificate(void)
 	: x509Cert_(nullptr)
+	, startTime_(time(NULL))
 	{
 		if (!init_) {
 			init_ = true;
@@ -138,8 +139,7 @@ namespace OpcUaStackCore
 
 		// set start time
 		if (success) {
-			time_t startTime = time(NULL);
-			resultCode = ASN1_INTEGER_set(X509_get_serialNumber(x509Cert_), (long)startTime);
+			resultCode = ASN1_INTEGER_set(X509_get_serialNumber(x509Cert_), (long)startTime_);
 			if (!resultCode) {
 				success = false;
 				openSSLError();
@@ -296,7 +296,7 @@ namespace OpcUaStackCore
 
 		// set valid time range
         if (success) {
-            X509_gmtime_adj(X509_get_notBefore(x509Cert_), 0);
+            X509_gmtime_adj(X509_get_notBefore(x509Cert_), (long)pkiCertificateInfo.startTime());
             X509_gmtime_adj(X509_get_notAfter(x509Cert_), (long)pkiCertificateInfo.validTime());
         }
 
@@ -413,6 +413,240 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	PkiCertificate::getCertificate(
+		PkiCertificateInfo& pkiCertificateInfo,
+		PkiIdentity& subjectPkiIdentity,
+		PkiPublicKey& subjectPkiPublicKey,
+		PkiIdentity& issuerPkiIdentity,
+		PkiPrivateKey& issuerPrivateKey
+	)
+	{
+		bool success = true;
+		int resultCode;
+
+		// check memory of x509 certificate
+		if (x509Cert_ == nullptr) {
+			Log(Error, "memory error for x509 certificate");
+			return false;
+		}
+
+		// set version (V3)
+		if (success) {
+			resultCode = X509_set_version(x509Cert_, 2);
+			if (!resultCode) {
+				success = false;
+				openSSLError();
+			}
+		}
+
+		// get start time
+		if (success) {
+			startTime_ = (time_t)ASN1_INTEGER_get(X509_get_serialNumber(x509Cert_));
+		}
+
+		// get subject name
+		if (success) {
+			X509_NAME* name = X509_get_subject_name(x509Cert_);
+			if (name == nullptr) {
+				success = false;
+				openSSLError();
+			}
+
+
+			success = success && getX509Name(name, NID_domainComponent, subjectPkiIdentity.domainComponent());
+			success = success && getX509Name(name, NID_commonName, subjectPkiIdentity.commonName());
+			success = success && getX509Name(name, NID_organizationName, subjectPkiIdentity.organization());
+			success = success && getX509Name(name, NID_organizationalUnitName, subjectPkiIdentity.organizationUnit());
+			success = success && getX509Name(name, NID_localityName, subjectPkiIdentity.locality());
+			success = success && getX509Name(name, NID_stateOrProvinceName, subjectPkiIdentity.state());
+			success = success && getX509Name(name, NID_countryName, subjectPkiIdentity.country());
+		}
+
+		// get issuer name
+		if (success) {
+			X509_NAME* name = X509_get_issuer_name(x509Cert_);
+			if (name == nullptr) {
+				success = false;
+				openSSLError();
+			}
+
+			success = success && getX509Name(name, NID_domainComponent, issuerPkiIdentity.domainComponent());
+			success = success && getX509Name(name, NID_commonName, issuerPkiIdentity.commonName());
+			success = success && getX509Name(name, NID_organizationName, issuerPkiIdentity.organization());
+			success = success && getX509Name(name, NID_organizationalUnitName, issuerPkiIdentity.organizationUnit());
+			success = success && getX509Name(name, NID_localityName, issuerPkiIdentity.locality());
+			success = success && getX509Name(name, NID_stateOrProvinceName, issuerPkiIdentity.state());
+			success = success && getX509Name(name, NID_countryName, issuerPkiIdentity.country());
+		}
+
+		if (success) {
+			ASN1_TIME* notBefore = X509_get_notBefore(x509Cert_);
+			if (notBefore == nullptr) {
+				success = false;
+				openSSLError();
+			}
+			else {
+				//asn1TimeToTime(&pkiCertificateInfo., notBefore);
+			}
+		}
+
+#if 0
+		// set valid time range
+        if (success) {
+            X509_gmtime_adj(X509_get_notBefore(x509Cert_), 0);
+            X509_gmtime_adj(X509_get_notAfter(x509Cert_), (long)pkiCertificateInfo.validTime());
+        }
+
+        if (success)
+        {
+            // set public key
+            EVP_PKEY *pKey = subjectPkiPublicKey.publicKey();
+            resultCode = X509_set_pubkey(x509Cert_, pKey);
+            if (!resultCode) {
+            	success = false;
+            	openSSLError();
+            }
+            EVP_PKEY_free( pKey );
+        }
+
+        //
+        // extension data
+        //
+        X509V3_CTX ctx;
+        X509V3_set_ctx(&ctx, x509Cert_, x509Cert_, NULL, NULL, 0);
+        if (success) {
+        	X509_EXTENSION *pExt = 0;
+            for (uint32_t idx = 0; idx < pkiEntensionEntryVec_.size(); idx++ )
+            {
+                pExt = X509V3_EXT_conf(
+                	NULL, &ctx,
+                	(char*)pkiEntensionEntryVec_[idx].key().c_str(),
+                	(char*)pkiEntensionEntryVec_[idx].value().c_str(
+                ));
+                if (!pExt) {
+                	success = false;
+                	openSSLError();
+                }
+                else
+                {
+                    resultCode = X509_add_ext(x509Cert_, pExt, -1);
+                    if (!resultCode)
+                    {
+                    	success = false;
+                    	openSSLError();
+                    }
+                    X509_EXTENSION_free (pExt);
+                }
+            }
+        }
+
+        if (success) {
+        	std::vector<std::string>::iterator it;
+        	std::string subjectAltNameValue;
+
+        	// add URI
+        	subjectAltNameValue += "URI:";
+        	subjectAltNameValue += pkiCertificateInfo.URI();
+
+        	// added DNS
+        	for (it = pkiCertificateInfo.dnsNames().begin(); it != pkiCertificateInfo.dnsNames().end(); it++) {
+        		subjectAltNameValue += ",DNS:";
+        		subjectAltNameValue += *it;
+        	}
+
+        	// added IP
+        	for (it = pkiCertificateInfo.ipAddresses().begin(); it != pkiCertificateInfo.ipAddresses().end(); it++) {
+        		subjectAltNameValue += ",IP:";
+        		subjectAltNameValue += *it;
+        	}
+
+        	// added email
+        	for (it = pkiCertificateInfo.email().begin(); it != pkiCertificateInfo.email().end(); it++) {
+        		subjectAltNameValue += ",email:";
+        		subjectAltNameValue += *it;
+        	}
+
+            X509_EXTENSION *pExt = X509V3_EXT_conf(NULL, &ctx, (char*)"subjectAltName", (char*)subjectAltNameValue.c_str());
+            if (!pExt) {
+            	success = false;
+                openSSLError();
+            }
+            else
+            {
+                resultCode = X509_add_ext(x509Cert_, pExt, -1);
+                if (!resultCode) {
+                	success = false;
+                    openSSLError();
+                }
+                X509_EXTENSION_free (pExt);
+            }
+
+        }
+
+	    if (success) {
+	        // sign the certificate
+	        const EVP_MD* digest = EVP_sha1();
+	        if (!digest) {
+	        	success = false;
+	        	openSSLError();
+	        }
+
+	        if (success) {
+	        	EVP_PKEY* pKey = issuerPrivateKey.privateKey();
+	            resultCode = X509_sign(x509Cert_, pKey, digest);
+	            if (!resultCode) {
+		        	success = false;
+		        	openSSLError();
+		        }
+	        }
+	    }
+
+	    if (!success) {
+	       X509_free (x509Cert_);
+	       x509Cert_ = nullptr;
+	    }
+
+		return true;
+#endif
+		return success;
+	}
+
+	bool
+	PkiCertificate::getX509Name(X509_NAME* name, uint32_t nameId, std::string& value)
+	{
+		int loc = X509_NAME_get_index_by_NID(name, nameId, -1);
+		if (loc == -1) {
+	    	openSSLError();
+	    	return false;
+		}
+
+		X509_NAME_ENTRY* entry = X509_NAME_get_entry(name, loc);
+		if (entry == nullptr) {
+			openSSLError();
+			return false;
+		}
+
+		ASN1_STRING* string = X509_NAME_ENTRY_get_data(entry);
+		if (string == nullptr) {
+			openSSLError();
+			return false;
+		}
+
+		char* buffer = nullptr;
+		int bufferLen = -1;
+		bufferLen = ASN1_STRING_to_UTF8((unsigned char**)&buffer, string);
+		if (bufferLen < 0) {
+			openSSLError();
+			return false;
+		}
+		value = std::string(buffer, bufferLen);
+
+		OPENSSL_free(buffer);
+
+		return true;
+	}
+
+	bool
 	PkiCertificate::toDERFile(const std::string& derFileName)
 	{
 	    if (x509Cert_ == nullptr) {
@@ -421,8 +655,7 @@ namespace OpcUaStackCore
 	    }
 
 	    BIO* bio = BIO_new(BIO_s_file());
-	    if (bio == nullptr)
-	    {
+	    if (bio == nullptr) {
 	    	openSSLError();
 	    	return false;
 	    }
@@ -454,8 +687,7 @@ namespace OpcUaStackCore
 		}
 
 	    BIO* bio = BIO_new(BIO_s_file());
-	    if (bio == nullptr)
-	    {
+	    if (bio == nullptr) {
 	    	openSSLError();
 	    	return false;
 	    }
