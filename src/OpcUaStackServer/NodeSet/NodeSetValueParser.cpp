@@ -147,6 +147,14 @@ namespace OpcUaStackServer
 		if (!ptreeValue) return false;
 		if (ptreeValue->begin() == ptreeValue->end()) return false;
 
+		// xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd"
+		boost::optional<std::string> xmlSchema = ptreeValue->front().second.get_optional<std::string>("<xmlattr>.xmlns");
+		if (xmlSchema) {
+			if (*xmlSchema == "http://opcfoundation.org/UA/2008/02/Types.xsd") {
+				xmls_ = "";
+			}
+		}
+
 		// Test whether the data type of the value exist in data type element list. If not exit function
 		std::string dataTypeString = cutxmls(ptreeValue->front().first);
 		DataTypeElement dataTypeElement;
@@ -274,18 +282,19 @@ namespace OpcUaStackServer
 		boost::optional<std::string> locale = ptree.get_optional<std::string>(addxmls("Locale"));
 		boost::optional<std::string> text = ptree.get_optional<std::string>(addxmls("Text"));
 
-		if (locale) {
+		if (!locale) {
+			destValue->locale("");
+
+		}
+		else {
 			destValue->locale(*locale);
 		}
-		else {
-			destValue->locale("");
-		}
 
-		if (text) {
-			destValue->text(*text);
+		if (!text) {
+			destValue->text("");
 		}
 		else {
-			destValue->text("");
+			destValue->text(*text);
 		}
 
 		return true;
@@ -366,6 +375,7 @@ namespace OpcUaStackServer
 	std::string 
 	NodeSetValueParser::addxmls(const std::string& tag)
 	{
+		if (xmls_ == "") return tag;
 		return xmls_ + std::string(":") + tag;
 	}
 
@@ -381,9 +391,6 @@ namespace OpcUaStackServer
 	NodeSetValueParser::encodeValue(const std::string& nodeId, boost::property_tree::ptree& ptree, OpcUaVariant& opcUaVariant, const std::string& xmls)
 	{
 		xmls_ = xmls;
-		if (xmls != "") {
-			xmls_.append(":");
-		}
 
 		bool rc = false;
 		std::string dataTypeString;
@@ -577,14 +584,10 @@ namespace OpcUaStackServer
 	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& tag)
 	{
 		std::string text = value->text().value();
-		if (text != "") {
-			ptree.put(tag + ".Text", text);
-		}
+		ptree.put(tag + std::string(".") + addxmls("Text"), text);
 
 		std::string locale = value->locale().value();
-		if (text != "") {
-			ptree.put(tag + ".Locale", locale);
-		}
+		ptree.put(tag + std::string(".") + addxmls("Locale"), locale);
 		return true;
 	}
 
@@ -592,7 +595,7 @@ namespace OpcUaStackServer
 	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag)
 	{
 		std::string guidString = *value;
-		std::string localTag = tag + std::string(".String");
+		std::string localTag = tag + std::string(".") + addxmls(std::string("String"));
 		ptree.put(localTag, guidString);
 		return true;
 	}
@@ -600,7 +603,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag)
 	{
-		std::string localTag = tag + std::string(".Identifier");
+		std::string localTag = tag + std::string(".") + addxmls(std::string("Identifier"));
 		ptree.put(localTag, value->toString());
 		return true;
 	}
@@ -611,11 +614,11 @@ namespace OpcUaStackServer
 		if (value->namespaceIndex() != 0 ) {
 			std::stringstream ss;
 			ss << value->namespaceIndex();;
-			std::string localTag = tag + std::string(".NamespaceIndex");
+			std::string localTag = tag + std::string(".") + addxmls(std::string("NamespaceIndex"));
 			ptree.put(localTag, ss.str());
 		}
 
-		std::string localTag = tag + std::string(".Identifier");
+		std::string localTag = tag + std::string(".") + addxmls(std::string("Name"));
 		ptree.put(localTag, value->name().value());
 		return true;
 	}

@@ -104,7 +104,12 @@ namespace OpcUaStackServer
 				ReferenceItem::SPtr referenceItem = itr->second;
 				if (referenceItem->isForward_) {
 					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
-					if (baseNodeClassTarget.get() == nullptr) continue;
+					if (baseNodeClassTarget.get() == nullptr) {
+						Log(Warning, "target node reference do not exist")
+							.parameter("NodeId", baseNodeClass->getNodeId()->toString())
+							.parameter("TargetNodeId", referenceItem->nodeId_.toString());
+						continue;
+					}
 
 					ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
 					referenceItemForward->isForward_ = false;
@@ -114,7 +119,12 @@ namespace OpcUaStackServer
 				}
 				else {
 					BaseNodeClass::SPtr baseNodeClassTarget = find(referenceItem->nodeId_);
-					if (baseNodeClassTarget.get() == nullptr) continue;
+					if (baseNodeClassTarget.get() == nullptr) {
+						Log(Warning, "target node reference do not exist")
+							.parameter("NodeId", baseNodeClass->getNodeId()->toString())
+							.parameter("TargetNodeId", referenceItem->nodeId_.toString());
+						continue;
+					}
 
 					ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
 					referenceItemForward->isForward_ = true;

@@ -15,14 +15,15 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_ClientServiceNodeSet_h__
-#define __OpcUaClient_ClientServiceNodeSet_h__
+#ifndef __OpcUaClient_ClientServiceNodeSetServer_h__
+#define __OpcUaClient_ClientServiceNodeSetServer_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 #include "OpcUaStackClient/ServiceSet/AttributeServiceNode.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -31,13 +32,13 @@ using namespace OpcUaStackServer;
 namespace OpcUaClient
 {
 
-	class ClientServiceNodeSet
+	class ClientServiceNodeSetServer
 	: public ClientServiceBase
 	, public ViewServiceBrowseIf
 	, public AttributeServiceNodeIf
 	{
 	  public:
-		typedef boost::shared_ptr<ClientServiceNodeSet> SPtr;
+		typedef boost::shared_ptr<ClientServiceNodeSetServer> SPtr;
 
 		typedef enum {
 			S_Init,
@@ -47,8 +48,8 @@ namespace OpcUaClient
 			S_WriteNodeSet
 		} State;
 
-		ClientServiceNodeSet(void);
-		virtual ~ClientServiceNodeSet(void);
+		ClientServiceNodeSetServer(void);
+		virtual ~ClientServiceNodeSetServer(void);
 
 		//- ClientServiceNodeSet interface ------------------------------------
 		virtual ClientServiceBase::SPtr createClientService(void);
@@ -78,6 +79,7 @@ namespace OpcUaClient
 			NodeClassType nodeClassType
 		);
 		OpcUaStatusCode readNamespaceArray(void);
+		void handleNamespaceArray(OpcUaDataValue::SPtr& dataValue);
 		bool createRootNode(OpcUaNodeId& rootNodeId);
 
 		State state_;
@@ -87,7 +89,7 @@ namespace OpcUaClient
 		AttributeService::SPtr attributeService_;
 		BaseNodeClass::SPtr baseNodeClass_;
 		InformationModel::SPtr informationModel_;
-		std::vector<std::string> serverNamespaceArray_;
+		NodeSetNamespace nodeSetNamespace_;
 
 		OpcUaStatusCode browseStatusCode_;
 		OpcUaStatusCode readStatusCode_;

@@ -55,6 +55,12 @@ namespace OpcUaServer
 			return false;
 		}
 
+		Log(Debug, "Environment")
+		    .parameter("InstallDir", Environment::installDir())
+		    .parameter("BinDir", Environment::binDir())
+		    .parameter("ConfDir", Environment::confDir())
+		    .parameter("LogDir", Environment::logDir());
+
 		// initial opc ua server
 		if (!server_.init()) {
 			Log(Error, "shutdown server, because init server error");
@@ -76,10 +82,11 @@ namespace OpcUaServer
 			it++
 		) {
 			ApplicationLibrary::SPtr applicationLibrary = it->second;
-			server_.applicationManager().registerApplication(
+			bool success = server_.applicationManager().registerApplication(
 				it->first,
 				applicationLibrary->applicationIf()
 			);
+			if (!success) return false;
 
 			applicationLibrary->applicationIf()->config(config_);
 		}

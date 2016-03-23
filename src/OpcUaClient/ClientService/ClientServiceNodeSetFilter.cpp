@@ -29,15 +29,15 @@
 #include "OpcUaStackServer/AddressSpaceModel/ViewNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
-#include "OpcUaClient/ClientCommand/CommandNodeSet.h"
-#include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
+#include "OpcUaClient/ClientCommand/CommandNodeSetFilter.h"
+#include "OpcUaClient/ClientService/ClientServiceNodeSetFilter.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
 
-	ClientServiceNodeSet::ClientServiceNodeSet(void)
+	ClientServiceNodeSetFilter::ClientServiceNodeSetFilter(void)
 	: ClientServiceBase()
 	, state_(S_Init)
 	, browseCompleted_()
@@ -46,132 +46,67 @@ namespace OpcUaClient
 	, baseNodeClass_()
 	, readNodeId_()
 	, informationModel_(constructSPtr<InformationModel>())
-	, serverNamespaceArray_()
+	, nodeSetNamespace_()
 	, browseStatusCode_(Success)
 	, readStatusCode_(Success)
 	, readNamespaceArrayStatusCode_(Success)
 	{
 	}
 
-	ClientServiceNodeSet::~ClientServiceNodeSet(void)
+	ClientServiceNodeSetFilter::~ClientServiceNodeSetFilter(void)
 	{
 	}
 
 	ClientServiceBase::SPtr
-	ClientServiceNodeSet::createClientService(void)
+	ClientServiceNodeSetFilter::createClientService(void)
 	{
-		return constructSPtr<ClientServiceNodeSet>();
+		return constructSPtr<ClientServiceNodeSetFilter>();
 	}
 
 	bool
-	ClientServiceNodeSet::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
+	ClientServiceNodeSetFilter::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
-		OpcUaStatusCode statusCode;
-		CommandNodeSet::SPtr commandNodeSet = boost::static_pointer_cast<CommandNodeSet>(commandBase);
+		bool rc;
+		CommandNodeSetFilter::SPtr commandNodeSetFilter = boost::static_pointer_cast<CommandNodeSetFilter>(commandBase);
 
-		// create new or get existing client object
-		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = clientServiceManager.getClientAccessObject(commandNodeSet->session());
-		if (clientAccessObject.get() == nullptr) {
+		// read node set file
+		ConfigXml configXmlRead;
+		rc = configXmlRead.read(commandNodeSetFilter->srcNodeSetName());
+		if (!rc) {
 			std::stringstream ss;
-			ss << "get client access object failed:"
-			   << " Session=" << commandNodeSet->session();
+			ss << "read nodeset error"
+			   << " SrcNodeSetName=" << commandNodeSetFilter->srcNodeSetName();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		// check session
-		if (clientAccessObject->sessionService_.get() == nullptr) {
+		NodeSetXmlParser nodeSetXmlParserRead;
+		rc = nodeSetXmlParserRead.decode(configXmlRead.ptree());
+		if (!rc) {
 			std::stringstream ss;
-			ss << "session object not exist: "
-			   << " Session=" << commandNodeSet->session();
-			return false;
-		}
-
-		// get or create attribute service
-		attributeService_ = clientAccessObject->getOrCreateAttributeService();
-		if (attributeService_.get() == nullptr) {
-			std::stringstream ss;
-			ss << "get client attribute service failed"
-			   << " Session=" << commandNodeSet->session();
+			ss << "read nodeset decode function error"
+			   << " SrcNodeSetName=" << commandNodeSetFilter->srcNodeSetName();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		// get or create view service
-		ViewService::SPtr viewService;
-		viewService = clientAccessObject->createViewService();
-		if (viewService.get() == nullptr) {
+		rc = InformationModelNodeSet::initial(informationModel_, nodeSetXmlParserRead);
+		if (!rc) {
 			std::stringstream ss;
-			ss << "get client view service failed"
-			   << " Session=" << commandNodeSet->session();
+			ss << "read nodeset initial function error"
+			   << " SrcNodeSetName=" << commandNodeSetFilter->srcNodeSetName();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		// read namespace array
-		state_ = S_ReadNamespaceArray;
-		statusCode = readNamespaceArray();
-		if (statusCode != Success) {
-			std::stringstream ss;
-			ss << "read namespace array error"
-			   << " Session=" << commandNodeSet->session()
-			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
-			errorMessage(ss.str());
-			return false;
-		}
-
-		// create start node
-		state_ = S_Browse;
-		OpcUaNodeId rootNodeId;
-		rootNodeId.set((OpcUaUInt32)84);
-		if (!createRootNode(rootNodeId)) {
-			std::stringstream ss;
-			ss << "create start node error"
-			   << " Session=" << commandNodeSet->session()
-			   << " StartNodeId=" << rootNodeId.toString();
-			errorMessage(ss.str());
-			return false;
-		}
-
-		// browse opc ua server information model
-		OpcUaNodeId::Vec nodeIdVec;
-		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
-		nodeId->copyFrom(rootNodeId);
-		nodeIdVec.push_back(nodeId);
-		commandNodeSet->validateCommand();
-
-		ViewServiceBrowse viewServiceBrowse;
-		viewServiceBrowse.viewService(viewService);
-		viewServiceBrowse.nodeIdVec(nodeIdVec);
-		viewServiceBrowse.recursive(true);
-		viewServiceBrowse.viewServiceBrowseIf(this);
-		viewServiceBrowse.asyncBrowse();
-
-		// wait for the end of the browse request
-		browseCompleted_.waitForCondition();
-		if (browseStatusCode_ != Success) {
-			std::stringstream ss;
-			ss << "browse error"
-			   << " Session=" << commandNodeSet->session()
-			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(browseStatusCode_);
-			errorMessage(ss.str());
-			return false;
-		}
-
-		state_ = S_CheckReferences;
-		informationModel_->checkForwardReferences();
 
 		// write nodeset to file
-		bool rc;
-		state_ = S_WriteNodeSet;
 		NodeSetXmlParser nodeSetXmlParserWrite;
-		std::vector<std::string> namespaceUris;
-		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, namespaceUris);
+		rc = InformationModelNodeSet::initial(nodeSetXmlParserWrite, informationModel_, commandNodeSetFilter->namespaceUriVec());
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset initial function error"
-			   << " Session=" << commandNodeSet->session();
+			   << " DstNodeSetName=" << commandNodeSetFilter->dstNodeSetName();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -181,16 +116,16 @@ namespace OpcUaClient
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset encode function error"
-			   << " Session=" << commandNodeSet->session();
+			   << " DstNodeSetName=" << commandNodeSetFilter->dstNodeSetName();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		rc = configXmlWrite.write("NodeSet.xml");
+		rc = configXmlWrite.write(commandNodeSetFilter->dstNodeSetName());
 		if (!rc) {
 			std::stringstream ss;
 			ss << "write nodeset error"
-			   << " Session=" << commandNodeSet->session();
+			   << " DstNodeSetName=" << commandNodeSetFilter->dstNodeSetName();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -199,7 +134,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::viewServiceBrowseDone(OpcUaStatusCode statusCode)
+	ClientServiceNodeSetFilter::viewServiceBrowseDone(OpcUaStatusCode statusCode)
 	{
 		Log(Debug, "browse done")
 		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
@@ -210,7 +145,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::viewServiceBrowseResult(
+	ClientServiceNodeSetFilter::viewServiceBrowseResult(
 		OpcUaStatusCode statusCode,
 		OpcUaNodeId::SPtr& nodeId,
 		ReferenceDescription::Vec& referenceDescriptionVec
@@ -252,10 +187,9 @@ namespace OpcUaClient
 				referenceItem->isForward_ = referenceDescription->isForward();
 
 				// replace local namespace by global namespace index
-				// FIXME:
-				//uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
-				//uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
-				//referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
+				uint16_t localNamespaceIndex = referenceItem->nodeId_.namespaceIndex();
+				uint16_t globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamespaceIndex);
+				referenceItem->nodeId_.namespaceIndex(globalNamespaceIndex);
 
 				baseNodeClass->referenceItemMap().add(
 					*referenceDescription->referenceTypeId(),
@@ -266,7 +200,7 @@ namespace OpcUaClient
 	}
 
 	OpcUaStatusCode
-	ClientServiceNodeSet::readNodeAttributes(
+	ClientServiceNodeSetFilter::readNodeAttributes(
 		OpcUaNodeId::SPtr& parentNodeId,
 		NodeClassType nodeClassType
 	)
@@ -343,6 +277,21 @@ namespace OpcUaClient
 
 		// insert new node
 		if (readStatusCode_ == Success) {
+			uint16_t localNamepaceIndex;
+			uint16_t globalNamespaceIndex;
+
+			// replace local namespace by global namespace index in nodeid
+			localNamepaceIndex = readNodeId_.namespaceIndex();
+			globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
+			readNodeId_.namespaceIndex(globalNamespaceIndex);
+
+			// replace local namespace by global namespace index in browsename
+			if (baseNodeClass_->getBrowseName()) {
+				baseNodeClass_->getBrowseName()->namespaceIndex();
+				globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
+				baseNodeClass_->getBrowseName()->namespaceIndex(globalNamespaceIndex);
+			}
+
 			baseNodeClass_->setNodeId(readNodeId_);
 			informationModel_->insert(baseNodeClass_);
 		}
@@ -350,7 +299,7 @@ namespace OpcUaClient
 	}
 
 	OpcUaStatusCode
-	ClientServiceNodeSet::readNamespaceArray(void)
+	ClientServiceNodeSetFilter::readNamespaceArray(void)
 	{
 		Log(Debug, "read namespace array");
 
@@ -374,7 +323,7 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::attributeServiceNodeDone(OpcUaStatusCode statusCode)
+	ClientServiceNodeSetFilter::attributeServiceNodeDone(OpcUaStatusCode statusCode)
 	{
 		if (statusCode != Success) {
 			Log(Error, "read node attributes error")
@@ -386,46 +335,58 @@ namespace OpcUaClient
 	}
 
 	void
-	ClientServiceNodeSet::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
+	ClientServiceNodeSetFilter::attributeServiceNodeResult(AttributeId attributeId, OpcUaDataValue::SPtr& dataValue)
 	{
 		if (state_ == S_ReadNamespaceArray) {
-			readNamespaceArrayStatusCode_ = dataValue->statusCode();
-			if (readNamespaceArrayStatusCode_ != Success) {
-				Log(Error, "read namespace array data error")
-					.parameter("ReadNodeId", readNodeId_.toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
-				return;
-			}
-
-			if (!dataValue->variant()->isArray()) {
-				readNamespaceArrayStatusCode_ = BadTypeMismatch;
-				Log(Error, "read namespace array array error")
-					.parameter("ReadNodeId", readNodeId_.toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
-				return;
-			}
-
-			if (dataValue->variant()->variantType() != OpcUaBuildInType_OpcUaString) {
-				readNamespaceArrayStatusCode_ = BadTypeMismatch;
-				Log(Error, "read namespace array type error")
-					.parameter("ReadNodeId", readNodeId_.toString())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
-				return;
-			}
-#if 0
-			NamespaceArray namespaceArray(session_);
-			if (!namespaceArray.readSync()) return false;
-			nodeSetNamespace_.clear();
-			nodeSetNamespace_.decodeNamespaceUris(namespaceArray.namespaceVec());
-#endif
+			handleNamespaceArray(dataValue);
 		}
 		else {
 			baseNodeClass_->set(attributeId, dataValue);
 		}
 	}
 
+	void
+	ClientServiceNodeSetFilter::handleNamespaceArray(OpcUaDataValue::SPtr& dataValue)
+	{
+		readNamespaceArrayStatusCode_ = dataValue->statusCode();
+		if (readNamespaceArrayStatusCode_ != Success) {
+			Log(Error, "read namespace array data error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+			return;
+		}
+
+		if (!dataValue->variant()->isArray()) {
+			readNamespaceArrayStatusCode_ = BadTypeMismatch;
+			Log(Error, "read namespace array array error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+			return;
+		}
+
+		if (dataValue->variant()->variantType() != OpcUaBuildInType_OpcUaString) {
+			readNamespaceArrayStatusCode_ = BadTypeMismatch;
+			Log(Error, "read namespace array type error")
+				.parameter("ReadNodeId", readNodeId_.toString())
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(readNamespaceArrayStatusCode_));
+			return;
+		}
+
+		std::vector<std::string> serverNamespaceArray;
+		for (uint32_t idx = 0; idx < dataValue->variant()->arrayLength(); idx++) {
+			OpcUaString::SPtr namespaceIndexName;
+			namespaceIndexName = dataValue->variant()->variantSPtr<OpcUaString>(idx);
+			serverNamespaceArray.push_back(namespaceIndexName->value());
+
+			Log(Debug, "read namespace index name")
+			    .parameter("NamespaceIndexName", namespaceIndexName->value());
+		}
+
+		nodeSetNamespace_.decodeNamespaceUris(serverNamespaceArray);
+	}
+
 	bool
-	ClientServiceNodeSet::createRootNode(OpcUaNodeId& rootNodeId)
+	ClientServiceNodeSetFilter::createRootNode(OpcUaNodeId& rootNodeId)
 	{
 		baseNodeClass_ = constructSPtr<ObjectNodeClass>();
 

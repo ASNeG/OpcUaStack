@@ -46,7 +46,8 @@ namespace OpcUaClient
 			Cmd_SubscriptionStop,
 			Cmd_MonitorItemStart,
 			Cmd_MonitorItemStop,
-			Cmd_NodeSet,
+			Cmd_NodeSetServer,
+			Cmd_NodeSetFilter,
 			Cmd_Browse,
 			Cmd_Function
 		} Cmd;

@@ -27,7 +27,8 @@
 #include "OpcUaClient/ClientCommand/CommandReadH.h"
 #include "OpcUaClient/ClientCommand/CommandWrite.h"
 #include "OpcUaClient/ClientCommand/CommandDelay.h"
-#include "OpcUaClient/ClientCommand/CommandNodeSet.h"
+#include "OpcUaClient/ClientCommand/CommandNodeSetServer.h"
+#include "OpcUaClient/ClientCommand/CommandNodeSetFilter.h"
 #include "OpcUaClient/ClientCommand/CommandBrowse.h"
 #include "OpcUaClient/ClientCommand/CommandFunction.h"
 
@@ -38,7 +39,8 @@
 #include "OpcUaClient/ClientService/ClientServiceReadH.h"
 #include "OpcUaClient/ClientService/ClientServiceWrite.h"
 #include "OpcUaClient/ClientService/ClientServiceDelay.h"
-#include "OpcUaClient/ClientService/ClientServiceNodeSet.h"
+#include "OpcUaClient/ClientService/ClientServiceNodeSetServer.h"
+#include "OpcUaClient/ClientService/ClientServiceNodeSetFilter.h"
 #include "OpcUaClient/ClientService/ClientServiceBrowse.h"
 #include "OpcUaClient/ClientService/ClientServiceFunction.h"
 
@@ -66,7 +68,8 @@ namespace OpcUaClient
 		CommandParser::addCommand("WRITE", constructSPtr<CommandWrite>());
 		CommandParser::addCommand("READH", constructSPtr<CommandReadH>());
 		CommandParser::addCommand("DELAY", constructSPtr<CommandDelay>());
-		CommandParser::addCommand("NODESET", constructSPtr<CommandNodeSet>());
+		CommandParser::addCommand("NODESETSERVER", constructSPtr<CommandNodeSetServer>());
+		CommandParser::addCommand("NODESETFILTER", constructSPtr<CommandNodeSetFilter>());
 		CommandParser::addCommand("BROWSE", constructSPtr<CommandBrowse>());
 		CommandParser::addCommand("FUNCTION", constructSPtr<CommandFunction>());
 
@@ -77,7 +80,8 @@ namespace OpcUaClient
 		ClientServiceExecute::addClientService(CommandBase::Cmd_ReadH, constructSPtr<ClientServiceReadH>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Write, constructSPtr<ClientServiceWrite>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Delay, constructSPtr<ClientServiceDelay>());
-		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSet, constructSPtr<ClientServiceNodeSet>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSetServer, constructSPtr<ClientServiceNodeSetServer>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_NodeSetFilter, constructSPtr<ClientServiceNodeSetFilter>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Browse, constructSPtr<ClientServiceBrowse>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Function, constructSPtr<ClientServiceFunction>());
 

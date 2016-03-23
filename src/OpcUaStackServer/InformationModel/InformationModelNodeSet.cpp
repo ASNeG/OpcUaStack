@@ -15,8 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -126,6 +129,9 @@ namespace OpcUaStackServer
 		for (it1 = namespaceUris.begin(); it1 != namespaceUris.end(); it1++) {
 			uint16_t namespaceIndex = nodeSetNamespace.mapToGlobalNamespaceIndex(*it1);
 			namespaceIndexSet.insert(namespaceIndex);
+			Log(Debug, "write namespace")
+				.parameter("NamespaceUri", *it1)
+				.parameter("GlobalNamespaceIndex", namespaceIndex);
 		}
 
 		// copy nodes from information model to parser

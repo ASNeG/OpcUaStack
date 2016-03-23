@@ -901,6 +901,7 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::encode(boost::property_tree::ptree& ptree)
 	{
 		boost::property_tree::ptree uaNodeSetTree;
+		boost::property_tree::ptree uaNodeSetTree1;
 
 		if (!encodeUAObject(uaNodeSetTree)) {
 			return false;
@@ -930,15 +931,27 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		encodeNamespaces(uaNodeSetTree);
-		
-		ptree.add_child("UANodeSet", uaNodeSetTree);
+		encodeNamespaces(uaNodeSetTree1);
+
+		boost::property_tree::ptree nodeSet;
+		boost::property_tree::ptree::iterator it;
+		for (it = uaNodeSetTree1.begin(); it != uaNodeSetTree1.end(); it++) {
+			nodeSet.push_back(*it);
+		}
+		for (it = uaNodeSetTree.begin(); it != uaNodeSetTree.end(); it++) {
+			nodeSet.push_back(*it);
+		}
+
+		ptree.put_child("UANodeSet", nodeSet);
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 		ptree.put("UANodeSet.<xmlattr>.xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+		ptree.put("UANodeSet.<xmlattr>.xmlns:uax", "http://opcfoundation.org/UA/2008/02/Types.xsd");
 		ptree.put("UANodeSet.<xmlattr>.Version", "1.02");
 		ptree.put("UANodeSet.<xmlattr>.LastModified", "2013-03-06T05:36:44.0862658Z");
 		ptree.put("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2011/03/UANodeSet.xsd");
 		ptree.put("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2008/02/Types.xsd");
+
+
 
 		return true;
 	}
@@ -1150,22 +1163,6 @@ namespace OpcUaStackServer
 			node.put("<xmlattr>.DataType", dataTypeNodeId.toString());
 
 			//
-			// encode Value
-			//
-			if (!variableNodeClassSPtr->isNullValue()) {
-				boost::optional<OpcUaDataValue&> dataValue = variableNodeClassSPtr->getValue();
-				if (!dataValue) {
-					// nothing to do
-				}
-				else {
-					if (dataValue->statusCode() == Success) {
-						NodeSetValueParser nodeSetValueParser;
-						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()));
-					}
-				}
-			}		
-
-			//
 			// attribute ValueRank (mandatory)
 			//
 			node.put("<xmlattr>.ValueRank", variableNodeClassSPtr->valueRank().data());
@@ -1206,6 +1203,21 @@ namespace OpcUaStackServer
 			//
 			if (!encodeReferences(variableNodeClassSPtr, node)) return false;
 
+			//
+			// encode Value
+			//
+			if (!variableNodeClassSPtr->isNullValue()) {
+				boost::optional<OpcUaDataValue&> dataValue = variableNodeClassSPtr->getValue();
+				if (!dataValue) {
+					// nothing to do
+				}
+				else {
+					if (dataValue->statusCode() == Success) {
+						NodeSetValueParser nodeSetValueParser;
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()), "uax");
+					}
+				}
+			}
 
 			// 
 			// Standard Properties
@@ -1250,16 +1262,6 @@ namespace OpcUaStackServer
 			node.put("<xmlattr>.DataType", dataTypeNodeId.toString());
 
 			//
-			// encode Value
-			//
-			if (variableTypeNodeClassSPtr->value().exist()) {
-				OpcUaDataValue& dataValue = variableTypeNodeClassSPtr->value().data();
-				if (dataValue.statusCode() != Success) break;
-				NodeSetValueParser nodeSetValueParser;
-				nodeSetValueParser.encodeValue(nodeId, node, *dataValue.variant());
-			}	
-
-			//
 			// attribute ValueRank (mandatory)
 			//
 			node.put("<xmlattr>.ValueRank", variableTypeNodeClassSPtr->valueRank().data());
@@ -1282,6 +1284,22 @@ namespace OpcUaStackServer
 			// encode References
 			//
 			if (!encodeReferences(variableTypeNodeClassSPtr, node)) return false;
+
+			//
+			// encode Value
+			//
+			if (!variableTypeNodeClassSPtr->isNullValue()) {
+				boost::optional<OpcUaDataValue&> dataValue = variableTypeNodeClassSPtr->getValue();
+				if (!dataValue) {
+					// nothing to do
+				}
+				else {
+					if (dataValue->statusCode() == Success) {
+						NodeSetValueParser nodeSetValueParser;
+						nodeSetValueParser.encodeValue(nodeId, node, *(dataValue->variant()), "uax");
+					}
+				}
+			}
 
 			// 
 			// Standard Properties

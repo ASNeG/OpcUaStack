@@ -165,10 +165,8 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_Value:
 			{
-				return false;
-				// FIXME:
-				//if (!isPartValue()) return false;
-				//return setValue(*dataValue);
+				if (!isPartValue()) return false;
+				return setValue(*dataValue);
 			}
 			case AttributeId_DataType:
 			{
@@ -1011,7 +1009,7 @@ namespace OpcUaStackServer
 	bool
 	AttributeBase::isNullValue(void)
 	{
-		if (!isPartValue()) return false;
+		if (!isPartValue()) return false;  // FIXME: wrong result ...
 		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
 		return !attr->exist();
 	}

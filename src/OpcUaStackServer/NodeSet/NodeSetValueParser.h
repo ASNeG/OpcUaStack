@@ -216,7 +216,7 @@ namespace OpcUaStackServer
 					T value;
 					value = variant.variant<T>();
 					
-					if (!encode(ptree, value, tag)) {
+					if (!encode(ptree, value, addxmls(tag))) {
 						Log(Error, "encode error")
 							.parameter("Tag", tag);
 						return false;
@@ -242,7 +242,7 @@ namespace OpcUaStackServer
 					typename T::SPtr value;
 					value = variant.variantSPtr<T>();
 					
-					if (!encode(ptree, value, tag)) {
+					if (!encode(ptree, value, addxmls(tag))) {
 						Log(Error, "encode error")
 							.parameter("Tag", tag);
 						return false;
@@ -257,7 +257,7 @@ namespace OpcUaStackServer
 	        bool
 			encode(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
 			{
-				std::string listTag = "ListOf" + tag;
+				std::string listTag = addxmls("ListOf" + tag);
 
 				boost::property_tree::ptree ptree;
 				OpcUaVariantValue::Vec::iterator it;
@@ -266,7 +266,7 @@ namespace OpcUaStackServer
 					value = it->variant<T>();
 					
 					boost::property_tree::ptree localPtree;
-					if (!encode(localPtree, value, tag)) {
+					if (!encode(localPtree, value, addxmls(tag))) {
 						Log(Error, "encode error")
 							.parameter("Tag", tag);
 						return false;
@@ -283,7 +283,7 @@ namespace OpcUaStackServer
 	        bool
 			encodeSPtr(boost::property_tree::ptree& ptreeValue, OpcUaVariantValue::Vec& variantValueVec, const std::string& tag)
 			{
-				std::string listTag = "ListOf" + tag;
+				std::string listTag = addxmls("ListOf" + tag);
 
 				boost::property_tree::ptree ptree;
 				OpcUaVariantValue::Vec::iterator it;
@@ -292,7 +292,7 @@ namespace OpcUaStackServer
 					value = it->variantSPtr<T>();
 					
 					boost::property_tree::ptree localPtree;
-					if (!encode(localPtree, value, tag)) {
+					if (!encode(localPtree, value, addxmls(tag))) {
 						Log(Error, "encode error")
 							.parameter("Tag", tag);
 						return false;

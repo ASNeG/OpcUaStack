@@ -31,7 +31,8 @@
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT NodeSetXmlParser : public NodeSetBaseParser
+	class DLLEXPORT NodeSetXmlParser
+	: public NodeSetBaseParser
 	{
 	  public:
 		NodeSetXmlParser(void);
