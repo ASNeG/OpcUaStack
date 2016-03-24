@@ -509,13 +509,9 @@ namespace OpcUaStackCore
 			}
 		}
 
-#if 0
-		// set valid time range
-        if (success) {
-            X509_gmtime_adj(X509_get_notBefore(x509Cert_), 0);
-            X509_gmtime_adj(X509_get_notAfter(x509Cert_), (long)pkiCertificateInfo.validTime());
-        }
 
+
+#if 0
         if (success)
         {
             // set public key
@@ -709,7 +705,13 @@ namespace OpcUaStackCore
 	bool
 	PkiCertificate::PosixTimeToASN1Time(boost::posix_time::ptime& ptime, ASN1_TIME* asn1Time)
 	{
-		// FIXME: todo
+		boost::posix_time::ptime pt = boost::posix_time::microsec_clock::universal_time();
+		boost::posix_time::time_duration dt = pt - ptime;
+
+		if (X509_gmtime_adj(asn1Time, (long)dt.total_seconds()) == nullptr) {
+			openSSLError("ASN1 time type invalid");
+			return false;
+		}
 		return true;
 	}
 
