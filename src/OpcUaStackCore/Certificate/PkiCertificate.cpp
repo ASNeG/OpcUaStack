@@ -486,7 +486,26 @@ namespace OpcUaStackCore
 				openSSLError();
 			}
 			else {
-				//asn1TimeToTime(&pkiCertificateInfo., notBefore);
+				boost::posix_time::ptime t;
+				if (!ASN1TimeToPosixTime(notBefore, t)) {
+					success = false;
+					openSSLError("not before parameter invalid");
+				}
+			}
+		}
+
+		if (success) {
+			ASN1_TIME* notAfter = X509_get_notAfter(x509Cert_);
+			if (notAfter == nullptr) {
+				success = false;
+				openSSLError();
+			}
+			else {
+				boost::posix_time::ptime t;
+				if (!ASN1TimeToPosixTime(notAfter, t)) {
+					success = false;
+					openSSLError("not after parameter invalid");
+				}
 			}
 		}
 
@@ -643,6 +662,54 @@ namespace OpcUaStackCore
 
 		OPENSSL_free(buffer);
 
+		return true;
+	}
+
+	bool
+	PkiCertificate::ASN1TimeToPosixTime(ASN1_TIME* asn1Time, boost::posix_time::ptime& ptime)
+	{
+		uint32_t year;
+		uint32_t month;
+		uint32_t day;
+		uint32_t hour;
+		uint32_t min;
+		uint32_t sec;
+
+		uint32_t pos = 0;
+		if (asn1Time->type == V_ASN1_UTCTIME) {
+			year = ((asn1Time->data[pos] - '0') * 10) + (asn1Time->data[pos+1] - '0');
+			if (year < 70) year += 2000;
+			else year += 1900;
+			pos += 2;
+
+		}
+		else if (asn1Time->type == V_ASN1_GENERALIZEDTIME) {
+			year = ((asn1Time->data[pos] - '0') * 1000) + ((asn1Time->data[pos+1] - '0') * 100) +
+				   ((asn1Time->data[pos+2] - '0') * 10) + (asn1Time->data[pos+3] - '0');
+			pos += 4;
+		}
+		else {
+			openSSLError("ASN1 time type invalid");
+			return false;
+		}
+		month = ((asn1Time->data[pos] - '0') * 10) + (asn1Time->data[pos+1] - '0'); pos += 2;
+		day   = ((asn1Time->data[pos] - '0') * 10) + (asn1Time->data[pos+1] - '0'); pos += 2;
+		hour  = ((asn1Time->data[pos] - '0') * 10) + (asn1Time->data[pos+1] - '0'); pos += 2;
+		min   = ((asn1Time->data[pos] - '0') * 10) + (asn1Time->data[pos+1] - '0'); pos += 2;
+		sec   = ((asn1Time->data[pos] - '0') * 10) + (asn1Time->data[pos+1] - '0'); pos += 2;
+
+		boost::posix_time::ptime t(
+			boost::gregorian::date(year, month, day),
+			boost::posix_time::time_duration(hour, min, sec)
+		);
+		ptime = t;
+		return true;
+	}
+
+	bool
+	PkiCertificate::PosixTimeToASN1Time(boost::posix_time::ptime& ptime, ASN1_TIME* asn1Time)
+	{
+		// FIXME: todo
 		return true;
 	}
 

@@ -18,7 +18,9 @@
 #ifndef __OpcUaStackCore_PkiCertificate_h__
 #define __OpcUaStackCore_PkiCertificate_h__
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <openssl/x509.h>
+#include <openssl/asn1.h>
 #include <list>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/PkiIdentity.h"
@@ -79,6 +81,8 @@ namespace OpcUaStackCore
 
 	  private:
 		bool getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);
+		bool ASN1TimeToPosixTime(ASN1_TIME* asn1Time, boost::posix_time::ptime& ptime);
+		bool PosixTimeToASN1Time(boost::posix_time::ptime& ptime, ASN1_TIME* asn1Time);
 
 		X509 *x509Cert_;
 
