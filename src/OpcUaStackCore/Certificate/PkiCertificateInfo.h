@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_PkiCertificateInfo_h__
 #define __OpcUaStackCore_PkiCertificateInfo_h__
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <string>
 #include <vector>
 #include <stdint.h>
@@ -40,18 +41,18 @@ namespace OpcUaStackCore
 		std::vector<std::string>& dnsNames(void);
 		void email(const std::vector<std::string>& email);
 		std::vector<std::string>& email(void);
-		void startTime(const uint32_t startTime);
-		uint32_t startTime(void);
-		void validTime(const uint32_t validTime);
-		uint32_t validTime(void);
+		void validTimeNotAfter(const boost::posix_time::ptime& validTimeNotAfter);
+		boost::posix_time::ptime& validTimeNotAfter(void);
+		void validTimeNotBefore(const boost::posix_time::ptime& validTimeNotBefore);
+		boost::posix_time::ptime& validTimeNotBefore(void);
 
 	  private:
 	    std::string URI_;
 	    std::vector<std::string> ipAddresses_;
 	    std::vector<std::string> dnsNames_;
 	    std::vector<std::string> emails_;
-	    uint32_t startTime_;
-	    uint32_t validTime_;
+	    boost::posix_time::ptime validTimeNotAfter_;
+	    boost::posix_time::ptime validTimeNotBefore_;
 	};
 
 }

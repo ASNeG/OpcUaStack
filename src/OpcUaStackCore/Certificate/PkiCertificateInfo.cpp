@@ -25,8 +25,8 @@ namespace OpcUaStackCore
     , ipAddresses_()
     , dnsNames_()
     , emails_()
-	, startTime_(0)
-    , validTime_(0)
+	, validTimeNotBefore_(boost::posix_time::microsec_clock::universal_time())
+    , validTimeNotAfter_()
 	{
 	}
 
@@ -83,27 +83,27 @@ namespace OpcUaStackCore
 	}
 
 	void
-	PkiCertificateInfo::startTime(const uint32_t startTime)
+	PkiCertificateInfo::validTimeNotAfter(const boost::posix_time::ptime& validTimeNotAfter)
 	{
-		startTime_ = startTime;
+		validTimeNotAfter_ = validTimeNotAfter;
 	}
 
-	uint32_t
-	PkiCertificateInfo::startTime(void)
+	boost::posix_time::ptime&
+	PkiCertificateInfo::validTimeNotAfter(void)
 	{
-		return startTime_;
+		return validTimeNotAfter_;
 	}
 
 	void
-	PkiCertificateInfo::validTime(const uint32_t validTime)
+	PkiCertificateInfo::validTimeNotBefore(const boost::posix_time::ptime& validTimeNotBefore)
 	{
-		validTime_ = validTime;
+		validTimeNotBefore_ = validTimeNotBefore;
 	}
 
-	uint32_t
-	PkiCertificateInfo::validTime(void)
+	boost::posix_time::ptime&
+	PkiCertificateInfo::validTimeNotBefore(void)
 	{
-		return validTime_;
+		return validTimeNotBefore_;
 	}
 
 }

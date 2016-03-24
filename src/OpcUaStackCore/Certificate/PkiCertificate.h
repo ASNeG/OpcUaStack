@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_PkiCertificate_h__
 #define __OpcUaStackCore_PkiCertificate_h__
 
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <openssl/x509.h>
 #include <openssl/asn1.h>
 #include <list>

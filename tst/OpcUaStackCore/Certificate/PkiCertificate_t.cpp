@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_create)
 	PkiCertificateInfo info;
 	info.URI()					= "urn:" + hostname + ":ASNeG::ASNeG-Demo";
 	info.dnsNames().push_back(hostname);
-	info.validTime(3600*24*365*5);
+	info.validTimeNotAfter(boost::posix_time::microsec_clock::universal_time() + boost::posix_time::seconds(3600*24*365*5));
 
 	PkiRsaKey rsaKey;
 	BOOST_REQUIRE(rsaKey.createKey(1024) == true);
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_key)
 	PkiCertificateInfo info;
 	info.URI()					= "urn:" + hostname + ":ASNeG::ASNeG-Demo";
 	info.dnsNames().push_back(hostname);
-	info.validTime(3600*24*365*5);
+	info.validTimeNotAfter(boost::posix_time::microsec_clock::universal_time() + boost::posix_time::seconds(3600*24*365*5));
 
 	PkiRsaKey rsaKey;
 	BOOST_REQUIRE(rsaKey.createKey(1024) == true);
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		PkiCertificateInfo info;
 		info.URI()					= "urn:" + hostname + ":ASNeG::ASNeG-Demo";
 		info.dnsNames().push_back(hostname);
-		info.validTime(3600*24*365*5);
+		info.validTimeNotAfter(boost::posix_time::microsec_clock::universal_time() + boost::posix_time::seconds(3600*24*365*5));
 
 		PkiRsaKey rsaKey;
 		BOOST_REQUIRE(rsaKey.createKey(1024) == true);

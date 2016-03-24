@@ -296,8 +296,8 @@ namespace OpcUaStackCore
 
 		// set valid time range
         if (success) {
-            X509_gmtime_adj(X509_get_notBefore(x509Cert_), (long)pkiCertificateInfo.startTime());
-            X509_gmtime_adj(X509_get_notAfter(x509Cert_), (long)pkiCertificateInfo.validTime());
+        	PosixTimeToASN1Time(pkiCertificateInfo.validTimeNotBefore(), X509_get_notBefore(x509Cert_));
+        	PosixTimeToASN1Time(pkiCertificateInfo.validTimeNotAfter(), X509_get_notBefore(x509Cert_));
         }
 
         if (success)
