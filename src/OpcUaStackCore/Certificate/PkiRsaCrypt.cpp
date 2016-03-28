@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <openssl/evp.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Certificate/PkiRsaCrypt.h"
 
@@ -22,11 +23,78 @@ namespace OpcUaStackCore
 {
 
 	PkiRsaCrypt::PkiRsaCrypt(void)
+	: padding_(RSA_PKCS1_PADDING)
+	, pkiRsaKey_(nullptr)
 	{
 	}
 
 	PkiRsaCrypt::~PkiRsaCrypt(void)
 	{
+	}
+
+	void
+	PkiRsaCrypt::padding(int padding)
+	{
+		padding_ = padding;
+	}
+
+	int
+	PkiRsaCrypt::padding(void)
+	{
+		return padding_;
+	}
+
+	void
+	PkiRsaCrypt::pkiRsaKey(PkiRsaKey* pkiRsaKey)
+	{
+		pkiRsaKey_ = pkiRsaKey;
+	}
+
+	PkiRsaKey*
+	PkiRsaCrypt::pkiRsaKey(void)
+	{
+		return pkiRsaKey_;
+	}
+
+	bool
+	PkiRsaCrypt::publicEncrypt(
+		const char* data,
+		uint32_t dataLen,
+		char* encryptedData,
+		uint32_t encryptedDataLen
+	)
+	{
+		int resultCode;
+
+		// get public key
+		PkiPublicKey pkiPublicKey;
+		if (!pkiRsaKey_->getPublicKey(pkiPublicKey)) {
+        	openSSLError("rsa public key error (1)");
+        	return false;
+		}
+
+		// get rsa
+		RSA* rsa;
+		rsa = EVP_PKEY_get1_RSA(pkiPublicKey.publicKey());
+        if (rsa == nullptr) {
+        	openSSLError("rsa public key error (2)");
+        	return false;
+        }
+
+		// encrypt data
+		resultCode = RSA_public_encrypt(
+			dataLen,
+			(const unsigned char*)data,
+			(unsigned char*)encryptedData,
+			rsa,
+			padding_
+		);
+        if (!resultCode) {
+        	openSSLError();
+        	return false;
+        }
+
+		return true;
 	}
 
 }

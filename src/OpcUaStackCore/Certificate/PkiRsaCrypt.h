@@ -20,9 +20,7 @@
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Certificate/PkiError.h"
-#include "OpcUaStackCore/Certificate/PkiPublicKey.h"
-#include "OpcUaStackCore/Certificate/PkiPrivateKey.h"
+#include "OpcUaStackCore/Certificate/PkiRsaKey.h"
 
 namespace OpcUaStackCore
 {
@@ -34,7 +32,21 @@ namespace OpcUaStackCore
 		PkiRsaCrypt(void);
 		~PkiRsaCrypt(void);
 
+		void padding(int padding);
+		int padding(void);
+		void pkiRsaKey(PkiRsaKey* pkiRsaKey);
+		PkiRsaKey* pkiRsaKey(void);
+
+		bool publicEncrypt(
+			const char* data,
+			uint32_t dataLen,
+			char* encryptedData,
+			uint32_t encryptedDataLen
+		);
+
 	  private:
+		int padding_;
+		PkiRsaKey* pkiRsaKey_;
 	};
 
 }
