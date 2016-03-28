@@ -16,8 +16,9 @@
  */
 
 #include <openssl/err.h>
-#include <openssl/x509.h>
+#include <openssl/dsa.h>
 #include <openssl/pem.h>
+#include <openssl/rand.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Certificate/PkiDsaKey.h"
 
@@ -26,16 +27,53 @@ namespace OpcUaStackCore
 
 	PkiDsaKey::PkiDsaKey(void)
 	: PkiError()
+	, key_(nullptr)
 	{
+		key_ = EVP_PKEY_new();
 	}
 
 	PkiDsaKey::~PkiDsaKey(void)
 	{
+		if (key_ == nullptr) {
+			EVP_PKEY_free (key_);
+			key_ = nullptr;
+		}
 	}
 
 	bool
 	PkiDsaKey::createKey(uint32_t bits)
 	{
+		int resultCode;
+
+		// create random buffer
+		unsigned char buffer[32];
+		resultCode = RAND_bytes(buffer, 32);
+		if (resultCode != 1) {
+			openSSLError();
+			return false;
+		}
+
+		// added random buffer to DSA key
+		DSA dsaKey;
+		resultCode = DSA_generate_parameters_ex(&dsaKey, bits, buffer, 32, nullptr, nullptr, nullptr);
+		if (resultCode != 1) {
+			openSSLError();
+			return false;
+		}
+
+		// generate DSA key
+		resultCode = DSA_generate_key(&dsaKey);
+		if (resultCode != 1) {
+			openSSLError();
+			return false;
+		}
+
+	    resultCode = EVP_PKEY_set1_DSA(key_, &dsaKey);
+	    if (resultCode != 1) {
+	    	openSSLError();
+	    	return false;
+	    }
+
 	    return true;
 	}
 
