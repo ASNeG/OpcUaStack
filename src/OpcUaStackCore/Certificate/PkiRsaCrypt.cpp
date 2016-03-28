@@ -98,6 +98,48 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	PkiRsaCrypt::privateDecrypt(
+		const char* encryptedData,
+		uint32_t encryptedDataLen,
+		char* data,
+		int32_t& dataLen
+	)
+	{
+		int resultCode;
+
+		// get private key
+		PkiPrivateKey pkiPrivateKey;
+		if (!pkiRsaKey_->getPrivateKey(pkiPrivateKey)) {
+        	openSSLError("rsa private key error (1)");
+        	return false;
+		}
+
+		// get rsa
+		RSA* rsa;
+		rsa = EVP_PKEY_get1_RSA(pkiPrivateKey.privateKey());
+        if (rsa == nullptr) {
+        	openSSLError("rsa private key error (2)");
+        	return false;
+        }
+
+		// encrypt data
+		resultCode = RSA_private_decrypt(
+			encryptedDataLen,
+			(const unsigned char*)encryptedData,
+			(unsigned char*)data,
+			rsa,
+			padding_
+		);
+		dataLen = resultCode;
+        if (!resultCode) {
+        	openSSLError();
+        	return false;
+        }
+
+		return true;
+	}
+
 }
 
 
