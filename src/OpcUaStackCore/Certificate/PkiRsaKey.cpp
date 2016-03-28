@@ -78,6 +78,20 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	PkiRsaKey::setPublicKey(PkiPublicKey& publicKey)
+	{
+		key_ = publicKey.publicKey();
+		return true;
+	}
+
+	bool
+	PkiRsaKey::setPrivateKey(PkiPrivateKey& privateKey)
+	{
+		key_ = privateKey.privateKey();
+		return true;
+	}
+
+	bool
 	PkiRsaKey::writePEMFile(const std::string& fileName, const std::string& password)
 	{
 		if (key_ == nullptr) {

@@ -297,7 +297,7 @@ namespace OpcUaStackCore
 		// set valid time range
         if (success) {
         	PosixTimeToASN1Time(pkiCertificateInfo.validTimeNotBefore(), X509_get_notBefore(x509Cert_));
-        	PosixTimeToASN1Time(pkiCertificateInfo.validTimeNotAfter(), X509_get_notBefore(x509Cert_));
+        	PosixTimeToASN1Time(pkiCertificateInfo.validTimeNotAfter(), X509_get_notAfter(x509Cert_));
         }
 
         if (success)
@@ -479,6 +479,7 @@ namespace OpcUaStackCore
 			success = success && getX509Name(name, NID_countryName, issuerPkiIdentity.country());
 		}
 
+		// validation time not before
 		if (success) {
 			ASN1_TIME* notBefore = X509_get_notBefore(x509Cert_);
 			if (notBefore == nullptr) {
@@ -486,14 +487,14 @@ namespace OpcUaStackCore
 				openSSLError();
 			}
 			else {
-				boost::posix_time::ptime t;
-				if (!ASN1TimeToPosixTime(notBefore, t)) {
+				if (!ASN1TimeToPosixTime(notBefore, pkiCertificateInfo.validTimeNotBefore())) {
 					success = false;
 					openSSLError("not before parameter invalid");
 				}
 			}
 		}
 
+		// validation time not after
 		if (success) {
 			ASN1_TIME* notAfter = X509_get_notAfter(x509Cert_);
 			if (notAfter == nullptr) {
@@ -501,102 +502,55 @@ namespace OpcUaStackCore
 				openSSLError();
 			}
 			else {
-				boost::posix_time::ptime t;
-				if (!ASN1TimeToPosixTime(notAfter, t)) {
+				if (!ASN1TimeToPosixTime(notAfter, pkiCertificateInfo.validTimeNotAfter())) {
 					success = false;
 					openSSLError("not after parameter invalid");
 				}
 			}
 		}
 
+		if (success) {
+			EVP_PKEY* pkey = X509_get_pubkey(x509Cert_);
+			if (pkey == nullptr) {
+				success = false;
+				openSSLError();
+			}
+			else {
+				if (!subjectPkiPublicKey.publicKey(pkey)) {
+					success = false;
+					openSSLError("public key error");
+				}
+			}
+		}
 
+		// extention data
+		if (success) {
+			uint32_t extCount = X509_get_ext_count(x509Cert_);
+			for (uint32_t idx=0; idx<extCount; idx++) {
+				X509_EXTENSION *ext = X509_get_ext(x509Cert_, idx);
+				if (ext == nullptr) {
+					success = false;
+					openSSLError();
+					break;
+				}
+
+				char buf[1024];
+				ASN1_OBJECT* object = X509_EXTENSION_get_object(ext);
+				OBJ_obj2txt(buf, 1024, object, 0);
+				std::cout << "XXXXXX" << buf << std::endl;
+
+				ASN1_OCTET_STRING *value = X509_EXTENSION_get_data(ext);
+
+				const unsigned char* octet_str_data = value->data;
+				long xlen;
+				int tag, xclass;
+				int ret = ASN1_get_object(&octet_str_data, &xlen, &tag, &xclass, value->length);
+				printf("value: [%d] %s\n", xlen, octet_str_data);
+			}
+		}
 
 #if 0
-        if (success)
-        {
-            // set public key
-            EVP_PKEY *pKey = subjectPkiPublicKey.publicKey();
-            resultCode = X509_set_pubkey(x509Cert_, pKey);
-            if (!resultCode) {
-            	success = false;
-            	openSSLError();
-            }
-            EVP_PKEY_free( pKey );
-        }
 
-        //
-        // extension data
-        //
-        X509V3_CTX ctx;
-        X509V3_set_ctx(&ctx, x509Cert_, x509Cert_, NULL, NULL, 0);
-        if (success) {
-        	X509_EXTENSION *pExt = 0;
-            for (uint32_t idx = 0; idx < pkiEntensionEntryVec_.size(); idx++ )
-            {
-                pExt = X509V3_EXT_conf(
-                	NULL, &ctx,
-                	(char*)pkiEntensionEntryVec_[idx].key().c_str(),
-                	(char*)pkiEntensionEntryVec_[idx].value().c_str(
-                ));
-                if (!pExt) {
-                	success = false;
-                	openSSLError();
-                }
-                else
-                {
-                    resultCode = X509_add_ext(x509Cert_, pExt, -1);
-                    if (!resultCode)
-                    {
-                    	success = false;
-                    	openSSLError();
-                    }
-                    X509_EXTENSION_free (pExt);
-                }
-            }
-        }
-
-        if (success) {
-        	std::vector<std::string>::iterator it;
-        	std::string subjectAltNameValue;
-
-        	// add URI
-        	subjectAltNameValue += "URI:";
-        	subjectAltNameValue += pkiCertificateInfo.URI();
-
-        	// added DNS
-        	for (it = pkiCertificateInfo.dnsNames().begin(); it != pkiCertificateInfo.dnsNames().end(); it++) {
-        		subjectAltNameValue += ",DNS:";
-        		subjectAltNameValue += *it;
-        	}
-
-        	// added IP
-        	for (it = pkiCertificateInfo.ipAddresses().begin(); it != pkiCertificateInfo.ipAddresses().end(); it++) {
-        		subjectAltNameValue += ",IP:";
-        		subjectAltNameValue += *it;
-        	}
-
-        	// added email
-        	for (it = pkiCertificateInfo.email().begin(); it != pkiCertificateInfo.email().end(); it++) {
-        		subjectAltNameValue += ",email:";
-        		subjectAltNameValue += *it;
-        	}
-
-            X509_EXTENSION *pExt = X509V3_EXT_conf(NULL, &ctx, (char*)"subjectAltName", (char*)subjectAltNameValue.c_str());
-            if (!pExt) {
-            	success = false;
-                openSSLError();
-            }
-            else
-            {
-                resultCode = X509_add_ext(x509Cert_, pExt, -1);
-                if (!resultCode) {
-                	success = false;
-                    openSSLError();
-                }
-                X509_EXTENSION_free (pExt);
-            }
-
-        }
 
 	    if (success) {
 	        // sign the certificate
@@ -705,8 +659,8 @@ namespace OpcUaStackCore
 	bool
 	PkiCertificate::PosixTimeToASN1Time(boost::posix_time::ptime& ptime, ASN1_TIME* asn1Time)
 	{
-		boost::posix_time::ptime pt = boost::posix_time::microsec_clock::universal_time();
-		boost::posix_time::time_duration dt = pt - ptime;
+		boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+		boost::posix_time::time_duration dt = ptime - now;
 
 		if (X509_gmtime_adj(asn1Time, (long)dt.total_seconds()) == nullptr) {
 			openSSLError("ASN1 time type invalid");

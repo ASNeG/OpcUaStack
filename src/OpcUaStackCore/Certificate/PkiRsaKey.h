@@ -38,6 +38,8 @@ namespace OpcUaStackCore
 		bool createKey(uint32_t bits);
 		bool getPublicKey(PkiPublicKey& publicKey);
 		bool getPrivateKey(PkiPrivateKey& privateKey);
+		bool setPublicKey(PkiPublicKey& publicKey);
+		bool setPrivateKey(PkiPrivateKey& privateKey);
 
 		bool writePEMFile(const std::string& fileName, const std::string& password);
 		bool readPEMFile(const std::string& fileName, const std::string& password);
