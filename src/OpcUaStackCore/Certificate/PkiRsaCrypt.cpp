@@ -182,6 +182,48 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	PkiRsaCrypt::publicDecrypt(
+		const char* encryptedData,
+		uint32_t encryptedDataLen,
+		char* data,
+		int32_t& dataLen
+	)
+	{
+		int resultCode;
+
+		// get public key
+		PkiPublicKey pkiPublicKey;
+		if (!pkiRsaKey_->getPublicKey(pkiPublicKey)) {
+        	openSSLError("rsa public key error (1)");
+        	return false;
+		}
+
+		// get rsa
+		RSA* rsa;
+		rsa = EVP_PKEY_get1_RSA(pkiPublicKey.publicKey());
+        if (rsa == nullptr) {
+        	openSSLError("rsa public key error (2)");
+        	return false;
+        }
+
+		// encrypt data
+		resultCode = RSA_public_decrypt(
+			encryptedDataLen,
+			(const unsigned char*)encryptedData,
+			(unsigned char*)data,
+			rsa,
+			padding_
+		);
+		dataLen = resultCode;
+        if (resultCode < 0) {
+        	openSSLError();
+        	return false;
+        }
+
+		return true;
+	}
+
 }
 
 

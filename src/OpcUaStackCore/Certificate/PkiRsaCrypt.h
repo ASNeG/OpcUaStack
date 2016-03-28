@@ -58,6 +58,13 @@ namespace OpcUaStackCore
 			int32_t& dataLen
 		);
 
+		bool publicDecrypt(
+			const char* encryptedData,
+			uint32_t encryptedDataLen,
+			char* data,
+			int32_t& dataLen
+		);
+
 	  private:
 		int padding_;
 		PkiRsaKey* pkiRsaKey_;

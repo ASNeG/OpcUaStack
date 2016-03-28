@@ -91,10 +91,10 @@ BOOST_AUTO_TEST_CASE(PkiRsaCrypt_private_encrypt_public_decrypt_1)
 	BOOST_REQUIRE(encryptBufferLen == 256);
 
 	// decrypt message
-	//BOOST_REQUIRE(pkiRsaCrypt.privateDecrypt((const char*)encryptBuffer, encryptBufferLen, buffer2, bufferLen2) == true);
-	//BOOST_REQUIRE(bufferLen2 == 1);
+	BOOST_REQUIRE(pkiRsaCrypt.publicDecrypt((const char*)encryptBuffer, encryptBufferLen, buffer2, bufferLen2) == true);
+	BOOST_REQUIRE(bufferLen2 == 1);
 
-	//BOOST_REQUIRE(buffer2[0] == 'A');
+	BOOST_REQUIRE(buffer2[0] == 'A');
 
 }
 
