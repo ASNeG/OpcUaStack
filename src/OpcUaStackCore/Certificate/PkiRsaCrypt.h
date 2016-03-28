@@ -44,6 +44,13 @@ namespace OpcUaStackCore
 			int32_t& encryptedDataLen
 		);
 
+		bool privateEncrypt(
+			const char* data,
+			uint32_t dataLen,
+			char* encryptedData,
+			int32_t& encryptedDataLen
+		);
+
 		bool privateDecrypt(
 			const char* encryptedData,
 			uint32_t encryptedDataLen,

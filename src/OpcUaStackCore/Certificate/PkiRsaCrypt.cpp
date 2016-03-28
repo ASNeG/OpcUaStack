@@ -90,7 +90,49 @@ namespace OpcUaStackCore
 			padding_
 		);
 		encryptedDataLen = resultCode;
-        if (!resultCode) {
+        if (resultCode < 0) {
+        	openSSLError();
+        	return false;
+        }
+
+		return true;
+	}
+
+	bool
+	PkiRsaCrypt::privateEncrypt(
+		const char* data,
+		uint32_t dataLen,
+		char* encryptedData,
+		int32_t& encryptedDataLen
+	)
+	{
+		int resultCode;
+
+		// get private key
+		PkiPrivateKey pkiPrivateKey;
+		if (!pkiRsaKey_->getPrivateKey(pkiPrivateKey)) {
+        	openSSLError("rsa private key error (1)");
+        	return false;
+		}
+
+		// get rsa
+		RSA* rsa;
+		rsa = EVP_PKEY_get1_RSA(pkiPrivateKey.privateKey());
+        if (rsa == nullptr) {
+        	openSSLError("rsa private key error (2)");
+        	return false;
+        }
+
+		// encrypt data
+		resultCode = RSA_private_encrypt(
+			dataLen,
+			(const unsigned char*)data,
+			(unsigned char*)encryptedData,
+			rsa,
+			padding_
+		);
+		encryptedDataLen = resultCode;
+        if (resultCode < 0) {
         	openSSLError();
         	return false;
         }
@@ -132,7 +174,7 @@ namespace OpcUaStackCore
 			padding_
 		);
 		dataLen = resultCode;
-        if (!resultCode) {
+        if (resultCode < 0) {
         	openSSLError();
         	return false;
         }
