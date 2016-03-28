@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 			const char* data,
 			uint32_t dataLen,
 			char* encryptedData,
-			uint32_t encryptedDataLen
+			int32_t& encryptedDataLen
 		);
 
 	  private:
