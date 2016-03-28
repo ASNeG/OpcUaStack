@@ -107,12 +107,83 @@ namespace OpcUaStackCore
 	bool
 	PkiDsaKey::writePEMFile(const std::string& fileName, const std::string& password)
 	{
+		if (key_ == nullptr) {
+			openSSLError("cannot write PEM file because key empty");
+			return false;
+		}
+
+        BIO *bioPem = BIO_new(BIO_s_file());
+        if (!bioPem) {
+        	openSSLError();
+        	return false;
+        }
+
+        int resultCode = BIO_write_filename(bioPem, (void*)fileName.c_str());
+        if (!resultCode) {
+        	openSSLError();
+        	BIO_free (bioPem);
+        	return false;
+        }
+
+        DSA *dsaKey = EVP_PKEY_get1_DSA(key_);
+        if (!dsaKey) {
+        	openSSLError();
+        	BIO_free (bioPem);
+        	return false;
+        }
+
+        // store private key
+        resultCode = PEM_write_bio_DSAPrivateKey(bioPem, dsaKey, 0, 0, 0, 0, 0);
+        if (!resultCode) {
+            openSSLError();
+            DSA_free(dsaKey);
+            BIO_free (bioPem);
+            return false;
+        }
+
+        DSA_free(dsaKey);
+        BIO_free(bioPem);
 		return true;
 	}
 
 	bool
 	PkiDsaKey::readPEMFile(const std::string& fileName, const std::string& password)
 	{
+		if (key_ == nullptr) {
+			openSSLError("cannot read PEM file because key empty");
+			return false;
+		}
+
+        BIO *bioPem = BIO_new(BIO_s_file());
+        if (!bioPem) {
+        	openSSLError();
+        	return false;
+        }
+
+        int resultCode = BIO_read_filename(bioPem, (void*)fileName.c_str());
+        if (!resultCode) {
+        	openSSLError();
+        	BIO_free (bioPem);
+        	return false;
+        }
+
+        DSA* dsaKey = nullptr;
+        // load private key unencrypted
+        dsaKey = PEM_read_bio_DSAPrivateKey(bioPem, 0, nullptr, nullptr);
+        if (dsaKey == nullptr) {
+            openSSLError();
+            BIO_free (bioPem);
+            return false;
+        }
+
+        resultCode = EVP_PKEY_assign_RSA(key_, dsaKey);
+        if (!resultCode) {
+        	openSSLError();
+        	BIO_free (bioPem);
+        	return false;
+        }
+
+        BIO_free(bioPem);
 		return true;
 	}
 

@@ -149,7 +149,7 @@ namespace OpcUaStackCore
 	PkiRsaKey::readPEMFile(const std::string& fileName, const std::string& password)
 	{
 		if (key_ == nullptr) {
-			openSSLError("cannot write PEM file because key empty");
+			openSSLError("cannot read PEM file because key empty");
 			return false;
 		}
 
