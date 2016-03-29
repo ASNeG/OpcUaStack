@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "boost/algorithm/string/erase.hpp"
+#include "boost/algorithm/string/classification.hpp"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <sstream>
 #include <iomanip>
@@ -179,8 +181,10 @@ namespace OpcUaStackCore
 		}
 	}
 
-	void hexStringToByteSequence(const std::string& hexString, uint8_t* byteSequence)
+	void hexStringToByteSequence(const std::string& hexStringSpace, uint8_t* byteSequence)
 	{
+		std::string hexString = boost::erase_all_copy(hexStringSpace, " ");
+
 		uint32_t pos = 0;
 		uint32_t hexStringLength = hexString.length();
 
@@ -196,8 +200,10 @@ namespace OpcUaStackCore
 		}
 	}
 
-	void hexStringToStream(const std::string& hexString, std::iostream& ios)
+	void hexStringToStream(const std::string& hexStringSpace, std::iostream& ios)
 	{
+		std::string hexString = boost::erase_all_copy(hexStringSpace, " ");
+
 		uint32_t hexStringLength = hexString.length();
 
 		for (uint32_t idx=0; idx<hexStringLength; idx+=2) {
