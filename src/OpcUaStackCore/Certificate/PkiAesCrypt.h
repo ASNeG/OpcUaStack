@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_PkiAesCrypt_h__
 #define __OpcUaStackCore_PkiAesCrypt_h__
 
+#include <openssl/evp.h>
 #include <stdint.h>
 #include "OpcUaStackCore/Certificate/PkiError.h"
 #include "OpcUaStackCore/Base/os.h"
@@ -33,10 +34,14 @@ namespace OpcUaStackCore
 		~PkiAesCrypt(void);
 
 		bool encrypt(
-			const char* data,
+			const unsigned char* data,
 			uint32_t dataLen,
-			const char* key,
-			uint32_t keyLen
+			const unsigned char* key,
+			uint32_t keyLen,
+			const unsigned char* iv,
+			uint32_t ivLen,
+			unsigned char *encryptData,
+			int32_t& encryptDataLen
 		);
 
 	  private:
