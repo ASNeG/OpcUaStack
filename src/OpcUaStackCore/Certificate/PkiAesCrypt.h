@@ -44,6 +44,17 @@ namespace OpcUaStackCore
 			int32_t& encryptDataLen
 		);
 
+		bool decrypt(
+			const unsigned char* encryptData,
+			uint32_t encryptDataLen,
+			const unsigned char* key,
+			uint32_t keyLen,
+			const unsigned char* iv,
+			uint32_t ivLen,
+			unsigned char *data,
+			int32_t& dataLen
+		);
+
 	  private:
 		EVP_CIPHER_CTX *ctx_;
 
