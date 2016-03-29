@@ -32,7 +32,15 @@ namespace OpcUaStackCore
 		PkiAesCrypt(void);
 		~PkiAesCrypt(void);
 
+		bool encrypt(
+			const char* data,
+			uint32_t dataLen,
+			const char* key,
+			uint32_t keyLen
+		);
+
 	  private:
+		EVP_CIPHER_CTX *ctx_;
 
 	};
 
