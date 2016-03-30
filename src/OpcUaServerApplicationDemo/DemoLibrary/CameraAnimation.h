@@ -19,8 +19,10 @@
 #define __OpcUaServerApplicationDemo_CameraAnimation_h__
 
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackServer;
 
 namespace OpcUaServerApplicationDemo
 {
@@ -31,11 +33,12 @@ namespace OpcUaServerApplicationDemo
 		CameraAnimation(void);
 		~CameraAnimation(void);
 
-		bool startup(IOThread& ioThread);
+		bool startup(IOThread& ioThread, ApplicationServiceIf& applicationServiceIf);
 		bool shutdown(void);
 
 	  private:
 		IOThread* ioThread_;
+		ApplicationServiceIf* applicationServiceIf_;
 	};
 
 }

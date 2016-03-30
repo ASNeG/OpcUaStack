@@ -23,6 +23,7 @@ namespace OpcUaServerApplicationDemo
 
 	CameraAnimation::CameraAnimation(void)
 	: ioThread_(nullptr)
+	, applicationServiceIf_(nullptr)
 	{
 	}
 
@@ -31,9 +32,10 @@ namespace OpcUaServerApplicationDemo
 	}
 
 	bool
-	CameraAnimation::startup(IOThread& ioThread)
+	CameraAnimation::startup(IOThread& ioThread, ApplicationServiceIf& applicationServiceIf)
 	{
 		ioThread_ = &ioThread;
+		applicationServiceIf_ = &applicationServiceIf;
 		return true;
 	}
 

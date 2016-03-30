@@ -80,6 +80,7 @@ namespace OpcUaServerApplicationDemo
 		}
 
 		ioThread_.startup();
+		cameraAnimation_.startup(ioThread_, service());
 
 		startTimerLoop();
 
@@ -91,6 +92,7 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "DemoLibrary::shutdown");
 
+		cameraAnimation_.shutdown();
 		ioThread_.shutdown();
 
 		return true;
@@ -116,7 +118,6 @@ namespace OpcUaServerApplicationDemo
 			it++
 		)
 		{
-			std::cout << "Index=" << it->first << " Namespace=" << it->second << std::endl;
 			if (it->second == "http://yourorganisation.org/Test-Server-Lib/") {
 				namespaceIndex_ = it->first;
 			}
