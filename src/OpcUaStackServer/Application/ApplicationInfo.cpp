@@ -24,6 +24,10 @@ namespace OpcUaStackServer
 	: applicationName_("")
 	, libraryName_("")
 	, configFileName_("")
+	, installDir_("")
+	, binDir_("")
+	, confDir_("")
+	, logDir_("")
 	{
 	}
 
@@ -65,6 +69,54 @@ namespace OpcUaStackServer
 	ApplicationInfo::configFileName(void)
 	{
 		return configFileName_;
+	}
+
+	void
+	ApplicationInfo::installDir(const std::string& installDir)
+	{
+		installDir_ = installDir;
+	}
+
+	std::string
+	ApplicationInfo::installDir(void)
+	{
+		return installDir_;
+	}
+
+	void
+	ApplicationInfo::binDir(const std::string& binDir)
+	{
+		binDir_ = binDir;
+	}
+
+	std::string
+	ApplicationInfo::binDir(void)
+	{
+		return binDir_;
+	}
+
+	void
+	ApplicationInfo::confDir(const std::string& confDir)
+	{
+		confDir_ = confDir;
+	}
+
+	std::string
+	ApplicationInfo::confDir(void)
+	{
+		return confDir_;
+	}
+
+	void
+	ApplicationInfo::logDir(const std::string& logDir)
+	{
+		logDir_ = logDir;
+	}
+
+	std::string
+	ApplicationInfo::logDir(void)
+	{
+		return logDir_;
 	}
 
 }
