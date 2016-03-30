@@ -43,6 +43,11 @@ install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.Nod
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLib.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSetTestLibClientServer.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSet.Camera.xml DESTINATION ${CONF_DIR}/ASNeG-Demo)
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/animation00.gif DESTINATION ${CONF_DIR}/ASNeG-Demo)
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/animation01.gif DESTINATION ${CONF_DIR}/ASNeG-Demo)
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/animation02.gif DESTINATION ${CONF_DIR}/ASNeG-Demo)
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/animation03.gif DESTINATION ${CONF_DIR}/ASNeG-Demo)
+install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/animation04.gif DESTINATION ${CONF_DIR}/ASNeG-Demo)
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/linux/log/README DESTINATION ${LOG_DIR}/ASNeG-Demo)
 install(DIRECTORY DESTINATION ${LOG_DIR}/ASNeG-Demo)
 
