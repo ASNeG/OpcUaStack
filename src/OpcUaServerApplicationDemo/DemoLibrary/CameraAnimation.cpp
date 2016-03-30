@@ -16,6 +16,8 @@
  */
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.h"
@@ -44,6 +46,8 @@ namespace OpcUaServerApplicationDemo
 		ApplicationInfo* applicationInfo
 	)
 	{
+		Log(Debug, "CameraAnimation::startup");
+
 		ioThread_ = &ioThread;
 		applicationServiceIf_ = &applicationServiceIf;
 		applicationInfo_ = applicationInfo;
@@ -73,6 +77,7 @@ namespace OpcUaServerApplicationDemo
 	bool
 	CameraAnimation::shutdown(void)
 	{
+		Log(Debug, "CameraAnimation::shutdown");
 		return true;
 	}
 
@@ -106,7 +111,7 @@ namespace OpcUaServerApplicationDemo
 		Log(Error, "namespace not found in configuration")
 	        .parameter("NamespaceUri", "http://ASNeG.de/Camera/");
 
-		return true;
+		return false;
 	}
 
 	bool
@@ -122,6 +127,7 @@ namespace OpcUaServerApplicationDemo
 		dataValue = createDataValue();
 		dataValue->variant()->variant(byteString);
 		valueMap_.insert(std::make_pair(nodeId, dataValue));
+		return true;
 	}
 
 	OpcUaDataValue::SPtr
@@ -183,6 +189,25 @@ namespace OpcUaServerApplicationDemo
 	bool
 	CameraAnimation::loadPics(void)
 	{
+		std::cout << "ConfigFileName=" << applicationInfo_->configFileName() << std::endl;
+
+		Config config;
+		ConfigXml configXml;
+
+		// read configuration file
+		config.alias("@BIN_DIR@", Environment::binDir());
+		config.alias("@CONF_DIR@", Environment::confDir());
+		config.alias("@LOG_DIR@", Environment::logDir());
+		config.alias("@INSTALL_DIR@", Environment::installDir());
+		if (!configXml.parse(applicationInfo_->configFileName(), &config)) {
+			Log(Error, "read configuration error")
+				.parameter("ConfigFileName", applicationInfo_->configFileName())
+				.parameter("Reason", configXml.errorMessage());
+			return false;
+		}
+
+		//
+
 		return true;
 	}
 
