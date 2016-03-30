@@ -30,7 +30,9 @@ namespace OpcUaServerApplicationDemo
 
 	CameraAnimation::CameraAnimation(void)
 	: ioThread_(nullptr)
+	, slotTimerElement_()
 	, applicationServiceIf_(nullptr)
+	, applicationInfo_(nullptr)
 	, namespaceIndex_(0)
 	, valueMap_()
 	, baseNodeClassWMap_()
@@ -43,6 +45,7 @@ namespace OpcUaServerApplicationDemo
 
 	CameraAnimation::~CameraAnimation(void)
 	{
+		slotTimerElement_.reset();
 	}
 
 	bool
@@ -77,6 +80,8 @@ namespace OpcUaServerApplicationDemo
 			return false;
 		}
 
+		startSample();
+
 		return true;
 	}
 
@@ -84,6 +89,7 @@ namespace OpcUaServerApplicationDemo
 	CameraAnimation::shutdown(void)
 	{
 		Log(Debug, "CameraAnimation::shutdown");
+		stopSample();
 		return true;
 	}
 
@@ -269,6 +275,27 @@ namespace OpcUaServerApplicationDemo
 		}
 
 		return true;
+	}
+
+	void
+	CameraAnimation::startSample(void)
+	{
+		slotTimerElement_ = constructSPtr<SlotTimerElement>();
+		slotTimerElement_->callback().reset(boost::bind(&CameraAnimation::sample, this));
+		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), sampleTimeout_);
+		ioThread_->slotTimer()->start(slotTimerElement_);
+	}
+
+	void
+	CameraAnimation::stopSample(void)
+	{
+		ioThread_->slotTimer()->stop(slotTimerElement_);
+	}
+
+	void
+	CameraAnimation::sample(void)
+	{
+		std::cout << "Sample..." << std::endl;
 	}
 
 }

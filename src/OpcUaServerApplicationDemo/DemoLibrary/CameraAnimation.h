@@ -44,8 +44,12 @@ namespace OpcUaServerApplicationDemo
 		OpcUaDataValue::SPtr createDataValue(void);
 		bool createNodeReferences();
 		bool loadPics(void);
+		void startSample(void);
+		void stopSample(void);
+		void sample(void);
 
 		IOThread* ioThread_;
+		SlotTimerElement::SPtr slotTimerElement_;
 		ApplicationServiceIf* applicationServiceIf_;
 		ApplicationInfo* applicationInfo_;
 
