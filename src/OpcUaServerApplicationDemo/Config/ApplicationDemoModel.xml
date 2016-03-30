@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CameraModel xmlns="http://ASNeG.de/ModbusMasterModel.xsd">
+
+    <CameraPath File="@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo" SampleTimeout="500"/>
+
+</CameraModel>
+

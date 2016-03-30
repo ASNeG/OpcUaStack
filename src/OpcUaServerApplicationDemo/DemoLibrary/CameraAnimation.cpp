@@ -29,6 +29,7 @@ namespace OpcUaServerApplicationDemo
 	, namespaceIndex_(0)
 	, valueMap_()
 	, baseNodeClassWMap_()
+	, countPics_(5)
 	{
 	}
 
@@ -37,10 +38,15 @@ namespace OpcUaServerApplicationDemo
 	}
 
 	bool
-	CameraAnimation::startup(IOThread& ioThread, ApplicationServiceIf& applicationServiceIf)
+	CameraAnimation::startup(
+		IOThread& ioThread,
+		ApplicationServiceIf& applicationServiceIf,
+		ApplicationInfo* applicationInfo
+	)
 	{
 		ioThread_ = &ioThread;
 		applicationServiceIf_ = &applicationServiceIf;
+		applicationInfo_ = applicationInfo;
 
 		// read namespace array from opc ua server
 		if (!getNamespaceInfo()) {
@@ -54,6 +60,10 @@ namespace OpcUaServerApplicationDemo
 
 		// create node references
 		if (!createNodeReferences()) {
+			return false;
+		}
+
+		if (!loadPics()) {
 			return false;
 		}
 
@@ -167,6 +177,12 @@ namespace OpcUaServerApplicationDemo
 	  		baseNodeClassWMap_.insert(std::make_pair(*nodeId, nodeReferenceApplication->baseNodeClass()));
 	  	}
 
+		return true;
+	}
+
+	bool
+	CameraAnimation::loadPics(void)
+	{
 		return true;
 	}
 

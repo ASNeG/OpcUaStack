@@ -80,7 +80,7 @@ namespace OpcUaServerApplicationDemo
 		}
 
 		ioThread_.startup();
-		cameraAnimation_.startup(ioThread_, service());
+		cameraAnimation_.startup(ioThread_, service(), applicationInfo());
 
 		startTimerLoop();
 

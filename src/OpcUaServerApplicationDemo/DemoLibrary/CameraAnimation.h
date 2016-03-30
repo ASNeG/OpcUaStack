@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackServer/Application/ApplicationInfo.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 using namespace OpcUaStackCore;
@@ -34,7 +35,7 @@ namespace OpcUaServerApplicationDemo
 		CameraAnimation(void);
 		~CameraAnimation(void);
 
-		bool startup(IOThread& ioThread, ApplicationServiceIf& applicationServiceIf);
+		bool startup(IOThread& ioThread, ApplicationServiceIf& applicationServiceIf, ApplicationInfo* applicationInfo);
 		bool shutdown(void);
 
 	  private:
@@ -42,9 +43,11 @@ namespace OpcUaServerApplicationDemo
 		bool createValueMap(void);
 		OpcUaDataValue::SPtr createDataValue(void);
 		bool createNodeReferences();
+		bool loadPics(void);
 
 		IOThread* ioThread_;
 		ApplicationServiceIf* applicationServiceIf_;
+		ApplicationInfo* applicationInfo_;
 
 		uint32_t namespaceIndex_;
 
@@ -52,6 +55,8 @@ namespace OpcUaServerApplicationDemo
 		typedef std::map<OpcUaNodeId,BaseNodeClass::WPtr> BaseNodeClassWMap;
 		ValueMap valueMap_;
 		BaseNodeClassWMap baseNodeClassWMap_;
+
+		uint32_t countPics_;
 	};
 
 }
