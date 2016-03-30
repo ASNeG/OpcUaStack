@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -38,11 +39,17 @@ namespace OpcUaServerApplicationDemo
 
 	  private:
 		bool getNamespaceInfo(void);
+		bool createValueMap(void);
+		OpcUaDataValue::SPtr createDataValue(void);
 
 		IOThread* ioThread_;
 		ApplicationServiceIf* applicationServiceIf_;
 
 		uint32_t namespaceIndex_;
+
+		typedef std::map<OpcUaNodeId,OpcUaDataValue::SPtr> ValueMap;
+		typedef std::map<OpcUaNodeId,BaseNodeClass::WPtr> BaseNodeClassWMap;
+		ValueMap valueMap_;
 	};
 
 }

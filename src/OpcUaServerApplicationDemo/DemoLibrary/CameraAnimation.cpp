@@ -25,6 +25,8 @@ namespace OpcUaServerApplicationDemo
 	CameraAnimation::CameraAnimation(void)
 	: ioThread_(nullptr)
 	, applicationServiceIf_(nullptr)
+	, namespaceIndex_(0)
+	, valueMap_()
 	{
 	}
 
@@ -38,7 +40,15 @@ namespace OpcUaServerApplicationDemo
 		ioThread_ = &ioThread;
 		applicationServiceIf_ = &applicationServiceIf;
 
-		if (!getNamespaceInfo()) return false;
+		// read namespace array from opc ua server
+		if (!getNamespaceInfo()) {
+			return false;
+		}
+
+		// create value map
+		if (!createValueMap()) {
+			return false;
+		}
 
 		return true;
 	}
@@ -80,6 +90,32 @@ namespace OpcUaServerApplicationDemo
 	        .parameter("NamespaceUri", "http://ASNeG.de/Camera/");
 
 		return true;
+	}
+
+	bool
+	CameraAnimation::createValueMap(void)
+	{
+		OpcUaNodeId nodeId;
+		OpcUaDataValue::SPtr dataValue;
+
+		// SByte ns=1;s=Camera.1
+		nodeId.set("Camera.1", namespaceIndex_);
+		OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+		byteString->value("0123456789");
+		dataValue = createDataValue();
+		dataValue->variant()->variant(byteString);
+		valueMap_.insert(std::make_pair(nodeId, dataValue));
+	}
+
+	OpcUaDataValue::SPtr
+	CameraAnimation::createDataValue(void)
+	{
+		OpcUaDataValue::SPtr dataValue;
+		dataValue = constructSPtr<OpcUaDataValue>();
+		dataValue->statusCode(Success);
+		dataValue->sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+		dataValue->serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
+		return dataValue;
 	}
 
 }
