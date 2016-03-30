@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/DemoLibrary.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
@@ -37,21 +38,21 @@ namespace OpcUaServerApplicationDemo
 	, slotTimer_()
 	, slotTimerElement_()
 	{
+		Log(Debug, "DemoLibrary::DemoLibrary");
+
 		loopTime_ = createDataValue();
 		loopTime_->variant()->variant((uint32_t)0);
-
-		std::cout << "DemoLibrary::construct" << std::endl;
 	}
 
 	DemoLibrary::~DemoLibrary(void)
 	{
-		std::cout << "DemoLibrary::destruct" << std::endl;
+		Log(Debug, "DemoLibrary::~DemoLibrary");
 	}
 
 	bool
 	DemoLibrary::startup(void)
 	{
-		std::cout << "DemoLibrary::startup" << std::endl;
+		Log(Debug, "DemoLibrary::startup");
 
 		// read namespace info from server service
 		if (!getNamespaceInfo()) {
@@ -89,7 +90,7 @@ namespace OpcUaServerApplicationDemo
 	bool
 	DemoLibrary::shutdown(void)
 	{
-		std::cout << "DemoLibrary::shutdown" << std::endl;
+		Log(Debug, "DemoLibrary::shutdown");
 
 		slotTimer_.stopSlotTimerLoop();
 		ioService_.stop();
