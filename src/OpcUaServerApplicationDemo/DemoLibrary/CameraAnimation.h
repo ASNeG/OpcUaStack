@@ -57,6 +57,9 @@ namespace OpcUaServerApplicationDemo
 		BaseNodeClassWMap baseNodeClassWMap_;
 
 		uint32_t countPics_;
+		uint32_t sampleTimeout_;
+		std::vector<OpcUaByteString::SPtr> byteStringVec_;
+		uint32_t byteStringVecIdx_;
 	};
 
 }

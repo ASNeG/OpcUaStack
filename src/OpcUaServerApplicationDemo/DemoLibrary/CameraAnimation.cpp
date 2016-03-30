@@ -14,6 +14,9 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
+
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
@@ -32,6 +35,9 @@ namespace OpcUaServerApplicationDemo
 	, valueMap_()
 	, baseNodeClassWMap_()
 	, countPics_(5)
+	, sampleTimeout_(1000)
+	, byteStringVec_()
+	, byteStringVecIdx_(0)
 	{
 	}
 
@@ -189,8 +195,6 @@ namespace OpcUaServerApplicationDemo
 	bool
 	CameraAnimation::loadPics(void)
 	{
-		std::cout << "ConfigFileName=" << applicationInfo_->configFileName() << std::endl;
-
 		Config config;
 		ConfigXml configXml;
 
@@ -206,7 +210,63 @@ namespace OpcUaServerApplicationDemo
 			return false;
 		}
 
-		//
+		// read configuration parameter
+		boost::optional<std::string> cameraPath = config.getValue("CameraModel.CameraPath.<xmlattr>.File");
+		if (!cameraPath) {
+			Log(Error, "camera path do not exist in configuration file")
+				.parameter("Variable", "CameraModel.CameraPath.<xmlattr>.File")
+				.parameter("ConfigFileName", applicationInfo_->configFileName());
+			return false;
+		}
+
+		if (!config.getConfigParameter("CameraModel.CameraPath.<xmlattr>.SampleTimeout", sampleTimeout_)) {
+			Log(Error, "sample timeout do not exist in configuration file")
+				.parameter("Variable", "CameraModel.CameraPath.<xmlattr>.File")
+				.parameter("ConfigFileName", applicationInfo_->configFileName());
+			return false;
+		}
+
+		// read camera pictures
+		uint32_t idx = 0;
+		bool readNext = true;
+		while (readNext)
+		{
+			std::stringstream file;
+			file << "animation" << std::setw(2) << idx << ".gif";
+
+			boost::filesystem::path cameraFile;
+			cameraFile = *cameraPath;
+			cameraFile /= file.str();
+
+			// check if file exists
+			if (!boost::filesystem::exists(cameraFile)) {
+				readNext = false;
+				continue;
+			}
+
+			// get file size an reallocate buffer
+			uint32_t bufferLen = boost::filesystem::file_size(cameraFile);
+			char buffer[1000000];
+
+			// read image file
+			try {
+				boost::filesystem::path imageFile(cameraFile);
+				boost::filesystem::ifstream ifs(imageFile);
+				std::istream is(ifs.rdbuf());
+				is.read(buffer, bufferLen);
+			} catch (...)
+			{
+				Log(Error, "camera image file read failed")
+				    .parameter("ImageFile", cameraFile.c_str());
+				return false;
+			}
+
+			OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+			value->value(buffer, bufferLen);
+			byteStringVec_.push_back(value);
+
+			idx++;
+		}
 
 		return true;
 	}
