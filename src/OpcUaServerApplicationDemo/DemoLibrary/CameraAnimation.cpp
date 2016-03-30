@@ -22,11 +22,25 @@ namespace OpcUaServerApplicationDemo
 {
 
 	CameraAnimation::CameraAnimation(void)
+	: ioThread_(nullptr)
 	{
 	}
 
 	CameraAnimation::~CameraAnimation(void)
 	{
+	}
+
+	bool
+	CameraAnimation::startup(IOThread& ioThread)
+	{
+		ioThread_ = &ioThread;
+		return true;
+	}
+
+	bool
+	CameraAnimation::shutdown(void)
+	{
+		return true;
 	}
 
 }

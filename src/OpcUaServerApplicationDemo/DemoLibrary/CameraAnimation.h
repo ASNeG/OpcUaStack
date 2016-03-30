@@ -18,6 +18,10 @@
 #ifndef __OpcUaServerApplicationDemo_CameraAnimation_h__
 #define __OpcUaServerApplicationDemo_CameraAnimation_h__
 
+#include "OpcUaStackCore/Utility/IOThread.h"
+
+using namespace OpcUaStackCore;
+
 namespace OpcUaServerApplicationDemo
 {
 
@@ -26,6 +30,12 @@ namespace OpcUaServerApplicationDemo
 	  public:
 		CameraAnimation(void);
 		~CameraAnimation(void);
+
+		bool startup(IOThread& ioThread);
+		bool shutdown(void);
+
+	  private:
+		IOThread* ioThread_;
 	};
 
 }
