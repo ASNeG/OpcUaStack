@@ -83,7 +83,7 @@
     <Application>
       <Name>ASNeG-Demo</name>  
       <Library>OpcUaServerApplicationDemo</Application>
-      <Config></Config>
+      <Config>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/ApplicationDemoModel.xml</Config>
     </Application>
   </Applications>
   
@@ -93,6 +93,7 @@
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTest.xml</NodeSetFile>
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTestLib.xml</NodeSetFile>
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTestLibClientServer.xml</NodeSetFile>
+    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.Camera.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>
