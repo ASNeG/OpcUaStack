@@ -37,8 +37,12 @@ namespace OpcUaServerApplicationDemo
 		bool shutdown(void);
 
 	  private:
+		bool getNamespaceInfo(void);
+
 		IOThread* ioThread_;
 		ApplicationServiceIf* applicationServiceIf_;
+
+		uint32_t namespaceIndex_;
 	};
 
 }

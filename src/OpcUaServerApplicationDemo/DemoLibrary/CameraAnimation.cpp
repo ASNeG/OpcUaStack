@@ -16,6 +16,7 @@
  */
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.h"
 
 namespace OpcUaServerApplicationDemo
@@ -36,12 +37,48 @@ namespace OpcUaServerApplicationDemo
 	{
 		ioThread_ = &ioThread;
 		applicationServiceIf_ = &applicationServiceIf;
+
+		if (!getNamespaceInfo()) return false;
+
 		return true;
 	}
 
 	bool
 	CameraAnimation::shutdown(void)
 	{
+		return true;
+	}
+
+	bool
+	CameraAnimation::getNamespaceInfo(void)
+	{
+		ServiceTransactionNamespaceInfo::SPtr trx = ServiceTransactionNamespaceInfo::construct();
+		NamespaceInfoRequest::SPtr req = trx->request();
+		NamespaceInfoResponse::SPtr res = trx->response();
+
+		applicationServiceIf_->sendSync(trx);
+		if (trx->statusCode() != Success) {
+			Log(Error, "NamespaceInfoResponse error")
+			    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
+			return false;
+		}
+
+		NamespaceInfoResponse::Index2NamespaceMap::iterator it;
+		for (
+		    it = res->index2NamespaceMap().begin();
+			it != res->index2NamespaceMap().end();
+			it++
+		)
+		{
+			if (it->second == "http://ASNeG.de/Camera/") {
+				namespaceIndex_ = it->first;
+				return true;
+			}
+ 		}
+
+		Log(Error, "namespace not found in configuration")
+	        .parameter("NamespaceUri", "http://ASNeG.de/Camera/");
+
 		return true;
 	}
 
