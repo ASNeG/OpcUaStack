@@ -17,6 +17,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
+#include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.h"
 
 namespace OpcUaServerApplicationDemo
@@ -27,6 +28,7 @@ namespace OpcUaServerApplicationDemo
 	, applicationServiceIf_(nullptr)
 	, namespaceIndex_(0)
 	, valueMap_()
+	, baseNodeClassWMap_()
 	{
 	}
 
@@ -47,6 +49,11 @@ namespace OpcUaServerApplicationDemo
 
 		// create value map
 		if (!createValueMap()) {
+			return false;
+		}
+
+		// create node references
+		if (!createNodeReferences()) {
 			return false;
 		}
 
@@ -116,6 +123,51 @@ namespace OpcUaServerApplicationDemo
 		dataValue->sourceTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 		dataValue->serverTimestamp(OpcUaDateTime(boost::posix_time::microsec_clock::universal_time()));
 		return dataValue;
+	}
+
+	bool
+	CameraAnimation::createNodeReferences(void)
+	{
+		ServiceTransactionGetNodeReference::SPtr trx = ServiceTransactionGetNodeReference::construct();
+		GetNodeReferenceRequest::SPtr req = trx->request();
+		GetNodeReferenceResponse::SPtr res = trx->response();
+
+	  	uint32_t pos = 0;
+	  	ValueMap::iterator it;
+	  	req->nodes()->resize(valueMap_.size());
+	  	for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
+	  		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+	  		*nodeId = it->first;
+
+	  		req->nodes()->set(pos, nodeId);
+	  		pos++;
+	  	}
+
+	  	applicationServiceIf_->sendSync(trx);
+	  	if (trx->statusCode() != Success) {
+	  		Log(Error, "response get node reference error")
+	  			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
+	  		return false;
+	  	}
+
+	  	for (pos = 0; pos < res->nodeReferenceArray()->size(); pos++) {
+	  		NodeReference::SPtr nodeReference;
+	  		res->nodeReferenceArray()->get(pos, nodeReference);
+	  		if (nodeReference->statusCode() != Success) {
+		  		Log(Error, "response get node reference node error")
+		  			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(nodeReference->statusCode()));
+	  			return false;
+	  		}
+
+	  		OpcUaNodeId::SPtr nodeId;
+	  		req->nodes()->get(pos, nodeId);
+
+	  		NodeReferenceApplication::SPtr nodeReferenceApplication;
+	  		nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
+	  		baseNodeClassWMap_.insert(std::make_pair(*nodeId, nodeReferenceApplication->baseNodeClass()));
+	  	}
+
+		return true;
 	}
 
 }

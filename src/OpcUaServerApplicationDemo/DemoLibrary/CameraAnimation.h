@@ -41,6 +41,7 @@ namespace OpcUaServerApplicationDemo
 		bool getNamespaceInfo(void);
 		bool createValueMap(void);
 		OpcUaDataValue::SPtr createDataValue(void);
+		bool createNodeReferences();
 
 		IOThread* ioThread_;
 		ApplicationServiceIf* applicationServiceIf_;
@@ -50,6 +51,7 @@ namespace OpcUaServerApplicationDemo
 		typedef std::map<OpcUaNodeId,OpcUaDataValue::SPtr> ValueMap;
 		typedef std::map<OpcUaNodeId,BaseNodeClass::WPtr> BaseNodeClassWMap;
 		ValueMap valueMap_;
+		BaseNodeClassWMap baseNodeClassWMap_;
 	};
 
 }
