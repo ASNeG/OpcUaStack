@@ -19,11 +19,12 @@
 #define __OpcUaServerApplicationDemo_DemoLibrary_h__
 
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -61,6 +62,8 @@ namespace OpcUaServerApplicationDemo
 		void startTimerLoop(void);
 		void timerLoop(void);
 
+		CameraAnimation cameraAnimation_;
+
 		uint32_t namespaceIndex_;
 		OpcUaDataValue::SPtr loopTime_;
 		Callback readCallback_;
@@ -73,8 +76,7 @@ namespace OpcUaServerApplicationDemo
 		ValueMap valueMap_;
 		BaseNodeClassWMap baseNodeClassWMap_;
 
-		IOService ioService_;
-		SlotTimer slotTimer_;
+		IOThread ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;
 	};
 

@@ -27,6 +27,7 @@ namespace OpcUaServerApplicationDemo
 
 	DemoLibrary::DemoLibrary(void)
 	: ApplicationIf()
+	, cameraAnimation_()
 	, namespaceIndex_(0)
 	, loopTime_()
 	, readCallback_(boost::bind(&DemoLibrary::readValue, this, _1))
@@ -34,8 +35,7 @@ namespace OpcUaServerApplicationDemo
 	, writeCallback_(boost::bind(&DemoLibrary::writeValue, this, _1))
 	, writeLoopTimeCallback_(boost::bind(&DemoLibrary::writeLoopTimeValue, this, _1))
 	, valueMap_()
-	, ioService_()
-	, slotTimer_()
+	, ioThread_()
 	, slotTimerElement_()
 	{
 		Log(Debug, "DemoLibrary::DemoLibrary");
@@ -79,8 +79,7 @@ namespace OpcUaServerApplicationDemo
 			return false;
 		}
 
-		ioService_.start();
-		slotTimer_.startSlotTimerLoop(&ioService_);
+		ioThread_.startup();
 
 		startTimerLoop();
 
@@ -92,8 +91,7 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "DemoLibrary::shutdown");
 
-		slotTimer_.stopSlotTimerLoop();
-		ioService_.stop();
+		ioThread_.shutdown();
 
 		return true;
 	}
@@ -580,7 +578,7 @@ namespace OpcUaServerApplicationDemo
 		applicationWriteContext->dataValue_.copyTo(*loopTime_);
 
 		if (slotTimerElement_.get() != nullptr) {
-			slotTimer_.stop(slotTimerElement_);
+			ioThread_.slotTimer()->stop(slotTimerElement_);
 			slotTimerElement_.reset();
 		}
 		if (timerInterval_ == 0) return;
@@ -588,7 +586,7 @@ namespace OpcUaServerApplicationDemo
 		slotTimerElement_ = constructSPtr<SlotTimerElement>();
 		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), timerInterval_);
-		slotTimer_.start(slotTimerElement_);
+		ioThread_.slotTimer()->start(slotTimerElement_);
 	}
 
 	void
@@ -601,7 +599,7 @@ namespace OpcUaServerApplicationDemo
 		slotTimerElement_ = constructSPtr<SlotTimerElement>();
 		slotTimerElement_->callback().reset(boost::bind(&DemoLibrary::timerLoop, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), 1111);
-		slotTimer_.start(slotTimerElement_);
+		ioThread_.slotTimer()->start(slotTimerElement_);
 	}
 
 	void
