@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
 
@@ -86,6 +87,12 @@ namespace OpcUaServer
 				return false;
 			}
 			applicationInfo.configFileName(*configFileName);
+
+			// set environment variables
+			applicationInfo.installDir(Environment::installDir());
+			applicationInfo.binDir(Environment::binDir());
+			applicationInfo.confDir(Environment::confDir());
+			applicationInfo.logDir(Environment::logDir());
 
 			// check application name
 			ApplicationLibrary::Map::iterator it;
