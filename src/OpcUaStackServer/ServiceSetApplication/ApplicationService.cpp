@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -109,7 +109,14 @@ namespace OpcUaStackServer
 			}
 
 			// create or update forward info
-			baseNodeClass->forwardInfoSync(registerForwardRequest->forwardInfoSync());
+			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+			if (forwardInfoSync.get() == nullptr) {
+				forwardInfoSync = registerForwardRequest->forwardInfoSync();
+			}
+			else {
+				forwardInfoSync->update(*forwardInfoSync);
+			}
+			baseNodeClass->forwardInfoSync(forwardInfoSync);
 
 			Log(Debug, "register forward")
 				.parameter("Trx", serviceTransaction->transactionId())
