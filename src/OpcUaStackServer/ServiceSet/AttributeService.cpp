@@ -339,9 +339,102 @@ namespace OpcUaStackServer
 		HistoryReadRequest::SPtr readRequest = trx->request();
 		HistoryReadResponse::SPtr readResponse = trx->response();
 
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
-		serviceTransaction->componentSession()->send(serviceTransaction);
+		Log(Debug, "attribute service historical read request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("NumberNodes", readRequest->nodesToRead()->size());
+
+		// check node id array
+		if (readRequest->nodesToRead()->size() == 0) {
+			trx->statusCode(BadNothingToDo);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+		if (readRequest->nodesToRead()->size() > 1000) { // FIXME: todo
+			trx->statusCode(BadTooManyOperations);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+
+		// read values
+		readResponse->results()->resize(readRequest->nodesToRead()->size());
+		for (uint32_t idx = 0; idx < readRequest->nodesToRead()->size(); idx++) {
+			HistoryReadResult::SPtr readResult = constructSPtr<HistoryReadResult>();
+			readResponse->results()->set(idx, readResult);
+
+			// determine node information
+			HistoryReadValueId::SPtr readValueId;
+			if (!readRequest->nodesToRead()->get(idx, readValueId)) {
+				readResult->statusCode(BadNodeIdInvalid);
+				Log(Debug, "history read value error, because node request parameter invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
+				continue;
+			}
+
+			// find node class instance for the node
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
+			if (baseNodeClass.get() == nullptr) {
+				readResult->statusCode(BadNodeIdUnknown);
+				Log(Debug, "history read value error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId());
+				continue;
+			}
+
+#if 0
+			// forward read request
+			forwardRead(baseNodeClass, readRequest, readValueId);
+
+			// determine the attribute to be read
+			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
+			if (attribute == nullptr) {
+				dataValue->statusCode(BadAttributeIdInvalid);
+				Log(Debug, "read value error, because node attribute not exist in node")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
+				continue;
+			}
+
+			if (attribute->exist() == false) {
+				Log(Debug, "read value error, because node attribute is empty")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
+				dataValue->statusCode(BadNotReadable);
+				continue;
+			}
+
+			if (!AttributeAccess::copy(*attribute, *dataValue)) {
+				Log(Debug, "read value error, because value error")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("Attr", readValueId->attributeId())
+					.parameter("Class", baseNodeClass->nodeClass().data());
+				dataValue->reset();
+				dataValue->statusCode(BadAttributeIdInvalid);
+				continue;
+			}
+
+			Log(Debug, "read value")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Idx", idx)
+				.parameter("Node", *readValueId->nodeId())
+				.parameter("Attr", readValueId->attributeId())
+				.parameter("Class", baseNodeClass->nodeClass().data())
+				.parameter("Data", *dataValue)
+				.parameter("Type", attribute->type());
+#endif
+		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
 	}
 
 	// ------------------------------------------------------------------------
