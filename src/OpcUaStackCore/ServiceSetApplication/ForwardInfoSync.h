@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,6 +40,11 @@ namespace OpcUaStackCore
 		bool isReadCallback(void);
 		Callback& readCallback(void);
 
+		void setReadHCallback(Callback& readHCallback);
+		void unsetReadHCallback(void);
+		bool isReadHCallback(void);
+		Callback& readHCallback(void);
+
 		void setWriteCallback(Callback& writeCallback);
 		void unsetWriteCallback(void);
 		bool isWriteCallback(void);
@@ -51,9 +56,11 @@ namespace OpcUaStackCore
 	  private:
 
 		bool readCallbackFlag_;
+		bool readHCallbackFlag_;
 		bool writeCallbackFlag_;
 
 		Callback readCallback_;
+		Callback readHCallback_;
 		Callback writeCallback_;
 
 		BaseClass::SPtr applicationContext_;

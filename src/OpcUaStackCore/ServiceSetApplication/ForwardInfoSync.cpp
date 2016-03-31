@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,8 +22,10 @@ namespace OpcUaStackCore
 
 	ForwardInfoSync::ForwardInfoSync(void)
 	: readCallbackFlag_(false)
+	, readHCallbackFlag_(false)
 	, writeCallbackFlag_(false)
 	, readCallback_()
+	, readHCallback_()
 	, writeCallback_()
 	, applicationContext_()
 	{
@@ -56,6 +58,31 @@ namespace OpcUaStackCore
 	ForwardInfoSync::readCallback(void)
 	{
 		return readCallback_;
+	}
+
+	void
+	ForwardInfoSync::setReadHCallback(Callback& readHCallback)
+	{
+		readHCallback_ = readHCallback;
+		readHCallbackFlag_ = true;
+	}
+
+	void
+	ForwardInfoSync::unsetReadHCallback(void)
+	{
+		readHCallbackFlag_ = false;
+	}
+
+	bool
+	ForwardInfoSync::isReadHCallback(void)
+	{
+		return readHCallbackFlag_;
+	}
+
+	Callback&
+	ForwardInfoSync::readHCallback(void)
+	{
+		return readHCallback_;
 	}
 
 	void
