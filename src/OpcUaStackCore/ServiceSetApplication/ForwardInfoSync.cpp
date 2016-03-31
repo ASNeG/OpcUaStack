@@ -24,6 +24,9 @@ namespace OpcUaStackCore
 	: readCallbackFlag_(false)
 	, readHCallbackFlag_(false)
 	, writeCallbackFlag_(false)
+	, usedReadCallbackFlag_(false)
+	, usedReadHCallbackFlag_(false)
+	, usedWriteCallbackFlag_(false)
 	, readCallback_()
 	, readHCallback_()
 	, writeCallback_()
@@ -40,18 +43,26 @@ namespace OpcUaStackCore
 	{
 		readCallback_ = readCallback;
 		readCallbackFlag_ = true;
+		usedReadCallbackFlag_ = true;
 	}
 
 	void
 	ForwardInfoSync::unsetReadCallback(void)
 	{
 		readCallbackFlag_ = false;
+		usedReadCallbackFlag_ = true;
 	}
 
 	bool
 	ForwardInfoSync::isReadCallback(void)
 	{
 		return readCallbackFlag_;
+	}
+
+	bool
+	ForwardInfoSync::usedReadCallback(void)
+	{
+		return usedReadCallbackFlag_;
 	}
 
 	Callback&
@@ -65,18 +76,26 @@ namespace OpcUaStackCore
 	{
 		readHCallback_ = readHCallback;
 		readHCallbackFlag_ = true;
+		usedReadHCallbackFlag_ = true;
 	}
 
 	void
 	ForwardInfoSync::unsetReadHCallback(void)
 	{
 		readHCallbackFlag_ = false;
+		usedReadHCallbackFlag_ = true;
 	}
 
 	bool
 	ForwardInfoSync::isReadHCallback(void)
 	{
 		return readHCallbackFlag_;
+	}
+
+	bool
+	ForwardInfoSync::usedReadHCallback(void)
+	{
+		return usedReadHCallbackFlag_;
 	}
 
 	Callback&
@@ -90,18 +109,26 @@ namespace OpcUaStackCore
 	{
 		writeCallback_ = writeCallback;
 		writeCallbackFlag_ = true;
+		usedWriteCallbackFlag_ = true;
 	}
 
 	void
 	ForwardInfoSync::unsetWriteCallback(void)
 	{
 		writeCallbackFlag_ = false;
+		usedWriteCallbackFlag_ = true;
 	}
 
 	bool
 	ForwardInfoSync::isWriteCallback(void)
 	{
 		return writeCallbackFlag_;
+	}
+
+	bool
+	ForwardInfoSync::usedWriteCallback(void)
+	{
+		return usedWriteCallbackFlag_;
 	}
 
 	Callback&
