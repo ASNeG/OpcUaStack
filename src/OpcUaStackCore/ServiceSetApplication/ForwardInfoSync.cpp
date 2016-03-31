@@ -24,12 +24,15 @@ namespace OpcUaStackCore
 	: readCallbackFlag_(false)
 	, readHCallbackFlag_(false)
 	, writeCallbackFlag_(false)
+	, methodCallbackFlag_(false)
 	, usedReadCallbackFlag_(false)
 	, usedReadHCallbackFlag_(false)
 	, usedWriteCallbackFlag_(false)
+	, usedMethodCallbackFlag_(false)
 	, readCallback_()
 	, readHCallback_()
 	, writeCallback_()
+	, methodCallback_()
 	, applicationContext_()
 	{
 	}
@@ -68,6 +71,16 @@ namespace OpcUaStackCore
 			}
 			else {
 				unsetWriteCallback();
+			}
+		}
+
+		// set or unset method callback
+		if (forwardInfoSync.usedMethodCallback()) {
+			if (forwardInfoSync.isMethodCallback()) {
+				setMethodCallback(forwardInfoSync.methodCallback());
+			}
+			else {
+				unsetMethodCallback();
 			}
 		}
 	}
@@ -169,6 +182,39 @@ namespace OpcUaStackCore
 	ForwardInfoSync::writeCallback(void)
 	{
 		return writeCallback_;
+	}
+
+	void
+	ForwardInfoSync::setMethodCallback(Callback& methodCallback)
+	{
+		methodCallback_ = methodCallback;
+		methodCallbackFlag_ = true;
+		usedMethodCallbackFlag_ = true;
+	}
+
+	void
+	ForwardInfoSync::unsetMethodCallback(void)
+	{
+		methodCallbackFlag_ = false;
+		usedMethodCallbackFlag_ = true;
+	}
+
+	bool
+	ForwardInfoSync::isMethodCallback(void)
+	{
+		return methodCallbackFlag_;
+	}
+
+	bool
+	ForwardInfoSync::usedMethodCallback(void)
+	{
+		return usedMethodCallbackFlag_;
+	}
+
+	Callback&
+	ForwardInfoSync::methodCallback(void)
+	{
+		return methodCallback_;
 	}
 
 	void

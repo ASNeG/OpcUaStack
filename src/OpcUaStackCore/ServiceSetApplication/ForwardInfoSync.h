@@ -55,6 +55,12 @@ namespace OpcUaStackCore
 		bool usedWriteCallback(void);
 		Callback& writeCallback(void);
 
+		void setMethodCallback(Callback& methodCallback);
+		void unsetMethodCallback(void);
+		bool isMethodCallback(void);
+		bool usedMethodCallback(void);
+		Callback& methodCallback(void);
+
 		void applicationContext(BaseClass::SPtr& applicationContext);
 		BaseClass::SPtr& applicationContext(void);
 
@@ -63,14 +69,17 @@ namespace OpcUaStackCore
 		bool readCallbackFlag_;
 		bool readHCallbackFlag_;
 		bool writeCallbackFlag_;
+		bool methodCallbackFlag_;
 
 		bool usedReadCallbackFlag_;
 		bool usedReadHCallbackFlag_;
 		bool usedWriteCallbackFlag_;
+		bool usedMethodCallbackFlag_;
 
 		Callback readCallback_;
 		Callback readHCallback_;
 		Callback writeCallback_;
+		Callback methodCallback_;
 
 		BaseClass::SPtr applicationContext_;
 	};
