@@ -238,7 +238,7 @@ namespace OpcUaServerApplicationDemo
 		while (readNext)
 		{
 			std::stringstream file;
-			file << "animation" << std::setw(2) << idx << ".gif";
+			file << "animation" << std::setfill('0') << std::setw(2) << idx << ".gif";
 
 			boost::filesystem::path cameraFile;
 			cameraFile = *cameraPath;
@@ -246,6 +246,8 @@ namespace OpcUaServerApplicationDemo
 
 			// check if file exists
 			if (!boost::filesystem::exists(cameraFile)) {
+				Log(Error, "camera image file not exist")
+				    .parameter("ImageFile", cameraFile.c_str());
 				readNext = false;
 				continue;
 			}
@@ -274,6 +276,11 @@ namespace OpcUaServerApplicationDemo
 			idx++;
 		}
 
+		if (byteStringVec_.size() == 0) {
+			Log(Error, "camera image file not exist");
+		    return false;
+		}
+
 		return true;
 	}
 
@@ -295,7 +302,28 @@ namespace OpcUaServerApplicationDemo
 	void
 	CameraAnimation::sample(void)
 	{
-		std::cout << "Sample..." << std::endl;
+		// get reference to base node class
+		BaseNodeClass::SPtr baseNodeClass = baseNodeClassWMap_.begin()->second.lock();
+		if (baseNodeClass.get() == nullptr) {
+			Log(Error, "camera opc ua node no longer exist");
+			return;
+		}
+
+		if (byteStringVec_.size() == 0) {
+			return;
+		}
+
+		byteStringVecIdx_++;
+		if (byteStringVecIdx_ >= byteStringVec_.size()) {
+			byteStringVecIdx_ = 0;
+		}
+
+		OpcUaDateTime dateTime(boost::posix_time::microsec_clock::local_time());
+		OpcUaDataValue dataValue;
+		dataValue.variant()->set(byteStringVec_[byteStringVecIdx_]);
+		dataValue.sourceTimestamp(dateTime);
+		dataValue.serverTimestamp(dateTime);
+		baseNodeClass->setValue(dataValue);
 	}
 
 }
