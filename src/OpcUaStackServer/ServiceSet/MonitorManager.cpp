@@ -114,6 +114,14 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// check parameter
+			if (monitoredItemCreateRequest->requestedParameters().samplingInterval() < 200) {
+				monitoredItemCreateRequest->requestedParameters().samplingInterval(200);
+			}
+			if (monitoredItemCreateRequest->requestedParameters().queueSize() < 1) {
+				monitoredItemCreateRequest->requestedParameters().queueSize(1);
+			}
+
 			// create new monitor item
 			MonitorItem::SPtr monitorItem = MonitorItem::construct();
 			OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);

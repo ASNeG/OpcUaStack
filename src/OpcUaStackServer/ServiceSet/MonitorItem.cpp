@@ -90,7 +90,6 @@ namespace OpcUaStackServer
 		baseNodeClass_ = baseNodeClass;
 		monitoredItemCreateRequest_ = monitoredItemCreateRequest;
 		samplingInterval_ = (uint32_t)monitoredItemCreateRequest->requestedParameters().samplingInterval();
-		samplingInterval_ = 500; // FIXME:
 		queSize_ = monitoredItemCreateRequest->requestedParameters().queueSize();
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
