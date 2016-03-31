@@ -39,6 +39,40 @@ namespace OpcUaStackCore
 	}
 
 	void
+	ForwardInfoSync::update(ForwardInfoSync& forwardInfoSync)
+	{
+		// set or unset read callback
+		if (forwardInfoSync.usedReadCallback()) {
+			if (forwardInfoSync.isReadCallback()) {
+				setReadCallback(forwardInfoSync.readCallback());
+			}
+			else {
+				unsetReadCallback();
+			}
+		}
+
+		// set or unset history read callback
+		if (forwardInfoSync.usedReadHCallback()) {
+			if (forwardInfoSync.isReadHCallback()) {
+				setReadHCallback(forwardInfoSync.readHCallback());
+			}
+			else {
+				unsetReadHCallback();
+			}
+		}
+
+		// set or unset write callback
+		if (forwardInfoSync.usedWriteCallback()) {
+			if (forwardInfoSync.isWriteCallback()) {
+				setWriteCallback(forwardInfoSync.writeCallback());
+			}
+			else {
+				unsetWriteCallback();
+			}
+		}
+	}
+
+	void
 	ForwardInfoSync::setReadCallback(Callback& readCallback)
 	{
 		readCallback_ = readCallback;

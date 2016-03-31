@@ -35,6 +35,8 @@ namespace OpcUaStackCore
 		ForwardInfoSync(void);
 		virtual ~ForwardInfoSync(void);
 
+		void update(ForwardInfoSync& forwardInfoSync);
+
 		void setReadCallback(Callback& readCallback);
 		void unsetReadCallback(void);
 		bool isReadCallback(void);

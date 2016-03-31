@@ -97,6 +97,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// find node
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
 			if (baseNodeClass.get() == nullptr) {
 				registerForwardResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
@@ -107,6 +108,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// create or update forward info
 			baseNodeClass->forwardInfoSync(registerForwardRequest->forwardInfoSync());
 
 			Log(Debug, "register forward")
