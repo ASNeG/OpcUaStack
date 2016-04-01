@@ -61,6 +61,12 @@ option(
     ON
 )
 
+option(
+    USE_OpcUaCertificate
+    "certificate applications"
+    ON
+)
+
 include(Tools/CMakeLists.txt) 
 
 add_definitions(-DBOOST_ALL_DYN_LINK)
@@ -108,6 +114,10 @@ endif ()
 
 if (USE_OpcUaProjectBuilder)
     include(OpcUaProjectBuilder/CMakeLists.txt) 
+endif ()
+
+if (USE_Certificate)
+    include(OpcUaCertificate/CMakeLists.txt) 
 endif ()
 
 

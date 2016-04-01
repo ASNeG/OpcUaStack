@@ -383,7 +383,7 @@ namespace OpcUaStackServer
 			}
 
 #if 0
-			// forward read request
+			// forward historical read request
 			forwardRead(baseNodeClass, readRequest, readValueId);
 
 			// determine the attribute to be read
