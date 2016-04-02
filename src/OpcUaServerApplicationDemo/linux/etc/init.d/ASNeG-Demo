@@ -41,6 +41,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 do_start()
 {
     echo "Start $NAME ..."
+    export LC_ALL=C
     export LD_LIBRARY_PATH=/usr/lib/OpcUaStack/:$LD_LIBRARY_PATH
     start-stop-daemon --start --quiet --background --make-pidfile --pidfile $PID --exec $DAEMON -- $OPTS
     echo "STATUS= $?"
