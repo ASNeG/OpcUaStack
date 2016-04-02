@@ -43,6 +43,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	bool
+	OpcUaDataValue::isNullVariant(void)
+	{
+		return opcUaVariantSPtr_.get() == nullptr;
+	}
+
 	OpcUaVariant::SPtr 
 	OpcUaDataValue::variant(void)
 	{
@@ -129,7 +135,11 @@ namespace OpcUaStackCore
 			}
 			case DataChangeTrigger_Status_Value:
 			{
-				if (*dataValue.variant() != *variant()) return true;
+				if (dataValue.isNullVariant() && !isNullVariant()) return true;
+				if (!dataValue.isNullVariant() && isNullVariant()) return true;
+				if (!dataValue.isNullVariant() && !isNullVariant()) {
+					if (*dataValue.variant() != *variant()) return true;
+				}
 			}
 			case DataChangeTrigger_Status:
 			{

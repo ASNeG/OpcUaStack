@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	: messageType_(MessageType_Unknown)
 	, messageSize_(0)
 	, segmentFlag_('F')
+	, messageTypeString_()
 	{
 	}
 	MessageHeader::~MessageHeader(void)
