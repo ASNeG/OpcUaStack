@@ -205,7 +205,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaDataValue::copyTo(OpcUaDataValue& dataValue)
 	{
-		if (opcUaVariantSPtr_.get() != NULL) {
+		if (opcUaVariantSPtr_.get() != NULL && opcUaStatusCode_ == Success) {
 		    opcUaVariantSPtr_->copyTo(*dataValue.variant());
 		}
 		if (opcUaStatusCode_ != dataValue.statusCode()) {
