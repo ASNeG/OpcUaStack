@@ -38,13 +38,17 @@ namespace OpcUaStackCore
 	void
 	TCPConnection::cancel(void)
 	{
-		socket_.close();
+		if (socket_.is_open()) {
+			socket_.close();
+		}
 	}
 
 	void
 	TCPConnection::close(void)
 	{
-		socket_.close();
+		if (socket_.is_open()) {
+			socket_.close();
+		}
 	}
 
 }
