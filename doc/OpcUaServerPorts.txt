@@ -5,9 +5,7 @@ Port	Server
 8889    ASNeG-Demo
 8890	OpcUaWebServer
 8891	OpcUaModbus
-8892	OpcUaSPS_S7_1200
+8892	OpcUaSPS
 8893    OpcUaUniPi
 8894	OpcUaRaspberry
-
 8895	OpcUaHistory
-
