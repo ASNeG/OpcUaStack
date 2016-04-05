@@ -25,6 +25,7 @@
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.h"
+#include "OpcUaServerApplicationDemo/DemoLibrary/TestFolderLib.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -45,39 +46,10 @@ namespace OpcUaServerApplicationDemo
 		//- ApplicationIf -----------------------------------------------------
 
 	  private:
-		bool getNamespaceInfo(void);
-		void readValue(ApplicationReadContext* applicationReadContext);
-		void readLoopTimeValue(ApplicationReadContext* applicationReadContext);
-		void writeValue(ApplicationWriteContext* applicationWriteContext);
-		void writeLoopTimeValue(ApplicationWriteContext* applicationWriteContext);
-		void updateSingle(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass);
-		void updateArray(const OpcUaNodeId& nodeId, const OpcUaDataValue::SPtr dataValue, const BaseNodeClass::SPtr baseNodeClass);
-
-		OpcUaDataValue::SPtr createDataValue(void);
-		bool createValueMap(void);
-		bool registerCallbacks(void);
-		bool registerLoopTimeCallbacks(void);
-		bool createNodeReferences(void);
-
-		void startTimerLoop(void);
-		void timerLoop(void);
-
 		CameraAnimation cameraAnimation_;
-
-		uint32_t namespaceIndex_;
-		OpcUaDataValue::SPtr loopTime_;
-		Callback readCallback_;
-		Callback readLoopTimeCallback_;
-		Callback writeCallback_;
-		Callback writeLoopTimeCallback_;
-
-		typedef std::map<OpcUaNodeId,OpcUaDataValue::SPtr> ValueMap;
-		typedef std::map<OpcUaNodeId,BaseNodeClass::WPtr> BaseNodeClassWMap;
-		ValueMap valueMap_;
-		BaseNodeClassWMap baseNodeClassWMap_;
+		TestFolderLib testFolderLib_;
 
 		IOThread ioThread_;
-		SlotTimerElement::SPtr slotTimerElement_;
 	};
 
 }
