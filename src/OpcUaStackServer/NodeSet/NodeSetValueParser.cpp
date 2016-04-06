@@ -575,6 +575,10 @@ namespace OpcUaStackServer
 		OpcUaByte *data;
 		OpcUaInt32 dataLen;
 		value->value(&data, &dataLen);
+		if (dataLen < 0) {
+			ptree.put(tag, std::string(""));
+			return true;
+		}
 		std::string byteString((char*)data, dataLen);
 		ptree.put(tag, byteString);
 		return true;
