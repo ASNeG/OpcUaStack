@@ -15,7 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -86,13 +89,22 @@ namespace OpcUaStackServer
 		if (variant.get() == nullptr) return false;
 		if (variant->variantType() == 0) return false;
 
-		//std::cout << "AttributeId=" << attributeId << std::endl;
-		//std::cout << "DataValue="; dataValue->out(std::cout); std::cout << std::endl;
+		std::cout << "Type=" << variant->variantType() << std::endl;
+		std::cout << "AttributeId=" << attributeId << std::endl;
+		std::cout << "DataValue="; dataValue->out(std::cout); std::cout << std::endl;
 
 		switch (attributeId)
 		{
 			case AttributeId_NodeId:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaNodeId) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "NodeId")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaNodeId));
+					return false;
+				}
+
 				if (!isPartNodeId()) return false;
 				OpcUaNodeId::SPtr nodeId = variant->variantSPtr<OpcUaNodeId>();
 				return setNodeId(*nodeId);
@@ -105,60 +117,140 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_BrowseName:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaQualifiedName) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "BrowseName")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaQualifiedName));
+					return false;
+				}
+
 				if (!isPartBrowseName()) return false;
 				OpcUaQualifiedName::SPtr browseName = variant->variantSPtr<OpcUaQualifiedName>();
 				return setBrowseName(*browseName);
 			}
 			case AttributeId_DisplayName:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaLocalizedText) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "DisplayName")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaLocalizedText));
+					return false;
+				}
+
 				if (!isPartDisplayName()) return false;
 				OpcUaLocalizedText::SPtr displayName = variant->variantSPtr<OpcUaLocalizedText>();
 				return setDisplayName(*displayName);
 			}
 			case AttributeId_Description:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaLocalizedText) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "Description")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaLocalizedText));
+					return false;
+				}
+
 				if (!isPartDescription()) return false;
 				OpcUaLocalizedText::SPtr description = variant->variantSPtr<OpcUaLocalizedText>();
 				return setDescription(*description);
 			}
 			case AttributeId_WriteMask:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "WriteMask")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaUInt32));
+					return false;
+				}
+
 				if (!isPartWriteMask()) return false;
 				OpcUaUInt32 writeMask = variant->variant<OpcUaUInt32>();
 				return setWriteMask(writeMask);
 			}
 			case AttributeId_UserWriteMask:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "UserWriteMask")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaUInt32));
+					return false;
+				}
+
 				if (!isPartUserWriteMask()) return false;
 				OpcUaUInt32 userWriteMask = variant->variant<OpcUaUInt32>();
 				return setUserWriteMask(userWriteMask);
 			}
 			case AttributeId_IsAbstract:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "IsAbstract")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaBoolean));
+					return false;
+				}
+
 				if (!isPartIsAbstract()) return false;
 				OpcUaBoolean isAbstract = variant->variant<OpcUaBoolean>();
 				return setIsAbstract(isAbstract);
 			}
 			case AttributeId_Symmetric:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "Symmetric")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaBoolean));
+					return false;
+				}
+
 				if (!isPartSymmetric()) return false;
 				OpcUaBoolean symmetric = variant->variant<OpcUaBoolean>();
 				return setSymmetric(symmetric);
 			}
 			case AttributeId_InverseName:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaLocalizedText) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "InverseName")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaLocalizedText));
+					return false;
+				}
+
 				if (!isPartInverseName()) return false;
 				OpcUaLocalizedText::SPtr inverseName = variant->variantSPtr<OpcUaLocalizedText>();
 				return setInverseName(*inverseName);
 			}
 			case AttributeId_ContainsNoLoops:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "ContainsNoLoops")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaBoolean));
+					return false;
+				}
+
 				if (!isPartContainsNoLoops()) return false;
 				OpcUaBoolean containsNoLoops = variant->variant<OpcUaBoolean>();
 				return setContainsNoLoops(containsNoLoops);
 			}
 			case AttributeId_EventNotifier:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaByte) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "EventNotifier")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaByte));
+					return false;
+				}
+
 				if (!isPartEventNotifier()) return false;
 				OpcUaByte eventNotifier = variant->variant<OpcUaByte>();
 				return setEventNotifier(eventNotifier);
@@ -170,18 +262,42 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_DataType:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaNodeId) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "DataType")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaNodeId));
+					return false;
+				}
+
 				if (!isPartDataType()) return false;
 				OpcUaNodeId::SPtr dataType = variant->variantSPtr<OpcUaNodeId>();
 				return setDataType(*dataType);
 			}
 			case AttributeId_ValueRank:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaInt32) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "ValueRank")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaInt32));
+					return false;
+				}
+
 				if (!isPartValueRank()) return false;
 				OpcUaInt32 valueRank = variant->variant<OpcUaInt32>();
 				return setValueRank(valueRank);
 			}
 			case AttributeId_ArrayDimensions:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "ArrayDimensions")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaUInt32));
+					return false;
+				}
+
 				if (!isPartArrayDimensions()) return false;
 				OpcUaUInt32Array::SPtr arrayDimensions = constructSPtr<OpcUaUInt32Array>();
 				arrayDimensions->resize(variant->arrayLength());
@@ -193,36 +309,84 @@ namespace OpcUaStackServer
 			}
 			case AttributeId_AccessLevel:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaByte) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "AccessLevel")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaByte));
+					return false;
+				}
+
 				if (!isPartAccessLevel()) return false;
 				OpcUaByte accessLevel = variant->variant<OpcUaByte>();
 				return setAccessLevel(accessLevel);
 			}
 			case AttributeId_UserAccessLevel:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaByte) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "UserAccessLevel")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaByte));
+					return false;
+				}
+
 				if (!isPartUserAccessLevel()) return false;
 				OpcUaByte userAccessLevel = variant->variant<OpcUaByte>();
 				return setUserAccessLevel(userAccessLevel);
 			}
 			case AttributeId_MinimumSamplingInterval:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaDouble) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "SamplingInterval")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaDouble));
+					return false;
+				}
+
 				if (!isPartMinimumSamplingInterval()) return false;
 				OpcUaDouble minimumSamplingInterval = variant->variant<OpcUaDouble>();
 				return setMinimumSamplingInterval(minimumSamplingInterval);
 			}
 			case AttributeId_Historizing:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "Historizing")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaBoolean));
+					return false;
+				}
+
 				if (!isPartHistorizing()) return false;
 				OpcUaBoolean historizing = variant->variant<OpcUaBoolean>();
 				return setHistorizing(historizing);
 			}
 			case AttributeId_Executable:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "Executable")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaBoolean));
+					return false;
+				}
+
 				if (!isPartExecutable()) return false;
 				OpcUaBoolean executable = variant->variant<OpcUaBoolean>();
 				return setExecutable(executable);
 			}
 			case AttributeId_UserExecutable:
 			{
+				if (variant->variantType() != OpcUaBuildInType_OpcUaBoolean) {
+					Log(Error, "data type error")
+						.parameter("Attribute", "UserExecutable")
+						.parameter("ActualType", OpcUaBuildInTypeMap::buildInType2String(variant->variantType()))
+						.parameter("ExpectedType", OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType_OpcUaBoolean));
+					return false;
+				}
+
 				if (!isPartUserExecutable()) return false;
 				OpcUaBoolean userExecutable = variant->variant<OpcUaBoolean>();
 				return setUserExecutable(userExecutable);
