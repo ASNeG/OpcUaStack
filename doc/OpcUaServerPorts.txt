@@ -8,6 +8,5 @@ Port	Server
 8892	OpcUaSPS_S7_1200
 8893    OpcUaUniPi
 8894	OpcUaRaspberry
-
 8895	OpcUaHistory
 
