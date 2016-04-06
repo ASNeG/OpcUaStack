@@ -89,9 +89,9 @@ namespace OpcUaStackServer
 		if (variant.get() == nullptr) return false;
 		if (variant->variantType() == 0) return false;
 
-		std::cout << "Type=" << variant->variantType() << std::endl;
-		std::cout << "AttributeId=" << attributeId << std::endl;
-		std::cout << "DataValue="; dataValue->out(std::cout); std::cout << std::endl;
+		//std::cout << "Type=" << variant->variantType() << std::endl;
+		//std::cout << "AttributeId=" << attributeId << std::endl;
+		//std::cout << "DataValue="; dataValue->out(std::cout); std::cout << std::endl;
 
 		switch (attributeId)
 		{
