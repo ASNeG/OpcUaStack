@@ -56,6 +56,9 @@ namespace OpcUaServerApplicationDemo
 	)
 	{
 		Log(Debug, "CameraAnimation::startup");
+		
+		// FIXME: this modul do not work on winows systems
+		return true;
 
 		ioThread_ = &ioThread;
 		applicationServiceIf_ = &applicationServiceIf;
@@ -89,6 +92,10 @@ namespace OpcUaServerApplicationDemo
 	CameraAnimation::shutdown(void)
 	{
 		Log(Debug, "CameraAnimation::shutdown");
+
+		// FIXME: this modul do not work on winows systems
+		return true;
+
 		stopSample();
 		return true;
 	}
@@ -96,6 +103,8 @@ namespace OpcUaServerApplicationDemo
 	bool
 	CameraAnimation::getNamespaceInfo(void)
 	{
+		Log(Debug, "get namespace info");
+
 		ServiceTransactionNamespaceInfo::SPtr trx = ServiceTransactionNamespaceInfo::construct();
 		NamespaceInfoRequest::SPtr req = trx->request();
 		NamespaceInfoResponse::SPtr res = trx->response();
@@ -129,6 +138,8 @@ namespace OpcUaServerApplicationDemo
 	bool
 	CameraAnimation::createValueMap(void)
 	{
+		Log(Debug, "create value map");
+
 		OpcUaNodeId nodeId;
 		OpcUaDataValue::SPtr dataValue;
 
@@ -156,6 +167,8 @@ namespace OpcUaServerApplicationDemo
 	bool
 	CameraAnimation::createNodeReferences(void)
 	{
+		Log(Debug, "create node reference");
+
 		ServiceTransactionGetNodeReference::SPtr trx = ServiceTransactionGetNodeReference::construct();
 		GetNodeReferenceRequest::SPtr req = trx->request();
 		GetNodeReferenceResponse::SPtr res = trx->response();
@@ -209,9 +222,14 @@ namespace OpcUaServerApplicationDemo
 		config.alias("@CONF_DIR@", Environment::confDir());
 		config.alias("@LOG_DIR@", Environment::logDir());
 		config.alias("@INSTALL_DIR@", Environment::installDir());
-		if (!configXml.parse(applicationInfo_->configFileName(), &config)) {
+
+		Log(Debug, "load camera model") 
+		    .parameter("ConfigFileName", applicationInfo_->configFileName());
+
+		boost::filesystem::path configFileName(applicationInfo_->configFileName());  
+		if (configXml.parse(configFileName.string(), &config) == false) {
 			Log(Error, "read configuration error")
-				.parameter("ConfigFileName", applicationInfo_->configFileName())
+				.parameter("ConfigFileName", configFileName.string())
 				.parameter("Reason", configXml.errorMessage());
 			return false;
 		}
@@ -264,6 +282,9 @@ namespace OpcUaServerApplicationDemo
 				is.read(buffer, bufferLen);
 			} catch (...)
 			{
+				readNext = false;
+			}
+			if (readNext == false) {
 				Log(Error, "camera image file read failed")
 				    .parameter("ImageFile", cameraFile.c_str());
 				return false;
@@ -281,12 +302,15 @@ namespace OpcUaServerApplicationDemo
 		    return false;
 		}
 
+		Log(Debug, "load camera model done");
 		return true;
 	}
 
 	void
 	CameraAnimation::startSample(void)
 	{
+		Log(Debug, "start sample");
+
 		slotTimerElement_ = constructSPtr<SlotTimerElement>();
 		slotTimerElement_->callback().reset(boost::bind(&CameraAnimation::sample, this));
 		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), sampleTimeout_);

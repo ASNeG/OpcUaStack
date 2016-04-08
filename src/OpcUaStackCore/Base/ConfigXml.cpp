@@ -20,6 +20,7 @@
 #include <boost/filesystem.hpp>
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -87,6 +88,22 @@ namespace OpcUaStackCore
 		configFileName_ = configFileName;
 		errorMessage_ = "";
 
+		// check if xml file exist
+		boost::filesystem::path fileName(configFileName);
+		if (!boost::filesystem::exists(fileName)) {
+			errorMessage_ = "file do not exist";
+			return false;
+		}
+
+		// check if file is readable
+		boost::filesystem::file_status stat;
+		stat = boost::filesystem::status(fileName);
+		boost::filesystem::perms perms = stat.permissions();
+		if ((perms & boost::filesystem::perms::owner_read) != boost::filesystem::perms::owner_read) {
+			errorMessage_ = "file is not readable";
+			return false;
+		}
+
 		// read configuration from xml file
 		try
 		{
@@ -95,6 +112,11 @@ namespace OpcUaStackCore
 		catch (const boost::property_tree::xml_parser_error& e)
 		{
 			errorMessage_ = std::string(e.what());
+			return false;
+		}
+		catch (...)
+		{
+			errorMessage_ = std::string("unknown exception in read xml");
 			return false;
 		}
 
