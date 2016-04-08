@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ViewService.h"
+#include <set>
 
 using namespace OpcUaStackCore;
 
