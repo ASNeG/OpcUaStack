@@ -96,6 +96,7 @@ namespace OpcUaStackCore
 		}
 
 		// check if file is readable
+#if 0
 		boost::filesystem::file_status stat;
 		stat = boost::filesystem::status(fileName);
 		boost::filesystem::perms perms = stat.permissions();
@@ -103,6 +104,7 @@ namespace OpcUaStackCore
 			errorMessage_ = "file is not readable";
 			return false;
 		}
+#endif
 
 		// read configuration from xml file
 		try
