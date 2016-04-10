@@ -632,13 +632,15 @@ namespace OpcUaServerApplicationDemo
 	  	}
 	}
 
-	int32_t sign(void)
+	int32_t
+	TestFolderLib::sign(void)
 	{
 		if ((rand() % 2) == 1) return -1;
 		return 1;
 	}
 
-	double percent(void)
+	double
+	TestFolderLib::percent(void)
 	{
 		return ((rand() % 5) / 100.0);
 	}
