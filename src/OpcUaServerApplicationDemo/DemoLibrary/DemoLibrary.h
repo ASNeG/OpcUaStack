@@ -46,8 +46,6 @@ namespace OpcUaServerApplicationDemo
 		//- ApplicationIf -----------------------------------------------------
 
 	  private:
-		void sign(void);
-		void percent(void);
 		CameraAnimation cameraAnimation_;
 		TestFolderLib testFolderLib_;
 

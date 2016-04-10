@@ -633,14 +633,14 @@ namespace OpcUaServerApplicationDemo
 	}
 
 	int32_t
-	TestFolderLib::sign(void)
+	TestFolderLib::mySign(void)
 	{
 		if ((rand() % 2) == 1) return -1;
 		return 1;
 	}
 
 	double
-	TestFolderLib::percent(void)
+	TestFolderLib::myPercent(void)
 	{
 		return ((rand() % 5) / 100.0);
 	}
@@ -660,7 +660,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaByte: // 0 - 64
 			{
 				OpcUaByte byte = dataValue->variant()->get<OpcUaByte>();
-				byte += (64 * percent() * sign());
+				byte += (64 * myPercent() * mySign());
 			    if (byte < 0) byte = 0;
 			    if (byte > 64) byte = 64;
 				dataValue->variant()->set(byte);
@@ -669,7 +669,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaInt16: // -50 - 100
 			{
 				OpcUaInt16 int16 = dataValue->variant()->get<OpcUaInt16>();
-				int16 += (150 * percent() * sign());
+				int16 += (150 * myPercent() * mySign());
 				if (int16 < -50) int16 = -50;
 				if (int16 > 100) int16 = 100;
 				dataValue->variant()->set(int16);
@@ -678,7 +678,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaUInt16: // 0 - 100
 			{
 				OpcUaUInt16 uint16 = dataValue->variant()->get<OpcUaUInt16>();
-				uint16 += (100 * percent() * sign());
+				uint16 += (100 * myPercent() * mySign());
 				if (uint16 < 0) uint16 = 0;
 				if (uint16 > 100) uint16 = 100;
 				dataValue->variant()->set(uint16);
@@ -687,7 +687,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaInt32: // 0 - 360
 			{
 				OpcUaInt32 int32 = dataValue->variant()->get<OpcUaInt32>();
-				int32 += (360 * percent() * sign());
+				int32 += (360 * myPercent() * mySign());
 				if (int32 < 0) int32 = 0;
 				if (int32 > 360) int32 = 360;
 				dataValue->variant()->set(int32);
@@ -696,7 +696,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaUInt32: // 0 - 360
 			{
 				OpcUaUInt32 uint32 = dataValue->variant()->get<OpcUaUInt32>();
-				uint32 += (360 * percent() * sign());
+				uint32 += (360 * myPercent() * mySign());
 				if (uint32 < 0) uint32 = 0;
 				if (uint32 > 360) uint32 = 360;
 				dataValue->variant()->set(uint32);
@@ -705,7 +705,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaInt64: // -1000 - 1000
 			{
 				OpcUaInt64 int64 = dataValue->variant()->get<OpcUaInt64>();
-				int64 += (2000 * percent() * sign());
+				int64 += (2000 * myPercent() * mySign());
 				if (int64 < -1000) int64 = 1000;
 				if (int64 > 1000) int64 = 1000;
 				dataValue->variant()->set(int64);
@@ -714,7 +714,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaUInt64: // 0 -3000
 			{
 				OpcUaUInt64 uint64 = dataValue->variant()->get<OpcUaUInt64>();
-				uint64 += (3000 * percent() * sign());
+				uint64 += (3000 * myPercent() * mySign());
 				if (uint64 < 0) uint64 = 0;
 				if (uint64 > 3000) uint64 = 3000;
 				dataValue->variant()->set(uint64);
@@ -723,7 +723,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaFloat: // 0 - 1000
 			{
 				OpcUaFloat floats = dataValue->variant()->get<OpcUaFloat>();
-				floats += (1000 * percent() * sign());
+				floats += (1000 * myPercent() * mySign());
 				if (floats < 0) floats = 0;
 				if (floats > 1000) floats = 1000;
 				dataValue->variant()->set(floats);
@@ -732,7 +732,7 @@ namespace OpcUaServerApplicationDemo
 			case OpcUaBuildInType_OpcUaDouble: // 0 - 1000
 			{
 				OpcUaDouble doubles = dataValue->variant()->get<OpcUaDouble>();
-				doubles += (1000 * percent() * sign());
+				doubles += (1000 * myPercent() * mySign());
 				if (doubles < 0) doubles = 0;
 				if (doubles > 1000) doubles = 1000;
 				dataValue->variant()->set(doubles);

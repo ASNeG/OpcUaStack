@@ -41,6 +41,8 @@ namespace OpcUaServerApplicationDemo
 		bool shutdown(void);
 
 	  private:
+		int32_t mySign(void);
+		double myPercent(void);
 		bool getNamespaceInfo(void);
 		void readValue(ApplicationReadContext* applicationReadContext);
 		void readLoopTimeValue(ApplicationReadContext* applicationReadContext);
