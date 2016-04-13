@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
@@ -31,8 +30,8 @@ namespace OpcUaStackCore
 	{
 	  public:
 		OpcUaNodeId nodeId_;
-		OpcUaDateTime startTime_;
-		OpcUaDateTime stopTime_;
+		boost::posix_time::ptime startTime_;
+		boost::posix_time::ptime stopTime_;
 		OpcUaDataValueArray::SPtr dataValueArray_;
 		OpcUaStatusCode statusCode_;
 		BaseClass::SPtr applicationContext_;

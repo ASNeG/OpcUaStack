@@ -18,8 +18,11 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
@@ -355,6 +358,17 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		// check type of history read details
+		OpcUaNodeId parameterTypeId;
+		parameterTypeId.set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		if (parameterTypeId != readRequest->historyReadDetails()->parameterTypeId()) {
+			trx->statusCode(BadServiceUnsupported);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+		ReadRawModifiedDetails::SPtr readDetails;
+		readDetails = readRequest->historyReadDetails()->parameter<ReadRawModifiedDetails>();
+
 		// read values
 		readResponse->results()->resize(readRequest->nodesToRead()->size());
 		for (uint32_t idx = 0; idx < readRequest->nodesToRead()->size(); idx++) {
@@ -382,55 +396,50 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-#if 0
-			// forward historical read request
-			forwardRead(baseNodeClass, readRequest, readValueId);
-
-			// determine the attribute to be read
-			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
-			if (attribute == nullptr) {
-				dataValue->statusCode(BadAttributeIdInvalid);
-				Log(Debug, "read value error, because node attribute not exist in node")
+			// check if forward callback exists
+			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+			if (forwardInfoSync.get() == nullptr) {
+				readResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history read value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId())
-					.parameter("Attr", readValueId->attributeId())
-					.parameter("Class", baseNodeClass->nodeClass().data());
+					.parameter("Node", *readValueId->nodeId());
+				continue;
+			}
+			if (!forwardInfoSync->isReadHCallback()) {
+				readResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history read value error, because service not supported")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId());
 				continue;
 			}
 
-			if (attribute->exist() == false) {
-				Log(Debug, "read value error, because node attribute is empty")
+			// call forward calbacks
+			ApplicationHReadContext applicationReadContext;
+			applicationReadContext.nodeId_ = *readValueId->nodeId();
+			applicationReadContext.startTime_ = readDetails->startTime().dateTime();
+			applicationReadContext.stopTime_ = readDetails->endTime().dateTime();
+			applicationReadContext.statusCode_ = Success;
+			applicationReadContext.applicationContext_ = forwardInfoSync->applicationContext();
+			forwardInfoSync->readHCallback()(&applicationReadContext);
+
+			// check response
+			readResult->statusCode(applicationReadContext.statusCode_);
+			if (applicationReadContext.statusCode_ != Success) {
+				Log(Debug, "history read value error, because service process failed")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("Node", *readValueId->nodeId())
-					.parameter("Attr", readValueId->attributeId())
-					.parameter("Class", baseNodeClass->nodeClass().data());
-				dataValue->statusCode(BadNotReadable);
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationReadContext.statusCode_));
 				continue;
 			}
 
-			if (!AttributeAccess::copy(*attribute, *dataValue)) {
-				Log(Debug, "read value error, because value error")
-					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId())
-					.parameter("Attr", readValueId->attributeId())
-					.parameter("Class", baseNodeClass->nodeClass().data());
-				dataValue->reset();
-				dataValue->statusCode(BadAttributeIdInvalid);
-				continue;
-			}
-
-			Log(Debug, "read value")
-				.parameter("Trx", serviceTransaction->transactionId())
-				.parameter("Idx", idx)
-				.parameter("Node", *readValueId->nodeId())
-				.parameter("Attr", readValueId->attributeId())
-				.parameter("Class", baseNodeClass->nodeClass().data())
-				.parameter("Data", *dataValue)
-				.parameter("Type", attribute->type());
-#endif
+			// process response
+			HistoryData::SPtr historyData;
+			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryData_Encoding_DefaultBinary);
+			historyData = readResult->historyData()->parameter<HistoryData>();
+			historyData->dataValues(applicationReadContext.dataValueArray_);
 		}
 
 		trx->statusCode(Success);
