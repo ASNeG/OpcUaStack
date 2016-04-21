@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_Base64_h__
 #define __OpcUaStackCore_Base64_h__
 
+#include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -28,6 +29,9 @@ namespace OpcUaStackCore
 	  public:
 		Base64(void);
 		~Base64(void);
+
+		static bool encode(const char*asciiBuf, uint32_t asciiLen, char* base64Buf, uint32_t& base64Len);
+		static bool decode(void);
 
 	  private:
 
