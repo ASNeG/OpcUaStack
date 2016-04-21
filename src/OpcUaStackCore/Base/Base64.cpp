@@ -65,8 +65,22 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Base64::decode(void)
+	Base64::decode(const char* base64Buf, uint32_t base64Len, char* asciiBuf, uint32_t& asciiLen)
 	{
+		uint32_t length = (6 * base64Len) / 8;
+		if (length > asciiLen) return false;
+
+		BIO *b64, *bio;
+		b64 = BIO_new(BIO_f_base64());
+		BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
+		bio = BIO_new_mem_buf((char*)base64Buf, base64Len);
+		bio = BIO_push(b64, bio);
+
+		length = BIO_read(bio, asciiBuf, length);
+		asciiLen = length;
+
+		BIO_free_all(b64);
+
 		return true;
 	}
 

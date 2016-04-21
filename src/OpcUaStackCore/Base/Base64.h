@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 		~Base64(void);
 
 		static bool encode(const char*asciiBuf, uint32_t asciiLen, char* base64Buf, uint32_t& base64Len);
-		static bool decode(void);
+		static bool decode(const char*base64Buf, uint32_t base64Len, char* asciiBuf, uint32_t& asciiLen);
 
 	  private:
 
