@@ -40,6 +40,7 @@ file(GLOB INC_OpcUaStackCore_ServiceSetApplication OpcUaStackCore/ServiceSetAppl
 file(GLOB INC_OpcUaStackCore_TCPChannel OpcUaStackCore/TCPChannel/*.h)
 file(GLOB INC_OpcUaStackCore_Utility OpcUaStackCore/Utility/*.h)
 file(GLOB INC_OpcUaStackCore_Application OpcUaStackCore/Application/*.h)
+file(GLOB INC_OpcUaStackCore_Container OpcUaStackCore/Container/*.h)
 
 install(TARGETS OpcUaStackCore DESTINATION ${LIB_DIR}/OpcUaStack)
 install(FILES ${INC_OpcUaStackCore_Base} DESTINATION ${INC_DIR}/OpcUaStack/OpcUaStackCore/Base)
@@ -52,4 +53,5 @@ install(FILES ${INC_OpcUaStackCore_ServiceSetApplication} DESTINATION ${INC_DIR}
 install(FILES ${INC_OpcUaStackCore_TCPChannel} DESTINATION ${INC_DIR}/OpcUaStack/OpcUaStackCore/TCPChannel)
 install(FILES ${INC_OpcUaStackCore_Utility} DESTINATION ${INC_DIR}/OpcUaStack/OpcUaStackCore/Utility)
 install(FILES ${INC_OpcUaStackCore_Application} DESTINATION ${INC_DIR}/OpcUaStack/OpcUaStackCore/Application)
+install(FILES ${INC_OpcUaStackCore_Container} DESTINATION ${INC_DIR}/OpcUaStack/OpcUaStackCore/Container)
 
