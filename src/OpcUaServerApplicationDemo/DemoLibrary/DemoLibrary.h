@@ -25,6 +25,7 @@
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.h"
+#include "OpcUaServerApplicationDemo/DemoLibrary/Function.h"
 #include "OpcUaServerApplicationDemo/DemoLibrary/TestFolderLib.h"
 
 using namespace OpcUaStackCore;
@@ -48,6 +49,7 @@ namespace OpcUaServerApplicationDemo
 	  private:
 		CameraAnimation cameraAnimation_;
 		TestFolderLib testFolderLib_;
+		Function function_;
 
 		IOThread ioThread_;
 	};

@@ -29,6 +29,7 @@ namespace OpcUaServerApplicationDemo
 	: ApplicationIf()
 	, cameraAnimation_()
 	, testFolderLib_()
+	, function_()
 	{
 		Log(Debug, "DemoLibrary::DemoLibrary");
 	}
@@ -46,6 +47,7 @@ namespace OpcUaServerApplicationDemo
 		ioThread_.startup();
 		testFolderLib_.startup(ioThread_, service(), applicationInfo());
 		cameraAnimation_.startup(ioThread_, service(), applicationInfo());
+		function_.startup(ioThread_, service(), applicationInfo());
 		return true;
 	}
 
@@ -54,6 +56,7 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "DemoLibrary::shutdown");
 
+		function_.shutdown();
 		cameraAnimation_.shutdown();
 		testFolderLib_.shutdown();
 		ioThread_.shutdown();
