@@ -94,6 +94,7 @@
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTestLib.xml</NodeSetFile>
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTestLibClientServer.xml</NodeSetFile>
     <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.Camera.xml</NodeSetFile>
+    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.Function.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>
