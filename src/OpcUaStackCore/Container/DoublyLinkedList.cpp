@@ -59,13 +59,13 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DoublyLinkedList::pushBefor(DoublyLinkedList& entry)
+	DoublyLinkedList::pushBefore(DoublyLinkedList& entry)
 	{
 		last()->insert(entry);
 	}
 
 	void
-	DoublyLinkedList::pushBefor(DoublyLinkedList* entry)
+	DoublyLinkedList::pushBefore(DoublyLinkedList* entry)
 	{
 		last()->insert(entry);
 	}

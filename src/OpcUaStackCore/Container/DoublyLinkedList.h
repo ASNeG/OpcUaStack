@@ -32,8 +32,8 @@ namespace OpcUaStackCore
 		void insert(DoublyLinkedList* entry);
 		void pushAfter(DoublyLinkedList& entry);
 		void pushAfter(DoublyLinkedList* entry);
-		void pushBefor(DoublyLinkedList& entry);
-		void pushBefor(DoublyLinkedList* entry);
+		void pushBefore(DoublyLinkedList& entry);
+		void pushBefore(DoublyLinkedList* entry);
 		void remove(void);
 		void erase(void);
 		void next(DoublyLinkedList* entry);
