@@ -40,7 +40,7 @@ namespace OpcUaServerApplicationDemo
 
 	  private:
 		bool getNamespaceInfo(void);
-		bool registerFunctions();
+		bool registerCallbacks();
 
 		IOThread* ioThread_;
 		ApplicationServiceIf* applicationServiceIf_;

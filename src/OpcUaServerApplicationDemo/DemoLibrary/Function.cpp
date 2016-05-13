@@ -59,8 +59,8 @@ namespace OpcUaServerApplicationDemo
 			return false;
 		}
 
-		// register functions
-		if (!registerFunctions()) {
+		// register function callbacks
+		if (!registerCallbacks()) {
 			return false;
 		}
 
@@ -111,9 +111,9 @@ namespace OpcUaServerApplicationDemo
 	}
 
 	bool
-	Function::registerFunctions(void)
+	Function::registerCallbacks(void)
 	{
-		Log(Debug, "register functions");
+		Log(Debug, "register function callbacks");
 
 		return true;
 	}
