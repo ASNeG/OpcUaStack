@@ -8,11 +8,29 @@ project	(Example)
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(OpcUaStack_ROOT /home/huebl/install)
 
-set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
-set(LIB_DIR "usr/lib" CACHE STRING "library directory")
-set(INC_DIR "usr/include" CACHE STRING "library directory")
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# libraries
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+find_package(Boost COMPONENTS system REQUIRED)
+find_library(OpcUaStackCore_LIBRARY NAMES OpcUaStackCore PATHS ${OpcUaStack_ROOT}/usr/lib/OpcUaStack)
+find_library(OpcUaStackClient_LIBRARY NAMES OpcUaStackClient PATHS ${OpcUaStack_ROOT}/usr/lib/OpcUaStack)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# infos
+# 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+message(STATUS "directories")
+message(STATUS "  OpcUaStack_ROOT: ${OpcUaStack_ROOT}")
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -21,9 +39,21 @@ set(INC_DIR "usr/include" CACHE STRING "library directory")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+include_directories(
+    ${OpcUaStack_ROOT}/usr/include/OpcUaStack
+)
+
 add_executable(
     ConnectToServer
     ConnectToServer.cpp
 )
 
+target_link_libraries(
+    ConnectToServer
+    ${OpcUaStackCore_LIBRARY}
+    ${OpcUaStackClient_LIBRARY}
+    ${Boost_LIBRARIES}
+)
 
