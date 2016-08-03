@@ -45,13 +45,27 @@ include_directories(
     ${OpcUaStack_ROOT}/usr/include/OpcUaStack
 )
 
+
 add_executable(
-    ConnectToServer
-    ConnectToServer.cpp
+    SyncConnectToServer
+    SyncConnectToServer.cpp
 )
 
 target_link_libraries(
-    ConnectToServer
+    SyncConnectToServer
+    ${OpcUaStackCore_LIBRARY}
+    ${OpcUaStackClient_LIBRARY}
+    ${Boost_LIBRARIES}
+)
+
+
+add_executable(
+    SyncReadFromServer
+    SyncReadFromServer.cpp
+)
+
+target_link_libraries(
+    SyncReadFromServer
     ${OpcUaStackCore_LIBRARY}
     ${OpcUaStackClient_LIBRARY}
     ${Boost_LIBRARIES}
