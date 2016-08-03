@@ -71,3 +71,16 @@ target_link_libraries(
     ${Boost_LIBRARIES}
 )
 
+
+add_executable(
+    SyncWriteToServer
+    SyncWriteToServer.cpp
+)
+
+target_link_libraries(
+    SyncWriteToServer
+    ${OpcUaStackCore_LIBRARY}
+    ${OpcUaStackClient_LIBRARY}
+    ${Boost_LIBRARIES}
+)
+
