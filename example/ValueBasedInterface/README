@@ -5,7 +5,7 @@ Entwicklung unter Linux
 
 mkdir build
 cd build
-cmake -G "Eclipse CDT4 - Unix Makefiles" ..
+cmake -G "Eclipse CDT4 - Unix Makefiles" ../src
 make
 
 
