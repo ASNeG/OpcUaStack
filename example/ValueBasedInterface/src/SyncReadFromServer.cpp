@@ -54,6 +54,30 @@ class ExampleClient
 		return true;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// close the secure channel to the opc ua server
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool disconnectFromServer(void)
+	{
+		OpcUaStatusCode statusCode;
+
+		//
+		// diconnect from the opc ua server
+		//
+		statusCode = client.syncDisconnect();
+		if (statusCode != Success) {
+			std::cout << std::endl << "**** disconnect from opc ua server error ****" << std::endl;
+			return false;
+		}
+
+		std::cout << std::endl << "**** disconnect from opc ua server success ****" << std::endl;
+		return true;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -136,6 +160,9 @@ int main(int argc, char**argv)
 
 	// read data from opc ua server
 	if (!client.readFromServer()) return 0;
+
+	// disconnect from the opc ua server
+	if (!client.disconnectFromServer()) return 0;
 
 	return 1;
 }
