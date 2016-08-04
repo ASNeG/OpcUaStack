@@ -25,18 +25,18 @@ using namespace OpcUaStackClient;
 class ExampleClient
 {
   public:
+	VBIClient client;
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// open a secure channel to the opc ua server
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	bool connectToServer(void)
 	{
-
-		// ------------------------------------------------------------------------
-		// ------------------------------------------------------------------------
-		//
-		// open a secure channel to the opc ua server
-		//
-		// ------------------------------------------------------------------------
-		// ------------------------------------------------------------------------
 		OpcUaStatusCode statusCode;
-		VBIClient client;
 		ConnectContext connectContext;
 
 		//
@@ -53,6 +53,31 @@ class ExampleClient
 		std::cout << std::endl << "**** connect to opc ua server success ****" << std::endl;
 		return true;
 	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// close the secure channel to the opc ua server
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool disconnectFromServer(void)
+	{
+		OpcUaStatusCode statusCode;
+
+		//
+		// diconnect from the opc ua server
+		//
+		statusCode = client.syncDisconnect();
+		if (statusCode != Success) {
+			std::cout << std::endl << "**** disconnect from opc ua server error ****" << std::endl;
+			return false;
+		}
+
+		std::cout << std::endl << "**** disconnect from opc ua server success ****" << std::endl;
+		return true;
+	}
 };
 
 
@@ -62,6 +87,9 @@ int main(int argc, char**argv)
 
 	// connect to the opc ua server
 	if (!client.connectToServer()) return 0;
+
+	// disconnect from the opc ua server
+	if (!client.disconnectFromServer()) return 0;
 
 	return 1;
 }
