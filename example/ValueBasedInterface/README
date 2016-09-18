@@ -1,0 +1,22 @@
+
+Voraussetzungen
+===============
+
+Installation OpcUaStack
+
+
+
+Entwicklung unter Linux
+=======================
+
+mkdir build
+cd build
+cmake -G "Eclipse CDT4 - Unix Makefiles" ../src
+make
+
+
+
+Entwicklung unter Windows
+=========================
+
+todo
