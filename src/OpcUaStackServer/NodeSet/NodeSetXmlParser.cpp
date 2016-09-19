@@ -39,6 +39,12 @@ namespace OpcUaStackServer
 		return nodeSetNamespace_;
 	}
 
+	NodeSetAlias&
+	NodeSetXmlParser::nodeSetAlias(void)
+	{
+		return nodeSetAlias_;
+	}
+
 	// ##########################################################
 	//
 	//  decode
@@ -900,6 +906,37 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::encode(boost::property_tree::ptree& ptree)
 	{
+		OpcUaNodeId nodeId;
+
+		nodeId.set((uint32_t)OpcUaId_HasComponent);
+		nodeSetAlias_.insert("HasComponent", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasProperty);
+		nodeSetAlias_.insert("HasProperty", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasModellingRule);
+		nodeSetAlias_.insert("HasModellingRule", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasTypeDefinition);
+		nodeSetAlias_.insert("HasTypeDefinition", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasModelParent);
+		nodeSetAlias_.insert("HasModelParent", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasEventSource);
+		nodeSetAlias_.insert("HasEventSource", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasNotifier);
+		nodeSetAlias_.insert("HasNotifier", nodeId);
+		nodeId.set((uint32_t)OpcUaId_Organizes);
+		nodeSetAlias_.insert("Organizes", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasDescription);
+		nodeSetAlias_.insert("HasDescription", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasEncoding);
+		nodeSetAlias_.insert("HasEncoding", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HasSubtype);
+		nodeSetAlias_.insert("HasSubtype", nodeId);
+		nodeId.set((uint32_t)OpcUaId_GeneratesEvent);
+		nodeSetAlias_.insert("GenerateEvents", nodeId);
+		nodeId.set((uint32_t)OpcUaId_AlwaysGeneratesEvent);
+		nodeSetAlias_.insert("AlwaysGeneratesEvent", nodeId);
+		nodeId.set((uint32_t)OpcUaId_HierarchicalReferences);
+		nodeSetAlias_.insert("HierarchicalReferences", nodeId);
+
 		boost::property_tree::ptree uaNodeSetTree;
 		boost::property_tree::ptree uaNodeSetTree1;
 
@@ -932,6 +969,7 @@ namespace OpcUaStackServer
 		}
 
 		encodeNamespaces(uaNodeSetTree1);
+		encodeAliases(uaNodeSetTree1);
 
 		boost::property_tree::ptree nodeSet;
 		boost::property_tree::ptree::iterator it;
@@ -949,6 +987,7 @@ namespace OpcUaStackServer
 		ptree.put("UANodeSet.<xmlattr>.Version", "1.02");
 		ptree.put("UANodeSet.<xmlattr>.LastModified", "2013-03-06T05:36:44.0862658Z");
 		ptree.put("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2011/03/UANodeSet.xsd");
+		//ptree.add("UANodeSet.<xmlattr>.xmlns", "http://opcfoundation.org/UA/2008/02/Types.xsd");
 
 		return true;
 	}
@@ -1048,7 +1087,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::encodeAliases(boost::property_tree::ptree& ptree)
 	{
-		return true;
+		return nodeSetAlias_.encodeAliases(ptree);
 	}
 	
 	bool 

@@ -35,6 +35,7 @@ namespace OpcUaStackServer
 
 		bool insert(const std::string& aliasString, OpcUaNodeId& nodeId);
 		bool map(const std::string& aliasString, OpcUaNodeId& nodeId);
+		bool encodeAliases(boost::property_tree::ptree& ptree);
 
 	  private: 
 		typedef std::map<std::string, OpcUaNodeId> AliasMap;

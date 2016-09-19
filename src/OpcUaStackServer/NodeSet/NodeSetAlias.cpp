@@ -16,6 +16,9 @@
  */
 
 #include "OpcUaStackServer/NodeSet/NodeSetAlias.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -52,6 +55,20 @@ namespace OpcUaStackServer
 		}
 
 		nodeId = it->second;
+		return true;
+	}
+
+	bool
+	NodeSetAlias::encodeAliases(boost::property_tree::ptree& ptree)
+	{
+		AliasMap::iterator it;
+		for (it = aliasMap_.begin(); it != aliasMap_.end(); it++) {
+
+			boost::property_tree::ptree pTreeAlias;
+			pTreeAlias.put("<xmlattr>.Alias", it->first);
+			pTreeAlias.put_value(it->second.toString());
+			ptree.add_child("Aliases.Alias", pTreeAlias);
+		}
 		return true;
 	}
 
