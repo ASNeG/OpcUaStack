@@ -148,7 +148,7 @@ namespace OpcUaStackClient
 				attributeIdVec_.push_back(AttributeId_Historizing);
 				attributeIdVec_.push_back(AttributeId_MinimumSamplingInterval);
 				attributeIdVec_.push_back(AttributeId_UserAccessLevel);
-				attributeIdVec_.push_back(AttributeId_Value);
+				//attributeIdVec_.push_back(AttributeId_Value);
 				attributeIdVec_.push_back(AttributeId_ValueRank);
 				break;
 			}
