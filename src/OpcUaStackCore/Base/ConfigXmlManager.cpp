@@ -16,16 +16,59 @@
  */
 
 #include "OpcUaStackCore/Base/ConfigXmlManager.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
 
 namespace OpcUaStackCore
 {
 
 	ConfigXmlManager::ConfigXmlManager(void)
+	: configMap_()
 	{
 	}
 
 	ConfigXmlManager::~ConfigXmlManager(void)
 	{
+		while (configMap_.size() > 0) {
+			deregisterConfiguration(configMap_.begin()->first);
+		}
 	}
+
+	bool
+	ConfigXmlManager::registerConfiguration(const std::string& configurationFileName, Config::SPtr& config)
+	{
+		Config::Map::iterator it;
+		it = configMap_.find(configurationFileName);
+		if (it != configMap_.end()) {
+			config = it->second;
+			return true;
+		}
+
+		// read configuration file
+		ConfigXml configXml;
+		if (!configXml.parse(configurationFileName, config.get())) {
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	ConfigXmlManager::deregisterConfiguration(const std::string& configurationFileName)
+	{
+		Config::Map::iterator it;
+		it = configMap_.find(configurationFileName);
+		if (it == configMap_.end()) return false;
+		configMap_.erase(it);
+		return false;
+	}
+
+	bool
+	ConfigXmlManager::existConfiguration(const std::string& configurationFileName)
+	{
+		Config::Map::iterator it;
+		it = configMap_.find(configurationFileName);
+		if (it != configMap_.end()) return false;
+		return false;
+	}
+
 
 }

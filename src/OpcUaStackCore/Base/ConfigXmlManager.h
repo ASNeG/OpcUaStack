@@ -18,7 +18,9 @@
 #ifndef __OpcUaStackCore_ConfigXmlManager_h__
 #define __OpcUaStackCore_ConfigXmlManager_h__
 
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
 
 namespace OpcUaStackCore
 {
@@ -28,6 +30,13 @@ namespace OpcUaStackCore
 	  public:
 		ConfigXmlManager(void);
 		~ConfigXmlManager(void);
+
+		bool registerConfiguration(const std::string& configurationFileName, Config::SPtr& config);
+		bool deregisterConfiguration(const std::string& configurationFileName);
+		bool existConfiguration(const std::string& configurationFileName);
+
+	  private:
+		Config::Map configMap_;
 	};
 
 }
