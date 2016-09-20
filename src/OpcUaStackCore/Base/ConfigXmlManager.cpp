@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/ConfigXmlManager.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 
 namespace OpcUaStackCore
 {
@@ -44,6 +45,7 @@ namespace OpcUaStackCore
 		}
 
 		// read configuration file
+		config = constructSPtr<Config>();
 		ConfigXml configXml;
 		if (!configXml.parse(configurationFileName, config.get())) {
 			return false;
