@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,31 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_NodeSetAlias_h__
-#define __OpcUaStackServer_NodeSetAlias_h__
+#ifndef __OpcUaStackCore_ConfigXmlManager_h__
+#define __OpcUaStackCore_ConfigXmlManager_h__
 
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include <map>
+#include "OpcUaStackCore/Base/Config.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
 
-	class DLLEXPORT NodeSetAlias
+	class DLLEXPORT ConfigXmlManager
 	{
 	  public:
-		NodeSetAlias(void);
-		~NodeSetAlias(void);
+		ConfigXmlManager(void);
+		~ConfigXmlManager(void);
 
-		bool insert(const std::string& aliasString, OpcUaNodeId& nodeId);
-		bool map(const std::string& aliasString, OpcUaNodeId& nodeId);
-		bool encodeAliases(boost::property_tree::ptree& ptree);
+		bool registerConfiguration(const std::string& configurationFileName, Config::SPtr& config);
+		bool deregisterConfiguration(const std::string& configurationFileName);
+		bool existConfiguration(const std::string& configurationFileName);
 
-	  private: 
-		typedef std::map<std::string, OpcUaNodeId> AliasMap;
-		AliasMap aliasMap_;
+	  private:
+		Config::Map configMap_;
 	};
 
 }

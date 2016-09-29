@@ -73,12 +73,21 @@ namespace OpcUaStackCore
 	void
 	DoublyLinkedList::remove(void)
 	{
+#if 0
 		if (last_ != next_) {
 			next()->last(last_);
 			last()->next(next_);
 			next_ = this;
 			last_ = this;
 		}
+#endif
+
+		if (last_ == next_&& last_ == this) return;
+
+		next()->last(last_);
+		last()->next(next_);
+		next_ = this;
+		last_ = this;
 	}
 
 	void

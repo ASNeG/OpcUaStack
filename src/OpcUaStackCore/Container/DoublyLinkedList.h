@@ -28,12 +28,12 @@ namespace OpcUaStackCore
 		DoublyLinkedList(void);
 		virtual ~DoublyLinkedList(void);
 
-		void insert(DoublyLinkedList& entry);
-		void insert(DoublyLinkedList* entry);
-		void pushAfter(DoublyLinkedList& entry);
-		void pushAfter(DoublyLinkedList* entry);
-		void pushBefore(DoublyLinkedList& entry);
-		void pushBefore(DoublyLinkedList* entry);
+		void insert(DoublyLinkedList& newEntry);
+		void insert(DoublyLinkedList* newEntry);
+		void pushAfter(DoublyLinkedList& newEntry);
+		void pushAfter(DoublyLinkedList* newEntry);
+		void pushBefore(DoublyLinkedList& newEntry);
+		void pushBefore(DoublyLinkedList* newEntry);
 		void remove(void);
 		void erase(void);
 		void next(DoublyLinkedList* entry);

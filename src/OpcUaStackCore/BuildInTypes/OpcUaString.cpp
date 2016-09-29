@@ -56,8 +56,13 @@ namespace OpcUaStackCore
 	void 
 	OpcUaString::value(const std::string& value)
 	{
-		exist_ = true;
-		value_ = value;
+		if (value == "---") {
+			reset();
+		}
+		else {
+		    exist_ = true;
+		    value_ = value;
+		}
 	}
 
 	uint32_t

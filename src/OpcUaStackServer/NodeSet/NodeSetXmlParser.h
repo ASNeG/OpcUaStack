@@ -42,6 +42,7 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree);
 
 		NodeSetNamespace& nodeSetNamespace(void);
+		NodeSetAlias& nodeSetAlias(void);
 
 	  private:
 		//

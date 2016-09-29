@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_Config_h__
 #define __OpcUaStackCore_Config_h__
 
+#include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>
 #include <vector>
@@ -32,6 +33,8 @@ namespace OpcUaStackCore
 	: public ConfigIf
 	{
 	  public:
+		typedef boost::shared_ptr<Config> SPtr;
+		typedef std::map<std::string, Config::SPtr> Map;
 		typedef std::map<std::string, std::string> AliasMap;
 
 		static Config* instance_;
