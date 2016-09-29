@@ -83,79 +83,6 @@ class ExampleClient
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// write some data values to the opc ua server
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	bool writeToServer(void)
-	{
-		OpcUaDataValue dataValue;
-		OpcUaStatusCode statusCode;
-		OpcUaNodeId nodeId;
-
-		boost::posix_time::ptime ptime1 = boost::posix_time::from_iso_string("20140506T102013.123456789");
-		boost::posix_time::ptime ptime2 = boost::posix_time::from_iso_string("20140506T102014.123456789");
-		OpcUaDateTime sourceTimestamp, serverTimestamp;
-
-		//
-		// write node 218 to namespace 1 (type Double)
-		//
-		nodeId.set((OpcUaInt32)218, 1);
-		dataValue.variant()->set((OpcUaDouble)3.14);
-		dataValue.statusCode((OpcUaStatusCode)Success);
-		dataValue.sourceTimestamp(sourceTimestamp);
-		dataValue.serverTimestamp(serverTimestamp);
-
-		statusCode = client.syncWrite(nodeId, dataValue);
-		if (statusCode != Success) {
-			std::cout << std::endl << "**** write to opc ua server error (Double) ****" << std::endl;
-			return false;
-		}
-		out(dataValue);
-
-		//
-		// write node 204 to namespace 1 (type Int16)
-		//
-		nodeId.set((OpcUaInt32)204, 1);
-		dataValue.variant()->set((OpcUaInt16)66);
-		dataValue.statusCode((OpcUaStatusCode)Success);
-		dataValue.sourceTimestamp(sourceTimestamp);
-		dataValue.serverTimestamp(serverTimestamp);
-
-		statusCode = client.syncWrite(nodeId, dataValue);
-		if (statusCode != Success) {
-			std::cout << std::endl << "**** write to opc ua server error (Int16) ****" << std::endl;
-			return false;
-		}
-		out(dataValue);
-
-
-		//
-		// write node 222 to namespace 1 (type String)
-		//
-		nodeId.set((OpcUaInt32)222, 1);
-		OpcUaString::SPtr strValue = constructSPtr<OpcUaString>();
-		strValue->value("Text1");
-		dataValue.variant()->variant(strValue);
-		dataValue.statusCode((OpcUaStatusCode)Success);
-		dataValue.sourceTimestamp(sourceTimestamp);
-		dataValue.serverTimestamp(serverTimestamp);
-
-		statusCode = client.syncWrite(nodeId, dataValue);
-		if (statusCode != Success) {
-			std::cout << std::endl << "**** write to opc ua server error (String) ****" << std::endl;
-			return false;
-		}
-		out(dataValue);
-
-		std::cout << std::endl << "**** write to opc ua server success ****" << std::endl;
-		return true;
-	}
-
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// print data value to screen
 	//
 	// ------------------------------------------------------------------------
@@ -175,9 +102,6 @@ int main(int argc, char**argv)
 
 	// connect to the opc ua server
 	if (!client.connectToServer()) return 0;
-
-	// write data to opc ua server
-	if (!client.writeToServer()) return 0;
 
 	// disconnect from the opc ua server
 	if (!client.disconnectFromServer()) return 0;
