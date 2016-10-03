@@ -48,6 +48,8 @@ namespace OpcUaStackClient
 		void asyncSend(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 		void syncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
 		void asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+		void syncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
+		void asyncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
 
 
 		//- Component -----------------------------------------------------------------

@@ -34,6 +34,7 @@ namespace OpcUaStackClient
 
         virtual void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse) {};
         virtual void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext) {};
+        virtual void viewServiceTranslateBrowsePathsToNodeIdsResponse(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds) {};
 	};
 
 	class DLLEXPORT ViewServiceIfTestHandler
@@ -47,6 +48,8 @@ namespace OpcUaStackClient
 	    void viewServiceBrowseResponse(ServiceTransactionBrowse::SPtr serviceTransactionBrowse);
 	    Condition viewServiceBrowseNextResponse_;
 	    void viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext);
+	    Condition viewServiceTranslateBrowsePathsToNodeIdsResponse_;
+	    void viewServiceTranslateBrowsePathsToNodeIdsResponse(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds);
 
 	};
 

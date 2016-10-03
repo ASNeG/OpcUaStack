@@ -86,8 +86,23 @@ namespace OpcUaStackClient
 	ViewService::asyncSend(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
 	{
 		serviceTransactionBrowseNext->componentService(this);
-		OpcUaNodeId nodeId;
 		componentSession_->send(serviceTransactionBrowseNext);
+	}
+
+	void
+	ViewService::syncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
+	{
+		serviceTransactionTranslateBrowsePathsToNodeIds->sync(true);
+		serviceTransactionTranslateBrowsePathsToNodeIds->conditionBool().conditionInit();
+		asyncSend(serviceTransactionTranslateBrowsePathsToNodeIds);
+		serviceTransactionTranslateBrowsePathsToNodeIds->conditionBool().waitForCondition();
+	}
+
+	void
+	ViewService::asyncSend(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTransactionTranslateBrowsePathsToNodeIds)
+	{
+		serviceTransactionTranslateBrowsePathsToNodeIds->componentService(this);
+		componentSession_->send(serviceTransactionTranslateBrowsePathsToNodeIds);
 	}
 
 	void 
@@ -121,6 +136,16 @@ namespace OpcUaStackClient
 				}
 				break;
 			}
+			case OpcUaId_TranslateBrowsePathsToNodeIdsResponse_Encoding_DefaultBinary:
+			{
+				if (viewServiceIf_ != nullptr) {
+					viewServiceIf_->viewServiceTranslateBrowsePathsToNodeIdsResponse(
+						boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction)
+					);
+				}
+				break;
+			}
+
 			default:
 				Log(Error, "view service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());

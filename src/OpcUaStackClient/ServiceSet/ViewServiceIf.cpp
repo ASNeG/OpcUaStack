@@ -23,6 +23,7 @@ namespace OpcUaStackClient
 	ViewServiceIfTestHandler::ViewServiceIfTestHandler(void)
 	: viewServiceBrowseResponse_()
 	, viewServiceBrowseNextResponse_()
+	, viewServiceTranslateBrowsePathsToNodeIdsResponse_()
 	{
 	}
 
@@ -40,6 +41,12 @@ namespace OpcUaStackClient
     ViewServiceIfTestHandler::viewServiceBrowseNextResponse(ServiceTransactionBrowseNext::SPtr serviceTransactionBrowseNext)
     {
     	viewServiceBrowseNextResponse_.conditionValueDec();
+    }
+
+    void
+    ViewServiceIfTestHandler::viewServiceTranslateBrowsePathsToNodeIdsResponse(ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr serviceTranslateBrowsePathsToNodeIds)
+    {
+    	viewServiceTranslateBrowsePathsToNodeIdsResponse_.conditionValueDec();
     }
 
 }

@@ -99,7 +99,7 @@ namespace OpcUaClient
 		}
 
 		// send browse name to node id request
-		//viewService->syncSend(trx);
+		viewService->syncSend(trx);
 
 		// process read response
 		statusCode = trx->statusCode();
