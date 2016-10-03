@@ -153,31 +153,45 @@ namespace OpcUaStackServer
 				return;
 			}
 
-			OpcUaNodeId::SPtr startingNode = browsePath->startingNode();
+			OpcUaNodeId::SPtr actualNode = browsePath->startingNode();
 			RelativePath* relativePath = &browsePath->relativePath();
 
 			BrowsePathResult::SPtr result = constructSPtr<BrowsePathResult>();
+			result->statusCode(Success);
 			response->results()->push_back(result);
 
-			if (relativePath->elements()->size()) {
+			if (relativePath->elements()->size() == 0) {
 				result->statusCode(BadInvalidArgument);
 				continue;
 			}
 
-			std::cout << "NodeId: " << *startingNode << std::endl;
 			for (uint32_t idx=0; idx<relativePath->elements()->size(); idx++) {
 				RelativePathElement::SPtr relativePathElement;
 				if (!relativePath->elements()->get(idx, relativePathElement)) {
-					// FIXME: todo
+					result->statusCode(BadInvalidArgument);
+					continue;
+				}
+
+				Log(Debug, "TranslateBrowsePathsToNodeId")
+					.parameter("NodeId", *actualNode);
+				Log(Debug, "  --")
+				    .parameter("PathElement", relativePathElement->targetName().toString());
+
+				if (!getNodeFromPathElement(*actualNode, relativePathElement->targetName())) {
+					Log(Debug, "node id not found")
+						.parameter("NodeId", *actualNode)
+						.parameter("PathElement", relativePathElement->targetName().toString());
+					result->statusCode(BadNotFound);
+					break;
 				}
 			}
 
-
-			//BrowsePathResultArray::SPtr results(
-			//RelativePathElementArray::SPtr elements(void) const;
+			if (result->statusCode() == Success) {
+				OpcUaExpandedNodeId::SPtr targetNodeId = constructSPtr<OpcUaExpandedNodeId>();
+				actualNode->copyTo(*targetNodeId);
+				result->tragetId(targetNodeId);
+			}
 		}
-
-		std::cout << "ViewService::receiveTranslateBrowsePathsToNodeIdsRequest" << std::endl;
 
 		serviceTransaction->statusCode(Success);
 		serviceTransaction->componentSession()->send(serviceTransaction);
@@ -307,5 +321,33 @@ namespace OpcUaStackServer
 		}
 
 		return BadNotFound;
+	}
+
+	bool
+	ViewService::getNodeFromPathElement(OpcUaNodeId& nodeId, OpcUaQualifiedName& pathElement)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return false;
+		}
+
+		ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
+		ReferenceItemMultiMap::iterator it;
+		for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
+			OpcUaNodeId referenceTypeNodeId = it->first;
+			ReferenceItem::SPtr referenceItem = it->second;
+
+			BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
+			if (baseNodeClassTarget.get() == nullptr) {
+				continue;
+			}
+
+			if (baseNodeClassTarget->browseName().data() == pathElement) {
+				referenceItem->nodeId_.copyTo(nodeId);
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
