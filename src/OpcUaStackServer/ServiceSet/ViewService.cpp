@@ -125,8 +125,61 @@ namespace OpcUaStackServer
 	void 
 	ViewService::receiveTranslateBrowsePathsToNodeIdsRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		ServiceTransactionTranslateBrowsePathsToNodeIds::SPtr trx = boost::static_pointer_cast<ServiceTransactionTranslateBrowsePathsToNodeIds>(serviceTransaction);
+		TranslateBrowsePathsToNodeIdsRequest::SPtr request = trx->request();
+		TranslateBrowsePathsToNodeIdsResponse::SPtr response = trx->response();
+
+		BrowsePathArray::SPtr browsePaths = request->browsePaths();
+		if (browsePaths->size() == 0) {
+			Log(Debug, "no browse path elements exist")
+				.parameter("TransactionId", serviceTransaction->transactionId());
+			serviceTransaction->statusCode(Success);
+			serviceTransaction->componentSession()->send(serviceTransaction);
+			return;
+		}
+
+		response->results()->resize(browsePaths->size());
+
+		for (uint32_t idx=0; idx<browsePaths->size(); idx++) {
+
+
+			BrowsePath::SPtr browsePath;
+			if (!browsePaths->get(idx, browsePath)) {
+				Log(Debug, "browse paths invalid")
+					.parameter("TransactionId", serviceTransaction->transactionId());
+
+				serviceTransaction->statusCode(BadInternalError);
+				serviceTransaction->componentSession()->send(serviceTransaction);
+				return;
+			}
+
+			OpcUaNodeId::SPtr startingNode = browsePath->startingNode();
+			RelativePath* relativePath = &browsePath->relativePath();
+
+			BrowsePathResult::SPtr result = constructSPtr<BrowsePathResult>();
+			response->results()->push_back(result);
+
+			if (relativePath->elements()->size()) {
+				result->statusCode(BadInvalidArgument);
+				continue;
+			}
+
+			std::cout << "NodeId: " << *startingNode << std::endl;
+			for (uint32_t idx=0; idx<relativePath->elements()->size(); idx++) {
+				RelativePathElement::SPtr relativePathElement;
+				if (!relativePath->elements()->get(idx, relativePathElement)) {
+					// FIXME: todo
+				}
+			}
+
+
+			//BrowsePathResultArray::SPtr results(
+			//RelativePathElementArray::SPtr elements(void) const;
+		}
+
+		std::cout << "ViewService::receiveTranslateBrowsePathsToNodeIdsRequest" << std::endl;
+
+		serviceTransaction->statusCode(Success);
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
