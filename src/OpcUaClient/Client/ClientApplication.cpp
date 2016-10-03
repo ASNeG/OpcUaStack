@@ -74,7 +74,7 @@ namespace OpcUaClient
 		CommandParser::addCommand("NODESETFILTER", constructSPtr<CommandNodeSetFilter>());
 		CommandParser::addCommand("BROWSE", constructSPtr<CommandBrowse>());
 		CommandParser::addCommand("FUNCTION", constructSPtr<CommandFunction>());
-		CommandParser::addCommand("BROWSE_PATH_TO_NODEID", constructSPtr<CommandBrowsePathToNodeId>());
+		CommandParser::addCommand("BROWSEPATHTONODEID", constructSPtr<CommandBrowsePathToNodeId>());
 
 		// register service in service factory
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Connect, constructSPtr<ClientServiceConnect>());
