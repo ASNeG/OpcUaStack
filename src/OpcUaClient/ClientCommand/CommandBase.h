@@ -49,7 +49,8 @@ namespace OpcUaClient
 			Cmd_NodeSetServer,
 			Cmd_NodeSetFilter,
 			Cmd_Browse,
-			Cmd_Function
+			Cmd_Function,
+			Cmd_BrowsePathToNodeId
 		} Cmd;
 
 		CommandBase(void);

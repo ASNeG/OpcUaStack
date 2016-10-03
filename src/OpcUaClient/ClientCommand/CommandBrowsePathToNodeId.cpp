@@ -107,10 +107,10 @@ namespace OpcUaClient
 		return ss.str();
 	}
 
-	OpcUaNodeId&
+	OpcUaNodeId::SPtr&
 	CommandBrowsePathToNodeId::nodeId(void)
 	{
-		return *nodeId_.get();
+		return nodeId_;
 	}
 
 	std::vector<OpcUaQualifiedName>&

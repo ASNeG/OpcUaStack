@@ -44,7 +44,7 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandBrowsePathToNodeId interface ---------------------------------------------
 
-		OpcUaNodeId& nodeId(void);
+		OpcUaNodeId::SPtr& nodeId(void);
 		std::vector<OpcUaQualifiedName>& browseNameVec(void);
 
 	  private:
