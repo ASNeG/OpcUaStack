@@ -187,9 +187,16 @@ namespace OpcUaStackServer
 			}
 
 			if (result->statusCode() == Success) {
+				result->targets()->resize(1);
+
+				BrowsePathTarget::SPtr browsePathTarget = constructSPtr<BrowsePathTarget>();
+
 				OpcUaExpandedNodeId::SPtr targetNodeId = constructSPtr<OpcUaExpandedNodeId>();
 				actualNode->copyTo(*targetNodeId);
-				result->tragetId(targetNodeId);
+
+				browsePathTarget->tragetId(targetNodeId);
+				browsePathTarget->remainingPathIndex(0xFFFFFFFF);
+				result->targets()->push_back(browsePathTarget);
 			}
 		}
 

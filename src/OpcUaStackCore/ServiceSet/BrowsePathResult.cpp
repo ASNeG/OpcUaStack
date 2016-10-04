@@ -31,9 +31,7 @@ namespace OpcUaStackCore
 	BrowsePathResult::BrowsePathResult(void)
 	: ObjectPool<BrowsePathResult>()
 	, statusCode_()
-	, targetArraySPtr_(RelativePathElementArray::construct())
-	, targetIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, remainingPathIndex_()
+	, targetArraySPtr_(BrowsePathTargetArray::construct())
 	{
 	}
 
@@ -54,48 +52,22 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	BrowsePathResult::targets(const RelativePathElementArray::SPtr targets)
+	BrowsePathResult::targets(const BrowsePathTargetArray::SPtr targets)
 	{
 		targetArraySPtr_ = targets;
 	}
 	
-	RelativePathElementArray::SPtr 
+	BrowsePathTargetArray::SPtr
 	BrowsePathResult::targets(void) const
 	{
 		return targetArraySPtr_;
 	}
 	
 	void 
-	BrowsePathResult::tragetId(const OpcUaExpandedNodeId::SPtr targetId)
-	{
-		targetIdSPtr_ = targetId;
-	}
-	
-	OpcUaExpandedNodeId::SPtr 
-	BrowsePathResult::targetId(void)
-	{
-		return targetIdSPtr_;
-	}
-	
-	void 
-	BrowsePathResult::remainingPathIndex(const OpcUaUInt32& remainingPathIndex)
-	{
-		remainingPathIndex_ = remainingPathIndex;
-	}
-	
-	OpcUaUInt32 
-	BrowsePathResult::remainingPathIndex(void)
-	{
-		return remainingPathIndex_;
-	}
-
-	void 
 	BrowsePathResult::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)statusCode_);
 		targetArraySPtr_->opcUaBinaryEncode(os);
-		targetIdSPtr_->opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, remainingPathIndex_);
 	}
 	
 	void 
@@ -105,8 +77,6 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, tmp);
 		statusCode_ = (OpcUaStatusCode)tmp;
 		targetArraySPtr_->opcUaBinaryDecode(is);
-		targetIdSPtr_->opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, remainingPathIndex_);
 	}
 
 }

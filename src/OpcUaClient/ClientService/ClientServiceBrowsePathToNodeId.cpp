@@ -134,9 +134,25 @@ namespace OpcUaClient
 			std::cout << OpcUaStatusCodeMap::shortString(browsePathResult->statusCode()) << std::endl;
 			return true;
 		}
-		else {
-			std::cout << browsePathResult->targetId()->toString() << std::endl;
+
+		if (browsePathResult->targets()->size() != 1) {
+			std::stringstream ss;
+			ss << "browse path result target response length error: "
+			   << " Session=" << commandBrowsePathToNodeId->session();
+			errorMessage(ss.str());
+			return false;
 		}
+
+		BrowsePathTarget::SPtr browsePathTarget;
+		if (!browsePathResult->targets()->get(0, browsePathTarget)) {
+			std::stringstream ss;
+			ss << "browse path target response error: "
+			   << " Session=" << commandBrowsePathToNodeId->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		std::cout << browsePathTarget->targetId()->toString() << std::endl;
 
 		return true;
 	}
