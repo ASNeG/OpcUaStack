@@ -180,10 +180,9 @@ namespace OpcUaStackServer
 		objectNodeClass->browseName().exist(true);
 
 		// replace local namespace index by global namespace index
-		globalNamespaceIndex = objectNodeClass->browseName().data().namespaceIndex();
+		localNamepaceIndex = objectNodeClass->browseName().data().namespaceIndex();
 		globalNamespaceIndex = nodeSetNamespace_.mapToGlobalNamespaceIndex(localNamepaceIndex);
 		objectNodeClass->browseName().data().namespaceIndex(globalNamespaceIndex);
-
 
 		//
 		// attribute DisplayName (mandatory)
