@@ -66,7 +66,7 @@ mkdir -p build_local
 cd build_local
 
 # configure cmake
-cmake ../src ${CMAKE_ARGS}
+cmake -G"Eclipse CDT4 - Unix Makefiles" ../src ${CMAKE_ARGS}
 
 #build and install
 make
