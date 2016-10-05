@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 		OpcUaNodeId nodeId_;
 		boost::posix_time::ptime startTime_;
 		boost::posix_time::ptime stopTime_;
+		TimestampsToReturn timestampsToReturn_;
 		OpcUaDataValueArray::SPtr dataValueArray_;
 		OpcUaStatusCode statusCode_;
 		BaseClass::SPtr applicationContext_;

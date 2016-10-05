@@ -346,13 +346,20 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", readRequest->nodesToRead()->size());
 
+		// check timestampsToReturn attribute
+		if (readRequest->timestampsToReturn() == TimestampsToReturn_Neither) {
+			trx->statusCode(BadInvalidTimestampArgument);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+
 		// check node id array
 		if (readRequest->nodesToRead()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (readRequest->nodesToRead()->size() > 1000) { // FIXME: todo
+		if (readRequest->nodesToRead()->size() > 1000) {
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
@@ -420,8 +427,10 @@ namespace OpcUaStackServer
 			applicationReadContext.nodeId_ = *readValueId->nodeId();
 			applicationReadContext.startTime_ = readDetails->startTime().dateTime();
 			applicationReadContext.stopTime_ = readDetails->endTime().dateTime();
+			applicationReadContext.timestampsToReturn_ = readRequest->timestampsToReturn();
 			applicationReadContext.statusCode_ = Success;
 			applicationReadContext.applicationContext_ = forwardInfoSync->applicationContext();
+
 			forwardInfoSync->readHCallback()(&applicationReadContext);
 
 			// check response
