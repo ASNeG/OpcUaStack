@@ -430,6 +430,7 @@ namespace OpcUaStackServer
 			applicationReadContext.timestampsToReturn_ = readRequest->timestampsToReturn();
 			applicationReadContext.statusCode_ = Success;
 			applicationReadContext.applicationContext_ = forwardInfoSync->applicationContext();
+			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
 
 			forwardInfoSync->readHCallback()(&applicationReadContext);
 
