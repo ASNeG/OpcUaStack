@@ -86,7 +86,8 @@ namespace OpcUaClient
 		boost::algorithm::trim(para);
 		if (
 		    boost::algorithm::to_upper_copy(para) != "-COMMAND" &&
-		    boost::algorithm::to_upper_copy(para) != "-HELP"
+		    boost::algorithm::to_upper_copy(para) != "-HELP" &&
+		    boost::algorithm::to_upper_copy(para) != "-H"
 		) {
 			errorString("first parameter must be a command or help");
 			return false;
@@ -114,7 +115,8 @@ namespace OpcUaClient
 			}
 
 			// help
-			else if (boost::algorithm::to_upper_copy(para) == "-HELP") {
+			else if (boost::algorithm::to_upper_copy(para) == "-HELP" ||
+					boost::algorithm::to_upper_copy(para) == "-H") {
 				help("");
 				exit(1);
 			}
