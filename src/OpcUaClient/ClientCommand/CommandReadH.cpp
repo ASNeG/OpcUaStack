@@ -31,6 +31,7 @@ namespace OpcUaClient
 	, nodeIdVec_()
 	, startTime_()
 	, endTime_()
+	, timestampsToReturn_(TimestampsToReturn_Both)
 	{
 		startTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
 		endTime_ = boost::posix_time::microsec_clock::universal_time();
@@ -108,6 +109,25 @@ namespace OpcUaClient
 				}
 			}
 		}
+		else if (parameterName == "-TIMESTAMPSTORETURN") {
+			std::string value = parameterValue;
+			boost::algorithm::to_upper(value);
+			if (value == "BOTH") {
+				timestampsToReturn_ = TimestampsToReturn_Both;
+			}
+			else if (value == "SERVER") {
+				timestampsToReturn_ = TimestampsToReturn_Server;
+			}
+			else if (value == "SOURCE") {
+				timestampsToReturn_ = TimestampsToReturn_Source;
+			}
+			else {
+				std::stringstream ss;
+				ss << "timestamp to return parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -131,7 +151,13 @@ namespace OpcUaClient
 		   << "     Format:\n"
 		   << "       ISO Format (Example: 16010101T120000.0)\n"
 		   << "       Now (Example: Now)\n"
-		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n";
+		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n"
+		   << "    -TimestampsToReturn (0..1): Selection of the timestamps to be returned\n"
+		   << "       Both - Return source timestamp and server timestamp\n"
+		   << "       Server - Return only server timestamp\n"
+		   << "       Source - Return only source timestamp\n"
+		   << "     ";
+
 		return ss.str();
 	}
 
@@ -151,6 +177,12 @@ namespace OpcUaClient
 	CommandReadH::endTime(void)
 	{
 		return endTime_;
+	}
+
+	TimestampsToReturn
+	CommandReadH::timestampsToReturn(void)
+	{
+		return timestampsToReturn_;
 	}
 
 }

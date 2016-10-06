@@ -84,6 +84,7 @@ namespace OpcUaClient
 
 		ReadRawModifiedDetails::SPtr readDetails;
 		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		req->timestampsToReturn(commandReadH->timestampsToReturn());
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
 		readDetails->startTime(commandReadH->startTime());
 		readDetails->endTime(commandReadH->endTime());
