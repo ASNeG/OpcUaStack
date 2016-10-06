@@ -39,6 +39,8 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode_;
 		BaseClass::SPtr applicationContext_;
 		OpcUaBoolean releaseContinuationPoints_;
+		std::string continousPoint_;
+		uint32_t numValuesPerNode_;
 	};
 
 }

@@ -375,6 +375,7 @@ namespace OpcUaStackServer
 		}
 		ReadRawModifiedDetails::SPtr readDetails;
 		readDetails = readRequest->historyReadDetails()->parameter<ReadRawModifiedDetails>();
+		uint32_t numValuesPerNode = readDetails->numValuesPerNode();
 
 		// read values
 		readResponse->results()->resize(readRequest->nodesToRead()->size());
@@ -422,6 +423,9 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			std::string continousPoint;
+			readValueId->continuationPoint().value(continousPoint);
+
 			// call forward calbacks
 			ApplicationHReadContext applicationReadContext;
 			applicationReadContext.nodeId_ = *readValueId->nodeId();
@@ -431,6 +435,8 @@ namespace OpcUaStackServer
 			applicationReadContext.statusCode_ = Success;
 			applicationReadContext.applicationContext_ = forwardInfoSync->applicationContext();
 			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
+			applicationReadContext.continousPoint_ = continousPoint;
+			applicationReadContext.numValuesPerNode_ = numValuesPerNode;
 
 			forwardInfoSync->readHCallback()(&applicationReadContext);
 
