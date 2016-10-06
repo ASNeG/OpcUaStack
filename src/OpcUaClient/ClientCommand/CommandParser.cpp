@@ -248,6 +248,7 @@ namespace OpcUaClient
 
 		CommandFactory::iterator it;
 		for (it = commandFactory_.begin(); it != commandFactory_.end();  it++) {
+			std::cout << std::endl;
 			std::cout << it->second->help();
 		}
 
