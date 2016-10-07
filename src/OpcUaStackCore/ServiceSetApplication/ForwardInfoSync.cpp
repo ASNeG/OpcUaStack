@@ -24,14 +24,17 @@ namespace OpcUaStackCore
 	: readCallbackFlag_(false)
 	, readHCallbackFlag_(false)
 	, writeCallbackFlag_(false)
+	, writeHCallbackFlag_(false)
 	, methodCallbackFlag_(false)
 	, usedReadCallbackFlag_(false)
 	, usedReadHCallbackFlag_(false)
 	, usedWriteCallbackFlag_(false)
+	, usedWriteHCallbackFlag_(false)
 	, usedMethodCallbackFlag_(false)
 	, readCallback_()
 	, readHCallback_()
 	, writeCallback_()
+	, writeHCallback_()
 	, methodCallback_()
 	, applicationContext_()
 	{
@@ -71,6 +74,16 @@ namespace OpcUaStackCore
 			}
 			else {
 				unsetWriteCallback();
+			}
+		}
+
+		// set or unset history write callback
+		if (forwardInfoSync.usedWriteHCallback()) {
+			if (forwardInfoSync.isWriteHCallback()) {
+				setWriteHCallback(forwardInfoSync.writeHCallback());
+			}
+			else {
+				unsetWriteHCallback();
 			}
 		}
 
@@ -182,6 +195,39 @@ namespace OpcUaStackCore
 	ForwardInfoSync::writeCallback(void)
 	{
 		return writeCallback_;
+	}
+
+	void
+	ForwardInfoSync::setWriteHCallback(Callback& writeHCallback)
+	{
+		writeHCallback_ = writeHCallback;
+		writeHCallbackFlag_ = true;
+		usedWriteHCallbackFlag_ = true;
+	}
+
+	void
+	ForwardInfoSync::unsetWriteHCallback(void)
+	{
+		writeHCallbackFlag_ = false;
+		usedWriteHCallbackFlag_ = true;
+	}
+
+	bool
+	ForwardInfoSync::isWriteHCallback(void)
+	{
+		return writeHCallbackFlag_;
+	}
+
+	bool
+	ForwardInfoSync::usedWriteHCallback(void)
+	{
+		return usedWriteHCallbackFlag_;
+	}
+
+	Callback&
+	ForwardInfoSync::writeHCallback(void)
+	{
+		return writeHCallback_;
 	}
 
 	void
