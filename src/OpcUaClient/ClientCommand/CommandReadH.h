@@ -50,6 +50,8 @@ namespace OpcUaClient
 		boost::posix_time::ptime& endTime(void);
 		TimestampsToReturn timestampsToReturn(void);
 		uint32_t maxNumResultValuesPerNode(void);
+		uint32_t maxNumRequests(void);
+		void maxNumRequestsDec(void);
 
 	  private:
 		OpcUaNodeId::Vec nodeIdVec_;
@@ -57,6 +59,7 @@ namespace OpcUaClient
 		boost::posix_time::ptime endTime_;
 		TimestampsToReturn timestampsToReturn_;
 		uint32_t maxNumResultValuesPerNode_;
+		int32_t maxNumRequests_;
 	};
 
 }

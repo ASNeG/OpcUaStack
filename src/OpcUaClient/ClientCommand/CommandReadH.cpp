@@ -33,6 +33,7 @@ namespace OpcUaClient
 	, endTime_()
 	, timestampsToReturn_(TimestampsToReturn_Both)
 	, maxNumResultValuesPerNode_(2000)
+	, maxNumRequests_(-1)
 	{
 		startTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
 		endTime_ = boost::posix_time::microsec_clock::universal_time();
@@ -141,6 +142,18 @@ namespace OpcUaClient
 				return false;
 		    }
 		}
+		else if (parameterName == "-MAXNUMREQUESTS") {
+			try {
+				maxNumRequests_ = boost::lexical_cast<uint32_t>(parameterValue);
+			}
+			catch (...)
+			{
+				std::stringstream ss;
+				ss << "MaxNumRequests parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+		    }
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -169,8 +182,10 @@ namespace OpcUaClient
 		   << "       Both - Return source timestamp and server timestamp\n"
 		   << "       Server - Return only server timestamp\n"
 		   << "       Source - Return only source timestamp\n"
-		   << "    - MaxNumResultValuesPerNode (0..1)\n"
+		   << "    -MaxNumResultValuesPerNode (0..1)\n"
 		   << "       Maximum number of results per node\n"
+		   << "    -MaxNumRequests (0..1)\n"
+		   << "       Maximum number of requests to the opc ua server\n"
 		   << "     ";
 
 		return ss.str();
@@ -204,6 +219,18 @@ namespace OpcUaClient
 	CommandReadH::maxNumResultValuesPerNode(void)
 	{
 		return maxNumResultValuesPerNode_;
+	}
+
+	uint32_t
+	CommandReadH::maxNumRequests(void)
+	{
+		return maxNumRequests_;
+	}
+
+	void
+	CommandReadH::maxNumRequestsDec(void)
+	{
+		maxNumRequests_--;
 	}
 
 }
