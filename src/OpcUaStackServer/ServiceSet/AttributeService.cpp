@@ -423,8 +423,11 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			std::string continousPoint;
-			readValueId->continuationPoint().value(continousPoint);
+			// get continous point
+			std::string continousPoint = "";
+			if (continousPoint.size() > 0) {
+				continousPoint = readValueId->continuationPoint().toString();
+			}
 
 			// call forward calbacks
 			ApplicationHReadContext applicationReadContext;
@@ -442,6 +445,11 @@ namespace OpcUaStackServer
 
 			// check response
 			readResult->statusCode(applicationReadContext.statusCode_);
+
+			if (!applicationReadContext.continousPoint_.empty()) {
+				readResult->continuationPoint().value(applicationReadContext.continousPoint_);
+			}
+
 			if (applicationReadContext.statusCode_ != Success) {
 				Log(Debug, "history read value error, because service process failed")
 					.parameter("Trx", serviceTransaction->transactionId())
