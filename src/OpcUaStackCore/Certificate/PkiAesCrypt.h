@@ -1,0 +1,65 @@
+/*
+   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
+#ifndef __OpcUaStackCore_PkiAesCrypt_h__
+#define __OpcUaStackCore_PkiAesCrypt_h__
+
+#include <openssl/evp.h>
+#include <stdint.h>
+#include "OpcUaStackCore/Certificate/PkiError.h"
+#include "OpcUaStackCore/Base/os.h"
+
+namespace OpcUaStackCore
+{
+
+	class DLLEXPORT PkiAesCrypt
+	: public PkiError
+	{
+	  public:
+		PkiAesCrypt(void);
+		~PkiAesCrypt(void);
+
+		bool encrypt(
+			const unsigned char* data,
+			uint32_t dataLen,
+			const unsigned char* key,
+			uint32_t keyLen,
+			const unsigned char* iv,
+			uint32_t ivLen,
+			unsigned char *encryptData,
+			int32_t& encryptDataLen
+		);
+
+		bool decrypt(
+			const unsigned char* encryptData,
+			uint32_t encryptDataLen,
+			const unsigned char* key,
+			uint32_t keyLen,
+			const unsigned char* iv,
+			uint32_t ivLen,
+			unsigned char *data,
+			int32_t& dataLen
+		);
+
+	  private:
+		EVP_CIPHER_CTX *ctx_;
+
+	};
+
+}
+
+#endif

@@ -1,0 +1,18 @@
+install os
+==========
+
+https://wiki.ubuntu.com/ARM/RaspberryPi
+
+
+Build package
+=============
+
+checkout source
+>> git clone git://81.169.197.52/OpcUaStack.git 
+
+build package
+>> cd OpcUaStack
+>> sh build_package.sh
+
+
+

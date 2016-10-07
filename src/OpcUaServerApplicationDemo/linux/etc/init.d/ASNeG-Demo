@@ -1,0 +1,93 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:          ASNeG-Demo
+# Required-Start:    network
+# Required-Stop:     network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Opc Ua application demo service 
+# Description:       start stop ua application demo services
+### END INIT INFO
+
+#
+#   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+#
+#   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+#   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+#   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+#
+#   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+#   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+#   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+#
+#   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+#   im Rahmen der Lizenz finden Sie in der Lizenz.
+#
+#   Autor: Kai Huebl (kai@huebl-sgh.de)
+#
+#
+
+. /lib/lsb/init-functions
+
+
+NAME=OpcUaServer
+DAEMON="/usr/bin/OpcUaServer"
+OPTS="ASNeG-Demo"
+PID=/var/run/${OPTS}.pid
+
+SCRIPTNAME=/etc/init.d/$NAME
+
+do_start()
+{
+    echo "Start $NAME ..."
+    export LC_ALL=C
+    export LD_LIBRARY_PATH=/usr/lib/OpcUaStack/:$LD_LIBRARY_PATH
+    start-stop-daemon --start --quiet --background --make-pidfile --pidfile $PID --exec $DAEMON -- $OPTS
+    echo "STATUS= $?"
+}
+
+do_stop()
+{
+    echo "Stopping $NAME ..."
+    start-stop-daemon --stop --signal 2 --retry 5 --pidfile $PID --exec $DAEMON
+    rm $PID
+}
+
+do_status()
+{
+    start-stop-daemon --status --exec $DAEMON
+    if [ $? -eq 0 ]; then
+        echo "process $DAMEON running";
+    else
+        echo "process $DAMEON NOT running";
+    fi
+}
+
+
+case "$1" in
+    start)
+        echo "Start $NAME services ..."
+	do_start
+        echo "  started."
+        ;;
+    stop)
+        do_stop
+        echo "  stopped."
+        ;;
+    restart)
+        do_stop
+        do_start
+        echo "  done."
+        ;;
+    status)
+	do_status
+	;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|restart|status}" >&2
+        exit 3
+        ;;
+esac
+
+
+
