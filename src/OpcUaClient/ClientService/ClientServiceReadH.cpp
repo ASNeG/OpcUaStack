@@ -88,6 +88,7 @@ namespace OpcUaClient
 		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
 		readDetails->startTime(commandReadH->startTime());
 		readDetails->endTime(commandReadH->endTime());
+		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
 
 		req->nodesToRead()->resize(commandReadH->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandReadH->nodeIdVec().size(); idx++) {
