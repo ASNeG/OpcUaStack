@@ -77,7 +77,14 @@ namespace OpcUaClient
 			return false;
 		}
 
-		// create read request
+		// read historical data from server
+		return hRead(attributeService, commandReadH);
+	}
+
+	bool
+	ClientServiceReadH::hRead(AttributeService::SPtr& attributeService, CommandReadH::SPtr& commandReadH)
+	{
+		OpcUaStatusCode statusCode;
 		ServiceTransactionHistoryRead::SPtr trx;
 		trx = constructSPtr<ServiceTransactionHistoryRead>();
 		HistoryReadRequest::SPtr req = trx->request();
@@ -121,6 +128,7 @@ namespace OpcUaClient
 			return false;
 		}
 
+		ReadNextNode::Vec readNextNodeVec;
 		for (uint32_t idx=0; idx<res->results()->size(); idx++) {
 			HistoryReadResult::SPtr readResult;
 			res->results()->get(idx, readResult);
@@ -148,7 +156,27 @@ namespace OpcUaClient
 				dataValue->out(std::cout); std::cout << std::endl;
 
 			}
+
+
+			if (readResult->continuationPoint().exist()) {
+				std::cout << "CONTINOUS POINT EXIST" << std::endl;
+				OpcUaNodeId nodeId;
+
+				ReadNextNode readNextNode;
+				readNextNode.nodeId_ = nodeId;
+				readNextNode.continousPoint_ = readResult->continuationPoint().toString();
+				readNextNodeVec.push_back(readNextNode);
+			}
 		}
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// create historical read request and send this request to the server.
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
 
 		return true;
 	}

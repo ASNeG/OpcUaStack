@@ -25,6 +25,33 @@
 namespace OpcUaClient
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ReadNextNode
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	class ReadNextNode
+	{
+	  public:
+		typedef std::vector<ReadNextNode> Vec;
+
+		ReadNextNode(void) {}
+		~ReadNextNode(void) {}
+
+		OpcUaNodeId nodeId_;
+		std::string continousPoint_;
+	};
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ClientServiceReadH
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	class ClientServiceReadH
 	: public ClientServiceBase
 	{
@@ -40,6 +67,7 @@ namespace OpcUaClient
 		//- ClientServiceReadH interface ---------------------------------------
 
       private:
+		bool hRead(AttributeService::SPtr& attributeService, CommandReadH::SPtr& commandReadH);
 
 	};
 
