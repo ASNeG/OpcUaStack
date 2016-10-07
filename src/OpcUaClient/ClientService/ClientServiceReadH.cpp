@@ -87,6 +87,10 @@ namespace OpcUaClient
 		CommandReadH::SPtr& commandReadH
 	)
 	{
+		if (commandReadH->maxNumRequests() > 0) {
+			commandReadH->maxNumRequestsDec();
+		}
+
 		OpcUaStatusCode statusCode;
 		ServiceTransactionHistoryRead::SPtr trx;
 		trx = constructSPtr<ServiceTransactionHistoryRead>();
@@ -172,7 +176,12 @@ namespace OpcUaClient
 		}
 
 		if (!readNextNodeVec.empty()) {
-			return hReadNext(attributeService, commandReadH, readNextNodeVec);
+			if (commandReadH->maxNumRequests() == 0) {
+				return hDelete(attributeService, commandReadH, readNextNodeVec);
+			}
+			else {
+				return hReadNext(attributeService, commandReadH, readNextNodeVec);
+			}
 		}
 
 
@@ -186,6 +195,11 @@ namespace OpcUaClient
 		ReadNextNode::Vec& readNextNodeVec
 	)
 	{
+
+		if (commandReadH->maxNumRequests() > 0) {
+			commandReadH->maxNumRequestsDec();
+		}
+
 		OpcUaStatusCode statusCode;
 		ServiceTransactionHistoryRead::SPtr trx;
 		trx = constructSPtr<ServiceTransactionHistoryRead>();
@@ -276,9 +290,74 @@ namespace OpcUaClient
 		}
 
 		if (!readNextNodeVec.empty()) {
-			return hReadNext(attributeService, commandReadH, readNextNodeVec);
+			if (commandReadH->maxNumRequests() == 0) {
+				return hDelete(attributeService, commandReadH, readNextNodeVec);
+			}
+			else {
+				return hReadNext(attributeService, commandReadH, readNextNodeVec);
+			}
 		}
 
+
+		return true;
+	}
+
+	bool
+	ClientServiceReadH::hDelete(
+		AttributeService::SPtr& attributeService,
+		CommandReadH::SPtr& commandReadH,
+		ReadNextNode::Vec& readNextNodeVec
+	)
+	{
+		OpcUaStatusCode statusCode;
+		ServiceTransactionHistoryRead::SPtr trx;
+		trx = constructSPtr<ServiceTransactionHistoryRead>();
+		HistoryReadRequest::SPtr req = trx->request();
+
+		ReadRawModifiedDetails::SPtr readDetails;
+		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		req->timestampsToReturn(commandReadH->timestampsToReturn());
+		req->releaseContinuationPoints(true);
+		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
+		readDetails->startTime(commandReadH->startTime());
+		readDetails->endTime(commandReadH->endTime());
+		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
+
+		req->nodesToRead()->resize(readNextNodeVec.size());
+		for (uint32_t idx=0; idx<readNextNodeVec.size(); idx++) {
+			OpcUaByteString continousPoint;
+			continousPoint.value(readNextNodeVec[idx].continousPoint_);
+
+			HistoryReadValueId::SPtr readValueId = HistoryReadValueId::construct();
+			readValueId->nodeId()->copyFrom(readNextNodeVec[idx].nodeId_);
+			readValueId->dataEncoding().namespaceIndex((OpcUaInt16) 0);
+			continousPoint.copyTo(readValueId->continuationPoint());
+
+			req->nodesToRead()->push_back(readValueId);
+		}
+
+		// send read history request
+		attributeService->syncSend(trx);
+
+		// process read response
+		statusCode = trx->statusCode();
+		if (statusCode != Success) {
+			std::stringstream ss;
+			ss << "read error: "
+			   << " Session=" << commandReadH->session()
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
+			errorMessage(ss.str());
+			return false;
+		}
+
+		HistoryReadResponse::SPtr res = trx->response();
+		if (res->results()->size() == 0) {
+			std::stringstream ss;
+			ss << "read history response length error: "
+			   << " Session=" << commandReadH->session();
+			errorMessage(ss.str());
+			return false;
+		}
 
 		return true;
 	}

@@ -76,6 +76,11 @@ namespace OpcUaClient
 			CommandReadH::SPtr& commandReadH,
 			ReadNextNode::Vec& readNextNodeVec
 		);
+		bool hDelete(
+			AttributeService::SPtr& attributeService,
+			CommandReadH::SPtr& commandReadH,
+			ReadNextNode::Vec& readNextNodeVec
+		);
 
 	};
 
