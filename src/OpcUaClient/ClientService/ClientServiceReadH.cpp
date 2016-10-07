@@ -82,7 +82,10 @@ namespace OpcUaClient
 	}
 
 	bool
-	ClientServiceReadH::hRead(AttributeService::SPtr& attributeService, CommandReadH::SPtr& commandReadH)
+	ClientServiceReadH::hRead(
+		AttributeService::SPtr& attributeService,
+		CommandReadH::SPtr& commandReadH
+	)
 	{
 		OpcUaStatusCode statusCode;
 		ServiceTransactionHistoryRead::SPtr trx;
@@ -150,32 +153,131 @@ namespace OpcUaClient
 			}
 
 			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
-			for (uint32_t idx=0; idx<historyData->dataValues()->size(); idx++) {
+			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
-				historyData->dataValues()->get(idx, dataValue);
+				historyData->dataValues()->get(idxv, dataValue);
 				dataValue->out(std::cout); std::cout << std::endl;
-
 			}
 
 
-			if (readResult->continuationPoint().exist()) {
-				std::cout << "CONTINOUS POINT EXIST" << std::endl;
-				OpcUaNodeId nodeId;
+			if (readResult->continuationPoint().exist()  && historyData->dataValues()->size() > 0) {
+				HistoryReadValueId::SPtr readValueId;
+				req->nodesToRead()->get(idx, readValueId);
 
 				ReadNextNode readNextNode;
-				readNextNode.nodeId_ = nodeId;
+				readNextNode.nodeId_.copyFrom(*readValueId->nodeId());
 				readNextNode.continousPoint_ = readResult->continuationPoint().toString();
 				readNextNodeVec.push_back(readNextNode);
 			}
 		}
 
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
-		//
-		// create historical read request and send this request to the server.
-		//
-		// --------------------------------------------------------------------
-		// --------------------------------------------------------------------
+		if (!readNextNodeVec.empty()) {
+			return hReadNext(attributeService, commandReadH, readNextNodeVec);
+		}
+
+
+		return true;
+	}
+
+	bool
+	ClientServiceReadH::hReadNext(
+		AttributeService::SPtr& attributeService,
+		CommandReadH::SPtr& commandReadH,
+		ReadNextNode::Vec& readNextNodeVec
+	)
+	{
+		OpcUaStatusCode statusCode;
+		ServiceTransactionHistoryRead::SPtr trx;
+		trx = constructSPtr<ServiceTransactionHistoryRead>();
+		HistoryReadRequest::SPtr req = trx->request();
+
+		ReadRawModifiedDetails::SPtr readDetails;
+		req->historyReadDetails()->parameterTypeId().set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		req->timestampsToReturn(commandReadH->timestampsToReturn());
+		readDetails = req->historyReadDetails()->parameter<ReadRawModifiedDetails>();
+		readDetails->startTime(commandReadH->startTime());
+		readDetails->endTime(commandReadH->endTime());
+		readDetails->numValuesPerNode(commandReadH->maxNumResultValuesPerNode());
+
+		req->nodesToRead()->resize(readNextNodeVec.size());
+		for (uint32_t idx=0; idx<readNextNodeVec.size(); idx++) {
+			OpcUaByteString continousPoint;
+			continousPoint.value(readNextNodeVec[idx].continousPoint_);
+
+			HistoryReadValueId::SPtr readValueId = HistoryReadValueId::construct();
+			readValueId->nodeId()->copyFrom(readNextNodeVec[idx].nodeId_);
+			readValueId->dataEncoding().namespaceIndex((OpcUaInt16) 0);
+			continousPoint.copyTo(readValueId->continuationPoint());
+
+			req->nodesToRead()->push_back(readValueId);
+		}
+
+		// send read history request
+		attributeService->syncSend(trx);
+
+		// process read response
+		statusCode = trx->statusCode();
+		if (statusCode != Success) {
+			std::stringstream ss;
+			ss << "read error: "
+			   << " Session=" << commandReadH->session()
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
+			errorMessage(ss.str());
+			return false;
+		}
+
+		HistoryReadResponse::SPtr res = trx->response();
+		if (res->results()->size() == 0) {
+			std::stringstream ss;
+			ss << "read history response length error: "
+			   << " Session=" << commandReadH->session();
+			errorMessage(ss.str());
+			return false;
+		}
+
+		readNextNodeVec.clear();
+		for (uint32_t idx=0; idx<res->results()->size(); idx++) {
+			HistoryReadResult::SPtr readResult;
+			res->results()->get(idx, readResult);
+			if (readResult->statusCode() != Success) {
+				std::cout << "Status=" << OpcUaStatusCodeMap::shortString(readResult->statusCode()) << std::endl;;
+				continue;
+			}
+
+
+			OpcUaNodeId typeId = readResult->historyData()->parameterTypeId();
+			uint32_t id = typeId.nodeId<OpcUaUInt32>();
+			if (id != OpcUaId_HistoryData_Encoding_DefaultBinary) {
+				std::stringstream ss;
+				ss << "receive invalid message type: "
+				   << " Session=" << commandReadH->session()
+				   << " TypeNodeId=" << typeId.toString();
+				errorMessage(ss.str());
+				return false;
+			}
+
+			HistoryData::SPtr historyData = readResult->historyData()->parameter<HistoryData>();
+			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
+				OpcUaDataValue::SPtr dataValue;
+				historyData->dataValues()->get(idxv, dataValue);
+				dataValue->out(std::cout); std::cout << std::endl;
+			}
+
+
+			if (readResult->continuationPoint().exist() && historyData->dataValues()->size() > 0) {
+				HistoryReadValueId::SPtr readValueId;
+				req->nodesToRead()->get(idx, readValueId);
+
+				ReadNextNode readNextNode;
+				readNextNode.nodeId_.copyFrom(*readValueId->nodeId());
+				readNextNode.continousPoint_ = readResult->continuationPoint().toString();
+				readNextNodeVec.push_back(readNextNode);
+			}
+		}
+
+		if (!readNextNodeVec.empty()) {
+			return hReadNext(attributeService, commandReadH, readNextNodeVec);
+		}
 
 
 		return true;

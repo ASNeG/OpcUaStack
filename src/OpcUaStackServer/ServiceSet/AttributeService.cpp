@@ -425,7 +425,7 @@ namespace OpcUaStackServer
 
 			// get continous point
 			std::string continousPoint = "";
-			if (continousPoint.size() > 0) {
+			if (readValueId->continuationPoint().exist()) {
 				continousPoint = readValueId->continuationPoint().toString();
 			}
 

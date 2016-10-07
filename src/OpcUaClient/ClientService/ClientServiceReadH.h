@@ -67,7 +67,15 @@ namespace OpcUaClient
 		//- ClientServiceReadH interface ---------------------------------------
 
       private:
-		bool hRead(AttributeService::SPtr& attributeService, CommandReadH::SPtr& commandReadH);
+		bool hRead(
+			AttributeService::SPtr& attributeService,
+			CommandReadH::SPtr& commandReadH
+		);
+		bool hReadNext(
+			AttributeService::SPtr& attributeService,
+			CommandReadH::SPtr& commandReadH,
+			ReadNextNode::Vec& readNextNodeVec
+		);
 
 	};
 
