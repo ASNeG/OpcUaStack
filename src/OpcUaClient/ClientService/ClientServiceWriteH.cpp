@@ -91,6 +91,7 @@ namespace OpcUaClient
 		updateDetails = extensibleParameter->parameter<UpdateStructureDataDetails>();
 
 		updateDetails->nodeId(commandWriteH->nodeId());
+		updateDetails->performInsertReplace(PerformUpdateEnumeration_Insert);
 
 		updateDetails->updateValue()->resize(commandWriteH->dataValueVec().size());
 		for (uint32_t idx=0; idx<commandWriteH->dataValueVec().size(); idx++) {
