@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
+#include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
@@ -485,131 +486,105 @@ namespace OpcUaStackServer
 		HistoryUpdateRequest::SPtr updateRequest = trx->request();
 		HistoryUpdateResponse::SPtr updateResponse = trx->response();
 
-#if 0
-		// check type of history update details
-		OpcUaNodeId parameterTypeId;
-		parameterTypeId.set((OpcUaUInt32)OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
-		if (parameterTypeId != updateRequest->historyUpdateDetails()->parameterTypeId()) {
-			trx->statusCode(BadServiceUnsupported);
-			trx->componentSession()->send(serviceTransaction);
-			return;
-		}
-		UpdateStructureDataDetails::SPtr dataDetails;
-		dataDetails = updateRequest->historyUpdateDetails()->parameter<UpdateStructureDataDetails>();
-
 		Log(Debug, "attribute service historical update request")
 			.parameter("Trx", serviceTransaction->transactionId())
-			.parameter("NumberNodes", dataDetails->updateValue()->size());
+			.parameter("NumberNodes", updateRequest->historyUpdateDetails()->size());
 
 		// check data array
-		if (dataDetails->updateValue()->size() == 0) {
+		if (updateRequest->historyUpdateDetails()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (dataDetails->updateValue()->size() > 1000) { // FIXME: todo
+		if (updateRequest->historyUpdateDetails()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-#endif
 
-#if 0
-		// write historical values
-		readResponse->results()->resize(readRequest->nodesToRead()->size());
-		for (uint32_t idx = 0; idx < readRequest->nodesToRead()->size(); idx++) {
-			HistoryReadResult::SPtr readResult = constructSPtr<HistoryReadResult>();
-			readResponse->results()->set(idx, readResult);
+		updateResponse->results()->resize(updateRequest->historyUpdateDetails()->size());
+		for (uint32_t idx=0; idx<updateRequest->historyUpdateDetails()->size(); idx++) {
 
-			// determine node information
-			HistoryReadValueId::SPtr readValueId;
-			if (!readRequest->nodesToRead()->get(idx, readValueId)) {
-				readResult->statusCode(BadNodeIdInvalid);
-				Log(Debug, "history read value error, because node request parameter invalid")
+			// create result package
+			HistoryUpdateResult::SPtr writeResult = constructSPtr<HistoryUpdateResult>();
+			updateResponse->results()->push_back(writeResult);
+
+			// check type of history update details
+			ExtensibleParameter::SPtr extensibleParameter;
+			updateRequest->historyUpdateDetails()->get(idx, extensibleParameter);
+
+			OpcUaNodeId parameterTypeId;
+			parameterTypeId.set((OpcUaUInt32)OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
+			if (parameterTypeId != extensibleParameter->parameterTypeId()) {
+				writeResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history write value error, because invalid parameter type id")
 					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("Idx", idx);
+					.parameter("Idx", idx)
+					.parameter("ParameterTypeId", extensibleParameter->parameterTypeId());
+				continue;
+			}
+			UpdateStructureDataDetails::SPtr dataDetails;
+			dataDetails = extensibleParameter->parameter<UpdateStructureDataDetails>();
+
+			// check operation type
+			if (dataDetails->performInsertReplace() != PerformUpdateEnumeration_Insert) {
+				writeResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history write value error, because invalid operation type")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", dataDetails->nodeId())
+					.parameter("OperationType", dataDetails->performInsertReplace());
+				continue;
+			}
+
+			// check data array
+			if (dataDetails->updateValue()->size() == 0) {
+				writeResult->statusCode(BadNothingToDo);
 				continue;
 			}
 
 			// find node class instance for the node
-			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(dataDetails->nodeId());
 			if (baseNodeClass.get() == nullptr) {
-				readResult->statusCode(BadNodeIdUnknown);
-				Log(Debug, "history read value error, because node not exist in information model")
+				writeResult->statusCode(BadNodeIdUnknown);
+				Log(Debug, "history write value error, because node not exist in information model")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId());
+					.parameter("Node", dataDetails->nodeId());
 				continue;
 			}
 
 			// check if forward callback exists
 			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
 			if (forwardInfoSync.get() == nullptr) {
-				readResult->statusCode(BadServiceUnsupported);
-				Log(Debug, "history read value error, because service not supported")
+				writeResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history write value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId());
+					.parameter("Node", dataDetails->nodeId());
 				continue;
 			}
-			if (!forwardInfoSync->isReadHCallback()) {
-				readResult->statusCode(BadServiceUnsupported);
-				Log(Debug, "history read value error, because service not supported")
+			if (!forwardInfoSync->isWriteHCallback()) {
+				writeResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history write value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId());
-				continue;
-			}
-
-			// get continous point
-			std::string continousPoint = "";
-			if (readValueId->continuationPoint().exist()) {
-				continousPoint = readValueId->continuationPoint().toString();
-			}
-
-			// call forward calbacks
-			ApplicationHReadContext applicationReadContext;
-			applicationReadContext.nodeId_ = *readValueId->nodeId();
-			applicationReadContext.startTime_ = readDetails->startTime().dateTime();
-			applicationReadContext.stopTime_ = readDetails->endTime().dateTime();
-			applicationReadContext.timestampsToReturn_ = readRequest->timestampsToReturn();
-			applicationReadContext.statusCode_ = Success;
-			applicationReadContext.applicationContext_ = forwardInfoSync->applicationContext();
-			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
-			applicationReadContext.continousPoint_ = continousPoint;
-			applicationReadContext.numValuesPerNode_ = numValuesPerNode;
-
-			forwardInfoSync->readHCallback()(&applicationReadContext);
-
-			// check response
-			readResult->statusCode(applicationReadContext.statusCode_);
-
-			if (!applicationReadContext.continousPoint_.empty()) {
-				readResult->continuationPoint().value(applicationReadContext.continousPoint_);
-			}
-
-			if (applicationReadContext.statusCode_ != Success) {
-				Log(Debug, "history read value error, because service process failed")
-					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationReadContext.statusCode_));
+					.parameter("Node", dataDetails->nodeId());
 				continue;
 			}
 
-			// process response
-			HistoryData::SPtr historyData;
-			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryData_Encoding_DefaultBinary);
-			historyData = readResult->historyData()->parameter<HistoryData>();
-			historyData->dataValues(applicationReadContext.dataValueArray_);
+			// call forward callback
+			ApplicationHWriteContext applicationWriteContext;
+			applicationWriteContext.nodeId_ = dataDetails->nodeId();
+			applicationWriteContext.dataValueArray_ = dataDetails->updateValue();
+			applicationWriteContext.statusCode_ = Success;
+			applicationWriteContext.applicationContext_ = forwardInfoSync->applicationContext();
+
+			forwardInfoSync->writeHCallback()(&applicationWriteContext);
+			writeResult->statusCode(applicationWriteContext.statusCode_);
 		}
 
-		trx->statusCode(Success);
-		trx->componentSession()->send(serviceTransaction);
-#endif
-
-		// FIXME:
-		serviceTransaction->statusCode(BadInternalError);
+		serviceTransaction->statusCode(Success);
 		serviceTransaction->componentSession()->send(serviceTransaction);
 	}
 
