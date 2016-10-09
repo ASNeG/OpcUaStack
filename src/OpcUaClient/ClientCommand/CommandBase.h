@@ -41,6 +41,7 @@ namespace OpcUaClient
 			Cmd_Read,
 			Cmd_Write,
 			Cmd_ReadH,
+			Cmd_WriteH,
 			Cmd_Delay,
 			Cmd_SubscriptionStart,
 			Cmd_SubscriptionStop,
