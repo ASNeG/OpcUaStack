@@ -207,11 +207,15 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	responseHeader->serviceResult(statusCode);
 	
 	// build BrowsePathResult
+	BrowsePathTarget::SPtr browsePathTarget = constructSPtr<BrowsePathTarget>();
+	browsePathTarget->targetId()->namespaceIndex(2);
+	browsePathTarget->targetId()->nodeId<OpcUaUInt32>(123);
+	browsePathTarget->remainingPathIndex(321);
+
 	browsePathResultSPtr = BrowsePathResult::construct();
 	browsePathResultSPtr->statusCode(Success);
-	browsePathResultSPtr->targetId()->namespaceIndex(2);
-	browsePathResultSPtr->targetId()->nodeId<OpcUaUInt32>(123);
-	browsePathResultSPtr->remainingPathIndex(321);
+	browsePathResultSPtr->targets()->resize(1);
+	browsePathResultSPtr->targets()->push_back(browsePathTarget);
 
 	responseSPtr->results()->set(browsePathResultSPtr);
 
@@ -233,7 +237,7 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	ss << "4d 53 47 46 4c 00 00 00  d9 7a 25 09 01 00 00 00"
 	   << "36 00 00 00 04 00 00 00  01 00 2d 02 00 00 00 00"
 	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
-	   << "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
+	   << "00 00 00 00 01 00 00 00  00 00 00 00 01 00 00 00"
 	   << "01 02 7b 00 41 01 00 00  00 00 00 00";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
@@ -273,10 +277,12 @@ BOOST_AUTO_TEST_CASE(TranslateBrowsePathsToNodeIds_Response)
 	browsePathResultSPtr = BrowsePathResult::construct();
 	responseSPtr->results()->get(browsePathResultSPtr);
 	BOOST_REQUIRE(browsePathResultSPtr->statusCode() == Success);
-	BOOST_REQUIRE(browsePathResultSPtr->targets()->size() == 0);
-	BOOST_REQUIRE(browsePathResultSPtr->targetId()->namespaceIndex() == 2);
-	BOOST_REQUIRE(browsePathResultSPtr->targetId()->nodeId<OpcUaUInt32>() == 123);
-	BOOST_REQUIRE(browsePathResultSPtr->remainingPathIndex() == 321);
+
+	BOOST_REQUIRE(browsePathResultSPtr->targets()->size() == 1);
+	browsePathResultSPtr->targets()->get(0, browsePathTarget);
+	BOOST_REQUIRE(browsePathTarget->targetId()->namespaceIndex() == 2);
+	BOOST_REQUIRE(browsePathTarget->targetId()->nodeId<OpcUaUInt32>() == 123);
+	BOOST_REQUIRE(browsePathTarget->remainingPathIndex() == 321);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
