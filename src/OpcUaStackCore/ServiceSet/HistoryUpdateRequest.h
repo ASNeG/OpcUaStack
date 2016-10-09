@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 
 		void requestHeader(const RequestHeader::SPtr requestHeaderSPtr);
 		RequestHeader::SPtr requestHeader(void) const;
-		ExtensibleParameterArray::SPtr historyUpdateDetails(void) const;
+		ExtensibleParameterArray::SPtr& historyUpdateDetails(void);
 
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);

@@ -47,23 +47,6 @@ namespace OpcUaClient
 		//- ClientServiceWriteH interface ---------------------------------------
 
       private:
-#if 0
-		bool hRead(
-			AttributeService::SPtr& attributeService,
-			CommandReadH::SPtr& commandReadH
-		);
-		bool hReadNext(
-			AttributeService::SPtr& attributeService,
-			CommandReadH::SPtr& commandReadH,
-			ReadNextNode::Vec& readNextNodeVec
-		);
-		bool hDelete(
-			AttributeService::SPtr& attributeService,
-			CommandReadH::SPtr& commandReadH,
-			ReadNextNode::Vec& readNextNodeVec
-		);
-#endif
-
 	};
 
 }

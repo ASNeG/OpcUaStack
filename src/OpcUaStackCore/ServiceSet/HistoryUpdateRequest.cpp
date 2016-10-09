@@ -38,8 +38,8 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ExtensibleParameterArray::SPtr
-	HistoryUpdateRequest::historyUpdateDetails(void) const
+	ExtensibleParameterArray::SPtr&
+	HistoryUpdateRequest::historyUpdateDetails(void)
 	{
 		return historyUpdateDetailsSPtr_;
 	}
