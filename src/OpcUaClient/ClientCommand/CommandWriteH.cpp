@@ -170,16 +170,21 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -WriteH: Write one ore more historical data values to the opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -Value (1..N): NodeId of the value to write to opc ua server\n"
+		   << "    -NodeId (1..1): NodeId of the value to write to opc ua server\n"
+		   << "      -Value (1..N): value.\n"
+		   << "       The value or the status code must be available\n"
 		   << "      -SourceTimestamp (1..N): source timestamp of the variable\n"
+		   << "       The source timestamp is optinal\n"
 		   << "       Format:\n"
 		   << "         ISO Format (Example: 16010101T000000.0)\n"
 		   << "         Now (Example: Now)\n"
 		   << "      -ServerTimestamp (1..N): server timestamp of the variable\n"
+		   << "       The server timestamp is optinal\n"
 		   << "       Format:\n"
 		   << "         ISO Format (Example: 16010101T000000.0)\n"
 		   << "         Now (Example: Now)\n"
 		   << "      -StatusCode (1..N): status code of the variable.\n"
+		   << "       The variable or the status code must be available\n"
 		   << "       ";
 
 		return ss.str();
