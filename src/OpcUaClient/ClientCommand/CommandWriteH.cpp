@@ -104,6 +104,34 @@ namespace OpcUaClient
 				boost::posix_time::ptime time;
 				try {
 					time = boost::posix_time::from_iso_string(parameterValue);
+					actDataValue_->sourceTimestamp(time);
+				} catch (...)
+				{
+					std::stringstream ss;
+					ss << "start time parameter invalid (" << parameterValue << ")";
+					errorMessage(ss.str());
+					return false;
+				}
+			}
+		}
+		else if (parameterName == "-SERVERTIMESTAMP") {
+			if (actDataValue_.get() == nullptr) {
+				std::stringstream ss;
+				ss << "a variable must exist before the server timestamp (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+
+			std::string value = parameterValue;
+			boost::algorithm::to_upper(value);
+			if (value == "NOW") {
+				OpcUaDateTime time(boost::posix_time::microsec_clock::universal_time());
+				actDataValue_->serverTimestamp(time);
+			}
+			else {
+				boost::posix_time::ptime time;
+				try {
+					time = boost::posix_time::from_iso_string(parameterValue);
 					actDataValue_->serverTimestamp(time);
 				} catch (...)
 				{

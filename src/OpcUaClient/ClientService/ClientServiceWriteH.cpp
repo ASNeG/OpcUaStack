@@ -127,7 +127,7 @@ namespace OpcUaClient
 			std::stringstream ss;
 			ss << "write history result error: "
 			   << " Session=" << commandWriteH->session()
-			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
+			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(historyUpdateResult->statusCode());
 			errorMessage(ss.str());
 			return false;
 		}
