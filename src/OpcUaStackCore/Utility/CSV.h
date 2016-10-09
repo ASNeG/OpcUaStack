@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
 
-namespace OpcUaOpcUaStackCore
+namespace OpcUaStackCore
 {
 
 	class DLLEXPORT CSV
