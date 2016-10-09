@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/ServiceSet/TimestampsToReturn.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaClient/ClientCommand/CommandBase.h"
 
 using namespace OpcUaStackCore;
@@ -45,21 +45,13 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandWriteH interface ---------------------------------------------
 
-		OpcUaNodeId::Vec& nodeIdVec(void);
-		boost::posix_time::ptime& startTime(void);
-		boost::posix_time::ptime& endTime(void);
-		TimestampsToReturn timestampsToReturn(void);
-		uint32_t maxNumResultValuesPerNode(void);
-		uint32_t maxNumRequests(void);
-		void maxNumRequestsDec(void);
+		OpcUaNodeId& nodeId(void);
+		OpcUaDataValue::Vec& dataValueVec(void);
 
 	  private:
-		OpcUaNodeId::Vec nodeIdVec_;
-		boost::posix_time::ptime startTime_;
-		boost::posix_time::ptime endTime_;
-		TimestampsToReturn timestampsToReturn_;
-		uint32_t maxNumResultValuesPerNode_;
-		int32_t maxNumRequests_;
+		OpcUaNodeId nodeId_;
+		OpcUaDataValue::Vec dataValueVec_;
+		OpcUaDataValue::SPtr actDataValue_;
 	};
 
 }

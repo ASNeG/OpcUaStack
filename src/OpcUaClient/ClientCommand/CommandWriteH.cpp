@@ -27,16 +27,11 @@ namespace OpcUaClient
 {
 
 	CommandWriteH::CommandWriteH(void)
-	: CommandBase(CommandBase::Cmd_ReadH)
-	, nodeIdVec_()
-	, startTime_()
-	, endTime_()
-	, timestampsToReturn_(TimestampsToReturn_Both)
-	, maxNumResultValuesPerNode_(2000)
-	, maxNumRequests_(-1)
+	: CommandBase(CommandBase::Cmd_WriteH)
+	, nodeId_()
+	, dataValueVec_()
+	, actDataValue_()
 	{
-		startTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
-		endTime_ = boost::posix_time::microsec_clock::universal_time();
 	}
 
 	CommandWriteH::~CommandWriteH(void)
@@ -53,12 +48,13 @@ namespace OpcUaClient
 	bool
 	CommandWriteH::validateCommand(void)
 	{
-		if (nodeIdVec_.size() == 0) {
+		if (dataValueVec_.size() == 0) {
 			std::stringstream ss;
-			ss << "neeed at least one node id parameter";
+			ss << "need at least one data value parameter";
 			errorMessage(ss.str());
 			return false;
 		}
+
 		return true;
 	}
 
@@ -66,24 +62,49 @@ namespace OpcUaClient
 	CommandWriteH::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
 		if (parameterName == "-NODEID") {
-			OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
-			if (!nodeId->fromString(parameterValue)) {
+			if (!nodeId_.fromString(parameterValue)) {
 				std::stringstream ss;
 				ss << "node id parameter invalid (" << parameterValue << ")";
 				errorMessage(ss.str());
 				return false;
 			}
-			nodeIdVec_.push_back(nodeId);
 		}
-		else if (parameterName == "-STARTTIME") {
+		else if (parameterName == "-VALUE") {
+			OpcUaVariant variant;
+			if (!variant.fromString(parameterValue)) {
+				std::stringstream ss;
+				ss << "value parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+
+			actDataValue_ = constructSPtr<OpcUaDataValue>();
+			OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+			actDataValue_->variant()->copyFrom(variant);
+			actDataValue_->sourceTimestamp(dateTime);
+			actDataValue_->serverTimestamp(dateTime);
+			actDataValue_->statusCode(Success);
+			dataValueVec_.push_back(actDataValue_);
+		}
+		else if (parameterName == "-SOURCETIMESTAMP") {
+			if (actDataValue_.get() == nullptr) {
+				std::stringstream ss;
+				ss << "a variable must exist before the source timestamp (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+
 			std::string value = parameterValue;
 			boost::algorithm::to_upper(value);
 			if (value == "NOW") {
-				startTime_ = boost::posix_time::microsec_clock::universal_time();
+				OpcUaDateTime time(boost::posix_time::microsec_clock::universal_time());
+				actDataValue_->sourceTimestamp(time);
 			}
 			else {
+				boost::posix_time::ptime time;
 				try {
-					startTime_ = boost::posix_time::from_iso_string(parameterValue);
+					time = boost::posix_time::from_iso_string(parameterValue);
+					actDataValue_->serverTimestamp(time);
 				} catch (...)
 				{
 					std::stringstream ss;
@@ -93,63 +114,15 @@ namespace OpcUaClient
 				}
 			}
 		}
-		else if (parameterName == "-ENDTIME") {
-			std::string value = parameterValue;
-			boost::algorithm::to_upper(value);
-			if (value == "NOW") {
-				endTime_ = boost::posix_time::microsec_clock::universal_time();
-			}
-			else {
-				try {
-					endTime_ = boost::posix_time::from_iso_string(parameterValue);
-				} catch (...)
-				{
-					std::stringstream ss;
-					ss << "end time parameter invalid (" << parameterValue << ")";
-					errorMessage(ss.str());
-					return false;
-				}
-			}
-		}
-		else if (parameterName == "-TIMESTAMPSTORETURN") {
-			std::string value = parameterValue;
-			boost::algorithm::to_upper(value);
-			if (value == "BOTH") {
-				timestampsToReturn_ = TimestampsToReturn_Both;
-			}
-			else if (value == "SERVER") {
-				timestampsToReturn_ = TimestampsToReturn_Server;
-			}
-			else if (value == "SOURCE") {
-				timestampsToReturn_ = TimestampsToReturn_Source;
-			}
-			else {
-				std::stringstream ss;
-				ss << "timestamp to return parameter invalid (" << parameterValue << ")";
-				errorMessage(ss.str());
-				return false;
-			}
-		}
-		else if (parameterName == "-MAXNUMRESULTVALUESPERNODE") {
+		else if (parameterName == "-STATUSCODE") {
 			try {
-				maxNumResultValuesPerNode_ = boost::lexical_cast<uint32_t>(parameterValue);
+				uint32_t statusCode = boost::lexical_cast<uint32_t>(parameterValue);
+				actDataValue_->statusCode((OpcUaStatusCode)statusCode);
 			}
 			catch (...)
 			{
 				std::stringstream ss;
-				ss << "MaxNumResultValuesPerNode parameter invalid (" << parameterValue << ")";
-				errorMessage(ss.str());
-				return false;
-		    }
-		}
-		else if (parameterName == "-MAXNUMREQUESTS") {
-			try {
-				maxNumRequests_ = boost::lexical_cast<uint32_t>(parameterValue);
-			}
-			catch (...)
-			{
-				std::stringstream ss;
-				ss << "MaxNumRequests parameter invalid (" << parameterValue << ")";
+				ss << "status code parameter invalid (" << parameterValue << ")";
 				errorMessage(ss.str());
 				return false;
 		    }
@@ -167,70 +140,33 @@ namespace OpcUaClient
 	CommandWriteH::help(void)
 	{
 		std::stringstream ss;
-		ss << "  -ReadH: Read one ore more historical data values from a opc ua server\n"
+		ss << "  -WriteH: Write one ore more historical data values to the opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
-		   << "    -StartTime (0..1) start time of data (Default: 16010101T000000)\n"
-		   << "     Format:\n"
-		   << "       ISO Format (Example: 16010101T000000.0)\n"
-		   << "       Now (Example: Now)\n"
-		   << "    -EndTime (0..1) end time of data ISO Format (Default: Now)\n"
-		   << "     Format:\n"
-		   << "       ISO Format (Example: 16010101T120000.0)\n"
-		   << "       Now (Example: Now)\n"
-		   << "    -NodeId (1..N): NodeId of the value to read from opc ua server\n"
-		   << "    -TimestampsToReturn (0..1): Selection of the timestamps to be returned\n"
-		   << "       Both - Return source timestamp and server timestamp\n"
-		   << "       Server - Return only server timestamp\n"
-		   << "       Source - Return only source timestamp\n"
-		   << "    -MaxNumResultValuesPerNode (0..1)\n"
-		   << "       Maximum number of results per node\n"
-		   << "    -MaxNumRequests (0..1)\n"
-		   << "       Maximum number of requests to the opc ua server\n"
-		   << "     ";
+		   << "    -Value (1..N): NodeId of the value to write to opc ua server\n"
+		   << "      -SourceTimestamp (1..N): source timestamp of the variable\n"
+		   << "       Format:\n"
+		   << "         ISO Format (Example: 16010101T000000.0)\n"
+		   << "         Now (Example: Now)\n"
+		   << "      -ServerTimestamp (1..N): server timestamp of the variable\n"
+		   << "       Format:\n"
+		   << "         ISO Format (Example: 16010101T000000.0)\n"
+		   << "         Now (Example: Now)\n"
+		   << "      -StatusCode (1..N): status code of the variable.\n"
+		   << "       ";
 
 		return ss.str();
 	}
 
-	OpcUaNodeId::Vec&
-	CommandWriteH::nodeIdVec(void)
+	OpcUaNodeId&
+	CommandWriteH::nodeId(void)
 	{
-		return nodeIdVec_;
+		return nodeId_;
 	}
 
-	boost::posix_time::ptime&
-	CommandWriteH::startTime(void)
+	OpcUaDataValue::Vec&
+	CommandWriteH::dataValueVec(void)
 	{
-		return startTime_;
-	}
-
-	boost::posix_time::ptime&
-	CommandWriteH::endTime(void)
-	{
-		return endTime_;
-	}
-
-	TimestampsToReturn
-	CommandWriteH::timestampsToReturn(void)
-	{
-		return timestampsToReturn_;
-	}
-
-	uint32_t
-	CommandWriteH::maxNumResultValuesPerNode(void)
-	{
-		return maxNumResultValuesPerNode_;
-	}
-
-	uint32_t
-	CommandWriteH::maxNumRequests(void)
-	{
-		return maxNumRequests_;
-	}
-
-	void
-	CommandWriteH::maxNumRequestsDec(void)
-	{
-		maxNumRequests_--;
+		return dataValueVec_;
 	}
 
 }
