@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryUpdateRequest::HistoryUpdateRequest(void)
 	: ObjectPool<HistoryUpdateRequest>()
-	, historyUpdateDetailsSPtr_(ExtensibleParameter::construct())
+	, historyUpdateDetailsSPtr_(ExtensibleParameterArray::construct())
 	{
 	}
 
@@ -38,13 +38,7 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void 
-	HistoryUpdateRequest::historyUpdateDetails(const ExtensibleParameter::SPtr historyUpdateDetails)
-	{
-		historyUpdateDetailsSPtr_ = historyUpdateDetails;
-	}
-	
-	ExtensibleParameter::SPtr 
+	ExtensibleParameterArray::SPtr
 	HistoryUpdateRequest::historyUpdateDetails(void) const
 	{
 		return historyUpdateDetailsSPtr_;

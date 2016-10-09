@@ -107,7 +107,9 @@ namespace OpcUaStackCore
 		ExtensibleParameterBase::SPtr epSPtr_;
 	};
 
-	class ExtensibleParameterArray : public OpcUaArray<ExtensibleParameter::SPtr, SPtrTypeCoder<ExtensibleParameter> >, public ObjectPool<ExtensibleParameterArray> 
+	class ExtensibleParameterArray
+	: public OpcUaArray<ExtensibleParameter::SPtr, SPtrTypeCoder<ExtensibleParameter> >
+	, public ObjectPool<ExtensibleParameterArray>
 	{
 	  public:
 		typedef boost::shared_ptr<ExtensibleParameterArray> SPtr;

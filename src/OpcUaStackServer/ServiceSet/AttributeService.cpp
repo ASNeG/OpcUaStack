@@ -485,6 +485,7 @@ namespace OpcUaStackServer
 		HistoryUpdateRequest::SPtr updateRequest = trx->request();
 		HistoryUpdateResponse::SPtr updateResponse = trx->response();
 
+#if 0
 		// check type of history update details
 		OpcUaNodeId parameterTypeId;
 		parameterTypeId.set((OpcUaUInt32)OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
@@ -511,6 +512,7 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
+#endif
 
 #if 0
 		// write historical values
