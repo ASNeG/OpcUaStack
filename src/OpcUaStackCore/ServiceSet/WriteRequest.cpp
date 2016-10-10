@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	WriteRequest::WriteRequest(void)
-	: ObjectPool<WriteRequest>()
-	, writeValueArraySPtr_(WriteValueArray::construct())
+	: Object()
+	, writeValueArraySPtr_(constructSPtr<WriteValueArray>())
 	{
 	}
 

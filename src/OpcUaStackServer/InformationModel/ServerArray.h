@@ -29,7 +29,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ServerArray : public ObjectPool<ServerArray>
+	class DLLEXPORT ServerArray
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ServerArray> SPtr;

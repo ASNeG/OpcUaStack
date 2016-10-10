@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowseResult::BrowseResult(void)
-	: ObjectPool<BrowseResult>()
+	: Object()
 	, statusCode_()
 	, continuationPoint_()
-	, referenceArraySPtr_(ReferenceDescriptionArray::construct())
+	, referenceArraySPtr_(constructSPtr<ReferenceDescriptionArray>())
 	{
 	}
 

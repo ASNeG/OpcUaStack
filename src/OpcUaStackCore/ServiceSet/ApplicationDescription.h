@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 	} ApplicationType;
 
 	class DLLEXPORT ApplicationDescription
-	: public ObjectPool<ApplicationDescription>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:
@@ -86,7 +86,9 @@ namespace OpcUaStackCore
 		OpcUaStringArray::SPtr discoveryUrls_;
 	};
 
-	class ApplicationDescriptionArray : public OpcUaArray<ApplicationDescription::SPtr, SPtrTypeCoder<ApplicationDescription> >, public ObjectPool<ApplicationDescriptionArray> 
+	class ApplicationDescriptionArray
+	: public OpcUaArray<ApplicationDescription::SPtr, SPtrTypeCoder<ApplicationDescription> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationDescriptionArray> SPtr;

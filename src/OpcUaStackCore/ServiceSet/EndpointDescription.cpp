@@ -22,11 +22,11 @@ namespace OpcUaStackCore
 
 	EndpointDescription::EndpointDescription(void)
 	: endpointUrl_()
-	, applicationDescription_(ApplicationDescription::construct())
+	, applicationDescription_(constructSPtr<ApplicationDescription>())
 	, serverCertificate_()
 	, messageSecurityMode_()
 	, securityPolicyUri_()
-	, userIdentityTokens_(UserTokenPolicyArray::construct())
+	, userIdentityTokens_(constructSPtr<UserTokenPolicyArray>())
 	, transportProfileUri_()
 	, securityLevel_()
 	{

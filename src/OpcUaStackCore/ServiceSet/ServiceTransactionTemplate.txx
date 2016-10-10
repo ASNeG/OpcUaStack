@@ -67,7 +67,7 @@ namespace OpcUaStackCore
 	  ServiceTransaction::SPtr 
 	  ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::constructTransaction(void) 
 	  {
-		  return ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID>::construct();
+		  return constructSPtr<ServiceTransactionTemplate<REQTYPE, RESTYPE, REQID, RESID> >();
 	  }
 
 	template<typename REQTYPE, typename RESTYPE, uint32_t REQID, uint32_t RESID>

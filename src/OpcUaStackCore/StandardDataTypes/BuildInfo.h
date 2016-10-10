@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT BuildInfo
-	: public ObjectPool<BuildInfo>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SecureChannelTransaction
-	: public ObjectPool<SecureChannelTransaction>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SecureChannelTransaction> SPtr;

@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT MonitoringParameters
-	: public  ObjectPool<MonitoringParameters>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoringParameters> SPtr;

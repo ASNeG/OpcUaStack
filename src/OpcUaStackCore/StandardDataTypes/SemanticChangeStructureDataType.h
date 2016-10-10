@@ -26,7 +26,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SemanticChangeStructureDataType
-	: public ObjectPool<SemanticChangeStructureDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

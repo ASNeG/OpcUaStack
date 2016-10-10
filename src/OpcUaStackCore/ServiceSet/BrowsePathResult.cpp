@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowsePathResult::BrowsePathResult(void)
-	: ObjectPool<BrowsePathResult>()
+	: Object()
 	, statusCode_()
-	, targetArraySPtr_(BrowsePathTargetArray::construct())
+	, targetArraySPtr_(constructSPtr<BrowsePathTargetArray>())
 	{
 	}
 

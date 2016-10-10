@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SignedSoftwareCertificate : public  ObjectPool<SignedSoftwareCertificate>
+	class DLLEXPORT SignedSoftwareCertificate
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SignedSoftwareCertificate> SPtr;
@@ -41,7 +42,9 @@ namespace OpcUaStackCore
 		
 	};
 
-	class SignedSoftwareCertificateArray : public OpcUaArray<SignedSoftwareCertificate::SPtr, SPtrTypeCoder<SignedSoftwareCertificate> >, public ObjectPool<SignedSoftwareCertificateArray> 
+	class SignedSoftwareCertificateArray
+	: public OpcUaArray<SignedSoftwareCertificate::SPtr, SPtrTypeCoder<SignedSoftwareCertificate> >
+	, public Object
 	{
       public:
 		typedef boost::shared_ptr<SignedSoftwareCertificateArray> SPtr;

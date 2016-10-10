@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	PublishResponse::PublishResponse(void)
-	: ObjectPool<PublishResponse>()
+	: Object()
 	, subscriptionId_()
 	, availableSequenceNumberArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	, moreNotifications_()

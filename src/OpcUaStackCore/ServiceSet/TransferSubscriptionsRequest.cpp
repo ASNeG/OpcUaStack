@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	TransferSubscriptionsRequest::TransferSubscriptionsRequest(void)
-	: ObjectPool<TransferSubscriptionsRequest>()
+	: Object()
 	, subscriptionIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	, sendInitialValues_()
 	{

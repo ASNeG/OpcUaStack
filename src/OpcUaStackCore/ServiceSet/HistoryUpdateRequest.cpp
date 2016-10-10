@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryUpdateRequest::HistoryUpdateRequest(void)
-	: ObjectPool<HistoryUpdateRequest>()
-	, historyUpdateDetailsSPtr_(ExtensibleParameterArray::construct())
+	: Object()
+	, historyUpdateDetailsSPtr_(constructSPtr<ExtensibleParameterArray>())
 	{
 	}
 

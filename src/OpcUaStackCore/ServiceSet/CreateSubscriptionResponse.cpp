@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	CreateSubscriptionResponse::CreateSubscriptionResponse(void)
-	: ObjectPool<CreateSubscriptionResponse>()
+	: Object()
 	, subscriptionId_()
 	, revisedPublishingInterval_()
 	, revisedLifetimeCount_()

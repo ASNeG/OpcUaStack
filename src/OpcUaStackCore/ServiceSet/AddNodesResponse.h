@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AddNodesResponse : public  ObjectPool<AddNodesResponse>
+	class DLLEXPORT AddNodesResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<AddNodesResponse> SPtr;

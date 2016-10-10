@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT ApplicationService
 	: public ServiceSetBase
-	, public ObjectPool<ApplicationService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ApplicationService> SPtr;

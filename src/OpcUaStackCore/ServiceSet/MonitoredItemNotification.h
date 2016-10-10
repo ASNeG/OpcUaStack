@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT MonitoredItemNotification : public  ObjectPool<MonitoredItemNotification>
+	class DLLEXPORT MonitoredItemNotification
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemNotification> SPtr;
@@ -48,7 +49,9 @@ namespace OpcUaStackCore
 		OpcUaDataValue dataValue_;
 	};
 
-	class MonitoredItemNotificationArray : public OpcUaArray<MonitoredItemNotification::SPtr, SPtrTypeCoder<MonitoredItemNotification> >, public ObjectPool<MonitoredItemNotificationArray> 
+	class MonitoredItemNotificationArray
+	: public OpcUaArray<MonitoredItemNotification::SPtr, SPtrTypeCoder<MonitoredItemNotification> >
+	, public Object
 	{
  	  public:
 		typedef boost::shared_ptr<MonitoredItemNotificationArray> SPtr;

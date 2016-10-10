@@ -73,7 +73,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
-			  ExtensionObjectBase::BSPtr epSPtr(T::construct());
+			  ExtensionObjectBase::BSPtr epSPtr(constructSPtr<T>());
 			  return OpcUaExtensionObject::insertElement(opcUaNodeId, epSPtr);
 		  }
 

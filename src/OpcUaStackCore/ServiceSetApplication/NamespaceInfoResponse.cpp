@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	NamespaceInfoResponse::NamespaceInfoResponse(void)
-	: ObjectPool<NamespaceInfoResponse>()
+	: Object()
 	, index2NamespaceMap_()
 	, namespace2IndexMap_()
 	{

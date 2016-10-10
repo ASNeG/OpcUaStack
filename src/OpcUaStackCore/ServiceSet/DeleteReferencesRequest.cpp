@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteReferencesRequest::DeleteReferencesRequest(void)
-	: deleteReferencesItemArray_(DeleteReferencesItemArray::construct())
+	: deleteReferencesItemArray_(constructSPtr<DeleteReferencesItemArray>())
 	{
 	}
 

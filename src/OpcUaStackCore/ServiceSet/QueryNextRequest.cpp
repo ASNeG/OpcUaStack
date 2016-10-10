@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	QueryNextRequest::QueryNextRequest(void)
-	: ObjectPool<QueryNextRequest>()
+	: Object()
 	, releaseContinuationPoint_()
 	, continuationPoint_()
 	{

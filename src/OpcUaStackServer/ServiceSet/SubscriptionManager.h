@@ -39,7 +39,7 @@ namespace OpcUaStackServer
 	typedef std::list<uint32_t> SubscriptionIdList;
 
 	class DLLEXPORT SubscriptionManager
-	: public ObjectPool<SubscriptionManager>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionManager> SPtr;

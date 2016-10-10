@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT EventField : public  ObjectPool<EventField>
+	class DLLEXPORT EventField
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<EventField> SPtr;
@@ -45,7 +46,9 @@ namespace OpcUaStackCore
 		  OpcUaVariant::SPtr variantSPtr_;
 	};
 
-	class EventFieldArray : public OpcUaArray<EventField::SPtr, SPtrTypeCoder<EventField> >, public ObjectPool<EventFieldArray> 
+	class EventFieldArray
+	: public OpcUaArray<EventField::SPtr, SPtrTypeCoder<EventField> >
+	, public Object
 	{
   	  public:
 		typedef boost::shared_ptr<EventFieldArray> SPtr;

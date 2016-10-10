@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	EventFieldList::EventFieldList(void)
-	: ObjectPool<EventFieldList>()
+	: Object()
 	, clientHandle_()
-	, eventFieldsSPtr_(EventFieldArray::construct())
+	, eventFieldsSPtr_(constructSPtr<EventFieldArray>())
 	{
 	}
 

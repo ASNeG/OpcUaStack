@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT QueryService 
 	: public ServiceSetBase
-	, public ObjectPool<QueryService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<QueryService> SPtr;

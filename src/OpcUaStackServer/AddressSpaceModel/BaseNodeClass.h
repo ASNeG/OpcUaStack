@@ -33,7 +33,8 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT BaseNodeClass
-	: public AttributeBase
+	: public Object
+	, public AttributeBase
 	{
 	  public: 
 		typedef boost::shared_ptr<BaseNodeClass> SPtr;

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadRawModifiedDetails::ReadRawModifiedDetails(void)
-	: ObjectPool<ReadRawModifiedDetails>()
+	: Object()
 	, isReadModified_(false)
 	, startTime_()
 	, endTime_()

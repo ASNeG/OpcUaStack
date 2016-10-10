@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 	, tcpConnection_(ioService.io_service())
 	, partnerAddress_(boost::asio::ip::address::from_string("127.0.0.1"))
 	, partnerPort_(4841)
-	, channelDataBaseSPtr_(ChannelDataBase::construct())
+	, channelDataBaseSPtr_(constructSPtr<ChannelDataBase>())
 	, channelId_(0)
 	, debugMode_(false)
 	{

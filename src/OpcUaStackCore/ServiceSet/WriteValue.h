@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT WriteValue : public  ObjectPool<WriteValue>
+	class DLLEXPORT WriteValue
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<WriteValue> SPtr;
@@ -57,7 +58,9 @@ namespace OpcUaStackCore
 
 	};
 
-	class WriteValueArray : public OpcUaArray<WriteValue::SPtr, SPtrTypeCoder<WriteValue> >, public ObjectPool<WriteValueArray> 
+	class WriteValueArray
+	: public OpcUaArray<WriteValue::SPtr, SPtrTypeCoder<WriteValue> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<WriteValueArray> SPtr;

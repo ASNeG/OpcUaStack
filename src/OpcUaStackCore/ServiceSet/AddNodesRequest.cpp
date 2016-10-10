@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodesRequest::AddNodesRequest(void)
-	: addNodesItemArray_(AddNodesItemArray::construct())
+	: addNodesItemArray_(constructSPtr<AddNodesItemArray>())
 	{
 	}
 

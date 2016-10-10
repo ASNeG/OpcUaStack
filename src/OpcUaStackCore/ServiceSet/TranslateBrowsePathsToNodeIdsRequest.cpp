@@ -28,8 +28,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	TranslateBrowsePathsToNodeIdsRequest::TranslateBrowsePathsToNodeIdsRequest(void)
-	: ObjectPool<TranslateBrowsePathsToNodeIdsRequest>()
-	, browsePathArraySPtr_(BrowsePathArray::construct())
+	: Object()
+	, browsePathArraySPtr_(constructSPtr<BrowsePathArray>())
 	{
 	}
 

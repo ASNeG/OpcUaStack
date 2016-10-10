@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ContentFilterResult::ContentFilterResult(void)
-	: ObjectPool<ContentFilterResult>()
-	, elementResultArraySPtr_(ContentFilterElementResultArray::construct())
+	: Object()
+	, elementResultArraySPtr_(constructSPtr<ContentFilterElementResultArray>())
 	{
 	}
 

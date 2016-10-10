@@ -26,7 +26,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ModelChangeStructureDataType
-	: public ObjectPool<ModelChangeStructureDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

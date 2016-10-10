@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteSubscriptionsResponse::DeleteSubscriptionsResponse(void)
-	: ObjectPool<DeleteSubscriptionsResponse>()
+	: Object()
 	, statusCodeArraySPtr_()
 	, diagnosticInfoArraySPtr_()
 	{

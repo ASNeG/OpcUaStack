@@ -73,7 +73,7 @@ namespace OpcUaStackServer
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", nodes);
 
-		BrowseResultArray::SPtr browseResultArray = BrowseResultArray::construct();
+		BrowseResultArray::SPtr browseResultArray = constructSPtr<BrowseResultArray>();
 		browseResponse->results(browseResultArray);
 		browseResultArray->resize(nodes);
 
@@ -81,7 +81,7 @@ namespace OpcUaStackServer
 			BrowseDescription::SPtr browseDescription;
 			browseRequest->nodesToBrowse()->get(idx, browseDescription);
 
-			BrowseResult::SPtr browseResult = BrowseResult::construct();
+			BrowseResult::SPtr browseResult = constructSPtr<BrowseResult>();
 			browseResultArray->set(idx, browseResult);
 
 			ReferenceDescriptionVec::iterator it;
@@ -89,7 +89,7 @@ namespace OpcUaStackServer
 			OpcUaStatusCode statusCode = browseNode(browseDescription, referenceDescriptionVec); 
 			browseResult->statusCode(statusCode);
 
-			ReferenceDescriptionArray::SPtr referenceDescriptionArray = ReferenceDescriptionArray::construct();
+			ReferenceDescriptionArray::SPtr referenceDescriptionArray = constructSPtr<ReferenceDescriptionArray>();
 			referenceDescriptionArray->resize(referenceDescriptionVec.size());
 			browseResult->references(referenceDescriptionArray);
 			for (it = referenceDescriptionVec.begin(); it != referenceDescriptionVec.end(); it++) {
@@ -259,7 +259,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			ReferenceDescription::SPtr referenceDescription = ReferenceDescription::construct();
+			ReferenceDescription::SPtr referenceDescription = constructSPtr<ReferenceDescription>();
 			referenceDescriptionVec.push_back(referenceDescription);
 
 			OpcUaExpandedNodeId::SPtr targetNodeId = constructSPtr<OpcUaExpandedNodeId>();

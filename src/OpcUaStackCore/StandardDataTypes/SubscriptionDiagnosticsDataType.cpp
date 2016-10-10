@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	SubscriptionDiagnosticsDataType::SubscriptionDiagnosticsDataType(void)
-	: ObjectPool<SubscriptionDiagnosticsDataType>()
+	: Object()
 	, sessionId_()
 	, subscriptionId_()
 	, priority_()
@@ -516,7 +516,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	SubscriptionDiagnosticsDataType::factory(void)
 	{
-		return SubscriptionDiagnosticsDataType::construct();
+		return constructSPtr<SubscriptionDiagnosticsDataType>();
 	}
 
 	void

@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT QueryNextResponse : public  ObjectPool<QueryNextResponse>
+	class DLLEXPORT QueryNextResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<QueryNextResponse> SPtr;

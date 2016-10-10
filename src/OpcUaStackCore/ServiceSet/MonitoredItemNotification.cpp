@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	MonitoredItemNotification::MonitoredItemNotification(void)
-	: ObjectPool<MonitoredItemNotification>()
+	: Object()
 	, clientHandle_()
 	, dataValue_()
 	{

@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	ServerDiagnosticsSummaryDataType::ServerDiagnosticsSummaryDataType(void)
-	: ObjectPool<ServerDiagnosticsSummaryDataType>()
+	: Object()
 	, serverViewCount_()
 	, currentSessionCount_()
 	, cumulatedSessionCount_()
@@ -246,7 +246,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	ServerDiagnosticsSummaryDataType::factory(void)
 	{
-		return ServerDiagnosticsSummaryDataType::construct();
+		return constructSPtr<ServerDiagnosticsSummaryDataType>();
 	}
 
 	void

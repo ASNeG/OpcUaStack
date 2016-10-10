@@ -38,7 +38,8 @@ namespace OpcUaStackCore
 	} NodeClassType;
 
 
-	class DLLEXPORT NodeClass : public  ObjectPool<NodeClass>
+	class DLLEXPORT NodeClass
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<NodeClass> SPtr;

@@ -44,7 +44,8 @@ namespace OpcUaStackServer
 		SubscriptionTimeout,
 	} PublishResult;
 
-	class DLLEXPORT Subscription : public ObjectPool<Subscription>
+	class DLLEXPORT Subscription
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<Subscription> SPtr;

@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	FindServersRequest::FindServersRequest(void)
-	: ObjectPool<FindServersRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
+	: Object()
+	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
 	, endpointUrl_()
 	, localeIdArraySPtr_(constructSPtr<OpcUaStringArray>())
 	, serverUriArraySPtr_(constructSPtr<OpcUaStringArray>())

@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT TranslateBrowsePathsToNodeIdsRequest : public  ObjectPool<TranslateBrowsePathsToNodeIdsRequest>
+	class DLLEXPORT TranslateBrowsePathsToNodeIdsRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<TranslateBrowsePathsToNodeIdsRequest> SPtr;

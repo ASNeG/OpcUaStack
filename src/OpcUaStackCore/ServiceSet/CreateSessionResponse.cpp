@@ -28,9 +28,9 @@ namespace OpcUaStackCore
 	, receivedSessionTimeout_()
 	, serverNonce_()
 	, serverCertificate_()
-	, serverEndpoints_(EndpointDescriptionArray::construct())
+	, serverEndpoints_(constructSPtr<EndpointDescriptionArray>())
 	, serverSoftwareCertificate_()
-	, signatureData_(SignatureData::construct())
+	, signatureData_(constructSPtr<SignatureData>())
 	, maxRequestMessageSize_()
 	{
 	}

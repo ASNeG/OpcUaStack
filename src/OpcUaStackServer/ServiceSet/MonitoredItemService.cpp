@@ -79,7 +79,7 @@ namespace OpcUaStackServer
 				MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
 				createMonitoredItemsRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest);
 				
-				MonitoredItemCreateResult::SPtr monitoredItemCreateResult = MonitoredItemCreateResult::construct();
+				MonitoredItemCreateResult::SPtr monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
 				createMonitoredItemsResponse->results()->set(idx, monitoredItemCreateResult);
 
 				itemId++;

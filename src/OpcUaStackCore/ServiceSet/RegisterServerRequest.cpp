@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RegisterServerRequest::RegisterServerRequest(void)
-	: ObjectPool<RegisterServerRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
+	: Object()
+	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
 	, server_()
 	{
 	}

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT MonitoredItemCreateResult
-	: public  ObjectPool<MonitoredItemCreateResult>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemCreateResult> SPtr;
@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 	class MonitoredItemCreateResultArray
 	: public OpcUaArray<MonitoredItemCreateResult::SPtr
 	, SPtrTypeCoder<MonitoredItemCreateResult> >
-	, public ObjectPool<MonitoredItemCreateResultArray>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemCreateResultArray> SPtr;

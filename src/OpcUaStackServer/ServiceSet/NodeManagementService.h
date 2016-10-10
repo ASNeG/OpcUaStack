@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT NodeManagementService 
 	: public ServiceSetBase
-	, public ObjectPool<NodeManagementService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<NodeManagementService> SPtr;

@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SetTriggeringRequest : public  ObjectPool<SetTriggeringRequest>
+	class DLLEXPORT SetTriggeringRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SetTriggeringRequest> SPtr;

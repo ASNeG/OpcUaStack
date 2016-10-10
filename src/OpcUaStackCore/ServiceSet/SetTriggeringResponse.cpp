@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SetTriggeringResponse::SetTriggeringResponse(void)
-	: ObjectPool<SetTriggeringResponse>()
+	: Object()
 	, addResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
 	, addDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	, removeResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())

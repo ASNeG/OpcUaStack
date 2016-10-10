@@ -43,7 +43,7 @@ namespace OpcUaStackServer
 
 
 	class DLLEXPORT SessionOld
-	: public OpcUaStackCore::ObjectPool<SessionOld>
+	: public OpcUaStackCore::Object
 	, public Component
 	{
 	  public:

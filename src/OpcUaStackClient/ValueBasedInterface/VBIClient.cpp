@@ -206,7 +206,7 @@ namespace OpcUaStackClient
 		VBITransactionRead::SPtr trx;
 		trx = constructSPtr<VBITransactionRead>();
 		ReadRequest::SPtr req = trx->request();
-		ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+		ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 		readValueIdSPtr->nodeId()->copyFrom(nodeId);
 		readValueIdSPtr->attributeId(readContext.attributeId_);
 		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
@@ -244,7 +244,7 @@ namespace OpcUaStackClient
 		VBITransactionRead::SPtr trx = constructSPtr<VBITransactionRead>();
 		trx->callback_ = callback;
 		ReadRequest::SPtr req = trx->request();
-		ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+		ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 		readValueIdSPtr->nodeId()->copyFrom(nodeId);
 		readValueIdSPtr->attributeId(readContext.attributeId_);
 		readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
@@ -315,7 +315,7 @@ namespace OpcUaStackClient
 		trx = constructSPtr<VBITransactionWrite>();
 		WriteRequest::SPtr req = trx->request();
 
-		WriteValue::SPtr writeValue = WriteValue::construct();
+		WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
 		writeValue->nodeId()->copyFrom(nodeId);
 		writeValue->attributeId(writeContext.attributeId_);
 		writeValue->dataValue().copyFrom(dataValue);
@@ -355,7 +355,7 @@ namespace OpcUaStackClient
 		trx->callback_ = callback;
 		WriteRequest::SPtr req = trx->request();
 
-		WriteValue::SPtr writeValue = WriteValue::construct();
+		WriteValue::SPtr writeValue = constructSPtr<WriteValue>();
 		writeValue->nodeId()->copyFrom(nodeId);
 		writeValue->attributeId(writeContext.attributeId_);
 		writeValue->dataValue().copyFrom(dataValue);

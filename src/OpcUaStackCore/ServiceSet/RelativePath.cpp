@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RelativePath::RelativePath(void)
-	: ObjectPool<RelativePath>()
-	, elementsArraySPtr_(RelativePathElementArray::construct())
+	: Object()
+	, elementsArraySPtr_(constructSPtr<RelativePathElementArray>())
 	{
 	}
 

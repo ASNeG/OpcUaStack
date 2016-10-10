@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	WriteValue::WriteValue(void)
-	: ObjectPool<WriteValue>()
+	: Object()
 	, nodeIdSPtr_()
 	, attributeId_()
 	, indexRange_()

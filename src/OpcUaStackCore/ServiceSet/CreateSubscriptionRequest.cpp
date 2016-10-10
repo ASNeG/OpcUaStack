@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	CreateSubscriptionRequest::CreateSubscriptionRequest(void)
-	: ObjectPool<CreateSubscriptionRequest>()
+	: Object()
 	, requestedPublishingInterval_(100)
 	, requestedLifetimeCount_(2400)
 	, requestedMaxKeepAliveCount_(10)

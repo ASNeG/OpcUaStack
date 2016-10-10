@@ -21,8 +21,8 @@ namespace OpcUaStackCore
 {
 
 	CreateSessionRequest::CreateSessionRequest(void)
-	: requestHeaderSPtr_(RequestHeader::construct())
-	, clientDescriptionSPtr_(ApplicationDescription::construct())
+	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	, clientDescriptionSPtr_(constructSPtr<ApplicationDescription>())
 	, serverUri_()
 	, endpointUrl_()
 	, sessionName_()

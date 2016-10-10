@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SetMonitoringModeResponse::SetMonitoringModeResponse(void)
-	: ObjectPool<SetMonitoringModeResponse>()
+	: Object()
 	, resultArraySPtr_()
 	, diagnosticInfoArraySPtr_()
 	{

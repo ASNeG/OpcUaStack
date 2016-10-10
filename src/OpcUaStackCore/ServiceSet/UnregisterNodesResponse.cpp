@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	UnregisterNodesResponse::UnregisterNodesResponse(void)
-	: ObjectPool<UnregisterNodesResponse>()
+	: Object()
 	{
 	}
 

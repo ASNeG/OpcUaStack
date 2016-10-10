@@ -29,13 +29,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryReadValueId::HistoryReadValueId(void)
-	: ObjectPool<HistoryReadValueId>()
-	, nodeIdSPtr_()
+	: Object()
+	, nodeIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, indexRange_()
 	, dataEncoding_()
 	, continuationPoint_()
 	{
-		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	HistoryReadValueId::~HistoryReadValueId(void)

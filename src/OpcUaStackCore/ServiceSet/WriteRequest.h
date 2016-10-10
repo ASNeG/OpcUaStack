@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT WriteRequest : public  ObjectPool<WriteRequest>
+	class DLLEXPORT WriteRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<WriteRequest> SPtr;

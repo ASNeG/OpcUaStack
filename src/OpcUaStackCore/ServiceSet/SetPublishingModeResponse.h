@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SetPublishingModeResponse : public ObjectPool<SetPublishingModeResponse>
+	class DLLEXPORT SetPublishingModeResponse
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SetPublishingModeResponse> SPtr;

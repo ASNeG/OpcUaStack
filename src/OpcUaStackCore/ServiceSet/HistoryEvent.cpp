@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryEvent::HistoryEvent(void)
-	: ObjectPool<HistoryEvent>()
-	, eventArraySPtr_(HistoryEventFieldListArray::construct())
+	: Object()
+	, eventArraySPtr_(constructSPtr<HistoryEventFieldListArray>())
 	{
 	}
 

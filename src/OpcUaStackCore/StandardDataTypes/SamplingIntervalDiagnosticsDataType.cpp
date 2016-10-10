@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	SamplingIntervalDiagnosticsDataType::SamplingIntervalDiagnosticsDataType(void)
-	: ObjectPool<SamplingIntervalDiagnosticsDataType>()
+	: Object()
 	, samplingRate_()
 	, sampledMonitoredItemsCount_()
 	, maxSampledMonitoredItemsCount_()
@@ -111,7 +111,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	SamplingIntervalDiagnosticsDataType::factory(void)
 	{
-		return SamplingIntervalDiagnosticsDataType::construct();
+		return constructSPtr<SamplingIntervalDiagnosticsDataType>();
 	}
 
 	void

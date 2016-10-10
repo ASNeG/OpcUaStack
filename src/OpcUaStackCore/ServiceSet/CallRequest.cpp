@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	CallRequest::CallRequest(void)
-	: ObjectPool<CallRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
-	, callMethodRequestArraySPtr_(CallMethodRequestArray::construct())
+	: Object()
+	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	, callMethodRequestArraySPtr_(constructSPtr<CallMethodRequestArray>())
 	{
 	}
 

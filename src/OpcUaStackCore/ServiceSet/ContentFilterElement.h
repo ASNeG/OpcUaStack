@@ -47,7 +47,8 @@ namespace OpcUaStackCore
 		BasicFilterOperator_BitwiseOr = 17
 	} BasicFilterOperator;
 
-	class DLLEXPORT ContentFilterElement : public  ObjectPool<ContentFilterElement>
+	class DLLEXPORT ContentFilterElement
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ContentFilterElement> SPtr;
@@ -68,7 +69,9 @@ namespace OpcUaStackCore
 		ExtensibleParameterArray::SPtr filterOperandsArraySPtr_;
 	};
 
-	class ContentFilterElementArray : public OpcUaArray<ContentFilterElement::SPtr, SPtrTypeCoder<ContentFilterElement> >, public ObjectPool<ContentFilterElementArray> 
+	class ContentFilterElementArray
+	: public OpcUaArray<ContentFilterElement::SPtr, SPtrTypeCoder<ContentFilterElement> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ContentFilterElementArray> SPtr;

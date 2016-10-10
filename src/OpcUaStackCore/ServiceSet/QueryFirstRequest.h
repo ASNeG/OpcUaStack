@@ -30,7 +30,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT QueryFirstRequest : public  ObjectPool<QueryFirstRequest>
+	class DLLEXPORT QueryFirstRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<QueryFirstRequest> SPtr;

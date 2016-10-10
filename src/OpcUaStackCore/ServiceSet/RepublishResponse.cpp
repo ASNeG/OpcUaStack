@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RepublishResponse::RepublishResponse(void)
-	: ObjectPool<RepublishResponse>()
-	, notificationMessageSPtr_(NotificationMessage::construct())
+	: Object()
+	, notificationMessageSPtr_(constructSPtr<NotificationMessage>())
 	{
 	}
 

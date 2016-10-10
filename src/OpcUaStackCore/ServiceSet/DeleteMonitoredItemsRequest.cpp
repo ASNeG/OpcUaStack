@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteMonitoredItemsRequest::DeleteMonitoredItemsRequest(void)
-	: ObjectPool<DeleteMonitoredItemsRequest>()
+	: Object()
 	, subscriptionId_()
 	, monitoredItemIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{

@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	GetEndpointsRequest::GetEndpointsRequest(void)
-	: ObjectPool<GetEndpointsRequest>()
-	, requestHeaderSPtr_(RequestHeader::construct())
+	: Object()
+	, requestHeaderSPtr_(constructSPtr<RequestHeader>())
 	, endpointUrl_()
 	, localeIdArraySPtr_(constructSPtr<OpcUaStringArray>())
 	, profileUriArraySPtr_(constructSPtr<OpcUaStringArray>())

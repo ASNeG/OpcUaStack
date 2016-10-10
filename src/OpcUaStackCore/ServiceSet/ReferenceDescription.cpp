@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReferenceDescription::ReferenceDescription(void)
-	: ObjectPool<ReferenceDescription>()
+	: Object()
 	, referenceTypeIdSPtr_()
 	, isForward_()
 	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())

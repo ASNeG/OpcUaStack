@@ -33,7 +33,8 @@ namespace OpcUaStackCore
 		UserIdentityTokenType_IssuedToken = 3
 	} UserIdentityTokenType;
 
-	class DLLEXPORT UserTokenPolicy : public  ObjectPool<UserTokenPolicy>
+	class DLLEXPORT UserTokenPolicy
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<UserTokenPolicy> SPtr;
@@ -63,7 +64,9 @@ namespace OpcUaStackCore
 		OpcUaString securityPolicyUri_;
 	};
 
-	class UserTokenPolicyArray : public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >, public ObjectPool<UserTokenPolicyArray> 
+	class UserTokenPolicyArray
+	: public OpcUaArray<UserTokenPolicy::SPtr, SPtrTypeCoder<UserTokenPolicy> >
+	, public Object
 	{
 	  public:
 		  typedef boost::shared_ptr<UserTokenPolicyArray> SPtr;

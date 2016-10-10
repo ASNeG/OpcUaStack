@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		sessionElement = SessionElement::construct();
+		sessionElement = constructSPtr<SessionElement>();
 		sessionElement->authenticationToken_ = authenticationToken;
 		sessionElement->session_ = session;
 		sessionElementMap_.insert(std::make_pair(authenticationToken, sessionElement));

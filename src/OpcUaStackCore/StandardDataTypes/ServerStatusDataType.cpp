@@ -22,7 +22,7 @@ namespace OpcUaStackCore
 {
 
 	ServerStatusDataType::ServerStatusDataType(void)
-	: ObjectPool<ServerStatusDataType>()
+	: Object()
 	, startTime_()
 	, currentTime_()
 	, serverState_()
@@ -142,7 +142,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	ServerStatusDataType::factory(void)
 	{
-		return ServerStatusDataType::construct();
+		return constructSPtr<ServerStatusDataType>();
 	}
 
 	void

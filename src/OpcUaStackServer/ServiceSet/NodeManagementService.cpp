@@ -71,7 +71,7 @@ namespace OpcUaStackServer
 			.parameter("NumberNodes", size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
-			AddNodesResult::SPtr addNodesResult = AddNodesResult::construct();
+			AddNodesResult::SPtr addNodesResult = constructSPtr<AddNodesResult>();
 			addNodesResponse->results()->set(idx, addNodesResult);
 			
 			AddNodesItem::SPtr addNodesItem;
@@ -168,7 +168,7 @@ namespace OpcUaStackServer
 	NodeManagementService::addNodeObject(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
 	{
 		OpcUaStatusCode statusCode;
-		ObjectNodeClass::SPtr objectNodeClass = ObjectNodeClass::construct();
+		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
 
 		// set base attributes
 		statusCode = addBaseNodeClass(pos, objectNodeClass, addNodesItem, addNodesResult);

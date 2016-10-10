@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RegisterNodesRequest::RegisterNodesRequest(void)
-	: ObjectPool<RegisterNodesRequest>()
+	: Object()
 	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
 	{
 	}

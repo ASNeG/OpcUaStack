@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ContentFilter : public  ObjectPool<ContentFilter>
+	class DLLEXPORT ContentFilter
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ContentFilter> SPtr;

@@ -26,7 +26,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT RedundantServerDataType
-	: public ObjectPool<RedundantServerDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

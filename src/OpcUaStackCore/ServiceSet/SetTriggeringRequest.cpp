@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SetTriggeringRequest::SetTriggeringRequest(void)
-	: ObjectPool<SetTriggeringRequest>()
+	: Object()
 	, subscriptionId_()
 	, triggeringItemId_()
 	, linksToAddArraySPtr_(constructSPtr<OpcUaUInt32Array>())

@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowseRequest::BrowseRequest(void)
-	: ObjectPool<BrowseRequest>()
+	: Object()
 	, view_()
 	, requestMaxReferencesPerNode_()
-	, nodesToBrowseArraySPtr_(BrowseDescriptionArray::construct())
+	, nodesToBrowseArraySPtr_(constructSPtr<BrowseDescriptionArray>())
 	{
 	}
 

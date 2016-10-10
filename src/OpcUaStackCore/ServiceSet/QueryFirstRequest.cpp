@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	QueryFirstRequest::QueryFirstRequest(void)
-	: ObjectPool<QueryFirstRequest>()
+	: Object()
 	, view_()
-	, nodeTypeArraySPtr_(NodeTypeDescriptionArray::construct())
+	, nodeTypeArraySPtr_(constructSPtr<NodeTypeDescriptionArray>())
 	, filter_()
 	, maxDataSetsToReturn_()
 	, maxReferencesToReturn_()

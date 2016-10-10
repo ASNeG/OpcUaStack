@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	QueryDataSet::QueryDataSet(void)
-	: ObjectPool<QueryDataSet>()
+	: Object()
 	, nodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, typeDefinitionNodeSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, valueArraySPtr_(constructSPtr<OpcUaVariantArray>())

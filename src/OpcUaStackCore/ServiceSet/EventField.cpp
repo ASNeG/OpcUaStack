@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	EventField::EventField(void)
-	: ObjectPool<EventField>()
+	: Object()
 	, variantSPtr_(constructSPtr<OpcUaVariant>())
 	{
 	}

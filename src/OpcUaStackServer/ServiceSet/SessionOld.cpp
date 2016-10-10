@@ -321,7 +321,7 @@ namespace OpcUaStackServer
 		responseHeader->requestHandle(requestHeader->requestHandle());
 		responseHeader->serviceResult(serviceTransactionSPtr->statusCode());
 
-		SecureChannelTransaction::SPtr secureChannelTransaction = SecureChannelTransaction::construct();
+		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
 		std::iostream ios(&secureChannelTransaction->os_);
 		responseHeader->opcUaBinaryEncode(ios);
 		serviceTransactionSPtr->opcUaBinaryEncodeResponse(ios);

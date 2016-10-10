@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CloseSessionRequest : public  ObjectPool<CloseSessionRequest>
+	class DLLEXPORT CloseSessionRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<CloseSessionRequest> SPtr;

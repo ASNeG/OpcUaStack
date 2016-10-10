@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT NamespaceInfoRequest
-	: public  ObjectPool<NamespaceInfoRequest>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<NamespaceInfoRequest> SPtr;

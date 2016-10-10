@@ -28,7 +28,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionElement : public ObjectPool<SessionElement>
+	class DLLEXPORT SessionElement
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SessionElement> SPtr;

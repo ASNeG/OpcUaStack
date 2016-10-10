@@ -29,16 +29,14 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowseDescription::BrowseDescription(void)
-	: ObjectPool<BrowseDescription>()
-	, nodeIdSPtr_()
+	: Object()
+	, nodeIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, browseDirection_()
-	, referenceTypeIdSPtr_()
+	, referenceTypeIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, includeSubtypes_()
 	, nodeClassMask_()
 	, resultMask_()
 	{
-		nodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
-		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	BrowseDescription::~BrowseDescription(void)

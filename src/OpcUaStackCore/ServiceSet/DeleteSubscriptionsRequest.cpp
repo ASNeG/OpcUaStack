@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteSubscriptionsRequest::DeleteSubscriptionsRequest(void)
-	: ObjectPool<DeleteSubscriptionsRequest>()
+	: Object()
 	, subscriptionIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{
 	}

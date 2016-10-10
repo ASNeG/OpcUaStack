@@ -78,7 +78,7 @@ namespace OpcUaStackServer
 		for (it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
-			EndpointDescription::SPtr endpointDescription = EndpointDescription::construct();
+			EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
 			endpointDescriptionArray->set(idx, endpointDescription);
 			idx++;
 
@@ -220,10 +220,10 @@ namespace OpcUaStackServer
 		}
 
 		uint32_t idx = 0;
-		UserTokenPolicyArray::SPtr userTokenPolicyArray = UserTokenPolicyArray::construct();
+		UserTokenPolicyArray::SPtr userTokenPolicyArray = constructSPtr<UserTokenPolicyArray>();
 		userTokenPolicyArray->resize(userTokenPolicyVec.size());
 		for (it = userTokenPolicyVec.begin(); it != userTokenPolicyVec.end(); it++) {
-			UserTokenPolicy::SPtr userTokenPolicy = UserTokenPolicy::construct();
+			UserTokenPolicy::SPtr userTokenPolicy = constructSPtr<UserTokenPolicy>();
 			userTokenPolicyArray->set(idx, userTokenPolicy);
 			idx++;
 

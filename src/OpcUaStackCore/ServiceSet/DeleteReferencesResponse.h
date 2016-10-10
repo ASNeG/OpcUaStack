@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DeleteReferencesResponse : public  ObjectPool<DeleteReferencesResponse>
+	class DLLEXPORT DeleteReferencesResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteReferencesResponse> SPtr;

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ModificationInfo::ModificationInfo(void)
-	: ObjectPool<ModificationInfo>()
+	: Object()
 	, username_()
 	, modificationTime_()
 	, updateType_()

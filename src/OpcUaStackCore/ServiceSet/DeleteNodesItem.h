@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DeleteNodesItem : public ObjectPool<DeleteNodesItem>
+	class DLLEXPORT DeleteNodesItem
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteNodesItem> SPtr;
@@ -48,7 +49,9 @@ namespace OpcUaStackCore
 		OpcUaBoolean deleteTargetReferences_;
 	};
 
-	class DeleteNodesItemArray : public OpcUaArray<DeleteNodesItem::SPtr, SPtrTypeCoder<DeleteNodesItem> >, public ObjectPool<DeleteNodesItemArray> 
+	class DeleteNodesItemArray
+	: public OpcUaArray<DeleteNodesItem::SPtr, SPtrTypeCoder<DeleteNodesItem> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteNodesItemArray> SPtr;

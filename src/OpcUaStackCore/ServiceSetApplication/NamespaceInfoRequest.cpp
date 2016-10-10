@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	NamespaceInfoRequest::NamespaceInfoRequest(void)
-	: ObjectPool<NamespaceInfoRequest>()
+	: Object()
 	{
 	}
 

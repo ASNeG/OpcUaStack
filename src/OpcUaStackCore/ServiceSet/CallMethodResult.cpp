@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	CallMethodResult::CallMethodResult(void)
-	: ObjectPool<CallMethodResult>()
+	: Object()
 	, statusCode_()
 	, inputArgumentResultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
 	, inputArgumentDiagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())

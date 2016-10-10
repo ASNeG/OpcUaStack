@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ContentFilterElement::ContentFilterElement(void)
-	: ObjectPool<ContentFilterElement>()
+	: Object()
 	, filterOperator_(BasicFilterOperator_Anonymous)
-	, filterOperandsArraySPtr_(ExtensibleParameterArray::construct())
+	, filterOperandsArraySPtr_(constructSPtr<ExtensibleParameterArray>())
 	{
 	}
 

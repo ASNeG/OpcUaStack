@@ -29,7 +29,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ModifyMonitoredItemsRequest : public  ObjectPool<ModifyMonitoredItemsRequest>
+	class DLLEXPORT ModifyMonitoredItemsRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ModifyMonitoredItemsRequest> SPtr;

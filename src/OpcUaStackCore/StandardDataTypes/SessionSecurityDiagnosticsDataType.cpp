@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	SessionSecurityDiagnosticsDataType::SessionSecurityDiagnosticsDataType(void)
-	: ObjectPool<SessionSecurityDiagnosticsDataType>()
+	: Object()
 	, sessionId_()
 	, clientUserIdOfSession_()
 	, clientUserIdHistory_(constructSPtr<OpcUaStringArray>())
@@ -186,7 +186,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	SessionSecurityDiagnosticsDataType::factory(void)
 	{
-		return SessionSecurityDiagnosticsDataType::construct();
+		return constructSPtr<SessionSecurityDiagnosticsDataType>();
 	}
 
 	void

@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SamplingIntervalDiagnosticsDataType
-	: public ObjectPool<SamplingIntervalDiagnosticsDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

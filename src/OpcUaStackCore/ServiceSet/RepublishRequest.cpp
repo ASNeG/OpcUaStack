@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RepublishRequest::RepublishRequest(void)
-	: ObjectPool<RepublishRequest>()
+	: Object()
 	, subscriptionId_()
 	, retransmitSequenceNumber_()
 	{

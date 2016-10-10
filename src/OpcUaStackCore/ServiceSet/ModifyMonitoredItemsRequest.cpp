@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ModifyMonitoredItemsRequest::ModifyMonitoredItemsRequest(void)
-	: ObjectPool<ModifyMonitoredItemsRequest>()
+	: Object()
 	, subscriptionId_()
 	, timestampsToReturn_()
-	, itemsToModifyArraySPtr_(MonitoredItemModifyRequestArray::construct())
+	, itemsToModifyArraySPtr_(constructSPtr<MonitoredItemModifyRequestArray>())
 	{
 	}
 

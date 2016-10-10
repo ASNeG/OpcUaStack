@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	ServiceCounterDataType::ServiceCounterDataType(void)
-	: ObjectPool<ServiceCounterDataType>()
+	: Object()
 	, totalCount_()
 	, errorCount_()
 	{
@@ -81,7 +81,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	ServiceCounterDataType::factory(void)
 	{
-		return ServiceCounterDataType::construct();
+		return constructSPtr<ServiceCounterDataType>();
 	}
 
 	void

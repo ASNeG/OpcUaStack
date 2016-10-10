@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT RegisterForwardResponse : public ObjectPool<RegisterForwardResponse>
+	class DLLEXPORT RegisterForwardResponse
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisterForwardResponse> SPtr;
