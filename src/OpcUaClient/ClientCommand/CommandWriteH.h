@@ -35,6 +35,11 @@ namespace OpcUaClient
 	  public:
 		typedef boost::shared_ptr<CommandWriteH> SPtr;
 
+		typedef enum {
+			T_CommandLine,
+			T_CSVFile
+		} InputType;
+
 		CommandWriteH(void);
 		virtual ~CommandWriteH(void);
 
@@ -48,10 +53,18 @@ namespace OpcUaClient
 		OpcUaNodeId& nodeId(void);
 		OpcUaDataValue::Vec& dataValueVec(void);
 
+		std::string& csvFileName(void);
+		InputType inputType(void);
+		OpcUaBuildInType valueType(void);
+
 	  private:
 		OpcUaNodeId nodeId_;
 		OpcUaDataValue::Vec dataValueVec_;
 		OpcUaDataValue::SPtr actDataValue_;
+
+		std::string csvFileName_;
+		OpcUaBuildInType valueType_;
+		InputType inputType_;
 	};
 
 }
