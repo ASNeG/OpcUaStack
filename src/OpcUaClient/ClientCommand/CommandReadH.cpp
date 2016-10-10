@@ -34,6 +34,7 @@ namespace OpcUaClient
 	, timestampsToReturn_(TimestampsToReturn_Both)
 	, maxNumResultValuesPerNode_(2000)
 	, maxNumRequests_(-1)
+	, csvFileName_("")
 	{
 		startTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
 		endTime_ = boost::posix_time::microsec_clock::universal_time();
@@ -154,6 +155,9 @@ namespace OpcUaClient
 				return false;
 		    }
 		}
+		else if (parameterName == "-CSV") {
+			csvFileName_ = parameterValue;
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -186,6 +190,8 @@ namespace OpcUaClient
 		   << "       Maximum number of results per node\n"
 		   << "    -MaxNumRequests (0..1)\n"
 		   << "       Maximum number of requests to the opc ua server\n"
+		   << "    -CSV (0..1)\n"
+		   << "       Name of a CSV file in which the variables are to be stored\n"
 		   << "     ";
 
 		return ss.str();
@@ -232,5 +238,12 @@ namespace OpcUaClient
 	{
 		maxNumRequests_--;
 	}
+
+	std::string&
+	CommandReadH::csvFileName(void)
+	{
+		return csvFileName_;
+	}
+
 
 }
