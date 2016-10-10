@@ -56,6 +56,9 @@ namespace OpcUaClient
 			AttributeService::SPtr& attributeService,
 			CommandWriteH::SPtr& commandWriteH
 		);
+		bool openCSVFile(const std::string& fileName);
+		bool closeCSVFile(void);
+		bool readCSVLines(const std::string& fileName, OpcUaBuildInType valueType, OpcUaDataValue::Vec& dataValueVec);
 
 		CSV::SPtr csv_;
 	};
