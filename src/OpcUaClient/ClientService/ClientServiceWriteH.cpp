@@ -21,6 +21,8 @@
 #include "OpcUaClient/ClientCommand/CommandWriteH.h"
 #include "OpcUaClient/ClientService/ClientServiceWriteH.h"
 
+#define MAXValuesPerRequest		1000
+
 using namespace OpcUaStackCore;
 
 namespace OpcUaClient
@@ -76,6 +78,18 @@ namespace OpcUaClient
 			errorMessage(ss.str());
 			return false;
 		}
+
+		return write(attributeService, commandWriteH);
+	}
+
+
+	bool
+	ClientServiceWriteH::write(
+		AttributeService::SPtr& attributeService,
+		CommandWriteH::SPtr& commandWriteH
+	)
+	{
+		OpcUaStatusCode statusCode;
 
 		// create update request
 		ServiceTransactionHistoryUpdate::SPtr trx;

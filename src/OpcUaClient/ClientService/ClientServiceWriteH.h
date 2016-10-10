@@ -47,6 +47,10 @@ namespace OpcUaClient
 		//- ClientServiceWriteH interface ---------------------------------------
 
       private:
+		bool write(
+			AttributeService::SPtr& attributeService,
+			CommandWriteH::SPtr& commandWriteH
+		);
 	};
 
 }
