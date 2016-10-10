@@ -16,12 +16,13 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaClient/ClientCommand/CommandWriteH.h"
 #include "OpcUaClient/ClientService/ClientServiceWriteH.h"
 
-#define MAXValuesPerRequest		1000
+#define MAXValuesPerRequest		10
 
 using namespace OpcUaStackCore;
 
@@ -79,9 +80,13 @@ namespace OpcUaClient
 			return false;
 		}
 
-		return write(attributeService, commandWriteH);
+		if (commandWriteH->inputType() == CommandWriteH::T_CSVFile) {
+			return writeCSV(attributeService, commandWriteH);
+		}
+		else {
+			return write(attributeService, commandWriteH);
+		}
 	}
-
 
 	bool
 	ClientServiceWriteH::write(
@@ -145,6 +150,116 @@ namespace OpcUaClient
 			errorMessage(ss.str());
 			return false;
 		}
+
+		return true;
+	}
+
+	bool
+	ClientServiceWriteH::writeCSV(
+		AttributeService::SPtr& attributeService,
+		CommandWriteH::SPtr& commandWriteH
+	)
+	{
+		// open csv file
+		Log(Debug, "read csv file")
+		    .parameter("CSVFileName", commandWriteH->csvFileName());
+
+		csv_ = constructSPtr<CSV>();
+		bool success = csv_->open(commandWriteH->csvFileName(), CSV::M_Read);
+		if (!success) {
+			Log(Error, "open csv file error")
+				.parameter("CSVFileName", commandWriteH->csvFileName());
+			return false;
+		}
+
+		bool ready = false;
+		while (!ready)
+		{
+
+			// ----------------------------------------------------------------
+			// read lines from csv file
+			// ----------------------------------------------------------------
+			OpcUaDataValue::Vec dataValueVec;
+			uint32_t maxValues = MAXValuesPerRequest;
+			CSV::Line line;
+			while (maxValues > 0) {
+				maxValues--;
+
+				line.clear();
+				CSV::State state = csv_->readLine(line);
+				if (state == CSV::S_EndOfFile) {
+					std::cout << "END" << std::endl;
+					ready = true;
+					break;
+				}
+				if (state != CSV::S_Ok) {
+					std::cout << "ERROR" << std::endl;
+					Log(Error, "csv file error")
+						.parameter("CSVFileName", commandWriteH->csvFileName())
+						.parameter("LineNumber", csv_->lineNumber());
+					return false;
+				}
+
+				//
+				// create new data value entry
+				//
+				OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
+
+				// read status code
+				try {
+					uint32_t statusCode = boost::lexical_cast<uint32_t>(line[0]);
+					dataValue->statusCode((OpcUaStatusCode)statusCode);
+				} catch(...)
+				{
+					Log(Error, "status code error in csv file")
+						.parameter("CSVFileName", commandWriteH->csvFileName())
+						.parameter("LineNumber", csv_->lineNumber());
+					return false;
+				}
+
+				// read variable
+				if (line[1] != "---") {
+					bool isArray = false;
+					if (line[1][0] == '[') {
+						isArray = true;
+					}
+
+					OpcUaVariant variant;
+					if (!dataValue->variant()->fromString(commandWriteH->valueType(), isArray, line[1])) {
+						Log(Error, "variable error in csv file")
+							.parameter("CSVFileName", commandWriteH->csvFileName())
+							.parameter("LineNumber", csv_->lineNumber());
+						return false;
+					}
+				}
+
+				// read source timestamp
+				if (line[2] != "---") {
+					if (!dataValue->sourceTimestamp().fromISOString(line[2])) {
+						Log(Error, "source timestamp error in csv file")
+							.parameter("CSVFileName", commandWriteH->csvFileName())
+							.parameter("LineNumber", csv_->lineNumber());
+						return false;
+					}
+				}
+
+				// read server timestamp
+				if (line[3] != "---") {
+					if (!dataValue->serverTimestamp().fromISOString(line[3])) {
+						Log(Error, "server timestamp error in csv file")
+							.parameter("CSVFileName", commandWriteH->csvFileName())
+							.parameter("LineNumber", csv_->lineNumber());
+						return false;
+					}
+				}
+
+				dataValue->out(std::cout); std::cout << std::endl;
+			}
+
+			break;
+		}
+
+		csv_->close();
 
 		return true;
 	}

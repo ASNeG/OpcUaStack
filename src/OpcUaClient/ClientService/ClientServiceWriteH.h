@@ -19,6 +19,7 @@
 #define __OpcUaClient_ClientServiceWriteH_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Utility/CSV.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -51,6 +52,12 @@ namespace OpcUaClient
 			AttributeService::SPtr& attributeService,
 			CommandWriteH::SPtr& commandWriteH
 		);
+		bool writeCSV(
+			AttributeService::SPtr& attributeService,
+			CommandWriteH::SPtr& commandWriteH
+		);
+
+		CSV::SPtr csv_;
 	};
 
 }
