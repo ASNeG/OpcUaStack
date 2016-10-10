@@ -35,6 +35,11 @@ namespace OpcUaClient
 	  public:
 		typedef boost::shared_ptr<CommandReadH> SPtr;
 
+		typedef enum {
+			T_Stdout,
+			T_CSVFile
+		} OutputType;
+
 		CommandReadH(void);
 		virtual ~CommandReadH(void);
 
@@ -52,7 +57,10 @@ namespace OpcUaClient
 		uint32_t maxNumResultValuesPerNode(void);
 		uint32_t maxNumRequests(void);
 		void maxNumRequestsDec(void);
+
 		std::string& csvFileName(void);
+		OutputType outputType(void);
+		void outputType(OutputType outputType);
 
 	  private:
 		OpcUaNodeId::Vec nodeIdVec_;
@@ -61,7 +69,9 @@ namespace OpcUaClient
 		TimestampsToReturn timestampsToReturn_;
 		uint32_t maxNumResultValuesPerNode_;
 		int32_t maxNumRequests_;
+
 		std::string csvFileName_;
+		OutputType outputType_;
 	};
 
 }

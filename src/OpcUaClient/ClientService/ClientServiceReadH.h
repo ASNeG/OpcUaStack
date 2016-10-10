@@ -19,8 +19,11 @@
 #define __OpcUaClient_ClientServiceReadH_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Utility/CSV.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaClient
 {
@@ -81,7 +84,16 @@ namespace OpcUaClient
 			CommandReadH::SPtr& commandReadH,
 			ReadNextNode::Vec& readNextNodeVec
 		);
+		bool output(
+			OpcUaDataValue& dataValue,
+			CommandReadH::SPtr& commandReadH
+		);
+		bool outputCSV(
+			OpcUaDataValue& dataValue,
+			CommandReadH::SPtr& commandReadH
+		);
 
+		CSV::SPtr csv_;
 	};
 
 }

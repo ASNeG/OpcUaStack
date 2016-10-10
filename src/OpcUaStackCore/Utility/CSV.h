@@ -21,6 +21,8 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 #include <stdint.h>
+#include <iostream>
+#include <fstream>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore

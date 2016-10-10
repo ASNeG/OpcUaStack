@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
@@ -28,6 +29,7 @@ namespace OpcUaClient
 
 	ClientServiceReadH::ClientServiceReadH(void)
 	: ClientServiceBase()
+	, csv_()
 	{
 	}
 
@@ -160,7 +162,7 @@ namespace OpcUaClient
 			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
 				historyData->dataValues()->get(idxv, dataValue);
-				dataValue->out(std::cout); std::cout << std::endl;
+				output(*dataValue, commandReadH);
 			}
 
 
@@ -183,7 +185,6 @@ namespace OpcUaClient
 				return hReadNext(attributeService, commandReadH, readNextNodeVec);
 			}
 		}
-
 
 		return true;
 	}
@@ -274,7 +275,7 @@ namespace OpcUaClient
 			for (uint32_t idxv=0; idxv<historyData->dataValues()->size(); idxv++) {
 				OpcUaDataValue::SPtr dataValue;
 				historyData->dataValues()->get(idxv, dataValue);
-				dataValue->out(std::cout); std::cout << std::endl;
+				output(*dataValue, commandReadH);
 			}
 
 
@@ -297,8 +298,6 @@ namespace OpcUaClient
 				return hReadNext(attributeService, commandReadH, readNextNodeVec);
 			}
 		}
-
-
 		return true;
 	}
 
@@ -356,6 +355,90 @@ namespace OpcUaClient
 			ss << "read history response length error: "
 			   << " Session=" << commandReadH->session();
 			errorMessage(ss.str());
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	ClientServiceReadH::output(
+		OpcUaDataValue& dataValue,
+		CommandReadH::SPtr& commandReadH
+	)
+	{
+		switch (commandReadH->outputType())
+		{
+			case CommandReadH::T_CSVFile:
+			{
+				if (!outputCSV(dataValue, commandReadH)) {
+					dataValue.out(std::cout); std::cout << std::endl;
+					commandReadH->outputType(CommandReadH::T_Stdout);
+				}
+				break;
+			}
+			default:
+			{
+				dataValue.out(std::cout); std::cout << std::endl;
+				break;
+			}
+		}
+		return true;
+	}
+
+	bool
+	ClientServiceReadH::outputCSV(
+		OpcUaDataValue& dataValue,
+		CommandReadH::SPtr& commandReadH
+	)
+	{
+		// if necessaray initializing csv output
+		if (csv_.get() == nullptr) {
+			csv_ = constructSPtr<CSV>();
+			bool success = csv_->open(commandReadH->csvFileName(), CSV::M_Write);
+			if (!success) {
+				Log(Error, "open csv file error")
+					.parameter("CSVFileName", commandReadH->csvFileName());
+				csv_.reset();
+				return false;
+			}
+		}
+
+		// create line to write to the csv file
+		CSV::Line line;
+
+		std::stringstream statusCode;
+		statusCode << (uint32_t)dataValue.statusCode();
+		line.push_back(statusCode.str());
+
+		if (dataValue.statusCode() == Success) {
+			std::stringstream variable;
+			dataValue.variant()->out(variable);
+			line.push_back(variable.str());
+		}
+		else {
+			line.push_back("---");
+		}
+
+		if (dataValue.sourceTimestamp().exist()) {
+			line.push_back(dataValue.sourceTimestamp().toISOString());
+		}
+		else {
+			line.push_back("---");
+		}
+
+		if (dataValue.serverTimestamp().exist()) {
+			line.push_back(dataValue.serverTimestamp().toISOString());
+		}
+		else {
+			line.push_back("---");
+		}
+
+		// write line to csv file
+		if (csv_->writeLine(line) != CSV::S_Ok) {
+			Log(Error, "write csv file error")
+				.parameter("CSVFileName", commandReadH->csvFileName());
+			csv_.reset();
 			return false;
 		}
 

@@ -35,6 +35,7 @@ namespace OpcUaClient
 	, maxNumResultValuesPerNode_(2000)
 	, maxNumRequests_(-1)
 	, csvFileName_("")
+	, outputType_(T_Stdout)
 	{
 		startTime_ = boost::posix_time::from_iso_string("16010101T000000.000000000");
 		endTime_ = boost::posix_time::microsec_clock::universal_time();
@@ -157,6 +158,7 @@ namespace OpcUaClient
 		}
 		else if (parameterName == "-CSV") {
 			csvFileName_ = parameterValue;
+			outputType_ = T_CSVFile;
 		}
 		else {
 			std::stringstream ss;
@@ -245,5 +247,16 @@ namespace OpcUaClient
 		return csvFileName_;
 	}
 
+	CommandReadH::OutputType
+	CommandReadH::outputType(void)
+	{
+		return outputType_;
+	}
+
+	void
+	CommandReadH::outputType(OutputType outputType)
+	{
+		outputType_ = outputType;
+	}
 
 }
