@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Title)
 
 BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	std::string str;
 	uint32_t pos;
 	OpcUaNodeId typeId;
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build
-	unregisterNodesRequestSPtr = UnregisterNodesRequest::construct();
+	unregisterNodesRequestSPtr = constructSPtr<UnregisterNodesRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	unregisterNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_UnregisterNodesRequest_Encoding_DefaultBinary);
 
 	// decode 
-	unregisterNodesRequestSPtr = UnregisterNodesRequest::construct();
+	unregisterNodesRequestSPtr = constructSPtr<UnregisterNodesRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	unregisterNodesRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	unregisterNodesResponseSPtr = UnregisterNodesResponse::construct();
+	unregisterNodesResponseSPtr = constructSPtr<UnregisterNodesResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Response)
 	unregisterNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -234,7 +234,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(UnregisterNodes_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_UnregisterNodesResponse_Encoding_DefaultBinary);
 
 	// decode 
-	unregisterNodesResponseSPtr = UnregisterNodesResponse::construct();
+	unregisterNodesResponseSPtr = constructSPtr<UnregisterNodesResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	unregisterNodesResponseSPtr->opcUaBinaryDecode(ios);
 

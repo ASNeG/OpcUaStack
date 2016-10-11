@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	value = constructSPtr<OpcUaDataValue>();;
 	value->statusCode((OpcUaStatusCode)Success);
 
-	modificationInfo = ModificationInfo::construct();
+	modificationInfo = constructSPtr<ModificationInfo>();
 	modificationInfo->username("username");
 	modificationInfo->modificationTime(ptime);
 	modificationInfo->updateType(HistoryUpdateMode_Insert);
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(HistoryData_HistoryModifiedData)
 	BOOST_REQUIRE(value->statusCode() == Success);
 
 	BOOST_REQUIRE(data2.modificationInfos()->size() == 1);
-	modificationInfo = ModificationInfo::construct();
+	modificationInfo = constructSPtr<ModificationInfo>();
 	data2.modificationInfos()->get(modificationInfo);
 	BOOST_REQUIRE(modificationInfo->username().value() == "username");
 	BOOST_REQUIRE(modificationInfo->modificationTime().dateTime() == ptime);

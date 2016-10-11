@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(Operand_Attribute)
 	nodeIdSPtr->namespaceIndex(123);
 	nodeIdSPtr->nodeId((OpcUaUInt32)11);
 
-	relativePathElementSPtr = RelativePathElement::construct();
+	relativePathElementSPtr = constructSPtr<RelativePathElement>();
 	relativePathElementSPtr->referenceTypeId(nodeIdSPtr);
 	relativePathElementSPtr->isInverse(false);
 	relativePathElementSPtr->includeSubtypes(false);

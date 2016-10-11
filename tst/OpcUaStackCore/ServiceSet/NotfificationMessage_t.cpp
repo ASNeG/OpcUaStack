@@ -38,12 +38,12 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 	std::iostream ios(&sb);
 
 	// build MonitoredItemNotification
-	monitoredItemNotificationSPtr = MonitoredItemNotification::construct();
+	monitoredItemNotificationSPtr = constructSPtr<MonitoredItemNotification>();
 	monitoredItemNotificationSPtr->clientHandle(2);
 	monitoredItemNotificationSPtr->dataValue().variant()->variant((OpcUaInt32)123);
 
 	// build NotificationData, DataChangeNotification
-	notificationDataSPtr = ExtensibleParameter::construct();
+	notificationDataSPtr = constructSPtr<ExtensibleParameter>();
 	BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<DataChangeNotification>((OpcUaUInt32)OpcUaId_DataChangeNotification_Encoding_DefaultBinary) == true);
 
 	notificationDataSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 	dataChangeNotificationSPtr->monitoredItems()->set(monitoredItemNotificationSPtr);
 
 	// build NotificationMessage
-	notificationMessageSPtr = NotificationMessage::construct();
+	notificationMessageSPtr = constructSPtr<NotificationMessage>();
 	notificationMessageSPtr->sequenceNumber(1);
 	notificationMessageSPtr->publishTime(ptime);
 	notificationMessageSPtr->notificationData()->set(notificationDataSPtr);
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_DataChangeNotification)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode NotificationMessage
-	notificationMessageSPtr = NotificationMessage::construct();
+	notificationMessageSPtr = constructSPtr<NotificationMessage>();
 	notificationMessageSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(notificationMessageSPtr->sequenceNumber() == 1);
@@ -107,15 +107,15 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 	variantSPtr = constructSPtr<OpcUaVariant>();
 	variantSPtr->variant((OpcUaInt32)123);
 	
-	eventFieldSPtr = EventField::construct();
+	eventFieldSPtr = constructSPtr<EventField>();
 	eventFieldSPtr->variant(variantSPtr);
 
-	eventFieldListSPtr = EventFieldList::construct();
+	eventFieldListSPtr = constructSPtr<EventFieldList>();
 	eventFieldListSPtr->clientHandle(12);
 	eventFieldListSPtr->eventFields()->set(eventFieldSPtr);
 
 	// build NotificationData, EventNotificationList
-	notificationDataSPtr = ExtensibleParameter::construct();
+	notificationDataSPtr = constructSPtr<ExtensibleParameter>();
 	BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<EventNotificationList>((OpcUaUInt32)OpcUaId_EventNotificationList_Encoding_DefaultBinary) == true);
 
 	notificationDataSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_EventNotificationList_Encoding_DefaultBinary);
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 	eventNotificationListSPtr->events()->set(eventFieldListSPtr);
 
 	// build NotificationMessage
-	notificationMessageSPtr = NotificationMessage::construct();
+	notificationMessageSPtr = constructSPtr<NotificationMessage>();
 	notificationMessageSPtr->sequenceNumber(2);
 	notificationMessageSPtr->publishTime(ptime);
 	notificationMessageSPtr->notificationData()->set(notificationDataSPtr);
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_EventNotificationList)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 	
 	// decode NotificationMessage
-	notificationMessageSPtr = NotificationMessage::construct();
+	notificationMessageSPtr = constructSPtr<NotificationMessage>();
 	notificationMessageSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(notificationMessageSPtr->sequenceNumber() == 2);
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_StatusChangeNotficiation)
 	statusCode = Success;
 
 	// build NotificationData, StatusChangeNotification
-	notificationDataSPtr = ExtensibleParameter::construct();
+	notificationDataSPtr = constructSPtr<ExtensibleParameter>();
 	BOOST_REQUIRE(notificationDataSPtr->registerFactoryElement<StatusChangeNotification>((OpcUaUInt32)OpcUaId_StatusChangeNotification_Encoding_DefaultBinary) == true);
 
 	notificationDataSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_StatusChangeNotification_Encoding_DefaultBinary);
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_StatusChangeNotficiation)
 	statusChangeNotificationSPtr->statusCode(statusCode);
 
 	// build NotificationMessage
-	notificationMessageSPtr = NotificationMessage::construct();
+	notificationMessageSPtr = constructSPtr<NotificationMessage>();
 	notificationMessageSPtr->sequenceNumber(3);
 	notificationMessageSPtr->publishTime(ptime);
 	notificationMessageSPtr->notificationData()->set(notificationDataSPtr);
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(NotificationMessage_StatusChangeNotficiation)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 	
 	// decode NotificationMessage
-	notificationMessageSPtr = NotificationMessage::construct();
+	notificationMessageSPtr = constructSPtr<NotificationMessage>();
 	notificationMessageSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(notificationMessageSPtr->sequenceNumber() == 3);

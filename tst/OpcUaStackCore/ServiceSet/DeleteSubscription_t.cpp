@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Title)
 
 BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CreateSubscriptionRequest
-	deleteSubscriptionsRequestSPtr = DeleteSubscriptionsRequest::construct();
+	deleteSubscriptionsRequestSPtr = constructSPtr<DeleteSubscriptionsRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	deleteSubscriptionsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteSubscriptionsRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	deleteSubscriptionsRequestSPtr = DeleteSubscriptionsRequest::construct();
+	deleteSubscriptionsRequestSPtr = constructSPtr<DeleteSubscriptionsRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	deleteSubscriptionsRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build ReadResponse
-	deleteSubscriptionsResponseSPtr = DeleteSubscriptionsResponse::construct();
+	deleteSubscriptionsResponseSPtr = constructSPtr<DeleteSubscriptionsResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 	deleteSubscriptionsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -248,7 +248,7 @@ BOOST_AUTO_TEST_CASE(DeleteSubscription_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteSubscriptionsResponse_Encoding_DefaultBinary);
 
 	// decode ReadResponse
-	deleteSubscriptionsResponseSPtr = DeleteSubscriptionsResponse::construct();
+	deleteSubscriptionsResponseSPtr = constructSPtr<DeleteSubscriptionsResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	deleteSubscriptionsResponseSPtr->opcUaBinaryDecode(ios);
 

@@ -70,13 +70,13 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	simpleAttributeOperandSPtr->attributeId((OpcUaUInt32)123);
 	simpleAttributeOperandSPtr->indexRange("1:2");
 
-	filterOperandSPtr = ExtensibleParameter::construct();
+	filterOperandSPtr = constructSPtr<ExtensibleParameter>();
 	BOOST_REQUIRE(filterOperandSPtr->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_OpcUa_XmlSchema_ElementOperand) == true);
 	filterOperandSPtr->parameterTypeId().set((OpcUaUInt32)OpcUaId_OpcUa_XmlSchema_ElementOperand);
 	elementOperandSPtr = filterOperandSPtr->parameter<ElementOperand>();
 	elementOperandSPtr->index((OpcUaUInt32)123);
 
-	contentFilterElementSPtr = ContentFilterElement::construct();
+	contentFilterElementSPtr = constructSPtr<ContentFilterElement>();
 	contentFilterElementSPtr->filterOperator(BasicFilterOperator_And);
 	contentFilterElementSPtr->filterOperands()->set(filterOperandSPtr);
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	// encode
 	eventFilterResult1.selectClauseResults()->set((OpcUaStatusCode)Success);
 	
-	elementResultSPtr = ContentFilterElementResult::construct();
+	elementResultSPtr = constructSPtr<ContentFilterElementResult>();
 	elementResultSPtr->statusCode((OpcUaStatusCode)Success);
 	elementResultSPtr->operandStatusCodes()->set((OpcUaStatusCode)Success);
 	eventFilterResult1.whereClauseResult().elementResults()->set(elementResultSPtr);
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(Filter_EventResult)
 	BOOST_REQUIRE(statusCode1 == Success);
 
 	BOOST_REQUIRE(eventFilterResult2.whereClauseResult().elementResults()->size() == 1);
-	elementResultSPtr = ContentFilterElementResult::construct();
+	elementResultSPtr = constructSPtr<ContentFilterElementResult>();
 	eventFilterResult2.whereClauseResult().elementResults()->get(elementResultSPtr);
 	BOOST_REQUIRE(elementResultSPtr->statusCode() == Success);
 

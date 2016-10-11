@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_)
 
 BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(52);
 	sequenceHeaderSPtr->requestId(2);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	deleteReferencesRequestSPtr = DeleteReferencesRequest::construct();
+	deleteReferencesRequestSPtr = constructSPtr<DeleteReferencesRequest>();
 
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
 	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 	deleteReferencesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
     */
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteReferencesRequest_Encoding_DefaultBinary);
 
 	// decode DeleteReferencesRequest
-	deleteReferencesRequestSPtr = DeleteReferencesRequest::construct();
+	deleteReferencesRequestSPtr = constructSPtr<DeleteReferencesRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	deleteReferencesRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -220,7 +220,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(53);
 	sequenceHeaderSPtr->requestId(3);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -230,16 +230,16 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode DeleteReferencesResponse
-	deleteReferencesResponseSPtr = DeleteReferencesResponse::construct();
+	deleteReferencesResponseSPtr = constructSPtr<DeleteReferencesResponse>();
 
 	responseHeader->time(ptime);
 	responseHeader->requestHandle(1);
 	responseHeader->serviceResult(Success);
 
-	DeleteReferencesResultArray::SPtr deleteReferencesResultArraySPtr = DeleteReferencesResultArray::construct();
+	DeleteReferencesResultArray::SPtr deleteReferencesResultArraySPtr = constructSPtr<DeleteReferencesResultArray>();
 	deleteReferencesResultArraySPtr->resize(1);
 	{
-		DeleteReferencesResult::SPtr deleteReferencesResultSPtr = DeleteReferencesResult::construct();
+		DeleteReferencesResult::SPtr deleteReferencesResultSPtr = constructSPtr<DeleteReferencesResult>();
 		deleteReferencesResultSPtr->statusCode(Success);
 		deleteReferencesResultArraySPtr->set(0, deleteReferencesResultSPtr);		
 	}
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 	deleteReferencesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 
 	
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -283,7 +283,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);
@@ -294,7 +294,7 @@ BOOST_AUTO_TEST_CASE(DeleteReferences_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteReferencesResponse_Encoding_DefaultBinary);
 
 	//decode DeleteReferencesResponse
-	deleteReferencesResponseSPtr = DeleteReferencesResponse::construct();
+	deleteReferencesResponseSPtr = constructSPtr<DeleteReferencesResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	deleteReferencesResponseSPtr->opcUaBinaryDecode(ios);
 

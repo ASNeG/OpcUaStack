@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(140);
 	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	// encode CancelRequest
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	cancelRequestSPtr = CancelRequest::construct();
+	cancelRequestSPtr = constructSPtr<CancelRequest>();
 
 	cancelRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
 	cancelRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	cancelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CancelRequest_Encoding_DefaultBinary);
 
 	// decode CancelRequest
-	cancelRequestSPtr = CancelRequest::construct();
+	cancelRequestSPtr = constructSPtr<CancelRequest>();
 	cancelRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(140);
 	sequenceHeaderSPtr->requestId(90);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	cancelResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 140);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 90);

@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Title)
 
 BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CreateMonitoredItemsRequest
-	createMonitoredItemsRequestSPtr = CreateMonitoredItemsRequest::construct();
+	createMonitoredItemsRequestSPtr = constructSPtr<CreateMonitoredItemsRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("AllDataTypesStatic/StaticInt32");
 
-	monitoredItemCreateRequestSPtr = MonitoredItemCreateRequest::construct();
+	monitoredItemCreateRequestSPtr = constructSPtr<MonitoredItemCreateRequest>();
 	monitoredItemCreateRequestSPtr->monitoringMode(MonitoringMode_Reporting);
 	monitoredItemCreateRequestSPtr->itemToMonitor().nodeId()->namespaceIndex(4);
 	monitoredItemCreateRequestSPtr->itemToMonitor().nodeId()->nodeId(opcUaStringSPtr);
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	createMonitoredItemsRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	responseHeader->serviceResult(statusCode);
 	
 	// build MonitoredItemCreateResult
-	monitoredItemCreateResultSPtr = MonitoredItemCreateResult::construct();
+	monitoredItemCreateResultSPtr = constructSPtr<MonitoredItemCreateResult>();
 	monitoredItemCreateResultSPtr->statusCode((OpcUaStatusCode)Success);
 	monitoredItemCreateResultSPtr->monitoredItemId(1);
 	monitoredItemCreateResultSPtr->revisedSamplingInterval(500);
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	createMonitoredItemsResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(CreateMonitoredItems_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);

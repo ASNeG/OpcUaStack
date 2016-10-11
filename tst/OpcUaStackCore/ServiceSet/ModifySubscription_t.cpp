@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Title)
 
 BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CreateSubscriptionRequest
-	modifySubscriptionRequestSPtr = ModifySubscriptionRequest::construct();
+	modifySubscriptionRequestSPtr = constructSPtr<ModifySubscriptionRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	modifySubscriptionRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(ModifySubscription_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ModifySubscriptionRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	modifySubscriptionRequestSPtr = ModifySubscriptionRequest::construct();
+	modifySubscriptionRequestSPtr = constructSPtr<ModifySubscriptionRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	modifySubscriptionRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -195,7 +195,7 @@ BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build ModifySubscriptionResponse
-	modifySubscriptionResponseSPtr = ModifySubscriptionResponse::construct();
+	modifySubscriptionResponseSPtr = constructSPtr<ModifySubscriptionResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 	modifySubscriptionResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -243,7 +243,7 @@ BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(CreateSubscription_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_ModifySubscriptionResponse_Encoding_DefaultBinary);
 
 	// decode ReadResponse
-	modifySubscriptionResponseSPtr = ModifySubscriptionResponse::construct();
+	modifySubscriptionResponseSPtr = constructSPtr<ModifySubscriptionResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	modifySubscriptionResponseSPtr->opcUaBinaryDecode(ios);
 

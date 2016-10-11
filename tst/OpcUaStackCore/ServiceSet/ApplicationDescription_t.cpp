@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 	std::iostream ios(&sb);
 
 	// encode ApplicationDescription
-	applicationDescriptionSPtr = ApplicationDescription::construct();
+	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
 	applicationDescriptionSPtr->applicationUri("urn:localhost:compyny:Unittest");
 	applicationDescriptionSPtr->productUri("urn:company:Unittest");
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(ApplicationDescription_)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode ApplicationDescription
-	applicationDescriptionSPtr = ApplicationDescription::construct();
+	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
 	applicationDescriptionSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(applicationDescriptionSPtr->productUri() == "urn:company:Unittest");

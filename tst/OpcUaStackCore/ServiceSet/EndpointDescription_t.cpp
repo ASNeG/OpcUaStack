@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	std::iostream ios(&sb);
 
 	// encode EndpointDescription
-	endpointDescriptionSPtr = EndpointDescription::construct();
+	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
 	
 	endpointDescriptionSPtr->endpointUrl("opt.tcp://localhost:481/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	endpointDescriptionSPtr->securityPolicyUri("http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	endpointDescriptionSPtr->userIdentityTokens()->resize(1);
-	userTokenPolicySPtr = UserTokenPolicy::construct();
+	userTokenPolicySPtr = constructSPtr<UserTokenPolicy>();
 	userTokenPolicySPtr->policyId("OpcUaStack");
 	userTokenPolicySPtr->tokenType(UserIdentityTokenType_Anonymous);
 	endpointDescriptionSPtr->userIdentityTokens()->push_back(userTokenPolicySPtr);
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode EndpointDescription
-	endpointDescriptionSPtr = EndpointDescription::construct();
+	endpointDescriptionSPtr = constructSPtr<EndpointDescription>();
 	endpointDescriptionSPtr->opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(endpointDescriptionSPtr->endpointUrl() == "opt.tcp://localhost:481/0.0.0.0");
