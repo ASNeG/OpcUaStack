@@ -24,14 +24,14 @@ BOOST_AUTO_TEST_CASE(RequestHeader_encode_decode)
 	RequestHeader::SPtr requestHeaderSPtr;
 
 	ptime1 = boost::posix_time::from_iso_string("20140629T200209.111000000");
-	requestHeaderSPtr = RequestHeader::construct();
+	requestHeaderSPtr = constructSPtr<RequestHeader>();
 	requestHeaderSPtr->time(ptime1);
 	requestHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// stream
 	OpcUaStackCore::dumpHex(ios1);
 
-	requestHeaderSPtr = RequestHeader::construct();
+	requestHeaderSPtr = constructSPtr<RequestHeader>();
 	requestHeaderSPtr->opcUaBinaryDecode(ios1);
 	ptime2 = requestHeaderSPtr->time().dateTime();
 	BOOST_REQUIRE(ptime1 == ptime2);

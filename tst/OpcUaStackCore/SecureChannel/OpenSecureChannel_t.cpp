@@ -49,12 +49,12 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode security header
-	securityHeaderSPtr = SecurityHeader::construct();
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
 	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
 	securityHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(51);
 	sequenceHeaderSPtr->requestId(1);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	// encode OpenSecureChannel
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
+	openSecureChannelRequestSPtr = constructSPtr<OpenSecureChannelRequest>();
 	openSecureChannelRequestSPtr->requestHeader()->time(ptime);
 	openSecureChannelRequestSPtr->securityMode(SM_None);
 	openSecureChannelRequestSPtr->clientNonce( clientNonce, 1);
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	openSecureChannelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_OpenSecureChannel);
 	
@@ -105,13 +105,13 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(channelId == 0);
 
 	// decode security header
-	securityHeaderSPtr = SecurityHeader::construct();
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
 	securityHeaderSPtr->opcUaBinaryDecode(ios);
 	securityHeaderSPtr->securityPolicyUri(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "http://opcfoundation.org/UA/SecurityPolicy#None",opcUaByteLen ) == 0);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 51);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 1);
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_OpenSecureChannelRequest_Encoding_DefaultBinary);
 
 	// decode OpenSecureChannel
-	openSecureChannelRequestSPtr = OpenSecureChannelRequest::construct();
+	openSecureChannelRequestSPtr = constructSPtr<OpenSecureChannelRequest>();
 	openSecureChannelRequestSPtr->opcUaBinaryDecode(ios);
 	openSecureChannelRequestSPtr->clientNonce(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(openSecureChannelRequestSPtr->requestHeader()->time().dateTime() == ptime);
@@ -161,12 +161,12 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, channelId);
 
 	// encode security header
-	securityHeaderSPtr = SecurityHeader::construct();
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
 	securityHeaderSPtr->securityPolicyUri((OpcUaByte*)"http://opcfoundation.org/UA/SecurityPolicy#None", (OpcUaInt32)strlen("http://opcfoundation.org/UA/SecurityPolicy#None"));
 	securityHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(51);
 	sequenceHeaderSPtr->requestId(1);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// security token
-	SecurityToken::SPtr securityTokenSPtr = SecurityToken::construct();
+	SecurityToken::SPtr securityTokenSPtr = constructSPtr<SecurityToken>();
 	securityTokenSPtr->channelId(153451225);
 	securityTokenSPtr->tokenId(1);
 	securityTokenSPtr->createAt().dateTime(ptime);
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	openSecureChannelResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_OpenSecureChannel);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_OpenSecureChannel);
 	
@@ -224,13 +224,13 @@ BOOST_AUTO_TEST_CASE(OpenSecureChannel_Response)
 	BOOST_REQUIRE(channelId == 153451225);
 
 	// decode security header
-	securityHeaderSPtr = SecurityHeader::construct();
+	securityHeaderSPtr = constructSPtr<SecurityHeader>();
 	securityHeaderSPtr->opcUaBinaryDecode(ios);
 	securityHeaderSPtr->securityPolicyUri(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "http://opcfoundation.org/UA/SecurityPolicy#None",opcUaByteLen ) == 0);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 51);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 1);
