@@ -180,7 +180,7 @@ namespace OpcUaClient
 
 			// add reference to node
 			if (statusCode == Success) {
-				ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+				ReferenceItem::SPtr referenceItem = constructSPtr<ReferenceItem>();
 
 				referenceItem->nodeId_.nodeIdValue(referenceDescription->expandedNodeId()->nodeIdValue());
 				referenceItem->nodeId_.namespaceIndex(referenceDescription->expandedNodeId()->namespaceIndex());

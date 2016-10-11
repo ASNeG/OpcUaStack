@@ -106,7 +106,7 @@ namespace OpcUaStackCore
 				   return epSPtr;
 			   }
 
-			   typename T::SPtr epSPtr = T::construct();
+			   typename T::SPtr epSPtr = constructSPtr<T>();
 			   style_ = S_Type;
 			   epSPtr_ = epSPtr;
 			   return epSPtr;

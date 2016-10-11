@@ -388,7 +388,7 @@ namespace OpcUaStackServer
 		}
 
 		// surrogate parent does not exist. Create a surrogate parent
-		baseNodeClass = ObjectNodeClass::construct();
+		baseNodeClass = constructSPtr<ObjectNodeClass>();
 		baseNodeClass->setNodeId(nodeId);
 		OpcUaQualifiedName browseName("SurrogateParent");
 		baseNodeClass->setBrowseName(browseName);
@@ -758,10 +758,10 @@ namespace OpcUaStackServer
 				baseNodeClass->referenceItemMap().remove(referenceTypeNodeId, referenceItem);
 
 				// add reference between node and new parent
-				referenceItem = ReferenceItem::construct(true, *baseNodeClass->getNodeId());
+				referenceItem = constructSPtr<ReferenceItem>(true, *baseNodeClass->getNodeId());
 				surrogateParentNode->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
 
-				referenceItem = ReferenceItem::construct(false, *surrogateParentNode->getNodeId());
+				referenceItem = constructSPtr<ReferenceItem>(false, *surrogateParentNode->getNodeId());
 				baseNodeClass->referenceItemMap().add(ReferenceType_HasComponent, referenceItem);
 			}
 		}

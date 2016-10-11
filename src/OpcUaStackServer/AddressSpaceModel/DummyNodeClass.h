@@ -25,7 +25,8 @@
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT DummyNodeClass : public BaseNodeClass, public ObjectPool<DummyNodeClass>
+	class DLLEXPORT DummyNodeClass
+	: public BaseNodeClass
 	{
 	  public:
 		typedef boost::shared_ptr<DummyNodeClass> SPtr;

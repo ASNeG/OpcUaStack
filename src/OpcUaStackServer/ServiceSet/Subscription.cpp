@@ -125,7 +125,7 @@ namespace OpcUaStackServer
 		// check lifetime counter
 		actLifetimeCount_ = lifetimeCount_;
 
-		ExtensibleParameter::SPtr extensibleParameter = ExtensibleParameter::construct();
+		ExtensibleParameter::SPtr extensibleParameter = constructSPtr<ExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		DataChangeNotification::SPtr dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
 		

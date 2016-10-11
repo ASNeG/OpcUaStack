@@ -111,7 +111,7 @@ namespace OpcUaStackServer
 						continue;
 					}
 
-					ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
+					ReferenceItem::SPtr referenceItemForward = constructSPtr<ReferenceItem>();
 					referenceItemForward->isForward_ = false;
 					baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
 
@@ -126,7 +126,7 @@ namespace OpcUaStackServer
 						continue;
 					}
 
-					ReferenceItem::SPtr referenceItemForward = ReferenceItem::construct();
+					ReferenceItem::SPtr referenceItemForward = constructSPtr<ReferenceItem>();
 					referenceItemForward->isForward_ = true;
 					baseNodeClass->nodeId().data().copyTo(referenceItemForward->nodeId_);
 

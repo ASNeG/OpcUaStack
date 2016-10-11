@@ -62,7 +62,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT SecureChannelServer
 	: public SecureChannelOld
-	, public  ObjectPool<SecureChannelServer>
+	, public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SecureChannelServer> SPtr;

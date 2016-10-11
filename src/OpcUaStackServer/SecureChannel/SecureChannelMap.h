@@ -35,7 +35,8 @@ namespace OpcUaStackServer
 	} SecureChannelState;
 
 
-	class DLLEXPORT SecureChannelElement : public ObjectPool<SecureChannelElement>
+	class DLLEXPORT SecureChannelElement
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SecureChannelElement> SPtr;

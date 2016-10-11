@@ -81,7 +81,7 @@ namespace OpcUaClient
 		ReadRequest::SPtr req = trx->request();
 		req->readValueIdArray()->resize(commandRead->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandRead->nodeIdVec().size(); idx++) {
-			ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(*commandRead->nodeIdVec()[idx]);
 			readValueIdSPtr->attributeId(commandRead->attributeIdVec()[idx]);
 			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
