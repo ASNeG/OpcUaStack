@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build 
-	findServersRequestSPtr = FindServersRequest::construct();
+	findServersRequestSPtr = constructSPtr<FindServersRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	findServersRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_FindServersRequest_Encoding_DefaultBinary);
 
 	// decode
-	findServersRequestSPtr = FindServersRequest::construct();
+	findServersRequestSPtr = constructSPtr<FindServersRequest>();
 	findServersRequestSPtr->opcUaBinaryDecode(ios);
 
 	std::string str;
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	findServersResponseSPtr->responseHeader()->serviceResult(statusCode);
 
 	// build ApplicationDescription
-	applicationDescriptionSPtr = ApplicationDescription::construct();
+	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
 	applicationDescriptionSPtr->applicationUri("urn:localhost:compyny:Unittest");
 	applicationDescriptionSPtr->productUri("urn:company:Unittest");
 	applicationDescriptionSPtr->applicationName().text("company Unittest");
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	findServersResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	BOOST_REQUIRE(findServersResponseSPtr->responseHeader()->serviceResult() == Success);
 
 	BOOST_REQUIRE(findServersResponseSPtr->servers()->size() == 1);
-	applicationDescriptionSPtr = ApplicationDescription::construct();
+	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
 	findServersResponseSPtr->servers()->get(applicationDescriptionSPtr);
 	BOOST_REQUIRE(applicationDescriptionSPtr->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(applicationDescriptionSPtr->productUri() == "urn:company:Unittest");

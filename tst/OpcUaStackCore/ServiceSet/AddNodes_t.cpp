@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(ep.registerFactoryElement<VariableTypeAttributes>((OpcUaUInt32)12351) == true);
 	BOOST_REQUIRE(ep.registerFactoryElement<ViewAttributes>((OpcUaUInt32)12352) == true);
 	
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(52);
 	sequenceHeaderSPtr->requestId(2);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	addNodesRequestSPtr = AddNodesRequest::construct();
+	addNodesRequestSPtr = constructSPtr<AddNodesRequest>();
 
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
 	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	// add DataTypeAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	// add ObjectAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	// add MethodAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		
 	// add ObjectTypeAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -187,7 +187,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 		
 	// add ReferenceTypeAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 			
 	// add ViewAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	// add VariableAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -277,7 +277,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 
 	// add VariableTypeAttributes node
 	{
-		AddNodesItem::SPtr addNodesItemSPtr = AddNodesItem::construct();
+		AddNodesItem::SPtr addNodesItemSPtr = constructSPtr<AddNodesItem>();
 		addNodesItemSPtr->parentNodeId()->set(12,130);
 		addNodesItemSPtr->referenceTypeId()->set(11, 130);
 		addNodesItemSPtr->requestedNewNodeId()->set(13,130);
@@ -316,7 +316,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	addNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
     */
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_AddNodesRequest_Encoding_DefaultBinary);
 
 	// decode AddNodesRequest
-	addNodesRequestSPtr = AddNodesRequest::construct();
+	addNodesRequestSPtr = constructSPtr<AddNodesRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	addNodesRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -660,7 +660,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(53);
 	sequenceHeaderSPtr->requestId(3);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -670,16 +670,16 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode AddNodesResponseResponse
-	addNodesResponseSPtr = AddNodesResponse::construct();
+	addNodesResponseSPtr = constructSPtr<AddNodesResponse>();
 
 	responseHeader->time(ptime);
 	responseHeader->requestHandle(1);
 	responseHeader->serviceResult(Success);
 
-	AddNodesResultArray::SPtr addNodesResultArraySPtr = AddNodesResultArray::construct();
+	AddNodesResultArray::SPtr addNodesResultArraySPtr = constructSPtr<AddNodesResultArray>();
 	addNodesResultArraySPtr->resize(1);
 	{
-		AddNodesResult::SPtr addNodesResultSPtr = AddNodesResult::construct();
+		AddNodesResult::SPtr addNodesResultSPtr = constructSPtr<AddNodesResult>();
 		addNodesResultSPtr->statusCode(Success);
 		OpcUaNodeId::SPtr addedNodeIdSPtr = constructSPtr<OpcUaNodeId>();
 		addedNodeIdSPtr->set(11, 130);
@@ -693,7 +693,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	addNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -713,7 +713,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 
 	
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -726,7 +726,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);
@@ -737,7 +737,7 @@ BOOST_AUTO_TEST_CASE(AddNodes_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_AddNodesResponse_Encoding_DefaultBinary);
 
 	//decode AddNodesResponse
-	addNodesResponseSPtr = AddNodesResponse::construct();
+	addNodesResponseSPtr = constructSPtr<AddNodesResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	addNodesResponseSPtr->opcUaBinaryDecode(ios);
 

@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_)
 
 BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	MessageHeader::SPtr messageHeaderSPtr;
 	boost::posix_time::ptime ptime = boost::posix_time::from_iso_string("16010101T000000.000000000");
 	OpcUaGuid::SPtr opcUaGuidSPtr;
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(52);
 	sequenceHeaderSPtr->requestId(2);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 
 	OpcUaByte clientNonce[1];
 	clientNonce[0] = 0x00;
-	deleteNodesRequestSPtr = DeleteNodesRequest::construct();
+	deleteNodesRequestSPtr = constructSPtr<DeleteNodesRequest>();
 
 	requestHeader->sessionAuthenticationToken().namespaceIndex(1);
 	requestHeader->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 
 	// add DeleteNodesItem node
 	{
-		DeleteNodesItem::SPtr deleteNodesItemSPtr = DeleteNodesItem::construct();
+		DeleteNodesItem::SPtr deleteNodesItemSPtr = constructSPtr<DeleteNodesItem>();
 		deleteNodesItemSPtr->nodeId()->set(11, 130);
 		deleteNodesItemSPtr->deleteTargetReferences(true);
 
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	deleteNodesRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
     */
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 52);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 2);
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_DeleteNodesRequest_Encoding_DefaultBinary);
 
 	// decode DeleteNodesRequest
-	deleteNodesRequestSPtr = DeleteNodesRequest::construct();
+	deleteNodesRequestSPtr = constructSPtr<DeleteNodesRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	deleteNodesRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, tokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(53);
 	sequenceHeaderSPtr->requestId(3);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -225,10 +225,10 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	responseHeader->requestHandle(1);
 	responseHeader->serviceResult(Success);
 
-	DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr = DeleteNodesResultArray::construct();
+	DeleteNodesResultArray::SPtr deleteNodesResultArraySPtr = constructSPtr<DeleteNodesResultArray>();
 	deleteNodesResultArraySPtr->resize(1);
 	{
-		DeleteNodesResult::SPtr deleteNodesResultSPtr = DeleteNodesResult::construct();
+		DeleteNodesResult::SPtr deleteNodesResultSPtr = constructSPtr<DeleteNodesResult>();
 		deleteNodesResultSPtr->statusCode(Success);
 		deleteNodesResultArraySPtr->set(0, deleteNodesResultSPtr);		
 	}
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	deleteNodesResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -259,7 +259,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 
 	
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 	
@@ -272,7 +272,7 @@ BOOST_AUTO_TEST_CASE(DeleteNodes_Response)
 	BOOST_REQUIRE(tokenId == 1);
 	
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 53);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 3);

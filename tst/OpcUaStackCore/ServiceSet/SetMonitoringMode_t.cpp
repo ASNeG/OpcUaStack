@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Title)
 
 BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 monitoredItemId;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build SetMonitoringModeRequest
-	setMonitoringModeRequestSPtr = SetMonitoringModeRequest::construct();
+	setMonitoringModeRequestSPtr = constructSPtr<SetMonitoringModeRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	setMonitoringModeRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_SetMonitoringModeRequest_Encoding_DefaultBinary);
 
 	// decode
-	setMonitoringModeRequestSPtr = SetMonitoringModeRequest::construct();
+	setMonitoringModeRequestSPtr = constructSPtr<SetMonitoringModeRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	setMonitoringModeRequestSPtr->opcUaBinaryDecode(ios);
 	
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build SetMonitoringModeResponse
-	setMonitoringModeResponseSPtr = SetMonitoringModeResponse::construct();
+	setMonitoringModeResponseSPtr = constructSPtr<SetMonitoringModeResponse>();
 
 	// build ResponseHeader
 	statusCode = Success;
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	setMonitoringModeResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -235,7 +235,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(SetMonitoringMode_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_SetMonitoringModeResponse_Encoding_DefaultBinary);
 
 	// decode 
-	setMonitoringModeResponseSPtr = SetMonitoringModeResponse::construct();
+	setMonitoringModeResponseSPtr = constructSPtr<SetMonitoringModeResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	setMonitoringModeResponseSPtr->opcUaBinaryDecode(ios);
 

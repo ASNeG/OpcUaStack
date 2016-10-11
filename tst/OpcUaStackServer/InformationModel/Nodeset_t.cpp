@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_NodeSet_Decode_Endode)
         std::cout << "mapToGlobalNamespaceIndex: " << namespaceIndex << std::endl;
     }
 
-	InformationModel::SPtr informationModel = InformationModel::construct();
+	InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModel, nodeSetXmlParser);
 	BOOST_REQUIRE(success == true);
 
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_NodeSet_Decode_Endode)
 	BOOST_REQUIRE(parentNodeSPtr.get() != nullptr);
 
 
-    OpcUaStackServer::VariableNodeClass::SPtr variableSPtr = OpcUaStackServer::VariableNodeClass::construct();
+    OpcUaStackServer::VariableNodeClass::SPtr variableSPtr = constructSPtr<OpcUaStackServer::VariableNodeClass>();
 
     OpcUaNodeId varNodeId;
     OpcUaNodeId dataTypeNodeId;
@@ -115,14 +115,14 @@ BOOST_AUTO_TEST_CASE(Nodeset_NodeSet_Decode_Endode)
     variableSPtr->referenceItemMap().add(OpcUaStackServer::ReferenceType_HasModellingRule, true, modellingRuleMandatoryNodeId);
 
     {
-        OpcUaStackServer::ReferenceItem::SPtr referenceItem = OpcUaStackServer::ReferenceItem::construct();
+        OpcUaStackServer::ReferenceItem::SPtr referenceItem = constructSPtr<OpcUaStackServer::ReferenceItem>();
         referenceItem->isForward_ = false;
         referenceItem->nodeId_ = parentNodeSPtr->nodeId().data();
         variableSPtr->referenceItemMap().add(parentReferenceTypeNodeId, referenceItem);
     }
 
     {
-        OpcUaStackServer::ReferenceItem::SPtr referenceItem = OpcUaStackServer::ReferenceItem::construct();
+        OpcUaStackServer::ReferenceItem::SPtr referenceItem = constructSPtr<OpcUaStackServer::ReferenceItem>();
         referenceItem->isForward_ = true;
         referenceItem->nodeId_ = varNodeId;
         parentNodeSPtr->referenceItemMap().add(parentReferenceTypeNodeId, referenceItem);
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_New_Node_And_New_Namespace)
 	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead1 = InformationModel::construct();
+	InformationModel::SPtr informationModelRead1 = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
 	BOOST_REQUIRE(success == true);
 
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_New_Node_And_New_Namespace)
 		std::stringstream nodeName;
 		nodeName << "MyVariable" << idx;
 
-		baseNodeClass = VariableNodeClass::construct();
+		baseNodeClass = constructSPtr<VariableNodeClass>();
 		nodeId.set(nodeName.str(), namespaceIndex);
 		baseNodeClass->setNodeId(nodeId);
 
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
 	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead1 = InformationModel::construct();
+	InformationModel::SPtr informationModelRead1 = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
 	BOOST_REQUIRE(success == true);
 
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_with_parent_node)
 	success = nodeSetXmlParserRead2.decode(configXmlRead2.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead2 = InformationModel::construct();
+	InformationModel::SPtr informationModelRead2 = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead2, nodeSetXmlParserRead2);
 	BOOST_REQUIRE(success == true);
 
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
 	success = nodeSetXmlParserRead1.decode(configXmlRead1.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead1 = InformationModel::construct();
+	InformationModel::SPtr informationModelRead1 = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead1, nodeSetXmlParserRead1);
 	BOOST_REQUIRE(success == true);
 
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_MergeNamespace_without_parent_node)
 	success = nodeSetXmlParserRead2.decode(configXmlRead2.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead2 = InformationModel::construct();
+	InformationModel::SPtr informationModelRead2 = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead2, nodeSetXmlParserRead2);
 	BOOST_REQUIRE(success == true);
 
@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_Remove)
 	success = nodeSetXmlParserRead.decode(configXmlRead.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead = InformationModel::construct();
+	InformationModel::SPtr informationModelRead = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead, nodeSetXmlParserRead);
 	BOOST_REQUIRE(success == true);
 
@@ -407,7 +407,7 @@ BOOST_AUTO_TEST_CASE(Nodeset_ParentChange)
 	success = nodeSetXmlParserRead.decode(configXmlRead.ptree());
 	BOOST_REQUIRE(success == true);
 
-	InformationModel::SPtr informationModelRead = InformationModel::construct();
+	InformationModel::SPtr informationModelRead = constructSPtr<InformationModel>();
 	success = InformationModelNodeSet::initial(informationModelRead, nodeSetXmlParserRead);
 	BOOST_REQUIRE(success == true);
 

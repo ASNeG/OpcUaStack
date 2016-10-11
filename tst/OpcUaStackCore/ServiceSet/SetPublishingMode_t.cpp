@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Title)
 
 BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 {
-	RequestHeader::SPtr requestHeader = RequestHeader::construct();
+	RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 	uint32_t pos;
 	OpcUaNodeId typeId;
 	OpcUaUInt32 subscriptionId;
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build SetPublishingModeRequest
-	setPublishingModeRequestSPtr = SetPublishingModeRequest::construct();
+	setPublishingModeRequestSPtr = constructSPtr<SetPublishingModeRequest>();
 
 	// build RequestHeader
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	setPublishingModeRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Request)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_SetPublishingModeRequest_Encoding_DefaultBinary);
 
 	// decode ReadRequest
-	setPublishingModeRequestSPtr = SetPublishingModeRequest::construct();
+	setPublishingModeRequestSPtr = constructSPtr<SetPublishingModeRequest>();
 	requestHeader->opcUaBinaryDecode(ios);
 	setPublishingModeRequestSPtr->opcUaBinaryDecode(ios);
 
@@ -179,7 +179,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Response)
 	OpcUaNumber::opcUaBinaryEncode(ios1, secureTokenId);
 
 	// encode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->sequenceNumber(54);
 	sequenceHeaderSPtr->requestId(4);
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Response)
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build SetPublishingModeResponse
-	setPublishingModeResponseSPtr = SetPublishingModeResponse::construct();
+	setPublishingModeResponseSPtr = constructSPtr<SetPublishingModeResponse>();
 	responseHeader->time(ptime);
 	responseHeader->requestHandle(133);
 	responseHeader->serviceResult((OpcUaStatusCode)Success);
@@ -200,7 +200,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Response)
 	setPublishingModeResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->messageType(MessageType_Message);
 	messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 	messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Response)
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
-	messageHeaderSPtr = MessageHeader::construct();
+	messageHeaderSPtr = constructSPtr<MessageHeader>();
 	messageHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(messageHeaderSPtr->messageType() == MessageType_Message);
 
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Response)
 	BOOST_REQUIRE(secureTokenId == 1);
 
 	// decode sequence header
-	sequenceHeaderSPtr = SequenceHeader::construct();
+	sequenceHeaderSPtr = constructSPtr<SequenceHeader>();
 	sequenceHeaderSPtr->opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(sequenceHeaderSPtr->sequenceNumber() == 54);
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(SetPublishingMode_Response)
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_SetPublishingModeResponse_Encoding_DefaultBinary);
 
 	// decode PublishResponse
-	setPublishingModeResponseSPtr = SetPublishingModeResponse::construct();
+	setPublishingModeResponseSPtr = constructSPtr<SetPublishingModeResponse>();
 	responseHeader->opcUaBinaryDecode(ios);
 	setPublishingModeResponseSPtr->opcUaBinaryDecode(ios);
 

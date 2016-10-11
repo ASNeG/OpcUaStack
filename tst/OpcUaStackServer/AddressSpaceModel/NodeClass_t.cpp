@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_)
 
 BOOST_AUTO_TEST_CASE(NodeClass_NodeId)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaNodeId nodeId1;
 	OpcUaNodeId nodeId2;
 	boost::optional<OpcUaNodeId&> nodeId3;
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_NodeId)
 
 BOOST_AUTO_TEST_CASE(NodeClass_NodeClass)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	NodeClassType nodeClass1;
 	NodeClassType nodeClass2;
 	boost::optional<NodeClassType&> nodeClass3;
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_NodeClass)
 
 BOOST_AUTO_TEST_CASE(NodeClass_BrowseName)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaQualifiedName browseName1;
 	OpcUaQualifiedName browseName2;
 	boost::optional<OpcUaQualifiedName&> browseName3;
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_BrowseName)
 
 BOOST_AUTO_TEST_CASE(NodeClass_DisplayName)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaLocalizedText displayName1;
 	OpcUaLocalizedText displayName2;
 	boost::optional<OpcUaLocalizedText&> displayName3;
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_DisplayName)
 
 BOOST_AUTO_TEST_CASE(NodeClass_Description)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaLocalizedText description1;
 	OpcUaLocalizedText description2;
 	boost::optional<OpcUaLocalizedText&> description3;
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_Description)
 
 BOOST_AUTO_TEST_CASE(NodeClass_WriteMask)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaUInt32 writeMask1;
 	OpcUaUInt32 writeMask2;
 	boost::optional<OpcUaUInt32&> writeMask3;
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_WriteMask)
 
 BOOST_AUTO_TEST_CASE(NodeClass_UserWriteMask)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaUInt32 userWriteMask1;
 	OpcUaUInt32 userWriteMask2;
 	boost::optional<OpcUaUInt32&> userWriteMask3;
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_UserWriteMask)
 
 BOOST_AUTO_TEST_CASE(NodeClass_IsAbstract)
 {
-	VariableTypeNodeClass::SPtr variableNodeClass = VariableTypeNodeClass::construct();
+	VariableTypeNodeClass::SPtr variableNodeClass = constructSPtr<VariableTypeNodeClass>();
 	OpcUaBoolean isAbstract1;
 	OpcUaBoolean isAbstract2;
 	boost::optional<OpcUaBoolean&> isAbstract3;
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_IsAbstract)
 
 BOOST_AUTO_TEST_CASE(NodeClass_Symmetric)
 {
-	ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = ReferenceTypeNodeClass::construct();
+	ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = constructSPtr<ReferenceTypeNodeClass>();
 	OpcUaBoolean symmetric1;
 	OpcUaBoolean symmetric2;
 	boost::optional<OpcUaBoolean&> symmetric3;
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_Symmetric)
 
 BOOST_AUTO_TEST_CASE(NodeClass_InverseName)
 {
-	ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = ReferenceTypeNodeClass::construct();
+	ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = constructSPtr<ReferenceTypeNodeClass>();
 	OpcUaLocalizedText inverseName1;
 	OpcUaLocalizedText inverseName2;
 	boost::optional<OpcUaLocalizedText&> inverseName3;
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_InverseName)
 
 BOOST_AUTO_TEST_CASE(NodeClass_ContainsNoLoops)
 {
-	ViewNodeClass::SPtr viewNodeClass = ViewNodeClass::construct();
+	ViewNodeClass::SPtr viewNodeClass = constructSPtr<ViewNodeClass>();
 	OpcUaBoolean containsNoLoops1;
 	OpcUaBoolean containsNoLoops2;
 	boost::optional<OpcUaBoolean&> containsNoLoops3;
@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_ContainsNoLoops)
 
 BOOST_AUTO_TEST_CASE(NodeClass_EventNotifier)
 {
-	ViewNodeClass::SPtr viewNodeClass = ViewNodeClass::construct();
+	ViewNodeClass::SPtr viewNodeClass = constructSPtr<ViewNodeClass>();
 	OpcUaByte eventNotifier1;
 	OpcUaByte eventNotifier2;
 	boost::optional<OpcUaByte&> eventNotifier3;
@@ -383,7 +383,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_EventNotifier)
 
 BOOST_AUTO_TEST_CASE(NodeClass_Value)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaDataValue value1;
 	OpcUaDataValue value2;
 	boost::optional<OpcUaDataValue&> value3;
@@ -413,7 +413,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_Value)
 
 BOOST_AUTO_TEST_CASE(NodeClass_DataType)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaNodeId dataType1;
 	OpcUaNodeId dataType2;
 	boost::optional<OpcUaNodeId&> dataType3;
@@ -444,7 +444,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_DataType)
 
 BOOST_AUTO_TEST_CASE(NodeClass_ValueRank)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaInt32 valueRank1;
 	OpcUaInt32 valueRank2;
 	boost::optional<OpcUaInt32&> valueRank3;
@@ -474,7 +474,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_ValueRank)
 
 BOOST_AUTO_TEST_CASE(NodeClass_ArrayDimensions)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaUInt32Array arrayDimensions1;
 	OpcUaUInt32Array arrayDimensions2;
 	boost::optional<OpcUaUInt32Array&> arrayDimensions3;
@@ -505,7 +505,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_ArrayDimensions)
 
 BOOST_AUTO_TEST_CASE(NodeClass_AccessLevel)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaByte accessLevel1;
 	OpcUaByte accessLevel2;
 	boost::optional<OpcUaByte&> accessLevel3;
@@ -535,7 +535,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_AccessLevel)
 
 BOOST_AUTO_TEST_CASE(NodeClass_UserAccessLevel)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaByte userAccessLevel1;
 	OpcUaByte userAccessLevel2;
 	boost::optional<OpcUaByte&> userAccessLevel3;
@@ -565,7 +565,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_UserAccessLevel)
 
 BOOST_AUTO_TEST_CASE(NodeClass_Historizing)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaBoolean historizing1;
 	OpcUaBoolean historizing2;
 	boost::optional<OpcUaBoolean&> historizing3;
@@ -595,7 +595,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_Historizing)
 
 BOOST_AUTO_TEST_CASE(NodeClass_Executable)
 {
-	MethodNodeClass::SPtr variableNodeClass = MethodNodeClass::construct();
+	MethodNodeClass::SPtr variableNodeClass = constructSPtr<MethodNodeClass>();
 	OpcUaBoolean executable1;
 	OpcUaBoolean executable2;
 	boost::optional<OpcUaBoolean&> executable3;
@@ -625,7 +625,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_Executable)
 
 BOOST_AUTO_TEST_CASE(NodeClass_UserExecutable)
 {
-	MethodNodeClass::SPtr variableNodeClass = MethodNodeClass::construct();
+	MethodNodeClass::SPtr variableNodeClass = constructSPtr<MethodNodeClass>();
 	OpcUaBoolean userExecutable1;
 	OpcUaBoolean userExecutable2;
 	boost::optional<OpcUaBoolean&> userExecutable3;
@@ -655,7 +655,7 @@ BOOST_AUTO_TEST_CASE(NodeClass_UserExecutable)
 
 BOOST_AUTO_TEST_CASE(NodeClass_MinimumSamplingInterval)
 {
-	VariableNodeClass::SPtr variableNodeClass = VariableNodeClass::construct();
+	VariableNodeClass::SPtr variableNodeClass = constructSPtr<VariableNodeClass>();
 	OpcUaDouble minimumSamplingInterval1;
 	OpcUaDouble minimumSamplingInterval2;
 	boost::optional<OpcUaDouble&> minimumSamplingInterval3;
