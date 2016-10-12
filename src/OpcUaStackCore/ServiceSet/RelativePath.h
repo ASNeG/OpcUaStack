@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT RelativePath
-	: public  ObjectPool<RelativePath>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<RelativePath> SPtr;

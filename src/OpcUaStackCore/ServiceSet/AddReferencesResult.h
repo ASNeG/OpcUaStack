@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AddReferencesResult : public ObjectPool<AddReferencesResult>
+	class DLLEXPORT AddReferencesResult
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<AddReferencesResult> SPtr;
@@ -44,7 +45,9 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode_;			
 	};
 
-	class AddReferencesResultArray : public OpcUaArray<AddReferencesResult::SPtr, SPtrTypeCoder<AddReferencesResult> >, public ObjectPool<AddReferencesResultArray> 
+	class AddReferencesResultArray
+	: public OpcUaArray<AddReferencesResult::SPtr, SPtrTypeCoder<AddReferencesResult> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<AddReferencesResultArray> SPtr;

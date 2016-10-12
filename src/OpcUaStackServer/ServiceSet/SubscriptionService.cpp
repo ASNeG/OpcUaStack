@@ -111,7 +111,7 @@ namespace OpcUaStackServer
 		SubscriptionManager::SPtr subscriptionManager;
 		SubscriptionManagerMap::iterator it = subscriptionManagerMap_.find(trx->sessionId());
 		if (it == subscriptionManagerMap_.end()) {
-			subscriptionManager = SubscriptionManager::construct();
+			subscriptionManager = constructSPtr<SubscriptionManager>();
 			subscriptionManager->ioService(ioService());
 			subscriptionManager->informationModel(informationModel_);
 			subscriptionManager->sessionId(trx->sessionId());

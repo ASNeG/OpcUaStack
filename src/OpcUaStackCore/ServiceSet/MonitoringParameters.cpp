@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	MonitoringParameters::MonitoringParameters(void)
-	: ObjectPool<MonitoringParameters>()
+	: Object()
 	, clientHandle_()
 	, samplingInterval_(500)
 	, filter_()

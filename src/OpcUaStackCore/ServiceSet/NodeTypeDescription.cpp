@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	NodeTypeDescription::NodeTypeDescription(void)
-	: ObjectPool<NodeTypeDescription>()
+	: Object()
 	, typeDefinitionNodeSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, includeSubtypes_()
-	, dataToReturnArraySPtr_(QueryDataDescriptionArray::construct()) 
+	, dataToReturnArraySPtr_(constructSPtr<QueryDataDescriptionArray>())
 	{
 	}
 

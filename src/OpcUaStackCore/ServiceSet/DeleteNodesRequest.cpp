@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteNodesRequest::DeleteNodesRequest(void)
-	: deleteNodesItemArraySPtr_(DeleteNodesItemArray::construct())
+	: deleteNodesItemArraySPtr_(constructSPtr<DeleteNodesItemArray>())
 	{
 	}
 

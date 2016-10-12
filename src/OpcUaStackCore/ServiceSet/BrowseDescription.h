@@ -33,7 +33,8 @@ namespace OpcUaStackCore
 		BrowseDirection_Both = 2
 	} BrowseDirectionEnum;
 	                
-	class DLLEXPORT BrowseDescription : public  ObjectPool<BrowseDescription>
+	class DLLEXPORT BrowseDescription
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseDescription> SPtr;
@@ -66,7 +67,9 @@ namespace OpcUaStackCore
 		OpcUaUInt32 resultMask_;
 	};
 
-	class BrowseDescriptionArray : public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >, public ObjectPool<BrowseDescriptionArray> 
+	class BrowseDescriptionArray
+	: public OpcUaArray<BrowseDescription::SPtr, SPtrTypeCoder<BrowseDescription> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<BrowseDescriptionArray> SPtr;

@@ -29,12 +29,11 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ViewDescription::ViewDescription(void)
-	: ObjectPool<ViewDescription>()
-	, viewIdSPtr_()
+	: Object()
+	, viewIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, timestamp_()
 	, viewVersion_()
 	{
-		viewIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	ViewDescription::~ViewDescription(void)

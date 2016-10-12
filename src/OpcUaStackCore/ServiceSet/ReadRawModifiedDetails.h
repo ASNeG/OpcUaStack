@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ReadRawModifiedDetails
-	: public ObjectPool<ReadRawModifiedDetails>
+	: public Object
 	, public ExtensibleParameterBase
 	{
 	  public:

@@ -28,8 +28,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT NodeReferenceApplication
-	: public  ObjectPool<NodeReferenceApplication>
-	, public NodeReference
+	: public NodeReference
 	{
 	  public:
 		typedef boost::shared_ptr<NodeReferenceApplication> SPtr;

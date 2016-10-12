@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT QueryDataSet : public  ObjectPool<QueryDataSet>
+	class DLLEXPORT QueryDataSet
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<QueryDataSet> SPtr;
@@ -51,7 +52,9 @@ namespace OpcUaStackCore
 		OpcUaVariantArray::SPtr valueArraySPtr_;
 	};
 
-	class QueryDataSetArray : public OpcUaArray<QueryDataSet::SPtr, SPtrTypeCoder<QueryDataSet> >, public ObjectPool<QueryDataSetArray> 
+	class QueryDataSetArray
+	: public OpcUaArray<QueryDataSet::SPtr, SPtrTypeCoder<QueryDataSet> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<QueryDataSetArray> SPtr;

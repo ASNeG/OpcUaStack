@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DeleteMonitoredItemsResponse : public  ObjectPool<DeleteMonitoredItemsResponse>
+	class DLLEXPORT DeleteMonitoredItemsResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteMonitoredItemsResponse> SPtr;

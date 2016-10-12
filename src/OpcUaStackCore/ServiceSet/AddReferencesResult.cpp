@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddReferencesResult::AddReferencesResult(void)
-		: statusCode_()		
+	: statusCode_()
 	{
 	}
 

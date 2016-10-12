@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryUpdateResult::HistoryUpdateResult(void)
-	: ObjectPool<HistoryUpdateResult>()
+	: Object()
 	, statusCode_()
 	, operationResultArraySPtr_()
 	, diagnosticInfoArraySPtr_()

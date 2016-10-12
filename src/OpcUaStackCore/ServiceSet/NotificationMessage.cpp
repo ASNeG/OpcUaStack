@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	NotificationMessage::NotificationMessage(void)
-	: ObjectPool<NotificationMessage>()
+	: Object()
 	, sequenceNumber_()
 	, publishTime_()
-	, notificationDataArraySPtr_(ExtensibleParameterArray::construct())
+	, notificationDataArraySPtr_(constructSPtr<ExtensibleParameterArray>())
 	{
 	}
 

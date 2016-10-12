@@ -80,7 +80,7 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "get namespace info");
 
-		ServiceTransactionNamespaceInfo::SPtr trx = ServiceTransactionNamespaceInfo::construct();
+		ServiceTransactionNamespaceInfo::SPtr trx = constructSPtr<ServiceTransactionNamespaceInfo>();
 		NamespaceInfoRequest::SPtr req = trx->request();
 		NamespaceInfoResponse::SPtr res = trx->response();
 

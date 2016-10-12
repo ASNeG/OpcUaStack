@@ -114,7 +114,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	VariableTypeNodeClass::clone(void)
 	{
-		VariableTypeNodeClass::SPtr variableTypeNodeClass = VariableTypeNodeClass::construct();
+		VariableTypeNodeClass::SPtr variableTypeNodeClass = constructSPtr<VariableTypeNodeClass>();
 		copyTo(variableTypeNodeClass);
 		return variableTypeNodeClass;
 	}

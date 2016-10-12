@@ -25,7 +25,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SecurityHeader : public  ObjectPool<SecurityHeader>
+	class DLLEXPORT SecurityHeader
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SecurityHeader> SPtr;

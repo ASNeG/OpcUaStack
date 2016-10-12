@@ -105,7 +105,7 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "get namespace info");
 
-		ServiceTransactionNamespaceInfo::SPtr trx = ServiceTransactionNamespaceInfo::construct();
+		ServiceTransactionNamespaceInfo::SPtr trx = constructSPtr<ServiceTransactionNamespaceInfo>();
 		NamespaceInfoRequest::SPtr req = trx->request();
 		NamespaceInfoResponse::SPtr res = trx->response();
 
@@ -169,7 +169,7 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "create node reference");
 
-		ServiceTransactionGetNodeReference::SPtr trx = ServiceTransactionGetNodeReference::construct();
+		ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
 		GetNodeReferenceRequest::SPtr req = trx->request();
 		GetNodeReferenceResponse::SPtr res = trx->response();
 

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SetMonitoringModeRequest::SetMonitoringModeRequest(void)
-	: ObjectPool<SetMonitoringModeRequest>()
+	: Object()
 	, subscriptionId_()
 	, monitoringMode_()
 	, monitoredItemIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())

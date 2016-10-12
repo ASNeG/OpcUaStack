@@ -215,7 +215,7 @@ namespace OpcUaStackClient
 		req->readValueIdArray()->resize(attributeIdVec_.size());
 		std::vector<AttributeId>::iterator it;
 		for (it = attributeIdVec_.begin(); it != attributeIdVec_.end(); it++) {
-			ReadValueId::SPtr readValueIdSPtr = ReadValueId::construct();
+			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
 			readValueIdSPtr->nodeId()->copyFrom(nodeId_);
 			readValueIdSPtr->attributeId((OpcUaInt32)*it);
 			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);

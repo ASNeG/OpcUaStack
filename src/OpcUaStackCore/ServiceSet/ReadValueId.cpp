@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadValueId::ReadValueId(void)
-	: ObjectPool<ReadValueId>()
+	: Object()
 	, nodeIdSPtr_()
 	, attributeId_(AttributeId_Value)
 	, indexRange_()

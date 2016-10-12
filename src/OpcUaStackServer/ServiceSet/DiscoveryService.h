@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DiscoveryService 
-	: public ObjectPool<DiscoveryService>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;

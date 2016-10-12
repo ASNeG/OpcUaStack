@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT SubscriptionService 
 	: public ServiceSetBase
-	, public ObjectPool<SubscriptionService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionService> SPtr;

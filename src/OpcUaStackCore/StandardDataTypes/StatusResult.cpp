@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	StatusResult::StatusResult(void)
-	: ObjectPool<StatusResult>()
+	: Object()
 	, statusCode_()
 	, diagnosticInfo_()
 	{
@@ -81,7 +81,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	StatusResult::factory(void)
 	{
-		return StatusResult::construct();
+		return constructSPtr<StatusResult>();
 	}
 
 	void

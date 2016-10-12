@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ReadRequest::ReadRequest(void)
-	: ObjectPool<ReadRequest>()
+	: Object()
 	, maxAge_()
 	, timestampsToReturn_()
-	, readValueIdArraySPtr_(ReadValueIdArray::construct())
+	, readValueIdArraySPtr_(constructSPtr<ReadValueIdArray>())
 	{
 	}
 

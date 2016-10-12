@@ -50,7 +50,7 @@ namespace OpcUaStackServer
 		//
 		// --------------------------------------------------------------------------
 		// --------------------------------------------------------------------------
-		EndpointDescriptionArray::SPtr endpointDescriptionArray = EndpointDescriptionArray::construct();
+		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
 
 		if (!EndpointDescriptionConfig::endpointDescriptions(endpointDescriptionArray, configPrefix, config, config->configFileName())) {
 			return false;

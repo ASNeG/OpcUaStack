@@ -61,7 +61,9 @@ namespace OpcUaStackCore
 		OpcUaString indexRange_;
 	};
 
-	class SimpleAttributeOperandArray : public OpcUaArray<SimpleAttributeOperand::SPtr, SPtrTypeCoder<SimpleAttributeOperand> >, public ObjectPool<SimpleAttributeOperandArray> 
+	class SimpleAttributeOperandArray
+	: public OpcUaArray<SimpleAttributeOperand::SPtr, SPtrTypeCoder<SimpleAttributeOperand> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SimpleAttributeOperandArray> SPtr;

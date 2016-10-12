@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AddNodesItem : public ObjectPool<AddNodesItem>
+	class DLLEXPORT AddNodesItem
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<AddNodesItem> SPtr;
@@ -63,7 +64,9 @@ namespace OpcUaStackCore
 		OpcUaExpandedNodeId::SPtr typeDefinition_;
 	};
 
-	class AddNodesItemArray : public OpcUaArray<AddNodesItem::SPtr, SPtrTypeCoder<AddNodesItem> >, public ObjectPool<AddNodesItemArray> 
+	class AddNodesItemArray
+	: public OpcUaArray<AddNodesItem::SPtr, SPtrTypeCoder<AddNodesItem> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<AddNodesItemArray> SPtr;

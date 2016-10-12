@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT TCPAcceptor : public ObjectPool<TCPAcceptor>
+	class DLLEXPORT TCPAcceptor
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<TCPAcceptor> SPtr;

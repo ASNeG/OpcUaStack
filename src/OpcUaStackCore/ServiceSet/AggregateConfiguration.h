@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AggregateConfiguration : public  ObjectPool<AggregateConfiguration>
+	class DLLEXPORT AggregateConfiguration
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<AggregateConfiguration> SPtr;

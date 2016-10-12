@@ -287,7 +287,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+			ReferenceItem::SPtr referenceItem = constructSPtr<ReferenceItem>();
 			
 			//
 			// attribute reference type (mandatory)
@@ -395,7 +395,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAObject(boost::property_tree::ptree& ptree)
 	{
-		ObjectNodeClass::SPtr objectNodeClassSPtr = ObjectNodeClass::construct();
+		ObjectNodeClass::SPtr objectNodeClassSPtr = constructSPtr<ObjectNodeClass>();
 
 		//
 		// decode NodeBase 
@@ -431,7 +431,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAObjectType(boost::property_tree::ptree& ptree)
 	{
-		ObjectTypeNodeClass::SPtr objectTypeNodeClassSPtr = ObjectTypeNodeClass::construct();
+		ObjectTypeNodeClass::SPtr objectTypeNodeClassSPtr = constructSPtr<ObjectTypeNodeClass>();
 
 		//
 		// decode NodeBase 
@@ -467,7 +467,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAVariable(boost::property_tree::ptree& ptree)
 	{
-		VariableNodeClass::SPtr variableNodeClassSPtr = VariableNodeClass::construct();
+		VariableNodeClass::SPtr variableNodeClassSPtr = constructSPtr<VariableNodeClass>();
 
 		//
 		// decode NodeBase
@@ -606,7 +606,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAVariableType(boost::property_tree::ptree& ptree)
 	{
-		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr = VariableTypeNodeClass::construct();
+		VariableTypeNodeClass::SPtr variableTypeNodeClassSPtr = constructSPtr<VariableTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -720,7 +720,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUADataType(boost::property_tree::ptree& ptree)
 	{
-		DataTypeNodeClass::SPtr dataTypeNodeClassSPtr = DataTypeNodeClass::construct();
+		DataTypeNodeClass::SPtr dataTypeNodeClassSPtr = constructSPtr<DataTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -757,7 +757,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAReferenceType(boost::property_tree::ptree& ptree)
 	{
-		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr = ReferenceTypeNodeClass::construct();
+		ReferenceTypeNodeClass::SPtr referenceTypeNodeClassSPtr = constructSPtr<ReferenceTypeNodeClass>();
 
 		//
 		// decode NodeBase
@@ -820,7 +820,7 @@ namespace OpcUaStackServer
 	bool 
 	NodeSetXmlParser::decodeUAMethod(boost::property_tree::ptree& ptree)
 	{
-		MethodNodeClass::SPtr methodeNodeClassSPtr = MethodNodeClass::construct();
+		MethodNodeClass::SPtr methodeNodeClassSPtr = constructSPtr<MethodNodeClass>();
 
 		//
 		// decode NodeBase (Id, BrowseName, SymbolicName, DisplayName, ...)
@@ -834,7 +834,7 @@ namespace OpcUaStackServer
 		//
 		boost::optional<std::string> methodDeclarationId = ptree.get_optional<std::string>("<xmlattr>.MethodDeclarationId");
 		if (methodDeclarationId) {
-			ReferenceItem::SPtr referenceItem = ReferenceItem::construct();
+			ReferenceItem::SPtr referenceItem = constructSPtr<ReferenceItem>();
 
 			OpcUaNodeId::SPtr referenceTypeNodeId = constructSPtr<OpcUaNodeId>();
 			referenceTypeNodeId = ReferenceTypeMap::stringToNodeId("HasTypeDefinition");
@@ -1185,7 +1185,7 @@ namespace OpcUaStackServer
 			variableNodeClassSPtr = *it;
 
 			//
-			// encode NodeBase 
+			// encode NodeBase
 			//
 			if (!encodeNodeBase(variableNodeClassSPtr, node)) return false;
 			std::string nodeId = variableNodeClassSPtr->nodeId().data().toString();

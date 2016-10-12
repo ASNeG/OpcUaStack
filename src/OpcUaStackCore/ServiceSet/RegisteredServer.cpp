@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RegisteredServer::RegisteredServer(void)
-	: ObjectPool<RegisteredServer>()
+	: Object()
 	, serverUri_()
 	, productUri_()
 	, serverNameArraySPtr_(constructSPtr<OpcUaStringArray>())

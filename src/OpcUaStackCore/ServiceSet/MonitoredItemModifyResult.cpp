@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	MonitoredItemModifyResult::MonitoredItemModifyResult(void)
-	: ObjectPool<MonitoredItemModifyResult>()
+	: Object()
 	, statusCode_()
 	, revisedSamplingInterval_()
 	, revisedQueueSize_()

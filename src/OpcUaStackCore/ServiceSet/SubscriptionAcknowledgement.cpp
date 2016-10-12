@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SubscriptionAcknowledgement::SubscriptionAcknowledgement(void)
-	: ObjectPool<SubscriptionAcknowledgement>()
+	: Object()
 	, subscriptionId_()
 	, sequenceNumber_()
 	{

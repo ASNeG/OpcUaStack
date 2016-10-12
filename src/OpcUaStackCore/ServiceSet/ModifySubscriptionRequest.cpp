@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	ModifySubscriptionRequest::ModifySubscriptionRequest(void)
-	: ObjectPool<ModifySubscriptionRequest>()
+	: Object()
 	, subscriptionId_()
 	, requestedPublishingInterval_()
 	, requestedLifetimeCount_()

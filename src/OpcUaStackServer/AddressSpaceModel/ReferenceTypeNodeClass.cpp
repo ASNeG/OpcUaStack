@@ -86,7 +86,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	ReferenceTypeNodeClass::clone(void)
 	{
-		ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = ReferenceTypeNodeClass::construct();
+		ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = constructSPtr<ReferenceTypeNodeClass>();
 		copyTo(referenceTypeNodeClass);
 		return referenceTypeNodeClass;
 	}

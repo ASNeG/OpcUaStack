@@ -68,7 +68,7 @@ namespace OpcUaStackServer
 		CreateSubscriptionRequest::SPtr createSubscriptionRequest = trx->request();
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
 
-		Subscription::SPtr subscription = Subscription::construct();
+		Subscription::SPtr subscription = constructSPtr<Subscription>();
 		subscription->ioService(ioService_);
 		subscription->informationModel(informationModel_);
 		subscriptionMap_.insert(std::make_pair(subscription->subscriptionId(), subscription));

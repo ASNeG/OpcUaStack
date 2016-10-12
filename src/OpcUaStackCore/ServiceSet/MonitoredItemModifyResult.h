@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT MonitoredItemModifyResult : public  ObjectPool<MonitoredItemModifyResult>
+	class DLLEXPORT MonitoredItemModifyResult
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemModifyResult> SPtr;
@@ -57,7 +58,9 @@ namespace OpcUaStackCore
 		ExtensibleParameter filterResult_;
 	};
 
-	class MonitoredItemModifyResultArray : public OpcUaArray<MonitoredItemModifyResult::SPtr, SPtrTypeCoder<MonitoredItemModifyResult> >, public ObjectPool<MonitoredItemModifyResultArray> 
+	class MonitoredItemModifyResultArray
+	: public OpcUaArray<MonitoredItemModifyResult::SPtr, SPtrTypeCoder<MonitoredItemModifyResult> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemModifyResultArray> SPtr;

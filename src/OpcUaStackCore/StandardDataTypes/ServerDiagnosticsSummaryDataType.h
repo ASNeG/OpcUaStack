@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServerDiagnosticsSummaryDataType
-	: public ObjectPool<ServerDiagnosticsSummaryDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

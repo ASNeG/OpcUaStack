@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	AggregateConfiguration::AggregateConfiguration(void)
-	: ObjectPool<AggregateConfiguration>()
+	: Object()
 	, useServerCapabilitiesDefaults_()
 	, treatUncertainAsBad_()
 	, percentDataBad_()

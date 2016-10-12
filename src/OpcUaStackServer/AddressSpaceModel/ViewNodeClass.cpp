@@ -72,7 +72,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	ViewNodeClass::clone(void)
 	{
-		ViewNodeClass::SPtr viewNodeClass = ViewNodeClass::construct();
+		ViewNodeClass::SPtr viewNodeClass = constructSPtr<ViewNodeClass>();
 		copyTo(viewNodeClass);
 		return viewNodeClass;
 	}

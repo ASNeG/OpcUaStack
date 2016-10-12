@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT ViewService 
 	: public ServiceSetBase
-	, public ObjectPool<ViewService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ViewService> SPtr;

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DataChangeFilter::DataChangeFilter(void)
-	: ObjectPool<DataChangeFilter>()
+	: Object()
 	, trigger_(DataChangeTrigger_Status_Value)
 	, deadbandType_(0)
 	, deadbandValue_()

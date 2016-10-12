@@ -27,7 +27,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT TransactionManager : public ObjectPool<TransactionManager>
+	class DLLEXPORT TransactionManager
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<TransactionManager> SPtr;

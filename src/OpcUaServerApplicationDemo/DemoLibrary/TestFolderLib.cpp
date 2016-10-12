@@ -96,7 +96,7 @@ namespace OpcUaServerApplicationDemo
 	bool
 	TestFolderLib::getNamespaceInfo(void)
 	{
-		ServiceTransactionNamespaceInfo::SPtr trx = ServiceTransactionNamespaceInfo::construct();
+		ServiceTransactionNamespaceInfo::SPtr trx = constructSPtr<ServiceTransactionNamespaceInfo>();
 		NamespaceInfoRequest::SPtr req = trx->request();
 		NamespaceInfoResponse::SPtr res = trx->response();
 
@@ -409,7 +409,7 @@ namespace OpcUaServerApplicationDemo
 	bool
 	TestFolderLib::registerCallbacks(void)
 	{
-	  	ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
+	  	ServiceTransactionRegisterForward::SPtr trx = constructSPtr<ServiceTransactionRegisterForward>();
 	  	RegisterForwardRequest::SPtr req = trx->request();
 	  	RegisterForwardResponse::SPtr res = trx->response();
 
@@ -451,7 +451,7 @@ namespace OpcUaServerApplicationDemo
 	  	OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
 	  	nodeId->set(3, namespaceIndex_);
 
-	  	ServiceTransactionRegisterForward::SPtr trx = ServiceTransactionRegisterForward::construct();
+	  	ServiceTransactionRegisterForward::SPtr trx = constructSPtr<ServiceTransactionRegisterForward>();
 	  	RegisterForwardRequest::SPtr req = trx->request();
 	  	RegisterForwardResponse::SPtr res = trx->response();
 
@@ -479,7 +479,7 @@ namespace OpcUaServerApplicationDemo
 	bool
 	TestFolderLib::createNodeReferences(void)
 	{
-		ServiceTransactionGetNodeReference::SPtr trx = ServiceTransactionGetNodeReference::construct();
+		ServiceTransactionGetNodeReference::SPtr trx = constructSPtr<ServiceTransactionGetNodeReference>();
 		GetNodeReferenceRequest::SPtr req = trx->request();
 		GetNodeReferenceResponse::SPtr res = trx->response();
 

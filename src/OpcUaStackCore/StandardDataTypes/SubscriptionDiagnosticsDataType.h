@@ -26,7 +26,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SubscriptionDiagnosticsDataType
-	: public ObjectPool<SubscriptionDiagnosticsDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

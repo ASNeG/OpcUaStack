@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 
 
 	class DLLEXPORT ForwardInfoSync
-	: public  ObjectPool<ForwardInfoSync>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ForwardInfoSync> SPtr;

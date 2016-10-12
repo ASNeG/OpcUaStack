@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT HistoryUpdateResult : public  ObjectPool<HistoryUpdateResult>
+	class DLLEXPORT HistoryUpdateResult
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryUpdateResult> SPtr;
@@ -51,7 +52,9 @@ namespace OpcUaStackCore
 		OpcUaDiagnosticInfoArray::SPtr diagnosticInfoArraySPtr_;
 	};
 
-	class HistoryUpdateResultArray : public OpcUaArray<HistoryUpdateResult::SPtr, SPtrTypeCoder<HistoryUpdateResult> >, public ObjectPool<HistoryUpdateResultArray> 
+	class HistoryUpdateResultArray
+	: public OpcUaArray<HistoryUpdateResult::SPtr, SPtrTypeCoder<HistoryUpdateResult> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryUpdateResultArray> SPtr;

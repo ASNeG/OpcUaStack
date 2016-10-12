@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT HistoryReadResult
-	: public  ObjectPool<HistoryReadResult>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryReadResult> SPtr;
@@ -54,8 +54,8 @@ namespace OpcUaStackCore
 	};
 
 	class HistoryReadResultArray
-  : public OpcUaArray<HistoryReadResult::SPtr, SPtrTypeCoder<HistoryReadResult> >
-	, public ObjectPool<HistoryReadResultArray>
+    : public OpcUaArray<HistoryReadResult::SPtr, SPtrTypeCoder<HistoryReadResult> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryReadResultArray> SPtr;

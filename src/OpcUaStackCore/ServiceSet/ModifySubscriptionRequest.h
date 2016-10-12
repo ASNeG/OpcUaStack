@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ModifySubscriptionRequest : public  ObjectPool<ModifySubscriptionRequest>
+	class DLLEXPORT ModifySubscriptionRequest
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ModifySubscriptionRequest> SPtr;

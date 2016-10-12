@@ -96,7 +96,7 @@ namespace OpcUaStackServer
 
 		for (uint32_t idx=0; idx<size; idx++) {
 			MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
-			monitoredItemCreateResult = MonitoredItemCreateResult::construct();
+			monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
 			createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
 
 			// get request parameter
@@ -123,7 +123,7 @@ namespace OpcUaStackServer
 			}
 
 			// create new monitor item
-			MonitorItem::SPtr monitorItem = MonitorItem::construct();
+			MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
 			OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
 			if (statusCode != Success) {
 				monitoredItemCreateResult->statusCode(statusCode);

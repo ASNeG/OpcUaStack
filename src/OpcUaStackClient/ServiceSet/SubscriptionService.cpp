@@ -337,7 +337,7 @@ namespace OpcUaStackClient
     {
     	if (subscriptionSet_.size() == 0) return;
     	while (actPublishCount_ < publishCount_) {
-    		ServiceTransactionPublish::SPtr trx = ServiceTransactionPublish::construct();
+    		ServiceTransactionPublish::SPtr trx = constructSPtr<ServiceTransactionPublish>();
     		trx->requestTimeout(requestTimeout_);
     		SubscriptionServiceBase::asyncSend(trx);
 

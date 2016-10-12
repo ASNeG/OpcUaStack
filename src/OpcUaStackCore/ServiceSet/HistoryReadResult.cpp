@@ -29,10 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	HistoryReadResult::HistoryReadResult(void)
-	: ObjectPool<HistoryReadResult>()
+	: Object()
 	, statusCode_()
 	, continuationPoint_()
-	, historyData_(ExtensibleParameter::construct())
+	, historyData_(constructSPtr<ExtensibleParameter>())
 	{
 	}
 

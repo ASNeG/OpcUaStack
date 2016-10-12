@@ -118,7 +118,7 @@ namespace OpcUaStackServer
 		ReferenceItemMultiMap::iterator it;
 		for (it = referenceItemMultiMap_.begin(); it != referenceItemMultiMap_.end(); it++) {
 			ReferenceItem::SPtr referenceItem = it->second;
-			ReferenceItem::SPtr newReferenceItem = ReferenceItem::construct();
+			ReferenceItem::SPtr newReferenceItem = constructSPtr<ReferenceItem>();
 
 			referenceItem->copyTo(newReferenceItem);
 

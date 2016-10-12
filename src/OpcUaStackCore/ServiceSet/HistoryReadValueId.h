@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT HistoryReadValueId : public  ObjectPool<HistoryReadValueId>
+	class DLLEXPORT HistoryReadValueId
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryReadValueId> SPtr;
@@ -59,7 +60,9 @@ namespace OpcUaStackCore
 		OpcUaByteString continuationPoint_;
 	};
 
-	class HistoryReadValueIdArray : public OpcUaArray<HistoryReadValueId::SPtr, SPtrTypeCoder<HistoryReadValueId> >, public ObjectPool<HistoryReadValueIdArray> 
+	class HistoryReadValueIdArray
+	: public OpcUaArray<HistoryReadValueId::SPtr, SPtrTypeCoder<HistoryReadValueId> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryReadValueIdArray> SPtr;

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowsePathTarget::BrowsePathTarget(void)
-	: ObjectPool<BrowsePathTarget>()
+	: Object()
 	, targetIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
 	, remainingPathIndex_()
 	{

@@ -25,7 +25,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AcknowledgeMessage : public  ObjectPool<AcknowledgeMessage>
+	class DLLEXPORT AcknowledgeMessage
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<AcknowledgeMessage> SPtr;

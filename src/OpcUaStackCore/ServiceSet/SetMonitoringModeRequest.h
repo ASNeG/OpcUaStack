@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SetMonitoringModeRequest : public  ObjectPool<SetMonitoringModeRequest>
+	class DLLEXPORT SetMonitoringModeRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SetMonitoringModeRequest> SPtr;

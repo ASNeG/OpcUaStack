@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	BuildInfo::BuildInfo(void)
-	: ObjectPool<BuildInfo>()
+	: Object()
 	, productUri_()
 	, manufacturerName_()
 	, productName_()
@@ -105,7 +105,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	BuildInfo::factory(void)
 	{
-		return BuildInfo::construct();
+		return constructSPtr<BuildInfo>();
 	}
 
 	void

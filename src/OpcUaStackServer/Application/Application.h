@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT Application
 	: public ApplicationBase
-	, public ObjectPool<Application>
+	, public Object
 	, public ApplicationServiceIf
 	{
 	  public:

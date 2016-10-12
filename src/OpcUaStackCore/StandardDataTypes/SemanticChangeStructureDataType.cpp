@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	SemanticChangeStructureDataType::SemanticChangeStructureDataType(void)
-	: ObjectPool<SemanticChangeStructureDataType>()
+	: Object()
 	, affected_()
 	, affectedType_()
 	{
@@ -81,7 +81,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	SemanticChangeStructureDataType::factory(void)
 	{
-		return SemanticChangeStructureDataType::construct();
+		return constructSPtr<SemanticChangeStructureDataType>();
 	}
 
 	void

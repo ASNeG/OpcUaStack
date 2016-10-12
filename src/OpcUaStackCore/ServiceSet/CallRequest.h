@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CallRequest : public  ObjectPool<CallRequest>
+	class DLLEXPORT CallRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<CallRequest> SPtr;

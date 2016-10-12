@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	BrowsePath::BrowsePath(void)
-	: ObjectPool<BrowsePath>()
+	: Object()
 	, startingNodeSPtr_()
 	, relativePath_()
 	{

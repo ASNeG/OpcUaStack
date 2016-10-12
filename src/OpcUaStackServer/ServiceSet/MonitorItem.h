@@ -37,7 +37,8 @@ namespace OpcUaStackServer
 		NodeNoLongerExist,
 	} SampleResult;
 
-	class MonitorItem : public ObjectPool<MonitorItem>
+	class MonitorItem
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitorItem> SPtr;

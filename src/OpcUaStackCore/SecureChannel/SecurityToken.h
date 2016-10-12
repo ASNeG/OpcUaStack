@@ -23,7 +23,7 @@
 namespace OpcUaStackCore
 {
 	class DLLEXPORT SecurityToken
-	: public  ObjectPool<SecurityToken>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SecurityToken> SPtr;

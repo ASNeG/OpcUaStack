@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	MonitoredItemCreateResult::MonitoredItemCreateResult(void)
-	: ObjectPool<MonitoredItemCreateResult>()
+	: Object()
 	, statusCode_()
 	, monitoredItemId_()
 	, revisedSamplingInterval_()

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SetPublishingModeRequest::SetPublishingModeRequest(void)
-	: ObjectPool<SetPublishingModeRequest>()
+	: Object()
 	, publishingEnabled_()
 	, subscriptionIdArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{

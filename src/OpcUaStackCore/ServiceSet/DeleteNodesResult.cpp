@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DeleteNodesResult::DeleteNodesResult(void)
-		: statusCode_()		
+	: statusCode_()
 	{
 	}
 

@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT MonitoredItemService 
 	: public ServiceSetBase
-	, public ObjectPool<MonitoredItemService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<MonitoredItemService> SPtr;

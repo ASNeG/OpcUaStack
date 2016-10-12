@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServiceCounterDataType
-	: public ObjectPool<ServiceCounterDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

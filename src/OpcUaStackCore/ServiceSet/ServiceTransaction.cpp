@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 	ServiceTransaction::requestHeader(void)
 	{
 		if (requestHeader_.get() == nullptr) {
-			requestHeader_ = RequestHeader::construct();
+			requestHeader_ = constructSPtr<RequestHeader>();
 		}
 		return requestHeader_;
 	}

@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	RedundantServerDataType::RedundantServerDataType(void)
-	: ObjectPool<RedundantServerDataType>()
+	: Object()
 	, serverId_()
 	, serviceLevel_()
 	, serverState_()
@@ -96,7 +96,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	RedundantServerDataType::factory(void)
 	{
-		return RedundantServerDataType::construct();
+		return constructSPtr<RedundantServerDataType>();
 	}
 
 	void

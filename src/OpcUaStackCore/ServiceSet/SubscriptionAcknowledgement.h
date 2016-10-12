@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SubscriptionAcknowledgement : public  ObjectPool<SubscriptionAcknowledgement>
+	class DLLEXPORT SubscriptionAcknowledgement
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionAcknowledgement> SPtr;
@@ -49,7 +50,9 @@ namespace OpcUaStackCore
 
 	};
 
-	class SubscriptionAcknowledgementArray : public OpcUaArray<SubscriptionAcknowledgement::SPtr, SPtrTypeCoder<SubscriptionAcknowledgement> >, public ObjectPool<SubscriptionAcknowledgementArray> 
+	class SubscriptionAcknowledgementArray
+	: public OpcUaArray<SubscriptionAcknowledgement::SPtr, SPtrTypeCoder<SubscriptionAcknowledgement> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<SubscriptionAcknowledgementArray> SPtr;

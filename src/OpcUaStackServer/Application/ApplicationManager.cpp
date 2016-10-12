@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		Application::SPtr application = Application::construct();
+		Application::SPtr application = constructSPtr<Application>();
 		application->applicationIf(applicationIf);
 		application->applicationName(applicationName);
 		application->serviceComponent(serviceComponent_);

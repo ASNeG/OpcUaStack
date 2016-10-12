@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CallMethodRequest : public  ObjectPool<CallMethodRequest>
+	class DLLEXPORT CallMethodRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<CallMethodRequest> SPtr;
@@ -51,7 +52,9 @@ namespace OpcUaStackCore
 		  OpcUaVariantArray::SPtr inputArgumentArraySPtr_;
 	};
 
-	class CallMethodRequestArray : public OpcUaArray<CallMethodRequest::SPtr, SPtrTypeCoder<CallMethodRequest> >, public ObjectPool<CallMethodRequestArray> 
+	class CallMethodRequestArray
+	: public OpcUaArray<CallMethodRequest::SPtr, SPtrTypeCoder<CallMethodRequest> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<CallMethodRequestArray> SPtr;

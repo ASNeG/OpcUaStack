@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	MonitoredItemModifyRequest::MonitoredItemModifyRequest(void)
-	: ObjectPool<MonitoredItemModifyRequest>()
+	: Object()
 	, monitoredItemId_()
 	, requestedParameters_()
 	{

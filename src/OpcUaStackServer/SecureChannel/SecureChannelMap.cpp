@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		secureChannelElement = SecureChannelElement::construct();
+		secureChannelElement = constructSPtr<SecureChannelElement>();
 		secureChannelElement->channelId_ = channelId;
 		secureChannelElement->secureChannelServer_ = secureChannelServer;
 		secureChannelElement->secureChannelState_ = SecureChannelState_Init;

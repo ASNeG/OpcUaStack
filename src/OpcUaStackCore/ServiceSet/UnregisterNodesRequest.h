@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT UnregisterNodesRequest : public  ObjectPool<UnregisterNodesRequest>
+	class DLLEXPORT UnregisterNodesRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<UnregisterNodesRequest> SPtr;

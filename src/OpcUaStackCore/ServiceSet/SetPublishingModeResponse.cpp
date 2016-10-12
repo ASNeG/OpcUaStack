@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	SetPublishingModeResponse::SetPublishingModeResponse(void)
-	: ObjectPool<SetPublishingModeResponse>()
+	: Object()
 	, statusCodeArraySPtr_()
 	, diagnosticInfoArraySPtr_()
 	{

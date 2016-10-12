@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ServerStatusDataType
-	: public ObjectPool<ServerStatusDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

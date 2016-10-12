@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	PublishRequest::PublishRequest(void)
-	: ObjectPool<PublishRequest>()
-	, subscriptionAcknowledgementArraySPtr_(SubscriptionAcknowledgementArray::construct())
+	: Object()
+	, subscriptionAcknowledgementArraySPtr_(constructSPtr<SubscriptionAcknowledgementArray>())
 	{
 	}
 

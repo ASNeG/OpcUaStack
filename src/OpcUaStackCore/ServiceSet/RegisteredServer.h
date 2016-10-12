@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT RegisteredServer : public  ObjectPool<RegisteredServer>
+	class DLLEXPORT RegisteredServer
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<RegisteredServer> SPtr;

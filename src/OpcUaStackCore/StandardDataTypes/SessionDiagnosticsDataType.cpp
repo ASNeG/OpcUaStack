@@ -21,10 +21,10 @@ namespace OpcUaStackCore
 {
 
 	SessionDiagnosticsDataType::SessionDiagnosticsDataType(void)
-	: ObjectPool<SessionDiagnosticsDataType>()
+	: Object()
 	, sessionId_()
 	, sessionName_()
-	, clientDescription_(ApplicationDescription::construct())
+	, clientDescription_(constructSPtr<ApplicationDescription>())
 	, serverUri_()
 	, endpointUri_()
 	, localeIds_(constructSPtr<OpcUaStringArray>())
@@ -261,7 +261,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	SessionDiagnosticsDataType::factory(void)
 	{
-		return SessionDiagnosticsDataType::construct();
+		return constructSPtr<SessionDiagnosticsDataType>();
 	}
 
 	void

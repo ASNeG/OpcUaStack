@@ -141,7 +141,7 @@ namespace OpcUaStackServer
 	SessionOld::SPtr
 	SessionManagerOld::createSession(void)
 	{
-		SessionOld::SPtr session = SessionOld::construct();
+		SessionOld::SPtr session = constructSPtr<SessionOld>();
 		session->transactionManager(transactionManagerSPtr_);
 		session->sessionManagerIf(this);
 		bool rc = SessionConfig::initial(session, prefixSessionConfig_, sessionConfig_);
@@ -161,7 +161,7 @@ namespace OpcUaStackServer
 	{
 		std::string host = url_.host();
 		boost::asio::io_service& io_service = ioService_->io_service();
-		tcpAcceptor_ = TCPAcceptor::construct(io_service, host, url_.port());
+		tcpAcceptor_ = constructSPtr<TCPAcceptor>(io_service, host, url_.port());
 		tcpAcceptor_->listen();
 
 		Log(Info, "open opc ua listener socket")
@@ -185,7 +185,7 @@ namespace OpcUaStackServer
 		bool rc;
 
 		// create secure channel
-		secureChannel = SecureChannelServer::construct(*ioService_);
+		secureChannel = constructSPtr<SecureChannelServer>(*ioService_);
 		secureChannel->secureChannelManagerIf(this);
 		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
 		if (!rc) {

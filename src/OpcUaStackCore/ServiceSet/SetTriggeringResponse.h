@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SetTriggeringResponse : public  ObjectPool<SetTriggeringResponse>
+	class DLLEXPORT SetTriggeringResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<SetTriggeringResponse> SPtr;

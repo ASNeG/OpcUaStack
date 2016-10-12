@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	GetNodeReferenceRequest::GetNodeReferenceRequest(void)
-	: ObjectPool<GetNodeReferenceRequest>()
+	: Object()
 	, nodes_(constructSPtr<OpcUaNodeIdArray>())
 	{
 	}

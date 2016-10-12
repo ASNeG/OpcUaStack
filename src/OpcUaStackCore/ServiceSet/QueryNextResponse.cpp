@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	QueryNextResponse::QueryNextResponse(void)
-	: ObjectPool<QueryNextResponse>()
-	, queryDataSetArraySPtr_(QueryDataSetArray::construct())
+	: Object()
+	, queryDataSetArraySPtr_(constructSPtr<QueryDataSetArray>())
 	, revisedContinuationPoint_()
 	{
 	}

@@ -29,12 +29,10 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	DeleteMonitoredItemsResponse::DeleteMonitoredItemsResponse(void)
-	: ObjectPool<DeleteMonitoredItemsResponse>()
-	, resultArraySPtr_()
-	, diagnosticInfoArraySPtr_()
+	: Object()
+	, resultArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
+	, diagnosticInfoArraySPtr_(constructSPtr<OpcUaDiagnosticInfoArray>())
 	{
-		resultArraySPtr_ = constructSPtr<OpcUaStatusCodeArray>();
-		diagnosticInfoArraySPtr_ = constructSPtr<OpcUaDiagnosticInfoArray>();
 	}
 
 	DeleteMonitoredItemsResponse::~DeleteMonitoredItemsResponse(void)

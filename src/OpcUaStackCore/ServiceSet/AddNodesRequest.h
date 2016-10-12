@@ -36,7 +36,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT AddNodesRequest : public  ObjectPool<AddNodesRequest>
+	class DLLEXPORT AddNodesRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<AddNodesRequest> SPtr;

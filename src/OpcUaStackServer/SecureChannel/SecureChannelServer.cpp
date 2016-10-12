@@ -230,7 +230,7 @@ namespace OpcUaStackServer
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
 
-		AcknowledgeMessage::SPtr achnowledgeMessageSPtr(AcknowledgeMessage::construct());
+		AcknowledgeMessage::SPtr achnowledgeMessageSPtr(constructSPtr<AcknowledgeMessage>());
 
 		// set secure channel limits
 		achnowledgeMessageSPtr->protocolVersion(channelDataBase()->protocolVersion());
@@ -242,7 +242,7 @@ namespace OpcUaStackServer
 
 		boost::asio::streambuf sb2;
 		std::iostream ios2(&sb2);
-		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
+		MessageHeader::SPtr messageHeaderSPtr = constructSPtr<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Acknowledge);
 		messageHeaderSPtr->messageSize(OpcUaStackCore::count(sb1)+8);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
@@ -491,7 +491,7 @@ namespace OpcUaStackServer
 		receiveMessageInfo_.first_ = false;
 
 		if (receiveMessageInfo_.secureChannelTransaction_.get() == nullptr) {
-			receiveMessageInfo_.secureChannelTransaction_ = SecureChannelTransaction::construct();
+			receiveMessageInfo_.secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
 			receiveMessageInfo_.first_ = true;
 		}
 
@@ -706,7 +706,7 @@ namespace OpcUaStackServer
 		}
 
 		// encode MessageHeader
-		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
+		MessageHeader::SPtr messageHeaderSPtr = constructSPtr<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Message);
 		messageHeaderSPtr->segmentFlag(segmentFlag);
 		messageHeaderSPtr->messageSize(packetSize);

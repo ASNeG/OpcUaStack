@@ -23,8 +23,8 @@ namespace OpcUaStackServer
 	ServiceSetBase::ServiceSetBase(void)
 	: Component()
 	, informationModel_()
-	, namespaceArray_(NamespaceArray::construct())
-	, serverArray_(ServerArray::construct())
+	, namespaceArray_(constructSPtr<NamespaceArray>())
+	, serverArray_(constructSPtr<ServerArray>())
 	{
 	}
 

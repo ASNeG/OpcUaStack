@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 
 	Server::Server(void)
 	: Core()
-	, informationModel_(InformationModel::construct())
+	, informationModel_(constructSPtr<InformationModel>())
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()
@@ -333,7 +333,7 @@ namespace OpcUaStackServer
 	bool
 	Server::initSession(void)
 	{
-		EndpointDescriptionArray::SPtr endpointDescriptionArray = EndpointDescriptionArray::construct();
+		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
 		bool rc = EndpointDescriptionConfig::endpointDescriptions(
 			endpointDescriptionArray, 
 			"OpcUaServer.Endpoints", 
@@ -345,7 +345,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		DiscoveryService::SPtr discoveryService = DiscoveryService::construct();
+		DiscoveryService::SPtr discoveryService = constructSPtr<DiscoveryService>();
 		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
 		sessionManager_.discoveryService(discoveryService);
 		sessionManager_.ioService(&ioService_);

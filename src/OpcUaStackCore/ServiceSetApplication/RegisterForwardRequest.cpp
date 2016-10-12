@@ -29,9 +29,9 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	RegisterForwardRequest::RegisterForwardRequest(void)
-	: ObjectPool<RegisterForwardRequest>()
+	: Object()
 	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
-	, forwardInfoSync_(ForwardInfoSync::construct())
+	, forwardInfoSync_(constructSPtr<ForwardInfoSync>())
 	{
 	}
 

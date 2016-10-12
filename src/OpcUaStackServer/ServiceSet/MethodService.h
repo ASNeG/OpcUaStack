@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT MethodService 
 	: public ServiceSetBase
-	, public ObjectPool<MethodService>
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<MethodService> SPtr;

@@ -29,8 +29,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	GetNodeReferenceResponse::GetNodeReferenceResponse(void)
-	: ObjectPool<GetNodeReferenceResponse>()
-	, nodeReferenceArray_(NodeReferenceArray::construct())
+	: Object()
+	, nodeReferenceArray_(constructSPtr<NodeReferenceArray>())
 	{
 	}
 

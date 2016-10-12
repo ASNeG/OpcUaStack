@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT FindServersRequest : public  ObjectPool<FindServersRequest>
+	class DLLEXPORT FindServersRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<FindServersRequest> SPtr;

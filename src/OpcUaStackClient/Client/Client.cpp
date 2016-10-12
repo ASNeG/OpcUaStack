@@ -22,7 +22,7 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
-		
+
 	Client::Client(void)
 	: Core()
 	, serviceSetManager_()

@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT HelloMessage
-	: public  ObjectPool<HelloMessage>
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<HelloMessage> SPtr;

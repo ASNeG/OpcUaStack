@@ -59,7 +59,7 @@ namespace OpcUaStackServer
 	BaseNodeClass::SPtr
 	ObjectNodeClass::clone(void)
 	{
-		ObjectNodeClass::SPtr objectNodeClass = ObjectNodeClass::construct();
+		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
 		copyTo(objectNodeClass);
 		return objectNodeClass;
 	}

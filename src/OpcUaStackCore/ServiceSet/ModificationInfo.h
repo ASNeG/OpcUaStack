@@ -35,7 +35,8 @@ namespace OpcUaStackCore
 		HistoryUpdateMode_Delete = 4
 	} HistoryUpdateMode;
 
-	class DLLEXPORT ModificationInfo : public  ObjectPool<ModificationInfo>
+	class DLLEXPORT ModificationInfo
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<ModificationInfo> SPtr;
@@ -61,7 +62,9 @@ namespace OpcUaStackCore
 		HistoryUpdateMode updateType_;
 	};
 
-	class ModificationInfoArray : public OpcUaArray<ModificationInfo::SPtr, SPtrTypeCoder<ModificationInfo> >, public ObjectPool<ModificationInfoArray> 
+	class ModificationInfoArray
+	: public OpcUaArray<ModificationInfo::SPtr, SPtrTypeCoder<ModificationInfo> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ModificationInfoArray> SPtr;

@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	NotificationData::NotificationData(void)
-	: ObjectPool<NotificationData>()
+	: Object()
 	, typeId_()
 	, dataChangeNotificationSPtr_()
 	, statusChangeNotificationSPtr_()

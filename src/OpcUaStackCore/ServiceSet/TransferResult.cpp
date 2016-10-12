@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	TransferResult::TransferResult(void)
-	: ObjectPool<TransferResult>()
+	: Object()
 	, statusCode_()
 	, availableSequenceNumberArraySPtr_(constructSPtr<OpcUaUInt32Array>())
 	{

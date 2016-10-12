@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	ModelChangeStructureDataType::ModelChangeStructureDataType(void)
-	: ObjectPool<ModelChangeStructureDataType>()
+	: Object()
 	, affected_()
 	, affectedType_()
 	, verb_()
@@ -97,7 +97,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	ModelChangeStructureDataType::factory(void)
 	{
-		return ModelChangeStructureDataType::construct();
+		return constructSPtr<ModelChangeStructureDataType>();
 	}
 
 	void

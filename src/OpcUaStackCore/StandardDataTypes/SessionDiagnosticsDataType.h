@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT SessionDiagnosticsDataType
-	: public ObjectPool<SessionDiagnosticsDataType>
+	: public Object
 	, public ExtensionObjectBase
 	{
 	  public:

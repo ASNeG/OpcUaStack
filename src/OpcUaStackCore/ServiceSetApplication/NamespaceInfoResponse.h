@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT NamespaceInfoResponse
-	: public ObjectPool<NamespaceInfoResponse>
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<NamespaceInfoResponse> SPtr;

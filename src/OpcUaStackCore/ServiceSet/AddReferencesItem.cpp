@@ -29,15 +29,13 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddReferencesItem::AddReferencesItem(void)
-	: sourceNodeIdSPtr_()
-	, referenceTypeIdSPtr_()
+	: sourceNodeIdSPtr_(constructSPtr<OpcUaNodeId>())
+	, referenceTypeIdSPtr_(constructSPtr<OpcUaNodeId>())
 	, isForward_(false)
 	, targetServerUriSPtr_(constructSPtr<OpcUaString>())
 	, targetNodeIdSPtr_(constructSPtr<OpcUaExpandedNodeId>())
-	, targetNodeClassSPtr_(NodeClass::construct())
+	, targetNodeClassSPtr_(constructSPtr<NodeClass>())
 	{
-		sourceNodeIdSPtr_ = constructSPtr<OpcUaNodeId>();
-		referenceTypeIdSPtr_ = constructSPtr<OpcUaNodeId>();
 	}
 
 	AddReferencesItem::~AddReferencesItem(void)

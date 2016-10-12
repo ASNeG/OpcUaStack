@@ -108,7 +108,7 @@ namespace OpcUaClient
 
 		req->nodesToRead()->resize(commandReadH->nodeIdVec().size());
 		for (uint32_t idx=0; idx<commandReadH->nodeIdVec().size(); idx++) {
-			HistoryReadValueId::SPtr readValueId = HistoryReadValueId::construct();
+			HistoryReadValueId::SPtr readValueId = constructSPtr<HistoryReadValueId>();
 			readValueId->nodeId()->copyFrom(*commandReadH->nodeIdVec()[idx]);
 			readValueId->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 			req->nodesToRead()->push_back(readValueId);
@@ -219,7 +219,7 @@ namespace OpcUaClient
 			OpcUaByteString continousPoint;
 			continousPoint.value(readNextNodeVec[idx].continousPoint_);
 
-			HistoryReadValueId::SPtr readValueId = HistoryReadValueId::construct();
+			HistoryReadValueId::SPtr readValueId = constructSPtr<HistoryReadValueId>();
 			readValueId->nodeId()->copyFrom(readNextNodeVec[idx].nodeId_);
 			readValueId->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 			continousPoint.copyTo(readValueId->continuationPoint());
@@ -327,7 +327,7 @@ namespace OpcUaClient
 			OpcUaByteString continousPoint;
 			continousPoint.value(readNextNodeVec[idx].continousPoint_);
 
-			HistoryReadValueId::SPtr readValueId = HistoryReadValueId::construct();
+			HistoryReadValueId::SPtr readValueId = constructSPtr<HistoryReadValueId>();
 			readValueId->nodeId()->copyFrom(readNextNodeVec[idx].nodeId_);
 			readValueId->dataEncoding().namespaceIndex((OpcUaInt16) 0);
 			continousPoint.copyTo(readValueId->continuationPoint());

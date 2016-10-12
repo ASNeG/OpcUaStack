@@ -833,7 +833,7 @@ namespace OpcUaStackCore
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
-			secureChannel->secureChannelTransaction_ = SecureChannelTransaction::construct();
+			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
 		}
 
 		secureChannel->async_read_exactly(
@@ -1058,7 +1058,7 @@ namespace OpcUaStackCore
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
-			secureChannel->secureChannelTransaction_ = SecureChannelTransaction::construct();
+			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
 		}
 
 		secureChannel->async_read_exactly(
@@ -1193,7 +1193,7 @@ namespace OpcUaStackCore
 		}
 
 		// encode MessageHeader
-		MessageHeader::SPtr messageHeaderSPtr = MessageHeader::construct();
+		MessageHeader::SPtr messageHeaderSPtr = constructSPtr<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Message);
 		messageHeaderSPtr->segmentFlag(segmentFlag);
 		messageHeaderSPtr->messageSize(packetSize);

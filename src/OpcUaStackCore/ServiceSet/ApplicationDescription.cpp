@@ -179,7 +179,7 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::BSPtr
 	ApplicationDescription::factory(void)
 	{
-		return ApplicationDescription::construct();
+		return constructSPtr<ApplicationDescription>();
 	}
 
 	void 

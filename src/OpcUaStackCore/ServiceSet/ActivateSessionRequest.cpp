@@ -21,12 +21,12 @@ namespace OpcUaStackCore
 {
 
 	ActivateSessionRequest::ActivateSessionRequest(void)
-	: requestHeaderSPtr_(RequestHeader::construct())
-	, clientSignature_(SignatureData::construct())
-	, signedSoftwareCertificate_(SignedSoftwareCertificateArray::construct())
+	: requestHeaderSPtr_(constructSPtr<RequestHeader>())
+	, clientSignature_(constructSPtr<SignatureData>())
+	, signedSoftwareCertificate_(constructSPtr<SignedSoftwareCertificateArray>())
 	, localeIds_(constructSPtr<LocaleIdArray>())
-	, userIdentityToken_(ExtensibleParameter::construct())
-	, userTokenSignature_(SignatureData::construct())
+	, userIdentityToken_(constructSPtr<ExtensibleParameter>())
+	, userTokenSignature_(constructSPtr<SignatureData>())
 	{
 	}
 

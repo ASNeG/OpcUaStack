@@ -27,7 +27,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT ApplicationInstanceCertificate
-	: public ObjectPool<ApplicationInstanceCertificate>
+	: public Object
 	{
 	  public:
 		ApplicationInstanceCertificate(void);

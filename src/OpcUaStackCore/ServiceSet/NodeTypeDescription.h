@@ -28,7 +28,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT NodeTypeDescription : public  ObjectPool<NodeTypeDescription>
+	class DLLEXPORT NodeTypeDescription
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<NodeTypeDescription> SPtr;
@@ -52,7 +53,9 @@ namespace OpcUaStackCore
 		QueryDataDescriptionArray::SPtr dataToReturnArraySPtr_;
 	};
 
-	class NodeTypeDescriptionArray : public OpcUaArray<NodeTypeDescription::SPtr, SPtrTypeCoder<NodeTypeDescription> >, public ObjectPool<NodeTypeDescriptionArray> 
+	class NodeTypeDescriptionArray
+	: public OpcUaArray<NodeTypeDescription::SPtr, SPtrTypeCoder<NodeTypeDescription> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<NodeTypeDescriptionArray> SPtr;

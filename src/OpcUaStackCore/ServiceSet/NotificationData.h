@@ -30,7 +30,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT NotificationData : public  ObjectPool<NotificationData>
+	class DLLEXPORT NotificationData
+	: public  Object
 	{
 	  public:
 		NotificationData(void);
@@ -57,7 +58,11 @@ namespace OpcUaStackCore
 		  // TODO: EventNotificationList
 	};
 
-	class NotificationDataArray : public OpcUaArray<NotificationData::SPtr, SPtrTypeCoder<NotificationData> >, public ObjectPool<NotificationDataArray> {};
+	class NotificationDataArray
+	: public OpcUaArray<NotificationData::SPtr, SPtrTypeCoder<NotificationData> >
+	, public Object
+	{
+	};
 
 }
 

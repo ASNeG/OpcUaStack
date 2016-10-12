@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT TransferResult : public  ObjectPool<TransferResult>
+	class DLLEXPORT TransferResult
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<TransferResult> SPtr;
@@ -48,7 +49,9 @@ namespace OpcUaStackCore
 		  OpcUaUInt32Array::SPtr availableSequenceNumberArraySPtr_;
 	};
 
-	class TransferResultArray : public OpcUaArray<TransferResult::SPtr, SPtrTypeCoder<TransferResult> >, public ObjectPool<TransferResultArray> 
+	class TransferResultArray
+	: public OpcUaArray<TransferResult::SPtr, SPtrTypeCoder<TransferResult> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<TransferResultArray> SPtr;

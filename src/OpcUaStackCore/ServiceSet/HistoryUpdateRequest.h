@@ -29,7 +29,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT HistoryUpdateRequest : public  ObjectPool<HistoryUpdateRequest>
+	class DLLEXPORT HistoryUpdateRequest
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<HistoryUpdateRequest> SPtr;

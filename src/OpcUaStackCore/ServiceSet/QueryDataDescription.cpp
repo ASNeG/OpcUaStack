@@ -29,7 +29,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 
 	QueryDataDescription::QueryDataDescription(void)
-	: ObjectPool<QueryDataDescription>()
+	: Object()
 	, relativePath_()
 	, attributeId_()
 	, indexRange_()

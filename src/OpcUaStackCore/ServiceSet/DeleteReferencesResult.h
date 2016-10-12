@@ -26,7 +26,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DeleteReferencesResult : public ObjectPool<DeleteReferencesResult>
+	class DLLEXPORT DeleteReferencesResult
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteReferencesResult> SPtr;
@@ -44,7 +45,9 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode_;			
 	};
 
-	class DeleteReferencesResultArray : public OpcUaArray<DeleteReferencesResult::SPtr, SPtrTypeCoder<DeleteReferencesResult> >, public ObjectPool<DeleteReferencesResultArray> 
+	class DeleteReferencesResultArray
+	: public OpcUaArray<DeleteReferencesResult::SPtr, SPtrTypeCoder<DeleteReferencesResult> >
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteReferencesResultArray> SPtr;

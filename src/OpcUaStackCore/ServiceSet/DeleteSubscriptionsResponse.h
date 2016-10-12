@@ -27,7 +27,8 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT DeleteSubscriptionsResponse : public  ObjectPool<DeleteSubscriptionsResponse>
+	class DLLEXPORT DeleteSubscriptionsResponse
+	: public  Object
 	{
 	  public:
 		typedef boost::shared_ptr<DeleteSubscriptionsResponse> SPtr;

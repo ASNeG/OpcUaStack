@@ -28,7 +28,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ReferenceItem : public ObjectPool<ReferenceItem>
+	class DLLEXPORT ReferenceItem
+	: public Object
 	{
 	  public:
 		typedef boost::shared_ptr<ReferenceItem> SPtr;
