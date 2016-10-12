@@ -1,0 +1,19 @@
+###########################
+# UaModeler Project File  #
+# Generated at 12.10.2016 #
+###########################
+
+PROJECTNAME = Complex
+
+TEMPLATESET = ($TEMPLATES)/modeling/v1_0/t0/modeling.tt2set
+
+MODELS += ($MODELS)/Opc.Ua.NodeSet2.ua \
+    complex.ua
+
+COLORS = ($MODELS)/Opc.Ua.NodeSet2.ua: #0000ff\
+    complex.ua: #008000
+
+OUTPUTPATH = 
+
+GENERATE += complex.ua
+
