@@ -1,0 +1,19 @@
+###########################
+# UaModeler Project File  #
+# Generated at 12.10.2016 #
+###########################
+
+PROJECTNAME = Function
+
+TEMPLATESET = ($TEMPLATES)/modeling/v1_0/t0/modeling.tt2set
+
+MODELS += ($MODELS)/Opc.Ua.NodeSet2.ua \
+    function.ua
+
+COLORS = ($MODELS)/Opc.Ua.NodeSet2.ua: #0000ff\
+    function.ua: #008000
+
+OUTPUTPATH = 
+
+GENERATE += function.ua
+
