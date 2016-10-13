@@ -1,0 +1,13 @@
+<opc:TypeDictionary xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="http://yourorganisation.org/Complex/" DefaultByteOrder="LittleEndian" xmlns:opc="http://opcfoundation.org/BinarySchema/" xmlns:ua="http://opcfoundation.org/UA/" TargetNamespace="http://yourorganisation.org/Complex/">
+    <opc:Import Namespace="http://opcfoundation.org/UA/"/>
+    <opc:StructuredType BaseType="ua:ExtensionObject" Name="Complex">
+        <opc:Field TypeName="opc:Bit" Name="Value5Specified"/>
+        <opc:Field Length="31" TypeName="opc:Bit" Name="Reserved1"/>
+        <opc:Field TypeName="opc:Double" Name="Value1"/>
+        <opc:Field TypeName="opc:UInt32" Name="Value2"/>
+        <opc:Field TypeName="ua:QualifiedName" Name="Value3"/>
+        <opc:Field TypeName="ua:LocalizedText" Name="Value4"/>
+        <opc:Field SwitchField="Value5Specified" TypeName="opc:Int32" Name="NoOfValue5"/>
+        <opc:Field LengthField="NoOfValue5" SwitchField="Value5Specified" TypeName="opc:Double" Name="Value5"/>
+    </opc:StructuredType>
+</opc:TypeDictionary>

@@ -114,7 +114,7 @@ namespace OpcUaStackServer
 				forwardInfoSync = registerForwardRequest->forwardInfoSync();
 			}
 			else {
-				forwardInfoSync->update(*registerForwardRequest->forwardInfoSync());
+				forwardInfoSync->updateFrom(*registerForwardRequest->forwardInfoSync());
 			}
 			baseNodeClass->forwardInfoSync(forwardInfoSync);
 

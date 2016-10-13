@@ -16,8 +16,6 @@
  */
 
 #include <boost/tokenizer.hpp>
-#include <iostream>
-#include <fstream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/CSV.h"
 
@@ -117,8 +115,9 @@ namespace OpcUaStackCore
 			if (idx != 0) {
 				ofFile_ << ",";
 			}
-			ofFile_ << "\"" << line[idx] << "\"" << std::endl;
+			ofFile_ << "\"" << line[idx] << "\"";
 		}
+		ofFile_ << std::endl;
 		return S_Ok;
 	}
 

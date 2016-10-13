@@ -20,6 +20,93 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ForwardInfo
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ForwardInfo::ForwardInfo(void)
+	: callbackFlag_(false)
+	, usedCallbackFlag_(false)
+	, callback_()
+	, applicationContext_()
+	{
+	}
+
+	ForwardInfo::~ForwardInfo(void)
+	{
+	}
+
+	void
+	ForwardInfo::updateFrom(ForwardInfo& forwardInfo)
+	{
+		// set or unset callback
+		if (forwardInfo.usedCallback()) {
+			if (forwardInfo.isCallback()) {
+				setCallback(forwardInfo.callback());
+				applicationContext_ = forwardInfo.applicationContext();
+			}
+			else {
+				unsetCallback();
+				applicationContext_.reset();
+			}
+		}
+	}
+
+	void
+	ForwardInfo::setCallback(Callback& callback)
+	{
+		callback_ = callback;
+		callbackFlag_ = true;
+		usedCallbackFlag_ = true;
+	}
+
+	void
+	ForwardInfo::unsetCallback(void)
+	{
+		callbackFlag_ = false;
+		usedCallbackFlag_ = true;
+	}
+
+	bool
+	ForwardInfo::isCallback(void)
+	{
+		return callbackFlag_;
+	}
+
+	bool
+	ForwardInfo::usedCallback(void)
+	{
+		return usedCallbackFlag_;
+	}
+
+	Callback&
+	ForwardInfo::callback(void)
+	{
+		return callback_;
+	}
+
+	void
+	ForwardInfo::applicationContext(BaseClass::SPtr& applicationContext)
+	{
+		applicationContext_ = applicationContext;
+	}
+
+	BaseClass::SPtr&
+	ForwardInfo::applicationContext(void)
+	{
+		return applicationContext_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ForwardInfoSync
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	ForwardInfoSync::ForwardInfoSync(void)
 	: readCallbackFlag_(false)
 	, readHCallbackFlag_(false)
@@ -37,6 +124,12 @@ namespace OpcUaStackCore
 	, writeHCallback_()
 	, methodCallback_()
 	, applicationContext_()
+
+	, readService_()
+	, readHService_()
+	, writeService_()
+	, writeHService_()
+	, methodService_()
 	{
 	}
 
@@ -44,9 +137,45 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void
-	ForwardInfoSync::update(ForwardInfoSync& forwardInfoSync)
+	ForwardInfo&
+	ForwardInfoSync::readService(void)
 	{
+		return readService_;
+	}
+
+	ForwardInfo&
+	ForwardInfoSync::readHService(void)
+	{
+		return readHService_;
+	}
+
+	ForwardInfo&
+	ForwardInfoSync::writeService(void)
+	{
+		return writeService_;
+	}
+
+	ForwardInfo&
+	ForwardInfoSync::writeHService(void)
+	{
+		return writeHService_;
+	}
+
+	ForwardInfo&
+	ForwardInfoSync::methodService(void)
+	{
+		return methodService_;
+	}
+
+	void
+	ForwardInfoSync::updateFrom(ForwardInfoSync& forwardInfoSync)
+	{
+		readService_.updateFrom(forwardInfoSync.readService());
+		readHService_.updateFrom(forwardInfoSync.readHService());
+		writeService_.updateFrom(forwardInfoSync.writeService());
+		writeHService_.updateFrom(forwardInfoSync.writeHService());
+		methodService_.updateFrom(forwardInfoSync.methodService());
+
 		// set or unset read callback
 		if (forwardInfoSync.usedReadCallback()) {
 			if (forwardInfoSync.isReadCallback()) {

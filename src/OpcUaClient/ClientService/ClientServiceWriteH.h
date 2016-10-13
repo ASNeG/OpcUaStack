@@ -19,6 +19,7 @@
 #define __OpcUaClient_ClientServiceWriteH_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Utility/CSV.h"
 #include "OpcUaClient/ClientService/ClientServiceBase.h"
 #include "OpcUaClient/ClientService/ClientServiceManager.h"
 
@@ -47,6 +48,19 @@ namespace OpcUaClient
 		//- ClientServiceWriteH interface ---------------------------------------
 
       private:
+		bool write(
+			AttributeService::SPtr& attributeService,
+			CommandWriteH::SPtr& commandWriteH
+		);
+		bool writeCSV(
+			AttributeService::SPtr& attributeService,
+			CommandWriteH::SPtr& commandWriteH
+		);
+		bool openCSVFile(const std::string& fileName);
+		bool closeCSVFile(void);
+		bool readCSVLines(const std::string& fileName, OpcUaBuildInType valueType, OpcUaDataValue::Vec& dataValueVec);
+
+		CSV::SPtr csv_;
 	};
 
 }

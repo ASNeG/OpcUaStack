@@ -1,0 +1,21 @@
+<xs:schema elementFormDefault="qualified" targetNamespace="http://yourorganisation.org/Complex/Types.xsd" xmlns:tns="http://yourorganisation.org/Complex/Types.xsd" xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:import namespace="http://opcfoundation.org/UA/2008/02/Types.xsd"/>
+    <xs:complexType name="Complex">
+        <xs:sequence>
+            <xs:element minOccurs="0" type="xs:unsignedInt" name="EncodingMask"/>
+            <xs:element minOccurs="0" maxOccurs="1" type="xs:double" name="Value1"/>
+            <xs:element minOccurs="0" maxOccurs="1" type="xs:unsignedInt" name="Value2"/>
+            <xs:element minOccurs="0" maxOccurs="1" type="ua:QualifiedName" name="Value3"/>
+            <xs:element minOccurs="0" maxOccurs="1" type="ua:LocalizedText" name="Value4"/>
+            <xs:element minOccurs="0" maxOccurs="1" type="ua:ListOfDouble" name="Value5"/>
+        </xs:sequence>
+        <xs:attribute name="EncodingTable" fixed="Value5:0"/>
+    </xs:complexType>
+    <xs:element type="tns:Complex" name="Complex"/>
+    <xs:complexType name="ListOfComplex">
+        <xs:sequence>
+            <xs:element minOccurs="0" maxOccurs="unbounded" type="tns:Complex" name="Complex" nillable="true"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element type="tns:ListOfComplex" name="ListOfComplex" nillable="true"/>
+</xs:schema>

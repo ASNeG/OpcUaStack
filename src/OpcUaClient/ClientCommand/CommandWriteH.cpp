@@ -31,6 +31,9 @@ namespace OpcUaClient
 	, nodeId_()
 	, dataValueVec_()
 	, actDataValue_()
+	, csvFileName_("")
+	, inputType_(T_CommandLine)
+	, valueType_(OpcUaBuildInType_Unknown)
 	{
 	}
 
@@ -48,11 +51,35 @@ namespace OpcUaClient
 	bool
 	CommandWriteH::validateCommand(void)
 	{
-		if (dataValueVec_.size() == 0) {
+		if (nodeId_.nodeIdType() == OpcUaBuildInType_Unknown) {
 			std::stringstream ss;
-			ss << "need at least one data value parameter";
+			ss << "need node id parameter";
 			errorMessage(ss.str());
 			return false;
+		}
+
+		if (inputType_ == T_CSVFile) {
+			if (csvFileName_.empty()) {
+				std::stringstream ss;
+				ss << "need csv parameter";
+				errorMessage(ss.str());
+				return false;
+			}
+
+			if (valueType_ == OpcUaBuildInType_Unknown) {
+				std::stringstream ss;
+				ss << "need value type parameter";
+				errorMessage(ss.str());
+				return false;
+			}
+		}
+		else {
+			if (dataValueVec_.size() == 0) {
+				std::stringstream ss;
+				ss << "need at least one data value parameter";
+				errorMessage(ss.str());
+				return false;
+			}
 		}
 
 		return true;
@@ -155,6 +182,19 @@ namespace OpcUaClient
 				return false;
 		    }
 		}
+		else if (parameterName == "-VALUETYPE") {
+			valueType_ = OpcUaBuildInTypeMap::string2BuildInType(parameterValue);
+			if (valueType_ == OpcUaBuildInType_Unknown) {
+				std::stringstream ss;
+				ss << "value type parameter invalid (" << parameterValue << ")";
+				errorMessage(ss.str());
+				return false;
+			}
+		}
+		else if (parameterName == "-CSV") {
+			csvFileName_ = parameterValue;
+			inputType_ = T_CSVFile;
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -170,9 +210,12 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -WriteH: Write one ore more historical data values to the opc ua server\n"
 		   << "    -Session (0..1): Name of the session.\n"
+		   << "     **** case 1 **** read values from command line\n"
 		   << "    -NodeId (1..1): NodeId of the value to write to opc ua server\n"
 		   << "      -Value (1..N): value.\n"
 		   << "       The value or the status code must be available\n"
+		   << "      -StatusCode (1..N): status code of the variable.\n"
+		   << "       The variable or the status code must be available\n"
 		   << "      -SourceTimestamp (1..N): source timestamp of the variable\n"
 		   << "       The source timestamp is optinal\n"
 		   << "       Format:\n"
@@ -183,8 +226,10 @@ namespace OpcUaClient
 		   << "       Format:\n"
 		   << "         ISO Format (Example: 16010101T000000.0)\n"
 		   << "         Now (Example: Now)\n"
-		   << "      -StatusCode (1..N): status code of the variable.\n"
-		   << "       The variable or the status code must be available\n"
+		   << "     **** case 2 **** read values from csv file\n"
+		   << "    -NodeId (1..1): NodeId of the value to write to opc ua server\n"
+		   << "    -ValueType (1..1): Data type of the variable\n"
+		   << "    -CSV (1..1): Name of the CSV file\n"
 		   << "       ";
 
 		return ss.str();
@@ -200,6 +245,24 @@ namespace OpcUaClient
 	CommandWriteH::dataValueVec(void)
 	{
 		return dataValueVec_;
+	}
+
+	std::string&
+	CommandWriteH::csvFileName(void)
+	{
+		return csvFileName_;
+	}
+
+	CommandWriteH::InputType
+	CommandWriteH::inputType(void)
+	{
+		return inputType_;
+	}
+
+	OpcUaBuildInType
+	CommandWriteH::valueType(void)
+	{
+		return valueType_;
 	}
 
 }
