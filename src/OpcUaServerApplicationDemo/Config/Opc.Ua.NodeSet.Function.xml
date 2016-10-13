@@ -29,7 +29,7 @@
         </References>
     </UAMethod>
     
-  <UAVariable DataType="Argument" ParentNodeId="ns=1;s=func2" ValueRank="1" NodeId="ns=1;i=6001" ArrayDimensions="2" BrowseName="InputArguments">
+  <UAVariable DataType="i=296" ParentNodeId="ns=1;s=func2" ValueRank="1" NodeId="ns=1;i=6001" ArrayDimensions="2" BrowseName="InputArguments">
         <DisplayName>InputArguments</DisplayName>
         <References>
             <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=func2</Reference>
@@ -80,7 +80,7 @@
         </References>
     </UAMethod>
     
-    <UAVariable DataType="Argument" ParentNodeId="ns=1;s=func3" ValueRank="1" NodeId="ns=1;i=6002" ArrayDimensions="2" BrowseName="InputArguments">
+    <UAVariable DataType="i=296" ParentNodeId="ns=1;s=func3" ValueRank="1" NodeId="ns=1;i=6002" ArrayDimensions="2" BrowseName="InputArguments">
         <DisplayName>InputArguments</DisplayName>
         <References>
             <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=func3</Reference>
@@ -124,7 +124,7 @@
         </Value>
     </UAVariable>
     
-    <UAVariable DataType="Argument" ParentNodeId="ns=1;s=func3" ValueRank="1" NodeId="ns=1;i=6003" ArrayDimensions="2" BrowseName="OutputArguments">
+    <UAVariable DataType="i=296" ParentNodeId="ns=1;s=func3" ValueRank="1" NodeId="ns=1;i=6003" ArrayDimensions="2" BrowseName="OutputArguments">
         <DisplayName>OutputArguments</DisplayName>
         <References>
             <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=func3</Reference>
@@ -175,7 +175,7 @@
         </References>
     </UAMethod>
     
-    <UAVariable DataType="Argument" ParentNodeId="ns=1;s=funcMult" ValueRank="1" NodeId="ns=1;i=7002" ArrayDimensions="2" BrowseName="InputArguments">
+    <UAVariable DataType="i=296" ParentNodeId="ns=1;s=funcMult" ValueRank="1" NodeId="ns=1;i=7002" ArrayDimensions="2" BrowseName="InputArguments">
         <DisplayName>InputArguments</DisplayName>
         <References>
             <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=funcMult</Reference>
@@ -219,7 +219,7 @@
         </Value>
     </UAVariable>
     
-    <UAVariable DataType="Argument" ParentNodeId="ns=1;s=funcMult" ValueRank="1" NodeId="ns=1;i=6003" ArrayDimensions="2" BrowseName="OutputArguments">
+    <UAVariable DataType="i=296" ParentNodeId="ns=1;s=funcMult" ValueRank="1" NodeId="ns=1;i=6003" ArrayDimensions="2" BrowseName="OutputArguments">
         <DisplayName>OutputArguments</DisplayName>
         <References>
             <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=funcMult</Reference>
