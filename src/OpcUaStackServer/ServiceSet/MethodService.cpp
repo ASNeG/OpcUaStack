@@ -94,7 +94,8 @@ namespace OpcUaStackServer
 				Log(Debug, "call method error, because object node not exist in information model")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("ObjectNode", *callMethod->objectId());
+					.parameter("ObjectNode", *callMethod->objectId())
+					.parameter("MethodNode", *callMethod->methodId());
 				continue;
 			}
 
@@ -105,7 +106,8 @@ namespace OpcUaStackServer
 				Log(Debug, "call method error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("ObjectNode", *callMethod->objectId());
+					.parameter("ObjectNode", *callMethod->objectId())
+					.parameter("MethodNode", *callMethod->methodId());
 				continue;
 			}
 			if (!forwardInfoSync->methodService().isCallback()) {
@@ -113,7 +115,8 @@ namespace OpcUaStackServer
 				Log(Debug, "call method error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
-					.parameter("ObjectNode", *callMethod->objectId());
+					.parameter("ObjectNode", *callMethod->objectId())
+					.parameter("MethodNode", *callMethod->methodId());
 				continue;
 			}
 
@@ -122,23 +125,24 @@ namespace OpcUaStackServer
 			applicationMethodContext.objectNodeId_ = *callMethod->objectId();
 			applicationMethodContext.methodNodeId_ = *callMethod->methodId();
 			applicationMethodContext.inputArguments_ = callMethod->inputArguments();
+			applicationMethodContext.outputArguments_ = constructSPtr<OpcUaVariantArray>();
 			applicationMethodContext.statusCode_ = Success;
 			applicationMethodContext.applicationContext_ = forwardInfoSync->methodService().applicationContext();
 			forwardInfoSync->methodService().callback()(&applicationMethodContext);
 
 			// check response
 			callMethodResult->statusCode(applicationMethodContext.statusCode_);
+			callMethodResult->outputArguments(applicationMethodContext.outputArguments_);
+
 			if (applicationMethodContext.statusCode_ != Success) {
 				Log(Debug, "call value error, because service process failed")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("ObjectNode", *callMethod->objectId())
+					.parameter("MethodNode", *callMethod->methodId())
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationMethodContext.statusCode_));
 				continue;
 			}
-
-			// process response
-			callMethodResult->outputArguments(applicationMethodContext.outputArguments_);
 		}
 
 		serviceTransaction->componentSession()->send(serviceTransaction);
