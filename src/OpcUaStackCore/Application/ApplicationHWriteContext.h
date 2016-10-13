@@ -29,11 +29,10 @@ namespace OpcUaStackCore
 	class ApplicationHWriteContext
 	{
 	  public:
-
-		OpcUaNodeId nodeId_;
-		OpcUaDataValueArray::SPtr dataValueArray_;
-		OpcUaStatusCode statusCode_;
-		BaseClass::SPtr applicationContext_;
+		BaseClass::SPtr applicationContext_;		// IN - application context from register call
+		OpcUaNodeId nodeId_;						// IN - node id to be write
+		OpcUaDataValueArray::SPtr dataValueArray_;	// IN - variables to be write
+		OpcUaStatusCode statusCode_;				// OUT - result state of the write operation
 	};
 
 }

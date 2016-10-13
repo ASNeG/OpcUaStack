@@ -29,11 +29,11 @@ namespace OpcUaStackCore
 	class ApplicationReadContext
 	{
 	  public:
-		OpcUaNodeId nodeId_;
-		uint32_t attributeId_;
-		OpcUaDataValue dataValue_;
-		OpcUaStatusCode statusCode_;
-		BaseClass::SPtr applicationContext_;
+		BaseClass::SPtr applicationContext_;	// IN - application context from register call
+		OpcUaNodeId nodeId_;					// IN - node id to be read
+		uint32_t attributeId_;					// IN - attribute id to be read
+		OpcUaDataValue dataValue_;				// OUT - variable to be write
+		OpcUaStatusCode statusCode_;			// OUT - result state of the read operation
 	};
 
 }

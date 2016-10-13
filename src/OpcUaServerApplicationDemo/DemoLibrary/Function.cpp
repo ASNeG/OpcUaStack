@@ -115,6 +115,42 @@ namespace OpcUaServerApplicationDemo
 	{
 		Log(Debug, "register function callbacks");
 
+#if 0
+	  	ServiceTransactionRegisterForward::SPtr trx = constructSPtr<ServiceTransactionRegisterForward>();
+	  	RegisterForwardRequest::SPtr req = trx->request();
+	  	RegisterForwardResponse::SPtr res = trx->response();
+
+	  	req->forwardInfoSync()->readService().setCallback(readCallback_);
+	  	req->forwardInfoSync()->writeService().setCallback(writeCallback_);
+	  	req->nodesToRegister()->resize(valueMap_.size());
+
+	  	uint32_t pos = 0;
+	  	ValueMap::iterator it;
+	  	for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
+	  		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+	  		*nodeId = it->first;
+
+	  		req->nodesToRegister()->set(pos, nodeId);
+	  		pos++;
+	  	}
+
+	  	applicationServiceIf_->sendSync(trx);
+	  	if (trx->statusCode() != Success) {
+	  		std::cout << "response error" << std::endl;
+	  		return false;
+	  	}
+
+	  	for (pos = 0; pos < res->statusCodeArray()->size(); pos++) {
+	  		OpcUaStatusCode statusCode;
+	  		res->statusCodeArray()->get(pos, statusCode);
+	  		if (statusCode != Success) {
+	  			std::cout << "register value error" << std::endl;
+	  			return false;
+	  		}
+	  	}
+
+	    return true;
+#endif
 		return true;
 	}
 

@@ -29,12 +29,12 @@ namespace OpcUaStackCore
 	class ApplicationCallContext
 	{
 	  public:
-		OpcUaNodeId objectNodeId_;
-		OpcUaNodeId methodNodeId_;
-		OpcUaVariantArray::SPtr inputArguments_;
-		OpcUaVariantArray::SPtr outputArguments_;
-		OpcUaStatusCode statusCode_;
-		BaseClass::SPtr applicationContext_;
+		BaseClass::SPtr applicationContext_;		// IN - application context from register call
+		OpcUaNodeId objectNodeId_;					// IN - object node id of the function
+		OpcUaNodeId methodNodeId_;					// IN - method node id of the function
+		OpcUaVariantArray::SPtr inputArguments_;	// IN - input arguments
+		OpcUaVariantArray::SPtr outputArguments_;	// OUT - output arguments
+		OpcUaStatusCode statusCode_;				// OUT - result state of the call operation
 	};
 
 }

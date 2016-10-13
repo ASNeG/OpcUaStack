@@ -522,9 +522,6 @@ namespace OpcUaServerApplicationDemo
 	void
 	TestFolderLib::readValue(ApplicationReadContext* applicationReadContext)
 	{
-		std::cout << "read value..." << std::endl;
-	    std::cout << "read value ..." << applicationReadContext->nodeId_ << std::endl;
-
 	    ValueMap::iterator it;
 	    it = valueMap_.find(applicationReadContext->nodeId_);
 	    if (it == valueMap_.end()) {

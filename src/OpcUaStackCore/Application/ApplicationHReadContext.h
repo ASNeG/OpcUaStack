@@ -30,17 +30,17 @@ namespace OpcUaStackCore
 	class ApplicationHReadContext
 	{
 	  public:
-
-		OpcUaNodeId nodeId_;
-		boost::posix_time::ptime startTime_;
-		boost::posix_time::ptime stopTime_;
-		TimestampsToReturn timestampsToReturn_;
-		OpcUaDataValueArray::SPtr dataValueArray_;
-		OpcUaStatusCode statusCode_;
-		BaseClass::SPtr applicationContext_;
-		OpcUaBoolean releaseContinuationPoints_;
-		std::string continousPoint_;
-		uint32_t numValuesPerNode_;
+		BaseClass::SPtr applicationContext_;		// IN - application context from register call
+		OpcUaNodeId nodeId_;						// IN - node id to be read
+		boost::posix_time::ptime startTime_;		// IN - Start time of variables
+		boost::posix_time::ptime stopTime_;			// IN - stop time of variables
+		TimestampsToReturn timestampsToReturn_;		// IN - what timestamps are to be returned
+		OpcUaBoolean releaseContinuationPoints_;	// IN - info about whether the continous
+													//      point schould be deleted
+		std::string continousPoint_;				// IN - continous point or empty string
+		uint32_t numValuesPerNode_;					// IN - maximum number of data values in result array
+		OpcUaDataValueArray::SPtr dataValueArray_;	// OUT - result data array
+		OpcUaStatusCode statusCode_;				// OUT - status code of the read operation
 	};
 
 }
