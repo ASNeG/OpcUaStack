@@ -34,6 +34,7 @@ namespace OpcUaServerApplicationDemo
 	, applicationInfo_(nullptr)
 	, namespaceIndex_(0)
 	, baseNodeClassWMap_()
+	, methodCallback_(boost::bind(&Function::method, this, _1))
 	{
 	}
 
@@ -107,32 +108,32 @@ namespace OpcUaServerApplicationDemo
 		Log(Error, "namespace not found in configuration")
 	        .parameter("NamespaceUri", "http://ASNeG.de/Function/");
 
+		func1_.set(std::string("func1"), namespaceIndex_);
+		func2_.set(std::string("func2"), namespaceIndex_);
+		func3_.set(std::string("func3"), namespaceIndex_);
+		funcMult_.set(std::string("funcMult"), namespaceIndex_);
+
 		return false;
 	}
 
 	bool
 	Function::registerCallbacks(void)
 	{
-		Log(Debug, "register function callbacks");
+		Log(Debug, "register method callbacks");
 
-#if 0
 	  	ServiceTransactionRegisterForward::SPtr trx = constructSPtr<ServiceTransactionRegisterForward>();
 	  	RegisterForwardRequest::SPtr req = trx->request();
 	  	RegisterForwardResponse::SPtr res = trx->response();
 
-	  	req->forwardInfoSync()->readService().setCallback(readCallback_);
-	  	req->forwardInfoSync()->writeService().setCallback(writeCallback_);
-	  	req->nodesToRegister()->resize(valueMap_.size());
+	  	req->forwardInfoSync()->methodService().setCallback(methodCallback_);
+	  	req->nodesToRegister()->resize(1);
 
-	  	uint32_t pos = 0;
-	  	ValueMap::iterator it;
-	  	for (it = valueMap_.begin(); it != valueMap_.end(); it++) {
-	  		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
-	  		*nodeId = it->first;
+	  	OpcUaNodeId::SPtr nodeId;
 
-	  		req->nodesToRegister()->set(pos, nodeId);
-	  		pos++;
-	  	}
+	  	// add func1
+	  	nodeId = constructSPtr<OpcUaNodeId>();
+	  	nodeId->set(std::string("Function"), namespaceIndex_);
+	  	req->nodesToRegister()->push_back(nodeId);
 
 	  	applicationServiceIf_->sendSync(trx);
 	  	if (trx->statusCode() != Success) {
@@ -140,7 +141,7 @@ namespace OpcUaServerApplicationDemo
 	  		return false;
 	  	}
 
-	  	for (pos = 0; pos < res->statusCodeArray()->size(); pos++) {
+	  	for (uint32_t pos = 0; pos < res->statusCodeArray()->size(); pos++) {
 	  		OpcUaStatusCode statusCode;
 	  		res->statusCodeArray()->get(pos, statusCode);
 	  		if (statusCode != Success) {
@@ -149,9 +150,52 @@ namespace OpcUaServerApplicationDemo
 	  		}
 	  	}
 
-	    return true;
-#endif
 		return true;
+	}
+
+	void
+	Function::method(ApplicationMethodContext* applicationMethodContext)
+	{
+		Log(Debug, "method call")
+			.parameter("ObjectNodeId", applicationMethodContext->objectNodeId_)
+			.parameter("MethodNodeId", applicationMethodContext->methodNodeId_);
+
+		// method func1
+		if (applicationMethodContext->methodNodeId_ == func1_) {
+			applicationMethodContext->statusCode_ = Success;
+		}
+
+		// method func2
+		else if (applicationMethodContext->methodNodeId_ == func2_) {
+			if (applicationMethodContext->inputArguments_->size() != 0) {
+				Log(Debug, "input arguments")
+				    .parameter("Arguments", applicationMethodContext->inputArguments_);
+			}
+			applicationMethodContext->statusCode_ = Success;
+		}
+
+		// method func3
+		else if (applicationMethodContext->methodNodeId_ == func3_) {
+			if (applicationMethodContext->inputArguments_->size() != 0) {
+				Log(Debug, "input arguments")
+				    .parameter("Arguments", applicationMethodContext->inputArguments_);
+			}
+			applicationMethodContext->statusCode_ = Success;
+		}
+
+		// method funcMult
+		else if (applicationMethodContext->methodNodeId_ == funcMult_) {
+			if (applicationMethodContext->inputArguments_->size() != 0) {
+				Log(Debug, "input arguments")
+				    .parameter("Arguments", applicationMethodContext->inputArguments_);
+			}
+			applicationMethodContext->statusCode_ = Success;
+		}
+
+		else {
+			applicationMethodContext->statusCode_ = BadNotSupported;
+		}
+
 	}
 
 }

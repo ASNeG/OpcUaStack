@@ -19,6 +19,7 @@
 #define __OpcUaServerApplicationDemo_Function_h__
 
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
@@ -41,6 +42,7 @@ namespace OpcUaServerApplicationDemo
 	  private:
 		bool getNamespaceInfo(void);
 		bool registerCallbacks();
+		void method(ApplicationMethodContext* applicationMethodContext);
 
 		IOThread* ioThread_;
 		ApplicationServiceIf* applicationServiceIf_;
@@ -51,6 +53,13 @@ namespace OpcUaServerApplicationDemo
 		typedef std::map<OpcUaNodeId,OpcUaDataValue::SPtr> ValueMap;
 		typedef std::map<OpcUaNodeId,BaseNodeClass::WPtr> BaseNodeClassWMap;
 		BaseNodeClassWMap baseNodeClassWMap_;
+
+		Callback methodCallback_;
+
+		OpcUaNodeId func1_;
+		OpcUaNodeId func2_;
+		OpcUaNodeId func3_;
+		OpcUaNodeId funcMult_;
 	};
 
 }
