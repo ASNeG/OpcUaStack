@@ -17,7 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/Application/ApplicationCallContext.h"
+#include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/MethodService.h"
 
@@ -118,27 +118,27 @@ namespace OpcUaStackServer
 			}
 
 			// call forward calbacks
-			ApplicationCallContext applicationCallContext;
-			applicationCallContext.objectNodeId_ = *callMethod->objectId();
-			applicationCallContext.methodNodeId_ = *callMethod->methodId();
-			applicationCallContext.inputArguments_ = callMethod->inputArguments();
-			applicationCallContext.statusCode_ = Success;
-			applicationCallContext.applicationContext_ = forwardInfoSync->methodService().applicationContext();
-			forwardInfoSync->methodService().callback()(&applicationCallContext);
+			ApplicationMethodContext applicationMethodContext;
+			applicationMethodContext.objectNodeId_ = *callMethod->objectId();
+			applicationMethodContext.methodNodeId_ = *callMethod->methodId();
+			applicationMethodContext.inputArguments_ = callMethod->inputArguments();
+			applicationMethodContext.statusCode_ = Success;
+			applicationMethodContext.applicationContext_ = forwardInfoSync->methodService().applicationContext();
+			forwardInfoSync->methodService().callback()(&applicationMethodContext);
 
 			// check response
-			callMethodResult->statusCode(applicationCallContext.statusCode_);
-			if (applicationCallContext.statusCode_ != Success) {
+			callMethodResult->statusCode(applicationMethodContext.statusCode_);
+			if (applicationMethodContext.statusCode_ != Success) {
 				Log(Debug, "call value error, because service process failed")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("ObjectNode", *callMethod->objectId())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationCallContext.statusCode_));
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationMethodContext.statusCode_));
 				continue;
 			}
 
 			// process response
-			callMethodResult->outputArguments(applicationCallContext.outputArguments_);
+			callMethodResult->outputArguments(applicationMethodContext.outputArguments_);
 		}
 
 		serviceTransaction->componentSession()->send(serviceTransaction);
