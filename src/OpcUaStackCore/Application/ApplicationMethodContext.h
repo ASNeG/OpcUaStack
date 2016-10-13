@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ApplicationCallContext_h__
-#define __OpcUaStackCore_ApplicationCallContext_h__
+#ifndef __OpcUaStackCore_ApplicationMethodContext_h__
+#define __OpcUaStackCore_ApplicationMethodContext_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
@@ -26,7 +26,7 @@
 namespace OpcUaStackCore
 {
 
-	class ApplicationCallContext
+	class ApplicationMethodContext
 	{
 	  public:
 		BaseClass::SPtr applicationContext_;		// IN - application context from register call
