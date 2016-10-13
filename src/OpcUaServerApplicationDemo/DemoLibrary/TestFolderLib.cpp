@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -413,8 +413,8 @@ namespace OpcUaServerApplicationDemo
 	  	RegisterForwardRequest::SPtr req = trx->request();
 	  	RegisterForwardResponse::SPtr res = trx->response();
 
-	  	req->forwardInfoSync()->setReadCallback(readCallback_);
-	  	req->forwardInfoSync()->setWriteCallback(writeCallback_);
+	  	req->forwardInfoSync()->readService().setCallback(readCallback_);
+	  	req->forwardInfoSync()->writeService().setCallback(writeCallback_);
 	  	req->nodesToRegister()->resize(valueMap_.size());
 
 	  	uint32_t pos = 0;
@@ -455,8 +455,8 @@ namespace OpcUaServerApplicationDemo
 	  	RegisterForwardRequest::SPtr req = trx->request();
 	  	RegisterForwardResponse::SPtr res = trx->response();
 
-	  	req->forwardInfoSync()->setReadCallback(readLoopTimeCallback_);
-	  	req->forwardInfoSync()->setWriteCallback(writeLoopTimeCallback_);
+	  	req->forwardInfoSync()->readService().setCallback(readLoopTimeCallback_);
+	  	req->forwardInfoSync()->writeService().setCallback(writeLoopTimeCallback_);
 	  	req->nodesToRegister()->resize(1);
 	  	req->nodesToRegister()->set(0, nodeId);
 
@@ -522,7 +522,8 @@ namespace OpcUaServerApplicationDemo
 	void
 	TestFolderLib::readValue(ApplicationReadContext* applicationReadContext)
 	{
-	    //std::cout << "read value ..." << applicationReadContext->nodeId_ << std::endl;
+		std::cout << "read value..." << std::endl;
+	    std::cout << "read value ..." << applicationReadContext->nodeId_ << std::endl;
 
 	    ValueMap::iterator it;
 	    it = valueMap_.find(applicationReadContext->nodeId_);

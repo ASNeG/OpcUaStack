@@ -69,65 +69,12 @@ namespace OpcUaStackCore
 
 		void updateFrom(ForwardInfoSync& forwardInfoSync);
 
-		void setReadCallback(Callback& readCallback);
-		void unsetReadCallback(void);
-		bool isReadCallback(void);
-		bool usedReadCallback(void);
-		Callback& readCallback(void);
-
-		void setReadHCallback(Callback& readHCallback);
-		void unsetReadHCallback(void);
-		bool isReadHCallback(void);
-		bool usedReadHCallback(void);
-		Callback& readHCallback(void);
-
-		void setWriteCallback(Callback& writeCallback);
-		void unsetWriteCallback(void);
-		bool isWriteCallback(void);
-		bool usedWriteCallback(void);
-		Callback& writeCallback(void);
-
-		void setWriteHCallback(Callback& writeHCallback);
-		void unsetWriteHCallback(void);
-		bool isWriteHCallback(void);
-		bool usedWriteHCallback(void);
-		Callback& writeHCallback(void);
-
-		void setMethodCallback(Callback& methodCallback);
-		void unsetMethodCallback(void);
-		bool isMethodCallback(void);
-		bool usedMethodCallback(void);
-		Callback& methodCallback(void);
-
-		void applicationContext(BaseClass::SPtr& applicationContext);
-		BaseClass::SPtr& applicationContext(void);
-
 	  private:
 		ForwardInfo readService_;
 		ForwardInfo readHService_;
 		ForwardInfo writeService_;
 		ForwardInfo writeHService_;
 		ForwardInfo methodService_;
-
-		bool readCallbackFlag_;
-		bool readHCallbackFlag_;
-		bool writeCallbackFlag_;
-		bool writeHCallbackFlag_;
-		bool methodCallbackFlag_;
-
-		bool usedReadCallbackFlag_;
-		bool usedReadHCallbackFlag_;
-		bool usedWriteCallbackFlag_;
-		bool usedWriteHCallbackFlag_;
-		bool usedMethodCallbackFlag_;
-
-		Callback readCallback_;
-		Callback readHCallback_;
-		Callback writeCallback_;
-		Callback writeHCallback_;
-		Callback methodCallback_;
-
-		BaseClass::SPtr applicationContext_;
 	};
 
 }

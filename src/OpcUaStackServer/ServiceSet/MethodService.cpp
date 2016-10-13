@@ -108,7 +108,7 @@ namespace OpcUaStackServer
 					.parameter("ObjectNode", *callMethod->objectId());
 				continue;
 			}
-			if (!forwardInfoSync->isMethodCallback()) {
+			if (!forwardInfoSync->methodService().isCallback()) {
 				callMethodResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "call method error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -123,8 +123,8 @@ namespace OpcUaStackServer
 			applicationCallContext.methodNodeId_ = *callMethod->methodId();
 			applicationCallContext.inputArguments_ = callMethod->inputArguments();
 			applicationCallContext.statusCode_ = Success;
-			applicationCallContext.applicationContext_ = forwardInfoSync->applicationContext();
-			forwardInfoSync->methodCallback()(&applicationCallContext);
+			applicationCallContext.applicationContext_ = forwardInfoSync->methodService().applicationContext();
+			forwardInfoSync->methodService().callback()(&applicationCallContext);
 
 			// check response
 			callMethodResult->statusCode(applicationCallContext.statusCode_);
