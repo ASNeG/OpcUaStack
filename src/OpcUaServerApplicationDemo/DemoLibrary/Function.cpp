@@ -101,17 +101,17 @@ namespace OpcUaServerApplicationDemo
 		{
 			if (it->second == "http://ASNeG.de/Function/") {
 				namespaceIndex_ = it->first;
+
+				func1_.set(std::string("func1"), namespaceIndex_);
+				func2_.set(std::string("func2"), namespaceIndex_);
+				func3_.set(std::string("func3"), namespaceIndex_);
+				funcMult_.set(std::string("funcMult"), namespaceIndex_);
 				return true;
 			}
  		}
 
 		Log(Error, "namespace not found in configuration")
 	        .parameter("NamespaceUri", "http://ASNeG.de/Function/");
-
-		func1_.set(std::string("func1"), namespaceIndex_);
-		func2_.set(std::string("func2"), namespaceIndex_);
-		func3_.set(std::string("func3"), namespaceIndex_);
-		funcMult_.set(std::string("funcMult"), namespaceIndex_);
 
 		return false;
 	}
@@ -180,6 +180,16 @@ namespace OpcUaServerApplicationDemo
 				Log(Debug, "input arguments")
 				    .parameter("Arguments", applicationMethodContext->inputArguments_);
 			}
+
+			OpcUaVariant::SPtr variant;
+			applicationMethodContext->outputArguments_->resize(2);
+			variant = constructSPtr<OpcUaVariant>();
+			variant->variant((OpcUaUInt32)1);
+			applicationMethodContext->outputArguments_->push_back(variant);
+			variant = constructSPtr<OpcUaVariant>();
+			variant->variant((OpcUaUInt32)2);
+			applicationMethodContext->outputArguments_->push_back(variant);
+
 			applicationMethodContext->statusCode_ = Success;
 		}
 
@@ -189,6 +199,39 @@ namespace OpcUaServerApplicationDemo
 				Log(Debug, "input arguments")
 				    .parameter("Arguments", applicationMethodContext->inputArguments_);
 			}
+			if (applicationMethodContext->inputArguments_->size() != 2) {
+				applicationMethodContext->statusCode_ = BadInvalidArgument;
+				return;
+			}
+
+			OpcUaUInt32 value1;
+			OpcUaUInt32 value2;
+			OpcUaUInt32 value3;
+			OpcUaVariant::SPtr variant;
+
+			// read input values
+			applicationMethodContext->inputArguments_->get(0,variant);
+			if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) {
+				applicationMethodContext->statusCode_ = BadInvalidArgument;
+				return;
+			}
+			value1 = variant->get<OpcUaUInt32>();
+
+			applicationMethodContext->inputArguments_->get(1,variant);
+			if (variant->variantType() != OpcUaBuildInType_OpcUaUInt32) {
+				applicationMethodContext->statusCode_ = BadInvalidArgument;
+				return;
+			}
+			value2 = variant->get<OpcUaUInt32>();
+
+			// calculate result value
+			value3 = value1 * value2;
+
+			// set result value
+			applicationMethodContext->outputArguments_->resize(1);
+			variant = constructSPtr<OpcUaVariant>();
+			variant->variant(value3);
+			applicationMethodContext->outputArguments_->push_back(variant);
 			applicationMethodContext->statusCode_ = Success;
 		}
 
