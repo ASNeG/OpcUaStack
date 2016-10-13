@@ -127,6 +127,8 @@ namespace OpcUaStackServer
 		insertDataTypeElement("ListOfNodeId", DataTypeElement(OpcUaBuildInType_OpcUaNodeId, true));
 		insertDataTypeElement("QualifiedName", DataTypeElement(OpcUaBuildInType_OpcUaQualifiedName, false));
 		insertDataTypeElement("ListOfQualifiedName", DataTypeElement(OpcUaBuildInType_OpcUaQualifiedName, true));
+		insertDataTypeElement("ExtensionObject", DataTypeElement(OpcUaBuildInType_OpcUaExtensionObject, false));
+		insertDataTypeElement("ListOfExtensionObject", DataTypeElement(OpcUaBuildInType_OpcUaExtensionObject, true));
 	}
 
 
@@ -187,6 +189,7 @@ namespace OpcUaStackServer
 			case OpcUaBuildInType_OpcUaGuid: rc = decodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid"); break;
 			case OpcUaBuildInType_OpcUaNodeId: rc = decodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId"); break;
 			case OpcUaBuildInType_OpcUaQualifiedName: rc = decodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
+			case OpcUaBuildInType_OpcUaExtensionObject: rc = decodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject"); break;
 			default:
 			{
 				Log(Error, "data type unknown in node set value decoder")
@@ -359,6 +362,13 @@ namespace OpcUaStackServer
 		}
 
 		return true;
+	}
+
+	bool
+	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag)
+	{
+		// FIXME: todo
+		return false;
 	}
 
 	std::string
@@ -625,6 +635,13 @@ namespace OpcUaStackServer
 		std::string localTag = tag + std::string(".") + addxmls(std::string("Name"));
 		ptree.put(localTag, value->name().value());
 		return true;
+	}
+
+	bool
+	NodeSetValueParser::encode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& tag)
+	{
+		// FIXME: todo
+		return false;
 	}
 
 }
