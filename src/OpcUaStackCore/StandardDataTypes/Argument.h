@@ -49,6 +49,8 @@ namespace OpcUaStackCore
 		ExtensionObjectBase::BSPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+		bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		void copyTo(ExtensionObjectBase& extensionObjectBase);
 		bool equal(ExtensionObjectBase& extensionObjectBase) const;
 		void out(std::ostream& os);

@@ -367,8 +367,14 @@ namespace OpcUaStackServer
 	bool
 	NodeSetValueParser::decode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		Xmlns xmlns;
+		xmlns.ns("uax");
+		if (!destValue->decode(ptree, xmlns)) {
+			Log(Error, "invalid value in decode")
+				.parameter("Tag", tag);
+			return false;
+		}
+		return true;
 	}
 
 	std::string

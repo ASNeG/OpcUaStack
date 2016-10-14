@@ -20,10 +20,12 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <map>
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Xmlns.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObjectBase.h"
 
 namespace OpcUaStackCore
 {
@@ -133,7 +135,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
-		bool decode(boost::property_tree::ptree& pt);
+		bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+
+		void logExtensionObjectMap(void);
 
 	  private:
 		static ExtensionObjectMap extentionObjectMap_;

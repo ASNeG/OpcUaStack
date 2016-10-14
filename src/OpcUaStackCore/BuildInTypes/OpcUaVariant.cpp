@@ -1621,8 +1621,10 @@ namespace OpcUaStackCore
 			{
 				OpcUaVariantSPtr val;
 
+				Xmlns xmlns;
+
 				OpcUaExtensionObject::SPtr opcUaExtensionObjectSPtr = constructSPtr<OpcUaExtensionObject>();
-				if (!opcUaExtensionObjectSPtr->decode(pt)) return false;
+				if (!opcUaExtensionObjectSPtr->decode(pt, xmlns)) return false;
 				val.objectSPtr_ = opcUaExtensionObjectSPtr;
 				val.opcUaBuildInType_ = OpcUaBuildInType_OpcUaExtensionObject;
 				variantValue_ = val;
