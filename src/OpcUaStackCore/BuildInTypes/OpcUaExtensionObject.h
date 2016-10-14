@@ -114,6 +114,7 @@ namespace OpcUaStackCore
 			   return epSPtr;
 		   }
 
+		void mapTypeIdFromXmlToBinary(void);
 		void typeId(OpcUaUInt32 typeId);
 		void typeId(const OpcUaNodeId& typeNodeId);
 		OpcUaNodeId& typeId(void);

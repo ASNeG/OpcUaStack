@@ -374,6 +374,7 @@ namespace OpcUaStackServer
 				.parameter("Tag", tag);
 			return false;
 		}
+		destValue->out(std::cout); std::cout << std::endl;
 		return true;
 	}
 

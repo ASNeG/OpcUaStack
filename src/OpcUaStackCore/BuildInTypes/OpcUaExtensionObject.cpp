@@ -17,6 +17,7 @@
 
 #include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
@@ -114,6 +115,18 @@ namespace OpcUaStackCore
 		typeId_.reset();
 		epSPtr_.reset();
 		byteString_.reset();
+	}
+
+	void
+	OpcUaExtensionObject::mapTypeIdFromXmlToBinary(void)
+	{
+		// FIXME: todo
+		if (typeId_.nodeId<uint32_t>() == OpcUaId_Argument_Encoding_DefaultXml) {
+			typeId_.nodeId((uint32_t)OpcUaId_Argument_Encoding_DefaultBinary);
+		}
+
+		//OpcUaId_Argument_Encoding_DefaultBinary;
+		//OpcUaId_Argument_Encoding_DefaultXml;
 	}
 
 	void
@@ -363,10 +376,9 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		ExtensionObjectMap::iterator it;
-		it = extentionObjectMap_.find(nodeIdType);
-		if (it == extentionObjectMap_.end()) {
-
+		// FIXME: .... todo....
+		this->typeId(nodeIdType);
+		if (!createObject()) {
 			// Extension object unknown
 			logExtensionObjectMap();
 			Log(Error, "extension object unknown")
@@ -374,7 +386,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		epSPtr_ = it->second->factory();
+		mapTypeIdFromXmlToBinary();
 		return epSPtr_->decode(*body, xmlns);
 	}
 

@@ -25,7 +25,7 @@ namespace OpcUaStackCore
 	, name_()
 	, dataType_()
 	, valueRank_(-1)
-	, arrayDimensions_()
+	, arrayDimensions_(constructSPtr<OpcUaUInt32Array>())
 	, description_()
 	{
 	}
@@ -216,7 +216,6 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		arrayDimensions_ = constructSPtr<OpcUaUInt32Array>();
 		// FIXME: todo ...
 
 		// get description
