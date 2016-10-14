@@ -219,7 +219,7 @@
         </Value>
     </UAVariable>
     
-    <UAVariable DataType="i=296" ParentNodeId="ns=1;s=funcMult" ValueRank="1" NodeId="ns=1;i=6003" ArrayDimensions="2" BrowseName="OutputArguments">
+    <UAVariable DataType="i=296" ParentNodeId="ns=1;s=funcMult" ValueRank="1" NodeId="ns=1;i=7003" ArrayDimensions="1" BrowseName="OutputArguments">
         <DisplayName>OutputArguments</DisplayName>
         <References>
             <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s=funcMult</Reference>
