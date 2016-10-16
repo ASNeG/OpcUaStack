@@ -46,14 +46,16 @@ namespace OpcUaStackCore
 		bool operator==(const Argument& argument) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
-		ExtensionObjectBase::BSPtr factory(void);
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-		bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
-		bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		void copyTo(ExtensionObjectBase& extensionObjectBase);
-		bool equal(ExtensionObjectBase& extensionObjectBase) const;
-		void out(std::ostream& os);
+		virtual ExtensionObjectBase::SPtr factory(void);
+		virtual OpcUaNodeId binaryTypeId(void);
+		virtual OpcUaNodeId xmlTypeId(void);
+		virtual void opcUaBinaryEncode(std::ostream& os) const;
+		virtual void opcUaBinaryDecode(std::istream& is);
+		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		virtual void out(std::ostream& os);
 		//- ExtensionObjectBase -----------------------------------------------
 
 	  private:

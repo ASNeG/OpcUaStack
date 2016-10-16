@@ -44,6 +44,8 @@ namespace OpcUaStackCore
 	{
 	  public:
 	    OpcUaNodeIdBase(void);
+	    OpcUaNodeIdBase(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);
+	    OpcUaNodeIdBase(const std::string& nodeId, OpcUaUInt16 namespaceIndex = 0);
 		virtual ~OpcUaNodeIdBase(void);
 
 		void reset(void);

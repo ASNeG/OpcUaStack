@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -45,7 +45,7 @@ namespace OpcUaStackCore
 		bool operator==(const ServiceCounterDataType& serviceCounterDataType) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
-		ExtensionObjectBase::BSPtr factory(void);
+		ExtensionObjectBase::SPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		void copyTo(ExtensionObjectBase& extensionObjectBase);

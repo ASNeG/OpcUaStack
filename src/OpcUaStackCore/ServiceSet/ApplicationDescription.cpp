@@ -176,7 +176,7 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ExtensionObjectBase::BSPtr
+	ExtensionObjectBase::SPtr
 	ApplicationDescription::factory(void)
 	{
 		return constructSPtr<ApplicationDescription>();

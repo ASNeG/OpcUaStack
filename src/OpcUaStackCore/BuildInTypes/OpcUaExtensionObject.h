@@ -30,7 +30,7 @@
 namespace OpcUaStackCore
 {
 
-	typedef std::map<OpcUaNodeId,ExtensionObjectBase::BSPtr> ExtensionObjectMap;
+	typedef std::map<OpcUaNodeId,ExtensionObjectBase::SPtr> ExtensionObjectMap;
 
 	class DLLEXPORT OpcUaExtensionObject
 	: public Object
@@ -44,9 +44,9 @@ namespace OpcUaStackCore
 			S_ByteString
 		} Style;
 
-		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::BSPtr epSPtr);
+		static bool insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr);
 		static bool deleteElement(OpcUaNodeId& opcUaNodeId);
-		static ExtensionObjectBase::BSPtr findElement(OpcUaNodeId& opcUaNodeId);
+		static ExtensionObjectBase::SPtr findElement(OpcUaNodeId& opcUaNodeId);
 
 	    OpcUaExtensionObject(void);
 		~OpcUaExtensionObject(void);
@@ -75,7 +75,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  bool registerFactoryElement(OpcUaNodeId& opcUaNodeId) {
-			  ExtensionObjectBase::BSPtr epSPtr(constructSPtr<T>());
+			  ExtensionObjectBase::SPtr epSPtr(constructSPtr<T>());
 			  return OpcUaExtensionObject::insertElement(opcUaNodeId, epSPtr);
 		  }
 
@@ -85,7 +85,7 @@ namespace OpcUaStackCore
 		bool deregisterFactoryElement(OpcUaNodeId& opcUaNodeId);
 
 		bool createObject(void);
-		ExtensionObjectBase::BSPtr& get(void);
+		ExtensionObjectBase::SPtr& get(void);
 		template<typename T>
 		   typename T::SPtr parameter(OpcUaUInt32 typeId) {
 				this->typeId(typeId);
@@ -114,7 +114,6 @@ namespace OpcUaStackCore
 			   return epSPtr;
 		   }
 
-		void mapTypeIdFromXmlToBinary(void);
 		void typeId(OpcUaUInt32 typeId);
 		void typeId(const OpcUaNodeId& typeNodeId);
 		OpcUaNodeId& typeId(void);
@@ -146,7 +145,7 @@ namespace OpcUaStackCore
 
 		Style style_;
 		OpcUaNodeId typeId_;
-		ExtensionObjectBase::BSPtr epSPtr_;
+		ExtensionObjectBase::SPtr epSPtr_;
 		OpcUaByteString::SPtr byteString_;
 	};
 

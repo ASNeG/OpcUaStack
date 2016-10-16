@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,7 +34,7 @@ namespace OpcUaStackCore
 	ExtensionObjectMap OpcUaExtensionObject::extentionObjectMap_;
 
 	bool
-	OpcUaExtensionObject::insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::BSPtr epSPtr)
+	OpcUaExtensionObject::insertElement(OpcUaNodeId& opcUaNodeId, ExtensionObjectBase::SPtr epSPtr)
 	{
 		ExtensionObjectMap::iterator it;
 		it = extentionObjectMap_.find(opcUaNodeId);
@@ -57,10 +57,10 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	ExtensionObjectBase::BSPtr
+	ExtensionObjectBase::SPtr
 	OpcUaExtensionObject::findElement(OpcUaNodeId& opcUaNodeId)
 	{
-		ExtensionObjectBase::BSPtr epSPtr;
+		ExtensionObjectBase::SPtr epSPtr;
 		ExtensionObjectMap::iterator it;
 		it = extentionObjectMap_.find(opcUaNodeId);
 		if (it != extentionObjectMap_.end()) {
@@ -118,18 +118,6 @@ namespace OpcUaStackCore
 	}
 
 	void
-	OpcUaExtensionObject::mapTypeIdFromXmlToBinary(void)
-	{
-		// FIXME: todo
-		if (typeId_.nodeId<uint32_t>() == OpcUaId_Argument_Encoding_DefaultXml) {
-			typeId_.nodeId((uint32_t)OpcUaId_Argument_Encoding_DefaultBinary);
-		}
-
-		//OpcUaId_Argument_Encoding_DefaultBinary;
-		//OpcUaId_Argument_Encoding_DefaultXml;
-	}
-
-	void
 	OpcUaExtensionObject::typeId(OpcUaUInt32 typeId)
 	{
 		OpcUaNodeId typeNodeId;
@@ -181,7 +169,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	ExtensionObjectBase::BSPtr&
+	ExtensionObjectBase::SPtr&
 	OpcUaExtensionObject::get(void)
 	{
 		return epSPtr_;
@@ -356,10 +344,10 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		OpcUaNodeId nodeIdType;
+		OpcUaNodeId xmlNodeIdType;
 		std::string s = *identifier;
 		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-		bool rc = nodeIdType.fromString(s);
+		bool rc = xmlNodeIdType.fromString(s);
 		if (!rc) {
 			Log(Error, "value format error")
 				.parameter("Tag", xmlns.add("Identifier"))
@@ -372,21 +360,24 @@ namespace OpcUaStackCore
 		if (!body) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.add("Body"))
-				.parameter("NodeIdType", nodeIdType);
+				.parameter("NodeIdType", xmlNodeIdType);
 			return false;
 		}
 
-		// FIXME: .... todo....
-		this->typeId(nodeIdType);
+		this->typeId(xmlNodeIdType);
 		if (!createObject()) {
 			// Extension object unknown
 			logExtensionObjectMap();
 			Log(Error, "extension object unknown")
-				.parameter("NodeIdType", nodeIdType);
+				.parameter("NodeIdType", xmlNodeIdType);
 			return false;
 		}
 
-		mapTypeIdFromXmlToBinary();
+		// Currently the XML type ist stored in the object. Now we determine
+		// the binary type by the XMl type.
+		typeId_ = epSPtr_->binaryTypeId();
+
+		// decode extension object from xml file
 		return epSPtr_->decode(*body, xmlns);
 	}
 

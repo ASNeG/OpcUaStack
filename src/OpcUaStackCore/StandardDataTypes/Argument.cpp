@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/Argument.h"
 
 namespace OpcUaStackCore
@@ -104,10 +105,22 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ExtensionObjectBase::BSPtr
+	ExtensionObjectBase::SPtr
 	Argument::factory(void)
 	{
 		return constructSPtr<Argument>();
+	}
+
+	OpcUaNodeId
+	Argument::binaryTypeId(void)
+	{
+		return OpcUaNodeId((OpcUaUInt32)OpcUaId_Argument_Encoding_DefaultBinary);
+	}
+
+	OpcUaNodeId
+	Argument::xmlTypeId(void)
+	{
+		return OpcUaNodeId((OpcUaUInt32)OpcUaId_Argument_Encoding_DefaultXml);
 	}
 
 	void

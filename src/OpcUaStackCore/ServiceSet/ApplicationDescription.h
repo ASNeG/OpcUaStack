@@ -68,7 +68,7 @@ namespace OpcUaStackCore
 		bool operator==(const ApplicationDescription& applicationDescription) const;
 
 		//- ExtensionObjectBase -----------------------------------------------
-		ExtensionObjectBase::BSPtr factory(void);
+		ExtensionObjectBase::SPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		void copyTo(ExtensionObjectBase& extensionObjectBase);
