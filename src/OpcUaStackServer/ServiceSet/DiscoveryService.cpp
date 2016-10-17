@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
+#include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
@@ -99,14 +100,24 @@ namespace OpcUaStackServer
 	bool 
 	DiscoveryService::receiveFindServersRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		// FIXME:
+#if 0
+		ServiceTransactionFindServers::SPtr trx = boost::static_pointer_cast<ServiceTransactionFindServers>(serviceTransaction);
+		FindServersRequest::SPtr findRequest = trx->request();
+		FindServersResponse::SPtr findResponse = trx->response();
+#endif
+
 		return false;
 	}
 
 	bool 
 	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		// FIXME:
+#if 0
+		ServiceTransactionRegisterServer::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction);
+		RegisterServerRequest::SPtr registerRequest = trx->request();
+		RegisterServerResponse::SPtr registerResponse = trx->response();
+#endif
+
 		return false;
 	}
 
