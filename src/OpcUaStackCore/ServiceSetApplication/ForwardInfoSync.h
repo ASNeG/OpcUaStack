@@ -66,15 +66,24 @@ namespace OpcUaStackCore
 		ForwardInfo& writeService(void);
 		ForwardInfo& writeHService(void);
 		ForwardInfo& methodService(void);
+		ForwardInfo& findServerService(void);
+		ForwardInfo& registerServerService(void);
 
 		void updateFrom(ForwardInfoSync& forwardInfoSync);
 
 	  private:
+		// attribute service
 		ForwardInfo readService_;
 		ForwardInfo readHService_;
 		ForwardInfo writeService_;
 		ForwardInfo writeHService_;
+
+		// method service
 		ForwardInfo methodService_;
+
+		// discovery service
+		ForwardInfo findServerService_;
+		ForwardInfo registerServerService_;
 	};
 
 }

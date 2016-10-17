@@ -113,6 +113,8 @@ namespace OpcUaStackCore
 	, writeService_()
 	, writeHService_()
 	, methodService_()
+	, findServerService_()
+	, registerServerService_()
 	{
 	}
 
@@ -150,6 +152,18 @@ namespace OpcUaStackCore
 		return methodService_;
 	}
 
+	ForwardInfo&
+	ForwardInfoSync::findServerService(void)
+	{
+		return findServerService_;
+	}
+
+	ForwardInfo&
+	ForwardInfoSync::registerServerService(void)
+	{
+		return registerServerService_;
+	}
+
 	void
 	ForwardInfoSync::updateFrom(ForwardInfoSync& forwardInfoSync)
 	{
@@ -158,6 +172,8 @@ namespace OpcUaStackCore
 		writeService_.updateFrom(forwardInfoSync.writeService());
 		writeHService_.updateFrom(forwardInfoSync.writeHService());
 		methodService_.updateFrom(forwardInfoSync.methodService());
+		findServerService_.updateFrom(forwardInfoSync.findServerService());
+		registerServerService_.updateFrom(forwardInfoSync.registerServerService());
 	}
 
 }
