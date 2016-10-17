@@ -29,11 +29,12 @@ namespace OpcUaStackCore
 	  public:
 		BaseClass::SPtr applicationContext_;	// IN - application context from register call
 
-		OpcUaString endpointUrl_;				// IN -
-		OpcUaStringArray::SPtr localeIdArraySPtr_; // IN -
-		OpcUaStringArray::SPtr serverUriArraySPtr_; // IN -
+		OpcUaString endpointUrl_;				// IN - the network address that the client used
+												//      to access.
+		OpcUaStringArray::SPtr localeIdArraySPtr_; // IN - list of locales to use
+		OpcUaStringArray::SPtr serverUriArraySPtr_; // IN -list of servers to return
 
-		ApplicationDescriptionArray::SPtr servers_; // OUT -
+		ApplicationDescriptionArray::SPtr servers_; // OUT - result list of servers
 		OpcUaStatusCode statusCode_;			// OUT - result state of the find operation
 
 	};
