@@ -64,6 +64,7 @@ namespace OpcUaStackServer
 			{
 				Log(Error, "Discovery service receives unknown message type")
 					.parameter("MessageType", secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>());
+				break;
 			}
 		}
 		return false;

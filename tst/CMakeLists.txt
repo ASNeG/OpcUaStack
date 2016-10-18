@@ -28,12 +28,6 @@ option(
     ON
 )
 
-option(
-    USE_OpcUaStackUtility
-    "build opc ua utility library"
-    ON
-)
-
 add_definitions(-DBOOST_ALL_DYN_LINK)
 
 if (WIN32)
@@ -45,7 +39,6 @@ find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_
 find_library(OpcUaStackCore_LIBRARY NAMES OpcUaStackCore PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
 find_library(OpcUaStackClient_LIBRARY NAMES OpcUaStackClient PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
 find_library(OpcUaStackServer_LIBRARY NAMES OpcUaStackServer PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-find_library(OpcUaStackUtility_LIBRARY NAMES OpcUaStackUtility PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -64,8 +57,4 @@ endif ()
 
 if (USE_OpcUaStackServer)
     include(OpcUaStackServer/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackUtility)
-    include(OpcUaStackUtility/CMakeLists.txt) 
 endif ()
