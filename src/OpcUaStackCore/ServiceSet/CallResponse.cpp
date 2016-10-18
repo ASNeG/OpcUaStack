@@ -79,7 +79,6 @@ namespace OpcUaStackCore
 	void 
 	CallResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//responseHeaderSPtr_->opcUaBinaryEncode(os);
 		callMethodResultArraySPtr_->opcUaBinaryEncode(os);
 		diagnosticInfoArraySPtr_->opcUaBinaryEncode(os);
 	}
@@ -87,7 +86,6 @@ namespace OpcUaStackCore
 	void 
 	CallResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		//responseHeaderSPtr_->opcUaBinaryDecode(is);
 		callMethodResultArraySPtr_->opcUaBinaryDecode(is);
 		diagnosticInfoArraySPtr_->opcUaBinaryDecode(is);
 	}

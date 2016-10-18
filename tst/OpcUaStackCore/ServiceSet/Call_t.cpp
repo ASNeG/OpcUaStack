@@ -57,22 +57,11 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode TypeId
-	typeId.nodeId(OpcUaId_CallRequest_Encoding_DefaultBinary);
+	typeId.nodeId((OpcUaUInt32)OpcUaId_CallRequest_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
 
 	// build CallRequest
 	callRequestSPtr = constructSPtr<CallRequest>();
-
-	// build RequestHeader
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
-	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
-	
-	callRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	callRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	callRequestSPtr->requestHeader()->time(ptime);
-	callRequestSPtr->requestHeader()->requestHandle(0);
-	callRequestSPtr->requestHeader()->returnDisagnostics(0);
-	callRequestSPtr->requestHeader()->timeoutHint(300000);
 	
 	// build CallMethodRequest
 	variantSPtr = constructSPtr<OpcUaVariant>();
@@ -108,13 +97,10 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 
 	std::stringstream ss;
 
-	ss << "4d 53 47 46 5f 00 00 00  d9 7a 25 09 01 00 00 00"
-	   << "36 00 00 00 04 00 00 00  01 00 c8 02 04 01 00 0d"
-	   << "44 55 b2 8d 2f b7 4f 86  4f 0a f5 94 5d d8 33 00"
-	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 ff" 
-	   << "ff ff ff e0 93 04 00 00  00 00 01 00 00 00 01 00"
-	   << "de 0a 01 00 23 0f 01 00  00 00 07 02 00 00 00";
-
+	ss << "4d 53 47 46 31 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "36 00 00 00 04 00 00 00  01 00 c8 02 01 00 00 00"
+	   << "01 00 de 0a 01 00 23 0f  01 00 00 00 07 02 00 00"
+	   << "00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -135,6 +121,7 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	BOOST_REQUIRE(sequenceHeaderSPtr->requestId() == 4);
 
 	// decode message type id
+
 	typeId.opcUaBinaryDecode(ios);
 	BOOST_REQUIRE(typeId.namespaceIndex() == 0);
 	BOOST_REQUIRE(typeId.nodeId<OpcUaUInt32>() == OpcUaId_CallRequest_Encoding_DefaultBinary);
@@ -142,15 +129,6 @@ BOOST_AUTO_TEST_CASE(Call_Request)
 	// decode CallRequest
 	callRequestSPtr = constructSPtr<CallRequest>();
 	callRequestSPtr->opcUaBinaryDecode(ios);
-
-	std::string str;
-	str = *callRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(callRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
-	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(callRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(callRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(callRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(callRequestSPtr->requestHeader()->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(callRequestSPtr->methodsToCall()->size() == 1);
 	callMethodRequestSPtr = constructSPtr<CallMethodRequest>();
@@ -212,11 +190,6 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	// build CallResponse
 	callResponseSPtr = constructSPtr<CallResponse>();
 
-	// build ResponseHeader
-	callResponseSPtr->responseHeader()->time(ptime);
-	callResponseSPtr->responseHeader()->requestHandle(133);
-	callResponseSPtr->responseHeader()->serviceResult((OpcUaStatusCode)Success);
-	
 	// build CallMethodResult
 	variantSPtr = constructSPtr<OpcUaVariant>();
 	variantSPtr->variant((OpcUaFloat)321);
@@ -242,13 +215,10 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 55 00 00 00  d9 7a 25 09 01 00 00 00"
-	   << "36 00 00 00 04 00 00 00  01 00 cb 02 00 00 00 00"
-	   << "00 00 00 00 85 00 00 00  00 00 00 00 00 00 00 00"
-	   << "00 00 00 00 01 00 00 00  00 00 00 00 01 00 00 00"
-	   << "00 00 00 00 00 00 00 00  01 00 00 00 0a 00 80 a0"
-	   << "43 00 00 00 00";
-
+	ss << "4d 53 47 46 3d 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "36 00 00 00 04 00 00 00  01 00 cb 02 01 00 00 00"
+	   << "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
+	   << "01 00 00 00 0a 00 80 a0  43 00 00 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -276,10 +246,6 @@ BOOST_AUTO_TEST_CASE(Call_Response)
 	// decode CallResponse
 	callResponseSPtr = constructSPtr<CallResponse>();
 	callResponseSPtr->opcUaBinaryDecode(ios);
-
-	BOOST_REQUIRE(callResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(callResponseSPtr->responseHeader()->requestHandle() == 133);
-	BOOST_REQUIRE(callResponseSPtr->responseHeader()->serviceResult() == Success);
 	
 	BOOST_REQUIRE(callResponseSPtr->results()->size() == 1);
 	callMethodResultSPtr = constructSPtr<CallMethodResult>();
