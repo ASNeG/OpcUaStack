@@ -164,7 +164,6 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Request)
 
 BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 {
-	ResponseHeader::SPtr responseHeader = constructSPtr<ResponseHeader>();
 	uint32_t pos;
 	std::string str;
 	OpcUaNodeId typeId;
@@ -205,21 +204,16 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 	// encode TypeId
 	typeId.nodeId(OpcUaId_HistoryReadResponse_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
-
-	// build 
-	historyReadResponseSPtr = constructSPtr<HistoryReadResponse>();
-	responseHeader->time(ptime);
-	responseHeader->requestHandle(0);
-	responseHeader->serviceResult(statusCode);
 	
 	// build HistoryReadResult
 	historyReadResultSPtr = constructSPtr<HistoryReadResult>();
 	historyReadResultSPtr->statusCode((OpcUaStatusCode)Success);
 	historyReadResultSPtr->continuationPoint() = "ABC";
+	historyReadResponseSPtr = constructSPtr<HistoryReadResponse>();
+	historyReadResponseSPtr->results()->resize(1);
 	historyReadResponseSPtr->results()->set(historyReadResultSPtr);
 
 	// encode 
-	responseHeader->opcUaBinaryEncode(ios1);
 	historyReadResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -233,11 +227,11 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 4a 00 00 00  d9 7a 25 09 01 00 00 00"
-	   << "36 00 00 00 04 00 00 00  01 00 9b 02 00 00 00 00"
-	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
-	   << "00 00 00 00 01 00 00 00  00 00 00 00 03 00 00 00"
-	   << "41 42 43 00 00 00 00 00  00 00";
+	ss << "4d 53 47 46 32 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "36 00 00 00 04 00 00 00  01 00 9b 02 01 00 00 00"
+	   << "00 00 00 00 03 00 00 00  41 42 43 00 00 00 00 00"
+	   << "00 00";
+
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
@@ -265,12 +259,7 @@ BOOST_AUTO_TEST_CASE(HistoryRead_Response)
 
 	// decode 
 	historyReadResponseSPtr = constructSPtr<HistoryReadResponse>();
-	responseHeader->opcUaBinaryDecode(ios);
 	historyReadResponseSPtr->opcUaBinaryDecode(ios);
-
-	BOOST_REQUIRE(responseHeader->time().dateTime() == ptime);
-	BOOST_REQUIRE(responseHeader->requestHandle() == 0);
-	BOOST_REQUIRE(responseHeader->serviceResult() == Success);
 
 	BOOST_REQUIRE(historyReadResponseSPtr->results()->size() == 1);
 	historyReadResultSPtr = constructSPtr<HistoryReadResult>();
