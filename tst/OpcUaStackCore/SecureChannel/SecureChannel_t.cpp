@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(SecureChannel_Connect_Disconnect)
 	BOOST_REQUIRE(secureChannelClientTest.handleConnect_.waitForCondition(1000) == true);
 	BOOST_REQUIRE(secureChannelServerTest.handleConnect_.waitForCondition(1000) == true);
 
-	// diconnect
+	// disconnect
 	secureChannelClientTest.handleDisconnect_.condition(1,0);
 	secureChannelServerTest.handleDisconnect_.condition(1,0);
 	secureChannelClient.disconnect(secureChannel);

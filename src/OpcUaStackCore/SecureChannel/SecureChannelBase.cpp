@@ -662,10 +662,10 @@ namespace OpcUaStackCore
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryDecode(ios1, secureChannel->recvSequenceNumber_);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->recvSequenceNumber_);
 
 		// encode request id
-		OpcUaNumber::opcUaBinaryDecode(ios1, secureChannel->recvRequestId_);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->recvRequestId_);
 
 		// encode response type id
 		OpcUaNodeId typeIdResponse;
