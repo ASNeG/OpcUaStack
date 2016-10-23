@@ -430,20 +430,6 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		// set version (V3)
-		if (success) {
-			resultCode = X509_set_version(x509Cert_, 2);
-			if (!resultCode) {
-				success = false;
-				openSSLError();
-			}
-		}
-
-		// get start time
-		if (success) {
-			startTime_ = (time_t)ASN1_INTEGER_get(X509_get_serialNumber(x509Cert_));
-		}
-
 		// get subject name
 		if (success) {
 			X509_NAME* name = X509_get_subject_name(x509Cert_);
@@ -477,6 +463,18 @@ namespace OpcUaStackCore
 			success = success && getX509Name(name, NID_localityName, issuerPkiIdentity.locality());
 			success = success && getX509Name(name, NID_stateOrProvinceName, issuerPkiIdentity.state());
 			success = success && getX509Name(name, NID_countryName, issuerPkiIdentity.country());
+		}
+
+		// get version
+		if (success) {
+			uint32_t version = X509_get_version(x509Cert_);
+			pkiCertificateInfo.version(version);
+		}
+
+		// get serial number
+		if (success) {
+			uint32_t serialNumber = ASN1_INTEGER_get(X509_get_serialNumber(x509Cert_));
+			pkiCertificateInfo.serialNumber(serialNumber);
 		}
 
 		// validation time not before
@@ -534,18 +532,31 @@ namespace OpcUaStackCore
 					break;
 				}
 
-				char buf[1024];
+				char buff[1024];
 				ASN1_OBJECT* object = X509_EXTENSION_get_object(ext);
-				OBJ_obj2txt(buf, 1024, object, 0);
-				std::cout << "XXXXXX" << buf << std::endl;
+				OBJ_obj2txt(buff, 1024, object, 0);
+				std::cout << "XXXXXX" << buff << std::endl;
 
-				ASN1_OCTET_STRING *value = X509_EXTENSION_get_data(ext);
+				BIO *bio = BIO_new(BIO_s_mem());
+				if(!X509V3_EXT_print(bio, ext, 0, 0)){
+				    // error handling...
+				}
 
-				const unsigned char* octet_str_data = value->data;
-				long xlen;
-				int tag, xclass;
-				int ret = ASN1_get_object(&octet_str_data, &xlen, &tag, &xclass, value->length);
-				printf("value: [%d] %s\n", xlen, octet_str_data);
+				BUF_MEM *bptr = NULL;
+				BIO_flush(bio);
+				BIO_get_mem_ptr(bio, &bptr);
+
+				// now bptr contains the strings of the key_usage, take
+				// care that bptr->data is NOT NULL terminated, so
+				// to print it well, let's do something..
+				char *buf = NULL;
+				buf = (char *)malloc( (bptr->length + 1)*sizeof(char) );
+
+				memcpy(buf, bptr->data, bptr->length);
+				buf[bptr->length] = '\0';
+
+				// Now you can printf it or parse it, the way you want...
+				printf ("%s\n", buf);
 			}
 		}
 

@@ -97,6 +97,61 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_key)
 
 BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 {
+	PkiRsaKey rsaKey;
+
+	std::string hostname = boost::asio::ip::host_name();
+
+	{ // read certificate from file
+		PkiCertificate certificate;
+
+		PkiCertificateInfo pkiCertificateInfo;
+		PkiIdentity subjectPkiIdentity;
+		PkiPublicKey subjectPkiPublicKey;
+		PkiIdentity issuerPkiIdentity;
+		PkiPrivateKey issuerPrivateKey;
+
+		BOOST_REQUIRE(certificate.fromDERFile("../tst/data/ASNeG-Demo-Server.der") == true);
+		BOOST_REQUIRE(
+			certificate.getCertificate(
+				pkiCertificateInfo,
+				subjectPkiIdentity,
+				subjectPkiPublicKey,
+				issuerPkiIdentity,
+				issuerPrivateKey
+			) == true
+		);
+
+		BOOST_REQUIRE(subjectPkiIdentity.commonName()	== "AggregationServer");
+		BOOST_REQUIRE(subjectPkiIdentity.organization() == "Baker Hughes");
+		BOOST_REQUIRE(subjectPkiIdentity.organizationUnit() == "Drilling Systems Automation");
+		BOOST_REQUIRE(subjectPkiIdentity.locality() == "Celle");
+		BOOST_REQUIRE(subjectPkiIdentity.state() == "Lower Saxony");
+		BOOST_REQUIRE(subjectPkiIdentity.country() == "DE");
+		BOOST_REQUIRE(subjectPkiIdentity.domainComponent() == "siemens-ipc");
+
+		BOOST_REQUIRE(issuerPkiIdentity.commonName()	== "AggregationServer");
+		BOOST_REQUIRE(issuerPkiIdentity.organization() == "Baker Hughes");
+		BOOST_REQUIRE(issuerPkiIdentity.organizationUnit() == "Drilling Systems Automation");
+		BOOST_REQUIRE(issuerPkiIdentity.locality() == "Celle");
+		BOOST_REQUIRE(issuerPkiIdentity.state() == "Lower Saxony");
+		BOOST_REQUIRE(issuerPkiIdentity.country() == "DE");
+		BOOST_REQUIRE(issuerPkiIdentity.domainComponent() == "siemens-ipc");
+
+		BOOST_REQUIRE(pkiCertificateInfo.version() == 2); // V3
+		BOOST_REQUIRE(pkiCertificateInfo.serialNumber() == 1);
+
+#if 0
+		// inaccuracy available
+		//BOOST_REQUIRE(pkiCertificateInfo.validTimeNotBefore() == validTimeNotBefore);
+		//BOOST_REQUIRE(pkiCertificateInfo.validTimeNotAfter() == validTimeNotAfter);
+#endif
+	}
+}
+
+
+#if 0
+BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
+{
 	PkiRsaKey rsaKey1, rsaKey2;
 	boost::posix_time::ptime validTimeNotBefore(boost::posix_time::time_from_string("2016-03-15 15:00:00"));
 	boost::posix_time::ptime validTimeNotAfter(boost::posix_time::time_from_string("2021-03-15 15:00:00"));
@@ -190,6 +245,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 
 	}
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
 
