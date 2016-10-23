@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,18 +21,67 @@ namespace OpcUaStackCore
 {
 
 	PkiCertificateInfo::PkiCertificateInfo(void)
-    : URI_("")
+    : validTimeNotBefore_(boost::posix_time::microsec_clock::universal_time())
+    , validTimeNotAfter_()
+	, version_(3)
+	, serialNumber_(0)
+	, URI_("")
     , ipAddresses_()
     , dnsNames_()
     , emails_()
-	, validTimeNotBefore_(boost::posix_time::microsec_clock::universal_time())
-    , validTimeNotAfter_()
 	{
 	}
 
 	PkiCertificateInfo::~PkiCertificateInfo(void)
 	{
 	}
+
+	void
+	PkiCertificateInfo::validTimeNotAfter(const boost::posix_time::ptime& validTimeNotAfter)
+	{
+		validTimeNotAfter_ = validTimeNotAfter;
+	}
+
+	boost::posix_time::ptime&
+	PkiCertificateInfo::validTimeNotAfter(void)
+	{
+		return validTimeNotAfter_;
+	}
+
+	void
+	PkiCertificateInfo::validTimeNotBefore(const boost::posix_time::ptime& validTimeNotBefore)
+	{
+		validTimeNotBefore_ = validTimeNotBefore;
+	}
+
+	boost::posix_time::ptime&
+	PkiCertificateInfo::validTimeNotBefore(void)
+	{
+		return validTimeNotBefore_;
+	}
+
+	void
+	PkiCertificateInfo::version(uint32_t version)
+	{
+		version_ = version;
+	}
+    uint32_t
+    PkiCertificateInfo::version(void)
+    {
+    	return version_;
+    }
+
+    void
+    PkiCertificateInfo::serialNumber(uint32_t serialNumber)
+    {
+    	serialNumber_ = serialNumber;
+    }
+
+    uint32_t
+    PkiCertificateInfo::serialNumber(void)
+    {
+    	return serialNumber_;
+    }
 
 	void
 	PkiCertificateInfo::URI(const std::string& URI)
@@ -80,30 +129,6 @@ namespace OpcUaStackCore
 	PkiCertificateInfo::email(void)
 	{
 		return emails_;
-	}
-
-	void
-	PkiCertificateInfo::validTimeNotAfter(const boost::posix_time::ptime& validTimeNotAfter)
-	{
-		validTimeNotAfter_ = validTimeNotAfter;
-	}
-
-	boost::posix_time::ptime&
-	PkiCertificateInfo::validTimeNotAfter(void)
-	{
-		return validTimeNotAfter_;
-	}
-
-	void
-	PkiCertificateInfo::validTimeNotBefore(const boost::posix_time::ptime& validTimeNotBefore)
-	{
-		validTimeNotBefore_ = validTimeNotBefore;
-	}
-
-	boost::posix_time::ptime&
-	PkiCertificateInfo::validTimeNotBefore(void)
-	{
-		return validTimeNotBefore_;
 	}
 
 }
