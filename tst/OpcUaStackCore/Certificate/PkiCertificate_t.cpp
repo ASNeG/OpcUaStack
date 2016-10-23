@@ -150,11 +150,16 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		ss << pkiCertificateInfo.validTimeNotAfter();
 		BOOST_REQUIRE(ss.str() == std::string("2019-Feb-24 15:33:47"));
 
+		// FIXME: todo
+		// Zertifikat Fingerabdrücke
 
 		BOOST_REQUIRE(subjectPkiPublicKey.keyType() == PkiPublicKey::KT_RSA);
+		//  FIXME: todo - Schluesselparameter
 		PkiRsaKey pkiRsaKey;
 		pkiRsaKey.setPublicKey(subjectPkiPublicKey);
 		BOOST_REQUIRE(pkiRsaKey.keyLength() == 2048);
+		// FIXME: todo - SHA1 Fingerabdruck des Schluessel
+		// FIXME: todo - Öffentlicher Schlüssel
 
 
 	}

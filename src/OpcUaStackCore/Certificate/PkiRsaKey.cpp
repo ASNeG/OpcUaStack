@@ -94,19 +94,34 @@ namespace OpcUaStackCore
 	uint32_t
 	PkiRsaKey::keyLength(void)
 	{
-	    RSA *rsaKey = EVP_PKEY_get1_RSA(key_);
-	    if (!rsaKey) {
-	       openSSLError();
-	       return 0;
-	    }
-
-	    int size = RSA_size(rsaKey);
+		int32_t size = EVP_PKEY_bits (key_);
 	    if (size < 0) {
 	    	openSSLError();
 	    	return 0;
 	    }
-		return size * 8;
+		return size;
 	}
+
+	std::string
+	PkiRsaKey::toHexStringPublicKey(void)
+	{
+		return std::string("");
+	}
+#if 0
+		void dump(RSA * rsa) {
+		        BIO * keybio = BIO_new(BIO_s_mem());
+		        int result = RSA_print(keybio, rsa, 0);
+		        BUF_MEM* mem = NULL;
+		        BIO_get_mem_ptr(keybio, &mem);
+		        string s;
+		        if(mem && mem->data && mem->length)
+		            s.assign(mem->data, mem->length);
+		        if(s.length())
+		           cout << s << endl;
+		        else
+		           cout << "Failed to retrieve key" << endl;
+		}
+#endif
 
 	bool
 	PkiRsaKey::writePEMFile(const std::string& fileName, const std::string& password)

@@ -769,6 +769,27 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	void
+	PkiCertificate::signatureAlgorithm() const
+	{
+
+#if 0
+	    SignatureAlgorithm sigAlg = SignatureAlgorithm_Sha1;
+	    switch (OBJ_obj2nid(m_pCert->sig_alg->algorithm))
+	    {
+	    case NID_sha1WithRSAEncryption:     sigAlg = SignatureAlgorithm_Sha1; break;
+	    case NID_sha256WithRSAEncryption:   sigAlg = SignatureAlgorithm_Sha256; break;
+	    case NID_sha384WithRSAEncryption:
+	    case NID_sha512WithRSAEncryption:
+	    case NID_sha224WithRSAEncryption:
+	    default:
+	        // not available
+	        break;
+	    }
+	    return sigAlg;
+#endif
+	}
+
 }
 
 
