@@ -507,6 +507,9 @@ namespace OpcUaStackCore
 			}
 		}
 
+		// get SHA1 signature
+
+		// get public key
 		if (success) {
 			EVP_PKEY* pkey = X509_get_pubkey(x509Cert_);
 			if (pkey == nullptr) {
@@ -520,6 +523,27 @@ namespace OpcUaStackCore
 				}
 			}
 		}
+
+#if 0
+	    UaPkiPublicKey ret;
+
+	    if (!m_pCert) {addError("The certificate is NULL");}
+	    else
+	    {
+	        X509_PUBKEY *pPubKey = X509_get_X509_PUBKEY( m_pCert );
+	        if (!pPubKey) {addOpenSSLError();}
+	        else
+	        {
+	            EVP_PKEY *pKey = X509_PUBKEY_get ( pPubKey );
+	            if (!pKey) {addOpenSSLError();}
+	            else
+	            {
+	                ret = UaPkiPublicKey(pKey);
+	                EVP_PKEY_free(pKey);
+	            }
+	        }
+	    }
+#endif
 
 		// extention data
 		if (success) {
@@ -580,6 +604,7 @@ namespace OpcUaStackCore
 		        }
 	        }
 	    }
+
 
 	    if (!success) {
 	       X509_free (x509Cert_);

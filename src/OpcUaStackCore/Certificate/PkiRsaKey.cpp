@@ -91,6 +91,23 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	uint32_t
+	PkiRsaKey::keyLength(void)
+	{
+	    RSA *rsaKey = EVP_PKEY_get1_RSA(key_);
+	    if (!rsaKey) {
+	       openSSLError();
+	       return 0;
+	    }
+
+	    int size = RSA_size(rsaKey);
+	    if (size < 0) {
+	    	openSSLError();
+	    	return 0;
+	    }
+		return size * 8;
+	}
+
 	bool
 	PkiRsaKey::writePEMFile(const std::string& fileName, const std::string& password)
 	{

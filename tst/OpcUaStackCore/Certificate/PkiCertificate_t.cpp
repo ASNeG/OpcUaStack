@@ -122,6 +122,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 			) == true
 		);
 
+
 		BOOST_REQUIRE(subjectPkiIdentity.commonName()	== "AggregationServer");
 		BOOST_REQUIRE(subjectPkiIdentity.organization() == "Baker Hughes");
 		BOOST_REQUIRE(subjectPkiIdentity.organizationUnit() == "Drilling Systems Automation");
@@ -129,6 +130,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		BOOST_REQUIRE(subjectPkiIdentity.state() == "Lower Saxony");
 		BOOST_REQUIRE(subjectPkiIdentity.country() == "DE");
 		BOOST_REQUIRE(subjectPkiIdentity.domainComponent() == "siemens-ipc");
+
 
 		BOOST_REQUIRE(issuerPkiIdentity.commonName()	== "AggregationServer");
 		BOOST_REQUIRE(issuerPkiIdentity.organization() == "Baker Hughes");
@@ -138,6 +140,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		BOOST_REQUIRE(issuerPkiIdentity.country() == "DE");
 		BOOST_REQUIRE(issuerPkiIdentity.domainComponent() == "siemens-ipc");
 
+
 		BOOST_REQUIRE(pkiCertificateInfo.version() == 2); // V3
 		BOOST_REQUIRE(pkiCertificateInfo.serialNumber() == 1);
 		ss.str("");
@@ -146,6 +149,12 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		ss.str("");
 		ss << pkiCertificateInfo.validTimeNotAfter();
 		BOOST_REQUIRE(ss.str() == std::string("2019-Feb-24 15:33:47"));
+
+
+		BOOST_REQUIRE(subjectPkiPublicKey.keyType() == PkiPublicKey::KT_RSA);
+		PkiRsaKey pkiRsaKey;
+		pkiRsaKey.setPublicKey(subjectPkiPublicKey);
+		BOOST_REQUIRE(pkiRsaKey.keyLength() == 2048);
 
 
 	}
