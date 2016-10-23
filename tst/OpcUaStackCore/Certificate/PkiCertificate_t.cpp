@@ -103,6 +103,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 
 	{ // read certificate from file
 		PkiCertificate certificate;
+		std::stringstream ss;
 
 		PkiCertificateInfo pkiCertificateInfo;
 		PkiIdentity subjectPkiIdentity;
@@ -139,12 +140,14 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 
 		BOOST_REQUIRE(pkiCertificateInfo.version() == 2); // V3
 		BOOST_REQUIRE(pkiCertificateInfo.serialNumber() == 1);
+		ss.str("");
+		ss << pkiCertificateInfo.validTimeNotBefore();
+		BOOST_REQUIRE(ss.str() == std::string("2016-Feb-25 14:33:47"));
+		ss.str("");
+		ss << pkiCertificateInfo.validTimeNotAfter();
+		BOOST_REQUIRE(ss.str() == std::string("2019-Feb-24 15:33:47"));
 
-#if 0
-		// inaccuracy available
-		//BOOST_REQUIRE(pkiCertificateInfo.validTimeNotBefore() == validTimeNotBefore);
-		//BOOST_REQUIRE(pkiCertificateInfo.validTimeNotAfter() == validTimeNotAfter);
-#endif
+
 	}
 }
 
