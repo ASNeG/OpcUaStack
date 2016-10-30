@@ -161,6 +161,10 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		// FIXME: todo - SHA1 Fingerabdruck des Schluessel
 		// FIXME: todo - Öffentlicher Schlüssel
 
+		std::string str;
+		pkiRsaKey.toHexStringPublicKey(str);
+		std::cout << ".....KEY=" << str << std::endl;
+
 
 	}
 }

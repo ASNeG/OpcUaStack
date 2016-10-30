@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		bool publicKey(EVP_PKEY* publicKey);
 		bool toDER(char* bufDER, uint32_t* lengthDER);
 		bool fromDER(char* bufDER, uint32_t lengthDER);
+		bool toHexStringPublicKey(std::string& hexString);
 
 	  private:
 		X509_PUBKEY* publicKey_;

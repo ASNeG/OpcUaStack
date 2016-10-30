@@ -102,26 +102,42 @@ namespace OpcUaStackCore
 		return size;
 	}
 
-	std::string
-	PkiRsaKey::toHexStringPublicKey(void)
+	bool
+	PkiRsaKey::toHexStringPublicKey(std::string& hexString)
 	{
-		return std::string("");
-	}
-#if 0
-		void dump(RSA * rsa) {
-		        BIO * keybio = BIO_new(BIO_s_mem());
-		        int result = RSA_print(keybio, rsa, 0);
-		        BUF_MEM* mem = NULL;
-		        BIO_get_mem_ptr(keybio, &mem);
-		        string s;
-		        if(mem && mem->data && mem->length)
-		            s.assign(mem->data, mem->length);
-		        if(s.length())
-		           cout << s << endl;
-		        else
-		           cout << "Failed to retrieve key" << endl;
+		hexString = "";
+
+        RSA *rsa = EVP_PKEY_get1_RSA(key_);
+        if (!rsa) {
+        	openSSLError();
+        	return false;
+        }
+
+		BIO* bio = BIO_new(BIO_s_mem());
+		if (bio == nullptr) {
+			openSSLError("bio memory allocation error");
+			return false;
 		}
-#endif
+
+		BUF_MEM* mem = NULL;
+		BIO_get_mem_ptr(bio, &mem);
+
+		int result = RSA_print(bio, rsa, 0);
+		if (result < 1) {
+        	openSSLError();
+        	BIO_free(bio);
+        	return false;
+		}
+		if (mem->length == 0) {
+			openSSLError("key empty");
+			BIO_free(bio);
+			return false;
+		}
+
+		hexString.assign(mem->data, mem->length);
+		BIO_free(bio);
+		return false;
+	}
 
 	bool
 	PkiRsaKey::writePEMFile(const std::string& fileName, const std::string& password)

@@ -112,5 +112,20 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	PkiPublicKey::toHexStringPublicKey(std::string& hexString)
+	{
+		// FIXME: todo
+
+#if 0
+		RSA *pubkey = RSA_new();
+		int len = BN_hex2bn(&pubkey->n, (const char *)p);
+		if (len == 0 || p[len])
+		    fprintf(stderr, "'%s' does not appear to be a valid modulus\n", p);
+		BN_hex2bn(&pubkey->e, "010001");
+#endif
+		return false;
+	}
+
 }
 

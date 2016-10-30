@@ -790,6 +790,105 @@ namespace OpcUaStackCore
 #endif
 	}
 
+#if 0
+	UaByteString UaPkiCertificate::toByteStringDER() const
+	{
+	    UaByteString ret;
+
+	    if (!m_pCert) {addError("The certificate is NULL");}
+	    else
+	    {
+	        unsigned char *buf = NULL;
+	        long length;
+
+	        length = i2d_X509 ( m_pCert, &buf );
+	        if ( length < 0 )
+	        {
+	            addOpenSSLError();
+	        }
+	        else
+	        {
+	            // copy cert data to result
+	            ret.setByteString(length, buf);
+	            OPENSSL_free(buf);
+	        }
+	    }
+
+	    return ret;
+	}
+
+
+
+	UaString UaPkiCertificate::getNameEntryByNID( X509_NAME *pName, int id ) const
+	{
+	    UaString ret;
+	    char    *pBuffer = 0;
+	    int      length = -1;
+	    int      loc = X509_NAME_get_index_by_NID ( pName, id, -1 );
+	    if (loc == -1) {addOpenSSLError();}
+	    else
+	    {
+	        X509_NAME_ENTRY *pEntry = X509_NAME_get_entry ( pName, loc );
+	        if (!pEntry) {addOpenSSLError();}
+	        else
+	        {
+	            ASN1_STRING *pString = X509_NAME_ENTRY_get_data ( pEntry );
+	            if (!pString) {addOpenSSLError();}
+	            else
+	            {
+	                length = ASN1_STRING_to_UTF8 ( ( unsigned char** ) &pBuffer, pString );
+	                if (length < 0) {addOpenSSLError();}
+	                else
+	                {
+	                    ret = pBuffer;
+	                    OPENSSL_free ( pBuffer );
+	                }
+	            }
+	        }
+	    }
+	    return ret;
+	}
+
+	UaString UaPkiCertificate::getExtensionByNID(int id) const
+	{
+	    UaString sRet;
+	    if (!m_pCert) {addError("The certificate is NULL");}
+	    else
+	    {
+	        int iPos = X509_get_ext_by_NID(m_pCert, id, -1);
+	        if (iPos < 0) {addOpenSSLError();}
+	        else
+	        {
+	            X509_EXTENSION *pExt = X509_get_ext(m_pCert, iPos);
+
+	            BIO *pBio = BIO_new ( BIO_s_mem() );
+	            int iRet = X509V3_EXT_print(pBio, pExt, 0, 0);
+	            if (!iRet) {addOpenSSLError();}
+	            else
+	            {
+	                BUF_MEM *pBufMem = OpcUa_Null;
+	                BIO_get_mem_ptr(pBio, &pBufMem);
+
+	                OpcUa_String *pContent = OpcUa_Null;
+	                OpcUa_String_CreateNewString(pBufMem->data,
+	                                             (OpcUa_UInt32)pBufMem->length,
+	                                             (OpcUa_UInt32)pBufMem->length,
+	                                             OpcUa_True,
+	                                             OpcUa_True,
+	                                             &pContent);
+
+	                sRet = pContent;
+
+	                OpcUa_String_Clear(pContent);
+	                OpcUa_Free(pContent);
+	            }
+	            BIO_free(pBio);
+	        }
+	    }
+	    return sRet;
+	}
+#endif
+
 }
 
 
