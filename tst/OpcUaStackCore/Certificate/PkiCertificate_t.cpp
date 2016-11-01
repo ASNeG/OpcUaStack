@@ -133,11 +133,16 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		BOOST_REQUIRE(certificate.getSignatureAlgorithm(signatureAlgorithm) == true);
 		BOOST_REQUIRE(signatureAlgorithm == "sha1WithRSAEncryption");
 
+		// check issuer
+		BOOST_REQUIRE(issuerPkiIdentity.commonName()	== "AggregationServer");
+		BOOST_REQUIRE(issuerPkiIdentity.organization() == "Baker Hughes");
+		BOOST_REQUIRE(issuerPkiIdentity.organizationUnit() == "Drilling Systems Automation");
+		BOOST_REQUIRE(issuerPkiIdentity.locality() == "Celle");
+		BOOST_REQUIRE(issuerPkiIdentity.state() == "Lower Saxony");
+		BOOST_REQUIRE(issuerPkiIdentity.country() == "DE");
+		BOOST_REQUIRE(issuerPkiIdentity.domainComponent() == "siemens-ipc");
 
-
-
-		// FIXME: todo
-
+		// check subject
 		BOOST_REQUIRE(subjectPkiIdentity.commonName()	== "AggregationServer");
 		BOOST_REQUIRE(subjectPkiIdentity.organization() == "Baker Hughes");
 		BOOST_REQUIRE(subjectPkiIdentity.organizationUnit() == "Drilling Systems Automation");
@@ -147,13 +152,15 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		BOOST_REQUIRE(subjectPkiIdentity.domainComponent() == "siemens-ipc");
 
 
-		BOOST_REQUIRE(issuerPkiIdentity.commonName()	== "AggregationServer");
-		BOOST_REQUIRE(issuerPkiIdentity.organization() == "Baker Hughes");
-		BOOST_REQUIRE(issuerPkiIdentity.organizationUnit() == "Drilling Systems Automation");
-		BOOST_REQUIRE(issuerPkiIdentity.locality() == "Celle");
-		BOOST_REQUIRE(issuerPkiIdentity.state() == "Lower Saxony");
-		BOOST_REQUIRE(issuerPkiIdentity.country() == "DE");
-		BOOST_REQUIRE(issuerPkiIdentity.domainComponent() == "siemens-ipc");
+
+
+
+		// FIXME: todo
+
+
+
+
+
 
 
 
