@@ -122,6 +122,21 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 			) == true
 		);
 
+		// check version
+		BOOST_REQUIRE(pkiCertificateInfo.version() == 2); // V3
+
+		// check serial number
+		BOOST_REQUIRE(pkiCertificateInfo.serialNumber() == 1);
+
+		// check signature algorithm
+		std::string signatureAlgorithm;
+		BOOST_REQUIRE(certificate.getSignatureAlgorithm(signatureAlgorithm) == true);
+		BOOST_REQUIRE(signatureAlgorithm == "sha1WithRSAEncryption");
+
+
+
+
+		// FIXME: todo
 
 		BOOST_REQUIRE(subjectPkiIdentity.commonName()	== "AggregationServer");
 		BOOST_REQUIRE(subjectPkiIdentity.organization() == "Baker Hughes");
@@ -141,8 +156,8 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		BOOST_REQUIRE(issuerPkiIdentity.domainComponent() == "siemens-ipc");
 
 
-		BOOST_REQUIRE(pkiCertificateInfo.version() == 2); // V3
-		BOOST_REQUIRE(pkiCertificateInfo.serialNumber() == 1);
+
+
 		ss.str("");
 		ss << pkiCertificateInfo.validTimeNotBefore();
 		BOOST_REQUIRE(ss.str() == std::string("2016-Feb-25 14:33:47"));

@@ -430,6 +430,18 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// get version
+		if (success) {
+			uint32_t version = X509_get_version(x509Cert_);
+			pkiCertificateInfo.version(version);
+		}
+
+		// get serial number
+		if (success) {
+			uint32_t serialNumber = ASN1_INTEGER_get(X509_get_serialNumber(x509Cert_));
+			pkiCertificateInfo.serialNumber(serialNumber);
+		}
+
 		// get subject name
 		if (success) {
 			X509_NAME* name = X509_get_subject_name(x509Cert_);
@@ -463,18 +475,6 @@ namespace OpcUaStackCore
 			success = success && getX509Name(name, NID_localityName, issuerPkiIdentity.locality());
 			success = success && getX509Name(name, NID_stateOrProvinceName, issuerPkiIdentity.state());
 			success = success && getX509Name(name, NID_countryName, issuerPkiIdentity.country());
-		}
-
-		// get version
-		if (success) {
-			uint32_t version = X509_get_version(x509Cert_);
-			pkiCertificateInfo.version(version);
-		}
-
-		// get serial number
-		if (success) {
-			uint32_t serialNumber = ASN1_INTEGER_get(X509_get_serialNumber(x509Cert_));
-			pkiCertificateInfo.serialNumber(serialNumber);
 		}
 
 		// validation time not before
@@ -769,9 +769,23 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	void
-	PkiCertificate::signatureAlgorithm() const
+	bool
+	PkiCertificate::getSignatureAlgorithm(std::string& signatureAlgorithm)
 	{
+		BIO *bio = BIO_new(BIO_s_mem());
+		if (i2a_ASN1_OBJECT(bio, x509Cert_->cert_info->signature->algorithm) <= 0){
+			openSSLError();
+			BIO_free (bio);
+			return false;
+		}
+
+		BUF_MEM *bptr = NULL;
+		BIO_flush(bio);
+		BIO_get_mem_ptr(bio, &bptr);
+		signatureAlgorithm.assign(bptr->data, bptr->length);
+
+		BIO_free (bio);
+		return true;
 
 #if 0
 	    SignatureAlgorithm sigAlg = SignatureAlgorithm_Sha1;
