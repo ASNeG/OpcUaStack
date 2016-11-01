@@ -151,6 +151,12 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		BOOST_REQUIRE(subjectPkiIdentity.country() == "DE");
 		BOOST_REQUIRE(subjectPkiIdentity.domainComponent() == "siemens-ipc");
 
+		ss.str("");
+		ss << pkiCertificateInfo.validTimeNotBefore();
+		BOOST_REQUIRE(ss.str() == std::string("2016-Feb-25 14:33:47"));
+		ss.str("");
+		ss << pkiCertificateInfo.validTimeNotAfter();
+		BOOST_REQUIRE(ss.str() == std::string("2019-Feb-24 15:33:47"));
 
 
 
@@ -158,19 +164,6 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		// FIXME: todo
 
 
-
-
-
-
-
-
-
-		ss.str("");
-		ss << pkiCertificateInfo.validTimeNotBefore();
-		BOOST_REQUIRE(ss.str() == std::string("2016-Feb-25 14:33:47"));
-		ss.str("");
-		ss << pkiCertificateInfo.validTimeNotAfter();
-		BOOST_REQUIRE(ss.str() == std::string("2019-Feb-24 15:33:47"));
 
 		// FIXME: todo
 		// Zertifikat Fingerabdrücke
