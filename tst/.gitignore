@@ -1,3 +1,4 @@
 *.der
 *.PEM
 *.key
+!data/*.der
