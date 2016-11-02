@@ -113,6 +113,25 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	PkiPublicKey::getPublicKeyAlgorithm(std::string& publicKeyAlgorithm)
+	{
+		BIO *bio = BIO_new(BIO_s_mem());
+		if (i2a_ASN1_OBJECT(bio, publicKey_->algor->algorithm) <= 0){
+			openSSLError();
+			BIO_free (bio);
+			return false;
+		}
+
+		BUF_MEM *bptr = NULL;
+		BIO_flush(bio);
+		BIO_get_mem_ptr(bio, &bptr);
+		publicKeyAlgorithm.assign(bptr->data, bptr->length);
+
+		BIO_free (bio);
+		return true;
+	}
+
+	bool
 	PkiPublicKey::toHexStringPublicKey(std::string& hexString)
 	{
 		// FIXME: todo

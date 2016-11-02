@@ -823,6 +823,29 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	PkiCertificate::getPublicKey(std::string& publicKey)
+	{
+		EVP_PKEY *pkey = nullptr;
+		pkey = X509_get_pubkey(x509Cert_);
+		if (pkey == nullptr) {
+			openSSLError("unable to open public key");
+			return false;
+		}
+
+		BIO *bio = BIO_new(BIO_s_mem());
+		EVP_PKEY_print_public(bio, pkey, 16, NULL);
+	    EVP_PKEY_free(pkey);
+
+	    BUF_MEM *bptr = NULL;
+	    BIO_flush(bio);
+	    BIO_get_mem_ptr(bio, &bptr);
+	    publicKey.assign(bptr->data, bptr->length);
+
+	    BIO_free (bio);
+	    return true;
+	}
+
 #if 0
 	UaByteString UaPkiCertificate::toByteStringDER() const
 	{

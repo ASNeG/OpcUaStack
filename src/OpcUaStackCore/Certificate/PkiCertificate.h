@@ -79,6 +79,7 @@ namespace OpcUaStackCore
 		bool fromDERFile(const std::string& derFileName);
 		bool getSignatureAlgorithm(std::string& signatureAlgorithm);
 		bool getPublicKeyAlgorithm(std::string& publicKeyAlgorithm);
+		bool getPublicKey(std::string& publicKey);
 
 	  private:
 		bool getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);

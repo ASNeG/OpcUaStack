@@ -110,6 +110,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		PkiPublicKey subjectPkiPublicKey;
 		PkiIdentity issuerPkiIdentity;
 		PkiPrivateKey issuerPrivateKey;
+		PkiRsaKey pkiRsaKey;
 
 		BOOST_REQUIRE(certificate.fromDERFile("../tst/data/ASNeG-Demo-Server.der") == true);
 		BOOST_REQUIRE(
@@ -121,6 +122,7 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 				issuerPrivateKey
 			) == true
 		);
+		BOOST_REQUIRE(pkiRsaKey.setPublicKey(subjectPkiPublicKey) == true);
 
 		// check version
 		BOOST_REQUIRE(pkiCertificateInfo.version() == 2); // V3
@@ -159,33 +161,20 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		ss << pkiCertificateInfo.validTimeNotAfter();
 		BOOST_REQUIRE(ss.str() == std::string("2019-Feb-24 15:33:47"));
 
+		// check public key type
+		BOOST_REQUIRE(subjectPkiPublicKey.keyType() == PkiPublicKey::KT_RSA);
+
 		// check public key algorithm
 		std::string publicKeyAlgorithm;
-		BOOST_REQUIRE(certificate.getPublicKeyAlgorithm(publicKeyAlgorithm) == true);
+		BOOST_REQUIRE(subjectPkiPublicKey.getPublicKeyAlgorithm(publicKeyAlgorithm) == true);
 		BOOST_REQUIRE(publicKeyAlgorithm == "rsaEncryption");
 
-
-
-		// FIXME: todo
-
-
-
-		// FIXME: todo
-		// Zertifikat Fingerabdrücke
-
-		BOOST_REQUIRE(subjectPkiPublicKey.keyType() == PkiPublicKey::KT_RSA);
-		//  FIXME: todo - Schluesselparameter
-		PkiRsaKey pkiRsaKey;
-		pkiRsaKey.setPublicKey(subjectPkiPublicKey);
+		// check public key length
 		BOOST_REQUIRE(pkiRsaKey.keyLength() == 2048);
-		// FIXME: todo - SHA1 Fingerabdruck des Schluessel
-		// FIXME: todo - Öffentlicher Schlüssel
 
-		std::string str;
-		pkiRsaKey.toHexStringPublicKey(str);
-		std::cout << ".....KEY=" << str << std::endl;
-
-
+		// check public key
+		std::string publicKey;
+		BOOST_REQUIRE(pkiRsaKey.toHexStringPublicKey(publicKey) == true);
 	}
 }
 

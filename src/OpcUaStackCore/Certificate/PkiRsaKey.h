@@ -43,6 +43,8 @@ namespace OpcUaStackCore
 		uint32_t keyLength(void);
 		bool toHexStringPublicKey(std::string& hexString);
 
+		uint32_t modulus(void);
+
 		bool writePEMFile(const std::string& fileName, const std::string& password);
 		bool readPEMFile(const std::string& fileName, const std::string& password);
 

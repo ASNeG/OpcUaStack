@@ -107,36 +107,34 @@ namespace OpcUaStackCore
 	{
 		hexString = "";
 
-        RSA *rsa = EVP_PKEY_get1_RSA(key_);
-        if (!rsa) {
-        	openSSLError();
-        	return false;
-        }
-
 		BIO* bio = BIO_new(BIO_s_mem());
 		if (bio == nullptr) {
 			openSSLError("bio memory allocation error");
 			return false;
 		}
 
+		EVP_PKEY_print_public(bio, key_, 0, NULL);
+
 		BUF_MEM* mem = NULL;
 		BIO_get_mem_ptr(bio, &mem);
-
-		int result = RSA_print(bio, rsa, 0);
-		if (result < 1) {
-        	openSSLError();
-        	BIO_free(bio);
-        	return false;
-		}
-		if (mem->length == 0) {
-			openSSLError("key empty");
-			BIO_free(bio);
-			return false;
-		}
-
 		hexString.assign(mem->data, mem->length);
+
 		BIO_free(bio);
-		return false;
+		return true;
+	}
+
+	uint32_t
+	PkiRsaKey::modulus(void)
+	{
+		RSA *rsa = EVP_PKEY_get1_RSA(key_);
+		if (!rsa) {
+		    openSSLError();
+		    return 0;
+		}
+
+		//BN_print(out, rsa->n);
+
+		return 0; //rsa->n;
 	}
 
 	bool
