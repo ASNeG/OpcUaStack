@@ -556,31 +556,37 @@ namespace OpcUaStackCore
 					break;
 				}
 
-				char buff[1024];
+				// get name from extension
+				char extName[1024];
 				ASN1_OBJECT* object = X509_EXTENSION_get_object(ext);
-				OBJ_obj2txt(buff, 1024, object, 0);
-				std::cout << "XXXXXX" << buff << std::endl;
+				OBJ_obj2txt(extName, 1024, object, 0);
+				std::cout << "NAME: ***" << extName << "***" << std::endl;
 
+
+				{
+				// get value from extension
 				BIO *bio = BIO_new(BIO_s_mem());
+				if (bio == nullptr) {
+					success = false;
+					openSSLError("bio memory allocation for extension error");
+					break;
+				}
+
 				if(!X509V3_EXT_print(bio, ext, 0, 0)){
-				    // error handling...
+					success = false;
+					openSSLError();
+					break;
 				}
 
 				BUF_MEM *bptr = NULL;
 				BIO_flush(bio);
 				BIO_get_mem_ptr(bio, &bptr);
+				std::string extValue(bptr->data, bptr->length);
 
-				// now bptr contains the strings of the key_usage, take
-				// care that bptr->data is NOT NULL terminated, so
-				// to print it well, let's do something..
-				char *buf = NULL;
-				buf = (char *)malloc( (bptr->length + 1)*sizeof(char) );
+				std::cout << "+++" << extValue << "+++" << std::endl;
 
-				memcpy(buf, bptr->data, bptr->length);
-				buf[bptr->length] = '\0';
-
-				// Now you can printf it or parse it, the way you want...
-				printf ("%s\n", buf);
+				BIO_free (bio);
+				}
 			}
 		}
 
