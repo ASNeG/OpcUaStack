@@ -79,15 +79,12 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	bool PkiCertificate::loadCryptoStrings_ = false;
-	std::list<std::string> PkiCertificate::cryptoStringErrorList_;
-	PkiExtensionEntry::Vec PkiCertificate::pkiEntensionEntryVec_;
-	bool PkiCertificate::init_ = false;
-
 	PkiCertificate::PkiCertificate(void)
-	: x509Cert_(nullptr)
+	: pkiEntensionEntryVec_()
+	, x509Cert_(nullptr)
 	, startTime_(time(NULL))
 	{
+#if 0
 		if (!init_) {
 			init_ = true;
 
@@ -99,6 +96,7 @@ namespace OpcUaStackCore
 			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("keyUsage", "critical, nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment, keyCertSign"));
 			pkiEntensionEntryVec_.push_back(PkiExtensionEntry("extendedKeyUsage", "critical, serverAuth,clientAuth"));
 		}
+#endif
 	}
 
 	PkiCertificate::~PkiCertificate(void)
@@ -584,6 +582,8 @@ namespace OpcUaStackCore
 				std::string extValue(bptr->data, bptr->length);
 
 				std::cout << "+++" << extValue << "+++" << std::endl;
+
+				pkiEntensionEntryVec_.push_back(PkiExtensionEntry(extName, extValue));
 
 				BIO_free (bio);
 				}

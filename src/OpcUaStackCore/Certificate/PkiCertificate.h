@@ -53,10 +53,7 @@ namespace OpcUaStackCore
 	: public PkiError
 	{
 	  public:
-		static bool loadCryptoStrings_;
-		static std::list<std::string> cryptoStringErrorList_;
-		static PkiExtensionEntry::Vec pkiEntensionEntryVec_;
-		static bool init_;
+		PkiExtensionEntry::Vec pkiEntensionEntryVec_;
 
 		PkiCertificate(void);
 		~PkiCertificate(void);
