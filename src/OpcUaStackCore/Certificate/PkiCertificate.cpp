@@ -80,7 +80,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	PkiCertificate::PkiCertificate(void)
-	: pkiEntensionEntryVec_()
+	: pkiEntensionEntryMap_()
 	, x509Cert_(nullptr)
 	, startTime_(time(NULL))
 	{
@@ -316,13 +316,15 @@ namespace OpcUaStackCore
         X509V3_CTX ctx;
         X509V3_set_ctx(&ctx, x509Cert_, x509Cert_, NULL, NULL, 0);
         if (success) {
-        	X509_EXTENSION *pExt = 0;
-            for (uint32_t idx = 0; idx < pkiEntensionEntryVec_.size(); idx++ )
-            {
+        	PkiExtensionEntry::Map::iterator it;
+        	for (it = pkiEntensionEntryMap_.begin(); it != pkiEntensionEntryMap_.end(); it++) {
+        		PkiExtensionEntry entry = it->second;
+
+            	X509_EXTENSION *pExt = 0;
                 pExt = X509V3_EXT_conf(
                 	NULL, &ctx,
-                	(char*)pkiEntensionEntryVec_[idx].key().c_str(),
-                	(char*)pkiEntensionEntryVec_[idx].value().c_str(
+                	(char*)entry.key().c_str(),
+                	(char*)entry.value().c_str(
                 ));
                 if (!pExt) {
                 	success = false;
@@ -583,7 +585,7 @@ namespace OpcUaStackCore
 
 				std::cout << "+++" << extValue << "+++" << std::endl;
 
-				pkiEntensionEntryVec_.push_back(PkiExtensionEntry(extName, extValue));
+				pkiEntensionEntryMap_.insert(std::make_pair(extName, PkiExtensionEntry(extName, extValue)));
 
 				BIO_free (bio);
 				}
@@ -950,6 +952,26 @@ namespace OpcUaStackCore
 	    return sRet;
 	}
 #endif
+
+	bool
+	PkiCertificate::existExtension(const std::string& extName)
+	{
+		PkiExtensionEntry::Map::iterator it;
+		it = pkiEntensionEntryMap_.find(extName);
+		if (it == pkiEntensionEntryMap_.end()) return false;
+		return true;
+	}
+
+	std::string
+	PkiCertificate::getExtension(const std::string& extName)
+	{
+		PkiExtensionEntry::Map::iterator it;
+		it = pkiEntensionEntryMap_.find(extName);
+		if (it != pkiEntensionEntryMap_.end()) {
+			return it->second.value();
+		}
+		return std::string("NotExist");
+	}
 
 }
 

@@ -34,6 +34,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef std::vector<PkiExtensionEntry> Vec;
+		typedef std::map<std::string,PkiExtensionEntry> Map;
 
 		PkiExtensionEntry(void);
 		PkiExtensionEntry(const std::string& key, const std::string& value);
@@ -53,8 +54,6 @@ namespace OpcUaStackCore
 	: public PkiError
 	{
 	  public:
-		PkiExtensionEntry::Vec pkiEntensionEntryVec_;
-
 		PkiCertificate(void);
 		~PkiCertificate(void);
 
@@ -78,6 +77,9 @@ namespace OpcUaStackCore
 		bool getPublicKeyAlgorithm(std::string& publicKeyAlgorithm);
 		bool getPublicKey(std::string& publicKey);
 
+		bool existExtension(const std::string& extName);
+		std::string getExtension(const std::string& extName);
+
 	  private:
 		bool getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);
 		bool ASN1TimeToPosixTime(ASN1_TIME* asn1Time, boost::posix_time::ptime& ptime);
@@ -85,6 +87,7 @@ namespace OpcUaStackCore
 
 		X509 *x509Cert_;
 
+		PkiExtensionEntry::Map pkiEntensionEntryMap_;
 		time_t startTime_;
 	};
 
