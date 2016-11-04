@@ -507,8 +507,6 @@ namespace OpcUaStackCore
 			}
 		}
 
-		// get SHA1 signature
-
 		// get public key
 		if (success) {
 			EVP_PKEY* pkey = X509_get_pubkey(x509Cert_);
@@ -523,27 +521,6 @@ namespace OpcUaStackCore
 				}
 			}
 		}
-
-#if 0
-	    UaPkiPublicKey ret;
-
-	    if (!m_pCert) {addError("The certificate is NULL");}
-	    else
-	    {
-	        X509_PUBKEY *pPubKey = X509_get_X509_PUBKEY( m_pCert );
-	        if (!pPubKey) {addOpenSSLError();}
-	        else
-	        {
-	            EVP_PKEY *pKey = X509_PUBKEY_get ( pPubKey );
-	            if (!pKey) {addOpenSSLError();}
-	            else
-	            {
-	                ret = UaPkiPublicKey(pKey);
-	                EVP_PKEY_free(pKey);
-	            }
-	        }
-	    }
-#endif
 
 		// extention data
 		if (success) {
@@ -588,35 +565,11 @@ namespace OpcUaStackCore
 			}
 		}
 
-#if 0
-
-
-	    if (success) {
-	        // sign the certificate
-	        const EVP_MD* digest = EVP_sha1();
-	        if (!digest) {
-	        	success = false;
-	        	openSSLError();
-	        }
-
-	        if (success) {
-	        	EVP_PKEY* pKey = issuerPrivateKey.privateKey();
-	            resultCode = X509_sign(x509Cert_, pKey, digest);
-	            if (!resultCode) {
-		        	success = false;
-		        	openSSLError();
-		        }
-	        }
-	    }
-
-
 	    if (!success) {
 	       X509_free (x509Cert_);
 	       x509Cert_ = nullptr;
 	    }
 
-		return true;
-#endif
 		return success;
 	}
 
@@ -790,22 +743,25 @@ namespace OpcUaStackCore
 
 		BIO_free (bio);
 		return true;
+	}
 
-#if 0
-	    SignatureAlgorithm sigAlg = SignatureAlgorithm_Sha1;
-	    switch (OBJ_obj2nid(m_pCert->sig_alg->algorithm))
-	    {
-	    case NID_sha1WithRSAEncryption:     sigAlg = SignatureAlgorithm_Sha1; break;
-	    case NID_sha256WithRSAEncryption:   sigAlg = SignatureAlgorithm_Sha256; break;
-	    case NID_sha384WithRSAEncryption:
-	    case NID_sha512WithRSAEncryption:
-	    case NID_sha224WithRSAEncryption:
-	    default:
-	        // not available
-	        break;
-	    }
-	    return sigAlg;
-#endif
+	bool
+	PkiCertificate::getSignature(std::string& signature)
+	{
+		BIO *bio = BIO_new(BIO_s_mem());
+		if (X509_signature_dump(bio, x509Cert_->signature, 9) <= 0) {
+			openSSLError();
+			BIO_free (bio);
+			return false;
+		}
+
+		BUF_MEM *bptr = NULL;
+		BIO_flush(bio);
+		BIO_get_mem_ptr(bio, &bptr);
+		signature.assign(bptr->data, bptr->length);
+
+		BIO_free (bio);
+		return true;
 	}
 
 	bool

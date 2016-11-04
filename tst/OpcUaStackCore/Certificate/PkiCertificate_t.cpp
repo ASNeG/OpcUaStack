@@ -201,6 +201,9 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		ext = certificate.getExtension("X509v3 Extended Key Usage");
 		BOOST_REQUIRE(ext == "TLS Web Server Authentication, TLS Web Client Authentication");
 
+		// get signature
+		std::string signature;
+		BOOST_REQUIRE(certificate.getSignature(signature) == true);
 	}
 }
 
