@@ -175,6 +175,32 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)
 		// check public key
 		std::string publicKey;
 		BOOST_REQUIRE(pkiRsaKey.toHexStringPublicKey(publicKey) == true);
+
+		// get extensions
+		BOOST_REQUIRE(certificate.existExtension("Netscape Comment") == true);
+		BOOST_REQUIRE(certificate.existExtension("X509v3 Subject Key Identifier") == true);
+		BOOST_REQUIRE(certificate.existExtension("X509v3 Authority Key Identifier") == true);
+		BOOST_REQUIRE(certificate.existExtension("X509v3 Subject Alternative Name") == true);
+		BOOST_REQUIRE(certificate.existExtension("X509v3 Basic Constraints") == true);
+		BOOST_REQUIRE(certificate.existExtension("X509v3 Key Usage") == true);
+		BOOST_REQUIRE(certificate.existExtension("X509v3 Extended Key Usage") == true);
+
+		std::string ext;
+		ext = certificate.getExtension("Netscape Comment");
+		BOOST_REQUIRE(ext == "OpenSSL Generated Certificate");
+		ext = certificate.getExtension("X509v3 Subject Key Identifier");
+		BOOST_REQUIRE(ext == "06:7D:C3:F7:D1:95:AC:3B:E0:60:51:C8:57:21:E7:54:FC:26:2C:45");
+		ext = certificate.getExtension("X509v3 Authority Key Identifier");
+		BOOST_REQUIRE(ext == "keyid:06:7D:C3:F7:D1:95:AC:3B:E0:60:51:C8:57:21:E7:54:FC:26:2C:45\n");
+		ext = certificate.getExtension("X509v3 Subject Alternative Name");
+		BOOST_REQUIRE(ext == "URI:urn:BakerHughes:AggregationServer:N39541, DNS:siemens-ipc");
+		ext = certificate.getExtension("X509v3 Basic Constraints");
+		BOOST_REQUIRE(ext == "CA:FALSE");
+		ext = certificate.getExtension("X509v3 Key Usage");
+		BOOST_REQUIRE(ext == "Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment, Certificate Sign");
+		ext = certificate.getExtension("X509v3 Extended Key Usage");
+		BOOST_REQUIRE(ext == "TLS Web Server Authentication, TLS Web Client Authentication");
+
 	}
 }
 
