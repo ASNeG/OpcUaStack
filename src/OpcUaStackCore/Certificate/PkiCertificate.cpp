@@ -560,10 +560,8 @@ namespace OpcUaStackCore
 				char extName[1024];
 				ASN1_OBJECT* object = X509_EXTENSION_get_object(ext);
 				OBJ_obj2txt(extName, 1024, object, 0);
-				std::cout << "NAME: ***" << extName << "***" << std::endl;
 
 
-				{
 				// get value from extension
 				BIO *bio = BIO_new(BIO_s_mem());
 				if (bio == nullptr) {
@@ -583,12 +581,10 @@ namespace OpcUaStackCore
 				BIO_get_mem_ptr(bio, &bptr);
 				std::string extValue(bptr->data, bptr->length);
 
-				std::cout << "+++" << extValue << "+++" << std::endl;
 
 				pkiEntensionEntryMap_.insert(std::make_pair(extName, PkiExtensionEntry(extName, extValue)));
 
 				BIO_free (bio);
-				}
 			}
 		}
 
