@@ -30,26 +30,6 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT PkiExtensionEntry
-	{
-	  public:
-		typedef std::vector<PkiExtensionEntry> Vec;
-		typedef std::map<std::string,PkiExtensionEntry> Map;
-
-		PkiExtensionEntry(void);
-		PkiExtensionEntry(const std::string& key, const std::string& value);
-		~PkiExtensionEntry(void);
-
-		void key(const std::string& key);
-		std::string& key(void);
-		void value(const std::string& value);
-		std::string& value(void);
-
-	  private:
-		std::string key_;
-		std::string value_;
-	};
-
 	class DLLEXPORT PkiCertificate
 	: public PkiError
 	{
@@ -78,19 +58,12 @@ namespace OpcUaStackCore
 		bool getPublicKeyAlgorithm(std::string& publicKeyAlgorithm);
 		bool getPublicKey(std::string& publicKey);
 
-		bool existExtension(const std::string& extName);
-		std::string getExtension(const std::string& extName);
-		bool setExtension(const std::string& extName, const std::string& extValue);
-
 	  private:
 		bool getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);
 		bool ASN1TimeToPosixTime(ASN1_TIME* asn1Time, boost::posix_time::ptime& ptime);
 		bool PosixTimeToASN1Time(boost::posix_time::ptime& ptime, ASN1_TIME* asn1Time);
 
 		X509 *x509Cert_;
-
-		PkiExtensionEntry::Map pkiEntensionEntryMap_;
-		time_t startTime_;
 	};
 
 }

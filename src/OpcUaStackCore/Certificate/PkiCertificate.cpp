@@ -28,61 +28,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// PkiExtensionEntry
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	PkiExtensionEntry::PkiExtensionEntry(void)
-	: key_("")
-	, value_("")
-	{
-	}
-
-	PkiExtensionEntry::PkiExtensionEntry(const std::string& key, const std::string& value)
-	: key_(key)
-	, value_(value)
-	{
-	}
-
-	PkiExtensionEntry::~PkiExtensionEntry(void)
-	{
-	}
-
-	void
-	PkiExtensionEntry::key(const std::string& key)
-	{
-		key_ = key;
-	}
-
-	std::string&
-	PkiExtensionEntry::key(void)
-	{
-		return key_;
-	}
-
-	void
-	PkiExtensionEntry::value(const std::string& value)
-	{
-		value_ = value;
-	}
-
-	std::string&
-	PkiExtensionEntry::value(void)
-	{
-		return value_;
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// PkiCertificate
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	PkiCertificate::PkiCertificate(void)
-	: pkiEntensionEntryMap_()
-	, x509Cert_(nullptr)
-	, startTime_(time(NULL))
+	: x509Cert_(nullptr)
 	{
 	}
 
@@ -122,9 +73,9 @@ namespace OpcUaStackCore
 			}
 		}
 
-		// set start time
+		// set serial number
 		if (success) {
-			resultCode = ASN1_INTEGER_set(X509_get_serialNumber(x509Cert_), (long)startTime_);
+			resultCode = ASN1_INTEGER_set(X509_get_serialNumber(x509Cert_), (long)pkiCertificateInfo.serialNumber());
 			if (!resultCode) {
 				success = false;
 				openSSLError();
@@ -303,16 +254,17 @@ namespace OpcUaStackCore
         X509V3_CTX ctx;
         X509V3_set_ctx(&ctx, x509Cert_, x509Cert_, NULL, NULL, 0);
         if (success) {
-        	PkiExtensionEntry::Map::iterator it;
-        	for (it = pkiEntensionEntryMap_.begin(); it != pkiEntensionEntryMap_.end(); it++) {
-        		PkiExtensionEntry entry = it->second;
+        	PkiCertificateInfo::ExtensionMap::iterator it;
+        	for (it = pkiCertificateInfo.extensionMap().begin(); it != pkiCertificateInfo.extensionMap().end(); it++) {
+        		std::string extName = it->first;
+        		std::string extValue = it->second;
 
             	X509_EXTENSION *pExt = 0;
                 pExt = X509V3_EXT_conf(
                 	NULL, &ctx,
-                	(char*)entry.key().c_str(),
-                	(char*)entry.value().c_str(
-                ));
+                	(char*)extName.c_str(),
+                	(char*)extValue.c_str()
+                );
                 if (!pExt) {
                 	success = false;
                 	openSSLError();
@@ -547,8 +499,7 @@ namespace OpcUaStackCore
 				BIO_get_mem_ptr(bio, &bptr);
 				std::string extValue(bptr->data, bptr->length);
 
-
-				pkiEntensionEntryMap_.insert(std::make_pair(extName, PkiExtensionEntry(extName, extValue)));
+				pkiCertificateInfo.extension(extName, extValue);
 
 				BIO_free (bio);
 			}
@@ -793,37 +744,6 @@ namespace OpcUaStackCore
 
 	    BIO_free (bio);
 	    return true;
-	}
-
-	bool
-	PkiCertificate::existExtension(const std::string& extName)
-	{
-		PkiExtensionEntry::Map::iterator it;
-		it = pkiEntensionEntryMap_.find(extName);
-		if (it == pkiEntensionEntryMap_.end()) return false;
-		return true;
-	}
-
-	std::string
-	PkiCertificate::getExtension(const std::string& extName)
-	{
-		PkiExtensionEntry::Map::iterator it;
-		it = pkiEntensionEntryMap_.find(extName);
-		if (it != pkiEntensionEntryMap_.end()) {
-			return it->second.value();
-		}
-		return std::string("NotExist");
-	}
-
-	bool
-	PkiCertificate::setExtension(const std::string& extName, const std::string& extValue)
-	{
-		PkiExtensionEntry::Map::iterator it;
-		it = pkiEntensionEntryMap_.find(extName);
-		if (it != pkiEntensionEntryMap_.end()) return false;
-
-		pkiEntensionEntryMap_.insert(std::make_pair(extName, PkiExtensionEntry(extName, extValue)));
-		return true;
 	}
 
 }

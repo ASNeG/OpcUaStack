@@ -29,6 +29,7 @@ namespace OpcUaStackCore
     , ipAddresses_()
     , dnsNames_()
     , emails_()
+	, extensionMap_()
 	{
 	}
 
@@ -129,6 +130,40 @@ namespace OpcUaStackCore
 	PkiCertificateInfo::email(void)
 	{
 		return emails_;
+	}
+
+	PkiCertificateInfo::ExtensionMap&
+	PkiCertificateInfo::extensionMap(void)
+	{
+		return extensionMap_;
+	}
+
+	bool
+	PkiCertificateInfo::existExtension(const std::string& extName)
+	{
+		ExtensionMap::iterator it;
+		it = extensionMap_.find(extName);
+		if (it == extensionMap_.end()) return false;
+		return true;
+	}
+
+	std::string
+	PkiCertificateInfo::extension(const std::string& extName)
+	{
+		ExtensionMap::iterator it;
+		it = extensionMap_.find(extName);
+		if (it == extensionMap_.end()) return std::string("NotExist");
+		return it->second;
+	}
+
+	bool
+	PkiCertificateInfo::extension(const std::string& extName, const std::string& extValue)
+	{
+		ExtensionMap::iterator it;
+		it = extensionMap_.find(extName);
+		if (it != extensionMap_.end()) return false;
+		extensionMap_.insert(std::make_pair(extName, extValue));
+		return true;
 	}
 
 }

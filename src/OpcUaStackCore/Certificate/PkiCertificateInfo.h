@@ -30,6 +30,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT PkiCertificateInfo
 	{
 	  public:
+		typedef std::map<std::string, std::string> ExtensionMap;
+
 		PkiCertificateInfo(void);
 		~PkiCertificateInfo(void);
 
@@ -51,12 +53,19 @@ namespace OpcUaStackCore
 		void email(const std::vector<std::string>& email);
 		std::vector<std::string>& email(void);
 
+		ExtensionMap& extensionMap(void);
+		bool existExtension(const std::string& extName);
+		std::string extension(const std::string& extName);
+		bool extension(const std::string& extName, const std::string& extValue);
+
 	  private:
 
 	    boost::posix_time::ptime validTimeNotAfter_;
 	    boost::posix_time::ptime validTimeNotBefore_;
 	    uint32_t version_;
 	    uint32_t serialNumber_;
+
+	    ExtensionMap extensionMap_;
 
 	    std::string URI_;
 	    std::vector<std::string> ipAddresses_;
