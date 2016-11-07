@@ -80,6 +80,7 @@ namespace OpcUaStackCore
 
 		bool existExtension(const std::string& extName);
 		std::string getExtension(const std::string& extName);
+		bool setExtension(const std::string& extName, const std::string& extValue);
 
 	  private:
 		bool getX509Name(X509_NAME* name, uint32_t nameId, std::string& value);
