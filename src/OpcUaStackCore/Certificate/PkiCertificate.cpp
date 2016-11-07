@@ -330,6 +330,7 @@ namespace OpcUaStackCore
             }
         }
 
+#if 0
         if (success) {
         	std::vector<std::string>::iterator it;
         	std::string subjectAltNameValue;
@@ -372,6 +373,7 @@ namespace OpcUaStackCore
             }
 
         }
+#endif
 
 	    if (success) {
 	        // sign the certificate
