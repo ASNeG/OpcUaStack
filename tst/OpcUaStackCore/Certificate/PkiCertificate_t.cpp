@@ -35,13 +35,6 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_create_self_signed)
 	BOOST_REQUIRE(rsaKey.getPrivateKey(issuerPkiPrivateKey) == true);
 	BOOST_REQUIRE(rsaKey.getPublicKey(subjectPkiPublicKey) == true);
 
-#if 0
-	// check signature algorithm
-	std::string signatureAlgorithm;
-	BOOST_REQUIRE(certificate.getSignatureAlgorithm(signatureAlgorithm) == true);
-	BOOST_REQUIRE(signatureAlgorithm == "sha1WithRSAEncryption");
-#endif
-
 	// issuer
 	issuerPkiIdentity.commonName("ASNeG-Demo-Server");
 	issuerPkiIdentity.organization("ASNeG");
@@ -64,23 +57,6 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_create_self_signed)
 	pkiCertificateInfo.validTimeNotBefore(boost::posix_time::time_from_string("2016-01-01 00:00:00"));
 	pkiCertificateInfo.validTimeNotAfter(boost::posix_time::time_from_string("2021-01-01 00:00:00"));
 
-#if 0
-	// check public key type
-	BOOST_REQUIRE(subjectPkiPublicKey.keyType() == PkiPublicKey::KT_RSA);
-
-	// check public key algorithm
-	std::string publicKeyAlgorithm;
-	BOOST_REQUIRE(subjectPkiPublicKey.getPublicKeyAlgorithm(publicKeyAlgorithm) == true);
-	BOOST_REQUIRE(publicKeyAlgorithm == "rsaEncryption");
-
-	// check public key length
-	BOOST_REQUIRE(pkiRsaKey.keyLength() == 2048);
-
-	// check public key
-	std::string publicKey;
-	BOOST_REQUIRE(pkiRsaKey.toHexStringPublicKey(publicKey) == true);
-#endif
-
 	// extensions
 	BOOST_REQUIRE(pkiCertificateInfo.extension("Netscape Comment", "OpenSSL Generated Certificate") == true);
 	BOOST_REQUIRE(pkiCertificateInfo.extension("X509v3 Subject Key Identifier", "06:7D:C3:F7:D1:95:AC:3B:E0:60:51:C8:57:21:E7:54:FC:26:2C:45") == true);
@@ -89,12 +65,6 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_create_self_signed)
 	BOOST_REQUIRE(pkiCertificateInfo.extension("X509v3 Basic Constraints", "CA:FALSE") == true);
 	BOOST_REQUIRE(pkiCertificateInfo.extension("X509v3 Key Usage", "Digital Signature, Non Repudiation, Key Encipherment, Data Encipherment, Certificate Sign") == true);
 	BOOST_REQUIRE(pkiCertificateInfo.extension("X509v3 Extended Key Usage", "TLS Web Server Authentication, TLS Web Client Authentication") == true);
-
-#if 0
-	// get signature
-	std::string signature;
-	BOOST_REQUIRE(certificate.getSignature(signature) == true);
-#endif
 
 	// create certificate
 	success = certificate.createNewCertificate(
@@ -105,6 +75,11 @@ BOOST_AUTO_TEST_CASE(PkiCertificate_create_self_signed)
 		issuerPkiPrivateKey
 	);
 	BOOST_REQUIRE(success == true);
+
+	// write certificate
+	certificate.toDERFile("Dummy.der");
+
+	BOOST_REQUIRE(certificate.toDERFile("Dummy.der") == true);
 }
 
 BOOST_AUTO_TEST_CASE(PkiCertificate_write_read_key)

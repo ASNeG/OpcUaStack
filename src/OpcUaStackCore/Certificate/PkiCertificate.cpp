@@ -259,13 +259,27 @@ namespace OpcUaStackCore
         		std::string extName = it->first;
         		std::string extValue = it->second;
 
+        		// get nid from name
+        		int nid = OBJ_ln2nid(extName.c_str());
+        		if (nid < 1) {
+        			nid = OBJ_sn2nid(extName.c_str());
+        			if (nid < 1) {
+        				std::stringstream ss;
+        				ss << "extension name " << extName << " not exist";
+        				success = false;
+        				openSSLError(ss.str());
+        				break;
+        			}
+        		}
+
             	X509_EXTENSION *pExt = 0;
-                pExt = X509V3_EXT_conf(
+                pExt = X509V3_EXT_conf_nid(
                 	NULL, &ctx,
-                	(char*)extName.c_str(),
+                	nid,
                 	(char*)extValue.c_str()
                 );
                 if (!pExt) {
+                	std::cout << "ERROR **" << extName << "** " << extValue << std::endl;
                 	success = false;
                 	openSSLError();
                 }
@@ -477,6 +491,15 @@ namespace OpcUaStackCore
 				// get name from extension
 				char extName[1024];
 				ASN1_OBJECT* object = X509_EXTENSION_get_object(ext);
+
+				// FIXME: test
+				//int nid = OBJ_obj2nid(object);
+				//std::cout << "nid: " << nid << " " << OBJ_nid2sn(nid) << std::endl;
+
+				//const char *	OBJ_nid2sn(int n);
+				//int		OBJ_obj2nid(const ASN1_OBJECT *o);
+
+
 				OBJ_obj2txt(extName, 1024, object, 0);
 
 
