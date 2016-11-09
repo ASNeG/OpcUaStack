@@ -32,6 +32,7 @@ namespace OpcUaServer
 	, running_(false)
 	, serviceName_("")
 	, server_()
+	, configFileName_("")
 	{
 	}
 
@@ -40,39 +41,11 @@ namespace OpcUaServer
 	}
 
 	void 
-	ServerApplication::serviceName(const std::string& serviceName, unsigned int argc, char** argv)
+	ServerApplication::serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv)
 	{
-		serviceName_ = serviceName;
-		
-		//
-		// <InstallationPath>/<BIN_DIR>/OpcUaServer
-		// <InstallationPath>/<CONF_DIR>/<ServiceName/OpcUaServer.xml
-		// <InstallationPath>/<LOG_DIR>/<ServiceName>/OpcUaServer.log
-		//
-
-		// It was only passed the service name
-		if (argc == 1) {
-			// The configuration file must be exist relative to the binary.
-			Environment::installDir(Environment::getInstallationPathRelative(Environment::binDir()));
-
-			// determine the path of the configuration file
-		    configFileName_ = Environment::installDir()
-				+ std::string("/") + Environment::confDir()
-				+ std::string("/") + serviceName_
-				+ std::string("/OpcUaServer.xml");
-		}
-
-		// It was passed the service name and die path and name of the
-		// configuration file
-		else if (argc == 2) {
-			// The configuration file is given
-			configFileName_ = argv[1];
-			Environment::installDir(
-				Environment::getInstallationPathAbsolute(
-					serviceName_, configFileName_,Environment::confDir()
-			    )
-		    );
-		}
+		configFileName_ = boost::filesystem::absolute(configFileName).string();
+		std::string configFilePath = boost::filesystem::path(configFileName_).parent_path().string();
+		Environment::confDir(configFilePath);
 	}
 
 	bool 
@@ -80,11 +53,7 @@ namespace OpcUaServer
 	{
 		// set global config alias variables
 		Config* config = Config::instance();
-		config->alias("@BIN_DIR@", Environment::binDir());
 		config->alias("@CONF_DIR@", Environment::confDir());
-		config->alias("@LOG_DIR@", Environment::logDir());
-		config->alias("@INSTALL_DIR@", Environment::installDir());
-
 		return true;
 	}
 

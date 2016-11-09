@@ -30,7 +30,7 @@ namespace OpcUaServer
 		ServerApplication(void);
 		~ServerApplication(void);
 
-		virtual void serviceName(const std::string& serviceName, unsigned int argc, char** argv);
+		virtual void serviceCommandLine(const std::string& configFileName, unsigned int argc, char** argv);
 		virtual bool startup(void);
 		virtual bool shutdown(void);
 		virtual bool run(void);

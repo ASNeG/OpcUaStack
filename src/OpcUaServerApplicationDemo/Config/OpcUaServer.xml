@@ -19,7 +19,7 @@
 
   <Logging>
     <FileLogger>
-      <LogFileName>@INSTALL_DIR@/@LOG_DIR@/ASNeG-Demo/OpcUaServer.log</LogFileName>
+      <LogFileName>@CONF_DIR@/../../../var/log/OpcUaStack/ASNeG-Demo/OpcUaServer.log</LogFileName>
       <MaxLogFileNumber>20</MaxLogFileNumber>
       <MaxLogFileSize>5000000</MaxLogFileSize>
       <LogLevel>Trace</LogLevel>
@@ -83,18 +83,18 @@
     <Application>
       <Name>ASNeG-Demo</name>  
       <Library>OpcUaServerApplicationDemo</Library>
-      <Config>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/ApplicationDemoModel.xml</Config>
+      <Config>@CONF_DIR@/ApplicationDemoModel.xml</Config>
     </Application>
   </Applications>
   
   
   <InformationModel>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTest.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTestLib.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSetTestLibClientServer.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.Camera.xml</NodeSetFile>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ASNeG-Demo/Opc.Ua.NodeSet.Function.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSetTest.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSetTestLib.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSetTestLibClientServer.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Camera.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.Function.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>

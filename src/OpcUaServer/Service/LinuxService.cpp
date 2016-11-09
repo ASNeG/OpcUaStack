@@ -69,7 +69,7 @@ namespace OpcUaServer
 
 		std::string serviceName(argv[1]);
 
-		serverApplicationIf_->serviceName(serviceName, argc-1, &argv[1]);
+		serverApplicationIf_->serviceCommandLine(serviceName, argc-1, &argv[1]);
 		if (!serverApplicationIf_->startup()) return;
 
 		signal(SIGINT, signalHandler);

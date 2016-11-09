@@ -531,7 +531,7 @@ namespace OpcUaServer
 			return; 
 		} 
 
-		serverApplicationIf_->serviceName(serviceName, argc, argv);
+		serverApplicationIf_->serviceCommandLine(serviceName, argc, argv);
 
 		// startup service
 		serviceStatus_.dwCurrentState		= SERVICE_START_PENDING;
