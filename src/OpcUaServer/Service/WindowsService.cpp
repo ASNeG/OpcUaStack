@@ -107,8 +107,10 @@ namespace OpcUaServer
 	}
 
 	void 
-	WindowsService::main(const std::string& applicationName, unsigned int argc, char** argv)
+	WindowsService::main(unsigned int argc, char** argv)
 	{
+		std::string applicationName = "OpcUaServer";
+
 		// write function parameter into event log
 		std::stringstream ss;
 		ss << "Main: " << applicationName << std::endl;

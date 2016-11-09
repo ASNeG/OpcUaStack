@@ -33,7 +33,7 @@ namespace OpcUaServer
 		virtual ~LinuxService(void);
 
 		void usage(void);
-		void main(const std::string& applicationName, unsigned int argc, char** argv);
+		void main(unsigned int argc, char** argv);
 
 		void serverApplicationIf(ServerApplicationIf* serverApplicationIf);
 		void stop(void);

@@ -37,7 +37,7 @@ namespace OpcUaServer
 		virtual ~WindowsService(void);
 
 		void usage(void);
-		void main(const std::string& applicationName, unsigned int argc, char** argv);
+		void main(unsigned int argc, char** argv);
 		void serviceMain(unsigned int argc, char** argv);
 		void serviceHandler(DWORD fdwControl);
 		bool installService(const std::string& serviceName, const std::string& serviceDescription);

@@ -41,5 +41,5 @@ int main(int argc, char** argv)
 	OpcUaServer::LinuxService* service = OpcUaServer::LinuxService::instance();
 #endif
 	service->serverApplicationIf(&serverApplication);
-	service->main("OpcUaServer", argc, argv);
+	service->main(argc, argv);
 }
