@@ -279,9 +279,11 @@ namespace OpcUaStackCore
                 	(char*)extValue.c_str()
                 );
                 if (!pExt) {
-                	std::cout << "ERROR **" << extName << "** " << extValue << std::endl;
+                	std::stringstream ss;
+                	ss << "create extension " << extName << " error";
                 	success = false;
-                	openSSLError();
+                	openSSLError(ss.str());
+                	break;
                 }
                 else
                 {
