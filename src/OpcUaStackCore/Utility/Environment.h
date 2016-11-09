@@ -1,3 +1,20 @@
+/*
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
 #ifndef __OpcUaStackCore_Environment_h__
 #define __OpcUaStackCore_Environment_h__
 
@@ -13,10 +30,7 @@ namespace OpcUaStackCore
 		Environment(void);
 		~Environment(void);
 
-		static std::string installDir_;
-		static std::string binDir_;
 		static std::string confDir_;
-		static std::string logDir_;
 
 		static std::string getInstallationPathRelative(const std::string& binaryDirectory);
 		static std::string getInstallationPathAbsolute(
@@ -28,14 +42,8 @@ namespace OpcUaStackCore
 		static void setCurrentPath(const std::string& currentPath);
 		static std::string getAbsolutePath(const std::string& relativePath);
 
-		static void installDir(const std::string& installDir);
-		static std::string& installDir(void);
-		static void binDir(const std::string& binDir);
-		static std::string& binDir(void);
 		static void confDir(const std::string& confDir);
 		static std::string& confDir(void);
-		static void logDir(const std::string& logDir);
-		static std::string& logDir(void);
 
 		static std::string subst(const std::string& string);
 	};

@@ -1,3 +1,21 @@
+
+/*
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -9,10 +27,7 @@
 namespace OpcUaStackCore
 {
 
-	std::string Environment::installDir_ = "";
-	std::string Environment::binDir_ = "";
 	std::string Environment::confDir_ = "";
-	std::string Environment::logDir_ = "";
 
 	Environment::Environment(void)
 	{
@@ -103,30 +118,6 @@ namespace OpcUaStackCore
 	}
 
 	void
-	Environment::installDir(const std::string& installDir)
-	{
-		installDir_ = installDir;
-	}
-
-	std::string&
-	Environment::installDir(void)
-	{
-		return installDir_;
-	}
-
-	void
-	Environment::binDir(const std::string& binDir)
-	{
-		binDir_ = binDir;
-	}
-
-	std::string&
-	Environment::binDir(void)
-	{
-		return binDir_;
-	}
-
-	void
 	Environment::confDir(const std::string& confDir)
 	{
 		confDir_ = confDir;
@@ -138,26 +129,12 @@ namespace OpcUaStackCore
 		return confDir_;
 	}
 
-	void
-	Environment::logDir(const std::string& logDir)
-	{
-		logDir_ = logDir;
-	}
-
-	std::string&
-	Environment::logDir(void)
-	{
-		return logDir_;
-	}
 
 	std::string
 	Environment::subst(const std::string& string)
 	{
 		std::string str = string;
-		boost::replace_all(str, "@INSTALL_DIR@", installDir_);
-		boost::replace_all(str, "@BIN_DIR@", binDir_);
 		boost::replace_all(str, "@CONF_DIR@", confDir_);
-		boost::replace_all(str, "@LOG_DIR@", logDir_);
 		return str;
 	}
 

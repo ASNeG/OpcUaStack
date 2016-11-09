@@ -37,24 +37,15 @@ namespace OpcUaStackServer
 		void configFileName(const std::string& configFileName);
 		std::string configFileName(void);
 
-		void installDir(const std::string& installDir);
-		std::string installDir(void);
-		void binDir(const std::string& binDir);
-		std::string binDir(void);
 		void confDir(const std::string& confDir);
 		std::string confDir(void);
-		void logDir(const std::string& logDir);
-		std::string logDir(void);
 
 	  private:
 		std::string applicationName_;
 		std::string libraryName_;
 		std::string configFileName_;
 
-		std::string installDir_;
-		std::string binDir_;
 		std::string confDir_;
-		std::string logDir_;
 	};
 
 }

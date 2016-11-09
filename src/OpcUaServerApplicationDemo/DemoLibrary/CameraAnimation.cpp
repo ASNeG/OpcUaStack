@@ -218,10 +218,7 @@ namespace OpcUaServerApplicationDemo
 		ConfigXml configXml;
 
 		// read configuration file
-		config.alias("@BIN_DIR@", Environment::binDir());
 		config.alias("@CONF_DIR@", Environment::confDir());
-		config.alias("@LOG_DIR@", Environment::logDir());
-		config.alias("@INSTALL_DIR@", Environment::installDir());
 
 		Log(Debug, "load camera model") 
 		    .parameter("ConfigFileName", applicationInfo_->configFileName());

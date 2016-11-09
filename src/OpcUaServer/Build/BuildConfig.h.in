@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,10 +17,5 @@
 
 #ifndef __OpcUaServer_BuildConfig__
 #define __OpcUaServer_BuildConfig__
-
-#define INSTALL_DIR 		"@CMAKE_INSTALL_PREFIX@"
-#define BIN_DIR				"@BIN_DIR@"
-#define CONF_DIR			"@CONF_DIR@"
-#define LOG_DIR				"@LOG_DIR@"
 
 #endif
