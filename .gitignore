@@ -15,3 +15,4 @@ build_src
 build_tst
 build_package
 build_local
+build_info
