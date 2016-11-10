@@ -1,17 +1,60 @@
 cmake_minimum_required(VERSION 2.8.9)
 project	(OpcUaStack)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+#
+# version
+#
+# ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+set(VERSION_MAJOR "2" CACHE STRING "major version")
+set(VERSION_MINOR "0" CACHE STRING "minor version")
+set(VERSION_PATCH "1" CACHE STRING "patch version")
+
+set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
+set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# global options
+# create version file and dependency file
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-set(CMAKE_VERBOSE_MAKEFILE ON)
-set(VERSION_MAJOR "1" CACHE STRING "major version")
-set(VERSION_MINOR "0" CACHE STRING "minor version")
-set(VERSION_PATCH "10" CACHE STRING "patch version")
+if (CREATE_INFO_FILES)
+    message(STATUS "create info file ${CMAKE_BINARY_DIR}/version")
+    file(WRITE ${CMAKE_BINARY_DIR}/version "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+    message(STATUS "create dependency file ${CMAKE_BINARY_DIR}/dependency")
+    file(WRITE ${CMAKE_BINARY_DIR}/dependency "boost ${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}")
+
+    return()
+endif ()
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# global info messages
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+message(STATUS "Version info")
+message(STATUS "  product version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+message(STATUS "Dependency info")
+message(STATUS "  boost version: ${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}")
+
+message(STATUS "System info")
+message(STATUS "  host system name: ${CMAKE_HOST_SYSTEM_NAME}")
+message(STATUS "  host system processor: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+message(STATUS "  system processor: ${CMAKE_SYSTEM_PROCESSOR}")
+message(STATUS "  system name: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
+
 
 set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
 set(LIB_DIR "usr/lib" CACHE STRING "library directory")
