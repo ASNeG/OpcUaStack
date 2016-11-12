@@ -56,6 +56,39 @@ message(STATUS "  system name: ${CMAKE_SYSTEM_NAME}")
 message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 
 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# boost library
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+add_definitions(-DBOOST_ALL_DYN_LINK)
+find_package(Boost "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
+
+message(STATUS "Boost library")
+message(STATUS "  version major: ${BOOST_VERSION_MAJOR}")
+message(STATUS "  version minor: ${BOOST_VERSION_MINOR}")
+message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
+message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
+message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")
+message(STATUS "  system release library: ${Boost_SYSTEM_LIBRARY_RELEASE}")
+message(STATUS "  unit_test_framework debug library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG}")
+message(STATUS "  unit_test_framework release library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE}")
+message(STATUS "  filesystem debug library: ${Boost_FILESYSTEM_LIBRARY_DEBUG}")
+message(STATUS "  filesystem release library: ${Boost_FILESYSTEM_LIBRARY_RELEASE}")
+message(STATUS "  thread debug library: ${Boost_THREAD_LIBRARY_DEBUG}")
+message(STATUS "  thread release library: ${Boost_THREAD_LIBRARY_RELEASE}")
+message(STATUS "  date_time debug library: ${Boost_DATE_TIME_LIBRARY_DEBUG}")
+message(STATUS "  date_time release library: ${Boost_DATE_TIME_LIBRARY_RELEASE}")
+message(STATUS "  chrono debug library: ${Boost_CHRONO_LIBRARY_DEBUG}")
+message(STATUS "  chrono release library: ${Boost_CHRONO_LIBRARY_RELEASE}")
+message(STATUS "  regex debug library: ${Boost_REGEX_LIBRARY_DEBUG}")
+message(STATUS "  regex release library: ${Boost_REGEX_LIBRARY_RELEASE}")
+
+
+
+
 set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
 set(LIB_DIR "usr/lib" CACHE STRING "library directory")
 set(INC_DIR "usr/include" CACHE STRING "library directory")
@@ -112,8 +145,6 @@ option(
 
 include(Tools/CMakeLists.txt) 
 
-add_definitions(-DBOOST_ALL_DYN_LINK)
-
 if (WIN32)
 	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
 	set(BOOST_LIBRARYDIR C:\\local\\boost_1_54_0\\lib32-msvc-11.0)
@@ -122,7 +153,7 @@ if (WIN32)
 endif ()
 
 find_package(OpenSSL REQUIRED)
-find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
