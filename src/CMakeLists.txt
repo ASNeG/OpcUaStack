@@ -132,64 +132,31 @@ message(STATUS "  crypto library: ${OPENSSL_SSL_LIBRARY}")
 message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 
 
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# build subdirectories
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+if (WIN32)
+    include(Tools/CMakeLists.txt) 
+endif()
+include(OpcUaStackCore/CMakeLists.txt)
+include(OpcUaStackClient/CMakeLists.txt) 
+include(OpcUaStackServer/CMakeLists.txt)
+include(OpcUaServer/CMakeLists.txt)
 
 
 
-set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
-set(LIB_DIR "usr/lib" CACHE STRING "library directory")
-set(INC_DIR "usr/include" CACHE STRING "library directory")
-set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
-set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
 
-option(
-    USE_OpcUaStackCore
-    "build opc ua core library"
-    ON
-)
 
-option(
-    USE_OpcUaStackClient
-    "build opc ua client library"
-    ON
-)
 
-option(
-    USE_OpcUaStackServer
-    "build opc ua server library"
-    ON
-)
 
-option(
-    USE_OpcUaServer
-    "build opc ua application server"
-    ON
-)
 
-option(
-    USE_OpcUaClient
-    "build opc ua client"
-    ON
-)
 
-option(
-    USE_OpcUaServerApplicationDemo
-    "build opc ua server application demo library"
-    ON
-)
 
-option(
-    USE_OpcUaProjectBuilder
-    "build opc ua project builder"
-    ON
-)
 
-option(
-    USE_OpcUaCertificate
-    "certificate applications"
-    ON
-)
-
-include(Tools/CMakeLists.txt) 
 
 if (WIN32)
 	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
@@ -200,6 +167,15 @@ endif ()
 
 
 
+set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
+set(LIB_DIR "usr/lib" CACHE STRING "library directory")
+set(INC_DIR "usr/include" CACHE STRING "library directory")
+set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
+set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
+
+
+
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -207,20 +183,8 @@ endif ()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-if (USE_OpcUaStackCore)
-    include(OpcUaStackCore/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackClient)
-    include(OpcUaStackClient/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaStackServer)
-    include(OpcUaStackServer/CMakeLists.txt) 
-endif ()
-
 if (USE_OpcUaServer)
-    include(OpcUaServer/CMakeLists.txt) 
+     
 endif ()
 
 if (USE_OpcUaClient)
