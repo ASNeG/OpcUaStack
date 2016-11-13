@@ -16,6 +16,10 @@ set(VERSION_PATCH "1" CACHE STRING "patch version")
 set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
 set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
 
+set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
+set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
+set(OPENSSL_VERSION_PATCH "1" CACHE STRING "patch version")
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -61,14 +65,32 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 #
 # boost library
 #
+# This module reads hints about search locations from variables:
+#
+# BOOST_ROOT             - Preferred installation prefix
+#  (or BOOSTROOT)
+# BOOST_INCLUDEDIR       - Preferred include directory e.g. <prefix>/include
+# BOOST_LIBRARYDIR       - Preferred library directory e.g. <prefix>/lib
+# Boost_NO_SYSTEM_PATHS  - Set to ON to disable searching in locations not
+#                          specified by these hint variables. Default is OFF.
+# Boost_ADDITIONAL_VERSIONS
+#                       - List of Boost versions not known to this module
+#                         (Boost install locations may contain the version)
+#
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 add_definitions(-DBOOST_ALL_DYN_LINK)
-find_package(Boost "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
+find_package(
+    Boost 
+    "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" 
+    COMPONENTS system unit_test_framework filesystem thread date_time chrono regex 
+    REQUIRED
+)
 
 message(STATUS "Boost library")
-message(STATUS "  version major: ${BOOST_VERSION_MAJOR}")
-message(STATUS "  version minor: ${BOOST_VERSION_MINOR}")
+message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
+message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
+message(STATUS "  version subminor: ${Boost_SUBMINOR_VERSION}")
 message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
 message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
 message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")
@@ -85,6 +107,30 @@ message(STATUS "  chrono debug library: ${Boost_CHRONO_LIBRARY_DEBUG}")
 message(STATUS "  chrono release library: ${Boost_CHRONO_LIBRARY_RELEASE}")
 message(STATUS "  regex debug library: ${Boost_REGEX_LIBRARY_DEBUG}")
 message(STATUS "  regex release library: ${Boost_REGEX_LIBRARY_RELEASE}")
+message(STATUS "  libraries: ${Boost_LIBRARIES}")
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# openssl
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+find_package(
+    OpenSSL 
+    "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}" 
+    COMPONENTS openssl crypto 
+    REQUIRED
+)
+
+message(STATUS "OpenSSL library")
+message(STATUS "  version: ${OPENSSL_VERSION}")
+message(STATUS "  include library: ${OPENSSL_INCLUDE_DIR}")
+message(STATUS "  openssl library: ${OPENSSL_CRYPTO_LIBRARY}")
+message(STATUS "  crypto library: ${OPENSSL_SSL_LIBRARY}")
+message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
+
 
 
 
@@ -152,7 +198,6 @@ if (WIN32)
 	#ADD_DEFINITIONS(-D_UNICODE)
 endif ()
 
-find_package(OpenSSL REQUIRED)
 
 
 # -----------------------------------------------------------------------------
