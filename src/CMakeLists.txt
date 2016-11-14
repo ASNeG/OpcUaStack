@@ -187,11 +187,11 @@ set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(FILES icon/asneg.ico DESTINATION usr/share/icons/OpcUaStack)
-install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/OpcUaStack)
-install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/OpcUaStack)
-install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION usr/share/OpcUaStack)
-install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/OpcUaStack)
+install(FILES icon/asneg.ico DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR})
+install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR})
+install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR})
+install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})
+install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})
 
 
 
