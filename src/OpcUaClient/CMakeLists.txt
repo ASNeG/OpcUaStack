@@ -32,13 +32,13 @@ file(
 )
 
 add_executable(
-    OpcUaClient
+    OpcUaClient${VERSION_MAJOR}
     ${OpcUaClient_SRC}
     ${PROJECT_BINARY_DIR}
 )
 
 target_link_libraries(
-    OpcUaClient
+    OpcUaClient${VERSION_MAJOR}
     OpcUaStackCore
     OpcUaStackServer
     OpcUaStackClient
@@ -55,4 +55,4 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaClient DESTINATION /usr/local/bin)
+install(TARGETS OpcUaClient${VERSION_MAJOR} DESTINATION /usr/local/bin)

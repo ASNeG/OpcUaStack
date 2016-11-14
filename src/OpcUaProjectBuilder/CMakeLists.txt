@@ -30,13 +30,13 @@ file(
 
 
 add_executable(
-    OpcUaProjectBuilder
+    OpcUaProjectBuilder${VERSION_MAJOR}
     ${OpcUaProjectBuilder_SRC}
     ${PROJECT_BINARY_DIR}
 )
 
 target_link_libraries(
-    OpcUaProjectBuilder
+    OpcUaProjectBuilder${VERSION_MAJOR}
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
 )
@@ -49,5 +49,5 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaProjectBuilder DESTINATION /usr/local/bin)
+install(TARGETS OpcUaProjectBuilder${VERSION_MAJOR} DESTINATION /usr/local/bin)
 install(DIRECTORY OpcUaProjectBuilder/ProjectTemplate DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})

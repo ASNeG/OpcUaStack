@@ -28,15 +28,19 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-file(GLOB OpcUaServer_SRC ${PROJECT_SOURCE_DIR}/OpcUaServer/*/*.cpp)
+file(
+    GLOB OpcUaServer_SRC 
+    ${PROJECT_SOURCE_DIR}/OpcUaServer/*/*.cpp
+)
+
 add_executable(
-    OpcUaServer
+    OpcUaServer${VERSION_MAJOR}
     ${OpcUaServer_SRC}
     ${PROJECT_BINARY_DIR}
 )
 
 target_link_libraries(
-    OpcUaServer
+    OpcUaServer${VERSION_MAJOR}
     OpcUaStackCore
     OpcUaStackServer
     OpcUaStackClient
@@ -53,4 +57,4 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaServer DESTINATION /usr/local/bin)
+install(TARGETS OpcUaServer${VERSION_MAJOR} DESTINATION /usr/local/bin)
