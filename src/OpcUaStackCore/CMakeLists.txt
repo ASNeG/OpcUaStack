@@ -29,6 +29,13 @@ target_link_libraries(
     ${OPENSSL_LIBRARIES}
 )
 
+set_target_properties(
+    OpcUaStackCore
+    PROPERTIES 
+    VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+    SOVERSION ${VERSION_MAJOR}
+)
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------

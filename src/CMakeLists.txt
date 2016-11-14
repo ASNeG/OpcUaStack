@@ -146,6 +146,10 @@ include(OpcUaStackCore/CMakeLists.txt)
 include(OpcUaStackClient/CMakeLists.txt) 
 include(OpcUaStackServer/CMakeLists.txt)
 include(OpcUaServer/CMakeLists.txt)
+include(OpcUaClient/CMakeLists.txt) 
+include(OpcUaProjectBuilder/CMakeLists.txt)
+include(OpcUaServerApplicationDemo/CMakeLists.txt) 
+
 
 
 
@@ -174,34 +178,6 @@ set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
 set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
 
 
-
-
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-#
-# build subdirectories
-#
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
-if (USE_OpcUaServer)
-     
-endif ()
-
-if (USE_OpcUaClient)
-    include(OpcUaClient/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaServerApplicationDemo)
-    include(OpcUaServerApplicationDemo/CMakeLists.txt) 
-endif ()
-
-if (USE_OpcUaProjectBuilder)
-    include(OpcUaProjectBuilder/CMakeLists.txt) 
-endif ()
-
-if (USE_Certificate)
-    include(OpcUaCertificate/CMakeLists.txt) 
-endif ()
 
 
 # -----------------------------------------------------------------------------

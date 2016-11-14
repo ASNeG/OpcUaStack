@@ -29,6 +29,12 @@ target_link_libraries(
     ${Boost_LIBRARIES}
 )
 
+set_target_properties(
+    OpcUaStackClient
+    PROPERTIES 
+    VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+    SOVERSION ${VERSION_MAJOR}
+)
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------

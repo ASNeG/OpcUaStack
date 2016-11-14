@@ -40,15 +40,14 @@ build_local()
     # install build local
     set -x
     cmake ../src \
-          "${CMAKE_GENERATOR_LOCAL}" \
-          -DCMAKE_INSTALL_PREFIX="${HOME}/install" 
+          "${CMAKE_GENERATOR_LOCAL}" 
     set +x
     if [ $? -ne 0 ] ;
     then
         echo "cmake error"
         return $?
     fi
-    make install
+    make DESTDIR="${HOME}/install" install
      if [ $? -ne 0 ] ;
     then
         echo "make install error"

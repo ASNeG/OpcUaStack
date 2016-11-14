@@ -1,11 +1,10 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# configuration
+# prebuild
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-
 configure_file(
     "${PROJECT_SOURCE_DIR}/OpcUaProjectBuilder/OpcUaProjectBuilderConfig.h.in"
     "${PROJECT_BINARY_DIR}/OpcUaProjectBuilderConfig.h"
@@ -24,7 +23,12 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
-file(GLOB OpcUaProjectBuilder_SRC ${PROJECT_SOURCE_DIR}/OpcUaProjectBuilder/*.cpp)
+file(
+    GLOB OpcUaProjectBuilder_SRC 
+    ${PROJECT_SOURCE_DIR}/OpcUaProjectBuilder/*.cpp
+)
+
+
 add_executable(
     OpcUaProjectBuilder
     ${OpcUaProjectBuilder_SRC}
@@ -45,5 +49,5 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaProjectBuilder DESTINATION ${BIN_DIR})
-install(DIRECTORY OpcUaProjectBuilder/ProjectTemplate DESTINATION usr/share/OpcUaStack)
+install(TARGETS OpcUaProjectBuilder DESTINATION /usr/local/bin)
+install(DIRECTORY OpcUaProjectBuilder/ProjectTemplate DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})
