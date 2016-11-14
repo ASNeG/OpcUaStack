@@ -170,16 +170,6 @@ if (WIN32)
 endif ()
 
 
-
-set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
-set(LIB_DIR "usr/lib" CACHE STRING "library directory")
-set(INC_DIR "usr/include" CACHE STRING "library directory")
-set(CONF_DIR "etc/OpcUaStack" CACHE STRING "configuration directory")
-set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
-
-
-
-
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -187,11 +177,35 @@ set(LOG_DIR "var/log/OpcUaStack" CACHE STRING "log output directory")
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(FILES icon/asneg.ico DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR})
-install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR})
-install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR})
-install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})
-install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})
+install(
+    FILES icon/asneg.ico 
+    DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    COMPONENT applications
+)
+
+install(
+    FILES icon/asneg_install.ico 
+    DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    COMPONENT applications
+)
+
+install(
+    FILES icon/asneg_uninstall.ico 
+    DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    COMPONENT applications
+)
+
+install(
+    FILES ${CMAKE_SOURCE_DIR}/Copyright.txt 
+    DESTINATION usr/share/OpcUaStack${VERSION_MAJOR}
+    COMPONENT applications
+)
+
+install(
+    FILES ${CMAKE_SOURCE_DIR}/../NOTICE 
+    DESTINATION usr/share/OpcUaStack${VERSION_MAJOR}
+    COMPONENT applications
+)
 
 
 
@@ -202,6 +216,86 @@ install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/OpcUaStack${VE
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+set(CPACK_PACKAGING_INSTALL_PREFIX "/")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+set(CPACK_PACKAGE_CONTACT "info@asneg.de")
+set(CPACK_PACKAGE_NAME "OpcUaStack")
+set(CPACK_PACKAGE_VENDOR "asneg.de")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpcUaStack - Opc Ua client server application framework")
+set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+
+if (CPACK_BINARY_DEB)
+    	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+endif()
+
+if (CPACK_BINARY_RPM)
+    	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+endif()
+
+
+# Tell CPack all of the components to install. The "ALL"
+# refers to the fact that this is the set of components that
+# will be included when CPack is instructed to put everything
+# into the binary installer (the default behavior).
+set(CPACK_COMPONENTS_ALL libraries headers applications tools)
+
+# Set the displayed names for each of the components to install.
+# These will be displayed in the list of components inside the installer.
+set(CPACK_COMPONENT_LIBRARIES_DISPLAY_NAME "C++ OPC UA Stack Libraries")
+set(CPACK_COMPONENT_HEADERS_DISPLAY_NAME "C++ OPC UA Stack Headers")
+set(CPACK_COMPONENT_APPLICATIONS_DISPLAY_NAME "C++ OPC UA Applications Server")
+set(CPACK_COMPONENT_TOOLS_DISPLAY_NAME "OPC UA Stack Tools")
+
+# Provide descriptions for each of the components to install.
+# When the user hovers the mouse over the name of a component, 
+# the description will be shown in the "Description" box in the
+# installer. If no descriptions are provided, the "Description" 
+# box will be removed.
+set(CPACK_COMPONENT_LIBRARIES_DESCRIPTION
+  "Shared libraries used to build opc ua applications")
+set(CPACK_COMPONENT_HEADERS_DESCRIPTION
+  "C/C++ header files used to build opc ua applications")
+set(CPACK_COMPONENT_APPLICATIONS_DESCRIPTION
+  "C/C++ opc ua application server")
+set(CPACK_COMPONENT_TOOLS_DESCRIPTION
+  "C/C++ development tools")
+
+# Put the components into two different groups: "Runtime" and "Development"
+set(CPACK_COMPONENT_LIBRARIES_GROUP "dev")
+set(CPACK_COMPONENT_HEADERS_GROUP "dev")
+set(CPACK_COMPONENT_APPLICATIONS_GROUP "bin")
+set(CPACK_COMPONENT_TOOLS_GROUP "dev")
+
+include(CPack)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#
+# todo
+#
 if (WIN32)
 	include (InstallRequiredSystemLibraries)
 	
@@ -229,27 +323,4 @@ if (WIN32)
 	
 endif ()
 
-set(CPACK_PACKAGING_INSTALL_PREFIX "/")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-set(CPACK_PACKAGE_CONTACT "info@asneg.de")
-set(CPACK_PACKAGE_NAME "OpcUaStack")
-set(CPACK_PACKAGE_VENDOR "asneg.de")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpcUaStack - Opc Ua client server application framework")
-set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
-set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
 
-if (CPACK_BINARY_DEB)
-    	set (CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-endif()
-
-if (CPACK_BINARY_RPM)
-    	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
-endif()
-
-	
-
-include(CPack)

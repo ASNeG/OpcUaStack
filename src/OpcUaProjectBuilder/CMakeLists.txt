@@ -49,5 +49,14 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaProjectBuilder${VERSION_MAJOR} DESTINATION /usr/local/bin)
-install(DIRECTORY OpcUaProjectBuilder/ProjectTemplate DESTINATION usr/share/OpcUaStack${VERSION_MAJOR})
+install(
+    TARGETS OpcUaProjectBuilder${VERSION_MAJOR} 
+    DESTINATION /usr/local/bin
+    COMPONENT tools
+)
+
+install(
+    DIRECTORY OpcUaProjectBuilder/ProjectTemplate 
+    DESTINATION usr/share/OpcUaStack${VERSION_MAJOR}
+    COMPONENT tools
+)

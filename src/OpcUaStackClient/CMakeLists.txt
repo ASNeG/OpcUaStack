@@ -48,9 +48,38 @@ file(GLOB INC_OpcUaStackClient_SecureChannel OpcUaStackClient/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackClient_ServiceSet OpcUaStackClient/ServiceSet/*.h)
 file(GLOB INC_OpcUaStackClient_VBI OpcUaStackClient/ValueBasedInterface/*.h)
 
-install(TARGETS OpcUaStackClient DESTINATION /usr/local/lib/OpcUaStack)
-install(FILES ${INC_OpcUaStackClient_Client} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/Client)
-install(FILES ${INC_OpcUaStackClient_SecureChannel} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/SecureChannel)
-install(FILES ${INC_OpcUaStackClient_ServiceSet} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ServiceSet)
-install(FILES ${INC_OpcUaStackClient_ServiceAccess} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ServiceAccess)
-install(FILES ${INC_OpcUaStackClient_VBI} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ValueBasedInterface)
+install(
+    TARGETS OpcUaStackClient 
+    DESTINATION /usr/local/lib/OpcUaStack
+    COMPONENT libraries
+)
+
+install(
+    FILES ${INC_OpcUaStackClient_Client} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/Client
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackClient_SecureChannel} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/SecureChannel
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackClient_ServiceSet} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ServiceSet
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackClient_ServiceAccess} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ServiceAccess
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackClient_VBI} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ValueBasedInterface
+    COMPONENT headers
+)

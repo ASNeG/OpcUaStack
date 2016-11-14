@@ -53,13 +53,62 @@ file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServer/ServiceSet/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceSetApplication OpcUaStackServer/ServiceSetApplication/*.h)
 
 
-install(TARGETS OpcUaStackServer DESTINATION /usr/local/lib)
-install(FILES ${INC_OpcUaStackServer_Server} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Server)
-install(FILES ${INC_OpcUaStackServer_AddressSpaceModel} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/AddressSpaceModel)
-install(FILES ${INC_OpcUaStackServer_Application} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Application)
-install(FILES ${INC_OpcUaStackServer_InformationModel} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/InformationModel)
-install(FILES ${INC_OpcUaStackServer_NodeSet} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/NodeSet)
-install(FILES ${INC_OpcUaStackServer_SecureChannel} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/SecureChannel)
-install(FILES ${INC_OpcUaStackServer_ServiceManager} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceManager)
-install(FILES ${INC_OpcUaStackServer_ServiceSet} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSet)
-install(FILES ${INC_OpcUaStackServer_ServiceSetApplication} DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSetApplication)
+install(
+    TARGETS OpcUaStackServer 
+    DESTINATION /usr/local/lib
+    COMPONENT libraries
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_Server} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Server
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_AddressSpaceModel} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/AddressSpaceModel
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_Application} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Application
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_InformationModel} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/InformationModel
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_NodeSet} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/NodeSet
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_SecureChannel} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/SecureChannel
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_ServiceManager} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceManager
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_ServiceSet} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSet
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_ServiceSetApplication} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceSetApplication
+    COMPONENT headers
+)
