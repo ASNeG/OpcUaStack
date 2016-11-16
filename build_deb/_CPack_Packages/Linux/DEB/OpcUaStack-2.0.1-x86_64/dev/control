@@ -1,0 +1,10 @@
+Package: opcuastack-2-dev
+Version: 2.0.1
+Section: devel
+Priority: optional
+Architecture: amd64
+Depends: libboost-system1.54-dev, libboost-test1.54-dev, libboost-filesystem1.54-dev, libboost-thread1.54-dev, libboost-date-time1.54-dev, libboost-chrono1.54-dev, libboost-regex1.54-dev, OpcUaStack-2-bin (=2.0.1)
+Installed-Size: 3156
+Maintainer: info@asneg.de
+Description: OpcUaStack - Opc Ua client server application framework
+

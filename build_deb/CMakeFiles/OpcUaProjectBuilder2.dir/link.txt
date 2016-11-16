@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/OpcUaProjectBuilder2.dir/OpcUaProjectBuilder/OpcUaprojectBuilder.cpp.o  -o OpcUaProjectBuilder2 -rdynamic -ldl -lboost_system -lboost_unit_test_framework -lboost_filesystem -lboost_thread -lboost_date_time -lboost_chrono -lboost_regex 

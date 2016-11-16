@@ -1,0 +1,2482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>OpcUaStack@build_deb</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.makeBuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.cleanBuildTarget</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableCleanBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.append_environment</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.stopOnError</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enabledIncrementalBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.command</key>
+					<value>/usr/bin/make</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.contents</key>
+					<value>org.eclipse.cdt.make.core.activeConfigSettings</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.inc</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.arguments</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildLocation</key>
+					<value>/home/huebl/devel_/OpcUaStack/build_deb</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.environment</key>
+					<value>VERBOSE=1|CMAKE_NO_VERBOSE=1|</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableFullBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.auto</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableAutoBuild</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.clean</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildArguments</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.location</key>
+					<value>/home/huebl/devel_/OpcUaStack/build_deb</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.core.errorOutputParser</key>
+					<value>org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.ScannerConfigBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.make.core.makeNature</nature>
+		<nature>org.eclipse.cdt.make.core.ScannerConfigNature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[Source directory]</name>
+			<type>2</type>
+			<location>/home/huebl/devel_/OpcUaStack/src</location>
+		</link>
+		<link>
+			<name>[Subprojects]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Subprojects]/OpcUaStack</name>
+			<type>2</type>
+			<location>/home/huebl/devel_/OpcUaStack/src</location>
+		</link>
+		<link>
+			<name>[Targets]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaDataValue.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaDataValue.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaGuid.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaGuid.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaNodeId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaNodeId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaByteString.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaByteString.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaNodeIdBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaNodeIdBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BuildInTypes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/BuildInTypes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaAttributeId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaAttributeId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaIdentifier.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaIdentifier.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaNumber.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaNumber.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaQualifiedName.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaXmlElement.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaXmlElement.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaExtensionObject.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaDiagnosticInfo.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaDiagnosticInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaArray.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaArray.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaString.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaString.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Json.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/Json.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaLocalizedText.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaVariant.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaVariant.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ByteOrder.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/ByteOrder.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaStatusCode.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaStatusCode.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaDateTime.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaDateTime.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpcUaExpandedNodeId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/BuildInTypes/OpcUaExpandedNodeId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiRsaCrypt.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiRsaCrypt.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiCertificate.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiCertificate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiDsaKey.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiDsaKey.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiPublicKey.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiPublicKey.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiRsaKey.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiRsaKey.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiIdentity.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiIdentity.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiAesCrypt.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiAesCrypt.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiCertificateInfo.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiCertificateInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiError.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiError.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PkiPrivateKey.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Certificate/PkiPrivateKey.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CallMethodRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CallMethodRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisterServerRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RegisterServerRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddNodesResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddNodesResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteNodesResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteNodesResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/QueryNextRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/QueryNextRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AggregateFilterResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AggregateFilterResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SubscriptionAcknowledgement.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SubscriptionAcknowledgement.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MonitoringParameters.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MonitoringParameters.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RelativePath.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RelativePath.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddReferencesItem.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddReferencesItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryData.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ContentFilterResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ContentFilterResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CreateMonitoredItemsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CreateMonitoredItemsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NotificationMessage.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/NotificationMessage.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CreateSessionResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CreateSessionResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/GetEndpointsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/GetEndpointsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteAtTimeDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteAtTimeDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ActivateSessionResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ActivateSessionResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisterNodesResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RegisterNodesResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/QueryDataSet.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/QueryDataSet.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SetMonitoringModeResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SetMonitoringModeResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowseRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowseRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DataChangeFilter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DataChangeFilter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/EventField.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/EventField.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MethodAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MethodAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SignatureData.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SignatureData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ObjectAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ObjectAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UpdateStructureDataDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteReferencesResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteReferencesResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UserIdentityToken.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UserIdentityToken.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisterNodesRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RegisterNodesRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteSubscriptionsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteSubscriptionsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddReferencesResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddReferencesResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteMonitoredItemsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteMonitoredItemsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/FindServersResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/FindServersResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ActivateSessionRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ActivateSessionRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/NodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadEventDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadEventDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CancelRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CancelRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UpdateDataDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UpdateDataDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ServiceBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ServiceBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/EventFieldList.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/EventFieldList.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NotificationData.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/NotificationData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UserNameIdentityToken.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UserNameIdentityToken.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadProcessedDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadProcessedDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CreateSessionRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CreateSessionRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/QueryDataDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/QueryDataDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ElementOperand.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ElementOperand.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PublishResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/PublishResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DataChangeNotification.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DataChangeNotification.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ModifyMonitoredItemsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ModifyMonitoredItemsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ModifySubscriptionRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ModifySubscriptionRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MonitoredItemCreateRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MonitoredItemCreateRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ContentFilterElementResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ContentFilterElementResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReferenceTypeAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReferenceTypeAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ExtensibleParameter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ExtensibleParameter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReferenceDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReferenceDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ModifyMonitoredItemsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ModifyMonitoredItemsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryReadValueId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryReadValueId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ServiceTransaction.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ServiceTransaction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/EventFilterResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/EventFilterResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowseResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowseResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryUpdateResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryUpdateResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UnregisterNodesResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UnregisterNodesResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryModifiedData.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryModifiedData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SetTriggeringRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SetTriggeringRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowsePathResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowsePathResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryReadResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryReadResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RepublishRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RepublishRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/QueryFirstResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/QueryFirstResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SetTriggeringResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SetTriggeringResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ViewDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ViewDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/VariableAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/VariableAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TransferResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/TransferResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/EventFilter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/EventFilter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ContentFilter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ContentFilter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SetPublishingModeRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SetPublishingModeRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteRawModifiedDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteRawModifiedDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ObjectTypeAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ObjectTypeAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NodeTypeDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/NodeTypeDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CloseSessionResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CloseSessionResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowseResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowseResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CancelResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CancelResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/WriteValue.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/WriteValue.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddReferencesRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddReferencesRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SimpleAttributeOperand.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SimpleAttributeOperand.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RelativePathElement.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RelativePathElement.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UpdateEventDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UpdateEventDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AggregateConfiguration.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AggregateConfiguration.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CloseSessionRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CloseSessionRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AttributeOperand.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AttributeOperand.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MonitoredItemNotification.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MonitoredItemNotification.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadValueId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadValueId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MonitoredItemCreateResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MonitoredItemCreateResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/LiteralOperand.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/LiteralOperand.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ViewAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ViewAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ParsingResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ParsingResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UserTokenPolicy.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UserTokenPolicy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/EventNotificationList.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/EventNotificationList.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryEvent.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryEvent.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CallRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CallRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowsePathTarget.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowsePathTarget.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DataTypeAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DataTypeAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ApplicationDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ApplicationDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TranslateBrowsePathsToNodeIdsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/TranslateBrowsePathsToNodeIdsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteNodesItem.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteNodesItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TranslateBrowsePathsToNodeIdsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/TranslateBrowsePathsToNodeIdsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteReferencesItem.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteReferencesItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadAtTimeDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadAtTimeDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/FindServersRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/FindServersRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/QueryFirstRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/QueryFirstRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CreateSubscriptionResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CreateSubscriptionResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CreateSubscriptionRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CreateSubscriptionRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ModifySubscriptionResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ModifySubscriptionResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowseDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowseDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowseNextRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowseNextRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteMonitoredItemsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteMonitoredItemsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/WriteRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/WriteRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CallResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CallResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowseNextResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowseNextResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryReadDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryReadDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/WriteResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/WriteResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PublishRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/PublishRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AggregateFilter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AggregateFilter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteNodesRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteNodesRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CreateMonitoredItemsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CreateMonitoredItemsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryEventFieldList.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryEventFieldList.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/QueryNextResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/QueryNextResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadRawModifiedDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SetMonitoringModeRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SetMonitoringModeRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CallMethodResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/CallMethodResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddNodesRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddNodesRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryUpdateResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryUpdateResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddNodesItem.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddNodesItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/StatusChangeNotification.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/StatusChangeNotification.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TransferSubscriptionsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/TransferSubscriptionsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MonitoredItemModifyResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MonitoredItemModifyResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddReferencesResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddReferencesResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisteredServer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RegisteredServer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AnonymousIdentityToken.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AnonymousIdentityToken.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ContentFilterElement.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ContentFilterElement.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/VariableTypeAttributes.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/VariableTypeAttributes.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BrowsePath.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/BrowsePath.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteReferencesRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteReferencesRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteEventDetails.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteEventDetails.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteSubscriptionsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteSubscriptionsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryReadRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryReadRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/UnregisterNodesRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/UnregisterNodesRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteNodesResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteNodesResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SetPublishingModeResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SetPublishingModeResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DeleteReferencesResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/DeleteReferencesResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisterServerResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RegisterServerResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryUpdateRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryUpdateRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HistoryReadResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/HistoryReadResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SignedSoftwareCertificate.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/SignedSoftwareCertificate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RepublishResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/RepublishResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AddNodesResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/AddNodesResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ReadResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ReadResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MonitoredItemModifyRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/MonitoredItemModifyRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/EndpointDescription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/EndpointDescription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TransferSubscriptionsResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/TransferSubscriptionsResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ModificationInfo.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/ModificationInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/GetEndpointsRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSet/GetEndpointsRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Config.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Config.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Condition.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Condition.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ConditionProcess.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/ConditionProcess.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/IOService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/IOService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Pool.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Pool.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Url.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Url.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Xmlns.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Xmlns.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Bitmask.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Bitmask.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PoolBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/PoolBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Log.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Log.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Base64.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Base64.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Utility.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Utility.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ConfigXml.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/ConfigXml.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ConfigXmlManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/ConfigXmlManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Callback.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/Callback.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ConditionBool.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Base/ConditionBool.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelClient.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelClient.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/HelloMessage.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/HelloMessage.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SequenceHeader.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SequenceHeader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ApplicationInstanceCertificate.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CloseSecureChannelRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/CloseSecureChannelRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CloseSecureChannelResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/CloseSecureChannelResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelClientConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelClientConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecurityHeader.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecurityHeader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelServer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelServer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecurityToken.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecurityToken.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MessageDefaults.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/MessageDefaults.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpenSecureChannelResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ResponseHeader.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/ResponseHeader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SessionAuthenticationToken.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SessionAuthenticationToken.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannel.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/MessageHeader.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/MessageHeader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelServerConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelServerConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelOld.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelOld.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/AcknowledgeMessage.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/AcknowledgeMessage.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RequestHeader.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/RequestHeader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SecureChannelTransaction.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/SecureChannelTransaction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/OpenSecureChannelRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ErrorMessage.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/SecureChannel/ErrorMessage.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NamespaceInfoResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/NamespaceInfoResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ForwardInfoSync.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/ForwardInfoSync.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NodeReference.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/NodeReference.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisterForwardResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/RegisterForwardResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RegisterForwardRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/RegisterForwardRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/GetNodeReferenceRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/GetNodeReferenceRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/GetNodeReferenceResponse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/NamespaceInfoRequest.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/DoublyLinkedList.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Container/DoublyLinkedList.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/IOThread.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/IOThread.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Timer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/Timer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SlotTimer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/SlotTimer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/CSV.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/CSV.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/PendingQueue.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/PendingQueue.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Environment.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/Environment.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Library.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Utility/Library.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Core.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Core/Core.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/FileLogger.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Core/FileLogger.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ServerDiagnosticsSummaryDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/ServerDiagnosticsSummaryDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SessionSecurityDiagnosticsDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/SessionSecurityDiagnosticsDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SemanticChangeStructureDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/SemanticChangeStructureDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SamplingIntervalDiagnosticsDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/SamplingIntervalDiagnosticsDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ServiceCounterDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/ServiceCounterDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Argument.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/Argument.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/RedundantServerDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/RedundantServerDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ServerStatusDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/ServerStatusDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/ModelChangeStructureDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/ModelChangeStructureDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SubscriptionDiagnosticsDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/SubscriptionDiagnosticsDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/StatusResult.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/StatusResult.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/SessionDiagnosticsDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/SessionDiagnosticsDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/BuildInfo.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/StandardDataTypes/BuildInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/Component.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/Component/Component.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TCPTestHandler.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/TCPChannel/TCPTestHandler.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TCPAcceptor.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/TCPChannel/TCPAcceptor.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TCPConnection.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/TCPChannel/TCPConnection.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Source Files/TCPConnector.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackCore/TCPChannel/TCPConnector.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackCore/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/MethodServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/MethodServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/AttributeServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/AttributeServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/DiscoveryServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/DiscoveryServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/ViewServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/ViewServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/MonitoredItemServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/MonitoredItemServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/MethodService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/MethodService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/QueryServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/QueryServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/MonitoredItemServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/MonitoredItemServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/MethodServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/MethodServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SessionConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SessionConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SubscriptionService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SubscriptionService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/NodeManagementServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/NodeManagementServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/NodeManagementService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/NodeManagementService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/MonitoredItemService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/MonitoredItemService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/ServiceConfigBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/ServiceConfigBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/ViewServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/ViewServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SubscriptionServiceBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SubscriptionServiceBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/DiscoveryService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/DiscoveryService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/DiscoveryServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/DiscoveryServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SubscriptionServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SubscriptionServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/ViewService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/ViewService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/QueryService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/QueryService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/ViewServiceBrowse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/ViewServiceBrowse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/QueryServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/QueryServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SessionServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SessionServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SessionService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SessionService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/AttributeService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/AttributeService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/NodeManagementServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/NodeManagementServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SessionServiceIf.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SessionServiceIf.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/AttributeServiceNode.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/AttributeServiceNode.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/SubscriptionServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/SubscriptionServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/AttributeServiceConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/AttributeServiceConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/ServiceSetManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ServiceSet/ServiceSetManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/Client.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/Client/Client.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/VBIContext.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ValueBasedInterface/VBIContext.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/VBITransaction.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ValueBasedInterface/VBITransaction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Source Files/VBIClient.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackClient/ValueBasedInterface/VBIClient.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackClient/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/LinuxService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/Service/LinuxService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/WindowsService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/Service/WindowsService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/ApplicationLibrary.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/ApplicationLibrary/ApplicationLibrary.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/ApplicationManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/ApplicationLibrary/ApplicationManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/DynamicLibrary.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/ApplicationLibrary/DynamicLibrary.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/ServerMain.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/Server/ServerMain.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/ServerApplication.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/Server/ServerApplication.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Source Files/Server.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServer/Server/Server.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaServer2/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/Client.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/Client/Client.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientApplication.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/Client/ClientApplication.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandSubscriptionStop.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandSubscriptionStop.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandBrowse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandBrowse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandDelay.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandDelay.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandMonitorItemStart.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandMonitorItemStart.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandReadH.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandReadH.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandSubscriptionStart.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandSubscriptionStart.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandDisconnect.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandDisconnect.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandWrite.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandWrite.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandMonitorItemStop.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandMonitorItemStop.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandBrowsePathToNodeId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandBrowsePathToNodeId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandFunction.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandFunction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandWriteH.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandWriteH.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ParameterFlags.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/ParameterFlags.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandNodeSetFilter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandNodeSetFilter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandNodeSetServer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandNodeSetServer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandParser.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandParser.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandRead.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandRead.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/CommandConnect.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientCommand/CommandConnect.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceFunction.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceFunction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceDelay.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceDelay.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceBrowse.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceBrowse.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceNodeSetServer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceNodeSetServer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceBrowsePathToNodeId.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceBrowsePathToNodeId.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceNodeSetFilter.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceNodeSetFilter.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceWrite.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceWrite.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceReadH.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceReadH.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceWriteH.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceWriteH.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceDisconnect.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceDisconnect.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientAccessObject.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientAccessObject.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceExecute.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceExecute.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceConnect.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceConnect.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Source Files/ClientServiceRead.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaClient/ClientService/ClientServiceRead.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaClient2/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/Source Files/OpcUaprojectBuilder.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaProjectBuilder/OpcUaprojectBuilder.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] OpcUaProjectBuilder2/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/MonitorItem.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/MonitorItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/MethodService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/MethodService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SessionConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/SessionConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SubscriptionManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/SubscriptionManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SubscriptionService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/SubscriptionService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ServiceSetBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/ServiceSetBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeManagementService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/NodeManagementService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/Subscription.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/Subscription.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SessionOld.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/SessionOld.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/MonitoredItemService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/MonitoredItemService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/DiscoveryService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/DiscoveryService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ViewService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/ViewService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/TransactionManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/TransactionManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/QueryService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/QueryService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SessionManagerOld.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/SessionManagerOld.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/AttributeService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/AttributeService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/EndpointDescriptionConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/MonitorManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/MonitorManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SessionMap.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSet/SessionMap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SecureChannelServer.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/SecureChannel/SecureChannelServer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SecureChannelMap.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/SecureChannel/SecureChannelMap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SecureChannelServerConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/SecureChannel/SecureChannelServerConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/SecureChannelTransaction.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/SecureChannel/SecureChannelTransaction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ApplicationService.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSetApplication/ApplicationService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeReferenceApplication.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeSetNamespace.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/NodeSet/NodeSetNamespace.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeSetBaseParser.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/NodeSet/NodeSetBaseParser.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeSetAlias.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/NodeSet/NodeSetAlias.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeSetValueParser.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/NodeSet/NodeSetValueParser.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NodeSetXmlParser.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/NodeSet/NodeSetXmlParser.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ServiceManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/ServiceManager/ServiceManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/NamespaceArray.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/NamespaceArray.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/InformationModel.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/InformationModel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ServerArray.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/ServerArray.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/InformationModelConfig.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/InformationModelConfig.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/InformationModelNodeSet.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/InformationModelNodeSet.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/Merge.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/Merge.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/InformationModelAccess.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/InformationModel/InformationModelAccess.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/VariableNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/VariableNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ReferenceType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ReferenceType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ObjectTypeNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ReferenceTypeNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/Attribute.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/Attribute.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/DataTypeNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/AttributeAccess.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/AttributeAccess.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/AttributeBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/AttributeBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/MethodNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/MethodNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/DummyNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/DummyNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/VariableTypeNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/BaseNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/BaseNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ViewNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ViewNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ReferenceItemMap.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ReferenceItemMap.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ReferenceItem.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ReferenceItem.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ObjectNodeClass.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ApplicationBase.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/Application/ApplicationBase.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/Application.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/Application/Application.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ApplicationManager.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/Application/ApplicationManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ApplicationInfo.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/Application/ApplicationInfo.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/Server.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/Server/Server.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Source Files/ServerStatusDataType.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaStackServer/Server/ServerStatusDataType.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaStackServer/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Source Files/DemoLibrary.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServerApplicationDemo/DemoLibrary/DemoLibrary.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Source Files/Function.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServerApplicationDemo/DemoLibrary/Function.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Source Files/CameraAnimation.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServerApplicationDemo/DemoLibrary/CameraAnimation.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Source Files/TestFolderLib.cpp</name>
+			<type>1</type>
+			<location>/home/huebl/devel_/OpcUaStack/src/OpcUaServerApplicationDemo/DemoLibrary/TestFolderLib.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] OpcUaServerApplicationDemo/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

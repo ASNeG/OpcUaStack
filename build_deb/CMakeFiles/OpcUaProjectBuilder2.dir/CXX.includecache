@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/huebl/devel_/OpcUaStack/src/OpcUaProjectBuilder/OpcUaProjectBuilder.h
+boost/filesystem.hpp
+-
+stdint.h
+-
+
+/home/huebl/devel_/OpcUaStack/src/OpcUaProjectBuilder/OpcUaprojectBuilder.cpp
+boost/filesystem/fstream.hpp
+-
+boost/regex.hpp
+-
+iostream
+-
+sstream
+-
+OpcUaProjectBuilderConfig.h
+/home/huebl/devel_/OpcUaStack/src/OpcUaProjectBuilder/OpcUaProjectBuilderConfig.h
+OpcUaProjectBuilder/OpcUaProjectBuilder.h
+/home/huebl/devel_/OpcUaStack/src/OpcUaProjectBuilder/OpcUaProjectBuilder/OpcUaProjectBuilder.h
+
+OpcUaProjectBuilderConfig.h
+
