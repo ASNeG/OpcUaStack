@@ -1,7 +1,0 @@
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaServerApplicationDemo.dir
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaProjectBuilder2.dir
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaClient2.dir
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaServer2.dir
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaStackServer.dir
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaStackClient.dir
-/home/huebl/devel_/OpcUaStack/build_deb/CMakeFiles/OpcUaStackCore.dir

@@ -1,6 +1,0 @@
-/usr/local/bin/OpcUaServer2
-/usr/usr/share/icons/OpcUaStack2/asneg.ico
-/usr/usr/share/icons/OpcUaStack2/asneg_install.ico
-/usr/usr/share/icons/OpcUaStack2/asneg_uninstall.ico
-/usr/usr/share/OpcUaStack2/Copyright.txt
-/usr/usr/share/OpcUaStack2/NOTICE
