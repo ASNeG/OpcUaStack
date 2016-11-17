@@ -51,6 +51,7 @@ message(STATUS "  product version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_P
 
 message(STATUS "Dependency info")
 message(STATUS "  boost version: ${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}")
+message(STATUS "  openssl version: ${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
 
 message(STATUS "System info")
 message(STATUS "  host system name: ${CMAKE_HOST_SYSTEM_NAME}")
