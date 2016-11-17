@@ -19,7 +19,7 @@
 
   <Logging>
     <FileLogger>
-      <LogFileName>@INSTALL_DIR@/@LOG_DIR@/ProjectName/OpcUaServer.log</LogFileName>
+      <LogFileName>@CONF_DIR@/../../../var/log/ProjectName/OpcUaServer.log</LogFileName>
       <MaxLogFileNumber>20</MaxLogFileNumber>
       <MaxLogFileSize>5000000</MaxLogFileSize>
       <LogLevel>Trace</LogLevel>
@@ -89,7 +89,7 @@
  
   
   <InformationModel>
-    <NodeSetFile>@INSTALL_DIR@/@CONF_DIR@/ProjectName/Opc.Ua.NodeSet.xml</NodeSetFile>
+    <NodeSetFile>@CONF_DIR@/Opc.Ua.NodeSet.xml</NodeSetFile>
   </InformationModel>
 
 </OpcUaServer>
