@@ -38,6 +38,22 @@ namespace OpcUaStackCore
 	}
 
 	std::string
+	Environment::getApplicationPathAbsolute(void)
+	{
+ 		std::string application = "";
+#ifdef WIN32
+		  char result[2048];
+		  application = std::string( result, GetModuleFileName(NULL, result, 2048));
+#else
+		char result[2048];
+		ssize_t count = readlink("/proc/self/exe", result, 2048);
+		application = std::string( result, (count > 0) ? count : 0 );
+#endif
+		if (application == "") return "";
+		return application;
+	}
+
+	std::string
 	Environment::getInstallationPathRelative(
 		const std::string& binaryDirectory
 	)

@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 
 		static std::string confDir_;
 
+		static std::string getApplicationPathAbsolute(void);
 		static std::string getInstallationPathRelative(const std::string& binaryDirectory);
 		static std::string getInstallationPathAbsolute(
 			const std::string& serviceName,
