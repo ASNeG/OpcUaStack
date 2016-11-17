@@ -7,13 +7,21 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 include_directories(
-    ${INSTALL_PREFIX_OpcUaStack}/usr/include/OpcUaStack
+    ${OPCUASTACK_INSTALL_PREFIX}/usr/include/OpcUaStack${OPCUASTACK_VERSION_MAJOR}
     ${PROJECT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
 )
 
-file(GLOB ProjectName_SRC ${PROJECT_SOURCE_DIR}/ProjectName/*/*.cpp)
-add_library(ProjectName SHARED ${ProjectName_SRC})
+file(
+    GLOB 
+    ProjectName_SRC 
+    ${PROJECT_SOURCE_DIR}/ProjectName/*/*.cpp
+)
+
+add_library(
+    ProjectName SHARED 
+    ${ProjectName_SRC}
+)
 
 target_link_libraries(
     ProjectName
@@ -31,18 +39,18 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS ProjectName DESTINATION ${LIB_DIR}/OpcUaStack)
+install(TARGETS ProjectName DESTINATION /usr/local/lib/OpcUaStack)
 
-install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION ${CONF_DIR}/OpcUaStack/ProjectName) 
-install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION ${CONF_DIR}/OpcUaStack/ProjectName)
-install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/log/README DESTINATION ${LOG_DIR}/OpcUaStack/ProjectName)
-install(DIRECTORY DESTINATION ${LOG_DIR}/OpcUaStack/ProjectName)
+install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION /etc/OpcUaStack/ProjectName) 
+install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION /etc/OpcUaStack/ProjectName)
+install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/log/README DESTINATION /var/log/OpcUaStack/ProjectName)
+install(DIRECTORY DESTINATION /var/log/OpcUaStack/ProjectName)
 
 if (WIN32)
 else() 
-    install(PROGRAMS ${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init.d/ProjectName DESTINATION etc/init.d)
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init/ProjectName.conf DESTINATION etc/init)
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/usr/lib/systemd/system/ProjectName.service DESTINATION usr/lib/systemd/system)
+    install(PROGRAMS ${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init.d/ProjectName DESTINATION /etc/init.d)
+    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init/ProjectName.conf DESTINATION /etc/init)
+    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/usr/lib/systemd/system/ProjectName.service DESTINATION /usr/lib/systemd/system)
 endif()
 
 if (CPACK_BINARY_DEB)
