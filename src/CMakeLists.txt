@@ -18,7 +18,7 @@ set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
 
 set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
 set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
-set(OPENSSL_VERSION_PATCH "1" CACHE STRING "patch version")
+set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 
 
 # -----------------------------------------------------------------------------
@@ -241,6 +241,7 @@ if (CPACK_BINARY_DEB)
     set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-date-time${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
     set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-chrono${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
     set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libboost-regex${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}-dev")
+    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libssl-dev (>= ${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR})")
     set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, OpcUaStack-${VERSION_MAJOR}-bin (=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})")
     set(CPACK_DEBIAN_DEV_PACKAGE_DEPENDS ${DEB_DEPS_DEV})
 
@@ -250,6 +251,7 @@ if (CPACK_BINARY_DEB)
     set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-date-time${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
     set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-chrono${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
     set(DEB_DEPS_BIN "${DEB_DEPS_BIN}, libboost-regex${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}.0")
+    set(DEB_DEPS_DEV "${DEB_DEPS_DEV}, libssl${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR})")
     set(CPACK_DEBIAN_BIN_PACKAGE_DEPENDS ${DEB_DEPS_BIN})
 endif()
 
