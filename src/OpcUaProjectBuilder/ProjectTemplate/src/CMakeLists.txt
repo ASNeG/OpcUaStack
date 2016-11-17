@@ -1,41 +1,144 @@
 cmake_minimum_required(VERSION 2.8.9)
-project	(ProjectName)
+project	(OpcUaStack)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 #
-# global options
+# version
 #
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 set(VERSION_MAJOR "1" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
-set(VERSION_PATCH "5" CACHE STRING "patch version")
+set(VERSION_PATCH "0" CACHE STRING "patch version")
 
-set(BIN_DIR "usr/bin" CACHE STRING "binary directory")
-set(LIB_DIR "usr/lib" CACHE STRING "library directory")
-set(INC_DIR "usr/include" CACHE STRING "library directory")
-set(CONF_DIR "etc" CACHE STRING "configuration directory")
-set(LOG_DIR "var/log" CACHE STRING "log output directory")
-set(INSTALL_PREFIX_OpcUaStack "/" CACHE PATH "opc ua stack intallation prefix")
+set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
+set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
 
-option(
-    USE_ProjectName
-    "build opc ua server application library"
-    ON
-)
+set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
+set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
+set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 
-add_definitions(-DBOOST_ALL_DYN_LINK)
+set(OPCUASTACK_VERSION_MAJOR "2" CACHE STRING "major version")
+set(OPCUASTACK_VERSION_MINOR "0" CACHE STRING "minor version")
+set(OPCUASTACK_VERSION_PATCH "1" CACHE STRING "patch version")
+set(OPCUASTACK_INSTALL_PREFIX "/" CACHE PATH "opc ua stack intallation prefix")
 
-if (WIN32)
-	set(CMAKE_PREFIX_PATH C:\\local\\boost_1_54_0)
-	set(BOOST_LIBRARYDIR C:\\local\\boost_1_54_0\\lib32-msvc-11.0)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# create version file and dependency file
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+if (CREATE_INFO_FILES)
+    message(STATUS "create info file ${CMAKE_BINARY_DIR}/version")
+    file(WRITE ${CMAKE_BINARY_DIR}/version "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+    message(STATUS "create dependency file ${CMAKE_BINARY_DIR}/dependency")
+    file(WRITE ${CMAKE_BINARY_DIR}/dependency "opcuastack ${OPCUASTACK_VERSION_MAJOR}.${OPCUASTACK_VERSION_MINOR}.${OPCUASTACK_VERSION_PATCH}")
+
+    return()
 endif ()
 
-find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
-find_library(OpcUaStackCore NAME OpcUaStackCore PATHS ${INSTALL_PREFIX_OpcUaStack}/usr/lib/OpcUaStack/ REQUIRED)
-find_library(OpcUaStackClient NAME OpcUaStackClient PATHS ${INSTALL_PREFIX_OpcUaStack}/usr/lib/OpcUaStack/ REQUIRED)
-find_library(OpcUaStackServer NAME OpcUaStackServer PATHS ${INSTALL_PREFIX_OpcUaStack}/usr/lib/OpcUaStack/ REQUIRED)
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# global info messages
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+message(STATUS "Version info")
+message(STATUS "  product version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+
+message(STATUS "Dependency info")
+message(STATUS "  opcuastack version: ${OPCUASTACK_VERSION_MAJOR}.${OPCUASTACK_VERSION_MINOR}.${OPCUASTACK_VERSION_PATCH}")
+message(STATUS "  boost version: ${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}")
+message(STATUS "  openssl version: ${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
+
+message(STATUS "System info")
+message(STATUS "  host system name: ${CMAKE_HOST_SYSTEM_NAME}")
+message(STATUS "  host system processor: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+message(STATUS "  system processor: ${CMAKE_SYSTEM_PROCESSOR}")
+message(STATUS "  system name: ${CMAKE_SYSTEM_NAME}")
+message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# boost library
+#
+# This module reads hints about search locations from variables:
+#
+# BOOST_ROOT             - Preferred installation prefix
+#  (or BOOSTROOT)
+# BOOST_INCLUDEDIR       - Preferred include directory e.g. <prefix>/include
+# BOOST_LIBRARYDIR       - Preferred library directory e.g. <prefix>/lib
+# Boost_NO_SYSTEM_PATHS  - Set to ON to disable searching in locations not
+#                          specified by these hint variables. Default is OFF.
+# Boost_ADDITIONAL_VERSIONS
+#                       - List of Boost versions not known to this module
+#                         (Boost install locations may contain the version)
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+add_definitions(-DBOOST_ALL_DYN_LINK)
+find_package(
+    Boost 
+    "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" 
+    COMPONENTS system unit_test_framework filesystem thread date_time chrono regex 
+    REQUIRED
+)
+
+message(STATUS "Boost library")
+message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
+message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
+message(STATUS "  version subminor: ${Boost_SUBMINOR_VERSION}")
+message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
+message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
+message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")
+message(STATUS "  system release library: ${Boost_SYSTEM_LIBRARY_RELEASE}")
+message(STATUS "  unit_test_framework debug library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG}")
+message(STATUS "  unit_test_framework release library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE}")
+message(STATUS "  filesystem debug library: ${Boost_FILESYSTEM_LIBRARY_DEBUG}")
+message(STATUS "  filesystem release library: ${Boost_FILESYSTEM_LIBRARY_RELEASE}")
+message(STATUS "  thread debug library: ${Boost_THREAD_LIBRARY_DEBUG}")
+message(STATUS "  thread release library: ${Boost_THREAD_LIBRARY_RELEASE}")
+message(STATUS "  date_time debug library: ${Boost_DATE_TIME_LIBRARY_DEBUG}")
+message(STATUS "  date_time release library: ${Boost_DATE_TIME_LIBRARY_RELEASE}")
+message(STATUS "  chrono debug library: ${Boost_CHRONO_LIBRARY_DEBUG}")
+message(STATUS "  chrono release library: ${Boost_CHRONO_LIBRARY_RELEASE}")
+message(STATUS "  regex debug library: ${Boost_REGEX_LIBRARY_DEBUG}")
+message(STATUS "  regex release library: ${Boost_REGEX_LIBRARY_RELEASE}")
+message(STATUS "  libraries: ${Boost_LIBRARIES}")
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# openssl
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+find_package(
+    OpenSSL 
+    "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}" 
+    COMPONENTS openssl crypto 
+    REQUIRED
+)
+
+message(STATUS "OpenSSL library")
+message(STATUS "  version: ${OPENSSL_VERSION}")
+message(STATUS "  include library: ${OPENSSL_INCLUDE_DIR}")
+message(STATUS "  openssl library: ${OPENSSL_CRYPTO_LIBRARY}")
+message(STATUS "  crypto library: ${OPENSSL_SSL_LIBRARY}")
+message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
+
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -44,9 +147,7 @@ find_library(OpcUaStackServer NAME OpcUaStackServer PATHS ${INSTALL_PREFIX_OpcUa
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-if (USE_ProjectName)
-    include(ProjectName/CMakeLists.txt) 
-endif ()
+include(ProjectName/CMakeLists.txt) 
 
 
 # -----------------------------------------------------------------------------
@@ -61,7 +162,6 @@ install(FILES icon/asneg_install.ico DESTINATION usr/share/icons/ProjectName)
 install(FILES icon/asneg_uninstall.ico DESTINATION usr/share/icons/ProjectName)
 install(FILES ${CMAKE_SOURCE_DIR}/Copyright.txt DESTINATION usr/share/ProjectName)
 install(FILES ${CMAKE_SOURCE_DIR}/../NOTICE DESTINATION usr/share/ProjectName)
-
 
 
 # -----------------------------------------------------------------------------
@@ -101,7 +201,7 @@ if (WIN32)
 	
 endif ()
 
-set(CPACK_PACKAGING_INSTALL_PREFIX "/")
+
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
 set(CPACK_PACKAGE_CONTACT "info@asneg.de")
 set(CPACK_PACKAGE_NAME "ProjectName")
@@ -111,17 +211,24 @@ set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${VERSION_PATCH})
 set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+set(CPACK_BINARY_STGZ "OFF")
+set(CPACK_BINARY_TGZ "OFF")
+set(CPACK_BINARY_TZ "OFF")
 
 if (CPACK_BINARY_DEB)
-    	set (CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+    set(CPACK_PACKAGE_FILE_NAME "ProjectName")
+    set(CPACK_DEB_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+
+    set(DEB_DEPS "${DEB_DEPS_DEV}, OpcUaStack-${VERSION_MAJOR}-bin (>=${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS ${DEB_DEPS})
+
 endif()
 
 if (CPACK_BINARY_RPM)
-    	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
-	set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
+    set(CPACK_RPM_COMPONENT_INSTALL "ON")
+ #   set(CPACK_PACKAGE_FILE_NAME "OpcUaStack-${CPACK_PACKAGE_VERSION}-${CMAKE_SYSTEM_PROCESSOR}")
+    set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_SOURCE_DIR}/Copyright.txt")
 endif()
 
-	
 
 include(CPack)
