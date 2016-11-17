@@ -39,6 +39,7 @@ target_link_libraries(
     OpcUaProjectBuilder${VERSION_MAJOR}
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
+    OpcUaStackCore
 )
 
 
@@ -57,6 +58,6 @@ install(
 
 install(
     DIRECTORY OpcUaProjectBuilder/ProjectTemplate 
-    DESTINATION usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT tools
 )

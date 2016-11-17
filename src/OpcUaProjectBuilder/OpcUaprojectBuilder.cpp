@@ -19,8 +19,11 @@
 #include <boost/regex.hpp>
 #include <iostream>
 #include <sstream>
+#include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaProjectBuilderConfig.h"
 #include "OpcUaProjectBuilder/OpcUaProjectBuilder.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaProjectBuilder
 {
@@ -89,9 +92,13 @@ namespace OpcUaProjectBuilder
 	bool
 	OpcUaProjectBuilder::createProjectInfo(void)
 	{
+		boost::filesystem::path application =  Environment::getApplicationPathAbsolute();
+		boost::filesystem::path applicationPath = application.parent_path();
+		boost::filesystem::path installPath = applicationPath / "../../../";
+
 		// set template directory
-		templateDirectory_ /= INSTALL_DIR;
-		templateDirectory_ /= "/usr/share/OpcUaStack/ProjectTemplate";
+		templateDirectory_ /= installPath;
+		templateDirectory_ /= "/usr/share/OpcUaStack" + std::string(VERSION_MAJOR) + "/ProjectTemplate";
 
 		// set project directory
 		projectDirectory_ /= boost::filesystem::current_path();

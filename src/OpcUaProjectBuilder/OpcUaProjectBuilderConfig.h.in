@@ -18,4 +18,6 @@
 #ifndef __OpcUaProjectBuilder_BuildConfig__
 #define __OpcUaProjectBuilder_BuildConfig__
 
+#define VERSION_MAJOR "@VERSION_MAJOR@"
+
 #endif
