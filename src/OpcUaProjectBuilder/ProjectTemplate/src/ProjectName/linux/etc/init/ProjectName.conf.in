@@ -36,7 +36,7 @@ respawn limit 5 60
 umask 022
 
 # variables for all script sections
-env LD_LIBRARY_PATH=/usr/local/lib/OpcUaStack/:${LD_LIBRARY_PATH}
+env LD_LIBRARY_PATH=/usr/lib/OpcUaStack/:${LD_LIBRARY_PATH}
 
 # we have our own logging
 console none

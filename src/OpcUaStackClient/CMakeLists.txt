@@ -50,7 +50,7 @@ file(GLOB INC_OpcUaStackClient_VBI OpcUaStackClient/ValueBasedInterface/*.h)
 
 install(
     TARGETS OpcUaStackClient 
-    DESTINATION /usr/local/lib
+    DESTINATION /usr/lib
     COMPONENT libraries
 )
 

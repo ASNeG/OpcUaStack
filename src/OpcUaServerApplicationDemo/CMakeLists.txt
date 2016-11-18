@@ -37,7 +37,7 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS OpcUaServerApplicationDemo DESTINATION /usr/local/lib)
+install(TARGETS OpcUaServerApplicationDemo DESTINATION /usr/lib)
 
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/OpcUaServer.xml DESTINATION /etc/OpcUaStack/ASNeG-Demo) 
 install(FILES ${PROJECT_SOURCE_DIR}/OpcUaServerApplicationDemo/Config/Opc.Ua.NodeSet.xml DESTINATION /etc/OpcUaStack/ASNeG-Demo)

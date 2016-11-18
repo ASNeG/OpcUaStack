@@ -2,7 +2,7 @@
 Description=ProjectDescription
 
 [Service]
-Environment="LD_LIBRARY_PATH=/usr/local/lib/OpcUaStack:${LD_LIBRARY_PATH}"
+Environment="LD_LIBRARY_PATH=/usr/lib/OpcUaStack:${LD_LIBRARY_PATH}"
 ExecStart=/usr/bin/OpcUaServer@OPCUASTACK_VERSION_MAJOR@ /etc/OpcUaStack/ProjectName/OpcUaServer.xml
 Restart=on-failure
 

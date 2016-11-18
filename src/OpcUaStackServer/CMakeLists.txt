@@ -55,7 +55,7 @@ file(GLOB INC_OpcUaStackServer_ServiceSetApplication OpcUaStackServer/ServiceSet
 
 install(
     TARGETS OpcUaStackServer 
-    DESTINATION /usr/local/lib
+    DESTINATION /usr/lib
     COMPONENT libraries
 )
 

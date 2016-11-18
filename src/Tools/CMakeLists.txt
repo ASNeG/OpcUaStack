@@ -32,5 +32,5 @@ add_executable(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS UpdateRegistry DESTINATION /usr/local/bin)
-install(TARGETS OpcUaStackService DESTINATION /usr/local/bin)
+install(TARGETS UpdateRegistry DESTINATION /usr/bin)
+install(TARGETS OpcUaStackService DESTINATION /usr/bin)

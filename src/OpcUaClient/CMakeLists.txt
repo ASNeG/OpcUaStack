@@ -57,6 +57,6 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaClient${VERSION_MAJOR} 
-    DESTINATION /usr/local/bin
+    DESTINATION /usr/bin
     COMPONENT libraries
 )

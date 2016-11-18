@@ -58,7 +58,7 @@ file(GLOB INC_OpcUaStackCore_Container OpcUaStackCore/Container/*.h)
 
 install(
     TARGETS OpcUaStackCore 
-    DESTINATION /usr/local/lib
+    DESTINATION /usr/lib
     COMPONENT libraries
 )
 

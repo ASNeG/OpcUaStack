@@ -52,7 +52,7 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 install(
     TARGETS OpcUaProjectBuilder${VERSION_MAJOR} 
-    DESTINATION /usr/local/bin
+    DESTINATION /usr/bin
     COMPONENT tools
 )
 
