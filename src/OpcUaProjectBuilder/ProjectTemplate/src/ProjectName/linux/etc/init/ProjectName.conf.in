@@ -1,5 +1,5 @@
 #
-#   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+#   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 #
 #   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
 #   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,7 +36,7 @@ respawn limit 5 60
 umask 022
 
 # variables for all script sections
-env LD_LIBRARY_PATH=/usr/lib/OpcUaStack/:${LD_LIBRARY_PATH}
+env LD_LIBRARY_PATH=/usr/local/lib/OpcUaStack/:${LD_LIBRARY_PATH}
 
 # we have our own logging
 console none
@@ -54,7 +54,7 @@ end script
 # 
 #  
 #
-exec /usr/bin/OpcUaServer ProjectName 
+exec /usr/bin/OpcUaServer@OPCUASTACK_VERSION_MAJOR@ /etc/OpcUaStack/ProjectName/OpcUaServer.xml 
 
 #
 # define the kill signal to shutdown the application

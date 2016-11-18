@@ -1,3 +1,25 @@
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# prebuild
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+configure_file(
+    "${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init/ProjectName.conf.in"
+    "${PROJECT_BINARY_DIR}/ProjectName.conf"
+)
+
+configure_file(
+    "${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init.d/ProjectName.in"
+    "${PROJECT_BINARY_DIR}/ProjectName"
+)
+
+configure_file(
+    "${PROJECT_SOURCE_DIR}/ProjectName/linux/usr/lib/systemd/system/ProjectName.service.in"
+    "${PROJECT_BINARY_DIR}/ProjectName.service"
+)
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -48,9 +70,9 @@ install(DIRECTORY DESTINATION /var/log/OpcUaStack/ProjectName)
 
 if (WIN32)
 else() 
-    install(PROGRAMS ${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init.d/ProjectName DESTINATION /etc/init.d)
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init/ProjectName.conf DESTINATION /etc/init)
-    install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/linux/usr/lib/systemd/system/ProjectName.service DESTINATION /usr/lib/systemd/system)
+    install(PROGRAMS ${PROJECT_BINARY_DIR}/ProjectName DESTINATION /etc/init.d)
+    install(FILES ${PROJECT_BINARY_DIR}/ProjectName.conf DESTINATION /etc/init)
+    install(FILES ${PROJECT_BINARY_DIR}/ProjectName.service DESTINATION /usr/lib/systemd/system)
 endif()
 
 if (CPACK_BINARY_DEB)
