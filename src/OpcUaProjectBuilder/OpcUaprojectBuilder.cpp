@@ -94,7 +94,7 @@ namespace OpcUaProjectBuilder
 	{
 		boost::filesystem::path application =  Environment::getApplicationPathAbsolute();
 		boost::filesystem::path applicationPath = application.parent_path();
-		boost::filesystem::path installPath = applicationPath / "../../../";
+		boost::filesystem::path installPath = applicationPath / "../../";
 
 		// set template directory
 		templateDirectory_ /= installPath;
