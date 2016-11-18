@@ -31,8 +31,8 @@
 . /lib/lsb/init-functions
 
 
-NAME=OpcUaServer
-DAEMON="/usr/bin/OpcUaServer@OPCUASTACK_VERSION_MAJOR@"
+NAME="ProjectName"
+DAEMON="/usr/local/bin/OpcUaServer@OPCUASTACK_VERSION_MAJOR@"
 SERVICE="ProjectName"
 OPTS="/etc/OpcUaStack/ProjectName/OpcUaServer.xml"
 PID=/var/run/${SERVICE}.pid
