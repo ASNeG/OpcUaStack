@@ -150,6 +150,7 @@ include(OpcUaServer/CMakeLists.txt)
 include(OpcUaClient/CMakeLists.txt) 
 include(OpcUaProjectBuilder/CMakeLists.txt)
 include(OpcUaServerApplicationDemo/CMakeLists.txt) 
+include(cmake/CMakeLists.txt)
 
 
 
@@ -180,31 +181,31 @@ endif ()
 # -----------------------------------------------------------------------------
 install(
     FILES icon/asneg.ico 
-    DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES icon/asneg_install.ico 
-    DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES icon/asneg_uninstall.ico 
-    DESTINATION usr/share/icons/OpcUaStack${VERSION_MAJOR}
+    DESTINATION /usr/share/icons/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES ${CMAKE_SOURCE_DIR}/Copyright.txt 
-    DESTINATION usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
 install(
     FILES ${CMAKE_SOURCE_DIR}/../NOTICE 
-    DESTINATION usr/share/OpcUaStack${VERSION_MAJOR}
+    DESTINATION /usr/share/OpcUaStack${VERSION_MAJOR}
     COMPONENT applications
 )
 
