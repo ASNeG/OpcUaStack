@@ -8,6 +8,7 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 CMAKE_GENERATOR_LOCAL=-G"Eclipse CDT4 - Unix Makefiles"
+#OPCUASTACK_INSTALL_PREFIX=/
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -43,9 +44,10 @@ build_local()
     cd build_local
 
     # install build local
+    : ${OPCUASTACK_INSTALL_PREFIX:=${HOME}/install}
     set -x
     cmake ../src \
-          -DOPCUASTACK_INSTALL_PREFIX=${HOME}/install
+          -DOPCUASTACK_INSTALL_PREFIX=${OPCUASTACK_INSTALL_PREFIX} \
           "${CMAKE_GENERATOR_LOCAL}" 
     set +x
     if [ $? -ne 0 ] ;
@@ -89,7 +91,9 @@ build_deb()
     cd build_deb
 
     # build package
+   : ${OPCUASTACK_INSTALL_PREFIX:=/}
     cmake ../src \
+        -DOPCUASTACK_INSTALL_PREFIX=${OPCUASTACK_INSTALL_PREFIX} \
         "${CMAKE_GENERATOR_LOCAL}" \
         "-DCPACK_BINARY_DEB=1" \
         "-DCPACK_BINARY_RPM=0" 
@@ -133,8 +137,10 @@ build_rpm()
     cd build_rpm
 
     # build package
-   echo "${CPACK_BINARY}"
+    echo "${CPACK_BINARY}"
+    : ${OPCUASTACK_INSTALL_PREFIX:=/}
     cmake ../src \
+        -DOPCUASTACK_INSTALL_PREFIX=${OPCUASTACK_INSTALL_PREFIX} \
         "${CMAKE_GENERATOR_LOCAL}" \
         "-DCPACK_BINARY_DEB=0" \
         "-DCPACK_BINARY_RPM=1"
@@ -171,9 +177,11 @@ build_tst()
     cd build_tst
 
     # build tst
+    : ${OPCUASTACK_INSTALL_PREFIX:=${HOME}/install}
     cmake ../tst \
+        -DOPCUASTACK_INSTALL_PREFIX=${OPCUASTACK_INSTALL_PREFIX} \
   	"${CMAKE_GENERATOR_LOCAL}" \
-	-DINSTALL_PREFIX_OpcUaStack="${HOME}/install"
+	-DOPCUASTACK_INSTALL_PREFIX="${HOME}/install"
     if [ $? -ne 0 ] ;
     then
         echo "cmake error"
