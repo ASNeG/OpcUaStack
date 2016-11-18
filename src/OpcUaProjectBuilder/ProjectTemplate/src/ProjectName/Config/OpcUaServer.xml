@@ -19,7 +19,7 @@
 
   <Logging>
     <FileLogger>
-      <LogFileName>@CONF_DIR@/../../../var/log/ProjectName/OpcUaServer.log</LogFileName>
+      <LogFileName>@CONF_DIR@/../../../var/log/OpcUaStack/ProjectName/OpcUaServer.log</LogFileName>
       <MaxLogFileNumber>20</MaxLogFileNumber>
       <MaxLogFileSize>5000000</MaxLogFileSize>
       <LogLevel>Trace</LogLevel>
