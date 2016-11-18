@@ -8,6 +8,7 @@
 configure_file(
     "${PROJECT_SOURCE_DIR}/cmake/CMakeOpcUaStack.txt.in"
     "${PROJECT_BINARY_DIR}/CMakeOpcUaStack.txt"
+    @ONLY
 )
 
 

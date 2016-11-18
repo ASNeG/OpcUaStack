@@ -7,7 +7,16 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
-set(OPCUASTACK_CORE_LIBRARY "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackCore.so.@VERSION_MAJOR@")
-set(OPCUASTACK_CLIENT_LIBRARY "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackClient.so.@VERSION_MAJOR@")
-set(OPCUASTACK_SERVER_LIBRARY "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackClient.so.@VERSION_MAJOR@")
+set(OPCUASTACK_LIBRARY_CORE "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackCore.so.@VERSION_MAJOR@")
+set(OPCUASTACK_LIBRARY_CLIENT "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackClient.so.@VERSION_MAJOR@")
+set(OPCUASTACK_LIBRARY_SERVER "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackClient.so.@VERSION_MAJOR@")
+set(OPCUASTACK_LIBRARY_ALL "${OPCUASTACK_LIBRARY_CORE} ${OPCUASTACK_LIBRARY_CLIENT} ${OPCUASTACK_LIBRARY_SERVER}")
+set(OPCUASTACK_INCLUDE_DIR "${OPCUASTACK_INSTALL_PREFIX}/usr/include/OpcUaStack@VERSION_MAJOR@") 
+
+message(STATUS "OpcUaStack library")
+message(STATUS "  version major: ${OPCUASTACK_VERSION_MAJOR}")
+message(STATUS "  version minor: ${OPCUASTACK_VERSION_MINOR}")
+message(STATUS "  version patch: ${OPCUASTACK_VERSION_PATCH}")
+message(STATUS "  include directory: ${OPCUASTACK_INCLUDE_DIR}")
+message(STATUS "  libraries: ${OPCUASTACK_LIBRARY_ALL}")
 
