@@ -1,0 +1,13 @@
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
+# OpcUaStack library
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+set(OPCUASTACK_CORE_LIBRARY "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackCore.so.@VERSION_MAJOR@")
+set(OPCUASTACK_CLIENT_LIBRARY "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackClient.so.@VERSION_MAJOR@")
+set(OPCUASTACK_SERVER_LIBRARY "${OPCUASTACK_INSTALL_PREFIX}/usr/lib/libOpcUaStackClient.so.@VERSION_MAJOR@")
+
