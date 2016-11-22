@@ -31,7 +31,8 @@ configure_file(
 include_directories(
     ${OPCUASTACK_INSTALL_PREFIX}/usr/include/OpcUaStack${OPCUASTACK_VERSION_MAJOR}
     ${PROJECT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIR}
+    ${OPENSSL_INCLUDE_DIR}
 )
 
 file(
@@ -47,10 +48,8 @@ add_library(
 
 target_link_libraries(
     ProjectName
-    ${OpcUaStackCore}
-    ${OpcUaStackServer}
-    ${OpcUaStackClient}
     ${pthread}
+    ${OPCUASTACK_LIBRARY_CORE}
     ${Boost_LIBRARIES}
 )
 
