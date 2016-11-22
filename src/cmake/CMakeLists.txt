@@ -11,6 +11,12 @@ configure_file(
     @ONLY
 )
 
+configure_file(
+    "${PROJECT_SOURCE_DIR}/cmake/CMakeBoost.txt.in"
+    "${PROJECT_BINARY_DIR}/CMakeBoost.txt"
+    @ONLY
+)
+
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
@@ -21,6 +27,11 @@ configure_file(
 # -----------------------------------------------------------------------------
 install(
     FILES "${PROJECT_BINARY_DIR}/CMakeOpcUaStack.txt" 
+    DESTINATION /usr/share/cmake/OpcUaStack${VERSION_MAJOR}
+    COMPONENT tools
+)
+install(
+    FILES "${PROJECT_BINARY_DIR}/CMakeBoost.txt" 
     DESTINATION /usr/share/cmake/OpcUaStack${VERSION_MAJOR}
     COMPONENT tools
 )
