@@ -46,6 +46,7 @@ endif ()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
+include(cmake/CMakeLists.txt)
 message(STATUS "Version info")
 message(STATUS "  product version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -116,6 +117,8 @@ message(STATUS "  libraries: ${Boost_LIBRARIES}")
 #
 # openssl
 #
+# BOOST_ROOT             - Preferred installation prefix
+#
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 find_package(
@@ -126,6 +129,9 @@ find_package(
 )
 
 message(STATUS "OpenSSL library")
+message(STATUS "  version major: ${OPENSSL_VERSION_MAJOR}")
+message(STATUS "  version minor: ${OPENSSL_VERSION_MINOR}")
+message(STATUS "  version patch: ${OPENSSL_VERSION_PATCH}")
 message(STATUS "  version: ${OPENSSL_VERSION}")
 message(STATUS "  include library: ${OPENSSL_INCLUDE_DIR}")
 message(STATUS "  openssl library: ${OPENSSL_CRYPTO_LIBRARY}")
@@ -150,7 +156,6 @@ include(OpcUaServer/CMakeLists.txt)
 include(OpcUaClient/CMakeLists.txt) 
 include(OpcUaProjectBuilder/CMakeLists.txt)
 include(OpcUaServerApplicationDemo/CMakeLists.txt) 
-include(cmake/CMakeLists.txt)
 
 
 

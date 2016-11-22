@@ -13,13 +13,6 @@ set(VERSION_MAJOR "1" CACHE STRING "major version")
 set(VERSION_MINOR "0" CACHE STRING "minor version")
 set(VERSION_PATCH "0" CACHE STRING "patch version")
 
-set(BOOST_VERSION_MAJOR "1"  CACHE STRING "boost major version")
-set(BOOST_VERSION_MINOR "54" CACHE STRING "boost minor version")
-
-set(OPENSSL_VERSION_MAJOR "1" CACHE STRING "major version")
-set(OPENSSL_VERSION_MINOR "0" CACHE STRING "minor version")
-set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
-
 set(OPCUASTACK_VERSION_MAJOR "2" CACHE STRING "major version")
 set(OPCUASTACK_VERSION_MINOR "0" CACHE STRING "minor version")
 set(OPCUASTACK_VERSION_PATCH "1" CACHE STRING "patch version")
@@ -84,19 +77,7 @@ include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERS
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-find_package(
-    OpenSSL 
-    "${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}" 
-    COMPONENTS openssl crypto 
-    REQUIRED
-)
-
-message(STATUS "OpenSSL library")
-message(STATUS "  version: ${OPENSSL_VERSION}")
-message(STATUS "  include library: ${OPENSSL_INCLUDE_DIR}")
-message(STATUS "  openssl library: ${OPENSSL_CRYPTO_LIBRARY}")
-message(STATUS "  crypto library: ${OPENSSL_SSL_LIBRARY}")
-message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
+include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeOpenSSL.txt)
 
 
 # -----------------------------------------------------------------------------
