@@ -11,6 +11,7 @@ ipch
 core
 *.log
 build
+build_local
 build_deb
 build_src
 build_tst
