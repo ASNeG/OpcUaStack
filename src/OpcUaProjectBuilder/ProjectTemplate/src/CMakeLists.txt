@@ -70,51 +70,11 @@ message(STATUS "  host system: ${CMAKE_HOST_SYSTEM}")
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
-# boost library
-#
-# This module reads hints about search locations from variables:
-#
-# BOOST_ROOT             - Preferred installation prefix
-#  (or BOOSTROOT)
-# BOOST_INCLUDEDIR       - Preferred include directory e.g. <prefix>/include
-# BOOST_LIBRARYDIR       - Preferred library directory e.g. <prefix>/lib
-# Boost_NO_SYSTEM_PATHS  - Set to ON to disable searching in locations not
-#                          specified by these hint variables. Default is OFF.
-# Boost_ADDITIONAL_VERSIONS
-#                       - List of Boost versions not known to this module
-#                         (Boost install locations may contain the version)
+# boost 
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-add_definitions(-DBOOST_ALL_DYN_LINK)
-find_package(
-    Boost 
-    "${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}" 
-    COMPONENTS system unit_test_framework filesystem thread date_time chrono regex 
-    REQUIRED
-)
-
-message(STATUS "Boost library")
-message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
-message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
-message(STATUS "  version subminor: ${Boost_SUBMINOR_VERSION}")
-message(STATUS "  include directory: ${Boost_INCLUDE_DIR}")
-message(STATUS "  library directory: ${Boost_LIBRARY_DIR}")
-message(STATUS "  system debug library: ${Boost_SYSTEM_LIBRARY_DEBUG}")
-message(STATUS "  system release library: ${Boost_SYSTEM_LIBRARY_RELEASE}")
-message(STATUS "  unit_test_framework debug library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_DEBUG}")
-message(STATUS "  unit_test_framework release library: ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE}")
-message(STATUS "  filesystem debug library: ${Boost_FILESYSTEM_LIBRARY_DEBUG}")
-message(STATUS "  filesystem release library: ${Boost_FILESYSTEM_LIBRARY_RELEASE}")
-message(STATUS "  thread debug library: ${Boost_THREAD_LIBRARY_DEBUG}")
-message(STATUS "  thread release library: ${Boost_THREAD_LIBRARY_RELEASE}")
-message(STATUS "  date_time debug library: ${Boost_DATE_TIME_LIBRARY_DEBUG}")
-message(STATUS "  date_time release library: ${Boost_DATE_TIME_LIBRARY_RELEASE}")
-message(STATUS "  chrono debug library: ${Boost_CHRONO_LIBRARY_DEBUG}")
-message(STATUS "  chrono release library: ${Boost_CHRONO_LIBRARY_RELEASE}")
-message(STATUS "  regex debug library: ${Boost_REGEX_LIBRARY_DEBUG}")
-message(STATUS "  regex release library: ${Boost_REGEX_LIBRARY_RELEASE}")
-message(STATUS "  libraries: ${Boost_LIBRARIES}")
+include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeBoost.txt)
 
 
 # -----------------------------------------------------------------------------
