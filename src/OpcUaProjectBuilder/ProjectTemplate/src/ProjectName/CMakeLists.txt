@@ -50,6 +50,7 @@ target_link_libraries(
     ProjectName
     ${pthread}
     ${OPCUASTACK_LIBRARY_CORE}
+    ${OPCUASTACK_LIBRARY_CLIENT}
     ${Boost_LIBRARIES}
 )
 
