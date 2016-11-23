@@ -61,7 +61,7 @@ target_link_libraries(
 # 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-install(TARGETS ProjectName DESTINATION /usr/lib/OpcUaStack)
+install(TARGETS ProjectName DESTINATION /usr/lib)
 
 install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/OpcUaServer.xml DESTINATION /etc/OpcUaStack/ProjectName) 
 install(FILES ${PROJECT_SOURCE_DIR}/ProjectName/Config/Opc.Ua.NodeSet.xml DESTINATION /etc/OpcUaStack/ProjectName)
