@@ -95,6 +95,7 @@ namespace OpcUaStackCore
 	bool 
 	OpcUaDateTime::fromISOString(const std::string& dateTimeString)
 	{
+#if 0
 		std::stringstream ss;
 
 		// do not delete this memory by yourself
@@ -104,6 +105,24 @@ namespace OpcUaStackCore
 		ss.str(dateTimeString);
 		boost::posix_time::ptime timeFromString; 
 		ss >> timeFromString;
+#endif
+
+		boost::posix_time::ptime timeFromString;
+		try {
+		    timeFromString = boost::posix_time::from_iso_string(dateTimeString);
+		}
+		catch (...)
+		{
+			std::string str = dateTimeString;
+			boost::to_upper(str);
+			if (str == "NOW") {
+				timeFromString = boost::posix_time::microsec_clock::local_time();
+			}
+			else {
+				return false;
+			}
+		}
+
 		dateTime(timeFromString);
 		return true;
 	}
