@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,6 +17,8 @@
 
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
+#include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
 
 namespace OpcUaStackServer
 {
@@ -25,6 +27,7 @@ namespace OpcUaStackServer
 	: ioService_(nullptr)
 	, monitorItemMap_()
 	, slotTimer_(constructSPtr<SlotTimer>())
+	, monitoredItemIds_()
 	{
 	}
 
@@ -137,6 +140,9 @@ namespace OpcUaStackServer
 			monitoredItemCreateResult->revisedQueueSize(monitorItem->queSize());
 			monitorItemMap_.insert(std::make_pair(monitorItem->monitorItemId(), monitorItem));
 
+			// forward start monitored item
+			forwardStartMonitoredItem(baseNodeClass, monitorItem->monitorItemId());
+
 			// start sample timer
 			SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
 			slotTimerElement->interval(monitorItem->samplingInterval());
@@ -177,6 +183,12 @@ namespace OpcUaStackServer
 			if (it == monitorItemMap_.end()) {
 				deleteMonitorItemResponse->results()->set(idx, Success);
 				continue;
+			}
+
+			// forward stop monitored item
+			BaseNodeClass::SPtr baseNodeClass = it->second->baseNodeClass();
+			if (baseNodeClass.get() != nullptr) {
+				forwardStopMonitoredItem(baseNodeClass, monitorItemId);
 			}
 
 			Log(Trace, "monitor item remove")
@@ -225,6 +237,13 @@ namespace OpcUaStackServer
 				Log(Trace, "monitor item no longer exist")
 					.parameter("MonitorId", monitorItem->monitorItemId());
 
+				// forward stop monitored item
+				// FIXME: todo base not class is not exist...
+				//BaseNodeClass::SPtr baseNodeClass = it->second->baseNodeClass();
+				//if (baseNodeClass.get() != nullptr) {
+				//	forwardStopMonitoredItem(baseNodeClass, monitorItemId);
+				//}
+
 				slotTimer_->stop(monitorItem->slotTimerElement());
 				monitorItemMap_.erase(monitorItem->monitorItemId());
 				break;
@@ -249,6 +268,48 @@ namespace OpcUaStackServer
 		}
 
 		return Success;
+	}
+
+	void
+	MonitorManager::forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
+	{
+		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+		if (forwardInfoSync.get() == nullptr) return;
+		if (!forwardInfoSync->monitoredItemStartService().isCallback()) return;
+
+		// find node id in item id map
+		MonitoredItemIds::iterator it;
+		it = monitoredItemIds_.find(baseNodeClass->nodeId().data());
+		if (it != monitoredItemIds_.end()) {
+			// not the first monitored item
+
+			std::vector<uint32_t> monitoredItemIds = it->second;
+			monitoredItemIds_.erase(it);
+			monitoredItemIds.push_back(monitoredItemId);
+			monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), monitoredItemIds));
+
+			return;
+		}
+
+		// first monitored item
+		std::vector<uint32_t> monitoredItemIds;
+		monitoredItemIds.push_back(monitoredItemId);
+		monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), monitoredItemIds));
+
+		// forward monitored item start
+		ApplicationMonitoredItemStartContext context;
+		context.nodeId_ = baseNodeClass->nodeId().data();
+		context.applicationContext_ = forwardInfoSync->monitoredItemStartService().applicationContext();
+
+		forwardInfoSync->monitoredItemStartService().callback()(&context);
+	}
+
+	void
+	MonitorManager::forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
+	{
+		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
+		if (forwardInfoSync.get() == nullptr) return;
+		if (!forwardInfoSync->monitoredItemStopService().isCallback()) return;
 	}
 
 }

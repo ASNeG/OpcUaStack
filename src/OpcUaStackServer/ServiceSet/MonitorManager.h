@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2106 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -36,6 +36,8 @@ namespace OpcUaStackServer
 	class MonitorManager
 	{
 	  public:
+		typedef std::map<OpcUaNodeId,std::vector<uint32_t> > MonitoredItemIds;
+
 		MonitorManager(void);
 		~MonitorManager(void);
 
@@ -54,6 +56,8 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray);
 
 	  private:
+		void forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
+		void forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
 		void sampleTimeout(MonitorItem::SPtr monitorItem);
 
 		IOService* ioService_;
@@ -61,6 +65,8 @@ namespace OpcUaStackServer
 		MonitorItemMap monitorItemMap_;
 		InformationModel::SPtr informationModel_;
 		SlotTimer::SPtr slotTimer_;
+
+		MonitoredItemIds monitoredItemIds_;
 	};
 
 }
