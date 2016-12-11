@@ -29,7 +29,6 @@ namespace OpcUaStackCore
 	  public:
 		BaseClass::SPtr applicationContext_;	// IN - application context from register call
 		OpcUaNodeId nodeId_;					// IN - node id to be monitored
-		uint32_t monitoredItemId_;				// IN - id of the monitored item
 	};
 
 }
