@@ -66,6 +66,8 @@ namespace OpcUaStackCore
 		ForwardInfo& writeService(void);
 		ForwardInfo& writeHService(void);
 		ForwardInfo& methodService(void);
+		ForwardInfo& monitoredItemStartService(void);
+		ForwardInfo& monitoredItemStopService(void);
 		ForwardInfo& findServerService(void);
 		ForwardInfo& registerServerService(void);
 
@@ -77,6 +79,8 @@ namespace OpcUaStackCore
 		ForwardInfo readHService_;
 		ForwardInfo writeService_;
 		ForwardInfo writeHService_;
+		ForwardInfo monitoredItemStartService_;
+		ForwardInfo monitoredItemStopService_;
 
 		// method service
 		ForwardInfo methodService_;

@@ -113,6 +113,8 @@ namespace OpcUaStackCore
 	, writeService_()
 	, writeHService_()
 	, methodService_()
+	, monitoredItemStartService_()
+	, monitoredItemStopService_()
 	, findServerService_()
 	, registerServerService_()
 	{
@@ -153,6 +155,18 @@ namespace OpcUaStackCore
 	}
 
 	ForwardInfo&
+	ForwardInfoSync::monitoredItemStartService(void)
+	{
+		return monitoredItemStartService_;
+	}
+
+	ForwardInfo&
+	ForwardInfoSync::monitoredItemStopService(void)
+	{
+		return monitoredItemStopService_;
+	}
+
+	ForwardInfo&
 	ForwardInfoSync::findServerService(void)
 	{
 		return findServerService_;
@@ -172,6 +186,8 @@ namespace OpcUaStackCore
 		writeService_.updateFrom(forwardInfoSync.writeService());
 		writeHService_.updateFrom(forwardInfoSync.writeHService());
 		methodService_.updateFrom(forwardInfoSync.methodService());
+		monitoredItemStartService_.updateFrom(forwardInfoSync.monitoredItemStartService());
+		monitoredItemStopService_.updateFrom(forwardInfoSync.monitoredItemStopService());
 		findServerService_.updateFrom(forwardInfoSync.findServerService());
 		registerServerService_.updateFrom(forwardInfoSync.registerServerService());
 	}
