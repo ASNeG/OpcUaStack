@@ -310,6 +310,37 @@ namespace OpcUaStackServer
 		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
 		if (forwardInfoSync.get() == nullptr) return;
 		if (!forwardInfoSync->monitoredItemStopService().isCallback()) return;
+
+		// find node id in item id map
+		MonitoredItemIds::iterator it1;
+		it1 = monitoredItemIds_.find(baseNodeClass->nodeId().data());
+		if (it1 == monitoredItemIds_.end()) {
+			// no monitored item exist
+			return;
+		}
+		std::vector<uint32_t> monitoredItemIds = it1->second;
+
+		// delete monitored item from list
+		std::vector<uint32_t>::iterator it2;
+		std::vector<uint32_t> newMonitoredItemIds;
+		for (it2=monitoredItemIds.begin(); it2!=monitoredItemIds.end(); it2++) {
+			if (*it2 != monitoredItemId) {
+				newMonitoredItemIds.push_back(*it2);
+			}
+		}
+
+		// check monitored item list
+		if (newMonitoredItemIds.size() > 0) {
+			monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), monitoredItemIds));
+			return;
+		}
+
+		// forward monitored item stop
+		ApplicationMonitoredItemStopContext context;
+		context.nodeId_ = baseNodeClass->nodeId().data();
+		context.applicationContext_ = forwardInfoSync->monitoredItemStopService().applicationContext();
+
+		forwardInfoSync->monitoredItemStopService().callback()(&context);
 	}
 
 }
