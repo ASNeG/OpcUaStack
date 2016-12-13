@@ -15,10 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
+#include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
+#include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 
 namespace OpcUaStackServer
 {
@@ -296,10 +297,17 @@ namespace OpcUaStackServer
 		monitoredItemIds.push_back(monitoredItemId);
 		monitoredItemIds_.insert(std::make_pair(baseNodeClass->nodeId().data(), monitoredItemIds));
 
+		// create node reference
+		NodeReferenceApplication::SPtr nodeReference = constructSPtr<NodeReferenceApplication>();
+		nodeReference->statusCode(Success);
+		nodeReference->baseNodeClass(baseNodeClass);
+
 		// forward monitored item start
 		ApplicationMonitoredItemStartContext context;
 		context.nodeId_ = baseNodeClass->nodeId().data();
 		context.applicationContext_ = forwardInfoSync->monitoredItemStartService().applicationContext();
+		context.firstMonitoredItem_ = true;
+		context.nodeReference_ = nodeReference;
 
 		forwardInfoSync->monitoredItemStartService().callback()(&context);
 	}
@@ -335,10 +343,17 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		// create node reference
+		NodeReferenceApplication::SPtr nodeReference = constructSPtr<NodeReferenceApplication>();
+		nodeReference->statusCode(Success);
+		nodeReference->baseNodeClass(baseNodeClass);
+
 		// forward monitored item stop
 		ApplicationMonitoredItemStopContext context;
 		context.nodeId_ = baseNodeClass->nodeId().data();
 		context.applicationContext_ = forwardInfoSync->monitoredItemStopService().applicationContext();
+		context.lastMonitoredItem_ = true;
+		context.nodeReference_ = nodeReference;
 
 		forwardInfoSync->monitoredItemStopService().callback()(&context);
 	}
