@@ -1,0 +1,11 @@
+
+001. Monitored Start/Stop Callback in Anwendung 
+===============================================
+
+Erzeuge Monitored Item fuer N1 -> Start Callback in Anwendung
+Lösche Monitored Item fuer N1 -> Stop Callback in Anwendung
+
+Erzeuge Monitored Item fuer N1 -> Start Callback in Anwendung
+Erzeuge Monitored Item fuer N1
+Lösche Monitored Item fuer N1
+Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
