@@ -1,25 +1,4 @@
 
-1. Installation Build Umgebung
+Informationen ueber das Produkt OpcUaStack finden Sie auf der folgenden Webseite.
 
-1.1 Windows
-
-  Tools und Libraries installieren:
-
-  - Visual Studio 2012 installieren
-  - cmake installieren (cmake-3.4.2-win32-x86.exe)
-  - NSIS installieren (nsis-2.50-setup.exe)
-  - Boost Library installieren (boost_1_54_msvc-11.0.32.exe)
-  - Open SSL installieren (Win32OpenSSL-1.0.2e.exe)
-
-  Build erstellen
-
-  - OpcUaStack Sourcen herunterladen und in Verzeichnis ../OpcUaStack speichern
-  - Mit cmake-gui ein Visual Studio Projekt erzeugen. Evtl muessen hierbei 
-    Verzeichnisse fuer boost eingestellt werden.
-    Build-Verzeichnis:  ../OpcUaStack/build
-    Source-Verzeichnis: ../OpcUaStack/src 
-  - Visual Studio oeffnen und Projekt laden
-  - Binary und Installations Package bauen
-    Bauen von ALL_BUILD
-    Bauen von PACKAGE
-
+http://wiki.asneg.de/wiki/index.php/OpcUaStack
