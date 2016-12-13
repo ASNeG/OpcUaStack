@@ -20,6 +20,8 @@
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
+
 
 namespace OpcUaStackCore
 {
@@ -29,6 +31,8 @@ namespace OpcUaStackCore
 	  public:
 		BaseClass::SPtr applicationContext_;	// IN - application context from register call
 		OpcUaNodeId nodeId_;					// IN - node id to be monitored
+		bool firstMonitoredItem_;				// IN - the first monitored item has been opened
+		NodeReference::SPtr nodeReference_;		// IN - reference to base node class
 	};
 
 }
