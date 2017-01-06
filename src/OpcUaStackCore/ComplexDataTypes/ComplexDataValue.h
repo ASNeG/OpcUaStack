@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
 
 namespace OpcUaStackCore
 {
@@ -48,6 +49,11 @@ namespace OpcUaStackCore
 		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
 		virtual void out(std::ostream& os);
 		//- ExtensionObjectBase -----------------------------------------------
+
+		void complexDataType(ComplexDataType::SPtr& complexDataType);
+
+	  private:
+		ComplexDataType::SPtr complexDataType_;
 	};
 
 }

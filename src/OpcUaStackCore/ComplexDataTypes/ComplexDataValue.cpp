@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 	ComplexDataValue::ComplexDataValue(void)
 	: Object()
 	, ExtensionObjectBase()
+	, complexDataType_()
 	{
 	}
 
@@ -33,24 +34,29 @@ namespace OpcUaStackCore
 	ExtensionObjectBase::SPtr
 	ComplexDataValue::factory(void)
 	{
-		// FIXME: todo
-		ExtensionObjectBase::SPtr x;
-		return x;
+		ComplexDataValue::SPtr complexDataTypeValue = constructSPtr<ComplexDataValue>();
+		complexDataTypeValue->complexDataType(complexDataType_);
+		return complexDataTypeValue;
 	}
+
 	OpcUaNodeId
 	ComplexDataValue::binaryTypeId(void)
 	{
-		// FIXME: todo
-		OpcUaNodeId x;
-		return x;
+		if (!complexDataType_) {
+			OpcUaNodeId tmp("Unknown-Type-Id");
+			return tmp;
+		}
+		return complexDataType_->binaryTypeId();
 	}
 
 	OpcUaNodeId
 	ComplexDataValue::xmlTypeId(void)
 	{
-		// FIXME: todo
-		OpcUaNodeId x;
-		return x;
+		if (!complexDataType_) {
+			OpcUaNodeId tmp("Unknown-Type-Id");
+			return tmp;
+		}
+		return complexDataType_->xmlTypeId();
 	}
 
 	void
@@ -96,6 +102,12 @@ namespace OpcUaStackCore
 	ComplexDataValue::out(std::ostream& os)
 	{
 		// FIXME: todo
+	}
+
+	void
+	ComplexDataValue::complexDataType(ComplexDataType::SPtr& complexDataType)
+	{
+		complexDataType_ = complexDataType;
 	}
 
 }
