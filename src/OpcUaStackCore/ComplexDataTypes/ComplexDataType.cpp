@@ -15,16 +15,16 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ComplexTypes/ComplexType.h"
+#include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
 
 namespace OpcUaStackCore
 {
 
-	ComplexType::ComplexType(void)
+	ComplexDataType::ComplexDataType(void)
 	{
 	}
 
-	ComplexType::~ComplexType(void)
+	ComplexDataType::~ComplexDataType(void)
 	{
 	}
 

@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ComplexType_h__
-#define __OpcUaStackCore_ComplexType_h__
+#ifndef __OpcUaStackCore_ComplexDataType_h__
+#define __OpcUaStackCore_ComplexDataType_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -24,13 +24,13 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ComplexType
+	class DLLEXPORT ComplexDataType
 	{
 	  public:
-		typedef boost::shared_ptr<ComplexType> SPtr;
+		typedef boost::shared_ptr<ComplexDataType> SPtr;
 
-		ComplexType(void);
-		virtual ~ComplexType(void);
+		ComplexDataType(void);
+		virtual ~ComplexDataType(void);
 	};
 
 }
