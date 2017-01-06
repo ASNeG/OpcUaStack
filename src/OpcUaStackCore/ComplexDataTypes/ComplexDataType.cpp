@@ -75,11 +75,61 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ComplexDataType::ComplexDataType(void)
+	: binaryTypeId_()
+	, xmlTypeId_()
+	, complexDataTypeItemVec_()
+	{
+	}
+
+	ComplexDataType::ComplexDataType(ComplexDataTypeItem::Vec& complexDataTypeItemVec)
+	: complexDataTypeItemVec_(complexDataTypeItemVec)
 	{
 	}
 
 	ComplexDataType::~ComplexDataType(void)
 	{
+	}
+
+	void
+	ComplexDataType::complexDataTypeItemVec(ComplexDataTypeItem::Vec& complexDataTypeItemVec)
+	{
+		complexDataTypeItemVec_ = complexDataTypeItemVec;
+	}
+
+	void
+	ComplexDataType::addComplexDataTypeItem(ComplexDataTypeItem& complexDataTypeItem)
+	{
+		complexDataTypeItemVec_.push_back(complexDataTypeItem);
+	}
+
+	ComplexDataTypeItem::Vec&
+	ComplexDataType::ComplexDataTypeItemVec(void)
+	{
+		return complexDataTypeItemVec_;
+	}
+
+	void
+	ComplexDataType::binaryTypeId(OpcUaNodeId& binaryTypeId)
+	{
+		binaryTypeId_ = binaryTypeId;
+	}
+
+	OpcUaNodeId&
+	ComplexDataType::binaryTypeId(void)
+	{
+		return binaryTypeId_;
+	}
+
+	void
+	ComplexDataType::xmlTypeId(OpcUaNodeId& xmlTypeId)
+	{
+		xmlTypeId_ = xmlTypeId;
+	}
+
+	OpcUaNodeId&
+	ComplexDataType::xmlTypeId(void)
+	{
+		return xmlTypeId_;
 	}
 
 }
