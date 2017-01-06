@@ -75,15 +75,25 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ComplexDataType::ComplexDataType(void)
-	: binaryTypeId_()
+	: complexDataTypeItemVec_()
+	, binaryTypeId_()
 	, xmlTypeId_()
-	, complexDataTypeItemVec_()
+	, nameIndexMap_()
 	{
 	}
 
 	ComplexDataType::ComplexDataType(ComplexDataTypeItem::Vec& complexDataTypeItemVec)
 	: complexDataTypeItemVec_(complexDataTypeItemVec)
+	, binaryTypeId_()
+	, xmlTypeId_()
+	, nameIndexMap_()
 	{
+		uint32_t idx = 0;
+		ComplexDataTypeItem::Vec::iterator it;
+		for (it = complexDataTypeItemVec_.begin(); it != complexDataTypeItemVec_.end(); it++) {
+			nameIndexMap_.insert(std::make_pair(it->itemName(), idx));
+			idx++;
+		}
 	}
 
 	ComplexDataType::~ComplexDataType(void)
@@ -94,11 +104,20 @@ namespace OpcUaStackCore
 	ComplexDataType::complexDataTypeItemVec(ComplexDataTypeItem::Vec& complexDataTypeItemVec)
 	{
 		complexDataTypeItemVec_ = complexDataTypeItemVec;
+		nameIndexMap_.clear();
+
+		uint32_t idx = 0;
+		ComplexDataTypeItem::Vec::iterator it;
+		for (it = complexDataTypeItemVec_.begin(); it != complexDataTypeItemVec_.end(); it++) {
+			nameIndexMap_.insert(std::make_pair(it->itemName(), idx));
+			idx++;
+		}
 	}
 
 	void
 	ComplexDataType::addComplexDataTypeItem(ComplexDataTypeItem& complexDataTypeItem)
 	{
+		nameIndexMap_.insert(std::make_pair(complexDataTypeItem.itemName(), complexDataTypeItemVec_.size()));
 		complexDataTypeItemVec_.push_back(complexDataTypeItem);
 	}
 
@@ -130,6 +149,24 @@ namespace OpcUaStackCore
 	ComplexDataType::xmlTypeId(void)
 	{
 		return xmlTypeId_;
+	}
+
+	int32_t
+	ComplexDataType::name2Index(const std::string& name)
+	{
+		NameIndexMap::iterator it;
+		it = nameIndexMap_.find(name);
+		if (it == nameIndexMap_.end()) return -1;
+		return it->second;
+	}
+
+	std::string
+	ComplexDataType::index2Name(uint32_t index)
+	{
+		if (index >= complexDataTypeItemVec_.size()) {
+			return "";
+		}
+		return complexDataTypeItemVec_[index].itemName();
 	}
 
 }

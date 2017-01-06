@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 	: Object()
 	, ExtensionObjectBase()
 	, complexDataType_()
+	, variantVec_()
 	{
 	}
 
@@ -108,6 +109,66 @@ namespace OpcUaStackCore
 	ComplexDataValue::complexDataType(ComplexDataType::SPtr& complexDataType)
 	{
 		complexDataType_ = complexDataType;
+	}
+
+	int32_t
+	ComplexDataValue::name2Index(const std::string& name)
+	{
+		if (!complexDataType_) {
+			return -1;
+		}
+		return complexDataType_->name2Index(name);
+	}
+
+	std::string
+	ComplexDataValue::index2Name(uint32_t index)
+	{
+		if (!complexDataType_) {
+			return "";
+		}
+		return complexDataType_->index2Name(index);
+	}
+
+	OpcUaVariant::SPtr
+	ComplexDataValue::getValue(const std::string& itemName)
+	{
+		int32_t index = name2Index(itemName);
+		if (index == -1) {
+			OpcUaVariant::SPtr tmp;
+			return tmp;
+		}
+		return variantVec_[index];
+	}
+
+	OpcUaVariant::SPtr
+	ComplexDataValue::getValue(uint32_t itemIndex)
+	{
+		if (itemIndex >= variantVec_.size()) {
+			OpcUaVariant::SPtr tmp;
+			return tmp;
+		}
+		return variantVec_[itemIndex];
+	}
+
+	bool
+	ComplexDataValue::setValue(const std::string& itemName, OpcUaVariant::SPtr& variant)
+	{
+		int32_t index = name2Index(itemName);
+		if (index == -1) {
+			return false;
+		}
+		variantVec_[index] = variant;
+		return true;
+	}
+
+	bool
+	ComplexDataValue::setValue(uint32_t itemIndex, OpcUaVariant::SPtr& variant)
+	{
+		if (itemIndex >= variantVec_.size()) {
+			return false;
+		}
+		variantVec_[itemIndex] = variant;
+		return true;
 	}
 
 }

@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
 
@@ -51,9 +52,16 @@ namespace OpcUaStackCore
 		//- ExtensionObjectBase -----------------------------------------------
 
 		void complexDataType(ComplexDataType::SPtr& complexDataType);
+		int32_t name2Index(const std::string& name);
+		std::string index2Name(uint32_t index);
+		OpcUaVariant::SPtr getValue(const std::string& itemName);
+		OpcUaVariant::SPtr getValue(uint32_t itemIndex);
+		bool setValue(const std::string& itemName, OpcUaVariant::SPtr& variant);
+		bool setValue(uint32_t itemIndex, OpcUaVariant::SPtr& variant);
 
 	  private:
 		ComplexDataType::SPtr complexDataType_;
+		OpcUaVariant::Vec variantVec_;
 	};
 
 }

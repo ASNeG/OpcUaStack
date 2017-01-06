@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
 
 #include <vector>
+#include <map>
 
 namespace OpcUaStackCore
 {
@@ -52,6 +53,7 @@ namespace OpcUaStackCore
 	class DLLEXPORT ComplexDataType
 	{
 	  public:
+		typedef std::map<std::string, uint32_t> NameIndexMap;
 		typedef boost::shared_ptr<ComplexDataType> SPtr;
 
 		ComplexDataType(void);
@@ -67,7 +69,11 @@ namespace OpcUaStackCore
 		void xmlTypeId(OpcUaNodeId& xmlTypeId);
 		OpcUaNodeId& xmlTypeId(void);
 
+		int32_t name2Index(const std::string& name);
+		std::string index2Name(uint32_t index);
+
 	  private:
+		NameIndexMap nameIndexMap_;
 		OpcUaNodeId binaryTypeId_;
 		OpcUaNodeId xmlTypeId_;
 		ComplexDataTypeItem::Vec complexDataTypeItemVec_;
