@@ -20,6 +20,60 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ComplexDataTypeItem
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ComplexDataTypeItem::ComplexDataTypeItem(void)
+	: itemName_("")
+	, itemType_(OpcUaBuildInType_Unknown)
+	{
+	}
+
+	ComplexDataTypeItem::ComplexDataTypeItem(const std::string& itemName, OpcUaBuildInType itemType)
+	: itemName_(itemName)
+	, itemType_(itemType)
+	{
+	}
+
+	ComplexDataTypeItem::~ComplexDataTypeItem(void)
+	{
+	}
+
+	void
+	ComplexDataTypeItem::itemName(const std::string& itemName)
+	{
+		itemName_ = itemName;
+	}
+
+	std::string&
+	ComplexDataTypeItem::itemName(void)
+	{
+		return itemName_;
+	}
+
+	void
+	ComplexDataTypeItem::itemType(OpcUaBuildInType itemType)
+	{
+		itemType_ = itemType;
+	}
+
+	OpcUaBuildInType
+	ComplexDataTypeItem::itemType(void)
+	{
+		return itemType_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ComplexDataType
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	ComplexDataType::ComplexDataType(void)
 	{
 	}

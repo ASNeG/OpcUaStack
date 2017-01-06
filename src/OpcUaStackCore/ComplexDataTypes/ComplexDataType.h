@@ -20,9 +20,33 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
+
+#include <vector>
 
 namespace OpcUaStackCore
 {
+
+	class DLLEXPORT ComplexDataTypeItem
+	{
+	  public:
+		typedef boost::shared_ptr<ComplexDataTypeItem> SPtr;
+		std::vector<ComplexDataTypeItem> Vec;
+
+		ComplexDataTypeItem(void);
+		ComplexDataTypeItem(const std::string& itemName, OpcUaBuildInType itemType);
+		virtual ~ComplexDataTypeItem(void);
+
+		void itemName(const std::string& itemName);
+		std::string& itemName(void);
+		void itemType(OpcUaBuildInType itemType);
+		OpcUaBuildInType itemType(void);
+
+	  private:
+		std::string itemName_;
+		OpcUaBuildInType itemType_;
+	};
+
 
 	class DLLEXPORT ComplexDataType
 	{
@@ -31,6 +55,8 @@ namespace OpcUaStackCore
 
 		ComplexDataType(void);
 		virtual ~ComplexDataType(void);
+
+	  private:
 	};
 
 }
