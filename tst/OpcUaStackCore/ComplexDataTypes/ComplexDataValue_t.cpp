@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(ComplexDataValue_ComplexDataTypeItem)
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field2", OpcUaBuildInType_OpcUaDouble));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field3", OpcUaBuildInType_OpcUaInt32));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field4", OpcUaBuildInType_OpcUaString));
-	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaDataValue));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaNodeId));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaDateTime));
 
 	BOOST_REQUIRE(myComplexDataTypeVec[3].itemName() == "Field4");
@@ -29,13 +29,14 @@ BOOST_AUTO_TEST_CASE(ComplexDataValue_create_ComplexDataType)
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field2", OpcUaBuildInType_OpcUaDouble));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field3", OpcUaBuildInType_OpcUaInt32));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field4", OpcUaBuildInType_OpcUaString));
-	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaDataValue));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaNodeId));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field6", OpcUaBuildInType_OpcUaDateTime));
 
 	// create complex data type
 	ComplexDataType::SPtr myComplexDataType = constructSPtr<ComplexDataType>();
 	myComplexDataType->name("MyComplexDataType");
 	myComplexDataType->complexDataTypeItemVec(myComplexDataTypeVec);
+	myComplexDataType->binaryTypeId(OpcUaNodeId("MyComplexType", 1));
 
 	BOOST_REQUIRE(myComplexDataType->size() == 6);
 
@@ -58,19 +59,19 @@ BOOST_AUTO_TEST_CASE(ComplexDataValue_create_ComplexDataValue)
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field2", OpcUaBuildInType_OpcUaDouble));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field3", OpcUaBuildInType_OpcUaInt32));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field4", OpcUaBuildInType_OpcUaString));
-	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaDataValue));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaNodeId));
 	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field6", OpcUaBuildInType_OpcUaDateTime));
 
 	// create complex data type
 	ComplexDataType::SPtr myComplexDataType = constructSPtr<ComplexDataType>();
 	myComplexDataType->name("MyComplexDataType");
 	myComplexDataType->complexDataTypeItemVec(myComplexDataTypeVec);
+	myComplexDataType->binaryTypeId(OpcUaNodeId("MyComplexType", 1));
 
 	// create complex data type value
 	ComplexDataValue myComplexDataValue(myComplexDataType);
-	//BOOST_REQUIRE(myComplexDataValue.index2Name(0) == "Field1");
 
-	//BOOST_REQUIRE(myComplexDataType->size() == 6);
+	BOOST_REQUIRE(myComplexDataType->size() == 6);
 
 	BOOST_REQUIRE(myComplexDataValue.index2Name(0) == "Field1");
 	BOOST_REQUIRE(myComplexDataValue.index2Name(1) == "Field2");
@@ -81,6 +82,57 @@ BOOST_AUTO_TEST_CASE(ComplexDataValue_create_ComplexDataValue)
 	BOOST_REQUIRE(myComplexDataValue.name2Index("Field2") == 1);
 	BOOST_REQUIRE(myComplexDataValue.name2Index("Field6") == 5);
 	BOOST_REQUIRE(myComplexDataValue.name2Index("Unknown") == -1);
+}
+
+BOOST_AUTO_TEST_CASE(ComplexDataValue_setValue_getValue)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	// create complex data type description
+	ComplexDataTypeItem::Vec myComplexDataTypeVec;
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field1", OpcUaBuildInType_OpcUaBoolean));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field2", OpcUaBuildInType_OpcUaDouble));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field3", OpcUaBuildInType_OpcUaInt32));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field4", OpcUaBuildInType_OpcUaString));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field5", OpcUaBuildInType_OpcUaNodeId));
+	myComplexDataTypeVec.push_back(ComplexDataTypeItem("Field6", OpcUaBuildInType_OpcUaDateTime));
+
+	// create complex data type
+	ComplexDataType::SPtr myComplexDataType = constructSPtr<ComplexDataType>();
+	myComplexDataType->name("MyComplexDataType");
+	myComplexDataType->complexDataTypeItemVec(myComplexDataTypeVec);
+	myComplexDataType->binaryTypeId(OpcUaNodeId("MyComplexType", 1));
+
+	// create complex data type value
+	ComplexDataValue myComplexDataValue(myComplexDataType);
+
+	// set and get values
+	OpcUaVariant::SPtr variant;
+	variant = myComplexDataValue.getValue("Field1");
+	variant->variant(OpcUaBoolean(true));
+	variant = myComplexDataValue.getValue("Field2");
+    variant->variant(OpcUaDouble(1.2345));
+    variant = myComplexDataValue.getValue("Field3");
+    variant->variant(OpcUaInt32(12345));
+
+    OpcUaString::SPtr str = constructSPtr<OpcUaString>("StringValue");
+    variant = myComplexDataValue.getValue(3);
+    variant->variant(str);
+    OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>(OpcUaNodeId("NodeId",1));
+    variant = myComplexDataValue.getValue(4);
+    variant->variant(nodeId);
+    variant = myComplexDataValue.getValue(5);
+    variant->variant(OpcUaDateTime(now));
+
+    BOOST_REQUIRE(myComplexDataValue.getValue(0)->get<OpcUaBoolean>() == true);
+    BOOST_REQUIRE(myComplexDataValue.getValue(1)->get<OpcUaDouble>() == 1.2345);
+    BOOST_REQUIRE(myComplexDataValue.getValue(2)->get<OpcUaInt32>() == 12345);
+    BOOST_REQUIRE(myComplexDataValue.getValue("Field4")->getSPtr<OpcUaString>()->value() == "StringValue");
+    BOOST_REQUIRE(myComplexDataValue.getValue("Field5")->getSPtr<OpcUaNodeId>()->namespaceIndex() == 1);
+    OpcUaDateTime dt = myComplexDataValue.getValue("Field6")->get<OpcUaDateTime>();
+    BOOST_REQUIRE(dt == OpcUaDateTime(now));
+
+	myComplexDataValue.out(std::cout);
 }
 
 #if 0
