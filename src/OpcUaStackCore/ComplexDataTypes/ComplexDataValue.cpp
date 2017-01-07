@@ -130,7 +130,9 @@ namespace OpcUaStackCore
 	void
 	ComplexDataValue::copyTo(ComplexDataValue& complexDataValue)
 	{
-		// FIXME: todo
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+			complexDataValue.getValue(idx)->copyFrom(*variantVec_[idx]);
+		}
 	}
 
 	bool
