@@ -79,14 +79,16 @@ namespace OpcUaStackCore
 	, binaryTypeId_()
 	, xmlTypeId_()
 	, nameIndexMap_()
+	, name_("")
 	{
 	}
 
-	ComplexDataType::ComplexDataType(ComplexDataTypeItem::Vec& complexDataTypeItemVec)
+	ComplexDataType::ComplexDataType(const std::string& name, ComplexDataTypeItem::Vec& complexDataTypeItemVec)
 	: complexDataTypeItemVec_(complexDataTypeItemVec)
 	, binaryTypeId_()
 	, xmlTypeId_()
 	, nameIndexMap_()
+	, name_(name)
 	{
 		uint32_t idx = 0;
 		ComplexDataTypeItem::Vec::iterator it;
@@ -149,6 +151,18 @@ namespace OpcUaStackCore
 	ComplexDataType::xmlTypeId(void)
 	{
 		return xmlTypeId_;
+	}
+
+	void
+	ComplexDataType::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	ComplexDataType::name(void)
+	{
+		return name_;
 	}
 
 	int32_t

@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<ComplexDataType> SPtr;
 
 		ComplexDataType(void);
-		ComplexDataType(ComplexDataTypeItem::Vec& complexDataTypeItemVec);
+		ComplexDataType(const std::string& name, ComplexDataTypeItem::Vec& complexDataTypeItemVec);
 		virtual ~ComplexDataType(void);
 
 		void complexDataTypeItemVec(ComplexDataTypeItem::Vec& complexDataTypeItemVec);
@@ -69,11 +69,14 @@ namespace OpcUaStackCore
 		void xmlTypeId(OpcUaNodeId& xmlTypeId);
 		OpcUaNodeId& xmlTypeId(void);
 
+		void name(const std::string& name);
+		std::string& name(void);
 		int32_t name2Index(const std::string& name);
 		std::string index2Name(uint32_t index);
 		uint32_t size(void);
 
 	  private:
+		std::string name_;
 		NameIndexMap nameIndexMap_;
 		OpcUaNodeId binaryTypeId_;
 		OpcUaNodeId xmlTypeId_;

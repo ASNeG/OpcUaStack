@@ -112,19 +112,29 @@ namespace OpcUaStackCore
 	void
 	ComplexDataValue::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
+		ComplexDataValue* dst = dynamic_cast<ComplexDataValue*>(&extensionObjectBase);
+		copyTo(*dst);
 	}
 
 	bool
 	ComplexDataValue::equal(ExtensionObjectBase& extensionObjectBase) const
 	{
-		// FIXME: todo
-		return true;
+		ComplexDataValue* dst = dynamic_cast<ComplexDataValue*>(&extensionObjectBase);
+		return *this == *dst;
 	}
 
 	void
 	ComplexDataValue::out(std::ostream& os)
 	{
-		// FIXME: todo
+		os << "Name=" << complexDataType_->name();
+		os << ", Type=" << complexDataType_->binaryTypeId();
+		os << ", Value={";
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+			if (idx != 0) os << ", ";
+			os << complexDataType_->complexDataTypeItemVec()[idx].itemName() << "=";
+			variantVec_[idx]->out(os);
+		}
+		os << "}";
 	}
 
 	void
