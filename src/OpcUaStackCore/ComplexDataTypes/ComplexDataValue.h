@@ -36,6 +36,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<ComplexDataValue> SPtr;
 
 		ComplexDataValue(void);
+		ComplexDataValue(ComplexDataType::SPtr& complexDataType);
 		virtual ~ComplexDataValue(void);
 
 		//- ExtensionObjectBase -----------------------------------------------

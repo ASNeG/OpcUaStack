@@ -29,6 +29,16 @@ namespace OpcUaStackCore
 	{
 	}
 
+	ComplexDataValue::ComplexDataValue(ComplexDataType::SPtr& complexDataType)
+	: Object()
+	, ExtensionObjectBase()
+	, complexDataType_()
+	, variantVec_()
+	, tmp_()
+	{
+		this->complexDataType(complexDataType);
+	}
+
 	ComplexDataValue::~ComplexDataValue(void)
 	{
 		clearVariantValueVec();
