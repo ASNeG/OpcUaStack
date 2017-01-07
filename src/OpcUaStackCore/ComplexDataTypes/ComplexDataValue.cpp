@@ -170,7 +170,7 @@ namespace OpcUaStackCore
 		    	return false;
 		    }
 		}
-		return false;
+		return true;
 	}
 
 	void
