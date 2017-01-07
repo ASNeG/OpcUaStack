@@ -112,7 +112,6 @@ namespace OpcUaStackCore
 	void
 	ComplexDataValue::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
-		// FIXME: todo
 	}
 
 	bool
@@ -126,6 +125,24 @@ namespace OpcUaStackCore
 	ComplexDataValue::out(std::ostream& os)
 	{
 		// FIXME: todo
+	}
+
+	void
+	ComplexDataValue::copyTo(ComplexDataValue& complexDataValue)
+	{
+		// FIXME: todo
+	}
+
+	bool
+	ComplexDataValue::operator==(const ComplexDataValue& complexDataValue) const
+	{
+		ComplexDataValue* cdv = const_cast<ComplexDataValue*>(&complexDataValue);
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+		    if (!(*cdv->getValue(idx) == *variantVec_[idx])) {
+		    	return false;
+		    }
+		}
+		return false;
 	}
 
 	void

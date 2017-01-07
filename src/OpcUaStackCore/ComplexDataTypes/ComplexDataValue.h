@@ -51,6 +51,8 @@ namespace OpcUaStackCore
 		virtual void out(std::ostream& os);
 		//- ExtensionObjectBase -----------------------------------------------
 
+		void copyTo(ComplexDataValue& complexDataValue);
+		bool operator==(const ComplexDataValue& complexDataValue) const;
 		void complexDataType(ComplexDataType::SPtr& complexDataType);
 		int32_t name2Index(const std::string& name);
 		std::string index2Name(uint32_t index);
