@@ -83,8 +83,12 @@ namespace OpcUaStackCore
 			OpcUaVariantValue::Vec& variantValueVec = variantVec_[idx]->variant();
 			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
 
-			if (variantValueVec.empty()) return;
-			if (variantValueVec[0].variantType() != itemType) return;
+			if (variantValueVec.empty()) {
+				return;
+			}
+			if (variantValueVec[0].variantType() != itemType) {
+				return;
+			}
 
 			variantValueVec[0].opcUaBinaryEncode(os, itemType);
 		}
@@ -104,6 +108,8 @@ namespace OpcUaStackCore
 
 			variantValueVec.push_back(variantValue);
 			variantValueVec[0].opcUaBinaryDecode(is, itemType);
+
+			variantVec_[idx]->variant(variantValueVec);
 		}
 	}
 
