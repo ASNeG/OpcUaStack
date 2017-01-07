@@ -176,6 +176,15 @@ namespace OpcUaStackCore
 	}
 
 	int32_t
+	ComplexDataValue::size(void)
+	{
+		if (!complexDataType_) {
+			return -1;
+		}
+		return complexDataType_->size();
+	}
+
+	int32_t
 	ComplexDataValue::name2Index(const std::string& name)
 	{
 		if (!complexDataType_) {

@@ -64,7 +64,7 @@ namespace OpcUaStackCore
 		void addComplexDataTypeItem(ComplexDataTypeItem& complexDataTypeItem);
 		ComplexDataTypeItem::Vec& complexDataTypeItemVec(void);
 
-		void binaryTypeId(OpcUaNodeId& binaryTypeId);
+		void binaryTypeId(const OpcUaNodeId& binaryTypeId);
 		OpcUaNodeId& binaryTypeId(void);
 		void xmlTypeId(OpcUaNodeId& xmlTypeId);
 		OpcUaNodeId& xmlTypeId(void);

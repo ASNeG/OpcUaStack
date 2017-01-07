@@ -130,7 +130,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ComplexDataType::binaryTypeId(OpcUaNodeId& binaryTypeId)
+	ComplexDataType::binaryTypeId(const OpcUaNodeId& binaryTypeId)
 	{
 		binaryTypeId_ = binaryTypeId;
 	}
