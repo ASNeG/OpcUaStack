@@ -54,13 +54,15 @@ namespace OpcUaStackCore
 		void complexDataType(ComplexDataType::SPtr& complexDataType);
 		int32_t name2Index(const std::string& name);
 		std::string index2Name(uint32_t index);
-		OpcUaVariant::SPtr getValue(const std::string& itemName);
-		OpcUaVariant::SPtr getValue(uint32_t itemIndex);
-		bool setValue(const std::string& itemName, OpcUaVariant::SPtr& variant);
-		bool setValue(uint32_t itemIndex, OpcUaVariant::SPtr& variant);
+		OpcUaVariant::SPtr& getValue(const std::string& itemName);
+		OpcUaVariant::SPtr& getValue(uint32_t itemIndex);
 
 	  private:
+		void clearVariantValueVec(void);
+	    void createVariantValueVec(void);
+
 		ComplexDataType::SPtr complexDataType_;
+		OpcUaVariant::SPtr tmp_;
 		OpcUaVariant::Vec variantVec_;
 	};
 

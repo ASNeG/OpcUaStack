@@ -25,11 +25,13 @@ namespace OpcUaStackCore
 	, ExtensionObjectBase()
 	, complexDataType_()
 	, variantVec_()
+	, tmp_()
 	{
 	}
 
 	ComplexDataValue::~ComplexDataValue(void)
 	{
+		clearVariantValueVec();
 	}
 
 	ExtensionObjectBase::SPtr
@@ -63,27 +65,48 @@ namespace OpcUaStackCore
 	void
 	ComplexDataValue::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
+		if (!complexDataType_) {
+			return;
+		}
+
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+			OpcUaVariantValue::Vec& variantValueVec = variantVec_[idx]->variant();
+			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
+
+			if (variantValueVec.empty()) return;
+			if (variantValueVec[0].variantType() != itemType) return;
+
+			variantValueVec[0].opcUaBinaryEncode(os, itemType);
+		}
 	}
 
 	void
 	ComplexDataValue::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		if (!complexDataType_) {
+			return;
+		}
+
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+			OpcUaVariantValue::Vec variantValueVec;
+			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
+			OpcUaVariantValue variantValue;
+
+			variantValueVec.push_back(variantValue);
+			variantValueVec[0].opcUaBinaryDecode(is, itemType);
+		}
 	}
 
 	bool
 	ComplexDataValue::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
 	{
-		// FIXME: todo
-		return true;
+		return false;
 	}
 
 	bool
 	ComplexDataValue::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: too
-		return true;
+		return false;
 	}
 
 	void
@@ -109,6 +132,8 @@ namespace OpcUaStackCore
 	ComplexDataValue::complexDataType(ComplexDataType::SPtr& complexDataType)
 	{
 		complexDataType_ = complexDataType;
+		clearVariantValueVec();
+		createVariantValueVec();
 	}
 
 	int32_t
@@ -129,46 +154,37 @@ namespace OpcUaStackCore
 		return complexDataType_->index2Name(index);
 	}
 
-	OpcUaVariant::SPtr
+	OpcUaVariant::SPtr&
 	ComplexDataValue::getValue(const std::string& itemName)
 	{
 		int32_t index = name2Index(itemName);
 		if (index == -1) {
-			OpcUaVariant::SPtr tmp;
-			return tmp;
+			return tmp_;
 		}
 		return variantVec_[index];
 	}
 
-	OpcUaVariant::SPtr
+	OpcUaVariant::SPtr&
 	ComplexDataValue::getValue(uint32_t itemIndex)
 	{
 		if (itemIndex >= variantVec_.size()) {
-			OpcUaVariant::SPtr tmp;
-			return tmp;
+			return tmp_;
 		}
 		return variantVec_[itemIndex];
 	}
 
-	bool
-	ComplexDataValue::setValue(const std::string& itemName, OpcUaVariant::SPtr& variant)
+	void
+	ComplexDataValue::clearVariantValueVec(void)
 	{
-		int32_t index = name2Index(itemName);
-		if (index == -1) {
-			return false;
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+			variantVec_[idx] = constructSPtr<OpcUaVariant>();
 		}
-		variantVec_[index] = variant;
-		return true;
 	}
 
-	bool
-	ComplexDataValue::setValue(uint32_t itemIndex, OpcUaVariant::SPtr& variant)
+	void
+	ComplexDataValue::createVariantValueVec(void)
 	{
-		if (itemIndex >= variantVec_.size()) {
-			return false;
-		}
-		variantVec_[itemIndex] = variant;
-		return true;
+		variantVec_.clear();
 	}
 
 }

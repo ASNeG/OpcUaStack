@@ -122,7 +122,7 @@ namespace OpcUaStackCore
 	}
 
 	ComplexDataTypeItem::Vec&
-	ComplexDataType::ComplexDataTypeItemVec(void)
+	ComplexDataType::complexDataTypeItemVec(void)
 	{
 		return complexDataTypeItemVec_;
 	}
@@ -167,6 +167,12 @@ namespace OpcUaStackCore
 			return "";
 		}
 		return complexDataTypeItemVec_[index].itemName();
+	}
+
+	uint32_t
+	ComplexDataType::size(void)
+	{
+		return complexDataTypeItemVec_.size();
 	}
 
 }

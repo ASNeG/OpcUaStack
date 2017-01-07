@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 
 		void complexDataTypeItemVec(ComplexDataTypeItem::Vec& complexDataTypeItemVec);
 		void addComplexDataTypeItem(ComplexDataTypeItem& complexDataTypeItem);
-		ComplexDataTypeItem::Vec& ComplexDataTypeItemVec(void);
+		ComplexDataTypeItem::Vec& complexDataTypeItemVec(void);
 
 		void binaryTypeId(OpcUaNodeId& binaryTypeId);
 		OpcUaNodeId& binaryTypeId(void);
@@ -71,6 +71,7 @@ namespace OpcUaStackCore
 
 		int32_t name2Index(const std::string& name);
 		std::string index2Name(uint32_t index);
+		uint32_t size(void);
 
 	  private:
 		NameIndexMap nameIndexMap_;
