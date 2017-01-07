@@ -215,15 +215,16 @@ namespace OpcUaStackCore
 	void
 	ComplexDataValue::clearVariantValueVec(void)
 	{
-		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
-			variantVec_[idx] = constructSPtr<OpcUaVariant>();
-		}
+		variantVec_.clear();
 	}
 
 	void
 	ComplexDataValue::createVariantValueVec(void)
 	{
-		variantVec_.clear();
+		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variantVec_.push_back(variant);
+		}
 	}
 
 }
