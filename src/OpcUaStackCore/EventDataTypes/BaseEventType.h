@@ -52,20 +52,16 @@ namespace OpcUaStackCore
 		void copyTo(BaseEventType& baseEventType);
 		bool operator==(const BaseEventType& baseEventType) const;
 
-	  private:
-		OpcUaByteString::SPtr eventId_;
-
-#if 0
-		   	    <Variable Name="EventId" 	 Type="ByteString" 		 ModellingRule="M"></Variable>
-			    <Variable Name="EventType" 	 Type="NodeId" 			 ModellingRule="M"></Variable>
-			    <Variable Name="SourceNode"  Type="NodeId"	 		 ModellingRule="M"></Variable>
-			    <Variable Name="SourceName"  Type="String" 			 ModellingRule="M"</Variable>
-			    <Variable Name="Time" 		 Type="Time" 			 ModellingRule="M"></Variable>
-			    <Variable Name="ReceiveTime" Type="Time" 			 ModellingRule="M"></Variable>
-			    <Variable Name="LocalTime" 	 Type="TimeZoneDataType" ModellingRule="O"></Variable>
-			    <Variable Name="Message" 	 Type="LocalizedText" 	 ModellingRule="M"></Variable>
-			    <Variable Name="Severity" 	 Type="UInt16" 			 ModellingRule="M"></Variable>
-#endif
+	  public:
+		OpcUaByteString eventId_;
+		OpcUaNodeId eventType_;
+		OpcUaNodeId sourceNode_;
+		OpcUaString sourceName_;
+		OpcUaDateTime time_;
+		OpcUaDateTime receiveTime_;
+		//  TimeZoneDataType localTime_;
+		OpcUaLocalizedText message_;
+		OpcUaUInt16 severity_;
 	};
 
 }

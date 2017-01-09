@@ -23,7 +23,15 @@ namespace OpcUaStackCore
 	BaseEventType::BaseEventType(void)
 	: Object()
 	, ExtensionObjectBase()
-	, eventId_(constructSPtr<OpcUaByteString>())
+	, eventId_()
+	, eventType_()
+	, sourceNode_()
+	, sourceName_()
+	, time_()
+	, receiveTime_()
+	// , TimeZoneDataType localTime_()
+	, message_()
+	, severity_()
 	{
 	}
 
@@ -53,38 +61,29 @@ namespace OpcUaStackCore
 	void
 	BaseEventType::opcUaBinaryEncode(std::ostream& os) const
 	{
-#if 0
-		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
-			OpcUaVariantValue::Vec& variantValueVec = variantVec_[idx]->variant();
-			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
-
-			if (variantValueVec.empty()) {
-				return;
-			}
-			if (variantValueVec[0].variantType() != itemType) {
-				return;
-			}
-
-			variantValueVec[0].opcUaBinaryEncode(os, itemType);
-		}
-#endif
+		eventId_.opcUaBinaryEncode(os);
+		eventType_.opcUaBinaryEncode(os);
+		sourceNode_.opcUaBinaryEncode(os);
+		sourceName_.opcUaBinaryEncode(os);
+		time_.opcUaBinaryEncode(os);
+		receiveTime_.opcUaBinaryEncode(os);
+		//localTime_.opcUaBinaryEncode(os);
+		message_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, severity_);
 	}
 
 	void
 	BaseEventType::opcUaBinaryDecode(std::istream& is)
 	{
-#if 0
-		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
-			OpcUaVariantValue::Vec variantValueVec;
-			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
-			OpcUaVariantValue variantValue;
-
-			variantValueVec.push_back(variantValue);
-			variantValueVec[0].opcUaBinaryDecode(is, itemType);
-
-			variantVec_[idx]->variant(variantValueVec);
-		}
-#endif
+		eventId_.opcUaBinaryDecode(is);
+		eventType_.opcUaBinaryDecode(is);
+		sourceNode_.opcUaBinaryDecode(is);
+		sourceName_.opcUaBinaryDecode(is);
+		time_.opcUaBinaryDecode(is);
+		receiveTime_.opcUaBinaryDecode(is);
+		//localTime_.opcUaBinaryDecode(is);
+		message_.opcUaBinaryDecode(is);
+		OpcUaNumber::opcUaBinaryDecode(is, severity_);
 	}
 
 	bool
@@ -116,41 +115,48 @@ namespace OpcUaStackCore
 	void
 	BaseEventType::out(std::ostream& os)
 	{
-#if 0
-		os << "Name=" << complexDataType_->name();
-		os << ", Type=" << complexDataType_->binaryTypeId();
-		os << ", Value={";
-		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
-			if (idx != 0) os << ", ";
-			os << complexDataType_->complexDataTypeItemVec()[idx].itemName() << "=";
-			variantVec_[idx]->out(os);
-		}
-		os << "}";
-#endif
+		os << "EventId="; eventId_.out(os);
+		os << ", EventType="; eventType_.out(os);
+		os << ", SourceNode="; sourceNode_.out(os);
+		os << ", SourceName="; sourceName_.out(os);
+		os << ", Time="; time_.out(os);
+		os << ", ReceiveTime="; receiveTime_.out(os);
+		//os << ", LocalTime="; localTime_.opcUaBinaryDecode(os);
+		os << ", Message="; message_.out(os);
+		os << ", Severity=" << severity_;
 	}
 
 	void
 	BaseEventType::copyTo(BaseEventType& baseEventType)
 	{
-#if 0
-		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
-			baseEventType.getValue(idx)->copyFrom(*variantVec_[idx]);
-		}
-#endif
+		eventId_.copyTo(baseEventType.eventId_);
+		eventType_.copyTo(baseEventType.eventType_);
+		sourceNode_.copyTo(baseEventType.sourceNode_);
+		sourceName_.copyTo(baseEventType.sourceName_);
+		time_.copyTo(baseEventType.time_);
+		receiveTime_.copyTo(baseEventType.receiveTime_);
+		// localTime_.copyTo(*baseEventType.localTime_);
+		message_.copyTo(baseEventType.message_);
+		baseEventType.severity_ = severity_;
+
 	}
 
 	bool
 	BaseEventType::operator==(const BaseEventType& baseEventType) const
 	{
-#if 0
-		BaseEventType* cdv = const_cast<BaseEventType*>(&baseEventType);
-		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
-		    if (!(*cdv->getValue(idx) == *variantVec_[idx])) {
-		    	return false;
-		    }
-		}
-#endif
-		return true;
+		BaseEventType* ptr = const_cast<BaseEventType*>(&baseEventType);
+		bool rc = true;
+
+		rc &= (*eventId_ == ptr->eventId_);
+		rc &= (*eventType_ == ptr->eventType_);
+		rc &= (*sourceNode_ == ptr->sourceNode_);
+		rc &= (*time_ == ptr->time_);
+		rc &= (*receiveTime_ == ptr->receiveTime_);
+		// rc &= (*localTime_ == ptr->localTime_);
+		rc &= (*message_ == ptr->message_);
+		rc &= (*severity_ == ptr->severity_);
+
+		return rc;
 	}
 
 }

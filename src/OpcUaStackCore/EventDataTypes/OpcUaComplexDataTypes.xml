@@ -23,8 +23,8 @@
 	    <Variable Name="EventType" 	 Type="NodeId" 			 ModellingRule="M"></Variable>
 	    <Variable Name="SourceNode"  Type="NodeId"	 		 ModellingRule="M"></Variable>
 	    <Variable Name="SourceName"  Type="String" 			 ModellingRule="M"</Variable>
-	    <Variable Name="Time" 		 Type="Time" 			 ModellingRule="M"></Variable>
-	    <Variable Name="ReceiveTime" Type="Time" 			 ModellingRule="M"></Variable>
+	    <Variable Name="Time" 		 Type="DateTime" 		 ModellingRule="M"></Variable>
+	    <Variable Name="ReceiveTime" Type="DateTime" 		 ModellingRule="M"></Variable>
 	    <Variable Name="LocalTime" 	 Type="TimeZoneDataType" ModellingRule="O"></Variable>
 	    <Variable Name="Message" 	 Type="LocalizedText" 	 ModellingRule="M"></Variable>
 	    <Variable Name="Severity" 	 Type="UInt16" 			 ModellingRule="M"></Variable>
