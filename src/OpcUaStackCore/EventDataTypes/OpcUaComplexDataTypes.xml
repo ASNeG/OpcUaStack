@@ -29,5 +29,13 @@
 	    <Variable Name="Message" 	 Type="LocalizedText" 	 ModellingRule="M"></Variable>
 	    <Variable Name="Severity" 	 Type="UInt16" 			 ModellingRule="M"></Variable>
 	</ComplexDataType>		
+	
+	<ComplexDataType TypeName="AuditEventType" HasSupertype="BaseEventType" TypeBinaryNodeId="i=2052" TypeXMlNodeId="">
+	    <Variable Name="ActionTimeStamp" 	Type="DateTime" ModellingRule="M"></Variable>
+	    <Variable Name="Status" 	 	    Type="Boolean" 	ModellingRule="M"></Variable>
+	    <Variable Name="ServerId" 	 	    Type="String" 	ModellingRule="M"></Variable>
+	    <Variable Name="ClientAuditEntryId" Type="String" 	ModellingRule="M"></Variable>
+	    <Variable Name="ClientUserId" 	    Type="String" 	ModellingRule="M"></Variable>
+	</ComplexDataType>		
 
 </OpcUaComplexDataTypes>

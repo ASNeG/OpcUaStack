@@ -147,14 +147,14 @@ namespace OpcUaStackCore
 		BaseEventType* ptr = const_cast<BaseEventType*>(&baseEventType);
 		bool rc = true;
 
-		rc &= (*eventId_ == ptr->eventId_);
-		rc &= (*eventType_ == ptr->eventType_);
-		rc &= (*sourceNode_ == ptr->sourceNode_);
-		rc &= (*time_ == ptr->time_);
-		rc &= (*receiveTime_ == ptr->receiveTime_);
+		rc &= (eventId_ == ptr->eventId_);
+		rc &= (eventType_ == ptr->eventType_);
+		rc &= (sourceNode_ == ptr->sourceNode_);
+		rc &= (time_ == ptr->time_);
+		rc &= (receiveTime_ == ptr->receiveTime_);
 		// rc &= (*localTime_ == ptr->localTime_);
-		rc &= (*message_ == ptr->message_);
-		rc &= (*severity_ == ptr->severity_);
+		rc &= (message_ == ptr->message_);
+		rc &= (severity_ == ptr->severity_);
 
 		return rc;
 	}
