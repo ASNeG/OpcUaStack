@@ -315,6 +315,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	OpcUaNodeIdBase::out(std::ostream& os)
+	{
+		os << *this;
+	}
+
 	void 
 	OpcUaNodeIdBase::opcUaBinaryEncode(std::ostream& os) const
 	{

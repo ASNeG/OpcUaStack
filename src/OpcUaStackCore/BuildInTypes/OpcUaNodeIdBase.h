@@ -91,6 +91,7 @@ namespace OpcUaStackCore
 			os << opcUaNodeId.toString();
 			return os;
 		}
+		void out(std::ostream& os);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
