@@ -37,7 +37,9 @@ namespace OpcUaStackCore
 
 	  private:
 		bool parseComplexDataType(Config& config, ComplexDataType::SPtr& complexDataType);
+		bool parseComplexDataTypeVariable(Config& config, ComplexDataTypeItem::SPtr& complexDataTypeItem);
 
+		std::string typeName_;
 		std::string fileName_;
 		ComplexDataType::Vec complexDataTypeMap_;
 	};
