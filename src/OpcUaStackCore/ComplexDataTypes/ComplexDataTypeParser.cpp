@@ -16,6 +16,8 @@
  */
 
 #include "OpcUaStackCore/ComplexDataTypes/ComplexDataTypeParser.h"
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 
 namespace OpcUaStackCore
@@ -57,7 +59,8 @@ namespace OpcUaStackCore
         Log(Info, "read complex data type configuration file")
             .parameter("FileName", fileName);
 		Config::SPtr config;
-		success = configXmlManager.registerConfiguration(fileName, config);
+		ConfigXml configXml;
+		success = configXml.parse(fileName_, &config);
 		if (!success) {
 			Log(Error, "read complex data type configuration file error")
 			   .parameter("ConfigFile", fileName);

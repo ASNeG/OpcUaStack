@@ -80,6 +80,7 @@ namespace OpcUaStackCore
 	, xmlTypeId_()
 	, nameIndexMap_()
 	, name_("")
+	, supertype_("")
 	{
 	}
 
@@ -89,6 +90,7 @@ namespace OpcUaStackCore
 	, xmlTypeId_()
 	, nameIndexMap_()
 	, name_(name)
+	, supertype_("")
 	{
 		uint32_t idx = 0;
 		ComplexDataTypeItem::Vec::iterator it;
@@ -163,6 +165,18 @@ namespace OpcUaStackCore
 	ComplexDataType::name(void)
 	{
 		return name_;
+	}
+
+	void
+	ComplexDataType::supertype(const std::string& supertype)
+	{
+		supertype_ = supertype;
+	}
+
+	std::string&
+	ComplexDataType::supertype(void)
+	{
+		return supertype_;
 	}
 
 	int32_t

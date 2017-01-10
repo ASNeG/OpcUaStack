@@ -72,12 +72,15 @@ namespace OpcUaStackCore
 
 		void name(const std::string& name);
 		std::string& name(void);
+		void supertype(const std::string& supertype);
+		std::string& supertype(void);
 		int32_t name2Index(const std::string& name);
 		std::string index2Name(uint32_t index);
 		uint32_t size(void);
 
 	  private:
 		std::string name_;
+		std::string supertype_;
 		NameIndexMap nameIndexMap_;
 		OpcUaNodeId binaryTypeId_;
 		OpcUaNodeId xmlTypeId_;
