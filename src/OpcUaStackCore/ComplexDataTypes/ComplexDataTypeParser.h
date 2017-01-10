@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
 
 namespace OpcUaStackCore
@@ -35,6 +36,8 @@ namespace OpcUaStackCore
 		ComplexDataType::Vec& complexDataTypeMap(void);
 
 	  private:
+		bool parseComplexDataType(Config& config, ComplexDataType::SPtr& complexDataType);
+
 		std::string fileName_;
 		ComplexDataType::Vec complexDataTypeMap_;
 	};

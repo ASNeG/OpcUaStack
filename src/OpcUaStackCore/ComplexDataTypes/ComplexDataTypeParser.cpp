@@ -17,7 +17,6 @@
 
 #include "OpcUaStackCore/ComplexDataTypes/ComplexDataTypeParser.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 
 namespace OpcUaStackCore
@@ -58,14 +57,44 @@ namespace OpcUaStackCore
 		//
         Log(Info, "read complex data type configuration file")
             .parameter("FileName", fileName);
-		Config::SPtr config;
+		Config config;
 		ConfigXml configXml;
 		success = configXml.parse(fileName_, &config);
 		if (!success) {
 			Log(Error, "read complex data type configuration file error")
-			   .parameter("ConfigFile", fileName);
+			   .parameter("FileName", fileName);
 			   return false;
 		}
+
+		// read complex data types
+		std::vector<Config> configVec;
+		config.getChilds("OpcUaComplexDataTypes.ComplexDataType", configVec);
+		if (configVec.size() == 0) {
+			Log(Error, "parameter missing in config file")
+				.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
+				.parameter("FileName", fileName);
+			return false;
+		}
+
+		std::vector<Config>::iterator it;
+		for (it = configVec.begin(); it != configVec.end(); it++) {
+			Config& child = *it;
+			ComplexDataType::SPtr complexDataType = constructSPtr<ComplexDataType>();
+
+			success = parseComplexDataType(child, complexDataType);
+			if (!success) return false;
+		}
+
+		return true;
+	}
+
+	bool
+	ComplexDataTypeParser::parseComplexDataType(Config& config, ComplexDataType::SPtr& complexDataType)
+	{
+		// FIXME: todo
+		return false;
+	}
+
 
 #if 0
 		<OpcUaComplexDataTypes>
@@ -82,9 +111,6 @@ namespace OpcUaStackCore
 			    <Variable Name="Severity" 	 Type="UInt16" 			 ModellingRule="M"></Variable>
 			</ComplexDataType>
 #endif
-
-		return true;
-	}
 
 }
 
