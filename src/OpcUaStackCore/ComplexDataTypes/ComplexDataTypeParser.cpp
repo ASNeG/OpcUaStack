@@ -70,7 +70,7 @@ namespace OpcUaStackCore
 		std::vector<Config> configVec;
 		config.getChilds("OpcUaComplexDataTypes.ComplexDataType", configVec);
 		if (configVec.size() == 0) {
-			Log(Error, "parameter missing in config file")
+			Log(Error, "parameter missing in complex data type config file")
 				.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
 				.parameter("FileName", fileName);
 			return false;
@@ -83,6 +83,8 @@ namespace OpcUaStackCore
 
 			success = parseComplexDataType(child, complexDataType);
 			if (!success) return false;
+
+			complexDataTypeMap_.insert(std::make_pair(complexDataType->name(), complexDataType));
 		}
 
 		return true;
@@ -91,7 +93,52 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataTypeParser::parseComplexDataType(Config& config, ComplexDataType::SPtr& complexDataType)
 	{
-		// FIXME: todo
+		// type name
+		std::string typeName;
+		if (!config.getConfigParameter("<xmlattr>.TypeName", typeName)) {
+			Log(Error, "attribute missing in complex data type config file")
+				.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
+				.parameter("Attribute", "TypeName")
+				.parameter("FileName", fileName_);
+			return false;
+		}
+		complexDataType->name(typeName);
+
+		// type binary node id
+		std::string binaryNodeIdStr;
+		if (!config.getConfigParameter("<xmlattr>.TypeBinaryNodeId", typeName)) {
+			Log(Error, "attribute missing in complex data type config file")
+				.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
+				.parameter("Attribute", "TypeBinaryNodeId")
+				.parameter("FileName", fileName_);
+			return false;
+		}
+		OpcUaNodeId binaryNodeId;
+		if (!binaryNodeId.fromString(binaryNodeIdStr)) {
+			Log(Error, "attribute value error in complex data type config file")
+				.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
+				.parameter("Attribute", "TypeBinaryNodeId")
+				.parameter("Value", binaryNodeIdStr)
+				.parameter("FileName", fileName_);
+			return false;
+		}
+		complexDataType->binaryTypeId(binaryNodeId);
+
+		// type xml node id
+		OpcUaNodeId xmlNodeId;
+		std::string xmlNodeIdStr;
+		if (config.getConfigParameter("<xmlattr>.TypeXMlNodeId", typeName)) {
+			if (!binaryNodeId.fromString(xmlNodeIdStr)) {
+				Log(Error, "attribute value error in complex data type config file")
+					.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
+					.parameter("Attribute", "TypeBinaryNodeId")
+					.parameter("Value", "TypeXMlNodeId")
+					.parameter("FileName", fileName_);
+				return false;
+			}
+		}
+		complexDataType->xmlTypeId(xmlNodeId);
+
 		return false;
 	}
 
