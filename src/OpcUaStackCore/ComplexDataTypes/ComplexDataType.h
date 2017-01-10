@@ -43,10 +43,13 @@ namespace OpcUaStackCore
 		std::string& itemName(void);
 		void itemType(OpcUaBuildInType itemType);
 		OpcUaBuildInType itemType(void);
+		void mandatory(bool mandatory);
+		bool mandatory(void);
 
 	  private:
 		std::string itemName_;
 		OpcUaBuildInType itemType_;
+		bool mandatory_;
 	};
 
 

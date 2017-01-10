@@ -30,12 +30,14 @@ namespace OpcUaStackCore
 	ComplexDataTypeItem::ComplexDataTypeItem(void)
 	: itemName_("")
 	, itemType_(OpcUaBuildInType_Unknown)
+	, mandatory_(true)
 	{
 	}
 
 	ComplexDataTypeItem::ComplexDataTypeItem(const std::string& itemName, OpcUaBuildInType itemType)
 	: itemName_(itemName)
 	, itemType_(itemType)
+	, mandatory_(true)
 	{
 	}
 
@@ -65,6 +67,18 @@ namespace OpcUaStackCore
 	ComplexDataTypeItem::itemType(void)
 	{
 		return itemType_;
+	}
+
+	void
+	ComplexDataTypeItem::mandatory(bool mandatory)
+	{
+		mandatory_ = mandatory;
+	}
+
+	bool
+	ComplexDataTypeItem::mandatory(void)
+	{
+		return mandatory_;
 	}
 
 	// ------------------------------------------------------------------------
