@@ -55,6 +55,7 @@ namespace OpcUaStackCore
 	  public:
 		typedef std::map<std::string, uint32_t> NameIndexMap;
 		typedef boost::shared_ptr<ComplexDataType> SPtr;
+		typedef std::map<std::string, ComplexDataType::SPtr> Vec;
 
 		ComplexDataType(void);
 		ComplexDataType(const std::string& name, ComplexDataTypeItem::Vec& complexDataTypeItemVec);
