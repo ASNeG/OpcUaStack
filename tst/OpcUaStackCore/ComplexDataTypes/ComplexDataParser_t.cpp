@@ -5,7 +5,7 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(ComplexDataTypeParser_t)
 
-BOOST_AUTO_TEST_CASE(ComplexDataTypeParser_xx)
+BOOST_AUTO_TEST_CASE(ComplexDataTypeParser_parse)
 {
 	ComplexDataTypeParser parser;
 

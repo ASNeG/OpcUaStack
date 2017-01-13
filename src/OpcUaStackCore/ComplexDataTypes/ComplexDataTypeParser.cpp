@@ -41,7 +41,7 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ComplexDataType::Vec&
+	ComplexDataType::Map&
 	ComplexDataTypeParser::complexDataTypeMap(void)
 	{
 		return complexDataTypeMap_;
