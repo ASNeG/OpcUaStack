@@ -81,7 +81,7 @@ namespace OpcUaStackCore
 
 		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
 			OpcUaVariantValue::Vec& variantValueVec = variantVec_[idx]->variant();
-			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
+			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx]->itemType();
 
 			if (variantValueVec.empty()) {
 				return;
@@ -103,7 +103,7 @@ namespace OpcUaStackCore
 
 		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
 			OpcUaVariantValue::Vec variantValueVec;
-			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx].itemType();
+			OpcUaBuildInType itemType = complexDataType_->complexDataTypeItemVec()[idx]->itemType();
 			OpcUaVariantValue variantValue;
 
 			variantValueVec.push_back(variantValue);
@@ -147,7 +147,7 @@ namespace OpcUaStackCore
 		os << ", Value={";
 		for (uint32_t idx = 0; idx < complexDataType_->size(); idx++) {
 			if (idx != 0) os << ", ";
-			os << complexDataType_->complexDataTypeItemVec()[idx].itemName() << "=";
+			os << complexDataType_->complexDataTypeItemVec()[idx]->itemName() << "=";
 			variantVec_[idx]->out(os);
 		}
 		os << "}";
