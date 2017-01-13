@@ -129,11 +129,11 @@ namespace OpcUaStackCore
 		// type xml node id
 		OpcUaNodeId xmlNodeId;
 		std::string xmlNodeIdStr;
-		if (config.getConfigParameter("<xmlattr>.TypeXMlNodeId", xmlNodeIdStr)) {
+		if (config.getConfigParameter("<xmlattr>.TypeXmlNodeId", xmlNodeIdStr)) {
 			if (!binaryNodeId.fromString(xmlNodeIdStr)) {
 				Log(Error, "attribute value error in complex data type config file")
 					.parameter("Parameter", "OpcUaComplexDataTypes.ComplexDataType")
-					.parameter("Attribute", "TypeBinaryNodeId")
+					.parameter("Attribute", "TypeXmlNodeId")
 					.parameter("Value", xmlNodeIdStr)
 					.parameter("FileName", fileName_);
 				return false;
@@ -162,7 +162,7 @@ namespace OpcUaStackCore
 			complexDataType->addComplexDataTypeItem(*complexDataTypeItem);
 		}
 
-		return false;
+		return true;
 	}
 
 	bool
