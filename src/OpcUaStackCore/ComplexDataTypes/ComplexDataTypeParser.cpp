@@ -47,6 +47,18 @@ namespace OpcUaStackCore
 		return complexDataTypeMap_;
 	}
 
+	ComplexDataType::SPtr
+	ComplexDataTypeParser::complexDataType(const std::string& typeName)
+	{
+		ComplexDataType::SPtr complexDataType;
+		ComplexDataType::Map::iterator it;
+		it = complexDataTypeMap_.find(typeName);
+		if (it != complexDataTypeMap_.end()) {
+			complexDataType = it->second;
+		}
+		return complexDataType;
+	}
+
 	bool
 	ComplexDataTypeParser::parse(const std::string& fileName)
 	{
@@ -159,7 +171,7 @@ namespace OpcUaStackCore
 			bool success = parseComplexDataTypeVariable(child, complexDataTypeItem);
 			if (!success) return false;
 
-			complexDataType->addComplexDataTypeItem(*complexDataTypeItem);
+			complexDataType->addComplexDataTypeItem(complexDataTypeItem);
 		}
 
 		return true;
