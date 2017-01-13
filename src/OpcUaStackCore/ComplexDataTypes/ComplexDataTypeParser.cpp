@@ -102,7 +102,7 @@ namespace OpcUaStackCore
 			complexDataTypeMap_.insert(std::make_pair(complexDataType->name(), complexDataType));
 		}
 
-		return true;
+		return postProcessing();
 	}
 
 	bool
@@ -152,6 +152,12 @@ namespace OpcUaStackCore
 			}
 		}
 		complexDataType->xmlTypeId(xmlNodeId);
+
+		// super type
+		std::string superType;
+		if (config.getConfigParameter("<xmlattr>.SuperType", superType)) {
+			complexDataType->supertype(superType);
+		}
 
 		// read complex data type items
 		std::vector<Config> configVec;
@@ -230,6 +236,61 @@ namespace OpcUaStackCore
 		else {
 			complexDataTypeItem->mandatory(false);
 		}
+
+		return true;
+	}
+
+	bool
+	ComplexDataTypeParser::postProcessing(void)
+	{
+		// super type post processing
+		ComplexDataType::Map::iterator it;
+		for (it = complexDataTypeMap_.begin(); it != complexDataTypeMap_.end(); it++) {
+			ComplexDataType::SPtr complexDataType = it->second;
+			if (!postProcessingSuperType(complexDataType)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	ComplexDataTypeParser::postProcessingSuperType(ComplexDataType::SPtr& complexDataType)
+	{
+		// super type processing already done
+		if (superTypeProcessing_.find(complexDataType->name()) != superTypeProcessing_.end()) {
+			return true;
+		}
+
+		// type with no super type
+		if (complexDataType->supertype() == "") {
+			superTypeProcessing_.insert(complexDataType->name());
+			return true;
+		}
+
+		// find super type
+		ComplexDataType::Map::iterator it1;
+		it1 = complexDataTypeMap_.find(complexDataType->supertype());
+		if (it1 == complexDataTypeMap_.end()) {
+			Log(Error, "super type not exist in complex data type config file")
+				.parameter("TypeName", complexDataType->name())
+				.parameter("SuperType", complexDataType->supertype())
+				.parameter("FileName", fileName_);
+			return false;
+		}
+		ComplexDataType::SPtr superType = it1->second;
+
+		// post processing super type
+		if (!postProcessingSuperType(superType)) {
+			return false;
+		}
+
+		// copy super type fields into complex data class
+		if (!complexDataType->addSuperTypeItemVec(superType->complexDataTypeItemVec())) {
+			return false;
+		}
+        superTypeProcessing_.insert(complexDataType->name());
 
 		return true;
 	}

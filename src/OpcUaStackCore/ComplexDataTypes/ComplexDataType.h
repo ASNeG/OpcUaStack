@@ -67,6 +67,7 @@ namespace OpcUaStackCore
 
 		void complexDataTypeItemVec(ComplexDataTypeItem::Vec& complexDataTypeItemVec);
 		void addComplexDataTypeItem(ComplexDataTypeItem::SPtr& complexDataTypeItem);
+		bool addSuperTypeItemVec(ComplexDataTypeItem::Vec& superTypeItemVec);
 		ComplexDataTypeItem::Vec& complexDataTypeItemVec(void);
 		ComplexDataTypeItem::SPtr complexDataTypeItem(const std::string& name);
 		ComplexDataTypeItem::SPtr complexDataTypeItem(uint32_t index);

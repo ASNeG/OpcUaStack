@@ -147,6 +147,29 @@ namespace OpcUaStackCore
 		complexDataTypeItemVec_.push_back(complexDataTypeItem);
 	}
 
+	bool
+	ComplexDataType::addSuperTypeItemVec(ComplexDataTypeItem::Vec& superTypeItemVec)
+	{
+		nameIndexMap_.clear();
+
+		ComplexDataTypeItem::Vec tmp = complexDataTypeItemVec_;
+		complexDataTypeItemVec_ = superTypeItemVec;
+		ComplexDataTypeItem::Vec::iterator it2;
+		for (it2 = tmp.begin(); it2 != tmp.end(); it2++) {
+			ComplexDataTypeItem::SPtr item = *it2;
+			complexDataTypeItemVec_.push_back(item);
+		}
+
+		uint32_t idx = 0;
+		ComplexDataTypeItem::Vec::iterator it3;
+		for (it3 = complexDataTypeItemVec_.begin(); it3 != complexDataTypeItemVec_.end(); it3++) {
+			ComplexDataTypeItem::SPtr complexDataTypeItem = *it3;
+			nameIndexMap_.insert(std::make_pair(complexDataTypeItem->itemName(), idx));
+			idx++;
+		}
+		return true;
+	}
+
 	ComplexDataTypeItem::Vec&
 	ComplexDataType::complexDataTypeItemVec(void)
 	{

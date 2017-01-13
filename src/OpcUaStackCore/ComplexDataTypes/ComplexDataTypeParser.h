@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_ComplexDataTypeParser_h__
 
 #include <boost/shared_ptr.hpp>
+#include <set>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
@@ -29,6 +30,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ComplexDataTypeParser
 	{
 	  public:
+		typedef std::set<std::string> SuperTypeProcessing;
+
 		ComplexDataTypeParser(void);
 		~ComplexDataTypeParser(void);
 
@@ -39,10 +42,14 @@ namespace OpcUaStackCore
 	  private:
 		bool parseComplexDataType(Config& config, ComplexDataType::SPtr& complexDataType);
 		bool parseComplexDataTypeVariable(Config& config, ComplexDataTypeItem::SPtr& complexDataTypeItem);
+		bool postProcessing(void);
+		bool postProcessingSuperType(ComplexDataType::SPtr& complexDataType);
 
 		std::string typeName_;
 		std::string fileName_;
 		ComplexDataType::Map complexDataTypeMap_;
+
+		SuperTypeProcessing superTypeProcessing_;
 	};
 
 }
