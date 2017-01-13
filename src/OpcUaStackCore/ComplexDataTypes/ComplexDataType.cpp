@@ -45,6 +45,12 @@ namespace OpcUaStackCore
 	{
 	}
 
+	ComplexDataTypeItem::SPtr
+	ComplexDataTypeItem::make(const std::string& itemName, OpcUaBuildInType itemType)
+	{
+		return constructSPtr<ComplexDataTypeItem>(itemName, itemType);
+	}
+
 	void
 	ComplexDataTypeItem::itemName(const std::string& itemName)
 	{
@@ -109,7 +115,8 @@ namespace OpcUaStackCore
 		uint32_t idx = 0;
 		ComplexDataTypeItem::Vec::iterator it;
 		for (it = complexDataTypeItemVec_.begin(); it != complexDataTypeItemVec_.end(); it++) {
-			nameIndexMap_.insert(std::make_pair(it->itemName(), idx));
+			ComplexDataTypeItem::SPtr complexDataTypeItem = *it;
+			nameIndexMap_.insert(std::make_pair(complexDataTypeItem->itemName(), idx));
 			idx++;
 		}
 	}
@@ -127,15 +134,16 @@ namespace OpcUaStackCore
 		uint32_t idx = 0;
 		ComplexDataTypeItem::Vec::iterator it;
 		for (it = complexDataTypeItemVec_.begin(); it != complexDataTypeItemVec_.end(); it++) {
-			nameIndexMap_.insert(std::make_pair(it->itemName(), idx));
+			ComplexDataTypeItem::SPtr complexDataTypeItem = *it;
+			nameIndexMap_.insert(std::make_pair(complexDataTypeItem->itemName(), idx));
 			idx++;
 		}
 	}
 
 	void
-	ComplexDataType::addComplexDataTypeItem(ComplexDataTypeItem& complexDataTypeItem)
+	ComplexDataType::addComplexDataTypeItem(ComplexDataTypeItem::SPtr& complexDataTypeItem)
 	{
-		nameIndexMap_.insert(std::make_pair(complexDataTypeItem.itemName(), complexDataTypeItemVec_.size()));
+		nameIndexMap_.insert(std::make_pair(complexDataTypeItem->itemName(), complexDataTypeItemVec_.size()));
 		complexDataTypeItemVec_.push_back(complexDataTypeItem);
 	}
 
@@ -143,6 +151,33 @@ namespace OpcUaStackCore
 	ComplexDataType::complexDataTypeItemVec(void)
 	{
 		return complexDataTypeItemVec_;
+	}
+
+	ComplexDataTypeItem::SPtr
+	ComplexDataType::complexDataTypeItem(const std::string& name)
+	{
+		ComplexDataTypeItem::SPtr typeItem;
+		int32_t index = name2Index(name);
+		if (index == -1) {
+			return typeItem;
+		}
+#if 0
+		// FIXME: todo
+		return complexDataTypeItemVec_[(uint32_t)index];
+#endif
+	}
+
+	ComplexDataTypeItem::SPtr
+	ComplexDataType::complexDataTypeItem(uint32_t index)
+	{
+		ComplexDataTypeItem::SPtr typeItem;
+		if (index >= complexDataTypeItemVec_.size()) {
+			return typeItem;
+		}
+#if 0
+		// FIXME: todo
+		return complexDataTypeItemVec_[index];
+#endif
 	}
 
 	void
@@ -208,7 +243,7 @@ namespace OpcUaStackCore
 		if (index >= complexDataTypeItemVec_.size()) {
 			return "";
 		}
-		return complexDataTypeItemVec_[index].itemName();
+		return complexDataTypeItemVec_[index]->itemName();
 	}
 
 	uint32_t

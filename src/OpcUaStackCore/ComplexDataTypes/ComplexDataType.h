@@ -33,12 +33,13 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<ComplexDataTypeItem> SPtr;
-		typedef std::vector<ComplexDataTypeItem> Vec;
+		typedef std::vector<ComplexDataTypeItem::SPtr> Vec;
 
 		ComplexDataTypeItem(void);
 		ComplexDataTypeItem(const std::string& itemName, OpcUaBuildInType itemType);
 		virtual ~ComplexDataTypeItem(void);
 
+		ComplexDataTypeItem::SPtr make(const std::string& itemName, OpcUaBuildInType itemType);
 		void itemName(const std::string& itemName);
 		std::string& itemName(void);
 		void itemType(OpcUaBuildInType itemType);
@@ -65,8 +66,10 @@ namespace OpcUaStackCore
 		virtual ~ComplexDataType(void);
 
 		void complexDataTypeItemVec(ComplexDataTypeItem::Vec& complexDataTypeItemVec);
-		void addComplexDataTypeItem(ComplexDataTypeItem& complexDataTypeItem);
+		void addComplexDataTypeItem(ComplexDataTypeItem::SPtr& complexDataTypeItem);
 		ComplexDataTypeItem::Vec& complexDataTypeItemVec(void);
+		ComplexDataTypeItem::SPtr complexDataTypeItem(const std::string& name);
+		ComplexDataTypeItem::SPtr complexDataTypeItem(uint32_t index);
 
 		void binaryTypeId(const OpcUaNodeId& binaryTypeId);
 		OpcUaNodeId& binaryTypeId(void);
