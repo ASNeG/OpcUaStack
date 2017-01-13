@@ -64,7 +64,8 @@ namespace OpcUaStackCore
 		success = configXml.parse(fileName_, &config);
 		if (!success) {
 			Log(Error, "read complex data type configuration file error")
-			   .parameter("FileName", fileName);
+			   .parameter("FileName", fileName)
+			   .parameter("ErrorMessage", configXml.errorMessage());
 			   return false;
 		}
 
