@@ -22,7 +22,7 @@
 	    <Variable Name="EventId" 	 Type="ByteString" 		 ModellingRule="M"></Variable>
 	    <Variable Name="EventType" 	 Type="NodeId" 			 ModellingRule="M"></Variable>
 	    <Variable Name="SourceNode"  Type="NodeId"	 		 ModellingRule="M"></Variable>
-	    <Variable Name="SourceName"  Type="String" 			 ModellingRule="M"</Variable>
+	    <Variable Name="SourceName"  Type="String" 			 ModellingRule="M"></Variable>
 	    <Variable Name="Time" 		 Type="DateTime" 		 ModellingRule="M"></Variable>
 	    <Variable Name="ReceiveTime" Type="DateTime" 		 ModellingRule="M"></Variable>
 	    <Variable Name="LocalTime" 	 Type="TimeZoneDataType" ModellingRule="O"></Variable>
