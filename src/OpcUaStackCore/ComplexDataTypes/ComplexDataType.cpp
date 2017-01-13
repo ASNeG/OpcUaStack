@@ -161,10 +161,7 @@ namespace OpcUaStackCore
 		if (index == -1) {
 			return typeItem;
 		}
-#if 0
-		// FIXME: todo
 		return complexDataTypeItemVec_[(uint32_t)index];
-#endif
 	}
 
 	ComplexDataTypeItem::SPtr
@@ -174,10 +171,7 @@ namespace OpcUaStackCore
 		if (index >= complexDataTypeItemVec_.size()) {
 			return typeItem;
 		}
-#if 0
-		// FIXME: todo
 		return complexDataTypeItemVec_[index];
-#endif
 	}
 
 	void
