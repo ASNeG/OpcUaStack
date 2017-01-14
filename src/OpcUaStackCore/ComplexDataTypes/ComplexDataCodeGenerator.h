@@ -44,15 +44,18 @@ namespace OpcUaStackCore
 	    void namespaceName(const std::string& namespaceName);
 
 	    bool generate(ComplexDataType& complexDataType);
-	    std::string& content(void);
+	    std::string& contentHeader(void);
+	    std::string& contentSource(void);
 
 	  private:
-	    bool readClassTemplateFile(void);
+	    bool readClassTemplateFileHeader(void);
+	    bool readClassTemplateFileSource(void);
 	    bool substNamespaceName(void);
 	    bool substClassName(const std::string& className);
 	    bool substValues(void);
 
-	    std::string content_;
+	    std::string contentHeader_;
+	    std::string contentSource_;
 		std::string classTemplateFileHeader_;
 		std::string classTemplateFileSource_;
 		std::string namespaceName_;

@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	ComplexDataCodeGenerator::ComplexDataCodeGenerator(void)
-	: content_()
+	: contentHeader_("")
+	, contentSource_("")
 	, classTemplateFileHeader_("")
 	, classTemplateFileSource_("")
 	, namespaceName_("OpcUaStackCore")
@@ -52,16 +53,22 @@ namespace OpcUaStackCore
 	}
 
 	std::string&
-	ComplexDataCodeGenerator::content(void)
+	ComplexDataCodeGenerator::contentHeader(void)
 	{
-		return content_;
+		return contentHeader_;
+	}
+
+	std::string&
+	ComplexDataCodeGenerator::contentSource(void)
+	{
+		return contentSource_;
 	}
 
 	bool
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
 		// read class template file
-		if (!readClassTemplateFile()) {
+		if (!readClassTemplateFileHeader()) {
 			return false;
 		}
 
@@ -94,20 +101,40 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ComplexDataCodeGenerator::readClassTemplateFile(void)
+	ComplexDataCodeGenerator::readClassTemplateFileHeader(void)
 	{
 		boost::filesystem::ifstream in;
 		in.open(classTemplateFileHeader_, std::ios::in);
 
 		if (!in) {
-			Log(Error, "read class template file error")
+			Log(Error, "read header class template file error")
 				.parameter("FileName", classTemplateFileHeader_);
 			return false;
 		}
 
 		std::stringstream ss;
 		ss << in.rdbuf();
-		content_ = ss.str();
+		contentHeader_ = ss.str();
+
+		in.close();
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::readClassTemplateFileSource(void)
+	{
+		boost::filesystem::ifstream in;
+		in.open(classTemplateFileSource_, std::ios::in);
+
+		if (!in) {
+			Log(Error, "read source class template file error")
+				.parameter("FileName", classTemplateFileSource_);
+			return false;
+		}
+
+		std::stringstream ss;
+		ss << in.rdbuf();
+		contentSource_ = ss.str();
 
 		in.close();
 		return true;
@@ -117,7 +144,7 @@ namespace OpcUaStackCore
 	ComplexDataCodeGenerator::substNamespaceName(void)
 	{
 		boost::regex regNamespaceName("@NamespaceName@");
-		content_ = boost::regex_replace(content_, regNamespaceName, namespaceName_);
+		contentHeader_ = boost::regex_replace(contentHeader_, regNamespaceName, namespaceName_);
 		return true;
 	}
 
@@ -125,12 +152,12 @@ namespace OpcUaStackCore
 	ComplexDataCodeGenerator::substClassName(const std::string& className)
 	{
 		boost::regex regClassName("@ClassName@");
-		content_ = boost::regex_replace(content_, regClassName, className);
+		contentHeader_ = boost::regex_replace(contentHeader_, regClassName, className);
 
 		std::string lowerClassName = className;
 		lowerClassName[0] = std::tolower	(lowerClassName[0]);
 		boost::regex regclassName("@className@");
-		content_ = boost::regex_replace(content_, regclassName, lowerClassName);
+		contentHeader_ = boost::regex_replace(contentHeader_, regclassName, lowerClassName);
 
 		return true;
 	}
@@ -139,7 +166,7 @@ namespace OpcUaStackCore
 	ComplexDataCodeGenerator::substValues(void)
 	{
 		boost::regex regValues("@Values@");
-		content_ = boost::regex_replace(content_, regValues, values_);
+		contentHeader_ = boost::regex_replace(contentHeader_, regValues, values_);
 		return true;
 	}
 
