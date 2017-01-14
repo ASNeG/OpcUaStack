@@ -22,6 +22,7 @@ namespace OpcUaStackCore
 
 	ComplexDataCodeGenerator::ComplexDataCodeGenerator(void)
 	: classTemplateFile_("")
+	, namespaceName_("OpcUaStackCore")
 	{
 	}
 
@@ -41,8 +42,17 @@ namespace OpcUaStackCore
 		uint32_t size = complexDataType.size();
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
+
+			// handle namespace name
+			// FIXME: todo
 		}
 		return true;
+	}
+
+	void
+	ComplexDataCodeGenerator::namespaceName(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
 	}
 
 }

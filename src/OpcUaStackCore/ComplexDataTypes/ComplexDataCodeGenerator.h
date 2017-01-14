@@ -35,11 +35,13 @@ namespace OpcUaStackCore
 		virtual ~ComplexDataCodeGenerator(void);
 
 	    void classTemplateFile(const std::string& classTemplateFile);
+	    void namespaceName(const std::string& namespaceName);
 
 	    bool generate(ComplexDataType& complexDataType);
 
 	  private:
 		std::string classTemplateFile_;
+		std::string namespaceName_;
 
 	};
 
