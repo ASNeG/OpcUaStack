@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 	, classTemplateFileSource_("")
 	, namespaceName_("OpcUaStackCore")
 	, values_("")
+	, folder_("")
 	{
 	}
 
@@ -50,6 +51,12 @@ namespace OpcUaStackCore
 	ComplexDataCodeGenerator::namespaceName(const std::string& namespaceName)
 	{
 		namespaceName_ = namespaceName;
+	}
+
+	void
+	ComplexDataCodeGenerator::folder(const std::string& folder)
+	{
+		folder_ = folder;
 	}
 
 	std::string&
@@ -132,6 +139,11 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// subst folder
+		if (!substFolder(contentSource_)) {
+			return false;
+		}
+
     	// FIXME: todo
     	return true;
     }
@@ -195,6 +207,13 @@ namespace OpcUaStackCore
 		boost::regex regclassName("@className@");
 		content = boost::regex_replace(content, regclassName, lowerClassName);
 
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substFolder(std::string& content)
+	{
+		// FIXME: todo
 		return true;
 	}
 
