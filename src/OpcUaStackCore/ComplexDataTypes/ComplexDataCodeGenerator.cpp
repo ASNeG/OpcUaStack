@@ -43,6 +43,12 @@ namespace OpcUaStackCore
 		namespaceName_ = namespaceName;
 	}
 
+	std::string&
+	ComplexDataCodeGenerator::content(void)
+	{
+		return content_;
+	}
+
 	bool
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
@@ -51,15 +57,21 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		// subst template file parameter
+		// subst namespace name
+		if (!substNamespaceName()) {
+			return false;
+		}
+
+		// subst class name
+		if (!substClassName(complexDataType.name())) {
+			return false;
+		}
+
+		// subst class values
 		uint32_t size = complexDataType.size();
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
 
-			// handle namespace name
-			// FIXME: todo
-
-			// handle class name
 			// FIXME: todo
 		}
 
@@ -83,6 +95,22 @@ namespace OpcUaStackCore
 		content_ = ss.str();
 
 		in.close();
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substNamespaceName(void)
+	{
+		boost::regex regNamespaceName("@NamespaceName@");
+		content_ = boost::regex_replace(content_, regNamespaceName, namespaceName_);
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substClassName(const std::string& className)
+	{
+		boost::regex regClassName("@ClassName@");
+		content_ = boost::regex_replace(content_, regClassName, className);
 		return true;
 	}
 
