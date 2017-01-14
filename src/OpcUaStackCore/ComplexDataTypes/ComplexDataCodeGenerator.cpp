@@ -21,11 +21,28 @@ namespace OpcUaStackCore
 {
 
 	ComplexDataCodeGenerator::ComplexDataCodeGenerator(void)
+	: classTemplateFile_("")
 	{
 	}
 
 	ComplexDataCodeGenerator::~ComplexDataCodeGenerator(void)
 	{
+	}
+
+	void
+	ComplexDataCodeGenerator::classTemplateFile(const std::string& classTemplateFile)
+	{
+		classTemplateFile_ = classTemplateFile;
+	}
+
+	bool
+	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
+	{
+		uint32_t size = complexDataType.size();
+		for (uint32_t idx=0; idx<size; idx++) {
+			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
+		}
+		return true;
 	}
 
 }

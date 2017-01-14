@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
 
 namespace OpcUaStackCore
 {
@@ -33,7 +34,12 @@ namespace OpcUaStackCore
 		ComplexDataCodeGenerator(void);
 		virtual ~ComplexDataCodeGenerator(void);
 
+	    void classTemplateFile(const std::string& classTemplateFile);
+
+	    bool generate(ComplexDataType& complexDataType);
+
 	  private:
+		std::string classTemplateFile_;
 
 	};
 
