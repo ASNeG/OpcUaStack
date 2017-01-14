@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 	    std::string& contentSource(void);
 
 	  private:
+	    bool generateHeader(ComplexDataType& complexDataType);
+	    bool generateSource(ComplexDataType& complexDataType);
 	    bool readClassTemplateFileHeader(void);
 	    bool readClassTemplateFileSource(void);
 	    bool substNamespaceName(void);

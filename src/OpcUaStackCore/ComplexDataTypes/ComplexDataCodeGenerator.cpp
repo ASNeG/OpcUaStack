@@ -67,6 +67,20 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
+		if (!generateHeader(complexDataType)) {
+			return false;
+		}
+
+		if (!generateSource(complexDataType)) {
+			return false;
+		}
+
+		return true;
+	}
+
+    bool
+    ComplexDataCodeGenerator::generateHeader(ComplexDataType& complexDataType)
+    {
 		// read class template file
 		if (!readClassTemplateFileHeader()) {
 			return false;
@@ -98,7 +112,20 @@ namespace OpcUaStackCore
 		}
 
 		return true;
-	}
+    }
+
+    bool
+    ComplexDataCodeGenerator::generateSource(ComplexDataType& complexDataType)
+    {
+		// read class template file
+		if (!readClassTemplateFileSource()) {
+			return false;
+		}
+
+
+    	// FIXME: todo
+    	return true;
+    }
 
 	bool
 	ComplexDataCodeGenerator::readClassTemplateFileHeader(void)
