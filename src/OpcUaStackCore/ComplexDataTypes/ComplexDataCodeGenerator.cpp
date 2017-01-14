@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	ComplexDataCodeGenerator::ComplexDataCodeGenerator(void)
-	: classTemplateFile_("")
+	: content_()
+	, classTemplateFile_("")
 	, namespaceName_("OpcUaStackCore")
 	{
 	}
@@ -36,23 +37,53 @@ namespace OpcUaStackCore
 		classTemplateFile_ = classTemplateFile;
 	}
 
+	void
+	ComplexDataCodeGenerator::namespaceName(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
+	}
+
 	bool
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
+		// read class template file
+		if (!readClassTemplateFile()) {
+			return false;
+		}
+
+		// subst template file parameter
 		uint32_t size = complexDataType.size();
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
 
 			// handle namespace name
 			// FIXME: todo
+
+			// handle class name
+			// FIXME: todo
 		}
+
 		return true;
 	}
 
-	void
-	ComplexDataCodeGenerator::namespaceName(const std::string& namespaceName)
+	bool
+	ComplexDataCodeGenerator::readClassTemplateFile(void)
 	{
-		namespaceName_ = namespaceName;
+		boost::filesystem::ifstream in;
+		in.open(classTemplateFile_, std::ios::in);
+
+		if (!in) {
+			Log(Error, "read class template file error")
+				.parameter("FileName", classTemplateFile_);
+			return false;
+		}
+
+		std::stringstream ss;
+		ss << in.rdbuf();
+		content_ = ss.str();
+
+		in.close();
+		return true;
 	}
 
 }

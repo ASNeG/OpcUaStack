@@ -19,7 +19,12 @@
 #define __OpcUaStackCore_ComplexDataCodeGenerator_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem/fstream.hpp>
+#include <boost/regex.hpp>
+#include <iostream>
+#include <sstream>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ComplexDataTypes/ComplexDataType.h"
 
 namespace OpcUaStackCore
@@ -40,6 +45,9 @@ namespace OpcUaStackCore
 	    bool generate(ComplexDataType& complexDataType);
 
 	  private:
+	    bool readClassTemplateFile(void);
+
+	    std::string content_;
 		std::string classTemplateFile_;
 		std::string namespaceName_;
 

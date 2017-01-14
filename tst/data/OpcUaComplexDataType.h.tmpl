@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __@NamespaceName@_AuditEventType_h__
-#define __@NamespaceName@_AuditEventType_h__
+#ifndef __@NamespaceName@_@ClassName@_h__
+#define __@NamespaceName@_@ClassName@_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -26,14 +26,14 @@
 namespace @NamespaceName@
 {
 
-	class DLLEXPORT AuditEventType
+	class DLLEXPORT @ClassName@
 	: public BaseEventType
 	{
 	  public:
-		typedef boost::shared_ptr<AuditEventType> SPtr;
+		typedef boost::shared_ptr<@ClassName@> SPtr;
 
-		AuditEventType(void);
-		virtual ~AuditEventType(void);
+		@ClassName@(void);
+		virtual ~@ClassName@(void);
 
 		//- ExtensionObjectBase -----------------------------------------------
 		virtual ExtensionObjectBase::SPtr factory(void);
@@ -48,8 +48,8 @@ namespace @NamespaceName@
 		virtual void out(std::ostream& os);
 		//- ExtensionObjectBase -----------------------------------------------
 
-		void copyTo(AuditEventType& auditEventType);
-		bool operator==(const AuditEventType& auditEventType) const;
+		void copyTo(@ClassName@& auditEventType);
+		bool operator==(const @ClassName@& auditEventType) const;
 
 	  public:
 		OpcUaDateTime actionTimeStamp_;
