@@ -52,8 +52,8 @@ namespace OpcUaStackCore
 	    bool generateSource(ComplexDataType& complexDataType);
 	    bool readClassTemplateFileHeader(void);
 	    bool readClassTemplateFileSource(void);
-	    bool substNamespaceName(void);
-	    bool substClassName(const std::string& className);
+	    bool substNamespaceName(std::string& content);
+	    bool substClassName(std::string& content, const std::string& className);
 	    bool substValues(void);
 
 	    std::string contentHeader_;

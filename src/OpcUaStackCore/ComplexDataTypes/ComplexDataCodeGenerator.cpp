@@ -87,12 +87,12 @@ namespace OpcUaStackCore
 		}
 
 		// subst namespace name
-		if (!substNamespaceName()) {
+		if (!substNamespaceName(contentHeader_)) {
 			return false;
 		}
 
 		// subst class name
-		if (!substClassName(complexDataType.name())) {
+		if (!substClassName(contentHeader_, complexDataType.name())) {
 			return false;
 		}
 
@@ -122,6 +122,15 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// subst namespace name
+		if (!substNamespaceName(contentSource_)) {
+			return false;
+		}
+
+		// subst class name
+		if (!substClassName(contentSource_, complexDataType.name())) {
+			return false;
+		}
 
     	// FIXME: todo
     	return true;
@@ -168,23 +177,23 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ComplexDataCodeGenerator::substNamespaceName(void)
+	ComplexDataCodeGenerator::substNamespaceName(std::string& content)
 	{
 		boost::regex regNamespaceName("@NamespaceName@");
-		contentHeader_ = boost::regex_replace(contentHeader_, regNamespaceName, namespaceName_);
+		content = boost::regex_replace(content, regNamespaceName, namespaceName_);
 		return true;
 	}
 
 	bool
-	ComplexDataCodeGenerator::substClassName(const std::string& className)
+	ComplexDataCodeGenerator::substClassName(std::string& content, const std::string& className)
 	{
 		boost::regex regClassName("@ClassName@");
-		contentHeader_ = boost::regex_replace(contentHeader_, regClassName, className);
+		content = boost::regex_replace(content, regClassName, className);
 
 		std::string lowerClassName = className;
 		lowerClassName[0] = std::tolower	(lowerClassName[0]);
 		boost::regex regclassName("@className@");
-		contentHeader_ = boost::regex_replace(contentHeader_, regclassName, lowerClassName);
+		content = boost::regex_replace(content, regclassName, lowerClassName);
 
 		return true;
 	}

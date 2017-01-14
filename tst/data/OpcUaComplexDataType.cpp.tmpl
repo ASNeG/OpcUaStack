@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/EventDataTypes/BaseEventType.h"
+#include "@NamespaceName@/EventDataTypes/@ClassName@.h"
 
-namespace OpcUaStackCore
+namespace @NamespaceName@
 {
 
-	BaseEventType::BaseEventType(void)
+	@ClassName@::@ClassName@(void)
 	: Object()
 	, ExtensionObjectBase()
 	, eventId_()
@@ -35,31 +35,31 @@ namespace OpcUaStackCore
 	{
 	}
 
-	BaseEventType::~BaseEventType(void)
+	@ClassName@::~@ClassName@(void)
 	{
 	}
 
 	ExtensionObjectBase::SPtr
-	BaseEventType::factory(void)
+	@ClassName@::factory(void)
 	{
-		BaseEventType::SPtr baseEventType = constructSPtr<BaseEventType>();
-		return baseEventType;
+		@ClassName@::SPtr @className@ = constructSPtr<@ClassName@>();
+		return @className@;
 	}
 
 	OpcUaNodeId
-	BaseEventType::binaryTypeId(void)
+	@ClassName@::binaryTypeId(void)
 	{
 		return OpcUaNodeId(2041);
 	}
 
 	OpcUaNodeId
-	BaseEventType::xmlTypeId(void)
+	@ClassName@::xmlTypeId(void)
 	{
 		return OpcUaNodeId("Unknown-Type-Id");
 	}
 
 	void
-	BaseEventType::opcUaBinaryEncode(std::ostream& os) const
+	@ClassName@::opcUaBinaryEncode(std::ostream& os) const
 	{
 		eventId_.opcUaBinaryEncode(os);
 		eventType_.opcUaBinaryEncode(os);
@@ -73,7 +73,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	BaseEventType::opcUaBinaryDecode(std::istream& is)
+	@ClassName@::opcUaBinaryDecode(std::istream& is)
 	{
 		eventId_.opcUaBinaryDecode(is);
 		eventType_.opcUaBinaryDecode(is);
@@ -87,33 +87,33 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	BaseEventType::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
+	@ClassName@::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const
 	{
 		return false;
 	}
 
 	bool
-	BaseEventType::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	@ClassName@::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		return false;
 	}
 
 	void
-	BaseEventType::copyTo(ExtensionObjectBase& extensionObjectBase)
+	@ClassName@::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
-		BaseEventType* dst = dynamic_cast<BaseEventType*>(&extensionObjectBase);
+		@ClassName@* dst = dynamic_cast<@ClassName@*>(&extensionObjectBase);
 		copyTo(*dst);
 	}
 
 	bool
-	BaseEventType::equal(ExtensionObjectBase& extensionObjectBase) const
+	@ClassName@::equal(ExtensionObjectBase& extensionObjectBase) const
 	{
-		BaseEventType* dst = dynamic_cast<BaseEventType*>(&extensionObjectBase);
+		@ClassName@* dst = dynamic_cast<@ClassName@*>(&extensionObjectBase);
 		return *this == *dst;
 	}
 
 	void
-	BaseEventType::out(std::ostream& os)
+	@ClassName@::out(std::ostream& os)
 	{
 		os << "EventId="; eventId_.out(os);
 		os << ", EventType="; eventType_.out(os);
@@ -127,24 +127,24 @@ namespace OpcUaStackCore
 	}
 
 	void
-	BaseEventType::copyTo(BaseEventType& baseEventType)
+	@ClassName@::copyTo(@ClassName@& @className@)
 	{
-		eventId_.copyTo(baseEventType.eventId_);
-		eventType_.copyTo(baseEventType.eventType_);
-		sourceNode_.copyTo(baseEventType.sourceNode_);
-		sourceName_.copyTo(baseEventType.sourceName_);
-		time_.copyTo(baseEventType.time_);
-		receiveTime_.copyTo(baseEventType.receiveTime_);
-		// localTime_.copyTo(*baseEventType.localTime_);
-		message_.copyTo(baseEventType.message_);
-		baseEventType.severity_ = severity_;
+		eventId_.copyTo(@className@.eventId_);
+		eventType_.copyTo(@className@.eventType_);
+		sourceNode_.copyTo(@className@.sourceNode_);
+		sourceName_.copyTo(@className@.sourceName_);
+		time_.copyTo(@className@.time_);
+		receiveTime_.copyTo(@className@.receiveTime_);
+		// localTime_.copyTo(*@className@.localTime_);
+		message_.copyTo(@className@.message_);
+		@className@.severity_ = severity_;
 
 	}
 
 	bool
-	BaseEventType::operator==(const BaseEventType& baseEventType) const
+	@ClassName@::operator==(const @ClassName@& @className@) const
 	{
-		BaseEventType* ptr = const_cast<BaseEventType*>(&baseEventType);
+		@ClassName@* ptr = const_cast<@ClassName@*>(&@className@);
 		bool rc = true;
 
 		rc &= (eventId_ == ptr->eventId_);
