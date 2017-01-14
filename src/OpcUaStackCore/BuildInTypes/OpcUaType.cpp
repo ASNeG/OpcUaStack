@@ -91,4 +91,39 @@ namespace OpcUaStackCore
 		else return OpcUaBuildInType_Unknown;
 	}
 
+	std::string
+	OpcUaBuildInTypeMap::buildInType2CPPType(OpcUaBuildInType buildInType)
+	{
+		switch (buildInType)
+		{
+			case OpcUaBuildInType_Unknown: return "Unknown";
+			case OpcUaBuildInType_OpcUaBoolean: return "OpcUaBoolean";
+			case OpcUaBuildInType_OpcUaSByte: return "OpcUaSByte";
+			case OpcUaBuildInType_OpcUaByte: return "OpcUaByte";
+			case OpcUaBuildInType_OpcUaInt16: return "OpcUaInt16";
+			case OpcUaBuildInType_OpcUaUInt16: return "OpcUaUInt16";
+			case OpcUaBuildInType_OpcUaInt32: return "OpcUaInt32";
+			case OpcUaBuildInType_OpcUaUInt32: return "OpcUaUInt32";
+			case OpcUaBuildInType_OpcUaInt64: return "OpcUaInt64";
+			case OpcUaBuildInType_OpcUaUInt64: return "OpcUaUInt64";
+			case OpcUaBuildInType_OpcUaFloat: return "OpcUaFloat";
+			case OpcUaBuildInType_OpcUaDouble: return "OpcUaDouble";
+			case OpcUaBuildInType_OpcUaString: return "OpcUaString";
+			case OpcUaBuildInType_OpcUaDateTime: return "OpcUaDateTime";
+			case OpcUaBuildInType_OpcUaGuid: return "OpcUaGuid";
+			case OpcUaBuildInType_OpcUaByteString: return "OpcUaByteString";
+			case OpcUaBuildInType_OpcUaXmlElement: return "OpcUaXmlElement";
+			case OpcUaBuildInType_OpcUaNodeId: return "OpcUaNodeId";
+			case OpcUaBuildInType_OpcUaExpandedNodeId: return "OpcUaExpandedNodeId";
+			case OpcUaBuildInType_OpcUaStatusCode: return "OpcUaStatusCode";
+			case OpcUaBuildInType_OpcUaQualifiedName: return "OpcUaQualifiedName";
+			case OpcUaBuildInType_OpcUaLocalizedText: return "OpcUaLocalizedText";
+			case OpcUaBuildInType_OpcUaExtensionObject: return "OpcUaExtensionObject";
+			case OpcUaBuildInType_OpcUaDataValue: return "OpcUaDataValue";
+			case OpcUaBuildInType_OpcUaVariant: return "OpcUaVariant";
+			case OpcUaBuildInType_OpcUaDiagnosticInfo: return "OpcUaDiagnosticInfo";
+			default: return "Unknown";
+		}
+	}
+
 }

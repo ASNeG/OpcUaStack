@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 	  public:
 		static std::string buildInType2String(OpcUaBuildInType buildInType);
 		static OpcUaBuildInType string2BuildInType(const std::string& type);
+		static std::string buildInType2CPPType(OpcUaBuildInType buildInType);
 	};
 
 };
