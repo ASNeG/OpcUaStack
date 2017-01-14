@@ -49,10 +49,12 @@ namespace OpcUaStackCore
 	    bool readClassTemplateFile(void);
 	    bool substNamespaceName(void);
 	    bool substClassName(const std::string& className);
+	    bool substValues(void);
 
 	    std::string content_;
 		std::string classTemplateFile_;
 		std::string namespaceName_;
+		std::string values_;
 
 	};
 

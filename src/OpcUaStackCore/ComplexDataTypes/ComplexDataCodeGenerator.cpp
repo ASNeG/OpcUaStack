@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 	: content_()
 	, classTemplateFile_("")
 	, namespaceName_("OpcUaStackCore")
+	, values_("")
 	{
 	}
 
@@ -72,7 +73,14 @@ namespace OpcUaStackCore
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
 
-			// FIXME: todo
+			std::string valueName = item->itemName();
+			valueName[0] = std::tolower	(valueName[0]);
+			values_ += "            ";
+			values_ +=  OpcUaBuildInTypeMap::buildInType2CPPType(item->itemType()) + " " + valueName + "_;";
+			values_ += "\n";
+		}
+		if (!substValues()) {
+			return false;
 		}
 
 		return true;
@@ -111,6 +119,20 @@ namespace OpcUaStackCore
 	{
 		boost::regex regClassName("@ClassName@");
 		content_ = boost::regex_replace(content_, regClassName, className);
+
+		std::string lowerClassName = className;
+		lowerClassName[0] = std::tolower	(lowerClassName[0]);
+		boost::regex regclassName("@className@");
+		content_ = boost::regex_replace(content_, regclassName, lowerClassName);
+
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substValues(void)
+	{
+		boost::regex regValues("@Values@");
+		content_ = boost::regex_replace(content_, regValues, values_);
 		return true;
 	}
 

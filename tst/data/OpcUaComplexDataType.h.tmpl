@@ -27,7 +27,6 @@ namespace @NamespaceName@
 {
 
 	class DLLEXPORT @ClassName@
-	: public BaseEventType
 	{
 	  public:
 		typedef boost::shared_ptr<@ClassName@> SPtr;
@@ -48,15 +47,11 @@ namespace @NamespaceName@
 		virtual void out(std::ostream& os);
 		//- ExtensionObjectBase -----------------------------------------------
 
-		void copyTo(@ClassName@& auditEventType);
-		bool operator==(const @ClassName@& auditEventType) const;
+		void copyTo(@ClassName@& @className@);
+		bool operator==(const @ClassName@& @className@) const;
 
 	  public:
-		OpcUaDateTime actionTimeStamp_;
-		OpcUaBoolean status_;
-		OpcUaString serverId_;
-		OpcUaString clientAuditEntryId_;
-		OpcUaString clientUserId_;
+@Values@
 	};
 
 }
