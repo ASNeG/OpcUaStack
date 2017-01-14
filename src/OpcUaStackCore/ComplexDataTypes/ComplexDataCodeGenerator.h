@@ -39,7 +39,8 @@ namespace OpcUaStackCore
 		ComplexDataCodeGenerator(void);
 		virtual ~ComplexDataCodeGenerator(void);
 
-	    void classTemplateFile(const std::string& classTemplateFile);
+	    void classTemplateFileHeader(const std::string& classTemplateFileHeader);
+	    void classTemplateFileSource(const std::string& classTemplateFileSource);
 	    void namespaceName(const std::string& namespaceName);
 
 	    bool generate(ComplexDataType& complexDataType);
@@ -52,7 +53,8 @@ namespace OpcUaStackCore
 	    bool substValues(void);
 
 	    std::string content_;
-		std::string classTemplateFile_;
+		std::string classTemplateFileHeader_;
+		std::string classTemplateFileSource_;
 		std::string namespaceName_;
 		std::string values_;
 

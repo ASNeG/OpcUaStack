@@ -22,7 +22,8 @@ namespace OpcUaStackCore
 
 	ComplexDataCodeGenerator::ComplexDataCodeGenerator(void)
 	: content_()
-	, classTemplateFile_("")
+	, classTemplateFileHeader_("")
+	, classTemplateFileSource_("")
 	, namespaceName_("OpcUaStackCore")
 	, values_("")
 	{
@@ -33,9 +34,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ComplexDataCodeGenerator::classTemplateFile(const std::string& classTemplateFile)
+	ComplexDataCodeGenerator::classTemplateFileHeader(const std::string& classTemplateFileHeader)
 	{
-		classTemplateFile_ = classTemplateFile;
+		classTemplateFileHeader_ = classTemplateFileHeader;
+	}
+
+	void
+	ComplexDataCodeGenerator::classTemplateFileSource(const std::string& classTemplateFileSource)
+	{
+		classTemplateFileSource_ = classTemplateFileSource;
 	}
 
 	void
@@ -90,11 +97,11 @@ namespace OpcUaStackCore
 	ComplexDataCodeGenerator::readClassTemplateFile(void)
 	{
 		boost::filesystem::ifstream in;
-		in.open(classTemplateFile_, std::ios::in);
+		in.open(classTemplateFileHeader_, std::ios::in);
 
 		if (!in) {
 			Log(Error, "read class template file error")
-				.parameter("FileName", classTemplateFile_);
+				.parameter("FileName", classTemplateFileHeader_);
 			return false;
 		}
 
