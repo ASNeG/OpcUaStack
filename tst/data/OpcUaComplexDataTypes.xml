@@ -36,6 +36,32 @@
 	    <Variable Name="ServerId" 	 	    Type="String" 	ModellingRule="M"></Variable>
 	    <Variable Name="ClientAuditEntryId" Type="String" 	ModellingRule="M"></Variable>
 	    <Variable Name="ClientUserId" 	    Type="String" 	ModellingRule="M"></Variable>
-	</ComplexDataType>		
+	</ComplexDataType>	
+	
+	
+	<ComplexDataType TypeName="MyComplexType1" TypeBinaryNodeId="ns=1;i=1">
+	    <Variable Name="Boolean" 			Type="Boolean" 			ModellingRule="M"></Variable>
+	    <Variable Name="SByte" 				Type="SByte" 			ModellingRule="M"></Variable>
+	    <Variable Name="Byte" 				Type="Byte" 			ModellingRule="M"></Variable>
+	    <Variable Name="Int16" 				Type="Int16" 			ModellingRule="M"></Variable>
+	    <Variable Name="UInt16" 			Type="UInt16" 			ModellingRule="M"></Variable>
+	    <Variable Name="Int32" 				Type="Int32" 			ModellingRule="M"></Variable>
+	    <Variable Name="UInt32" 			Type="UInt32" 			ModellingRule="M"></Variable>
+	    <Variable Name="Int64" 				Type="Int64" 			ModellingRule="M"></Variable>
+	    <Variable Name="UInt64" 			Type="UInt64" 			ModellingRule="M"></Variable>
+	    <Variable Name="Float" 				Type="Float" 			ModellingRule="M"></Variable>
+	    <Variable Name="Double" 			Type="Double" 			ModellingRule="M"></Variable>
+	    <Variable Name="String" 			Type="String" 			ModellingRule="M"></Variable>
+	    <Variable Name="DateTime" 			Type="DateTime"			ModellingRule="M"></Variable>
+		<Variable Name="Guid" 				Type="Guid"				ModellingRule="M"></Variable>
+		<Variable Name="ByteString" 		Type="ByteString"		ModellingRule="M"></Variable>
+		<Variable Name="NodeId" 			Type="NodeId"			ModellingRule="M"></Variable>
+		<Variable Name="ExpandedNodeId" 	Type="ExpandedNodeId"	ModellingRule="M"></Variable>
+		<Variable Name="StatusCode" 		Type="StatusCode"		ModellingRule="M"></Variable>
+		<Variable Name="QualifiedName" 		Type="QualifiedName"	ModellingRule="M"></Variable>
+		<Variable Name="LocalizedText" 		Type="LocalizedText"	ModellingRule="M"></Variable>
+		<Variable Name="DataValue" 			Type="DataValue"		ModellingRule="M"></Variable>
+		<Variable Name="Variant" 			Type="Variant"			ModellingRule="M"></Variable>
+	</ComplexDataType>	
 
 </OpcUaComplexDataTypes>
