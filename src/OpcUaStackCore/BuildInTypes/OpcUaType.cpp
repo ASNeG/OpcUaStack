@@ -21,6 +21,46 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaBuildInTypeClass
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaBuildInTypeClass::isBoolean(OpcUaBuildInType buildInType)
+	{
+		return buildInType == OpcUaBuildInType_OpcUaBoolean;
+	}
+
+	bool
+	OpcUaBuildInTypeClass::isByte(OpcUaBuildInType buildInType)
+	{
+		return buildInType == OpcUaBuildInType_OpcUaSByte ||
+			   buildInType == OpcUaBuildInType_OpcUaByte;
+	}
+
+	bool
+	OpcUaBuildInTypeClass::isNumber(OpcUaBuildInType buildInType)
+	{
+		return buildInType == OpcUaBuildInType_OpcUaInt16 ||
+			   buildInType == OpcUaBuildInType_OpcUaUInt16 ||
+			   buildInType == OpcUaBuildInType_OpcUaInt32 ||
+			   buildInType == OpcUaBuildInType_OpcUaUInt32 ||
+			   buildInType == OpcUaBuildInType_OpcUaInt64 ||
+			   buildInType == OpcUaBuildInType_OpcUaUInt64 ||
+			   buildInType == OpcUaBuildInType_OpcUaFloat ||
+			   buildInType == OpcUaBuildInType_OpcUaDouble;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUaBuildInTypeMap
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	std::string
 	OpcUaBuildInTypeMap::buildInType2String(OpcUaBuildInType buildInType)
 	{
