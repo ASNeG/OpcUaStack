@@ -29,6 +29,10 @@ namespace OpcUaStackCore
 	, values_("")
 	, folder_("")
 	, valuesInit_("")
+	, binaryTypeId_("unknown-type-id")
+	, xmlTypeId_("unknown-type-id")
+	, encode_("")
+	, decode_("")
 	{
 	}
 
@@ -145,6 +149,13 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// subst binary type id and xml type id
+		binaryTypeId_ = complexDataType.binaryTypeId().toString();
+		xmlTypeId_ = complexDataType.xmlTypeId().toString();
+		if (!substTypeIds(contentSource_)) {
+			return false;
+		}
+
 		// subst values
 		valuesInit_ = "";
 		uint32_t size = complexDataType.size();
@@ -157,6 +168,10 @@ namespace OpcUaStackCore
 			valuesInit_ += "        , ";
 			valuesInit_ += valueName + "_()";  // FIXME: use default value...
 			valuesInit_ += "\n";
+
+			// encode
+
+			// decode
 		}
 
 		// subst values init
@@ -252,6 +267,18 @@ namespace OpcUaStackCore
 	{
 		boost::regex regValuesInit("@ValuesInit@");
 		content = boost::regex_replace(content, regValuesInit, valuesInit_);
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substTypeIds(std::string& content)
+	{
+		boost::regex regBinaryTypeId("@BinaryTypeId@");
+		content = boost::regex_replace(content, regBinaryTypeId, binaryTypeId_);
+
+		boost::regex regXmlTypeId("@XmlTypeId@");
+		content = boost::regex_replace(content, regXmlTypeId, xmlTypeId_);
+
 		return true;
 	}
 

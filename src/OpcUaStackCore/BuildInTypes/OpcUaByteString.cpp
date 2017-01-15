@@ -265,4 +265,10 @@ namespace OpcUaStackCore
 		return std::string((char*)value_, length_);
 	}
 
+	void
+	OpcUaByteString::fromString(const std::string& string)
+	{
+		value(string);
+	}
+
 };

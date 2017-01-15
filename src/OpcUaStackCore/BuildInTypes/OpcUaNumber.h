@@ -120,7 +120,7 @@ namespace OpcUaStackCore
     class DLLEXPORT OpcUaNumber
     {
 	  public:
-	
+
 		//
 		// Boolean
 		//
