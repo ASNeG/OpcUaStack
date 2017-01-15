@@ -151,10 +151,11 @@ namespace OpcUaStackCore
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
 
+			// values init
 			std::string valueName = item->itemName();
 			valueName[0] = std::tolower(valueName[0]);
 			valuesInit_ += "        , ";
-			valuesInit_ += valueName + "_()";
+			valuesInit_ += valueName + "_()";  // FIXME: use default value...
 			valuesInit_ += "\n";
 		}
 

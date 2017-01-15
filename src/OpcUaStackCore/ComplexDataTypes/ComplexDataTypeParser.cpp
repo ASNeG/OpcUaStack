@@ -237,6 +237,11 @@ namespace OpcUaStackCore
 			complexDataTypeItem->mandatory(false);
 		}
 
+		// default value
+		std::string defaultValue = "";
+		config.getConfigParameter("<xmlattr>.Default", defaultValue, "");
+		complexDataTypeItem->defaultValue(defaultValue);
+
 		return true;
 	}
 
