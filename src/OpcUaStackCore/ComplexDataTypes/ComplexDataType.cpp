@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 	: itemName_(itemName)
 	, itemType_(itemType)
 	, mandatory_(true)
+	, defaultValue_("")
 	{
 	}
 
@@ -85,6 +86,18 @@ namespace OpcUaStackCore
 	ComplexDataTypeItem::mandatory(void)
 	{
 		return mandatory_;
+	}
+
+	void
+	ComplexDataTypeItem::defaultValue(const std::string& defaultValue)
+	{
+		defaultValue_ = defaultValue;
+	}
+
+	std::string&
+	ComplexDataTypeItem::defaultValue(void)
+	{
+		return defaultValue_;
 	}
 
 	// ------------------------------------------------------------------------
