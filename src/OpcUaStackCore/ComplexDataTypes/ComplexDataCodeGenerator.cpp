@@ -213,7 +213,9 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataCodeGenerator::substFolder(std::string& content)
 	{
-		// FIXME: todo
+		boost::regex regFolder("@Folder@");
+		content = boost::regex_replace(content, regFolder, folder_);
+
 		return true;
 	}
 
