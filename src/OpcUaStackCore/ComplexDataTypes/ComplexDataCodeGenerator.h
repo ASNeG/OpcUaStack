@@ -56,7 +56,8 @@ namespace OpcUaStackCore
 	    bool substNamespaceName(std::string& content);
 	    bool substClassName(std::string& content, const std::string& className);
 	    bool substFolder(std::string& content);
-	    bool substValues(void);
+	    bool substValues(std::string& content);
+	    bool substValuesInit(std::string& content);
 
 	    std::string contentHeader_;
 	    std::string contentSource_;
@@ -65,6 +66,7 @@ namespace OpcUaStackCore
 		std::string namespaceName_;
 		std::string values_;
 		std::string folder_;
+		std::string valuesInit_;
 
 	};
 

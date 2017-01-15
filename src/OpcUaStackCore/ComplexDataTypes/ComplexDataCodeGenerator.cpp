@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 	, namespaceName_("OpcUaStackCore")
 	, values_("")
 	, folder_("")
+	, valuesInit_("")
 	{
 	}
 
@@ -103,7 +104,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		// subst class values
+		// subst values
 		uint32_t size = complexDataType.size();
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
@@ -114,7 +115,7 @@ namespace OpcUaStackCore
 			values_ +=  OpcUaBuildInTypeMap::buildInType2CPPType(item->itemType()) + " " + valueName + "_;";
 			values_ += "\n";
 		}
-		if (!substValues()) {
+		if (!substValues(contentHeader_)) {
 			return false;
 		}
 
@@ -141,6 +142,24 @@ namespace OpcUaStackCore
 
 		// subst folder
 		if (!substFolder(contentSource_)) {
+			return false;
+		}
+
+		// subst values
+		valuesInit_ = "";
+		uint32_t size = complexDataType.size();
+		for (uint32_t idx=0; idx<size; idx++) {
+			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
+
+			std::string valueName = item->itemName();
+			valueName[0] = std::tolower(valueName[0]);
+			valuesInit_ += "        , ";
+			valuesInit_ += valueName + "_()";
+			valuesInit_ += "\n";
+		}
+
+		// subst values init
+		if (!substValuesInit(contentSource_)) {
 			return false;
 		}
 
@@ -220,10 +239,18 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ComplexDataCodeGenerator::substValues(void)
+	ComplexDataCodeGenerator::substValues(std::string& content)
 	{
 		boost::regex regValues("@Values@");
-		contentHeader_ = boost::regex_replace(contentHeader_, regValues, values_);
+		content = boost::regex_replace(content, regValues, values_);
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substValuesInit(std::string& content)
+	{
+		boost::regex regValuesInit("@ValuesInit@");
+		content = boost::regex_replace(content, regValuesInit, valuesInit_);
 		return true;
 	}
 
