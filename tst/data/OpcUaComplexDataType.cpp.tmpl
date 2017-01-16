@@ -53,29 +53,13 @@ namespace @NamespaceName@
 	void
 	@ClassName@::opcUaBinaryEncode(std::ostream& os) const
 	{
-		eventId_.opcUaBinaryEncode(os);
-		eventType_.opcUaBinaryEncode(os);
-		sourceNode_.opcUaBinaryEncode(os);
-		sourceName_.opcUaBinaryEncode(os);
-		time_.opcUaBinaryEncode(os);
-		receiveTime_.opcUaBinaryEncode(os);
-		//localTime_.opcUaBinaryEncode(os);
-		message_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, severity_);
+@ValuesEncode@
 	}
 
 	void
 	@ClassName@::opcUaBinaryDecode(std::istream& is)
 	{
-		eventId_.opcUaBinaryDecode(is);
-		eventType_.opcUaBinaryDecode(is);
-		sourceNode_.opcUaBinaryDecode(is);
-		sourceName_.opcUaBinaryDecode(is);
-		time_.opcUaBinaryDecode(is);
-		receiveTime_.opcUaBinaryDecode(is);
-		//localTime_.opcUaBinaryDecode(is);
-		message_.opcUaBinaryDecode(is);
-		OpcUaNumber::opcUaBinaryDecode(is, severity_);
+@ValuesDecode@
 	}
 
 	bool

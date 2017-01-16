@@ -26,8 +26,10 @@ namespace OpcUaStackCore
 	, classTemplateFileHeader_("")
 	, classTemplateFileSource_("")
 	, namespaceName_("OpcUaStackCore")
-	, values_("")
 	, folder_("")
+	, values_("")
+	, valuesEncode_("")
+	, valuesDecode_("")
 	, valuesInit_("")
 	, binaryTypeId_("unknown-type-id")
 	, xmlTypeId_("unknown-type-id")
@@ -161,23 +163,55 @@ namespace OpcUaStackCore
 		uint32_t size = complexDataType.size();
 		for (uint32_t idx=0; idx<size; idx++) {
 			ComplexDataTypeItem::SPtr item = complexDataType.complexDataTypeItem(idx);
-
-			// values init
 			std::string valueName = item->itemName();
 			valueName[0] = std::tolower(valueName[0]);
+
+			// values init
 			valuesInit_ += "        , ";
 			valuesInit_ += valueName + "_()";  // FIXME: use default value...
 			valuesInit_ += "\n";
 
-			// encode
+			// values encode
+			valuesEncode_ += "            ";
+			if (OpcUaBuildInTypeClass::isObject(item->itemType())) {
+				valuesEncode_ += valueName + "_.opcUaBinaryEncode(os);";
+			}
+			else {
+				valuesEncode_ += "OpcUaNumber::opcUaBinaryEncode(os, " + valueName + ");";
+			}
+			valuesEncode_ += "\n";
 
-			// decode
+
+			// values decode
 		}
 
 		// subst values init
 		if (!substValuesInit(contentSource_)) {
 			return false;
 		}
+
+		// subst values encode
+		if (!substValuesEncode(contentSource_)) {
+			return false;
+		}
+
+		// subst values decode
+		if (!substValuesDecode(contentSource_)) {
+			return false;
+		}
+
+#if 0
+		eventId_.opcUaBinaryEncode(os);
+		eventType_.opcUaBinaryEncode(os);
+		sourceNode_.opcUaBinaryEncode(os);
+		sourceName_.opcUaBinaryEncode(os);
+		time_.opcUaBinaryEncode(os);
+		receiveTime_.opcUaBinaryEncode(os);
+		//localTime_.opcUaBinaryEncode(os);
+		message_.opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, severity_);
+
+#endif
 
     	// FIXME: todo
     	return true;
@@ -267,6 +301,22 @@ namespace OpcUaStackCore
 	{
 		boost::regex regValuesInit("@ValuesInit@");
 		content = boost::regex_replace(content, regValuesInit, valuesInit_);
+		return true;
+	}
+
+    bool
+    ComplexDataCodeGenerator::substValuesEncode(std::string& content)
+	{
+		boost::regex regValuesEncode("@ValuesEncode@");
+		content = boost::regex_replace(content, regValuesEncode, valuesEncode_);
+		return true;
+	}
+
+    bool
+    ComplexDataCodeGenerator::substValuesDecode(std::string& content)
+	{
+		boost::regex regValuesDecode("@ValuesDecode@");
+		content = boost::regex_replace(content, regValuesDecode, valuesDecode_);
 		return true;
 	}
 
