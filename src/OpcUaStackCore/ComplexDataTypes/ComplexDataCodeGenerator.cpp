@@ -32,6 +32,8 @@ namespace OpcUaStackCore
 	, valuesEncode_("")
 	, valuesDecode_("")
 	, valuesOut_("")
+	, valuesCopyTo_("")
+	, valuesEqual_("")
 	, binaryTypeId_("unknown-type-id")
 	, xmlTypeId_("unknown-type-id")
 	, encode_("")
@@ -142,11 +144,6 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		// subst class name
-		if (!substClassName(contentSource_, complexDataType.name())) {
-			return false;
-		}
-
 		// subst folder
 		if (!substFolder(contentSource_)) {
 			return false;
@@ -205,6 +202,19 @@ namespace OpcUaStackCore
 				valuesOut_ += " << " + valueName + "_;";
 			}
 			valuesOut_ += "\n";
+
+			// values copy to
+			valuesCopyTo_ += "            ";
+			if (OpcUaBuildInTypeClass::isObject(item->itemType())) {
+				valuesCopyTo_ += valueName + "_.copyTo(@className@." + valueName + "_);";
+			}
+			else {
+				valuesCopyTo_ += "@className@." + valueName + "_ = " + valueName + "_;";
+			}
+			valuesCopyTo_ += "\n";
+
+			// values equal
+			// FIXME: todo
 		}
 
 		// subst values init
@@ -227,8 +237,21 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// subst values copy to
+		if (!substValuesCopyTo(contentSource_)) {
+			return false;
+		}
 
-    	// FIXME: todo
+		// subst values equal
+		if (!substValuesEqual(contentSource_)) {
+			return false;
+		}
+
+		// subst class name
+		if (!substClassName(contentSource_, complexDataType.name())) {
+			return false;
+		}
+
     	return true;
     }
 
@@ -340,6 +363,22 @@ namespace OpcUaStackCore
 	{
 		boost::regex regValuesOut("@ValuesOut@");
 		content = boost::regex_replace(content, regValuesOut, valuesOut_);
+		return true;
+	}
+
+    bool
+    ComplexDataCodeGenerator::substValuesCopyTo(std::string& content)
+	{
+		boost::regex regValuesCopyTo("@ValuesCopyTo@");
+		content = boost::regex_replace(content, regValuesCopyTo, valuesCopyTo_);
+		return true;
+	}
+
+    bool
+    ComplexDataCodeGenerator::substValuesEqual(std::string& content)
+	{
+		boost::regex regValuesEqual("@ValuesEqual@");
+		content = boost::regex_replace(content, regValuesEqual, valuesEqual_);
 		return true;
 	}
 

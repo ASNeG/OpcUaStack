@@ -91,30 +91,13 @@ namespace @NamespaceName@
 	void
 	@ClassName@::out(std::ostream& os)
 	{
-		os << "EventId="; eventId_.out(os);
-		os << ", EventType="; eventType_.out(os);
-		os << ", SourceNode="; sourceNode_.out(os);
-		os << ", SourceName="; sourceName_.out(os);
-		os << ", Time="; time_.out(os);
-		os << ", ReceiveTime="; receiveTime_.out(os);
-		//os << ", LocalTime="; localTime_.opcUaBinaryDecode(os);
-		os << ", Message="; message_.out(os);
-		os << ", Severity=" << severity_;
+@ValuesOut@
 	}
 
 	void
 	@ClassName@::copyTo(@ClassName@& @className@)
 	{
-		eventId_.copyTo(@className@.eventId_);
-		eventType_.copyTo(@className@.eventType_);
-		sourceNode_.copyTo(@className@.sourceNode_);
-		sourceName_.copyTo(@className@.sourceName_);
-		time_.copyTo(@className@.time_);
-		receiveTime_.copyTo(@className@.receiveTime_);
-		// localTime_.copyTo(*@className@.localTime_);
-		message_.copyTo(@className@.message_);
-		@className@.severity_ = severity_;
-
+@ValuesCopyTo@
 	}
 
 	bool
@@ -123,6 +106,7 @@ namespace @NamespaceName@
 		@ClassName@* ptr = const_cast<@ClassName@*>(&@className@);
 		bool rc = true;
 
+@ValuesEqual@
 		rc &= (eventId_ == ptr->eventId_);
 		rc &= (eventType_ == ptr->eventType_);
 		rc &= (sourceNode_ == ptr->sourceNode_);

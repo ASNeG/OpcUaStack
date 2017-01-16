@@ -61,6 +61,8 @@ namespace OpcUaStackCore
 	    bool substValuesEncode(std::string& content);
 	    bool substValuesDecode(std::string& content);
 	    bool substValuesOut(std::string& content);
+	    bool substValuesCopyTo(std::string& content);
+	    bool substValuesEqual(std::string& content);
 	    bool substTypeIds(std::string& content);
 
 	    std::string contentHeader_;
@@ -74,6 +76,8 @@ namespace OpcUaStackCore
 		std::string valuesEncode_;
 		std::string valuesDecode_;
 		std::string valuesOut_;
+		std::string valuesCopyTo_;
+		std::string valuesEqual_;
 		std::string binaryTypeId_;
 		std::string xmlTypeId_;
 		std::string encode_;
