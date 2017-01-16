@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	, contentSource_("")
 	, classTemplateFileHeader_("")
 	, classTemplateFileSource_("")
+	, superType_("")
 	, namespaceName_("OpcUaStackCore")
 	, folder_("")
 	, values_("")
@@ -82,6 +83,8 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
+		superType_ = complexDataType.supertype();
+
 		if (!generateHeader(complexDataType)) {
 			return false;
 		}
@@ -98,6 +101,11 @@ namespace OpcUaStackCore
     {
 		// read class template file
 		if (!readClassTemplateFileHeader()) {
+			return false;
+		}
+
+		// subst super type
+		if (!substSuperType(contentHeader_)) {
 			return false;
 		}
 
@@ -292,6 +300,19 @@ namespace OpcUaStackCore
 		contentSource_ = ss.str();
 
 		in.close();
+		return true;
+	}
+
+	bool
+	ComplexDataCodeGenerator::substSuperType(std::string& content)
+	{
+		std::string superType = "";
+		if (superType_ != "") {
+			superType += ": " + superType_;
+		}
+
+		boost::regex regSuperType("@SuperType@");
+		content = boost::regex_replace(content, regSuperType, superType);
 		return true;
 	}
 
