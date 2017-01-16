@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 		bool parse(const std::string& fileName);
 		ComplexDataType::Map& complexDataTypeMap(void);
 		ComplexDataType::SPtr complexDataType(const std::string& typeName);
+		void mergeSuperType(bool mergeSuperType);
 
 	  private:
 		bool parseComplexDataType(Config& config, ComplexDataType::SPtr& complexDataType);
@@ -49,6 +50,7 @@ namespace OpcUaStackCore
 		std::string fileName_;
 		ComplexDataType::Map complexDataTypeMap_;
 
+		bool mergeSuperType_;
 		SuperTypeProcessing superTypeProcessing_;
 	};
 

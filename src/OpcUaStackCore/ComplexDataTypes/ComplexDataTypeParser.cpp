@@ -34,6 +34,7 @@ namespace OpcUaStackCore
 	: fileName_("")
 	, complexDataTypeMap_()
 	, typeName_("")
+	, mergeSuperType_(true)
 	{
 	}
 
@@ -57,6 +58,12 @@ namespace OpcUaStackCore
 			complexDataType = it->second;
 		}
 		return complexDataType;
+	}
+
+	void
+	ComplexDataTypeParser::mergeSuperType(bool mergeSuperType)
+	{
+		mergeSuperType_ = mergeSuperType;
 	}
 
 	bool
@@ -248,12 +255,14 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataTypeParser::postProcessing(void)
 	{
-		// super type post processing
-		ComplexDataType::Map::iterator it;
-		for (it = complexDataTypeMap_.begin(); it != complexDataTypeMap_.end(); it++) {
-			ComplexDataType::SPtr complexDataType = it->second;
-			if (!postProcessingSuperType(complexDataType)) {
-				return false;
+		// merge super type
+		if (mergeSuperType_) {
+			ComplexDataType::Map::iterator it;
+			for (it = complexDataTypeMap_.begin(); it != complexDataTypeMap_.end(); it++) {
+				ComplexDataType::SPtr complexDataType = it->second;
+				if (!postProcessingSuperType(complexDataType)) {
+					return false;
+				}
 			}
 		}
 

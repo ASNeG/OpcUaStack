@@ -38,8 +38,32 @@
 	    <Variable Name="ClientUserId" 	    Type="String" 	ModellingRule="M"></Variable>
 	</ComplexDataType>	
 	
+	<ComplexDataType TypeName="MyComplexTypeBase" TypeBinaryNodeId="ns=1;i=1">
+	    <Variable Name="BaseBoolean" 			Type="Boolean" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseSByte"  			Type="SByte" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseByte0" 				Type="Byte" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseInt16" 				Type="Int16" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseUInt16" 			Type="UInt16" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseInt32" 				Type="Int32" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseUInt32" 			Type="UInt32" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseInt64" 				Type="Int64" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseUInt64" 			Type="UInt64" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseFloat" 				Type="Float" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseDouble" 			Type="Double" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseString" 			Type="String" 			ModellingRule="M"></Variable>
+	    <Variable Name="BaseDateTime" 			Type="DateTime"			ModellingRule="M"></Variable>
+		<Variable Name="BaseGuid" 				Type="Guid"				ModellingRule="M"></Variable>
+		<Variable Name="BaseByteString" 		Type="ByteString"		ModellingRule="M"></Variable>
+		<Variable Name="BaseNodeId" 			Type="NodeId"			ModellingRule="M"></Variable>
+		<Variable Name="BaseExpandedNodeId" 	Type="ExpandedNodeId"	ModellingRule="M"></Variable>
+		<Variable Name="BaseStatusCode" 		Type="StatusCode"		ModellingRule="M"></Variable>
+		<Variable Name="BaseQualifiedName" 		Type="QualifiedName"	ModellingRule="M"></Variable>
+		<Variable Name="BaseLocalizedText" 		Type="LocalizedText"	ModellingRule="M"></Variable>
+		<Variable Name="BaseDataValue" 			Type="DataValue"		ModellingRule="M"></Variable>
+		<Variable Name="BaseVariant" 			Type="Variant"			ModellingRule="M"></Variable>
+	</ComplexDataType>	
 	
-	<ComplexDataType TypeName="MyComplexType1" TypeBinaryNodeId="ns=1;i=1">
+	<ComplexDataType TypeName="MyComplexType1" SuperType="MyComplexTypeBase" TypeBinaryNodeId="ns=1;i=2">
 	    <Variable Name="Boolean" 			Type="Boolean" 			ModellingRule="M"></Variable>
 	    <Variable Name="SByte" 				Type="SByte" 			ModellingRule="M"></Variable>
 	    <Variable Name="Byte" 				Type="Byte" 			ModellingRule="M"></Variable>

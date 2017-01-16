@@ -10,6 +10,7 @@ BOOST_AUTO_TEST_CASE(ComplexDataCodeGenerator_CodeGenerator)
 {
 	// parse configuration
 	ComplexDataTypeParser parser;
+	parser.mergeSuperType(false);
 	BOOST_REQUIRE(parser.parse("../tst/data/OpcUaComplexDataTypes.xml") == true);
 
 	// get type

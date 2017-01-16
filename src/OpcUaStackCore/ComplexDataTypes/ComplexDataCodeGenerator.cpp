@@ -308,7 +308,8 @@ namespace OpcUaStackCore
 	{
 		std::string superType = "";
 		if (superType_ != "") {
-			superType += ": " + superType_;
+			superType += "        ";
+			superType += ": public " + superType_;
 		}
 
 		boost::regex regSuperType("@SuperType@");
