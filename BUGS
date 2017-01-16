@@ -9,3 +9,12 @@ Erzeuge Monitored Item fuer N1 -> Start Callback in Anwendung
 Erzeuge Monitored Item fuer N1
 Lösche Monitored Item fuer N1
 Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
+
+
+
+002. Complex Data Type erweitern 
+================================
+
+- Namespace sollte aus Konfiguration kommen
+- Folder sollte aus Konfiguration kommen
+- Eine Variable einer Klasse kann eine komplexe Variable sein
