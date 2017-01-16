@@ -36,8 +36,6 @@ namespace OpcUaStackCore
 	, valuesEqual_("")
 	, binaryTypeId_("unknown-type-id")
 	, xmlTypeId_("unknown-type-id")
-	, encode_("")
-	, decode_("")
 	{
 	}
 

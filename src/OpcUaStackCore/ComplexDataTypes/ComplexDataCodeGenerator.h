@@ -80,8 +80,6 @@ namespace OpcUaStackCore
 		std::string valuesEqual_;
 		std::string binaryTypeId_;
 		std::string xmlTypeId_;
-		std::string encode_;
-		std::string decode_;
 
 	};
 
