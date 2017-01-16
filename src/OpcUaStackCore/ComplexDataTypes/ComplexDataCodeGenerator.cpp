@@ -181,8 +181,15 @@ namespace OpcUaStackCore
 			}
 			valuesEncode_ += "\n";
 
-
 			// values decode
+			valuesDecode_ += "            ";
+			if (OpcUaBuildInTypeClass::isObject(item->itemType())) {
+				valuesDecode_ += valueName + "_.opcUaBinaryDecode(is);";
+			}
+			else {
+				valuesDecode_ += "OpcUaNumber::opcUaBinaryDecode(is, " + valueName + ");";
+			}
+			valuesDecode_ += "\n";
 		}
 
 		// subst values init
