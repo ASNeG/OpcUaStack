@@ -22,12 +22,13 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "@NamespaceName@/@Folder@/@SuperType@.h"
 
 namespace @NamespaceName@
 {
 
 	class DLLEXPORT @ClassName@
-@SuperType@
+@SuperTypeInheritance@
 	{
 	  public:
 		typedef boost::shared_ptr<@ClassName@> SPtr;

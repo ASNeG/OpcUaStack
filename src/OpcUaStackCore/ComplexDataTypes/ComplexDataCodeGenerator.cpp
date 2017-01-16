@@ -119,6 +119,11 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// subst folder
+		if (!substFolder(contentHeader_)) {
+			return false;
+		}
+
 		// subst values
 		uint32_t size = complexDataType.size();
 		for (uint32_t idx=0; idx<size; idx++) {
@@ -306,14 +311,23 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataCodeGenerator::substSuperType(std::string& content)
 	{
+		std::string superTypeInheritance = "";
+		if (superType_ != "") {
+			superTypeInheritance += "        ";
+			superTypeInheritance += ": public " + superType_;
+		}
+
+		boost::regex regSuperTypeInheritance("@SuperTypeInheritance@");
+		content = boost::regex_replace(content, regSuperTypeInheritance, superTypeInheritance);
+
 		std::string superType = "";
 		if (superType_ != "") {
-			superType += "        ";
-			superType += ": public " + superType_;
+			superType = superType_;
 		}
 
 		boost::regex regSuperType("@SuperType@");
 		content = boost::regex_replace(content, regSuperType, superType);
+
 		return true;
 	}
 
