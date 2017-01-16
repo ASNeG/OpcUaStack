@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 		static bool isBoolean(OpcUaBuildInType buildInType);
 		static bool isByte(OpcUaBuildInType buildInType);
 	    static bool isNumber(OpcUaBuildInType buildInType);
+	    static bool isObject(OpcUaBuildInType buildInType);
 	};
 
 	class DLLEXPORT OpcUaBuildInTypeMap

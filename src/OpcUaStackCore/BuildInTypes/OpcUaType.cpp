@@ -54,6 +54,12 @@ namespace OpcUaStackCore
 			   buildInType == OpcUaBuildInType_OpcUaDouble;
 	}
 
+	bool
+	OpcUaBuildInTypeClass::isObject(OpcUaBuildInType buildInType)
+	{
+		return !isBoolean(buildInType) && !isByte(buildInType) && !isNumber(buildInType);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
