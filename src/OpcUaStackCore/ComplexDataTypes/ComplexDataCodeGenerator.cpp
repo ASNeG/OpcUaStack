@@ -28,9 +28,10 @@ namespace OpcUaStackCore
 	, namespaceName_("OpcUaStackCore")
 	, folder_("")
 	, values_("")
+	, valuesInit_("")
 	, valuesEncode_("")
 	, valuesDecode_("")
-	, valuesInit_("")
+	, valuesOut_("")
 	, binaryTypeId_("unknown-type-id")
 	, xmlTypeId_("unknown-type-id")
 	, encode_("")
@@ -190,6 +191,20 @@ namespace OpcUaStackCore
 				valuesDecode_ += "OpcUaNumber::opcUaBinaryDecode(is, " + valueName + ");";
 			}
 			valuesDecode_ += "\n";
+
+			// values out
+			std::string outPrefix = ", ";
+			if (idx == 0) outPrefix = "";
+			valuesOut_ += "            ";
+			if (OpcUaBuildInTypeClass::isObject(item->itemType())) {
+				valuesOut_ += "os << \"" + outPrefix + item->itemName() + "=\"; ";
+				valuesOut_ += valueName + "_.out(os);";
+			}
+			else {
+				valuesOut_ += "os << \"" + outPrefix + item->itemName() + "=\"";
+				valuesOut_ += " << " + valueName + "_;";
+			}
+			valuesOut_ += "\n";
 		}
 
 		// subst values init
@@ -207,18 +222,11 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-#if 0
-		eventId_.opcUaBinaryEncode(os);
-		eventType_.opcUaBinaryEncode(os);
-		sourceNode_.opcUaBinaryEncode(os);
-		sourceName_.opcUaBinaryEncode(os);
-		time_.opcUaBinaryEncode(os);
-		receiveTime_.opcUaBinaryEncode(os);
-		//localTime_.opcUaBinaryEncode(os);
-		message_.opcUaBinaryEncode(os);
-		OpcUaNumber::opcUaBinaryEncode(os, severity_);
+		// subst values out
+		if (!substValuesOut(contentSource_)) {
+			return false;
+		}
 
-#endif
 
     	// FIXME: todo
     	return true;
@@ -327,6 +335,14 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+    bool
+    ComplexDataCodeGenerator::substValuesOut(std::string& content)
+	{
+		boost::regex regValuesOut("@ValuesOut@");
+		content = boost::regex_replace(content, regValuesOut, valuesOut_);
+		return true;
+	}
+
 	bool
 	ComplexDataCodeGenerator::substTypeIds(std::string& content)
 	{
@@ -338,6 +354,8 @@ namespace OpcUaStackCore
 
 		return true;
 	}
+
+
 
 }
 

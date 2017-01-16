@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 	    bool substValuesInit(std::string& content);
 	    bool substValuesEncode(std::string& content);
 	    bool substValuesDecode(std::string& content);
+	    bool substValuesOut(std::string& content);
 	    bool substTypeIds(std::string& content);
 
 	    std::string contentHeader_;
@@ -69,9 +70,10 @@ namespace OpcUaStackCore
 		std::string namespaceName_;
 		std::string folder_;
 		std::string values_;
+		std::string valuesInit_;
 		std::string valuesEncode_;
 		std::string valuesDecode_;
-		std::string valuesInit_;
+		std::string valuesOut_;
 		std::string binaryTypeId_;
 		std::string xmlTypeId_;
 		std::string encode_;
