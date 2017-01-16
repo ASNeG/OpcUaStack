@@ -214,7 +214,9 @@ namespace OpcUaStackCore
 			valuesCopyTo_ += "\n";
 
 			// values equal
-			// FIXME: todo
+			valuesEqual_ += "            ";
+			valuesEqual_ += "rc &= (" + valueName + "_ == ptr->" + valueName + "_);";
+			valuesEqual_ += "\n";
 		}
 
 		// subst values init
