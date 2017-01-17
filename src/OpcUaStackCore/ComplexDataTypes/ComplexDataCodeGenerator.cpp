@@ -28,6 +28,8 @@ namespace OpcUaStackCore
 	, superType_("")
 	, projectNamespace_("")
 	, projectFolder_("")
+	, projectNamespaceSuperType_("")
+	, projectFolderSuperType_("")
 	, values_("")
 	, valuesInit_("")
 	, valuesEncode_("")
@@ -69,11 +71,26 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType, ComplexDataType& complexDataTypeSuperType)
+	{
+		projectNamespaceSuperType_ = complexDataTypeSuperType.projectNamespace();
+		projectFolderSuperType_ = complexDataTypeSuperType.projectFolder();
+		return generate(complexDataType);
+	}
+
+	bool
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
 		superType_ = complexDataType.supertype();
 		projectNamespace_ = complexDataType.projectNamespace();
 		projectFolder_ = complexDataType.projectFolder();
+
+		if (projectNamespaceSuperType_ == "") {
+			projectNamespaceSuperType_ = complexDataType.projectNamespace();
+		}
+		if (projectFolderSuperType_ == "") {
+			projectFolderSuperType_ = complexDataType.projectFolder();
+		}
 
 		if (!generateHeader(complexDataType)) {
 			return false;

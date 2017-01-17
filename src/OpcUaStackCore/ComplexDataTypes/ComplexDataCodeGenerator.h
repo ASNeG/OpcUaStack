@@ -43,6 +43,7 @@ namespace OpcUaStackCore
 	    void classTemplateFileSource(const std::string& classTemplateFileSource);
 
 	    bool generate(ComplexDataType& complexDataType);
+	    bool generate(ComplexDataType& complexDataType, ComplexDataType& complexDataTypeSuperType);
 	    std::string& contentHeader(void);
 	    std::string& contentSource(void);
 
@@ -71,6 +72,8 @@ namespace OpcUaStackCore
 		std::string superType_;
 		std::string projectNamespace_;
 		std::string projectFolder_;
+		std::string projectNamespaceSuperType_;
+		std::string projectFolderSuperType_;
 		std::string values_;
 		std::string valuesInit_;
 		std::string valuesEncode_;
