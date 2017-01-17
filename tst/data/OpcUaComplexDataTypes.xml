@@ -18,7 +18,7 @@
 
 <OpcUaComplexDataTypes>
 
-	<ComplexDataType TypeName="BaseEventType" TypeBinaryNodeId="i=2041">
+	<ComplexDataType TypeName="BaseEventType" TypeBinaryNodeId="i=2041" ProjectNamespace="OpcUaStackCore" ProjectFolder="ComplexDataTypes">
 	    <Variable Name="EventId" 	 Type="ByteString" 		 ModellingRule="M"></Variable>
 	    <Variable Name="EventType" 	 Type="NodeId" 			 ModellingRule="M"></Variable>
 	    <Variable Name="SourceNode"  Type="NodeId"	 		 ModellingRule="M"></Variable>
@@ -30,7 +30,7 @@
 	    <Variable Name="Severity" 	 Type="UInt16" 			 ModellingRule="M"></Variable>
 	</ComplexDataType>		
 	
-	<ComplexDataType TypeName="AuditEventType" SuperType="BaseEventType" TypeBinaryNodeId="i=2052">
+	<ComplexDataType TypeName="AuditEventType" SuperType="BaseEventType" TypeBinaryNodeId="i=2052" ProjectNamespace="OpcUaStackCore" ProjectFolder="ComplexDataTypes">
 	    <Variable Name="ActionTimeStamp" 	Type="DateTime" ModellingRule="M"></Variable>
 	    <Variable Name="Status" 	 	    Type="Boolean" 	ModellingRule="M"></Variable>
 	    <Variable Name="ServerId" 	 	    Type="String" 	ModellingRule="M"></Variable>
@@ -38,7 +38,7 @@
 	    <Variable Name="ClientUserId" 	    Type="String" 	ModellingRule="M"></Variable>
 	</ComplexDataType>	
 	
-	<ComplexDataType TypeName="MyComplexTypeBase" TypeBinaryNodeId="ns=1;i=1">
+	<ComplexDataType TypeName="MyComplexTypeBase" TypeBinaryNodeId="ns=1;i=1" ProjectNamespace="OpcUaStackCore" ProjectFolder="ComplexDataTypes">
 	    <Variable Name="BaseBoolean" 			Type="Boolean" 			ModellingRule="M"></Variable>
 	    <Variable Name="BaseSByte"  			Type="SByte" 			ModellingRule="M"></Variable>
 	    <Variable Name="BaseByte0" 				Type="Byte" 			ModellingRule="M"></Variable>
@@ -63,7 +63,7 @@
 		<Variable Name="BaseVariant" 			Type="Variant"			ModellingRule="M"></Variable>
 	</ComplexDataType>	
 	
-	<ComplexDataType TypeName="MyComplexType1" SuperType="MyComplexTypeBase" TypeBinaryNodeId="ns=1;i=2">
+	<ComplexDataType TypeName="MyComplexType1" SuperType="MyComplexTypeBase" TypeBinaryNodeId="ns=1;i=2" ProjectNamespace="OpcUaStackCore" ProjectFolder="ComplexDataTypes">
 	    <Variable Name="Boolean" 			Type="Boolean" 			ModellingRule="M"></Variable>
 	    <Variable Name="SByte" 				Type="SByte" 			ModellingRule="M"></Variable>
 	    <Variable Name="Byte" 				Type="Byte" 			ModellingRule="M"></Variable>
