@@ -318,6 +318,16 @@ namespace OpcUaStackCore
 	bool
 	ComplexDataCodeGenerator::substSuperType(std::string& content)
 	{
+		// super type include
+		std::string superTypeInclude = "";
+		if (superType_ != "") {
+			superTypeInclude += "#include \"@ProjectNamespaceSuperType@/@ProjectFolderSuperType@/@SuperType@.h\"";
+		}
+
+		boost::regex regSuperTypeInclude("@SuperTypeInclude@");
+		content = boost::regex_replace(content, regSuperTypeInclude, superTypeInclude);
+
+		// super type ineritance
 		std::string superTypeInheritance = "";
 		if (superType_ != "") {
 			superTypeInheritance += "        ";
@@ -327,6 +337,7 @@ namespace OpcUaStackCore
 		boost::regex regSuperTypeInheritance("@SuperTypeInheritance@");
 		content = boost::regex_replace(content, regSuperTypeInheritance, superTypeInheritance);
 
+		// super type
 		std::string superType = "";
 		if (superType_ != "") {
 			superType = superType_;
@@ -334,6 +345,14 @@ namespace OpcUaStackCore
 
 		boost::regex regSuperType("@SuperType@");
 		content = boost::regex_replace(content, regSuperType, superType);
+
+		// super type project namespace
+		boost::regex regProjectNamespaceSuperType("@ProjectNamespaceSuperType@");
+		content = boost::regex_replace(content, regProjectNamespaceSuperType, projectNamespaceSuperType_);
+
+		// super type project folder
+		boost::regex regProjectFolderSuperType("@ProjectFolderSuperType@");
+		content = boost::regex_replace(content, regProjectFolderSuperType, projectFolderSuperType_);
 
 		return true;
 	}
