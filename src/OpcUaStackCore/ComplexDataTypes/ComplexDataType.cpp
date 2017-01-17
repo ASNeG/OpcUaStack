@@ -113,6 +113,8 @@ namespace OpcUaStackCore
 	, xmlTypeId_()
 	, nameIndexMap_()
 	, name_("")
+	, projectNamespace_("")
+	, projectFolder_("")
 	, supertype_("")
 	{
 	}
@@ -123,6 +125,8 @@ namespace OpcUaStackCore
 	, xmlTypeId_()
 	, nameIndexMap_()
 	, name_(name)
+	, projectNamespace_("")
+	, projectFolder_("")
 	, supertype_("")
 	{
 		uint32_t idx = 0;
@@ -244,6 +248,30 @@ namespace OpcUaStackCore
 	ComplexDataType::name(void)
 	{
 		return name_;
+	}
+
+	void
+	ComplexDataType::projectNamespace(const std::string& projectNamespace)
+	{
+		projectNamespace_ = projectNamespace;
+	}
+
+	std::string&
+	ComplexDataType::projectNamespace(void)
+	{
+		return projectNamespace_;
+	}
+
+	void
+	ComplexDataType::projectFolder(const std::string& projectFolder)
+	{
+		projectFolder_ = projectFolder;
+	}
+
+	std::string&
+	ComplexDataType::projectFolder(void)
+	{
+		return projectFolder_;
 	}
 
 	void
