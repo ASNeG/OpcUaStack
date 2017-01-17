@@ -41,8 +41,6 @@ namespace OpcUaStackCore
 
 	    void classTemplateFileHeader(const std::string& classTemplateFileHeader);
 	    void classTemplateFileSource(const std::string& classTemplateFileSource);
-	    void namespaceName(const std::string& namespaceName);
-	    void folder(const std::string& folder);
 
 	    bool generate(ComplexDataType& complexDataType);
 	    std::string& contentHeader(void);
@@ -54,9 +52,9 @@ namespace OpcUaStackCore
 	    bool readClassTemplateFileHeader(void);
 	    bool readClassTemplateFileSource(void);
 	    bool substSuperType(std::string& content);
-	    bool substNamespaceName(std::string& content);
+	    bool substProjectNamespace(std::string& content);
 	    bool substClassName(std::string& content, const std::string& className);
-	    bool substFolder(std::string& content);
+	    bool substProjectFolder(std::string& content);
 	    bool substValues(std::string& content);
 	    bool substValuesInit(std::string& content);
 	    bool substValuesEncode(std::string& content);
@@ -71,8 +69,8 @@ namespace OpcUaStackCore
 		std::string classTemplateFileHeader_;
 		std::string classTemplateFileSource_;
 		std::string superType_;
-		std::string namespaceName_;
-		std::string folder_;
+		std::string projectNamespace_;
+		std::string projectFolder_;
 		std::string values_;
 		std::string valuesInit_;
 		std::string valuesEncode_;

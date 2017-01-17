@@ -26,8 +26,8 @@ namespace OpcUaStackCore
 	, classTemplateFileHeader_("")
 	, classTemplateFileSource_("")
 	, superType_("")
-	, namespaceName_("OpcUaStackCore")
-	, folder_("")
+	, projectNamespace_("")
+	, projectFolder_("")
 	, values_("")
 	, valuesInit_("")
 	, valuesEncode_("")
@@ -56,18 +56,6 @@ namespace OpcUaStackCore
 		classTemplateFileSource_ = classTemplateFileSource;
 	}
 
-	void
-	ComplexDataCodeGenerator::namespaceName(const std::string& namespaceName)
-	{
-		namespaceName_ = namespaceName;
-	}
-
-	void
-	ComplexDataCodeGenerator::folder(const std::string& folder)
-	{
-		folder_ = folder;
-	}
-
 	std::string&
 	ComplexDataCodeGenerator::contentHeader(void)
 	{
@@ -84,6 +72,8 @@ namespace OpcUaStackCore
 	ComplexDataCodeGenerator::generate(ComplexDataType& complexDataType)
 	{
 		superType_ = complexDataType.supertype();
+		projectNamespace_ = complexDataType.projectNamespace();
+		projectFolder_ = complexDataType.projectFolder();
 
 		if (!generateHeader(complexDataType)) {
 			return false;
@@ -110,7 +100,7 @@ namespace OpcUaStackCore
 		}
 
 		// subst namespace name
-		if (!substNamespaceName(contentHeader_)) {
+		if (!substProjectNamespace(contentHeader_)) {
 			return false;
 		}
 
@@ -120,7 +110,7 @@ namespace OpcUaStackCore
 		}
 
 		// subst folder
-		if (!substFolder(contentHeader_)) {
+		if (!substProjectFolder(contentHeader_)) {
 			return false;
 		}
 
@@ -151,12 +141,12 @@ namespace OpcUaStackCore
 		}
 
 		// subst namespace name
-		if (!substNamespaceName(contentSource_)) {
+		if (!substProjectNamespace(contentSource_)) {
 			return false;
 		}
 
 		// subst folder
-		if (!substFolder(contentSource_)) {
+		if (!substProjectFolder(contentSource_)) {
 			return false;
 		}
 
@@ -332,10 +322,10 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ComplexDataCodeGenerator::substNamespaceName(std::string& content)
+	ComplexDataCodeGenerator::substProjectNamespace(std::string& content)
 	{
-		boost::regex regNamespaceName("@NamespaceName@");
-		content = boost::regex_replace(content, regNamespaceName, namespaceName_);
+		boost::regex regProjectNamespace("@ProjectNamespace@");
+		content = boost::regex_replace(content, regProjectNamespace, projectNamespace_);
 		return true;
 	}
 
@@ -354,10 +344,10 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	ComplexDataCodeGenerator::substFolder(std::string& content)
+	ComplexDataCodeGenerator::substProjectFolder(std::string& content)
 	{
-		boost::regex regFolder("@Folder@");
-		content = boost::regex_replace(content, regFolder, folder_);
+		boost::regex regProjectFolder("@ProjectFolder@");
+		content = boost::regex_replace(content, regProjectFolder, projectFolder_);
 
 		return true;
 	}

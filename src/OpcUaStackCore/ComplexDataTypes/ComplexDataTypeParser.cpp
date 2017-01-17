@@ -166,6 +166,16 @@ namespace OpcUaStackCore
 			complexDataType->supertype(superType);
 		}
 
+		// project namespace
+		std::string projectNamespace;
+		config.getConfigParameter("<xmlattr>.ProjectNamespace", projectNamespace, "ProjectNamespace");
+		complexDataType->projectNamespace(projectNamespace);
+
+		// project folder
+		std::string projectFolder;
+		config.getConfigParameter("<xmlattr>.ProjectFolder", projectFolder, "ProjectFolder");
+		complexDataType->projectFolder(projectFolder);
+
 		// read complex data type items
 		std::vector<Config> configVec;
 		config.getChilds("Variable", configVec);

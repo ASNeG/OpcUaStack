@@ -22,7 +22,6 @@ BOOST_AUTO_TEST_CASE(ComplexDataCodeGenerator_CodeGenerator)
 	ComplexDataCodeGenerator generator;
 	generator.classTemplateFileHeader("../tst/data/OpcUaComplexDataType.h.tmpl");
 	generator.classTemplateFileSource("../tst/data/OpcUaComplexDataType.cpp.tmpl");
-	generator.folder("EventDataTypes");
 	BOOST_REQUIRE(generator.generate(*type) == true);
 
 	std::cout << "============================" << std::endl;
