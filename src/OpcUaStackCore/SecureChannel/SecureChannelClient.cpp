@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -217,6 +217,22 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannelClient::renewSecurityToken(SecureChannel* secureChannel)
+	{
+		OpcUaByte clientNonce[1];
+		clientNonce[0] = 0x00;
+		OpenSecureChannelRequest openSecureChannelRequest;
+		openSecureChannelRequest.clientProtocolVersion(0);
+		openSecureChannelRequest.requestType(RT_RENEW);
+		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
+		openSecureChannelRequest.clientNonce(clientNonce, 1);
+		openSecureChannelRequest.requestedLifetime(300000);
+
+		// send open secure channel request
+		asyncWriteOpenSecureChannelRequest(secureChannel, openSecureChannelRequest);
+	}
+
+	void
 	SecureChannelClient::handleRecvOpenSecureChannelResponse(SecureChannel* secureChannel, OpenSecureChannelResponse& openSecureChannelResponse)
 	{
 		// set security parameter
@@ -225,6 +241,10 @@ namespace OpcUaStackCore
 		secureChannel->tokenId_ = securityToken->tokenId();
 		secureChannel->createAt_ = securityToken->createAt();
 		secureChannel->revisedLifetime_ = securityToken->revisedLifetime();
+
+		// start timer to renew security token
+		std::cout << "Revised Lifetime: " << securityToken->revisedLifetime() << std::endl;
+		uint32_t revisedLifetime = securityToken->revisedLifetime() * 0.75;
 
 		secureChannel->state_ = SecureChannel::S_Established;
 		secureChannelClientIf_->handleConnect(secureChannel);
