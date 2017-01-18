@@ -18,3 +18,11 @@ Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
 - Namespace sollte aus Konfiguration kommen
 - Folder sollte aus Konfiguration kommen
 - Eine Variable einer Klasse kann eine komplexe Variable sein
+
+
+
+004. OPC UA Client Server verbindung bricht ab
+==============================================
+
+- Der Client öffnet eine Verbindung zu einem Server
+- Nach Ablauf von X Sekunden bricht die Verbindung ab und wird wieder neu geöffnet
