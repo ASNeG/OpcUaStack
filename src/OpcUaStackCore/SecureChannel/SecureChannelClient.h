@@ -64,6 +64,7 @@ namespace OpcUaStackCore
 		IOThread* ioThread_;
 		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelClientIf* secureChannelClientIf_;
+		SlotTimerElement::SPtr slotTimerElement_;
 	};
 
 }
