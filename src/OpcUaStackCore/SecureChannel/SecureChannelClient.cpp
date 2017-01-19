@@ -35,6 +35,9 @@ namespace OpcUaStackCore
 	, ioThread_(ioThread)
 	, resolver_(ioThread->ioService()->io_service())
 	, slotTimerElementRenew_(constructSPtr<SlotTimerElement>())
+	, slotTimerElementReconnect_(constructSPtr<SlotTimerElement>())
+	, renewTimeout_(300000)
+	, reconnectTimeout_(0)
 	{
 	}
 
@@ -55,17 +58,21 @@ namespace OpcUaStackCore
 	}
 
 	SecureChannel*
-	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientconfig)
+	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
 	{
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
-				.parameter("EndpointUrl", secureChannelClientconfig->endpointUrl());
+				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
 			return nullptr;
 		}
 
+		// set base configuration
+		renewTimeout_ = secureChannelClientConfig->renewTimeout();
+		reconnectTimeout_ = secureChannelClientConfig->reconnectTimeout();
+
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioThread_);
-		secureChannel->config_ = secureChannelClientconfig;
+		secureChannel->config_ = secureChannelClientConfig;
 		connect(secureChannel);
 		return secureChannel;
 	}
@@ -79,6 +86,7 @@ namespace OpcUaStackCore
 		}
 
 		// send close secure channel request
+		// confirm through handleDisconnect
 		secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 		asyncWriteCloseSecureChannelRequest(secureChannel);
 	}
@@ -127,10 +135,8 @@ namespace OpcUaStackCore
 			Log(Error, "address resolver error")
 				.parameter("EndpointUrl", secureChannel->endpointUrl_)
 				.parameter("Message", error.message());
-			secureChannelClientIf_->handleDisconnect(secureChannel);
 
-			secureChannel->state_ = SecureChannel::S_Reconnecting;
-			// FIXME: reconnect...
+			reconnect(secureChannel);
 
 			return;
 		}
@@ -163,10 +169,8 @@ namespace OpcUaStackCore
 				.parameter("Address", secureChannel->partner_.address().to_string())
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
-			secureChannelClientIf_->handleDisconnect(secureChannel);
 
-			secureChannel->state_ = SecureChannel::S_Reconnecting;
-			// FIXME: reconnect...
+			reconnect(secureChannel);
 
 			return;
 		}
@@ -210,7 +214,7 @@ namespace OpcUaStackCore
 		openSecureChannelRequest.requestType(RT_ISSUE);
 		openSecureChannelRequest.securityMode(secureChannel->securityMode_);
 		openSecureChannelRequest.clientNonce(clientNonce, 1);
-		openSecureChannelRequest.requestedLifetime(300000);
+		openSecureChannelRequest.requestedLifetime(renewTimeout_);
 
 		// send open secure channel request
 		secureChannel->state_ = SecureChannel::S_OpenSecureChannel;
@@ -268,16 +272,38 @@ namespace OpcUaStackCore
 			.parameter("Address", secureChannel->partner_.address().to_string())
 			.parameter("Port", secureChannel->partner_.port());
 
-		secureChannelClientIf_->handleDisconnect(secureChannel);
+		// stop renew and reconnect timer
+		ioThread_->slotTimer()->stop(slotTimerElementRenew_);
+		ioThread_->slotTimer()->stop(slotTimerElementReconnect_);
+
+		// delete secure channel - the user has closed the connection
 		if (secureChannel->state_ == SecureChannel::S_CloseSecureChannel) {
+			secureChannelClientIf_->handleDisconnect(secureChannel);
 			delete secureChannel;
 			return;
 		}
 
+		// reconnect secure channel - the communication partner has closed the connection
+		reconnect(secureChannel);
+	}
+
+	void
+	SecureChannelClient::reconnect(SecureChannel* secureChannel)
+	{
+		secureChannel->state_ = SecureChannel::S_Reconnecting;
 		secureChannelClientIf_->handleDisconnect(secureChannel);
 
-		secureChannel->state_ = SecureChannel::S_Reconnecting;
-		// FIXME: reconnect...
+		// start reconnect timer
+		if (reconnectTimeout_ == 0) return;
+		slotTimerElementReconnect_->expireFromNow(reconnectTimeout_);
+		slotTimerElementReconnect_->callback().reset(boost::bind(&SecureChannelClient::handleReconnect, this, secureChannel));
+		ioThread_->slotTimer()->start(slotTimerElementReconnect_);
+	}
+
+	void
+	SecureChannelClient::handleReconnect(SecureChannel* secureChannel)
+	{
+		connect(secureChannel);
 	}
 
 }

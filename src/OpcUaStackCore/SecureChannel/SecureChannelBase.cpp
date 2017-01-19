@@ -816,6 +816,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
+		// interrupts reading loop -> handleDisconnect
 		secureChannel->socket().cancel();
 	}
 

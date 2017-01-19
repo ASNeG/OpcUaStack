@@ -60,11 +60,17 @@ namespace OpcUaStackCore
 			const boost::system::error_code& error,
 			SecureChannel* secureChannel
 		);
+		void reconnect(SecureChannel* secureChannel);
+		void handleReconnect(SecureChannel* secureChannel);
 
 		IOThread* ioThread_;
 		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelClientIf* secureChannelClientIf_;
 		SlotTimerElement::SPtr slotTimerElementRenew_;
+		SlotTimerElement::SPtr slotTimerElementReconnect_;
+
+		uint32_t renewTimeout_;
+		uint32_t reconnectTimeout_;
 	};
 
 }
