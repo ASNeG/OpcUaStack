@@ -400,6 +400,8 @@ namespace OpcUaStackCore
 	void 
 	SlotTimer::stop(SlotTimerElement::SPtr slotTimerElement)
 	{
+		if (!slotTimerElement->isRunning()) return;
+
 		boost::mutex::scoped_lock g(mutex_);
 		slotArray1_.remove(slotTimerElement);
 	}
