@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime expireTime(void);
 		uint32_t interval(void);
 
+		bool isRunning(void);
 		void tick(uint64_t tick);
 		uint64_t tick(void);
 		void handle(uint16_t handle);

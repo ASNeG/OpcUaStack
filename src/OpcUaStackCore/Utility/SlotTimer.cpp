@@ -68,6 +68,12 @@ namespace OpcUaStackCore
 		return interval_;
 	}
 
+	bool
+	SlotTimerElement::isRunning(void)
+	{
+	    return (next_.get() !=  nullptr && last_.get() != nullptr);
+	}
+
 	void 
 	SlotTimerElement::tick(uint64_t tick)
 	{
