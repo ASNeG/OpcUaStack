@@ -41,6 +41,10 @@ namespace OpcUaStackCore
 		SecurityPolicy securityPolicy(void);
 		void connectTimeout(uint32_t connectTimeout);
 		uint32_t connectTimeout(void);
+		void renewTimeout(uint32_t renewTimeout);
+		uint32_t renewTimeout(void);
+		void reconnectTimeout(uint32_t reconnectTimeout);
+		uint32_t reconnectTimeout(void);
 
 	  private:
 		std::string endpointUrl_;
@@ -48,6 +52,8 @@ namespace OpcUaStackCore
 		SecurityPolicy securityPolicy_;
 
 		uint32_t connectTimeout_;
+		uint32_t renewTimeout_;
+		uint32_t reconnectTimeout_;
 	};
 
 }

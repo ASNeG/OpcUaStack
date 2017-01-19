@@ -33,6 +33,8 @@ namespace OpcUaStackCore
 	, securityMode_(SM_None)
 	, securityPolicy_(SP_None)
 	, connectTimeout_(0)
+	, renewTimeout_(300000)
+	, reconnectTimeout_(0)
 	{
 	}
 
@@ -86,6 +88,30 @@ namespace OpcUaStackCore
 	SecureChannelClientConfig::connectTimeout(void)
 	{
 		return connectTimeout_;
+	}
+
+	void
+	SecureChannelClientConfig::renewTimeout(uint32_t renewTimeout)
+	{
+		renewTimeout_ = renewTimeout;
+	}
+
+	uint32_t
+	SecureChannelClientConfig::renewTimeout(void)
+	{
+		return renewTimeout_;
+	}
+
+	void
+	SecureChannelClientConfig::reconnectTimeout(uint32_t reconnectTimeout)
+	{
+		reconnectTimeout_ = reconnectTimeout;
+	}
+
+	uint32_t
+	SecureChannelClientConfig::reconnectTimeout(void)
+	{
+		return reconnectTimeout_;
 	}
 
 }
