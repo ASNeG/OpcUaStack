@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 
 	ConfigXmlManager::ConfigXmlManager(void)
 	: configMap_()
+	, errorMessage_("")
 	{
 	}
 
@@ -37,6 +38,8 @@ namespace OpcUaStackCore
 	bool
 	ConfigXmlManager::registerConfiguration(const std::string& configurationFileName, Config::SPtr& config)
 	{
+		errorMessage_ = "";
+
 		Config::Map::iterator it;
 		it = configMap_.find(configurationFileName);
 		if (it != configMap_.end()) {
@@ -48,6 +51,7 @@ namespace OpcUaStackCore
 		config = constructSPtr<Config>();
 		ConfigXml configXml;
 		if (!configXml.parse(configurationFileName, config.get())) {
+			errorMessage_ = configXml.errorMessage();
 			return false;
 		}
 		return true;
@@ -56,6 +60,8 @@ namespace OpcUaStackCore
 	bool
 	ConfigXmlManager::deregisterConfiguration(const std::string& configurationFileName)
 	{
+		errorMessage_ = "";
+
 		Config::Map::iterator it;
 		it = configMap_.find(configurationFileName);
 		if (it == configMap_.end()) return false;
@@ -66,10 +72,18 @@ namespace OpcUaStackCore
 	bool
 	ConfigXmlManager::existConfiguration(const std::string& configurationFileName)
 	{
+		errorMessage_ = "";
+
 		Config::Map::iterator it;
 		it = configMap_.find(configurationFileName);
 		if (it != configMap_.end()) return false;
 		return false;
+	}
+
+	std::string&
+	ConfigXmlManager::errorMessage(void)
+	{
+		return errorMessage_;
 	}
 
 

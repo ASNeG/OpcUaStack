@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,9 +34,11 @@ namespace OpcUaStackCore
 		bool registerConfiguration(const std::string& configurationFileName, Config::SPtr& config);
 		bool deregisterConfiguration(const std::string& configurationFileName);
 		bool existConfiguration(const std::string& configurationFileName);
+		std::string& errorMessage(void);
 
 	  private:
 		Config::Map configMap_;
+		std::string errorMessage_;
 	};
 
 }
