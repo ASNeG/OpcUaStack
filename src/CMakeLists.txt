@@ -26,6 +26,13 @@ set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 #
 # check environment variables
 #
+# list of possible environment variables
+#   - OPENSSL_VERSION_MAJOR
+#   - OPENSSL_VERSION_MINOR
+#   - OPENSSL_VERSION_PATCH
+#   - BOOST_VERSION_MAJOR
+#   - BOOST_VERSION_MINOR
+#
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 
