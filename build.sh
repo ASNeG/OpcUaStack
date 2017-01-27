@@ -76,30 +76,33 @@ build_local()
         set -x
         cmake ../src \
               "${CMAKE_GENERATOR_LOCAL}" 
+        RESULT=$?
         set +x
-        if [ $? -ne 0 ] ;
+        if [ ${RESULT} -ne 0 ] ;
         then
             echo "cmake error"
-            return $?
+            return ${RESULT}
         fi
     else
         set -x
         cmake .
+        RESULT=$?
         set +x
-        if [ $? -ne 0 ] ;
+        if [ ${RESULT} -ne 0 ] ;
         then
             echo "cmake error"
-            return $?
+            return ${RESULT}
         fi
 
     fi
 
     # install local
     make DESTDIR="${HOME}/install" install
-     if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make install error"
-        return $?
+        return ${RESULT}
     fi
 
     return 0
@@ -151,20 +154,28 @@ build_deb()
             "${CMAKE_GENERATOR_LOCAL}" \
             "-DCPACK_BINARY_DEB=1" \
             "-DCPACK_BINARY_RPM=0" 
-        if [ $? -ne 0 ] ;
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
         then
             echo "cmake error"
-            return $?
+            return ${RESULT}
         fi
     else
         cmake .
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
+        then
+            echo "cmake error"
+            return ${RESULT}
+        fi     
     fi
 
     make package
-    if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make package error"
-        return $?
+        return ${RESULT}
     fi
 
     return 0
@@ -214,20 +225,28 @@ build_rpm()
             "${CMAKE_GENERATOR_LOCAL}" \
             "-DCPACK_BINARY_DEB=0" \
             "-DCPACK_BINARY_RPM=1"
-        if [ $? -ne 0 ] ;
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
         then
             echo "cmake error"
-            return $?
+            return ${RESULT}
         fi
     else
         cmake .
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
+        then
+            echo "cmake error"
+            return ${RESULT}
+        fi
     fi
 
     make package
-    if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make package error"
-        return $?
+        return ${RESULT}
     fi
 
     return 0
@@ -269,25 +288,31 @@ build_tst()
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
 	     -DINSTALL_PREFIX_OpcUaStack="${HOME}/install"
-        if [ $? -ne 0 ] ;
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
         then
             echo "cmake error"
-            return $?
+            return ${RESULT}
         fi
     else
         cmake .
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
+        then
+            echo "cmake error"
+            return ${RESULT}
+        fi
     fi
 
     make 
-     if [ $? -ne 0 ] ;
+    RESULT=$?
+     if [ ${RESULT} -ne 0 ] ;
     then
         echo "make error"
-        return $?
+        return ${RESULT}
     fi
 
-
-
-     return 0
+    return 0
 }
 
 
@@ -332,6 +357,7 @@ then
 elif [ "$1" = "clean" ] ;
 then 
     clean 
+    exit 0
 elif [ "$1" = "local" ] ;
 then 
     build_local
