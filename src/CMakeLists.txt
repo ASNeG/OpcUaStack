@@ -129,6 +129,7 @@ find_package(
 )
 
 message(STATUS "OpenSSL library")
+message(STATUS "  found: ${OPENSSL_FOUND}")
 message(STATUS "  version major: ${OPENSSL_VERSION_MAJOR}")
 message(STATUS "  version minor: ${OPENSSL_VERSION_MINOR}")
 message(STATUS "  version patch: ${OPENSSL_VERSION_PATCH}")
