@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -453,7 +453,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaNodeId&>
 	AttributeBase::getNodeId(void)
 	{
-		if (isNullNodeId()) return nullptr;
+		if (isNullNodeId()) return boost::none;
 		NodeIdAttribute* attr = reinterpret_cast<NodeIdAttribute*>(nodeIdAttribute());
 		return attr->data();
 	}
@@ -514,7 +514,7 @@ namespace OpcUaStackServer
 	boost::optional<NodeClassType&>
 	AttributeBase::getNodeClass(void)
 	{
-		if (isNullNodeClass()) return nullptr;
+		if (isNullNodeClass()) return boost::none;
 		NodeClassAttribute* attr = reinterpret_cast<NodeClassAttribute*>(nodeClassAttribute());
 		return attr->data();
 	}
@@ -575,7 +575,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaQualifiedName&>
 	AttributeBase::getBrowseName(void)
 	{
-		if (isNullBrowseName()) return nullptr;
+		if (isNullBrowseName()) return boost::none;
 		BrowseNameAttribute* attr = reinterpret_cast<BrowseNameAttribute*>(browseNameAttribute());
 		return attr->data();
 	}
@@ -636,7 +636,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaLocalizedText&>
 	AttributeBase::getDisplayName(void)
 	{
-		if (isNullDisplayName()) return nullptr;
+		if (isNullDisplayName()) return boost::none;
 		DisplayNameAttribute* attr = reinterpret_cast<DisplayNameAttribute*>(displayNameAttribute());
 		return attr->data();
 	}
@@ -697,7 +697,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaLocalizedText&>
 	AttributeBase::getDescription(void)
 	{
-		if (isNullDescription()) return nullptr;
+		if (isNullDescription()) return boost::none;
 		DescriptionAttribute* attr = reinterpret_cast<DescriptionAttribute*>(descriptionAttribute());
 		return attr->data();
 	}
@@ -758,7 +758,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaUInt32&>
 	AttributeBase::getWriteMask(void)
 	{
-		if (isNullWriteMask()) return nullptr;
+		if (isNullWriteMask()) return boost::none;
 		WriteMaskAttribute* attr = reinterpret_cast<WriteMaskAttribute*>(writeMaskAttribute());
 		return attr->data();
 	}
@@ -819,7 +819,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaUInt32&>
 	AttributeBase::getUserWriteMask(void)
 	{
-		if (isNullUserWriteMask()) return nullptr;
+		if (isNullUserWriteMask()) return boost::none;
 		UserWriteMaskAttribute* attr = reinterpret_cast<UserWriteMaskAttribute*>(userWriteMaskAttribute());
 		return attr->data();
 	}
@@ -880,7 +880,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaBoolean&>
 	AttributeBase::getIsAbstract(void)
 	{
-		if (isNullIsAbstract()) return nullptr;
+		if (isNullIsAbstract()) return boost::none;
 		IsAbstractAttribute* attr = reinterpret_cast<IsAbstractAttribute*>(isAbstractAttribute());
 		return attr->data();
 	}
@@ -941,7 +941,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaBoolean&>
 	AttributeBase::getSymmetric(void)
 	{
-		if (isNullSymmetric()) return nullptr;
+		if (isNullSymmetric()) return boost::none;
 		SymmetricAttribute* attr = reinterpret_cast<SymmetricAttribute*>(symmetricAttribute());
 		return attr->data();
 	}
@@ -1003,7 +1003,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaLocalizedText&>
 	AttributeBase::getInverseName(void)
 	{
-		if (isNullInverseName()) return nullptr;
+		if (isNullInverseName()) return boost::none;
 		InverseNameAttribute* attr = reinterpret_cast<InverseNameAttribute*>(inverseNameAttribute());
 		return attr->data();
 	}
@@ -1065,7 +1065,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaBoolean&>
 	AttributeBase::getContainsNoLoops(void)
 	{
-		if (isNullContainsNoLoops()) return nullptr;
+		if (isNullContainsNoLoops()) return boost::none;
 		ContainsNoLoopsAttribute* attr = reinterpret_cast<ContainsNoLoopsAttribute*>(containsNoLoopsAttribute());
 		return attr->data();
 	}
@@ -1126,7 +1126,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaByte&>
 	AttributeBase::getEventNotifier(void)
 	{
-		if (isNullEventNotifier()) return nullptr;
+		if (isNullEventNotifier()) return boost::none;
 		EventNotifierAttribute* attr = reinterpret_cast<EventNotifierAttribute*>(eventNotifierAttribute());
 		return attr->data();
 	}
@@ -1187,7 +1187,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaDataValue&>
 	AttributeBase::getValue(void)
 	{
-		if (isNullValue()) return nullptr;
+		if (isNullValue()) return boost::none;
 		ValueAttribute* attr = reinterpret_cast<ValueAttribute*>(valueAttribute());
 		return attr->data();
 	}
@@ -1310,7 +1310,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaInt32&>
 	AttributeBase::getValueRank(void)
 	{
-		if (isNullValueRank()) return nullptr;
+		if (isNullValueRank()) return boost::none;
 		ValueRankAttribute* attr = reinterpret_cast<ValueRankAttribute*>(valueRankAttribute());
 		return attr->data();
 	}
@@ -1371,7 +1371,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaUInt32Array&>
 	AttributeBase::getArrayDimensions(void)
 	{
-		if (isNullArrayDimensions()) return nullptr;
+		if (isNullArrayDimensions()) return boost::none;
 		ArrayDimensionsAttribute* attr = reinterpret_cast<ArrayDimensionsAttribute*>(arrayDimensionsAttribute());
 		return attr->data();
 	}
@@ -1432,7 +1432,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaByte&>
 	AttributeBase::getAccessLevel(void)
 	{
-		if (isNullAccessLevel()) return nullptr;
+		if (isNullAccessLevel()) return boost::none;
 		AccessLevelAttribute* attr = reinterpret_cast<AccessLevelAttribute*>(accessLevelAttribute());
 		return attr->data();
 	}
@@ -1493,7 +1493,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaByte&>
 	AttributeBase::getUserAccessLevel(void)
 	{
-		if (isNullUserAccessLevel()) return nullptr;
+		if (isNullUserAccessLevel()) return boost::none;
 		UserAccessLevelAttribute* attr = reinterpret_cast<UserAccessLevelAttribute*>(userAccessLevelAttribute());
 		return attr->data();
 	}
@@ -1554,7 +1554,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaBoolean&>
 	AttributeBase::getHistorizing(void)
 	{
-		if (isNullHistorizing()) return nullptr;
+		if (isNullHistorizing()) return boost::none;
 		HistorizingAttribute* attr = reinterpret_cast<HistorizingAttribute*>(historizingAttribute());
 		return attr->data();
 	}
@@ -1615,7 +1615,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaBoolean&>
 	AttributeBase::getExecutable(void)
 	{
-		if (isNullExecutable()) return nullptr;
+		if (isNullExecutable()) return boost::none;
 		ExecutableAttribute* attr = reinterpret_cast<ExecutableAttribute*>(executableAttribute());
 		return attr->data();
 	}
@@ -1676,7 +1676,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaBoolean&>
 	AttributeBase::getUserExecutable(void)
 	{
-		if (isNullUserExecutable()) return nullptr;
+		if (isNullUserExecutable()) return boost::none;
 		UserExecutableAttribute* attr = reinterpret_cast<UserExecutableAttribute*>(userExecutableAttribute());
 		return attr->data();
 	}
@@ -1737,7 +1737,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaDouble&>
 	AttributeBase::getMinimumSamplingInterval(void)
 	{
-		if (isNullMinimumSamplingInterval()) return nullptr;
+		if (isNullMinimumSamplingInterval()) return boost::none;
 		MinimumSamplingIntervalAttribute* attr = reinterpret_cast<MinimumSamplingIntervalAttribute*>(minimumSamplingIntervalAttribute());
 		return attr->data();
 	}
