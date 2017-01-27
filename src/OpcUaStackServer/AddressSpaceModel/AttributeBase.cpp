@@ -1249,7 +1249,7 @@ namespace OpcUaStackServer
 	boost::optional<OpcUaNodeId&>
 	AttributeBase::getDataType(void)
 	{
-		if (isNullDataType()) return nullptr;
+		if (isNullDataType()) return boost::none;
 		DataTypeAttribute* attr = reinterpret_cast<DataTypeAttribute*>(dataTypeAttribute());
 		return attr->data();
 	}
