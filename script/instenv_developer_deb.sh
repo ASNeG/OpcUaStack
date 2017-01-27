@@ -18,7 +18,7 @@ BOOST_VERSION_MINOR_=${BOOST_VERSION_MINOR:-54}
 VERSION_OPENSSL=${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR_}.${OPENSSL_VERSION_PATCH_}
 VERSION_BOOST=${BOOST_VERSION_MAJOR_}.${BOOST_VERSION_MINOR_}
 
-apt-get install libboost-test
+apt-get install libboost-test-dev
 apt-get install libboost-system${VERSION_BOOST}-dev
 apt-get install libboost-filesystem${VERSION_BOOST}-dev
 apt-get install libboost-thread${VERSION_BOOST}-dev
