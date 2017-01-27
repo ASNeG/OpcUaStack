@@ -40,17 +40,12 @@ namespace OpcUaStackCore
 	{
 		try 
 		{
-#if 0 // boost 1.54
+#ifdef BOOST_VERSION_1_54
 			boost::property_tree::xml_writer_settings<char> settings('\t', 1);
-			boost::property_tree::write_xml(configFileName, ptree_, std::locale(), settings);
-#else // boost 1.58
-			boost::property_tree::write_xml(
-				configFileName,
-				ptree_,
-				std::locale(),
-				boost::property_tree::xml_writer_make_settings<char>('\t',1)
-			);
+#else
+			boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
 #endif
+			boost::property_tree::write_xml(configFileName, ptree_, std::locale(), settings);
 		}
 		catch(const boost::property_tree::xml_parser_error& e)
 		{

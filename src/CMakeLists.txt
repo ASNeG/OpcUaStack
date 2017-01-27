@@ -123,6 +123,8 @@ find_package(
     REQUIRED
 )
 
+add_definitions(-DBOOST_VERSION_${BOOST_VERSION_MAJOR}_${BOOST_VERSION_MINOR})
+
 message(STATUS "Boost library")
 message(STATUS "  version major: ${Boost_MAJOR_VERSION}")
 message(STATUS "  version minor: ${Boost_MINOR_VERSION}")
