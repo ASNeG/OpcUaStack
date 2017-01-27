@@ -24,6 +24,33 @@ set(OPENSSL_VERSION_PATCH "0" CACHE STRING "patch version")
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
+# check environment variables
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+# boost
+if (DEFINED ENV{BOOST_VERSION_MAJOR})
+    set(BOOST_VERSION_MAJOR $ENV{BOOST_VERSION_MAJOR})
+endif ()
+if (DEFINED ENV{BOOST_VERSION_MINOR})
+    set(BOOST_VERSION_MAJOR $ENV{BOOST_VERSION_MINOR})
+endif ()
+
+# openssl
+if (DEFINED ENV{OPENSSL_VERSION_MAJOR})
+    set(OPENSSL_VERSION_MAJOR $ENV{OPENSSL_VERSION_MAJOR})
+endif ()
+if (DEFINED ENV{OPENSSL_VERSION_MINOR})
+    set(OPENSSL_VERSION_MINOR $ENV{OPENSSL_VERSION_MINOR})
+endif ()
+if (DEFINED ENV{OPENSSL_VERSION_PATCH})
+    set(OPENSSL_VERSION_PATCH $ENV{OPENSSL_VERSION_PATCH})
+endif ()
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
 # create version file and dependency file
 #
 # -----------------------------------------------------------------------------
