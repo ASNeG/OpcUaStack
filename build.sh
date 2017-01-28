@@ -224,7 +224,8 @@ build_rpm()
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
             "-DCPACK_BINARY_DEB=0" \
-            "-DCPACK_BINARY_RPM=1"
+            "-DCPACK_BINARY_RPM=1" \
+  	    "-DCPACK_BINARY_STGZ=1"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
