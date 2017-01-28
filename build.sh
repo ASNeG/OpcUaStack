@@ -155,7 +155,8 @@ build_deb()
             "-DCPACK_BINARY_DEB=1" \
             "-DCPACK_BINARY_RPM=0" \
 	    "-DCPACK_BINARY_STGZ=0" \
-	    "-DCPACK_BINARY_TGZ=0" 
+	    "-DCPACK_BINARY_TGZ=0" \
+	    "-DCPACK_BINARY_TZ=0" 
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -228,7 +229,8 @@ build_rpm()
             "-DCPACK_BINARY_DEB=0" \
             "-DCPACK_BINARY_RPM=1" \
   	    "-DCPACK_BINARY_STGZ=0" \
-     	    "-DCPACK_BINARY_TGZ=0"
+     	    "-DCPACK_BINARY_TGZ=0" \
+	    "-DCPACK_BINARY_TZ=0"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
