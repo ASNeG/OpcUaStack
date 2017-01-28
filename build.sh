@@ -153,7 +153,8 @@ build_deb()
         cmake ../src \
             "${CMAKE_GENERATOR_LOCAL}" \
             "-DCPACK_BINARY_DEB=1" \
-            "-DCPACK_BINARY_RPM=0" 
+            "-DCPACK_BINARY_RPM=0" \
+	    "-DCPACK_BINARY_STGZ=0" 
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
@@ -225,7 +226,7 @@ build_rpm()
             "${CMAKE_GENERATOR_LOCAL}" \
             "-DCPACK_BINARY_DEB=0" \
             "-DCPACK_BINARY_RPM=1" \
-  	    "-DCPACK_BINARY_STGZ=1"
+  	    "-DCPACK_BINARY_STGZ=0"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
