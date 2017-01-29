@@ -81,22 +81,31 @@ build_local()
 	cmake ../src \
 	    -DOPCUASTACK_INSTALL_PREFIX=${OPCUASTACK_INSTALL_PREFIX} \
 	    "${CMAKE_GENERATOR_LOCAL}" 
+        RESULT=$?
 	set +x
-	if [ $? -ne 0 ] ;
+	if [ ${RESULT} -ne 0 ] ;
 	then
 	    echo "cmake error"
-	    return $?
+	    return ${RESULT}
 	fi
     else
         cmake .
+        RESULT=$?
+	set +x
+	if [ ${RESULT} -ne 0 ] ;
+	then
+	    echo "cmake error"
+	    return ${RESULT}
+	fi
     fi
 
     # install local
     make DESTDIR="${HOME}/install" install
-     if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make install error"
-        return $?
+        return ${RESULT}
     fi
 
     return 0
@@ -152,21 +161,28 @@ build_deb()
             "-DCPACK_BINARY_STGZ=0" \
             "-DCPACK_BINARY_TGZ=0" \
             "-DCPACK_BINARY_TZ=0"
- 
-	if [ $? -ne 0 ] ;
+	RESULT=$?
+	if [ ${RESULT} -ne 0 ] ;
 	then
 	    echo "cmake error"
-	    return $?
+	    return ${RESULT}
 	fi
     else
         cmake .
+	RESULT=$?
+	if [ ${RESULT} -ne 0 ] ;
+	then
+	    echo "cmake error"
+	    return ${RESULT}
+	fi
     fi
 
     make package
-    if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make package error"
-        return $?
+        return ${RESULT}
     fi
 
     return 0
@@ -223,21 +239,28 @@ build_rpm()
             "-DCPACK_BINARY_STGZ=0" \
             "-DCPACK_BINARY_TGZ=0" \
             "-DCPACK_BINARY_TZ=0"
- 
-	if [ $? -ne 0 ] ;
+        RESULT=$? 
+	if [ ${RESULT} -ne 0 ] ;
 	then
 	    echo "cmake error"
-	    return $?
+	    return ${RESULT}
 	fi
     else
         cmake .
+        RESULT=$? 
+	if [ ${RESULT} -ne 0 ] ;
+	then
+	    echo "cmake error"
+	    return ${RESULT}
+	fi
     fi
 
     make package
-    if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make package error"
-        return $?
+        return ${RESULT}
     fi
 
     return 0
@@ -282,25 +305,32 @@ build_tst()
             -DOPCUASTACK_INSTALL_PREFIX=${OPCUASTACK_INSTALL_PREFIX} \
   	    "${CMAKE_GENERATOR_LOCAL}" \
 	    -DOPCUASTACK_INSTALL_PREFIX="${HOME}/install"
-        if [ $? -ne 0 ] ;
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
         then
             echo "cmake error"
-            return $?
+            return ${RESULT}
         fi
     else 
         cmake .
+        RESULT=$?
+        if [ ${RESULT} -ne 0 ] ;
+        then
+            echo "cmake error"
+            return ${RESULT}
+        fi
+
     fi
 
     make 
-     if [ $? -ne 0 ] ;
+    RESULT=$?
+    if [ ${RESULT} -ne 0 ] ;
     then
         echo "make error"
-        return $?
+        return ${RESULT}
     fi
 
-
-
-     return 0
+    return 0
 }
 
 
