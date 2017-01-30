@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaClient/ClientCommand/CommandRead.h"
+#include "OpcUaClient/ClientCommand/CommandGetEndpoint.h"
 #include "OpcUaClient/ClientService/ClientServiceGetEndpoint.h"
 
 using namespace OpcUaStackCore;
@@ -43,15 +43,15 @@ namespace OpcUaClient
 	ClientServiceGetEndpoint::run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase)
 	{
 		OpcUaStatusCode statusCode;
-		CommandRead::SPtr commandRead = boost::static_pointer_cast<CommandRead>(commandBase);
+		CommandGetEndpoint::SPtr commandGetEndpoint = boost::static_pointer_cast<CommandGetEndpoint>(commandBase);
 
 		// create new or get existing client object
 		ClientAccessObject::SPtr clientAccessObject;
-		clientAccessObject = clientServiceManager.getClientAccessObject(commandRead->session());
+		clientAccessObject = clientServiceManager.getClientAccessObject(commandGetEndpoint->session());
 		if (clientAccessObject.get() == nullptr) {
 			std::stringstream ss;
 			ss << "get client access object failed:"
-			   << " Session=" << commandRead->session();
+			   << " Session=" << commandGetEndpoint->session();
 			errorMessage(ss.str());
 			return false;
 		}
@@ -60,55 +60,46 @@ namespace OpcUaClient
 		if (clientAccessObject->sessionService_.get() == nullptr) {
 			std::stringstream ss;
 			ss << "session object not exist: "
-			   << " Session=" << commandRead->session();
+			   << " Session=" << commandGetEndpoint->session();
 			return false;
 		}
 
-#if 0
-
-		// get or create attribute service
-		AttributeService::SPtr attributeService;
-		attributeService = clientAccessObject->getOrCreateAttributeService();
-		if (attributeService.get() == nullptr) {
+		// get or create discovery service
+		DiscoveryService::SPtr discoveryService;
+		discoveryService = clientAccessObject->getOrCreateDiscoveryService();
+		if (discoveryService.get() == nullptr) {
 			std::stringstream ss;
-			ss << "get client attribute service failed"
-			   << " Session=" << commandRead->session();
+			ss << "get client discovery service failed"
+			   << " Session=" << commandGetEndpoint->session();
 			errorMessage(ss.str());
 			return false;
 		}
 
-		// create read request
-		ServiceTransactionRead::SPtr trx;
-		trx = constructSPtr<ServiceTransactionRead>();
-		ReadRequest::SPtr req = trx->request();
-		req->readValueIdArray()->resize(commandRead->nodeIdVec().size());
-		for (uint32_t idx=0; idx<commandRead->nodeIdVec().size(); idx++) {
-			ReadValueId::SPtr readValueIdSPtr = constructSPtr<ReadValueId>();
-			readValueIdSPtr->nodeId()->copyFrom(*commandRead->nodeIdVec()[idx]);
-			readValueIdSPtr->attributeId(commandRead->attributeIdVec()[idx]);
-			readValueIdSPtr->dataEncoding().namespaceIndex((OpcUaInt16) 0);
-			req->readValueIdArray()->push_back(readValueIdSPtr);
-		}
+		// create get endpoint request
+		ServiceTransactionGetEndpoints::SPtr trx;
+		trx = constructSPtr<ServiceTransactionGetEndpoints>();
+		GetEndpointsRequest::SPtr req = trx->request();
 
 		// send read request
-		attributeService->syncSend(trx);
+		discoveryService->syncSend(trx);
 
 		// process read response
 		statusCode = trx->statusCode();
 		if (statusCode != Success) {
 			std::stringstream ss;
 			ss << "read error: "
-			   << " Session=" << commandRead->session()
+			   << " Session=" << commandGetEndpoint->session()
 			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
 			errorMessage(ss.str());
 			return false;
 		}
 
-		ReadResponse::SPtr res = trx->response();
+		GetEndpointsResponse::SPtr res = trx->response();
+#if 0
 		if (res->dataValueArray()->size() == 0) {
 			std::stringstream ss;
 			ss << "read response length error: "
-			   << " Session=" << commandRead->session();
+			   << " Session=" << commandGetEndpoint->session();
 			errorMessage(ss.str());
 			return false;
 		}
