@@ -1,3 +1,3 @@
 #!/bin/bash
 
-OpcUaClient -help
+${OpcUaClient} -help

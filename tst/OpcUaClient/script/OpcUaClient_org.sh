@@ -4,10 +4,10 @@
 EndpointUrl=opc.tcp://192.168.122.99:48010
 
 
-OpcUaClient \
+${OpcUaClient} \
  -help
 
-OpcUaClient \
+${OpcUaClient} \
  -Command Connect 	-Session "TestSession" -EndpointUrl ${EndpointUrl} \
  -Command Write 	-NodeId "ns=2;s=Demo.Static.Scalar.Double" -Value Double:1.1  -NodeId "ns=2;s=Demo.Static.Scalar.Int32" -Value Int32:123 \
  -Command Read 		-NodeId "ns=2;s=Demo.Static.Scalar.Double" -NodeId "ns=2;s=Demo.Static.Scalar.Int32" \
