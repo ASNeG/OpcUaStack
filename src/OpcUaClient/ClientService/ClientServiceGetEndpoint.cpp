@@ -87,7 +87,7 @@ namespace OpcUaClient
 		statusCode = trx->statusCode();
 		if (statusCode != Success) {
 			std::stringstream ss;
-			ss << "read error: "
+			ss << "discovery error: "
 			   << " Session=" << commandGetEndpoint->session()
 			   << " StatusCode=" << OpcUaStatusCodeMap::shortString(statusCode);
 			errorMessage(ss.str());
@@ -98,7 +98,7 @@ namespace OpcUaClient
 #if 0
 		if (res->dataValueArray()->size() == 0) {
 			std::stringstream ss;
-			ss << "read response length error: "
+			ss << "discovery response length error: "
 			   << " Session=" << commandGetEndpoint->session();
 			errorMessage(ss.str());
 			return false;

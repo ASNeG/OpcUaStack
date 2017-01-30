@@ -62,6 +62,11 @@ namespace OpcUaClient
 		sessionServiceConfig.secureChannelClient_->endpointUrl(commandConnect->endpointUrl());
 		sessionServiceConfig.session_->sessionName(commandConnect->session());
 
+		// check if session must be activated
+		if (!commandConnect->activateSession()) {
+			sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+		}
+
 		// create session
 		if (clientAccessObject->sessionService_.get() == nullptr) {
 			clientAccessObject->sessionService_ = clientAccessObject->serviceSetManager_.sessionService(sessionServiceConfig);
