@@ -28,6 +28,7 @@ namespace OpcUaClient
 	CommandConnect::CommandConnect(void)
 	: CommandBase(CommandBase::Cmd_Connect)
 	, endpointUrl_("opc.tcp://127.0.0.1:4841")
+	, activateSession_(true)
 	{
 	}
 
@@ -51,7 +52,14 @@ namespace OpcUaClient
 	bool
 	CommandConnect::addParameter(const std::string& parameterName, const std::string& parameterValue)
 	{
-		if (parameterName == "-ENDPOINTURL") endpointUrl_ = parameterValue;
+		if (parameterName == "-ENDPOINTURL") {
+			endpointUrl_ = parameterValue;
+		}
+		else if (parameterName == "-ACTIVATESESSION") {
+			if (parameterValue == "0") {
+				activateSession_ = false;
+			}
+		}
 		else {
 			std::stringstream ss;
 			ss << "invalid parameter " << parameterName;
@@ -67,7 +75,8 @@ namespace OpcUaClient
 		std::stringstream ss;
 		ss << "  -Connect: Open a new connection to a opc ua server\n"
 		   << "    -Session (0..1): Name of the session. (Default: Main)\n"
-		   << "    -EndpointUrl (0..1): Endpoint Url of the server. (Default: opt.tcp://127.0.0.1:4841)\n";
+		   << "    -EndpointUrl (0..1): Endpoint Url of the server. (Default: opt.tcp://127.0.0.1:4841)\n"
+		   << "    -ActivateSession (0..1): Activate session or not. (Default: 1)\n";
 		return ss.str();
 	}
 
@@ -75,6 +84,12 @@ namespace OpcUaClient
 	CommandConnect::endpointUrl(void)
 	{
 		return endpointUrl_;
+	}
+
+	bool
+	CommandConnect::activateSession(void)
+	{
+		return activateSession_;
 	}
 
 }

@@ -41,9 +41,11 @@ namespace OpcUaClient
 		//- CommandConnect interface ---------------------------------------------
 
 		std::string& endpointUrl(void);
+		bool activateSession(void);
 
 	  private:
 		std::string endpointUrl_;
+		bool activateSession_;
 	};
 
 }
