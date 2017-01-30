@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -157,6 +157,48 @@ namespace OpcUaClient
 
 		methodService_ = serviceSetManager_.methodService(sessionService_);
 		return methodService_;
+	}
+
+	DiscoveryService::SPtr
+	ClientAccessObject::createDiscoveryService(DiscoveryServiceConfig& discoveryServiceConfig)
+	{
+		return serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
+	}
+
+	DiscoveryService::SPtr
+	ClientAccessObject::createDiscoveryService(void)
+	{
+		return serviceSetManager_.discoveryService(sessionService_);
+	}
+
+	DiscoveryService::SPtr
+	ClientAccessObject::getOrCreateDiscoveryService(DiscoveryServiceConfig& discoveryServiceConfig)
+	{
+		if (discoveryService_.get() != nullptr ) {
+			return discoveryService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return discoveryService_;
+		}
+
+		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
+		return discoveryService_;
+	}
+
+	DiscoveryService::SPtr
+	ClientAccessObject::getOrCreateDiscoveryService(void)
+	{
+		if (discoveryService_.get() != nullptr ) {
+			return discoveryService_;
+		}
+
+		if (sessionService_.get() == nullptr) {
+			return discoveryService_;
+		}
+
+		discoveryService_ = serviceSetManager_.discoveryService(sessionService_);
+		return discoveryService_;
 	}
 
 }
