@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,7 @@ namespace OpcUaStackServer
 	, subscriptionService_(constructSPtr<SubscriptionService>())
 	, viewService_(constructSPtr<ViewService>())
 	, applicationService_(constructSPtr<ApplicationService>())
+	, discoveryService_(constructSPtr<DiscoveryService>())
 	{
 		attributeService_->componentName("AttributeService");
 		methodService_->componentName("MethodService");
@@ -39,6 +40,7 @@ namespace OpcUaStackServer
 		subscriptionService_->componentName("SubscriptionService");
 		viewService_->componentName("ViewService");
 		applicationService_->componentName("ApplicationService");
+		discoveryService_->componentName("DiscoveryService");
 	}
 
 	ServiceManager::~ServiceManager(void)
@@ -201,6 +203,17 @@ namespace OpcUaStackServer
 		transactionManager_->registerTransaction(serviceTransactionUnregisterNodes);
 
 		//
+		// discovery service service
+		//
+		ServiceTransactionRegisterServer::name("RegisterServer");
+
+		ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer = constructSPtr<ServiceTransactionRegisterServer>();
+
+		serviceTransactionRegisterServer->componentService(&*discoveryService_);
+
+		transactionManager_->registerTransaction(serviceTransactionRegisterServer);
+
+		//
 		// application service
 		//
 		ServiceTransactionRegisterForward::name("RegisterForward");
@@ -211,7 +224,7 @@ namespace OpcUaStackServer
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterForward);
 	
-
+		sessionManager.discoveryService(discoveryService_);
 		sessionManager.transactionManager(transactionManager_);
 		return true;
 	}
@@ -227,6 +240,7 @@ namespace OpcUaStackServer
 		subscriptionService_->informationModel(informationModel);
 		viewService_->informationModel(informationModel);
 		applicationService_->informationModel(informationModel);
+		discoveryService_->informationModel(informationModel);
 		return true;
 	}
 
@@ -241,6 +255,7 @@ namespace OpcUaStackServer
 		subscriptionService_->ioService(ioService);
 		viewService_->ioService(ioService);
 		applicationService_->ioService(ioService);
+		discoveryService_->ioService(ioService);
 		return true;
 	}
 
@@ -256,6 +271,7 @@ namespace OpcUaStackServer
 		rc = rc && subscriptionService_->init();
 		rc = rc && viewService_->init();
 		rc = rc && applicationService_->init();
+		rc = rc && discoveryService_->init();
 		return rc;
 	}
 
@@ -270,6 +286,7 @@ namespace OpcUaStackServer
 		monitoredItemService_->shutdown();
 		methodService_->shutdown();
 		attributeService_->shutdown();
+		discoveryService_->shutdown();
 		return true;
 	}
 
@@ -277,6 +294,12 @@ namespace OpcUaStackServer
 	ServiceManager::applicationService(void)
 	{
 		return applicationService_;
+	}
+
+	DiscoveryService::SPtr
+	ServiceManager::discoveryService(void)
+	{
+		return discoveryService_;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
+#include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryManagerIf.h"
 
 using namespace OpcUaStackCore;
@@ -30,7 +32,8 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DiscoveryService 
-	: public Object
+	: public ServiceSetBase
+	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryService> SPtr;

@@ -51,17 +51,17 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	SessionManagerOld::discoveryService(DiscoveryService::SPtr& discoveryService)
+	{
+		discoveryService_ = discoveryService;
+		discoveryService_->discoveryManagerIf(this);
+	}
+
 	void 
 	SessionManagerOld::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
 	{
 		transactionManagerSPtr_ = transactionManagerSPtr;
-	}
-
-	void 
-	SessionManagerOld::discoveryService(DiscoveryService::SPtr discoveryService)
-	{
-		discoveryService_ = discoveryService;
-		discoveryService_->discoveryManagerIf(this);
 	}
 
 	void
@@ -292,6 +292,11 @@ namespace OpcUaStackServer
 	bool 
 	SessionManagerOld::secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
+		//
+		// this function is called by the secure channel when a new message
+		// is received
+		//
+
 		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<uint32_t>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:

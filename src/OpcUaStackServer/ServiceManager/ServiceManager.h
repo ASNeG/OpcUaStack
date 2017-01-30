@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,6 +29,7 @@
 #include "OpcUaStackServer/ServiceSet/QueryService.h"
 #include "OpcUaStackServer/ServiceSet/SubscriptionService.h"
 #include "OpcUaStackServer/ServiceSet/ViewService.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 
 using namespace OpcUaStackCore;
@@ -49,6 +50,7 @@ namespace OpcUaStackServer
 		bool shutdown(void);
 
 		ApplicationService::SPtr applicationService(void);
+		DiscoveryService::SPtr discoveryService(void);
 
 	  private:
 		TransactionManager::SPtr transactionManager_;
@@ -60,6 +62,7 @@ namespace OpcUaStackServer
 		SubscriptionService::SPtr subscriptionService_;
 		ViewService::SPtr viewService_;
 		ApplicationService::SPtr applicationService_;
+		DiscoveryService::SPtr discoveryService_;
 	};
 
 }
