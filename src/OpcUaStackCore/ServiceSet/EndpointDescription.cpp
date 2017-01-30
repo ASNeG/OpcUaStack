@@ -161,4 +161,17 @@ namespace OpcUaStackCore
 		messageSecurityMode_ = (MessageSecurityMode)messageSecurityMode;
 	}
 
+	void
+	EndpointDescription::out(std::ostream& os)
+	{
+		os << "EndpointUrl="; endpointUrl_.out(os);
+		os << ", ApplicationDescription={";  applicationDescription_->out(os); os << "}";
+		os << ", ServerCertificate="; serverCertificate_.out(os);
+		os << ", MessageSecurityMode=" << (uint32_t)messageSecurityMode_;
+		os << ", SecurityPolicy="; securityPolicyUri_.out(os);
+		//os << ", UserIdentityTokens=[" << *userIdentityTokens_ << "]";
+		os << ", TransportProfileUri="; transportProfileUri_.out(os);
+		os << ", SecurityLevel=" << (uint32_t)securityLevel_;
+	}
+
 }

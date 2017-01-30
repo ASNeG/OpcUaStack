@@ -64,6 +64,7 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		void out(std::ostream& os);
 
 	  private:
 		OpcUaString endpointUrl_;

@@ -95,8 +95,7 @@ namespace OpcUaClient
 		}
 
 		GetEndpointsResponse::SPtr res = trx->response();
-#if 0
-		if (res->dataValueArray()->size() == 0) {
+		if (res->endpoints()->size() == 0) {
 			std::stringstream ss;
 			ss << "discovery response length error: "
 			   << " Session=" << commandGetEndpoint->session();
@@ -104,12 +103,11 @@ namespace OpcUaClient
 			return false;
 		}
 
-		for (uint32_t idx=0; idx<res->dataValueArray()->size(); idx++) {
-			OpcUaDataValue::SPtr dataValue;
-			res->dataValueArray()->get(idx, dataValue);
-			dataValue->out(std::cout); std::cout << std::endl;
+		for (uint32_t idx=0; idx<res->endpoints()->size(); idx++) {
+			EndpointDescription::SPtr endpoints;
+			res->endpoints()->get(idx, endpoints);
+			endpoints->out(std::cout); std::cout << std::endl;
 		}
-#endif
 
 		return true;
 	}
