@@ -43,6 +43,10 @@ namespace OpcUaStackServer
 
 		bool message(SecureChannelTransaction::SPtr secureChannelTransaction);
 
+		//- Component -----------------------------------------------------------------
+		void receive(Message::SPtr message);
+		//- Component -----------------------------------------------------------------
+
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		DiscoveryManagerIf* discoveryManagerIf_;

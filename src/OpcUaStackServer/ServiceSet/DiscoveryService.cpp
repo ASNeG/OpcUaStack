@@ -76,6 +76,24 @@ namespace OpcUaStackServer
 		return false;
 	}
 
+	void
+	DiscoveryService::receive(Message::SPtr message)
+	{
+		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
+		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
+		{
+			default:
+			{
+				Log(Error, "discovery service received unknown message type")
+					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
+
+				serviceTransaction->statusCode(BadInternalError);
+				serviceTransaction->componentSession()->send(serviceTransaction);
+				break;
+			}
+		}
+	}
+
 	bool 
 	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
