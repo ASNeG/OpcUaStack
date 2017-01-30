@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -295,6 +295,7 @@ namespace OpcUaStackServer
 		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<uint32_t>())
 		{
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
+			case OpcUaId_FindServersRequest_Encoding_DefaultBinary:
 			{
 				return discoveryService_->message(secureChannelTransaction);
 			}
