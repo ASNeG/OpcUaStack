@@ -125,13 +125,30 @@ namespace OpcUaStackServer
 	bool 
 	DiscoveryService::receiveFindServersRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-#if 0
-		ServiceTransactionFindServers::SPtr trx = boost::static_pointer_cast<ServiceTransactionFindServers>(serviceTransaction);
-		FindServersRequest::SPtr findRequest = trx->request();
-		FindServersResponse::SPtr findResponse = trx->response();
-#endif
+		std::iostream is(&secureChannelTransaction->is_);
+		RequestHeader requestHeader;
+		FindServersRequest findServersRequest;
 
-		return false;
+		requestHeader.opcUaBinaryDecode(is);
+		findServersRequest.opcUaBinaryDecode(is);
+
+		// FIXME: analyse request data
+
+		std::iostream os(&secureChannelTransaction->os_);
+
+		ResponseHeader responseHeader;
+		FindServersResponse findServersResponse;
+
+		responseHeader.requestHandle(requestHeader.requestHandle());
+		responseHeader.serviceResult(BadNotImplemented);
+
+		// FIXME: todo
+
+		responseHeader.opcUaBinaryEncode(os);
+		findServersResponse.opcUaBinaryEncode(os);
+
+		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
+		return true;
 	}
 
 	bool 
