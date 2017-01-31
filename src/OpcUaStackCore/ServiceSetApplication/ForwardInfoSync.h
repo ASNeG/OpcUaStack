@@ -68,8 +68,6 @@ namespace OpcUaStackCore
 		ForwardInfo& methodService(void);
 		ForwardInfo& monitoredItemStartService(void);
 		ForwardInfo& monitoredItemStopService(void);
-		ForwardInfo& findServerService(void);
-		ForwardInfo& registerServerService(void);
 
 		void updateFrom(ForwardInfoSync& forwardInfoSync);
 
@@ -84,10 +82,6 @@ namespace OpcUaStackCore
 
 		// method service
 		ForwardInfo methodService_;
-
-		// discovery service
-		ForwardInfo findServerService_;
-		ForwardInfo registerServerService_;
 	};
 
 }
