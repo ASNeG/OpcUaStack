@@ -15,37 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_CommandGetEndpoint_h__
-#define __OpcUaClient_CommandGetEndpoint_h__
+#ifndef __OpcUaClient_ClientServiceFindServer_h__
+#define __OpcUaClient_ClientServiceFindServer_h__
 
 #include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaClient/ClientCommand/CommandBase.h"
-
-using namespace OpcUaStackCore;
+#include "OpcUaClient/ClientService/ClientServiceBase.h"
+#include "OpcUaClient/ClientService/ClientServiceManager.h"
 
 namespace OpcUaClient
 {
 
-	class CommandGetEndpoint
-	: public CommandBase
+	class ClientServiceFindServer
+	: public ClientServiceBase
 	{
 	  public:
-		typedef boost::shared_ptr<CommandGetEndpoint> SPtr;
+		typedef boost::shared_ptr<ClientServiceFindServer> SPtr;
 
-		CommandGetEndpoint(void);
-		virtual ~CommandGetEndpoint(void);
+		ClientServiceFindServer(void);
+		virtual ~ClientServiceFindServer(void);
 
-		//- CommandGetEndpoint interface ---------------------------------------------
-		virtual CommandBase::SPtr createCommand(void);
-		virtual bool validateCommand(void);
-		virtual bool addParameter(const std::string& parameterName, const std::string& parameterValue);
-		virtual std::string help(void);
-		//- CommandGetEndpoint interface ---------------------------------------------
+		//- ClientServiceFindServer interface ---------------------------------------
+		virtual ClientServiceBase::SPtr createClientService(void);
+		virtual bool run(ClientServiceManager& clientServiceManager, CommandBase::SPtr& commandBase);
+		//- ClientServiceFindServer interface ---------------------------------------
 
-	  private:
+      private:
+
 	};
 
 }
 
 #endif
+

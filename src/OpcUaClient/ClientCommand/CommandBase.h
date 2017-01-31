@@ -52,7 +52,8 @@ namespace OpcUaClient
 			Cmd_Browse,
 			Cmd_Function,
 			Cmd_BrowsePathToNodeId,
-			Cmd_GetEndpoint
+			Cmd_GetEndpoint,
+			Cmd_FindServer
 		} Cmd;
 
 		CommandBase(void);
