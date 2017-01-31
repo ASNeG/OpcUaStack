@@ -56,6 +56,12 @@ namespace OpcUaStackServer
 	{
 		switch(secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
+			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
+			{
+				Log(Debug, "receive register server request");
+				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_RegisterServerResponse_Encoding_DefaultBinary);
+				return receiveRegisterServerRequest(secureChannelTransaction);
+			}
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
 				Log(Debug, "receive get endpoints request");
@@ -160,13 +166,51 @@ namespace OpcUaStackServer
 
 		}
 
-		findServersResponse.responseHeader()->serviceResult(ctx.statusCode_);
+		responseHeader.serviceResult(ctx.statusCode_);
 		if (ctx.statusCode_ == Success) {
 			findServersResponse.servers(ctx.servers_);
 		}
 
 		responseHeader.opcUaBinaryEncode(os);
 		findServersResponse.opcUaBinaryEncode(os);
+
+		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
+		return true;
+	}
+
+	bool
+	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	{
+		std::iostream is(&secureChannelTransaction->is_);
+		RequestHeader requestHeader;
+		RegisterServerRequest registerServerRequest;
+
+		requestHeader.opcUaBinaryDecode(is);
+		registerServerRequest.opcUaBinaryDecode(is);
+
+		// FIXME: analyse request data
+
+		std::iostream os(&secureChannelTransaction->os_);
+
+		ResponseHeader responseHeader;
+		RegisterServerResponse registerServerResponse;
+
+		responseHeader.requestHandle(requestHeader.requestHandle());
+
+		// check forward callback functions
+		ApplicationRegisterServerContext ctx;
+		ctx.statusCode_ = BadNotSupported;
+		if (forwardGlobalSync()->registerServerService().isCallback()) {
+
+			// forward register server request
+			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
+			registerServerRequest.server().copyTo(ctx.server_);
+			forwardGlobalSync()->registerServerService().callback()(ctx);
+		}
+		responseHeader.serviceResult(ctx.statusCode_);
+
+		responseHeader.opcUaBinaryEncode(os);
+		registerServerResponse.opcUaBinaryEncode(os);
 
 		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
 		return true;

@@ -299,6 +299,7 @@ namespace OpcUaStackServer
 
 		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<uint32_t>())
 		{
+			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			case OpcUaId_FindServersRequest_Encoding_DefaultBinary:
 			{
