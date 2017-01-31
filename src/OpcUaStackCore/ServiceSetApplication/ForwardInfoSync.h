@@ -22,35 +22,10 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT ForwardInfo
-	{
-	  public:
-		typedef boost::shared_ptr<ForwardInfo> SPtr;
-
-		ForwardInfo(void);
-		~ForwardInfo(void);
-
-		void updateFrom(ForwardInfo& forwardInfo);
-		void setCallback(Callback& callback);
-		void unsetCallback(void);
-		bool isCallback(void);
-		bool usedCallback(void);
-		Callback& callback(void);
-
-		void applicationContext(BaseClass::SPtr& applicationContext);
-		BaseClass::SPtr& applicationContext(void);
-
-	  private:
-		bool callbackFlag_;
-		bool usedCallbackFlag_;
-		Callback callback_;
-		BaseClass::SPtr applicationContext_;
-	};
-
 
 	class DLLEXPORT ForwardInfoSync
 	: public  Object
