@@ -154,6 +154,7 @@ namespace OpcUaStackServer
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
 		{
 			case OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary:
+			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
 			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
 			case OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary:
 			{
