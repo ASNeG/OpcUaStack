@@ -82,6 +82,9 @@ namespace OpcUaStackServer
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
 		{
+			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
+				receiveRegisterServerRequest(serviceTransaction);
+				break;
 			default:
 			{
 				Log(Error, "discovery service received unknown message type")
@@ -151,16 +154,21 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	bool 
-	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	void
+	DiscoveryService::receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-#if 0
 		ServiceTransactionRegisterServer::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterServer>(serviceTransaction);
-		RegisterServerRequest::SPtr registerRequest = trx->request();
-		RegisterServerResponse::SPtr registerResponse = trx->response();
-#endif
 
-		return false;
+		RegisterServerRequest::SPtr registerServerRequest = trx->request();
+		RegisterServerResponse::SPtr registerServerResponse = trx->response();
+
+		Log(Debug, "discovery service register service request")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		// FIXME: todo
+
+		trx->statusCode(BadNotImplemented);
+		trx->componentSession()->send(serviceTransaction);
 	}
 
 }

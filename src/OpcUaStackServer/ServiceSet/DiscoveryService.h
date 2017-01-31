@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 
 		bool receiveGetEndpointsRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
 		bool receiveFindServersRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
-		bool receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }
