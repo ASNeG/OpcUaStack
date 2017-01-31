@@ -41,10 +41,27 @@ namespace OpcUaStackServer
 		viewService_->componentName("ViewService");
 		applicationService_->componentName("ApplicationService");
 		discoveryService_->componentName("DiscoveryService");
+
+		initForwardGlobalSync();
 	}
 
 	ServiceManager::~ServiceManager(void)
 	{
+	}
+
+	void
+	ServiceManager::initForwardGlobalSync(void)
+	{
+		ForwardGlobalSync::SPtr forwardGlobalSync = constructSPtr<ForwardGlobalSync>();
+		attributeService_->forwardGlobalSync(forwardGlobalSync);
+		methodService_->forwardGlobalSync(forwardGlobalSync);
+		monitoredItemService_->forwardGlobalSync(forwardGlobalSync);
+		nodeManagementService_->forwardGlobalSync(forwardGlobalSync);
+		queryService_->forwardGlobalSync(forwardGlobalSync);
+		subscriptionService_->forwardGlobalSync(forwardGlobalSync);
+		viewService_->forwardGlobalSync(forwardGlobalSync);
+		applicationService_->forwardGlobalSync(forwardGlobalSync);
+		discoveryService_->forwardGlobalSync(forwardGlobalSync);
 	}
 
 	bool
@@ -217,12 +234,16 @@ namespace OpcUaStackServer
 		// application service
 		//
 		ServiceTransactionRegisterForward::name("RegisterForward");
+		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
 
 		ServiceTransactionRegisterForward::SPtr serviceTransactionRegisterForward = constructSPtr<ServiceTransactionRegisterForward>();
+		ServiceTransactionRegisterForwardGlobal::SPtr serviceTransactionRegisterForwardGlobal = constructSPtr<ServiceTransactionRegisterForwardGlobal>();
 
 		serviceTransactionRegisterForward->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);
 
 		transactionManager_->registerTransaction(serviceTransactionRegisterForward);
+		transactionManager_->registerTransaction(serviceTransactionRegisterForwardGlobal);
 	
 		sessionManager.discoveryService(discoveryService_);
 		sessionManager.transactionManager(transactionManager_);

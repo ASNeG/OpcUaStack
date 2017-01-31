@@ -53,6 +53,8 @@ namespace OpcUaStackServer
 		DiscoveryService::SPtr discoveryService(void);
 
 	  private:
+		void initForwardGlobalSync(void);
+
 		TransactionManager::SPtr transactionManager_;
 		AttributeService::SPtr attributeService_;
 		MethodService::SPtr methodService_;

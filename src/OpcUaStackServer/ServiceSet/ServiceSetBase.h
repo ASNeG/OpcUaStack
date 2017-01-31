@@ -42,6 +42,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel(void);
 		NamespaceArray::SPtr namespaceArray(void);
 		ServerArray::SPtr serverArray(void);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync);
 		ForwardGlobalSync::SPtr forwardGlobalSync(void);
 
 		virtual bool init(void) { return true; }

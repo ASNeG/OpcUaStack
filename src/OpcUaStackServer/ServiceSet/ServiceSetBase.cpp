@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 	, informationModel_()
 	, namespaceArray_(constructSPtr<NamespaceArray>())
 	, serverArray_(constructSPtr<ServerArray>())
-	, forwardGlobalSync_(constructSPtr<ForwardGlobalSync>())
+	, forwardGlobalSync_()
 	{
 	}
 
@@ -63,6 +63,12 @@ namespace OpcUaStackServer
 	ServiceSetBase::forwardGlobalSync(void)
 	{
 		return forwardGlobalSync_;
+	}
+
+	void
+	ServiceSetBase::forwardGlobalSync(ForwardGlobalSync::SPtr forwardGlobalSync)
+	{
+		forwardGlobalSync_ = forwardGlobalSync;
 	}
 
 }
