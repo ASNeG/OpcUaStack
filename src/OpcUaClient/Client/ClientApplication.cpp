@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,6 +35,7 @@
 #include "OpcUaClient/ClientCommand/CommandBrowsePathToNodeId.h"
 #include "OpcUaClient/ClientCommand/CommandGetEndpoint.h"
 #include "OpcUaClient/ClientCommand/CommandFindServer.h"
+#include "OpcUaClient/ClientCommand/CommandRegisterServer.h"
 
 // services
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
@@ -51,6 +52,7 @@
 #include "OpcUaClient/ClientService/ClientServiceBrowsePathToNodeId.h"
 #include "OpcUaClient/ClientService/ClientServiceGetEndpoint.h"
 #include "OpcUaClient/ClientService/ClientServiceFindServer.h"
+#include "OpcUaClient/ClientService/ClientServiceRegisterServer.h"
 
 namespace OpcUaClient
 {
@@ -84,6 +86,7 @@ namespace OpcUaClient
 		CommandParser::addCommand("BROWSEPATHTONODEID", constructSPtr<CommandBrowsePathToNodeId>());
 		CommandParser::addCommand("GETENDPOINT", constructSPtr<CommandGetEndpoint>());
 		CommandParser::addCommand("FINDSERVER", constructSPtr<CommandFindServer>());
+		CommandParser::addCommand("REGISTERSERVER", constructSPtr<CommandRegisterServer>());
 
 
 		// register service in service factory
@@ -101,6 +104,7 @@ namespace OpcUaClient
 		ClientServiceExecute::addClientService(CommandBase::Cmd_BrowsePathToNodeId, constructSPtr<ClientServiceBrowsePathToNodeId>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_GetEndpoint, constructSPtr<ClientServiceGetEndpoint>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_FindServer, constructSPtr<ClientServiceFindServer>());
+		ClientServiceExecute::addClientService(CommandBase::Cmd_RegisterServer, constructSPtr<ClientServiceRegisterServer>());
 
 		// parse command line
 		CommandParser commandParser;
