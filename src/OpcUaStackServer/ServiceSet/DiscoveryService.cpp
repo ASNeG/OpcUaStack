@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
 #include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
+#include "OpcUaStackCore/Application/ApplicationFindServerContext.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 
 
@@ -144,9 +145,25 @@ namespace OpcUaStackServer
 		FindServersResponse findServersResponse;
 
 		responseHeader.requestHandle(requestHeader.requestHandle());
-		responseHeader.serviceResult(BadNotImplemented);
 
-		// FIXME: todo
+		// check forward callback functions
+		ApplicationFindServerContext ctx;
+		ctx.statusCode_ = BadNotSupported;
+		if (forwardGlobalSync()->findServersService().isCallback()) {
+
+			// forward find server request
+			ctx.applicationContext_ = forwardGlobalSync()->findServersService().applicationContext();
+			findServersRequest.endpointUrl().copyTo(ctx.endpointUrl_);
+			ctx.localeIdArraySPtr_ = findServersRequest.localeIds();
+			ctx.serverUriArraySPtr_ = findServersRequest.serverUris();
+			forwardGlobalSync()->findServersService().callback()(ctx);
+
+		}
+
+		findServersResponse.responseHeader()->serviceResult(ctx.statusCode_);
+		if (ctx.statusCode_ == Success) {
+			findServersResponse.servers(ctx.servers_);
+		}
 
 		responseHeader.opcUaBinaryEncode(os);
 		findServersResponse.opcUaBinaryEncode(os);
