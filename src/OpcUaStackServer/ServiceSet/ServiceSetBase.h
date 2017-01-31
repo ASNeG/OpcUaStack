@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Component/Component.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/InformationModel/ServerArray.h"
@@ -30,7 +31,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT ServiceSetBase : public Component
+	class DLLEXPORT ServiceSetBase
+	: public Component
 	{
 	  public:
 		ServiceSetBase(void);
@@ -40,6 +42,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel(void);
 		NamespaceArray::SPtr namespaceArray(void);
 		ServerArray::SPtr serverArray(void);
+		ForwardGlobalSync::SPtr forwardGlobalSync(void);
 
 		virtual bool init(void) { return true; }
 		virtual bool shutdown(void) { return true; }
@@ -48,6 +51,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 		NamespaceArray::SPtr namespaceArray_;
 		ServerArray::SPtr serverArray_; 
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 	};
 
 }

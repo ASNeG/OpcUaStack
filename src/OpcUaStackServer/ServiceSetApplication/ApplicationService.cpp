@@ -142,9 +142,9 @@ namespace OpcUaStackServer
 		Log(Debug, "application service register forward global request")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		// FIXME: todo
+		forwardGlobalSync()->updateFrom(*registerForwardGlobalRequest->forwardGlobalSync());
 
-		trx->statusCode(BadNotImplemented);
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
