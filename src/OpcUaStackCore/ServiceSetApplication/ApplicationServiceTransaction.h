@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionTemplate.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.h"
@@ -36,6 +38,13 @@ namespace OpcUaStackCore
 		OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForward;
+
+	typedef ServiceTransactionTemplate<
+		RegisterForwardGlobalRequest,
+		RegisterForwardGlobalResponse,
+		OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary,
+		OpcUaId_RegisterForwardGlobalResponse_Encoding_DefaultBinary
+	> ServiceTransactionRegisterForwardGlobal;
 
 	typedef ServiceTransactionTemplate<
 		GetNodeReferenceRequest,

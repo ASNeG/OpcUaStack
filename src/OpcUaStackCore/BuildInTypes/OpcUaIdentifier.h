@@ -2056,6 +2056,8 @@
 #define OpcUaId_GetNodeReferenceResponse_Encoding_DefaultBinary 1000003
 #define OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary 1000004
 #define OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary 1000005
+#define OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary 1000006
+#define OpcUaId_RegisterForwardGlobalResponse_Encoding_DefaultBinary 1000007
 
 #include <map>
 #include <stdint.h>

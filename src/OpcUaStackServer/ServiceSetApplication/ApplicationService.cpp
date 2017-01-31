@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,6 +43,9 @@ namespace OpcUaStackServer
 		{
 			case OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardRequest(serviceTransaction);
+				break;
+			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
+				receiveRegisterForwardGlobalRequest(serviceTransaction);
 				break;
 			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
 				receiveGetNodeReferenceRequest(serviceTransaction);
@@ -127,6 +130,24 @@ namespace OpcUaStackServer
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
+
+	void
+	ApplicationService::receiveRegisterForwardGlobalRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionRegisterForwardGlobal::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardGlobal>(serviceTransaction);
+
+		RegisterForwardGlobalRequest::SPtr registerForwardGlobalRequest = trx->request();
+		RegisterForwardGlobalResponse::SPtr registerForwardGlobalResponse = trx->response();
+
+		Log(Debug, "application service register forward global request")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		// FIXME: todo
+
+		trx->statusCode(BadNotImplemented);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
 
 	void
 	ApplicationService::receiveGetNodeReferenceRequest(ServiceTransaction::SPtr serviceTransaction)
