@@ -34,6 +34,7 @@
 #include "OpcUaClient/ClientCommand/CommandFunction.h"
 #include "OpcUaClient/ClientCommand/CommandBrowsePathToNodeId.h"
 #include "OpcUaClient/ClientCommand/CommandGetEndpoint.h"
+#include "OpcUaClient/ClientCommand/CommandFindServer.h"
 
 // services
 #include "OpcUaClient/ClientService/ClientServiceConnect.h"
@@ -49,6 +50,7 @@
 #include "OpcUaClient/ClientService/ClientServiceFunction.h"
 #include "OpcUaClient/ClientService/ClientServiceBrowsePathToNodeId.h"
 #include "OpcUaClient/ClientService/ClientServiceGetEndpoint.h"
+#include "OpcUaClient/ClientService/ClientServiceFindServer.h"
 
 namespace OpcUaClient
 {
@@ -81,6 +83,7 @@ namespace OpcUaClient
 		CommandParser::addCommand("FUNCTION", constructSPtr<CommandFunction>());
 		CommandParser::addCommand("BROWSEPATHTONODEID", constructSPtr<CommandBrowsePathToNodeId>());
 		CommandParser::addCommand("GETENDPOINT", constructSPtr<CommandGetEndpoint>());
+		CommandParser::addCommand("FINDSERVER", constructSPtr<CommandFindServer>());
 
 
 		// register service in service factory
@@ -97,7 +100,7 @@ namespace OpcUaClient
 		ClientServiceExecute::addClientService(CommandBase::Cmd_Function, constructSPtr<ClientServiceFunction>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_BrowsePathToNodeId, constructSPtr<ClientServiceBrowsePathToNodeId>());
 		ClientServiceExecute::addClientService(CommandBase::Cmd_GetEndpoint, constructSPtr<ClientServiceGetEndpoint>());
-
+		ClientServiceExecute::addClientService(CommandBase::Cmd_FindServer, constructSPtr<ClientServiceFindServer>());
 
 		// parse command line
 		CommandParser commandParser;
