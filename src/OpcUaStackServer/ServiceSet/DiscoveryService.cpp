@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsRequest.h"
 #include "OpcUaStackCore/ServiceSet/GetEndpointsResponse.h"
+#include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 
 
@@ -162,12 +163,22 @@ namespace OpcUaStackServer
 		RegisterServerRequest::SPtr registerServerRequest = trx->request();
 		RegisterServerResponse::SPtr registerServerResponse = trx->response();
 
-		Log(Debug, "discovery service register service request")
+		Log(Debug, "discovery service register server request")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		// FIXME: todo
+		// check forward callback functions
+		ApplicationRegisterServerContext ctx;
+		ctx.statusCode_ = BadNotSupported;
+		OpcUaStatusCode statusCode = BadNotSupported;
+		if (forwardGlobalSync()->registerServerService().isCallback()) {
 
-		trx->statusCode(BadNotImplemented);
+			// forward register server request
+			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
+			registerServerRequest->server().copyTo(ctx.server_);
+			forwardGlobalSync()->registerServerService().callback()(ctx);
+		}
+
+		trx->statusCode(ctx.statusCode_);
 		trx->componentSession()->send(serviceTransaction);
 	}
 

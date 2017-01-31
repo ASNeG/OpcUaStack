@@ -193,4 +193,17 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, isOnline_);
 	}
 
+	void
+	RegisteredServer::copyTo(RegisteredServer& registeredServer)
+	{
+		serverUri_.copyTo(registeredServer.serverUri());
+		productUri_.copyTo(registeredServer.productUri());
+		gatewayServerUri_.copyTo(registeredServer.gatewayServerUri());
+		semaphoreFilePath_.copyTo(registeredServer.semaphoreFilePath());
+		registeredServer.serverType_ = serverType_;
+		registeredServer.isOnline_ = isOnline_;
+		discoveryUrlArraySPtr_->copyTo(*registeredServer.discoveryUrls());
+		serverNameArraySPtr_->copyTo(*registeredServer.serverNames());
+	}
+
 }
