@@ -42,8 +42,8 @@ namespace OpcUaStackCore
 		void productUri(const OpcUaString& productUri);
 		void productUri(const std::string& productUri);
 		OpcUaString& productUri(void);
-		void serverNames(const OpcUaStringArray::SPtr serverNames);
-		OpcUaStringArray::SPtr serverNames(void) const;
+		void serverNames(const OpcUaLocalizedTextArray::SPtr serverNames);
+		OpcUaLocalizedTextArray::SPtr serverNames(void) const;
 		void serverType(const ApplicationType serverType);
 		ApplicationType serverType(void);
 		void gatewayServerUri(const OpcUaString& gatewayServerUri);
@@ -65,7 +65,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaString serverUri_;
 		OpcUaString productUri_;
-		OpcUaStringArray::SPtr serverNameArraySPtr_;
+		OpcUaLocalizedTextArray::SPtr serverNameArraySPtr_;
 		ApplicationType serverType_;
 		OpcUaString gatewayServerUri_;
 		OpcUaStringArray::SPtr discoveryUrlArraySPtr_;

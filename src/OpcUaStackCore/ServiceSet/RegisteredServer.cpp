@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, serverUri_()
 	, productUri_()
-	, serverNameArraySPtr_(constructSPtr<OpcUaStringArray>())
+	, serverNameArraySPtr_(constructSPtr<OpcUaLocalizedTextArray>())
 	, serverType_()
 	, gatewayServerUri_()
 	, discoveryUrlArraySPtr_(constructSPtr<OpcUaStringArray>())
@@ -82,12 +82,12 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	RegisteredServer::serverNames(const OpcUaStringArray::SPtr serverNames)
+	RegisteredServer::serverNames(const OpcUaLocalizedTextArray::SPtr serverNames)
 	{
 		serverNameArraySPtr_ = serverNames;
 	}
 	
-	OpcUaStringArray::SPtr 
+	OpcUaLocalizedTextArray::SPtr
 	RegisteredServer::serverNames(void) const
 	{
 		return serverNameArraySPtr_;
