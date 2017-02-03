@@ -98,7 +98,7 @@ namespace OpcUaStackCore
 	void 
 	FindServersRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
+		//requestHeaderSPtr_->opcUaBinaryEncode(os);
 		endpointUrl_.opcUaBinaryEncode(os);
 		localeIdArraySPtr_->opcUaBinaryEncode(os);
 		serverUriArraySPtr_->opcUaBinaryEncode(os);
@@ -107,7 +107,7 @@ namespace OpcUaStackCore
 	void 
 	FindServersRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
+		//requestHeaderSPtr_->opcUaBinaryDecode(is);
 		endpointUrl_.opcUaBinaryDecode(is);
 		localeIdArraySPtr_->opcUaBinaryDecode(is);
 		serverUriArraySPtr_->opcUaBinaryDecode(is);
