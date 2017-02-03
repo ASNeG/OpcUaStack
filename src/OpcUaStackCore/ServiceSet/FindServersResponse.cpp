@@ -66,14 +66,14 @@ namespace OpcUaStackCore
 	void 
 	FindServersResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeaderSPtr_->opcUaBinaryEncode(os);
+		//responseHeaderSPtr_->opcUaBinaryEncode(os);
 		serverArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	FindServersResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeaderSPtr_->opcUaBinaryDecode(is);
+		//responseHeaderSPtr_->opcUaBinaryDecode(is);
 		serverArraySPtr_->opcUaBinaryDecode(is);
 	}
 

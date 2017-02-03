@@ -162,7 +162,7 @@ namespace OpcUaStackServer
 			findServersRequest.endpointUrl().copyTo(ctx.endpointUrl_);
 			ctx.localeIdArraySPtr_ = findServersRequest.localeIds();
 			ctx.serverUriArraySPtr_ = findServersRequest.serverUris();
-			forwardGlobalSync()->findServersService().callback()(ctx);
+			forwardGlobalSync()->findServersService().callback()(&ctx);
 
 		}
 
@@ -205,7 +205,7 @@ namespace OpcUaStackServer
 			// forward register server request
 			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
 			registerServerRequest.server().copyTo(ctx.server_);
-			forwardGlobalSync()->registerServerService().callback()(ctx);
+			forwardGlobalSync()->registerServerService().callback()(&ctx);
 		}
 		responseHeader.serviceResult(ctx.statusCode_);
 
@@ -236,7 +236,7 @@ namespace OpcUaStackServer
 			// forward register server request
 			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
 			registerServerRequest->server().copyTo(ctx.server_);
-			forwardGlobalSync()->registerServerService().callback()(ctx);
+			forwardGlobalSync()->registerServerService().callback()(&ctx);
 		}
 
 		trx->statusCode(ctx.statusCode_);
