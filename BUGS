@@ -21,14 +21,8 @@ Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
 
 
 
-004. OPC UA Client Server verbindung bricht ab
-==============================================
+005. Eigene Klasse fuer ApplicationType
+=======================================
 
-- Der Client öffnet eine Verbindung zu einem Server
-- Nach Ablauf von X Sekunden bricht die Verbindung ab und wird wieder neu geöffnet
-
-09:57:47.227538 DBG [7f29f1c18700] session send CreateSessionRequest
-10:05:02.520940 DBG [7f29f1c18700] session send request timeout
-
-7 Minuten und 15 Sekunden -> 435 Sekunden
-SecurityToken existiert nicht mehr (Wahrscheinlich Timeout)
+- Der ApplicationType sollte aus der Klasse OpcUaStackCore/ServiceSet/ApplicationDescription 
+  entfernt werden.
