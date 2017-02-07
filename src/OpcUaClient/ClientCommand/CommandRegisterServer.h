@@ -44,6 +44,15 @@ namespace OpcUaClient
 		//- CommandRegisterServer interface ---------------------------------------------
 
 	  private:
+		std::string serverUri_;
+		std::string productUri_;
+		std::vector<std::string> discoveryUrls_;
+		std::vector<std::string> serverNames_;
+		std::string serverType_;
+		std::string gatewayServerUri_;
+		std::string semaphoreFilePath_;
+		bool isOnline_;
+
 	};
 
 }
