@@ -43,6 +43,15 @@ namespace OpcUaClient
 		virtual std::string help(void);
 		//- CommandRegisterServer interface ---------------------------------------------
 
+		std::string serverUri(void);
+		std::string productUri(void);
+		std::vector<std::string>& discoveryUrls(void);
+		std::vector<std::string>& serverNames(void);
+		std::string serverType(void);
+		std::string gatewayServerUri(void);
+		std::string semaphoreFilePath(void);
+		bool isOnline(void);
+
 	  private:
 		std::string serverUri_;
 		std::string productUri_;

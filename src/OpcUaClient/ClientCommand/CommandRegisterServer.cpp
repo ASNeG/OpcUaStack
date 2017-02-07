@@ -17,6 +17,7 @@
  */
 
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 #include <sstream>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaClient/ClientCommand/CommandRegisterServer.h"
@@ -142,6 +143,54 @@ namespace OpcUaClient
 		   << "    -SemaphoreFilePath (0..1): semaphore file path\n"
 		   << "    -IsOnline (0..1): online flag [0,1]\n";
 		return ss.str();
+	}
+
+	std::string
+	CommandRegisterServer::serverUri(void)
+	{
+		return serverUri_;
+	}
+
+	std::string
+	CommandRegisterServer::productUri(void)
+	{
+		return productUri_;
+	}
+
+	std::vector<std::string>&
+	CommandRegisterServer::discoveryUrls(void)
+	{
+		return discoveryUrls_;
+	}
+
+	std::vector<std::string>&
+	CommandRegisterServer::serverNames(void)
+	{
+		serverNames_;
+	}
+
+	std::string
+	CommandRegisterServer::serverType(void)
+	{
+		return serverType_;
+	}
+
+	std::string
+	CommandRegisterServer::gatewayServerUri(void)
+	{
+		return gatewayServerUri_;
+	}
+
+	std::string
+	CommandRegisterServer::semaphoreFilePath(void)
+	{
+		return semaphoreFilePath_;
+	}
+
+	bool
+	CommandRegisterServer::isOnline(void)
+	{
+		return isOnline_;
 	}
 
 }
