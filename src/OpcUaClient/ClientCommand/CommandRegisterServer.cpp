@@ -166,7 +166,7 @@ namespace OpcUaClient
 	std::vector<std::string>&
 	CommandRegisterServer::serverNames(void)
 	{
-		serverNames_;
+		return serverNames_;
 	}
 
 	std::string
