@@ -42,4 +42,31 @@ namespace OpcUaStackClient
 	{
 	}
 
+	void
+	DiscoveryClientRegisteredServers::addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer)
+	{
+		// check existing registered server entry
+		RegisteredServer::Map::iterator it;
+		it = registeredServerMap_.find(name);
+		if (it != registeredServerMap_.end()) {
+			// remove existing registered server entry
+			registeredServerMap_.erase(it);
+		}
+
+		// insert new registered server entry
+		registeredServerMap_.insert(std::make_pair(name, registeredServer));
+	}
+
+	void
+	DiscoveryClientRegisteredServers::removeRegisteredServer(const std::string& name)
+	{
+		// check existing registered server entry
+		RegisteredServer::Map::iterator it;
+		it = registeredServerMap_.find(name);
+		if (it != registeredServerMap_.end()) {
+			// remove existing registered server entry
+			registeredServerMap_.erase(it);
+		}
+	}
+
 }

@@ -36,6 +36,9 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
+		void addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer);
+		void removeRegisteredServer(const std::string& name);
+
 	  public:
 		RegisteredServer::Map registeredServerMap_;
 	};
