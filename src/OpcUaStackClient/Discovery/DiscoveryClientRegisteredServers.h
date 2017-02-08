@@ -15,26 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackDiscoveryClient_DiscoveryClient_h__
-#define __OpcUaStackDiscoveryClient_DiscoveryClient_h__
+#ifndef __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
+#define __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
+#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	class DLLEXPORT DiscoveryClient
-	: public OpcUaStackCore::Core
+	class DLLEXPORT DiscoveryClientRegisteredServers
 	{
 	  public:
-		DiscoveryClient(void);
-	    ~DiscoveryClient(void);
+		DiscoveryClientRegisteredServers(void);
+	    ~DiscoveryClientRegisteredServers(void);
 
 		bool startup(void);
 		void shutdown(void);
 
 	  public:
+		RegisteredServer::Map registeredServerMap_;
 	};
 
 }

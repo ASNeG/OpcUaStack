@@ -19,6 +19,8 @@
 #define __OpcUaStackCore_RegisteredServerResponse_h__
 
 #include <stdint.h>
+#include <vector>
+#include <map>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
@@ -32,6 +34,8 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<RegisteredServer> SPtr;
+		typedef std::map<std::string, RegisteredServer::SPtr> Map;
+		typedef std::vector<RegisteredServer::SPtr> Vec;
 
 		RegisteredServer(void);
 		virtual ~RegisteredServer(void);

@@ -16,28 +16,29 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/DiscoveryClient/DiscoveryClient.h"
+#include "OpcUaStackClient/Discovery/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackClient
 {
 
-	DiscoveryClient::DiscoveryClient(void)
+	DiscoveryClientRegisteredServers::DiscoveryClientRegisteredServers(void)
+	: registeredServerMap_()
 	{
 	}
 
-	DiscoveryClient::~DiscoveryClient(void)
+	DiscoveryClientRegisteredServers::~DiscoveryClientRegisteredServers(void)
 	{
 	}
 
 	bool 
-	DiscoveryClient::startup(void)
+	DiscoveryClientRegisteredServers::startup(void)
 	{
 	}
 
 	void 
-	DiscoveryClient::shutdown(void)
+	DiscoveryClientRegisteredServers::shutdown(void)
 	{
 	}
 
