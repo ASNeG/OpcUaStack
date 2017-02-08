@@ -80,7 +80,36 @@ namespace OpcUaClient
 		trx = constructSPtr<ServiceTransactionRegisterServer>();
 		RegisterServerRequest::SPtr req = trx->request();
 
-		// FIXME: command line parameter
+		// added request parameter
+		std::vector<std::string>::iterator it;
+		req->server().serverUri(commandRegisterServer->serverUri());
+		req->server().productUri(commandRegisterServer->productUri());
+		req->server().serverNames(constructSPtr<OpcUaLocalizedTextArray>());
+		req->server().serverNames()->resize(commandRegisterServer->serverNames().size());
+		for (it=commandRegisterServer->serverNames().begin(); it!=commandRegisterServer->serverNames().end(); it++) {
+			OpcUaLocalizedText::SPtr serverName = constructSPtr<OpcUaLocalizedText>();
+			serverName->set("en", *it);
+			req->server().serverNames()->push_back(serverName);
+		}
+		if (commandRegisterServer->serverType() == "CLIENT") {
+			req->server().serverType(ApplicationType_Client);
+		}
+		if (commandRegisterServer->serverType() == "SERVER") {
+			req->server().serverType(ApplicationType_Server);
+		}
+		else {
+			req->server().serverType(ApplicationType_ClientAndServer);
+		}
+		req->server().gatewayServerUri(commandRegisterServer->gatewayServerUri());
+		req->server().discoveryUrls(constructSPtr<OpcUaStringArray>());
+		req->server().discoveryUrls()->resize(commandRegisterServer->discoveryUrls().size());
+		for (it=commandRegisterServer->discoveryUrls().begin(); it!=commandRegisterServer->discoveryUrls().end(); it++) {
+			OpcUaString::SPtr discoveryUrl = constructSPtr<OpcUaString>();
+			discoveryUrl->value(*it);
+			req->server().discoveryUrls()->push_back(discoveryUrl);
+		}
+		req->server().semaphoreFilePath(commandRegisterServer->semaphoreFilePath());
+		req->server().isOnline(commandRegisterServer->isOnline());
 
 		// send read request
 		discoveryService->syncSend(trx);
