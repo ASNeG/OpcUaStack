@@ -137,13 +137,13 @@ namespace OpcUaClient
     {
 		Log(Debug, "register server discovery loop");
 
-		// FIXME: todo
-
+		sessionService_->asyncConnect();
     }
 
 	void
 	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
+		std::cout << "SessionStateUpdate=" << sessionState << std::endl;
 		// FIXME: todo
 	}
 
