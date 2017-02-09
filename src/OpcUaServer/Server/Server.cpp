@@ -97,7 +97,7 @@ namespace OpcUaServer
 		server_.start();
 
 		// start discovery client
-		if (!discoveryClient_.startup()) {
+		if (!discoveryClient_.startup(*config_)) {
 			return false;
 		}
 

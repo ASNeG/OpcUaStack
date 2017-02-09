@@ -19,8 +19,10 @@
 #define __OpcUaServer_DiscoveryClient_h__
 
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackClient/Discovery/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaServer
 {
@@ -31,10 +33,12 @@ namespace OpcUaServer
 		DiscoveryClient(void);
 		~DiscoveryClient(void);
 
-		bool startup(void);
+		bool startup(Config& config);
 		void shutdown(void);
 		
 	  private:
+		Config* config_;
+		DiscoveryClientRegisteredServers discoveryClient_;
 	};
 
 }

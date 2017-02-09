@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_DiscoveryClientRegisteredServers_h__
-#define __OpcUaClient_DiscoveryClientRegisteredServers_h__
+#ifndef __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
+#define __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
@@ -25,9 +25,8 @@
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;
-using namespace OpcUaStackClient;
 
-namespace OpcUaClient
+namespace OpcUaStackClient
 {
 
 	class DLLEXPORT DiscoveryClientRegisteredServers

@@ -16,11 +16,11 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaClient/Discovery/DiscoveryClientRegisteredServers.h"
+#include "OpcUaStackClient/Discovery/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaClient
+namespace OpcUaStackClient
 {
 
 	DiscoveryClientRegisteredServers::DiscoveryClientRegisteredServers(void)

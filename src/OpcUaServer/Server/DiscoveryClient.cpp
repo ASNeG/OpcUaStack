@@ -24,6 +24,8 @@ namespace OpcUaServer
 {
 
 	DiscoveryClient::DiscoveryClient(void)
+	: config_(nullptr)
+	, discoveryClient_()
 	{
 	}
 
@@ -32,9 +34,17 @@ namespace OpcUaServer
 	}
 
 	bool
-	DiscoveryClient::startup(void)
+	DiscoveryClient::startup(Config& config)
 	{
+		config_ = &config;
+
 		// FIXME: todo
+
+#if 0
+	    void ioThread(IOThread::SPtr& ioThread);
+	    void loopTime(uint32_t loopTime);
+	    void discoveryUri(const std::string& discoveryUri);
+#endif
 
 		return true;
 	}
