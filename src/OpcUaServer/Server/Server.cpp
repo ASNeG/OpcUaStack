@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -93,13 +93,24 @@ namespace OpcUaServer
 	bool
 	Server::start(void)
 	{
+		// start opc ua server
 		server_.start();
+
+		// start discovery client
+		if (!discoveryClient_.startup()) {
+			return false;
+		}
+
 		return true;
 	}
 
 	void
 	Server::stop(void)
 	{
+		// shutdown discovery client
+		discoveryClient_.shutdown();
+
+		// stop opc ua server
 		server_.stop();
 	}
 
