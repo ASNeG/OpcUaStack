@@ -27,6 +27,8 @@ namespace OpcUaClient
 	: ioThread_(nullptr)
 	, mutex_()
 	, registeredServerMap_()
+	, slotTimerElement_()
+	, loopTime_(40000)
 	{
 	}
 
@@ -34,23 +36,41 @@ namespace OpcUaClient
 	{
 	}
 
-	 void
-	 DiscoveryClientRegisteredServers::ioThread(IOThread* ioThread)
-	 {
-		 ioThread_ = ioThread;
-	 }
+	void
+	DiscoveryClientRegisteredServers::ioThread(IOThread* ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	void
+	DiscoveryClientRegisteredServers::loopTime(uint32_t loopTime)
+	{
+		loopTime_ = loopTime;
+	}
 
 	bool 
 	DiscoveryClientRegisteredServers::startup(void)
 	{
+	  	// start timer to check server entries
+	  	slotTimerElement_ = constructSPtr<SlotTimerElement>();
+	  	slotTimerElement_->callback().reset(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
+	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), loopTime_);
+	  	ioThread_->slotTimer()->start(slotTimerElement_);
+
+		return true;
 	}
 
 	void 
 	DiscoveryClientRegisteredServers::shutdown(void)
 	{
+    	// stop timer
+    	if (slotTimerElement_.get() != nullptr) {
+    		ioThread_->slotTimer()->stop(slotTimerElement_);
+    		slotTimerElement_.reset();
+    	}
 	}
 
-	void
+    void
 	DiscoveryClientRegisteredServers::addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer)
 	{
 		boost::mutex::scoped_lock g(mutex_);
@@ -83,5 +103,11 @@ namespace OpcUaClient
 		RegisteredServer::SPtr registeredServer = it->second;
 		registeredServer->isOnline(false);
 	}
+
+    void
+    DiscoveryClientRegisteredServers::loop(void)
+    {
+		Log(Debug, "register server loop");
+    }
 
 }

@@ -35,6 +35,7 @@ namespace OpcUaClient
 	    ~DiscoveryClientRegisteredServers(void);
 
 	    void ioThread(IOThread* ioThread);
+	    void loopTime(uint32_t loopTime);
 
 		bool startup(void);
 		void shutdown(void);
@@ -43,7 +44,11 @@ namespace OpcUaClient
 		void removeRegisteredServer(const std::string& name);
 
 	  public:
+		void loop(void);
+
 		IOThread* ioThread_;
+		SlotTimerElement::SPtr slotTimerElement_;
+		uint32_t loopTime_;
 		boost::mutex mutex_;
 		RegisteredServer::Map registeredServerMap_;
 	};
