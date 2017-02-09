@@ -29,7 +29,6 @@ namespace OpcUaClient
 	, registeredServerMap_()
 	, slotTimerElement_()
 	, loopTime_(40000)
-	, init_(false)
 	, discoveryUri_("")
 	, sessionService_()
 	{
@@ -60,6 +59,26 @@ namespace OpcUaClient
 	bool 
 	DiscoveryClientRegisteredServers::startup(void)
 	{
+		// create service set manager
+		SessionServiceConfig sessionServiceConfig;
+		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
+		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
+		sessionServiceConfig.session_->sessionName("DiscoveryClient");
+		sessionServiceConfig.session_->reconnectTimeout(5000);
+		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
+		serviceSetManager_.sessionService(sessionServiceConfig);
+
+		// create session service
+		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
+
+		// create discovery service
+		DiscoveryServiceConfig discoveryServiceConfig;
+		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
+		discoveryServiceConfig.discoveryServiceIf_ = this;
+		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
+
 	  	// start timer to check server entries
 	  	slotTimerElement_ = constructSPtr<SlotTimerElement>();
 	  	slotTimerElement_->callback().reset(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
@@ -116,31 +135,20 @@ namespace OpcUaClient
     void
     DiscoveryClientRegisteredServers::loop(void)
     {
-		Log(Debug, "register server loop");
+		Log(Debug, "register server discovery loop");
 
-		// init service set manager
-		if (!init_) {
-			init_ = true;
-
-			// create service set manager
-			SessionServiceConfig sessionServiceConfig;
-			sessionServiceConfig.ioThreadName("DiscoveryIOThread");
-			sessionServiceConfig.sessionServiceIf_ = this;
-			sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
-			sessionServiceConfig.session_->sessionName("DiscoveryClient");
-			sessionServiceConfig.session_->reconnectTimeout(5000);
-			sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
-			serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
-			serviceSetManager_.sessionService(sessionServiceConfig);
-
-			// create session service
-			sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
-		}
+		// FIXME: todo
 
     }
 
 	void
 	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	{
+		// FIXME: todo
+	}
+
+	void
+	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
 	{
 		// FIXME: todo
 	}

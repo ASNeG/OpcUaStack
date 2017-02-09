@@ -32,6 +32,7 @@ namespace OpcUaClient
 
 	class DLLEXPORT DiscoveryClientRegisteredServers
 	: public SessionServiceIf
+	, public DiscoveryServiceIf
 	{
 	  public:
 		DiscoveryClientRegisteredServers(void);
@@ -51,6 +52,10 @@ namespace OpcUaClient
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
 		//- SessionServiceIf --------------------------------------------------
 
+        //- DiscoveryServiceIf ------------------------------------------------
+        virtual void discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer);
+        //- DiscoveryServiceIf ------------------------------------------------
+
 	  public:
 		void loop(void);
 
@@ -60,11 +65,10 @@ namespace OpcUaClient
 		boost::mutex mutex_;
 		RegisteredServer::Map registeredServerMap_;
 
-		bool init_;
 		std::string discoveryUri_;
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
-
+		DiscoveryService::SPtr discoveryService_;
 	};
 
 }
