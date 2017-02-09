@@ -24,11 +24,14 @@ namespace OpcUaClient
 {
 
 	DiscoveryClientRegisteredServers::DiscoveryClientRegisteredServers(void)
-	: ioThread_(nullptr)
+	: ioThread_()
 	, mutex_()
 	, registeredServerMap_()
 	, slotTimerElement_()
 	, loopTime_(40000)
+	, init_(false)
+	, discoveryUri_("")
+	, sessionService_()
 	{
 	}
 
@@ -37,7 +40,7 @@ namespace OpcUaClient
 	}
 
 	void
-	DiscoveryClientRegisteredServers::ioThread(IOThread* ioThread)
+	DiscoveryClientRegisteredServers::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
 	}
@@ -46,6 +49,12 @@ namespace OpcUaClient
 	DiscoveryClientRegisteredServers::loopTime(uint32_t loopTime)
 	{
 		loopTime_ = loopTime;
+	}
+
+	void
+	DiscoveryClientRegisteredServers::discoveryUri(const std::string& discoveryUri)
+	{
+		discoveryUri_ = discoveryUri;
 	}
 
 	bool 
@@ -108,6 +117,32 @@ namespace OpcUaClient
     DiscoveryClientRegisteredServers::loop(void)
     {
 		Log(Debug, "register server loop");
+
+		// init service set manager
+		if (!init_) {
+			init_ = true;
+
+			// create service set manager
+			SessionServiceConfig sessionServiceConfig;
+			sessionServiceConfig.ioThreadName("DiscoveryIOThread");
+			sessionServiceConfig.sessionServiceIf_ = this;
+			sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
+			sessionServiceConfig.session_->sessionName("DiscoveryClient");
+			sessionServiceConfig.session_->reconnectTimeout(5000);
+			sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+			serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
+			serviceSetManager_.sessionService(sessionServiceConfig);
+
+			// create session service
+			sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
+		}
+
     }
+
+	void
+	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	{
+		// FIXME: todo
+	}
 
 }

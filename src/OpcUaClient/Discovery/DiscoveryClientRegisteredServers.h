@@ -22,20 +22,24 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackClient;
 
 namespace OpcUaClient
 {
 
 	class DLLEXPORT DiscoveryClientRegisteredServers
+	: public SessionServiceIf
 	{
 	  public:
 		DiscoveryClientRegisteredServers(void);
 	    ~DiscoveryClientRegisteredServers(void);
 
-	    void ioThread(IOThread* ioThread);
+	    void ioThread(IOThread::SPtr& ioThread);
 	    void loopTime(uint32_t loopTime);
+	    void discoveryUri(const std::string& discoveryUri);
 
 		bool startup(void);
 		void shutdown(void);
@@ -43,14 +47,24 @@ namespace OpcUaClient
 		void addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer);
 		void removeRegisteredServer(const std::string& name);
 
+		//- SessionServiceIf --------------------------------------------------
+		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		//- SessionServiceIf --------------------------------------------------
+
 	  public:
 		void loop(void);
 
-		IOThread* ioThread_;
+		IOThread::SPtr ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;
 		uint32_t loopTime_;
 		boost::mutex mutex_;
 		RegisteredServer::Map registeredServerMap_;
+
+		bool init_;
+		std::string discoveryUri_;
+		ServiceSetManager serviceSetManager_;
+		SessionService::SPtr sessionService_;
+
 	};
 
 }
