@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
-#define __OpcUaStackClient_DiscoveryClientRegisteredServers_h__
+#ifndef __OpcUaClient_DiscoveryClientFindServers_h__
+#define __OpcUaClient_DiscoveryClientFindServers_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
@@ -24,20 +24,17 @@
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaClient
 {
 
-	class DLLEXPORT DiscoveryClientRegisteredServers
+	class DLLEXPORT DiscoveryClientFindServers
 	{
 	  public:
-		DiscoveryClientRegisteredServers(void);
-	    ~DiscoveryClientRegisteredServers(void);
+		DiscoveryClientFindServers(void);
+	    ~DiscoveryClientFindServers(void);
 
 		bool startup(void);
 		void shutdown(void);
-
-		void addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer);
-		void removeRegisteredServer(const std::string& name);
 
 	  public:
 		RegisteredServer::Map registeredServerMap_;

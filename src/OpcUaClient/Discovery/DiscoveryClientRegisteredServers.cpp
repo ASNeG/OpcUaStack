@@ -16,21 +16,29 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/Discovery/DiscoveryClientRegisteredServers.h"
+#include "OpcUaClient/Discovery/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaClient
 {
 
 	DiscoveryClientRegisteredServers::DiscoveryClientRegisteredServers(void)
-	: registeredServerMap_()
+	: ioThread_(nullptr)
+	, mutex_()
+	, registeredServerMap_()
 	{
 	}
 
 	DiscoveryClientRegisteredServers::~DiscoveryClientRegisteredServers(void)
 	{
 	}
+
+	 void
+	 DiscoveryClientRegisteredServers::ioThread(IOThread* ioThread)
+	 {
+		 ioThread_ = ioThread;
+	 }
 
 	bool 
 	DiscoveryClientRegisteredServers::startup(void)
@@ -45,6 +53,8 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientRegisteredServers::addRegisteredServer(const std::string& name, RegisteredServer::SPtr& registeredServer)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		// check existing registered server entry
 		RegisteredServer::Map::iterator it;
 		it = registeredServerMap_.find(name);
@@ -60,13 +70,18 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientRegisteredServers::removeRegisteredServer(const std::string& name)
 	{
+		boost::mutex::scoped_lock g(mutex_);
+
 		// check existing registered server entry
 		RegisteredServer::Map::iterator it;
 		it = registeredServerMap_.find(name);
-		if (it != registeredServerMap_.end()) {
-			// remove existing registered server entry
-			registeredServerMap_.erase(it);
+		if (it == registeredServerMap_.end()) {
+			return;
 		}
+
+		// set online flag off
+		RegisteredServer::SPtr registeredServer = it->second;
+		registeredServer->isOnline(false);
 	}
 
 }

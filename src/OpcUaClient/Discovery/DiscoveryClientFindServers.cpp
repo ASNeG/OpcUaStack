@@ -15,31 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackClient_DiscoveryClientFindServers_h__
-#define __OpcUaStackClient_DiscoveryClientFindServers_h__
-
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaClient/Discovery/DiscoveryClientFindServers.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackClient
+namespace OpcUaClient
 {
 
-	class DLLEXPORT DiscoveryClientFindServers
+	DiscoveryClientFindServers::DiscoveryClientFindServers(void)
+	: registeredServerMap_()
 	{
-	  public:
-		DiscoveryClientFindServers(void);
-	    ~DiscoveryClientFindServers(void);
+	}
 
-		bool startup(void);
-		void shutdown(void);
+	DiscoveryClientFindServers::~DiscoveryClientFindServers(void)
+	{
+	}
 
-	  public:
-		RegisteredServer::Map registeredServerMap_;
-	};
+	bool 
+	DiscoveryClientFindServers::startup(void)
+	{
+	}
+
+	void 
+	DiscoveryClientFindServers::shutdown(void)
+	{
+	}
 
 }
-
-#endif
