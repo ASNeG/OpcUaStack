@@ -26,6 +26,7 @@ namespace OpcUaServer
 	DiscoveryClient::DiscoveryClient(void)
 	: config_(nullptr)
 	, discoveryClient_()
+	, discoveryUrl_("")
 	{
 	}
 
@@ -36,15 +37,40 @@ namespace OpcUaServer
 	bool
 	DiscoveryClient::startup(Config& config)
 	{
+		bool success;
 		config_ = &config;
 
-		// FIXME: todo
+		//
+		// read discovery server configuration
+		//
+
+		// check if the discovery registered service is enabled
+		boost::optional<Config> dicoveryServerConfig = config.getChild("OpcUaServer.DiscoveryServer");
+		if (!dicoveryServerConfig) {
+			Log(Info, "discovery registered service is disabled");
+			return true;
+		}
+		Log(Info, "discovery registered service is enabled");
+
+		// get element discovery url
+		success = dicoveryServerConfig->getConfigParameter("DiscoveryUrl", discoveryUrl_);
+		if (!success) {
+			Log(Error, "element missing in config file")
+				.parameter("Element", "OpcUaServer.DiscoveryServer.DiscoveryUrl")
+				.parameter("ConfigFileName", config.configFileName());
+			return false;
+		}
+
+		//
+		// read endpoint configuration
+		//
 
 #if 0
 	    void ioThread(IOThread::SPtr& ioThread);
 	    void loopTime(uint32_t loopTime);
 	    void discoveryUri(const std::string& discoveryUri);
 #endif
+
 
 		return true;
 	}

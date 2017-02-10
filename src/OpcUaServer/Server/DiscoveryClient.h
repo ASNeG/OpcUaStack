@@ -37,6 +37,8 @@ namespace OpcUaServer
 		void shutdown(void);
 		
 	  private:
+		std::string discoveryUrl_;
+
 		Config* config_;
 		DiscoveryClientRegisteredServers discoveryClient_;
 	};
