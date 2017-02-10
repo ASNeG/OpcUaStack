@@ -37,6 +37,15 @@ namespace OpcUaServer
 		void shutdown(void);
 		
 	  private:
+		bool parseEndpointConfiguration(Config& config);
+		bool createRegisteredServers(
+			const std::string& applicationUri,
+			const std::string& productUri,
+			const std::string& applicationName,
+			const std::string& discoveryUrl,
+			const std::string& gatewayServerUri
+		);
+
 		std::string discoveryUrl_;
 
 		Config* config_;
