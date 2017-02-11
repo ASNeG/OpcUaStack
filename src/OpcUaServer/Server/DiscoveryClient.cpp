@@ -26,7 +26,7 @@ namespace OpcUaServer
 	DiscoveryClient::DiscoveryClient(void)
 	: config_(nullptr)
 	, discoveryClient_()
-	, discoveryUrl_("")
+	, discoveryServerUrl_("")
 	{
 	}
 
@@ -53,7 +53,7 @@ namespace OpcUaServer
 		Log(Info, "discovery registered service is enabled");
 
 		// get element discovery url
-		success = dicoveryServerConfig->getConfigParameter("DiscoveryUrl", discoveryUrl_);
+		success = dicoveryServerConfig->getConfigParameter("DiscoveryUrl", discoveryServerUrl_);
 		if (!success) {
 			Log(Error, "element missing in config file")
 				.parameter("Element", "OpcUaServer.DiscoveryServer.DiscoveryUrl")
@@ -167,25 +167,6 @@ namespace OpcUaServer
 		}
 
 #if 0
-
-	    <Endpoints>
-	     <EndpointDescription>
-	  	  <EndpointUrl>opc.tcp://0.0.0.0:8889</EndpointUrl>
-	  	  <ApplicationUri>urn:0.0.0.0:ASNeG.de:ASNeG-Demo</ApplicationUri>
-	  	  <ProductUri>urn:ASNeG.de:ASNeG-Demo</ProductUri>
-	  	  <ApplicationName>ASNeG-Demo</ApplicationName>
-	  	  <DiscoveryUrl>opc.tcp://0.0.0.0:8889</DiscoveryUrl>
-	  	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
-	  	  <UserTokenPolicy>
-	  	    <PolicyId>OpcUaStack</PolicyId>
-	  	    <TokenType>Anonymous</TokenType>
-	  	  </UserTokenPolicy>
-	  	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
-	  	  <SecurityLevel>0</SecurityLevel>
-	  	</EndpointDescription>
-
-
-
 		void serverUri(const OpcUaString& serverUri);
 		void serverUri(const std::string& serverUri);
 		OpcUaString& serverUri(void);

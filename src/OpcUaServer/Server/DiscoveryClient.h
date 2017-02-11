@@ -46,7 +46,7 @@ namespace OpcUaServer
 			const std::string& gatewayServerUri
 		);
 
-		std::string discoveryUrl_;
+		std::string discoveryServerUrl_;
 
 		Config* config_;
 		DiscoveryClientRegisteredServers discoveryClient_;
