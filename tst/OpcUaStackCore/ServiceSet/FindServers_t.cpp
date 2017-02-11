@@ -65,13 +65,6 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
 	*opcUaGuidSPtr = "0D4455B2-8D2F-B74F-864F-0AF5945DD833";
 	
-	findServersRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	findServersRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	findServersRequestSPtr->requestHeader()->time(ptime);
-	findServersRequestSPtr->requestHeader()->requestHandle(0);
-	findServersRequestSPtr->requestHeader()->returnDisagnostics(0);
-	findServersRequestSPtr->requestHeader()->timeoutHint(300000);
-	
 	// build Parameter
 	stringSPtr = constructSPtr<OpcUaString>();
 	stringSPtr->value("TestString");
@@ -94,14 +87,12 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	OpcUaStackCore::dumpHex(ios);
 	
 	std::stringstream ss;
-	ss << "4d 53 47 46 7d 00 00 00  d9 7a 25 09 01 00 00 00"
-	   << "36 00 00 00 04 00 00 00  01 00 a6 01 04 01 00 0d"
-	   << "44 55 b2 8d 2f b7 4f 86  4f 0a f5 94 5d d8 33 00"
-	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 ff"	
-	   << "ff ff ff e0 93 04 00 00  00 00 0b 00 00 00 45 6e"
-	   << "64 70 6f 69 6e 74 55 72  6c 01 00 00 00 0a 00 00"
-	   << "00 54 65 73 74 53 74 72  69 6e 67 01 00 00 00 0a"
-	   << "00 00 00 54 65 73 74 53  74 72 69 6e 67";
+	ss << "4d 53 47 46 4f 00 00 00  d9 7a 25 09 01 00 00 00"
+       << "36 00 00 00 04 00 00 00  01 00 a6 01 0b 00 00 00"
+	   << "45 6e 64 70 6f 69 6e 74  55 72 6c 01 00 00 00 0a"
+	   << "00 00 00 54 65 73 74 53  74 72 69 6e 67 01 00 00"
+	   << "00 0a 00 00 00 54 65 73  74 53 74 72 69 6e 67";
+
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
@@ -130,15 +121,6 @@ BOOST_AUTO_TEST_CASE(FindServers_Request)
 	// decode
 	findServersRequestSPtr = constructSPtr<FindServersRequest>();
 	findServersRequestSPtr->opcUaBinaryDecode(ios);
-
-	std::string str;
-	str = *findServersRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(findServersRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
-	BOOST_REQUIRE(str == "0D4455B2-8D2F-B74F-864F-0AF5945DD833");
-	BOOST_REQUIRE(findServersRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(findServersRequestSPtr->requestHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(findServersRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(findServersRequestSPtr->requestHeader()->timeoutHint() == 300000);
 	
 	BOOST_REQUIRE(findServersRequestSPtr->endpointUrl().value() == "EndpointUrl");
 	
@@ -198,12 +180,6 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	// build 
 	findServersResponseSPtr = constructSPtr<FindServersResponse>();
 
-	// build ResponseHeader
-	statusCode = Success;
-	findServersResponseSPtr->responseHeader()->time(ptime);
-	findServersResponseSPtr->responseHeader()->requestHandle(0);
-	findServersResponseSPtr->responseHeader()->serviceResult(statusCode);
-
 	// build ApplicationDescription
 	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
 	applicationDescriptionSPtr->applicationUri("urn:localhost:compyny:Unittest");
@@ -231,18 +207,17 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss << "4d 53 47 46 bb 00 00 00  d9 7a 25 09 01 00 00 00"
-	   << "36 00 00 00 04 00 00 00  01 00 a9 01 00 00 00 00"
-	   << "00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00"
-	   << "00 00 00 00 01 00 00 00  1e 00 00 00 75 72 6e 3a"
-	   << "6c 6f 63 61 6c 68 6f 73  74 3a 63 6f 6d 70 79 6e"
-	   << "79 3a 55 6e 69 74 74 65  73 74 14 00 00 00 75 72"
-	   << "6e 3a 63 6f 6d 70 61 6e  79 3a 55 6e 69 74 74 65"
-	   << "73 74 02 10 00 00 00 63  6f 6d 70 61 6e 79 20 55"
-	   << "6e 69 74 74 65 73 74 00  00 00 00 ff ff ff ff ff"
-	   << "ff ff ff 01 00 00 00 20  00 00 00 6f 70 74 2e 74"
-	   << "63 70 3a 2f 2f 6c 6f 63  61 6c 68 6f 73 74 3a 34"
-	   << "38 34 31 2f 30 2e 30 2e  30 2e 30";
+	ss << "4d 53 47 46 a3 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "36 00 00 00 04 00 00 00  01 00 a9 01 01 00 00 00"
+	   << "1e 00 00 00 75 72 6e 3a  6c 6f 63 61 6c 68 6f 73"
+	   << "74 3a 63 6f 6d 70 79 6e  79 3a 55 6e 69 74 74 65"
+	   << "73 74 14 00 00 00 75 72  6e 3a 63 6f 6d 70 61 6e"
+	   << "79 3a 55 6e 69 74 74 65  73 74 02 10 00 00 00 63"
+	   << "6f 6d 70 61 6e 79 20 55  6e 69 74 74 65 73 74 00"
+       << "00 00 00 ff ff ff ff ff  ff ff ff 01 00 00 00 20"
+	   << "00 00 00 6f 70 74 2e 74  63 70 3a 2f 2f 6c 6f 63"
+	   << "61 6c 68 6f 73 74 3a 34  38 34 31 2f 30 2e 30 2e"
+	   << "30 2e 30";
 
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
@@ -271,10 +246,6 @@ BOOST_AUTO_TEST_CASE(FindServers_Response)
 	// decode 
 	findServersResponseSPtr = constructSPtr<FindServersResponse>();
 	findServersResponseSPtr->opcUaBinaryDecode(ios);
-
-	BOOST_REQUIRE(findServersResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(findServersResponseSPtr->responseHeader()->requestHandle() == 0);
-	BOOST_REQUIRE(findServersResponseSPtr->responseHeader()->serviceResult() == Success);
 
 	BOOST_REQUIRE(findServersResponseSPtr->servers()->size() == 1);
 	applicationDescriptionSPtr = constructSPtr<ApplicationDescription>();
