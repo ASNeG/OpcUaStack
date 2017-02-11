@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Base/Url.h"
 #include <boost/lexical_cast.hpp>
+#include <boost/regex.hpp>
+#include <boost/asio.hpp>
+#include <boost/algorithm/string.hpp>
+#include "OpcUaStackCore/Base/Url.h"
 
 namespace OpcUaStackCore
 {
@@ -100,6 +103,53 @@ namespace OpcUaStackCore
 		path_ = "";
 		query_ = "";
 	}
+
+	bool
+	Url::isLocalAddress(void)
+	{
+		// check localhost
+		if (boost::to_upper_copy(host_) == "LOCALHOST") return true;
+
+		// convert string to ip address
+		boost::system::error_code ec;
+		boost::asio::ip::address_v4 ipv4;
+		boost::replace_all(host_, "00", "0");
+		boost::replace_all(host_, "00", "0");
+		host_ = boost::regex_replace(host_, boost::regex("(0)(\\d)"), std::string("\\2"));
+		ipv4 = boost::asio::ip::address_v4::from_string(host_, ec);
+		if (ec) {
+			return false;
+		}
+
+		// check ip address
+		return ipv4.is_loopback();
+	}
+
+	bool
+	Url::isAnyAddress(void)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	Url::isIPAddress(void)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	Url::isHostAddress(void)
+	{
+		// FIXME: todo
+		return false;
+	}
+#if 0
+	   static const boost::regex e("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
+	   return regex_match(s, e);
+
+#endif
 
 	size_t
 	Url::findString(const std::string& str, size_t pos)

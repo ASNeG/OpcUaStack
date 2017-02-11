@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -42,6 +42,11 @@ namespace OpcUaStackCore
 		std::string path(void);
 		std::string query(void);
 		void clear(void);
+
+		bool isLocalAddress(void);
+		bool isAnyAddress(void);
+		bool isIPAddress(void);
+		bool isHostAddress(void);
 	  
 	  private:
 		size_t findString(const std::string& str, size_t pos = 0);
