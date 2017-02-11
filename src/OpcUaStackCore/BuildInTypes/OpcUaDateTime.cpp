@@ -133,7 +133,7 @@ namespace OpcUaStackCore
 		std::string str;
 		try 
 		{
-			str = boost::posix_time::to_iso_extended_string(dateTime());
+			str = boost::posix_time::to_iso_string(dateTime());
 		} catch(std::exception&) {
 			return "unknown";
 		}
