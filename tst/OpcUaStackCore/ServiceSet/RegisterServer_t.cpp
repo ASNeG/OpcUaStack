@@ -25,6 +25,7 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	OpcUaNodeId typeId;
 	OpcUaGuid::SPtr opcUaGuidSPtr;
 	OpcUaString::SPtr stringSPtr;
+	OpcUaLocalizedText::SPtr localizedTextSPtr;
 	MessageHeader::SPtr messageHeaderSPtr;
 	SequenceHeader::SPtr sequenceHeaderSPtr;
 	RegisterServerRequest::SPtr registerServerRequestSPtr;
@@ -73,12 +74,14 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	registerServerRequestSPtr->requestHeader()->timeoutHint(300000);
 	
 	// build RegisteredServer
-	stringSPtr = constructSPtr<OpcUaString>();
-	stringSPtr->value("TestString");
+	OpcUaLocalizedTextArray::SPtr serverNames = constructSPtr<OpcUaLocalizedTextArray>();
+	localizedTextSPtr = constructSPtr<OpcUaLocalizedText>();
+	localizedTextSPtr->set("en", "TestString");
 
 	registerServerRequestSPtr->server().serverUri("Uri1");
 	registerServerRequestSPtr->server().productUri("Uri2");
-	registerServerRequestSPtr->server().serverNames()->set(stringSPtr);
+	registerServerRequestSPtr->server().serverNames(serverNames);
+	registerServerRequestSPtr->server().serverNames()->set(localizedTextSPtr);
 	registerServerRequestSPtr->server().serverType(ApplicationType_Server);
 	registerServerRequestSPtr->server().gatewayServerUri("Uri3");
 	registerServerRequestSPtr->server().discoveryUrls()->set(stringSPtr);
@@ -151,8 +154,8 @@ BOOST_AUTO_TEST_CASE(RegisterServer_Request)
 	BOOST_REQUIRE(registerServerRequestSPtr->server().productUri().value() == "Uri2");
 
 	BOOST_REQUIRE(registerServerRequestSPtr->server().serverNames()->size() == 1);
-	registerServerRequestSPtr->server().serverNames()->get(stringSPtr);
-	BOOST_REQUIRE(stringSPtr->value() == "TestString");
+	registerServerRequestSPtr->server().serverNames()->get(localizedTextSPtr);
+	BOOST_REQUIRE(localizedTextSPtr->text() == "TestString");
 
 	BOOST_REQUIRE(registerServerRequestSPtr->server().serverType() == ApplicationType_Server);
 	BOOST_REQUIRE(registerServerRequestSPtr->server().gatewayServerUri().value() == "Uri3");
