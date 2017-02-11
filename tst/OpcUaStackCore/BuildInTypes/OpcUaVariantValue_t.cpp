@@ -178,12 +178,12 @@ BOOST_AUTO_TEST_CASE(OpcUaVariantValue_fromString_Float)
 BOOST_AUTO_TEST_CASE(OpcUaVariantValue_fromString_DateTime)
 {
 	OpcUaVariantValue variantValue;
-	BOOST_REQUIRE(variantValue.fromString("DateTime:2012-01-01T10:11:01") == true);
+	BOOST_REQUIRE(variantValue.fromString("DateTime:20120101T101101") == true);
 
 	BOOST_REQUIRE(variantValue.variantType() == OpcUaBuildInType_OpcUaDateTime);
 
 	OpcUaDateTime value = variantValue.variant<OpcUaDateTime>();
-	BOOST_REQUIRE(value.toISOString() == "2012-01-01T10:11:01");
+	BOOST_REQUIRE(value.toISOString() == "20120101T101101");
 }
 
 BOOST_AUTO_TEST_CASE(OpcUaVariantValue_fromString_StatusCode)
