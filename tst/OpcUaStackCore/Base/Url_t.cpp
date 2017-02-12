@@ -102,20 +102,32 @@ BOOST_AUTO_TEST_CASE(Url_check_function)
 	url.url("opc.tcp://127.0.0.1:4841/path/to?query");
 	BOOST_REQUIRE(url.isLocalAddress() == true);
 	BOOST_REQUIRE(url.isAnyAddress() == false);
-	BOOST_REQUIRE(url.isIPAddress() == false); // FIXME: todo
+	BOOST_REQUIRE(url.isIPAddress() == true);
 	BOOST_REQUIRE(url.isHostAddress() == false);
 
 	url.url("opc.tcp://127.000.000.001:4841/path/to?query");
 	BOOST_REQUIRE(url.isLocalAddress() == true);
 	BOOST_REQUIRE(url.isAnyAddress() == false);
-	BOOST_REQUIRE(url.isIPAddress() == false); // FIXME: todo
+	BOOST_REQUIRE(url.isIPAddress() == true);
 	BOOST_REQUIRE(url.isHostAddress() == false);
 
 	url.url("opc.tcp://127.001.001.001:4841/path/to?query");
-	BOOST_REQUIRE(url.isLocalAddress() == true);
+	BOOST_REQUIRE(url.isLocalAddress() == false);
 	BOOST_REQUIRE(url.isAnyAddress() == false);
-	BOOST_REQUIRE(url.isIPAddress() == false); // FIXME: todo
+	BOOST_REQUIRE(url.isIPAddress() == true);
 	BOOST_REQUIRE(url.isHostAddress() == false);
+
+	url.url("opc.tcp://127.100.100.100:4841/path/to?query");
+	BOOST_REQUIRE(url.isLocalAddress() == false);
+	BOOST_REQUIRE(url.isAnyAddress() == false);
+	BOOST_REQUIRE(url.isIPAddress() == true);
+	BOOST_REQUIRE(url.isHostAddress() == false);
+
+	url.url("opc.tcp://ASNeG.de:4841/path/to?query");
+	BOOST_REQUIRE(url.isLocalAddress() == false);
+	BOOST_REQUIRE(url.isAnyAddress() == false);
+	BOOST_REQUIRE(url.isIPAddress() == false);
+	BOOST_REQUIRE(url.isHostAddress() == false); // FIXME: todo
 }
 
 BOOST_AUTO_TEST_SUITE_END()
