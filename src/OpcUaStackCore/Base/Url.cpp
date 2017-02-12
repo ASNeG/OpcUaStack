@@ -131,8 +131,7 @@ namespace OpcUaStackCore
 	bool
 	Url::isAnyAddress(void)
 	{
-		// FIXME: todo
-		return false;
+		return host_ == "0.0.0.0";
 	}
 
 	bool
@@ -155,8 +154,7 @@ namespace OpcUaStackCore
 	bool
 	Url::isHostAddress(void)
 	{
-		// FIXME: todo
-		return false;
+		return !isLocalAddress() && !isIPAddress();
 	}
 
 	bool
