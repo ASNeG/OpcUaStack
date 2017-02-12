@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 		std::string portToString(void);
 		std::string path(void);
 		std::string query(void);
+		std::string url(void);
 		void clear(void);
 
 		bool isLocalAddress(void);
@@ -49,7 +50,7 @@ namespace OpcUaStackCore
 		bool isHostAddress(void);
 	  
 	  private:
-		bool normalizeUrl(void);
+		bool normalizeHost(void);
 		size_t findString(const std::string& str, size_t pos = 0);
 		void parse(void);
 

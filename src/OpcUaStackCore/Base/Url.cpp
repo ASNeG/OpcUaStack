@@ -92,6 +92,12 @@ namespace OpcUaStackCore
 		return query_;
 	}
 
+	std::string
+	Url::url(void)
+	{
+		return url_;
+	}
+
 	void 
 	Url::clear(void)
 	{
@@ -119,7 +125,7 @@ namespace OpcUaStackCore
 		}
 
 		// check ip address
-		return ipv4.is_loopback();
+		return ipv4.to_ulong() == 0x7f000001;
 	}
 
 	bool
@@ -154,11 +160,24 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Url::normalizeUrl(void)
+	Url::normalizeHost(void)
 	{
-		boost::replace_all(host_, ".00", ".0");
-		boost::replace_all(host_, ".00", ".0");
-		host_ = boost::regex_replace(host_, boost::regex("(0)(\\d)"), std::string("\\2"));
+		if (!boost::regex_match(host_, boost::regex("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"))) {
+			return false;
+		}
+
+		std::vector<std::string>::iterator it;
+		std::vector<std::string> ipVec;
+		boost::split(ipVec, host_, boost::is_any_of("."));
+
+		for (uint32_t idx=0; idx<ipVec.size(); idx++) {
+			std::string str = ipVec[idx];
+			str.erase(0, str.find_first_not_of("0"));
+			if (str.empty()) str = "0";
+			ipVec[idx] = str;
+		}
+
+		host_ = boost::join(ipVec, ".");
 		return true;
 	}
 
@@ -295,7 +314,7 @@ namespace OpcUaStackCore
 		size_t beginQuery = endPath;
 		query_ = url_.substr(beginQuery);
 
-		normalizeUrl();
+		normalizeHost();
 	}
 
 }
