@@ -49,6 +49,7 @@ namespace OpcUaStackCore
 		bool isHostAddress(void);
 	  
 	  private:
+		bool normalizeUrl(void);
 		size_t findString(const std::string& str, size_t pos = 0);
 		void parse(void);
 

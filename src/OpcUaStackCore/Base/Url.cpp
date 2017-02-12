@@ -113,9 +113,6 @@ namespace OpcUaStackCore
 		// convert string to ip address
 		boost::system::error_code ec;
 		boost::asio::ip::address_v4 ipv4;
-		boost::replace_all(host_, "00", "0");
-		boost::replace_all(host_, "00", "0");
-		host_ = boost::regex_replace(host_, boost::regex("(0)(\\d)"), std::string("\\2"));
 		ipv4 = boost::asio::ip::address_v4::from_string(host_, ec);
 		if (ec) {
 			return false;
@@ -135,8 +132,18 @@ namespace OpcUaStackCore
 	bool
 	Url::isIPAddress(void)
 	{
-		// FIXME: todo
-		return false;
+		if (!boost::regex_match(host_, boost::regex("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}"))) {
+			return false;
+		}
+
+		// convert string to ip address
+		boost::system::error_code ec;
+		boost::asio::ip::address_v4 ipv4;
+		ipv4 = boost::asio::ip::address_v4::from_string(host_, ec);
+		if (ec) {
+			return false;
+		}
+		return true;
 	}
 
 	bool
@@ -145,11 +152,15 @@ namespace OpcUaStackCore
 		// FIXME: todo
 		return false;
 	}
-#if 0
-	   static const boost::regex e("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-	   return regex_match(s, e);
 
-#endif
+	bool
+	Url::normalizeUrl(void)
+	{
+		boost::replace_all(host_, ".00", ".0");
+		boost::replace_all(host_, ".00", ".0");
+		host_ = boost::regex_replace(host_, boost::regex("(0)(\\d)"), std::string("\\2"));
+		return true;
+	}
 
 	size_t
 	Url::findString(const std::string& str, size_t pos)
@@ -283,6 +294,8 @@ namespace OpcUaStackCore
 		// parse query
 		size_t beginQuery = endPath;
 		query_ = url_.substr(beginQuery);
+
+		normalizeUrl();
 	}
 
 }
