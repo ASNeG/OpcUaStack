@@ -30,7 +30,8 @@ namespace OpcUaStackCore
 		Address(void);
 		~Address(void);
 
-		static void getAllIPsFromHost(void);
+		static std::string hostName(void);
+		static void getAllIPv4sFromHost(void);
 
 	};
 

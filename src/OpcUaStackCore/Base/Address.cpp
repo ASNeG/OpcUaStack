@@ -28,10 +28,25 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void
-	Address::getAllIPsFromHost(void)
+	std::string
+	Address::hostName(void)
 	{
-		;
+		return boost::asio::ip::host_name();
+	}
+
+	void
+	Address::getAllIPv4sFromHost(void)
+	{
+		boost::asio::io_service io_service;
+		boost::asio::ip::tcp::resolver resolver(io_service);
+		boost::asio::ip::tcp::resolver::query query(boost::asio::ip::host_name(), "");
+		boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
+		boost::asio::ip::tcp::resolver::iterator end; // End marker.
+		while (iter != end)
+		{
+			boost::asio::ip::tcp::endpoint ep = *iter++;
+		    std::cout << ep.address() << std::endl;
+		}
 	}
 
 }
