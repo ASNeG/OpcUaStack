@@ -82,7 +82,7 @@ namespace OpcUaStackCore
 	}
 	
 	void 
-	RegisteredServer::serverNames(const OpcUaLocalizedTextArray::SPtr serverNames)
+	RegisteredServer::serverNames(const OpcUaLocalizedTextArray::SPtr& serverNames)
 	{
 		serverNameArraySPtr_ = serverNames;
 	}

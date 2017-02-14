@@ -46,7 +46,7 @@ namespace OpcUaStackCore
 		void productUri(const OpcUaString& productUri);
 		void productUri(const std::string& productUri);
 		OpcUaString& productUri(void);
-		void serverNames(const OpcUaLocalizedTextArray::SPtr serverNames);
+		void serverNames(const OpcUaLocalizedTextArray::SPtr& serverNames);
 		OpcUaLocalizedTextArray::SPtr serverNames(void) const;
 		void serverType(const ApplicationType serverType);
 		ApplicationType serverType(void);
