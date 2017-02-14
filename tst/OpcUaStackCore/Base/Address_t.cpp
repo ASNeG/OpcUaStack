@@ -17,7 +17,12 @@ BOOST_AUTO_TEST_CASE(Address_HostName)
 
 BOOST_AUTO_TEST_CASE(Address_decode)
 {
-	Address::getAllIPv4sFromHost();
+	std::vector<std::string>::iterator it;
+	std::vector<std::string> ipVec;
+	Address::getAllIPv4sFromHost(ipVec);
+	for (it=ipVec.begin(); it!=ipVec.end(); it++) {
+		std::cout << "IP=" << *it << std::endl;
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()
