@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 		~Url(void);
 
 		void url(const std::string& url);
+		std::string url(void);
 
 		bool good(void);
 		std::string protocol(void) const;
@@ -46,7 +47,6 @@ namespace OpcUaStackCore
 		void path(const std::string& path);
 		std::string query(void);
 		void query(const std::string& query);
-		std::string url(void);
 		void clear(void);
 
 		bool isLocalAddress(void);

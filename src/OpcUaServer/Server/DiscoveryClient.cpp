@@ -16,6 +16,8 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/Address.h"
+#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaServer/Server/DiscoveryClient.h"
 
 using namespace OpcUaStackCore;
@@ -151,7 +153,7 @@ namespace OpcUaServer
 			std::string gatewayServerUri;
 			endpointDescriptionConfig.getConfigParameter("GatewayServerUri", gatewayServerUri, "");
 
-			// create registered server structures
+			// create registered server structure
 			success = createRegisteredServers(
 				applicationUri,
 				productUri,
@@ -201,7 +203,46 @@ namespace OpcUaServer
 		const std::string& gatewayServerUri
 	)
 	{
-		// FIXME: todo
+		// create discovery url and discovery server url
+		Url url_discoveryUrl(discoveryUrl);
+
+		// create discovery url address list
+		std::vector<std::string> addressList;
+		if (url_discoveryUrl.isAnyAddress()) {
+			Address::getAllIPv4sFromHost(addressList);
+		}
+		else {
+			addressList.push_back(url_discoveryUrl.host());
+		}
+
+		// create register Server entrie
+		RegisteredServer::SPtr registeredServer = constructSPtr<RegisteredServer>();
+		registeredServer->serverUri(applicationUri);
+		registeredServer->productUri(productUri);
+		OpcUaLocalizedText::SPtr serverName = constructSPtr<OpcUaLocalizedText>();
+		serverName->set("en", applicationName);
+		OpcUaLocalizedTextArray::SPtr serverNames = constructSPtr<OpcUaLocalizedTextArray>();
+		serverNames->resize(1);
+		serverNames->push_back(serverName);
+		registeredServer->serverNames(serverNames);
+		registeredServer->serverType(ApplicationType_Server);
+		registeredServer->gatewayServerUri(gatewayServerUri);
+		registeredServer->isOnline(true);
+
+		OpcUaStringArray::SPtr discoveryUrls = constructSPtr<OpcUaStringArray>();
+		discoveryUrls->resize(addressList.size());
+		registeredServer->discoveryUrls(discoveryUrls);
+
+		std::vector<std::string>::iterator it;
+		for (it=addressList.begin(); it!=addressList.end(); it++) {
+
+			url_discoveryUrl.host(*it);
+			OpcUaString::SPtr url = constructSPtr<OpcUaString>();
+			url->value(url_discoveryUrl.url());
+
+			discoveryUrls->push_back(url);
+		}
+
 		return true;
 	}
 
