@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 		~Address(void);
 
 		static std::string hostName(void);
-		static void getAllIPv4sFromHost(void);
+		static void getAllIPv4sFromHost(std::vector<std::string>& ipVec);
 
 	};
 

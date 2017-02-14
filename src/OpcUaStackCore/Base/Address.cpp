@@ -15,6 +15,14 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#ifdef WIN32
+	// FIXME: todo
+#else
+	#include <ifaddrs.h>
+	#include <sys/socket.h>
+#endif
+
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/Address.h"
 
 namespace OpcUaStackCore
@@ -35,18 +43,27 @@ namespace OpcUaStackCore
 	}
 
 	void
-	Address::getAllIPv4sFromHost(void)
+	Address::getAllIPv4sFromHost(std::vector<std::string>& ipVec)
 	{
-		boost::asio::io_service io_service;
-		boost::asio::ip::tcp::resolver resolver(io_service);
-		boost::asio::ip::tcp::resolver::query query(boost::asio::ip::host_name(), "");
-		boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
-		boost::asio::ip::tcp::resolver::iterator end; // End marker.
-		while (iter != end)
-		{
-			boost::asio::ip::tcp::endpoint ep = *iter++;
-		    std::cout << ep.address() << std::endl;
-		}
-	}
+#ifdef WIN32
+		// FIXME: todo
+#else
+		struct ifaddrs *ifaddr, *ifa;
+		int n;
 
+        if (getifaddrs(&ifaddr) == -1) {
+        	Log(Error, "getifaddr call errror");
+            return;
+        }
+
+        for (ifa = ifaddr, n = 0; ifa != NULL; ifa = ifa->ifa_next, n++) {
+        	if (ifa->ifa_addr->sa_family != AF_INET) continue;
+        	struct sockaddr_in *addr = (struct sockaddr_in *)ifa->ifa_addr;
+            std::string ip = inet_ntoa(addr->sin_addr);
+            ipVec.push_back(ip);
+        }
+
+        freeifaddrs(ifaddr);
+	}
+#endif
 }
