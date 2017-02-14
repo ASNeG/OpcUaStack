@@ -36,11 +36,16 @@ namespace OpcUaStackCore
 
 		bool good(void);
 		std::string protocol(void) const;
+		void protocol(const std::string& protocol);
 		std::string host(void);
+		void host(const std::string& host);
 		int32_t port(void);
+		void port(int32_t port);
 		std::string portToString(void);
 		std::string path(void);
+		void path(const std::string& path);
 		std::string query(void);
+		void query(const std::string& query);
 		std::string url(void);
 		void clear(void);
 

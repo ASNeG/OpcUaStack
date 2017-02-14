@@ -54,10 +54,16 @@ namespace OpcUaStackCore
 		return good_;
 	}
 
-	std::string 
+	std::string
 	Url::protocol(void) const
 	{
 		return protocol_;
+	}
+
+	void
+	Url::protocol(const std::string& protocol)
+	{
+		protocol_ = protocol;
 	}
 		
 	std::string 
@@ -65,11 +71,23 @@ namespace OpcUaStackCore
 	{
 		return host_;
 	}
+
+	void
+	Url::host(const std::string& host)
+	{
+		host_ = host;
+	}
 		
 	int32_t 
 	Url::port(void)
 	{
 		return port_;
+	}
+
+	void
+	Url::port(int32_t port)
+	{
+		port_ = port;
 	}
 
 	std::string
@@ -86,15 +104,39 @@ namespace OpcUaStackCore
 		return path_;
 	}
 
+	void
+	Url::path(const std::string& path)
+	{
+		path_ = path;
+	}
+
 	std::string 
 	Url::query(void)
 	{
 		return query_;
 	}
 
+	void
+	Url::query(const std::string& query)
+	{
+		query_ = query;
+	}
+
 	std::string
 	Url::url(void)
 	{
+		std::stringstream ss;
+		ss << protocol_ << "://" << host_;
+		if (port_ != -1) {
+			ss << ":" << port_;
+		}
+		if (path_ != "") {
+			ss << "/" << path_;
+		}
+		if (query_ != "") {
+			ss << "?" << query_;
+		}
+
 		return url_;
 	}
 
