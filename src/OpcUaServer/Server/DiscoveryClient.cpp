@@ -73,11 +73,12 @@ namespace OpcUaServer
 			return false;
 		}
 
-
+		//
+		// startup discovery client service process
+		//
 
 #if 0
 	    void ioThread(IOThread::SPtr& ioThread);
-	    void loopTime(uint32_t loopTime);
 	    void discoveryUri(const std::string& discoveryUri);
 	    void registerInterval(uint32_t registerInterval);
 
@@ -223,6 +224,11 @@ namespace OpcUaServer
 		}
 
 		registeredServerVec_.push_back(registeredServer);
+
+		//
+		// register server entry
+		//
+		discoveryClient_.addRegisteredServer(applicationName, registeredServer);
 
 		return true;
 	}
