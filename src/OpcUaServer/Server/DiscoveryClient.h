@@ -47,9 +47,11 @@ namespace OpcUaServer
 		);
 
 		std::string discoveryServerUrl_;
+		uint32_t registerInterval_;
 
 		Config* config_;
 		DiscoveryClientRegisteredServers discoveryClient_;
+		RegisteredServer::Vec registeredServerVec_;
 	};
 
 }

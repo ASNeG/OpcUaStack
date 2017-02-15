@@ -38,8 +38,8 @@ namespace OpcUaStackClient
 	    ~DiscoveryClientRegisteredServers(void);
 
 	    void ioThread(IOThread::SPtr& ioThread);
-	    void loopTime(uint32_t loopTime);
 	    void discoveryUri(const std::string& discoveryUri);
+	    void registerInterval(uint32_t registerInterval);
 
 		bool startup(void);
 		void shutdown(void);
@@ -60,11 +60,12 @@ namespace OpcUaStackClient
 
 		IOThread::SPtr ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;
-		uint32_t loopTime_;
 		boost::mutex mutex_;
 		RegisteredServer::Map registeredServerMap_;
 
 		std::string discoveryUri_;
+		uint32_t registerInterval_;
+
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
 		DiscoveryService::SPtr discoveryService_;

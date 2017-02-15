@@ -28,7 +28,7 @@ namespace OpcUaStackClient
 	, mutex_()
 	, registeredServerMap_()
 	, slotTimerElement_()
-	, loopTime_(40000)
+	, registerInterval_(40000)
 	, discoveryUri_("")
 	, sessionService_()
 	{
@@ -45,15 +45,15 @@ namespace OpcUaStackClient
 	}
 
 	void
-	DiscoveryClientRegisteredServers::loopTime(uint32_t loopTime)
-	{
-		loopTime_ = loopTime;
-	}
-
-	void
 	DiscoveryClientRegisteredServers::discoveryUri(const std::string& discoveryUri)
 	{
 		discoveryUri_ = discoveryUri;
+	}
+
+	void
+	DiscoveryClientRegisteredServers::registerInterval(uint32_t registerInterval)
+	{
+		registerInterval_ = registerInterval;
 	}
 
 	bool 
@@ -82,7 +82,7 @@ namespace OpcUaStackClient
 	  	// start timer to check server entries
 	  	slotTimerElement_ = constructSPtr<SlotTimerElement>();
 	  	slotTimerElement_->callback().reset(boost::bind(&DiscoveryClientRegisteredServers::loop, this));
-	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), loopTime_);
+	  	slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), registerInterval_);
 	  	ioThread_->slotTimer()->start(slotTimerElement_);
 
 		return true;

@@ -63,6 +63,9 @@ namespace OpcUaServer
 			return false;
 		}
 
+		// get element register interval url
+		dicoveryServerConfig->getConfigParameter("RegisterInterval", registerInterval_, "40000");
+
 		//
 		// read endpoint configuration
 		//
@@ -76,6 +79,7 @@ namespace OpcUaServer
 	    void ioThread(IOThread::SPtr& ioThread);
 	    void loopTime(uint32_t loopTime);
 	    void discoveryUri(const std::string& discoveryUri);
+	    void registerInterval(uint32_t registerInterval);
 
 
 #endif
@@ -164,32 +168,7 @@ namespace OpcUaServer
 			if (!success) {
 				return false;
 			}
-
-
 		}
-
-#if 0
-		void serverUri(const OpcUaString& serverUri);
-		void serverUri(const std::string& serverUri);
-		OpcUaString& serverUri(void);
-		void productUri(const OpcUaString& productUri);
-		void productUri(const std::string& productUri);
-		OpcUaString& productUri(void);
-		void serverNames(const OpcUaLocalizedTextArray::SPtr serverNames);
-		OpcUaLocalizedTextArray::SPtr serverNames(void) const;
-		void serverType(const ApplicationType serverType);
-		ApplicationType serverType(void);
-		void gatewayServerUri(const OpcUaString& gatewayServerUri);
-		void gatewayServerUri(const std::string& gatewayServerUri);
-		OpcUaString& gatewayServerUri(void);
-		void discoveryUrls(const OpcUaStringArray::SPtr discoveryUrls);
-		OpcUaStringArray::SPtr discoveryUrls(void) const;
-		void semaphoreFilePath(const OpcUaString& semaphoreFilePath);
-		void semaphoreFilePath(const std::string& semaphoreFilePath);
-		OpcUaString& semaphoreFilePath(void);
-		void isOnline(const OpcUaBoolean& isOnline);
-		OpcUaBoolean isOnline(void);
-#endif
 
 		return true;
 	}
@@ -242,6 +221,8 @@ namespace OpcUaServer
 
 			discoveryUrls->push_back(url);
 		}
+
+		registeredServerVec_.push_back(registeredServer);
 
 		return true;
 	}
