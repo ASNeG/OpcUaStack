@@ -59,6 +59,10 @@ namespace OpcUaStackClient
         void sendDiscoveryServiceRegisterServer(void);
         void deregisterServers(void);
 		void loop(void);
+		void shutdownLoop(void);
+
+		bool shutdown_;
+		Condition shutdownCond_;
 
 		IOThread::SPtr ioThread_;
 		SlotTimerElement::SPtr slotTimerElement_;

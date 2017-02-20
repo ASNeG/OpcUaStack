@@ -31,11 +31,16 @@ namespace OpcUaStackClient
 	, registerInterval_(40000)
 	, discoveryUri_("")
 	, sessionService_()
+	, shutdown_(false)
+	, shutdownCond_()
 	{
 	}
 
 	DiscoveryClientRegisteredServers::~DiscoveryClientRegisteredServers(void)
 	{
+    	if (slotTimerElement_.get() != nullptr) {
+    		slotTimerElement_.reset();
+    	}
 	}
 
 	void
@@ -94,11 +99,15 @@ namespace OpcUaStackClient
     	// stop timer
     	if (slotTimerElement_.get() != nullptr) {
     		ioThread_->slotTimer()->stop(slotTimerElement_);
-    		slotTimerElement_.reset();
     	}
 
-    	// deregister server entries from discovery server
-    	deregisterServers();
+    	// deregister server entries from discovery server and wait of the
+    	// end of the process
+    	shutdownCond_.condition(1,0);
+    	ioThread_->run(
+    		boost::bind(&DiscoveryClientRegisteredServers::shutdownLoop, this)
+    	);
+    	shutdownCond_.waitForCondition(3000);
 
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
@@ -145,6 +154,15 @@ namespace OpcUaStackClient
 		sessionService_->asyncConnect();
     }
 
+    void
+    DiscoveryClientRegisteredServers::shutdownLoop(void)
+    {
+		Log(Debug, "deregister server discovery loop");
+		shutdown_ = true;
+		deregisterServers();
+		sessionService_->asyncConnect();
+    }
+
 	void
 	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
@@ -152,11 +170,19 @@ namespace OpcUaStackClient
 			sendDiscoveryServiceRegisterServer();
 			return;
 		}
+
+		if (shutdown_) {
+			shutdownCond_.conditionValueDec();
+		}
 	}
 
 	void
 	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
 	{
+		if (registeredServerMap_.size() == 0) {
+			sessionService_->asyncDisconnect();
+		}
+
 		RegisteredServer::Map::iterator it;
 		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 
@@ -186,7 +212,16 @@ namespace OpcUaStackClient
 	void
 	DiscoveryClientRegisteredServers::deregisterServers(void)
 	{
-		// FIXME: todo
+		// all server entries must be deregister from dicovery server. We must
+		// disable the isOnline flag and send the deregister server request once
+		// again
+		RegisteredServer::Map::iterator it;
+		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
+			RegisteredServer::SPtr rs = it->second;
+			rs->isOnline(false);
+		}
+
+		;
 	}
 
 }
