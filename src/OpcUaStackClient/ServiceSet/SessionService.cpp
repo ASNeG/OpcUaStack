@@ -143,7 +143,7 @@ namespace OpcUaStackClient
 		// check secure channel state
 		if (secureChannelState_ != SCS_Disconnected) {
 			Log(Error, "connect operation in invalid state")
-			    .parameter("SessionName", sessionConfig_->sessionName_)
+			    .parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "None")
 				.parameter("SecureChannelState", secureChannelState_);
 
 			if (sessionTransaction.get() != nullptr) {
@@ -200,7 +200,7 @@ namespace OpcUaStackClient
 		// check secure channel state
 		if (secureChannelState_ == SCS_Disconnecting || secureChannelState_ == SCS_Disconnected) {
 			Log(Error, "disconnect operation in invalid state")
-			    .parameter("SessionName", sessionConfig_->sessionName_)
+			    .parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "None")
 				.parameter("SecureChannelState", secureChannelState_);
 
 			if (sessionTransaction.get() != nullptr) {
