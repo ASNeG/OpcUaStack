@@ -136,6 +136,7 @@ namespace OpcUaStackCore
 		if (query_ != "") {
 			ss << "?" << query_;
 		}
+		url_ = ss.str();
 
 		return url_;
 	}
