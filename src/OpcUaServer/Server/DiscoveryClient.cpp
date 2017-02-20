@@ -43,6 +43,8 @@ namespace OpcUaServer
 		bool success;
 		config_ = &config;
 
+		Log(Info, "startup discovery client");
+
 		//
 		// read discovery server configuration
 		//
@@ -91,6 +93,8 @@ namespace OpcUaServer
 	void 
 	DiscoveryClient::shutdown(void)
 	{
+		Log(Info, "shutdown discovery client");
+
 		discoveryClient_.shutdown();
 		ioThread_->shutdown();
 	}
