@@ -30,6 +30,7 @@ namespace OpcUaServer
 	, ioThread_()
 	, discoveryClient_()
 	, discoveryServerUrl_("")
+	, enable_(false)
 	{
 	}
 
@@ -55,6 +56,7 @@ namespace OpcUaServer
 			Log(Info, "discovery registered service is disabled");
 			return true;
 		}
+		enable_ = true;
 		Log(Info, "discovery registered service is enabled");
 
 		// get element discovery url
@@ -94,6 +96,8 @@ namespace OpcUaServer
 	DiscoveryClient::shutdown(void)
 	{
 		Log(Info, "shutdown discovery client");
+
+		if (!enable_) return;
 
 		discoveryClient_.shutdown();
 		ioThread_->shutdown();

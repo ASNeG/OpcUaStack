@@ -46,6 +46,7 @@ namespace OpcUaServer
 			const std::string& gatewayServerUri
 		);
 
+		bool enable_;
 		std::string discoveryServerUrl_;
 		uint32_t registerInterval_;
 

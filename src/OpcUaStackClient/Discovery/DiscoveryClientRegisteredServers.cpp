@@ -97,6 +97,9 @@ namespace OpcUaStackClient
     		slotTimerElement_.reset();
     	}
 
+    	// deregister server entries from discovery server
+    	deregisterServers();
+
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
 	}
@@ -178,6 +181,12 @@ namespace OpcUaStackClient
 		}
 
 		sessionService_->asyncDisconnect();
+	}
+
+	void
+	DiscoveryClientRegisteredServers::deregisterServers(void)
+	{
+		// FIXME: todo
 	}
 
 }
