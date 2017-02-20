@@ -96,6 +96,9 @@ namespace OpcUaStackClient
     		ioThread_->slotTimer()->stop(slotTimerElement_);
     		slotTimerElement_.reset();
     	}
+
+    	// deregister io thread from service set manager
+    	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
 	}
 
     void
