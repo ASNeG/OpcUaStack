@@ -91,7 +91,8 @@ namespace OpcUaServer
 	void 
 	DiscoveryClient::shutdown(void)
 	{
-		// FIXME: todo
+		discoveryClient_.shutdown();
+		ioThread_->shutdown();
 	}
 
 	bool

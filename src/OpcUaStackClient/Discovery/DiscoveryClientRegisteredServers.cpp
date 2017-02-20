@@ -136,17 +136,12 @@ namespace OpcUaStackClient
     DiscoveryClientRegisteredServers::loop(void)
     {
 		Log(Debug, "register server discovery loop");
-
-		std::cout << "State=" << sessionService_->secureChannelState() << std::endl;
-
 		sessionService_->asyncConnect();
     }
 
 	void
 	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
-		std::cout << "SessionStateUpdate=" << sessionState << std::endl;
-
 		if (sessionState == SS_Connect) {
 			sendDiscoveryServiceRegisterServer();
 			return;
@@ -178,8 +173,6 @@ namespace OpcUaStackClient
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionRegisterServer->statusCode()));
 
 		}
-
-		std::cout << "receive register response..." << std::endl;
 
 		sessionService_->asyncDisconnect();
 	}
