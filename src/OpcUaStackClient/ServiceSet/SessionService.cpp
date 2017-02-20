@@ -259,6 +259,12 @@ namespace OpcUaStackClient
 		ioThread_->run(boost::bind(&SessionService::asyncCancelInternal, this, requestHandle));
 	}
 
+	SessionService::SecureChannelState
+	SessionService::secureChannelState(void)
+	{
+		return secureChannelState_;
+	}
+
 	void
 	SessionService::asyncCancelInternal(uint32_t requestHandle)
 	{
