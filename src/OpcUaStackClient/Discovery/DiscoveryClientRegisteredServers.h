@@ -56,6 +56,7 @@ namespace OpcUaStackClient
         //- DiscoveryServiceIf ------------------------------------------------
 
 	  public:
+        void sendDiscoveryServiceRegisterServer(void);
 		void loop(void);
 
 		IOThread::SPtr ioThread_;

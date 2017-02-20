@@ -50,6 +50,7 @@ namespace OpcUaServer
 		uint32_t registerInterval_;
 
 		Config* config_;
+		IOThread::SPtr ioThread_;
 		DiscoveryClientRegisteredServers discoveryClient_;
 		RegisteredServer::Vec registeredServerVec_;
 	};

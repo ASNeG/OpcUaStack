@@ -137,6 +137,8 @@ namespace OpcUaStackClient
     {
 		Log(Debug, "register server discovery loop");
 
+		std::cout << "State=" << sessionService_->secureChannelState() << std::endl;
+
 		sessionService_->asyncConnect();
     }
 
@@ -144,13 +146,42 @@ namespace OpcUaStackClient
 	DiscoveryClientRegisteredServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
 		std::cout << "SessionStateUpdate=" << sessionState << std::endl;
-		// FIXME: todo
+
+		if (sessionState == SS_Connect) {
+			sendDiscoveryServiceRegisterServer();
+			return;
+		}
+	}
+
+	void
+	DiscoveryClientRegisteredServers::sendDiscoveryServiceRegisterServer(void)
+	{
+		RegisteredServer::Map::iterator it;
+		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
+
+			ServiceTransactionRegisterServer::SPtr trx;
+			trx = constructSPtr<ServiceTransactionRegisterServer>();
+			RegisterServerRequest::SPtr req = trx->request();
+
+			it->second->copyTo(req->server());
+
+			discoveryService_->asyncSend(trx);
+		}
+
 	}
 
 	void
 	DiscoveryClientRegisteredServers::discoveryServiceRegisterServerResponse(ServiceTransactionRegisterServer::SPtr serviceTransactionRegisterServer)
 	{
-		// FIXME: todo
+		if (serviceTransactionRegisterServer->statusCode() != Success) {
+			Log(Error, "receive register server response error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionRegisterServer->statusCode()));
+
+		}
+
+		std::cout << "receive register response..." << std::endl;
+
+		sessionService_->asyncDisconnect();
 	}
 
 }

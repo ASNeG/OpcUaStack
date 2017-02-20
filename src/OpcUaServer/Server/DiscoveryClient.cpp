@@ -27,6 +27,7 @@ namespace OpcUaServer
 
 	DiscoveryClient::DiscoveryClient(void)
 	: config_(nullptr)
+	, ioThread_()
 	, discoveryClient_()
 	, discoveryServerUrl_("")
 	{
@@ -76,15 +77,13 @@ namespace OpcUaServer
 		//
 		// startup discovery client service process
 		//
+		ioThread_ = constructSPtr<IOThread>();
+		ioThread_->startup();
 
-#if 0
-	    void ioThread(IOThread::SPtr& ioThread);
-	    void discoveryUri(const std::string& discoveryUri);
-	    void registerInterval(uint32_t registerInterval);
-
-
-#endif
-
+		discoveryClient_.ioThread(ioThread_);
+		discoveryClient_.discoveryUri(discoveryServerUrl_);
+		discoveryClient_.registerInterval(registerInterval_);
+		discoveryClient_.startup();
 
 		return true;
 	}
