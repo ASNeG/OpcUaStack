@@ -96,6 +96,11 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryClientRegisteredServers::shutdown(void)
 	{
+		//
+		// The shutdown thread and the communication thread (IO Thread) may not
+		// be the same
+		//
+
     	// stop timer
     	if (slotTimerElement_.get() != nullptr) {
     		ioThread_->slotTimer()->stop(slotTimerElement_);
@@ -213,8 +218,7 @@ namespace OpcUaStackClient
 	DiscoveryClientRegisteredServers::deregisterServers(void)
 	{
 		// all server entries must be deregister from dicovery server. We must
-		// disable the isOnline flag and send the deregister server request once
-		// again
+		// disable the isOnline flag
 		RegisteredServer::Map::iterator it;
 		for (it = registeredServerMap_.begin(); it != registeredServerMap_.end(); it++) {
 			RegisteredServer::SPtr rs = it->second;

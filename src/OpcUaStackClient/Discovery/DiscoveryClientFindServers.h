@@ -43,6 +43,8 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
+		void find(const std::string serverUri, Callback& findResultCallback);
+
 		//- SessionServiceIf --------------------------------------------------
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
 		//- SessionServiceIf --------------------------------------------------
@@ -52,12 +54,17 @@ namespace OpcUaStackClient
         //- DiscoveryServiceIf ------------------------------------------------
 
 	  public:
+        void sendFindServersRequest(void);
+
 		IOThread::SPtr ioThread_;
 		std::string discoveryUri_;
 
 		ServiceSetManager serviceSetManager_;
 		SessionService::SPtr sessionService_;
 		DiscoveryService::SPtr discoveryService_;
+
+		std::string serverUri_;
+		Callback findResultCallback_;
 	};
 
 }

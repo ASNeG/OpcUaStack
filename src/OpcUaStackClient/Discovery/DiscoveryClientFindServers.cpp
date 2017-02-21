@@ -29,6 +29,8 @@ namespace OpcUaStackClient
 	, serviceSetManager_()
 	, sessionService_()
 	, discoveryService_()
+	, serverUri_("")
+	, findResultCallback_()
 	{
 	}
 
@@ -78,20 +80,66 @@ namespace OpcUaStackClient
 	void 
 	DiscoveryClientFindServers::shutdown(void)
 	{
+		//
+		// The shutdown thread and the communication thread (IO Thread) may not
+		// be the same
+		//
+
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
 	}
 
 	void
+	DiscoveryClientFindServers::find(const std::string serverUri, Callback& findResultCallback)
+	{
+		serverUri_ = serverUri;
+		findResultCallback_ = findResultCallback;
+		sessionService_->asyncConnect();
+	}
+
+	void
 	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
-		// FIXME: todo
+		if (sessionState != SS_Connect) {
+			findResultCallback_(BadCommunicationError); // FIXME: application description...
+			return;
+		}
+
+		sendFindServersRequest();
+	}
+
+	void
+	DiscoveryClientFindServers::sendFindServersRequest(void)
+	{
+		ServiceTransactionFindServers::SPtr trx;
+		trx = constructSPtr<ServiceTransactionFindServers>();
+		FindServersRequest::SPtr req = trx->request();
+
+		OpcUaStringArray::SPtr serverUris = constructSPtr<OpcUaStringArray>();
+		serverUris->resize(1);
+		OpcUaString::SPtr serverUri = constructSPtr<OpcUaString>();
+		serverUri->value(serverUri_);
+		serverUris->push_back(serverUri);
+		req->serverUris(serverUris);
+
+		discoveryService_->asyncSend(trx);
 	}
 
     void
     DiscoveryClientFindServers::discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
     {
-    	// FIXME: todo
+		if (serviceTransactionFindServers->statusCode() != Success) {
+			Log(Error, "receive find servers response error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionFindServers->statusCode()));
+			findResultCallback_(BadCommunicationError); // FIXME: application description...
+		}
+
+		else {
+			FindServersResponse::SPtr res = serviceTransactionFindServers->response();
+
+		}
+
+		sessionService_->asyncDisconnect();
     }
 
 }
