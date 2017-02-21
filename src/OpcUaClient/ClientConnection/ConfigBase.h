@@ -19,11 +19,12 @@
 #define __OpcUaClient_ConfigBase_h__
 
 #include <iostream>
+#include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaClient
 {
 
-	class ConfigBase
+	class DLLEXPORT ConfigBase
 	{
 	  public:
 		ConfigBase(void);
