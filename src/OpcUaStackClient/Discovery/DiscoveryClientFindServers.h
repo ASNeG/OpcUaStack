@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,11 +34,15 @@ namespace OpcUaStackClient
 		DiscoveryClientFindServers(void);
 	    ~DiscoveryClientFindServers(void);
 
+	    void ioThread(IOThread::SPtr& ioThread);
+	    void discoveryUri(const std::string& discoveryUri);
+
 		bool startup(void);
 		void shutdown(void);
 
 	  public:
-		RegisteredServer::Map registeredServerMap_;
+		IOThread::SPtr ioThread_;
+		std::string discoveryUri_;
 	};
 
 }

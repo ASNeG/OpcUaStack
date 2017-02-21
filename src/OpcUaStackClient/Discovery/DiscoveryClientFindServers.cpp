@@ -24,7 +24,8 @@ namespace OpcUaStackClient
 {
 
 	DiscoveryClientFindServers::DiscoveryClientFindServers(void)
-	: registeredServerMap_()
+	: ioThread_()
+	, discoveryUri_("")
 	{
 	}
 
@@ -32,14 +33,30 @@ namespace OpcUaStackClient
 	{
 	}
 
+    void
+    DiscoveryClientFindServers::ioThread(IOThread::SPtr& ioThread)
+    {
+    	ioThread_ = ioThread;
+    }
+
+    void
+    DiscoveryClientFindServers::discoveryUri(const std::string& discoveryUri)
+    {
+    	discoveryUri_ = discoveryUri;
+    }
+
+
 	bool 
 	DiscoveryClientFindServers::startup(void)
 	{
+		// FIXME: todo
+		return true;
 	}
 
 	void 
 	DiscoveryClientFindServers::shutdown(void)
 	{
+		// FIXME: todo
 	}
 
 }
