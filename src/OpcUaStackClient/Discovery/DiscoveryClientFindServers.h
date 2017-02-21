@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -29,6 +30,8 @@ namespace OpcUaStackClient
 {
 
 	class DLLEXPORT DiscoveryClientFindServers
+	: public SessionServiceIf
+	, public DiscoveryServiceIf
 	{
 	  public:
 		DiscoveryClientFindServers(void);
@@ -40,9 +43,21 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
+		//- SessionServiceIf --------------------------------------------------
+		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
+		//- SessionServiceIf --------------------------------------------------
+
+        //- DiscoveryServiceIf ------------------------------------------------
+        virtual void discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers);
+        //- DiscoveryServiceIf ------------------------------------------------
+
 	  public:
 		IOThread::SPtr ioThread_;
 		std::string discoveryUri_;
+
+		ServiceSetManager serviceSetManager_;
+		SessionService::SPtr sessionService_;
+		DiscoveryService::SPtr discoveryService_;
 	};
 
 }

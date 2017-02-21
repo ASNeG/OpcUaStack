@@ -26,6 +26,9 @@ namespace OpcUaStackClient
 	DiscoveryClientFindServers::DiscoveryClientFindServers(void)
 	: ioThread_()
 	, discoveryUri_("")
+	, serviceSetManager_()
+	, sessionService_()
+	, discoveryService_()
 	{
 	}
 
@@ -49,14 +52,46 @@ namespace OpcUaStackClient
 	bool 
 	DiscoveryClientFindServers::startup(void)
 	{
-		// FIXME: todo
+		// create service set manager
+		SessionServiceConfig sessionServiceConfig;
+		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
+		sessionServiceConfig.sessionServiceIf_ = this;
+		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
+		sessionServiceConfig.session_->sessionName("DiscoveryClient");
+		sessionServiceConfig.session_->reconnectTimeout(5000);
+		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
+		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
+		serviceSetManager_.sessionService(sessionServiceConfig);
+
+		// create session service
+		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
+
+		// create discovery service
+		DiscoveryServiceConfig discoveryServiceConfig;
+		discoveryServiceConfig.ioThreadName("DiscoveryIOThread");
+		discoveryServiceConfig.discoveryServiceIf_ = this;
+		discoveryService_ = serviceSetManager_.discoveryService(sessionService_, discoveryServiceConfig);
+
 		return true;
 	}
 
 	void 
 	DiscoveryClientFindServers::shutdown(void)
 	{
+    	// deregister io thread from service set manager
+    	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
+	}
+
+	void
+	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
+	{
 		// FIXME: todo
 	}
+
+    void
+    DiscoveryClientFindServers::discoveryServiceFindServersResponse(ServiceTransactionFindServers::SPtr serviceTransactionFindServers)
+    {
+    	// FIXME: todo
+    }
 
 }
