@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2015 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,17 +23,12 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
+#include "OpcUaStackCore/BuildInTypes/DataChangeTrigger.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		DataChangeTrigger_Status = 0,
-		DataChangeTrigger_Status_Value = 1,
-		DataChangeTrigger_Status_Value_Timestamp = 2
-	} DataChangeTrigger;
 
 	class DLLEXPORT OpcUaDataValue
 	: public Object
@@ -61,8 +56,8 @@ namespace OpcUaStackCore
 
 		void copyFrom(OpcUaDataValue& dataValue);
 		void copyTo(OpcUaDataValue& dataValue);
-		bool trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);
-		bool trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger = DataChangeTrigger_Status_Value);
+		bool trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger = DCT_StatusValue);
+		bool trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger = DCT_StatusValue);
 
 		void out(std::ostream& os) const;
 		friend std::ostream& operator<<(std::ostream& os, const OpcUaDataValue& value) {

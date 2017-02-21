@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -129,11 +129,11 @@ namespace OpcUaStackCore
 	{
 		switch (dataChangeTrigger) 
 		{
-			case DataChangeTrigger_Status_Value_Timestamp:
+			case DCT_StatusValueTimestamp:
 			{
 				if (dataValue.sourceTimestamp() != sourceTimestamp()) return true;
 			}
-			case DataChangeTrigger_Status_Value:
+			case DCT_StatusValue:
 			{
 				if (dataValue.isNullVariant() && !isNullVariant()) return true;
 				if (!dataValue.isNullVariant() && isNullVariant()) return true;
@@ -141,7 +141,7 @@ namespace OpcUaStackCore
 					if (*dataValue.variant() != *variant()) return true;
 				}
 			}
-			case DataChangeTrigger_Status:
+			case DCT_Status:
 			{
 				if (dataValue.statusCode() != statusCode()) return true;
 			}

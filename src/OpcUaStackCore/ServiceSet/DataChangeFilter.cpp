@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	DataChangeFilter::DataChangeFilter(void)
 	: Object()
-	, trigger_(DataChangeTrigger_Status_Value)
+	, trigger_(DCT_StatusValue)
 	, deadbandType_(0)
 	, deadbandValue_()
 	{
@@ -88,7 +88,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(os, (OpcUaUInt32)trigger_);
 		OpcUaNumber::opcUaBinaryEncode(os, deadbandType_);
 
-		if((trigger_ != DataChangeTrigger_Status) && (deadbandType_ != 0))
+		if((trigger_ != DCT_Status) && (deadbandType_ != 0))
 		{
 			OpcUaNumber::opcUaBinaryEncode(os, deadbandValue_);
 		}
@@ -102,7 +102,7 @@ namespace OpcUaStackCore
 		trigger_ = (DataChangeTrigger)tmp;
 		OpcUaNumber::opcUaBinaryDecode(is, deadbandType_);
 
-		if((trigger_ != DataChangeTrigger_Status) && (deadbandType_ != 0))
+		if((trigger_ != DCT_Status) && (deadbandType_ != 0))
 		{
 			OpcUaNumber::opcUaBinaryDecode(is, deadbandValue_);
 		}
