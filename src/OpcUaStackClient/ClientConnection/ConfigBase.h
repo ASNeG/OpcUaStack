@@ -15,13 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaClient_ConfigBase_h__
-#define __OpcUaClient_ConfigBase_h__
+#ifndef __OpcUaStackClient_ConfigBase_h__
+#define __OpcUaStackClient_ConfigBase_h__
 
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 
-namespace OpcUaClient
+namespace OpcUaStackClient
 {
 
 	class DLLEXPORT ConfigBase

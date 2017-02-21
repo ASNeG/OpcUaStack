@@ -15,9 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaClient/ClientConnection/ConfigBase.h"
+#include "OpcUaStackClient/ClientConnection/ConfigBase.h"
 
-namespace OpcUaClient
+namespace OpcUaStackClient
 {
 
 	ConfigBase::ConfigBase(void)
