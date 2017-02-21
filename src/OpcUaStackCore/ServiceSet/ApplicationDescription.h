@@ -24,16 +24,10 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/ServiceSet/ApplicationType.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		ApplicationType_Server = 0,
-		ApplicationType_Client = 1,
-		ApplicationType_ClientAndServer = 3,
-		ApplicationType_DiscoveryServer = 4
-	} ApplicationType;
 
 	class DLLEXPORT ApplicationDescription
 	: public Object

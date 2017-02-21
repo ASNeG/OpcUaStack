@@ -128,6 +128,7 @@ namespace OpcUaStackClient
 	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
 		if (sessionState != SS_Connect) {
+
 			if (shutdown_) {
 				shutdownCond_.conditionValueDec();
 				return;

@@ -213,7 +213,7 @@ namespace OpcUaServer
 		serverNames->resize(1);
 		serverNames->push_back(serverName);
 		registeredServer->serverNames(serverNames);
-		registeredServer->serverType(ApplicationType_Server);
+		registeredServer->serverType(AT_Server);
 		registeredServer->gatewayServerUri(gatewayServerUri);
 		registeredServer->isOnline(true);
 

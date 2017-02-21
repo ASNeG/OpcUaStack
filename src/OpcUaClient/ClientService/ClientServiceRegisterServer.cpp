@@ -92,13 +92,13 @@ namespace OpcUaClient
 			req->server().serverNames()->push_back(serverName);
 		}
 		if (commandRegisterServer->serverType() == "CLIENT") {
-			req->server().serverType(ApplicationType_Client);
+			req->server().serverType(AT_Client);
 		}
 		if (commandRegisterServer->serverType() == "SERVER") {
-			req->server().serverType(ApplicationType_Server);
+			req->server().serverType(AT_Server);
 		}
 		else {
-			req->server().serverType(ApplicationType_ClientAndServer);
+			req->server().serverType(AT_ClientAndServer);
 		}
 		req->server().gatewayServerUri(commandRegisterServer->gatewayServerUri());
 		req->server().discoveryUrls(constructSPtr<OpcUaStringArray>());
