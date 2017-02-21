@@ -55,6 +55,7 @@ namespace OpcUaStackClient
 
 	  public:
         void sendFindServersRequest(void);
+        void shutdownTask(void);
 
 		IOThread::SPtr ioThread_;
 		std::string discoveryUri_;
@@ -65,6 +66,12 @@ namespace OpcUaStackClient
 
 		std::string serverUri_;
 		Callback findResultCallback_;
+
+		ApplicationDescription::Vec findResults_;
+		OpcUaStatusCode findStatusCode_;
+
+		bool shutdown_;
+		Condition shutdownCond_;
 	};
 
 }

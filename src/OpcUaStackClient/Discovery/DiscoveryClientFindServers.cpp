@@ -31,6 +31,10 @@ namespace OpcUaStackClient
 	, discoveryService_()
 	, serverUri_("")
 	, findResultCallback_()
+	, findResults_()
+	, findStatusCode_(BadCommunicationError)
+	, shutdown_()
+	, shutdownCond_()
 	{
 	}
 
@@ -85,13 +89,36 @@ namespace OpcUaStackClient
 		// be the same
 		//
 
+		// start shutdown task and wait for shutdown signal
+	   	shutdownCond_.condition(1,0);
+	    ioThread_->run(
+	    	boost::bind(&DiscoveryClientFindServers::shutdownTask, this)
+	    );
+	    shutdownCond_.waitForCondition(3000);
+
     	// deregister io thread from service set manager
     	serviceSetManager_.deregisterIOThread("DiscoveryIOThread");
 	}
 
 	void
+	DiscoveryClientFindServers::shutdownTask(void)
+	{
+		shutdown_ = true;
+
+		if (sessionService_->secureChannelState() != SessionService::SCS_Disconnected) {
+			sessionService_->asyncDisconnect();
+			return;
+		}
+
+		shutdownCond_.conditionValueDec();
+	}
+
+	void
 	DiscoveryClientFindServers::find(const std::string serverUri, Callback& findResultCallback)
 	{
+		findResults_.clear();
+		findStatusCode_ = BadCommunicationError;
+
 		serverUri_ = serverUri;
 		findResultCallback_ = findResultCallback;
 		sessionService_->asyncConnect();
@@ -101,7 +128,12 @@ namespace OpcUaStackClient
 	DiscoveryClientFindServers::sessionStateUpdate(SessionBase& session, SessionState sessionState)
 	{
 		if (sessionState != SS_Connect) {
-			findResultCallback_(BadCommunicationError); // FIXME: application description...
+			if (shutdown_) {
+				shutdownCond_.conditionValueDec();
+				return;
+			}
+
+			findResultCallback_(findStatusCode_, findResults_);
 			return;
 		}
 
@@ -131,11 +163,16 @@ namespace OpcUaStackClient
 		if (serviceTransactionFindServers->statusCode() != Success) {
 			Log(Error, "receive find servers response error")
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionFindServers->statusCode()));
-			findResultCallback_(BadCommunicationError); // FIXME: application description...
 		}
 
 		else {
 			FindServersResponse::SPtr res = serviceTransactionFindServers->response();
+
+			findStatusCode_ = Success;
+			for (uint32_t idx = 0; idx < res->servers()->size(); idx++) {
+				ApplicationDescription::SPtr applicationDescription;
+				res->servers()->get(idx, applicationDescription);
+			}
 
 		}
 
