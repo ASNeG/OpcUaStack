@@ -17,7 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackClient/ClientConnection/ClientConfig.h"
+#include "OpcUaStackClient/ApplicationUtility/ClientConfig.h"
 
 using namespace OpcUaStackCore;
 

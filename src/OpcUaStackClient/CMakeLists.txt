@@ -47,7 +47,7 @@ file(GLOB INC_OpcUaStackClient_Client OpcUaStackClient/Client/*.h)
 file(GLOB INC_OpcUaStackClient_SecureChannel OpcUaStackClient/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackClient_ServiceSet OpcUaStackClient/ServiceSet/*.h)
 file(GLOB INC_OpcUaStackClient_VBI OpcUaStackClient/ValueBasedInterface/*.h)
-file(GLOB INC_OpcUaStackClient_ClientConnection OpcUaStackClient/ClientConnection/*.h)
+file(GLOB INC_OpcUaStackClient_ApplicationUtility OpcUaStackClient/ApplicationUtility/*.h)
 
 install(
     TARGETS OpcUaStackClient 
@@ -86,7 +86,7 @@ install(
 )
 
 install(
-    FILES ${INC_OpcUaStackClient_ClientConnection} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ClientConnection
+    FILES ${INC_OpcUaStackClient_ApplicationUtility} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackClient/ApplicationUtility
     COMPONENT headers
 )

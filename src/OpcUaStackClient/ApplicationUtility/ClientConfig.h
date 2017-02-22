@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ConfigXmlManager.h"
 #include "OpcUaStackCore/BuildInTypes/DataChangeTrigger.h"
-#include "OpcUaStackClient/ClientConnection/ConfigBase.h"
+#include "OpcUaStackClient/ApplicationUtility/ConfigBase.h"
 
 using namespace OpcUaStackCore;
 

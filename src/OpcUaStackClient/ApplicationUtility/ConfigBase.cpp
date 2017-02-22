@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackClient/ClientConnection/ConfigBase.h"
+#include "OpcUaStackClient/ApplicationUtility/ConfigBase.h"
 
 namespace OpcUaStackClient
 {
