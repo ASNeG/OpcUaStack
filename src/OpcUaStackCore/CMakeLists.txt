@@ -55,6 +55,7 @@ file(GLOB INC_OpcUaStackCore_TCPChannel OpcUaStackCore/TCPChannel/*.h)
 file(GLOB INC_OpcUaStackCore_Utility OpcUaStackCore/Utility/*.h)
 file(GLOB INC_OpcUaStackCore_Application OpcUaStackCore/Application/*.h)
 file(GLOB INC_OpcUaStackCore_Container OpcUaStackCore/Container/*.h)
+file(GLOB INC_OpcUaStackCore_ApplicationUtility OpcUaStackCore/ApplicationUtility/*.h)
 
 install(
     TARGETS OpcUaStackCore 
@@ -125,5 +126,11 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_Container} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Container
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_ApplicationUtility} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ApplicationUtility
     COMPONENT headers
 )
