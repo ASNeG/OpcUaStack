@@ -19,6 +19,7 @@
 #define __OpcUaStackClient_ClientConnection_h__
 
 #include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ApplicationUtility/ApplicationClientConfigIf.h"
@@ -33,7 +34,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackClient
 {
 
-	class ClientConnection
+	class DLLEXPORT ClientConnection
 	: public SessionServiceIf
 	, public AttributeServiceIf
 	{
