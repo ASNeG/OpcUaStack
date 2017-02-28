@@ -72,6 +72,8 @@ namespace OpcUaStackClient
 
 		void connect(void);
 		void disconnect(void);
+		void asyncDisconnect(void);
+		void syncDisconnect(void);
 
 		//- SessionServiceIf --------------------------------------------------
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);

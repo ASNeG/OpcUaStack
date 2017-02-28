@@ -93,6 +93,10 @@ namespace OpcUaStackClient
 
 	SessionService::~SessionService(void)
 	{
+		if (slotTimerElement_.get() != nullptr) {
+			ioThread_->slotTimer()->stop(slotTimerElement_);
+			slotTimerElement_.reset();
+		}
 	}
 
 	void
@@ -245,6 +249,11 @@ namespace OpcUaStackClient
 	OpcUaStatusCode
 	SessionService::syncDisconnect(bool deleteSubscriptions)
 	{
+		//
+		// Only a separate shutdown thread can be used. Do not use
+		// the thread from io service
+		//
+
 		SessionTransaction::SPtr sessionTransaction = constructSPtr<SessionTransaction>();
 		sessionTransaction->operation_ = SessionTransaction::OP_Disconnect;
 		sessionTransaction->condition_.condition(1,0);

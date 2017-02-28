@@ -165,9 +165,23 @@ namespace OpcUaStackClient
 	void
 	ClientConnection::disconnect(void)
 	{
+		asyncDisconnect();
+	}
+
+	void
+	ClientConnection::asyncDisconnect(void)
+	{
 		// disconnect session
 		handleDisconnect();
 		sessionService_->asyncDisconnect(true);
+	}
+
+	void
+	ClientConnection::syncDisconnect(void)
+	{
+		// disconnect session
+		handleDisconnect();
+		sessionService_->syncDisconnect(true);
 	}
 
 	// ------------------------------------------------------------------------
