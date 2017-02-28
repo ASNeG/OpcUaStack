@@ -103,7 +103,6 @@ namespace OpcUaStackClient
 
 		NamespaceMap namespaceMap_;
 		void init(void);
-		void timerLoop(void);
 	    void readNamespaceArray(void);
 	    void handleNamespaceArray(ServiceTransactionRead::SPtr serviceTransactionRead);
 	    void handleConnect(void);
