@@ -70,8 +70,8 @@ namespace OpcUaStackClient
 		void namespaceElementVec(NamespaceElement::Vec& namespaceElementVec);
 		NamespaceElement::Vec& namespaceElementVec(void);
 
-		bool connect(void);
-		bool disconnect(void);
+		void connect(void);
+		void disconnect(void);
 
 		//- SessionServiceIf --------------------------------------------------
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);

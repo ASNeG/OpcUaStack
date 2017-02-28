@@ -154,22 +154,20 @@ namespace OpcUaStackClient
 		attributeService_ = serviceSetManager_.attributeService(sessionService_, attributeServiceConfig);
 	}
 
-	bool
+	void
 	ClientConnection::connect(void)
 	{
 		// create session
 		state_ = S_Connecting;
 		sessionService_->asyncConnect();
-		return true;
 	}
 
-	bool
+	void
 	ClientConnection::disconnect(void)
 	{
 		// disconnect session
 		handleDisconnect();
 		sessionService_->asyncDisconnect(true);
-		return true;
 	}
 
 	// ------------------------------------------------------------------------
