@@ -114,7 +114,7 @@ namespace OpcUaStackClient
 	}
 
 	void
-	DiscoveryClientFindServers::find(const std::string serverUri, Callback& findResultCallback)
+	DiscoveryClientFindServers::asyncFind(const std::string serverUri, Callback& findResultCallback)
 	{
 		findResults_.clear();
 		findStatusCode_ = BadCommunicationError;

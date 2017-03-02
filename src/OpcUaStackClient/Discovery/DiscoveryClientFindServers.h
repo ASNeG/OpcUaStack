@@ -43,7 +43,7 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
-		void find(const std::string serverUri, Callback& findResultCallback);
+		void asyncFind(const std::string serverUri, Callback& findResultCallback);
 
 		//- SessionServiceIf --------------------------------------------------
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
