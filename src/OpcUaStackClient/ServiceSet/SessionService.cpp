@@ -18,6 +18,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
@@ -177,7 +178,35 @@ namespace OpcUaStackClient
 		}
 
 		// check server uri. In case of an error inform the application
-		// FIXME: todo
+		Url endpointUrl(secureChannelClientConfig_->endpointUrl());
+		if (!endpointUrl.good()) {
+			Log(Debug, "connect operation error - invalid endpoint url")
+			    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "None")
+				.parameter("EndpointUrl", secureChannelClientConfig_->endpointUrl());
+
+			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Disconnect);
+
+			secureChannelState_ = SCS_Disconnected;
+			if (mode_ != M_SecureChannel) {
+				if (sessionConfig_->reconnectTimeout() != 0) {
+
+					// start reconnect timer
+					slotTimerElement_->expireFromNow(sessionConfig_->reconnectTimeout());
+					slotTimerElement_->callback().reset(
+						boost::bind(&SessionService::reconnectTimeout, this)
+					);
+					ioThread_->slotTimer()->start(slotTimerElement_);
+					secureChannelState_ = SCS_DisconnectedWait;
+				}
+			}
+
+			if (sessionTransaction.get() != nullptr) {
+				sessionTransaction->statusCode_ = BadInvalidArgument;
+				sessionTransaction->condition_.conditionValueDec();
+			}
+
+			return;
+		}
 
 		// open secure channel
 		secureChannelState_ = SCS_Connecting;
