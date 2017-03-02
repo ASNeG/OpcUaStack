@@ -61,6 +61,8 @@ namespace OpcUaStackClient
 		std::string serverUri(void);
 		void reconnectTimeout(uint32_t reconnectTimeout);
 		uint32_t reconnectTimeout(void);
+		void sessionName(const std::string& sessionName);
+		std::string sessionName(void);
 		bool addClientSubscription(const std::string& id, ClientSubscription::SPtr& clientSubscription);
 		void ioThread(IOThread::SPtr& ioThread);
 		IOThread::SPtr& ioThread(void);
@@ -91,6 +93,7 @@ namespace OpcUaStackClient
 		// configuration parameters
 		std::string serverUri_;
 		uint32_t reconnectTimeout_;
+		std::string sessionName_;
 		IOThread::SPtr ioThread_;
 
 		// runtime parameters

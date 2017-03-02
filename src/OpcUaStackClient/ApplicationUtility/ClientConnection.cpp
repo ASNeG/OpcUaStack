@@ -26,6 +26,7 @@ namespace OpcUaStackClient
 	ClientConnection::ClientConnection(void)
 	: serverUri_("opc.tcp://127.0.0.1:4841")
 	, reconnectTimeout_(5000)
+	, sessionName_("OpcUaStackClient-Default")
 
 	, init_(false)
 	, state_(S_Disconnected)
@@ -69,6 +70,18 @@ namespace OpcUaStackClient
 	ClientConnection::reconnectTimeout(void)
 	{
 		return reconnectTimeout_;
+	}
+
+	void
+	ClientConnection::sessionName(const std::string& sessionName)
+	{
+		sessionName_ = sessionName;
+	}
+
+	std::string
+	ClientConnection::sessionName(void)
+	{
+		return sessionName_;
 	}
 
 	bool
@@ -142,7 +155,7 @@ namespace OpcUaStackClient
 		sessionServiceConfig.ioThreadName("GlobalIOThread");
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(serverUri_);
-		sessionServiceConfig.session_->sessionName("ASNeGHistoryServer");
+		sessionServiceConfig.session_->sessionName(sessionName_);
 		sessionServiceConfig.session_->reconnectTimeout(reconnectTimeout_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
 		sessionService_ = serviceSetManager_.sessionService(sessionServiceConfig);
