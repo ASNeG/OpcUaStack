@@ -110,7 +110,9 @@ namespace OpcUaStackClient
 		mode_ = mode;
 		sessionServiceIf_ = sessionServiceIf;
 		secureChannelClientConfig_ = secureChannelClientConfig;
-		sessionConfig_ = sessionConfig;
+		if (mode_ != M_SecureChannel) {
+			sessionConfig_ = sessionConfig;
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -147,7 +149,7 @@ namespace OpcUaStackClient
 		// check secure channel state
 		if (secureChannelState_ != SCS_Disconnected) {
 			Log(Error, "connect operation in invalid state")
-			    .parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "None")
+			    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "None")
 				.parameter("SecureChannelState", secureChannelState_);
 
 			if (sessionTransaction.get() != nullptr) {
@@ -163,15 +165,8 @@ namespace OpcUaStackClient
 		assert(sessionServiceIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
 
-		if (mode_ == M_SecureChannel) {
-			sessionConfig_.reset();
-			assert(sessionConfig_.get() == nullptr);
-		}
-		else {
+		if (mode_ != M_SecureChannel) {
 			assert(sessionConfig_.get() != nullptr);
-		}
-
-		if (sessionConfig_.get() != nullptr) {
 			requestTimeout_ = sessionConfig_->requestTimeout_;
 		}
 
@@ -204,7 +199,7 @@ namespace OpcUaStackClient
 		// check secure channel state
 		if (secureChannelState_ == SCS_Disconnecting || secureChannelState_ == SCS_Disconnected) {
 			Log(Error, "disconnect operation in invalid state")
-			    .parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "None")
+			    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "None")
 				.parameter("SecureChannelState", secureChannelState_);
 
 			if (sessionTransaction.get() != nullptr) {
@@ -431,7 +426,7 @@ namespace OpcUaStackClient
 	SessionService::handleConnect(SecureChannel* secureChannel)
 	{
 		secureChannelState_ = SCS_Connected;
-		if (sessionConfig_.get() == nullptr) {
+		if (mode_ == M_SecureChannel) {
 
 			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Connect);
 
@@ -453,7 +448,7 @@ namespace OpcUaStackClient
 	SessionService::handleDisconnect(SecureChannel* secureChannel)
 	{
 		secureChannelState_ = SCS_Disconnected;
-		if (sessionConfig_.get() != nullptr) {
+		if (mode_ != M_SecureChannel) {
 			if (sessionConfig_->reconnectTimeout() != 0) {
 
 				// start reconnect timer
@@ -520,7 +515,7 @@ namespace OpcUaStackClient
 		uint32_t requestId = ++requestId_;
 		Log(Debug, "session send request")
 		    .parameter("RequestId", requestId)
-		    .parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
+		    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "NoSession")
 		    .parameter("AuthenticationToken", authenticationToken_)
 		    .parameter("RequestType", OpcUaIdMap::longString(requestType));
 
@@ -570,7 +565,7 @@ namespace OpcUaStackClient
 
 		Log(Debug, "session send request timeout")
 		    .parameter("RequestId", serviceTransaction->requestId_)
-	    	.parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
+	    	.parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "NoSession")
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("NodeType", serviceTransaction->nodeTypeResponse())
 			.parameter("RequestHandle", serviceTransaction->transactionId());
@@ -594,7 +589,7 @@ namespace OpcUaStackClient
 		if (objectSPtr.get() == nullptr) {
 			Log(Error, "session pending queue error, because element not exist")
 				.parameter("RequestId", secureChannelTransaction->requestId_)
-				.parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
+				.parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "NoSession")
 				.parameter("AuthenticationToken", authenticationToken_)
 				.parameter("TypeId", secureChannelTransaction->responseTypeNodeId_)
 				.parameter("RequestHandle", responseHeader->requestHandle());
@@ -609,7 +604,7 @@ namespace OpcUaStackClient
 
 		Log(Debug, "session receive response")
 		    .parameter("RequestId", secureChannelTransaction->requestId_)
-	    	.parameter("SessionName", sessionConfig_.get() != nullptr ? sessionConfig_->sessionName_ : "NoSession")
+	    	.parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "NoSession")
 	    	.parameter("AuthenticationToken", authenticationToken_)
 			.parameter("ResponseType", OpcUaIdMap::longString(serviceTransaction->nodeTypeResponse().nodeId<uint32_t>()))
 			.parameter("ServiceResult", OpcUaStatusCodeMap::shortString(serviceTransaction->responseHeader()->serviceResult()));
