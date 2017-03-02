@@ -219,10 +219,6 @@ namespace OpcUaStackClient
 					.parameter("ServerUri", serverUri_);
 				handleDisconnect();
 				break;
-			case SS_Reactivate:
-				Log(Debug, "session state changed to reactivate")
-					.parameter("ServerUri", serverUri_);
-				break;
 		}
 	}
 
