@@ -63,8 +63,6 @@ namespace OpcUaStackClient
 		sessionServiceConfig.ioThreadName("DiscoveryIOThread");
 		sessionServiceConfig.sessionServiceIf_ = this;
 		sessionServiceConfig.secureChannelClient_->endpointUrl(discoveryUri_);
-		sessionServiceConfig.session_->sessionName("DiscoveryClient");
-		sessionServiceConfig.session_->reconnectTimeout(5000);
 		sessionServiceConfig.mode_ = SessionService::M_SecureChannel;
 		serviceSetManager_.registerIOThread("DiscoveryIOThread", ioThread_);
 		serviceSetManager_.sessionService(sessionServiceConfig);
