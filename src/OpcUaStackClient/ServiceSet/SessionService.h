@@ -87,7 +87,7 @@ namespace OpcUaStackClient
 			SecureChannelClientConfig::SPtr& secureChannelClientConfig,
 			SessionConfig::SPtr& sessionConfig
 		);
-
+		void updateEndpointUrl(const std::string& endpointUrl);
 
 		void sessionServiceIf(SessionServiceIf* sessionServiceIf);
 		void asyncConnect(void);

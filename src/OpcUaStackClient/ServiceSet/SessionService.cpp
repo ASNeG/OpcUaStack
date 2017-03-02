@@ -115,6 +115,12 @@ namespace OpcUaStackClient
 		}
 	}
 
+	void
+	SessionService::updateEndpointUrl(const std::string& endpointUrl)
+	{
+		secureChannelClientConfig_->endpointUrl(endpointUrl);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -162,14 +168,18 @@ namespace OpcUaStackClient
 		// set session transaction
 		sessionTransaction_ = sessionTransaction;
 
+		// check configuration parameter
 		assert(sessionServiceIf_ != nullptr);
 		assert(secureChannelClientConfig_.get() != nullptr);
-
 		if (mode_ != M_SecureChannel) {
 			assert(sessionConfig_.get() != nullptr);
 			requestTimeout_ = sessionConfig_->requestTimeout_;
 		}
 
+		// check server uri. In case of an error inform the application
+		// FIXME: todo
+
+		// open secure channel
 		secureChannelState_ = SCS_Connecting;
 		secureChannelClient_.secureChannelClientIf(this);
 		secureChannel_ = secureChannelClient_.connect(secureChannelClientConfig_);
