@@ -237,7 +237,7 @@ namespace OpcUaStackClient
 		// set session transaction
 		sessionTransaction_ = sessionTransaction;
 
-		// FIXME: onl if session is acvitated...
+		// FIXME: only if session is activated...
 		if (secureChannelState_ == SCS_Connected && sessionConfig_.get() != nullptr) {
 			sendCloseSessionRequest(deleteSubscriptions);
 		}
