@@ -228,6 +228,11 @@ namespace OpcUaStackClient
 				Log(Debug, "session state changed to disconnect/close")
 					.parameter("ServerUri", serverUri_);
 				handleDisconnect();
+
+				if (discoveryIf_ != nullptr) {
+					discoveryIf_->asyncFind(serverUrn_, discoveryFindResponseCallback_);
+				}
+
 				break;
 			case SS_ServerUriError:
 				Log(Debug, "session state changed to disconnect/close, because server uri invalid")
@@ -412,6 +417,8 @@ namespace OpcUaStackClient
 
     	std::cout << "receive addresses from discovery process" << std::endl;
     	// FIXME: todo
+    	sessionService_->updateEndpointUrl("opc.tcp://127.0.0.1:8889");
+    	sessionService_->asyncConnect();
     }
 
 }
