@@ -25,6 +25,7 @@ namespace OpcUaStackClient
 
 	ClientConnection::ClientConnection(void)
 	: serverUri_("opc.tcp://127.0.0.1:4841")
+	, serverUrn_("")
 	, discoveryUri_("")
 	, reconnectTimeout_(5000)
 	, sessionName_("OpcUaStackClient-Default")
@@ -59,6 +60,18 @@ namespace OpcUaStackClient
 	ClientConnection::serverUri(void)
 	{
 		return serverUri_;
+	}
+
+	void
+	ClientConnection::serverUrn(const std::string& serverUrn)
+	{
+		serverUrn_ = serverUrn;
+	}
+
+	std::string
+	ClientConnection::serverUrn(void)
+	{
+		return serverUrn_;
 	}
 
 	void
