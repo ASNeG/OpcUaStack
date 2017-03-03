@@ -153,6 +153,12 @@ namespace OpcUaStackClient
 	void
 	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
+		// stop reconnect timer if necessary
+		if (secureChannelState_ != SCS_DisconnectedWait) {
+			ioThread_->slotTimer()->stop(slotTimerElement_);
+			secureChannelState_ = SCS_Disconnected;
+		}
+
 		// check secure channel state
 		if (secureChannelState_ != SCS_Disconnected) {
 			Log(Error, "connect operation in invalid state")
@@ -165,9 +171,6 @@ namespace OpcUaStackClient
 			}
 			return;
 		}
-
-		// set session transaction
-		sessionTransaction_ = sessionTransaction;
 
 		// check configuration parameter
 		assert(sessionServiceIf_ != nullptr);
@@ -207,6 +210,9 @@ namespace OpcUaStackClient
 
 			return;
 		}
+
+		// set session transaction
+		sessionTransaction_ = sessionTransaction;
 
 		// open secure channel
 		secureChannelState_ = SCS_Connecting;
