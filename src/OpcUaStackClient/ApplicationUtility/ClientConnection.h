@@ -59,6 +59,8 @@ namespace OpcUaStackClient
 
 		void serverUri(const std::string& serverUri);
 		std::string serverUri(void);
+		void discoveryUri(const std::string& discoveryUri);
+		std::string discoveryUri(void);
 		void reconnectTimeout(uint32_t reconnectTimeout);
 		uint32_t reconnectTimeout(void);
 		void sessionName(const std::string& sessionName);
@@ -92,6 +94,7 @@ namespace OpcUaStackClient
 	  private:
 		// configuration parameters
 		std::string serverUri_;
+		std::string discoveryUri_;
 		uint32_t reconnectTimeout_;
 		std::string sessionName_;
 		IOThread::SPtr ioThread_;
