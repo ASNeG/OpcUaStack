@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
+#include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServersIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -32,6 +33,7 @@ namespace OpcUaStackClient
 	class DLLEXPORT DiscoveryClientFindServers
 	: public SessionServiceIf
 	, public DiscoveryServiceIf
+	, public DiscoveryClientFindServersIf
 	{
 	  public:
 		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
@@ -45,12 +47,14 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
+		//- DiscoveryClientFindServerIf ---------------------------------------
 		//
 		// asyncFind
 		//   server uri of the discovery server
 		//   findResultCallback(OpcUaStatusCode, ApplicationDescription::Vec&)
 		//
-		void asyncFind(const std::string serverUri, Callback& findResultCallback);
+		virtual void asyncFind(const std::string serverUri, Callback& findResultCallback);
+		//- DiscoveryClientFindServerIf ---------------------------------------
 
 		//- SessionServiceIf --------------------------------------------------
 		virtual void sessionStateUpdate(SessionBase& session, SessionState sessionState);
