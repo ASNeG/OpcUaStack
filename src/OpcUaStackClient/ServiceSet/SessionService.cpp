@@ -184,9 +184,9 @@ namespace OpcUaStackClient
 			    .parameter("SessionName", mode_ != M_SecureChannel ? sessionConfig_->sessionName_ : "None")
 				.parameter("EndpointUrl", secureChannelClientConfig_->endpointUrl());
 
-			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_Disconnect);
-
 			secureChannelState_ = SCS_Disconnected;
+			if (sessionServiceIf_) sessionServiceIf_->sessionStateUpdate(*this, SS_ServerUriError);
+
 			if (mode_ != M_SecureChannel) {
 				if (sessionConfig_->reconnectTimeout() != 0) {
 

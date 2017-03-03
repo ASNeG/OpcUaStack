@@ -30,7 +30,8 @@ namespace OpcUaStackClient
 
 	typedef enum {
 		SS_Disconnect,		// The session or the secure channel is closed
-		SS_Connect			// The session or the secure channel is connected
+		SS_Connect,			// The session or the secure channel is connected
+		SS_ServerUriError	// The server uri is invalid
 	} SessionState;
 
 	class DLLEXPORT SessionServiceIf
