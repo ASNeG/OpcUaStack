@@ -43,6 +43,11 @@ namespace OpcUaStackClient
 		bool startup(void);
 		void shutdown(void);
 
+		//
+		// asyncFind
+		//   server uri of the discovery server
+		//   findResultCallback(OpcUaStatusCode, ApplicationDescription::Vec&)
+		//
 		void asyncFind(const std::string serverUri, Callback& findResultCallback);
 
 		//- SessionServiceIf --------------------------------------------------
