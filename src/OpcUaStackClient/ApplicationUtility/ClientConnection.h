@@ -24,6 +24,7 @@
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ApplicationUtility/ApplicationClientConfigIf.h"
 #include "OpcUaStackClient/ApplicationUtility/ClientSubscription.h"
+#include "OpcUaStackClient/ApplicationUtility/DiscoveryClientFindServersIf.h"
 #include <map>
 #include <set>
 #include <vector>
@@ -59,8 +60,7 @@ namespace OpcUaStackClient
 
 		void serverUri(const std::string& serverUri);
 		std::string serverUri(void);
-		void serverUrn(const std::string& serverUrn);
-		std::string serverUrn(void);
+		void discoveryIf(DiscoveryClientFindServersIf* discoveryIf, const std::string& serverUrn);
 		void reconnectTimeout(uint32_t reconnectTimeout);
 		uint32_t reconnectTimeout(void);
 		void sessionName(const std::string& sessionName);
@@ -95,6 +95,8 @@ namespace OpcUaStackClient
 		// configuration parameters
 		std::string serverUri_;
 		std::string serverUrn_;
+		DiscoveryClientFindServersIf* discoveryIf_;
+		Callback discoveryFindResponseCallback_;
 		uint32_t reconnectTimeout_;
 		std::string sessionName_;
 		IOThread::SPtr ioThread_;
@@ -115,6 +117,7 @@ namespace OpcUaStackClient
 	    void handleNamespaceArray(ServiceTransactionRead::SPtr serviceTransactionRead);
 	    void handleConnect(void);
 	    void handleDisconnect(void);
+	    void findResultCallback(OpcUaStatusCode statusCode, ApplicationDescription::Vec& applicationDescriptionVec);
 
 	    ClientSubscription::Map clientSubscriptionMap_;
 	};

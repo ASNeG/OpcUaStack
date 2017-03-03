@@ -29,7 +29,7 @@ namespace OpcUaStackClient
 	{
 	  public:
 		DiscoveryClientFindServersIf(void) {}
-		~DiscoveryClientFindServersIf(void) {}
+		virtual ~DiscoveryClientFindServersIf(void) {}
 
 		//
 		// asyncFind

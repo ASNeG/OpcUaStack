@@ -26,6 +26,8 @@ namespace OpcUaStackClient
 	ClientConnection::ClientConnection(void)
 	: serverUri_("opc.tcp://127.0.0.1:4841")
 	, serverUrn_("")
+	, discoveryIf_(nullptr)
+	, discoveryFindResponseCallback_(boost::bind(&ClientConnection::findResultCallback, this, _1, _2))
 	, reconnectTimeout_(5000)
 	, sessionName_("OpcUaStackClient-Default")
 
@@ -62,15 +64,10 @@ namespace OpcUaStackClient
 	}
 
 	void
-	ClientConnection::serverUrn(const std::string& serverUrn)
+	ClientConnection::discoveryIf(DiscoveryClientFindServersIf* discoveryIf, const std::string& serverUrn)
 	{
+		discoveryIf_ = discoveryIf;
 		serverUrn_ = serverUrn;
-	}
-
-	std::string
-	ClientConnection::serverUrn(void)
-	{
-		return serverUrn_;
 	}
 
 	void
@@ -235,8 +232,12 @@ namespace OpcUaStackClient
 			case SS_ServerUriError:
 				Log(Debug, "session state changed to disconnect/close, because server uri invalid")
 					.parameter("ServerUri", serverUri_);
-				break;
 
+				if (discoveryIf_ != nullptr) {
+					discoveryIf_->asyncFind(serverUrn_, discoveryFindResponseCallback_);
+				}
+
+				break;
 		}
 	}
 
@@ -400,6 +401,17 @@ namespace OpcUaStackClient
     		ClientSubscription::SPtr clientSubscription = it->second;
     		clientSubscription->error();
     	}
+    }
+
+    void
+    ClientConnection::findResultCallback(OpcUaStatusCode statusCode, ApplicationDescription::Vec& applicationDescriptionVec)
+    {
+    	if (statusCode != Success) {
+    		return;
+    	}
+
+    	std::cout << "receive addresses from discovery process" << std::endl;
+    	// FIXME: todo
     }
 
 }
