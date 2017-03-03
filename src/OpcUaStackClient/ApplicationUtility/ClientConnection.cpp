@@ -219,6 +219,11 @@ namespace OpcUaStackClient
 					.parameter("ServerUri", serverUri_);
 				handleDisconnect();
 				break;
+			case SS_ServerUriError:
+				Log(Debug, "session state changed to disconnect/close, because server uri invalid")
+					.parameter("ServerUri", serverUri_);
+				break;
+
 		}
 	}
 
