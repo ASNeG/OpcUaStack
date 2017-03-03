@@ -34,6 +34,8 @@ namespace OpcUaStackClient
 	, public DiscoveryServiceIf
 	{
 	  public:
+		typedef boost::shared_ptr<DiscoveryClientFindServers> SPtr;
+
 		DiscoveryClientFindServers(void);
 	    ~DiscoveryClientFindServers(void);
 
