@@ -30,9 +30,7 @@ namespace OpcUaStackClient
 	, discoveryFindResponseCallback_(boost::bind(&ClientConnection::findResultCallback, this, _1, _2))
 	, reconnectTimeout_(5000)
 	, sessionName_("OpcUaStackClient-Default")
-	, lastDiscoveryTime_(
-		boost::posix_time::microsec_clock::universal_time() - boost::posix_time::millisec(reconnectTimeout_+1)
-	)
+	, lastDiscoveryTime_()
 
 	, init_(false)
 	, state_(S_Disconnected)
@@ -47,6 +45,7 @@ namespace OpcUaStackClient
 	, namespaceMap_()
 	, clientSubscriptionMap_()
 	{
+		lastDiscoveryTime_ = boost::posix_time::microsec_clock::universal_time() - boost::posix_time::millisec(reconnectTimeout_);
 	}
 
 	ClientConnection::~ClientConnection(void)
@@ -234,7 +233,7 @@ namespace OpcUaStackClient
 
 				if (discoveryIf_ != nullptr) {
 			    	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-			    	if (lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_) < now) {
+			    	if ((lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_)) < now) {
 			    		lastDiscoveryTime_ = boost::posix_time::microsec_clock::universal_time();
 			    		discoveryIf_->asyncFind(serverUrn_, discoveryFindResponseCallback_);
 			    	}
@@ -247,7 +246,7 @@ namespace OpcUaStackClient
 
 				if (discoveryIf_ != nullptr) {
 					boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-			    	if (lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_) < now) {
+			    	if ((lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_)) < now) {
 			    		lastDiscoveryTime_ = boost::posix_time::microsec_clock::universal_time();
 			    		discoveryIf_->asyncFind(serverUrn_, discoveryFindResponseCallback_);
 			    	}
