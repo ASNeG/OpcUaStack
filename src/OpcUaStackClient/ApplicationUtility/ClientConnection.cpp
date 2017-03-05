@@ -415,30 +415,26 @@ namespace OpcUaStackClient
     		return;
     	}
 
-    	std::cout << "receive addresses from discovery process ..." << OpcUaStatusCodeMap::shortString(statusCode) << std::endl;
-    	std::cout << "Size=" << applicationDescriptionVec.size() << std::endl;
-
+    	std::string endpointUrl = "";
     	ApplicationDescription::Vec::iterator it;
     	for (it = applicationDescriptionVec.begin(); it != applicationDescriptionVec.end(); it++) {
 
     		ApplicationDescription::SPtr ad = *it;
 
-    		std::cout << "Result:" << std::endl;
+    		Log(Debug, "discovery result")
+    			.parameter("ServerUrn", ad->applicationUri())
+    			.parameter("DiscoveryUrls", ad->discoveryUrls());
+
     		OpcUaStringArray::SPtr discoeryUrls = ad->discoveryUrls();
     		for (uint32_t idx = 0; idx < discoeryUrls->size(); idx++) {
     			OpcUaString::SPtr str;
     			discoeryUrls->get(idx, str);
-    			std::cout << "  " << str->value() << std::endl;
+    			endpointUrl = str->value();
+    			break;
     		}
-
-
     	}
 
-    	//void discoveryUrls(OpcUaStringArray::SPtr discoveryUrls);
-    	//OpcUaStringArray::SPtr discoveryUrls(void) const;
-
-    	// FIXME: todo
-    	sessionService_->updateEndpointUrl("opc.tcp://127.0.0.1:8889");
+    	sessionService_->updateEndpointUrl(endpointUrl);
     	sessionService_->asyncConnect();
     }
 
