@@ -31,7 +31,7 @@ namespace OpcUaStackClient
 	, reconnectTimeout_(5000)
 	, sessionName_("OpcUaStackClient-Default")
 	, lastDiscoveryTime_(
-		boost::posix_time::microsec_clock::universal_time() - boost::posix_time::millisec(reconnectTimeout_)
+		boost::posix_time::microsec_clock::universal_time() - boost::posix_time::millisec(reconnectTimeout_+1)
 	)
 
 	, init_(false)
@@ -235,6 +235,7 @@ namespace OpcUaStackClient
 				if (discoveryIf_ != nullptr) {
 			    	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 			    	if (lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_) < now) {
+			    		lastDiscoveryTime_ = boost::posix_time::microsec_clock::universal_time();
 			    		discoveryIf_->asyncFind(serverUrn_, discoveryFindResponseCallback_);
 			    	}
 				}
@@ -247,6 +248,7 @@ namespace OpcUaStackClient
 				if (discoveryIf_ != nullptr) {
 					boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 			    	if (lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_) < now) {
+			    		lastDiscoveryTime_ = boost::posix_time::microsec_clock::universal_time();
 			    		discoveryIf_->asyncFind(serverUrn_, discoveryFindResponseCallback_);
 			    	}
 				}
@@ -445,7 +447,6 @@ namespace OpcUaStackClient
 
     	// update endpoint url
     	sessionService_->updateEndpointUrl(endpointUrl);
-    	lastDiscoveryTime_ = boost::posix_time::microsec_clock::universal_time();
     	sessionService_->asyncConnect();
     }
 
