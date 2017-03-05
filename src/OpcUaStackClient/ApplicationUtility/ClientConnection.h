@@ -96,6 +96,7 @@ namespace OpcUaStackClient
 		std::string serverUri_;
 		std::string serverUrn_;
 		DiscoveryClientFindServersIf* discoveryIf_;
+		boost::posix_time::ptime lastDiscoveryTime_;
 		Callback discoveryFindResponseCallback_;
 		uint32_t reconnectTimeout_;
 		std::string sessionName_;

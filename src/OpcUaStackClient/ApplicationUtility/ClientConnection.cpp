@@ -30,6 +30,9 @@ namespace OpcUaStackClient
 	, discoveryFindResponseCallback_(boost::bind(&ClientConnection::findResultCallback, this, _1, _2))
 	, reconnectTimeout_(5000)
 	, sessionName_("OpcUaStackClient-Default")
+	, lastDiscoveryTime_(
+		boost::posix_time::microsec_clock::universal_time() - boost::posix_time::millisec(reconnectTimeout_)
+	)
 
 	, init_(false)
 	, state_(S_Disconnected)
@@ -434,7 +437,13 @@ namespace OpcUaStackClient
     		}
     	}
 
+    	// update endpoint url
     	sessionService_->updateEndpointUrl(endpointUrl);
+
+    	// prevent overload by loop
+    	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+    	if (lastDiscoveryTime_ + boost::posix_time::millisec(reconnectTimeout_) > now) return;
+    	lastDiscoveryTime_ = now;
     	sessionService_->asyncConnect();
     }
 
