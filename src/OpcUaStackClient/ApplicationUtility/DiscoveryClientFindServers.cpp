@@ -168,9 +168,11 @@ namespace OpcUaStackClient
 			FindServersResponse::SPtr res = serviceTransactionFindServers->response();
 
 			findStatusCode_ = Success;
+			findResults_.clear();
 			for (uint32_t idx = 0; idx < res->servers()->size(); idx++) {
 				ApplicationDescription::SPtr applicationDescription;
 				res->servers()->get(idx, applicationDescription);
+				findResults_.push_back(applicationDescription);
 			}
 
 		}
