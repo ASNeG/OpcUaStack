@@ -377,12 +377,7 @@ namespace OpcUaStackClient
 		config.getConfigParameter("ServerUrn", serverUrn_, "");
 
 		// ServerUri
-		if (!config.getConfigParameter("ServerUri", serverUri_)) {
-			Log(Error, "element missing in config file")
-				.parameter("Element", configBase.elementPrefix() + ".ServerUri")
-				.parameter("ConfigFileName", configBase.configFileName());
-			return false;
-		}
+		config.getConfigParameter("ServerUri", serverUri_, "");
 
 		// ReconnectTimeout
 		if (!config.getConfigParameter("ReconnectTimeout", reconnectTimeout_)) {
