@@ -154,7 +154,7 @@ namespace OpcUaStackClient
 	SessionService::asyncConnectInternal(SessionTransaction::SPtr& sessionTransaction)
 	{
 		// stop reconnect timer if necessary
-		if (secureChannelState_ != SCS_DisconnectedWait) {
+		if (secureChannelState_ == SCS_DisconnectedWait) {
 			ioThread_->slotTimer()->stop(slotTimerElement_);
 			secureChannelState_ = SCS_Disconnected;
 		}
