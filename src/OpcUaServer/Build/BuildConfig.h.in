@@ -19,6 +19,13 @@
 #define __OpcUaServer_BuildConfig__
 
 //
+// version of Library
+//
+#define LIBRARY_VERSION_MAJOR			"0"
+#define LIBRARY_VERSION_MINOR			"0"
+#define LIBRARY_VERSION_PATCH			"0"
+
+//
 // version of OpcUaServer
 //
 #define VERSION_MAJOR			"@VERSION_MAJOR@"
