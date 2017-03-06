@@ -6,6 +6,11 @@
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 configure_file(
+    "${PROJECT_SOURCE_DIR}/ProjectName/Build/BuildConfig.h.in"
+    "${PROJECT_BINARY_DIR}/BuildConfig.h"
+)
+
+configure_file(
     "${PROJECT_SOURCE_DIR}/ProjectName/linux/etc/init/ProjectName.conf.in"
     "${PROJECT_BINARY_DIR}/ProjectName.conf"
 )
@@ -31,6 +36,7 @@ configure_file(
 include_directories(
     ${OPCUASTACK_INSTALL_PREFIX}/usr/include/OpcUaStack${OPCUASTACK_VERSION_MAJOR}
     ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR}
     ${Boost_INCLUDE_DIR}
     ${OPENSSL_INCLUDE_DIR}
 )

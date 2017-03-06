@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include <iostream>
+#include "BuildConfig.h"
 
 namespace ProjectName
 {
@@ -28,12 +29,10 @@ namespace ProjectName
 	Library::Library(void)
 	: ApplicationIf()
 	{
-		Log(Debug, "Library::Library");
 	}
 
 	Library::~Library(void)
 	{
-		Log(Debug, "Library::~Library");
 	}
 
 	bool
@@ -48,6 +47,15 @@ namespace ProjectName
 	{
 		Log(Debug, "Library::shutdown");
 		return true;
+	}
+
+	std::string
+	Library::version(void)
+	{
+		std::stringstream version;
+
+		version << LIBRARY_VERSION_MAJOR << "." << LIBRARY_VERSION_MINOR << "." << LIBRARY_VERSION_PATCH;
+		return version.str();
 	}
 
 }
