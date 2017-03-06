@@ -116,15 +116,17 @@ namespace OpcUaServer
 				return false;
 			}
 
-			// log out library version
-			// FIXME: todo
-
 			// create application library instance
 			ApplicationLibrary::SPtr applicationLibrary = constructSPtr<ApplicationLibrary>();
 			applicationLibrary->applicationInfo(applicationInfo);
 			if (!applicationLibrary->startup()) {
 				return false;
 			}
+
+			// log out library version
+			std::stringstream version;
+			version  << "  Library Version          : " << applicationLibrary->version();
+			Log(Info, version.str());
 
 			// call startup function
 			ApplicationIf* applicationIf;
