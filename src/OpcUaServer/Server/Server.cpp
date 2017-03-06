@@ -57,16 +57,17 @@ namespace OpcUaServer
 		}
 		logServerInfo();
 
-		// initial opc ua server
-		if (!server_.init()) {
-			Log(Error, "shutdown server, because init server error");
-			return false;
-		}
-
 		// initial application library manager
 		applicationManager_.config(*config_);
 		if (!applicationManager_.startup()) {
 			Log(Error, "shutdown server, because startup application manager error");
+			return false;
+		}
+		logApplicationInfo(applicationManager_);
+
+		// initial opc ua server
+		if (!server_.init()) {
+			Log(Error, "shutdown server, because init server error");
 			return false;
 		}
 
@@ -201,6 +202,7 @@ namespace OpcUaServer
 		std::stringstream version;
 		std::stringstream boostVersion;
 		std::stringstream openSSLVersion;
+		std::stringstream confDir;
 
 		version        << "  OpcUaServer version      : "
 			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
@@ -208,14 +210,42 @@ namespace OpcUaServer
 			<< BOOST_VERSION_MAJOR << "." << BOOST_VERSION_MINOR;
 		openSSLVersion << "  Open SSL Library version : "
 			<< OPENSSL_VERSION_MAJOR << "." << OPENSSL_VERSION_MINOR << "." << OPENSSL_VERSION_PATCH;
+		confDir        << "  Config Directory         : "
+			<< Environment::confDir();
 
 		Log(Info, "Start OpcUaServer");
 		Log(Info, version.str());
 		Log(Info, boostVersion.str());
 		Log(Info, openSSLVersion.str());
+		Log(Info, confDir.str());
+	}
 
-		Log(Debug, "Environment")
-		    .parameter("ConfDir", Environment::confDir());
+	void
+	Server::logApplicationInfo(ApplicationManager& applicationManager)
+	{
+		ApplicationLibrary::Map::iterator it;
+		for (
+			it = applicationManager_.applicationLibraryMap().begin();
+			it != applicationManager_.applicationLibraryMap().end();
+			it++
+		) {
+			ApplicationLibrary::SPtr applicationLibrary = it->second;
+
+			std::stringstream name;
+			std::stringstream library;
+			std::stringstream confFile;
+
+			name <<    "Load Application Library " << applicationLibrary->applicationInfo().applicationName();
+			library  << "  Library Name             : "
+				<< applicationLibrary->applicationInfo().libraryName();
+			confFile << "  Config File              : "
+				<< applicationLibrary->applicationInfo().configFileName();
+
+			Log(Info, name.str());
+			Log(Info, library.str());
+			Log(Info, confFile.str());
+
+		}
 	}
 
 }
