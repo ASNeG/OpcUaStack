@@ -22,7 +22,6 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
-#include "BuildConfig.h"
 
 namespace OpcUaStackServer
 {
@@ -68,10 +67,7 @@ namespace OpcUaStackServer
 
 		virtual std::string version(void)
 		{
-			std::stringstream version;
-
-			version << LIBRARY_VERSION_MAJOR << "." << LIBRARY_VERSION_MINOR << "." << LIBRARY_VERSION_PATCH;
-			return version.str();
+			return "0.0.0";
 		}
 
 	  private:
