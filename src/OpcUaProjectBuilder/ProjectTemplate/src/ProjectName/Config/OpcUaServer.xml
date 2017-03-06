@@ -29,14 +29,19 @@
     </Log4cxxLogger>
     
   </Logging>
+  
+  <DiscoveryServer>
+    <DiscoveryUrl>opc.tcp://localhost:4840</DiscoveryUrl>
+    <RegisterInterval>40000</RegisterInterval>
+  </DiscoveryServer>
    
   <Endpoints>
     <EndpointDescription>
-	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort/0.0.0.0</EndpointUrl>
-	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
-	  <ProductUri>urn:company:OpcUaServer</ProductUri>
-	  <ApplicationName>OpcUaServer</ApplicationName>
-	  <DiscoveryUrl>opc.tcp://localhost:4841/0.0.0.0</DiscoveryUrl>	
+	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort</EndpointUrl>
+	  <ApplicationUri>urn:ASNeG::ProjectName</ApplicationUri>
+	  <ProductUri>urn:ASNeG:ProjectName</ProductUri>
+	  <ApplicationName>ProjectName</ApplicationName>
+	  <DiscoveryUrl>opc.tcp://0.0.0.0:ProjectPort</DiscoveryUrl>	
 	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
 	  <UserTokenPolicy>
 	    <PolicyId>OpcUaStack</PolicyId>
@@ -81,8 +86,8 @@
 
   <Applications>
     <Application>
-      <Name>ProjectName</name>  
-      <Library>ProjectName</Application>
+      <Name>ProjectName</Name>  
+      <Library>ProjectName</Library>
       <Config></Config>
     </Application>
   </Applications>
