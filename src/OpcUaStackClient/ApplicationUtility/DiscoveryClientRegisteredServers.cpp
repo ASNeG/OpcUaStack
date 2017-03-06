@@ -16,7 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackClient/Discovery/DiscoveryClientRegisteredServers.h"
+#include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
 

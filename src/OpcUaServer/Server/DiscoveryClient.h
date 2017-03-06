@@ -19,7 +19,7 @@
 #define __OpcUaServer_DiscoveryClient_h__
 
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackClient/Discovery/DiscoveryClientRegisteredServers.h"
+#include "OpcUaStackClient/ApplicationUtility/DiscoveryClientRegisteredServers.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
