@@ -66,7 +66,7 @@ namespace OpcUaStackServer
 			return applicationInfo_;
 		}
 
-		std::string version(void)
+		virtual std::string version(void)
 		{
 			std::stringstream version;
 
