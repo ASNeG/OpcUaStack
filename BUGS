@@ -20,9 +20,3 @@ Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
 - Eine Variable einer Klasse kann eine komplexe Variable sein
 
 
-
-006. Versions Info
-==================
-
-- Beim Start der Anwendung sollten alle Namen und Versionen der verwendeten Programme und 
-  Libraries in die Log Datei ausgegeben werden.
