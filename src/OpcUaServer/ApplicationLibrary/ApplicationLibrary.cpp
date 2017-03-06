@@ -59,6 +59,12 @@ namespace OpcUaServer
 		return applicationIf_;
 	}
 
+	std::string
+	ApplicationLibrary::version(void)
+	{
+		return applicationIf_->version();
+	}
+
 	bool
 	ApplicationLibrary::startup(void)
 	{

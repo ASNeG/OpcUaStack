@@ -47,6 +47,7 @@ namespace OpcUaServer
 		ApplicationInfo& applicationInfo(void);
 		InitFunction* initFunction(void);
 		ApplicationIf* applicationIf(void);
+		std::string version(void);
 
 		bool startup(void);
 		bool shutdown(void);
