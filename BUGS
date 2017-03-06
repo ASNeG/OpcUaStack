@@ -21,8 +21,8 @@ Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
 
 
 
-005. Eigene Klasse fuer ApplicationType
-=======================================
+006. Versions Info
+==================
 
-- Der ApplicationType sollte aus der Klasse OpcUaStackCore/ServiceSet/ApplicationDescription 
-  entfernt werden.
+- Beim Start der Anwendung sollten alle Namen und Versionen der verwendeten Programme und 
+  Libraries in die Log Datei ausgegeben werden.
