@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaServer/Server/Server.h"
 #include "OpcUaStackCore/Utility/Environment.h"
+#include "BuildConfig.h"
 #include <iostream>
 
 using namespace OpcUaStackCore;
@@ -54,9 +55,7 @@ namespace OpcUaServer
 			Log(Error, "shutdown server, because init log error");
 			return false;
 		}
-
-		Log(Debug, "Environment")
-		    .parameter("ConfDir", Environment::confDir());
+		logServerInfo();
 
 		// initial opc ua server
 		if (!server_.init()) {
@@ -196,5 +195,27 @@ namespace OpcUaServer
 		return true;
 	}
 
+	void
+	Server::logServerInfo(void)
+	{
+		std::stringstream version;
+		std::stringstream boostVersion;
+		std::stringstream openSSLVersion;
+
+		version        << "  OpcUaServer version      : "
+			<< VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH;
+		boostVersion   << "  Boost Library version    : "
+			<< BOOST_VERSION_MAJOR << "." << BOOST_VERSION_MINOR;
+		openSSLVersion << "  Open SSL Library version : "
+			<< OPENSSL_VERSION_MAJOR << "." << OPENSSL_VERSION_MINOR << "." << OPENSSL_VERSION_PATCH;
+
+		Log(Info, "Start OpcUaServer");
+		Log(Info, version.str());
+		Log(Info, boostVersion.str());
+		Log(Info, openSSLVersion.str());
+
+		Log(Debug, "Environment")
+		    .parameter("ConfDir", Environment::confDir());
+	}
 
 }

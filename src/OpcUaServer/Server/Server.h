@@ -46,6 +46,7 @@ namespace OpcUaServer
 	  private:
 		bool readConfigurationFile(void);
 		bool initLogging(void);
+		void logServerInfo(void);
 
 		std::string configurationFile_;
 		Config* config_;
