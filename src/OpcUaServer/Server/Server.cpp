@@ -63,7 +63,6 @@ namespace OpcUaServer
 			Log(Error, "shutdown server, because startup application manager error");
 			return false;
 		}
-		logApplicationInfo(applicationManager_);
 
 		// initial opc ua server
 		if (!server_.init()) {
@@ -218,34 +217,6 @@ namespace OpcUaServer
 		Log(Info, boostVersion.str());
 		Log(Info, openSSLVersion.str());
 		Log(Info, confDir.str());
-	}
-
-	void
-	Server::logApplicationInfo(ApplicationManager& applicationManager)
-	{
-		ApplicationLibrary::Map::iterator it;
-		for (
-			it = applicationManager_.applicationLibraryMap().begin();
-			it != applicationManager_.applicationLibraryMap().end();
-			it++
-		) {
-			ApplicationLibrary::SPtr applicationLibrary = it->second;
-
-			std::stringstream name;
-			std::stringstream library;
-			std::stringstream confFile;
-
-			name <<    "Load Application Library " << applicationLibrary->applicationInfo().applicationName();
-			library  << "  Library Name             : "
-				<< applicationLibrary->applicationInfo().libraryName();
-			confFile << "  Config File              : "
-				<< applicationLibrary->applicationInfo().configFileName();
-
-			Log(Info, name.str());
-			Log(Info, library.str());
-			Log(Info, confFile.str());
-
-		}
 	}
 
 }

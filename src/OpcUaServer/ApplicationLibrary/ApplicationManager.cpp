@@ -88,6 +88,21 @@ namespace OpcUaServer
 			}
 			applicationInfo.configFileName(*configFileName);
 
+			// log out application infos
+			std::stringstream name;
+			std::stringstream library;
+			std::stringstream confFile;
+
+			name <<    "Load Application Library " << applicationInfo.applicationName();
+			library  << "  Library Name             : "
+				<< applicationInfo.libraryName();
+			confFile << "  Config File              : "
+				<< applicationInfo.configFileName();
+
+			Log(Info, name.str());
+			Log(Info, library.str());
+			Log(Info, confFile.str());
+
 			// set environment variables
 			applicationInfo.confDir(Environment::confDir());
 
@@ -101,10 +116,8 @@ namespace OpcUaServer
 				return false;
 			}
 
-			Log(Info, "load application library")
-			    .parameter("ApplicationName", *applicationName)
-				.parameter("LibraryName", *libraryName)
-			    .parameter("ConfigFile", *configFileName);
+			// log out library version
+			// FIXME: todo
 
 			// create application library instance
 			ApplicationLibrary::SPtr applicationLibrary = constructSPtr<ApplicationLibrary>();
