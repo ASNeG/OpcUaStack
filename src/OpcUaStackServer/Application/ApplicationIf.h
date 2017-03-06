@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
+#include "BuildConfig.h"
 
 namespace OpcUaStackServer
 {
@@ -63,6 +64,14 @@ namespace OpcUaStackServer
 
 		ApplicationInfo* applicationInfo(void) {
 			return applicationInfo_;
+		}
+
+		std::string version(void)
+		{
+			std::stringstream version;
+
+			version << LIBRARY_VERSION_MAJOR << "." << LIBRARY_VERSION_MINOR << "." << LIBRARY_VERSION_PATCH;
+			return version.str();
 		}
 
 	  private:
