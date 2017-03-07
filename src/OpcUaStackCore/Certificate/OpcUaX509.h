@@ -37,6 +37,7 @@ namespace OpcUaStackCore
 		std::string value_;
 	};
 
+
 	class DLLEXPORT OpcUaX509Extension
 	{
 	  public:
@@ -48,6 +49,7 @@ namespace OpcUaStackCore
 		std::string value_;
 	};
 
+
 	class DLLEXPORT OpcUaX509
 	: public PkiError
 	{
@@ -57,6 +59,9 @@ namespace OpcUaStackCore
 
 		OpcUaStatusCode addEntryByName(X509_NAME** x509Name, const std::string& name, const std::string& value);
 		OpcUaStatusCode addEntryByName(X509_NAME** x509Name, const OpcUaX509NameEntry& x509NameEntry);
+
+		OpcUaStatusCode addV3Extension(X509** cert, const std::string& name, const std::string& value, X509V3_CTX* ctx);
+		OpcUaStatusCode addV3Extension(X509** cert, const OpcUaX509Extension& extension, X509V3_CTX* ctx);
 	};
 
 }

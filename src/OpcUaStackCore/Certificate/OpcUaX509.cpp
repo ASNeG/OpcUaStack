@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Certificate/OpcUaX509.h"
+#include <openssl/x509v3.h>
 
 namespace OpcUaStackCore
 {
@@ -118,6 +119,36 @@ namespace OpcUaStackCore
 	    }
 
 	    X509_NAME_ENTRY_free(entry);
+		return Success;
+	}
+
+	OpcUaStatusCode
+	OpcUaX509::addV3Extension(X509** cert, const std::string& name, const std::string& value, X509V3_CTX* ctx)
+	{
+		return addV3Extension(cert, OpcUaX509Extension(name, value), ctx);
+	}
+
+	OpcUaStatusCode
+	OpcUaX509::addV3Extension(X509** cert, const OpcUaX509Extension& extension, X509V3_CTX* ctx)
+	{
+		// create extension
+		X509_EXTENSION* ext = nullptr;
+		ext = X509V3_EXT_conf(nullptr, ctx, (char*)extension.name_.c_str(), (char*)extension.value_.c_str());
+		if (ext == nullptr) {
+			openSSLError();
+			return BadInternalError;
+		}
+
+		// added extension to certificate
+		int rc = X509_add_ext(*cert, ext, -1);
+		if (rc != 1) {
+			openSSLError();
+
+			X509_EXTENSION_free(ext);
+			return BadInternalError;
+		}
+
+	    X509_EXTENSION_free(ext);
 		return Success;
 	}
 
