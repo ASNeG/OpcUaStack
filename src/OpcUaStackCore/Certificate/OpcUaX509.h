@@ -37,6 +37,17 @@ namespace OpcUaStackCore
 		std::string value_;
 	};
 
+	class DLLEXPORT OpcUaX509Extension
+	{
+	  public:
+		OpcUaX509Extension(void);
+		OpcUaX509Extension(const std::string& name, const std::string& value);
+		~OpcUaX509Extension(void);
+
+		std::string name_;
+		std::string value_;
+	};
+
 	class DLLEXPORT OpcUaX509
 	: public PkiError
 	{
