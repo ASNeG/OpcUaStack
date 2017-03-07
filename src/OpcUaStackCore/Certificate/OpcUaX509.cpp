@@ -152,6 +152,18 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	OpcUaX509::addCustomExtension(X509** cert, const std::string& name, const std::string& value, X509V3_CTX* ctx)
+	{
+		return addCustomExtension(cert, OpcUaX509Extension(name, value), ctx);
+	}
+
+	OpcUaStatusCode
+	OpcUaX509::addCustomExtension(X509** cert, const OpcUaX509Extension& extension, X509V3_CTX* ctx)
+	{
+		return addV3Extension(cert, extension, ctx);
+	}
+
 }
 
 
