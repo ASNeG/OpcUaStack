@@ -72,17 +72,48 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// X509Handle
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	X509Handle::X509Handle(X509** x509)
+	: x509_(x509)
+	{
+	}
+
+	X509Handle::~X509Handle(void)
+	{
+		if (x509_ != nullptr) {
+			X509_free (*x509_);
+			*x509_ = nullptr;
+		}
+	}
+
+	void
+	X509Handle::reset(void)
+	{
+		x509_ = nullptr;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// OpcUaX509
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaX509::OpcUaX509(void)
 	: PkiError()
+	, x509Cert_(nullptr)
 	{
 	}
 
 	OpcUaX509::~OpcUaX509(void)
 	{
+		if (x509Cert_ != nullptr) {
+		    X509_free(x509Cert_);
+		    x509Cert_ = nullptr;
+		}
 	}
 
 	OpcUaStatusCode
@@ -162,6 +193,41 @@ namespace OpcUaStackCore
 	OpcUaX509::addCustomExtension(X509** cert, const OpcUaX509Extension& extension, X509V3_CTX* ctx)
 	{
 		return addV3Extension(cert, extension, ctx);
+	}
+
+	OpcUaStatusCode
+	OpcUaX509::createSelfSignedCerificate(
+		EVP_PKEY* subjectPublicKey,
+		EVP_PKEY* issuerPrivateKey
+	)
+	{
+		int rc;
+
+		// check subject and issuer keys
+		if (subjectPublicKey->type != issuerPrivateKey->type) {
+			openSSLError("subject public key and issuer private key with different types");
+			return BadInvalidArgument;
+		}
+
+		// create new X509 certificate
+		x509Cert_ = X509_new();
+		if (x509Cert_ == nullptr) {
+			Log(Error, "allocate memory error for x509 certificate");
+			return BadInternalError;
+		}
+		X509Handle x509Handle(&x509Cert_); // cleanup cert memory automaticaly on return
+
+		// set version of certificate
+		rc = X509_set_version(x509Cert_, 2);
+		if (!rc) {
+			openSSLError();
+			return BadInternalError;
+		}
+
+		// FIXME: todo
+
+		x509Handle.reset(); // do not clean memory automaticaly on return
+		return Success;
 	}
 
 }

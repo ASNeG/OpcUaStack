@@ -49,6 +49,18 @@ namespace OpcUaStackCore
 		std::string value_;
 	};
 
+	class X509Handle
+	{
+	  public:
+		X509Handle(X509** x509);
+		~X509Handle(void);
+
+		void reset(void);
+
+	  private:
+		X509** x509_;
+
+	};
 
 	class DLLEXPORT OpcUaX509
 	: public PkiError
@@ -57,14 +69,47 @@ namespace OpcUaStackCore
 		OpcUaX509(void);
 		~OpcUaX509(void);
 
-		OpcUaStatusCode addEntryByName(X509_NAME** x509Name, const std::string& name, const std::string& value);
-		OpcUaStatusCode addEntryByName(X509_NAME** x509Name, const OpcUaX509NameEntry& x509NameEntry);
+		OpcUaStatusCode addEntryByName(
+			X509_NAME** x509Name,
+			const std::string& name,
+			const std::string& value
+		);
+		OpcUaStatusCode addEntryByName(
+			X509_NAME** x509Name,
+			const OpcUaX509NameEntry& x509NameEntry
+		);
 
-		OpcUaStatusCode addV3Extension(X509** cert, const std::string& name, const std::string& value, X509V3_CTX* ctx);
-		OpcUaStatusCode addV3Extension(X509** cert, const OpcUaX509Extension& extension, X509V3_CTX* ctx);
+		OpcUaStatusCode addV3Extension(
+			X509** cert,
+			const std::string& name,
+			const std::string& value,
+			X509V3_CTX* ctx
+		);
+		OpcUaStatusCode addV3Extension(
+			X509** cert,
+			const OpcUaX509Extension& extension,
+			X509V3_CTX* ctx
+		);
 
-		OpcUaStatusCode addCustomExtension(X509** cert, const std::string& name, const std::string& value, X509V3_CTX* ctx);
-		OpcUaStatusCode addCustomExtension(X509** cert, const OpcUaX509Extension& extension, X509V3_CTX* ctx);
+		OpcUaStatusCode addCustomExtension(
+			X509** cert,
+			const std::string& name,
+			const std::string& value,
+			X509V3_CTX* ctx
+		);
+		OpcUaStatusCode addCustomExtension(
+			X509** cert,
+			const OpcUaX509Extension& extension,
+			X509V3_CTX* ctx
+		);
+
+		OpcUaStatusCode createSelfSignedCerificate(
+			EVP_PKEY* subjectPublicKey,
+			EVP_PKEY* issuerPrivateKey
+		);
+
+	  private:
+		X509 *x509Cert_;
 	};
 
 }
