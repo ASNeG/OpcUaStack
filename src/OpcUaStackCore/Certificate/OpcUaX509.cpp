@@ -420,8 +420,19 @@ namespace OpcUaStackCore
 	EVP_PKEY*
 	OpcUaX509::getPublicKey(void)
 	{
-		// FIXME:
-		return nullptr;
+		if (x509Cert_ == nullptr) {
+			openSSLError("x509 certificate is null");
+			return nullptr;
+		}
+
+		EVP_PKEY *pkey = nullptr;
+		pkey = X509_get_pubkey(x509Cert_);
+		if (pkey == nullptr) {
+			openSSLError();
+			return nullptr;
+		}
+
+		return pkey;
 	}
 
 	EVP_PKEY*
