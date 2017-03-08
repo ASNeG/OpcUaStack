@@ -137,6 +137,7 @@ namespace OpcUaStackCore
 		);
 
 		OpcUaStatusCode saveToFileDER(const std::string& fileName);
+		OpcUaStatusCode loadFromFileDER(const std::string& fileName);
 
 	  private:
 		X509 *x509Cert_;

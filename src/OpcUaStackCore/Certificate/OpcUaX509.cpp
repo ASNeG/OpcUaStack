@@ -384,6 +384,39 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	OpcUaX509::loadFromFileDER(const std::string& fileName)
+	{
+		if (x509Cert_ != nullptr) {
+		    X509_free(x509Cert_);
+		    x509Cert_ = nullptr;
+		}
+
+	    BIO* bio = BIO_new(BIO_s_file());
+	    if (bio == nullptr) {
+	    	openSSLError();
+	    	return BadInternalError;
+	    }
+
+	    int rc = BIO_read_filename(bio, (void*)fileName.c_str());
+	    if (!rc) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return BadInternalError;
+	    }
+
+	    x509Cert_ = d2i_X509_bio(bio, 0);
+	    if (x509Cert_ == nullptr) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return BadInternalError;
+	    }
+
+	    BIO_free (bio);
+
+		return Success;
+	}
+
 }
 
 
