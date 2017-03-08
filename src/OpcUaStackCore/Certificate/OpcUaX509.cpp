@@ -351,6 +351,39 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	OpcUaX509::saveToFileDER(const std::string& fileName)
+	{
+	    if (x509Cert_ == nullptr) {
+	    	openSSLError("The certificate is NULL");
+	    	return BadInternalError;
+	    }
+
+	    BIO* bio = BIO_new(BIO_s_file());
+	    if (bio == nullptr) {
+	    	openSSLError();
+	    	return BadInternalError;
+	    }
+
+	    int resultCode = BIO_write_filename(bio, (void*)fileName.c_str());
+	    if (!resultCode) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return BadInternalError;
+	    }
+
+	    resultCode = i2d_X509_bio(bio, x509Cert_);
+	    if (!resultCode) {
+	    	openSSLError();
+	    	BIO_free (bio);
+	    	return BadInternalError;
+	    }
+
+	    BIO_free (bio);
+
+		return Success;
+	}
+
 }
 
 

@@ -136,6 +136,8 @@ namespace OpcUaStackCore
 			boost::posix_time::ptime notAfter
 		);
 
+		OpcUaStatusCode saveToFileDER(const std::string& fileName);
+
 	  private:
 		X509 *x509Cert_;
 	};
