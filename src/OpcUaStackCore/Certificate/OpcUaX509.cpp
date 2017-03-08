@@ -417,6 +417,27 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	EVP_PKEY*
+	OpcUaX509::getPublicKey(void)
+	{
+		// FIXME:
+		return nullptr;
+	}
+
+	EVP_PKEY*
+	OpcUaX509::getPrivateKey(void)
+	{
+		// FIXME:
+		return nullptr;
+	}
+
+	std::string
+	OpcUaX509::getSignature(void)
+	{
+		// FIXME:
+		return "";
+	}
+
 }
 
 
