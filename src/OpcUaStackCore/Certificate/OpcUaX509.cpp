@@ -222,13 +222,30 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	OpcUaX509::PosixTimeToASN1Time(boost::posix_time::ptime& ptime, ASN1_TIME* asn1Time)
+	{
+		boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+		boost::posix_time::time_duration dt = ptime - now;
+
+		if (X509_gmtime_adj(asn1Time, (long)dt.total_seconds()) == nullptr) {
+			openSSLError("ASN1 time type invalid");
+			return BadInternalError;
+		}
+		return Success;
+	}
+
+	OpcUaStatusCode
 	OpcUaX509::createSelfSignedCerificate(
 		EVP_PKEY* subjectPublicKey,
 		EVP_PKEY* issuerPrivateKey,
 		int serialNumber,
-		OpcUaX509NameEntry::Vec& nameEntries
+		OpcUaX509NameEntry::Vec& nameEntries,
+		OpcUaX509Extension::Vec& extensionEntries,
+		boost::posix_time::ptime notBefore,
+		boost::posix_time::ptime notAfter
 	)
 	{
+		OpcUaStatusCode statusCode;
 		int rc;
 
 		// check subject and issuer keys
@@ -294,6 +311,22 @@ namespace OpcUaStackCore
         if (!rc) {
             openSSLError();
  			return BadInternalError;
+        }
+
+        // set valid time range
+        statusCode = PosixTimeToASN1Time(notBefore, X509_get_notBefore(x509Cert_));
+        if (statusCode != Success) return statusCode;
+        statusCode = PosixTimeToASN1Time(notAfter, X509_get_notAfter(x509Cert_));
+        if (statusCode != Success) return statusCode;
+
+        // set v3 extensions
+        X509V3_CTX ctx;
+        X509V3_set_ctx(&ctx, x509Cert_, x509Cert_, NULL, NULL, 0);
+        OpcUaX509Extension::Vec::iterator it1;
+        for (it1 = extensionEntries.begin(); it1 != extensionEntries.end(); it1++) {
+        	OpcUaStatusCode statusCode;
+        	statusCode = addV3Extension(&x509Cert_, *it1, &ctx);
+        	if (statusCode != Success) return statusCode;
         }
 
 		// FIXME: todo

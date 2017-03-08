@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_OpcUaX509_h__
 #define __OpcUaStackCore_OpcUaX509_h__
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/PkiError.h"
@@ -118,11 +119,19 @@ namespace OpcUaStackCore
 			X509V3_CTX* ctx
 		);
 
+		OpcUaStatusCode PosixTimeToASN1Time(
+			boost::posix_time::ptime& ptime,
+			ASN1_TIME* asn1Time
+		);
+
 		OpcUaStatusCode createSelfSignedCerificate(
 			EVP_PKEY* subjectPublicKey,
 			EVP_PKEY* issuerPrivateKey,
 			int serialNumber,
-			OpcUaX509NameEntry::Vec& nameEntries // self signed - will be used for subject and issuer
+			OpcUaX509NameEntry::Vec& nameEntries, // self signed - will be used for subject and issuer
+			OpcUaX509Extension::Vec& extensionEntries,
+			boost::posix_time::ptime notBefore,
+			boost::posix_time::ptime notAfter
 		);
 
 	  private:
