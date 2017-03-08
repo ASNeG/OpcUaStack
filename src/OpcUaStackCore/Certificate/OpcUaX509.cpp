@@ -329,7 +329,17 @@ namespace OpcUaStackCore
         	if (statusCode != Success) return statusCode;
         }
 
-		// FIXME: todo
+        // sign the certificate with the private key
+        const EVP_MD* digest = EVP_sha1();
+        if (!digest) {
+        	openSSLError();
+        	return BadInternalError;
+        }
+        rc = X509_sign(x509Cert_, issuerPrivateKey, digest);
+        if (!rc) {
+        	openSSLError();
+        	return BadInternalError;
+        }
 
 		x509Handle.reset(); // do not clean cert memory automaticaly on return
 		return Success;
