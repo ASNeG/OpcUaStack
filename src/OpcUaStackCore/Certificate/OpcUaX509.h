@@ -29,6 +29,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaX509NameEntry
 	{
 	  public:
+		typedef std::vector<OpcUaX509NameEntry> Vec;
+
 		OpcUaX509NameEntry(void);
 		OpcUaX509NameEntry(const std::string& name, const std::string& value);
 		~OpcUaX509NameEntry(void);
@@ -41,6 +43,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT OpcUaX509Extension
 	{
 	  public:
+		typedef std::vector<OpcUaX509Extension> Vec;
+
 		OpcUaX509Extension(void);
 		OpcUaX509Extension(const std::string& name, const std::string& value);
 		~OpcUaX509Extension(void);
@@ -59,7 +63,18 @@ namespace OpcUaStackCore
 
 	  private:
 		X509** x509_;
+	};
 
+	class X509NameHandle
+	{
+	  public:
+		X509NameHandle(X509_NAME** x509Name);
+		~X509NameHandle(void);
+
+		void reset(void);
+
+	  private:
+		X509_NAME** x509Name_;
 	};
 
 	class DLLEXPORT OpcUaX509
@@ -105,7 +120,9 @@ namespace OpcUaStackCore
 
 		OpcUaStatusCode createSelfSignedCerificate(
 			EVP_PKEY* subjectPublicKey,
-			EVP_PKEY* issuerPrivateKey
+			EVP_PKEY* issuerPrivateKey,
+			int serialNumber,
+			OpcUaX509NameEntry::Vec& nameEntries // self signed - will be used for subject and issuer
 		);
 
 	  private:

@@ -83,7 +83,7 @@ namespace OpcUaStackCore
 
 	X509Handle::~X509Handle(void)
 	{
-		if (x509_ != nullptr) {
+		if (x509_ != nullptr && *x509_ != nullptr) {
 			X509_free (*x509_);
 			*x509_ = nullptr;
 		}
@@ -93,6 +93,32 @@ namespace OpcUaStackCore
 	X509Handle::reset(void)
 	{
 		x509_ = nullptr;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// X509NameHandle
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	X509NameHandle::X509NameHandle(X509_NAME** x509Name)
+	: x509Name_(x509Name)
+	{
+	}
+
+	X509NameHandle::~X509NameHandle(void)
+	{
+		if (x509Name_ != nullptr && *x509Name_ != nullptr) {
+			X509_NAME_free (*x509Name_);
+			*x509Name_ = nullptr;
+		}
+	}
+
+	void
+	X509NameHandle::reset(void)
+	{
+		x509Name_ = nullptr;
 	}
 
 	// ------------------------------------------------------------------------
@@ -198,7 +224,9 @@ namespace OpcUaStackCore
 	OpcUaStatusCode
 	OpcUaX509::createSelfSignedCerificate(
 		EVP_PKEY* subjectPublicKey,
-		EVP_PKEY* issuerPrivateKey
+		EVP_PKEY* issuerPrivateKey,
+		int serialNumber,
+		OpcUaX509NameEntry::Vec& nameEntries
 	)
 	{
 		int rc;
@@ -212,7 +240,7 @@ namespace OpcUaStackCore
 		// create new X509 certificate
 		x509Cert_ = X509_new();
 		if (x509Cert_ == nullptr) {
-			Log(Error, "allocate memory error for x509 certificate");
+			openSSLError("allocate memory error for x509 certificate");
 			return BadInternalError;
 		}
 		X509Handle x509Handle(&x509Cert_); // cleanup cert memory automaticaly on return
@@ -224,9 +252,53 @@ namespace OpcUaStackCore
 			return BadInternalError;
 		}
 
+		// set serial number
+		rc = ASN1_INTEGER_set(X509_get_serialNumber(x509Cert_), serialNumber);
+		if (!rc) {
+			openSSLError();
+			return BadInternalError;
+		}
+
+		// set subject public key
+        rc = X509_set_pubkey(x509Cert_, subjectPublicKey);
+        if (!rc) {
+            openSSLError();
+ 			return BadInternalError;
+        }
+
+        // set subject name
+        X509_NAME* x509Name = X509_NAME_new();
+        if (x509Name == nullptr) {
+			openSSLError("allocate memory error for x509_NAME");
+			return BadInternalError;
+        }
+        X509NameHandle x509NameHandleSubject(&x509Name); // cleanup x509 name memory automaticaly on return
+
+        // create and add entries to subject name
+        OpcUaX509NameEntry::Vec::iterator it0;
+        for (it0 = nameEntries.begin(); it0 != nameEntries.end(); it0++) {
+        	OpcUaStatusCode statusCode;
+        	statusCode = addEntryByName(&x509Name, *it0);
+        	if (statusCode != Success) return statusCode;
+        }
+
+        // set subject name
+        rc = X509_set_subject_name(x509Cert_, x509Name);
+        if (!rc) {
+            openSSLError();
+ 			return BadInternalError;
+        }
+
+        // set issuer name
+        rc = X509_set_issuer_name(x509Cert_, x509Name);
+        if (!rc) {
+            openSSLError();
+ 			return BadInternalError;
+        }
+
 		// FIXME: todo
 
-		x509Handle.reset(); // do not clean memory automaticaly on return
+		x509Handle.reset(); // do not clean cert memory automaticaly on return
 		return Success;
 	}
 
