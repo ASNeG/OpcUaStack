@@ -142,6 +142,12 @@ namespace OpcUaStackCore
 		}
 	}
 
+	X509*
+	OpcUaX509::x509(void)
+	{
+		return x509Cert_;
+	}
+
 	OpcUaStatusCode
 	OpcUaX509::addEntryByName(X509_NAME** x509Name, const std::string& name, const std::string& value)
 	{

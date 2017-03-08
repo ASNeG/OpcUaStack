@@ -85,6 +85,8 @@ namespace OpcUaStackCore
 		OpcUaX509(void);
 		~OpcUaX509(void);
 
+		X509* x509(void);
+
 		OpcUaStatusCode addEntryByName(
 			X509_NAME** x509Name,
 			const std::string& name,
