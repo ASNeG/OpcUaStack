@@ -46,23 +46,25 @@ namespace OpcUaStackCore
 		}
 	}
 
-	bool
+	OpcUaStatusCode
 	OpcUaRsaKey::createKey(uint32_t bits)
 	{
 	    RSA *rsaKey = RSA_generate_key(bits, 0x10001, 0, 0);
 	    if (!rsaKey) {
 	    	openSSLError();
-	    	return false;
+	    	return BadInternalError;
 	    }
 
 	    int resultCode = EVP_PKEY_assign_RSA(key_, rsaKey);
 	    if (!resultCode) {
 	    	openSSLError();
-	    	return false;
+	    	return BadInternalError;
 	    }
 
-	    return true;
+	    return Success;
 	}
+
+#if 0
 
 	bool
 	OpcUaRsaKey::getPublicKey(PkiPublicKey& publicKey)
@@ -136,33 +138,34 @@ namespace OpcUaStackCore
 
 		return 0; //rsa->n;
 	}
+#endif
 
-	bool
+	OpcUaStatusCode
 	OpcUaRsaKey::writePEMFile(const std::string& fileName, const std::string& password)
 	{
 		if (key_ == nullptr) {
 			openSSLError("cannot write PEM file because key empty");
-			return false;
+			return BadInternalError;
 		}
 
         BIO *bioPem = BIO_new(BIO_s_file());
         if (!bioPem) {
         	openSSLError();
-        	return false;
+        	return BadInternalError;
         }
 
         int resultCode = BIO_write_filename(bioPem, (void*)fileName.c_str());
         if (!resultCode) {
         	openSSLError();
         	BIO_free (bioPem);
-        	return false;
+        	return BadInternalError;
         }
 
         RSA *rsaKey = EVP_PKEY_get1_RSA(key_);
         if (!rsaKey) {
         	openSSLError();
         	BIO_free (bioPem);
-        	return false;
+        	return BadInternalError;
         }
 
         if (password.empty()) {
@@ -172,7 +175,7 @@ namespace OpcUaStackCore
                 openSSLError();
                 RSA_free(rsaKey);
                 BIO_free (bioPem);
-                return false;
+                return BadInternalError;
             }
         }
         else {
@@ -182,34 +185,34 @@ namespace OpcUaStackCore
             	openSSLError();
             	RSA_free(rsaKey);
             	BIO_free (bioPem);
-            	return false;
+            	return BadInternalError;
             }
         }
 
         RSA_free(rsaKey);
         BIO_free(bioPem);
-		return true;
+		return Success;
 	}
 
-	bool
+	OpcUaStatusCode
 	OpcUaRsaKey::readPEMFile(const std::string& fileName, const std::string& password)
 	{
 		if (key_ == nullptr) {
 			openSSLError("cannot read PEM file because key empty");
-			return false;
+			return BadInternalError;
 		}
 
         BIO *bioPem = BIO_new(BIO_s_file());
         if (!bioPem) {
         	openSSLError();
-        	return false;
+        	return BadInternalError;
         }
 
         int resultCode = BIO_read_filename(bioPem, (void*)fileName.c_str());
         if (!resultCode) {
         	openSSLError();
         	BIO_free (bioPem);
-        	return false;
+        	return BadInternalError;
         }
 
         RSA* rsaKey = nullptr;
@@ -219,7 +222,7 @@ namespace OpcUaStackCore
             if (rsaKey == nullptr) {
             	openSSLError();
             	BIO_free (bioPem);
-            	return false;
+            	return BadInternalError;
             }
         }
         else {
@@ -228,7 +231,7 @@ namespace OpcUaStackCore
             if (rsaKey == nullptr) {
             	openSSLError();
             	BIO_free (bioPem);
-            	return false;
+            	return BadInternalError;
             }
         }
 
@@ -236,11 +239,11 @@ namespace OpcUaStackCore
         if (!resultCode) {
         	openSSLError();
         	BIO_free (bioPem);
-        	return false;
+        	return BadInternalError;
         }
 
         BIO_free(bioPem);
-		return true;
+		return Success;
 	}
 
 }

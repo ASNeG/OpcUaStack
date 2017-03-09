@@ -21,9 +21,8 @@
 #include <openssl/x509.h>
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/PkiError.h"
-#include "OpcUaStackCore/Certificate/PkiPublicKey.h"
-#include "OpcUaStackCore/Certificate/PkiPrivateKey.h"
 
 namespace OpcUaStackCore
 {
@@ -35,7 +34,8 @@ namespace OpcUaStackCore
 		OpcUaRsaKey(void);
 		~OpcUaRsaKey(void);
 
-		bool createKey(uint32_t bits);
+		OpcUaStatusCode createKey(uint32_t bits = 2048);
+#if 0
 		bool getPublicKey(PkiPublicKey& publicKey);
 		bool getPrivateKey(PkiPrivateKey& privateKey);
 		bool setPublicKey(PkiPublicKey& publicKey);
@@ -45,8 +45,9 @@ namespace OpcUaStackCore
 
 		uint32_t modulus(void);
 
-		bool writePEMFile(const std::string& fileName, const std::string& password);
-		bool readPEMFile(const std::string& fileName, const std::string& password);
+#endif
+		OpcUaStatusCode writePEMFile(const std::string& fileName, const std::string& password);
+		OpcUaStatusCode readPEMFile(const std::string& fileName, const std::string& password);
 
 	  private:
 		EVP_PKEY *key_;
