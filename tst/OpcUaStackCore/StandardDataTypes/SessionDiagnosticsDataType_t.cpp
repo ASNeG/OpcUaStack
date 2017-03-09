@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(SessionDiagnosticsDataType_encode_decode)
 	value1.clientDescription()->applicationUri("applicationUri");
 	value1.clientDescription()->productUri("productUri");
 	value1.clientDescription()->applicationName(applicationName);
-	value1.clientDescription()->applicationType(ApplicationType_Server);
+	value1.clientDescription()->applicationType(AT_Server);
 	value1.clientDescription()->gatewayServerUri("serverUri");
 	value1.clientDescription()->discoveryProfileUri("profileUri");
 	value1.serverUri(serverUri);
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(SessionDiagnosticsDataType_encode_decode)
 	BOOST_REQUIRE(value2.clientDescription()->applicationUri() == "applicationUri");
 	BOOST_REQUIRE(value2.clientDescription()->productUri() == "productUri");
 	BOOST_REQUIRE(value2.clientDescription()->applicationName() == applicationName);
-	BOOST_REQUIRE(value2.clientDescription()->applicationType() == ApplicationType_Server);
+	BOOST_REQUIRE(value2.clientDescription()->applicationType() == AT_Server);
 	BOOST_REQUIRE(value2.clientDescription()->gatewayServerUri() == "serverUri");
 	BOOST_REQUIRE(value2.clientDescription()->discoveryProfileUri() == "profileUri");
 	BOOST_REQUIRE(value2.serverUri() == serverUri);
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(SessionDiagnosticsDataType_ExtensionObject)
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationUri("applicationUri");
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->productUri("productUri");
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationName(applicationName);
-	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType(ApplicationType_Server);
+	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType(AT_Server);
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->gatewayServerUri("serverUri");
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->discoveryProfileUri("profileUri");
 	value1.parameter<SessionDiagnosticsDataType>()->serverUri(serverUri);
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(SessionDiagnosticsDataType_ExtensionObject)
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationUri() == "applicationUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->productUri() == "productUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationName() == applicationName);
-	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType() == ApplicationType_Server);
+	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType() == AT_Server);
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->gatewayServerUri() == "serverUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->discoveryProfileUri() == "profileUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->serverUri() == serverUri);
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(SessionDiagnosticsDataType_ExtensionObject_copyTo)
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationUri("applicationUri");
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->productUri("productUri");
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationName(applicationName);
-	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType(ApplicationType_Server);
+	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType(AT_Server);
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->gatewayServerUri("serverUri");
 	value1.parameter<SessionDiagnosticsDataType>()->clientDescription()->discoveryProfileUri("profileUri");
 	value1.parameter<SessionDiagnosticsDataType>()->serverUri(serverUri);
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(SessionDiagnosticsDataType_ExtensionObject_copyTo)
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationUri() == "applicationUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->productUri() == "productUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationName() == applicationName);
-	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType() == ApplicationType_Server);
+	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->applicationType() == AT_Server);
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->gatewayServerUri() == "serverUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->clientDescription()->discoveryProfileUri() == "profileUri");
 	BOOST_REQUIRE(value2.parameter<SessionDiagnosticsDataType>()->serverUri() == serverUri);

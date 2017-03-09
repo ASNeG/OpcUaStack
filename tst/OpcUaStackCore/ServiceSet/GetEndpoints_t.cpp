@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	endpointDescriptionSPtr->applicationDescription()->applicationUri("urn:localhost:compyny:Unittest");
 	endpointDescriptionSPtr->applicationDescription()->productUri("urn:company:Unittest");
 	endpointDescriptionSPtr->applicationDescription()->applicationName().text("company Unittest");
-	endpointDescriptionSPtr->applicationDescription()->applicationType(ApplicationType_Server);
+	endpointDescriptionSPtr->applicationDescription()->applicationType(AT_Server);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->resize(1);
 	opcUaStringSPtr = constructSPtr<OpcUaString>();
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(GetEndpoints_Response)
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationUri() == "urn:localhost:compyny:Unittest");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->productUri() == "urn:company:Unittest");
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationName().text().value() == "company Unittest");
-	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationType() == ApplicationType_Server);
+	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->applicationType() == AT_Server);
 	BOOST_REQUIRE(endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->size() == 1);
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->get(0, opcUaStringSPtr);
 	BOOST_REQUIRE(opcUaStringSPtr->value() == "opt.tcp://localhost:4841/0.0.0.0");

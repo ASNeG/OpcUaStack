@@ -140,8 +140,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode loadFromFileDER(const std::string& fileName);
 
 		EVP_PKEY* getPublicKey(void);
-		EVP_PKEY* getPrivateKey(void);
-		std::string getSignature(void);
 
 	  private:
 		X509 *x509Cert_;
