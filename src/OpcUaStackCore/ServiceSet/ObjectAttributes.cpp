@@ -86,7 +86,7 @@ namespace OpcUaStackCore
 	}
 
     OpcUaByte
-	ObjectAttributes::eventNotifier(void) const
+	ObjectAttributes::eventNotifier(void)
 	{
 		return eventNotifier_;
 	}
@@ -98,7 +98,7 @@ namespace OpcUaStackCore
 	}
 
     OpcUaUInt32
-	ObjectAttributes::writeMask(void) const
+	ObjectAttributes::writeMask(void)
 	{
 		return writeMask_;
 	}
@@ -111,7 +111,7 @@ namespace OpcUaStackCore
 	}
 
     OpcUaUInt32
-	ObjectAttributes::userWriteMask(void) const
+	ObjectAttributes::userWriteMask(void)
 	{
 		return userWriteMask_;
 	}

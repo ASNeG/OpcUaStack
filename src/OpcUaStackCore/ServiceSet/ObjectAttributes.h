@@ -51,11 +51,11 @@ namespace OpcUaStackCore
         void description(const OpcUaLocalizedText::SPtr descriptionSPtr);
         OpcUaLocalizedText::SPtr& description(void);
         void eventNotifier(const EventNotifierAttribute eventNotifier);
-        OpcUaByte eventNotifier(void) const;
+        OpcUaByte eventNotifier(void);
         void writeMask(const WriteableAttribute writeMask);
-        OpcUaUInt32 writeMask(void) const;
+        OpcUaUInt32 writeMask(void);
         void userWriteMask(const WriteableAttribute userWriteMask);
-        OpcUaUInt32 userWriteMask(void) const;
+        OpcUaUInt32 userWriteMask(void);
 
 		
 	  private:

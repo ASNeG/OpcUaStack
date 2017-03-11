@@ -50,6 +50,10 @@ namespace OpcUaStackServer
 		void receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveDeleteReferencesRequest(ServiceTransaction::SPtr serviceTransaction);
 
+		OpcUaStatusCode addNodeAndReference(
+			BaseNodeClass::SPtr baseNodeClass,
+			AddNodesItem::SPtr& addNodesItem
+		);
 		OpcUaStatusCode addNode(
 			uint32_t,
 			BaseNodeClass::SPtr baseNodeClass

@@ -118,6 +118,43 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	OpcUaStatusCode 
+	NodeManagementService::addNodeAndReference(
+		BaseNodeClass::SPtr baseNodeClass,
+		AddNodesItem::SPtr& addNodesItem
+	)
+	{
+		bool rc;
+
+		// set parent node identifier
+		OpcUaNodeId parentNodeId;
+		parentNodeId.namespaceIndex(addNodesItem->parentNodeId()->namespaceIndex());
+		parentNodeId.nodeIdValue(addNodesItem->parentNodeId()->nodeIdValue());
+
+		// find parent node
+		BaseNodeClass::SPtr parentBaseNodeClass = informationModel_->find(parentNodeId);
+		if (parentBaseNodeClass.get() == nullptr) {
+			return BadParentNodeIdInvalid;
+		}
+
+		// create hierarchical reference
+		rc = parentBaseNodeClass->referenceItemMap().add(
+			*addNodesItem->referenceTypeId(),
+			true,
+			*baseNodeClass->getNodeId()
+		);
+		if (!rc) return BadReferenceTypeIdInvalid;
+
+		rc = baseNodeClass->referenceItemMap().add(
+			*addNodesItem->referenceTypeId(),
+			false,
+			*baseNodeClass->getNodeId()
+		);
+		if (!rc) return BadReferenceTypeIdInvalid;
+
+		return Success;
+	}
+
+	OpcUaStatusCode
 	NodeManagementService::addNode(uint32_t pos, BaseNodeClass::SPtr baseNodeClass)
 	{
 		if ((informationModel_->find(baseNodeClass->nodeId().data())).get() != nullptr) {
@@ -174,7 +211,6 @@ namespace OpcUaStackServer
 		// O - UserWriteMask
 		//
 
-		;
 		OpcUaNodeId nodeId;
 		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId()->namespaceIndex());
 		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId()->nodeIdValue());
@@ -196,7 +232,6 @@ namespace OpcUaStackServer
 		OpcUaStatusCode statusCode;
 		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
 
-
 		// set base attributes
 		statusCode = addBaseNodeClass(pos, objectNodeClass, addNodesItem, addNodesResult);
 		if (statusCode != Success) return statusCode;
@@ -212,14 +247,18 @@ namespace OpcUaStackServer
 		}
 		ObjectAttributes::SPtr objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>(); 
 
-		objectNodeClass->displayName().data(*objectAttributes->displayName());
-		objectNodeClass->description().data(*objectAttributes->description());
-		objectNodeClass->eventNotifier().data(objectAttributes->eventNotifier());
-		objectNodeClass->writeMask().data(objectAttributes->writeMask());
-		objectNodeClass->userWriteMask().data(objectAttributes->userWriteMask());
+		// set additional object attributes
+		objectNodeClass->setDisplayName(*objectAttributes->displayName());
+		objectNodeClass->setDescription(*objectAttributes->description());
+		objectNodeClass->setEventNotifier(objectAttributes->eventNotifier());
+		objectNodeClass->setWriteMask(objectAttributes->writeMask());
+		objectNodeClass->setUserWriteMask(objectAttributes->userWriteMask());
 
-		addNodesResult->statusCode(Success);
-		return BadInternalError;
+		// added node and reference
+		statusCode = addNodeAndReference(objectNodeClass, addNodesItem);
+		addNodesResult->statusCode(statusCode);
+
+		return Success;
 	}
 
 }
