@@ -1,5 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaExpandedNodeId.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include <boost/iostreams/stream.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -204,6 +205,25 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_copyTo)
 	BOOST_REQUIRE(value2.namespaceUri().exist() == true);
 	BOOST_REQUIRE(value2.namespaceUri().value() == "URI");
 	BOOST_REQUIRE(value2.serverIndex() == 4711);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_copyNodeId)
+{
+	OpcUaExpandedNodeId value1;
+	OpcUaNodeId value2;
+
+	value1.namespaceIndex(0);
+	value1.nodeId((OpcUaInt32)11);
+
+	value2.namespaceIndex(value1.namespaceIndex());
+	value2.nodeIdValue(value1.nodeIdValue());
+
+	BOOST_REQUIRE(value1.namespaceIndex() == 0);
+	BOOST_REQUIRE(value1.nodeId<OpcUaUInt32>() == 11);
+
+	BOOST_REQUIRE(value2.namespaceIndex() == 0);
+	BOOST_REQUIRE(value2.nodeId<OpcUaUInt32>() == 11);
+
 }
 
 
