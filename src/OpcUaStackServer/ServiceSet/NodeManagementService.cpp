@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -157,25 +157,49 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode 
-	NodeManagementService::addBaseNodeClass(uint32_t pos, BaseNodeClass::SPtr baseNodeClass, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
+	NodeManagementService::addBaseNodeClass(
+		uint32_t pos,
+		BaseNodeClass::SPtr baseNodeClass,
+		AddNodesItem::SPtr addNodesItem,
+		AddNodesResult::SPtr addNodesResult
+	)
 	{
-		baseNodeClass->nodeClass().data(addNodesItem->nodeClass()->nodeClassType());
-		baseNodeClass->browseName().data(*addNodesItem->browseName());
+		//
+		// M - NodeId
+		// M - NodeClass
+		// M - BrowseName
+		// M - DisplayName
+		// O - Description
+		// O - WriteMask
+		// O - UserWriteMask
+		//
+
+		;
+		OpcUaNodeId nodeId;
+		nodeId.namespaceIndex(addNodesItem->requestedNewNodeId()->namespaceIndex());
+		nodeId.nodeIdValue(addNodesItem->requestedNewNodeId()->nodeIdValue());
+		baseNodeClass->setNodeId(nodeId);
+		NodeClassType nodeClassType = addNodesItem->nodeClass()->nodeClassType();
+		baseNodeClass->setNodeClass(nodeClassType);
+		baseNodeClass->setBrowseName(*addNodesItem->browseName());
+
 		return Success;
 	}
 
 	OpcUaStatusCode 
-	NodeManagementService::addNodeObject(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult)
+	NodeManagementService::addNodeObject(
+		uint32_t pos,
+		AddNodesItem::SPtr addNodesItem,
+		AddNodesResult::SPtr addNodesResult
+	)
 	{
 		OpcUaStatusCode statusCode;
 		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
 
+
 		// set base attributes
 		statusCode = addBaseNodeClass(pos, objectNodeClass, addNodesItem, addNodesResult);
 		if (statusCode != Success) return statusCode;
-
-		OpcUaNodeId nodeId; //= addNodesItem->requestedNewNodeId();
-		objectNodeClass->nodeId().data(nodeId);
 
 		// get object attributes 
 		if (addNodesItem->nodeAttributes().parameterTypeId().nodeId<uint32_t>() != OpcUaId_ObjectAttributes) {
@@ -187,13 +211,13 @@ namespace OpcUaStackServer
 			return Success;
 		}
 		ObjectAttributes::SPtr objectAttributes = addNodesItem->nodeAttributes().parameter<ObjectAttributes>(); 
-		
+
 		objectNodeClass->displayName().data(*objectAttributes->displayName());
 		objectNodeClass->description().data(*objectAttributes->description());
 		objectNodeClass->eventNotifier().data(objectAttributes->eventNotifier());
 		objectNodeClass->writeMask().data(objectAttributes->writeMask());
 		objectNodeClass->userWriteMask().data(objectAttributes->userWriteMask());
-		
+
 		addNodesResult->statusCode(Success);
 		return BadInternalError;
 	}

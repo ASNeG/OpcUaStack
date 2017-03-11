@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -50,10 +50,26 @@ namespace OpcUaStackServer
 		void receiveDeleteNodesRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveDeleteReferencesRequest(ServiceTransaction::SPtr serviceTransaction);
 
-		OpcUaStatusCode addNode(uint32_t, BaseNodeClass::SPtr baseNodeClass);
-		OpcUaStatusCode addNode(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult);
-		OpcUaStatusCode addBaseNodeClass(uint32_t pos, BaseNodeClass::SPtr baseNodeClass, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult);
-		OpcUaStatusCode addNodeObject(uint32_t pos, AddNodesItem::SPtr addNodesItem, AddNodesResult::SPtr addNodesResult);
+		OpcUaStatusCode addNode(
+			uint32_t,
+			BaseNodeClass::SPtr baseNodeClass
+		);
+		OpcUaStatusCode addNode(
+			uint32_t pos,
+			AddNodesItem::SPtr addNodesItem,
+			AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStatusCode addBaseNodeClass(
+			uint32_t pos,
+			BaseNodeClass::SPtr baseNodeClass,
+			AddNodesItem::SPtr addNodesItem,
+			AddNodesResult::SPtr addNodesResult
+		);
+		OpcUaStatusCode addNodeObject(
+			uint32_t pos,
+			AddNodesItem::SPtr addNodesItem,
+			AddNodesResult::SPtr addNodesResult
+		);
 	};
 
 }
