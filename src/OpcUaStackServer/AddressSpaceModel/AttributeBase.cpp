@@ -721,7 +721,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setWriteMask(OpcUaUInt32& writeMask)
+	AttributeBase::setWriteMask(OpcUaUInt32 writeMask)
 	{
 		if (!isPartWriteMask()) return false;
 		WriteMaskAttribute* attr = reinterpret_cast<WriteMaskAttribute*>(writeMaskAttribute());
@@ -782,7 +782,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setUserWriteMask(OpcUaUInt32& userWriteMask)
+	AttributeBase::setUserWriteMask(OpcUaUInt32 userWriteMask)
 	{
 		if (!isPartUserWriteMask()) return false;
 		UserWriteMaskAttribute* attr = reinterpret_cast<UserWriteMaskAttribute*>(userWriteMaskAttribute());
@@ -1089,7 +1089,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AttributeBase::setEventNotifier(OpcUaByte& eventNotifier)
+	AttributeBase::setEventNotifier(OpcUaByte eventNotifier)
 	{
 		if (!isPartEventNotifier()) return false;
 		EventNotifierAttribute* attr = reinterpret_cast<EventNotifierAttribute*>(eventNotifierAttribute());

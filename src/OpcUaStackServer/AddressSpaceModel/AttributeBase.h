@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -104,7 +104,7 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* writeMaskAttribute(void);
 		bool unsetWriteMask(void);
-		bool setWriteMask(OpcUaUInt32& writeMask);
+		bool setWriteMask(OpcUaUInt32 writeMask);
 		bool getWriteMask(OpcUaUInt32& writeMask);
 		bool isPartWriteMask(void);
 		bool isNullWriteMask(void);
@@ -115,7 +115,7 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* userWriteMaskAttribute(void);
 		bool unsetUserWriteMask(void);
-		bool setUserWriteMask(OpcUaUInt32& writeMask);
+		bool setUserWriteMask(OpcUaUInt32 writeMask);
 		bool getUserWriteMask(OpcUaUInt32& writeMask);
 		bool isPartUserWriteMask(void);
 		bool isNullUserWriteMask(void);
@@ -170,7 +170,7 @@ namespace OpcUaStackServer
 		//
 		virtual Attribute* eventNotifierAttribute(void);
 		bool unsetEventNotifier(void);
-		bool setEventNotifier(OpcUaByte& eventNotifier);
+		bool setEventNotifier(OpcUaByte eventNotifier);
 		bool getEventNotifier(OpcUaByte& eventNotifier);
 		bool isPartEventNotifier(void);
 		bool isNullEventNotifier(void);
