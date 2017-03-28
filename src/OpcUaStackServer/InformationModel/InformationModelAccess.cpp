@@ -124,6 +124,7 @@ namespace OpcUaStackServer
 
 			if (!isReferenceHierarchically(it->first)) continue;
 
+			if (informationModel_.get() == nullptr) return false;
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
 				Log(Warning, "child node not found in information model")
