@@ -36,11 +36,43 @@ namespace OpcUaStackCore
 	{
 	}
 
-	 NodeClassType
-     NodeClass::nodeClassType(void) const
-	 {
-		 return nodeClassType_;
-	 }
+	std::string
+	NodeClass::toString(NodeClassType nodeClassType)
+	{
+		switch (nodeClassType)
+		{
+			case NodeClassType_Object: return "Object";
+			case NodeClassType_Variable: return "Variable";
+			case NodeClassType_Method: return "Method";
+			case NodeClassType_ObjectType: return "ObjectType";
+			case NodeClassType_VariableType: return "VariableType";
+			case NodeClassType_ReferenceType: return "ReferenceType";
+			case NodeClassType_DataType: return "DataType";
+			case NodeClassType_View: return "View";
+			default: return "Unspecified";
+		}
+		return "Unspecified";
+	}
+
+	NodeClassType
+	NodeClass::toNodeClassType(const std::string& nodeClassTypeString)
+	{
+		if (nodeClassTypeString == "Object") return NodeClassType_Object;
+		else if (nodeClassTypeString == "Variable") return NodeClassType_Variable;
+		else if (nodeClassTypeString == "Method") return NodeClassType_Method;
+		else if (nodeClassTypeString == "ObjectType") return NodeClassType_ObjectType;
+		else if (nodeClassTypeString == "VariableType") return NodeClassType_VariableType;
+		else if (nodeClassTypeString == "ReferenceType") return NodeClassType_ReferenceType;
+		else if (nodeClassTypeString == "DataType") return NodeClassType_DataType;
+		else if (nodeClassTypeString == "View") return NodeClassType_View;
+		return NodeClassType_Unspecified;
+	}
+
+	NodeClassType
+    NodeClass::nodeClassType(void) const
+	{
+		return nodeClassType_;
+	}
 
 	void
 	NodeClass::nodeClassType(
