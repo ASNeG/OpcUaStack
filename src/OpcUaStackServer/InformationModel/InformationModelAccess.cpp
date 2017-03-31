@@ -129,6 +129,7 @@ namespace OpcUaStackServer
 	)
 	{
 		childBaseNodeClassVec.clear();
+		referenceItemVec.clear();
 
 		ReferenceItemMultiMap::iterator it;
 		for (
@@ -150,6 +151,7 @@ namespace OpcUaStackServer
 					.parameter("ChildNodeId", referenceItem->nodeId_);
 				return false;
 			}
+
 			childBaseNodeClassVec.push_back(childBaseNodeClass);
 			referenceItemVec.push_back(referenceItem);
 		}
