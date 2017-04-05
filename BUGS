@@ -20,3 +20,10 @@ Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
 - Eine Variable einer Klasse kann eine komplexe Variable sein
 
 
+
+003. NodeSetNamespace Klasse 
+============================
+
+Diese Klasse enthaelt statische Variablen. Wird diese im OpcUaDesigner
+in einer DLL unter Windows mehrfach verwendet, so existieren mehrere
+Variablen.
