@@ -32,6 +32,31 @@ namespace OpcUaStackServer
 	  public:
 		PTreeBuildInTypes(void);
 		~PTreeBuildInTypes(void);
+
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr value, const std::string& tag);
+		static bool encode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr value, const std::string& tag);
+
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaBoolean& destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaByte& destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaSByte& destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaDateTime& destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaString::SPtr destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaQualifiedName::SPtr destValue, const std::string& tag);
+		static bool decode(boost::property_tree::ptree& ptree, OpcUaExtensionObject::SPtr destValue, const std::string& tag);
+
 	};
 
 
