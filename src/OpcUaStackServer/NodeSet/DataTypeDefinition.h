@@ -20,11 +20,13 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackServer/NodeSet/DataTypeField.h"
 
 namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DataTypeDefinition
+	: public DataTypeFieldIf
 	{
 	  public:
 		DataTypeDefinition(void);
@@ -33,7 +35,18 @@ namespace OpcUaStackServer
 		bool decode(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);
 
+		//- DataTypeFieldIf ---------------------------------------------------
+		virtual bool decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition);
+		virtual bool encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition);
+		//- DataTypeFieldIf ---------------------------------------------------
+
 	  private:
+
+		DataSubType dataSubType_;
+		OpcUaQualifiedName name_; 		// only for nested dataTypeDefinitions
+		OpcUaQualifiedName baseType_;	// only for nested dataTypeDefinitions
+		OpcUaBoolean isUnion_;			// default: false
+		DataTypeField::Vec dataFields_;
 	};
 
 

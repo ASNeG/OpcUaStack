@@ -38,4 +38,18 @@ namespace OpcUaStackServer
 	{
 	}
 
+	bool
+	DataTypeDefinition::decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataTypeDefinition::encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
+	{
+		// FIXME: todo
+		return false;
+	}
+
 }

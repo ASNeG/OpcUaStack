@@ -19,6 +19,8 @@
 #define __OpcUaStackServer_DataTypeField_h__
 
 #include <boost/property_tree/ptree.hpp>
+#include <vector>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
@@ -48,6 +50,9 @@ namespace OpcUaStackServer
 	class DLLEXPORT DataTypeField
 	{
 	  public:
+		typedef boost::shared_ptr<DataTypeField> SPtr;
+		typedef std::vector<DataTypeField::SPtr> Vec;
+
 		DataTypeField(void);
 		~DataTypeField(void);
 
@@ -80,6 +85,7 @@ namespace OpcUaStackServer
 
 		DataTypeFieldIf* dataTypeFieldIf_;
 		DataSubType dataSubType_;
+
 		OpcUaString name_;
 		OpcUaNodeId dataType_;
 		OpcUaInt32 valueRank_;
