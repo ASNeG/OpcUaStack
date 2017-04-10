@@ -145,14 +145,24 @@ namespace OpcUaStackServer
 	bool
 	DataTypeField::decode(boost::property_tree::ptree& ptree)
 	{
-		// FIXME: todo
+		if (dataSubType_ == Structure) {
+			return decodeStruct(ptree);
+		}
+		else if (dataSubType_ == Enumeration) {
+			return decodeEnum(ptree);
+		}
 		return false;
 	}
 
 	bool
 	DataTypeField::encode(boost::property_tree::ptree& ptree)
 	{
-		// FIXME: todo
+		if (dataSubType_ == Structure) {
+			return encodeStruct(ptree);
+		}
+		else if (dataSubType_ == Enumeration) {
+			return decodeEnum(ptree);
+		}
 		return false;
 	}
 
