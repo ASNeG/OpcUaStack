@@ -60,6 +60,11 @@ namespace OpcUaStackServer
 		bool encode(boost::property_tree::ptree& ptree);
 
 	  private:
+		bool decodeEnum(boost::property_tree::ptree& ptree);
+		bool decodeStruct(boost::property_tree::ptree& ptree);
+		bool encodeEnum(boost::property_tree::ptree& ptree);
+		bool encodeStruct(boost::property_tree::ptree& ptree);
+
 		DataSubType dataSubType_;
 		OpcUaString name_;
 		OpcUaNodeId dataType_;

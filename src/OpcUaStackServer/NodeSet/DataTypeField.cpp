@@ -156,4 +156,33 @@ namespace OpcUaStackServer
 		return false;
 	}
 
+	bool
+	DataTypeField::decodeEnum(boost::property_tree::ptree& ptree)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataTypeField::decodeStruct(boost::property_tree::ptree& ptree)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataTypeField::encodeEnum(boost::property_tree::ptree& ptree)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataTypeField::encodeStruct(boost::property_tree::ptree& ptree)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+
 }
