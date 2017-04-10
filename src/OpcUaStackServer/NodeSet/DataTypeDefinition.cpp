@@ -56,6 +56,18 @@ namespace OpcUaStackServer
 		dataSubType_ = dataSubType;
 	}
 
+	bool
+	DataTypeDefinition::nested(void)
+	{
+		return nested_;
+	}
+
+	void
+	DataTypeDefinition::nested(bool nested)
+	{
+		nested_ = nested;
+	}
+
 	OpcUaQualifiedName&
 	DataTypeDefinition::name(void)
 	{
@@ -151,11 +163,12 @@ namespace OpcUaStackServer
 			if (it->first != "Field") continue;
 
 			DataTypeField::SPtr field = constructSPtr<DataTypeField>();
+			field->dataSubType(dataSubType_);
 			if (!field->decode(it->second)) return false;
 			dataFields_.push_back(field);
 		}
 
-		return false;
+		return true;
 	}
 
 	bool
@@ -184,21 +197,27 @@ namespace OpcUaStackServer
 			ptree.add_child("Field", tree);
 		}
 
-		return false;
+		return true;
 	}
 
 	bool
 	DataTypeDefinition::decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
 	{
-		// FIXME: todo
-		return false;
+		DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+		definition->nested(true);
+		definition->dataSubType(dataSubType_);
+
+		if (!definition->decode(ptree)) return false;
+		dataTypeDefinition = definition;
+
+		return true;
 	}
 
 	bool
 	DataTypeDefinition::encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
 	{
-		// FIXME: todo
-		return false;
+		DataTypeDefinition::SPtr definition = boost::static_pointer_cast<DataTypeDefinition>(dataTypeDefinition);
+		return definition->decode(ptree);
 	}
 
 }

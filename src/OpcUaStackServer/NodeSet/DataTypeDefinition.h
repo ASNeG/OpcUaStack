@@ -26,14 +26,19 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT DataTypeDefinition
-	: public DataTypeFieldIf
+	: public Object
+	, public DataTypeFieldIf
 	{
 	  public:
+		typedef boost::shared_ptr<DataTypeDefinition> SPtr;
+
 		DataTypeDefinition(void);
 		~DataTypeDefinition(void);
 
 		DataSubType dataSubType(void);
 		void dataSubType(DataSubType dataSubType);
+		bool nested(void);
+		void nested(bool nested);
 		OpcUaQualifiedName& name(void);
 		void name(OpcUaQualifiedName& name);
 		OpcUaQualifiedName& baseType(void);
