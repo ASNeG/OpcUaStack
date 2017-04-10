@@ -32,6 +32,17 @@ namespace OpcUaStackServer
 		DataTypeDefinition(void);
 		~DataTypeDefinition(void);
 
+		DataSubType dataSubType(void);
+		void dataSubType(DataSubType dataSubType);
+		OpcUaQualifiedName& name(void);
+		void name(OpcUaQualifiedName& name);
+		OpcUaQualifiedName& baseType(void);
+		void baseType(OpcUaQualifiedName& baseType);
+		OpcUaBoolean isUnion(void);
+		void isUnion(OpcUaBoolean isUnion);
+		DataTypeField::Vec& dataFields(void);
+		void dataField(DataTypeField::SPtr& dataField);
+
 		bool decode(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);
 

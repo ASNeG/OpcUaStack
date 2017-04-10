@@ -38,6 +38,66 @@ namespace OpcUaStackServer
 	{
 	}
 
+	DataSubType
+	DataTypeDefinition::dataSubType(void)
+	{
+		return dataSubType_;
+	}
+
+	void
+	DataTypeDefinition::dataSubType(DataSubType dataSubType)
+	{
+		dataSubType_ = dataSubType;
+	}
+
+	OpcUaQualifiedName&
+	DataTypeDefinition::name(void)
+	{
+		return name_;
+	}
+
+	void
+	DataTypeDefinition::name(OpcUaQualifiedName& name)
+	{
+		name.copyTo(name_);
+	}
+
+	OpcUaQualifiedName&
+	DataTypeDefinition::baseType(void)
+	{
+		return baseType_;
+	}
+
+	void
+	DataTypeDefinition::baseType(OpcUaQualifiedName& baseType)
+	{
+		baseType.copyTo(baseType_);
+	}
+
+	OpcUaBoolean
+	DataTypeDefinition::isUnion(void)
+	{
+		return isUnion_;
+	}
+
+	void
+	DataTypeDefinition::isUnion(OpcUaBoolean isUnion)
+	{
+		isUnion_ = isUnion;
+	}
+
+	DataTypeField::Vec&
+	DataTypeDefinition::dataFields(void)
+	{
+		return dataFields_;
+	}
+
+	void
+	DataTypeDefinition::dataField(DataTypeField::SPtr& dataField)
+	{
+		dataFields_.push_back(dataField);
+	}
+
 	bool
 	DataTypeDefinition::decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
 	{
