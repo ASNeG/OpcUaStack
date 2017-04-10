@@ -210,7 +210,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	bool
@@ -337,7 +337,7 @@ namespace OpcUaStackServer
 			ptree.put("<xmlattr>.DataType", dataType_.toString());
 		}
 
-		return false;
+		return true;
 	}
 
 

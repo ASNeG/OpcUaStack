@@ -164,7 +164,9 @@ namespace OpcUaStackServer
 
 			DataTypeField::SPtr field = constructSPtr<DataTypeField>();
 			field->dataSubType(dataSubType_);
-			if (!field->decode(it->second)) return false;
+			if (!field->decode(it->second)) {
+				return false;
+			}
 			dataFields_.push_back(field);
 		}
 
