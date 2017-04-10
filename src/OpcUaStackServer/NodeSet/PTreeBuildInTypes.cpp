@@ -35,64 +35,95 @@ namespace OpcUaStackServer
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaBoolean& value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		if (value) {
+			ptree.put(tag, "true");
+		}
+		else {
+			ptree.put(tag, "false");
+		}
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaByte& value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		std::stringstream ss;
+		ss << (int16_t)value;
+		ptree.put(tag, ss.str());
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaSByte& value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		std::stringstream ss;
+		ss << (int16_t)value;
+		ptree.put(tag, ss.str());
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaDateTime& value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		ptree.put(tag, value.toISOString());
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaString::SPtr value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		ptree.put(tag, value->value());
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaByteString::SPtr value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		OpcUaByte *data;
+		OpcUaInt32 dataLen;
+		value->value(&data, &dataLen);
+		if (dataLen < 0) {
+			ptree.put(tag, std::string(""));
+			return true;
+		}
+		std::string byteString((char*)data, dataLen);
+		ptree.put(tag, byteString);
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaLocalizedText::SPtr value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		std::string text = value->text().value();
+		ptree.put(tag + std::string(".") + std::string("Text"), text);
+
+		std::string locale = value->locale().value();
+		ptree.put(tag + std::string(".") + std::string("Locale"), locale);
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaGuid::SPtr value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		std::string guidString = *value;
+		std::string localTag = tag + std::string(".") + std::string("String");
+		ptree.put(localTag, guidString);
+		return true;
 	}
 
 	bool
 	PTreeBuildInTypes::encode(boost::property_tree::ptree& ptree, OpcUaNodeId::SPtr value, const std::string& tag)
 	{
-		// FIXME: todo
-		return false;
+		if (value->namespaceIndex() != 0 ) {
+			std::stringstream ss;
+			ss << value->namespaceIndex();;
+			std::string localTag = tag + std::string(".") + std::string("NamespaceIndex");
+			ptree.put(localTag, ss.str());
+		}
+
+		std::string localTag = tag + std::string(".") + std::string("Name");
+		//ptree.put(localTag, value->name().value());
+		return true;
 	}
 
 	bool
