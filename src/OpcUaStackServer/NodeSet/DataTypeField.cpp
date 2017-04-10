@@ -301,12 +301,29 @@ namespace OpcUaStackServer
 	DataTypeField::encodeStruct(boost::property_tree::ptree& ptree)
 	{
 		// decode name
+		ptree.put("<xmlattr>.Name", name_.value());
+
 		// decode dataType
+		ptree.put("<xmlattr>.DataType", dataType_.toString());
+
 		// decode valueRank
+		std::stringstream ss;
+		ss << valueRank_;
+		ptree.put("<xmlattr>.ValueRank", ss.str());
+
 		// decode description (optional)
-		// decode dataTypeDefinition (optional)
+		if (description_.text().size() > 0) {
+			ptree.put("Description", description_.text());
+		}
+
 		// decode isOptional
+		if (isOptional_) {
+			ptree.put("<xmlattr>.IsOptional", "true");
+		}
+
+		// decode dataTypeDefinition (optional)
 		// FIXME: todo
+
 		return false;
 	}
 
