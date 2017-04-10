@@ -207,7 +207,7 @@ namespace OpcUaStackServer
 				.parameter("Attribute", "Value")
 				.parameter("Value", *value)
 				.parameter("What", e.what());
-			return true;
+			return false;
 		}
 
 		return false;
@@ -217,14 +217,64 @@ namespace OpcUaStackServer
 	DataTypeField::decodeStruct(boost::property_tree::ptree& ptree)
 	{
 		// decode name
-		// decode dataType
-		// decode valueRank
-		// decode description (optional)
-		// decode dataTypeDefinition (optional)
-		// decode isOptional
+		boost::optional<std::string> name = ptree.get_optional<std::string>("<xmlattr>.Name");
+		if (!name) {
+			Log(Error, "missing attribute in data type field")
+				.parameter("Attribute", "Name");
+			return false;
+		}
+		name_.value(*name);
 
+		// decode dataType
+		boost::optional<std::string> dataType = ptree.get_optional<std::string>("<xmlattr>.DataType");
+		if (!name) {
+			Log(Error, "missing attribute in data type field")
+				.parameter("Attribute", "DataType");
+			return false;
+		}
+		if (!dataType_.fromString(*dataType)) {
+			Log(Error, "invalid attribute in data type field")
+				.parameter("Attribute", "DataType")
+				.parameter("Value", *dataType);
+			return false;
+		}
+
+		// decode valueRank  (default: -1)
+		boost::optional<std::string> valueRank = ptree.get_optional<std::string>("<xmlattr>.ValueRank");
+		if (valueRank) {
+			try {
+				valueRank_ = (OpcUaInt32)boost::lexical_cast<OpcUaInt32>(*valueRank);
+			} catch(boost::bad_lexical_cast& e) {
+				Log(Error, "invalid attribute in data type field")
+					.parameter("Attribute", "ValueRank")
+					.parameter("Value", *valueRank)
+					.parameter("What", e.what());
+				return false;
+			}
+		}
+
+		// decode description (optional)
+		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
+		if (description) {
+			description_.locale("");
+			description_.text(*description);
+		}
+
+		// decode isOptional (default: false)
+		boost::optional<std::string> isOptional = ptree.get_optional<std::string>("<xmlattr>.IsOptional");
+		if (isOptional) {
+			if (*isOptional == "true") {
+				isOptional_ = true;
+			}
+			else {
+				isOptional_ = false;
+			}
+		}
+
+		// decode dataTypeDefinition (optional)
 		// FIXME: todo
-		return false;
+
+		return true;
 	}
 
 	bool
