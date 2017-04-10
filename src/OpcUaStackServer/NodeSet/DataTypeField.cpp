@@ -171,10 +171,18 @@ namespace OpcUaStackServer
 	DataTypeField::decodeEnum(boost::property_tree::ptree& ptree)
 	{
 		// decode name
-		// decode description
-		// decode value
+		ptree.put("<xmlattr>.Name", name_.value());
 
-		// FIXME: todo
+		// decode description
+		if (description_.text().size() > 0) {
+			ptree.put("Description", description_.text());
+		}
+
+		// decode value
+		std::stringstream ss;
+		ss << value_;
+		ptree.put("<xmlattr>.Value", ss.str());
+
 		return false;
 	}
 
