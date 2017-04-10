@@ -54,6 +54,8 @@ namespace OpcUaStackServer
 	  private:
 
 		DataSubType dataSubType_;
+		bool nested_;
+
 		OpcUaQualifiedName name_; 		// only for nested dataTypeDefinitions
 		OpcUaQualifiedName baseType_;	// only for nested dataTypeDefinitions
 		OpcUaBoolean isUnion_;			// default: false

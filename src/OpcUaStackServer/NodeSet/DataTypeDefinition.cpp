@@ -31,6 +31,12 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	DataTypeDefinition::DataTypeDefinition(void)
+	: dataSubType_(None)
+	, nested_(false)
+	, name_()
+	, baseType_()
+	, isUnion_(false)
+	, dataFields_()
 	{
 	}
 
@@ -96,6 +102,70 @@ namespace OpcUaStackServer
 	DataTypeDefinition::dataField(DataTypeField::SPtr& dataField)
 	{
 		dataFields_.push_back(dataField);
+	}
+
+	bool
+	DataTypeDefinition::decode(boost::property_tree::ptree& ptree)
+	{
+		if (nested_) {
+			// decode name
+			boost::optional<std::string> name = ptree.get_optional<std::string>("<xmlattr>.Name");
+			if (!name) {
+				Log(Error, "missing attribute in data type definition")
+					.parameter("Attribute", "Name");
+				return false;
+			}
+			if (!name_.fromString(*name)) {
+				Log(Error, "invalid attribute in data type definition")
+					.parameter("Attribute", "Name")
+					.parameter("Value", *name);
+				return false;
+			}
+
+			// decode base type
+			boost::optional<std::string> baseType = ptree.get_optional<std::string>("<xmlattr>.BaseType");
+			if (baseType) {
+				if (!baseType_.fromString(*name)) {
+					Log(Error, "invalid attribute in data type definition")
+						.parameter("Attribute", "BaseType")
+						.parameter("Value", *baseType);
+					return false;
+				}
+			}
+		}
+
+		// decode isUnion (default: false)
+		boost::optional<std::string> isUnion = ptree.get_optional<std::string>("<xmlattr>.IsUnion");
+		if (isUnion) {
+			if (*isUnion == "true") {
+				isUnion_ = true;
+			}
+			else {
+				isUnion_ = false;
+			}
+		}
+
+		// decode data type fields
+		boost::property_tree::ptree::iterator it;
+		for (it = ptree.begin(); it != ptree.end(); it++) {
+			if (it->first != "Field") continue;
+
+			DataTypeField::SPtr field = constructSPtr<DataTypeField>();
+			if (!field->decode(it->second)) return false;
+			dataFields_.push_back(field);
+		}
+
+		return false;
+	}
+
+	bool
+	DataTypeDefinition::encode(boost::property_tree::ptree& ptree)
+	{
+		if (nested_) {
+
+		}
+
+		return false;
 	}
 
 	bool
