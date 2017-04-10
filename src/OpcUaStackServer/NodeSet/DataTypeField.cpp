@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/lexical_cast.hpp>
 #include "OpcUaStackServer/NodeSet/DataTypeField.h"
 #include "OpcUaStackCore/Base/Log.h"
 
@@ -195,10 +196,38 @@ namespace OpcUaStackServer
 	DataTypeField::encodeEnum(boost::property_tree::ptree& ptree)
 	{
 		// decode name
-		// decode description
-		// decode value
+		boost::optional<std::string> name = ptree.get_optional<std::string>("<xmlattr>.Name");
+		if (!name) {
+			Log(Error, "missing attribute in data type field")
+				.parameter("Attribute", "Name");
+			return false;
+		}
+		name_.value(*name);
 
-		// FIXME: todo
+		// decode description (optional)
+		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
+		if (description) {
+			description_.locale("");
+			description_.text(*description);
+		}
+
+		// decode value
+		boost::optional<std::string> value = ptree.get_optional<std::string>("<xmlattr>.Value");
+		if (!value) {
+			Log(Error, "missing attribute in data type field")
+				.parameter("Attribute", "Value");
+			return false;
+		}
+		try {
+			value_ = (OpcUaInt32)boost::lexical_cast<OpcUaUInt32>(*value);
+		} catch(boost::bad_lexical_cast& e) {
+			Log(Error, "invalid attribute in data type field")
+				.parameter("Attribute", "Value")
+				.parameter("Value", *value)
+				.parameter("What", e.what());
+			return false;
+		}
+
 		return false;
 	}
 
@@ -208,7 +237,7 @@ namespace OpcUaStackServer
 		// decode name
 		// decode dataType
 		// decode valueRank
-		// decode description
+		// decode description (optional)
 		// decode dataTypeDefinition (optional)
 		// decode isOptional
 		// FIXME: todo
