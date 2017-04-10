@@ -162,7 +162,26 @@ namespace OpcUaStackServer
 	DataTypeDefinition::encode(boost::property_tree::ptree& ptree)
 	{
 		if (nested_) {
+			// encode name
+			ptree.put("<xmlattr>.Name", name_.toString());
 
+			// decode base type
+			ptree.put("<xmlattr>.BaseType", baseType_.toString());
+		}
+
+		// encode is union
+		if (isUnion_) {
+			ptree.put("<xmlattr>.IsUnion", "true");
+		}
+
+		// encode data type fields
+		DataTypeField::Vec::iterator it;
+		for (it = dataFields_.begin(); it != dataFields_.end(); it++) {
+			DataTypeField::SPtr field = *it;
+
+			boost::property_tree::ptree tree;
+			if (!field->encode(tree)) return false;
+			ptree.add_child("Field", tree);
 		}
 
 		return false;

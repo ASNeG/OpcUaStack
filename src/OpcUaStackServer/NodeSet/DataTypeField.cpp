@@ -307,22 +307,22 @@ namespace OpcUaStackServer
 		// decode name
 		ptree.put("<xmlattr>.Name", name_.value());
 
-		// decode valueRank
+		// encode valueRank
 		std::stringstream ss;
 		ss << valueRank_;
 		ptree.put("<xmlattr>.ValueRank", ss.str());
 
-		// decode description (optional)
+		// encode description (optional)
 		if (description_.text().size() > 0) {
 			ptree.put("Description", description_.text());
 		}
 
-		// decode isOptional
+		// encode isOptional
 		if (isOptional_) {
 			ptree.put("<xmlattr>.IsOptional", "true");
 		}
 
-		// decode dataType or dataTypeDefinition
+		// encode dataType or dataTypeDefinition
 		if (dataTypeDefinition_.get() != nullptr) {
 			if (dataTypeFieldIf_ == nullptr) return false;
 
