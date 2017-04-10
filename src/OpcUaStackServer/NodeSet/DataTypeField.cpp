@@ -31,11 +31,129 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	DataTypeField::DataTypeField(void)
+	: dataSubType_(None)
+	, name_()
+	, dataType_()
+	, valueRank_()
+	, description_()
+	, dataTypeDefinition_()
+	, value_(0)
+	, isOptional_(false)
 	{
 	}
 
 	DataTypeField::~DataTypeField(void)
 	{
+	}
+
+	DataSubType&
+	DataTypeField::dataSubType(void)
+	{
+		return dataSubType_;
+	}
+
+	void
+	DataTypeField::dataSubType(DataSubType& dataSubType)
+	{
+		dataSubType_ = dataSubType;
+	}
+
+	OpcUaString&
+	DataTypeField::name(void)
+	{
+		return name_;
+	}
+
+	void
+	DataTypeField::name(OpcUaString& name)
+	{
+		name.copyTo(name_);
+	}
+
+	OpcUaNodeId&
+	DataTypeField::dataType(void)
+	{
+		return dataType_;
+	}
+
+	void
+	DataTypeField::dataType(OpcUaNodeId& dataType)
+	{
+		dataType.copyTo(dataType_);
+	}
+
+	OpcUaInt32
+	DataTypeField::valueRank(void)
+	{
+		return valueRank_;
+	}
+
+	void
+	DataTypeField::valueRank(OpcUaInt32 valueRank)
+	{
+		valueRank_ = valueRank;
+	}
+
+	OpcUaLocalizedText&
+	DataTypeField::description(void)
+	{
+		return description_;
+	}
+
+	void
+	DataTypeField::description(OpcUaLocalizedText& description)
+	{
+		description.copyTo(description_);
+	}
+
+	Object::SPtr&
+	DataTypeField::dataTypeDefinition(void)
+	{
+		return dataTypeDefinition_;
+	}
+
+	void
+	DataTypeField::dataTypeDefinition(Object::SPtr& dataTypeDefinition)
+	{
+		dataTypeDefinition_ = dataTypeDefinition;
+	}
+
+	OpcUaInt32
+	DataTypeField::value(void)
+	{
+		return value_;
+	}
+
+	void
+	DataTypeField::value(OpcUaInt32 value)
+	{
+		value_ = value;
+	}
+
+	OpcUaBoolean
+	DataTypeField::isOptional(void)
+	{
+		return isOptional_;
+	}
+
+	void
+	DataTypeField::isOptional(OpcUaBoolean isOptional)
+	{
+		isOptional_ = isOptional;
+	}
+
+	bool
+	DataTypeField::decode(boost::property_tree::ptree& ptree)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataTypeField::encode(boost::property_tree::ptree& ptree)
+	{
+		// FIXME: todo
+		return false;
 	}
 
 }
