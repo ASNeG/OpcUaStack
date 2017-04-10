@@ -225,20 +225,6 @@ namespace OpcUaStackServer
 		}
 		name_.value(*name);
 
-		// decode dataType
-		boost::optional<std::string> dataType = ptree.get_optional<std::string>("<xmlattr>.DataType");
-		if (!name) {
-			Log(Error, "missing attribute in data type field")
-				.parameter("Attribute", "DataType");
-			return false;
-		}
-		if (!dataType_.fromString(*dataType)) {
-			Log(Error, "invalid attribute in data type field")
-				.parameter("Attribute", "DataType")
-				.parameter("Value", *dataType);
-			return false;
-		}
-
 		// decode valueRank  (default: -1)
 		boost::optional<std::string> valueRank = ptree.get_optional<std::string>("<xmlattr>.ValueRank");
 		if (valueRank) {
@@ -269,6 +255,20 @@ namespace OpcUaStackServer
 			else {
 				isOptional_ = false;
 			}
+		}
+
+		// decode dataType or dataTypeDefinition
+		boost::optional<std::string> dataType = ptree.get_optional<std::string>("<xmlattr>.DataType");
+		if (!name) {
+			Log(Error, "missing attribute in data type field")
+				.parameter("Attribute", "DataType");
+			return false;
+		}
+		if (!dataType_.fromString(*dataType)) {
+			Log(Error, "invalid attribute in data type field")
+				.parameter("Attribute", "DataType")
+				.parameter("Value", *dataType);
+			return false;
 		}
 
 		// decode dataTypeDefinition (optional)
@@ -303,9 +303,6 @@ namespace OpcUaStackServer
 		// decode name
 		ptree.put("<xmlattr>.Name", name_.value());
 
-		// decode dataType
-		ptree.put("<xmlattr>.DataType", dataType_.toString());
-
 		// decode valueRank
 		std::stringstream ss;
 		ss << valueRank_;
@@ -321,7 +318,8 @@ namespace OpcUaStackServer
 			ptree.put("<xmlattr>.IsOptional", "true");
 		}
 
-		// decode dataTypeDefinition (optional)
+		// decode dataType or dataTypeDefinition
+		ptree.put("<xmlattr>.DataType", dataType_.toString());
 		// FIXME: todo
 
 		return false;
