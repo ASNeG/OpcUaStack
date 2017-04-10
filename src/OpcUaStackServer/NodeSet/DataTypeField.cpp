@@ -319,8 +319,19 @@ namespace OpcUaStackServer
 		}
 
 		// decode dataType or dataTypeDefinition
-		ptree.put("<xmlattr>.DataType", dataType_.toString());
-		// FIXME: todo
+		if (dataTypeDefinition_.get() != nullptr) {
+			if (dataTypeFieldIf_ == nullptr) return false;
+
+			boost::property_tree::ptree tree;
+			if (!dataTypeFieldIf_->encode(tree, dataTypeDefinition_)) {
+				return false;
+			}
+
+			ptree.add_child("Definition", tree);
+		}
+		else {
+			ptree.put("<xmlattr>.DataType", dataType_.toString());
+		}
 
 		return false;
 	}
