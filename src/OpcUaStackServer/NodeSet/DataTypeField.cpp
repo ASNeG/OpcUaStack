@@ -32,7 +32,8 @@ namespace OpcUaStackServer
 	// ---------------------------------------------------------------------------
 	// ---------------------------------------------------------------------------
 	DataTypeField::DataTypeField(void)
-	: dataSubType_(None)
+	: dataTypeFieldIf_(nullptr)
+	, dataSubType_(None)
 	, name_()
 	, dataType_()
 	, valueRank_(-1)
@@ -45,6 +46,12 @@ namespace OpcUaStackServer
 
 	DataTypeField::~DataTypeField(void)
 	{
+	}
+
+	void
+	DataTypeField::dataTypeFieldIf(DataTypeFieldIf* dataTypeFieldIf)
+	{
+		dataTypeFieldIf_ = dataTypeFieldIf;
 	}
 
 	DataSubType&
@@ -171,39 +178,6 @@ namespace OpcUaStackServer
 	DataTypeField::decodeEnum(boost::property_tree::ptree& ptree)
 	{
 		// decode name
-		ptree.put("<xmlattr>.Name", name_.value());
-
-		// decode description
-		if (description_.text().size() > 0) {
-			ptree.put("Description", description_.text());
-		}
-
-		// decode value
-		std::stringstream ss;
-		ss << value_;
-		ptree.put("<xmlattr>.Value", ss.str());
-
-		return false;
-	}
-
-	bool
-	DataTypeField::decodeStruct(boost::property_tree::ptree& ptree)
-	{
-		// decode name
-		// decode dataType
-		// decode valueRank
-		// decode description
-		// decode dataTypeDefinition (optional)
-		// decode isOptional
-
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	DataTypeField::encodeEnum(boost::property_tree::ptree& ptree)
-	{
-		// decode name
 		boost::optional<std::string> name = ptree.get_optional<std::string>("<xmlattr>.Name");
 		if (!name) {
 			Log(Error, "missing attribute in data type field")
@@ -233,10 +207,44 @@ namespace OpcUaStackServer
 				.parameter("Attribute", "Value")
 				.parameter("Value", *value)
 				.parameter("What", e.what());
-			return false;
+			return true;
 		}
 
 		return false;
+	}
+
+	bool
+	DataTypeField::decodeStruct(boost::property_tree::ptree& ptree)
+	{
+		// decode name
+		// decode dataType
+		// decode valueRank
+		// decode description (optional)
+		// decode dataTypeDefinition (optional)
+		// decode isOptional
+
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataTypeField::encodeEnum(boost::property_tree::ptree& ptree)
+	{
+
+		// decode name
+		ptree.put("<xmlattr>.Name", name_.value());
+
+		// decode description
+		if (description_.text().size() > 0) {
+			ptree.put("Description", description_.text());
+		}
+
+		// decode value
+		std::stringstream ss;
+		ss << value_;
+		ptree.put("<xmlattr>.Value", ss.str());
+
+		return true;
 	}
 
 	bool

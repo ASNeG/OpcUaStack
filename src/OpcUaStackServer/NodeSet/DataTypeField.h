@@ -33,12 +33,25 @@ namespace OpcUaStackServer
 		Enumeration
 	} DataSubType;
 
+
+	class DLLEXPORT DataTypeFieldIf
+	{
+	  public:
+		DataTypeFieldIf(void) {}
+		virtual ~DataTypeFieldIf(void) {}
+
+		virtual bool decode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition) = 0;
+		virtual bool encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition) = 0;
+	};
+
+
 	class DLLEXPORT DataTypeField
 	{
 	  public:
 		DataTypeField(void);
 		~DataTypeField(void);
 
+		void dataTypeFieldIf(DataTypeFieldIf* dataTypeFieldIf);
 		DataSubType& dataSubType(void);
 		void dataSubType(DataSubType& dataSubType);
 		OpcUaString& name(void);
@@ -65,6 +78,7 @@ namespace OpcUaStackServer
 		bool encodeEnum(boost::property_tree::ptree& ptree);
 		bool encodeStruct(boost::property_tree::ptree& ptree);
 
+		DataTypeFieldIf* dataTypeFieldIf_;
 		DataSubType dataSubType_;
 		OpcUaString name_;
 		OpcUaNodeId dataType_;
