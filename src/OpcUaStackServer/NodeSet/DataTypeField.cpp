@@ -34,7 +34,7 @@ namespace OpcUaStackServer
 	: dataSubType_(None)
 	, name_()
 	, dataType_()
-	, valueRank_()
+	, valueRank_(-1)
 	, description_()
 	, dataTypeDefinition_()
 	, value_(0)
@@ -169,6 +169,10 @@ namespace OpcUaStackServer
 	bool
 	DataTypeField::decodeEnum(boost::property_tree::ptree& ptree)
 	{
+		// decode name
+		// decode description
+		// decode value
+
 		// FIXME: todo
 		return false;
 	}
@@ -176,6 +180,13 @@ namespace OpcUaStackServer
 	bool
 	DataTypeField::decodeStruct(boost::property_tree::ptree& ptree)
 	{
+		// decode name
+		// decode dataType
+		// decode valueRank
+		// decode description
+		// decode dataTypeDefinition (optional)
+		// decode isOptional
+
 		// FIXME: todo
 		return false;
 	}
@@ -183,6 +194,10 @@ namespace OpcUaStackServer
 	bool
 	DataTypeField::encodeEnum(boost::property_tree::ptree& ptree)
 	{
+		// decode name
+		// decode description
+		// decode value
+
 		// FIXME: todo
 		return false;
 	}
@@ -190,6 +205,12 @@ namespace OpcUaStackServer
 	bool
 	DataTypeField::encodeStruct(boost::property_tree::ptree& ptree)
 	{
+		// decode name
+		// decode dataType
+		// decode valueRank
+		// decode description
+		// decode dataTypeDefinition (optional)
+		// decode isOptional
 		// FIXME: todo
 		return false;
 	}
