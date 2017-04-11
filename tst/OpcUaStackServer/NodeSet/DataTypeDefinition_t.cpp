@@ -161,6 +161,86 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Structure_Simple)
     BOOST_REQUIRE(definition->dataFields()[2]->description() == OpcUaLocalizedText());
 }
 
+BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Structure_Simple)
+{
+	bool success;
+	DataTypeDefinition::SPtr definition;
+	DataTypeField::SPtr field;
+	OpcUaQualifiedName dataTypeName;
+	OpcUaString fieldName;
+	OpcUaNodeId dataType;
+	OpcUaLocalizedText description;
+
+	//
+	// create simple structure
+	//
+	definition = constructSPtr<DataTypeDefinition>();
+	definition->dataSubType(Structure);
+	dataTypeName.set("MyStructureType",1);
+	definition->name(dataTypeName);
+
+	field = constructSPtr<DataTypeField>();
+	fieldName.value("Element1");
+	field->name(fieldName);
+	dataType.set(OpcUaBuildInType_OpcUaDouble);
+	field->dataType(dataType);
+	description.set("", "todo");
+	field->description(description);
+	definition->dataField(field);
+
+	field = constructSPtr<DataTypeField>();
+	fieldName.value("Element2");
+	field->name(fieldName);
+	dataType.set(OpcUaBuildInType_OpcUaDouble);
+	field->dataType(dataType);
+	definition->dataField(field);
+
+	field = constructSPtr<DataTypeField>();
+	fieldName.value("Element3");
+	field->name(fieldName);
+	dataType.set(OpcUaBuildInType_OpcUaDouble);
+	field->dataType(dataType);
+	field->isOptional(true);
+	definition->dataField(field);
+
+	// encode and write eimple enum to file
+	ConfigXml configXmlWrite;
+	success = definition->encode(configXmlWrite.ptree());
+	BOOST_REQUIRE(success == true);
+
+
+	//
+	// read xml file
+	//
+	success = configXmlWrite.write("test.xml");
+	BOOST_REQUIRE(success == true);
+
+	ConfigXml configXml;
+    success = configXml.parse("../tst/data/DataTypeDefinition.Structure.Simple.xml");
+    BOOST_REQUIRE(success == true);
+
+    // decode simple enum type
+    definition = constructSPtr<DataTypeDefinition>();
+    definition->dataSubType(Structure);
+    success = definition->decode(configXml.ptree().get_child("Definition"));
+
+    BOOST_REQUIRE(success == true);
+    BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
+    BOOST_REQUIRE(definition->dataFields().size() == 3);
+    BOOST_REQUIRE(definition->dataFields()[0]->name().value() == "Element1");
+    BOOST_REQUIRE(definition->dataFields()[0]->isOptional() == false);
+    BOOST_REQUIRE(definition->dataFields()[0]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[0]->description() == OpcUaLocalizedText("", "todo"));
+    BOOST_REQUIRE(definition->dataFields()[1]->name().value() == "Element2");
+    BOOST_REQUIRE(definition->dataFields()[1]->isOptional() == false);
+    BOOST_REQUIRE(definition->dataFields()[1]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[1]->description() == OpcUaLocalizedText());
+    BOOST_REQUIRE(definition->dataFields()[2]->name().value() == "Element3");
+    BOOST_REQUIRE(definition->dataFields()[2]->isOptional() == true);
+    BOOST_REQUIRE(definition->dataFields()[2]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[2]->description() == OpcUaLocalizedText());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 
