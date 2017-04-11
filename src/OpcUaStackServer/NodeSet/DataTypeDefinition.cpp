@@ -145,6 +145,18 @@ namespace OpcUaStackServer
 				}
 			}
 		}
+		else {
+			// decode name
+			boost::optional<std::string> name = ptree.get_optional<std::string>("<xmlattr>.Name");
+			if (name) {
+				if (!name_.fromString(*name)) {
+					Log(Error, "invalid attribute in data type definition")
+						.parameter("Attribute", "Name")
+						.parameter("Value", *name);
+					return false;
+				}
+			}
+		}
 
 		// decode isUnion (default: false)
 		boost::optional<std::string> isUnion = ptree.get_optional<std::string>("<xmlattr>.IsUnion");
@@ -182,6 +194,12 @@ namespace OpcUaStackServer
 
 			// decode base type
 			ptree.put("<xmlattr>.BaseType", baseType_.toString());
+		}
+		else {
+			// encode name
+			if (name_.toString().size() != 0) {
+				ptree.put("<xmlattr>.Name", name_.toString());
+			}
 		}
 
 		// encode is union
