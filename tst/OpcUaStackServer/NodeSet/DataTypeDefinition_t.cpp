@@ -150,12 +150,15 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Structure_Simple)
     BOOST_REQUIRE(definition->dataFields()[0]->name().value() == "Element1");
     BOOST_REQUIRE(definition->dataFields()[0]->isOptional() == false);
     BOOST_REQUIRE(definition->dataFields()[0]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[0]->description() == OpcUaLocalizedText("", "todo"));
     BOOST_REQUIRE(definition->dataFields()[1]->name().value() == "Element2");
     BOOST_REQUIRE(definition->dataFields()[1]->isOptional() == false);
     BOOST_REQUIRE(definition->dataFields()[1]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[1]->description() == OpcUaLocalizedText());
     BOOST_REQUIRE(definition->dataFields()[2]->name().value() == "Element3");
     BOOST_REQUIRE(definition->dataFields()[2]->isOptional() == true);
     BOOST_REQUIRE(definition->dataFields()[2]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[2]->description() == OpcUaLocalizedText());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
