@@ -242,8 +242,7 @@ namespace OpcUaStackServer
 		// decode description (optional)
 		boost::optional<std::string> description = ptree.get_optional<std::string>("Description");
 		if (description) {
-			description_.locale("");
-			description_.text(*description);
+			description_.fromString(*description);
 		}
 
 		// decode isOptional (default: false)
@@ -296,7 +295,13 @@ namespace OpcUaStackServer
 
 		// decode description
 		if (description_.text().size() > 0) {
-			ptree.put("Description", description_.text());
+			std::stringstream ss;
+
+			if (description_.locale().value().size() > 0) {
+				ss << description_.locale().value() << ",";
+			}
+			ss << description_.text().value();
+			ptree.put("Description", ss.str());
 		}
 
 		// decode value
