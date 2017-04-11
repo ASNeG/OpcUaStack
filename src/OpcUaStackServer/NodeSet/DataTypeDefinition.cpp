@@ -113,6 +113,7 @@ namespace OpcUaStackServer
 	void
 	DataTypeDefinition::dataField(DataTypeField::SPtr& dataField)
 	{
+		dataField->dataSubType(dataSubType_);
 		dataFields_.push_back(dataField);
 	}
 
