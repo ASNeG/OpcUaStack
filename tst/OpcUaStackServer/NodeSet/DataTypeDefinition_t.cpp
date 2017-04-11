@@ -27,8 +27,8 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Enum_Simple)
     // decode simple enum type
     DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Enumeration);
-
     success = definition->decode(configXml.ptree().get_child("Definition"));
+
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("EnumSimpleType",1));
     BOOST_REQUIRE(definition->dataFields().size() == 3);
@@ -43,11 +43,66 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Enum_Simple)
 BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Enum_Simple)
 {
 	bool success;
+	DataTypeDefinition::SPtr definition;
+	DataTypeField::SPtr field;
+	OpcUaQualifiedName dataTypeName;
+	OpcUaString fieldName;
 
-	DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+	//
+	// create simple enumeration
+	//
+	definition = constructSPtr<DataTypeDefinition>();
 	definition->dataSubType(Enumeration);
-	OpcUaQualifiedName name("EnumSimpleType",1);
-	definition->name(name);
+	dataTypeName.set("EnumSimpleType",1);
+	definition->name(dataTypeName);
+
+	field = constructSPtr<DataTypeField>();
+	fieldName.value("Enum1");
+	field->name(fieldName);
+	field->value(0);
+	definition->dataField(field);
+
+	field = constructSPtr<DataTypeField>();
+	fieldName.value("Enum2");
+	field->name(fieldName);
+	field->value(1);
+	definition->dataField(field);
+
+	field = constructSPtr<DataTypeField>();
+	fieldName.value("Enum3");
+	field->name(fieldName);
+	field->value(2);
+	definition->dataField(field);
+
+	// encode and write eimple enum to file
+	ConfigXml configXmlWrite;
+	success = definition->encode(configXmlWrite.ptree());
+	BOOST_REQUIRE(success == true);
+
+	success = configXmlWrite.write("test.xml");
+	BOOST_REQUIRE(success == true);
+
+	//
+	// read opc ua nodeset
+	//
+	ConfigXml configXmlRead;
+    success = configXmlRead.parse("test.xml");
+    BOOST_REQUIRE(success == true);
+
+    // decode simple enum type
+    definition = constructSPtr<DataTypeDefinition>();
+    definition->dataSubType(Enumeration);
+    success = definition->decode(configXmlRead.ptree().get_child("Definition"));
+
+    BOOST_REQUIRE(success == true);
+    BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("EnumSimpleType",1));
+    BOOST_REQUIRE(definition->dataFields().size() == 3);
+    BOOST_REQUIRE(definition->dataFields()[0]->name().value() == "Enum1");
+    BOOST_REQUIRE(definition->dataFields()[1]->name().value() == "Enum2");
+    BOOST_REQUIRE(definition->dataFields()[2]->name().value() == "Enum3");
+    BOOST_REQUIRE(definition->dataFields()[0]->value() == 0);
+    BOOST_REQUIRE(definition->dataFields()[1]->value() == 1);
+    BOOST_REQUIRE(definition->dataFields()[2]->value() == 2);
 
 }
 
