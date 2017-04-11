@@ -342,7 +342,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-			ptree.add_child("Definition", tree);
+			ptree.add_child("Definition", tree.get_child("Definition"));
 		}
 		else {
 			if (dataType_.namespaceIndex() == 0 && dataType_.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {

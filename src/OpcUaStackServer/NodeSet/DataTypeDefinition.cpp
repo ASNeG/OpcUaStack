@@ -252,7 +252,7 @@ namespace OpcUaStackServer
 	DataTypeDefinition::encode(boost::property_tree::ptree& ptree, Object::SPtr& dataTypeDefinition)
 	{
 		DataTypeDefinition::SPtr definition = boost::static_pointer_cast<DataTypeDefinition>(dataTypeDefinition);
-		return definition->decode(ptree);
+		return definition->encode(ptree);
 	}
 
 }
