@@ -103,8 +103,33 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Enum_Simple)
     BOOST_REQUIRE(definition->dataFields()[0]->value() == 0);
     BOOST_REQUIRE(definition->dataFields()[1]->value() == 1);
     BOOST_REQUIRE(definition->dataFields()[2]->value() == 2);
-
 }
+
+BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Enum_Gap)
+{
+	bool success;
+
+	// read opc ua nodeset
+	ConfigXml configXml;
+    success = configXml.parse("../tst/data/DataTypeDefinition.Enum.Gap.xml");
+    BOOST_REQUIRE(success == true);
+
+    // decode simple enum type
+    DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+    definition->dataSubType(Enumeration);
+    success = definition->decode(configXml.ptree().get_child("Definition"));
+
+    BOOST_REQUIRE(success == true);
+    BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("EnumGapType",1));
+    BOOST_REQUIRE(definition->dataFields().size() == 3);
+    BOOST_REQUIRE(definition->dataFields()[0]->name().value() == "Enum1");
+    BOOST_REQUIRE(definition->dataFields()[1]->name().value() == "Enum2");
+    BOOST_REQUIRE(definition->dataFields()[2]->name().value() == "Enum3");
+    BOOST_REQUIRE(definition->dataFields()[0]->value() == -1);
+    BOOST_REQUIRE(definition->dataFields()[1]->value() == 1);
+    BOOST_REQUIRE(definition->dataFields()[2]->value() == 7);
+}
+
 
 
 #if 0
