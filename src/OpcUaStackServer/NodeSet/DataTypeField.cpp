@@ -169,7 +169,7 @@ namespace OpcUaStackServer
 			return encodeStruct(ptree);
 		}
 		else if (dataSubType_ == Enumeration) {
-			return decodeEnum(ptree);
+			return encodeEnum(ptree);
 		}
 		return false;
 	}
