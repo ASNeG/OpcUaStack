@@ -191,21 +191,21 @@ namespace OpcUaStackServer
 	{
 		if (nested_) {
 			// encode name
-			ptree.put("<xmlattr>.Name", name_.toString());
+			ptree.put("Definition.<xmlattr>.Name", name_.toString());
 
 			// decode base type
-			ptree.put("<xmlattr>.BaseType", baseType_.toString());
+			ptree.put("Definition.<xmlattr>.BaseType", baseType_.toString());
 		}
 		else {
 			// encode name
 			if (name_.toString().size() != 0) {
-				ptree.put("<xmlattr>.Name", name_.toString());
+				ptree.put("Definition.<xmlattr>.Name", name_.toString());
 			}
 		}
 
 		// encode is union
 		if (isUnion_) {
-			ptree.put("<xmlattr>.IsUnion", "true");
+			ptree.put("Definition.<xmlattr>.IsUnion", "true");
 		}
 
 		// encode data type fields
@@ -214,8 +214,10 @@ namespace OpcUaStackServer
 			DataTypeField::SPtr field = *it;
 
 			boost::property_tree::ptree tree;
-			if (!field->encode(tree)) return false;
-			ptree.add_child("Field", tree);
+			if (!field->encode(tree)) {
+				return false;
+			}
+			ptree.add_child("Definition.Field", tree);
 		}
 
 		return true;
