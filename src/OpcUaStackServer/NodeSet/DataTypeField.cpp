@@ -274,10 +274,10 @@ namespace OpcUaStackServer
 			return true;
 		}
 
-		boost::optional<boost::property_tree::ptree&> dataTypeDefinition = ptree.get_child_optional("DataTypeDefintion");
+		boost::optional<boost::property_tree::ptree&> dataTypeDefinition = ptree.get_child_optional("Definition");
 		if (!dataTypeDefinition) {
 			Log(Error, "missing attribute in data type field")
-				.parameter("Attribute", "DataType/DataTypeDefinition");
+				.parameter("Attribute", "DataType/Definition");
 			return false;
 		}
 

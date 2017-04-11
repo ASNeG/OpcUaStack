@@ -48,6 +48,8 @@ namespace OpcUaStackServer
 		DataTypeField::Vec& dataFields(void);
 		void dataField(DataTypeField::SPtr& dataField);
 
+		static DataTypeDefinition::SPtr definition(DataTypeField::SPtr& dataField);
+
 		bool decode(boost::property_tree::ptree& ptree);
 		bool encode(boost::property_tree::ptree& ptree);
 

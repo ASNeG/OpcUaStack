@@ -114,7 +114,18 @@ namespace OpcUaStackServer
 	DataTypeDefinition::dataField(DataTypeField::SPtr& dataField)
 	{
 		dataField->dataSubType(dataSubType_);
+		dataField->dataTypeFieldIf(this);
 		dataFields_.push_back(dataField);
+	}
+
+	DataTypeDefinition::SPtr
+	DataTypeDefinition::definition(DataTypeField::SPtr& dataField)
+	{
+		DataTypeDefinition::SPtr definition;
+		if (dataField.get() == nullptr) return definition;
+		if (dataField->dataTypeDefinition().get() == nullptr) return definition;
+		definition = boost::static_pointer_cast<DataTypeDefinition>(dataField->dataTypeDefinition());
+		return definition;
 	}
 
 	bool
@@ -177,6 +188,7 @@ namespace OpcUaStackServer
 
 			DataTypeField::SPtr field = constructSPtr<DataTypeField>();
 			field->dataSubType(dataSubType_);
+			field->dataTypeFieldIf(this);
 			if (!field->decode(it->second)) {
 				return false;
 			}
