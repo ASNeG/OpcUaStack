@@ -283,7 +283,7 @@ namespace OpcUaStackServer
 
 		if (dataTypeFieldIf_ == nullptr) return false;
 
-		return dataTypeFieldIf_->decode(ptree, dataTypeDefinition_);
+		return dataTypeFieldIf_->decode(*dataTypeDefinition, dataTypeDefinition_);
 	}
 
 	bool

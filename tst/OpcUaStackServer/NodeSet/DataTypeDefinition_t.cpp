@@ -352,6 +352,43 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Structure_Complex)
     BOOST_REQUIRE(definition->dataFields()[2]->description() == OpcUaLocalizedText());
 }
 
+BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Structure_Nested)
+{
+	bool success;
+
+	// read opc ua nodeset
+	ConfigXml configXml;
+    success = configXml.parse("../tst/data/DataTypeDefinition.Structure.Nested.xml");
+    BOOST_REQUIRE(success == true);
+
+    // decode simple enum type
+    DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+    definition->dataSubType(Structure);
+    success = definition->decode(configXml.ptree().get_child("Definition"));
+
+    BOOST_REQUIRE(success == true);
+    BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
+    BOOST_REQUIRE(definition->dataFields().size() == 3);
+    BOOST_REQUIRE(definition->dataFields()[0]->name().value() == "Element1");
+    BOOST_REQUIRE(definition->dataFields()[0]->isOptional() == false);
+    BOOST_REQUIRE(definition->dataFields()[0]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[1]->name().value() == "Element2");
+    BOOST_REQUIRE(definition->dataFields()[1]->isOptional() == false);
+    BOOST_REQUIRE(definition->dataFields()[2]->name().value() == "Element3");
+    BOOST_REQUIRE(definition->dataFields()[2]->isOptional() == true);
+    BOOST_REQUIRE(definition->dataFields()[2]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+
+    definition = DataTypeDefinition::definition(definition->dataFields()[1]);
+    BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyNestedType",1));
+    BOOST_REQUIRE(definition->dataFields().size() == 2);
+    BOOST_REQUIRE(definition->dataFields()[0]->name().value() == "Element1");
+    BOOST_REQUIRE(definition->dataFields()[0]->isOptional() == false);
+    BOOST_REQUIRE(definition->dataFields()[0]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+    BOOST_REQUIRE(definition->dataFields()[1]->name().value() == "Element2");
+    BOOST_REQUIRE(definition->dataFields()[1]->isOptional() == false);
+    BOOST_REQUIRE(definition->dataFields()[1]->dataType() == OpcUaNodeId(OpcUaBuildInType_OpcUaDouble));
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 

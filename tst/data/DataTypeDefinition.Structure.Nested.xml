@@ -17,7 +17,7 @@
 -->
       
 <Definition Name="1:MyStructureType">
-    <Field DataType="s=MyType" Name="Element1"/>
+    <Field DataType="Double" Name="Element1"/>
     <Field Name="Element2">
     	<Definition Name="1:MyNestedType">
     		<Field DataType="Double" Name="Element1"/>
