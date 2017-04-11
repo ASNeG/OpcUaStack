@@ -340,7 +340,19 @@ namespace OpcUaStackServer
 			ptree.add_child("Definition", tree);
 		}
 		else {
-			ptree.put("<xmlattr>.DataType", dataType_.toString());
+			if (dataType_.namespaceIndex() == 0 && dataType_.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+				OpcUaUInt32 id = dataType_.nodeId<OpcUaUInt32>();
+				std::string typeString = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)id);
+				if (typeString == "Unknown") {
+					ptree.put("<xmlattr>.DataType", dataType_.toString());
+				}
+				else {
+					ptree.put("<xmlattr>.DataType", typeString);
+				}
+			}
+			else {
+				ptree.put("<xmlattr>.DataType", dataType_.toString());
+			}
 		}
 
 		return true;
