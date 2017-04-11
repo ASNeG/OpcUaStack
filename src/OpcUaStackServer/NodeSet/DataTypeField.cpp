@@ -260,11 +260,17 @@ namespace OpcUaStackServer
 		// decode dataType or dataTypeDefinition
 		boost::optional<std::string> dataType = ptree.get_optional<std::string>("<xmlattr>.DataType");
 		if (dataType) {
-			if (!dataType_.fromString(*dataType)) {
-				Log(Error, "invalid attribute in data type field")
-					.parameter("Attribute", "DataType")
-					.parameter("Value", *dataType);
-				return false;
+			OpcUaBuildInType type = OpcUaBuildInTypeMap::string2BuildInType(*dataType);
+			if (type != OpcUaBuildInType_Unknown) {
+				dataType_.set(type);
+			}
+			else {
+				if (!dataType_.fromString(*dataType)) {
+					Log(Error, "invalid attribute in data type field")
+						.parameter("Attribute", "DataType")
+						.parameter("Value", *dataType);
+					return false;
+				}
 			}
 			return true;
 		}
