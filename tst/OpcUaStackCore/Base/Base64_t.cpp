@@ -78,6 +78,77 @@ BOOST_AUTO_TEST_CASE(Base64_decode2)
 	std::cout << buffer << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(Base64_decode3)
+{
+	std::stringstream ss1;
+	char buffer[5000];
+	uint32_t len = 5000;
+
+	memset(buffer, 0x00, 5000);
+	ss1	<< "PHhzOnNjaGVtYSBlbGVtZW50Rm9ybURlZmF1bHQ9InF1YWxpZmllZCIgdGFyZ2V0TmFtZXNwYWNlPSJod"
+		<< "HRwOi8veW91cm9yZ2FuaXNhdGlvbi5vcmcvTm9kZVNldEV4YW1wbGUvVHlwZXMueHNkIiB4b"
+        << "Wxuczp0bnM9Imh0dHA6Ly95b3Vyb3JnYW5pc2F0aW9uLm9yZy9Ob2RlU2V0RXhhbXBsZS9Ue"
+        << "XBlcy54c2QiIHhtbG5zOnVhPSJodHRwOi8vb3BjZm91bmRhdGlvbi5vcmcvVUEvMjAwOC8wM"
+        << "i9UeXBlcy54c2QiIHhtbG5zOnhzPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtY"
+        << "SI+CiA8eHM6aW1wb3J0IG5hbWVzcGFjZT0iaHR0cDovL29wY2ZvdW5kYXRpb24ub3JnL1VBL"
+        << "zIwMDgvMDIvVHlwZXMueHNkIi8+CiA8eHM6c2ltcGxlVHlwZSBuYW1lPSJFbnVtR2FwVHlwZ"
+        << "SI+CiAgPHhzOnJlc3RyaWN0aW9uIGJhc2U9InhzOnN0cmluZyI+CiAgIDx4czplbnVtZXJhd"
+        << "GlvbiB2YWx1ZT0iRW51bTFfLTEiLz4KICAgPHhzOmVudW1lcmF0aW9uIHZhbHVlPSJFbnVtM"
+        << "l8zIi8+CiAgIDx4czplbnVtZXJhdGlvbiB2YWx1ZT0iRW51bTNfNSIvPgogIDwveHM6cmVzd"
+        << "HJpY3Rpb24+CiA8L3hzOnNpbXBsZVR5cGU+CiA8eHM6ZWxlbWVudCB0eXBlPSJ0bnM6RW51b"
+        << "UdhcFR5cGUiIG5hbWU9IkVudW1HYXBUeXBlIi8+CiA8eHM6Y29tcGxleFR5cGUgbmFtZT0iT"
+        << "GlzdE9mRW51bUdhcFR5cGUiPgogIDx4czpzZXF1ZW5jZT4KICAgPHhzOmVsZW1lbnQgbWluT"
+        << "2NjdXJzPSIwIiBtYXhPY2N1cnM9InVuYm91bmRlZCIgdHlwZT0idG5zOkVudW1HYXBUeXBlI"
+        << "iBuYW1lPSJFbnVtR2FwVHlwZSIgbmlsbGFibGU9InRydWUiLz4KICA8L3hzOnNlcXVlbmNlP"
+        << "gogPC94czpjb21wbGV4VHlwZT4KIDx4czplbGVtZW50IHR5cGU9InRuczpMaXN0T2ZFbnVtR"
+        << "2FwVHlwZSIgbmFtZT0iTGlzdE9mRW51bUdhcFR5cGUiIG5pbGxhYmxlPSJ0cnVlIi8+CiA8e"
+        << "HM6c2ltcGxlVHlwZSBuYW1lPSJFbnVtU2ltcGxlVHlwZSI+CiAgPHhzOnJlc3RyaWN0aW9uI"
+        << "GJhc2U9InhzOnN0cmluZyI+CiAgIDx4czplbnVtZXJhdGlvbiB2YWx1ZT0iRW51bTFfMCIvP"
+        << "gogICA8eHM6ZW51bWVyYXRpb24gdmFsdWU9IkVudW0yXzEiLz4KICAgPHhzOmVudW1lcmF0a"
+        << "W9uIHZhbHVlPSJFbnVtM18yIi8+CiAgPC94czpyZXN0cmljdGlvbj4KIDwveHM6c2ltcGxlV"
+        << "HlwZT4KIDx4czplbGVtZW50IHR5cGU9InRuczpFbnVtU2ltcGxlVHlwZSIgbmFtZT0iRW51b"
+        << "VNpbXBsZVR5cGUiLz4KIDx4czpjb21wbGV4VHlwZSBuYW1lPSJMaXN0T2ZFbnVtU2ltcGxlV"
+        << "HlwZSI+CiAgPHhzOnNlcXVlbmNlPgogICA8eHM6ZWxlbWVudCBtaW5PY2N1cnM9IjAiIG1he"
+        << "E9jY3Vycz0idW5ib3VuZGVkIiB0eXBlPSJ0bnM6RW51bVNpbXBsZVR5cGUiIG5hbWU9IkVud"
+        << "W1TaW1wbGVUeXBlIiBuaWxsYWJsZT0idHJ1ZSIvPgogIDwveHM6c2VxdWVuY2U+CiA8L3hzO"
+        << "mNvbXBsZXhUeXBlPgogPHhzOmVsZW1lbnQgdHlwZT0idG5zOkxpc3RPZkVudW1TaW1wbGVUe"
+        << "XBlIiBuYW1lPSJMaXN0T2ZFbnVtU2ltcGxlVHlwZSIgbmlsbGFibGU9InRydWUiLz4KIDx4c"
+        << "zpjb21wbGV4VHlwZSBuYW1lPSJNeUNvbXBsZXhTdHJ1Y3R1cmVUeXBlIj4KICA8eHM6c2Vxd"
+        << "WVuY2U+CiAgIDx4czplbGVtZW50IG1pbk9jY3Vycz0iMCIgbWF4T2NjdXJzPSIxIiB0eXBlP"
+        << "SJ4czpkb3VibGUiIG5hbWU9IkVsZW1lbnQxIi8+CiAgIDx4czplbGVtZW50IG1pbk9jY3Vyc"
+        << "z0iMCIgbWF4T2NjdXJzPSIxIiB0eXBlPSJ0bnM6TXlTdHJ1Y3R1cmVUeXBlIiBuYW1lPSJFb"
+        << "GVtZW50MiIvPgogICA8eHM6ZWxlbWVudCBtaW5PY2N1cnM9IjAiIG1heE9jY3Vycz0iMSIgd"
+        << "HlwZT0idG5zOkVudW1TaW1wbGVUeXBlIiBuYW1lPSJFbGVtZW50MyIvPgogIDwveHM6c2Vxd"
+        << "WVuY2U+CiA8L3hzOmNvbXBsZXhUeXBlPgogPHhzOmVsZW1lbnQgdHlwZT0idG5zOk15Q29tc"
+        << "GxleFN0cnVjdHVyZVR5cGUiIG5hbWU9Ik15Q29tcGxleFN0cnVjdHVyZVR5cGUiLz4KIDx4c"
+        << "zpjb21wbGV4VHlwZSBuYW1lPSJMaXN0T2ZNeUNvbXBsZXhTdHJ1Y3R1cmVUeXBlIj4KICA8e"
+        << "HM6c2VxdWVuY2U+CiAgIDx4czplbGVtZW50IG1pbk9jY3Vycz0iMCIgbWF4T2NjdXJzPSJ1b"
+        << "mJvdW5kZWQiIHR5cGU9InRuczpNeUNvbXBsZXhTdHJ1Y3R1cmVUeXBlIiBuYW1lPSJNeUNvb"
+        << "XBsZXhTdHJ1Y3R1cmVUeXBlIiBuaWxsYWJsZT0idHJ1ZSIvPgogIDwveHM6c2VxdWVuY2U+C"
+        << "iA8L3hzOmNvbXBsZXhUeXBlPgogPHhzOmVsZW1lbnQgdHlwZT0idG5zOkxpc3RPZk15Q29tc"
+        << "GxleFN0cnVjdHVyZVR5cGUiIG5hbWU9Ikxpc3RPZk15Q29tcGxleFN0cnVjdHVyZVR5cGUiI"
+        << "G5pbGxhYmxlPSJ0cnVlIi8+CiA8eHM6Y29tcGxleFR5cGUgbmFtZT0iTXlTdHJ1Y3R1cmVUe"
+        << "XBlIj4KICA8eHM6c2VxdWVuY2U+CiAgIDx4czplbGVtZW50IG1pbk9jY3Vycz0iMCIgdHlwZ"
+        << "T0ieHM6dW5zaWduZWRJbnQiIG5hbWU9IkVuY29kaW5nTWFzayIvPgogICA8eHM6ZWxlbWVud"
+        << "CBtaW5PY2N1cnM9IjAiIG1heE9jY3Vycz0iMSIgdHlwZT0ieHM6ZG91YmxlIiBuYW1lPSJFb"
+        << "GVtZW50MSIvPgogICA8eHM6ZWxlbWVudCBtaW5PY2N1cnM9IjAiIG1heE9jY3Vycz0iMSIgd"
+        << "HlwZT0ieHM6ZG91YmxlIiBuYW1lPSJFbGVtZW50MiIvPgogICA8eHM6ZWxlbWVudCBtaW5PY"
+        << "2N1cnM9IjAiIG1heE9jY3Vycz0iMSIgdHlwZT0ieHM6ZG91YmxlIiBuYW1lPSJFbGVtZW50M"
+        << "yIvPgogIDwveHM6c2VxdWVuY2U+CiAgPHhzOmF0dHJpYnV0ZSBuYW1lPSJFbmNvZGluZ1RhY"
+        << "mxlIiBmaXhlZD0iRWxlbWVudDM6MCIvPgogPC94czpjb21wbGV4VHlwZT4KIDx4czplbGVtZ"
+        << "W50IHR5cGU9InRuczpNeVN0cnVjdHVyZVR5cGUiIG5hbWU9Ik15U3RydWN0dXJlVHlwZSIvP"
+        << "gogPHhzOmNvbXBsZXhUeXBlIG5hbWU9Ikxpc3RPZk15U3RydWN0dXJlVHlwZSI+CiAgPHhzO"
+        << "nNlcXVlbmNlPgogICA8eHM6ZWxlbWVudCBtaW5PY2N1cnM9IjAiIG1heE9jY3Vycz0idW5ib"
+        << "3VuZGVkIiB0eXBlPSJ0bnM6TXlTdHJ1Y3R1cmVUeXBlIiBuYW1lPSJNeVN0cnVjdHVyZVR5c"
+        << "GUiIG5pbGxhYmxlPSJ0cnVlIi8+CiAgPC94czpzZXF1ZW5jZT4KIDwveHM6Y29tcGxleFR5c"
+        << "GU+CiA8eHM6ZWxlbWVudCB0eXBlPSJ0bnM6TGlzdE9mTXlTdHJ1Y3R1cmVUeXBlIiBuYW1lP"
+        << "SJMaXN0T2ZNeVN0cnVjdHVyZVR5cGUiIG5pbGxhYmxlPSJ0cnVlIi8+CjwveHM6c2NoZW1hP"
+        << "go=";
+
+	Base64::decode(ss1.str().c_str(), ss1.str().length(), buffer, len);
+	std::cout << buffer << std::endl;
+}
+
 
 
 BOOST_AUTO_TEST_SUITE_END()
