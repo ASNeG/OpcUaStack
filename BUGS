@@ -27,3 +27,12 @@ Lösche Monitored Item fuer N1 -> FEHLER Keine Callback
 Diese Klasse enthaelt statische Variablen. Wird diese im OpcUaDesigner
 in einer DLL unter Windows mehrfach verwendet, so existieren mehrere
 Variablen.
+
+
+004. Method Registrierung hat Fehler
+====================================
+
+Aktuell muss fuer die Ausfuehrung einer Funktion der Objekt-Node registeiert
+werden. Eine Methode wird aber über den Objekt-Node und den Funktion-Node
+identifiziert. Fuer Funktionen muss daher ein neues Konzept implementiert
+werden.
