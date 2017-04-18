@@ -58,7 +58,8 @@ namespace OpcUaStackCore
 			Write,
 			Mon,
 			HRead,
-			HWrite
+			HWrite,
+			Call
 		} Service;
 
 		OpcUaReferenceConfig(void);

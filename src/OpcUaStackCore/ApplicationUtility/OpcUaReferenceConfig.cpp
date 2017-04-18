@@ -144,6 +144,7 @@ namespace OpcUaStackCore
 		else if (service == "HREAD") service_ = HRead;
 		else if (service == "HWRITE") service_ = HWrite;
 		else if (service == "MON") service_ = Mon;
+		else if (service == "CALL") service_ = Call;
 		else {
 			Log(Error, "attribute error in config file")
 				.parameter("Element", elementPrefix_)
