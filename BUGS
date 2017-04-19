@@ -36,3 +36,10 @@ Aktuell muss fuer die Ausfuehrung einer Funktion der Objekt-Node registeiert
 werden. Eine Methode wird aber über den Objekt-Node und den Funktion-Node
 identifiziert. Fuer Funktionen muss daher ein neues Konzept implementiert
 werden.
+
+
+005. OpcUaVariant Array Laenge 0
+================================
+
+Wird in einer OpcUaVariant Variable ein String Array abgelegt und hat das
+Array die Länge 0, so wird die Variable nicht korrekt übertragen.
