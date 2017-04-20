@@ -766,6 +766,7 @@ namespace OpcUaStackServer
 		if (enableDefinition_) {
 			if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
 		}
+
 		//
 		// add into vector
 		//
@@ -1434,6 +1435,13 @@ namespace OpcUaStackServer
 			//
 			if (!encodeReferences(dataTypeNodeClassSPtr, node)) return false;
 
+			//
+			// encode data type definitons
+			//
+			if (enableDefinition_) {
+				if (!encodeDataTypeDefinition(dataTypeNodeClassSPtr, node)) return false;
+			}
+
 			// 
 			// Standard Properties
 			//
@@ -1554,6 +1562,24 @@ namespace OpcUaStackServer
 
 		return true;
 	}
+
+	bool
+	NodeSetXmlParser::encodeDataTypeDefinition(DataTypeNodeClass::SPtr& dataTypeNodeClass, boost::property_tree::ptree& ptree)
+	{
+		Object::SPtr definitionObject = dataTypeNodeClass->dataTypeDefinition();
+		if (definitionObject.get() == nullptr) return true;
+		DataTypeDefinition::SPtr definition = boost::static_pointer_cast<DataTypeDefinition>(definitionObject);
+
+		// encode definition
+		if (!definition->encode(ptree)) {
+			Log(Error, "invalid definiton - ignore definiton section")
+				.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+			return true;
+		}
+
+		return true;
+	}
+
 
 	// ##########################################################
 	//
