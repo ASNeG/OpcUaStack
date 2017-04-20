@@ -27,6 +27,7 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::NodeSetXmlParser(void)
 	: nodeSetAlias_()
 	, xmlnsTypes_("")
+	, enableDefinition_(true)
 	{
 	}
 
@@ -44,6 +45,18 @@ namespace OpcUaStackServer
 	NodeSetXmlParser::nodeSetAlias(void)
 	{
 		return nodeSetAlias_;
+	}
+
+	void
+	NodeSetXmlParser::enableDefinition(bool enableDefinition)
+	{
+		enableDefinition_ = enableDefinition;
+	}
+
+	bool
+	NodeSetXmlParser::enableDefinition(void)
+	{
+		return enableDefinition_;
 	}
 
 	// ##########################################################
@@ -750,8 +763,9 @@ namespace OpcUaStackServer
 		//
 		// decode data type definitons
 		//
-		if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
-
+		if (enableDefinition_) {
+			if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
+		}
 		//
 		// add into vector
 		//

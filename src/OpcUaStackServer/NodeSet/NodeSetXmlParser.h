@@ -43,6 +43,8 @@ namespace OpcUaStackServer
 
 		NodeSetNamespace& nodeSetNamespace(void);
 		NodeSetAlias& nodeSetAlias(void);
+		void enableDefinition(bool enableDefinition);
+		bool enableDefinition(void);
 
 	  private:
 		//
@@ -84,6 +86,7 @@ namespace OpcUaStackServer
 		bool stringToNodeId(const std::string& nodeIdString, OpcUaNodeId& nodeId);
 		bool isProperty(VariableNodeClass::SPtr variableNodeClassSPtr);
 
+		bool enableDefinition_;
 		NodeSetAlias nodeSetAlias_;
 		NodeSetValueParser nodeSetValueParser_;
 		std::string xmlnsTypes_;
