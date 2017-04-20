@@ -131,6 +131,23 @@ namespace OpcUaStackServer
 	bool
 	DataTypeDefinition::decode(boost::property_tree::ptree& ptree)
 	{
+		return decode(ptree, true);
+	}
+
+	bool
+	DataTypeDefinition::decode(boost::property_tree::ptree& ptree, bool withDefinitionTag)
+	{
+		if (withDefinitionTag) {
+			boost::optional<boost::property_tree::ptree&> tree = ptree.get_child_optional("Definition");
+			if (!tree) {
+				Log(Error, "missing element in data type definition")
+					.parameter("Element", "Definition");
+				return false;
+			}
+			ptree = *tree;
+		}
+
+
 		if (nested_) {
 			// decode name
 			boost::optional<std::string> name = ptree.get_optional<std::string>("<xmlattr>.Name");
@@ -242,7 +259,7 @@ namespace OpcUaStackServer
 		definition->nested(true);
 		definition->dataSubType(dataSubType_);
 
-		if (!definition->decode(ptree)) return false;
+		if (!definition->decode(ptree, false)) return false;
 		dataTypeDefinition = definition;
 
 		return true;

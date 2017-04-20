@@ -59,6 +59,7 @@ namespace OpcUaStackServer
 		//- DataTypeFieldIf ---------------------------------------------------
 
 	  private:
+		bool decode(boost::property_tree::ptree& ptree, bool withDefinitionTag);
 
 		DataSubType dataSubType_;
 		bool nested_;
