@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Enum_Simple)
     // decode simple enum type
     DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Enumeration);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("EnumSimpleType",1));
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Enum_Simple)
     // decode simple enum type
     definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Enumeration);
-    success = definition->decode(configXmlRead.ptree().get_child("Definition"));
+    success = definition->decode(configXmlRead.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("EnumSimpleType",1));
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Enum_Gap)
     // decode simple enum type
     DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Enumeration);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("EnumGapType",1));
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Structure_Simple)
     // decode simple enum type
     DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Structure);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Structure_Simple)
     // decode simple enum type
     definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Structure);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Structure_Complex)
     // decode simple enum type
     DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Structure);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Structure_Complex)
     // decode simple enum type
     definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Structure);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_read_Structure_Nested)
     // decode simple enum type
     DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Structure);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
@@ -464,7 +464,7 @@ BOOST_AUTO_TEST_CASE(DataTypeDefinition_write_Structure_Nested)
     // decode simple enum type
     definition = constructSPtr<DataTypeDefinition>();
     definition->dataSubType(Structure);
-    success = definition->decode(configXml.ptree().get_child("Definition"));
+    success = definition->decode(configXml.ptree());
 
     BOOST_REQUIRE(success == true);
     BOOST_REQUIRE(definition->name() == OpcUaQualifiedName("MyStructureType",1));
