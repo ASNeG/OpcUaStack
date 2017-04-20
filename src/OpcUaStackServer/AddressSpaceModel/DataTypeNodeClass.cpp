@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,6 +23,7 @@ namespace OpcUaStackServer
 	DataTypeNodeClass::DataTypeNodeClass(void)
 	: BaseNodeClass(NodeClassType_DataType)
 	, isAbstract_()
+	, dataTypeDefinition_()
 	{
 	}
 
@@ -61,6 +62,18 @@ namespace OpcUaStackServer
 		DataTypeNodeClass::SPtr dataTypeNodeClass = constructSPtr<DataTypeNodeClass>();
 		copyTo(dataTypeNodeClass);
 		return dataTypeNodeClass;
+	}
+
+	void
+	DataTypeNodeClass::dataTypeDefinition(Object::SPtr dataTypeDefinition)
+	{
+		dataTypeDefinition_ = dataTypeDefinition;
+	}
+
+	Object::SPtr&
+	DataTypeNodeClass::dataTypeDefinition(void)
+	{
+		return dataTypeDefinition_;
 	}
 
 }

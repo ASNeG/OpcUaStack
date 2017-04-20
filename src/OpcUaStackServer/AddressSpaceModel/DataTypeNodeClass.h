@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -44,13 +44,18 @@ namespace OpcUaStackServer
 		void copyTo(DataTypeNodeClass& dataTypeNodeClass);
 		BaseNodeClass::SPtr clone(void);
 
+		void dataTypeDefinition(Object::SPtr dataTypeDefinition);
+		Object::SPtr& dataTypeDefinition(void);
+
 	  private:
 		// attributes mandatory
 		IsAbstractAttribute isAbstract_;
 
+		// additional properties
+		Object::SPtr dataTypeDefinition_;
+
 		// standard properties - all optional
-		OpcUaString nodeVersion_;  
-		OpcUaLocalizedTextArray EnumStrings_;
+		OpcUaString nodeVersion_;
 	};
 
 }
