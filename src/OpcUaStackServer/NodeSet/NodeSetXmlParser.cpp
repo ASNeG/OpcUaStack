@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -747,6 +747,11 @@ namespace OpcUaStackServer
 		if (!decodeReferences(dataTypeNodeClassSPtr, ptree)) return false;
 
 		//
+		// decode data type definitons
+		//
+		if (!decodeDataTypeDefinition(dataTypeNodeClassSPtr, ptree)) return false;
+
+		//
 		// add into vector
 		//
 		dataTypeNodeClassVec().push_back(dataTypeNodeClassSPtr);
@@ -895,6 +900,23 @@ namespace OpcUaStackServer
 
 		return true;
 	}
+
+
+	bool
+	NodeSetXmlParser::decodeDataTypeDefinition(DataTypeNodeClass::SPtr& dataTypeNodeClass, boost::property_tree::ptree& ptree)
+	{
+		// get optional Definition element
+		boost::optional<boost::property_tree::ptree&> definitionTree = ptree.get_child_optional("Definition");
+		if (!definitionTree) {
+			return true;
+		}
+
+		std::cout << "find defintion..." << std::endl;
+		// decode definition
+
+		return true;
+	}
+
 
 	// ##########################################################
 	//
