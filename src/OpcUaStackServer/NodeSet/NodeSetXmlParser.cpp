@@ -17,6 +17,7 @@
 
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
+#include "OpcUaStackServer/NodeSet/DataTypeDefinition.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
@@ -911,8 +912,24 @@ namespace OpcUaStackServer
 			return true;
 		}
 
-		std::cout << "find defintion..." << std::endl;
+		// find out whether a enum or data strucure exists
+		DataTypeDefinition::SPtr definition = constructSPtr<DataTypeDefinition>();
+		boost::optional<std::string> value = ptree.get_optional<std::string>("Definition.Field.<xmlattr>.Value");
+		if (value) {
+			definition->dataSubType(Enumeration);
+		}
+		else {
+			definition->dataSubType(Structure);
+		}
+
 		// decode definition
+		if (!definition->decode(ptree)) {
+			Log(Error, "invalid definiton - ignore definiton section")
+				.parameter("NodeId", dataTypeNodeClass->nodeId().data());
+			return true;
+		}
+
+		dataTypeNodeClass->dataTypeDefinition(definition);
 
 		return true;
 	}
