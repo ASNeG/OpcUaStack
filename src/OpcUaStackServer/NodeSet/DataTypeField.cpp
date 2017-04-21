@@ -261,7 +261,7 @@ namespace OpcUaStackServer
 		if (dataType) {
 			OpcUaBuildInType type = OpcUaBuildInTypeMap::string2BuildInType(*dataType);
 			if (type != OpcUaBuildInType_Unknown) {
-				dataType_.set(type);
+				dataType_.set((uint32_t)type);
 			}
 			else {
 				if (!dataType_.fromString(*dataType)) {
