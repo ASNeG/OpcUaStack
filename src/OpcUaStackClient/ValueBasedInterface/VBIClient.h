@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackClient/ServiceSet/ServiceSetManager.h"
 #include "OpcUaStackClient/ValueBasedInterface/VBIContext.h"
+#include "OpcUaStackClient/ServiceSet/ViewServiceBrowse.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackClient;
@@ -224,6 +225,16 @@ namespace OpcUaStackClient
 		// set triggering
 		// FIXME: todo
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// ViewServiceBrowse
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
+		OpcUaStatusCode syncViewServiceBrowse(OpcUaNodeId::SPtr& nodeId, ReferenceDescriptionArray::SPtr& references);
+
 	  private:
 		// BEGIN SessionServiceIf
 		void sessionStateUpdate(SessionBase& session, SessionState sessionState);
@@ -260,6 +271,7 @@ namespace OpcUaStackClient
 		AttributeService::SPtr attributeService_;
 		SubscriptionService::SPtr subscriptionService_;
 		MonitoredItemService::SPtr monitoredItemService_;
+		ViewService::SPtr viewService_;
 
 		Callback sessionCompleteCallback_;
 

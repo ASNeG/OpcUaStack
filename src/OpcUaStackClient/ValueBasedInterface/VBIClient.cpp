@@ -28,6 +28,7 @@ namespace OpcUaStackClient
 	, attributeService_()
 	, subscriptionService_()
 	, monitoredItemService_()
+	, viewService_()
 
 	, sessionChangeCallback_()
 	, subscriptionChangeCallback_()
@@ -48,6 +49,7 @@ namespace OpcUaStackClient
 		subscriptionService_.reset();
 		sessionService_.reset();
 		monitoredItemService_.reset();
+		viewService_.reset();
 
 		sessionChangeCallback_.reset();
 		subscriptionChangeCallback_.reset();
@@ -902,4 +904,50 @@ namespace OpcUaStackClient
     	// FIXME: todo
     }
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ViewServiceBrowse
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------
+	// viewServiceBrowseDone
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode VBIClient::syncViewServiceBrowse(OpcUaNodeId::SPtr& nodeId,
+			ReferenceDescriptionArray::SPtr& references)
+	{
+		if (viewService_ == nullptr)
+		{
+			// create view service
+			viewService_ = serviceSetManager_.viewService(sessionService_);
+		}
+
+		ServiceTransactionBrowse::SPtr trx = constructSPtr<ServiceTransactionBrowse>();
+		BrowseRequest::SPtr req = trx->request();
+		req->nodesToBrowse()->resize(1);
+
+		BrowseDescription::SPtr browseDescription = constructSPtr<BrowseDescription>();
+		browseDescription->nodeId(nodeId);
+		browseDescription->browseDirection(BrowseDirection_Forward);
+		browseDescription->nodeClassMask(0xFFFFFFFF);
+		browseDescription->resultMask(0xFFFFFFFF);
+		req->nodesToBrowse()->push_back(browseDescription);
+
+		viewService_->syncSend(trx);
+
+		BrowseResponse::SPtr res = trx->response();
+		BrowseResultArray::SPtr results = res->results();
+
+		if (results->size() > 0)
+		{
+			BrowseResult::SPtr browseResult;
+			results->get(browseResult);
+			references = browseResult->references();
+			return browseResult->statusCode();
+		}
+
+		return BadUnexpectedError;
+	}
 }
