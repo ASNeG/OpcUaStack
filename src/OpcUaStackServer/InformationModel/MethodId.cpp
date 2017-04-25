@@ -29,4 +29,28 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	MethodId::methodNodeId(OpcUaNodeId& methodNodeId)
+	{
+		methodNodeId_.copyFrom(methodNodeId);
+	}
+
+	OpcUaNodeId&
+	MethodId::methodNodeId(void)
+	{
+		return methodNodeId_;
+	}
+
+	void
+	MethodId::parentNodeId(OpcUaNodeId& parentNodeId)
+	{
+		parentNodeId_.copyFrom(parentNodeId);
+	}
+
+	OpcUaNodeId&
+	MethodId::parentNodeId(void)
+	{
+		return parentNodeId_;
+	}
+
 }

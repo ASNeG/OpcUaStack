@@ -19,6 +19,9 @@
 #define __OpcUaStackServer_MethodId_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -29,7 +32,14 @@ namespace OpcUaStackServer
 		MethodId(void);
 		~MethodId(void);
 
+		void methodNodeId(OpcUaNodeId& methodNodeId);
+		OpcUaNodeId& methodNodeId(void);
+		void parentNodeId(OpcUaNodeId& parentNodeId);
+		OpcUaNodeId& parentNodeId(void);
+
 	  private:
+		OpcUaNodeId methodNodeId_;
+		OpcUaNodeId parentNodeId_;
 
 	};
 
