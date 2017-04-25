@@ -53,4 +53,13 @@ namespace OpcUaStackServer
 		return parentNodeId_;
 	}
 
+	bool
+	MethodId::operator<(const MethodId& methodId) const
+	{
+		MethodId *tmpMethodId = const_cast<MethodId*>(&methodId);
+		if (tmpMethodId->methodNodeId() < methodNodeId_) return true;
+		if (methodNodeId_ < tmpMethodId->methodNodeId()) return false;
+		return tmpMethodId->parentNodeId() < parentNodeId_;
+	}
+
 }

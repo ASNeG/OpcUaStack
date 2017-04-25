@@ -37,6 +37,8 @@ namespace OpcUaStackServer
 		void parentNodeId(OpcUaNodeId& parentNodeId);
 		OpcUaNodeId& parentNodeId(void);
 
+		bool operator<(const MethodId& methodId) const;
+
 	  private:
 		OpcUaNodeId methodNodeId_;
 		OpcUaNodeId parentNodeId_;
