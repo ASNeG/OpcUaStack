@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -23,41 +23,41 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// OpcUa RegisterForwardResponse
+	// OpcUa RegisterForwardNodeResponse
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	RegisterForwardResponse::RegisterForwardResponse(void)
+	RegisterForwardNodeResponse::RegisterForwardNodeResponse(void)
 	: Object()
 	, statusCodeArraySPtr_(constructSPtr<OpcUaStatusCodeArray>())
 	{
 	}
 
-	RegisterForwardResponse::~RegisterForwardResponse(void)
+	RegisterForwardNodeResponse::~RegisterForwardNodeResponse(void)
 	{
 	}
 
 	void 
-	RegisterForwardResponse::statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray)
+	RegisterForwardNodeResponse::statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray)
 	{
 		statusCodeArraySPtr_ = statusCodeArray;
 	}
 	
 	OpcUaStatusCodeArray::SPtr
-	RegisterForwardResponse::statusCodeArray(void) const
+	RegisterForwardNodeResponse::statusCodeArray(void) const
 	{
 		return statusCodeArraySPtr_;
 	}
 
 	void 
-	RegisterForwardResponse::opcUaBinaryEncode(std::ostream& os) const
+	RegisterForwardNodeResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
 		statusCodeArraySPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
-	RegisterForwardResponse::opcUaBinaryDecode(std::istream& is)
+	RegisterForwardNodeResponse::opcUaBinaryDecode(std::istream& is)
 	{
 		statusCodeArraySPtr_->opcUaBinaryDecode(is);
 	}

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardResponse_h__
-#define __OpcUaStackCore_RegisterForwardResponse_h__
+#ifndef __OpcUaStackCore_RegisterForwardNodeResponse_h__
+#define __OpcUaStackCore_RegisterForwardNodeResponse_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -28,14 +28,14 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT RegisterForwardResponse
+	class DLLEXPORT RegisterForwardNodeResponse
 	: public Object
 	{
 	  public:
-		typedef boost::shared_ptr<RegisterForwardResponse> SPtr;
+		typedef boost::shared_ptr<RegisterForwardNodeResponse> SPtr;
 
-	    RegisterForwardResponse(void);
-		virtual ~RegisterForwardResponse(void);
+	    RegisterForwardNodeResponse(void);
+		virtual ~RegisterForwardNodeResponse(void);
 
 		void statusCodeArray(const OpcUaStatusCodeArray::SPtr statusCodeArray);
 		OpcUaStatusCodeArray::SPtr statusCodeArray(void) const;
