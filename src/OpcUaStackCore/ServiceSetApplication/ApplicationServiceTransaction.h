@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionTemplate.h"
-#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalResponse.h"
@@ -33,10 +33,10 @@ namespace OpcUaStackCore
 {
 	
 	typedef ServiceTransactionTemplate<
-		RegisterForwardRequest,
+		RegisterForwardNodeRequest,
 		RegisterForwardResponse,
-		OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary,
-		OpcUaId_RegisterForwardResponse_Encoding_DefaultBinary
+		OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary,
+		OpcUaId_RegisterForwardNodeResponse_Encoding_DefaultBinary
 	> ServiceTransactionRegisterForward;
 
 	typedef ServiceTransactionTemplate<

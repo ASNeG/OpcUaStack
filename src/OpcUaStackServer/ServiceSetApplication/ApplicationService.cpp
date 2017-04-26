@@ -41,8 +41,8 @@ namespace OpcUaStackServer
 
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>()) 
 		{
-			case OpcUaId_RegisterForwardRequest_Encoding_DefaultBinary:
-				receiveRegisterForwardRequest(serviceTransaction);
+			case OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary:
+				receiveRegisterForwardNodeRequest(serviceTransaction);
 				break;
 			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardGlobalRequest(serviceTransaction);
@@ -63,36 +63,36 @@ namespace OpcUaStackServer
 	}
 
 	void
-	ApplicationService::receiveRegisterForwardRequest(ServiceTransaction::SPtr serviceTransaction)
+	ApplicationService::receiveRegisterForwardNodeRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
 		ServiceTransactionRegisterForward::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForward>(serviceTransaction);
 
-		RegisterForwardRequest::SPtr registerForwardRequest = trx->request();
+		RegisterForwardNodeRequest::SPtr registerForwardNodeRequest = trx->request();
 		RegisterForwardResponse::SPtr registerForwardResponse = trx->response();
 
 		Log(Debug, "application service register forward request")
 			.parameter("Trx", serviceTransaction->transactionId())
-			.parameter("NumberNodes", registerForwardRequest->nodesToRegister()->size());
+			.parameter("NumberNodes", registerForwardNodeRequest->nodesToRegister()->size());
 
-		if (registerForwardRequest->nodesToRegister()->size() == 0) {
+		if (registerForwardNodeRequest->nodesToRegister()->size() == 0) {
 			trx->statusCode(BadNothingToDo);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (registerForwardRequest->nodesToRegister()->size() > 1000) { // FIXME: todo
+		if (registerForwardNodeRequest->nodesToRegister()->size() > 1000) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
 
 		// register forward
-		registerForwardResponse->statusCodeArray()->resize(registerForwardRequest->nodesToRegister()->size());
-		for (uint32_t idx = 0; idx < registerForwardRequest->nodesToRegister()->size(); idx++) {
+		registerForwardResponse->statusCodeArray()->resize(registerForwardNodeRequest->nodesToRegister()->size());
+		for (uint32_t idx = 0; idx < registerForwardNodeRequest->nodesToRegister()->size(); idx++) {
 			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
 			registerForwardResponse->statusCodeArray()->set(idx, Success);
 
 			OpcUaNodeId::SPtr nodeId;
-			if (!registerForwardRequest->nodesToRegister()->get(idx, nodeId)) {
+			if (!registerForwardNodeRequest->nodesToRegister()->get(idx, nodeId)) {
 				registerForwardResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
 				Log(Debug, "register forward error, because node request parameter node id invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -114,10 +114,10 @@ namespace OpcUaStackServer
 			// create or update forward info
 			ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
 			if (forwardCallbackSync.get() == nullptr) {
-				forwardCallbackSync = registerForwardRequest->forwardCallbackSync();
+				forwardCallbackSync = registerForwardNodeRequest->forwardCallbackSync();
 			}
 			else {
-				forwardCallbackSync->updateFrom(*registerForwardRequest->forwardCallbackSync());
+				forwardCallbackSync->updateFrom(*registerForwardNodeRequest->forwardCallbackSync());
 			}
 			baseNodeClass->forwardCallbackSync(forwardCallbackSync);
 

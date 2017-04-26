@@ -233,7 +233,7 @@ namespace OpcUaStackServer
 		//
 		// application service
 		//
-		ServiceTransactionRegisterForward::name("RegisterForward");
+		ServiceTransactionRegisterForward::name("RegisterForwardNode");
 		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
 
 		ServiceTransactionRegisterForward::SPtr serviceTransactionRegisterForward = constructSPtr<ServiceTransactionRegisterForward>();
