@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -100,8 +100,8 @@ namespace OpcUaStackServer
 			}
 
 			// check if forward callback exists
-			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-			if (forwardInfoSync.get() == nullptr) {
+			ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+			if (forwardCallbackSync.get() == nullptr) {
 				callMethodResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "call method error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -110,7 +110,7 @@ namespace OpcUaStackServer
 					.parameter("MethodNode", *callMethod->methodId());
 				continue;
 			}
-			if (!forwardInfoSync->methodService().isCallback()) {
+			if (!forwardCallbackSync->methodService().isCallback()) {
 				callMethodResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "call method error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -127,8 +127,8 @@ namespace OpcUaStackServer
 			applicationMethodContext.inputArguments_ = callMethod->inputArguments();
 			applicationMethodContext.outputArguments_ = constructSPtr<OpcUaVariantArray>();
 			applicationMethodContext.statusCode_ = Success;
-			applicationMethodContext.applicationContext_ = forwardInfoSync->methodService().applicationContext();
-			forwardInfoSync->methodService().callback()(&applicationMethodContext);
+			applicationMethodContext.applicationContext_ = forwardCallbackSync->methodService().applicationContext();
+			forwardCallbackSync->methodService().callback()(&applicationMethodContext);
 
 			// check response
 			callMethodResult->statusCode(applicationMethodContext.statusCode_);

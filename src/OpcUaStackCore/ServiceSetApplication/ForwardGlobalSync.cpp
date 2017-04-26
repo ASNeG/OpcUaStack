@@ -30,13 +30,13 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardInfo&
+	ForwardCallback&
 	ForwardGlobalSync::registerServerService(void)
 	{
 		return registerServerService_;
 	}
 
-	ForwardInfo&
+	ForwardCallback&
 	ForwardGlobalSync::findServersService(void)
 	{
 		return findServersService_;

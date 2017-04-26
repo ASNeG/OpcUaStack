@@ -112,14 +112,14 @@ namespace OpcUaStackServer
 			}
 
 			// create or update forward info
-			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-			if (forwardInfoSync.get() == nullptr) {
-				forwardInfoSync = registerForwardRequest->forwardInfoSync();
+			ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+			if (forwardCallbackSync.get() == nullptr) {
+				forwardCallbackSync = registerForwardRequest->forwardCallbackSync();
 			}
 			else {
-				forwardInfoSync->updateFrom(*registerForwardRequest->forwardInfoSync());
+				forwardCallbackSync->updateFrom(*registerForwardRequest->forwardCallbackSync());
 			}
-			baseNodeClass->forwardInfoSync(forwardInfoSync);
+			baseNodeClass->forwardCallbackSync(forwardCallbackSync);
 
 			Log(Debug, "register forward")
 				.parameter("Trx", serviceTransaction->transactionId())

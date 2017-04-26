@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardInfoSync_h__
-#define __OpcUaStackCore_ForwardInfoSync_h__
+#ifndef __OpcUaStackCore_ForwardCallbackSync_h__
+#define __OpcUaStackCore_ForwardCallbackSync_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -27,36 +27,36 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardInfoSync
+	class DLLEXPORT ForwardCallbackSync
 	: public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<ForwardInfoSync> SPtr;
+		typedef boost::shared_ptr<ForwardCallbackSync> SPtr;
 
-		ForwardInfoSync(void);
-		virtual ~ForwardInfoSync(void);
+		ForwardCallbackSync(void);
+		virtual ~ForwardCallbackSync(void);
 
-		ForwardInfo& readService(void);
-		ForwardInfo& readHService(void);
-		ForwardInfo& writeService(void);
-		ForwardInfo& writeHService(void);
-		ForwardInfo& methodService(void);
-		ForwardInfo& monitoredItemStartService(void);
-		ForwardInfo& monitoredItemStopService(void);
+		ForwardCallback& readService(void);
+		ForwardCallback& readHService(void);
+		ForwardCallback& writeService(void);
+		ForwardCallback& writeHService(void);
+		ForwardCallback& methodService(void);
+		ForwardCallback& monitoredItemStartService(void);
+		ForwardCallback& monitoredItemStopService(void);
 
-		void updateFrom(ForwardInfoSync& forwardInfoSync);
+		void updateFrom(ForwardCallbackSync& forwardInfoSync);
 
 	  private:
 		// attribute service
-		ForwardInfo readService_;
-		ForwardInfo readHService_;
-		ForwardInfo writeService_;
-		ForwardInfo writeHService_;
-		ForwardInfo monitoredItemStartService_;
-		ForwardInfo monitoredItemStopService_;
+		ForwardCallback readService_;
+		ForwardCallback readHService_;
+		ForwardCallback writeService_;
+		ForwardCallback writeHService_;
+		ForwardCallback monitoredItemStartService_;
+		ForwardCallback monitoredItemStopService_;
 
 		// method service
-		ForwardInfo methodService_;
+		ForwardCallback methodService_;
 	};
 
 }

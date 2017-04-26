@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
 
 namespace OpcUaStackCore
 {
@@ -36,15 +36,15 @@ namespace OpcUaStackCore
 		ForwardGlobalSync(void);
 		virtual ~ForwardGlobalSync(void);
 
-		ForwardInfo& registerServerService(void);
-		ForwardInfo& findServersService(void);
+		ForwardCallback& registerServerService(void);
+		ForwardCallback& findServersService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
 	  private:
 		// discovery service
-		ForwardInfo registerServerService_;
-		ForwardInfo findServersService_;
+		ForwardCallback registerServerService_;
+		ForwardCallback findServersService_;
 	};
 
 }

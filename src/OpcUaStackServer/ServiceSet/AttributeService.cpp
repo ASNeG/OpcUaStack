@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -189,17 +189,17 @@ namespace OpcUaStackServer
 	{
 		if ((AttributeId)readValueId->attributeId() != AttributeId_Value) return;
 
-		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-		if (forwardInfoSync.get() == nullptr) return;
-		if (!forwardInfoSync->readService().isCallback()) return;
+		ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+		if (forwardCallbackSync.get() == nullptr) return;
+		if (!forwardCallbackSync->readService().isCallback()) return;
 
 		ApplicationReadContext applicationReadContext;
 		applicationReadContext.nodeId_ = *readValueId->nodeId();
 		applicationReadContext.attributeId_ = readValueId->attributeId();
 		applicationReadContext.statusCode_ = Success;
-		applicationReadContext.applicationContext_ = forwardInfoSync->readService().applicationContext();
+		applicationReadContext.applicationContext_ = forwardCallbackSync->readService().applicationContext();
 
-		forwardInfoSync->readService().callback()(&applicationReadContext);
+		forwardCallbackSync->readService().callback()(&applicationReadContext);
 
 		if (applicationReadContext.statusCode_ != Success) return;
 		baseNodeClass->setValue(applicationReadContext.dataValue_);
@@ -314,18 +314,18 @@ namespace OpcUaStackServer
 	{
 		if ((AttributeId)writeValue->attributeId() != AttributeId_Value) return Success;
 
-		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-		if (forwardInfoSync.get() == nullptr) return Success;
-		if (!forwardInfoSync->writeService().isCallback()) return Success;
+		ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+		if (forwardCallbackSync.get() == nullptr) return Success;
+		if (!forwardCallbackSync->writeService().isCallback()) return Success;
 
 		ApplicationWriteContext applicationWriteContext;
 		applicationWriteContext.nodeId_ = *writeValue->nodeId();
 		applicationWriteContext.attributeId_ = writeValue->attributeId();
 		writeValue->dataValue().copyTo(applicationWriteContext.dataValue_);
 		applicationWriteContext.statusCode_ = Success;
-		applicationWriteContext.applicationContext_ = forwardInfoSync->writeService().applicationContext();
+		applicationWriteContext.applicationContext_ = forwardCallbackSync->writeService().applicationContext();
 
-		forwardInfoSync->writeService().callback()(&applicationWriteContext);
+		forwardCallbackSync->writeService().callback()(&applicationWriteContext);
 
 		return applicationWriteContext.statusCode_;
 	}
@@ -407,8 +407,8 @@ namespace OpcUaStackServer
 			}
 
 			// check if forward callback exists
-			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-			if (forwardInfoSync.get() == nullptr) {
+			ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+			if (forwardCallbackSync.get() == nullptr) {
 				readResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history read value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -416,7 +416,7 @@ namespace OpcUaStackServer
 					.parameter("Node", *readValueId->nodeId());
 				continue;
 			}
-			if (!forwardInfoSync->readHService().isCallback()) {
+			if (!forwardCallbackSync->readHService().isCallback()) {
 				readResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history read value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -438,12 +438,12 @@ namespace OpcUaStackServer
 			applicationReadContext.stopTime_ = readDetails->endTime().dateTime();
 			applicationReadContext.timestampsToReturn_ = readRequest->timestampsToReturn();
 			applicationReadContext.statusCode_ = Success;
-			applicationReadContext.applicationContext_ = forwardInfoSync->readHService().applicationContext();
+			applicationReadContext.applicationContext_ = forwardCallbackSync->readHService().applicationContext();
 			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
 			applicationReadContext.continousPoint_ = continousPoint;
 			applicationReadContext.numValuesPerNode_ = numValuesPerNode;
 
-			forwardInfoSync->readHService().callback()(&applicationReadContext);
+			forwardCallbackSync->readHService().callback()(&applicationReadContext);
 
 			// check response
 			readResult->statusCode(applicationReadContext.statusCode_);
@@ -555,8 +555,8 @@ namespace OpcUaStackServer
 			}
 
 			// check if forward callback exists
-			ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-			if (forwardInfoSync.get() == nullptr) {
+			ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+			if (forwardCallbackSync.get() == nullptr) {
 				writeResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history write value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -564,7 +564,7 @@ namespace OpcUaStackServer
 					.parameter("Node", dataDetails->nodeId());
 				continue;
 			}
-			if (!forwardInfoSync->writeHService().isCallback()) {
+			if (!forwardCallbackSync->writeHService().isCallback()) {
 				writeResult->statusCode(BadServiceUnsupported);
 				Log(Debug, "history write value error, because service not supported")
 					.parameter("Trx", serviceTransaction->transactionId())
@@ -578,9 +578,9 @@ namespace OpcUaStackServer
 			applicationWriteContext.nodeId_ = dataDetails->nodeId();
 			applicationWriteContext.dataValueArray_ = dataDetails->updateValue();
 			applicationWriteContext.statusCode_ = Success;
-			applicationWriteContext.applicationContext_ = forwardInfoSync->writeHService().applicationContext();
+			applicationWriteContext.applicationContext_ = forwardCallbackSync->writeHService().applicationContext();
 
-			forwardInfoSync->writeHService().callback()(&applicationWriteContext);
+			forwardCallbackSync->writeHService().callback()(&applicationWriteContext);
 			writeResult->statusCode(applicationWriteContext.statusCode_);
 		}
 

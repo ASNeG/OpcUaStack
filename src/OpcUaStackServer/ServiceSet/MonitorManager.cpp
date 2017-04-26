@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -274,9 +274,9 @@ namespace OpcUaStackServer
 	void
 	MonitorManager::forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
 	{
-		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-		if (forwardInfoSync.get() == nullptr) return;
-		if (!forwardInfoSync->monitoredItemStartService().isCallback()) return;
+		ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+		if (forwardCallbackSync.get() == nullptr) return;
+		if (!forwardCallbackSync->monitoredItemStartService().isCallback()) return;
 
 		// find node id in item id map
 		MonitoredItemIds::iterator it;
@@ -305,19 +305,19 @@ namespace OpcUaStackServer
 		// forward monitored item start
 		ApplicationMonitoredItemStartContext context;
 		context.nodeId_ = baseNodeClass->nodeId().data();
-		context.applicationContext_ = forwardInfoSync->monitoredItemStartService().applicationContext();
+		context.applicationContext_ = forwardCallbackSync->monitoredItemStartService().applicationContext();
 		context.firstMonitoredItem_ = true;
 		context.nodeReference_ = nodeReference;
 
-		forwardInfoSync->monitoredItemStartService().callback()(&context);
+		forwardCallbackSync->monitoredItemStartService().callback()(&context);
 	}
 
 	void
 	MonitorManager::forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
 	{
-		ForwardInfoSync::SPtr forwardInfoSync = baseNodeClass->forwardInfoSync();
-		if (forwardInfoSync.get() == nullptr) return;
-		if (!forwardInfoSync->monitoredItemStopService().isCallback()) return;
+		ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
+		if (forwardCallbackSync.get() == nullptr) return;
+		if (!forwardCallbackSync->monitoredItemStopService().isCallback()) return;
 
 		// find node id in item id map
 		MonitoredItemIds::iterator it1;
@@ -351,11 +351,11 @@ namespace OpcUaStackServer
 		// forward monitored item stop
 		ApplicationMonitoredItemStopContext context;
 		context.nodeId_ = baseNodeClass->nodeId().data();
-		context.applicationContext_ = forwardInfoSync->monitoredItemStopService().applicationContext();
+		context.applicationContext_ = forwardCallbackSync->monitoredItemStopService().applicationContext();
 		context.lastMonitoredItem_ = true;
 		context.nodeReference_ = nodeReference;
 
-		forwardInfoSync->monitoredItemStopService().callback()(&context);
+		forwardCallbackSync->monitoredItemStopService().callback()(&context);
 	}
 
 }

@@ -78,15 +78,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ForwardCallbackSync::updateFrom(ForwardCallbackSync& forwardInfoSync)
+	ForwardCallbackSync::updateFrom(ForwardCallbackSync& forwardCallbackSync)
 	{
-		readService_.updateFrom(forwardInfoSync.readService());
-		readHService_.updateFrom(forwardInfoSync.readHService());
-		writeService_.updateFrom(forwardInfoSync.writeService());
-		writeHService_.updateFrom(forwardInfoSync.writeHService());
-		methodService_.updateFrom(forwardInfoSync.methodService());
-		monitoredItemStartService_.updateFrom(forwardInfoSync.monitoredItemStartService());
-		monitoredItemStopService_.updateFrom(forwardInfoSync.monitoredItemStopService());
+		readService_.updateFrom(forwardCallbackSync.readService());
+		readHService_.updateFrom(forwardCallbackSync.readHService());
+		writeService_.updateFrom(forwardCallbackSync.writeService());
+		writeHService_.updateFrom(forwardCallbackSync.writeHService());
+		methodService_.updateFrom(forwardCallbackSync.methodService());
+		monitoredItemStartService_.updateFrom(forwardCallbackSync.monitoredItemStartService());
+		monitoredItemStopService_.updateFrom(forwardCallbackSync.monitoredItemStopService());
 	}
 
 }
