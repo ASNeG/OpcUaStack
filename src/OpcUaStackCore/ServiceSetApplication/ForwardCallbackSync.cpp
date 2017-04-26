@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardInfoSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardCallbackSync.h"
 
 namespace OpcUaStackCore
 {
 
-	ForwardInfoSync::ForwardInfoSync(void)
+	ForwardCallbackSync::ForwardCallbackSync(void)
 	: readService_()
 	, readHService_()
 	, writeService_()
@@ -31,54 +31,54 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardInfoSync::~ForwardInfoSync(void)
+	ForwardCallbackSync::~ForwardCallbackSync(void)
 	{
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::readService(void)
+	ForwardCallback&
+	ForwardCallbackSync::readService(void)
 	{
 		return readService_;
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::readHService(void)
+	ForwardCallback&
+	ForwardCallbackSync::readHService(void)
 	{
 		return readHService_;
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::writeService(void)
+	ForwardCallback&
+	ForwardCallbackSync::writeService(void)
 	{
 		return writeService_;
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::writeHService(void)
+	ForwardCallback&
+	ForwardCallbackSync::writeHService(void)
 	{
 		return writeHService_;
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::methodService(void)
+	ForwardCallback&
+	ForwardCallbackSync::methodService(void)
 	{
 		return methodService_;
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::monitoredItemStartService(void)
+	ForwardCallback&
+	ForwardCallbackSync::monitoredItemStartService(void)
 	{
 		return monitoredItemStartService_;
 	}
 
-	ForwardInfo&
-	ForwardInfoSync::monitoredItemStopService(void)
+	ForwardCallback&
+	ForwardCallbackSync::monitoredItemStopService(void)
 	{
 		return monitoredItemStopService_;
 	}
 
 	void
-	ForwardInfoSync::updateFrom(ForwardInfoSync& forwardInfoSync)
+	ForwardCallbackSync::updateFrom(ForwardCallbackSync& forwardInfoSync)
 	{
 		readService_.updateFrom(forwardInfoSync.readService());
 		readHService_.updateFrom(forwardInfoSync.readHService());
