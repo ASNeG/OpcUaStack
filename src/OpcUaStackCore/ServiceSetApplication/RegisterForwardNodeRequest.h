@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_RegisterForwardRequest_h__
-#define __OpcUaStackCore_RegisterForwardRequest_h__
+#ifndef __OpcUaStackCore_RegisterForwardNodeRequest_h__
+#define __OpcUaStackCore_RegisterForwardNodeRequest_h__
 
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -28,14 +28,14 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT RegisterForwardRequest
+	class DLLEXPORT RegisterForwardNodeRequest
 	: public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<RegisterForwardRequest> SPtr;
+		typedef boost::shared_ptr<RegisterForwardNodeRequest> SPtr;
 
-		RegisterForwardRequest(void);
-		virtual ~RegisterForwardRequest(void);
+		RegisterForwardNodeRequest(void);
+		virtual ~RegisterForwardNodeRequest(void);
 
 		void nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister);
 		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;

@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeRequest.h"
 
 namespace OpcUaStackCore
 {
@@ -23,54 +23,54 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// OpcUa RegisterForwardRequest
+	// OpcUa RegisterForwardNodeRequest
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 
-	RegisterForwardRequest::RegisterForwardRequest(void)
+	RegisterForwardNodeRequest::RegisterForwardNodeRequest(void)
 	: Object()
 	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
 	, forwardCallbackSync_(constructSPtr<ForwardCallbackSync>())
 	{
 	}
 
-	RegisterForwardRequest::~RegisterForwardRequest(void)
+	RegisterForwardNodeRequest::~RegisterForwardNodeRequest(void)
 	{
 	}
 
 	void 
-	RegisterForwardRequest::nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister)
+	RegisterForwardNodeRequest::nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister)
 	{
 		nodesToRegisterArraySPtr_ = nodesToRegister;
 	}
 	
 	OpcUaNodeIdArray::SPtr 
-	RegisterForwardRequest::nodesToRegister(void) const
+	RegisterForwardNodeRequest::nodesToRegister(void) const
 	{
 		return nodesToRegisterArraySPtr_;
 	}
 
 	void 
-	RegisterForwardRequest::opcUaBinaryEncode(std::ostream& os) const
+	RegisterForwardNodeRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 		nodesToRegisterArraySPtr_->opcUaBinaryEncode(os);	
 	}
 	
 	void 
-	RegisterForwardRequest::opcUaBinaryDecode(std::istream& is)
+	RegisterForwardNodeRequest::opcUaBinaryDecode(std::istream& is)
 	{
 		nodesToRegisterArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	void
-	RegisterForwardRequest::forwardCallbackSync(ForwardCallbackSync::SPtr forwardInfo)
+	RegisterForwardNodeRequest::forwardCallbackSync(ForwardCallbackSync::SPtr forwardInfo)
 	{
 		forwardCallbackSync_ = forwardInfo;
 	}
 
 	ForwardCallbackSync::SPtr
-	RegisterForwardRequest::forwardCallbackSync(void)
+	RegisterForwardNodeRequest::forwardCallbackSync(void)
 	{
 		return forwardCallbackSync_;
 	}
