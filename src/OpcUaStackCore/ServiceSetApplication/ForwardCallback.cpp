@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardInfo.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardCallback.h"
 
 namespace OpcUaStackCore
 {
 
-	ForwardInfo::ForwardInfo(void)
+	ForwardCallback::ForwardCallback(void)
 	: callbackFlag_(false)
 	, usedCallbackFlag_(false)
 	, callback_()
@@ -28,12 +28,12 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardInfo::~ForwardInfo(void)
+	ForwardCallback::~ForwardCallback(void)
 	{
 	}
 
 	void
-	ForwardInfo::updateFrom(ForwardInfo& forwardInfo)
+	ForwardCallback::updateFrom(ForwardCallback& forwardInfo)
 	{
 		// set or unset callback
 		if (forwardInfo.usedCallback()) {
@@ -49,7 +49,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ForwardInfo::setCallback(Callback& callback)
+	ForwardCallback::setCallback(Callback& callback)
 	{
 		callback_ = callback;
 		callbackFlag_ = true;
@@ -57,38 +57,38 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ForwardInfo::unsetCallback(void)
+	ForwardCallback::unsetCallback(void)
 	{
 		callbackFlag_ = false;
 		usedCallbackFlag_ = true;
 	}
 
 	bool
-	ForwardInfo::isCallback(void)
+	ForwardCallback::isCallback(void)
 	{
 		return callbackFlag_;
 	}
 
 	bool
-	ForwardInfo::usedCallback(void)
+	ForwardCallback::usedCallback(void)
 	{
 		return usedCallbackFlag_;
 	}
 
 	Callback&
-	ForwardInfo::callback(void)
+	ForwardCallback::callback(void)
 	{
 		return callback_;
 	}
 
 	void
-	ForwardInfo::applicationContext(BaseClass::SPtr& applicationContext)
+	ForwardCallback::applicationContext(BaseClass::SPtr& applicationContext)
 	{
 		applicationContext_ = applicationContext;
 	}
 
 	BaseClass::SPtr&
-	ForwardInfo::applicationContext(void)
+	ForwardCallback::applicationContext(void)
 	{
 		return applicationContext_;
 	}

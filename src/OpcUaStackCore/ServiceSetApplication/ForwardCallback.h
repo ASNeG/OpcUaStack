@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardInfo_h__
-#define __OpcUaStackCore_ForwardInfo_h__
+#ifndef __OpcUaStackCore_ForwardCallback_h__
+#define __OpcUaStackCore_ForwardCallback_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -26,15 +26,15 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardInfo
+	class DLLEXPORT ForwardCallback
 	{
 	  public:
-		typedef boost::shared_ptr<ForwardInfo> SPtr;
+		typedef boost::shared_ptr<ForwardCallback> SPtr;
 
-		ForwardInfo(void);
-		~ForwardInfo(void);
+		ForwardCallback(void);
+		~ForwardCallback(void);
 
-		void updateFrom(ForwardInfo& forwardInfo);
+		void updateFrom(ForwardCallback& forwardInfo);
 		void setCallback(Callback& callback);
 		void unsetCallback(void);
 		bool isCallback(void);
