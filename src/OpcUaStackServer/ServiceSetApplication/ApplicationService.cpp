@@ -68,7 +68,7 @@ namespace OpcUaStackServer
 		ServiceTransactionRegisterForward::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForward>(serviceTransaction);
 
 		RegisterForwardNodeRequest::SPtr registerForwardNodeRequest = trx->request();
-		RegisterForwardResponse::SPtr registerForwardResponse = trx->response();
+		RegisterForwardNodeResponse::SPtr registerForwardNodeResponse = trx->response();
 
 		Log(Debug, "application service register forward request")
 			.parameter("Trx", serviceTransaction->transactionId())
@@ -86,14 +86,14 @@ namespace OpcUaStackServer
 		}
 
 		// register forward
-		registerForwardResponse->statusCodeArray()->resize(registerForwardNodeRequest->nodesToRegister()->size());
+		registerForwardNodeResponse->statusCodeArray()->resize(registerForwardNodeRequest->nodesToRegister()->size());
 		for (uint32_t idx = 0; idx < registerForwardNodeRequest->nodesToRegister()->size(); idx++) {
 			OpcUaDataValue::SPtr dataValue = constructSPtr<OpcUaDataValue>();
-			registerForwardResponse->statusCodeArray()->set(idx, Success);
+			registerForwardNodeResponse->statusCodeArray()->set(idx, Success);
 
 			OpcUaNodeId::SPtr nodeId;
 			if (!registerForwardNodeRequest->nodesToRegister()->get(idx, nodeId)) {
-				registerForwardResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
+				registerForwardNodeResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
 				Log(Debug, "register forward error, because node request parameter node id invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx);
@@ -103,7 +103,7 @@ namespace OpcUaStackServer
 			// find node
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
 			if (baseNodeClass.get() == nullptr) {
-				registerForwardResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
+				registerForwardNodeResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
 				Log(Debug, "register forward error, because node not exist in information model")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
