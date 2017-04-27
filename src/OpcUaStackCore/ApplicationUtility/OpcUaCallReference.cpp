@@ -19,4 +19,22 @@
 
 namespace OpcUaStackCore
 {
+
+	OpcUaCallReference::OpcUaCallReference(OpcUaReferenceConfig* referenceConfig)
+	: OpcUaReference(referenceConfig)
+	{
+	}
+
+	OpcUaCallReference::~OpcUaCallReference(void)
+	{
+	}
+
+	OpcUaNodeId&
+	OpcUaCallReference::objectNodeId(void)
+	{
+		Object::SPtr extension = referenceConfig_->extension();
+		OpcUaCallReferenceConfig::SPtr callReferenceConfig = boost::static_pointer_cast<OpcUaCallReferenceConfig>(extension);
+		return callReferenceConfig->objectNodeId();
+	}
+
 }

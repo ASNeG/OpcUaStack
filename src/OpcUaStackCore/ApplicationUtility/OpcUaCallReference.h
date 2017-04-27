@@ -19,9 +19,18 @@
 #define __OpcUaStackCore_OpcUaCallReference_h__
 
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/ApplicationUtility/OpcUaReference.h"
 
 namespace OpcUaStackCore
 {
+	class OpcUaCallReference
+	: public OpcUaReference
+	{
+	  public:
+		OpcUaCallReference(OpcUaReferenceConfig* referenceConfig);
+		~OpcUaCallReference(void);
+		OpcUaNodeId& objectNodeId(void);
+	};
 }
 
 #endif
