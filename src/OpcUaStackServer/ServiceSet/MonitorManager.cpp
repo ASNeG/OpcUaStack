@@ -274,9 +274,9 @@ namespace OpcUaStackServer
 	void
 	MonitorManager::forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
 	{
-		ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
-		if (forwardCallbackSync.get() == nullptr) return;
-		if (!forwardCallbackSync->monitoredItemStartService().isCallback()) return;
+		ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
+		if (forwardNodeSync.get() == nullptr) return;
+		if (!forwardNodeSync->monitoredItemStartService().isCallback()) return;
 
 		// find node id in item id map
 		MonitoredItemIds::iterator it;
@@ -305,19 +305,19 @@ namespace OpcUaStackServer
 		// forward monitored item start
 		ApplicationMonitoredItemStartContext context;
 		context.nodeId_ = baseNodeClass->nodeId().data();
-		context.applicationContext_ = forwardCallbackSync->monitoredItemStartService().applicationContext();
+		context.applicationContext_ = forwardNodeSync->monitoredItemStartService().applicationContext();
 		context.firstMonitoredItem_ = true;
 		context.nodeReference_ = nodeReference;
 
-		forwardCallbackSync->monitoredItemStartService().callback()(&context);
+		forwardNodeSync->monitoredItemStartService().callback()(&context);
 	}
 
 	void
 	MonitorManager::forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
 	{
-		ForwardCallbackSync::SPtr forwardCallbackSync = baseNodeClass->forwardCallbackSync();
-		if (forwardCallbackSync.get() == nullptr) return;
-		if (!forwardCallbackSync->monitoredItemStopService().isCallback()) return;
+		ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
+		if (forwardNodeSync.get() == nullptr) return;
+		if (!forwardNodeSync->monitoredItemStopService().isCallback()) return;
 
 		// find node id in item id map
 		MonitoredItemIds::iterator it1;
@@ -351,11 +351,11 @@ namespace OpcUaStackServer
 		// forward monitored item stop
 		ApplicationMonitoredItemStopContext context;
 		context.nodeId_ = baseNodeClass->nodeId().data();
-		context.applicationContext_ = forwardCallbackSync->monitoredItemStopService().applicationContext();
+		context.applicationContext_ = forwardNodeSync->monitoredItemStopService().applicationContext();
 		context.lastMonitoredItem_ = true;
 		context.nodeReference_ = nodeReference;
 
-		forwardCallbackSync->monitoredItemStopService().callback()(&context);
+		forwardNodeSync->monitoredItemStopService().callback()(&context);
 	}
 
 }

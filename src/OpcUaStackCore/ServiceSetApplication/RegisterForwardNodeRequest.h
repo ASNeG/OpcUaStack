@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardCallbackSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 
 namespace OpcUaStackCore
 {
@@ -39,14 +39,14 @@ namespace OpcUaStackCore
 
 		void nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister);
 		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
-		void forwardCallbackSync(ForwardCallbackSync::SPtr forwardInfo);
-		ForwardCallbackSync::SPtr forwardCallbackSync(void);
+		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
+		ForwardNodeSync::SPtr forwardNodeSync(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardCallbackSync::SPtr forwardCallbackSync_;
+		ForwardNodeSync::SPtr forwardNodeSync_;
 		OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
 	};
 

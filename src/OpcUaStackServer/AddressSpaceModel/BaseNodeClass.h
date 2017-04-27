@@ -21,7 +21,7 @@
 #include <vector>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardCallbackSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceType.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
@@ -67,8 +67,8 @@ namespace OpcUaStackServer
 		void copyTo(BaseNodeClass& baseNodeClass);
 		virtual BaseNodeClass::SPtr clone(void) = 0;
 
-		void forwardCallbackSync(ForwardCallbackSync::SPtr forwardInfo);
-		ForwardCallbackSync::SPtr forwardCallbackSync(void);
+		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
+		ForwardNodeSync::SPtr forwardNodeSync(void);
 
 	  private:
 		NodeIdAttribute nodeId_;
@@ -81,7 +81,7 @@ namespace OpcUaStackServer
 
 		ReferenceItemMap referenceItemMap_;
 
-		ForwardCallbackSync::SPtr forwardCallbackSync_;
+		ForwardNodeSync::SPtr forwardNodeSync_;
 	};
 
 }

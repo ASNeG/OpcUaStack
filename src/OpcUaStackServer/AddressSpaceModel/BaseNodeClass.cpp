@@ -28,7 +28,7 @@ namespace OpcUaStackServer
 	, description_()
 	, writeMask_()
 	, userWriteMask_()
-	, forwardCallbackSync_()
+	, forwardNodeSync_()
 	{
 	}
 
@@ -40,7 +40,7 @@ namespace OpcUaStackServer
 	, description_()
 	, writeMask_()
 	, userWriteMask_()
-	, forwardCallbackSync_()
+	, forwardNodeSync_()
 	{
 	}
 
@@ -158,15 +158,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	BaseNodeClass::forwardCallbackSync(ForwardCallbackSync::SPtr forwardCallbackSync)
+	BaseNodeClass::forwardNodeSync(ForwardNodeSync::SPtr forwardNodeSync)
 	{
-		forwardCallbackSync_ = forwardCallbackSync;
+		forwardNodeSync_ = forwardNodeSync;
 	}
 
-	ForwardCallbackSync::SPtr
-	BaseNodeClass::forwardCallbackSync(void)
+	ForwardNodeSync::SPtr
+	BaseNodeClass::forwardNodeSync(void)
 	{
-		return forwardCallbackSync_;
+		return forwardNodeSync_;
 	}
 
 }

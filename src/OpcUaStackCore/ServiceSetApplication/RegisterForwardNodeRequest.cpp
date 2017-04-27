@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	RegisterForwardNodeRequest::RegisterForwardNodeRequest(void)
 	: Object()
 	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
-	, forwardCallbackSync_(constructSPtr<ForwardCallbackSync>())
+	, forwardNodeSync_(constructSPtr<ForwardNodeSync>())
 	{
 	}
 
@@ -64,15 +64,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	RegisterForwardNodeRequest::forwardCallbackSync(ForwardCallbackSync::SPtr forwardInfo)
+	RegisterForwardNodeRequest::forwardNodeSync(ForwardNodeSync::SPtr forwardInfo)
 	{
-		forwardCallbackSync_ = forwardInfo;
+		forwardNodeSync_ = forwardInfo;
 	}
 
-	ForwardCallbackSync::SPtr
-	RegisterForwardNodeRequest::forwardCallbackSync(void)
+	ForwardNodeSync::SPtr
+	RegisterForwardNodeRequest::forwardNodeSync(void)
 	{
-		return forwardCallbackSync_;
+		return forwardNodeSync_;
 	}
 
 }
