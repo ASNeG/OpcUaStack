@@ -19,9 +19,20 @@
 #define __OpcUaStackCore_OpcUaMonReference_h__
 
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/ApplicationUtility/OpcUaReference.h"
 
 namespace OpcUaStackCore
 {
+
+	class OpcUaMonReference
+	: public OpcUaReference
+	{
+	  public:
+		OpcUaMonReference(OpcUaReferenceConfig* referenceConfig);
+		~OpcUaMonReference(void);
+		std::string& handle(void);
+	};
+
 }
 
 #endif

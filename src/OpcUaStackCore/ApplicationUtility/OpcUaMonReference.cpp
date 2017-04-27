@@ -19,4 +19,22 @@
 
 namespace OpcUaStackCore
 {
+
+	OpcUaMonReference::OpcUaMonReference(OpcUaReferenceConfig* referenceConfig)
+	: OpcUaReference(referenceConfig)
+	{
+	}
+
+	OpcUaMonReference::~OpcUaMonReference(void)
+	{
+	}
+
+	std::string&
+	OpcUaMonReference::handle(void)
+	{
+		Object::SPtr extension = referenceConfig_->extension();
+		OpcUaMonReferenceConfig::SPtr monReferenceConfig = boost::static_pointer_cast<OpcUaMonReferenceConfig>(extension);
+		return monReferenceConfig->handle();
+	}
+
 }
