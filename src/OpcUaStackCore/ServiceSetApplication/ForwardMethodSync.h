@@ -36,26 +36,11 @@ namespace OpcUaStackCore
 		ForwardMethodSync(void);
 		virtual ~ForwardMethodSync(void);
 
-		ForwardCallback& readService(void);
-		ForwardCallback& readHService(void);
-		ForwardCallback& writeService(void);
-		ForwardCallback& writeHService(void);
 		ForwardCallback& methodService(void);
-		ForwardCallback& monitoredItemStartService(void);
-		ForwardCallback& monitoredItemStopService(void);
 
 		void updateFrom(ForwardMethodSync& forwardInfoSync);
 
 	  private:
-		// attribute service
-		ForwardCallback readService_;
-		ForwardCallback readHService_;
-		ForwardCallback writeService_;
-		ForwardCallback writeHService_;
-		ForwardCallback monitoredItemStartService_;
-		ForwardCallback monitoredItemStopService_;
-
-		// method service
 		ForwardCallback methodService_;
 	};
 

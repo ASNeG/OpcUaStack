@@ -21,13 +21,7 @@ namespace OpcUaStackCore
 {
 
 	ForwardMethodSync::ForwardMethodSync(void)
-	: readService_()
-	, readHService_()
-	, writeService_()
-	, writeHService_()
-	, methodService_()
-	, monitoredItemStartService_()
-	, monitoredItemStopService_()
+	: methodService_()
 	{
 	}
 
@@ -36,57 +30,15 @@ namespace OpcUaStackCore
 	}
 
 	ForwardCallback&
-	ForwardMethodSync::readService(void)
-	{
-		return readService_;
-	}
-
-	ForwardCallback&
-	ForwardMethodSync::readHService(void)
-	{
-		return readHService_;
-	}
-
-	ForwardCallback&
-	ForwardMethodSync::writeService(void)
-	{
-		return writeService_;
-	}
-
-	ForwardCallback&
-	ForwardMethodSync::writeHService(void)
-	{
-		return writeHService_;
-	}
-
-	ForwardCallback&
 	ForwardMethodSync::methodService(void)
 	{
 		return methodService_;
 	}
 
-	ForwardCallback&
-	ForwardMethodSync::monitoredItemStartService(void)
-	{
-		return monitoredItemStartService_;
-	}
-
-	ForwardCallback&
-	ForwardMethodSync::monitoredItemStopService(void)
-	{
-		return monitoredItemStopService_;
-	}
-
 	void
 	ForwardMethodSync::updateFrom(ForwardMethodSync& forwardCallbackSync)
 	{
-		readService_.updateFrom(forwardCallbackSync.readService());
-		readHService_.updateFrom(forwardCallbackSync.readHService());
-		writeService_.updateFrom(forwardCallbackSync.writeService());
-		writeHService_.updateFrom(forwardCallbackSync.writeHService());
 		methodService_.updateFrom(forwardCallbackSync.methodService());
-		monitoredItemStartService_.updateFrom(forwardCallbackSync.monitoredItemStartService());
-		monitoredItemStopService_.updateFrom(forwardCallbackSync.monitoredItemStopService());
 	}
 
 }
