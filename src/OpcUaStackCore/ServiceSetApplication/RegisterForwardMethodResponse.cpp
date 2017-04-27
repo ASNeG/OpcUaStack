@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	RegisterForwardMethodResponse::statusCode(OpcUaStatusCodeA statusCode)
+	RegisterForwardMethodResponse::statusCode(OpcUaStatusCode statusCode)
 	{
 		statusCode_ = statusCode;
 	}

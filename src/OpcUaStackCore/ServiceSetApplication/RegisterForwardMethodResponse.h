@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 	    RegisterForwardMethodResponse(void);
 		virtual ~RegisterForwardMethodResponse(void);
 
-		void statusCode(OpcUaStatusCoder statusCode);
+		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
