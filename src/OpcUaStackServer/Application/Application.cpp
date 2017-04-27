@@ -165,6 +165,8 @@ namespace OpcUaStackServer
 			default:
 			{
 				// nothing to do
+				Log(Warning, "receive invalid messsage type")
+				    .parameter("MessageType", serviceTransaction->nodeTypeRequest().nodeId<uint32_t>());
 			}
 		}
 	}
