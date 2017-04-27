@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ForwardCallbackSync_h__
-#define __OpcUaStackCore_ForwardCallbackSync_h__
+#ifndef __OpcUaStackCore_ForwardNodeSync_h__
+#define __OpcUaStackCore_ForwardNodeSync_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -27,14 +27,14 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT ForwardCallbackSync
+	class DLLEXPORT ForwardNodeSync
 	: public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<ForwardCallbackSync> SPtr;
+		typedef boost::shared_ptr<ForwardNodeSync> SPtr;
 
-		ForwardCallbackSync(void);
-		virtual ~ForwardCallbackSync(void);
+		ForwardNodeSync(void);
+		virtual ~ForwardNodeSync(void);
 
 		ForwardCallback& readService(void);
 		ForwardCallback& readHService(void);
@@ -44,7 +44,7 @@ namespace OpcUaStackCore
 		ForwardCallback& monitoredItemStartService(void);
 		ForwardCallback& monitoredItemStopService(void);
 
-		void updateFrom(ForwardCallbackSync& forwardInfoSync);
+		void updateFrom(ForwardNodeSync& forwardInfoSync);
 
 	  private:
 		// attribute service

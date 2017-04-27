@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/ServiceSetApplication/ForwardCallbackSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
 
 namespace OpcUaStackCore
 {
 
-	ForwardCallbackSync::ForwardCallbackSync(void)
+	ForwardNodeSync::ForwardNodeSync(void)
 	: readService_()
 	, readHService_()
 	, writeService_()
@@ -31,54 +31,54 @@ namespace OpcUaStackCore
 	{
 	}
 
-	ForwardCallbackSync::~ForwardCallbackSync(void)
+	ForwardNodeSync::~ForwardNodeSync(void)
 	{
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::readService(void)
+	ForwardNodeSync::readService(void)
 	{
 		return readService_;
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::readHService(void)
+	ForwardNodeSync::readHService(void)
 	{
 		return readHService_;
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::writeService(void)
+	ForwardNodeSync::writeService(void)
 	{
 		return writeService_;
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::writeHService(void)
+	ForwardNodeSync::writeHService(void)
 	{
 		return writeHService_;
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::methodService(void)
+	ForwardNodeSync::methodService(void)
 	{
 		return methodService_;
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::monitoredItemStartService(void)
+	ForwardNodeSync::monitoredItemStartService(void)
 	{
 		return monitoredItemStartService_;
 	}
 
 	ForwardCallback&
-	ForwardCallbackSync::monitoredItemStopService(void)
+	ForwardNodeSync::monitoredItemStopService(void)
 	{
 		return monitoredItemStopService_;
 	}
 
 	void
-	ForwardCallbackSync::updateFrom(ForwardCallbackSync& forwardCallbackSync)
+	ForwardNodeSync::updateFrom(ForwardNodeSync& forwardCallbackSync)
 	{
 		readService_.updateFrom(forwardCallbackSync.readService());
 		readHService_.updateFrom(forwardCallbackSync.readHService());
