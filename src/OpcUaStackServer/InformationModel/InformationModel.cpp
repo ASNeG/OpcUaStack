@@ -23,6 +23,7 @@ namespace OpcUaStackServer
 {
 
 	InformationModel::InformationModel(void)
+	: methodMap_()
 	{
 	}
 
@@ -34,6 +35,12 @@ namespace OpcUaStackServer
 	InformationModel::informationModelMap(void)
 	{
 		return informationModelMap_;
+	}
+
+	MethodMap&
+	InformationModel::methodMap(void)
+	{
+		return methodMap_;
 	}
 
 	bool 

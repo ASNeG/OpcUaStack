@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/InformationModel/MethodMap.h"
 #include <map>
 
 using namespace OpcUaStackCore;
@@ -49,6 +50,7 @@ namespace OpcUaStackServer
 		uint32_t size(void);
 
 		InformationModelMap& informationModelMap(void);
+		MethodMap& methodMap(void);
 
 		void checkForwardReferences(void);
 
@@ -65,6 +67,7 @@ namespace OpcUaStackServer
 	  private:
 		boost::mutex mutex_;
 		InformationModelMap informationModelMap_;
+		MethodMap methodMap_;
 
 	};
 
