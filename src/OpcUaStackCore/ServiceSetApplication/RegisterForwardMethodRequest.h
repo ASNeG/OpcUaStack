@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		virtual ~RegisterForwardMethodRequest(void);
 
 		void forwardMethodSync(ForwardMethodSync::SPtr forwardMethodSync);
-		ForwardMethodSync::SPtr forwardMethodSync(void);
+		ForwardMethodSync::SPtr& forwardMethodSync(void);
 		void objectNodeId(OpcUaNodeId& objectNodeId);
 		OpcUaNodeId& objectNodeId(void);
 		void methodNodeId(OpcUaNodeId& methodNodeId);

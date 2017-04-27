@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		forwardMethodSync_ = forwardMethodSync;
 	}
 
-	ForwardMethodSync::SPtr
+	ForwardMethodSync::SPtr&
 	RegisterForwardMethodRequest::forwardMethodSync(void)
 	{
 		return forwardMethodSync_;
