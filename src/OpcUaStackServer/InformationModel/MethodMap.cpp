@@ -22,11 +22,41 @@ namespace OpcUaStackServer
 {
 
 	MethodMap::MethodMap(void)
+	: forwardMethodSyncMap_()
 	{
 	}
 
 	MethodMap::~MethodMap(void)
 	{
+	}
+
+	bool
+	MethodMap::existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	{
+		// FIXME:
+		return true;
+	}
+
+	bool
+	MethodMap::registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	{
+		// FIXME:
+		return true;
+	}
+
+	bool
+	MethodMap::deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	{
+		// FIXME:
+		return true;
+	}
+
+	ForwardMethodSync::SPtr
+	MethodMap::getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	{
+		// FIXME;
+		ForwardMethodSync::SPtr forwardMethodSync;
+		return forwardMethodSync;
 	}
 
 }

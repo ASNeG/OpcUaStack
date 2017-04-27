@@ -18,7 +18,13 @@
 #ifndef __OpcUaStackServer_MethodMap_h__
 #define __OpcUaStackServer_MethodMap_h__
 
+#include <map>
+
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
+#include "OpcUaStackServer/InformationModel/MethodId.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -26,10 +32,18 @@ namespace OpcUaStackServer
 	class DLLEXPORT MethodMap
 	{
 	  public:
+		typedef std::map<MethodId, ForwardMethodSync::SPtr> ForwardMethodSyncMap;
+
 		MethodMap(void);
 		~MethodMap(void);
 
+		bool existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
+		bool registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
+		bool deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
+		ForwardMethodSync::SPtr getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
+
 	  private:
+		ForwardMethodSyncMap forwardMethodSyncMap_;
 	};
 
 }
