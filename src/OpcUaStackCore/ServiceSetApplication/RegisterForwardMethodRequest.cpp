@@ -32,7 +32,7 @@ namespace OpcUaStackCore
 	: Object()
 	, forwardMethodSync_(constructSPtr<ForwardMethodSync>())
 	, objectNodeId_()
-	, functionNodeId_()
+	, methodNodeId_()
 	{
 	}
 
@@ -75,15 +75,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	RegisterForwardMethodRequest::functionNodeId(OpcUaNodeId& functionNodeId)
+	RegisterForwardMethodRequest::methodNodeId(OpcUaNodeId& methodNodeId)
 	{
-		functionNodeId.copyTo(functionNodeId_);
+		methodNodeId.copyTo(methodNodeId_);
 	}
 
 	OpcUaNodeId&
-	RegisterForwardMethodRequest::functionNodeId(void)
+	RegisterForwardMethodRequest::methodNodeId(void)
 	{
-		return functionNodeId_;
+		return methodNodeId_;
 	}
 
 }

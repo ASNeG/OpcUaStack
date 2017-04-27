@@ -41,8 +41,8 @@ namespace OpcUaStackCore
 		ForwardMethodSync::SPtr forwardMethodSync(void);
 		void objectNodeId(OpcUaNodeId& objectNodeId);
 		OpcUaNodeId& objectNodeId(void);
-		void functionNodeId(OpcUaNodeId& functionNodeId);
-		OpcUaNodeId& functionNodeId(void);
+		void methodNodeId(OpcUaNodeId& methodNodeId);
+		OpcUaNodeId& methodNodeId(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 	  private:
 		ForwardMethodSync::SPtr forwardMethodSync_;
 		OpcUaNodeId objectNodeId_;
-		OpcUaNodeId functionNodeId_;
+		OpcUaNodeId methodNodeId_;
 	};
 
 }
