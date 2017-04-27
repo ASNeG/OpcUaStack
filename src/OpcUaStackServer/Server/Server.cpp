@@ -170,7 +170,7 @@ namespace OpcUaStackServer
 		}
 
 		if (!configXml.write(nodeSetFileName)) {
-			Log(Error, "node set file error")
+			Log(Error, "node set file write error")
 				.parameter("NodeSetFileName", nodeSetFileName)
 				.parameter("ErrorMessage", configXml.errorMessage());
 			return false;
@@ -200,7 +200,7 @@ namespace OpcUaStackServer
 
 			ConfigXml configXml;
 			if (!configXml.parse(nodeSetFileName)) {
-				Log(Error, "node set file error")
+				Log(Error, "node set file parse error")
 					.parameter("NodeSetFileName", nodeSetFileName)
 					.parameter("ErrorMessage", configXml.errorMessage());
 				return false;
