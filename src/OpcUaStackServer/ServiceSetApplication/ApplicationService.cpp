@@ -68,7 +68,7 @@ namespace OpcUaStackServer
 	void
 	ApplicationService::receiveRegisterForwardNodeRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		ServiceTransactionRegisterForward::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForward>(serviceTransaction);
+		ServiceTransactionRegisterForwardNode::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardNode>(serviceTransaction);
 
 		RegisterForwardNodeRequest::SPtr registerForwardNodeRequest = trx->request();
 		RegisterForwardNodeResponse::SPtr registerForwardNodeResponse = trx->response();

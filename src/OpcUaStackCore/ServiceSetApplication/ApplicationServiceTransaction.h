@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionTemplate.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardNodeResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardMethodRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/RegisterForwardMethodResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/RegisterForwardGlobalResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceRequest.h"
@@ -37,7 +39,14 @@ namespace OpcUaStackCore
 		RegisterForwardNodeResponse,
 		OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary,
 		OpcUaId_RegisterForwardNodeResponse_Encoding_DefaultBinary
-	> ServiceTransactionRegisterForward;
+	> ServiceTransactionRegisterForwardNode;
+
+	typedef ServiceTransactionTemplate<
+		RegisterForwardMethodRequest,
+		RegisterForwardMethodResponse,
+		OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary,
+		OpcUaId_RegisterForwardMethodResponse_Encoding_DefaultBinary
+	> ServiceTransactionRegisterForwardMethod;
 
 	typedef ServiceTransactionTemplate<
 		RegisterForwardGlobalRequest,

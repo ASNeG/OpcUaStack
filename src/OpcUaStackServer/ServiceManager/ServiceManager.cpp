@@ -233,16 +233,20 @@ namespace OpcUaStackServer
 		//
 		// application service
 		//
-		ServiceTransactionRegisterForward::name("RegisterForwardNode");
+		ServiceTransactionRegisterForwardNode::name("RegisterForwardNode");
+		ServiceTransactionRegisterForwardMethod::name("RegisterForwardMethod");
 		ServiceTransactionRegisterForwardGlobal::name("RegisterForwardGlobal");
 
-		ServiceTransactionRegisterForward::SPtr serviceTransactionRegisterForward = constructSPtr<ServiceTransactionRegisterForward>();
+		ServiceTransactionRegisterForwardNode::SPtr serviceTransactionRegisterForwardNode = constructSPtr<ServiceTransactionRegisterForwardNode>();
+		ServiceTransactionRegisterForwardMethod::SPtr serviceTransactionRegisterForwardMethod = constructSPtr<ServiceTransactionRegisterForwardMethod>();
 		ServiceTransactionRegisterForwardGlobal::SPtr serviceTransactionRegisterForwardGlobal = constructSPtr<ServiceTransactionRegisterForwardGlobal>();
 
-		serviceTransactionRegisterForward->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardNode->componentService(&*applicationService_);
+		serviceTransactionRegisterForwardMethod->componentService(&*applicationService_);
 		serviceTransactionRegisterForwardGlobal->componentService(&*applicationService_);
 
-		transactionManager_->registerTransaction(serviceTransactionRegisterForward);
+		transactionManager_->registerTransaction(serviceTransactionRegisterForwardNode);
+		transactionManager_->registerTransaction(serviceTransactionRegisterForwardMethod);
 		transactionManager_->registerTransaction(serviceTransactionRegisterForwardGlobal);
 	
 		sessionManager.discoveryService(discoveryService_);
