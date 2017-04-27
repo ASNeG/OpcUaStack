@@ -24,6 +24,28 @@
 namespace OpcUaStackCore
 {
 
+	class OpcUaCallReferenceConfig
+	: public Object
+	{
+	  public:
+		typedef boost::shared_ptr<OpcUaCallReferenceConfig> SPtr;
+
+		OpcUaCallReferenceConfig(void);
+		~OpcUaCallReferenceConfig(void);
+
+		void configFileName(const std::string& configFileName);
+		void elementPrefix(const std::string& elementPrefix);
+		OpcUaNodeId& objectNodeId(void);
+
+		bool decode(Config& config);
+
+	  private:
+		std::string configFileName_;
+		std::string elementPrefix_;
+		OpcUaNodeId objectNodeId_;
+	};
+
+
 	class OpcUaMonReferenceConfig
 	: public Object
 	{

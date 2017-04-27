@@ -26,6 +26,66 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// OpcUaCallReferenceConfig
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaCallReferenceConfig::OpcUaCallReferenceConfig(void)
+	: Object()
+	, configFileName_("")
+	, elementPrefix_("")
+	, objectNodeId_("")
+	{
+	}
+
+	OpcUaCallReferenceConfig::~OpcUaCallReferenceConfig(void)
+	{
+	}
+
+	void
+	OpcUaCallReferenceConfig::configFileName(const std::string& configFileName)
+	{
+		configFileName_ = configFileName;
+	}
+
+	void
+	OpcUaCallReferenceConfig::elementPrefix(const std::string& elementPrefix)
+	{
+		elementPrefix_ = elementPrefix;
+	}
+
+	OpcUaNodeId&
+	OpcUaCallReferenceConfig::objectNodeId(void)
+	{
+		return objectNodeId_;
+	}
+
+	bool
+	OpcUaCallReferenceConfig::decode(Config& config)
+	{
+		// get ObjectNodeId attribute
+		std::string objectNodeId;
+		if (!config.getConfigParameter("<xmlattr>.ObjectNodeId", objectNodeId)) {
+			Log(Error, "attribute missing in config file")
+				.parameter("Element", elementPrefix_)
+				.parameter("Attribute", "ObjectNodeId")
+				.parameter("ConfigFileName", configFileName_);
+			return false;
+		}
+		if (!objectNodeId_.fromString(objectNodeId)) {
+			Log(Error, "attribute invalid in config file")
+				.parameter("Element", elementPrefix_)
+				.parameter("Attribute", "ObjectNodeId")
+				.parameter("ConfigFileName", configFileName_);
+			return false;
+		}
+
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// OpcUaMonReferenceConfig
 	//
 	// ------------------------------------------------------------------------
@@ -179,6 +239,15 @@ namespace OpcUaStackCore
 			mon->elementPrefix(elementPrefix_);
 			extension_ = mon;
 			return mon->decode(config);
+		}
+
+		// add call item extension
+		if (service_ == Call) {
+			OpcUaCallReferenceConfig::SPtr call = constructSPtr<OpcUaCallReferenceConfig>();
+			call->configFileName(configFileName_);
+			call->elementPrefix(elementPrefix_);
+			extension_ = call;
+			return call->decode(config);
 		}
 
 		return true;
