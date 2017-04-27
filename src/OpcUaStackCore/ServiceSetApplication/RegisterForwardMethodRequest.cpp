@@ -30,8 +30,9 @@ namespace OpcUaStackCore
 
 	RegisterForwardMethodRequest::RegisterForwardMethodRequest(void)
 	: Object()
-	, nodesToRegisterArraySPtr_(constructSPtr<OpcUaNodeIdArray>())
-	, forwardNodeSync_(constructSPtr<ForwardNodeSync>())
+	, forwardMethodSync_(constructSPtr<ForwardMethodSync>())
+	, objectNodeId_()
+	, functionNodeId_()
 	{
 	}
 
@@ -40,39 +41,49 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	RegisterForwardMethodRequest::nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister)
-	{
-		nodesToRegisterArraySPtr_ = nodesToRegister;
-	}
-	
-	OpcUaNodeIdArray::SPtr 
-	RegisterForwardMethodRequest::nodesToRegister(void) const
-	{
-		return nodesToRegisterArraySPtr_;
-	}
-
-	void 
 	RegisterForwardMethodRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		nodesToRegisterArraySPtr_->opcUaBinaryEncode(os);	
 	}
 	
 	void 
 	RegisterForwardMethodRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		nodesToRegisterArraySPtr_->opcUaBinaryDecode(is);
 	}
 
 	void
-	RegisterForwardMethodRequest::forwardNodeSync(ForwardNodeSync::SPtr forwardInfo)
+	RegisterForwardMethodRequest::forwardMethodSync(ForwardMethodSync::SPtr forwardMethodSync)
 	{
-		forwardNodeSync_ = forwardInfo;
+		forwardMethodSync_ = forwardMethodSync;
 	}
 
-	ForwardNodeSync::SPtr
-	RegisterForwardMethodRequest::forwardNodeSync(void)
+	ForwardMethodSync::SPtr
+	RegisterForwardMethodRequest::forwardMethodSync(void)
 	{
-		return forwardNodeSync_;
+		return forwardMethodSync_;
+	}
+
+	void
+	RegisterForwardMethodRequest::objectNodeId(OpcUaNodeId& objectNodeId)
+	{
+		objectNodeId.copyTo(objectNodeId_);
+	}
+
+	OpcUaNodeId&
+	RegisterForwardMethodRequest::objectNodeId(void)
+	{
+		return objectNodeId_;
+	}
+
+	void
+	RegisterForwardMethodRequest::functionNodeId(OpcUaNodeId& functionNodeId)
+	{
+		functionNodeId.copyTo(functionNodeId_);
+	}
+
+	OpcUaNodeId&
+	RegisterForwardMethodRequest::functionNodeId(void)
+	{
+		return functionNodeId_;
 	}
 
 }

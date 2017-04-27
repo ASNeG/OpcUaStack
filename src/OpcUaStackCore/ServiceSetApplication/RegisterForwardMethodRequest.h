@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
-#include "OpcUaStackCore/ServiceSetApplication/ForwardNodeSync.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardMethodSync.h"
 
 namespace OpcUaStackCore
 {
@@ -37,17 +37,20 @@ namespace OpcUaStackCore
 		RegisterForwardMethodRequest(void);
 		virtual ~RegisterForwardMethodRequest(void);
 
-		void nodesToRegister(const OpcUaNodeIdArray::SPtr nodesToRegister);
-		OpcUaNodeIdArray::SPtr nodesToRegister(void) const;
-		void forwardNodeSync(ForwardNodeSync::SPtr forwardInfo);
-		ForwardNodeSync::SPtr forwardNodeSync(void);
+		void forwardMethodSync(ForwardMethodSync::SPtr forwardMethodSync);
+		ForwardMethodSync::SPtr forwardMethodSync(void);
+		void objectNodeId(OpcUaNodeId& objectNodeId);
+		OpcUaNodeId& objectNodeId(void);
+		void functionNodeId(OpcUaNodeId& functionNodeId);
+		OpcUaNodeId& functionNodeId(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		ForwardNodeSync::SPtr forwardNodeSync_;
-		OpcUaNodeIdArray::SPtr nodesToRegisterArraySPtr_;
+		ForwardMethodSync::SPtr forwardMethodSync_;
+		OpcUaNodeId objectNodeId_;
+		OpcUaNodeId functionNodeId_;
 	};
 
 }
