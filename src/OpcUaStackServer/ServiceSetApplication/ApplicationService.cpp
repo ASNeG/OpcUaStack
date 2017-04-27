@@ -44,6 +44,9 @@ namespace OpcUaStackServer
 			case OpcUaId_RegisterForwardNodeRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardNodeRequest(serviceTransaction);
 				break;
+			case OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary:
+				receiveRegisterForwardMethodRequest(serviceTransaction);
+				break;
 			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
 				receiveRegisterForwardGlobalRequest(serviceTransaction);
 				break;
@@ -129,6 +132,12 @@ namespace OpcUaStackServer
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveRegisterForwardMethodRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		// FIXME: todo
 	}
 
 	void

@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 
 	  private:
 		void receiveRegisterForwardNodeRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveRegisterForwardMethodRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveRegisterForwardGlobalRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveGetNodeReferenceRequest(ServiceTransaction::SPtr serviceTransaction);
 		void receiveNamespaceInfoRequest(ServiceTransaction::SPtr serviceTransaction);
