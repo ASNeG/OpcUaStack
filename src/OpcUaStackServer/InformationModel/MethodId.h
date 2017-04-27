@@ -34,14 +34,14 @@ namespace OpcUaStackServer
 
 		void methodNodeId(OpcUaNodeId& methodNodeId);
 		OpcUaNodeId& methodNodeId(void);
-		void parentNodeId(OpcUaNodeId& parentNodeId);
-		OpcUaNodeId& parentNodeId(void);
+		void objectNodeId(OpcUaNodeId& objectNodeId);
+		OpcUaNodeId& objectNodeId(void);
 
 		bool operator<(const MethodId& methodId) const;
 
 	  private:
 		OpcUaNodeId methodNodeId_;
-		OpcUaNodeId parentNodeId_;
+		OpcUaNodeId objectNodeId_;
 
 	};
 

@@ -42,15 +42,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	MethodId::parentNodeId(OpcUaNodeId& parentNodeId)
+	MethodId::objectNodeId(OpcUaNodeId& objectNodeId)
 	{
-		parentNodeId_.copyFrom(parentNodeId);
+		objectNodeId_.copyFrom(objectNodeId);
 	}
 
 	OpcUaNodeId&
-	MethodId::parentNodeId(void)
+	MethodId::objectNodeId(void)
 	{
-		return parentNodeId_;
+		return objectNodeId_;
 	}
 
 	bool
@@ -59,7 +59,7 @@ namespace OpcUaStackServer
 		MethodId *tmpMethodId = const_cast<MethodId*>(&methodId);
 		if (tmpMethodId->methodNodeId() < methodNodeId_) return true;
 		if (methodNodeId_ < tmpMethodId->methodNodeId()) return false;
-		return tmpMethodId->parentNodeId() < parentNodeId_;
+		return tmpMethodId->objectNodeId() < objectNodeId_;
 	}
 
 }
