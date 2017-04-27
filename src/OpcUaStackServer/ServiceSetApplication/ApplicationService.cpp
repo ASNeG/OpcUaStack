@@ -73,7 +73,7 @@ namespace OpcUaStackServer
 		RegisterForwardNodeRequest::SPtr registerForwardNodeRequest = trx->request();
 		RegisterForwardNodeResponse::SPtr registerForwardNodeResponse = trx->response();
 
-		Log(Debug, "application service register forward request")
+		Log(Debug, "application service register forward node request")
 			.parameter("Trx", serviceTransaction->transactionId())
 			.parameter("NumberNodes", registerForwardNodeRequest->nodesToRegister()->size());
 
@@ -97,7 +97,7 @@ namespace OpcUaStackServer
 			OpcUaNodeId::SPtr nodeId;
 			if (!registerForwardNodeRequest->nodesToRegister()->get(idx, nodeId)) {
 				registerForwardNodeResponse->statusCodeArray()->set(idx, BadNodeIdInvalid);
-				Log(Debug, "register forward error, because node request parameter node id invalid")
+				Log(Debug, "register forward node error, because node request parameter node id invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx);
 				continue;
@@ -107,7 +107,7 @@ namespace OpcUaStackServer
 			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
 			if (baseNodeClass.get() == nullptr) {
 				registerForwardNodeResponse->statusCodeArray()->set(idx, BadNodeIdUnknown);
-				Log(Debug, "register forward error, because node not exist in information model")
+				Log(Debug, "register forward node error, because node not exist in information model")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("Node", *nodeId);
@@ -124,7 +124,7 @@ namespace OpcUaStackServer
 			}
 			baseNodeClass->forwardNodeSync(forwardNodeSync);
 
-			Log(Debug, "register forward")
+			Log(Debug, "register forward node")
 				.parameter("Trx", serviceTransaction->transactionId())
 				.parameter("Idx", idx)
 				.parameter("Node", *nodeId);
@@ -137,7 +137,60 @@ namespace OpcUaStackServer
 	void
 	ApplicationService::receiveRegisterForwardMethodRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
-		// FIXME: todo
+		BaseNodeClass::SPtr baseNodeClass;
+		ServiceTransactionRegisterForwardMethod::SPtr trx = boost::static_pointer_cast<ServiceTransactionRegisterForwardMethod>(serviceTransaction);
+
+		RegisterForwardMethodRequest::SPtr registerForwardMethodRequest = trx->request();
+		RegisterForwardMethodResponse::SPtr registerForwardMethodResponse = trx->response();
+
+		Log(Debug, "application service register forward method request")
+			.parameter("Trx", serviceTransaction->transactionId())
+			.parameter("ObjectNodeId", registerForwardMethodRequest->objectNodeId().toString())
+			.parameter("MethodNodeId", registerForwardMethodRequest->methodNodeId().toString());
+
+		// find object node
+		baseNodeClass = informationModel_->find(registerForwardMethodRequest->objectNodeId());
+		if (baseNodeClass.get() == nullptr) {
+			registerForwardMethodResponse->statusCode(BadNodeIdUnknown);
+			Log(Debug, "register forward method error, because object node not exist in information model")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("ObjectNode", registerForwardMethodRequest->objectNodeId().toString());
+
+			trx->statusCode(Success);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+
+		// find method node
+		baseNodeClass = informationModel_->find(registerForwardMethodRequest->methodNodeId());
+		if (baseNodeClass.get() == nullptr) {
+			registerForwardMethodResponse->statusCode(BadNodeIdUnknown);
+			Log(Debug, "register forward method error, because function node not exist in information model")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("MethodNode", registerForwardMethodRequest->methodNodeId().toString());
+
+			trx->statusCode(Success);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+
+		// register/deregister method call
+		if (!registerForwardMethodRequest->forwardMethodSync()->methodService().isCallback()) {
+			informationModel_->methodMap().deregisterMethod(
+				registerForwardMethodRequest->objectNodeId(),
+				registerForwardMethodRequest->methodNodeId()
+			);
+		}
+		else {
+			informationModel_->methodMap().registerMethod(
+				registerForwardMethodRequest->objectNodeId(),
+				registerForwardMethodRequest->methodNodeId(),
+				registerForwardMethodRequest->forwardMethodSync()
+			);
+		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
 	}
 
 	void

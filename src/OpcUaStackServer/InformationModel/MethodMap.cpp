@@ -43,7 +43,11 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId, ForwardMethodSync::SPtr& forwardMethodSync)
+	MethodMap::registerMethod(
+		OpcUaNodeId& objectNodeId,
+		OpcUaNodeId& methodNodeId,
+		ForwardMethodSync::SPtr& forwardMethodSync
+	)
 	{
 		if (existMethod(objectNodeId, methodNodeId)) {
 			deregisterMethod(objectNodeId, methodNodeId);
