@@ -37,10 +37,10 @@ namespace OpcUaStackServer
 		MethodMap(void);
 		~MethodMap(void);
 
-		bool existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
-		bool registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
-		bool deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
-		ForwardMethodSync::SPtr getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId);
+		bool existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
+		bool registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId, ForwardMethodSync::SPtr& forwardMethodSync);
+		bool deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
+		ForwardMethodSync::SPtr getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
 
 	  private:
 		ForwardMethodSyncMap forwardMethodSyncMap_;

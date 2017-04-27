@@ -31,30 +31,61 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	MethodMap::existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	MethodMap::existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{
-		// FIXME:
+		MethodId methodId;
+		ForwardMethodSyncMap::iterator it;
+
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+		it = forwardMethodSyncMap_.find(methodId);
+		return (it != forwardMethodSyncMap_.end());
+	}
+
+	bool
+	MethodMap::registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId, ForwardMethodSync::SPtr& forwardMethodSync)
+	{
+		if (existMethod(objectNodeId, methodNodeId)) {
+			deregisterMethod(objectNodeId, methodNodeId);
+		}
+
+		MethodId methodId;
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+
+		forwardMethodSyncMap_.insert(std::make_pair(methodId, forwardMethodSync));
+
 		return true;
 	}
 
 	bool
-	MethodMap::registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	MethodMap::deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{
-		// FIXME:
-		return true;
-	}
+		MethodId methodId;
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
 
-	bool
-	MethodMap::deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
-	{
-		// FIXME:
+		ForwardMethodSyncMap::iterator it;
+		it = forwardMethodSyncMap_.find(methodId);
+		if (it == forwardMethodSyncMap_.end()) return true;
+		forwardMethodSyncMap_.erase(it);
+
 		return true;
 	}
 
 	ForwardMethodSync::SPtr
-	MethodMap::getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& functionNodeId)
+	MethodMap::getMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{
-		// FIXME;
+		MethodId methodId;
+		methodId.objectNodeId().copyFrom(objectNodeId);
+		methodId.methodNodeId().copyFrom(methodNodeId);
+
+		ForwardMethodSyncMap::iterator it;
+		it = forwardMethodSyncMap_.find(methodId);
+		if (it != forwardMethodSyncMap_.end()) {
+			return it->second;
+		}
+
 		ForwardMethodSync::SPtr forwardMethodSync;
 		return forwardMethodSync;
 	}
