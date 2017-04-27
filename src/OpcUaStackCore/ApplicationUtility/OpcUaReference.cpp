@@ -19,4 +19,20 @@
 
 namespace OpcUaStackCore
 {
+
+	OpcUaReference::OpcUaReference(OpcUaReferenceConfig* referenceConfig)
+	: referenceConfig_(referenceConfig)
+	{
+	}
+
+	OpcUaReference::~OpcUaReference(void)
+	{
+	}
+
+	OpcUaNodeId&
+	OpcUaReference::nodeId(void)
+	{
+		return referenceConfig_->nodeId();
+	}
+
 }
