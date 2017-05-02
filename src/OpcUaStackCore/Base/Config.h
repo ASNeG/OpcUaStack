@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -48,6 +48,7 @@ namespace OpcUaStackCore
 		void child(boost::property_tree::ptree& child);
 		boost::property_tree::ptree& child(void);
 
+		bool setValue(const std::string& value);
 		bool setValue(const std::string& path, const std::string& value);
 		bool setChild(const std::string& path, Config& config);
 
