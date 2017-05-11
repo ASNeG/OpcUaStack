@@ -279,4 +279,31 @@ namespace OpcUaStackCore
 		return it->second;
 	}
 
+	void
+	Config::out(std::ostream& os)
+	{
+		out(os, child_, 0);
+	}
+
+	void
+	Config::out(std::ostream& os,boost::property_tree::ptree& ptree, uint32_t depth)
+	{
+		// create prefix
+		std::string prefix;
+		for (uint32_t idx=0; idx<depth; idx++) {
+			prefix += "  ";
+		}
+
+		// write data
+		boost::property_tree::ptree::iterator it;
+		for (it = ptree.begin(); it != ptree.end(); it++) {
+			boost::optional<std::string> value = it->second.data();
+			if (value) {
+				os << prefix << it->first << " = " << *value << std::endl;
+			}
+
+			out(os, it->second, depth+1);
+		}
+	}
+
 }

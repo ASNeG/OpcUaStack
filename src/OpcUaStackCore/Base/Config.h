@@ -146,8 +146,10 @@ namespace OpcUaStackCore
 		bool aliasExist(const std::string& aliasName);
 		void alias(const std::string& aliasName, const std::string& aliasValue);
 		std::string alias(const std::string& aliasName);
+		void out(std::ostream& os);
 
 	  private:
+		void out(std::ostream& os, boost::property_tree::ptree& ptree, uint32_t depth = 0);
 		void getValuesFromName(const std::string& valueName, std::vector<std::string>& valueVec);
 		void getChildFromName(const std::string& valueName, std::vector<Config>& valueVec);
 		static void substAlias(std::string& value);
