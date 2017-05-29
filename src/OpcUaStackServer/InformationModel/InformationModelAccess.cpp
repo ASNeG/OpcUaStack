@@ -761,6 +761,27 @@ namespace OpcUaStackServer
 		return isDataTypeEnum(baseNodeClass);
 	}
 
+	bool
+	InformationModelAccess::isObjectType(BaseNodeClass::SPtr baseNodeClass)
+	{
+		// check node id
+		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+		if (*nodeId == OpcUaNodeId(OpcUaId_BaseObjectType)) return true;
+
+		// get subtype
+		OpcUaNodeId subTypeNodeId;
+		if (!getSubType(baseNodeClass, subTypeNodeId)) {
+			return false;
+		}
+
+		// get subtype base class
+		baseNodeClass = informationModel_->find(subTypeNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return false;
+		}
+
+		return isObjectType(baseNodeClass);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
