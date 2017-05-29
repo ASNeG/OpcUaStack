@@ -805,6 +805,28 @@ namespace OpcUaStackServer
 		return isVariableType(baseNodeClass);
 	}
 
+	bool
+	InformationModelAccess::isReferences(BaseNodeClass::SPtr baseNodeClass)
+	{
+		// check node id
+		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+		if (*nodeId == OpcUaNodeId(OpcUaId_References)) return true;
+
+		// get subtype
+		OpcUaNodeId subTypeNodeId;
+		if (!getSubType(baseNodeClass, subTypeNodeId)) {
+			return false;
+		}
+
+		// get subtype base class
+		baseNodeClass = informationModel_->find(subTypeNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return false;
+		}
+
+		return isReferences(baseNodeClass);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
