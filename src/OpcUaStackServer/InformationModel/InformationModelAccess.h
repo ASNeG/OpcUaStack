@@ -111,6 +111,7 @@ namespace OpcUaStackServer
 		bool isObjectType(BaseNodeClass::SPtr baseNodeClass);
 		bool isVariableType(BaseNodeClass::SPtr baseNodeClass);
 		bool isReferences(BaseNodeClass::SPtr baseNodeClass);
+		bool isBaseEventType(BaseNodeClass::SPtr baseNodeClass);
 
 		// --------------------------------------------------------------------
 		// merge function
