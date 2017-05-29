@@ -695,6 +695,72 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	InformationModelAccess::isSubType(BaseNodeClass::SPtr baseNodeClass)
+	{
+		// get subtype
+		OpcUaNodeId subTypeNodeId;
+		if (!getSubType(baseNodeClass, subTypeNodeId)) {
+			return false;
+		}
+
+		// get subtype base class
+		baseNodeClass = informationModel_->find(subTypeNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return false;
+		}
+
+		// check node id
+		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+		if (*nodeId == OpcUaNodeId(OpcUaId_BaseDataType)) return true;
+
+		return isSubType(baseNodeClass);
+	}
+
+	bool
+	InformationModelAccess::isSubTypeStructure(BaseNodeClass::SPtr baseNodeClass)
+	{
+		// get subtype
+		OpcUaNodeId subTypeNodeId;
+		if (!getSubType(baseNodeClass, subTypeNodeId)) {
+			return false;
+		}
+
+		// get subtype base class
+		baseNodeClass = informationModel_->find(subTypeNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return false;
+		}
+
+		// check node id
+		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+		if (*nodeId == OpcUaNodeId(OpcUaId_Structure)) return true;
+
+		return isSubType(baseNodeClass);
+	}
+
+	bool
+	InformationModelAccess::isSubTypeEnum(BaseNodeClass::SPtr baseNodeClass)
+	{
+		// get subtype
+		OpcUaNodeId subTypeNodeId;
+		if (!getSubType(baseNodeClass, subTypeNodeId)) {
+			return false;
+		}
+
+		// get subtype base class
+		baseNodeClass = informationModel_->find(subTypeNodeId);
+		if (baseNodeClass.get() == nullptr) {
+			return false;
+		}
+
+		// check node id
+		boost::optional<OpcUaNodeId&> nodeId = baseNodeClass->getNodeId();
+		if (*nodeId == OpcUaNodeId(OpcUaId_Enumeration)) return true;
+
+		return isSubType(baseNodeClass);
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

@@ -101,6 +101,9 @@ namespace OpcUaStackServer
 		bool getType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& typeNodeId);
 		bool getSubType(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& subTypeBaseNodeClass);
 		bool getSubType(BaseNodeClass::SPtr baseNodeClass, OpcUaNodeId& subTypeNodeId);
+		bool isSubType(BaseNodeClass::SPtr baseNodeClass);
+		bool isSubTypeStructure(BaseNodeClass::SPtr baseNodeClass);
+		bool isSubTypeEnum(BaseNodeClass::SPtr baseNodeClass);
 
 		// --------------------------------------------------------------------
 		// merge function
