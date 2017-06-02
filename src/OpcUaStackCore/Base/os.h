@@ -46,8 +46,9 @@
     #define CONNECTION_CLOSE_REMOTE			boost::asio::error::eof
 	#define CONNECTION_CLOSE_EOF			boost::asio::error::eof
 
+#if __cplusplus < 201103L
 	#define nullptr 				NULL
-
+#endif
 
 #endif
 
