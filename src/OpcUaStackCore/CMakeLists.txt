@@ -56,6 +56,7 @@ file(GLOB INC_OpcUaStackCore_Utility OpcUaStackCore/Utility/*.h)
 file(GLOB INC_OpcUaStackCore_Application OpcUaStackCore/Application/*.h)
 file(GLOB INC_OpcUaStackCore_Container OpcUaStackCore/Container/*.h)
 file(GLOB INC_OpcUaStackCore_ApplicationUtility OpcUaStackCore/ApplicationUtility/*.h)
+file(GLOB INC_OpcUaStackCore_StandardDataTypes OpcUaStackCore/StandardDataTypes/*.h)
 
 install(
     TARGETS OpcUaStackCore 
