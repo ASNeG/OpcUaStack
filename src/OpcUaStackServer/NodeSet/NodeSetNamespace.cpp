@@ -119,8 +119,17 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeSetNamespace::delGlobalNamespace(uint16_t globalNamespaceIndex)
+	NodeSetNamespace::delLastGlobalNamespace(void)
 	{
+		// find old namespace Uri
+		std::string namespaceUri = globalNamespaceVec_[globalNamespaceVec_.size()-1];
+		globalNamespaceVec_.erase(globalNamespaceVec_.begin() + globalNamespaceVec_.size() - 1);
+
+		NamespaceMap::iterator it;
+		it = globalNamespaceMap_.find(namespaceUri);
+		if (it == globalNamespaceMap_.end()) return false;
+		globalNamespaceMap_.erase(it);
+
 		return true;
 	}
 
@@ -215,9 +224,9 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	NodeSetNamespace::delExistGlobalNamespace(uint16_t globalNamespaceIndex)
+	NodeSetNamespace::delLastExistGlobalNamespace(void)
 	{
-		return delGlobalNamespace(globalNamespaceIndex);
+		return delLastGlobalNamespace();
 	}
 
 	NamespaceVec& 
