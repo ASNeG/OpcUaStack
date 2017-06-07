@@ -44,6 +44,8 @@ namespace OpcUaStackServer
 		void decodeNamespaceUris(std::vector<std::string>& namespaceUriVec);
 		void encodeNamespaceUris(boost::property_tree::ptree& ptree);
 		uint32_t addNewGlobalNamespace(const std::string& namespaceUri);
+		bool updateExistGlobalNamespace(uint16_t globalNamespaceIndex, const std::string& namespaceUri);
+		bool delExistGlobalNamespace(uint16_t globalNamespaceIndex);
 	
 		NamespaceVec& localNamespaceVec(void);
 		NamespaceVec& globalNamespaceVec(void);
@@ -55,6 +57,8 @@ namespace OpcUaStackServer
 		static bool startup_;
 		static void startup(void);
 		static uint16_t addGlobalNamespace(const std::string& namespaceUri);
+		static bool updateGlobalNamespace(uint16_t globalNamespaceIndex, const std::string& namespaceUri);
+		static bool delGlobalNamespace(uint16_t globalNamespaceIndex);
 		static std::string getGlobalNamespaceUri(uint16_t globalNamespaceIndex);
 
 		// list off all existing global namespace uris
