@@ -30,6 +30,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	MethodMap::clear(void)
+	{
+		forwardMethodSyncMap_.clear();
+	}
+
 	bool
 	MethodMap::existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{

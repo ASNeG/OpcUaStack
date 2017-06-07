@@ -37,6 +37,7 @@ namespace OpcUaStackServer
 		MethodMap(void);
 		~MethodMap(void);
 
+		void clear(void);
 		bool existMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
 		bool registerMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId, ForwardMethodSync::SPtr& forwardMethodSync);
 		bool deregisterMethod(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
