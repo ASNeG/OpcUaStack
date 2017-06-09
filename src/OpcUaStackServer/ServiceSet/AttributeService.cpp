@@ -97,7 +97,7 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
-		if (readRequest->readValueIdArray()->size() > 1000) { // FIXME: todo
+		if (readRequest->readValueIdArray()->size() > 1500) { // FIXME: todo
 			trx->statusCode(BadTooManyOperations);
 			trx->componentSession()->send(serviceTransaction);
 			return;
