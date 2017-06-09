@@ -135,3 +135,9 @@ install(
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ApplicationUtility
     COMPONENT headers
 )
+
+install(
+    FILES ${INC_OpcUaStackCore_StandardDataTypes} 
+    DESTINATION include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardDataTypes
+    COMPONENT headers
+)
