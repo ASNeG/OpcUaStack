@@ -46,7 +46,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelManager::addNode(
+	InformationModelManager::addObjectNode(
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
 		OpcUaLocalizedText& displayName,
@@ -82,7 +82,27 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// create new node
+		// create new object node and add the attributes
+		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
+		objectNodeClass->setNodeId(nodeId);
+		objectNodeClass->setBrowseName(browseName);
+		objectNodeClass->setDisplayName(displayName);
+
+		OpcUaLocalizedText description;
+		typeNodeClass->getDescription(description);
+		objectNodeClass->setDescription(description);
+
+		OpcUaUInt32 writeMask;
+		typeNodeClass->getWriteMask(writeMask);
+		objectNodeClass->setWriteMask(writeMask);
+
+		OpcUaUInt32 userWriteMask;
+		typeNodeClass->getWriteMask(userWriteMask);
+		objectNodeClass->setWriteMask(userWriteMask);
+
+		OpcUaByte eventNotifier;
+		typeNodeClass->getEventNotifier(eventNotifier);
+		objectNodeClass->setEventNotifier(eventNotifier);
 
 		return true;
 	}

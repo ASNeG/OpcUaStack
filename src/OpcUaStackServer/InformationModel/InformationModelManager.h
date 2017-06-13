@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 
 		void informationModel(InformationModel::SPtr informationModel);
 
-		bool addNode(
+		bool addObjectNode(
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,
 			OpcUaLocalizedText& displayName,
