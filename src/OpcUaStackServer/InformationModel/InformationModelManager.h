@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 
 		void informationModel(InformationModel::SPtr informationModel);
 
-		bool addObject(
+		bool addObjectNode(
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,
 			OpcUaLocalizedText& displayName,
@@ -53,13 +53,21 @@ namespace OpcUaStackServer
 			OpcUaNodeId& referenceType,
 			OpcUaNodeId& objectType
 		);
-		bool addVariable(
+		bool addVariableNode(
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,
 			OpcUaLocalizedText& displayName,
 			OpcUaQualifiedName& browseName,
 			OpcUaNodeId& referenceType,
 			OpcUaNodeId& variableType
+		);
+		bool addNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName,
+			OpcUaNodeId& referenceType,
+			OpcUaNodeId& nodeType
 		);
 
 	  private:

@@ -46,7 +46,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelManager::addObject(
+	InformationModelManager::addObjectNode(
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
 		OpcUaLocalizedText& displayName,
@@ -60,13 +60,27 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelManager::addVariable(
+	InformationModelManager::addVariableNode(
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
 		OpcUaLocalizedText& displayName,
 		OpcUaQualifiedName& browseName,
 		OpcUaNodeId& referenceType,
 		OpcUaNodeId& variableType
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	InformationModelManager::addNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName,
+		OpcUaNodeId& referenceType,
+		OpcUaNodeId& nodeType
 	)
 	{
 		// FIXME: todo
