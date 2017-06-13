@@ -383,10 +383,34 @@ namespace OpcUaStackServer
 		ReferenceItem::SPtr& referenceItem
 	)
 	{
-		// FIXME: todo
+		// clone node class
+		BaseNodeClass::SPtr baseNodeClass = cloneBaseNodeClass->clone();
+
+#if 0
+		//
+		// added type definition
+		//
+		variableNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		typeNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, false, nodeId);
+
+		//
+		// added reference to parent
+		//
+		parentNodeClass->referenceItemMap().add(referenceNodeId, true, nodeId);
+		variableNodeClass->referenceItemMap().add(referenceNodeId, false, parentNodeId);
+
+		//
+		// added node to information model
+		//
+		informationModel_->insert(variableNodeClass);
+
+		return true;
+#endif
+
 		return true;
 	}
 
+	static uint32_t id = 1234;
 	bool
 	InformationModelManager::addVariableNode(
 		AddNodeRule& addNodeRule,
@@ -395,7 +419,58 @@ namespace OpcUaStackServer
 		ReferenceItem::SPtr& referenceItem
 	)
 	{
-		// FIXME: todo
+		//
+		// get parent node id
+		//
+		OpcUaNodeId parentNodeId;
+		parentNodeClass->getNodeId(parentNodeId);
+
+		//
+		// get type node id
+		//
+		OpcUaNodeId typeNodeId;
+		InformationModelAccess ima(informationModel_);
+		ima.getType(cloneBaseNodeClass, typeNodeId);
+
+		//
+		// get type node class
+		//
+		BaseNodeClass::SPtr typeNodeClass;
+		typeNodeClass = informationModel_->find(typeNodeId);
+		if (typeNodeClass.get() == nullptr) {
+			Log(Error, "type node id not exist in information model")
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
+		}
+
+		// clone node class
+		BaseNodeClass::SPtr variableNodeClass = cloneBaseNodeClass->clone();
+
+		//
+		// get unique node id
+		//
+		OpcUaNodeId nodeId;
+		variableNodeClass->getNodeId(nodeId);
+		nodeId.set(id++, nodeId.namespaceIndex());
+		variableNodeClass->setNodeId(nodeId);
+
+		//
+		// added type definition
+		//
+		variableNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		typeNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, false, nodeId);
+
+		//
+		// added reference to parent
+		//
+		parentNodeClass->referenceItemMap().add(referenceItem->nodeId_, true, nodeId);
+		variableNodeClass->referenceItemMap().add(referenceItem->nodeId_, false, parentNodeId);
+
+		//
+		// added node to information model
+		//
+		informationModel_->insert(variableNodeClass);
+
 		return true;
 	}
 
