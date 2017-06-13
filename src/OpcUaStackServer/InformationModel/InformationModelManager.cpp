@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
@@ -26,6 +27,28 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// AddNodeRule
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	AddNodeRule::AddNodeRule(void)
+	{
+	}
+
+	AddNodeRule::~AddNodeRule(void)
+	{
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// InformationModelManager
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	InformationModelManager::InformationModelManager(void)
 	: informationModel_()
 	{
@@ -48,6 +71,7 @@ namespace OpcUaStackServer
 
 	bool
 	InformationModelManager::addObjectNode(
+		AddNodeRule& addNodeRule,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
 		OpcUaLocalizedText& displayName,
@@ -125,6 +149,17 @@ namespace OpcUaStackServer
 		objectNodeClass->setEventNotifier(eventNotifier);
 
 		//
+		// added childs
+		//
+		BaseNodeClass::Vec childBaseNodeClassVec;
+		ReferenceItem::Vec referenceItemVec;
+		InformationModelAccess ima(informationModel_);
+		ima.getChildHierarchically(typeNodeClass, childBaseNodeClassVec, referenceItemVec);
+		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
+			// FIXME: todo
+		}
+
+		//
 		// added type definition
 		//
 		objectNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
@@ -146,6 +181,7 @@ namespace OpcUaStackServer
 
 	bool
 	InformationModelManager::addVariableNode(
+		AddNodeRule& addNodeRule,
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
 		OpcUaLocalizedText& displayName,

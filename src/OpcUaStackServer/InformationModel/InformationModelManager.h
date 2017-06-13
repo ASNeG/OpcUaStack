@@ -24,6 +24,13 @@
 namespace OpcUaStackServer
 {
 
+    class DLLEXPORT AddNodeRule
+    {
+      public:
+    	AddNodeRule(void);
+    	~AddNodeRule(void);
+    };
+
 	class DLLEXPORT InformationModelManager
 	{
 	  public:
@@ -36,6 +43,7 @@ namespace OpcUaStackServer
 		void informationModel(InformationModel::SPtr informationModel);
 
 		bool addObjectNode(
+			AddNodeRule& addNodeRule,
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,
 			OpcUaLocalizedText& displayName,
@@ -45,6 +53,7 @@ namespace OpcUaStackServer
 		);
 
 		bool addVariableNode(
+			AddNodeRule& addNodeRule,
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,
 			OpcUaLocalizedText& displayName,
