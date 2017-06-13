@@ -24,16 +24,6 @@
 namespace OpcUaStackServer
 {
 
-	class MergeIf
-	{
-	  public:
-		MergeIf(void) {}
-		virtual ~MergeIf(void) {}
-
-		virtual void handleMerge(uint32_t maxCount, uint32_t actCount) = 0;
-	};
-
-
 	class DLLEXPORT InformationModelManager
 	{
 	  public:
@@ -45,22 +35,6 @@ namespace OpcUaStackServer
 
 		void informationModel(InformationModel::SPtr informationModel);
 
-		bool addObjectNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceType,
-			OpcUaNodeId& objectType
-		);
-		bool addVariableNode(
-			OpcUaNodeId& parentNodeId,
-			OpcUaNodeId& nodeId,
-			OpcUaLocalizedText& displayName,
-			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceType,
-			OpcUaNodeId& variableType
-		);
 		bool addNode(
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,

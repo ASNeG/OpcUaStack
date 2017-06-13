@@ -46,34 +46,6 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	InformationModelManager::addObjectNode(
-		OpcUaNodeId& parentNodeId,
-		OpcUaNodeId& nodeId,
-		OpcUaLocalizedText& displayName,
-		OpcUaQualifiedName& browseName,
-		OpcUaNodeId& referenceType,
-		OpcUaNodeId& objectType
-	)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
-	InformationModelManager::addVariableNode(
-		OpcUaNodeId& parentNodeId,
-		OpcUaNodeId& nodeId,
-		OpcUaLocalizedText& displayName,
-		OpcUaQualifiedName& browseName,
-		OpcUaNodeId& referenceType,
-		OpcUaNodeId& variableType
-	)
-	{
-		// FIXME: todo
-		return true;
-	}
-
-	bool
 	InformationModelManager::addNode(
 		OpcUaNodeId& parentNodeId,
 		OpcUaNodeId& nodeId,
@@ -109,6 +81,8 @@ namespace OpcUaStackServer
 				.parameter("ReferenceNodeId", referenceNodeId);
 			return false;
 		}
+
+		// create new node
 
 		return true;
 	}
