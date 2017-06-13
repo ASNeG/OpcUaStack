@@ -69,7 +69,24 @@ namespace OpcUaStackServer
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneNodeClass
 		);
-
+		bool addObjectNode(
+			AddNodeRule& addNodeRule,
+			BaseNodeClass::SPtr& parentNodeClass,
+			BaseNodeClass::SPtr& cloneBaseNodeClass,
+			ReferenceItem::SPtr& referenceItem
+		);
+		bool addVariableNode(
+			AddNodeRule& addNodeRule,
+			BaseNodeClass::SPtr& parentNodeClass,
+			BaseNodeClass::SPtr& cloneBaseNodeClass,
+			ReferenceItem::SPtr& referenceItem
+		);
+		bool addMethodNode(
+			AddNodeRule& addNodeRule,
+			BaseNodeClass::SPtr& parentNodeClass,
+			BaseNodeClass::SPtr& cloneBaseNodeClass,
+			ReferenceItem::SPtr& referenceItem
+		);
 
 		InformationModel::SPtr informationModel_;
 	};

@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 
@@ -328,9 +329,85 @@ namespace OpcUaStackServer
 		InformationModelAccess ima(informationModel_);
 		ima.getChildHierarchically(cloneNodeClass, childBaseNodeClassVec, referenceItemVec);
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
-			// FIXME: todo
+			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
+
+			NodeClassType nodeClassType;
+			childBaseNodeClass->getNodeClass(nodeClassType);
+
+			switch (nodeClassType)
+			{
+				case NodeClassType_Object:
+				{
+					bool success = addObjectNode(
+						addNodeRule,
+						parentNodeClass,
+						childBaseNodeClass,
+						referenceItemVec[idx]
+					);
+					if (!success) return false;
+					break;
+				}
+				case NodeClassType_Variable:
+				{
+					bool success = addVariableNode(
+						addNodeRule,
+						parentNodeClass,
+						childBaseNodeClass,
+						referenceItemVec[idx]
+					);
+					if (!success) return false;
+					break;
+				}
+				case NodeClassType_Method:
+				{
+					bool success = addMethodNode(
+						addNodeRule,
+						parentNodeClass,
+						childBaseNodeClass,
+						referenceItemVec[idx]
+					);
+					if (!success) return false;
+					break;
+				}
+			}
 		}
 
+		return true;
+	}
+
+	bool
+	InformationModelManager::addObjectNode(
+		AddNodeRule& addNodeRule,
+		BaseNodeClass::SPtr& parentNodeClass,
+		BaseNodeClass::SPtr& cloneBaseNodeClass,
+		ReferenceItem::SPtr& referenceItem
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	InformationModelManager::addVariableNode(
+		AddNodeRule& addNodeRule,
+		BaseNodeClass::SPtr& parentNodeClass,
+		BaseNodeClass::SPtr& cloneBaseNodeClass,
+		ReferenceItem::SPtr& referenceItem
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	InformationModelManager::addMethodNode(
+		AddNodeRule& addNodeRule,
+		BaseNodeClass::SPtr& parentNodeClass,
+		BaseNodeClass::SPtr& cloneBaseNodeClass,
+		ReferenceItem::SPtr& referenceItem
+	)
+	{
+		// FIXME: todo
 		return true;
 	}
 
