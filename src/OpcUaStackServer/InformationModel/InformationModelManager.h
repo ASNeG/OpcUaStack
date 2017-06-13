@@ -44,6 +44,15 @@ namespace OpcUaStackServer
 			OpcUaNodeId& typeNodeId
 		);
 
+		bool addVariableNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName,
+			OpcUaNodeId& referenceNodeId,
+			OpcUaNodeId& typeNodeId
+		);
+
 	  private:
 		InformationModel::SPtr informationModel_;
 	};
