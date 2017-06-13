@@ -151,12 +151,13 @@ namespace OpcUaStackServer
 		//
 		// added childs
 		//
-		BaseNodeClass::Vec childBaseNodeClassVec;
-		ReferenceItem::Vec referenceItemVec;
-		InformationModelAccess ima(informationModel_);
-		ima.getChildHierarchically(typeNodeClass, childBaseNodeClassVec, referenceItemVec);
-		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
-			// FIXME: todo
+		BaseNodeClass::SPtr tmpObjectNodeClass = objectNodeClass;
+		bool success = addTypeChilds(addNodeRule, tmpObjectNodeClass, typeNodeClass);
+		if (!success) {
+			Log(Error, "create childs error")
+				.parameter("NodeId", nodeId)
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
 		}
 
 		//
@@ -284,6 +285,18 @@ namespace OpcUaStackServer
 		variableNodeClass->setHistorizing(historizing);
 
 		//
+		// added childs
+		//
+		BaseNodeClass::SPtr tmpVariableNodeClass = variableNodeClass;
+		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, typeNodeClass);
+		if (!success) {
+			Log(Error, "create childs error")
+				.parameter("NodeId", nodeId)
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
+		}
+
+		//
 		// added type definition
 		//
 		variableNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
@@ -299,6 +312,24 @@ namespace OpcUaStackServer
 		// added node to information model
 		//
 		informationModel_->insert(variableNodeClass);
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::addTypeChilds(
+		AddNodeRule& addNodeRule,
+		BaseNodeClass::SPtr& parentNodeClass,
+		BaseNodeClass::SPtr& cloneNodeClass
+	)
+	{
+		BaseNodeClass::Vec childBaseNodeClassVec;
+		ReferenceItem::Vec referenceItemVec;
+		InformationModelAccess ima(informationModel_);
+		ima.getChildHierarchically(cloneNodeClass, childBaseNodeClassVec, referenceItemVec);
+		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
+			// FIXME: todo
+		}
 
 		return true;
 	}

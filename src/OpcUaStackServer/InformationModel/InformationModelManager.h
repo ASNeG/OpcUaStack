@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_InformationModelManager_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 namespace OpcUaStackServer
@@ -60,6 +61,12 @@ namespace OpcUaStackServer
 			OpcUaQualifiedName& browseName,
 			OpcUaNodeId& referenceNodeId,
 			OpcUaNodeId& typeNodeId
+		);
+
+		bool addTypeChilds(
+			AddNodeRule& addNodeRule,
+			BaseNodeClass::SPtr& parentNodeClass,
+			BaseNodeClass::SPtr& cloneNodeClass
 		);
 
 	  private:
