@@ -218,18 +218,34 @@ namespace OpcUaStackServer
 		typeNodeClass->getWriteMask(userWriteMask);
 		variableNodeClass->setWriteMask(userWriteMask);
 
-#if 0
-		ValueAttribute value_;
-		DataTypeAttribute dataType_;
-		ValueRankAttribute valueRank_;
-		AccessLevelAttribute accessLevel_;
-		UserAccessLevelAttribute userAccessLevel_;
-		HistorizingAttribute historizing_;
+		if (!typeNodeClass->isNullValue()) {
+			OpcUaDataValue value;
+			typeNodeClass->getValue(value);
+			variableNodeClass->setValue(value);
+		}
 
-		// attributes optional
-		ArrayDimensionsAttribute arrayDimensions_;
-		MinimumSamplingIntervalAttribute minimumSamplingInterval_;
-#endif
+		if (!typeNodeClass->isNullArrayDimensions()) {
+			OpcUaUInt32Array arrayDimensions;
+			typeNodeClass->getArrayDimensions(arrayDimensions);
+			variableNodeClass->setArrayDimensions(arrayDimensions);
+		}
+
+		OpcUaNodeId dataType;
+		typeNodeClass->getDataType(dataType);
+		variableNodeClass->setDataType(dataType);
+
+		OpcUaInt32 valueRank;
+		typeNodeClass->getValueRank(valueRank);
+		variableNodeClass->setValueRank(valueRank);
+
+		OpcUaByte accessLevel = 0;
+		variableNodeClass->setAccessLevel(accessLevel);
+
+		OpcUaByte userAccessLevel = 0;
+		variableNodeClass->setUserAccessLevel(userAccessLevel);
+
+		OpcUaBoolean historizing = false;;
+		variableNodeClass->setHistorizing(historizing);
 
 		//
 		// added type definition
