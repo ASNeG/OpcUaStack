@@ -55,7 +55,9 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		//
 		// get parent node class
+		//
 		BaseNodeClass::SPtr parentNodeClass;
 		parentNodeClass = informationModel_->find(parentNodeId);
 		if (parentNodeClass.get() == nullptr) {
@@ -64,7 +66,9 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		//
 		// get type node class
+		//
 		BaseNodeClass::SPtr typeNodeClass;
 		typeNodeClass = informationModel_->find(typeNodeId);
 		if (typeNodeClass.get() == nullptr) {
@@ -73,7 +77,9 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		//
 		// get reference node class
+		//
 		BaseNodeClass::SPtr referenceNodeClass;
 		referenceNodeClass = informationModel_->find(referenceNodeId);
 		if (referenceNodeClass.get() == nullptr) {
@@ -82,7 +88,9 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		//
 		// create new object node and add the attributes
+		//
 		ObjectNodeClass::SPtr objectNodeClass = constructSPtr<ObjectNodeClass>();
 		objectNodeClass->setNodeId(nodeId);
 		objectNodeClass->setBrowseName(browseName);
@@ -103,6 +111,23 @@ namespace OpcUaStackServer
 		OpcUaByte eventNotifier;
 		typeNodeClass->getEventNotifier(eventNotifier);
 		objectNodeClass->setEventNotifier(eventNotifier);
+
+		//
+		// added type definition
+		//
+		objectNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		typeNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, false, nodeId);
+
+		//
+		// added reference to parent
+		//
+		parentNodeClass->referenceItemMap().add(referenceNodeId, true, nodeId);
+		objectNodeClass->referenceItemMap().add(referenceNodeId, false, parentNodeId);
+
+		//
+		// added node to information model
+		//
+		informationModel_->insert(objectNodeClass);
 
 		return true;
 	}
