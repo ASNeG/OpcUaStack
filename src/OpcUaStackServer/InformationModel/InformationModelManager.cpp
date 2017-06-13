@@ -56,6 +56,17 @@ namespace OpcUaStackServer
 	)
 	{
 		//
+		// check, if node already exist
+		//
+		BaseNodeClass::SPtr baseNodeClass;
+		baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() != NULL) {
+			Log(Error, "node id already exist in information model")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
+		//
 		// get parent node class
 		//
 		BaseNodeClass::SPtr parentNodeClass;
