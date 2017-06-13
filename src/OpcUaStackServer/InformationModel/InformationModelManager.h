@@ -63,13 +63,14 @@ namespace OpcUaStackServer
 			OpcUaNodeId& typeNodeId
 		);
 
+	  private:
 		bool addTypeChilds(
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneNodeClass
 		);
 
-	  private:
+
 		InformationModel::SPtr informationModel_;
 	};
 
