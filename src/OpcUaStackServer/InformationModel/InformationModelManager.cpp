@@ -79,11 +79,37 @@ namespace OpcUaStackServer
 		OpcUaNodeId& nodeId,
 		OpcUaLocalizedText& displayName,
 		OpcUaQualifiedName& browseName,
-		OpcUaNodeId& referenceType,
-		OpcUaNodeId& nodeType
+		OpcUaNodeId& referenceNodeId,
+		OpcUaNodeId& typeNodeId
 	)
 	{
-		// FIXME: todo
+		// get parent node class
+		BaseNodeClass::SPtr parentNodeClass;
+		parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "parent node id not exist in information model")
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+		// get type node class
+		BaseNodeClass::SPtr typeNodeClass;
+		typeNodeClass = informationModel_->find(typeNodeId);
+		if (typeNodeClass.get() == nullptr) {
+			Log(Error, "type node id not exist in information model")
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
+		}
+
+		// get reference node class
+		BaseNodeClass::SPtr referenceNodeClass;
+		referenceNodeClass = informationModel_->find(referenceNodeId);
+		if (referenceNodeClass.get() == nullptr) {
+			Log(Error, "reference node id not exist in information model")
+				.parameter("ReferenceNodeId", referenceNodeId);
+			return false;
+		}
+
 		return true;
 	}
 

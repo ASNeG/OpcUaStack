@@ -66,8 +66,8 @@ namespace OpcUaStackServer
 			OpcUaNodeId& nodeId,
 			OpcUaLocalizedText& displayName,
 			OpcUaQualifiedName& browseName,
-			OpcUaNodeId& referenceType,
-			OpcUaNodeId& nodeType
+			OpcUaNodeId& referenceNodeId,
+			OpcUaNodeId& typeNodeId
 		);
 
 	  private:
