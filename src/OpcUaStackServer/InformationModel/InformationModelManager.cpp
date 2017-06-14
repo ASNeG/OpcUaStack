@@ -183,7 +183,6 @@ namespace OpcUaStackServer
 
 			OpcUaNodeId nodeId;
 			subtypeNodeClass->getNodeId(nodeId);
-			std::cout << "nodeId=" << nodeId << std::endl;
 
 			bool success = addTypeChilds(addNodeRule, baseNodeClass, subtypeNodeClass);
 			if (!success) {
@@ -341,7 +340,6 @@ namespace OpcUaStackServer
 
 			OpcUaNodeId nodeId;
 			subtypeNodeClass->getNodeId(nodeId);
-			std::cout << "nodeId=" << nodeId << std::endl;
 
 			bool success = addTypeChilds(addNodeRule, baseNodeClass, subtypeNodeClass);
 			if (!success) {
