@@ -325,9 +325,9 @@ namespace OpcUaStackServer
 	)
 	{
 		BaseNodeClass::Vec childBaseNodeClassVec;
-		ReferenceItem::Vec referenceItemVec;
+		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
 		InformationModelAccess ima(informationModel_);
-		ima.getChildHierarchically(cloneNodeClass, childBaseNodeClassVec, referenceItemVec);
+		ima.getChildHierarchically(cloneNodeClass, childBaseNodeClassVec, referenceTypeNodeIdVec);
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
 			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
 
@@ -342,7 +342,7 @@ namespace OpcUaStackServer
 						addNodeRule,
 						parentNodeClass,
 						childBaseNodeClass,
-						referenceItemVec[idx]
+						referenceTypeNodeIdVec[idx]
 					);
 					if (!success) return false;
 					break;
@@ -353,7 +353,7 @@ namespace OpcUaStackServer
 						addNodeRule,
 						parentNodeClass,
 						childBaseNodeClass,
-						referenceItemVec[idx]
+						referenceTypeNodeIdVec[idx]
 					);
 					if (!success) return false;
 					break;
@@ -364,7 +364,7 @@ namespace OpcUaStackServer
 						addNodeRule,
 						parentNodeClass,
 						childBaseNodeClass,
-						referenceItemVec[idx]
+						referenceTypeNodeIdVec[idx]
 					);
 					if (!success) return false;
 					break;
@@ -380,32 +380,12 @@ namespace OpcUaStackServer
 		AddNodeRule& addNodeRule,
 		BaseNodeClass::SPtr& parentNodeClass,
 		BaseNodeClass::SPtr& cloneBaseNodeClass,
-		ReferenceItem::SPtr& referenceItem
+		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
 		// clone node class
 		BaseNodeClass::SPtr baseNodeClass = cloneBaseNodeClass->clone();
 
-#if 0
-		//
-		// added type definition
-		//
-		variableNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
-		typeNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, false, nodeId);
-
-		//
-		// added reference to parent
-		//
-		parentNodeClass->referenceItemMap().add(referenceNodeId, true, nodeId);
-		variableNodeClass->referenceItemMap().add(referenceNodeId, false, parentNodeId);
-
-		//
-		// added node to information model
-		//
-		informationModel_->insert(variableNodeClass);
-
-		return true;
-#endif
 
 		return true;
 	}
@@ -416,7 +396,7 @@ namespace OpcUaStackServer
 		AddNodeRule& addNodeRule,
 		BaseNodeClass::SPtr& parentNodeClass,
 		BaseNodeClass::SPtr& cloneBaseNodeClass,
-		ReferenceItem::SPtr& referenceItem
+		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
 		//
@@ -463,8 +443,8 @@ namespace OpcUaStackServer
 		//
 		// added reference to parent
 		//
-		parentNodeClass->referenceItemMap().add(referenceItem->nodeId_, true, nodeId);
-		variableNodeClass->referenceItemMap().add(referenceItem->nodeId_, false, parentNodeId);
+		parentNodeClass->referenceItemMap().add(referenceTypeNodeId, true, nodeId);
+		variableNodeClass->referenceItemMap().add(referenceTypeNodeId, false, parentNodeId);
 
 		//
 		// added node to information model
@@ -479,7 +459,7 @@ namespace OpcUaStackServer
 		AddNodeRule& addNodeRule,
 		BaseNodeClass::SPtr& parentNodeClass,
 		BaseNodeClass::SPtr& cloneBaseNodeClass,
-		ReferenceItem::SPtr& referenceItem
+		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
 		// FIXME: todo

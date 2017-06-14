@@ -73,19 +73,19 @@ namespace OpcUaStackServer
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			ReferenceItem::SPtr& referenceItem
+			OpcUaNodeId& referenceTypeNodeId
 		);
 		bool addVariableNode(
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			ReferenceItem::SPtr& referenceItem
+			OpcUaNodeId& referenceTypeNodeId
 		);
 		bool addMethodNode(
 			AddNodeRule& addNodeRule,
 			BaseNodeClass::SPtr& parentNodeClass,
 			BaseNodeClass::SPtr& cloneBaseNodeClass,
-			ReferenceItem::SPtr& referenceItem
+			OpcUaNodeId& referenceTypeNodeId
 		);
 
 		InformationModel::SPtr informationModel_;
