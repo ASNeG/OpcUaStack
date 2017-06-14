@@ -557,26 +557,6 @@ namespace OpcUaStackServer
 		nodeId.set(id++, parentNodeId.namespaceIndex());
 		methodNodeClass->setNodeId(nodeId);
 
-#if 0
-		//
-		// get type node id
-		//
-		OpcUaNodeId typeNodeId;
-		InformationModelAccess ima(informationModel_);
-		ima.getType(cloneBaseNodeClass, typeNodeId);
-
-		//
-		// get type node class
-		//
-		BaseNodeClass::SPtr typeNodeClass;
-		typeNodeClass = informationModel_->find(typeNodeId);
-		if (typeNodeClass.get() == nullptr) {
-			Log(Error, "type node id not exist in information model")
-				.parameter("TypeNodeId", typeNodeId);
-			return false;
-		}
-#endif
-
 		//
 		// added childs
 		//
@@ -588,12 +568,6 @@ namespace OpcUaStackServer
 				.parameter("FunctionNodeId", "");
 			return false;
 		}
-
-		//
-		// added type definition
-		//
-		//methodNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
-		//typeNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, false, nodeId);
 
 		//
 		// added reference to parent
