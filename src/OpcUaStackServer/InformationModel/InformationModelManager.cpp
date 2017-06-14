@@ -417,7 +417,6 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	static uint32_t id = 1234;
 	bool
 	InformationModelManager::addObjectNode(
 		AddNodeRule& addNodeRule,
@@ -439,17 +438,16 @@ namespace OpcUaStackServer
 		parentNodeClass->getNodeId(parentNodeId);
 
 		//
-		// create unique node id ---- FIXME: todo
+		// create unique node id
 		//
-		OpcUaNodeId nodeId;
-		nodeId.set(id++, parentNodeId.namespaceIndex());
+		InformationModelAccess ima(informationModel_);
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(parentNodeId.namespaceIndex());
 		objectNodeClass->setNodeId(nodeId);
 
 		//
 		// get type node id
 		//
 		OpcUaNodeId typeNodeId;
-		InformationModelAccess ima(informationModel_);
 		ima.getType(cloneBaseNodeClass, typeNodeId);
 
 		//
@@ -516,17 +514,16 @@ namespace OpcUaStackServer
 		parentNodeClass->getNodeId(parentNodeId);
 
 		//
-		// create unique node id ---- FIXME: todo
+		// create unique node id
 		//
-		OpcUaNodeId nodeId;
-		nodeId.set(id++, parentNodeId.namespaceIndex());
+		InformationModelAccess ima(informationModel_);
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(parentNodeId.namespaceIndex());
 		variableNodeClass->setNodeId(nodeId);
 
 		//
 		// get type node id
 		//
 		OpcUaNodeId typeNodeId;
-		InformationModelAccess ima(informationModel_);
 		ima.getType(cloneBaseNodeClass, typeNodeId);
 
 		//
@@ -593,10 +590,10 @@ namespace OpcUaStackServer
 		parentNodeClass->getNodeId(parentNodeId);
 
 		//
-		// create unique node id ---- FIXME: todo
+		// create unique node id
 		//
-		OpcUaNodeId nodeId;
-		nodeId.set(id++, parentNodeId.namespaceIndex());
+		InformationModelAccess ima(informationModel_);
+		OpcUaNodeId nodeId = ima.createUniqueNodeId(parentNodeId.namespaceIndex());
 		methodNodeClass->setNodeId(nodeId);
 
 		//
