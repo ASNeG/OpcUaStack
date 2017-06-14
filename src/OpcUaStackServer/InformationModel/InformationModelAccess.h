@@ -46,6 +46,11 @@ namespace OpcUaStackServer
 		void informationModel(InformationModel::SPtr informationModel);
 
 		// --------------------------------------------------------------------
+		// helper function
+		// --------------------------------------------------------------------
+		OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
+
+		// --------------------------------------------------------------------
 		// node functions
 		// --------------------------------------------------------------------
 		bool rootNode(BaseNodeClass::SPtr& baseNodeClass, bool logOnError = true);
@@ -127,6 +132,7 @@ namespace OpcUaStackServer
 		bool containsNodeIds(InformationModel::SPtr informationModel, uint16_t namespaceIndex);
 
 	  private:
+		static uint32_t counter_;
 		InformationModel::SPtr informationModel_;
 	};
 

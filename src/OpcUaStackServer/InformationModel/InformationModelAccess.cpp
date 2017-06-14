@@ -25,6 +25,8 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+	uint32_t InformationModelAccess::counter_ = 1;
+
 	InformationModelAccess::InformationModelAccess(void)
 	: informationModel_()
 	{
@@ -43,6 +45,28 @@ namespace OpcUaStackServer
 	InformationModelAccess::informationModel(InformationModel::SPtr informationModel)
 	{
 		informationModel_ = informationModel;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// helper function
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaNodeId
+	InformationModelAccess::createUniqueNodeId(uint16_t namespaceIndex)
+	{
+		OpcUaNodeId nodeId;
+		BaseNodeClass::SPtr baseNode;
+
+		do {
+			nodeId.set(counter_++, namespaceIndex);
+
+			baseNode = informationModel_->find(nodeId);
+		} while (baseNode.get() != nullptr);
+
+		return nodeId;
 	}
 
 	// ------------------------------------------------------------------------
