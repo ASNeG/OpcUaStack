@@ -700,12 +700,13 @@ namespace OpcUaStackServer
 					.parameter("SubTypeNode", "");
 				return false;
 			}
+			return true;
 		}
 
 		Log(Warning, "HasSubTypeDefinition backward reference not exist in node")
 			.parameter("NodeId", baseNodeClass->nodeId());
 
-		return true;
+		return false;
 	}
 
 	bool
