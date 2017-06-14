@@ -159,6 +159,44 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::getChildHierarchically(
+		BaseNodeClass::SPtr baseNodeClass,
+		BaseNodeClass::Vec& childBaseNodeClassVec,
+		std::vector<OpcUaNodeId>& referenceTypeNodeIdVec
+	)
+	{
+		childBaseNodeClassVec.clear();
+		referenceTypeNodeIdVec.clear();
+
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			OpcUaNodeId referenceTypeNodeId = it->first;
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+
+			if (!isReferenceHierarchically(it->first)) continue;
+
+			if (informationModel_.get() == nullptr) return false;
+			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
+			if (childBaseNodeClass.get() == nullptr) {
+				Log(Warning, "child node not found in information model")
+					.parameter("ParentNodeId", baseNodeClass->getNodeId())
+					.parameter("ChildNodeId", referenceItem->nodeId_);
+				return false;
+			}
+
+			childBaseNodeClassVec.push_back(childBaseNodeClass);
+			referenceTypeNodeIdVec.push_back(referenceTypeNodeId);
+		}
+		return true;
+	}
+
+	bool
 	InformationModelAccess::getChildNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
 		childBaseNodeClassVec.clear();
