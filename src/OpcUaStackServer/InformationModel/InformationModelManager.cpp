@@ -430,8 +430,7 @@ namespace OpcUaStackServer
 		// get unique node id
 		//
 		OpcUaNodeId nodeId;
-		variableNodeClass->getNodeId(nodeId);
-		nodeId.set(id++, nodeId.namespaceIndex());
+		nodeId.set(id++, parentNodeId.namespaceIndex());
 		variableNodeClass->setNodeId(nodeId);
 
 		//
