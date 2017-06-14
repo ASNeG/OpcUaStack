@@ -375,6 +375,7 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	static uint32_t id = 1234;
 	bool
 	InformationModelManager::addObjectNode(
 		AddNodeRule& addNodeRule,
@@ -383,14 +384,75 @@ namespace OpcUaStackServer
 		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
+		//
 		// clone node class
-		BaseNodeClass::SPtr baseNodeClass = cloneBaseNodeClass->clone();
+		//
+		BaseNodeClass::SPtr objectNodeClass = cloneBaseNodeClass->clone();
+		objectNodeClass->referenceItemMap().referenceItemMultiMap().clear();
 
+		//
+		// get parent node id
+		//
+		OpcUaNodeId parentNodeId;
+		parentNodeClass->getNodeId(parentNodeId);
+
+		//
+		// create unique node id ---- FIXME: todo
+		//
+		OpcUaNodeId nodeId;
+		nodeId.set(id++, parentNodeId.namespaceIndex());
+		objectNodeClass->setNodeId(nodeId);
+
+		//
+		// get type node id
+		//
+		OpcUaNodeId typeNodeId;
+		InformationModelAccess ima(informationModel_);
+		ima.getType(cloneBaseNodeClass, typeNodeId);
+
+		//
+		// get type node class
+		//
+		BaseNodeClass::SPtr typeNodeClass;
+		typeNodeClass = informationModel_->find(typeNodeId);
+		if (typeNodeClass.get() == nullptr) {
+			Log(Error, "type node id not exist in information model")
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
+		}
+
+		//
+		// added childs
+		//
+		BaseNodeClass::SPtr tmpVariableNodeClass = objectNodeClass;
+		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, typeNodeClass);
+		if (!success) {
+			Log(Error, "create childs error")
+				.parameter("NodeId", nodeId)
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
+		}
+
+		//
+		// added type definition
+		//
+		objectNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, true, typeNodeId);
+		typeNodeClass->referenceItemMap().add(ReferenceType_HasTypeDefinition, false, nodeId);
+
+		//
+		// added reference to parent
+		//
+		parentNodeClass->referenceItemMap().add(referenceTypeNodeId, true, nodeId);
+		objectNodeClass->referenceItemMap().add(referenceTypeNodeId, false, parentNodeId);
+
+		//
+		// added node to information model
+		//
+		informationModel_->insert(objectNodeClass);
 
 		return true;
 	}
 
-	static uint32_t id = 1234;
 	bool
 	InformationModelManager::addVariableNode(
 		AddNodeRule& addNodeRule,
