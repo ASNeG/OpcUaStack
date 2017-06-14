@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <sstream>
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
@@ -64,6 +65,32 @@ namespace OpcUaStackServer
 			nodeId.set(counter_++, namespaceIndex);
 
 			baseNode = informationModel_->find(nodeId);
+		} while (baseNode.get() != nullptr);
+
+		return nodeId;
+	}
+
+	OpcUaNodeId
+	InformationModelAccess::createUniqueNodeId(const std::string& namespaceName, uint16_t namespaceIndex)
+	{
+		uint32_t idx = 0;
+		OpcUaNodeId nodeId;
+		BaseNodeClass::SPtr baseNode;
+
+		do {
+			std::stringstream ss;
+
+			if (idx == 0) {
+				ss << namespaceName;
+			}
+			else {
+				ss << namespaceName << "_" << idx;
+			}
+
+			nodeId.set(ss.str(), namespaceIndex);
+			baseNode = informationModel_->find(nodeId);
+
+			idx++;
 		} while (baseNode.get() != nullptr);
 
 		return nodeId;

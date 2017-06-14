@@ -49,6 +49,7 @@ namespace OpcUaStackServer
 		// helper function
 		// --------------------------------------------------------------------
 		OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
+		OpcUaNodeId createUniqueNodeId(const std::string& namespaceName, uint16_t namespaceIndex);
 
 		// --------------------------------------------------------------------
 		// node functions
