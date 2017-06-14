@@ -400,10 +400,23 @@ namespace OpcUaStackServer
 	)
 	{
 		//
+		// clone node class
+		//
+		BaseNodeClass::SPtr variableNodeClass = cloneBaseNodeClass->clone();
+		variableNodeClass->referenceItemMap().referenceItemMultiMap().clear();
+
+		//
 		// get parent node id
 		//
 		OpcUaNodeId parentNodeId;
 		parentNodeClass->getNodeId(parentNodeId);
+
+		//
+		// create unique node id ---- FIXME: todo
+		//
+		OpcUaNodeId nodeId;
+		nodeId.set(id++, parentNodeId.namespaceIndex());
+		variableNodeClass->setNodeId(nodeId);
 
 		//
 		// get type node id
@@ -423,15 +436,17 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// clone node class
-		BaseNodeClass::SPtr variableNodeClass = cloneBaseNodeClass->clone();
-
 		//
-		// get unique node id
+		// added childs
 		//
-		OpcUaNodeId nodeId;
-		nodeId.set(id++, parentNodeId.namespaceIndex());
-		variableNodeClass->setNodeId(nodeId);
+		BaseNodeClass::SPtr tmpVariableNodeClass = variableNodeClass;
+		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, typeNodeClass);
+		if (!success) {
+			Log(Error, "create childs error")
+				.parameter("NodeId", nodeId)
+				.parameter("TypeNodeId", typeNodeId);
+			return false;
+		}
 
 		//
 		// added type definition
