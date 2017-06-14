@@ -332,6 +332,28 @@ namespace OpcUaStackServer
 		variableNodeClass->referenceItemMap().add(referenceNodeId, false, parentNodeId);
 
 		//
+		// check subtype reference
+		//
+		baseNodeClass = variableNodeClass;
+		InformationModelAccess ima(informationModel_);
+		BaseNodeClass::SPtr subtypeNodeClass;
+		while (ima.getSubType(typeNodeClass, subtypeNodeClass)) {
+
+			OpcUaNodeId nodeId;
+			subtypeNodeClass->getNodeId(nodeId);
+			std::cout << "nodeId=" << nodeId << std::endl;
+
+			bool success = addTypeChilds(addNodeRule, baseNodeClass, subtypeNodeClass);
+			if (!success) {
+				Log(Error, "create childs error")
+					.parameter("NodeId", nodeId)
+					.parameter("TypeNodeId", typeNodeId);
+				return false;
+			}
+			typeNodeClass = subtypeNodeClass;
+		}
+
+		//
 		// added node to information model
 		//
 		informationModel_->insert(variableNodeClass);
