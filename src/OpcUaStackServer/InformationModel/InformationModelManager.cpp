@@ -425,7 +425,7 @@ namespace OpcUaStackServer
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpVariableNodeClass = objectNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, typeNodeClass);
+		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
 		if (!success) {
 			Log(Error, "create childs error")
 				.parameter("NodeId", nodeId)
@@ -502,7 +502,7 @@ namespace OpcUaStackServer
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpVariableNodeClass = variableNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, typeNodeClass);
+		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
 		if (!success) {
 			Log(Error, "create childs error")
 				.parameter("NodeId", nodeId)
