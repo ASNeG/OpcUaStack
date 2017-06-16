@@ -36,11 +36,51 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AddNodeRule::AddNodeRule(void)
+	: informationModel_()
+	, nodeIdMode_(UniqueString)
+	, prefix_("")
 	{
 	}
 
 	AddNodeRule::~AddNodeRule(void)
 	{
+	}
+
+	void
+	AddNodeRule::informationModel(InformationModel::SPtr& informationModel)
+	{
+		informationModel_ = informationModel;
+	}
+
+	void
+	AddNodeRule::nodeIdMode(NodeIdMode nodeIdMode)
+	{
+		nodeIdMode_ = nodeIdMode;
+	}
+
+	AddNodeRule::NodeIdMode
+	AddNodeRule::nodeIdMode(void)
+	{
+		return nodeIdMode_;
+	}
+
+	void
+	AddNodeRule::prefix(const std::string& prefix)
+	{
+		prefix_ = prefix;
+	}
+
+	std::string&
+	AddNodeRule::prefix(void)
+	{
+		return prefix_;
+	}
+
+	OpcUaNodeId
+	AddNodeRule::createUniqueNodeId(void)
+	{
+		OpcUaNodeId nodeId;
+		return nodeId;
 	}
 
 	// ------------------------------------------------------------------------

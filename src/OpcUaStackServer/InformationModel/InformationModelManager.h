@@ -28,8 +28,25 @@ namespace OpcUaStackServer
     class DLLEXPORT AddNodeRule
     {
       public:
+    	typedef enum {
+    		UniqueNumber,
+    		UniqueString
+    	} NodeIdMode;
+
     	AddNodeRule(void);
     	~AddNodeRule(void);
+
+    	void informationModel(InformationModel::SPtr& informationModel);
+    	void nodeIdMode(NodeIdMode nodeIdMode);
+    	NodeIdMode nodeIdMode(void);
+    	void prefix(const std::string& prefix);
+    	std::string& prefix(void);
+    	OpcUaNodeId createUniqueNodeId(void);
+
+      private:
+    	InformationModel::SPtr informationModel_;
+    	NodeIdMode nodeIdMode_;
+    	std::string prefix_;
     };
 
 	class DLLEXPORT InformationModelManager
