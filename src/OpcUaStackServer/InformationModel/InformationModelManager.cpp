@@ -38,6 +38,7 @@ namespace OpcUaStackServer
 	AddNodeRule::AddNodeRule(void)
 	: informationModel_()
 	, nodeIdMode_(UniqueString)
+	, displayPath_("")
 	{
 	}
 
@@ -63,13 +64,20 @@ namespace OpcUaStackServer
 		return nodeIdMode_;
 	}
 
+	void
+	AddNodeRule::displayName(const std::string& displayName)
+	{
+		displayPath_ = displayPath_ + "." + displayName;
+	}
+
 	OpcUaNodeId
 	AddNodeRule::createUniqueNodeId(uint16_t namespaceIndex)
 	{
 		OpcUaNodeId nodeId;
 
 		if (nodeIdMode_ == UniqueString) {
-
+			InformationModelAccess ima(informationModel_);
+			OpcUaNodeId nodeId = ima.createUniqueNodeId(displayPath_, namespaceIndex);
 		}
 		else {
 			InformationModelAccess ima(informationModel_);
