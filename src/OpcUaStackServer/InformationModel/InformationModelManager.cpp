@@ -65,9 +65,11 @@ namespace OpcUaStackServer
 	}
 
 	void
-	AddNodeRule::displayName(const std::string& displayName)
+	AddNodeRule::displayName(OpcUaLocalizedText& displayName)
 	{
-		displayPath_ = displayPath_ + "." + displayName;
+		std::string text;
+		displayName.text().value(text);
+		displayPath_ = displayPath_ + "." + text;
 	}
 
 	OpcUaNodeId

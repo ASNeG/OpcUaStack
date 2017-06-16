@@ -40,7 +40,7 @@ namespace OpcUaStackServer
     	void nodeIdMode(NodeIdMode nodeIdMode);
     	NodeIdMode nodeIdMode(void);
     	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
-    	void displayName(const std::string& displayName);
+    	void displayName(OpcUaLocalizedText& displayName);
 
       private:
     	std::string displayPath_;
