@@ -39,14 +39,11 @@ namespace OpcUaStackServer
     	void informationModel(InformationModel::SPtr& informationModel);
     	void nodeIdMode(NodeIdMode nodeIdMode);
     	NodeIdMode nodeIdMode(void);
-    	void prefix(const std::string& prefix);
-    	std::string& prefix(void);
-    	OpcUaNodeId createUniqueNodeId(void);
+    	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
 
       private:
     	InformationModel::SPtr informationModel_;
     	NodeIdMode nodeIdMode_;
-    	std::string prefix_;
     };
 
 	class DLLEXPORT InformationModelManager

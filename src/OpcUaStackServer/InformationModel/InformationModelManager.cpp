@@ -38,7 +38,6 @@ namespace OpcUaStackServer
 	AddNodeRule::AddNodeRule(void)
 	: informationModel_()
 	, nodeIdMode_(UniqueString)
-	, prefix_("")
 	{
 	}
 
@@ -64,22 +63,19 @@ namespace OpcUaStackServer
 		return nodeIdMode_;
 	}
 
-	void
-	AddNodeRule::prefix(const std::string& prefix)
-	{
-		prefix_ = prefix;
-	}
-
-	std::string&
-	AddNodeRule::prefix(void)
-	{
-		return prefix_;
-	}
-
 	OpcUaNodeId
-	AddNodeRule::createUniqueNodeId(void)
+	AddNodeRule::createUniqueNodeId(uint16_t namespaceIndex)
 	{
 		OpcUaNodeId nodeId;
+
+		if (nodeIdMode_ == UniqueString) {
+
+		}
+		else {
+			InformationModelAccess ima(informationModel_);
+			OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex);
+		}
+
 		return nodeId;
 	}
 
@@ -121,6 +117,8 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		addNodeRule.informationModel(informationModel_);
+
 		//
 		// check, if node already exist
 		//
@@ -253,6 +251,8 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		addNodeRule.informationModel(informationModel_);
+
 		//
 		// check, if node already exist
 		//
@@ -480,14 +480,14 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		InformationModelAccess ima(informationModel_);
-		OpcUaNodeId nodeId = ima.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		objectNodeClass->setNodeId(nodeId);
 
 		//
 		// get type node id
 		//
 		OpcUaNodeId typeNodeId;
+		InformationModelAccess ima(informationModel_);
 		ima.getType(cloneBaseNodeClass, typeNodeId);
 
 		//
@@ -556,14 +556,14 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		InformationModelAccess ima(informationModel_);
-		OpcUaNodeId nodeId = ima.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		variableNodeClass->setNodeId(nodeId);
 
 		//
 		// get type node id
 		//
 		OpcUaNodeId typeNodeId;
+		InformationModelAccess ima(informationModel_);
 		ima.getType(cloneBaseNodeClass, typeNodeId);
 
 		//
@@ -632,8 +632,8 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		InformationModelAccess ima(informationModel_);
-		OpcUaNodeId nodeId = ima.createUniqueNodeId(parentNodeId.namespaceIndex());
+
+		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		methodNodeClass->setNodeId(nodeId);
 
 		//
