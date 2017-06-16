@@ -34,13 +34,19 @@ namespace OpcUaStackServer
     	} NodeIdMode;
 
     	AddNodeRule(void);
+    	AddNodeRule(AddNodeRule& addNodeRule);
+    	AddNodeRule(AddNodeRule& addNodeRule, OpcUaLocalizedText& displayName);
     	~AddNodeRule(void);
 
     	void informationModel(InformationModel::SPtr& informationModel);
+    	InformationModel::SPtr& informationModel(void);
     	void nodeIdMode(NodeIdMode nodeIdMode);
     	NodeIdMode nodeIdMode(void);
-    	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
+    	void displayPath(const std::string& displayPath);
+    	std::string& displayPath(void);
     	void displayName(OpcUaLocalizedText& displayName);
+
+    	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
 
       private:
     	std::string displayPath_;

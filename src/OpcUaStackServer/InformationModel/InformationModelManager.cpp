@@ -42,6 +42,21 @@ namespace OpcUaStackServer
 	{
 	}
 
+	AddNodeRule::AddNodeRule(AddNodeRule& addNodeRule)
+	: informationModel_(addNodeRule.informationModel())
+	, nodeIdMode_(addNodeRule.nodeIdMode())
+	, displayPath_(addNodeRule.displayPath())
+	{
+	}
+
+	AddNodeRule::AddNodeRule(AddNodeRule& addNodeRule, OpcUaLocalizedText& displayName)
+	: informationModel_(addNodeRule.informationModel())
+	, nodeIdMode_(addNodeRule.nodeIdMode())
+	, displayPath_(addNodeRule.displayPath())
+	{
+		this->displayName(displayName);
+	}
+
 	AddNodeRule::~AddNodeRule(void)
 	{
 	}
@@ -50,6 +65,12 @@ namespace OpcUaStackServer
 	AddNodeRule::informationModel(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
+	}
+
+	InformationModel::SPtr&
+	AddNodeRule::informationModel(void)
+	{
+		return informationModel_;
 	}
 
 	void
@@ -62,6 +83,18 @@ namespace OpcUaStackServer
 	AddNodeRule::nodeIdMode(void)
 	{
 		return nodeIdMode_;
+	}
+
+	void
+	AddNodeRule::displayPath(const std::string& displayPath)
+	{
+		displayPath_ = displayPath;
+	}
+
+	std::string&
+	AddNodeRule::displayPath(void)
+	{
+		return displayPath_;
 	}
 
 	void
