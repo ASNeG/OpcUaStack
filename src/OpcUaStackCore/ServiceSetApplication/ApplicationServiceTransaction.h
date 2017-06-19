@@ -30,6 +30,10 @@
 #include "OpcUaStackCore/ServiceSetApplication/GetNodeReferenceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/NamespaceInfoResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateNodeInstanceRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/CreateNodeInstanceResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -68,6 +72,20 @@ namespace OpcUaStackCore
 		OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary,
 		OpcUaId_NamespaceInfoResponse_Encoding_DefaultBinary
 	> ServiceTransactionNamespaceInfo;
+
+	typedef ServiceTransactionTemplate<
+		CreateNodeInstanceRequest,
+		CreateNodeInstanceResponse,
+		OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary,
+		OpcUaId_CreateNodeInstanceResponse_Encoding_DefaultBinary
+	> ServiceTransactionCreateNodeInstances;
+
+	typedef ServiceTransactionTemplate<
+		DelNodeInstanceRequest,
+		DelNodeInstanceResponse,
+		OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary,
+		OpcUaId_DelNodeInstanceResponse_Encoding_DefaultBinary
+	> ServiceTransactionDelNodeInstances;
 
 }
 
