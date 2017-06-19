@@ -56,6 +56,12 @@ namespace OpcUaStackServer
 			case OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary:
 				receiveNamespaceInfoRequest(serviceTransaction);
 				break;
+			case OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary:
+				receiveCreateNodeInstanceRequest(serviceTransaction);
+				break;
+			case OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary:
+				receiveDelNodeInstanceRequest(serviceTransaction);
+				break;
 			default:
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
@@ -289,6 +295,40 @@ namespace OpcUaStackServer
 			namespaceInfoResponse->index2NamespaceMap().insert(std::make_pair(idx, namespaceName));
 			namespaceInfoResponse->namespace2IndexMap().insert(std::make_pair(namespaceName, idx));
 		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveCreateNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionCreateNodeInstance::SPtr trx = boost::static_pointer_cast<ServiceTransactionCreateNodeInstance>(serviceTransaction);
+
+		CreateNodeInstanceRequest::SPtr createNodeInstanceRequest = trx->request();
+		CreateNodeInstanceResponse::SPtr createNodeInstanceResponse = trx->response();
+
+		Log(Debug, "application service create node instance request")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		// FIXME: todo
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveDelNodeInstanceRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionDelNodeInstance::SPtr trx = boost::static_pointer_cast<ServiceTransactionDelNodeInstance>(serviceTransaction);
+
+		DelNodeInstanceRequest::SPtr delNodeInstanceRequest = trx->request();
+		DelNodeInstanceResponse::SPtr delNodeInstanceResponse = trx->response();
+
+		Log(Debug, "application service del node instance request")
+			.parameter("Trx", serviceTransaction->transactionId());
+
+		// FIXME: todo
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);

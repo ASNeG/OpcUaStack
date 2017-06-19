@@ -78,14 +78,14 @@ namespace OpcUaStackCore
 		CreateNodeInstanceResponse,
 		OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary,
 		OpcUaId_CreateNodeInstanceResponse_Encoding_DefaultBinary
-	> ServiceTransactionCreateNodeInstances;
+	> ServiceTransactionCreateNodeInstance;
 
 	typedef ServiceTransactionTemplate<
 		DelNodeInstanceRequest,
 		DelNodeInstanceResponse,
 		OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary,
 		OpcUaId_DelNodeInstanceResponse_Encoding_DefaultBinary
-	> ServiceTransactionDelNodeInstances;
+	> ServiceTransactionDelNodeInstance;
 
 }
 
