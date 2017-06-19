@@ -523,7 +523,12 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaLocalizedText displayName;
+		objectNodeClass->getDisplayName(displayName);
+		AddNodeRule actAddNodeRule(addNodeRule, displayName);
+
+
+		OpcUaNodeId nodeId = actAddNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		objectNodeClass->setNodeId(nodeId);
 
 		//
@@ -548,7 +553,7 @@ namespace OpcUaStackServer
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpVariableNodeClass = objectNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
+		bool success = addTypeChilds(actAddNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
 		if (!success) {
 			Log(Error, "create childs error")
 				.parameter("NodeId", nodeId)
@@ -599,7 +604,11 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaLocalizedText displayName;
+		variableNodeClass->getDisplayName(displayName);
+		AddNodeRule actAddNodeRule(addNodeRule, displayName);
+
+		OpcUaNodeId nodeId = actAddNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		variableNodeClass->setNodeId(nodeId);
 
 		//
@@ -624,7 +633,7 @@ namespace OpcUaStackServer
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpVariableNodeClass = variableNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
+		bool success = addTypeChilds(actAddNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
 		if (!success) {
 			Log(Error, "create childs error")
 				.parameter("NodeId", nodeId)
@@ -675,15 +684,18 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
+		OpcUaLocalizedText displayName;
+		methodNodeClass->getDisplayName(displayName);
+		AddNodeRule actAddNodeRule(addNodeRule, displayName);
 
-		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaNodeId nodeId = actAddNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		methodNodeClass->setNodeId(nodeId);
 
 		//
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpMethodNodeClass = methodNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpMethodNodeClass, cloneBaseNodeClass);
+		bool success = addTypeChilds(actAddNodeRule, tmpMethodNodeClass, cloneBaseNodeClass);
 		if (!success) {
 			Log(Error, "create childs error")
 				.parameter("NodeId", nodeId)
