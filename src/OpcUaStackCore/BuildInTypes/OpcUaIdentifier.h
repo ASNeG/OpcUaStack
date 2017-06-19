@@ -2060,6 +2060,10 @@
 #define OpcUaId_RegisterForwardGlobalResponse_Encoding_DefaultBinary 	1000007
 #define OpcUaId_RegisterForwardMethodRequest_Encoding_DefaultBinary 	1000008
 #define OpcUaId_RegisterForwardMethodResponse_Encoding_DefaultBinary 	1000009
+#define OpcUaId_CreateNodeInstanceRequest_Encoding_DefaultBinary 		1000010
+#define OpcUaId_CreateNodeInstanceResponse_Encoding_DefaultBinary 		1000011
+#define OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary 			1000012
+#define OpcUaId_DelNodeInstanceResponse_Encoding_DefaultBinary 			1000013
 
 #include <map>
 #include <stdint.h>
