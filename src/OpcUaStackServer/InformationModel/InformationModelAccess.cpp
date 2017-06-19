@@ -730,6 +730,16 @@ namespace OpcUaStackServer
 	bool
 	InformationModelAccess::getSubType(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::SPtr& subTypeBaseNodeClass)
 	{
+		OpcUaNodeId nodeId;
+		baseNodeClass->getNodeId(nodeId);
+
+		// base type nodes do not have a sub type
+		if (nodeId == OpcUaNodeId(58)) return false;
+		if (nodeId == OpcUaNodeId(24)) return false;
+		if (nodeId == OpcUaNodeId(2041)) return false;
+		if (nodeId == OpcUaNodeId(31)) return false;
+		if (nodeId == OpcUaNodeId(62)) return false;
+
 		std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> it;
 		it = baseNodeClass->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasSubtypeTypeNodeId());
 		if (it.first == it.second) {
