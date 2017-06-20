@@ -108,6 +108,11 @@ namespace OpcUaStackServer
 			OpcUaQualifiedName& browseName
 		);
 
+		bool delNode(
+			OpcUaNodeId& nodeId,
+			bool recursive = true
+		);
+
 	  private:
 		bool addTypeChilds(
 			AddNodeRule& addNodeRule,

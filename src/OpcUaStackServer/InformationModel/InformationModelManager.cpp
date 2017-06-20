@@ -539,6 +539,16 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelManager::delNode(
+		OpcUaNodeId& nodeId,
+		bool recursive
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
 	InformationModelManager::addTypeChilds(
 		AddNodeRule& addNodeRule,
 		BaseNodeClass::SPtr& parentNodeClass,
