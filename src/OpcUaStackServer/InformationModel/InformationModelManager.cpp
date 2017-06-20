@@ -23,6 +23,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -537,11 +538,15 @@ namespace OpcUaStackServer
        	objectTypeNodeClass->setUserWriteMask(0);
     	objectTypeNodeClass->setIsAbstract(isAbstract);
 
-        //
-        // insert data type node into information model
-        //
+    	//
+    	// create subtype reference
+    	//
         objectTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
         parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+        //
+        // insert node into information model
+        //
         if (!informationModel_->insert(objectTypeNodeClass)) {
 			Log(Error, "add object type node error")
 				.parameter("NodeId", nodeId);
@@ -559,7 +564,50 @@ namespace OpcUaStackServer
 		OpcUaQualifiedName& browseName
 	)
 	{
-		// FIXME: todo
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+		OpcUaNodeId dataType(OpcUaId_Double);
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add variable type node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+	    //
+	    // create variable type node
+	    //
+	    VariableTypeNodeClass::SPtr variableTypeNodeClass = constructSPtr<VariableTypeNodeClass>();
+	    variableTypeNodeClass->setNodeId(nodeId);
+	    variableTypeNodeClass->setBrowseName(browseName);
+	    variableTypeNodeClass->setDisplayName(displayName);
+	    variableTypeNodeClass->setDescription(description);
+	    variableTypeNodeClass->setWriteMask(0);
+	    variableTypeNodeClass->setUserWriteMask(0);
+	    variableTypeNodeClass->setIsAbstract(isAbstract);
+	    variableTypeNodeClass->setDataType(dataType);
+	    //variableTypeNodeClass->setValueRank();
+
+	   	//
+	    // create subtype reference
+	    //
+	    variableTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
+	    parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+	    //
+	    // insert node into information model
+	    //
+	    if (!informationModel_->insert(variableTypeNodeClass)) {
+			Log(Error, "add variable type node error")
+				.parameter("NodeId", nodeId);
+	        return false;
+	    }
+
 		return true;
 	}
 
