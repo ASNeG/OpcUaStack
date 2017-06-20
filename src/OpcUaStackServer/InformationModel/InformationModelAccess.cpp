@@ -148,9 +148,15 @@ namespace OpcUaStackServer
 			if (!referenceItem->isForward_) continue;
 			BaseNodeClass::SPtr childBaseNodeClass = informationModel_->find(referenceItem->nodeId_);
 			if (childBaseNodeClass.get() == nullptr) {
+				OpcUaNodeId parentNodeId;
+				OpcUaNodeId childNodeId;
+
+				baseNodeClass->getNodeId(parentNodeId);
+				childNodeId = referenceItem->nodeId_;
+
 				Log(Warning, "child node not found in information model")
-					.parameter("ParentNodeId", baseNodeClass->getNodeId())
-					.parameter("ChildNodeId", referenceItem->nodeId_);
+					.parameter("ParentNodeId", parentNodeId)
+					.parameter("ChildNodeId", childNodeId);
 				return false;
 			}
 			childBaseNodeClassVec.push_back(childBaseNodeClass);

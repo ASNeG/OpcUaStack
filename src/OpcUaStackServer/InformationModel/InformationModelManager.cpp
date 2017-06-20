@@ -112,11 +112,11 @@ namespace OpcUaStackServer
 
 		if (nodeIdMode_ == UniqueString) {
 			InformationModelAccess ima(informationModel_);
-			OpcUaNodeId nodeId = ima.createUniqueNodeId(displayPath_, namespaceIndex);
+			nodeId = ima.createUniqueNodeId(displayPath_, namespaceIndex);
 		}
 		else {
 			InformationModelAccess ima(informationModel_);
-			OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex);
+			nodeId = ima.createUniqueNodeId(namespaceIndex);
 		}
 
 		return nodeId;
@@ -160,6 +160,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		Log(Debug, "added object node")
+			.parameter("NodeId", nodeId)
+			.parameter("TypeNodeId", typeNodeId);
+
 		addNodeRule.informationModel(informationModel_);
 
 		//
@@ -278,7 +282,11 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(objectNodeClass);
+		if (!informationModel_->insert(objectNodeClass)) {
+			Log(Error, "add object node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
 
 		return true;
 	}
@@ -294,6 +302,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		Log(Debug, "added variable node")
+			.parameter("NodeId", nodeId)
+			.parameter("TypeNodeId", typeNodeId);
+
 		addNodeRule.informationModel(informationModel_);
 
 		//
@@ -437,7 +449,11 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(variableNodeClass);
+		if (!informationModel_->insert(variableNodeClass)) {
+			Log(Error, "add variable node error")
+			    .parameter("NodeId", nodeId);
+			return false;
+		}
 
 		return true;
 	}
@@ -453,11 +469,39 @@ namespace OpcUaStackServer
 		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
 		InformationModelAccess ima(informationModel_);
 		ima.getChildHierarchically(cloneNodeClass, childBaseNodeClassVec, referenceTypeNodeIdVec);
+
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
 			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
 
 			NodeClassType nodeClassType;
 			childBaseNodeClass->getNodeClass(nodeClassType);
+
+			if (nodeClassType != NodeClassType_Object && nodeClassType != NodeClassType_Variable) {
+				continue;
+			}
+
+			OpcUaNodeId childNodeId;
+			OpcUaNodeId parentNodeId;
+			OpcUaNodeId cloneNodeId;
+			OpcUaLocalizedText childDisplayName;
+			OpcUaLocalizedText parentDisplayName;
+			OpcUaLocalizedText cloneDisplayName;
+
+			childBaseNodeClass->getNodeId(childNodeId);
+			parentNodeClass->getNodeId(parentNodeId);
+			cloneNodeClass->getNodeId(cloneNodeId);
+			childBaseNodeClass->getDisplayName(childDisplayName);
+			parentNodeClass->getDisplayName(parentDisplayName);
+			cloneNodeClass->getDisplayName(cloneDisplayName);
+
+			Log(Debug, "added childs")
+				.parameter("NodeClassType", (uint32_t)nodeClassType)
+				.parameter("ChildNodeId", childNodeId)
+				.parameter("ChildDisplayName", childDisplayName.text().value())
+				.parameter("ParentNodeId", parentNodeId)
+				.parameter("ParentDisplayName", parentDisplayName.text().value())
+				.parameter("CloneNodeId", cloneNodeId)
+				.parameter("CloneDisplayName", cloneDisplayName.text().value());
 
 			switch (nodeClassType)
 			{
@@ -493,6 +537,18 @@ namespace OpcUaStackServer
 					);
 					if (!success) return false;
 					break;
+				}
+				default:
+				{
+					Log(Error, "invalid node class type found in add type childs")
+						.parameter("NodeClassType", (uint32_t)nodeClassType)
+						.parameter("ChildNodeId", childNodeId)
+						.parameter("ChildDisplayName", childDisplayName.text().value())
+						.parameter("ParentNodeId", parentNodeId)
+						.parameter("ParentDisplayName", parentDisplayName.text().value())
+						.parameter("CloneNodeId", cloneNodeId)
+						.parameter("CloneDisplayName", cloneDisplayName.text().value());
+					return false;
 				}
 			}
 		}
@@ -576,7 +632,13 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(objectNodeClass);
+		if (!informationModel_->insert(objectNodeClass)) {
+			Log(Error, "add object node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		Log(Debug, "add object node success")
+			.parameter("NodeId", nodeId);
 
 		return true;
 	}
@@ -656,7 +718,13 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(variableNodeClass);
+		if (!informationModel_->insert(variableNodeClass)) {
+			Log(Error, "add variable node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		Log(Debug, "add variable node success")
+			.parameter("NodeId", nodeId);
 
 		return true;
 	}
@@ -698,8 +766,7 @@ namespace OpcUaStackServer
 		bool success = addTypeChilds(actAddNodeRule, tmpMethodNodeClass, cloneBaseNodeClass);
 		if (!success) {
 			Log(Error, "add method node error, because create childs error")
-				.parameter("NodeId", nodeId)
-				.parameter("FunctionNodeId", "");
+				.parameter("NodeId", nodeId);
 			return false;
 		}
 
@@ -712,7 +779,13 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(methodNodeClass);
+		if (!informationModel_->insert(methodNodeClass)) {
+			Log(Error, "add method node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		Log(Debug, "add method node success")
+			.parameter("NodeId", nodeId);
 
 		return true;
 	}
