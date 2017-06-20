@@ -580,7 +580,7 @@ namespace OpcUaStackServer
 			ReferenceItem::SPtr referenceItem = it->second;
 			OpcUaNodeId targetNodeId = referenceItem->nodeId_;
 
-			delReference(nodeId, referenceTypeId, targetNodeId);
+			delReference(targetNodeId, referenceTypeId, nodeId);
 		}
 		nodeClass->referenceItemMap().clear();
 
@@ -601,7 +601,28 @@ namespace OpcUaStackServer
 		OpcUaNodeId& targetNodeId
 	)
 	{
-		// FIXME: todo
+		//
+		// get node class
+		//
+		BaseNodeClass::SPtr nodeClass;
+		nodeClass = informationModel_->find(sourceNodeId);
+		if (nodeClass.get() == nullptr) {
+			Log(Error, "remove node error, because source node id not exist in information model")
+				.parameter("SourceNodeId", sourceNodeId)
+				.parameter("ReferenceTypeNodeId", referenceTypeNodeId)
+				.parameter("TargetNodeId", targetNodeId);
+			return false;
+		}
+
+		// remove reference
+		if (!nodeClass->referenceItemMap().remove(referenceTypeNodeId, targetNodeId)) {
+			Log(Error, "remove node error, because reference not exist in information model")
+				.parameter("SourceNodeId", sourceNodeId)
+				.parameter("ReferenceTypeNodeId", referenceTypeNodeId)
+				.parameter("TargetNodeId", targetNodeId);
+			return false;
+		}
+
 		return true;
 	}
 
