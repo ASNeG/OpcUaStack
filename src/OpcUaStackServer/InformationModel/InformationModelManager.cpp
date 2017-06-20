@@ -503,6 +503,42 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelManager::addObjectTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	InformationModelManager::addVariableTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	InformationModelManager::addReferenceTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
 	InformationModelManager::addTypeChilds(
 		AddNodeRule& addNodeRule,
 		BaseNodeClass::SPtr& parentNodeClass,

@@ -87,6 +87,27 @@ namespace OpcUaStackServer
 			OpcUaNodeId& typeNodeId
 		);
 
+		bool addObjectTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
+		bool addVariableTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
+		bool addReferenceTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
 	  private:
 		bool addTypeChilds(
 			AddNodeRule& addNodeRule,
