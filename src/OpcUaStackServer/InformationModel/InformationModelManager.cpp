@@ -24,6 +24,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -619,7 +620,49 @@ namespace OpcUaStackServer
 		OpcUaQualifiedName& browseName
 	)
 	{
-		// FIXME: todo
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+		bool symmetric = true;
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add reference type node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+	    //
+	    // create reference type node
+	    //
+	    ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = constructSPtr<ReferenceTypeNodeClass>();
+	    referenceTypeNodeClass->setNodeId(nodeId);
+	    referenceTypeNodeClass->setBrowseName(browseName);
+	    referenceTypeNodeClass->setDisplayName(displayName);
+	    referenceTypeNodeClass->setDescription(description);
+	    referenceTypeNodeClass->setWriteMask(0);
+	    referenceTypeNodeClass->setUserWriteMask(0);
+	    referenceTypeNodeClass->setIsAbstract(isAbstract);
+	    referenceTypeNodeClass->setSymmetric(symmetric);
+
+	   	//
+	    // create subtype reference
+	    //
+	    referenceTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
+	    parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+	    //
+	    // insert node into information model
+	    //
+	    if (!informationModel_->insert(referenceTypeNodeClass)) {
+			Log(Error, "add reference type node error")
+				.parameter("NodeId", nodeId);
+	        return false;
+	    }
+
 		return true;
 	}
 
