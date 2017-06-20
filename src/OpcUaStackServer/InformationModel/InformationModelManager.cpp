@@ -91,6 +91,51 @@ namespace OpcUaStackServer
 		displayPath_ = displayPath;
 	}
 
+	void
+	AddNodeRule::displayPath(OpcUaNodeId& nodeId)
+	{
+		uint16_t namespaceIndex;
+		switch (nodeId.nodeIdType())
+		{
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				uint32_t id;
+				nodeId.get(id, namespaceIndex);
+
+				std::stringstream ss;
+				ss << id;
+
+				displayPath_ = ss.str();
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				displayPath_ = nodeId.nodeId<OpcUaString::SPtr>()->value();
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				displayPath_ = *nodeId.nodeId<OpcUaGuid::SPtr>();
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				char *buf;
+				OpcUaInt32 bufLen;
+				nodeId.nodeId<OpcUaByteString::SPtr>()->value(&buf, &bufLen);
+				displayPath_ = std::string(buf, bufLen);
+				break;
+			}
+			default:
+			{
+				displayPath_ = "Unknown";
+				break;
+			}
+		}
+
+		std::cout << "DisplayPath=" << displayPath_ << std::endl;
+	}
+
 	std::string&
 	AddNodeRule::displayPath(void)
 	{
@@ -100,9 +145,8 @@ namespace OpcUaStackServer
 	void
 	AddNodeRule::displayName(OpcUaLocalizedText& displayName)
 	{
-		std::string text;
-		displayName.text().value(text);
-		displayPath_ = displayPath_ + "." + text;
+		std::string text = displayName.text().value();
+		displayPath_ += "." + text;
 	}
 
 	OpcUaNodeId
