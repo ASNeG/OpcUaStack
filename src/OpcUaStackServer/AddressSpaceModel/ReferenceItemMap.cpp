@@ -28,6 +28,12 @@ namespace OpcUaStackServer
 	{
 	}
 
+	void
+	ReferenceItemMap::clear(void)
+	{
+		referenceItemMultiMap_.clear();
+	}
+
 	bool 
 	ReferenceItemMap::add(ReferenceType referenceType, ReferenceItem::SPtr referenceItem)
 	{
