@@ -109,8 +109,13 @@ namespace OpcUaStackServer
 		);
 
 		bool delNode(
-			OpcUaNodeId& nodeId,
-			bool recursive = true
+			OpcUaNodeId& nodeId
+		);
+
+		bool delReference(
+			OpcUaNodeId& sourceNodeId,
+			OpcUaNodeId& referenceTypeNodeId,
+			OpcUaNodeId& targetNodeId
 		);
 
 	  private:

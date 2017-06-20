@@ -540,8 +540,65 @@ namespace OpcUaStackServer
 
 	bool
 	InformationModelManager::delNode(
-		OpcUaNodeId& nodeId,
-		bool recursive
+		OpcUaNodeId& nodeId
+	)
+	{
+		//
+		// get node class
+		//
+		BaseNodeClass::SPtr nodeClass;
+		nodeClass = informationModel_->find(nodeId);
+		if (nodeClass.get() == nullptr) {
+			Log(Error, "remove node error, because node id not exist in information model")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
+		// find all children of the node
+		BaseNodeClass::Vec childNodeClassVec;
+		InformationModelAccess ima(informationModel_);
+		ima.getChildHierarchically(nodeClass, childNodeClassVec);
+
+		for (uint32_t idx=0; idx<childNodeClassVec.size(); idx++) {
+			BaseNodeClass::SPtr childNodeClass = childNodeClassVec[idx];
+
+			OpcUaNodeId childNodeId;
+			childNodeClass->getNodeId(childNodeId);
+			if (!delNode(childNodeId)) {
+				return false;
+			}
+		}
+
+		// remove all references from node class
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = nodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != nodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		) {
+			OpcUaNodeId referenceTypeId = it->first;
+			ReferenceItem::SPtr referenceItem = it->second;
+			OpcUaNodeId targetNodeId = referenceItem->nodeId_;
+
+			delReference(nodeId, referenceTypeId, targetNodeId);
+		}
+		nodeClass->referenceItemMap().clear();
+
+		// delete node
+		if (!informationModel_->remove(nodeId)) {
+			Log(Error, "remove node error, because node id not exist in information model")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::delReference(
+		OpcUaNodeId& sourceNodeId,
+		OpcUaNodeId& referenceTypeNodeId,
+		OpcUaNodeId& targetNodeId
 	)
 	{
 		// FIXME: todo
