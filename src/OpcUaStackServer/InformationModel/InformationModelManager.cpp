@@ -22,6 +22,9 @@
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -91,6 +94,51 @@ namespace OpcUaStackServer
 		displayPath_ = displayPath;
 	}
 
+	void
+	AddNodeRule::displayPath(OpcUaNodeId& nodeId)
+	{
+		uint16_t namespaceIndex;
+		switch (nodeId.nodeIdType())
+		{
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				uint32_t id;
+				nodeId.get(id, namespaceIndex);
+
+				std::stringstream ss;
+				ss << id;
+
+				displayPath_ = ss.str();
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				displayPath_ = nodeId.nodeId<OpcUaString::SPtr>()->value();
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				displayPath_ = *nodeId.nodeId<OpcUaGuid::SPtr>();
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				char *buf;
+				OpcUaInt32 bufLen;
+				nodeId.nodeId<OpcUaByteString::SPtr>()->value(&buf, &bufLen);
+				displayPath_ = std::string(buf, bufLen);
+				break;
+			}
+			default:
+			{
+				displayPath_ = "Unknown";
+				break;
+			}
+		}
+
+		std::cout << "DisplayPath=" << displayPath_ << std::endl;
+	}
+
 	std::string&
 	AddNodeRule::displayPath(void)
 	{
@@ -100,9 +148,8 @@ namespace OpcUaStackServer
 	void
 	AddNodeRule::displayName(OpcUaLocalizedText& displayName)
 	{
-		std::string text;
-		displayName.text().value(text);
-		displayPath_ = displayPath_ + "." + text;
+		std::string text = displayName.text().value();
+		displayPath_ += "." + text;
 	}
 
 	OpcUaNodeId
@@ -112,11 +159,11 @@ namespace OpcUaStackServer
 
 		if (nodeIdMode_ == UniqueString) {
 			InformationModelAccess ima(informationModel_);
-			OpcUaNodeId nodeId = ima.createUniqueNodeId(displayPath_, namespaceIndex);
+			nodeId = ima.createUniqueNodeId(displayPath_, namespaceIndex);
 		}
 		else {
 			InformationModelAccess ima(informationModel_);
-			OpcUaNodeId nodeId = ima.createUniqueNodeId(namespaceIndex);
+			nodeId = ima.createUniqueNodeId(namespaceIndex);
 		}
 
 		return nodeId;
@@ -160,6 +207,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		Log(Debug, "added object node")
+			.parameter("NodeId", nodeId)
+			.parameter("TypeNodeId", typeNodeId);
+
 		addNodeRule.informationModel(informationModel_);
 
 		//
@@ -168,7 +219,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr baseNodeClass;
 		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() != NULL) {
-			Log(Error, "node id already exist in information model")
+			Log(Error, "add object node error, because node id already exist in information model")
 				.parameter("NodeId", nodeId);
 			return false;
 		}
@@ -179,7 +230,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr parentNodeClass;
 		parentNodeClass = informationModel_->find(parentNodeId);
 		if (parentNodeClass.get() == nullptr) {
-			Log(Error, "parent node id not exist in information model")
+			Log(Error, "add object node error, because parent node id not exist in information model")
 				.parameter("ParentNodeId", parentNodeId);
 			return false;
 		}
@@ -190,7 +241,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr typeNodeClass;
 		typeNodeClass = informationModel_->find(typeNodeId);
 		if (typeNodeClass.get() == nullptr) {
-			Log(Error, "type node id not exist in information model")
+			Log(Error, "add object node error, because type node id not exist in information model")
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
 		}
@@ -201,7 +252,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr referenceNodeClass;
 		referenceNodeClass = informationModel_->find(referenceNodeId);
 		if (referenceNodeClass.get() == nullptr) {
-			Log(Error, "reference node id not exist in information model")
+			Log(Error, "add object node error, because reference node id not exist in information model")
 				.parameter("ReferenceNodeId", referenceNodeId);
 			return false;
 		}
@@ -236,7 +287,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr tmpObjectNodeClass = objectNodeClass;
 		bool success = addTypeChilds(addNodeRule, tmpObjectNodeClass, typeNodeClass);
 		if (!success) {
-			Log(Error, "create childs error")
+			Log(Error, "add object node error, because create childs error")
 				.parameter("NodeId", nodeId)
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
@@ -267,7 +318,7 @@ namespace OpcUaStackServer
 
 			bool success = addTypeChilds(addNodeRule, baseNodeClass, subtypeNodeClass);
 			if (!success) {
-				Log(Error, "create childs error")
+				Log(Error, "add object node error, because create childs error")
 					.parameter("NodeId", nodeId)
 					.parameter("TypeNodeId", typeNodeId);
 				return false;
@@ -278,7 +329,11 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(objectNodeClass);
+		if (!informationModel_->insert(objectNodeClass)) {
+			Log(Error, "add object node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
 
 		return true;
 	}
@@ -294,6 +349,10 @@ namespace OpcUaStackServer
 		OpcUaNodeId& typeNodeId
 	)
 	{
+		Log(Debug, "added variable node")
+			.parameter("NodeId", nodeId)
+			.parameter("TypeNodeId", typeNodeId);
+
 		addNodeRule.informationModel(informationModel_);
 
 		//
@@ -302,7 +361,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr baseNodeClass;
 		baseNodeClass = informationModel_->find(nodeId);
 		if (baseNodeClass.get() != NULL) {
-			Log(Error, "node id already exist in information model")
+			Log(Error, "add variable node error, because node id already exist in information model")
 				.parameter("NodeId", nodeId);
 			return false;
 		}
@@ -313,7 +372,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr parentNodeClass;
 		parentNodeClass = informationModel_->find(parentNodeId);
 		if (parentNodeClass.get() == nullptr) {
-			Log(Error, "parent node id not exist in information model")
+			Log(Error, "add variable node error, because parent node id not exist in information model")
 				.parameter("ParentNodeId", parentNodeId);
 			return false;
 		}
@@ -324,7 +383,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr typeNodeClass;
 		typeNodeClass = informationModel_->find(typeNodeId);
 		if (typeNodeClass.get() == nullptr) {
-			Log(Error, "type node id not exist in information model")
+			Log(Error, "add variable node error, because type node id not exist in information model")
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
 		}
@@ -335,7 +394,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr referenceNodeClass;
 		referenceNodeClass = informationModel_->find(referenceNodeId);
 		if (referenceNodeClass.get() == nullptr) {
-			Log(Error, "reference node id not exist in information model")
+			Log(Error, "add variable node error, because reference node id not exist in information model")
 				.parameter("ReferenceNodeId", referenceNodeId);
 			return false;
 		}
@@ -395,7 +454,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr tmpVariableNodeClass = variableNodeClass;
 		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, typeNodeClass);
 		if (!success) {
-			Log(Error, "create childs error")
+			Log(Error, "add variable node error, because create childs error")
 				.parameter("NodeId", nodeId)
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
@@ -426,7 +485,7 @@ namespace OpcUaStackServer
 
 			bool success = addTypeChilds(addNodeRule, baseNodeClass, subtypeNodeClass);
 			if (!success) {
-				Log(Error, "create childs error")
+				Log(Error, "add variable node error, because create childs error")
 					.parameter("NodeId", nodeId)
 					.parameter("TypeNodeId", typeNodeId);
 				return false;
@@ -437,7 +496,260 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(variableNodeClass);
+		if (!informationModel_->insert(variableNodeClass)) {
+			Log(Error, "add variable node error")
+			    .parameter("NodeId", nodeId);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::addObjectTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add object type node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+    	//
+    	// create object type node
+    	//
+       	ObjectTypeNodeClass::SPtr objectTypeNodeClass = constructSPtr<ObjectTypeNodeClass>();
+       	objectTypeNodeClass->setNodeId(nodeId);
+       	objectTypeNodeClass->setBrowseName(browseName);
+       	objectTypeNodeClass->setDisplayName(displayName);
+       	objectTypeNodeClass->setDescription(description);
+       	objectTypeNodeClass->setWriteMask(0);
+       	objectTypeNodeClass->setUserWriteMask(0);
+    	objectTypeNodeClass->setIsAbstract(isAbstract);
+
+    	//
+    	// create subtype reference
+    	//
+        objectTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
+        parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+        //
+        // insert node into information model
+        //
+        if (!informationModel_->insert(objectTypeNodeClass)) {
+			Log(Error, "add object type node error")
+				.parameter("NodeId", nodeId);
+        	return false;
+        }
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::addVariableTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+		OpcUaNodeId dataType(OpcUaId_Double);
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add variable type node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+	    //
+	    // create variable type node
+	    //
+	    VariableTypeNodeClass::SPtr variableTypeNodeClass = constructSPtr<VariableTypeNodeClass>();
+	    variableTypeNodeClass->setNodeId(nodeId);
+	    variableTypeNodeClass->setBrowseName(browseName);
+	    variableTypeNodeClass->setDisplayName(displayName);
+	    variableTypeNodeClass->setDescription(description);
+	    variableTypeNodeClass->setWriteMask(0);
+	    variableTypeNodeClass->setUserWriteMask(0);
+	    variableTypeNodeClass->setIsAbstract(isAbstract);
+	    variableTypeNodeClass->setDataType(dataType);
+	    //variableTypeNodeClass->setValueRank();
+
+	   	//
+	    // create subtype reference
+	    //
+	    variableTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
+	    parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+	    //
+	    // insert node into information model
+	    //
+	    if (!informationModel_->insert(variableTypeNodeClass)) {
+			Log(Error, "add variable type node error")
+				.parameter("NodeId", nodeId);
+	        return false;
+	    }
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::addReferenceTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+		bool symmetric = true;
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add reference type node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+	    //
+	    // create reference type node
+	    //
+	    ReferenceTypeNodeClass::SPtr referenceTypeNodeClass = constructSPtr<ReferenceTypeNodeClass>();
+	    referenceTypeNodeClass->setNodeId(nodeId);
+	    referenceTypeNodeClass->setBrowseName(browseName);
+	    referenceTypeNodeClass->setDisplayName(displayName);
+	    referenceTypeNodeClass->setDescription(description);
+	    referenceTypeNodeClass->setWriteMask(0);
+	    referenceTypeNodeClass->setUserWriteMask(0);
+	    referenceTypeNodeClass->setIsAbstract(isAbstract);
+	    referenceTypeNodeClass->setSymmetric(symmetric);
+
+	   	//
+	    // create subtype reference
+	    //
+	    referenceTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
+	    parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+	    //
+	    // insert node into information model
+	    //
+	    if (!informationModel_->insert(referenceTypeNodeClass)) {
+			Log(Error, "add reference type node error")
+				.parameter("NodeId", nodeId);
+	        return false;
+	    }
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::delNode(
+		OpcUaNodeId& nodeId
+	)
+	{
+		//
+		// get node class
+		//
+		BaseNodeClass::SPtr nodeClass;
+		nodeClass = informationModel_->find(nodeId);
+		if (nodeClass.get() == nullptr) {
+			Log(Error, "remove node error, because node id not exist in information model")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
+		// find all children of the node
+		BaseNodeClass::Vec childNodeClassVec;
+		InformationModelAccess ima(informationModel_);
+		ima.getChildHierarchically(nodeClass, childNodeClassVec);
+
+		for (uint32_t idx=0; idx<childNodeClassVec.size(); idx++) {
+			BaseNodeClass::SPtr childNodeClass = childNodeClassVec[idx];
+
+			OpcUaNodeId childNodeId;
+			childNodeClass->getNodeId(childNodeId);
+			if (!delNode(childNodeId)) {
+				return false;
+			}
+		}
+
+		// remove all references from node class
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = nodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != nodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		) {
+			OpcUaNodeId referenceTypeId = it->first;
+			ReferenceItem::SPtr referenceItem = it->second;
+			OpcUaNodeId targetNodeId = referenceItem->nodeId_;
+
+			delReference(targetNodeId, referenceTypeId, nodeId);
+		}
+		nodeClass->referenceItemMap().clear();
+
+		// delete node
+		if (!informationModel_->remove(nodeId)) {
+			Log(Error, "remove node error, because node id not exist in information model")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::delReference(
+		OpcUaNodeId& sourceNodeId,
+		OpcUaNodeId& referenceTypeNodeId,
+		OpcUaNodeId& targetNodeId
+	)
+	{
+		//
+		// get node class
+		//
+		BaseNodeClass::SPtr nodeClass;
+		nodeClass = informationModel_->find(sourceNodeId);
+		if (nodeClass.get() == nullptr) {
+			Log(Error, "remove node error, because source node id not exist in information model")
+				.parameter("SourceNodeId", sourceNodeId)
+				.parameter("ReferenceTypeNodeId", referenceTypeNodeId)
+				.parameter("TargetNodeId", targetNodeId);
+			return false;
+		}
+
+		// remove reference
+		if (!nodeClass->referenceItemMap().remove(referenceTypeNodeId, targetNodeId)) {
+			Log(Error, "remove node error, because reference not exist in information model")
+				.parameter("SourceNodeId", sourceNodeId)
+				.parameter("ReferenceTypeNodeId", referenceTypeNodeId)
+				.parameter("TargetNodeId", targetNodeId);
+			return false;
+		}
 
 		return true;
 	}
@@ -453,11 +765,39 @@ namespace OpcUaStackServer
 		std::vector<OpcUaNodeId> referenceTypeNodeIdVec;
 		InformationModelAccess ima(informationModel_);
 		ima.getChildHierarchically(cloneNodeClass, childBaseNodeClassVec, referenceTypeNodeIdVec);
+
 		for (uint32_t idx=0; idx<childBaseNodeClassVec.size(); idx++) {
 			BaseNodeClass::SPtr childBaseNodeClass = childBaseNodeClassVec[idx];
 
 			NodeClassType nodeClassType;
 			childBaseNodeClass->getNodeClass(nodeClassType);
+
+			if (nodeClassType != NodeClassType_Object && nodeClassType != NodeClassType_Variable) {
+				continue;
+			}
+
+			OpcUaNodeId childNodeId;
+			OpcUaNodeId parentNodeId;
+			OpcUaNodeId cloneNodeId;
+			OpcUaLocalizedText childDisplayName;
+			OpcUaLocalizedText parentDisplayName;
+			OpcUaLocalizedText cloneDisplayName;
+
+			childBaseNodeClass->getNodeId(childNodeId);
+			parentNodeClass->getNodeId(parentNodeId);
+			cloneNodeClass->getNodeId(cloneNodeId);
+			childBaseNodeClass->getDisplayName(childDisplayName);
+			parentNodeClass->getDisplayName(parentDisplayName);
+			cloneNodeClass->getDisplayName(cloneDisplayName);
+
+			Log(Debug, "added childs")
+				.parameter("NodeClassType", (uint32_t)nodeClassType)
+				.parameter("ChildNodeId", childNodeId)
+				.parameter("ChildDisplayName", childDisplayName.text().value())
+				.parameter("ParentNodeId", parentNodeId)
+				.parameter("ParentDisplayName", parentDisplayName.text().value())
+				.parameter("CloneNodeId", cloneNodeId)
+				.parameter("CloneDisplayName", cloneDisplayName.text().value());
 
 			switch (nodeClassType)
 			{
@@ -494,6 +834,18 @@ namespace OpcUaStackServer
 					if (!success) return false;
 					break;
 				}
+				default:
+				{
+					Log(Error, "invalid node class type found in add type childs")
+						.parameter("NodeClassType", (uint32_t)nodeClassType)
+						.parameter("ChildNodeId", childNodeId)
+						.parameter("ChildDisplayName", childDisplayName.text().value())
+						.parameter("ParentNodeId", parentNodeId)
+						.parameter("ParentDisplayName", parentDisplayName.text().value())
+						.parameter("CloneNodeId", cloneNodeId)
+						.parameter("CloneDisplayName", cloneDisplayName.text().value());
+					return false;
+				}
 			}
 		}
 
@@ -523,7 +875,12 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaLocalizedText displayName;
+		objectNodeClass->getDisplayName(displayName);
+		AddNodeRule actAddNodeRule(addNodeRule, displayName);
+
+
+		OpcUaNodeId nodeId = actAddNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		objectNodeClass->setNodeId(nodeId);
 
 		//
@@ -539,7 +896,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr typeNodeClass;
 		typeNodeClass = informationModel_->find(typeNodeId);
 		if (typeNodeClass.get() == nullptr) {
-			Log(Error, "type node id not exist in information model")
+			Log(Error, "add object node error, because type node id not exist in information model")
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
 		}
@@ -548,9 +905,9 @@ namespace OpcUaStackServer
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpVariableNodeClass = objectNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
+		bool success = addTypeChilds(actAddNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
 		if (!success) {
-			Log(Error, "create childs error")
+			Log(Error, "add object node error, because create childs error")
 				.parameter("NodeId", nodeId)
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
@@ -571,7 +928,13 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(objectNodeClass);
+		if (!informationModel_->insert(objectNodeClass)) {
+			Log(Error, "add object node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		Log(Debug, "add object node success")
+			.parameter("NodeId", nodeId);
 
 		return true;
 	}
@@ -599,7 +962,11 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
-		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaLocalizedText displayName;
+		variableNodeClass->getDisplayName(displayName);
+		AddNodeRule actAddNodeRule(addNodeRule, displayName);
+
+		OpcUaNodeId nodeId = actAddNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		variableNodeClass->setNodeId(nodeId);
 
 		//
@@ -615,7 +982,7 @@ namespace OpcUaStackServer
 		BaseNodeClass::SPtr typeNodeClass;
 		typeNodeClass = informationModel_->find(typeNodeId);
 		if (typeNodeClass.get() == nullptr) {
-			Log(Error, "type node id not exist in information model")
+			Log(Error, "add variable node error, because type node id not exist in information model")
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
 		}
@@ -624,9 +991,9 @@ namespace OpcUaStackServer
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpVariableNodeClass = variableNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
+		bool success = addTypeChilds(actAddNodeRule, tmpVariableNodeClass, cloneBaseNodeClass);
 		if (!success) {
-			Log(Error, "create childs error")
+			Log(Error, "add variable node error, because create childs error")
 				.parameter("NodeId", nodeId)
 				.parameter("TypeNodeId", typeNodeId);
 			return false;
@@ -647,7 +1014,13 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(variableNodeClass);
+		if (!informationModel_->insert(variableNodeClass)) {
+			Log(Error, "add variable node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		Log(Debug, "add variable node success")
+			.parameter("NodeId", nodeId);
 
 		return true;
 	}
@@ -675,19 +1048,21 @@ namespace OpcUaStackServer
 		//
 		// create unique node id
 		//
+		OpcUaLocalizedText displayName;
+		methodNodeClass->getDisplayName(displayName);
+		AddNodeRule actAddNodeRule(addNodeRule, displayName);
 
-		OpcUaNodeId nodeId = addNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
+		OpcUaNodeId nodeId = actAddNodeRule.createUniqueNodeId(parentNodeId.namespaceIndex());
 		methodNodeClass->setNodeId(nodeId);
 
 		//
 		// added childs
 		//
 		BaseNodeClass::SPtr tmpMethodNodeClass = methodNodeClass;
-		bool success = addTypeChilds(addNodeRule, tmpMethodNodeClass, cloneBaseNodeClass);
+		bool success = addTypeChilds(actAddNodeRule, tmpMethodNodeClass, cloneBaseNodeClass);
 		if (!success) {
-			Log(Error, "create childs error")
-				.parameter("NodeId", nodeId)
-				.parameter("FunctionNodeId", "");
+			Log(Error, "add method node error, because create childs error")
+				.parameter("NodeId", nodeId);
 			return false;
 		}
 
@@ -700,7 +1075,13 @@ namespace OpcUaStackServer
 		//
 		// added node to information model
 		//
-		informationModel_->insert(methodNodeClass);
+		if (!informationModel_->insert(methodNodeClass)) {
+			Log(Error, "add method node error")
+				.parameter("NodeId", nodeId);
+			return false;
+		}
+		Log(Debug, "add method node success")
+			.parameter("NodeId", nodeId);
 
 		return true;
 	}

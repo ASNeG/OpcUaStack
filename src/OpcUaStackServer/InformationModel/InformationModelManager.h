@@ -43,6 +43,7 @@ namespace OpcUaStackServer
     	void nodeIdMode(NodeIdMode nodeIdMode);
     	NodeIdMode nodeIdMode(void);
     	void displayPath(const std::string& displayPath);
+    	void displayPath(OpcUaNodeId& nodeId);
     	std::string& displayPath(void);
     	void displayName(OpcUaLocalizedText& displayName);
 
@@ -84,6 +85,37 @@ namespace OpcUaStackServer
 			OpcUaQualifiedName& browseName,
 			OpcUaNodeId& referenceNodeId,
 			OpcUaNodeId& typeNodeId
+		);
+
+		bool addObjectTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
+		bool addVariableTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
+		bool addReferenceTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
+		bool delNode(
+			OpcUaNodeId& nodeId
+		);
+
+		bool delReference(
+			OpcUaNodeId& sourceNodeId,
+			OpcUaNodeId& referenceTypeNodeId,
+			OpcUaNodeId& targetNodeId
 		);
 
 	  private:
