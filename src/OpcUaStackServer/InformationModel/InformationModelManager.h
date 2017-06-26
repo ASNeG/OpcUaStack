@@ -87,6 +87,13 @@ namespace OpcUaStackServer
 			OpcUaNodeId& typeNodeId
 		);
 
+		bool addMethodNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
 		bool addObjectTypeNode(
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,

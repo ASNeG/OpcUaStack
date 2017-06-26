@@ -21,6 +21,7 @@
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/MethodNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
@@ -502,6 +503,58 @@ namespace OpcUaStackServer
 			    .parameter("NodeId", nodeId);
 			return false;
 		}
+
+		return true;
+	}
+
+	bool
+	InformationModelManager::addMethodNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add method node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+    	//
+    	// create method node
+    	//
+       	MethodNodeClass::SPtr methodNodeClass = constructSPtr<MethodNodeClass>();
+       	methodNodeClass->setNodeId(nodeId);
+       	methodNodeClass->setBrowseName(browseName);
+       	methodNodeClass->setDisplayName(displayName);
+       	methodNodeClass->setDescription(description);
+       	methodNodeClass->setWriteMask(0);
+       	methodNodeClass->setUserWriteMask(0);
+       	methodNodeClass->setIsAbstract(isAbstract);
+
+    	//
+    	// create subtype reference
+    	//
+       	methodNodeClass->referenceItemMap().add(ReferenceType_HasComponent, false, parentNodeId);
+        parentNodeClass->referenceItemMap().add(ReferenceType_HasComponent, true, nodeId);
+
+        //
+        // insert node into information model
+        //
+        if (!informationModel_->insert(methodNodeClass)) {
+			Log(Error, "add method node error")
+				.parameter("NodeId", nodeId);
+        	return false;
+        }
 
 		return true;
 	}
