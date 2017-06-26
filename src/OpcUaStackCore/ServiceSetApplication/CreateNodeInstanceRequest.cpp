@@ -89,11 +89,27 @@ namespace OpcUaStackCore
 	void 
 	CreateNodeInstanceRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
+		OpcUaNumber::opcUaBinaryEncode(os, (uint32_t)nodeClassType_);
+		parentNodeId_.opcUaBinaryEncode(os);
+		nodeId_.opcUaBinaryEncode(os);
+		displayName_.opcUaBinaryEncode(os);
+		browseName_.opcUaBinaryEncode(os);
+		referenceNodeId_.opcUaBinaryEncode(os);
+		typeNodeId_.opcUaBinaryEncode(os);
 	}
 	
 	void 
 	CreateNodeInstanceRequest::opcUaBinaryDecode(std::istream& is)
 	{
+		uint32_t tmp;
+		OpcUaNumber::opcUaBinaryDecode(is, tmp);
+		nodeClassType_ = (NodeClassType)tmp;
+		parentNodeId_.opcUaBinaryDecode(is);
+		nodeId_.opcUaBinaryDecode(is);
+		displayName_.opcUaBinaryDecode(is);
+		browseName_.opcUaBinaryDecode(is);
+		referenceNodeId_.opcUaBinaryDecode(is);
+		typeNodeId_.opcUaBinaryDecode(is);
 	}
 
 
