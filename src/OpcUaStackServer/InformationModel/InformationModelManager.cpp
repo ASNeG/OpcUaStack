@@ -24,6 +24,7 @@
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ObjectTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableTypeNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/DataTypeNodeClass.h"
 #include "OpcUaStackServer/AddressSpaceModel/ReferenceTypeNodeClass.h"
 
 using namespace OpcUaStackCore;
@@ -605,6 +606,59 @@ namespace OpcUaStackServer
 	    //
 	    if (!informationModel_->insert(variableTypeNodeClass)) {
 			Log(Error, "add variable type node error")
+				.parameter("NodeId", nodeId);
+	        return false;
+	    }
+
+		return true;
+	}
+
+
+	bool
+	InformationModelManager::addDataTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	)
+	{
+		OpcUaLocalizedText description("en", "");
+		bool isAbstract = true;
+
+		//
+		// find parent node class
+		//
+		BaseNodeClass::SPtr parentNodeClass = informationModel_->find(parentNodeId);
+		if (parentNodeClass.get() == nullptr) {
+			Log(Error, "add data type node error, because parent node id not exist")
+				.parameter("NodeId", nodeId)
+				.parameter("ParentNodeId", parentNodeId);
+			return false;
+		}
+
+	    //
+	    // create data type node
+	    //
+	    DataTypeNodeClass::SPtr dataTypeNodeClass = constructSPtr<DataTypeNodeClass>();
+	    dataTypeNodeClass->setNodeId(nodeId);
+	    dataTypeNodeClass->setBrowseName(browseName);
+	    dataTypeNodeClass->setDisplayName(displayName);
+	    dataTypeNodeClass->setDescription(description);
+	    dataTypeNodeClass->setWriteMask(0);
+	    dataTypeNodeClass->setUserWriteMask(0);
+	    dataTypeNodeClass->setIsAbstract(isAbstract);
+
+	   	//
+	    // create subtype reference
+	    //
+	    dataTypeNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, false, parentNodeId);
+	    parentNodeClass->referenceItemMap().add(ReferenceType_HasSubtype, true, nodeId);
+
+	    //
+	    // insert node into information model
+	    //
+	    if (!informationModel_->insert(dataTypeNodeClass)) {
+			Log(Error, "add data type node error")
 				.parameter("NodeId", nodeId);
 	        return false;
 	    }

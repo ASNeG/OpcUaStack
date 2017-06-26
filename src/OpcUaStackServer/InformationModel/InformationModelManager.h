@@ -101,6 +101,13 @@ namespace OpcUaStackServer
 			OpcUaQualifiedName& browseName
 		);
 
+		bool addDataTypeNode(
+			OpcUaNodeId& parentNodeId,
+			OpcUaNodeId& nodeId,
+			OpcUaLocalizedText& displayName,
+			OpcUaQualifiedName& browseName
+		);
+
 		bool addReferenceTypeNode(
 			OpcUaNodeId& parentNodeId,
 			OpcUaNodeId& nodeId,
