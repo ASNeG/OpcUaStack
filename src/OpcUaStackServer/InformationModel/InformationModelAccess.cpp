@@ -963,6 +963,14 @@ namespace OpcUaStackServer
 		return isBaseEventType(baseNodeClass);
 	}
 
+	bool
+	InformationModelAccess::isBaseEventType(OpcUaNodeId& nodeId)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) return false;
+		return isBaseEventType(baseNodeClass);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
