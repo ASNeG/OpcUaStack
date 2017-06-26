@@ -890,6 +890,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::isObjectType(OpcUaNodeId& nodeId)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) return false;
+		return isObjectType(baseNodeClass);
+	}
+
+	bool
 	InformationModelAccess::isVariableType(BaseNodeClass::SPtr baseNodeClass)
 	{
 		// check node id
