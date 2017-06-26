@@ -30,11 +30,60 @@ namespace OpcUaStackCore
 
 	CreateNodeInstanceRequest::CreateNodeInstanceRequest(void)
 	: Object()
+	, nodeClassType_()
+	, parentNodeId_()
+	, nodeId_()
+	, displayName_()
+	, browseName_()
+	, referenceNodeId_()
+	, typeNodeId_()
 	{
 	}
 
 	CreateNodeInstanceRequest::~CreateNodeInstanceRequest(void)
 	{
+	}
+
+	NodeClassType&
+	CreateNodeInstanceRequest::nodeClassType(void)
+	{
+		return nodeClassType_;
+	}
+
+	OpcUaNodeId&
+	CreateNodeInstanceRequest::parentNodeId(void)
+	{
+		return parentNodeId_;
+	}
+
+	OpcUaNodeId&
+	CreateNodeInstanceRequest::nodeId(void)
+	{
+		return nodeId_;
+	}
+
+	OpcUaLocalizedText&
+	CreateNodeInstanceRequest::displayName(void)
+	{
+		return displayName_;
+	}
+
+	OpcUaQualifiedName&
+	CreateNodeInstanceRequest::browseName(void)
+	{
+		return browseName_;
+	}
+
+	OpcUaNodeId&
+	CreateNodeInstanceRequest::referenceNodeId(void)
+	{
+		return referenceNodeId_;
+	}
+
+	OpcUaNodeId&
+	CreateNodeInstanceRequest::typeNodeId(void)
+	{
+		return typeNodeId_;
 	}
 
 	void 

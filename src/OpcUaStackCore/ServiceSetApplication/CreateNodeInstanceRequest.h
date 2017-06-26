@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSet/NodeClass.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
@@ -35,10 +36,25 @@ namespace OpcUaStackCore
 		CreateNodeInstanceRequest(void);
 		virtual ~CreateNodeInstanceRequest(void);
 
+		NodeClassType& nodeClassType(void);
+		OpcUaNodeId& parentNodeId(void);
+		OpcUaNodeId& nodeId(void);
+		OpcUaLocalizedText& displayName(void);
+		OpcUaQualifiedName& browseName(void);
+		OpcUaNodeId& referenceNodeId(void);
+		OpcUaNodeId& typeNodeId(void);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		NodeClassType nodeClassType_;
+		OpcUaNodeId parentNodeId_;
+		OpcUaNodeId nodeId_;
+		OpcUaLocalizedText displayName_;
+		OpcUaQualifiedName browseName_;
+		OpcUaNodeId referenceNodeId_;
+		OpcUaNodeId typeNodeId_;			// optional
 	};
 
 }
