@@ -971,6 +971,45 @@ namespace OpcUaStackServer
 		return isBaseEventType(baseNodeClass);
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// event function
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	InformationModelAccess::isEventProperty(BaseNodeClass::SPtr baseNodeClass)
+	{
+		// check type definition
+		OpcUaNodeId typeNodeId;
+		getType(baseNodeClass, typeNodeId);
+		if (typeNodeId != OpcUaNodeId(OpcUaId_PropertyType))  return false;
+
+		// get parent
+		std::vector<OpcUaNodeId> nodeIdVec;
+		getParent(baseNodeClass, nodeIdVec);
+
+		// check event type
+		std::vector<OpcUaNodeId>::iterator it;
+		for (it = nodeIdVec .begin(); it != nodeIdVec.end(); it++) {
+			OpcUaNodeId parentNodeId = *it;
+
+			if (isBaseEventType(parentNodeId)) return true;
+		}
+
+		return false;
+
+	}
+
+	bool
+	InformationModelAccess::isEventProperty(OpcUaNodeId& nodeId)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) return false;
+		return isEventProperty(baseNodeClass);
+	}
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

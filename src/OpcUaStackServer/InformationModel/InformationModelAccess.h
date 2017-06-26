@@ -127,6 +127,12 @@ namespace OpcUaStackServer
 		bool isBaseEventType(OpcUaNodeId& nodeId);
 
 		// --------------------------------------------------------------------
+		// event function
+		// --------------------------------------------------------------------
+		bool isEventProperty(BaseNodeClass::SPtr baseNodeClass);
+		bool isEventProperty(OpcUaNodeId& nodeId);
+
+		// --------------------------------------------------------------------
 		// merge function
 		// --------------------------------------------------------------------
 		bool add(InformationModel::SPtr informationModel, uint16_t namespaceIndex, MergeIf* mergeIf = NULL, uint32_t step = 10);
