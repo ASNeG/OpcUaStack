@@ -981,7 +981,9 @@ namespace OpcUaStackServer
 			NodeClassType nodeClassType;
 			childBaseNodeClass->getNodeClass(nodeClassType);
 
-			if (nodeClassType != NodeClassType_Object && nodeClassType != NodeClassType_Variable) {
+			if (nodeClassType != NodeClassType_Object &&
+				nodeClassType != NodeClassType_Variable &&
+				nodeClassType != NodeClassType_Method) {
 				continue;
 			}
 
