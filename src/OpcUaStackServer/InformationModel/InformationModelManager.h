@@ -46,6 +46,8 @@ namespace OpcUaStackServer
     	void displayPath(OpcUaNodeId& nodeId);
     	std::string& displayPath(void);
     	void displayName(OpcUaLocalizedText& displayName);
+    	void delemiter(const std::string& delemiter);
+    	std::string& delemiter(void);
 
     	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
 
@@ -53,6 +55,7 @@ namespace OpcUaStackServer
     	std::string displayPath_;
     	InformationModel::SPtr informationModel_;
     	NodeIdMode nodeIdMode_;
+    	std::string delemiter_;
     };
 
 

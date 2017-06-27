@@ -44,6 +44,7 @@ namespace OpcUaStackServer
 	: informationModel_()
 	, nodeIdMode_(UniqueString)
 	, displayPath_("")
+	, delemiter_(".")
 	{
 	}
 
@@ -51,6 +52,7 @@ namespace OpcUaStackServer
 	: informationModel_(addNodeRule.informationModel())
 	, nodeIdMode_(addNodeRule.nodeIdMode())
 	, displayPath_(addNodeRule.displayPath())
+	, delemiter_(addNodeRule.delemiter())
 	{
 	}
 
@@ -58,6 +60,7 @@ namespace OpcUaStackServer
 	: informationModel_(addNodeRule.informationModel())
 	, nodeIdMode_(addNodeRule.nodeIdMode())
 	, displayPath_(addNodeRule.displayPath())
+	, delemiter_(addNodeRule.delemiter())
 	{
 		this->displayName(displayName);
 	}
@@ -137,8 +140,6 @@ namespace OpcUaStackServer
 				break;
 			}
 		}
-
-		std::cout << "DisplayPath=" << displayPath_ << std::endl;
 	}
 
 	std::string&
@@ -151,8 +152,20 @@ namespace OpcUaStackServer
 	AddNodeRule::displayName(OpcUaLocalizedText& displayName)
 	{
 		std::string text = displayName.text().value();
-		displayPath_ += "." + text;
+		displayPath_ += delemiter_ + text;
 	}
+
+   	void
+   	AddNodeRule::delemiter(const std::string& delemiter)
+   	{
+   		delemiter_ = delemiter;
+   	}
+
+   	std::string&
+   	AddNodeRule::delemiter(void)
+   	{
+   		return delemiter_;
+   	}
 
 	OpcUaNodeId
 	AddNodeRule::createUniqueNodeId(uint16_t namespaceIndex)
