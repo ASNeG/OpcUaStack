@@ -18,6 +18,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -311,9 +312,28 @@ namespace OpcUaStackServer
 		Log(Debug, "application service create node instance request")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		// FIXME: todo
+		//
+		// create new node instance
+		//
+		AddNodeRule addNodeRule;
+		InformationModelManager imm(informationModel_);
+		bool success = imm.addNode(
+			createNodeInstanceRequest->nodeClassType(),
+			addNodeRule,
+			createNodeInstanceRequest->parentNodeId(),
+			createNodeInstanceRequest->nodeId(),
+			createNodeInstanceRequest->displayName(),
+			createNodeInstanceRequest->browseName(),
+			createNodeInstanceRequest->referenceNodeId(),
+			createNodeInstanceRequest->typeNodeId()
+		);
 
-		trx->statusCode(Success);
+		if (success) {
+			trx->statusCode(Success);
+		}
+		else {
+			trx->statusCode(BadInternalError);
+		}
 		trx->componentSession()->send(serviceTransaction);
 	}
 
