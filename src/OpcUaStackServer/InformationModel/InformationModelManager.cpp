@@ -199,6 +199,95 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelManager::addNode(
+		NodeClassType nodeClassType,
+		AddNodeRule& addNodeRule,
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName,
+		OpcUaNodeId& referenceNodeId,
+		OpcUaNodeId& typeNodeId
+	)
+	{
+		switch (nodeClassType)
+		{
+			case NodeClassType_Object:
+			{
+				return addObjectNode(
+					addNodeRule,
+					parentNodeId,
+					nodeId,
+					displayName,
+					browseName,
+					referenceNodeId,
+					typeNodeId
+				);
+				break;
+			}
+		}
+
+		return false;
+	}
+#if 0
+
+	NodeClassType_Variable = 2,
+	NodeClassType_Method = 4,
+	NodeClassType_ObjectType = 8,
+	NodeClassType_VariableType = 16,
+	NodeClassType_ReferenceType = 32,
+	NodeClassType_DataType = 64,
+
+
+
+	bool addVariableNode(
+		AddNodeRule& addNodeRule,
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName,
+		OpcUaNodeId& referenceNodeId,
+		OpcUaNodeId& typeNodeId
+	);
+
+	bool addMethodNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	);
+
+	bool addObjectTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	);
+
+	bool addVariableTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	);
+
+	bool addDataTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	);
+
+	bool addReferenceTypeNode(
+		OpcUaNodeId& parentNodeId,
+		OpcUaNodeId& nodeId,
+		OpcUaLocalizedText& displayName,
+		OpcUaQualifiedName& browseName
+	);
+
+#endif
+
+	bool
 	InformationModelManager::addObjectNode(
 		AddNodeRule& addNodeRule,
 		OpcUaNodeId& parentNodeId,
