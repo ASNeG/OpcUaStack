@@ -171,6 +171,10 @@ namespace OpcUaStackServer
 			OpcUaNodeId& referenceTypeNodeId
 		);
 
+		bool isOptionalPlaceholder(
+			BaseNodeClass::SPtr& nodeClass
+		);
+
 		InformationModel::SPtr informationModel_;
 	};
 

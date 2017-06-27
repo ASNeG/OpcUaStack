@@ -1071,6 +1071,11 @@ namespace OpcUaStackServer
 		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
+		// Optional Placeholder nodes are not inserted
+		if (isOptionalPlaceholder(cloneBaseNodeClass)) {
+			return true;
+		}
+
 		//
 		// clone node class
 		//
@@ -1158,6 +1163,11 @@ namespace OpcUaStackServer
 		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
+		// Optional Placeholder nodes are not inserted
+		if (isOptionalPlaceholder(cloneBaseNodeClass)) {
+			return true;
+		}
+
 		//
 		// clone node class
 		//
@@ -1244,6 +1254,11 @@ namespace OpcUaStackServer
 		OpcUaNodeId& referenceTypeNodeId
 	)
 	{
+		// Optional Placeholder nodes are not inserted
+		if (isOptionalPlaceholder(cloneBaseNodeClass)) {
+			return true;
+		}
+
 		//
 		// clone node class
 		//
@@ -1296,6 +1311,28 @@ namespace OpcUaStackServer
 
 		return true;
 	}
+
+	bool
+	InformationModelManager::isOptionalPlaceholder(
+		BaseNodeClass::SPtr& nodeClass
+	)
+	{
+		std::vector<OpcUaNodeId>::iterator it;
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		OpcUaNodeId referenceTypeNodeId(OpcUaId_HasModellingRule);
+
+		// get HasModelling rule
+		InformationModelAccess ima(informationModel_);
+		ima.getChildHierarchically(nodeClass, referenceTypeNodeId, childNodeIdVec);
+
+		// check result
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+			if (*it == OpcUaNodeId(OpcUaId_ModellingRule_OptionalPlaceholder)) return true;
+		}
+
+		return false;
+	}
+
 
 }
 
