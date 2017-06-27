@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 
 	CreateNodeInstanceRequest::CreateNodeInstanceRequest(void)
 	: Object()
+	, name_("")
 	, nodeClassType_()
 	, parentNodeId_()
 	, nodeId_()
@@ -42,6 +43,12 @@ namespace OpcUaStackCore
 
 	CreateNodeInstanceRequest::~CreateNodeInstanceRequest(void)
 	{
+	}
+
+	std::string&
+	CreateNodeInstanceRequest::name(void)
+	{
+		return name_;
 	}
 
 	NodeClassType&

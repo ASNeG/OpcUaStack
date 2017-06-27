@@ -316,6 +316,7 @@ namespace OpcUaStackServer
 		// create new node instance
 		//
 		AddNodeRule addNodeRule;
+		addNodeRule.displayPath(createNodeInstanceRequest->name());
 		InformationModelManager imm(informationModel_);
 		bool success = imm.addNode(
 			createNodeInstanceRequest->nodeClassType(),

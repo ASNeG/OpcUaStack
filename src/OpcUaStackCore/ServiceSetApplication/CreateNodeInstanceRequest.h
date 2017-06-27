@@ -36,6 +36,7 @@ namespace OpcUaStackCore
 		CreateNodeInstanceRequest(void);
 		virtual ~CreateNodeInstanceRequest(void);
 
+		std::string& name(void);
 		NodeClassType& nodeClassType(void);
 		OpcUaNodeId& parentNodeId(void);
 		OpcUaNodeId& nodeId(void);
@@ -48,6 +49,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		std::string name_;
 		NodeClassType nodeClassType_;
 		OpcUaNodeId parentNodeId_;
 		OpcUaNodeId nodeId_;
