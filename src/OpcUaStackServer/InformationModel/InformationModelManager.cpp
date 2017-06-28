@@ -1093,7 +1093,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// Optional Placeholder nodes are not inserted
-		if (isOptionalPlaceholder(cloneBaseNodeClass)) {
+		if (!addNodeRule.createOptionalPlaceholder() && isOptionalPlaceholder(cloneBaseNodeClass)) {
 			return true;
 		}
 
@@ -1185,7 +1185,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// Optional Placeholder nodes are not inserted
-		if (isOptionalPlaceholder(cloneBaseNodeClass)) {
+		if (!addNodeRule.createOptionalPlaceholder() && isOptionalPlaceholder(cloneBaseNodeClass)) {
 			return true;
 		}
 
@@ -1276,7 +1276,7 @@ namespace OpcUaStackServer
 	)
 	{
 		// Optional Placeholder nodes are not inserted
-		if (isOptionalPlaceholder(cloneBaseNodeClass)) {
+		if (!addNodeRule.createOptionalPlaceholder() && isOptionalPlaceholder(cloneBaseNodeClass)) {
 			return true;
 		}
 
