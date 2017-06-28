@@ -48,6 +48,8 @@ namespace OpcUaStackServer
     	void displayName(OpcUaLocalizedText& displayName);
     	void delemiter(const std::string& delemiter);
     	std::string& delemiter(void);
+    	void createOptionalPlaceholder(bool createOptionalPlaceholder);
+    	bool createOptionalPlaceholder(void);
 
     	OpcUaNodeId createUniqueNodeId(uint16_t namespaceIndex);
 
@@ -56,6 +58,7 @@ namespace OpcUaStackServer
     	InformationModel::SPtr informationModel_;
     	NodeIdMode nodeIdMode_;
     	std::string delemiter_;
+    	bool createOptionalPlaceholder_;
     };
 
 

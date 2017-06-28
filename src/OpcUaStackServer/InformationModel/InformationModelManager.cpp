@@ -45,6 +45,7 @@ namespace OpcUaStackServer
 	, nodeIdMode_(UniqueString)
 	, displayPath_("")
 	, delemiter_(".")
+	, createOptionalPlaceholder_(false)
 	{
 	}
 
@@ -53,6 +54,7 @@ namespace OpcUaStackServer
 	, nodeIdMode_(addNodeRule.nodeIdMode())
 	, displayPath_(addNodeRule.displayPath())
 	, delemiter_(addNodeRule.delemiter())
+	, createOptionalPlaceholder_(addNodeRule.createOptionalPlaceholder())
 	{
 	}
 
@@ -61,6 +63,7 @@ namespace OpcUaStackServer
 	, nodeIdMode_(addNodeRule.nodeIdMode())
 	, displayPath_(addNodeRule.displayPath())
 	, delemiter_(addNodeRule.delemiter())
+	, createOptionalPlaceholder_(addNodeRule.createOptionalPlaceholder())
 	{
 		this->displayName(displayName);
 	}
@@ -166,6 +169,18 @@ namespace OpcUaStackServer
    	{
    		return delemiter_;
    	}
+
+	void
+	AddNodeRule::createOptionalPlaceholder(bool createOptionalPlaceholder)
+	{
+		createOptionalPlaceholder_ = createOptionalPlaceholder;
+	}
+
+	bool
+	AddNodeRule::createOptionalPlaceholder(void)
+	{
+		return createOptionalPlaceholder_;
+	}
 
 	OpcUaNodeId
 	AddNodeRule::createUniqueNodeId(uint16_t namespaceIndex)
