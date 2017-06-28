@@ -350,9 +350,20 @@ namespace OpcUaStackServer
 		Log(Debug, "application service del node instance request")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		// FIXME: todo
+		//
+		// create new node instance
+		//
+		InformationModelManager imm(informationModel_);
+		bool success = imm.delNode(
+			delNodeInstanceRequest->nodeId()
+		);
 
-		trx->statusCode(Success);
+		if (success) {
+			trx->statusCode(Success);
+		}
+		else {
+			trx->statusCode(BadInternalError);
+		}
 		trx->componentSession()->send(serviceTransaction);
 	}
 
