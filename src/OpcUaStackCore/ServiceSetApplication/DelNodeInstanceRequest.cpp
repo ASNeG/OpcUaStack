@@ -30,11 +30,18 @@ namespace OpcUaStackCore
 
 	DelNodeInstanceRequest::DelNodeInstanceRequest(void)
 	: Object()
+	, nodeId_()
 	{
 	}
 
 	DelNodeInstanceRequest::~DelNodeInstanceRequest(void)
 	{
+	}
+
+	OpcUaNodeId&
+	DelNodeInstanceRequest::nodeId(void)
+	{
+		return nodeId_;
 	}
 
 	void 

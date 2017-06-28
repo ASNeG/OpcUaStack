@@ -35,10 +35,13 @@ namespace OpcUaStackCore
 		DelNodeInstanceRequest(void);
 		virtual ~DelNodeInstanceRequest(void);
 
+		OpcUaNodeId& nodeId(void);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		OpcUaNodeId nodeId_;
 	};
 
 }
