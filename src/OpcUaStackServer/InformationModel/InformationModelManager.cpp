@@ -261,6 +261,16 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
+			case NodeClassType_ObjectType:
+			{
+				return addObjectTypeNode(
+					parentNodeId,
+					nodeId,
+					displayName,
+					browseName
+				);
+				break;
+			}
 		}
 
 		return false;
