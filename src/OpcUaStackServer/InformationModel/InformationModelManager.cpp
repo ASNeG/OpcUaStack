@@ -291,21 +291,20 @@ namespace OpcUaStackServer
 				);
 				break;
 			}
+			case NodeClassType_ReferenceType:
+			{
+				return addReferenceTypeNode(
+					parentNodeId,
+					nodeId,
+					displayName,
+					browseName
+				);
+				break;
+			}
 		}
 
 		return false;
 	}
-#if 0
-	NodeClassType_DataType = 64,
-
-	bool addReferenceTypeNode(
-		OpcUaNodeId& parentNodeId,
-		OpcUaNodeId& nodeId,
-		OpcUaLocalizedText& displayName,
-		OpcUaQualifiedName& browseName
-	);
-
-#endif
 
 	bool
 	InformationModelManager::addObjectNode(
