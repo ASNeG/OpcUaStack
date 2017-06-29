@@ -1002,6 +1002,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::isReferences(OpcUaNodeId& nodeId)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) return false;
+		return isReferences(baseNodeClass);
+	}
+
+	bool
 	InformationModelAccess::isBaseEventType(BaseNodeClass::SPtr baseNodeClass)
 	{
 		// check node id

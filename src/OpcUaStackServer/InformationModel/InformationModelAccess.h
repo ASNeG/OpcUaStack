@@ -132,6 +132,7 @@ namespace OpcUaStackServer
 		bool isVariableType(BaseNodeClass::SPtr baseNodeClass);
 		bool isVariableType(OpcUaNodeId& nodeId);
 		bool isReferences(BaseNodeClass::SPtr baseNodeClass);
+		bool isReferences(OpcUaNodeId& nodeId);
 		bool isBaseEventType(BaseNodeClass::SPtr baseNodeClass);
 		bool isBaseEventType(OpcUaNodeId& nodeId);
 
