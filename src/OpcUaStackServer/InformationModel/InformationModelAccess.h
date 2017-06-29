@@ -122,6 +122,7 @@ namespace OpcUaStackServer
 		// data type functions
 		// --------------------------------------------------------------------
 		bool isDataType(BaseNodeClass::SPtr baseNodeClass);
+		bool isDataType(OpcUaNodeId& nodeId);
 		bool isDataTypeStructure(BaseNodeClass::SPtr baseNodeClass);
 		bool isDataTypeEnum(BaseNodeClass::SPtr baseNodeClass);
 		bool isObjectType(BaseNodeClass::SPtr baseNodeClass);
