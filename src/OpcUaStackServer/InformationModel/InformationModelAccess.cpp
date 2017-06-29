@@ -882,6 +882,14 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::isDataTypeStructure(OpcUaNodeId& nodeId)
+	{
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(nodeId);
+		if (baseNodeClass.get() == nullptr) return false;
+		return isDataTypeStructure(baseNodeClass);
+	}
+
+	bool
 	InformationModelAccess::isDataTypeEnum(BaseNodeClass::SPtr baseNodeClass)
 	{
 		// check node id
