@@ -126,6 +126,7 @@ namespace OpcUaStackServer
 		bool isDataTypeStructure(BaseNodeClass::SPtr baseNodeClass);
 		bool isDataTypeStructure(OpcUaNodeId& nodeId);
 		bool isDataTypeEnum(BaseNodeClass::SPtr baseNodeClass);
+		bool isDataTypeEnum(OpcUaNodeId& nodeId);
 		bool isObjectType(BaseNodeClass::SPtr baseNodeClass);
 		bool isObjectType(OpcUaNodeId& nodeId);
 		bool isVariableType(BaseNodeClass::SPtr baseNodeClass);
