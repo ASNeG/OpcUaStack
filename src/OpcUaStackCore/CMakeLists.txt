@@ -57,6 +57,7 @@ file(GLOB INC_OpcUaStackCore_Application OpcUaStackCore/Application/*.h)
 file(GLOB INC_OpcUaStackCore_Container OpcUaStackCore/Container/*.h)
 file(GLOB INC_OpcUaStackCore_ApplicationUtility OpcUaStackCore/ApplicationUtility/*.h)
 file(GLOB INC_OpcUaStackCore_StandardDataTypes OpcUaStackCore/StandardDataTypes/*.h)
+file(GLOB INC_OpcUaStackCore_ComplexDataTypes OpcUaStackCore/ComplexDataTypes/*.h)
 
 install(
     TARGETS OpcUaStackCore 
@@ -139,5 +140,11 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_StandardDataTypes} 
     DESTINATION include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardDataTypes
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_ComplexDataTypes} 
+    DESTINATION include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/ComplexDataTypes
     COMPONENT headers
 )
