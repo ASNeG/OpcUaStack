@@ -109,8 +109,8 @@ namespace OpcUaStackCore
 		ss << std::endl;
 		ss << "    Generated Source Code - please do not change this source code" << std::endl;
 		ss << std::endl;
-		ss << "    DataTypeCodeGenerator Version:" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
-		ss << "        OpcUaStackCore - " << std::endl;
+		ss << "    DataTypeCodeGenerator Version:"  << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
 		ss << std::endl;
 		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
@@ -142,8 +142,8 @@ namespace OpcUaStackCore
 		ss << std::endl;
 		ss << "    Generated Source Code - please do not change this source code" << std::endl;
 		ss << std::endl;
-		ss << "    DataTypeCodeGenerator Version:" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
-		ss << "        OpcUaStackCore - " << std::endl;
+		ss << "    DataTypeCodeGenerator Version:" << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH  << std::endl;
 		ss << std::endl;
 		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
