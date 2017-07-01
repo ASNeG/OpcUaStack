@@ -23,7 +23,9 @@ namespace OpcUaStackCore
 {
 
 	DataTypeGenerator::DataTypeGenerator(void)
-	: dataTypeDefinition_()
+	: projectName_("OpcUaStackCore")
+	, projectDirectory_("StandardDataTypes")
+	, dataTypeDefinition_()
 	, superTypeDataTypeDefinition_()
 	, sourceFileContent_("")
 	, headerFileContent_("")
@@ -32,6 +34,18 @@ namespace OpcUaStackCore
 
 	DataTypeGenerator::~DataTypeGenerator(void)
 	{
+	}
+
+	void
+	DataTypeGenerator::projectName(const std::string& projectName)
+	{
+		projectName_ = projectName;
+	}
+
+	void
+	DataTypeGenerator::projectDirectory(const std::string& projectDirectory)
+	{
+		projectDirectory_ = projectDirectory;
 	}
 
 	void
