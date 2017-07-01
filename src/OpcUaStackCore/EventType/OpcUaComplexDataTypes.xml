@@ -1,0 +1,41 @@
+
+<!--
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+-->
+
+<OpcUaComplexDataTypes>
+
+	<ComplexDataType TypeName="BaseEventType" TypeBinaryNodeId="i=2041">
+	    <Variable Name="EventId" 	 Type="ByteString" 		 ModellingRule="M"></Variable>
+	    <Variable Name="EventType" 	 Type="NodeId" 			 ModellingRule="M"></Variable>
+	    <Variable Name="SourceNode"  Type="NodeId"	 		 ModellingRule="M"></Variable>
+	    <Variable Name="SourceName"  Type="String" 			 ModellingRule="M"></Variable>
+	    <Variable Name="Time" 		 Type="DateTime" 		 ModellingRule="M"></Variable>
+	    <Variable Name="ReceiveTime" Type="DateTime" 		 ModellingRule="M"></Variable>
+	    <Variable Name="LocalTime" 	 Type="TimeZoneDataType" ModellingRule="O"></Variable>
+	    <Variable Name="Message" 	 Type="LocalizedText" 	 ModellingRule="M"></Variable>
+	    <Variable Name="Severity" 	 Type="UInt16" 			 ModellingRule="M"></Variable>
+	</ComplexDataType>		
+	
+	<ComplexDataType TypeName="AuditEventType" HasSupertype="BaseEventType" TypeBinaryNodeId="i=2052">
+	    <Variable Name="ActionTimeStamp" 	Type="DateTime" ModellingRule="M"></Variable>
+	    <Variable Name="Status" 	 	    Type="Boolean" 	ModellingRule="M"></Variable>
+	    <Variable Name="ServerId" 	 	    Type="String" 	ModellingRule="M"></Variable>
+	    <Variable Name="ClientAuditEntryId" Type="String" 	ModellingRule="M"></Variable>
+	    <Variable Name="ClientUserId" 	    Type="String" 	ModellingRule="M"></Variable>
+	</ComplexDataType>		
+
+</OpcUaComplexDataTypes>
