@@ -23,11 +23,46 @@ namespace OpcUaStackCore
 {
 
 	DataTypeGenerator::DataTypeGenerator(void)
+	: dataTypeDefinition_()
+	, superTypeDataTypeDefinition_()
+	, sourceFileContent_("")
+	, headerFileContent_("")
 	{
 	}
 
 	DataTypeGenerator::~DataTypeGenerator(void)
 	{
+	}
+
+	void
+	DataTypeGenerator::dataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition)
+	{
+		dataTypeDefinition_ = dataTypeDefinition;
+	}
+
+	void
+	DataTypeGenerator::superTypeDataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition)
+	{
+		superTypeDataTypeDefinition_ = dataTypeDefinition;
+	}
+
+	std::string&
+	DataTypeGenerator::sourceFileContent(void)
+	{
+		return sourceFileContent_;
+	}
+
+	std::string&
+	DataTypeGenerator::headerFileContent(void)
+	{
+		return headerFileContent_;
+	}
+
+	bool
+	DataTypeGenerator::generate(void)
+	{
+		// FIXME: todo
+		return true;
 	}
 
 }

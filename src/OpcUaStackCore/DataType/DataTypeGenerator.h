@@ -23,6 +23,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/DataType/DataTypeDefinition.h"
 
 namespace OpcUaStackCore
 {
@@ -35,7 +36,18 @@ namespace OpcUaStackCore
 		DataTypeGenerator(void);
 		~DataTypeGenerator(void);
 
+		void dataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
+		void superTypeDataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
+		std::string& sourceFileContent(void);
+		std::string& headerFileContent(void);
+
+		bool generate(void);
+
 	  private:
+		DataTypeDefinition::SPtr dataTypeDefinition_;
+		DataTypeDefinition::SPtr superTypeDataTypeDefinition_;
+		std::string sourceFileContent_;
+		std::string headerFileContent_;
 	};
 
 
