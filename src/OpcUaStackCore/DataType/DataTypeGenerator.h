@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		DataTypeGenerator(void);
 		~DataTypeGenerator(void);
 
-		void projectName(const std::string& projectName);
+		void projectNamespace(const std::string& projectName);
 		void projectDirectory(const std::string& projectDirectory);
 		void dataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
 		void superTypeDataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
@@ -46,12 +46,24 @@ namespace OpcUaStackCore
 		bool generate(void);
 
 	  private:
-		std::string projectName_;
+		//
+		// header functions
+		//
+		bool generateHeader(void);
+		bool generateHeaderComments(void);
+
+		//
+		// source functions
+		//
+		bool generateSource(void);
+		bool generateSourceComments(void);
+
+		std::string projectNamespace_;
 		std::string projectDirectory_;
 		DataTypeDefinition::SPtr dataTypeDefinition_;
 		DataTypeDefinition::SPtr superTypeDataTypeDefinition_;
-		std::string sourceFileContent_;
-		std::string headerFileContent_;
+		std::string sourceContent_;
+		std::string headerContent_;
 	};
 
 

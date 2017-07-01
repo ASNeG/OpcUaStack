@@ -16,6 +16,7 @@
  */
 
 #include <boost/lexical_cast.hpp>
+#include "BuildConfig.h"
 #include "OpcUaStackCore/DataType/DataTypeGenerator.h"
 #include "OpcUaStackCore/Base/Log.h"
 
@@ -23,12 +24,12 @@ namespace OpcUaStackCore
 {
 
 	DataTypeGenerator::DataTypeGenerator(void)
-	: projectName_("OpcUaStackCore")
+	: projectNamespace_("OpcUaStackCore")
 	, projectDirectory_("StandardDataTypes")
 	, dataTypeDefinition_()
 	, superTypeDataTypeDefinition_()
-	, sourceFileContent_("")
-	, headerFileContent_("")
+	, sourceContent_("")
+	, headerContent_("")
 	{
 	}
 
@@ -37,9 +38,9 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DataTypeGenerator::projectName(const std::string& projectName)
+	DataTypeGenerator::projectNamespace(const std::string& projectNamespace)
 	{
-		projectName_ = projectName;
+		projectNamespace_ = projectNamespace;
 	}
 
 	void
@@ -63,19 +64,91 @@ namespace OpcUaStackCore
 	std::string&
 	DataTypeGenerator::sourceFileContent(void)
 	{
-		return sourceFileContent_;
+		return sourceContent_;
 	}
 
 	std::string&
 	DataTypeGenerator::headerFileContent(void)
 	{
-		return headerFileContent_;
+		return headerContent_;
 	}
 
 	bool
 	DataTypeGenerator::generate(void)
 	{
-		// FIXME: todo
+		if (dataTypeDefinition_.get() == nullptr) {
+			Log(Error, "data type generation error - data type definition is null");
+			return false;
+		}
+
+		return
+			generateHeader() &&
+			generateSource();
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// header functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	DataTypeGenerator::generateHeader(void)
+	{
+		return
+			generateHeaderComments();
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderComments(void)
+	{
+		std::stringstream ss;
+		ss << "/*" << std::endl;
+		ss << "    DataTypeClass: " << dataTypeDefinition_->name().name().value() << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    DataTypeCodeGenerator Version:" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
+		ss << "        OpcUaStackCore - " << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// source functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	DataTypeGenerator::generateSource(void)
+	{
+		return
+			generateSourceComments();
+	}
+
+	bool
+	DataTypeGenerator::generateSourceComments(void)
+	{
+		std::stringstream ss;
+		ss << "/*" << std::endl;
+		ss << "    DataTypeClass: " << dataTypeDefinition_->name().name().value() << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    DataTypeCodeGenerator Version:" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
+		ss << "        OpcUaStackCore - " << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
