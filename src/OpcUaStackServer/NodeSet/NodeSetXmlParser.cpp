@@ -17,7 +17,7 @@
 
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/NodeSet/NodeSetValueParser.h"
-#include "OpcUaStackServer/NodeSet/DataTypeDefinition.h"
+#include "OpcUaStackCore/DataType/DataTypeDefinition.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 
