@@ -127,21 +127,30 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
+		//
+		// added defines
+		//
 		ss << std::endl;
 		ss << "#ifndef __" << projectNamespace_ << "_" << dataTypeDefinition_->name().name().value() << "_h__" << std::endl;
 		ss << "#define __" << projectNamespace_ << "_" << dataTypeDefinition_->name().name().value() << "_h__" << std::endl;
 
+		//
+		// added includes
+		//
+		ss << std::endl;
+		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
 
-#if 0
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "namespace " << projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
 
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-
-namespace OpcUaStackCore
-{
-#endif
+		headerContent_ += ss.str();
 		return true;
 	}
 
@@ -150,9 +159,19 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		//
+		// added defines
+		//
 		ss << std::endl;
 		ss << "#endif" << std::endl;
 
+		headerContent_ += ss.str();
 		return true;
 	}
 
