@@ -108,6 +108,7 @@ namespace OpcUaStackCore
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
 			    generateHeaderClassBegin("    ") &&
+			    	generateHeaderClassValueGetter("        ") &&
 			        generateHeaderClassExtensionInterface("        ") &&
 			    generateHeaderClassPrivate("    ") &&
 			        generateHeaderClassValueDefinition("        ") &&
@@ -269,6 +270,47 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	DataTypeGenerator::generateHeaderClassValueGetter(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added value definition
+		//
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		ss << prefix << std::endl;
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			OpcUaNodeId typeNodeId = dataTypeField->dataType();
+			std::string name = dataTypeField->name().value();
+			if (name.length() == 0) {
+				Log(Error, "create header file error, because name empty")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value());
+				return false;
+			}
+			name[0] = boost::to_lower_copy(name.substr(0,1))[0];
+
+			std::string dataTypeStr = getTypeNameFromNodeId(typeNodeId);
+			if (dataTypeStr == "Unknown") {
+				Log(Error, "create header file error, because type node id unknown")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value())
+					.parameter("FieldName", name)
+					.parameter("TypeNodeId", typeNodeId);
+				return false;
+			}
+
+			ss << prefix << "OpcUa" << dataTypeStr << "& " << name << "(void);" << std::endl;
+		}
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
 	DataTypeGenerator::generateHeaderClassValueDefinition(const std::string& prefix)
 	{
 		std::stringstream ss;
@@ -301,16 +343,6 @@ namespace OpcUaStackCore
 			}
 
 			ss << prefix << "OpcUa" << dataTypeStr << " " << name << "_;" << std::endl;
-
-#if 0
-			OpcUaString name_;
-			OpcUaNodeId dataType_;
-			OpcUaInt32 valueRank_;
-			OpcUaLocalizedText description_;
-			Object::SPtr dataTypeDefinition_;
-			OpcUaInt32 value_;
-			OpcUaBoolean isOptional_;
-#endif
 		}
 
 		headerContent_ += ss.str();
