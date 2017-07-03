@@ -58,6 +58,8 @@ namespace OpcUaStackCore
 	  private:
 		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
 		bool createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile);
+		bool createVariableType(DataTypeField::SPtr& dataTypeField, std::string& variableType, bool headerFile, bool sptr = true);
+
 
 		DataTypeGeneratorIf* dataTypeGeneratorIf_;
 

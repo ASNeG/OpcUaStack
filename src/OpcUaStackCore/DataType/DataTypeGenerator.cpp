@@ -286,22 +286,12 @@ namespace OpcUaStackCore
 			DataTypeField::SPtr dataTypeField = *it;
 
 			std::string variableName;
-			if (!createVariableName(dataTypeField, variableName, false)) return false;
+			if (!createVariableName(dataTypeField, variableName, true)) return false;
 
-			OpcUaNodeId typeNodeId = dataTypeField->dataType();
-			std::string dataTypeStr = getTypeNameFromNodeId(typeNodeId);
-			if (dataTypeStr == "Unknown") {
-				Log(Error, "create header file error, because type node id unknown")
-					.parameter("StructureName", dataTypeDefinition_->name().name().value())
-					.parameter("VariableName", variableName)
-					.parameter("TypeNodeId", typeNodeId);
-				return false;
-			}
-			if (dataTypeField->valueRank() >= 0) {
-				dataTypeStr += "Array::SPtr";
-			}
+			std::string variableType;
+			if (!createVariableType(dataTypeField, variableType, true)) return false;
 
-			ss << prefix << "OpcUa" << dataTypeStr << "& " << variableName << "(void);" << std::endl;
+			ss << prefix << variableType << "& " << variableName << "(void);" << std::endl;
 		}
 
 		headerContent_ += ss.str();
@@ -323,22 +313,12 @@ namespace OpcUaStackCore
 			DataTypeField::SPtr dataTypeField = *it;
 
 			std::string variableName;
-			if (!createVariableName(dataTypeField, variableName, false)) return false;
+			if (!createVariableName(dataTypeField, variableName, true)) return false;
 
-			OpcUaNodeId typeNodeId = dataTypeField->dataType();
-			std::string dataTypeStr = getTypeNameFromNodeId(typeNodeId);
-			if (dataTypeStr == "Unknown") {
-				Log(Error, "create header file error, because type node id unknown")
-					.parameter("StructureName", dataTypeDefinition_->name().name().value())
-					.parameter("VariableName", variableName)
-					.parameter("TypeNodeId", typeNodeId);
-				return false;
-			}
-			if (dataTypeField->valueRank() >= 0) {
-				dataTypeStr += "Array::SPtr";
-			}
+			std::string variableType;
+			if (!createVariableType(dataTypeField, variableType, true)) return false;
 
-			ss << prefix << "OpcUa" << dataTypeStr << " " << variableName << "_;" << std::endl;
+			ss << prefix << variableType << " " << variableName << "_;" << std::endl;
 		}
 
 		headerContent_ += ss.str();
@@ -444,13 +424,23 @@ namespace OpcUaStackCore
 		DataTypeField::Vec::iterator it;
 		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
 
+		std::string delemiter = ": ";
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
 			std::string variableName;
 			if (!createVariableName(dataTypeField, variableName, false)) return false;
 
-			ss << prefix << ", " << variableName << "()" << std::endl;
+			std::string variableType;
+			if (!createVariableType(dataTypeField, variableType, false, false)) return false;
+
+			std::string variableContent = "";
+			if (dataTypeField->valueRank() >= 0) {
+				variableContent = "constructSPtr<" + variableType + ">()";
+			}
+
+			ss << prefix << delemiter << variableName << "(" << variableContent << ")" << std::endl;
+			delemiter = ", ";
 		}
 
 		ss << prefix << "{" << std::endl;
@@ -523,6 +513,45 @@ namespace OpcUaStackCore
 		}
 		variableName[0] = boost::to_lower_copy(variableName.substr(0,1))[0];
 		variableName += "_";
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::createVariableType(
+		DataTypeField::SPtr& dataTypeField,
+		std::string& variableType,
+		bool headerFile,
+		bool sptr
+	)
+	{
+		OpcUaNodeId typeNodeId = dataTypeField->dataType();
+		variableType = getTypeNameFromNodeId(typeNodeId);
+		if (variableType == "Unknown") {
+			std::string variableName;
+			createVariableName(dataTypeField, variableName, headerFile);
+
+			if (headerFile) {
+				Log(Error, "create header file error, because type node id unknown")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value())
+					.parameter("VariableName", variableName)
+					.parameter("TypeNodeId", typeNodeId);
+			}
+			else {
+				Log(Error, "create source file error, because type node id unknown")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value())
+					.parameter("VariableName", variableName)
+					.parameter("TypeNodeId", typeNodeId);
+			}
+
+			return false;
+		}
+
+		if (dataTypeField->valueRank() >= 0) {
+			variableType += "Array" ;
+			if (sptr) variableType += "::SPtr";
+		}
+		variableType = "OpcUa" + variableType;
+
 		return true;
 	}
 
