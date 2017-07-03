@@ -457,16 +457,10 @@ namespace OpcUaStackCore
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
-			OpcUaNodeId typeNodeId = dataTypeField->dataType();
-			std::string name = dataTypeField->name().value();
-			if (name.length() == 0) {
-				Log(Error, "create source file error, because name empty")
-					.parameter("StructureName", dataTypeDefinition_->name().name().value());
-				return false;
-			}
-			name[0] = boost::to_lower_copy(name.substr(0,1))[0];
+			std::string variableName;
+			if (!createVariableName(dataTypeField, variableName, false)) return false;
 
-			ss << prefix << ", " << name << "_()" << std::endl;
+			ss << prefix << ", " << variableName << "()" << std::endl;
 		}
 
 		ss << prefix << "{" << std::endl;
@@ -520,6 +514,26 @@ namespace OpcUaStackCore
 		}
 
 		return dataTypeGeneratorIf_->getTypeNameFromNodeId(typeNodeId);
+	}
+
+	bool
+	DataTypeGenerator::createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile)
+	{
+		variableName = dataTypeField->name().value();
+		if (variableName.length() == 0) {
+			if (headerFile) {
+				Log(Error, "create header file error, because name empty")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value());
+			}
+			else {
+				Log(Error, "create source file error, because name empty")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value());
+			}
+			return false;
+		}
+		variableName[0] = boost::to_lower_copy(variableName.substr(0,1))[0];
+		variableName += "_";
+		return true;
 	}
 
 }
