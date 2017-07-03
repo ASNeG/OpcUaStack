@@ -341,6 +341,7 @@ namespace OpcUaStackCore
 			generateSourceClassBegin() &&
 				generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
+				generateSourceClassGetter("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -469,6 +470,40 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateSourceClassGetter(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableName;
+			if (!createVariableName(dataTypeField, variableName, false)) return false;
+
+			std::string functionName;
+			if (!createVariableName(dataTypeField, functionName, false, false)) return false;
+
+			std::string variableType;
+			if (!createVariableType(dataTypeField, variableType, false)) return false;
+
+			ss << prefix << std::endl;
+			ss << prefix << variableType << "&" << std::endl;
+			ss << prefix << className << "::" << functionName << "(void)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " <<  variableName << ";" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -497,7 +532,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataTypeGenerator::createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile)
+	DataTypeGenerator::createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile, bool ext)
 	{
 		variableName = dataTypeField->name().value();
 		if (variableName.length() == 0) {
@@ -512,7 +547,9 @@ namespace OpcUaStackCore
 			return false;
 		}
 		variableName[0] = boost::to_lower_copy(variableName.substr(0,1))[0];
-		variableName += "_";
+		if (ext) {
+			variableName += "_";
+		}
 		return true;
 	}
 

@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
-		bool createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile);
+		bool createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile, bool ext = true);
 		bool createVariableType(DataTypeField::SPtr& dataTypeField, std::string& variableType, bool headerFile, bool sptr = true);
 
 
@@ -87,6 +87,7 @@ namespace OpcUaStackCore
 		bool generateSourceClassEnd(void);
 		bool generateSourceClassConstructor(const std::string& prefix);
 		bool generateSourceClassDestructor(const std::string& prefix);
+		bool generateSourceClassGetter(const std::string& prefix);
 
 		std::string projectNamespace_;
 		std::string projectDirectory_;
