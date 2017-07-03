@@ -28,6 +28,15 @@
 namespace OpcUaStackCore
 {
 
+	class DLLEXPORT DataTypeGeneratorIf
+	{
+	  public:
+		DataTypeGeneratorIf(void) {}
+		virtual ~DataTypeGeneratorIf(void) {}
+
+		virtual std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId) = 0;
+	};
+
 	class DLLEXPORT DataTypeGenerator
 	{
 	  public:
@@ -36,6 +45,7 @@ namespace OpcUaStackCore
 		DataTypeGenerator(void);
 		~DataTypeGenerator(void);
 
+		void dataTypeGeneratorIf(DataTypeGeneratorIf* dataTypeGeneratorIf);
 		void projectNamespace(const std::string& projectName);
 		void projectDirectory(const std::string& projectDirectory);
 		void dataTypeDefinition(DataTypeDefinition::SPtr& dataTypeDefinition);
@@ -46,6 +56,10 @@ namespace OpcUaStackCore
 		bool generate(void);
 
 	  private:
+		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
+
+		DataTypeGeneratorIf* dataTypeGeneratorIf_;
+
 		//
 		// header functions
 		//
@@ -57,6 +71,7 @@ namespace OpcUaStackCore
 		bool generateHeaderClassEnd(const std::string& prefix);
 		bool generateHeaderClassExtensionInterface(const std::string& prefix);
 		bool generateHeaderClassPrivate(const std::string& prefix);
+		bool generateHeaderClassValueDefinition(const std::string& prefix);
 
 		//
 		// source functions

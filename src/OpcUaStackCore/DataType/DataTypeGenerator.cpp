@@ -17,6 +17,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include "BuildConfig.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaType.h"
 #include "OpcUaStackCore/DataType/DataTypeGenerator.h"
 #include "OpcUaStackCore/Base/Log.h"
 
@@ -24,7 +25,8 @@ namespace OpcUaStackCore
 {
 
 	DataTypeGenerator::DataTypeGenerator(void)
-	: projectNamespace_("OpcUaStackCore")
+	: dataTypeGeneratorIf_(nullptr)
+	, projectNamespace_("OpcUaStackCore")
 	, projectDirectory_("StandardDataTypes")
 	, dataTypeDefinition_()
 	, superTypeDataTypeDefinition_()
@@ -35,6 +37,12 @@ namespace OpcUaStackCore
 
 	DataTypeGenerator::~DataTypeGenerator(void)
 	{
+	}
+
+	void
+	DataTypeGenerator::dataTypeGeneratorIf(DataTypeGeneratorIf* dataTypeGeneratorIf)
+	{
+		dataTypeGeneratorIf_ = dataTypeGeneratorIf;
 	}
 
 	void
@@ -102,6 +110,7 @@ namespace OpcUaStackCore
 			    generateHeaderClassBegin("    ") &&
 			        generateHeaderClassExtensionInterface("        ") &&
 			    generateHeaderClassPrivate("    ") &&
+			        generateHeaderClassValueDefinition("        ") &&
 			    generateHeaderClassEnd("    ") &&
 			generateHeaderEnd();
 	}
@@ -259,6 +268,55 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateHeaderClassValueDefinition(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added value definition
+		//
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			OpcUaNodeId typeNodeId = dataTypeField->dataType();
+			std::string name = dataTypeField->name().value();
+			if (name.length() == 0) {
+				Log(Error, "create header file error, because name empty")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value());
+				return false;
+			}
+			name[0] = boost::to_lower_copy(name.substr(0,1))[0];
+
+			std::string dataTypeStr = getTypeNameFromNodeId(typeNodeId);
+			if (dataTypeStr == "Unknown") {
+				Log(Error, "create header file error, because type node id unknown")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value())
+					.parameter("FieldName", name)
+					.parameter("TypeNodeId", typeNodeId);
+				return false;
+			}
+
+			ss << prefix << "OpcUa" << dataTypeStr << " " << name << "_;" << std::endl;
+
+#if 0
+			OpcUaString name_;
+			OpcUaNodeId dataType_;
+			OpcUaInt32 valueRank_;
+			OpcUaLocalizedText description_;
+			Object::SPtr dataTypeDefinition_;
+			OpcUaInt32 value_;
+			OpcUaBoolean isOptional_;
+#endif
+		}
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -290,6 +348,33 @@ namespace OpcUaStackCore
 
 		sourceContent_ += ss.str();
 		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// private function
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	std::string
+	DataTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
+	{
+		// build in type possible
+		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+			uint32_t type;
+			uint16_t namespaceIndex;
+			typeNodeId.get(type, namespaceIndex);
+			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+			if (buildInType != "Unknown") return buildInType;
+		}
+
+		// map type node id to type string
+		if (dataTypeGeneratorIf_ == nullptr) {
+			return "Unknown";
+		}
+
+		return dataTypeGeneratorIf_->getTypeNameFromNodeId(typeNodeId);
 	}
 
 }
