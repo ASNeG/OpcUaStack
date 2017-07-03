@@ -99,6 +99,9 @@ namespace OpcUaStackCore
 		return
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
+			    generateHeaderClassBegin("    ") &&
+			        generateHeaderClassExtensionInterface("        ") &&
+			    generateHeaderClassEnd("    ") &&
 			generateHeaderEnd();
 	}
 
@@ -170,6 +173,71 @@ namespace OpcUaStackCore
 		//
 		ss << std::endl;
 		ss << "#endif" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassBegin(const std::string& prefix)
+	{
+		std::string className = dataTypeDefinition_->name().name().value();
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "class " << className << std::endl;
+		ss << prefix << ": public Object" << std::endl;
+		ss << prefix << ", public ExtensionObjectBase" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "    typedef boost::shared_ptr<" << className  << "> SPtr;" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    " << className << "(void);" << std::endl;
+		ss << prefix << "    virtual ~" << className << "(void);" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassEnd(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "};" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassExtensionInterface(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added extension interface
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
+		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
+		virtual OpcUaNodeId binaryTypeId(void);
+		virtual OpcUaNodeId xmlTypeId(void);
+		virtual void opcUaBinaryEncode(std::ostream& os) const;
+		virtual void opcUaBinaryDecode(std::istream& is);
+		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+		virtual void out(std::ostream& os);
+		//- ExtensionObjectBase -----------------------------------------------
 
 		headerContent_ += ss.str();
 		return true;
