@@ -56,6 +56,7 @@ namespace OpcUaStackCore
 		bool generateHeaderClassBegin(const std::string& prefix);
 		bool generateHeaderClassEnd(const std::string& prefix);
 		bool generateHeaderClassExtensionInterface(const std::string& prefix);
+		bool generateHeaderClassPrivate(const std::string& prefix);
 
 		//
 		// source functions

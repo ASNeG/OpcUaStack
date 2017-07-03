@@ -101,6 +101,7 @@ namespace OpcUaStackCore
 			generateHeaderBegin() &&
 			    generateHeaderClassBegin("    ") &&
 			        generateHeaderClassExtensionInterface("        ") &&
+			    generateHeaderClassPrivate("    ") &&
 			    generateHeaderClassEnd("    ") &&
 			generateHeaderEnd();
 	}
@@ -238,6 +239,21 @@ namespace OpcUaStackCore
 		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
 		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added private
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "  private:" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
