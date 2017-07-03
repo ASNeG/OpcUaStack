@@ -228,16 +228,16 @@ namespace OpcUaStackCore
 		ss << prefix << std::endl;
 		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 		ss << prefix << "virtual ExtensionObjectBase::SPtr factory(void);" << std::endl;
-		virtual OpcUaNodeId binaryTypeId(void);
-		virtual OpcUaNodeId xmlTypeId(void);
-		virtual void opcUaBinaryEncode(std::ostream& os) const;
-		virtual void opcUaBinaryDecode(std::istream& is);
-		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
-		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
-		virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
-		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
-		virtual void out(std::ostream& os);
-		//- ExtensionObjectBase -----------------------------------------------
+		ss << prefix << "virtual OpcUaNodeId binaryTypeId(void);" << std::endl;
+		ss << prefix << "virtual OpcUaNodeId xmlTypeId(void);" << std::endl;
+		ss << prefix << "virtual void opcUaBinaryEncode(std::ostream& os) const;" << std::endl;
+		ss << prefix << "virtual void opcUaBinaryDecode(std::istream& is);" << std::endl;
+		ss << prefix << "virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;" << std::endl;
+		ss << prefix << "virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);" << std::endl;
+		ss << prefix << "virtual void copyTo(ExtensionObjectBase& extensionObjectBase);" << std::endl;
+		ss << prefix << "virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;" << std::endl;
+		ss << prefix << "virtual void out(std::ostream& os);" << std::endl;
+		ss << prefix << "//- ExtensionObjectBase -----------------------------------------------" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
