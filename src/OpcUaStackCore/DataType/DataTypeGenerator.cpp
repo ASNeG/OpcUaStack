@@ -97,13 +97,16 @@ namespace OpcUaStackCore
 	DataTypeGenerator::generateHeader(void)
 	{
 		return
-			generateHeaderComments();
+			generateHeaderComments() &&
+			generateHeaderBegin() &&
+			generateHeaderEnd();
 	}
 
 	bool
 	DataTypeGenerator::generateHeaderComments(void)
 	{
 		std::stringstream ss;
+
 		ss << "/*" << std::endl;
 		ss << "    DataTypeClass: " << dataTypeDefinition_->name().name().value() << std::endl;
 		ss << std::endl;
@@ -116,6 +119,40 @@ namespace OpcUaStackCore
 		ss << "*/" << std::endl;
 
 		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderBegin(void)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#ifndef __" << projectNamespace_ << "_" << dataTypeDefinition_->name().name().value() << "_h__" << std::endl;
+		ss << "#define __" << projectNamespace_ << "_" << dataTypeDefinition_->name().name().value() << "_h__" << std::endl;
+
+
+#if 0
+
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+
+namespace OpcUaStackCore
+{
+#endif
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateHeaderEnd(void)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#endif" << std::endl;
+
 		return true;
 	}
 
