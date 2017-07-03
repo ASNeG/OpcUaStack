@@ -79,6 +79,11 @@ namespace OpcUaStackCore
 		//
 		bool generateSource(void);
 		bool generateSourceComments(void);
+		bool generateSourceIncludes(void);
+		bool generateSourceClassBegin(void);
+		bool generateSourceClassEnd(void);
+		bool generateSourceClassConstructor(const std::string& prefix);
+		bool generateSourceClassDestructor(const std::string& prefix);
 
 		std::string projectNamespace_;
 		std::string projectDirectory_;

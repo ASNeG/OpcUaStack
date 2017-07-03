@@ -302,6 +302,9 @@ namespace OpcUaStackCore
 					.parameter("TypeNodeId", typeNodeId);
 				return false;
 			}
+			if (dataTypeField->valueRank() >= 0) {
+				dataTypeStr += "Array::SPtr";
+			}
 
 			ss << prefix << "OpcUa" << dataTypeStr << "& " << name << "(void);" << std::endl;
 		}
@@ -341,6 +344,9 @@ namespace OpcUaStackCore
 					.parameter("TypeNodeId", typeNodeId);
 				return false;
 			}
+			if (dataTypeField->valueRank() >= 0) {
+				dataTypeStr += "Array::SPtr";
+			}
 
 			ss << prefix << "OpcUa" << dataTypeStr << " " << name << "_;" << std::endl;
 		}
@@ -360,13 +366,19 @@ namespace OpcUaStackCore
 	DataTypeGenerator::generateSource(void)
 	{
 		return
-			generateSourceComments();
+			generateSourceComments() &&
+			generateSourceIncludes() &&
+			generateSourceClassBegin() &&
+				generateSourceClassConstructor("    ") &&
+				generateSourceClassDestructor("    ") &&
+			generateSourceClassEnd();
 	}
 
 	bool
 	DataTypeGenerator::generateSourceComments(void)
 	{
 		std::stringstream ss;
+
 		ss << "/*" << std::endl;
 		ss << "    DataTypeClass: " << dataTypeDefinition_->name().name().value() << std::endl;
 		ss << std::endl;
@@ -377,6 +389,107 @@ namespace OpcUaStackCore
 		ss << std::endl;
 		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceIncludes(void)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#include \"" << projectNamespace_ << "/" << projectDirectory_ << "/" << dataTypeDefinition_->name().name().value() << ".h\"" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "namespace " <<  projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassConstructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		//
+		// added constructor
+		//
+		ss << prefix << std::endl;
+		ss << prefix << className << "::" << className << "(void)" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			OpcUaNodeId typeNodeId = dataTypeField->dataType();
+			std::string name = dataTypeField->name().value();
+			if (name.length() == 0) {
+				Log(Error, "create source file error, because name empty")
+					.parameter("StructureName", dataTypeDefinition_->name().name().value());
+				return false;
+			}
+			name[0] = boost::to_lower_copy(name.substr(0,1))[0];
+
+			ss << prefix << ", " << name << "_()" << std::endl;
+		}
+
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassDestructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		//
+		// added destructor
+		//
+		ss << prefix << std::endl;
+		ss << prefix << className << "::~" << className << "(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
