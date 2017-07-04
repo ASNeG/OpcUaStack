@@ -88,6 +88,7 @@ namespace OpcUaStackCore
 		bool generateSourceClassConstructor(const std::string& prefix);
 		bool generateSourceClassDestructor(const std::string& prefix);
 		bool generateSourceClassGetter(const std::string& prefix);
+		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
 
 		std::string projectNamespace_;
 		std::string projectDirectory_;

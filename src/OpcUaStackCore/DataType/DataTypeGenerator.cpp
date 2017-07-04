@@ -342,6 +342,7 @@ namespace OpcUaStackCore
 				generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
+				generateSourceClassExtensionObjectBase("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -503,6 +504,40 @@ namespace OpcUaStackCore
 		sourceContent_ += ss.str();
 		return true;
 	}
+
+	bool
+	DataTypeGenerator::generateSourceClassExtensionObjectBase(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+		ss << prefix << "//" << std::endl;
+		ss << prefix << "// ExtensionObjectBase" << std::endl;
+		ss << prefix << "//" << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+		ss << prefix << "// ------------------------------------------------------------------------" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+#if 0
+    //- ExtensionObjectBase -----------------------------------------------
+     virtual ExtensionObjectBase::SPtr factory(void);
+     virtual OpcUaNodeId binaryTypeId(void);
+     virtual OpcUaNodeId xmlTypeId(void);
+     virtual void opcUaBinaryEncode(std::ostream& os) const;
+     virtual void opcUaBinaryDecode(std::istream& is);
+     virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
+     virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+     virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
+     virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
+     virtual void out(std::ostream& os);
+     //- ExtensionObjectBase -----------------------------------------------
+
+#endif
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
