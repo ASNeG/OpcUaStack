@@ -692,6 +692,25 @@ namespace OpcUaStackCore
 		ss << prefix << "void" << std::endl;
 		ss << prefix << "Argument::out(std::ostream& os)" << std::endl;
 		ss << prefix << "{" << std::endl;
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		bool first = true;
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			if (first) {
+				first = false;
+				ss << prefix << "    os << \"" << dataTypeField->name() << "=";
+			}
+			else {
+				ss << prefix << "    os << \", " << dataTypeField->name() << "=";
+			}
+
+			ss << std::endl;
+		}
+
 			//os << "Name="; name_.out(os);
 			//os << ", DataType=" << dataType_;
 			//os << ", ValueRank=" << valueRank_;
@@ -702,6 +721,19 @@ namespace OpcUaStackCore
 		sourceContent_ += ss.str();
 		return true;
 	}
+
+#if 0
+	std::string variableName;
+	if (!createVariableName(dataTypeField, variableName, false)) return false;
+
+	std::string variableType;
+	if (!createVariableType(dataTypeField, variableType, false, false)) return false;
+
+	std::string variableContent = "";
+	if (dataTypeField->valueRank() >= 0) {
+		variableContent = "constructSPtr<" + variableType + ">()";
+	}
+#endif
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -826,6 +858,56 @@ namespace OpcUaStackCore
 			if (sptr) variableType += "::SPtr";
 		}
 		variableType = "OpcUa" + variableType;
+
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::isBoolean(OpcUaNodeId& typeNodeId)
+	{
+		if (typeNodeId.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) return false;
+
+		uint16_t namespaceIndex;
+		OpcUaUInt32 id;
+		typeNodeId.get(id, namespaceIndex);
+
+		return OpcUaBuildInTypeClass::isBoolean((OpcUaBuildInType)id);
+	}
+
+	bool
+	DataTypeGenerator::isByte(OpcUaNodeId& typeNodeId)
+	{
+		if (typeNodeId.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) return false;
+
+		uint16_t namespaceIndex;
+		OpcUaUInt32 id;
+		typeNodeId.get(id, namespaceIndex);
+
+		return OpcUaBuildInTypeClass::isByte((OpcUaBuildInType)id);
+	}
+
+    bool
+    DataTypeGenerator::isNumber(OpcUaNodeId& typeNodeId)
+	{
+		if (typeNodeId.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) return false;
+
+		uint16_t namespaceIndex;
+		OpcUaUInt32 id;
+		typeNodeId.get(id, namespaceIndex);
+
+		return OpcUaBuildInTypeClass::isNumber((OpcUaBuildInType)id);
+	}
+
+    bool
+    DataTypeGenerator::isObject(OpcUaNodeId& typeNodeId)
+	{
+    	if (typeNodeId.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) return true;
+
+		uint16_t namespaceIndex;
+		OpcUaUInt32 id;
+		typeNodeId.get(id, namespaceIndex);
+
+		return OpcUaBuildInTypeClass::isObject((OpcUaBuildInType)id);
 
 		return true;
 	}

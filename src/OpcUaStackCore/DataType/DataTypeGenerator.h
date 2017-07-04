@@ -63,6 +63,10 @@ namespace OpcUaStackCore
 		bool createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile, bool ext = true);
 		bool createVariableType(DataTypeField::SPtr& dataTypeField, std::string& variableType, bool headerFile, bool sptr = true);
 
+		bool isBoolean(OpcUaNodeId& typeNodeId);
+		bool isByte(OpcUaNodeId& typeNodeId);
+	    bool isNumber(OpcUaNodeId& typeNodeId);
+	    bool isObject(OpcUaNodeId& typeNodeId);
 
 		DataTypeGeneratorIf* dataTypeGeneratorIf_;
 
