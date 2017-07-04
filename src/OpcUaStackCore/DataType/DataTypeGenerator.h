@@ -45,6 +45,8 @@ namespace OpcUaStackCore
 		DataTypeGenerator(void);
 		~DataTypeGenerator(void);
 
+		void binaryEncodingNodeId(OpcUaNodeId& binaryEncodingNodeId);
+		void xmlEncodingNodeId(OpcUaNodeId& xmlEncodingNodeId);
 		void dataTypeGeneratorIf(DataTypeGeneratorIf* dataTypeGeneratorIf);
 		void projectNamespace(const std::string& projectName);
 		void projectDirectory(const std::string& projectDirectory);
@@ -89,7 +91,10 @@ namespace OpcUaStackCore
 		bool generateSourceClassDestructor(const std::string& prefix);
 		bool generateSourceClassGetter(const std::string& prefix);
 		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
+		bool generateSourceClassFactory(const std::string& prefix);
 
+		OpcUaNodeId binaryEncodingNodeId_;
+		OpcUaNodeId xmlEncodingNodeId_;
 		std::string projectNamespace_;
 		std::string projectDirectory_;
 		DataTypeDefinition::SPtr dataTypeDefinition_;

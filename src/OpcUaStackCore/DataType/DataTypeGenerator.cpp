@@ -25,7 +25,9 @@ namespace OpcUaStackCore
 {
 
 	DataTypeGenerator::DataTypeGenerator(void)
-	: dataTypeGeneratorIf_(nullptr)
+	: binaryEncodingNodeId_(4711)
+	, xmlEncodingNodeId_(4712)
+	, dataTypeGeneratorIf_(nullptr)
 	, projectNamespace_("OpcUaStackCore")
 	, projectDirectory_("StandardDataTypes")
 	, dataTypeDefinition_()
@@ -37,6 +39,18 @@ namespace OpcUaStackCore
 
 	DataTypeGenerator::~DataTypeGenerator(void)
 	{
+	}
+
+	void
+	DataTypeGenerator::binaryEncodingNodeId(OpcUaNodeId& binaryEncodingNodeId)
+	{
+		binaryEncodingNodeId_ = binaryEncodingNodeId;
+	}
+
+	void
+	DataTypeGenerator::xmlEncodingNodeId(OpcUaNodeId& xmlEncodingNodeId)
+	{
+		xmlEncodingNodeId_ = xmlEncodingNodeId;
 	}
 
 	void
@@ -343,6 +357,7 @@ namespace OpcUaStackCore
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
+				generateSourceClassFactory("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -523,9 +538,27 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateSourceClassFactory(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "ExtensionObjectBase::SPtr" << std::endl;
+		ss << prefix << className << "::factory(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return constructSPtr<" << className << ">();" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
 #if 0
     //- ExtensionObjectBase -----------------------------------------------
-     virtual ExtensionObjectBase::SPtr factory(void);
+
      virtual OpcUaNodeId binaryTypeId(void);
      virtual OpcUaNodeId xmlTypeId(void);
      virtual void opcUaBinaryEncode(std::ostream& os) const;
