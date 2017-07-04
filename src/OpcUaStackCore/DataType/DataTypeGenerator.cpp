@@ -25,8 +25,8 @@ namespace OpcUaStackCore
 {
 
 	DataTypeGenerator::DataTypeGenerator(void)
-	: binaryEncodingNodeId_(4711)
-	, xmlEncodingNodeId_(4712)
+	: binaryEncodingNodeId_((OpcUaUInt32)0)
+	, xmlEncodingNodeId_((OpcUaUInt32)0)
 	, dataTypeGeneratorIf_(nullptr)
 	, projectNamespace_("OpcUaStackCore")
 	, projectDirectory_("StandardDataTypes")
@@ -358,6 +358,8 @@ namespace OpcUaStackCore
 				generateSourceClassGetter("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
 				generateSourceClassFactory("    ") &&
+				generateSourceClassBinaryTypeId("    ") &&
+				generateSourceClassXmlTypeId("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -556,6 +558,42 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateSourceClassBinaryTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << className << "::binaryTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << getIdentifier(binaryEncodingNodeId_) << ", " << (uint32_t)binaryEncodingNodeId_.namespaceIndex() << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlTypeId(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaNodeId" << std::endl;
+		ss << prefix << className << "::xmlTypeId(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return OpcUaNodeId(" << getIdentifier(xmlEncodingNodeId_) << ", " << (uint32_t)xmlEncodingNodeId_.namespaceIndex() << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
 #if 0
     //- ExtensionObjectBase -----------------------------------------------
 
@@ -579,6 +617,45 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+    std::string
+    DataTypeGenerator::getIdentifier(OpcUaNodeId& nodeId)
+    {
+    	if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+    		uint16_t namespaceIndex;
+    		uint32_t id;
+    		nodeId.get(id, namespaceIndex);
+
+    		std::stringstream ss;
+    		ss << "(OpcUaUInt32)" << id;
+
+    		return ss.str();
+    	}
+    	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaString) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+    	}
+       	else if (nodeId.nodeIdType() == OpcUaBuildInType_OpcUaGuid) {
+    		uint16_t namespaceIndex;
+    		std::string id;
+    		nodeId.get(id, namespaceIndex);
+
+       		std::stringstream ss;
+        	ss << "\"" << id << "\"";
+
+        	return ss.str();
+        }
+       	else {
+       		return "(OpcUaUInt32)0";
+       	}
+    	return "";
+    }
+
 	std::string
 	DataTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
 	{

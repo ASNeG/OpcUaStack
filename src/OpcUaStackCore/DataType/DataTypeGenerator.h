@@ -58,6 +58,7 @@ namespace OpcUaStackCore
 		bool generate(void);
 
 	  private:
+		std::string getIdentifier(OpcUaNodeId& nodeId);
 		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
 		bool createVariableName(DataTypeField::SPtr& dataTypeField, std::string& variableName, bool headerFile, bool ext = true);
 		bool createVariableType(DataTypeField::SPtr& dataTypeField, std::string& variableType, bool headerFile, bool sptr = true);
@@ -92,6 +93,8 @@ namespace OpcUaStackCore
 		bool generateSourceClassGetter(const std::string& prefix);
 		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
 		bool generateSourceClassFactory(const std::string& prefix);
+		bool generateSourceClassBinaryTypeId(const std::string& prefix);
+		bool generateSourceClassXmlTypeId(const std::string& prefix);
 
 		OpcUaNodeId binaryEncodingNodeId_;
 		OpcUaNodeId xmlEncodingNodeId_;
