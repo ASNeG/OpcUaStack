@@ -364,6 +364,7 @@ namespace OpcUaStackCore
 				generateSourceClassBinaryDecode("    ") &&
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
+				generateSourceClassCopyTo("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -637,6 +638,25 @@ namespace OpcUaStackCore
 		std::stringstream ss;
 
 		// FIXME: todo
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassCopyTo(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << className << "::copyTo(ExtensionObjectBase& extensionObjectBase)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	" << className <<  "* dst = dynamic_cast<" << className << "*>(&extensionObjectBase);" << std::endl;
+		ss << prefix << "	copyTo(*dst);" << std::endl;
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
