@@ -80,6 +80,7 @@ namespace OpcUaStackCore
 		bool generateHeaderClassBegin(const std::string& prefix);
 		bool generateHeaderClassEnd(const std::string& prefix);
 		bool generateHeaderClassExtensionInterface(const std::string& prefix);
+		bool generateHeaderClassPublic(const std::string& prefix);
 		bool generateHeaderClassPrivate(const std::string& prefix);
 		bool generateHeaderClassValueGetter(const std::string& prefix);
 		bool generateHeaderClassValueDefinition(const std::string& prefix);
@@ -95,6 +96,8 @@ namespace OpcUaStackCore
 		bool generateSourceClassConstructor(const std::string& prefix);
 		bool generateSourceClassDestructor(const std::string& prefix);
 		bool generateSourceClassGetter(const std::string& prefix);
+		bool generateSourceClassPublicEQ(const std::string& prefix);
+		bool generateSourceClassPublicCP(const std::string& prefix);
 		bool generateSourceClassExtensionObjectBase(const std::string& prefix);
 		bool generateSourceClassFactory(const std::string& prefix);
 		bool generateSourceClassBinaryTypeId(const std::string& prefix);

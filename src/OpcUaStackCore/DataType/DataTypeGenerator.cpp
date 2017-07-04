@@ -124,6 +124,7 @@ namespace OpcUaStackCore
 			    generateHeaderClassBegin("    ") &&
 			    	generateHeaderClassValueGetter("        ") &&
 			        generateHeaderClassExtensionInterface("        ") &&
+			        generateHeaderClassPublic("        ") &&
 			    generateHeaderClassPrivate("    ") &&
 			        generateHeaderClassValueDefinition("        ") &&
 			    generateHeaderClassEnd("    ") &&
@@ -269,6 +270,21 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	DataTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "void copyTo(" << className << "& value);" << std::endl;
+		ss << prefix << "bool operator==(const " << className << "& value) const;" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
 	DataTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
 	{
 		std::stringstream ss;
@@ -356,6 +372,8 @@ namespace OpcUaStackCore
 				generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
+				generateSourceClassPublicEQ("    ") &&
+				generateSourceClassPublicCP("    ") &&
 				generateSourceClassExtensionObjectBase("    ") &&
 				generateSourceClassFactory("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
@@ -530,6 +548,42 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	DataTypeGenerator::generateSourceClassPublicEQ(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << className << "::copyTo(" << className << "& value)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassPublicCP(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << className << "::operator==(const " << className << "& value) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+		// FIXME: todo
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
 	DataTypeGenerator::generateSourceClassExtensionObjectBase(const std::string& prefix)
 	{
 		std::stringstream ss;
@@ -606,7 +660,14 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << className << "::opcUaBinaryEncode(std::ostream& os) const" << std::endl;
+		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
@@ -617,7 +678,14 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << className << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
+		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
@@ -628,7 +696,14 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << className << "::encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const" << std::endl;
+		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
@@ -639,7 +714,14 @@ namespace OpcUaStackCore
 	{
 		std::stringstream ss;
 
+		std::string className = dataTypeDefinition_->name().name().value();
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << className << "::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)" << std::endl;
+		ss << prefix << "{" << std::endl;
 		// FIXME: todo
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
@@ -700,6 +782,9 @@ namespace OpcUaStackCore
 		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
 			DataTypeField::SPtr dataTypeField = *it;
 
+			std::string variableName;
+			if (!createVariableName(dataTypeField, variableName, false)) return false;
+
 			if (first) {
 				first = false;
 				ss << prefix << "    os << \"" << dataTypeField->name() << "=";
@@ -708,32 +793,30 @@ namespace OpcUaStackCore
 				ss << prefix << "    os << \", " << dataTypeField->name() << "=";
 			}
 
+			if (dataTypeField->valueRank() >= 0) {
+				ss << "\"; " << variableName << "->out(os);";
+			}
+			else if (isBoolean(dataTypeField->dataType())) {
+				ss << "\" << " << variableName << ";";
+			}
+			else if (isByte(dataTypeField->dataType())) {
+				ss << "\" << "<< variableName << ";";
+			}
+			else if (isNumber(dataTypeField->dataType())) {
+				ss << "\" << "<< variableName << ";";
+			}
+			else {
+				ss << "\"; " << variableName << ".out(os);";
+			}
+
 			ss << std::endl;
 		}
 
-			//os << "Name="; name_.out(os);
-			//os << ", DataType=" << dataType_;
-			//os << ", ValueRank=" << valueRank_;
-			//os << ", ArrayDimensions="; arrayDimensions_->out(os);
-			//os << ", Description="; description_.out(os);
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
 	}
-
-#if 0
-	std::string variableName;
-	if (!createVariableName(dataTypeField, variableName, false)) return false;
-
-	std::string variableType;
-	if (!createVariableType(dataTypeField, variableType, false, false)) return false;
-
-	std::string variableContent = "";
-	if (dataTypeField->valueRank() >= 0) {
-		variableContent = "constructSPtr<" + variableType + ">()";
-	}
-#endif
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
