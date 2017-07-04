@@ -360,6 +360,10 @@ namespace OpcUaStackCore
 				generateSourceClassFactory("    ") &&
 				generateSourceClassBinaryTypeId("    ") &&
 				generateSourceClassXmlTypeId("    ") &&
+				generateSourceClassBinaryEncode("    ") &&
+				generateSourceClassBinaryDecode("    ") &&
+				generateSourceClassXmlEncode("    ") &&
+				generateSourceClassXmlDecode("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -594,15 +598,53 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataTypeGenerator::generateSourceClassBinaryEncode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		// FIXME: todo
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassBinaryDecode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		// FIXME: todo
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlEncode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		// FIXME: todo
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassXmlDecode(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		// FIXME: todo
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
 #if 0
     //- ExtensionObjectBase -----------------------------------------------
 
-     virtual OpcUaNodeId binaryTypeId(void);
-     virtual OpcUaNodeId xmlTypeId(void);
-     virtual void opcUaBinaryEncode(std::ostream& os) const;
-     virtual void opcUaBinaryDecode(std::istream& is);
-     virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const;
-     virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
      virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
      virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
      virtual void out(std::ostream& os);

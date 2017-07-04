@@ -95,6 +95,10 @@ namespace OpcUaStackCore
 		bool generateSourceClassFactory(const std::string& prefix);
 		bool generateSourceClassBinaryTypeId(const std::string& prefix);
 		bool generateSourceClassXmlTypeId(const std::string& prefix);
+		bool generateSourceClassBinaryEncode(const std::string& prefix);
+		bool generateSourceClassBinaryDecode(const std::string& prefix);
+		bool generateSourceClassXmlEncode(const std::string& prefix);
+		bool generateSourceClassXmlDecode(const std::string& prefix);
 
 		OpcUaNodeId binaryEncodingNodeId_;
 		OpcUaNodeId xmlEncodingNodeId_;
