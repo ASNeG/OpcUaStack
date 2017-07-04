@@ -365,6 +365,8 @@ namespace OpcUaStackCore
 				generateSourceClassXmlEncode("    ") &&
 				generateSourceClassXmlDecode("    ") &&
 				generateSourceClassCopyTo("    ") &&
+				generateSourceClassEqual("    ") &&
+				generateSourceClassOut("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -662,15 +664,44 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-#if 0
-    //- ExtensionObjectBase -----------------------------------------------
+	bool
+	DataTypeGenerator::generateSourceClassEqual(const std::string& prefix)
+	{
+		std::stringstream ss;
 
-     virtual void copyTo(ExtensionObjectBase& extensionObjectBase);
-     virtual bool equal(ExtensionObjectBase& extensionObjectBase) const;
-     virtual void out(std::ostream& os);
-     //- ExtensionObjectBase -----------------------------------------------
+		std::string className = dataTypeDefinition_->name().name().value();
 
-#endif
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << className << "::equal(ExtensionObjectBase& extensionObjectBase) const" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	" << className << "* dst = dynamic_cast<" << className << "*>(&extensionObjectBase);" << std::endl;
+		ss << prefix << "	return *this == *dst;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	DataTypeGenerator::generateSourceClassOut(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << "Argument::out(std::ostream& os)" << std::endl;
+		ss << prefix << "{" << std::endl;
+			//os << "Name="; name_.out(os);
+			//os << ", DataType=" << dataType_;
+			//os << ", ValueRank=" << valueRank_;
+			//os << ", ArrayDimensions="; arrayDimensions_->out(os);
+			//os << ", Description="; description_.out(os);
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
