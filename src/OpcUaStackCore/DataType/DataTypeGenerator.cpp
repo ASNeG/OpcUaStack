@@ -750,7 +750,6 @@ namespace OpcUaStackCore
 			else {
 				ss << prefix << "    " << variableName << ".opcUaBinaryEncode(os);" << std::endl;
 			}
-
 		}
 
 		ss << prefix << "}" << std::endl;
@@ -770,7 +769,32 @@ namespace OpcUaStackCore
 		ss << prefix << "void" << std::endl;
 		ss << prefix << className << "::opcUaBinaryDecode(std::istream& is)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableName;
+			if (!createVariableName(dataTypeField, variableName, false)) return false;
+
+			std::string variableType;
+			if (!createVariableType(dataTypeField,  variableType, false)) return false;
+
+			if (dataTypeField->valueRank() >= 0) {
+				ss << prefix << "    " << variableName << "->opcUaBinaryDecode(is);" << std::endl;
+			}
+			else if (isNumber(dataTypeField->dataType()) ||
+					 isByte(dataTypeField->dataType()) ||
+					 isBoolean(dataTypeField->dataType())) {
+				ss << prefix << "    OpcUaNumber::opcUaBinaryDecode(is," << variableName << ");" << std::endl;
+			}
+			else {
+				ss << prefix << "    " << variableName << ".opcUaBinaryDecode(os);" << std::endl;
+			}
+		}
+
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
