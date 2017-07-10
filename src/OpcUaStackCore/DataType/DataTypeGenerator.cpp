@@ -575,12 +575,8 @@ namespace OpcUaStackCore
 			if (dataTypeField->valueRank() >= 0) {
 				// object can be null
 
-				ss << prefix << "    if (" << variableName << ".get() == nullptr && dst->" << functionName << "().get() != nullptr) {" << std::endl;
-				ss << prefix << "	       return false;" << std::endl;
-				ss << prefix << "    }" << std::endl;
-				ss << prefix << "    if (" << variableName << ".get() != nullptr && dst->" << functionName << "().get() == nullptr) {" << std::endl;
-				ss << prefix << "	     return false;" << std::endl;
-				ss << prefix << "    }" << std::endl;
+				ss << prefix << "    if (" << variableName << ".get() == nullptr && dst->" << functionName << "().get() != nullptr) return false;" << std::endl;
+				ss << prefix << "    if (" << variableName << ".get() != nullptr && dst->" << functionName << "().get() == nullptr) return false;" << std::endl;
 
 				// equal object
 				ss << prefix << "    if (*" << variableName << " != *dst->" << functionName << "()) return false;" << std::endl;
@@ -610,7 +606,32 @@ namespace OpcUaStackCore
 		ss << prefix << "void" << std::endl;
 		ss << prefix << className << "::copyTo(" << className << "& value)" << std::endl;
 		ss << prefix << "{" << std::endl;
-		// FIXME: todo
+
+		DataTypeField::Vec::iterator it;
+		DataTypeField::Vec& dataTypeFields = dataTypeDefinition_->dataFields();
+
+		for (it = dataTypeFields.begin(); it != dataTypeFields.end(); it++) {
+			DataTypeField::SPtr dataTypeField = *it;
+
+			std::string variableName;
+			if (!createVariableName(dataTypeField, variableName, false)) return false;
+
+			std::string functionName;
+			if (!createVariableName(dataTypeField, functionName, false, false)) return false;
+
+			if (dataTypeField->valueRank() >= 0) {
+				ss << prefix << "    if (" << variableName << ".get() != nullptr) {" << std::endl;
+				ss << prefix << "	    " << variableName << "->copyTo(*value." << functionName << "());" << std::endl;
+				ss << prefix << "    }" << std::endl;
+			}
+			else if (isObject(dataTypeField->dataType())) {
+				ss << prefix << "    " << variableName << ".copyTo(value." << functionName << "());" << std::endl;
+			}
+			else {
+				ss << prefix << "    value." << functionName << " = " << variableName << ";" << std::endl;
+			}
+		}
+
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
