@@ -151,70 +151,90 @@ namespace OpcUaStackCore
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaByte& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << (int16_t)value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaSByte& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << (int16_t)value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaUInt16& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaInt16& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaUInt32& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaInt32& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaUInt64& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaInt64& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaFloat& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaDouble& value)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+		ss << value;
+		pt.put_value(ss.str());
 		return true;
 	}
 
