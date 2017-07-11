@@ -121,15 +121,17 @@ namespace OpcUaStackCore
     {
 	  public:
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		//
 		// Boolean
 		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBoolean& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaBoolean& value);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaBoolean& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
-		static bool xmlEncode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
-		static bool xmlDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value);
 
 		static void opcUaBinaryEncode(std::ostream& os, const OpcUaBooleanArray& value);
 		static void opcUaBinaryDecode(std::istream& is, OpcUaBooleanArray& value);
@@ -139,7 +141,6 @@ namespace OpcUaStackCore
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBooleanArray& value);
 		static bool encode(boost::property_tree::ptree& pt, const OpcUaBooleanArray::SPtr& value);
 		static bool decode(boost::property_tree::ptree& pt, OpcUaBooleanArray::SPtr& value);
-
 
 		//
 		// SByte

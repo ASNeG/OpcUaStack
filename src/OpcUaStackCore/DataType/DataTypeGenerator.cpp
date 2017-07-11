@@ -837,6 +837,19 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+#if 0
+    <Argument>
+       <Name>SubscriptionId</Name>
+       <DataType>
+         <Identifier>i=7</Identifier>
+       </DataType>
+       <ValueRank>-1</ValueRank>
+       <ArrayDimensions />
+       <Description p5:nil="true" xmlns:p5="http://www.w3.org/2001/XMLSchema-instance" />
+     </Argument>
+
+#endif
+
 	bool
 	DataTypeGenerator::generateSourceClassCopyTo(const std::string& prefix)
 	{
