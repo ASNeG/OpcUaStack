@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -14,6 +14,9 @@
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
+
+#include <boost/algorithm/string/case_conv.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
@@ -51,6 +54,28 @@ namespace OpcUaStackCore
 	OpcUaNumber::decode(boost::property_tree::ptree& pt, OpcUaBoolean& value)
 	{
 		return Json::decode(pt, value);
+	}
+
+	bool
+	OpcUaNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaBoolean& value)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		boost::to_upper(sourceValue);
+		if (sourceValue == "TRUE") value = true;
+		else value = false;
+		return true;
+	}
+
+	bool
+	OpcUaNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
+		return true;
 	}
 
 
@@ -109,6 +134,29 @@ namespace OpcUaStackCore
 		return value->decode(pt);
 	}
 
+	bool
+	OpcUaNumber::xmlEncode(boost::property_tree::ptree& pt, const OpcUaBooleanArray& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaBooleanArray& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaNumber::xmlEncode(boost::property_tree::ptree& pt, const OpcUaBooleanArray::SPtr& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaBooleanArray::SPtr& value)
+	{
+		return true;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
