@@ -248,77 +248,130 @@ namespace OpcUaStackCore
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaBoolean& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		boost::to_upper(sourceValue);
+		if (sourceValue == "TRUE") value = true;
+		else value = false;
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaByte& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaSByte& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = (OpcUaSByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt16& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<uint16_t>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaInt16& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<int16_t>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt32& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<uint32_t>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaInt32& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<int32_t>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaUInt64& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<uint64_t>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaInt64& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<int64_t>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaFloat& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<float>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	XmlNumber::xmlDecode(boost::property_tree::ptree& pt, OpcUaDouble& value)
 	{
-		// FIXME: todo
+		std::string sourceValue = pt.get_value<std::string>();
+		try {
+			value = boost::lexical_cast<double>(sourceValue);
+		} catch(boost::bad_lexical_cast& e) {
+			return false;
+		}
 		return true;
 	}
 
