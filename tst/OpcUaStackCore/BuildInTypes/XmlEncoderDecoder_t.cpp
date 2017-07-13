@@ -203,52 +203,57 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Double)
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaString)
 {
+	Xmlns xmlns;
 	ConfigXml xml;
 	boost::property_tree::ptree pt;
 	OpcUaString value1, value2;
 
 	value1.value("Dies ist ein String");
-	value1.xmlEncode(pt);
+	value1.xmlEncode(pt, xmlns);
 
 	xml.ptree(pt);
 	xml.write(std::cout);
 	std::cout << std::endl;
 
-	value2.xmlDecode(pt);
-	BOOST_REQUIRE(value2.value() == "Dies ist ein String");
+	value2.xmlDecode(pt, xmlns);
+	BOOST_REQUIRE(value2.value() == std::string("Dies ist ein String"));
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaDataTime)
 {
 	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 
+	Xmlns xmlns;
 	ConfigXml xml;
 	boost::property_tree::ptree pt;
 	OpcUaDateTime value1, value2;
 
 	value1.dateTime(now);
-	value1.xmlEncode(pt);
+	value1.xmlEncode(pt, xmlns);
 
 	xml.ptree(pt);
 	xml.write(std::cout);
 	std::cout << std::endl;
 
-	value2.xmlDecode(pt);
+	value2.xmlDecode(pt, xmlns);
 	BOOST_REQUIRE(value2.dateTime() == now);
 }
 
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaGuid
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaGuid)
+{
+	Xmlns xmlns;
+	ConfigXml xml;
 	boost::property_tree::ptree pt;
 	OpcUaGuid value1, value2;
 
 	value1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	value1.xmlEncode(pt);
+	value1.xmlEncode(pt, xmlns);
 
 	xml.ptree(pt);
 	xml.write(std::cout);
 	std::cout << std::endl;
 
-	value2.xmlDecode(pt);
+	value2.xmlDecode(pt, xmlns);
 	std::string str = value2;
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
