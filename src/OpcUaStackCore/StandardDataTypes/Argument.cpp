@@ -161,7 +161,7 @@ namespace OpcUaStackCore
 	Argument::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		// get argument
-		boost::optional<boost::property_tree::ptree&> argument = pt.get_child_optional(xmlns.addxmlnsxmlns("Argument"));
+		boost::optional<boost::property_tree::ptree&> argument = pt.get_child_optional(xmlns.addxmlns("Argument"));
 		if (!argument) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Argument"));
@@ -169,7 +169,7 @@ namespace OpcUaStackCore
 		}
 
 		// get name
-		boost::optional<std::string> name = argument->get_optional<std::string>(xmlns.addxmlnsxmlns("Name"));
+		boost::optional<std::string> name = argument->get_optional<std::string>(xmlns.addxmlns("Name"));
 		if (!name) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Name"));
@@ -178,7 +178,7 @@ namespace OpcUaStackCore
 		name_ = *name;
 
 		// get data type
-		boost::optional<boost::property_tree::ptree&> dataType = argument->get_child_optional(xmlns.addxmlnsxmlns("DataType"));
+		boost::optional<boost::property_tree::ptree&> dataType = argument->get_child_optional(xmlns.addxmlns("DataType"));
 		if (!dataType) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("DataType"));

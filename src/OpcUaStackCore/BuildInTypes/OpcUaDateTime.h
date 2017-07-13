@@ -20,6 +20,7 @@
 
 #include "boost/property_tree/ptree.hpp"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "boost/date_time/posix_time/posix_time.hpp"
 
@@ -57,9 +58,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool xmlEncode(boost::property_tree::ptree& pt);
-		bool xmlDecode(boost::property_tree::ptree& pt);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
 		static boost::posix_time::ptime nullTime_;
