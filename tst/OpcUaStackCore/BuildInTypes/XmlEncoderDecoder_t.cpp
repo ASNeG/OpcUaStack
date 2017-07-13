@@ -237,5 +237,21 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaDataTime)
 	BOOST_REQUIRE(value2.dateTime() == now);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaGuid
+	boost::property_tree::ptree pt;
+	OpcUaGuid value1, value2;
+
+	value1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+	value1.xmlEncode(pt);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	value2.xmlDecode(pt);
+	std::string str = value2;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
