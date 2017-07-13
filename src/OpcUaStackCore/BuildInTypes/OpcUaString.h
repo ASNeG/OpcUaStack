@@ -22,6 +22,7 @@
 #include <string>
 #include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include <boost/property_tree/ptree.hpp>
 
@@ -62,9 +63,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt);
-		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element);
-		bool xmlEncode(boost::property_tree::ptree& pt);
-		bool xmlDecode(boost::property_tree::ptree& pt);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
 		bool exist_;
