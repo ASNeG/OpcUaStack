@@ -201,4 +201,28 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaString::xmlEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt)) return false;
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaString::xmlEncode(boost::property_tree::ptree& pt)
+	{
+		pt.put_value(value());
+		return true;
+	}
+
+	bool
+	OpcUaString::xmlDecode(boost::property_tree::ptree& pt)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		value(sourceValue);
+		return true;
+	}
+
 }

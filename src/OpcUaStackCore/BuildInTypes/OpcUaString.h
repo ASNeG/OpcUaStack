@@ -62,6 +62,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element);
+		bool xmlEncode(boost::property_tree::ptree& pt);
+		bool xmlDecode(boost::property_tree::ptree& pt);
 
 	  private:
 		bool exist_;
