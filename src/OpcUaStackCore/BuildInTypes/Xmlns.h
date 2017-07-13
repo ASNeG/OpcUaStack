@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_Xmlns_h__
 #define __OpcUaStackCore_Xmlns_h__
 
+#include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -28,6 +29,12 @@ namespace OpcUaStackCore
 	  public:
 		Xmlns(void);
 		~Xmlns(void);
+
+		void xmlns(const std::string& xmlns);
+		std::string addxmlns(const std::string& element);
+
+	  private:
+		std::string xmlns_;
 	};
 
 }

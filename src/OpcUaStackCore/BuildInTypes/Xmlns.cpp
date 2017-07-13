@@ -21,11 +21,25 @@ namespace OpcUaStackCore
 {
 
 	Xmlns::Xmlns(void)
+	: xmlns_("")
 	{
 	}
 
 	Xmlns::~Xmlns(void)
 	{
+	}
+
+	void
+	Xmlns::xmlns(const std::string& xmlns)
+	{
+		xmlns_ = xmlns;
+	}
+
+	std::string
+	Xmlns::addxmlns(const std::string& element)
+	{
+		if (xmlns_ == "") return element;
+		return xmlns_ + std::string(":") + element;
 	}
 
 }
