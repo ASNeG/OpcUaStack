@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
@@ -198,6 +199,42 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Double)
 
 	XmlNumber::xmlDecode(pt, value2);
 	BOOST_REQUIRE(value2 > 12.33 && value2 < 12.35);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaString)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaString value1, value2;
+
+	value1.value("Dies ist ein String");
+	value1.xmlEncode(pt);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	value2.xmlDecode(pt);
+	BOOST_REQUIRE(value2.value() == "Dies ist ein String");
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaDataTime)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaDateTime value1, value2;
+
+	value1.dateTime(now);
+	value1.xmlEncode(pt);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	value2.xmlDecode(pt);
+	BOOST_REQUIRE(value2.dateTime() == now);
 }
 
 

@@ -189,4 +189,31 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, const std::string& element)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt)) return false;
+		pt.push_back(std::make_pair(element, elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt)
+	{
+		pt.put_value(toISOString());
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::xmlDecode(boost::property_tree::ptree& pt)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		if (sourceValue.empty()) {
+			return false;
+		}
+
+		return fromISOString(sourceValue);
+	}
+
 }
