@@ -1,5 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Certificate/PkiIdentity.h"
+#include <iostream>
 
 using namespace OpcUaStackCore;
 

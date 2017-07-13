@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <iostream>
 #include "OpcUaStackCore/Base/Base64.h"
 
 using namespace OpcUaStackCore;
