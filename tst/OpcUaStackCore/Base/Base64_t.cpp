@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <cmath>
 #include <iostream>
 #include "OpcUaStackCore/Base/Base64.h"
 
@@ -148,6 +149,32 @@ BOOST_AUTO_TEST_CASE(Base64_decode3)
 
 	Base64::decode(ss1.str().c_str(), ss1.str().length(), buffer, len);
 	std::cout << buffer << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(Base64_buf_len)
+{
+	std::cout << "Base64Len=" << Base64::asciiLen2base64Len(22) << std::endl;
+	std::cout << "AsciiLen= " << Base64::base64Len2asciiLen(32) << std::endl;
+	BOOST_REQUIRE(Base64::asciiLen2base64Len(22) == 32);
+	BOOST_REQUIRE(Base64::base64Len2asciiLen(33) == 24);
+}
+
+BOOST_AUTO_TEST_CASE(Base64_encode_decode)
+{
+	std::string str = "Dies ist ein ByteString";
+
+	char base64Buf[33];
+	uint32_t base64BufLen = 32;
+	memset(base64Buf, 0x00, 33);
+
+	BOOST_REQUIRE(Base64::encode(str.c_str(), str.length(), base64Buf, base64BufLen) == true);
+	std::cout << base64Buf << std::endl;
+
+	char asciiBuf[25];
+	uint32_t asciiBufLen = 24;
+	memset(asciiBuf, 0x00, 24);
+
+	BOOST_REQUIRE(Base64::decode(base64Buf, base64BufLen, asciiBuf, asciiBufLen) == true);
 }
 
 
