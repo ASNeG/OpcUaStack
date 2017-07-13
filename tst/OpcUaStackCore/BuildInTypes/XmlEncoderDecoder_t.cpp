@@ -98,4 +98,107 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Int16)
 	BOOST_REQUIRE(value2 == -123);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_UInt32)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaUInt32 value1, value2;
+
+	value1 = 1234;
+	XmlNumber::xmlEncode(pt, value1);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	XmlNumber::xmlDecode(pt, value2);
+	BOOST_REQUIRE(value2 == 1234);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Int32)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaInt32 value1, value2;
+
+	value1 = -1234;
+	XmlNumber::xmlEncode(pt, value1);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	XmlNumber::xmlDecode(pt, value2);
+	BOOST_REQUIRE(value2 == -1234);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_UInt64)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaUInt64 value1, value2;
+
+	value1 = 12345;
+	XmlNumber::xmlEncode(pt, value1);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	XmlNumber::xmlDecode(pt, value2);
+	BOOST_REQUIRE(value2 == 12345);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Int64)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaInt64 value1, value2;
+
+	value1 = -12345;
+	XmlNumber::xmlEncode(pt, value1);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	XmlNumber::xmlDecode(pt, value2);
+	BOOST_REQUIRE(value2 == -12345);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Float)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaFloat value1, value2;
+
+	value1 = 12.34;
+	XmlNumber::xmlEncode(pt, value1);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	XmlNumber::xmlDecode(pt, value2);
+	BOOST_REQUIRE(value2 > 12.33 && value2 < 12.35);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_Double)
+{
+	ConfigXml xml;
+	boost::property_tree::ptree pt;
+	OpcUaDouble value1, value2;
+
+	value1 = 12.34;
+	XmlNumber::xmlEncode(pt, value1);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	XmlNumber::xmlDecode(pt, value2);
+	BOOST_REQUIRE(value2 > 12.33 && value2 < 12.35);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
