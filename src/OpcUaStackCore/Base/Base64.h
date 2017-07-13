@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -29,6 +29,9 @@ namespace OpcUaStackCore
 	  public:
 		Base64(void);
 		~Base64(void);
+
+		static uint32_t asciiLen2base64Len(uint32_t asciiLen);
+		static uint32_t base64Len2asciiLen(uint32_t base64Len);
 
 		static bool encode(const char*asciiBuf, uint32_t asciiLen, char* base64Buf, uint32_t& base64Len);
 		static bool decode(const char*base64Buf, uint32_t base64Len, char* asciiBuf, uint32_t& asciiLen);
