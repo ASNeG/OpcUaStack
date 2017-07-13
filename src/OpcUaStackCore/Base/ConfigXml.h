@@ -35,6 +35,8 @@ namespace OpcUaStackCore
 		bool write(const std::string& configFileName);
 		bool write(std::ostream& os);
 		bool read(const std::string& configFileName);
+		bool read(std::istream& is);
+		bool parse(std::istream& is);
 		bool parse(const std::string& configFileName, bool writeToConfig = false);
 		bool parse(const std::string& configFileName, ConfigIf* configIf);
 		std::string errorMessage(void);

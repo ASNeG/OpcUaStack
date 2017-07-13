@@ -81,6 +81,31 @@ namespace OpcUaStackCore
 		return parse(configFileName);
 	}
 
+	bool
+	ConfigXml::read(std::istream& is)
+	{
+		return parse(is);
+	}
+
+	bool
+	ConfigXml::parse(std::istream& is)
+	{
+		errorMessage_ = "";
+
+		// read configuration from xml file
+		try
+		{
+			boost::property_tree::read_xml(is, ptree_, boost::property_tree::xml_parser::trim_whitespace);
+		}
+		catch (const boost::property_tree::xml_parser_error& e)
+		{
+			errorMessage_ = std::string(e.what());
+			return false;
+		}
+
+		return true;
+	}
+
 	bool 
 	ConfigXml::parse(const std::string& configFileName, bool writeToConfig)
 	{
