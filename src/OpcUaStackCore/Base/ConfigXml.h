@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,6 +33,7 @@ namespace OpcUaStackCore
 		~ConfigXml(void);
 
 		bool write(const std::string& configFileName);
+		bool write(std::ostream& os);
 		bool read(const std::string& configFileName);
 		bool parse(const std::string& configFileName, bool writeToConfig = false);
 		bool parse(const std::string& configFileName, ConfigIf* configIf);
