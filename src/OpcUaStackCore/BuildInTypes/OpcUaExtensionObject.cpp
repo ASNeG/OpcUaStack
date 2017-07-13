@@ -329,18 +329,18 @@ namespace OpcUaStackCore
 	OpcUaExtensionObject::decode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		// get typeId
-		boost::optional<boost::property_tree::ptree&> typeId = pt.get_child_optional(xmlns.add("TypeId"));
+		boost::optional<boost::property_tree::ptree&> typeId = pt.get_child_optional(xmlns.addxmlns("TypeId"));
 		if (!typeId) {
 			Log(Error, "value empty")
-				.parameter("Tag", xmlns.add("TypeId"));
+				.parameter("Tag", xmlns.addxmlns("TypeId"));
 			return false;
 		}
 
 		// get identifier
-		boost::optional<std::string> identifier = typeId->get_optional<std::string>(xmlns.add("Identifier"));
+		boost::optional<std::string> identifier = typeId->get_optional<std::string>(xmlns.addxmlns("Identifier"));
 		if (!identifier) {
 			Log(Error, "value empty")
-				.parameter("Tag", xmlns.add("Identifier"));
+				.parameter("Tag", xmlns.addxmlns("Identifier"));
 			return false;
 		}
 
@@ -350,16 +350,16 @@ namespace OpcUaStackCore
 		bool rc = xmlNodeIdType.fromString(s);
 		if (!rc) {
 			Log(Error, "value format error")
-				.parameter("Tag", xmlns.add("Identifier"))
+				.parameter("Tag", xmlns.addxmlns("Identifier"))
 				.parameter("Identifier", s);
 			return false;
 		}
 
 		// get body
-		boost::optional<boost::property_tree::ptree&> body = pt.get_child_optional(xmlns.add("Body"));
+		boost::optional<boost::property_tree::ptree&> body = pt.get_child_optional(xmlns.addxmlns("Body"));
 		if (!body) {
 			Log(Error, "value empty")
-				.parameter("Tag", xmlns.add("Body"))
+				.parameter("Tag", xmlns.addxmlns("Body"))
 				.parameter("NodeIdType", xmlNodeIdType);
 			return false;
 		}

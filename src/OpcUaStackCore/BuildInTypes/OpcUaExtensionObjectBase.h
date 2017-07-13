@@ -19,7 +19,7 @@
 #define __OpcUaStackCore_ExtensionObjectBase_h__
 
 #include <boost/property_tree/ptree.hpp>
-#include "OpcUaStackCore/Base/Xmlns.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 namespace OpcUaStackCore
