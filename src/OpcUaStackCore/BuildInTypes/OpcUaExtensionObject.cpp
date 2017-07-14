@@ -384,22 +384,62 @@ namespace OpcUaStackCore
 	bool
 	OpcUaExtensionObject::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) return false;
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+
 		return true;
 	}
 
 	bool
 	OpcUaExtensionObject::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		if (epSPtr_.get() == nullptr) return false;
+
+		//
+		// encode type id
+		//
+		OpcUaNodeId xmlNodeId = epSPtr_->xmlTypeId();
+		if (!xmlNodeId.xmlEncode(pt, "TypeId", xmlns)) return false;
+
+		//
+		// encode body
+		//
+		if (!epSPtr_->xmlEncode(pt, "Body", xmlns)) return false;
+
 		return true;
 	}
 
 	bool
 	OpcUaExtensionObject::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
-		return true;
+		// get typeIdTree tree
+		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional(xmlns.addxmlns("TypeId"));
+		if (!typeIdTree) return false;
+
+		// get type id
+		OpcUaNodeId xmlTypeNodeId;
+		if (xmlTypeNodeId.xmlDecode(*typeIdTree, xmlns)) return false;
+
+		// get body tree
+		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional(xmlns.addxmlns("Body"));
+		if (!bodyTree) return false;
+
+		this->typeId(xmlTypeNodeId);
+		if (!createObject()) {
+			// Extension object unknown
+			logExtensionObjectMap();
+			Log(Error, "extension object unknown")
+				.parameter("NodeIdType", xmlTypeNodeId);
+			return false;
+		}
+
+		// Currently the XML type ist stored in the object. Now we determine
+		// the binary type by the XMl type.
+		typeId_ = epSPtr_->binaryTypeId();
+
+		// decode extension object from xml file
+		return epSPtr_->xmlDecode(*bodyTree, xmlns);
 	}
 
 	void

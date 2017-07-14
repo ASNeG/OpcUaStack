@@ -356,5 +356,15 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_LocalizedText)
 	BOOST_REQUIRE(value2.text().toStdString() == "Text");
 }
 
+#if 0
+OpcUaExtensionObject eo;
+
+// binary
+eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+
+// xml
+eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
+#endif
+
 
 BOOST_AUTO_TEST_SUITE_END()
