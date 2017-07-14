@@ -258,35 +258,35 @@ namespace OpcUaStackCore
 	{
 		boost::property_tree::ptree argumentTree;
 
-		if (!name_.xmlEncode(pt, "Name", xmlns)) {
+		if (!name_.xmlEncode(argumentTree, "Name", xmlns)) {
 			Log(Error, "Argument xml encoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "Name");
 			return false;
 		}
 
-		if (!dataType_.xmlEncode(pt, "DataType", xmlns)) {
+		if (!dataType_.xmlEncode(argumentTree, "DataType", xmlns)) {
 			Log(Error, "Argument xml encoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "DataType");
 			return false;
 		}
 
-		if (!XmlNumber::xmlEncode(pt, valueRank_, "ValueRank")) {
+		if (!XmlNumber::xmlEncode(argumentTree, valueRank_, "ValueRank")) {
 			Log(Error, "Argument xml encoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "ValueRank");
 			return false;
 		}
 
-		if (!arrayDimensions_->xmlEncode(pt, "ArrayDimensions", "UInt32")) {
+		if (!arrayDimensions_->xmlEncode(argumentTree, "ArrayDimensions", "UInt32")) {
 			Log(Error, "Argument xml encoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "ArrayDimensions");
 			return false;
 		}
 
-		if (!description_.xmlEncode(pt, "Description", xmlns)) {
+		if (!description_.xmlEncode(argumentTree, "Description", xmlns)) {
 			Log(Error, "Argument xml encoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "Description");

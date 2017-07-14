@@ -405,21 +405,26 @@ namespace OpcUaStackCore
 		//
 		// encode type id
 		//
+		boost::property_tree::ptree typeIdTree;
 		OpcUaNodeId xmlNodeId = epSPtr_->xmlTypeId();
-		if (!xmlNodeId.xmlEncode(pt, "TypeId", xmlns)) {
+		if (!xmlNodeId.xmlEncode(typeIdTree, xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml encoder error")
 				.parameter("Element", "TypeId");
 			return false;
 		}
+		pt.add_child(xmlns.addxmlns("TypeId"), typeIdTree);
 
 		//
 		// encode body
 		//
-		if (!epSPtr_->xmlEncode(pt, "Body", xmlns)) {
+		boost::property_tree::ptree bodyTree;
+		if (!epSPtr_->xmlEncode(pt, xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml encoder error")
 				.parameter("Element", "Body");
 			return false;
 		}
+		pt.add_child(xmlns.addxmlns("Body"), bodyTree);
+
 		return true;
 	}
 
