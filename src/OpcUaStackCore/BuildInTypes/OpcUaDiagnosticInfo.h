@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_OpcUaDiagnosticInfo_h__
 #define __OpcUaStackCore_OpcUaDiagnosticInfo_h__
 
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
@@ -59,6 +60,9 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
 		OpcUaInt32 symbolicId_;

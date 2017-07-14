@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_OpcUaVariant__
 
 #include <boost/property_tree/ptree.hpp>
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaDateTime.h"
@@ -124,9 +125,11 @@ namespace OpcUaStackCore
 
 		void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
 		void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);
-
 		bool encode(boost::property_tree::ptree& pt, OpcUaBuildInType opcUaBuildInType) const;
 		bool decode(boost::property_tree::ptree& pt, OpcUaBuildInType opcUaBuildInType);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
 		OpcUaVariantValueType variantValue_;
@@ -241,6 +244,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt, const OpcUaBuildInType& opcUaBuildInType, bool isArray);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
 		OpcUaInt32 arrayLength_;

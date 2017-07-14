@@ -136,6 +136,9 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 		void logExtensionObjectMap(void);
 
