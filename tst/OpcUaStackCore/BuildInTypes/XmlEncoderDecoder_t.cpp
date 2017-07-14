@@ -336,5 +336,25 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_QualifiedName)
 	BOOST_REQUIRE(value2.name().toStdString() == "Name");
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_LocalizedText)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaLocalizedText value1, value2;
+
+	value1.locale("de");
+	value1.text("Text");
+	value1.xmlEncode(pt, xmlns);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	value2.xmlDecode(pt, xmlns);
+	BOOST_REQUIRE(value2.locale().toStdString() == "de");
+	BOOST_REQUIRE(value2.text().toStdString() == "Text");
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
