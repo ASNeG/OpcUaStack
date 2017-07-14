@@ -165,6 +165,20 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaNodeIdBase::get(OpcUaByteString& nodeId, OpcUaUInt16& namespaceIndex)
+	{
+		if (nodeIdType() != OpcUaBuildInType_OpcUaByteString) {
+			return false;
+		}
+
+		namespaceIndex = namespaceIndex_;
+		OpcUaByteString::SPtr opcUaByteStringSPtr;
+		opcUaByteStringSPtr = boost::get<OpcUaByteString::SPtr>(nodeIdValue_);
+		opcUaByteStringSPtr->copyTo(nodeId);
+		return true;
+	}
+
 	bool 
 	OpcUaNodeIdBase::get(OpcUaByte** buf, OpcUaInt32* bufLen, OpcUaUInt16& namespaceIndex)
 	{
@@ -472,6 +486,32 @@ namespace OpcUaStackCore
 		nodeIdString = pt.get_value<std::string>();
 		if (!fromString(nodeIdString)) return false;
 		return true;
+	}
+
+	bool
+	OpcUaNodeIdBase::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) return false;
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaNodeIdBase::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		pt.put(xmlns.addxmlns("Identifier"), toString());
+		return true;
+	}
+
+	bool
+	OpcUaNodeIdBase::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addxmlns("Identifier"));
+		if (!sourceValue) {
+			return false;
+		}
+		return fromString(*sourceValue);
 	}
 
 	bool 
