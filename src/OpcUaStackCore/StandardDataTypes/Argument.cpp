@@ -243,6 +243,27 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	Argument::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	Argument::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	Argument::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
 	void
 	Argument::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{

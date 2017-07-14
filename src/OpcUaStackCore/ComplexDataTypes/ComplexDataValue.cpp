@@ -125,6 +125,27 @@ namespace OpcUaStackCore
 		return false;
 	}
 
+	bool
+	ComplexDataValue::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	ComplexDataValue::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	ComplexDataValue::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
 	void
 	ComplexDataValue::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{
