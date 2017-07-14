@@ -211,7 +211,7 @@ namespace OpcUaStackCore
 	OpcUaString::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, xmlns)) {
+		if (!xmlEncode(elementTree, xmlns)) {
 			Log(Error, "OpcString xml encoder error")
 				.parameter("Element", element);
 			return false;
