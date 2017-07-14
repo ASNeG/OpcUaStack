@@ -294,7 +294,7 @@ namespace OpcUaStackCore
 		}
 
 		pt.add_child(xmlns.addxmlns("Argument"), argumentTree);
-		return false;
+		return true;
 	}
 
 	bool
