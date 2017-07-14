@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
+#include <cstring>
 #include <cmath>
 #include <openssl/evp.h>
 #include <openssl/buffer.h>
@@ -50,33 +52,25 @@ namespace OpcUaStackCore
 	bool
 	Base64::encode(const char* asciiBuf, uint32_t asciiLen, char* base64Buf, uint32_t& base64Len)
 	{
-		BIO* b64, *bio;
-		BUF_MEM *bptr;
+		BIO *bio, *b64;
+		BUF_MEM *bufferPtr;
 
-		b64 = BIO_new(BIO_f_base64());
-		BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-		bio = BIO_new(BIO_s_mem());
-		BIO_push(b64, bio);
-		BIO_get_mem_ptr(b64, &bptr);
-
-		// write directly to base64 buffer to avoid copy operation
 		uint32_t length = asciiLen2base64Len(asciiLen);
 		if (length > base64Len) return false;
 		base64Len = length;
 
-		bptr->length = 0;
-		bptr->max = length + 1;
-		bptr->data = base64Buf;
+		b64 = BIO_new(BIO_f_base64());
+		bio = BIO_new(BIO_s_mem());
+		bio = BIO_push(b64, bio);
 
-		BIO_write(b64, asciiBuf, asciiLen);
-		BIO_flush(b64);
+		BIO_set_flags(bio, BIO_FLAGS_BASE64_NO_NL); //Ignore newlines - write everything in one line
+		BIO_write(bio, asciiBuf, asciiLen);
+		BIO_flush(bio);
+		BIO_get_mem_ptr(bio, &bufferPtr);
+		BIO_set_close(bio, BIO_NOCLOSE);
+		BIO_free_all(bio);
 
-		bptr->length = 0;
-		bptr->max = 0;
-		bptr->data = nullptr;
-
-		BIO_free_all(b64);
-
+		memcpy(base64Buf, bufferPtr->data, base64Len);
 		return true;
 	}
 

@@ -58,6 +58,11 @@ namespace OpcUaStackCore
 	void 
 	OpcUaByteString::value(const OpcUaByte* value, OpcUaInt32 length)
 	{
+		if (value == nullptr) {
+			reset();
+			return;
+		}
+
 		reset();
 		if (length < 0) return;
 		value_ = (OpcUaByte*)malloc(length);
@@ -108,7 +113,7 @@ namespace OpcUaStackCore
 		
 	OpcUaByteString::operator std::string const (void)
 	{
-		if (length_ < 1) {
+		if (length_ < 1 || value_ == nullptr) {
 			return std::string();
 		}
 		return std::string((char*)value_, length_);
@@ -284,18 +289,9 @@ namespace OpcUaStackCore
 	bool
 	OpcUaByteString::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: ERROR IN ENCODER CODE
-		std::string str = "RGllcyBpc3QgZWluIEJ5dGVTdHJpbmc=";
-		pt.put_value(str);
-		return true;
-
 		OpcUaByte** valueBuf;
 		OpcUaInt32 valueLen = 0;
 		value(valueBuf, &valueLen);
-
-		std::cout << "x1  " << valueLen << std::endl;
-		std::string xx((const char*)*valueBuf, valueLen);
-		std::cout << "x2  " << xx << std::endl;
 
 		if (valueLen == 0) {
 			pt.put_value("");
@@ -307,7 +303,7 @@ namespace OpcUaStackCore
 				return false;
 			}
 
-			char* buf = (char*)malloc(bufLen+1);
+			char* buf = (char*) new char[bufLen+1];
 			if (!Base64::encode((const char*)*valueBuf, valueLen, buf, bufLen)) {
 				delete buf;
 				return false;

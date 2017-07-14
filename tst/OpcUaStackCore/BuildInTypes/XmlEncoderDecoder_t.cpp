@@ -263,8 +263,9 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaByteString)
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
-	OpcUaByteString value1, value2;
+	OpcUaByteString value2;
 
+	OpcUaByteString value1;
 	value1.value("Dies ist ein ByteString");
 	value1.xmlEncode(pt, xmlns);
 
@@ -272,11 +273,8 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaByteString)
 	xml.write(std::cout);
 	std::cout << std::endl;
 
-	std::cout << "AA" << std::endl;
 	value2.xmlDecode(pt, xmlns);
-	std::cout << "BB" << std::endl;
 	BOOST_REQUIRE(value2.toString() == std::string("Dies ist ein ByteString"));
-	std::cout << "CC" << std::endl;
 }
 
 
