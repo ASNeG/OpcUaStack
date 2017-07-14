@@ -1,8 +1,10 @@
 #include "unittest.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
+#include "OpcUaStackCore/StandardDataTypes/Argument.h"
 #include <boost/iostreams/stream.hpp>
 
 using namespace OpcUaStackCore;
@@ -356,15 +358,29 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_LocalizedText)
 	BOOST_REQUIRE(value2.text().toStdString() == "Text");
 }
 
-#if 0
-OpcUaExtensionObject eo;
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
+{
+	OpcUaExtensionObject eo;
+	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
 
-// binary
-eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+	Argument::SPtr argument;
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaExtensionObject value1, value2;
 
-// xml
-eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
-#endif
+	argument = value1.parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+	argument->name().value("ArgumentName");
+	argument->dataType().set("NodeName", 23);
+	argument->description().set("de", "Description");
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+}
 
 BOOST_AUTO_TEST_SUITE_END()

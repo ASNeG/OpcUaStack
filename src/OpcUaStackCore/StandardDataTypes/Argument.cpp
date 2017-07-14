@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/StandardDataTypes/Argument.h"
 
@@ -257,11 +258,40 @@ namespace OpcUaStackCore
 	{
 		boost::property_tree::ptree argumentTree;
 
-		if (!name_.xmlEncode(pt, "Name", xmlns)) return false;
-		if (!dataType_.xmlEncode(pt, "DataType", xmlns)) return false;
-		if (!XmlNumber::xmlEncode(pt, "valueRank_, ValueRank")) return false;
-		if (!arrayDimensions_->xmlEncode(pt, "ArrayDimensions", xmlns)) return false;
-		if (!description_.xmlEncode(pt, "Description", xmlns)) return false;
+		if (!name_.xmlEncode(pt, "Name", xmlns)) {
+			Log(Error, "Argument xml encoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Name");
+			return false;
+		}
+
+		if (!dataType_.xmlEncode(pt, "DataType", xmlns)) {
+			Log(Error, "Argument xml encoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "DataType");
+			return false;
+		}
+
+		if (!XmlNumber::xmlEncode(pt, valueRank_, "ValueRank")) {
+			Log(Error, "Argument xml encoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "ValueRank");
+			return false;
+		}
+
+		if (!arrayDimensions_->xmlEncode(pt, "ArrayDimensions", "UInt32")) {
+			Log(Error, "Argument xml encoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "ArrayDimensions");
+			return false;
+		}
+
+		if (!description_.xmlEncode(pt, "Description", xmlns)) {
+			Log(Error, "Argument xml encoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Description");
+			return false;
+		}
 
 		pt.add_child(xmlns.addxmlns("Argument"), argumentTree);
 		return false;
@@ -270,85 +300,92 @@ namespace OpcUaStackCore
 	bool
 	Argument::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
 		// get argument
 		boost::optional<boost::property_tree::ptree&> argument = pt.get_child_optional(xmlns.addxmlns("Argument"));
-		if (!argument) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("Argument"));
-			return false;
-		}
+		if (!argument) return false;
+
 
 		// get name
-		boost::optional<std::string> name = argument->get_optional<std::string>(xmlns.addxmlns("Name"));
-		if (!name) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("Name"));
+		tmpTree = argument->get_child_optional(xmlns.addxmlns("Name"));
+		if (!tmpTree) {
+			Log(Error, "Argument xml decoder error - element not exist in xml document")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Name");
 			return false;
 		}
-		name_ = *name;
+		if (name_.xmlDecode(*tmpTree, xmlns)) {
+			Log(Error, "Argument xml decoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Name");
+			return false;
+		}
+
 
 		// get data type
-		boost::optional<boost::property_tree::ptree&> dataType = argument->get_child_optional(xmlns.addxmlns("DataType"));
-		if (!dataType) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("DataType"));
+		tmpTree = argument->get_child_optional(xmlns.addxmlns("DataType"));
+		if (!tmpTree) {
+			Log(Error, "Argument xml decoder error - element not exist in xml document")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "DataType");
+			return false;
+		}
+		if (dataType_.xmlDecode(*tmpTree, xmlns)) {
+			Log(Error, "Argument xml decoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "DataType");
 			return false;
 		}
 
-		// get identifier
-		boost::optional<std::string> identifier = dataType->get_optional<std::string>(xmlns.addxmlns("Identifier"));
-		if (!identifier) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("Identifier"));
-			return false;
-		}
-
-		std::string s = *identifier;
-		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
-		bool rc = dataType_.fromString(s);
-		if (!rc) {
-			Log(Error, "value format error")
-				.parameter("Tag", xmlns.addxmlns("Identifier"))
-				.parameter("Identifier", s);
-			return false;
-		}
 
 		// get value rank
-		boost::optional<std::string> valueRank = argument->get_optional<std::string>(xmlns.addxmlns("ValueRank"));
-		if (!valueRank) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("ValueRank"));
+		tmpTree = argument->get_child_optional(xmlns.addxmlns("ValueRank"));
+		if (!tmpTree) {
+			Log(Error, "Argument xml decoder error - element not exist in xml document")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "ValueRank");
+			return false;
+		}
+		if (!XmlNumber::xmlDecode(*tmpTree, valueRank_)) {
+			Log(Error, "Argument xml decoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "ValueRank");
 			return false;
 		}
 
-		try {
-			valueRank_ = boost::lexical_cast<OpcUaInt32>(*valueRank);
-		} catch(boost::bad_lexical_cast& e) {
-			Log(Error, "bad_lexical_cast in decode")
-				.parameter("Tag", xmlns.addxmlns("ValueRank"))
-				.parameter("SourceValue", valueRank)
-				.parameter("What", e.what());
-			return false;
-		}
 
 		// get array dimensions
-		boost::optional<std::string> arrayDimensions = argument->get_optional<std::string>(xmlns.addxmlns("ArrayDimensions"));
-		if (!arrayDimensions) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("ArrayDimensions"));
+		tmpTree = argument->get_child_optional(xmlns.addxmlns("ArrayDimensions"));
+		if (!tmpTree) {
+			Log(Error, "Argument xml decoder error - element not exist in xml document")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "ArrayDimensions");
+			return false;
+		}
+		if (arrayDimensions_->xmlDecode(*tmpTree, "UInt32")) {
+			Log(Error, "Argument xml decoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "ArrayDimensions");
 			return false;
 		}
 
-		// FIXME: todo ...
 
-		// get description
-		boost::optional<std::string> description = argument->get_optional<std::string>(xmlns.addxmlns("Description"));
-		if (!description) {
-			Log(Error, "value empty")
-				.parameter("Tag", xmlns.addxmlns("Description"));
+		// description
+		tmpTree = argument->get_child_optional(xmlns.addxmlns("Description"));
+		if (!tmpTree) {
+			Log(Error, "Argument xml decoder error - element not exist in xml document")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Description");
 			return false;
 		}
-		// FIXME: todo ...
+		if (description_.xmlDecode(*tmpTree, xmlns)) {
+			Log(Error, "Argument xml decoder error")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Description");
+			return false;
+		}
+
 
 		return true;
 	}

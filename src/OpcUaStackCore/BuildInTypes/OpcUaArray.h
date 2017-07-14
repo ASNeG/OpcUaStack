@@ -23,7 +23,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <stdint.h>
 #include <iostream>
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/ByteOrder.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
 #include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
@@ -67,7 +69,7 @@ namespace OpcUaStackCore
 
 		  static bool xmlDecode(boost::property_tree::ptree& pt, T& value, const std::string& element)
 		  {
-			  return XmlNumber::xmlDecode(pt, value, element);
+			  return XmlNumber::xmlDecode(pt, value);
 		  }
 
 		  static T copy(T& sourceValue, T& destValue)
@@ -276,6 +278,7 @@ namespace OpcUaStackCore
 		bool encode(boost::property_tree::ptree& pt) const;
 		bool decode(boost::property_tree::ptree& pt);
 
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& extElement) const;
 		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const;
 		bool xmlDecode(boost::property_tree::ptree& pt, const std::string& element);
 
@@ -526,11 +529,31 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	bool
+	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement) const
+	{
+		boost::property_tree::ptree tmpTree;
+		if (xmlEncode(tmpTree, listElement)) {
+			Log(Error, "OpcUaArray xml encoder error")
+				.parameter("Element", element)
+				.parameter("ListElement", listElement);
+			return false;
+		}
+
+		pt.add_child(element, tmpTree);
+		return true;
+	}
+
+	template<typename T, typename CODER>
+	bool
 	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const
 	{
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			boost::property_tree::ptree arrayElement;
-			if (!CODER::xmlEncode(arrayElement, valueArray_[idx], element)) return false;
+			if (!CODER::xmlEncode(arrayElement, valueArray_[idx], element)) {
+				Log(Error, "OpcUaArray xml encoder error")
+					.parameter("ListElement", element);
+				return false;
+			}
 			pt.push_back(std::make_pair(element, arrayElement));
 		}
 		return true;
@@ -543,13 +566,21 @@ namespace OpcUaStackCore
 		int32_t arrayLength = 0;
 		arrayLength = pt.size();
 
+		if (arrayLength == 0) {
+			return true;
+		}
+
 		resize(arrayLength);
 		boost::property_tree::ptree::iterator it;
 		for (it = pt.begin(); it != pt.end(); it++) {
 			boost::property_tree::ptree arrayElement = it->second;
 
 			T value;
-			if (!CODER::xmlDecode(arrayElement, value, element)) return false;
+			if (!CODER::xmlDecode(arrayElement, value, element)) {
+				Log(Error, "OpcUaArray xml decoder error")
+					.parameter("ListElement", element);
+				return false;
+			}
 			push_back(value);
 		}
 		return true;
