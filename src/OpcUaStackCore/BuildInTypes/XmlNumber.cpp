@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaBoolean& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaByte& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -51,7 +51,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaSByte& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -60,7 +60,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaUInt16& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaInt16& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -78,7 +78,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaUInt32& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -87,7 +87,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaInt32& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -96,7 +96,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaUInt64& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -105,7 +105,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaInt64& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -114,7 +114,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaFloat& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
@@ -123,7 +123,7 @@ namespace OpcUaStackCore
 	XmlNumber::xmlEncode(boost::property_tree::ptree& pt, OpcUaDouble& value, const std::string& element)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, value)) return false;
+		if (!xmlEncode(elementTree, value)) return false;
 		pt.push_back(std::make_pair(element, elementTree));
 		return true;
 	}
