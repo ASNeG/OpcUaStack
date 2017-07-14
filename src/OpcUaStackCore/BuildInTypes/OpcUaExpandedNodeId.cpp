@@ -194,22 +194,27 @@ namespace OpcUaStackCore
 	bool
 	OpcUaExpandedNodeId::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) return false;
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
 
 	bool
 	OpcUaExpandedNodeId::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME:
+		pt.put(xmlns.addxmlns("Identifier"), toString());
 		return true;
 	}
 
 	bool
 	OpcUaExpandedNodeId::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
-		return true;
+		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addxmlns("Identifier"));
+		if (!sourceValue) {
+			return false;
+		}
+		return fromString(*sourceValue);
 	}
 
 	bool
