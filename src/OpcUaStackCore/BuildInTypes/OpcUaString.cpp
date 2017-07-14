@@ -54,7 +54,7 @@ namespace OpcUaStackCore
 	}
 
 	std::string
-	OpcUaString::toString(void) const
+	OpcUaString::toStdString(void) const
 	{
 		return value_;
 	}
