@@ -17,7 +17,6 @@
 
 #include <boost/algorithm/string/case_conv.hpp>
 #include <boost/lexical_cast.hpp>
-
 #include "OpcUaStackCore/BuildInTypes/XmlNumber.h"
 
 namespace OpcUaStackCore

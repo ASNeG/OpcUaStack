@@ -246,22 +246,111 @@ namespace OpcUaStackCore
 	bool
 	Argument::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
-		// FIXME: todo
-		return false;
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) return false;
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
 	}
 
 	bool
 	Argument::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree argumentTree;
+
+		if (!name_.xmlEncode(pt, "Name", xmlns)) return false;
+		if (!dataType_.xmlEncode(pt, "DataType", xmlns)) return false;
+		if (!XmlNumber::xmlEncode(pt, "valueRank_, ValueRank")) return false;
+		if (!arrayDimensions_->xmlEncode(pt, "ArrayDimensions", xmlns)) return false;
+		if (!description_.xmlEncode(pt, "Description", xmlns)) return false;
+
+		pt.add_child(xmlns.addxmlns("Argument"), argumentTree);
 		return false;
 	}
 
 	bool
 	Argument::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
-		return false;
+		// get argument
+		boost::optional<boost::property_tree::ptree&> argument = pt.get_child_optional(xmlns.addxmlns("Argument"));
+		if (!argument) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("Argument"));
+			return false;
+		}
+
+		// get name
+		boost::optional<std::string> name = argument->get_optional<std::string>(xmlns.addxmlns("Name"));
+		if (!name) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("Name"));
+			return false;
+		}
+		name_ = *name;
+
+		// get data type
+		boost::optional<boost::property_tree::ptree&> dataType = argument->get_child_optional(xmlns.addxmlns("DataType"));
+		if (!dataType) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("DataType"));
+			return false;
+		}
+
+		// get identifier
+		boost::optional<std::string> identifier = dataType->get_optional<std::string>(xmlns.addxmlns("Identifier"));
+		if (!identifier) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("Identifier"));
+			return false;
+		}
+
+		std::string s = *identifier;
+		s.erase(s.begin(), std::find_if(s.begin(), s.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
+		bool rc = dataType_.fromString(s);
+		if (!rc) {
+			Log(Error, "value format error")
+				.parameter("Tag", xmlns.addxmlns("Identifier"))
+				.parameter("Identifier", s);
+			return false;
+		}
+
+		// get value rank
+		boost::optional<std::string> valueRank = argument->get_optional<std::string>(xmlns.addxmlns("ValueRank"));
+		if (!valueRank) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("ValueRank"));
+			return false;
+		}
+
+		try {
+			valueRank_ = boost::lexical_cast<OpcUaInt32>(*valueRank);
+		} catch(boost::bad_lexical_cast& e) {
+			Log(Error, "bad_lexical_cast in decode")
+				.parameter("Tag", xmlns.addxmlns("ValueRank"))
+				.parameter("SourceValue", valueRank)
+				.parameter("What", e.what());
+			return false;
+		}
+
+		// get array dimensions
+		boost::optional<std::string> arrayDimensions = argument->get_optional<std::string>(xmlns.addxmlns("ArrayDimensions"));
+		if (!arrayDimensions) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("ArrayDimensions"));
+			return false;
+		}
+
+		// FIXME: todo ...
+
+		// get description
+		boost::optional<std::string> description = argument->get_optional<std::string>(xmlns.addxmlns("Description"));
+		if (!description) {
+			Log(Error, "value empty")
+				.parameter("Tag", xmlns.addxmlns("Description"));
+			return false;
+		}
+		// FIXME: todo ...
+
+		return true;
 	}
 
 	void
