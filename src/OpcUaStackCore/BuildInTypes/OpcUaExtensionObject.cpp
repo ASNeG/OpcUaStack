@@ -405,23 +405,27 @@ namespace OpcUaStackCore
 		//
 		// encode body
 		//
-		if (!epSPtr_->xmlEncode(pt, "Body", xmlns)) return false;
-
-		return true;
+		return epSPtr_->xmlEncode(pt, "Body", xmlns);
 	}
 
 	bool
 	OpcUaExtensionObject::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		//
 		// get typeIdTree tree
+		//
 		boost::optional<boost::property_tree::ptree&> typeIdTree = pt.get_child_optional(xmlns.addxmlns("TypeId"));
 		if (!typeIdTree) return false;
 
+		//
 		// get type id
+		//
 		OpcUaNodeId xmlTypeNodeId;
 		if (xmlTypeNodeId.xmlDecode(*typeIdTree, xmlns)) return false;
 
+		//
 		// get body tree
+		//
 		boost::optional<boost::property_tree::ptree&> bodyTree = pt.get_child_optional(xmlns.addxmlns("Body"));
 		if (!bodyTree) return false;
 
@@ -438,7 +442,9 @@ namespace OpcUaStackCore
 		// the binary type by the XMl type.
 		typeId_ = epSPtr_->binaryTypeId();
 
+		//
 		// decode extension object from xml file
+		//
 		return epSPtr_->xmlDecode(*bodyTree, xmlns);
 	}
 
