@@ -223,7 +223,7 @@ namespace OpcUaStackCore
 		// find token "srv=" (optional)
 		//
 		serverIndex_ = 0;
-		pos = nodeIdString.find("srv=");
+		pos = nodeIdString.find("svr=");
 		if (pos == std::string::npos) {
 			posBegin = 0;
 			posEnd = 0;
@@ -265,7 +265,7 @@ namespace OpcUaStackCore
 
 			pos = nodeIdString.find("ns=", posBegin);
 			if (pos != std::string::npos) {
-				posBegin = pos+2;
+				posBegin = pos+3;
 				posEnd = nodeIdString.find_first_of(';', posBegin);
 
 				try {
@@ -349,7 +349,7 @@ namespace OpcUaStackCore
 	{
 		std::stringstream nodeIdStream;
 		if (serverIndex_ != 0) {
-			nodeIdStream << "srv=" << serverIndex_ << ";";
+			nodeIdStream << "svr=" << serverIndex_ << ";";
 		}
 
 		if (namespaceUri_.size() > 0) {
