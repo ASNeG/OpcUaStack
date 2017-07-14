@@ -236,7 +236,11 @@ namespace OpcUaStackCore
 	OpcUaLocalizedText::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, xmlns)) return false;
+		if (!xmlEncode(pt, xmlns)) {
+			Log(Error, "OpcUaLocalizedText xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
 		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}

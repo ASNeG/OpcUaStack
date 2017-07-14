@@ -195,7 +195,11 @@ namespace OpcUaStackCore
 	OpcUaExpandedNodeId::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, xmlns)) return false;
+		if (!xmlEncode(pt, xmlns)) {
+			Log(Error, "OpcUaExpandedNodeId xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
 		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
@@ -212,6 +216,8 @@ namespace OpcUaStackCore
 	{
 		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addxmlns("Identifier"));
 		if (!sourceValue) {
+			Log(Error, "OpcUaExpandedNodeId xml decoder error - element not exist in xml document")
+				.parameter("Element", "Identifier");
 			return false;
 		}
 		return fromString(*sourceValue);

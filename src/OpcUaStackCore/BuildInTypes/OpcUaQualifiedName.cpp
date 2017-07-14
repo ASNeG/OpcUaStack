@@ -231,7 +231,11 @@ namespace OpcUaStackCore
 	OpcUaQualifiedName::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, xmlns)) return false;
+		if (!xmlEncode(pt, xmlns)) {
+			Log(Error, "OpcUaQualifiedName xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
 		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
@@ -266,6 +270,9 @@ namespace OpcUaStackCore
 			}
 			catch (boost::bad_lexical_cast&)
 			{
+				Log(Error, "OpcUaQulifiedName xml encoder error - value invalid")
+					.parameter("Element", "NamespaceIndex")
+					.parameter("Value", *namespaceIndexString);
 				return false;
 			}
 		}
