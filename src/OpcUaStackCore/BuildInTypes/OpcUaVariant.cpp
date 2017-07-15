@@ -2055,14 +2055,14 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaSByte:
 			{
-				//dataTypeString = "SByte";
-				//rc = encode<OpcUaSByte>(ptree, opcUaVariant, dataTypeString);
+				OpcUaSByte value = get<OpcUaSByte>();
+				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"));
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByte:
 			{
-				//dataTypeString = "Byte";
-				//rc = encode<OpcUaByte>(ptree, opcUaVariant, dataTypeString);
+				OpcUaSByte value = get<OpcUaByte>();
+				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"));
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt16:
@@ -2195,7 +2195,32 @@ namespace OpcUaStackCore
 				OpcUaBoolean value;
 				if (!XmlNumber::xmlDecode(tmpTree, value)) {
 					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element);
+						.parameter("Element", element)
+						.parameter("DataType", "Boolean");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "SByte");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaByte value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Byte");
 					return false;
 				}
 				set(value);
