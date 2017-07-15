@@ -2197,6 +2197,16 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				OpcUaExpandedNodeId::SPtr value = variantSPtr<OpcUaExpandedNodeId>();
+				if (!value->xmlEncode(pt, "ExpandedNodeId", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "ExpandedNodeId");
+					return false;
+				}
+				break;
+			}
 
 
 
@@ -2454,6 +2464,26 @@ namespace OpcUaStackCore
 					Log(Error, "OpcUaVariant xml decode error")
 						.parameter("Element", element)
 						.parameter("DataType", "NodeId");
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("ExpandedNodeId"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "ExpandedNodeId");
+					return false;
+				}
+
+				OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "ExpandedNodeId");
 					return false;
 				}
 				variant(value);
