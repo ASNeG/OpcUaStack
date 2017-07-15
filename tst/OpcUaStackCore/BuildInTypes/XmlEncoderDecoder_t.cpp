@@ -657,4 +657,25 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Guid)
 	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_NodeId)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	OpcUaNodeId::SPtr nodeId1 = constructSPtr<OpcUaNodeId>();
+	nodeId1->set(4711,4712);
+	value1.variant(nodeId1);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaNodeId::SPtr nodeId2 = value2.variantSPtr<OpcUaNodeId>();
+	BOOST_REQUIRE(*nodeId2 == OpcUaNodeId(4711,4712));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
