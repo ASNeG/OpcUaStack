@@ -554,4 +554,42 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_UInt64)
 	BOOST_REQUIRE(value2.get<OpcUaUInt64>() == 123456);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Float)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	value1.set((OpcUaFloat)1.2);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaFloat v = value2.get<OpcUaFloat>();
+	BOOST_REQUIRE(v > 1.1 && v < 1.3);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Double)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	value1.set((OpcUaDouble)1.2);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaDouble v = value2.get<OpcUaDouble>();
+	BOOST_REQUIRE(v > 1.1 && v < 1.3);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

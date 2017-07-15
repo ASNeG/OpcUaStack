@@ -2101,21 +2101,22 @@ namespace OpcUaStackCore
 				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt64"));
 				break;
 			}
-
-
-
 			case OpcUaBuildInType_OpcUaFloat:
 			{
-				//dataTypeString = "Float";
-				//rc = encode<OpcUaFloat>(ptree, opcUaVariant, dataTypeString);
+				OpcUaFloat value = get<OpcUaFloat>();
+				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"));
 				break;
 			}
 			case OpcUaBuildInType_OpcUaDouble:
 			{
-				//dataTypeString = "Double";
-				//rc = encode<OpcUaDouble>(ptree, opcUaVariant, dataTypeString);
+				OpcUaDouble value = get<OpcUaDouble>();
+				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"));
 				break;
 			}
+
+
+
+
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
 				//dataTypeString = "DateTime";
@@ -2301,15 +2302,32 @@ namespace OpcUaStackCore
 				set(value);
 				break;
 			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Float");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Double");
+					return false;
+				}
+				set(value);
+				break;
+			}
 
 #if 0
-			case OpcUaBuildInType_OpcUaSByte: rc = decode<OpcUaSByte>(dataTypeElement, *ptreeValue, variant, "SByte"); break;
-			case OpcUaBuildInType_OpcUaByte: rc = decode<OpcUaByte>(dataTypeElement, *ptreeValue, variant, "Byte"); break;
-			case OpcUaBuildInType_OpcUaUInt16: rc = decode<OpcUaUInt16>(dataTypeElement, *ptreeValue, variant, "UInt16"); break;
-			case OpcUaBuildInType_OpcUaInt16: rc = decode<OpcUaInt16>(dataTypeElement, *ptreeValue, variant, "Int16"); break;
-			case OpcUaBuildInType_OpcUaUInt32: rc = decode<OpcUaUInt32>(dataTypeElement, *ptreeValue, variant, "UInt32"); break;
-			case OpcUaBuildInType_OpcUaInt32: rc = decode<OpcUaInt32>(dataTypeElement, *ptreeValue, variant, "Int32"); break;
-			case OpcUaBuildInType_OpcUaUInt64: rc = decode<OpcUaUInt64>(dataTypeElement, *ptreeValue, variant, "UInt64"); break;
 			case OpcUaBuildInType_OpcUaInt64: rc = decode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
 			case OpcUaBuildInType_OpcUaFloat: rc = decode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
 			case OpcUaBuildInType_OpcUaDouble: rc = decode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
