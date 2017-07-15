@@ -548,13 +548,11 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const
 	{
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
-			boost::property_tree::ptree arrayElement;
-			if (!CODER::xmlEncode(arrayElement, valueArray_[idx], element)) {
+			if (!CODER::xmlEncode(pt, valueArray_[idx], element)) {
 				Log(Error, "OpcUaArray xml encoder error")
 					.parameter("ListElement", element);
 				return false;
 			}
-			pt.push_back(std::make_pair(element, arrayElement));
 		}
 		return true;
 	}

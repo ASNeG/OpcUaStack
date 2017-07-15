@@ -364,16 +364,20 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
 	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
 	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
 
-	Argument::SPtr argument;
+	Argument::SPtr argument1, argument2;
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaExtensionObject value1, value2;
 
-	argument = value1.parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-	argument->name().value("ArgumentName");
-	argument->dataType().set("NodeName", 23);
-	argument->description().set("de", "Description");
+	argument1 = value1.parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+	argument1->name().value("ArgumentName");
+	argument1->dataType().set("NodeName", 23);
+	argument1->arrayDimensions()->resize(3);
+	argument1->arrayDimensions()->set(0, 123);
+	argument1->arrayDimensions()->set(1, 456);
+	argument1->arrayDimensions()->set(2, 789);
+	argument1->description().set("de", "Description");
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -381,6 +385,11 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.typeId().nodeId<OpcUaUInt32>() == OpcUaId_Argument_Encoding_DefaultBinary);
+	argument2 = value2.parameter<Argument>();
+	BOOST_REQUIRE(argument2->name().toStdString() == "ArgumentName");
+	BOOST_REQUIRE(argument2->dataType() == OpcUaNodeId("NodeName", 23));
+	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
