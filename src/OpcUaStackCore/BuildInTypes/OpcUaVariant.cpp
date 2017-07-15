@@ -2079,16 +2079,18 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaInt32:
 			{
-				//dataTypeString = "Int32";
-				//rc = encode<OpcUaInt32>(ptree, opcUaVariant, dataTypeString);
+				OpcUaInt32 value = get<OpcUaInt32>();
+				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int32"));
 				break;
 			}
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
-				//dataTypeString = "UInt32";
-				//rc = encode<OpcUaUInt32>(ptree, opcUaVariant, dataTypeString);
+				OpcUaUInt32 value = get<OpcUaUInt32>();
+				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"));
 				break;
 			}
+
+
 			case OpcUaBuildInType_OpcUaInt64:
 			{
 				//dataTypeString = "Int64";
@@ -2245,6 +2247,30 @@ namespace OpcUaStackCore
 					Log(Error, "OpcUaVariant xml decode error")
 						.parameter("Element", element)
 						.parameter("DataType", "Int16");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "UInt32");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Int32");
 					return false;
 				}
 				set(value);
