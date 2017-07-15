@@ -320,7 +320,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "Name");
 			return false;
 		}
-		if (name_.xmlDecode(*tmpTree, xmlns)) {
+		if (!name_.xmlDecode(*tmpTree, xmlns)) {
 			Log(Error, "Argument xml decoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "Name");
@@ -336,7 +336,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "DataType");
 			return false;
 		}
-		if (dataType_.xmlDecode(*tmpTree, xmlns)) {
+		if (!dataType_.xmlDecode(*tmpTree, xmlns)) {
 			Log(Error, "Argument xml decoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "DataType");
@@ -368,7 +368,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "ArrayDimensions");
 			return false;
 		}
-		if (arrayDimensions_->xmlDecode(*tmpTree, "UInt32")) {
+		if (!arrayDimensions_->xmlDecode(*tmpTree, "UInt32")) {
 			Log(Error, "Argument xml decoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "ArrayDimensions");
@@ -384,7 +384,7 @@ namespace OpcUaStackCore
 				.parameter("Element", "Description");
 			return false;
 		}
-		if (description_.xmlDecode(*tmpTree, xmlns)) {
+		if (!description_.xmlDecode(*tmpTree, xmlns)) {
 			Log(Error, "Argument xml decoder error")
 				.parameter("Structure", "Argument")
 				.parameter("Element", "Description");
