@@ -446,4 +446,40 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Byte)
 	BOOST_REQUIRE(value2.get<OpcUaByte>() == 12);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Int16)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	value1.set((OpcUaInt16)-123);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.get<OpcUaInt16>() == -123);
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_UInt16)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	value1.set((OpcUaUInt16)1234);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.get<OpcUaUInt16>() == 1234);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
