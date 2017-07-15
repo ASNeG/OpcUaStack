@@ -220,7 +220,15 @@ namespace OpcUaStackCore
 				.parameter("Element", "Identifier");
 			return false;
 		}
-		return fromString(*sourceValue);
+
+		if (!fromString(*sourceValue)) {
+			Log(Error, "OpcUaExpandedNodeId xml decoder error - value format error")
+				.parameter("Element", "Identifier")
+				.parameter("Value", *sourceValue);
+			return false;
+		}
+
+		return true;
 	}
 
 	bool

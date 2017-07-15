@@ -218,7 +218,13 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		return fromISOString(sourceValue);
+		if (!fromISOString(sourceValue)) {
+			Log(Error, "OpcUaDateTime xml decoder error - value format error")
+				.parameter("Value", sourceValue);
+			return false;
+		}
+
+		return true;
 	}
 
 }
