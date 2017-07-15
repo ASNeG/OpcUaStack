@@ -614,6 +614,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
 {
+#if 0
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
@@ -628,9 +629,32 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
 	xml.write(std::cout);
 	std::cout << std::endl;
 
-	//BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	//std::string str = value2.get<OpcUaByteString>();
-	//BOOST_REQUIRE(str == "Dies ist ein ByteString");
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaByteString::SPtr byteString2 = value2.variantSPtr<OpcUaByteString>();
+	BOOST_REQUIRE(byteString2->toString() == "Das ist ein ByteString");
+#endif
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Guid)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	OpcUaGuid::SPtr guid1 = constructSPtr<OpcUaGuid>();
+	*guid1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+	value1.variant(guid1);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaGuid::SPtr guid2 = value2.variantSPtr<OpcUaGuid>();
+	std::string str = *guid2;
+	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

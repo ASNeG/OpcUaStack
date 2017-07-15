@@ -2177,17 +2177,19 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
-
-
-
-
-
 			case OpcUaBuildInType_OpcUaGuid:
 			{
-				//dataTypeString = "Guid";
-				//rc = encodeSPtr<OpcUaGuid>(ptree, opcUaVariant, dataTypeString);
+				OpcUaGuid::SPtr value = variantSPtr<OpcUaGuid>();
+				if (!value->xmlEncode(pt, "Guid", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Guid");
+					return false;
+				}
 				break;
 			}
+
+
+
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
 				//dataTypeString = "NodeId";
@@ -2410,7 +2412,27 @@ namespace OpcUaStackCore
 						.parameter("DataType", "ByteString");
 					return false;
 				}
-				set(value);
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("Guid"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "Guid");
+					return false;
+				}
+
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Guid");
+					return false;
+				}
+				variant(value);
 				break;
 			}
 
