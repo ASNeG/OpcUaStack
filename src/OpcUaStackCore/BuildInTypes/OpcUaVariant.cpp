@@ -2167,27 +2167,25 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
-
-
-
-
-
-			case OpcUaBuildInType_OpcUaString:
+			case OpcUaBuildInType_OpcUaByteString:
 			{
-				//dataTypeString = "String";
-				//rc = encodeSPtr<OpcUaString>(ptree, opcUaVariant, dataTypeString);
+				OpcUaByteString::SPtr value = variantSPtr<OpcUaByteString>();
+				if (!value->xmlEncode(pt, "ByteString", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "ByteString");
+					return false;
+				}
 				break;
 			}
+
+
+
+
+
 			case OpcUaBuildInType_OpcUaGuid:
 			{
 				//dataTypeString = "Guid";
 				//rc = encodeSPtr<OpcUaGuid>(ptree, opcUaVariant, dataTypeString);
-				break;
-			}
-			case OpcUaBuildInType_OpcUaByteString:
-			{
-				//dataTypeString = "ByteString";
-				//rc = encodeSPtr<OpcUaByteString>(ptree, opcUaVariant, dataTypeString);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaNodeId:
@@ -2377,7 +2375,6 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
-				// get argument
 				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("DateTime"));
 				if (!valueTree) {
 					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
@@ -2391,6 +2388,26 @@ namespace OpcUaStackCore
 					Log(Error, "OpcUaVariant xml decode error")
 						.parameter("Element", element)
 						.parameter("DataType", "DateTime");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("ByteString"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "ByteString");
+					return false;
+				}
+
+				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "ByteString");
 					return false;
 				}
 				set(value);

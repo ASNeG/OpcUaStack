@@ -612,4 +612,25 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 	BOOST_REQUIRE(value2.get<OpcUaDateTime>().dateTime() == now);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	OpcUaByteString::SPtr byteString1 = constructSPtr<OpcUaByteString>();
+	byteString1->value("Das ist ein ByteString");
+	value1.variant(byteString1);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	//BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	//std::string str = value2.get<OpcUaByteString>();
+	//BOOST_REQUIRE(str == "Dies ist ein ByteString");
+}
+
 BOOST_AUTO_TEST_SUITE_END()
