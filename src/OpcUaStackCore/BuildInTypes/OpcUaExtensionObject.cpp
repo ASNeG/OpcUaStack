@@ -418,7 +418,7 @@ namespace OpcUaStackCore
 		// encode body
 		//
 		boost::property_tree::ptree bodyTree;
-		if (!epSPtr_->xmlEncode(pt, xmlns)) {
+		if (!epSPtr_->xmlEncode(bodyTree, xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml encoder error")
 				.parameter("Element", "Body");
 			return false;
