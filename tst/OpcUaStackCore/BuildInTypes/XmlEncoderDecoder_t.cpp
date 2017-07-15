@@ -392,4 +392,23 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_OpcUaBoolean)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	value1.set((OpcUaBoolean)true);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.get<OpcUaBoolean>() == true);
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()
