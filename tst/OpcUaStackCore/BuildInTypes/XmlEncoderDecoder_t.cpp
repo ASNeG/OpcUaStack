@@ -592,4 +592,24 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Double)
 	BOOST_REQUIRE(v > 1.1 && v < 1.3);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	value1.set(OpcUaDateTime(now));
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.get<OpcUaDateTime>().dateTime() == now);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

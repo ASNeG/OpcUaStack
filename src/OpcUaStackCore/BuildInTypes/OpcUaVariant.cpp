@@ -2050,79 +2050,128 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
 				OpcUaBoolean value = get<OpcUaBoolean>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Boolean");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaSByte:
 			{
 				OpcUaSByte value = get<OpcUaSByte>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "SByte");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByte:
 			{
 				OpcUaSByte value = get<OpcUaByte>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Byte");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt16:
 			{
 				OpcUaInt16 value = get<OpcUaInt16>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int16"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int16"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Int16");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaUInt16:
 			{
 				OpcUaUInt16 value = get<OpcUaUInt16>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt16"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt16"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "UInt16");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt32:
 			{
 				OpcUaInt32 value = get<OpcUaInt32>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int32"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int32"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Int32");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
 				OpcUaUInt32 value = get<OpcUaUInt32>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "UInt32");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt64:
 			{
 				OpcUaInt64 value = get<OpcUaInt64>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int64"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int64"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Int64");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaUInt64:
 			{
 				OpcUaUInt64 value = get<OpcUaUInt64>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt64"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt64"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "UInt64");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaFloat:
 			{
 				OpcUaFloat value = get<OpcUaFloat>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Float");
+					return false;
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaDouble:
 			{
 				OpcUaDouble value = get<OpcUaDouble>();
-				XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"));
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Double");
+					return false;
+				}
 				break;
 			}
-
-
-
-
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
-				//dataTypeString = "DateTime";
-				//rc = encode<OpcUaDateTime>(ptree, opcUaVariant, dataTypeString);
+				OpcUaDateTime value = get<OpcUaDateTime>();
+				if (!value.xmlEncode(pt, "DateTime", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "DateTime");
+					return false;
+				}
 				break;
 			}
+
+
+
+
+
 			case OpcUaBuildInType_OpcUaString:
 			{
 				//dataTypeString = "String";
@@ -2321,6 +2370,27 @@ namespace OpcUaStackCore
 					Log(Error, "OpcUaVariant xml decode error")
 						.parameter("Element", element)
 						.parameter("DataType", "Double");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				// get argument
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("DateTime"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "DateTime");
+					return false;
+				}
+
+				OpcUaDateTime value;
+				if (!value.xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "DateTime");
 					return false;
 				}
 				set(value);
