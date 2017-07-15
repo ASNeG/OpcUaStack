@@ -304,7 +304,12 @@ namespace OpcUaStackCore
 
 		// get argument
 		boost::optional<boost::property_tree::ptree&> argument = pt.get_child_optional(xmlns.addxmlns("Argument"));
-		if (!argument) return false;
+		if (!argument) {
+			Log(Error, "Argument xml decoder error - element not exist in xml document")
+				.parameter("Structure", "Argument")
+				.parameter("Element", "Argument");
+			return false;
+		}
 
 
 		// get name
