@@ -445,7 +445,7 @@ namespace OpcUaStackCore
 		// get type id
 		//
 		OpcUaNodeId xmlTypeNodeId;
-		if (xmlTypeNodeId.xmlDecode(*typeIdTree, xmlns)) {
+		if (!xmlTypeNodeId.xmlDecode(*typeIdTree, xmlns)) {
 			Log(Error, "OpcUaExtensionObject xml decoder error")
 				.parameter("Element", "TypeId");
 			return false;
