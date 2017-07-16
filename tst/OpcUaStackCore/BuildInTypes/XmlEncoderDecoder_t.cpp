@@ -780,4 +780,28 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
 	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DataValue)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaDataValue value1, value2;
+
+	value1.variant()->set((OpcUaInt32)12345);
+	value1.statusCode(BadNoData);
+	value1.sourceTimestamp(OpcUaDateTime(now));
+	value1.serverTimestamp(OpcUaDateTime(now));
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	BOOST_REQUIRE(value2.variant()->get<OpcUaInt32>() == 12345);
+	BOOST_REQUIRE(value2.serverTimestamp().dateTime() == now);
+	BOOST_REQUIRE(value2.sourceTimestamp().dateTime() == now);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

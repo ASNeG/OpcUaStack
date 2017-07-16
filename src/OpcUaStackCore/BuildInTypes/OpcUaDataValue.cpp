@@ -391,21 +391,145 @@ namespace OpcUaStackCore
 	bool
 	OpcUaDataValue::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(elementTree, xmlns)) return false;
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
 
 	bool
 	OpcUaDataValue::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		if (opcUaVariantSPtr_.get() != nullptr) {
+			if (!opcUaVariantSPtr_->xmlEncode(pt, "Value", xmlns)) {
+				Log(Error, "DataValue xml encoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "Value");
+				return false;
+			}
+		}
+
+		if (opcUaStatusCode_ != 0) {
+			OpcUaUInt32 statusCode = opcUaStatusCode_;
+			if (!XmlNumber::xmlEncode(pt, statusCode, "StatusCode")) {
+				Log(Error, "DataValue xml encoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "StatusCode");
+				return false;
+			}
+		}
+
+		if (sourceTimestamp_.exist()) {
+			if (!sourceTimestamp_.xmlEncode(pt, "SourceTimestamp", xmlns)) {
+				Log(Error, "DataValue xml encoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "SourceTimestamp");
+				return false;
+			}
+		}
+
+		if (serverTimestamp_.exist()) {
+			if (!serverTimestamp_.xmlEncode(pt, "ServerTimestamp", xmlns)) {
+				Log(Error, "DataValue xml encoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "ServerTimestamp");
+				return false;
+			}
+		}
+
+		if (sourcePicoseconds_ != 0) {
+			if (!XmlNumber::xmlEncode(pt, sourcePicoseconds_, "SourcePicoseconds")) {
+				Log(Error, "DataValue xml encoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "SourcePicoseconds");
+				return false;
+			}
+		}
+
+		if (serverPicoseconds_ != 0) {
+			if (!XmlNumber::xmlEncode(pt, serverPicoseconds_, "ServerPicoseconds")) {
+				Log(Error, "DataValue xml encoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "ServerPicoseconds");
+				return false;
+			}
+		}
+
 		return true;
 	}
 
 	bool
 	OpcUaDataValue::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		// FIXME: todo
+		boost::optional<boost::property_tree::ptree&> tmpTree;
+
+		tmpTree = pt.get_child_optional(xmlns.addxmlns("Value"));
+		if (!tmpTree) {
+			opcUaVariantSPtr_.reset();
+		}
+		else {
+			opcUaVariantSPtr_ = constructSPtr<OpcUaVariant>();
+			if (!opcUaVariantSPtr_->xmlDecode(*tmpTree, xmlns)) {
+				opcUaVariantSPtr_.reset();
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "Value");
+				return false;
+			}
+		}
+
+		tmpTree = pt.get_child_optional(xmlns.addxmlns("SourceTimestamp"));
+		if (!tmpTree) {
+			// nothing to do
+		}
+		else {
+			if (!sourceTimestamp_.xmlDecode(*tmpTree, xmlns)) {
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "SourceTimestamp");
+				return false;
+			}
+		}
+
+		tmpTree = pt.get_child_optional(xmlns.addxmlns("ServerTimestamp"));
+		if (!tmpTree) {
+			// nothing to do
+		}
+		else {
+			if (!serverTimestamp_.xmlDecode(*tmpTree, xmlns)) {
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "ServerTimestamp");
+				return false;
+			}
+		}
+
+		tmpTree = pt.get_child_optional(xmlns.addxmlns("SourcePicoseconds"));
+		if (!tmpTree) {
+			sourcePicoseconds_ = 0;
+		}
+		else {
+			if (!XmlNumber::xmlDecode(*tmpTree, sourcePicoseconds_)) {
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "SourcePicoseconds");
+				return false;
+			}
+		}
+
+		tmpTree = pt.get_child_optional(xmlns.addxmlns("ServerPicoseconds"));
+		if (!tmpTree) {
+			serverPicoseconds_ = 0;
+		}
+		else {
+			if (!XmlNumber::xmlDecode(*tmpTree, serverPicoseconds_)) {
+				Log(Error, "DataValue xml decoder error")
+					.parameter("Structure", "DataValue")
+					.parameter("Element", "ServerPicoseconds");
+				return false;
+			}
+		}
+
 		return true;
 	}
 
