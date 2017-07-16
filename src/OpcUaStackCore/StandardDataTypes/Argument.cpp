@@ -248,7 +248,7 @@ namespace OpcUaStackCore
 	Argument::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
 	{
 		boost::property_tree::ptree elementTree;
-		if (!xmlEncode(pt, xmlns)) return false;
+		if (!xmlEncode(elementTree, xmlns)) return false;
 		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
 		return true;
 	}
