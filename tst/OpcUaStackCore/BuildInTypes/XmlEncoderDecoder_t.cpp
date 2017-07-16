@@ -701,4 +701,25 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 	BOOST_REQUIRE(expandedNodeId2->serverIndex() == 4713);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_QualifiedName)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	OpcUaQualifiedName::SPtr qualifiedName1 = constructSPtr<OpcUaQualifiedName>();
+	qualifiedName1->set("Name", 4712);
+	value1.variant(qualifiedName1);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaQualifiedName::SPtr qualifiedName2 = value2.variantSPtr<OpcUaQualifiedName>();
+	BOOST_REQUIRE(*qualifiedName2 == OpcUaQualifiedName("Name", 4712));
+}
+
 BOOST_AUTO_TEST_SUITE_END()

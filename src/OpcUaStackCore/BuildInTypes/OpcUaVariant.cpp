@@ -2207,15 +2207,20 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
-
-
-
 			case OpcUaBuildInType_OpcUaQualifiedName:
 			{
-				//dataTypeString = "QualifiedName";
-				//rc = encodeSPtr<OpcUaQualifiedName>(ptree, opcUaVariant, dataTypeString);
+				OpcUaQualifiedName::SPtr value = variantSPtr<OpcUaQualifiedName>();
+				if (!value->xmlEncode(pt, "QualifiedName", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "QualifiedName");
+					return false;
+				}
 				break;
 			}
+
+
+
+
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
 				//dataTypeString = "LocalizedText";
@@ -2484,6 +2489,26 @@ namespace OpcUaStackCore
 					Log(Error, "OpcUaVariant xml decode error")
 						.parameter("Element", element)
 						.parameter("DataType", "ExpandedNodeId");
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("QualifiedName"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "QualifiedName");
+					return false;
+				}
+
+				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "QualifiedName");
 					return false;
 				}
 				variant(value);
