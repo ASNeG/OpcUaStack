@@ -2227,6 +2227,16 @@ namespace OpcUaStackCore
 				}
 				break;
 			}
+			case OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				OpcUaExtensionObject::SPtr value = variantSPtr<OpcUaExtensionObject>();
+				if (!value->xmlEncode(pt, "ExtensionObject", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "ExtensionObject");
+					return false;
+				}
+				break;
+			}
 			default:
 			{
 				std::stringstream ss;
@@ -2529,6 +2539,26 @@ namespace OpcUaStackCore
 					Log(Error, "OpcUaVariant xml decode error")
 						.parameter("Element", element)
 						.parameter("DataType", "LocalizedText");
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("ExtensionObject"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "ExtensionObject");
+					return false;
+				}
+
+				OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "ExtensionObject");
 					return false;
 				}
 				variant(value);
