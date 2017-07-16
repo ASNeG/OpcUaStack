@@ -722,4 +722,25 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_QualifiedName)
 	BOOST_REQUIRE(*qualifiedName2 == OpcUaQualifiedName("Name", 4712));
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_LocalizedText)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	OpcUaLocalizedText::SPtr localizedText1 = constructSPtr<OpcUaLocalizedText>();
+	localizedText1->set("de", "Name");
+	value1.variant(localizedText1);
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	OpcUaLocalizedText::SPtr localizedText2 = value2.variantSPtr<OpcUaLocalizedText>();
+	BOOST_REQUIRE(*localizedText2 == OpcUaLocalizedText("de", "Name"));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
