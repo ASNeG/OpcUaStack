@@ -37,7 +37,9 @@ namespace OpcUaStackCore
 		static bool decode(const char*base64Buf, uint32_t base64Len, char* asciiBuf, uint32_t& asciiLen);
 
 	  private:
+		bool isBase64(unsigned char c);
 
+		static const std::string base64Chars_;
 	};
 
 }

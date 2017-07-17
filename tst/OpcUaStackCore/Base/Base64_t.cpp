@@ -175,6 +175,8 @@ BOOST_AUTO_TEST_CASE(Base64_encode_decode)
 	memset(asciiBuf, 0x00, 24);
 
 	BOOST_REQUIRE(Base64::decode(base64Buf, base64BufLen, asciiBuf, asciiBufLen) == true);
+
+	std::cout << asciiBuf << std::endl;
 }
 
 
