@@ -65,6 +65,8 @@ namespace OpcUaStackCore
 		base64Len = length;
 		char* buf= (char*)asciiBuf;
 
+		memset(base64Buf, 0x00, length);
+
 		unsigned char charArray3[3];
 		unsigned char charArray4[4];
 
@@ -139,6 +141,61 @@ namespace OpcUaStackCore
 		uint32_t length = base64Len2asciiLen(base64Len);
 		if (length > asciiLen) return false;
 
+		memset(asciiBuf, 0x00, length);
+		char* buf = (char*)base64Buf;
+
+		uint32_t idx = 0;
+		uint32_t rpos = 0;
+		uint32_t wpos = 0;
+		unsigned char charArray4[4];
+		unsigned char charArray3[3];
+
+		while (base64Len-- && ( buf[rpos] != '=') && Base64::isBase64(buf[rpos])) {
+		    charArray4[idx] = buf[rpos];
+		    rpos++;
+		    idx++;
+
+		    if (idx == 4) {
+		        for (idx = 0; idx <4; idx++) {
+		            charArray4[idx] = base64Chars_.find(charArray4[idx]);
+		        }
+
+		        charArray3[0] = (charArray4[0] << 2) + ((charArray4[1] & 0x30) >> 4);
+		        charArray3[1] = ((charArray4[1] & 0xf) << 4) + ((charArray4[2] & 0x3c) >> 2);
+		        charArray3[2] = ((charArray4[2] & 0x3) << 6) + charArray4[3];
+
+		        for (idx = 0; (idx < 3); idx++){
+		        	asciiBuf[wpos] = charArray3[idx];
+		        	wpos++;
+		        }
+		        idx = 0;
+		    }
+		}
+
+		std::cout << idx << std::endl;
+
+		if (idx) {
+		    for (uint32_t j = idx; j < 4; j++) {
+		        charArray4[j] = 0;
+		    }
+
+		    for (uint32_t j = 0; j < 4; j++) {
+		        charArray4[j] = base64Chars_.find(charArray4[j]);
+		    }
+
+		    charArray3[0] = (charArray4[0] << 2) + ((charArray4[1] & 0x30) >> 4);
+		    charArray3[1] = ((charArray4[1] & 0xf) << 4) + ((charArray4[2] & 0x3c) >> 2);
+		    charArray3[2] = ((charArray4[2] & 0x3) << 6) + charArray4[3];
+
+		    for (uint32_t j = 0; (j < idx - 1); j++) {
+	        	asciiBuf[wpos] = charArray3[j];
+	        	wpos++;
+		    }
+		}
+
+
+
+#if 0
 		BIO *b64, *bio;
 		b64 = BIO_new(BIO_f_base64());
 		BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
@@ -149,6 +206,7 @@ namespace OpcUaStackCore
 		asciiLen = length;
 
 		BIO_free_all(b64);
+#endif
 
 		return true;
 	}
