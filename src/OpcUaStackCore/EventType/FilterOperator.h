@@ -24,7 +24,16 @@ namespace OpcUaStackCore
 {
 
 	typedef enum {
-		Equals,
+		Equals,				// Number of Operands: 2
+		// TRUE if operand[0] is equal to operand[1].
+		// If the operands are of different types, the system shall perform any implicit
+		// conversion to a common type. This operator resolves to FALSE if no implicit
+		// conversion is available and the operands are of different types. This operator returns
+		// FALSE if the implicit conversion fails. See the discussion on data type precedence in
+		// Table 119 for more information how to convert operands of different types.
+
+		// FIXME: todo
+
 	} FilterOperator;
 
 }
