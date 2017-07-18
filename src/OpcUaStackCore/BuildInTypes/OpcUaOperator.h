@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_FilterOperator_h__
-#define __OpcUaStackCore_FilterOperator_h__
+#ifndef __OpcUaStackCore_OpcUaOpterator_h__
+#define __OpcUaStackCore_OpcUaOpterator_h__
 
 #include "OpcUaStackCore/Base/os.h"
 
@@ -34,7 +34,7 @@ namespace OpcUaStackCore
 
 		// FIXME: todo
 
-	} FilterOperator;
+	} OpcUaOpterator;
 
 }
 
