@@ -45,8 +45,8 @@ namespace OpcUaStackCore
 	void 
 	OpcUaByteString::value(OpcUaByte** value, OpcUaInt32* length) const
 	{
-		*value = value_;
-		*length = length_;
+		(*value) = value_;
+		(*length) = length_;
 	}
 
 	void 
@@ -293,9 +293,9 @@ namespace OpcUaStackCore
 	bool
 	OpcUaByteString::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
-		OpcUaByte** valueBuf;
+		OpcUaByte* valueBuf = nullptr;
 		OpcUaInt32 valueLen = 0;
-		value(valueBuf, &valueLen);
+		value(&valueBuf, &valueLen);
 
 		if (valueLen == 0) {
 			pt.put_value("");
@@ -309,7 +309,7 @@ namespace OpcUaStackCore
 			}
 
 			char* buf = (char*) new char[bufLen+1];
-			if (!Base64::encode((const char*)*valueBuf, valueLen, buf, bufLen)) {
+			if (!Base64::encode((const char*)valueBuf, valueLen, buf, bufLen)) {
 				Log(Error, "OpcUaByteString xml encoder error - base64 encoder error");
 				delete buf;
 				return false;

@@ -262,15 +262,14 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaGuid)
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaByteString)
 {
-	// FIXME: core
-#if 0
+	std::string str = "Dies ist ein ByteString";
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaByteString value2;
 
 	OpcUaByteString value1;
-	value1.value("Dies ist ein ByteString");
+	value1.value(str);
 	value1.xmlEncode(pt, xmlns);
 
 	xml.ptree(pt);
@@ -278,8 +277,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaByteString)
 	std::cout << std::endl;
 
 	value2.xmlDecode(pt, xmlns);
-	BOOST_REQUIRE(value2.toString() == std::string("Dies ist ein ByteString"));
-#endif
+	BOOST_REQUIRE(value2.toString() == str);
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaNodeId)
@@ -614,14 +612,13 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
 {
-#if 0
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
 
 	OpcUaByteString::SPtr byteString1 = constructSPtr<OpcUaByteString>();
-	byteString1->value("Das ist ein ByteString");
+	byteString1->value("Das ist ein ByteString xxxx");
 	value1.variant(byteString1);
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
@@ -631,8 +628,7 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
 	OpcUaByteString::SPtr byteString2 = value2.variantSPtr<OpcUaByteString>();
-	BOOST_REQUIRE(byteString2->toString() == "Das ist ein ByteString");
-#endif
+	BOOST_REQUIRE(byteString2->toString() == "Das ist ein ByteString xxxx");
 }
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Guid)
