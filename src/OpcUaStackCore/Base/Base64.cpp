@@ -119,6 +119,7 @@ namespace OpcUaStackCore
 	{
 		uint32_t length = base64Len2asciiLen(base64Len);
 		if (length > asciiLen) return false;
+		asciiLen = 0;
 
 		memset(asciiBuf, 0x00, length);
 		char* buf = (char*)base64Buf;
@@ -151,8 +152,6 @@ namespace OpcUaStackCore
 		    }
 		}
 
-		std::cout << idx << std::endl;
-
 		if (idx) {
 		    for (uint32_t j = idx; j < 4; j++) {
 		        charArray4[j] = 0;
@@ -171,6 +170,8 @@ namespace OpcUaStackCore
 	        	wpos++;
 		    }
 		}
+
+		asciiLen = wpos;
 
 		return true;
 	}
