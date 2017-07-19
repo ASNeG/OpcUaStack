@@ -28,6 +28,29 @@ namespace OpcUaStackCore
 	  public:
 		DataMemArray(void);
 		~DataMemArray(void);
+
+		void startMemorySize(uint32_t startMemorySize);
+		uint32_t startMemorySize(void);
+		void maxMemorySize(uint32_t maxMemorySize);
+		uint32_t maxMemorySize(void);
+		void expandMemorySize(uint32_t expandMemorySize);
+		uint32_t expandMemorySize(void);
+		uint32_t actMemorySize(void);
+
+		uint32_t arraySize(void);
+		bool arrayResize(uint32_t numberElements);
+		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
+		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
+		void clear();
+
+	  private:
+		uint32_t startMemorySize_;
+		uint32_t maxMemorySize_;
+		uint32_t expandMemorySize_;
+
+		char* memBuf_;
+		uint32_t memLen_;
+		uint32_t arraySize_;
 	};
 
 }
