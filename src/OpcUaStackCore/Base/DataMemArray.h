@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		uint32_t expandMemorySize(void);
 
 		uint32_t arraySize(void);
-		bool arrayResize(uint32_t numberElements);
+		bool arrayResize(uint32_t arraySize);
 		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
 		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
 
@@ -49,8 +49,10 @@ namespace OpcUaStackCore
 
 	  private:
 		bool createMemoryBuffer(uint32_t startMemorySize);
-		uint32_t calcMinMemoryBufferSize(uint32_t numberElements);
+		bool resizeMemArray(uint32_t arraySize);
+		uint32_t calcMinMemoryBufferSize(uint32_t arraySize);
 
+		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;
 
 		static uint32_t minMemorySize_;

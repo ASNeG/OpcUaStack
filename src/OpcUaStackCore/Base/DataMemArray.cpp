@@ -15,6 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <cstring>
+#include <iostream>
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/DataMemArray.h"
 
 namespace OpcUaStackCore
@@ -68,7 +71,8 @@ namespace OpcUaStackCore
 	uint32_t DataMemArray::minMemorySize_ = 1000;
 
 	DataMemArray::DataMemArray(void)
-	: dataMemArrayHeader_(nullptr)
+	: debug_(true)
+	, dataMemArrayHeader_(nullptr)
 	, startMemorySize_(10000)
 	, maxMemorySize_(1000000)
 	, expandMemorySize_(10000)
@@ -154,18 +158,27 @@ namespace OpcUaStackCore
 	uint32_t
 	DataMemArray::arraySize(void)
 	{
-		return 0;
+		if (dataMemArrayHeader_ == nullptr) {
+			return 0;
+		}
+		return dataMemArrayHeader_->actArraySize_;
 	}
 
 	bool
-	DataMemArray::arrayResize(uint32_t numberElements)
+	DataMemArray::arrayResize(uint32_t arraySize)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
 
+			//
+			//check minimal used memory size
+			//
 			uint32_t startMemorySize = startMemorySize_;
-			uint32_t minMemoryBufferSize = calcMinMemoryBufferSize(numberElements);
+			uint32_t minMemoryBufferSize = calcMinMemoryBufferSize(arraySize);
 			if (maxMemorySize_ != 0 && minMemoryBufferSize > maxMemorySize_) return false;
 
+			//
+			// calculate size of new memory buffer
+			//
 			while (minMemoryBufferSize > startMemorySize_) {
 				if (expandMemorySize_ != 0) {
 					startMemorySize += expandMemorySize_;
@@ -176,7 +189,17 @@ namespace OpcUaStackCore
 				break;
 			}
 
+			//
+			// create new memory buffer
+			//
 			if (!createMemoryBuffer(startMemorySize)) {
+				return false;
+			}
+
+			//
+			// resize array size
+			//
+			if (!resizeMemArray(arraySize)) {
 				return false;
 			}
 		}
@@ -222,11 +245,23 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::createMemoryBuffer(uint32_t startMemorySize)
 	{
+		if (debug_) {
+			Log(Debug, "create memory buffer")
+				.parameter("Id", this)
+				.parameter("StartMemorySize", startMemorySize);
+		}
+
 		//
 		// allocate memory
 		//
 		char* mem = new char[startMemorySize];
-		if (mem == nullptr) return false;
+		if (mem == nullptr) {
+			if (debug_) {
+				Log(Debug, "create memory buffer error")
+					.parameter("Id", this);
+			}
+			return false;
+		}
 		dataMemArrayHeader_ = (DataMemArrayHeader*)mem;
 
 		//
@@ -260,13 +295,75 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataMemArray::resizeMemArray(uint32_t arraySize)
+	{
+		if (arraySize == dataMemArrayHeader_->actArraySize_) {
+			if (debug_) {
+				Log(Debug, "source and target array size are equal")
+					.parameter("Id", this);
+			}
+			return true;
+		}
+
+		//
+		// get memory buffer
+		//
+		char* memBuf = (char*)dataMemArrayHeader_;
+		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+
+		//
+		// get last free slot
+		//
+		DataMemoryArrayFreeSlot* lastFreeSlot = (DataMemoryArrayFreeSlot*)&memBuf[dataMemArrayHeader_->posLastFreeSlot_];
+
+		//
+		// init array
+		//
+		if (arraySize > dataMemArrayHeader_->actArraySize_) {
+			uint32_t actSize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
+			uint32_t usedSize = (arraySize - dataMemArrayHeader_->actArraySize_) * sizeof(uint32_t);
+			uint32_t newSize = actSize + usedSize;
+
+			if (debug_) {
+				Log(Debug, "create new array elements")
+					.parameter("Id", this)
+					.parameter("OldArraySize", dataMemArrayHeader_->actArraySize_)
+					.parameter("NewArraySize", arraySize)
+					.parameter("NewMemSize", usedSize);
+			}
+
+			lastFreeSlot->size_ -= usedSize;
+			memset(&memBuf[memSize-newSize], 0x00, usedSize);
+		}
+		else {
+			uint32_t actSize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
+			uint32_t freeSize = (arraySize - dataMemArrayHeader_->actArraySize_) * sizeof(uint32_t);
+			uint32_t newSize = actSize - freeSize;
+
+			if (debug_) {
+				Log(Debug, "create new array elements")
+					.parameter("Id", this)
+					.parameter("OldArraySize", dataMemArrayHeader_->actArraySize_)
+					.parameter("NewArraySize", arraySize)
+					.parameter("FreeMemSize", freeSize);
+			}
+
+			// FIXME: free elements ...
+			lastFreeSlot->size_ += freeSize;
+		}
+		dataMemArrayHeader_->actArraySize_ = arraySize;
+
+		return true;
+	}
+
 	uint32_t
-	DataMemArray::calcMinMemoryBufferSize(uint32_t numberElements)
+	DataMemArray::calcMinMemoryBufferSize(uint32_t arraySize)
 	{
 		uint32_t size =
 			sizeof(DataMemArrayHeader) + 		// header
 			sizeof(DataMemoryArrayFreeSlot) +	// free slot
-			numberElements * sizeof(uint32_t) +	// array
+			arraySize * sizeof(uint32_t) +		// array
 			1;									// minimum free
 	}
 }
