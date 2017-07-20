@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -56,9 +56,54 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	ConfigXml::write(std::ostream& os)
+	{
+		try
+		{
+#ifdef BOOST_VERSION_1_58
+			boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
+#else
+			boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+#endif
+			boost::property_tree::write_xml(os, ptree_);
+		}
+		catch(const boost::property_tree::xml_parser_error& e)
+		{
+			errorMessage_ = std::string(e.what());
+			return false;
+		}
+		return true;
+	}
+
+	bool
 	ConfigXml::read(const std::string& configFileName)
 	{
 		return parse(configFileName);
+	}
+
+	bool
+	ConfigXml::read(std::istream& is)
+	{
+		return parse(is);
+	}
+
+	bool
+	ConfigXml::parse(std::istream& is)
+	{
+		errorMessage_ = "";
+
+		// read configuration from xml file
+		try
+		{
+			boost::property_tree::read_xml(is, ptree_, boost::property_tree::xml_parser::trim_whitespace);
+		}
+		catch (const boost::property_tree::xml_parser_error& e)
+		{
+			errorMessage_ = std::string(e.what());
+			return false;
+		}
+
+		return true;
 	}
 
 	bool 

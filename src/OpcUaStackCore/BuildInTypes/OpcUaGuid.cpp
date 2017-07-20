@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -106,6 +106,21 @@ namespace OpcUaStackCore
 		hexStringToByteSequence(string.substr(19,4), data4_);
 		hexStringToByteSequence(string.substr(24,12), &data4_[2]);
 		return true;
+	}
+
+	std::string
+	OpcUaGuid::value(void)
+	{
+		std::string str1, str2, str3, str4, str5;
+
+		byteSequenceToHexString((uint8_t*)&data1_, 4, str1);
+		byteSequenceToHexString((uint8_t*)&data2_, 2, str2);
+		byteSequenceToHexString((uint8_t*)&data3_, 2, str3);
+		byteSequenceToHexString(data4_, 2, str4);
+		byteSequenceToHexString(&data4_[2], 6, str5);
+
+		return str1.append("-").append(str2).append("-").append(str3)
+				.append("-").append(str4).append("-").append(str5);
 	}
 
 	OpcUaGuid& 
@@ -223,6 +238,39 @@ namespace OpcUaStackCore
 		hexStringToByteSequence(guidString.substr(19,4), data4_);
 		hexStringToByteSequence(guidString.substr(24,12), &data4_[2]);
 		return true;
+	}
+
+	bool
+	OpcUaGuid::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(elementTree, xmlns)) {
+			Log(Error, "OpcUaGuid xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaGuid::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		std::string guidString = value();
+		pt.put(xmlns.addxmlns("String"), guidString);
+		return true;
+	}
+
+	bool
+	OpcUaGuid::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addxmlns("String"));
+		if (!sourceValue) {
+			Log(Error, "OpcUaGuid xml decoder error")
+				.parameter("Element", "String");
+			return false;
+		}
+		return value(*sourceValue);
 	}
 
 }

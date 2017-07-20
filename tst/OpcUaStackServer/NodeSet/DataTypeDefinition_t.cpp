@@ -2,10 +2,9 @@
 
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackServer/NodeSet/DataTypeDefinition.h"
+#include "OpcUaStackCore/DataType/DataTypeDefinition.h"
 
 using namespace OpcUaStackCore;
-using namespace OpcUaStackServer;
 
 BOOST_AUTO_TEST_SUITE(DataTypeDefinition_)
 

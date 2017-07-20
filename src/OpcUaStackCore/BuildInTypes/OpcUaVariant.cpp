@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -2026,6 +2026,461 @@ namespace OpcUaStackCore
 		}
 
 		arrayDimensionsVec_.clear();
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		switch (variantType())
+		{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				OpcUaBoolean value = get<OpcUaBoolean>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Boolean");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte value = get<OpcUaSByte>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "SByte");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaSByte value = get<OpcUaByte>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Byte");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				OpcUaInt16 value = get<OpcUaInt16>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int16"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Int16");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value = get<OpcUaUInt16>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt16"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "UInt16");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 value = get<OpcUaInt32>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int32"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Int32");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value = get<OpcUaUInt32>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "UInt32");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				OpcUaInt64 value = get<OpcUaInt64>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Int64"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Int64");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				OpcUaUInt64 value = get<OpcUaUInt64>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt64"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "UInt64");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat value = get<OpcUaFloat>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Float");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble value = get<OpcUaDouble>();
+				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"))) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Double");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime value = get<OpcUaDateTime>();
+				if (!value.xmlEncode(pt, "DateTime", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "DateTime");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString::SPtr value = variantSPtr<OpcUaByteString>();
+				if (!value->xmlEncode(pt, "ByteString", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "ByteString");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = variantSPtr<OpcUaGuid>();
+				if (!value->xmlEncode(pt, "Guid", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "Guid");
+					return false;
+				}
+				break;
+			}
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaNodeId::SPtr value = variantSPtr<OpcUaNodeId>();
+				if (!value->xmlEncode(pt, "NodeId", xmlns)) {
+					Log(Error, "OpcUaVariant xml encoder error")
+						.parameter("Element", "NodeId");
+					return false;
+				}
+				break;
+			}
+
+
+
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				//dataTypeString = "QualifiedName";
+				//rc = encodeSPtr<OpcUaQualifiedName>(ptree, opcUaVariant, dataTypeString);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				//dataTypeString = "LocalizedText";
+				//rc = encodeSPtr<OpcUaLocalizedText>(ptree, opcUaVariant, dataTypeString);
+				break;
+			}
+			default:
+			{
+				std::stringstream ss;
+				ss << variantType();
+				Log(Error, "OpcUaVariant xml encode error - data type unknown")
+					.parameter("DataType", ss.str());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// check if first element exist
+		if (pt.empty()) {
+			Log(Error, "OpcUaVariant xml encode error - variable not exist");
+			return false;
+		}
+		std::string element = pt.front().first;
+		boost::property_tree::ptree tmpTree = pt.front().second;
+
+		// get data type from element name
+		OpcUaBuildInType dataType = OpcUaBuildInTypeMap::string2BuildInType(element);
+		if (dataType == OpcUaBuildInType_Unknown) {
+			Log(Error, "OpcUaVariant xml encode error - data type unknown")
+				.parameter("DataType", element);
+			return false;
+		}
+
+		// decode element
+		switch (dataType)
+		{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				OpcUaBoolean value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Boolean");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "SByte");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaByte value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Byte");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "UInt16");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt16:
+			{
+				OpcUaInt16 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Int16");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "UInt32");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Int32");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaUInt64:
+			{
+				OpcUaUInt64 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "UInt64");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaInt64:
+			{
+				OpcUaInt64 value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Int64");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Float");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble value;
+				if (!XmlNumber::xmlDecode(tmpTree, value)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Double");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("DateTime"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "DateTime");
+					return false;
+				}
+
+				OpcUaDateTime value;
+				if (!value.xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "DateTime");
+					return false;
+				}
+				set(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("ByteString"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "ByteString");
+					return false;
+				}
+
+				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "ByteString");
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("Guid"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "Guid");
+					return false;
+				}
+
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "Guid");
+					return false;
+				}
+				variant(value);
+				break;
+			}
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("NodeId"));
+				if (!valueTree) {
+					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
+						.parameter("Element", element)
+						.parameter("DataType", "NodeId");
+					return false;
+				}
+
+				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				if (!value->xmlDecode(*valueTree, xmlns)) {
+					Log(Error, "OpcUaVariant xml decode error")
+						.parameter("Element", element)
+						.parameter("DataType", "NodeId");
+					return false;
+				}
+				variant(value);
+				break;
+			}
+
+#if 0
+			case OpcUaBuildInType_OpcUaInt64: rc = decode<OpcUaInt64>(dataTypeElement, *ptreeValue, variant, "Int64"); break;
+			case OpcUaBuildInType_OpcUaFloat: rc = decode<OpcUaFloat>(dataTypeElement, *ptreeValue, variant, "Float"); break;
+			case OpcUaBuildInType_OpcUaDouble: rc = decode<OpcUaDouble>(dataTypeElement, *ptreeValue, variant, "Double"); break;
+			case OpcUaBuildInType_OpcUaDateTime: rc = decode<OpcUaDateTime>(dataTypeElement, *ptreeValue, variant, "DateTime"); break;
+			case OpcUaBuildInType_OpcUaString: rc = decodeSPtr<OpcUaString>(dataTypeElement, *ptreeValue, variant, "String"); break;
+			case OpcUaBuildInType_OpcUaByteString: rc = decodeSPtr<OpcUaByteString>(dataTypeElement, *ptreeValue, variant, "ByteString"); break;
+			case OpcUaBuildInType_OpcUaLocalizedText: rc = decodeSPtr<OpcUaLocalizedText>(dataTypeElement, *ptreeValue, variant, "LocalizedText"); break;
+			case OpcUaBuildInType_OpcUaGuid: rc = decodeSPtr<OpcUaGuid>(dataTypeElement, *ptreeValue, variant, "Guid"); break;
+			case OpcUaBuildInType_OpcUaNodeId: rc = decodeSPtr<OpcUaNodeId>(dataTypeElement, *ptreeValue, variant, "NodeId"); break;
+			case OpcUaBuildInType_OpcUaQualifiedName: rc = decodeSPtr<OpcUaQualifiedName>(dataTypeElement, *ptreeValue, variant, "QualifiedName"); break;
+			case OpcUaBuildInType_OpcUaExtensionObject: rc = decodeSPtr<OpcUaExtensionObject>(dataTypeElement, *ptreeValue, variant, "ExtensionObject"); break;
+#endif
+			default:
+			{
+				Log(Error, "OpcUaVariant xml encode error - data type unknown")
+					.parameter("DataType", element);
+				return false;
+			}
+		}
+
 		return true;
 	}
 

@@ -189,4 +189,42 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(elementTree, xmlns)) {
+			Log(Error, "OpcUaDateTime xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		pt.put_value(toISOString());
+		return true;
+	}
+
+	bool
+	OpcUaDateTime::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		if (sourceValue.empty()) {
+			Log(Error, "OpcUaDateTime xml decoder error - value not exist in xml document");
+			return false;
+		}
+
+		if (!fromISOString(sourceValue)) {
+			Log(Error, "OpcUaDateTime xml decoder error - value format error")
+				.parameter("Value", sourceValue);
+			return false;
+		}
+
+		return true;
+	}
+
 }

@@ -58,8 +58,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == 0);
 
 	//
 	// close channel by client
@@ -131,8 +131,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_connect_send_disconnect_client)
 
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == 0);
 
 	//
 	// send 20 byte from client to server  
@@ -266,8 +266,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_readAtLeast)
 
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == 0);
 
 	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
 	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
@@ -349,8 +349,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_readExactly)
 
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == 0);
 
 	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
 	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
@@ -432,8 +432,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_all)
 
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() == 0);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == 0);
 
 	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
 	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);
@@ -516,8 +516,8 @@ BOOST_AUTO_TEST_CASE(TCPChannel_send_stream_vector)
 
 	BOOST_REQUIRE(tcpTestHandler.handleAcceptCount_ == 1);
 	BOOST_REQUIRE(tcpTestHandler.handleConnectCount_ == 1);
-	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_ == false);
-	BOOST_REQUIRE(tcpTestHandler.handleConnectError_ == false);
+	BOOST_REQUIRE(tcpTestHandler.handleAcceptError_.value() ==  0);
+	BOOST_REQUIRE(tcpTestHandler.handleConnectError_.value() == 0);
 
 	tcpTestHandler.handleReadServerCondition_.condition(0, 1);
 	tcpTestHandler.handleWriteClientCondition_.condition(0, 1);

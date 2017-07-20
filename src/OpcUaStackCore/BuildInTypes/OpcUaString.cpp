@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -49,6 +49,12 @@ namespace OpcUaStackCore
 
 	std::string
 	OpcUaString::value(void) const
+	{
+		return value_;
+	}
+
+	std::string
+	OpcUaString::toStdString(void) const
 	{
 		return value_;
 	}
@@ -198,6 +204,34 @@ namespace OpcUaStackCore
 	{
 		value_ = pt.get_value<std::string>();
 		exist_ = true;
+		return true;
+	}
+
+	bool
+	OpcUaString::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(elementTree, xmlns)) {
+			Log(Error, "OpcString xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaString::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		pt.put_value(value());
+		return true;
+	}
+
+	bool
+	OpcUaString::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+		value(sourceValue);
 		return true;
 	}
 

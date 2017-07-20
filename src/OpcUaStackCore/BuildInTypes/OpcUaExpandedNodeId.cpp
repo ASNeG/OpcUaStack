@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/lexical_cast.hpp>
 #include "OpcUaStackCore/BuildInTypes/OpcUaExpandedNodeId.h"
 
 namespace OpcUaStackCore
@@ -31,6 +32,7 @@ namespace OpcUaStackCore
 	: OpcUaNodeIdBase()
 	, namespaceUri_()
 	, serverIndex_()
+	, expandedEncodingFlag_(0)
 	{
 	}
 	
@@ -90,8 +92,8 @@ namespace OpcUaStackCore
 	OpcUaExpandedNodeId::out(std::ostream& os) const
 	{
 		os << *(OpcUaNodeIdBase*)this;
-		if (namespaceUri_.size() > 0) os << ",nu=" << namespaceUri_;
-		if (serverIndex_ != 0) os << ",si" << serverIndex_;
+		if (namespaceUri_.size() > 0) os << ",nsu=" << namespaceUri_;
+		if (serverIndex_ != 0) os << ",svr" << serverIndex_;
 	}
 
 	void 
@@ -187,6 +189,237 @@ namespace OpcUaStackCore
 		}
 
 		return true;
+	}
+
+	bool
+	OpcUaExpandedNodeId::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) {
+			Log(Error, "OpcUaExpandedNodeId xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaExpandedNodeId::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		pt.put(xmlns.addxmlns("Identifier"), toString());
+		return true;
+	}
+
+	bool
+	OpcUaExpandedNodeId::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		boost::optional<std::string> sourceValue = pt.get_optional<std::string>(xmlns.addxmlns("Identifier"));
+		if (!sourceValue) {
+			Log(Error, "OpcUaExpandedNodeId xml decoder error - element not exist in xml document")
+				.parameter("Element", "Identifier");
+			return false;
+		}
+
+		if (!fromString(*sourceValue)) {
+			Log(Error, "OpcUaExpandedNodeId xml decoder error - value format error")
+				.parameter("Element", "Identifier")
+				.parameter("Value", *sourceValue);
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	OpcUaExpandedNodeId::fromString(const std::string& nodeIdString)
+	{
+		size_t pos;
+		size_t posBegin;
+		size_t posEnd;
+
+		//
+		// find token "srv=" (optional)
+		//
+		serverIndex_ = 0;
+		pos = nodeIdString.find("svr=");
+		if (pos == std::string::npos) {
+			posBegin = 0;
+			posEnd = 0;
+		}
+		else {
+			posBegin = 4;
+			posEnd = nodeIdString.find_first_of(';', posBegin);
+			if (posEnd == std::string::npos) {
+				return false;
+			}
+
+			try {
+				serverIndex_ = boost::lexical_cast<uint16_t>(nodeIdString.substr(posBegin, posEnd-posBegin));
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+			posBegin = posEnd+1;
+		}
+
+		//
+		// find token "nsu=" (optional)
+		//
+		namespaceUri_ = "";
+		namespaceIndex_ = 0;
+		pos = nodeIdString.find("nsu=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+4;
+			posEnd = nodeIdString.find_first_of(';', posBegin);
+
+			namespaceUri_ = nodeIdString.substr(posBegin, posEnd-posBegin);
+
+			posBegin = posEnd+1;
+		}
+		else {
+			//
+			// find token "ns=" (optional)
+			//
+
+			pos = nodeIdString.find("ns=", posBegin);
+			if (pos != std::string::npos) {
+				posBegin = pos+3;
+				posEnd = nodeIdString.find_first_of(';', posBegin);
+
+				try {
+					namespaceIndex_ = boost::lexical_cast<uint16_t>(nodeIdString.substr(posBegin, posEnd-posBegin));
+				} catch (boost::bad_lexical_cast&)
+				{
+					return false;
+				}
+
+				posBegin = posEnd+1;
+			}
+			else {
+				return false;
+			}
+		}
+
+		//
+		// find token "i=" (optional)
+		//
+		pos = nodeIdString.find("i=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+2;
+			posEnd = nodeIdString.length();
+
+			try {
+				uint32_t value = boost::lexical_cast<uint32_t>(nodeIdString.substr(posBegin, posEnd-posBegin));
+				nodeId(value);
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		//
+		// find token "s=" (optional)
+		//
+		pos = nodeIdString.find("s=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+2;
+			posEnd = nodeIdString.length();
+
+			try {
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>();
+				*value = nodeIdString.substr(posBegin, posEnd-posBegin);
+				nodeId(value);
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		//
+		// find token "g=" (optional)
+		//
+		pos = nodeIdString.find("g=", posBegin);
+		if (pos != std::string::npos) {
+			posBegin = pos+2;
+			posEnd = nodeIdString.length();
+
+			try {
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				*value = nodeIdString.substr(posBegin, posEnd-posBegin);
+				nodeId(value);
+			} catch (boost::bad_lexical_cast&)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	std::string
+	OpcUaExpandedNodeId::toString(void) const
+	{
+		std::stringstream nodeIdStream;
+		if (serverIndex_ != 0) {
+			nodeIdStream << "svr=" << serverIndex_ << ";";
+		}
+
+		if (namespaceUri_.size() > 0) {
+			nodeIdStream << "nsu=" << namespaceUri_ << ";";
+		}
+		else {
+			if (namespaceIndex_ != 0) {
+				nodeIdStream << "ns=" << namespaceIndex_ << ";";
+			}
+		}
+
+		switch(nodeIdType())
+		{
+			case OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value;
+				OpcUaUInt16 namespaceIndex;
+
+				const_cast<OpcUaExpandedNodeId*>(this)->get(value, namespaceIndex);
+				nodeIdStream << "i=" << value;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				std::string value;
+				OpcUaUInt16 namespaceIndex;
+
+				const_cast<OpcUaExpandedNodeId*>(this)->get(value, namespaceIndex);
+				nodeIdStream << "s=" << value;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				std::string value;
+				OpcUaUInt16 namespaceIndex;
+
+				const_cast<OpcUaExpandedNodeId*>(this)->get(value, namespaceIndex);
+				nodeIdStream << "g=" << value;
+				break;
+			}
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaByteString value;
+				OpcUaUInt16 namespaceIndex;
+
+				const_cast<OpcUaExpandedNodeId*>(this)->get(value, namespaceIndex);
+				nodeIdStream << "h=" << value;
+				break;
+			}
+		}
+		return nodeIdStream.str();
 	}
 
 }

@@ -226,5 +226,15 @@ BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_copyNodeId)
 
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaExpandedNodeId_fromString_toString)
+{
+	OpcUaExpandedNodeId value1;
+	BOOST_REQUIRE(value1.fromString("svr=4711;ns=1;s=NodeName") == true);
+	BOOST_REQUIRE(value1.toString() == "svr=4711;ns=1;s=NodeName");
+
+	OpcUaExpandedNodeId value2;
+	BOOST_REQUIRE(value2.fromString("svr=4711;nsu=NamespaceUri;s=NodeName") == true);
+	BOOST_REQUIRE(value2.toString() == "svr=4711;nsu=NamespaceUri;s=NodeName");
+}
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -215,6 +215,27 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(is, securityMode_);
 		securityPolicyUri_.opcUaBinaryDecode(is);
 		clientCertificate_.opcUaBinaryDecode(is);
+	}
+
+	bool
+	SessionSecurityDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	SessionSecurityDiagnosticsDataType::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	SessionSecurityDiagnosticsDataType::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
 	}
 
 	void

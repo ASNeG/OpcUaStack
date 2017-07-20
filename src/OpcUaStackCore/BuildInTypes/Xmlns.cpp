@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,28 +15,31 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_Xmlns_h__
-#define __OpcUaStackCore_Xmlns_h__
-
-#include <string>
-#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT Xmlns
+	Xmlns::Xmlns(void)
+	: xmlns_("")
 	{
-	  public:
-		Xmlns(void);
-		~Xmlns(void);
+	}
 
-		void ns(const std::string& ns);
-		std::string add(const std::string& tag);
+	Xmlns::~Xmlns(void)
+	{
+	}
 
-	  private:
-		std::string ns_;
-	};
+	void
+	Xmlns::xmlns(const std::string& xmlns)
+	{
+		xmlns_ = xmlns;
+	}
+
+	std::string
+	Xmlns::addxmlns(const std::string& element)
+	{
+		if (xmlns_ == "") return element;
+		return xmlns_ + std::string(":") + element;
+	}
 
 }
-
-#endif

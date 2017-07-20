@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -223,6 +223,70 @@ namespace OpcUaStackCore
 		name = pt.get_child_optional("Name");
 		if (!name) return false;
 		if (!name_.decode(*name)) return false;
+
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(pt, xmlns)) {
+			Log(Error, "OpcUaQualifiedName xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		std::stringstream ss;
+		ss << namespaceIndex();
+		pt.put(xmlns.addxmlns("NamespaceIndex"), ss.str());
+
+		pt.put(xmlns.addxmlns("Name"), name().value());
+
+		return true;
+	}
+
+	bool
+	OpcUaQualifiedName::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		//
+		// namespace index
+		//
+		boost::optional<std::string> namespaceIndexString = pt.get_optional<std::string>(xmlns.addxmlns("NamespaceIndex"));
+		if (!namespaceIndexString) {
+			namespaceIndex(0);
+		}
+		else {
+			try
+			{
+				uint16_t ni = boost::lexical_cast<int16_t>(*namespaceIndexString);
+				namespaceIndex(ni);
+			}
+			catch (boost::bad_lexical_cast&)
+			{
+				Log(Error, "OpcUaQulifiedName xml encoder error - value invalid")
+					.parameter("Element", "NamespaceIndex")
+					.parameter("Value", *namespaceIndexString);
+				return false;
+			}
+		}
+
+		//
+		// name
+		//
+		boost::optional<std::string> nameString = pt.get_optional<std::string>(xmlns.addxmlns("Name"));
+		if (!nameString) {
+			name("");
+		}
+		else {
+			name(*nameString);
+		}
 
 		return true;
 	}

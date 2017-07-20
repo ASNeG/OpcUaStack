@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/Base/Base64.h"
 #include <string.h>
 
 namespace OpcUaStackCore
@@ -57,6 +58,11 @@ namespace OpcUaStackCore
 	void 
 	OpcUaByteString::value(const OpcUaByte* value, OpcUaInt32 length)
 	{
+		if (value == nullptr) {
+			reset();
+			return;
+		}
+
 		reset();
 		if (length < 0) return;
 		value_ = (OpcUaByte*)malloc(length);
@@ -107,7 +113,7 @@ namespace OpcUaStackCore
 		
 	OpcUaByteString::operator std::string const (void)
 	{
-		if (length_ < 1) {
+		if (length_ < 1 || value_ == nullptr) {
 			return std::string();
 		}
 		return std::string((char*)value_, length_);
@@ -269,6 +275,80 @@ namespace OpcUaStackCore
 	OpcUaByteString::fromString(const std::string& string)
 	{
 		value(string);
+	}
+
+	bool
+	OpcUaByteString::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree elementTree;
+		if (!xmlEncode(elementTree, xmlns)) {
+			Log(Error, "OpcUaByteString xml encoder error")
+				.parameter("Element", element);
+			return false;
+		}
+		pt.push_back(std::make_pair(xmlns.addxmlns(element), elementTree));
+		return true;
+	}
+
+	bool
+	OpcUaByteString::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		OpcUaByte** valueBuf;
+		OpcUaInt32 valueLen = 0;
+		value(valueBuf, &valueLen);
+
+		if (valueLen == 0) {
+			pt.put_value("");
+		}
+		else {
+			uint32_t bufLen = Base64::asciiLen2base64Len(valueLen);
+			if (bufLen == 0) {
+				Log(Error, "OpcUaByteString xml encoder error - base64 length error");
+				pt.put_value("");
+				return false;
+			}
+
+			char* buf = (char*) new char[bufLen+1];
+			if (!Base64::encode((const char*)*valueBuf, valueLen, buf, bufLen)) {
+				Log(Error, "OpcUaByteString xml encoder error - base64 encoder error");
+				delete buf;
+				return false;
+			}
+
+			std::string str(buf, bufLen);
+			pt.put_value(str);
+			delete buf;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaByteString::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		std::string sourceValue = pt.get_value<std::string>();
+
+		if (sourceValue.size() == 0) {
+			value("", 0);
+			return true;
+		}
+
+		uint32_t valueLen = Base64::base64Len2asciiLen(sourceValue.length());
+		if (valueLen == 0) {
+			Log(Error, "OpcUaByteString xml encoder error - ascii length error");
+			return false;
+		}
+		char* valueBuf = (char*)malloc(valueLen+1);
+		memset(valueBuf, 0x00, valueLen+1);
+
+		if (!Base64::decode(sourceValue.c_str(), sourceValue.length(), valueBuf, valueLen)) {
+			Log(Error, "OpcUaByteString xml encoder error - base64 decoder error");
+			delete valueBuf;
+			return false;
+		}
+
+		value(valueBuf, valueLen);
+		delete valueBuf;
+		return true;
 	}
 
 };

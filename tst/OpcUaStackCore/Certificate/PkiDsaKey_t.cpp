@@ -1,5 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Certificate/PkiRsaKey.h"
+#include <iostream>
 
 using namespace OpcUaStackCore;
 

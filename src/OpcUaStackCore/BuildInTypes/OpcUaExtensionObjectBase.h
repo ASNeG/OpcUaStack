@@ -19,7 +19,7 @@
 #define __OpcUaStackCore_ExtensionObjectBase_h__
 
 #include <boost/property_tree/ptree.hpp>
-#include "OpcUaStackCore/Base/Xmlns.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 namespace OpcUaStackCore
@@ -38,6 +38,11 @@ namespace OpcUaStackCore
 		virtual void opcUaBinaryDecode(std::istream& is) = 0;
 		virtual bool encode(boost::property_tree::ptree& pt, Xmlns& xmlns) const { return false; }
 		virtual bool decode(boost::property_tree::ptree& pt, Xmlns& xmlns) { return false; }
+
+		virtual bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns) = 0;
+		virtual bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
+		virtual bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns) = 0;
+
 		virtual void copyTo(ExtensionObjectBase& extensionObjectBase) = 0;
 		virtual bool equal(ExtensionObjectBase& extensionObjectBase) const = 0;
 		virtual void out(std::ostream& os) = 0;

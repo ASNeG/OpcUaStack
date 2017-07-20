@@ -1,6 +1,7 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Callback.h"
 #include <boost/function.hpp>
+#include <iostream>
 
 using namespace OpcUaStackCore;
 

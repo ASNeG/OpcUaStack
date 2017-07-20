@@ -130,6 +130,27 @@ namespace OpcUaStackCore
 		buildDate_.opcUaBinaryDecode(is);
 	}
 
+	bool
+	BuildInfo::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	BuildInfo::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	BuildInfo::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
 	void
 	BuildInfo::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{

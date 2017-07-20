@@ -2,6 +2,7 @@
 #include <boost/asio/streambuf.hpp>
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/buffers_iterator.hpp>
+#include <iostream>
 
 BOOST_AUTO_TEST_SUITE(Streambuf_t)
 
@@ -39,7 +40,7 @@ BOOST_AUTO_TEST_CASE(Streambuf_streambbuf_to_buffer_iterate)
 
 BOOST_AUTO_TEST_CASE(Streambuf_buffer_to_streambuf)
 {
-	char *buf = "0123456789";
+	const char *buf = "0123456789";
 	boost::asio::const_buffer buffer(buf, 10);
 
 	boost::asio::streambuf sb;
@@ -58,7 +59,7 @@ BOOST_AUTO_TEST_CASE(Streambuf_buffer_to_streambuf)
 
 BOOST_AUTO_TEST_CASE(Streambuf_redirect)
 {
-	char *buf = "0123456789";
+	const char *buf = "0123456789";
 
 	boost::asio::streambuf sb1; 
 	std::iostream ios(std::cout.rdbuf());

@@ -388,4 +388,26 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	OpcUaDataValue::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaDataValue::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	OpcUaDataValue::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+
 }

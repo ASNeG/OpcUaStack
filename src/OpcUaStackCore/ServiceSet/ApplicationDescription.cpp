@@ -208,6 +208,27 @@ namespace OpcUaStackCore
 		applicationType_ = (ApplicationType)applicationType;
 	}
 
+	bool
+	ApplicationDescription::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	ApplicationDescription::xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	ApplicationDescription::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		// FIXME: todo
+		return false;
+	}
+
 	void
 	ApplicationDescription::copyTo(ExtensionObjectBase& extensionObjectBase)
 	{

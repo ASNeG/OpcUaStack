@@ -1,4 +1,5 @@
 #include "unittest.h"
+#include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 
 using namespace OpcUaStackCore;

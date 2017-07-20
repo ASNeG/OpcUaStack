@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/Xmlns.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaLocalizedText.h"
@@ -66,6 +67,9 @@ namespace OpcUaStackCore
 		ExtensionObjectBase::SPtr factory(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+		bool xmlEncode(boost::property_tree::ptree& pt, const std::string& element, Xmlns& xmlns);
+		bool xmlEncode(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		void copyTo(ExtensionObjectBase& extensionObjectBase);
 		bool equal(ExtensionObjectBase& extensionObjectBase) const;
 		void out(std::ostream& os);

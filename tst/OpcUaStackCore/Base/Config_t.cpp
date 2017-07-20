@@ -1,5 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include <iostream>
 
 using namespace OpcUaStackCore;
 
@@ -18,7 +19,7 @@ BOOST_AUTO_TEST_CASE(Config_setValue_getValue)
 	BOOST_REQUIRE(cfg.setValue("p2.p3.p4", "v234") == true);
 	BOOST_REQUIRE(cfg.setValue("p2.p5", "v25") == true);
 	BOOST_REQUIRE(cfg.setValue("p2.p5", "v25") == false);
-	BOOST_REQUIRE(cfg.getValue("path.not.exist") == false);
+	BOOST_REQUIRE(!cfg.getValue("path.not.exist") == true);
 
 	BOOST_REQUIRE(!cfg.getValue("p2.p5") == false);
 	BOOST_REQUIRE(*cfg.getValue("p2.p5") == "v25");
@@ -52,7 +53,7 @@ BOOST_AUTO_TEST_CASE(Config_getChild)
 	BOOST_REQUIRE(cfg1.setValue("p2.p3.p2", "v232") == true);
 	BOOST_REQUIRE(cfg1.setValue("p2.p5", "v25") == true);
 	BOOST_REQUIRE(cfg1.setValue("p2.p5", "v25") == false);
-	BOOST_REQUIRE(cfg1.getValue("path.not.exist") == false);
+	BOOST_REQUIRE(!cfg1.getValue("path.not.exist") == true);
 
 	BOOST_REQUIRE(!cfg1.getChild("child.not.exist") == true);
 	BOOST_REQUIRE(!cfg1.getChild("p1") == false);
@@ -84,14 +85,14 @@ BOOST_AUTO_TEST_CASE(Config_setChild)
 	BOOST_REQUIRE(cfg1.setValue("p2.p3.p2", "v232") == true);
 	BOOST_REQUIRE(cfg1.setValue("p2.p5", "v25") == true);
 	BOOST_REQUIRE(cfg1.setValue("p2.p5", "v25") == false);
-	BOOST_REQUIRE(cfg1.getValue("path.not.exist") == false);
+	BOOST_REQUIRE(!cfg1.getValue("path.not.exist") == true);
 
 	BOOST_REQUIRE(cfg2.setValue("p1", "v1") == true);
 	BOOST_REQUIRE(cfg2.setValue("p2.p3.p1", "v231") == true);
 	BOOST_REQUIRE(cfg2.setValue("p2.p3.p2", "v232") == true);
 	BOOST_REQUIRE(cfg2.setValue("p2.p5", "v25") == true);
 	BOOST_REQUIRE(cfg2.setValue("p2.p5", "v25") == false);
-	BOOST_REQUIRE(cfg2.getValue("path.not.exist") == false);
+	BOOST_REQUIRE(!cfg2.getValue("path.not.exist") == true);
 
 	BOOST_REQUIRE(cfg1.setChild("p3", cfg2) == true);
 	BOOST_REQUIRE(cfg1.getValue("p1", "default") == "v1");
