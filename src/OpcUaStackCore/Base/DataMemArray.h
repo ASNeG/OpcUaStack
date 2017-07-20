@@ -49,6 +49,7 @@ namespace OpcUaStackCore
 
 	  private:
 		bool createMemoryBuffer(void);
+		uint32_t calcMinMemoryBufferSize(uint32_t numberElements);
 
 		DataMemArrayHeader* dataMemArrayHeader_;
 

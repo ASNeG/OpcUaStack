@@ -161,6 +161,9 @@ namespace OpcUaStackCore
 	DataMemArray::arrayResize(uint32_t numberElements)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
+
+			uint32_t minMemoryBufferSize = calcMinMemoryBufferSize(numberElements);
+
 			if (!createMemoryBuffer()) {
 				return false;
 			}
@@ -243,5 +246,15 @@ namespace OpcUaStackCore
 		freeSlot->posNextFreeSlot_ = sizeof(DataMemArrayHeader);
 
 		return true;
+	}
+
+	uint32_t
+	DataMemArray::calcMinMemoryBufferSize(uint32_t numberElements)
+	{
+		uint32_t size =
+			sizeof(DataMemArrayHeader) + 		// header
+			sizeof(DataMemoryArrayFreeSlot) +	// free slot
+			numberElements * sizeof(uint32_t) +	// array
+			1;									// minimum free
 	}
 }
