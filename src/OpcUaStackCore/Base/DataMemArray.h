@@ -48,6 +48,8 @@ namespace OpcUaStackCore
 		void getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
+		bool createMemoryBuffer(void);
+
 		DataMemArrayHeader* dataMemArrayHeader_;
 
 		static uint32_t minMemorySize_;

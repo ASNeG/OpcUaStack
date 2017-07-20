@@ -160,7 +160,14 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::arrayResize(uint32_t numberElements)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			if (!createMemoryBuffer()) {
+				return false;
+			}
+		}
+
 		// FIXME: todo
+
 		return true;
 	}
 
@@ -190,4 +197,51 @@ namespace OpcUaStackCore
 		// FIXME: todo
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// private function
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	DataMemArray::createMemoryBuffer(void)
+	{
+		//
+		// allocate memory
+		//
+		char* mem = new char[startMemorySize_];
+		if (mem == nullptr) return false;
+		dataMemArrayHeader_ = (DataMemArrayHeader*)mem;
+
+		//
+		// create header element
+		//
+		dataMemArrayHeader_->eye_[0] = 'H';
+		dataMemArrayHeader_->eye_[1] = 'E';
+		dataMemArrayHeader_->eye_[2] = 'A';
+		dataMemArrayHeader_->eye_[3] = 'D';
+		dataMemArrayHeader_->maxMemorySize_ = maxMemorySize_;
+		dataMemArrayHeader_->expandMemorySize_ = expandMemorySize_;
+
+		dataMemArrayHeader_->actMemorySize_ = startMemorySize_;
+		dataMemArrayHeader_->actArraySize_ = 0;
+
+		dataMemArrayHeader_->posFirstFreeSlot_ = sizeof(DataMemArrayHeader);
+		dataMemArrayHeader_->posLastFreeSlot_ = sizeof(DataMemArrayHeader);
+
+		//
+		// create free element
+		//
+		DataMemoryArrayFreeSlot* freeSlot = (DataMemoryArrayFreeSlot*)&mem[sizeof(DataMemArrayHeader)];
+		freeSlot->eye_[0] = 'F';
+		freeSlot->eye_[1] = 'R';
+		freeSlot->eye_[2] = 'E';
+		freeSlot->eye_[3] = 'E';
+		freeSlot->size_ = startMemorySize_ - sizeof(DataMemArrayHeader) - sizeof(DataMemoryArrayFreeSlot);
+		freeSlot->posLastFreeSlot_ = sizeof(DataMemArrayHeader);
+		freeSlot->posNextFreeSlot_ = sizeof(DataMemArrayHeader);
+
+		return true;
+	}
 }
