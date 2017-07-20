@@ -18,24 +18,20 @@
 #ifndef __OpcUaStackCore_DataMemArray_h__
 #define __OpcUaStackCore_DataMemArray_h__
 
+#include <stdint.h>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
+	class DataMemArrayHeader;
+
 	class DLLEXPORT DataMemArray
 	{
 	  public:
-		DataMemArray(void);
+		DataMemArray(uint32_t startMemorySize = 20000);
+		DataMemArray(char* memBuf, uint32_t memLen);
 		~DataMemArray(void);
-
-		void startMemorySize(uint32_t startMemorySize);
-		uint32_t startMemorySize(void);
-		void maxMemorySize(uint32_t maxMemorySize);
-		uint32_t maxMemorySize(void);
-		void expandMemorySize(uint32_t expandMemorySize);
-		uint32_t expandMemorySize(void);
-		uint32_t actMemorySize(void);
 
 		uint32_t arraySize(void);
 		bool arrayResize(uint32_t numberElements);
@@ -44,13 +40,7 @@ namespace OpcUaStackCore
 		void clear();
 
 	  private:
-		uint32_t startMemorySize_;
-		uint32_t maxMemorySize_;
-		uint32_t expandMemorySize_;
-
-		char* memBuf_;
-		uint32_t memLen_;
-		uint32_t arraySize_;
+		DataMemArrayHeader* dataMemArrayHeader_;
 	};
 
 }

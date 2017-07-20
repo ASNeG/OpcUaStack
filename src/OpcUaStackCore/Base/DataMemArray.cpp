@@ -20,13 +20,58 @@
 namespace OpcUaStackCore
 {
 
-	DataMemArray::DataMemArray(void)
-	: startMemorySize_(100000)
-	, maxMemorySize_(0)
-	, expandMemorySize(100000);
-	, memBuf_(nullptr)
-	, memLen_(0)
-	, arraySize_(0)
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DataMemArrayHeader
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	class DataMemoryArrayFreeSlot
+	{
+	  public:
+		char eye_[4]; // FREE
+
+		uint32_t size_;
+		uint32_t posLastFreeSlot_;
+		uint32_t posNextFreeSlot_;
+	};
+
+	class DataMemoryArrayUsedSlot
+	{
+		char eye_[4]; // USED
+		uint32_t size_;
+	};
+
+	class DataMemArrayHeader
+	{
+	  public:
+		char eye_[4]; // HEAD
+
+		uint32_t maxMemorySize_;
+		uint32_t expandMemorySize_;
+
+		uint32_t actMemorySize_;
+		uint32_t actArraySize_;
+
+		uint32_t posFirstFreeSlot_;
+		uint32_t posLastFreeSlot_;
+	};
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DataMemArray
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	DataMemArray::DataMemArray(uint32_t startMemorySize)
+	: dataMemArrayHeader_(nullptr)
+	{
+	}
+
+	DataMemArray::DataMemArray(char* memBuf, uint32_t memLen)
+	: dataMemArrayHeader_((DataMemArrayHeader*)memBuf)
 	{
 	}
 
@@ -35,52 +80,10 @@ namespace OpcUaStackCore
 		clear();
 	}
 
-	void
-	DataMemArray::startMemorySize(uint32_t startMemorySize)
-	{
-		startMemorySize_ = startMemorySize;
-	}
-
-	uint32_t
-	DataMemArray::startMemorySize(void)
-	{
-		return startMemorySize_;
-	}
-
-	void
-	DataMemArray::maxMemorySize(uint32_t maxMemorySize)
-	{
-		maxMemorySize_ = maxMemorySize;
-	}
-
-	uint32_t
-	DataMemArray::maxMemorySize(void)
-	{
-		return maxMemorySize_;
-	}
-
-	void
-	DataMemArray::expandMemorySize(uint32_t expandMemorySize)
-	{
-		expandedMemorySize_ = expandedMemorySize;
-	}
-
-	uint32_t
-	DataMemArray::expandMemorySize(void)
-	{
-		return expandedMemorySize_;
-	}
-
-	uint32_t
-	DataMemArray::actMemorySize(void)
-	{
-		return memLen_;
-	}
-
 	uint32_t
 	DataMemArray::arraySize(void)
 	{
-		return arraySize_;
+		return 0;
 	}
 
 	bool
@@ -107,7 +110,6 @@ namespace OpcUaStackCore
 	void
 	DataMemArray::clear()
 	{
-		// FIXME: todo
 	}
 
 }
