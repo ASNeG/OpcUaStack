@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(DataMemArray_constructor)
 
 BOOST_AUTO_TEST_CASE(DataMemArray_resize)
 {
-	DataMemArray dataMemArray[6];
+	DataMemArray dataMemArray[7];
 
 	BOOST_REQUIRE(dataMemArray[0].arrayResize(0) == true);
 	BOOST_REQUIRE(dataMemArray[0].arraySize() == 0);
@@ -32,7 +32,9 @@ BOOST_AUTO_TEST_CASE(DataMemArray_resize)
 	BOOST_REQUIRE(dataMemArray[4].arrayResize(100) == true);
 	BOOST_REQUIRE(dataMemArray[4].arraySize() == 100);
 	BOOST_REQUIRE(dataMemArray[5].arrayResize(100000) == true);
-	BOOST_REQUIRE(dataMemArray[5].arraySize() == 0);
+	BOOST_REQUIRE(dataMemArray[5].arraySize() == 100000);
+	BOOST_REQUIRE(dataMemArray[6].arrayResize(1000000) == false);
+	BOOST_REQUIRE(dataMemArray[6].arraySize() == 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

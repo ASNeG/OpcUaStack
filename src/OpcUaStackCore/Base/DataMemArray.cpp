@@ -174,19 +174,27 @@ namespace OpcUaStackCore
 			//
 			uint32_t startMemorySize = startMemorySize_;
 			uint32_t minMemoryBufferSize = calcMinMemoryBufferSize(arraySize);
-			if (maxMemorySize_ != 0 && minMemoryBufferSize > maxMemorySize_) return false;
+			if (maxMemorySize_ != 0 && minMemoryBufferSize > maxMemorySize_) {
+				if (debug_) {
+					Log(Debug, "array resize error - max memory exceeded")
+						.parameter("Id", this)
+						.parameter("ArraySize", arraySize)
+						.parameter("MaxMemorySize", maxMemorySize_)
+						.parameter("UsedMemorySize", minMemoryBufferSize);
+				}
+				return false;
+			}
 
 			//
 			// calculate size of new memory buffer
 			//
-			while (minMemoryBufferSize > startMemorySize_) {
+			while (minMemoryBufferSize > startMemorySize) {
 				if (expandMemorySize_ != 0) {
 					startMemorySize += expandMemorySize_;
 				}
 				else {
 					startMemorySize += 1000;
 				}
-				break;
 			}
 
 			//
@@ -365,5 +373,6 @@ namespace OpcUaStackCore
 			sizeof(DataMemoryArrayFreeSlot) +	// free slot
 			arraySize * sizeof(uint32_t) +		// array
 			1;									// minimum free
+		return size;
 	}
 }
