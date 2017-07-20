@@ -29,18 +29,27 @@ namespace OpcUaStackCore
 	class DLLEXPORT DataMemArray
 	{
 	  public:
-		DataMemArray(uint32_t startMemorySize = 20000);
-		DataMemArray(char* memBuf, uint32_t memLen);
+		DataMemArray(void);
 		~DataMemArray(void);
+
+		void startMemorySizeDefault(uint32_t startMemorySizeDefault);
+		void maxMemorySizeDefault(uint32_t maxMemorySizeDefault);
+		void expandMemorySizeDefault(uint32_t expandMemorySizeDefault);
 
 		uint32_t arraySize(void);
 		bool arrayResize(uint32_t numberElements);
 		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
 		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
-		void clear();
+
+		void setMemoryBuf(char* memBuf, uint32_t memLen);
+		void getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
 		DataMemArrayHeader* dataMemArrayHeader_;
+
+		uint32_t startMemorySizeDefault_;
+		uint32_t maxMemorySizeDefault_;
+		uint32_t expandMemorySizeDefault_;
 	};
 
 }

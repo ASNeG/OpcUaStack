@@ -65,19 +65,39 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	DataMemArray::DataMemArray(uint32_t startMemorySize)
+	DataMemArray::DataMemArray(void)
 	: dataMemArrayHeader_(nullptr)
-	{
-	}
-
-	DataMemArray::DataMemArray(char* memBuf, uint32_t memLen)
-	: dataMemArrayHeader_((DataMemArrayHeader*)memBuf)
+	, startMemorySizeDefault_(10000)
+	, maxMemorySizeDefault_(1000000)
+	, expandMemorySizeDefault_(10000)
 	{
 	}
 
 	DataMemArray::~DataMemArray(void)
 	{
-		clear();
+		if (dataMemArrayHeader_ != nullptr) {
+			char* mem = (char*)dataMemArrayHeader_;
+			delete [] mem;
+			dataMemArrayHeader_ = nullptr;
+		}
+	}
+
+	void
+	DataMemArray::startMemorySizeDefault(uint32_t startMemorySizeDefault)
+	{
+		startMemorySizeDefault_ = startMemorySizeDefault;
+	}
+
+	void
+	DataMemArray::maxMemorySizeDefault(uint32_t maxMemorySizeDefault)
+	{
+		maxMemorySizeDefault_ = maxMemorySizeDefault;
+	}
+
+	void
+	DataMemArray::expandMemorySizeDefault(uint32_t expandMemorySizeDefault)
+	{
+		expandMemorySizeDefault_ = expandMemorySizeDefault;
 	}
 
 	uint32_t
@@ -108,8 +128,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DataMemArray::clear()
+	DataMemArray::setMemoryBuf(char* memBuf, uint32_t memLen)
 	{
+		// FIXME: todo
+	}
+
+	void
+	DataMemArray::getMemoryBuf(char** memBuf, uint32_t* memLen)
+	{
+		// FIXME: todo
 	}
 
 }
