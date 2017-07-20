@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_os_h__
 #define __OpcUaStackCore_os_h__
 
+
 #ifdef WIN32
 	
 	#define _WIN32_WINNT	0x0501
@@ -46,9 +47,9 @@
     #define CONNECTION_CLOSE_REMOTE			boost::asio::error::eof
 	#define CONNECTION_CLOSE_EOF			boost::asio::error::eof
 
-#if __cplusplus < 201103L
-	#define nullptr 				NULL
-#endif
+	#if __cplusplus < 201103L
+		#define nullptr 				NULL
+	#endif
 
 #endif
 
