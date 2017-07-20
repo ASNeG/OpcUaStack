@@ -65,11 +65,13 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	uint32_t DataMemArray::minMemorySize_ = 1000;
+
 	DataMemArray::DataMemArray(void)
 	: dataMemArrayHeader_(nullptr)
-	, startMemorySizeDefault_(10000)
-	, maxMemorySizeDefault_(1000000)
-	, expandMemorySizeDefault_(10000)
+	, startMemorySize_(10000)
+	, maxMemorySize_(1000000)
+	, expandMemorySize_(10000)
 	{
 	}
 
@@ -83,21 +85,70 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DataMemArray::startMemorySizeDefault(uint32_t startMemorySizeDefault)
+	DataMemArray::startMemorySize(uint32_t startMemorySize)
 	{
-		startMemorySizeDefault_ = startMemorySizeDefault;
+		if (startMemorySize < minMemorySize_) {
+			startMemorySize_ = minMemorySize_;
+		}
+		else {
+			startMemorySize_ = startMemorySize;
+		}
+	}
+
+	uint32_t
+	DataMemArray::startMemorySize(void)
+	{
+		return startMemorySize_;
 	}
 
 	void
-	DataMemArray::maxMemorySizeDefault(uint32_t maxMemorySizeDefault)
+	DataMemArray::maxMemorySize(uint32_t maxMemorySize)
 	{
-		maxMemorySizeDefault_ = maxMemorySizeDefault;
+		if (dataMemArrayHeader_ == nullptr) {
+			if (maxMemorySize < startMemorySize_) {
+				maxMemorySize_ = startMemorySize_;
+				expandMemorySize_ = 0;
+			}
+			else {
+				maxMemorySize_ = maxMemorySize;
+			}
+		}
+		else {
+			if (maxMemorySize < dataMemArrayHeader_->actArraySize_) {
+				dataMemArrayHeader_->maxMemorySize_ = dataMemArrayHeader_->actArraySize_;
+			}
+			else {
+				dataMemArrayHeader_->maxMemorySize_ = maxMemorySize;
+			}
+		}
+	}
+
+	uint32_t
+	DataMemArray::maxMemorySize(void)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return maxMemorySize_;
+		}
+		else {
+			return dataMemArrayHeader_->maxMemorySize_;
+		}
 	}
 
 	void
-	DataMemArray::expandMemorySizeDefault(uint32_t expandMemorySizeDefault)
+	DataMemArray::expandMemorySize(uint32_t expandMemorySize)
 	{
-		expandMemorySizeDefault_ = expandMemorySizeDefault;
+		if (dataMemArrayHeader_ == nullptr) {
+			expandMemorySize_ = expandMemorySize;
+		}
+		else {
+			dataMemArrayHeader_->expandMemorySize_ = expandMemorySize;
+		}
+	}
+
+	uint32_t
+	DataMemArray::expandMemorySize(void)
+	{
+		return expandMemorySize_;
 	}
 
 	uint32_t

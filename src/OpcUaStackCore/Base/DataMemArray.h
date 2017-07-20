@@ -32,9 +32,12 @@ namespace OpcUaStackCore
 		DataMemArray(void);
 		~DataMemArray(void);
 
-		void startMemorySizeDefault(uint32_t startMemorySizeDefault);
-		void maxMemorySizeDefault(uint32_t maxMemorySizeDefault);
-		void expandMemorySizeDefault(uint32_t expandMemorySizeDefault);
+		void startMemorySize(uint32_t startMemorySize);
+		uint32_t startMemorySize(void);
+		void maxMemorySize(uint32_t maxMemorySize);
+		uint32_t maxMemorySize(void);
+		void expandMemorySize(uint32_t expandMemorySize);
+		uint32_t expandMemorySize(void);
 
 		uint32_t arraySize(void);
 		bool arrayResize(uint32_t numberElements);
@@ -47,9 +50,10 @@ namespace OpcUaStackCore
 	  private:
 		DataMemArrayHeader* dataMemArrayHeader_;
 
-		uint32_t startMemorySizeDefault_;
-		uint32_t maxMemorySizeDefault_;
-		uint32_t expandMemorySizeDefault_;
+		static uint32_t minMemorySize_;
+		uint32_t startMemorySize_;
+		uint32_t maxMemorySize_;
+		uint32_t expandMemorySize_;
 	};
 
 }
