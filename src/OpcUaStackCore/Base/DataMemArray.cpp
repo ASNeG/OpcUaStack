@@ -162,9 +162,21 @@ namespace OpcUaStackCore
 	{
 		if (dataMemArrayHeader_ == nullptr) {
 
+			uint32_t startMemorySize = startMemorySize_;
 			uint32_t minMemoryBufferSize = calcMinMemoryBufferSize(numberElements);
+			if (maxMemorySize_ != 0 && minMemoryBufferSize > maxMemorySize_) return false;
 
-			if (!createMemoryBuffer()) {
+			while (minMemoryBufferSize > startMemorySize_) {
+				if (expandMemorySize_ != 0) {
+					startMemorySize += expandMemorySize_;
+				}
+				else {
+					startMemorySize += 1000;
+				}
+				break;
+			}
+
+			if (!createMemoryBuffer(startMemorySize)) {
 				return false;
 			}
 		}
@@ -208,12 +220,12 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	DataMemArray::createMemoryBuffer(void)
+	DataMemArray::createMemoryBuffer(uint32_t startMemorySize)
 	{
 		//
 		// allocate memory
 		//
-		char* mem = new char[startMemorySize_];
+		char* mem = new char[startMemorySize];
 		if (mem == nullptr) return false;
 		dataMemArrayHeader_ = (DataMemArrayHeader*)mem;
 
@@ -227,7 +239,7 @@ namespace OpcUaStackCore
 		dataMemArrayHeader_->maxMemorySize_ = maxMemorySize_;
 		dataMemArrayHeader_->expandMemorySize_ = expandMemorySize_;
 
-		dataMemArrayHeader_->actMemorySize_ = startMemorySize_;
+		dataMemArrayHeader_->actMemorySize_ = startMemorySize;
 		dataMemArrayHeader_->actArraySize_ = 0;
 
 		dataMemArrayHeader_->posFirstFreeSlot_ = sizeof(DataMemArrayHeader);
