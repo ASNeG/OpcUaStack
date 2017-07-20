@@ -231,6 +231,13 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	bool
+	DataMemArray::exist(uint32_t idx)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	void
 	DataMemArray::setMemoryBuf(char* memBuf, uint32_t memLen)
 	{

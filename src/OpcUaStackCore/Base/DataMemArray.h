@@ -43,6 +43,7 @@ namespace OpcUaStackCore
 		bool arrayResize(uint32_t arraySize);
 		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
 		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
+		bool exist(uint32_t idx);
 
 		void setMemoryBuf(char* memBuf, uint32_t memLen);
 		void getMemoryBuf(char** memBuf, uint32_t* memLen);
