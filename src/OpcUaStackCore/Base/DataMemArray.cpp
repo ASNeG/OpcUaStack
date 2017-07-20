@@ -43,7 +43,9 @@ namespace OpcUaStackCore
 	class DataMemoryArrayUsedSlot
 	{
 		char eye_[4]; // USED
+
 		uint32_t size_;
+		uint32_t padding_;
 	};
 
 	class DataMemArrayHeader
@@ -220,6 +222,16 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::set(uint32_t idx, const char* buf, uint32_t bufLen)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		//
+		// get memory buffer
+		//
+		char* memBuf = (char*)dataMemArrayHeader_;
+		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+
 		// FIXME: todo
 		return true;
 	}
@@ -227,6 +239,16 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::get(uint32_t idx, char**buf, uint32_t& bufLen)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		//
+		// get memory buffer
+		//
+		char* memBuf = (char*)dataMemArrayHeader_;
+		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+
 		// FIXME: todo
 		return true;
 	}
@@ -234,7 +256,32 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::exist(uint32_t idx)
 	{
-		// FIXME: todo
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		//
+		// get memory buffer
+		//
+		char* memBuf = (char*)dataMemArrayHeader_;
+		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+
+		//
+		// check index
+		//
+		if (idx >= dataMemArrayHeader_->actArraySize_) {
+			return false;
+		}
+
+		//
+		// read array element
+		//
+		uint32_t offset = (idx+1) * sizeof(uint32_t);
+		uint32_t* arrayElement = (uint32_t*)memBuf[memSize-offset];
+
+		if (*arrayElement == 0) {
+			return false;
+		}
 		return true;
 	}
 
@@ -303,7 +350,7 @@ namespace OpcUaStackCore
 		freeSlot->eye_[1] = 'R';
 		freeSlot->eye_[2] = 'E';
 		freeSlot->eye_[3] = 'E';
-		freeSlot->size_ = startMemorySize_ - sizeof(DataMemArrayHeader) - sizeof(DataMemoryArrayFreeSlot);
+		freeSlot->size_ = startMemorySize_ - sizeof(DataMemArrayHeader);
 		freeSlot->posLastFreeSlot_ = sizeof(DataMemArrayHeader);
 		freeSlot->posNextFreeSlot_ = sizeof(DataMemArrayHeader);
 
