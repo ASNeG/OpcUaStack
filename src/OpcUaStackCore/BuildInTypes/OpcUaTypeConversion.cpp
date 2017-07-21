@@ -20,6 +20,11 @@
 namespace OpcUaStackCore
 {
 
+	//operator bool(const std::string& value) const
+	//{
+	//	return true;
+	//}
+
 	OpcUaTypeConversion::OpcUaTypeConversion(void)
 	{
 	}

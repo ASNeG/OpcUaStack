@@ -19,15 +19,23 @@
 #define __OpcUaStackCore_OpcUaTypeConversion_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
+
+	// operator bool(const std::string& value) const;
+	// CGPoint& operator|=(CGPoint& cPoint, CGSize const& cSize)
 
 	class DLLEXPORT OpcUaTypeConversion
 	{
 	  public:
 		OpcUaTypeConversion(void);
 		~OpcUaTypeConversion(void);
+
+		// FIXME: todo
+
+	  private:
 	};
 
 }
