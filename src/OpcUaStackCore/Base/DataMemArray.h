@@ -49,9 +49,13 @@ namespace OpcUaStackCore
 		void getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
+		char *posToPtr(uint32_t pos);
+		uint32_t ptrToPos(char* ptr);
 		bool createMemoryBuffer(uint32_t startMemorySize);
 		bool resizeMemArray(uint32_t arraySize);
 		uint32_t calcMinMemoryBufferSize(uint32_t arraySize);
+		uint32_t findFreePos(uint32_t bufLen);
+		bool allocateMemory(uint32_t idx, const char* buf, uint32_t len);
 
 		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;

@@ -223,16 +223,37 @@ namespace OpcUaStackCore
 	DataMemArray::set(uint32_t idx, const char* buf, uint32_t bufLen)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
+			if (debug_) {
+				Log(Debug, "set error - no memory available")
+					.parameter("Id", this);
+			}
 			return false;
 		}
 
 		//
-		// get memory buffer
+		// check index
 		//
-		char* memBuf = (char*)dataMemArrayHeader_;
-		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+		if (idx >= dataMemArrayHeader_->actArraySize_) {
+			if (debug_) {
+				Log(Debug, "set error - index outside array")
+					.parameter("Id", this)
+					.parameter("Idx", idx)
+					.parameter("ActArraySize", dataMemArrayHeader_->actArraySize_);
+			}
+			return false;
+		}
 
-		// FIXME: todo
+		//
+		// allocate memory
+		//
+		if (!allocateMemory(idx, buf, bufLen)) {
+			if (debug_) {
+				Log(Debug, "set error - allocate memory error")
+					.parameter("Id", this);
+			}
+			return false;
+		}
+
 		return true;
 	}
 
@@ -243,11 +264,8 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		//
-		// get memory buffer
-		//
-		char* memBuf = (char*)dataMemArrayHeader_;
-		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+
+
 
 		// FIXME: todo
 		return true;
@@ -277,7 +295,7 @@ namespace OpcUaStackCore
 		// read array element
 		//
 		uint32_t offset = (idx+1) * sizeof(uint32_t);
-		uint32_t* arrayElement = (uint32_t*)memBuf[memSize-offset];
+		uint32_t* arrayElement = (uint32_t*)&memBuf[memSize-offset];
 
 		if (*arrayElement == 0) {
 			return false;
@@ -304,6 +322,20 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	char*
+	DataMemArray::posToPtr(uint32_t pos)
+	{
+		char* memBuf = (char*)dataMemArrayHeader_;
+		return (memBuf + pos);
+	}
+
+	uint32_t
+	DataMemArray::ptrToPos(char* ptr)
+	{
+		char* memBuf = (char*)dataMemArrayHeader_;
+		return (ptr - memBuf);
+	}
+
 	bool
 	DataMemArray::createMemoryBuffer(uint32_t startMemorySize)
 	{
@@ -428,5 +460,86 @@ namespace OpcUaStackCore
 			arraySize * sizeof(uint32_t) +		// array
 			1;									// minimum free
 		return size;
+	}
+
+	uint32_t
+	DataMemArray::findFreePos(uint32_t bufLen)
+	{
+		uint32_t usedBufLen = bufLen + sizeof(DataMemoryArrayUsedSlot);
+
+		//
+		// get memory buffer
+		//
+		char* memBuf = (char*)dataMemArrayHeader_;
+		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
+
+		//
+		// get free slot list
+		//
+		DataMemoryArrayFreeSlot* freeSlotList = (DataMemoryArrayFreeSlot*)posToPtr(sizeof(DataMemArrayHeader));
+		DataMemoryArrayFreeSlot* freeSlotElement = freeSlotList;
+
+		do {
+			uint32_t offset = 0;
+			if (freeSlotList == freeSlotElement) {
+				offset = sizeof(DataMemoryArrayFreeSlot);
+			}
+
+			if (freeSlotElement->size_ >= (usedBufLen+offset)) {
+				return ptrToPos((char*)freeSlotElement);
+			}
+
+			freeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(freeSlotList->posNextFreeSlot_);
+		} while (freeSlotList != freeSlotElement);
+
+		return 0;
+	}
+
+	bool
+	DataMemArray::allocateMemory(uint32_t idx, const char* buf, uint32_t bufLen)
+	{
+		//
+		// find free buffer
+		//
+		uint32_t pos = findFreePos(bufLen);
+		if (debug_) {
+			Log(Debug, "find free pos")
+				.parameter("Id", this)
+				.parameter("Pos", pos);
+		}
+		if (pos == 0) {
+			return false;
+		}
+
+		//
+		// get free slot elements
+		//
+		DataMemoryArrayFreeSlot* actFreeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(pos);
+		DataMemoryArrayFreeSlot* lastFreeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(actFreeSlotElement->posLastFreeSlot_);
+		DataMemoryArrayFreeSlot* nextFreeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(actFreeSlotElement->posNextFreeSlot_);
+		uint32_t slotSize = actFreeSlotElement->size_;
+		uint32_t rest = slotSize - bufLen;
+
+		if (rest > sizeof(DataMemoryArrayFreeSlot)) {
+			// reduce free slot element
+			DataMemoryArrayFreeSlot freeSlotElement;
+			freeSlotElement
+		}
+		else {
+			// remove free slot element
+			// FIXME: todo
+		}
+
+		//
+		// create used element
+		//
+		// FIXME: todo
+
+		//
+		// set position to array index
+		//
+		// FIXME: todo
+
+		return true;
 	}
 }
