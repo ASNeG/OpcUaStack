@@ -523,7 +523,6 @@ namespace OpcUaStackCore
 		if (rest > sizeof(DataMemoryArrayFreeSlot)) {
 			// reduce free slot element
 			DataMemoryArrayFreeSlot freeSlotElement;
-			freeSlotElement
 		}
 		else {
 			// remove free slot element
