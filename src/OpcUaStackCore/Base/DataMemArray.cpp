@@ -244,6 +244,9 @@ namespace OpcUaStackCore
 		if (dataMemArrayHeader_ == nullptr) {
 			return false;
 		}
+		if (idx >= dataMemArrayHeader_->actArraySize_) {
+			return false;
+		}
 
 		//
 		// find free memory slot
@@ -273,12 +276,12 @@ namespace OpcUaStackCore
 		}
 		else {
 			// split slot
-			DataMemArraySlot* newSlot;
-			uint32_t newSlotSize = slot->dataSize() - bufLen - sizeof(DataMemArraySlot) - sizeof(uint32_t);
+			DataMemArraySlot* freeSlot;
+			uint32_t freeSlotSize = slot->dataSize() - bufLen - sizeof(DataMemArraySlot) - sizeof(uint32_t);
 
 			slot = createNewSlot((char*)slot, 'U', bufLen, 0);
-			newSlot = createNewSlot((char*)slot + bufLen + sizeof(DataMemArraySlot) + sizeof(uint32_t), 'F', 0);
-			freeSlotMap_.insert(std::make_pair(ptrToPos((char*)newSlot), newSlot));
+			freeSlot = createNewSlot((char*)slot + bufLen + sizeof(DataMemArraySlot) + sizeof(uint32_t), 'F', freeSlotSize);
+			freeSlotMap_.insert(std::make_pair(ptrToPos((char*)freeSlot), freeSlot));
 		}
 
 		//
