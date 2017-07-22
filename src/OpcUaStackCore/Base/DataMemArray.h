@@ -44,7 +44,7 @@ namespace OpcUaStackCore
 	class DataMemArraySlot
 	{
 	  public:
-		typedef std::map<uint32_t, DataMemArraySlot> Map;
+		typedef std::map<uint32_t, DataMemArraySlot*> Map;
 
 		DataMemArraySlot(void);
 		~DataMemArraySlot(void);
@@ -83,12 +83,13 @@ namespace OpcUaStackCore
 		bool getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
+		uint32_t ptrToPos(char* ptr);
 		bool createNewMemory(uint32_t arraySize);
 		void createNewSlot(char* mem, char type, uint32_t size);
 
-
 		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;
+		DataMemArraySlot::Map freeSlotMap_;
 
 		static uint32_t minMemorySize_;
 		uint32_t startMemorySize_;

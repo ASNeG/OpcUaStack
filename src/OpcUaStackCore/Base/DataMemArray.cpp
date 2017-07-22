@@ -233,6 +233,13 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	uint32_t
+	DataMemArray::ptrToPos(char* ptr)
+	{
+		if (dataMemArrayHeader_ == nullptr) return 0;
+		return (ptr - (char*)dataMemArrayHeader_);
+	}
+
 	bool
 	DataMemArray::createNewMemory(uint32_t arraySize)
 	{
@@ -299,6 +306,7 @@ namespace OpcUaStackCore
 		// create free slot
 		mem += sizeof(DataMemArraySlot) + sizeof(uint32_t);
 		createNewSlot(mem, 'F', dataSize);
+		freeSlotMap_.insert(std::make_pair(ptrToPos(mem), (DataMemArraySlot*)mem));
 
 		// create end slot
 		mem += sizeof(DataMemArraySlot) + sizeof(uint32_t) + dataSize;
