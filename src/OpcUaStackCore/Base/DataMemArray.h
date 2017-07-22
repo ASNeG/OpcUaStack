@@ -24,7 +24,38 @@
 namespace OpcUaStackCore
 {
 
-	class DataMemArrayHeader;
+	class DataMemArrayHeader
+	{
+	  public:
+		DataMemArrayHeader(void);
+		~DataMemArrayHeader(void);
+
+		char eye_[4]; // HEAD
+
+		uint32_t maxMemorySize_;
+		uint32_t expandMemorySize_;
+
+		uint32_t actMemorySize_;
+		uint32_t actArraySize_;
+	};
+
+
+	class DataMemArraySlot
+	{
+	  public:
+		DataMemArraySlot(void);
+		~DataMemArraySlot(void);
+
+		DataMemArraySlot* last(void);
+		DataMemArraySlot* next(void);
+		uint32_t dataSize(void);
+
+		char eye_[4]; 		// SLOT
+
+		char state_; 		// U = Used, F=Free, B = BEGIN, E = END
+		uint32_t size_;		// size inclusive slot header
+	};
+
 
 	class DLLEXPORT DataMemArray
 	{
@@ -49,13 +80,6 @@ namespace OpcUaStackCore
 		void getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
-		char *posToPtr(uint32_t pos);
-		uint32_t ptrToPos(char* ptr);
-		bool createMemoryBuffer(uint32_t startMemorySize);
-		bool resizeMemArray(uint32_t arraySize);
-		uint32_t calcMinMemoryBufferSize(uint32_t arraySize);
-		uint32_t findFreePos(uint32_t bufLen);
-		bool allocateMemory(uint32_t idx, const char* buf, uint32_t len);
 
 		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;

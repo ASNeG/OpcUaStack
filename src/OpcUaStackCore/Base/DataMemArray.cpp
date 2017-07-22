@@ -30,38 +30,50 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	class DataMemoryArrayFreeSlot
+	DataMemArrayHeader::DataMemArrayHeader(void)
 	{
-	  public:
-		char eye_[4]; // FREE
+	}
 
-		uint32_t size_;
-		uint32_t posLastFreeSlot_;
-		uint32_t posNextFreeSlot_;
-	};
-
-	class DataMemoryArrayUsedSlot
+	DataMemArrayHeader::~DataMemArrayHeader(void)
 	{
-		char eye_[4]; // USED
+	}
 
-		uint32_t size_;
-		uint32_t padding_;
-	};
 
-	class DataMemArrayHeader
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DataMemArraySlot
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	DataMemArraySlot::DataMemArraySlot(void)
 	{
-	  public:
-		char eye_[4]; // HEAD
+	}
 
-		uint32_t maxMemorySize_;
-		uint32_t expandMemorySize_;
+	DataMemArraySlot::~DataMemArraySlot(void)
+	{
+	}
 
-		uint32_t actMemorySize_;
-		uint32_t actArraySize_;
+	DataMemArraySlot*
+	DataMemArraySlot::last(void)
+	{
+		// FIXME: todo
+		return nullptr;
+	}
 
-		uint32_t posFirstFreeSlot_;
-		uint32_t posLastFreeSlot_;
-	};
+	DataMemArraySlot*
+	DataMemArraySlot::next(void)
+	{
+		// FIXME: todo
+		return nullptr;
+	}
+
+	uint32_t
+	DataMemArraySlot::dataSize(void)
+	{
+		// FIXME: todo
+		return 0;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -169,104 +181,18 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::arrayResize(uint32_t arraySize)
 	{
-		if (dataMemArrayHeader_ == nullptr) {
-
-			//
-			//check minimal used memory size
-			//
-			uint32_t startMemorySize = startMemorySize_;
-			uint32_t minMemoryBufferSize = calcMinMemoryBufferSize(arraySize);
-			if (maxMemorySize_ != 0 && minMemoryBufferSize > maxMemorySize_) {
-				if (debug_) {
-					Log(Debug, "array resize error - max memory exceeded")
-						.parameter("Id", this)
-						.parameter("ArraySize", arraySize)
-						.parameter("MaxMemorySize", maxMemorySize_)
-						.parameter("UsedMemorySize", minMemoryBufferSize);
-				}
-				return false;
-			}
-
-			//
-			// calculate size of new memory buffer
-			//
-			while (minMemoryBufferSize > startMemorySize) {
-				if (expandMemorySize_ != 0) {
-					startMemorySize += expandMemorySize_;
-				}
-				else {
-					startMemorySize += 1000;
-				}
-			}
-
-			//
-			// create new memory buffer
-			//
-			if (!createMemoryBuffer(startMemorySize)) {
-				return false;
-			}
-
-			//
-			// resize array size
-			//
-			if (!resizeMemArray(arraySize)) {
-				return false;
-			}
-		}
-
-		// FIXME: todo
-
 		return true;
 	}
 
 	bool
 	DataMemArray::set(uint32_t idx, const char* buf, uint32_t bufLen)
 	{
-		if (dataMemArrayHeader_ == nullptr) {
-			if (debug_) {
-				Log(Debug, "set error - no memory available")
-					.parameter("Id", this);
-			}
-			return false;
-		}
-
-		//
-		// check index
-		//
-		if (idx >= dataMemArrayHeader_->actArraySize_) {
-			if (debug_) {
-				Log(Debug, "set error - index outside array")
-					.parameter("Id", this)
-					.parameter("Idx", idx)
-					.parameter("ActArraySize", dataMemArrayHeader_->actArraySize_);
-			}
-			return false;
-		}
-
-		//
-		// allocate memory
-		//
-		if (!allocateMemory(idx, buf, bufLen)) {
-			if (debug_) {
-				Log(Debug, "set error - allocate memory error")
-					.parameter("Id", this);
-			}
-			return false;
-		}
-
 		return true;
 	}
 
 	bool
 	DataMemArray::get(uint32_t idx, char**buf, uint32_t& bufLen)
 	{
-		if (dataMemArrayHeader_ == nullptr) {
-			return false;
-		}
-
-
-
-
 		// FIXME: todo
 		return true;
 	}
@@ -274,32 +200,6 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::exist(uint32_t idx)
 	{
-		if (dataMemArrayHeader_ == nullptr) {
-			return false;
-		}
-
-		//
-		// get memory buffer
-		//
-		char* memBuf = (char*)dataMemArrayHeader_;
-		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
-
-		//
-		// check index
-		//
-		if (idx >= dataMemArrayHeader_->actArraySize_) {
-			return false;
-		}
-
-		//
-		// read array element
-		//
-		uint32_t offset = (idx+1) * sizeof(uint32_t);
-		uint32_t* arrayElement = (uint32_t*)&memBuf[memSize-offset];
-
-		if (*arrayElement == 0) {
-			return false;
-		}
 		return true;
 	}
 
@@ -322,223 +222,5 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	char*
-	DataMemArray::posToPtr(uint32_t pos)
-	{
-		char* memBuf = (char*)dataMemArrayHeader_;
-		return (memBuf + pos);
-	}
 
-	uint32_t
-	DataMemArray::ptrToPos(char* ptr)
-	{
-		char* memBuf = (char*)dataMemArrayHeader_;
-		return (ptr - memBuf);
-	}
-
-	bool
-	DataMemArray::createMemoryBuffer(uint32_t startMemorySize)
-	{
-		if (debug_) {
-			Log(Debug, "create memory buffer")
-				.parameter("Id", this)
-				.parameter("StartMemorySize", startMemorySize);
-		}
-
-		//
-		// allocate memory
-		//
-		char* mem = new char[startMemorySize];
-		if (mem == nullptr) {
-			if (debug_) {
-				Log(Debug, "create memory buffer error")
-					.parameter("Id", this);
-			}
-			return false;
-		}
-		dataMemArrayHeader_ = (DataMemArrayHeader*)mem;
-
-		//
-		// create header element
-		//
-		dataMemArrayHeader_->eye_[0] = 'H';
-		dataMemArrayHeader_->eye_[1] = 'E';
-		dataMemArrayHeader_->eye_[2] = 'A';
-		dataMemArrayHeader_->eye_[3] = 'D';
-		dataMemArrayHeader_->maxMemorySize_ = maxMemorySize_;
-		dataMemArrayHeader_->expandMemorySize_ = expandMemorySize_;
-
-		dataMemArrayHeader_->actMemorySize_ = startMemorySize;
-		dataMemArrayHeader_->actArraySize_ = 0;
-
-		dataMemArrayHeader_->posFirstFreeSlot_ = sizeof(DataMemArrayHeader);
-		dataMemArrayHeader_->posLastFreeSlot_ = sizeof(DataMemArrayHeader);
-
-		//
-		// create free element
-		//
-		DataMemoryArrayFreeSlot* freeSlot = (DataMemoryArrayFreeSlot*)&mem[sizeof(DataMemArrayHeader)];
-		freeSlot->eye_[0] = 'F';
-		freeSlot->eye_[1] = 'R';
-		freeSlot->eye_[2] = 'E';
-		freeSlot->eye_[3] = 'E';
-		freeSlot->size_ = startMemorySize_ - sizeof(DataMemArrayHeader);
-		freeSlot->posLastFreeSlot_ = sizeof(DataMemArrayHeader);
-		freeSlot->posNextFreeSlot_ = sizeof(DataMemArrayHeader);
-
-		return true;
-	}
-
-	bool
-	DataMemArray::resizeMemArray(uint32_t arraySize)
-	{
-		if (arraySize == dataMemArrayHeader_->actArraySize_) {
-			if (debug_) {
-				Log(Debug, "source and target array size are equal")
-					.parameter("Id", this);
-			}
-			return true;
-		}
-
-		//
-		// get memory buffer
-		//
-		char* memBuf = (char*)dataMemArrayHeader_;
-		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
-
-		//
-		// get last free slot
-		//
-		DataMemoryArrayFreeSlot* lastFreeSlot = (DataMemoryArrayFreeSlot*)&memBuf[dataMemArrayHeader_->posLastFreeSlot_];
-
-		//
-		// init array
-		//
-		if (arraySize > dataMemArrayHeader_->actArraySize_) {
-			uint32_t actSize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
-			uint32_t usedSize = (arraySize - dataMemArrayHeader_->actArraySize_) * sizeof(uint32_t);
-			uint32_t newSize = actSize + usedSize;
-
-			if (debug_) {
-				Log(Debug, "create new array elements")
-					.parameter("Id", this)
-					.parameter("OldArraySize", dataMemArrayHeader_->actArraySize_)
-					.parameter("NewArraySize", arraySize)
-					.parameter("NewMemSize", usedSize);
-			}
-
-			lastFreeSlot->size_ -= usedSize;
-			memset(&memBuf[memSize-newSize], 0x00, usedSize);
-		}
-		else {
-			uint32_t actSize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
-			uint32_t freeSize = (arraySize - dataMemArrayHeader_->actArraySize_) * sizeof(uint32_t);
-			uint32_t newSize = actSize - freeSize;
-
-			if (debug_) {
-				Log(Debug, "create new array elements")
-					.parameter("Id", this)
-					.parameter("OldArraySize", dataMemArrayHeader_->actArraySize_)
-					.parameter("NewArraySize", arraySize)
-					.parameter("FreeMemSize", freeSize);
-			}
-
-			// FIXME: free elements ...
-			lastFreeSlot->size_ += freeSize;
-		}
-		dataMemArrayHeader_->actArraySize_ = arraySize;
-
-		return true;
-	}
-
-	uint32_t
-	DataMemArray::calcMinMemoryBufferSize(uint32_t arraySize)
-	{
-		uint32_t size =
-			sizeof(DataMemArrayHeader) + 		// header
-			sizeof(DataMemoryArrayFreeSlot) +	// free slot
-			arraySize * sizeof(uint32_t) +		// array
-			1;									// minimum free
-		return size;
-	}
-
-	uint32_t
-	DataMemArray::findFreePos(uint32_t bufLen)
-	{
-		uint32_t usedBufLen = bufLen + sizeof(DataMemoryArrayUsedSlot);
-
-		//
-		// get memory buffer
-		//
-		char* memBuf = (char*)dataMemArrayHeader_;
-		uint32_t memSize = dataMemArrayHeader_->actMemorySize_;
-
-		//
-		// get free slot list
-		//
-		DataMemoryArrayFreeSlot* freeSlotList = (DataMemoryArrayFreeSlot*)posToPtr(sizeof(DataMemArrayHeader));
-		DataMemoryArrayFreeSlot* freeSlotElement = freeSlotList;
-
-		do {
-			uint32_t offset = 0;
-			if (freeSlotList == freeSlotElement) {
-				offset = sizeof(DataMemoryArrayFreeSlot);
-			}
-
-			if (freeSlotElement->size_ >= (usedBufLen+offset)) {
-				return ptrToPos((char*)freeSlotElement);
-			}
-
-			freeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(freeSlotList->posNextFreeSlot_);
-		} while (freeSlotList != freeSlotElement);
-
-		return 0;
-	}
-
-	bool
-	DataMemArray::allocateMemory(uint32_t idx, const char* buf, uint32_t bufLen)
-	{
-		//
-		// find free buffer
-		//
-		uint32_t pos = findFreePos(bufLen);
-		if (debug_) {
-			Log(Debug, "find free pos")
-				.parameter("Id", this)
-				.parameter("Pos", pos);
-		}
-		if (pos == 0) {
-			return false;
-		}
-
-		//
-		// get free slot elements
-		//
-		DataMemoryArrayFreeSlot* actFreeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(pos);
-		DataMemoryArrayFreeSlot* lastFreeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(actFreeSlotElement->posLastFreeSlot_);
-		DataMemoryArrayFreeSlot* nextFreeSlotElement = (DataMemoryArrayFreeSlot*)posToPtr(actFreeSlotElement->posNextFreeSlot_);
-		uint32_t slotSize = actFreeSlotElement->size_;
-		uint32_t rest = slotSize - bufLen;
-
-		if (rest > sizeof(DataMemoryArrayFreeSlot)) {
-			// reduce free slot element
-			DataMemoryArrayFreeSlot freeSlotElement;
-		}
-		else {
-			// remove free slot element
-			// FIXME: todo
-		}
-
-		//
-		// create used element
-		//
-		// FIXME: todo
-
-		//
-		// set position to array index
-		//
-		// FIXME: todo
-
-		return true;
-	}
 }
