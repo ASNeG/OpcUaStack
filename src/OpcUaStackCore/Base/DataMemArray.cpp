@@ -289,6 +289,22 @@ namespace OpcUaStackCore
 	void
 	DataMemArray::logArray(void)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return;
+		}
+
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		for (uint32_t idx = 0; idx < dataMemArrayHeader_->actArraySize_; idx++) {
+			uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+			if (*pos != 0) {
+				DataMemArraySlot* slot = pos2Slot(pos[-idx]);
+
+				Log(Debug, "Array")
+					.parameter("Idx", idx)
+					.parameter("Pos", pos[-idx])
+					.parameter("Len", slot->dataSize_);
+			}
+		}
 	}
 
 	bool
@@ -313,13 +329,13 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DataMemArraySlot*
-	DataMemArray::firstSlot(void)
+	DataMemArray::pos2Slot(uint32_t pos)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
 			return nullptr;
 		}
 
-		return (DataMemArraySlot*)((char*)dataMemArrayHeader_ + sizeof(DataMemArrayHeader));
+		return (DataMemArraySlot*)((char*)dataMemArrayHeader_ + pos);
 	}
 
 	uint32_t
@@ -327,6 +343,16 @@ namespace OpcUaStackCore
 	{
 		if (dataMemArrayHeader_ == nullptr) return 0;
 		return (ptr - (char*)dataMemArrayHeader_);
+	}
+
+	DataMemArraySlot*
+	DataMemArray::firstSlot(void)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return nullptr;
+		}
+
+		return (DataMemArraySlot*)((char*)dataMemArrayHeader_ + sizeof(DataMemArrayHeader));
 	}
 
 	bool

@@ -95,8 +95,10 @@ namespace OpcUaStackCore
 		bool getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
-		DataMemArraySlot* firstSlot(void);
+		DataMemArraySlot* pos2Slot(uint32_t pos);
 		uint32_t ptrToPos(char* ptr);
+		DataMemArraySlot* firstSlot(void);
+
 		bool createNewMemory(uint32_t arraySize);
 		void createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize = 0);
 
