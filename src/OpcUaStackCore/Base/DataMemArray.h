@@ -49,14 +49,21 @@ namespace OpcUaStackCore
 		DataMemArraySlot(void);
 		~DataMemArraySlot(void);
 
+		bool isStartSlot(void);
+		bool isEndSlot(void);
+		bool isFreeSlot(void);
+		bool isUsedSlot(void);
 		DataMemArraySlot* last(void);
 		DataMemArraySlot* next(void);
 		uint32_t dataSize(void);
+		uint32_t paddingSize(void);
+		uint32_t memSize(void);
 
 		char eye_[4]; 		// SLOT
 
 		char type_; 		// U = Used, F=Free, S = Start, E = End
-		uint32_t size_;		// size exclusive slot header and slot tail
+		uint32_t dataSize_;
+		uint32_t paddingSize_;
 	};
 
 
@@ -79,13 +86,19 @@ namespace OpcUaStackCore
 		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
 		bool exist(uint32_t idx);
 
+		void log(void);
+		void logHeader(void);
+		void logSlot(void);
+		void logArray(void);
+
 		bool setMemoryBuf(char* memBuf, uint32_t memLen);
 		bool getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
+		DataMemArraySlot* firstSlot(void);
 		uint32_t ptrToPos(char* ptr);
 		bool createNewMemory(uint32_t arraySize);
-		void createNewSlot(char* mem, char type, uint32_t size);
+		void createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize = 0);
 
 		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;

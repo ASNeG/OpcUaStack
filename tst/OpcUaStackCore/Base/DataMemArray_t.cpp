@@ -33,6 +33,9 @@ BOOST_AUTO_TEST_CASE(DataMemArray_resize)
 	BOOST_REQUIRE(dataMemArray[4].size() == 100);
 	BOOST_REQUIRE(dataMemArray[5].resize(100000) == true);
 	BOOST_REQUIRE(dataMemArray[5].size() == 100000);
+
+	dataMemArray[5].log();
+
 	BOOST_REQUIRE(dataMemArray[6].resize(1000000) == false);
 	BOOST_REQUIRE(dataMemArray[6].size() == 0);
 }

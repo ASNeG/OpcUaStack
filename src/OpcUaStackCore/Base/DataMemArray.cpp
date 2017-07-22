@@ -54,25 +54,63 @@ namespace OpcUaStackCore
 	{
 	}
 
-	DataMemArraySlot*
-	DataMemArraySlot::last(void)
+	bool
+	DataMemArraySlot::isStartSlot(void)
 	{
-		// FIXME: todo
-		return nullptr;
+		return type_ == 'S';
+	}
+
+	bool
+	DataMemArraySlot::isEndSlot(void)
+	{
+		return type_ == 'E';
+	}
+
+	bool
+	DataMemArraySlot::isFreeSlot(void)
+	{
+		return type_ == 'F';
+	}
+
+	bool
+	DataMemArraySlot::isUsedSlot(void)
+	{
+		return type_ == 'U';
 	}
 
 	DataMemArraySlot*
 	DataMemArraySlot::next(void)
 	{
-		// FIXME: todo
-		return nullptr;
+		if (type_ == 'E') return nullptr;
+		DataMemArraySlot* slot = (DataMemArraySlot*)((char*)this + sizeof(DataMemArraySlot) + memSize() + sizeof(uint32_t));
+		return slot;
+	}
+
+	DataMemArraySlot*
+	DataMemArraySlot::last(void)
+	{
+		if (type_ == 'S') return nullptr;
+		uint32_t *memSize = (uint32_t*)((char*)this - sizeof(uint32_t));
+		DataMemArraySlot* slot = (DataMemArraySlot*)((char*)this - sizeof(uint32_t) - *memSize - sizeof(DataMemArraySlot));
+		return slot;
 	}
 
 	uint32_t
 	DataMemArraySlot::dataSize(void)
 	{
-		// FIXME: todo
-		return 0;
+		return dataSize_;
+	}
+
+	uint32_t
+	DataMemArraySlot::paddingSize(void)
+	{
+		return paddingSize_;
+	}
+
+	uint32_t
+	DataMemArraySlot::memSize(void)
+	{
+		return dataSize_ + paddingSize_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -212,6 +250,47 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	void
+	DataMemArray::log(void)
+	{
+		logHeader();
+		logSlot();
+		logArray();
+	}
+
+	void
+	DataMemArray::logHeader(void)
+	{
+		Log(Debug, "Header")
+		    .parameter("MaxMemorySize", dataMemArrayHeader_->maxMemorySize_)
+			.parameter("ExpandMemorySize", dataMemArrayHeader_->expandMemorySize_)
+			.parameter("ActMemorySize", dataMemArrayHeader_->actMemorySize_)
+			.parameter("ActArraySize", dataMemArrayHeader_->actArraySize_);
+	}
+
+	void
+	DataMemArray::logSlot(void)
+	{
+		DataMemArraySlot* slot = firstSlot();
+		if (slot == nullptr) {
+			return;
+		}
+
+		do {
+			Log(Debug, "Slot")
+				.parameter("Type", slot->type_)
+				.parameter("DataSize", slot->dataSize())
+				.parameter("PaddingSize", slot->paddingSize())
+				.parameter("MemSize", slot->memSize());
+			slot = slot->next();
+		} while (slot != nullptr);
+	}
+
+	void
+	DataMemArray::logArray(void)
+	{
+	}
+
 	bool
 	DataMemArray::setMemoryBuf(char* memBuf, uint32_t memLen)
 	{
@@ -233,6 +312,16 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	DataMemArraySlot*
+	DataMemArray::firstSlot(void)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return nullptr;
+		}
+
+		return (DataMemArraySlot*)((char*)dataMemArrayHeader_ + sizeof(DataMemArrayHeader));
+	}
+
 	uint32_t
 	DataMemArray::ptrToPos(char* ptr)
 	{
@@ -316,7 +405,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	DataMemArray::createNewSlot(char* mem, char type, uint32_t size)
+	DataMemArray::createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize)
 	{
 		// create header
 		DataMemArraySlot* dataMemArraySlot;
@@ -326,10 +415,11 @@ namespace OpcUaStackCore
 		dataMemArraySlot->eye_[2] = 'O';
 		dataMemArraySlot->eye_[3] = 'T';
 		dataMemArraySlot->type_ = type;
-		dataMemArraySlot->size_ = size;
+		dataMemArraySlot->dataSize_ = size;
+		dataMemArraySlot->paddingSize_ = paddingSize;
 
-		uint32_t* sizeTag = (uint32_t*)(mem + sizeof(DataMemArraySlot) + sizeof(uint32_t));
-		*sizeTag = size;
+		uint32_t* sizeTag = (uint32_t*)(mem + sizeof(DataMemArraySlot) + dataMemArraySlot->memSize());
+		*sizeTag = dataMemArraySlot->memSize();
 	}
 
 }
