@@ -270,6 +270,14 @@ namespace OpcUaStackCore
 		//
 		// allocate memory and create management structures
 		//
+		if (debug_) {
+			Log(Debug, "create new memory")
+				.parameter("Id", this)
+				.parameter("ArraySize", arraySize)
+				.parameter("MemorySize", actMemorySize)
+				.parameter("DataSize", dataSize);
+		}
+
 		char* mem = new char[actMemorySize];
 		memset(mem, 0x0, actMemorySize);
 

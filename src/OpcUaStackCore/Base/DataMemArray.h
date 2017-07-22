@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_DataMemArray_h__
 
 #include <stdint.h>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -43,6 +44,8 @@ namespace OpcUaStackCore
 	class DataMemArraySlot
 	{
 	  public:
+		typedef std::map<uint32_t, DataMemArraySlot> Map;
+
 		DataMemArraySlot(void);
 		~DataMemArraySlot(void);
 
