@@ -91,6 +91,7 @@ namespace OpcUaStackCore
 		void logHeader(void);
 		void logSlot(void);
 		void logArray(void);
+		void logFreeSlots(void);
 
 		bool setMemoryBuf(char* memBuf, uint32_t memLen);
 		bool getMemoryBuf(char** memBuf, uint32_t* memLen);

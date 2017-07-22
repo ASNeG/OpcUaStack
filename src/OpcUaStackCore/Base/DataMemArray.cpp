@@ -345,6 +345,7 @@ namespace OpcUaStackCore
 		do {
 			Log(Debug, "Slot")
 				.parameter("Type", slot->type_)
+				.parameter("Pos", ptrToPos((char*)slot))
 				.parameter("DataSize", slot->dataSize())
 				.parameter("PaddingSize", slot->paddingSize())
 				.parameter("MemSize", slot->memSize());
@@ -363,13 +364,26 @@ namespace OpcUaStackCore
 		for (uint32_t idx = 0; idx < dataMemArrayHeader_->actArraySize_; idx++) {
 			uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
 			if (*pos != 0) {
-				DataMemArraySlot* slot = posToSlot(pos[-idx]);
+				DataMemArraySlot* slot = posToSlot(*pos);
 
 				Log(Debug, "Array")
 					.parameter("Idx", idx)
-					.parameter("Pos", pos[-idx])
+					.parameter("Pos", *pos)
 					.parameter("Len", slot->dataSize_);
 			}
+		}
+	}
+
+	void
+	DataMemArray::logFreeSlots(void)
+	{
+		DataMemArraySlot::Map::iterator it;
+		for (it = freeSlotMap_.begin(); it != freeSlotMap_.end(); it++) {
+			DataMemArraySlot* slot = it->second;
+
+			Log(Debug, "FreeSlots")
+				.parameter("Pos", it->first)
+				.parameter("Len", slot->dataSize());
 		}
 	}
 

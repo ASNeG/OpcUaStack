@@ -49,6 +49,9 @@ BOOST_AUTO_TEST_CASE(DataMemArray_set)
 
 	BOOST_REQUIRE(dataMemArray.set(10, "0123456789", 10) == false);
 	BOOST_REQUIRE(dataMemArray.set(0, "0123456789", 10) == true);
+	BOOST_REQUIRE(dataMemArray.set(1, "01234567890123456789", 20) == true);
+	BOOST_REQUIRE(dataMemArray.set(3, "01234567890123456789", 20) == true);
+	dataMemArray.logFreeSlots();
 	dataMemArray.log();
 }
 
