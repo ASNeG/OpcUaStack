@@ -54,6 +54,13 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	DataMemArraySlot::set(const char* buf, uint32_t bufLen)
+	{
+		char* mem = (char*)this + sizeof(DataMemArraySlot);
+		memcpy(mem, buf, bufLen);
+	}
+
 	bool
 	DataMemArraySlot::isStartSlot(void)
 	{
@@ -234,6 +241,52 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::set(uint32_t idx, const char* buf, uint32_t bufLen)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		//
+		// find free memory slot
+		//
+		DataMemArraySlot* slot = nullptr;
+		DataMemArraySlot::Map::iterator it;
+		for (it = freeSlotMap_.begin(); it != freeSlotMap_.end(); it++) {
+			DataMemArraySlot* tmpSlot = it->second;
+			if (tmpSlot->dataSize() >= bufLen) {
+				slot = tmpSlot;
+				break;
+			}
+		}
+		if (slot == nullptr) {
+			return false;
+		}
+
+		//
+		// check available memory in slot
+		//
+		freeSlotMap_.erase(it);
+		if ((bufLen + sizeof(DataMemArraySlot) + sizeof(uint32_t)) >= slot->dataSize()) {
+			// use the entire slot
+			uint32_t padding = slot->dataSize() - bufLen;
+
+			slot = createNewSlot((char*)slot, 'U', bufLen, padding);
+		}
+		else {
+			// split slot
+			DataMemArraySlot* newSlot;
+			uint32_t newSlotSize = slot->dataSize() - bufLen - sizeof(DataMemArraySlot) - sizeof(uint32_t);
+
+			slot = createNewSlot((char*)slot, 'U', bufLen, 0);
+			newSlot = createNewSlot((char*)slot + bufLen + sizeof(DataMemArraySlot) + sizeof(uint32_t), 'F', 0);
+			freeSlotMap_.insert(std::make_pair(ptrToPos((char*)newSlot), newSlot));
+		}
+
+		//
+		// set memory and array index
+		//
+		slot->set(buf, bufLen);
+		setIndex(idx, ptrToPos((char*)slot));
+
 		return true;
 	}
 
@@ -247,6 +300,16 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::exist(uint32_t idx)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+		if (*pos == 0) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -297,7 +360,7 @@ namespace OpcUaStackCore
 		for (uint32_t idx = 0; idx < dataMemArrayHeader_->actArraySize_; idx++) {
 			uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
 			if (*pos != 0) {
-				DataMemArraySlot* slot = pos2Slot(pos[-idx]);
+				DataMemArraySlot* slot = posToSlot(pos[-idx]);
 
 				Log(Debug, "Array")
 					.parameter("Idx", idx)
@@ -329,7 +392,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	DataMemArraySlot*
-	DataMemArray::pos2Slot(uint32_t pos)
+	DataMemArray::posToSlot(uint32_t pos)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
 			return nullptr;
@@ -353,6 +416,30 @@ namespace OpcUaStackCore
 		}
 
 		return (DataMemArraySlot*)((char*)dataMemArrayHeader_ + sizeof(DataMemArrayHeader));
+	}
+
+	void
+	DataMemArray::setIndex(uint32_t idx, uint32_t value)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return;
+		}
+
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+		*pos = value;
+	}
+
+	void
+	DataMemArray::getIndex(uint32_t idx, uint32_t& value)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return;
+		}
+
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+		value = *pos;
 	}
 
 	bool
@@ -430,7 +517,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	void
+	DataMemArraySlot*
 	DataMemArray::createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize)
 	{
 		// create header
@@ -446,6 +533,8 @@ namespace OpcUaStackCore
 
 		uint32_t* sizeTag = (uint32_t*)(mem + sizeof(DataMemArraySlot) + dataMemArraySlot->memSize());
 		*sizeTag = dataMemArraySlot->memSize();
+
+		return dataMemArraySlot;
 	}
 
 }

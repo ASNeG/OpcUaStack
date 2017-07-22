@@ -49,6 +49,7 @@ namespace OpcUaStackCore
 		DataMemArraySlot(void);
 		~DataMemArraySlot(void);
 
+		void set(const char* buf, uint32_t bufLen);
 		bool isStartSlot(void);
 		bool isEndSlot(void);
 		bool isFreeSlot(void);
@@ -95,12 +96,14 @@ namespace OpcUaStackCore
 		bool getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
-		DataMemArraySlot* pos2Slot(uint32_t pos);
+		DataMemArraySlot* posToSlot(uint32_t pos);
 		uint32_t ptrToPos(char* ptr);
 		DataMemArraySlot* firstSlot(void);
+		void setIndex(uint32_t idx, uint32_t value);
+		void getIndex(uint32_t idx, uint32_t& value);
 
 		bool createNewMemory(uint32_t arraySize);
-		void createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize = 0);
+		DataMemArraySlot* createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize = 0);
 
 		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;
