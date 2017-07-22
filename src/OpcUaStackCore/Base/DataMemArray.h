@@ -52,8 +52,8 @@ namespace OpcUaStackCore
 
 		char eye_[4]; 		// SLOT
 
-		char state_; 		// U = Used, F=Free, B = BEGIN, E = END
-		uint32_t size_;		// size inclusive slot header
+		char type_; 		// U = Used, F=Free, S = Start, E = End
+		uint32_t size_;		// size exclusive slot header and slot tail
 	};
 
 
@@ -70,16 +70,19 @@ namespace OpcUaStackCore
 		void expandMemorySize(uint32_t expandMemorySize);
 		uint32_t expandMemorySize(void);
 
-		uint32_t arraySize(void);
-		bool arrayResize(uint32_t arraySize);
+		uint32_t size(void);
+		bool resize(uint32_t arraySize);
 		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
 		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
 		bool exist(uint32_t idx);
 
-		void setMemoryBuf(char* memBuf, uint32_t memLen);
-		void getMemoryBuf(char** memBuf, uint32_t* memLen);
+		bool setMemoryBuf(char* memBuf, uint32_t memLen);
+		bool getMemoryBuf(char** memBuf, uint32_t* memLen);
 
 	  private:
+		bool createNewMemory(uint32_t arraySize);
+		void createNewSlot(char* mem, char type, uint32_t size);
+
 
 		bool debug_;
 		DataMemArrayHeader* dataMemArrayHeader_;

@@ -170,7 +170,7 @@ namespace OpcUaStackCore
 	}
 
 	uint32_t
-	DataMemArray::arraySize(void)
+	DataMemArray::size(void)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
 			return 0;
@@ -179,8 +179,17 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataMemArray::arrayResize(uint32_t arraySize)
+	DataMemArray::resize(uint32_t arraySize)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+
+			if (!createNewMemory(arraySize)) return false;
+
+			return true;
+		}
+
+		// FIXME: todo
+
 		return true;
 	}
 
@@ -203,16 +212,18 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	void
+	bool
 	DataMemArray::setMemoryBuf(char* memBuf, uint32_t memLen)
 	{
 		// FIXME: todo
+		return true;
 	}
 
-	void
+	bool
 	DataMemArray::getMemoryBuf(char** memBuf, uint32_t* memLen)
 	{
 		// FIXME: todo
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
@@ -222,5 +233,87 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	bool
+	DataMemArray::createNewMemory(uint32_t arraySize)
+	{
+		//
+		// calculate used buffer size
+		//
+		// HEAD  B-Slot  F-Slot  E-Slot  Array
+		//
+		uint32_t usedMemorySize = sizeof(DataMemArrayHeader) +
+			3*(sizeof(DataMemArraySlot) + sizeof(uint32_t)) +
+			arraySize * sizeof(char*) +
+			minMemorySize_;
+
+		//
+		// check max memory size
+		//
+		if (maxMemorySize_ != 0 && usedMemorySize > maxMemorySize_) {
+			Log(Error, "allocate memory error - used memory size is bigger then max memory size")
+				.parameter("Id", this)
+				.parameter("UsedMemorySize", usedMemorySize)
+				.parameter("MaxMemorySize", maxMemorySize_);
+			return false;
+		}
+
+		//
+		// calculate actual memory size
+		//
+		uint32_t actMemorySize = startMemorySize_;
+		while (usedMemorySize > actMemorySize) actMemorySize += expandMemorySize_;
+		uint32_t dataSize = actMemorySize -
+			sizeof(DataMemArrayHeader) -
+			(3*(sizeof(DataMemArrayHeader) + sizeof(uint32_t))) -
+			(arraySize * sizeof(uint32_t));
+
+		//
+		// allocate memory and create management structures
+		//
+		char* mem = new char[actMemorySize];
+		memset(mem, 0x0, actMemorySize);
+
+		// create header
+		dataMemArrayHeader_ = (DataMemArrayHeader*)mem;
+		dataMemArrayHeader_->eye_[0] = 'H';
+		dataMemArrayHeader_->eye_[1] = 'E';
+		dataMemArrayHeader_->eye_[2] = 'A';
+		dataMemArrayHeader_->eye_[3] = 'D';
+		dataMemArrayHeader_->maxMemorySize_ = maxMemorySize_;
+		dataMemArrayHeader_->expandMemorySize_ = expandMemorySize_;
+		dataMemArrayHeader_->actMemorySize_ = actMemorySize;
+		dataMemArrayHeader_->actArraySize_ = arraySize;
+
+		// create start slot
+		mem += sizeof(DataMemArrayHeader);
+		createNewSlot(mem, 'S', 0);
+
+		// create free slot
+		mem += sizeof(DataMemArraySlot) + sizeof(uint32_t);
+		createNewSlot(mem, 'F', dataSize);
+
+		// create end slot
+		mem += sizeof(DataMemArraySlot) + sizeof(uint32_t) + dataSize;
+		createNewSlot(mem, 'E', 0);
+
+		return true;
+	}
+
+	void
+	DataMemArray::createNewSlot(char* mem, char type, uint32_t size)
+	{
+		// create header
+		DataMemArraySlot* dataMemArraySlot;
+		dataMemArraySlot = (DataMemArraySlot*)mem;
+		dataMemArraySlot->eye_[0] = 'S';
+		dataMemArraySlot->eye_[1] = 'L';
+		dataMemArraySlot->eye_[2] = 'O';
+		dataMemArraySlot->eye_[3] = 'T';
+		dataMemArraySlot->type_ = type;
+		dataMemArraySlot->size_ = size;
+
+		uint32_t* sizeTag = (uint32_t*)(mem + sizeof(DataMemArraySlot) + sizeof(uint32_t));
+		*sizeTag = size;
+	}
 
 }
