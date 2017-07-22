@@ -48,6 +48,7 @@ namespace OpcUaStackServer
 		uint32_t noticicationNumber(void);
 		bool notificationAvailable(void);
 
+
 		OpcUaStatusCode receive(ServiceTransactionCreateMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionDeleteMonitoredItems::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionModifyMonitoredItems::SPtr trx);

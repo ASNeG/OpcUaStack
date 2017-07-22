@@ -122,6 +122,7 @@ namespace OpcUaStackServer
 				if (it != subscriptionMap_.end()) {
 					// stop subscription timer
 					slotTimer_->stop(it->second->slotTimerElement());
+					it->second->slotTimerElement()->callback().reset();
 				}
 
 				subscriptionMap_.erase((uint32_t)id);
@@ -191,6 +192,8 @@ namespace OpcUaStackServer
 					.parameter("Subscription", subscription->subscriptionId());
 
 				slotTimer_->stop(subscription->slotTimerElement());
+				subscription->slotTimerElement()->callback().reset();
+
 				subscriptionMap_.erase(subscription->subscriptionId());
 				break;
 			}

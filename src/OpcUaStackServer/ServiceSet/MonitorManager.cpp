@@ -36,7 +36,14 @@ namespace OpcUaStackServer
 	{
 		MonitorItemMap::iterator it;
 		for (it=monitorItemMap_.begin(); it!=monitorItemMap_.end(); it++) {
-			slotTimer_->stop(it->second->slotTimerElement());
+		    MonitorItem::SPtr monitorItem = it->second;
+
+		    if (monitorItem->baseNodeClass() != nullptr) {
+		        forwardStopMonitoredItem(monitorItem->baseNodeClass(), it->first);
+		    }
+
+			slotTimer_->stop(monitorItem->slotTimerElement());
+			monitorItem->slotTimerElement().reset();
 		}
 
 		monitorItemMap_.clear();
@@ -129,6 +136,7 @@ namespace OpcUaStackServer
 			// create new monitor item
 			MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
 			OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
+
 			if (statusCode != Success) {
 				monitoredItemCreateResult->statusCode(statusCode);
 				continue;

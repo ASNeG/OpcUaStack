@@ -49,6 +49,7 @@ namespace OpcUaStackServer
 	, monitorManager_()
 	, eventManager_()
 	{
+	    monitorManager_.subscriptionId(subscriptionId_);
 	}
 
 	Subscription::~Subscription(void)
@@ -114,6 +115,7 @@ namespace OpcUaStackServer
 	{
 		if (trx.get() == NULL) {
 			actLifetimeCount_--;
+
 			if (actLifetimeCount_ == 0) return SubscriptionTimeout;
 
 			if (actMaxKeepAliveCount_ == 0) return NothingTodo;
