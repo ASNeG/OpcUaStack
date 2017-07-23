@@ -51,6 +51,7 @@ namespace OpcUaStackCore
 
 		void set(const char* buf, uint32_t bufLen);
 		bool get(char* buf, uint32_t& bufLen);
+		bool get(char** buf, uint32_t& bufLen);
 		bool isStartSlot(void);
 		bool isEndSlot(void);
 		bool isFreeSlot(void);
@@ -86,7 +87,10 @@ namespace OpcUaStackCore
 		bool resize(uint32_t arraySize);
 		bool unset(uint32_t idx);
 		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
+		bool set(uint32_t idx, const std::string& value);
 		bool get(uint32_t idx, char* buf, uint32_t& bufLen);
+		bool get(uint32_t idx, char** buf, uint32_t& bufLen);
+		bool get(uint32_t idx, std::string& value);
 		bool exist(uint32_t idx);
 		void clear(void);
 

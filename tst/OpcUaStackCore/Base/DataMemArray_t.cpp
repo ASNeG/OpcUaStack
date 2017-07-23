@@ -77,6 +77,27 @@ BOOST_AUTO_TEST_CASE(DataMemArray_get)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_set_get_string)
+{
+	DataMemArray dataMemArray;
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+	BOOST_REQUIRE(dataMemArray.size() == 10);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		std::string str = "0123456789";
+		BOOST_REQUIRE(dataMemArray.set(idx, str) == true);
+	}
+
+	dataMemArray.log();
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		std::string str;
+		BOOST_REQUIRE(dataMemArray.get(idx, str) == true);
+		BOOST_REQUIRE(str == "0123456789");
+	}
+}
+
 BOOST_AUTO_TEST_CASE(DataMemArray_exist)
 {
 	DataMemArray dataMemArray;
