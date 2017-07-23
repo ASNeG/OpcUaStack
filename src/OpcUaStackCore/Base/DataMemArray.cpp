@@ -436,7 +436,30 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::setMemoryBuf(char* memBuf, uint32_t memLen)
 	{
-		// FIXME: todo
+		if (memBuf == nullptr) {
+			return false;
+		}
+		if (dataMemArrayHeader_ != nullptr) {
+			clear();
+		}
+
+		char* tmpMem = new char [memLen];
+		memcpy(tmpMem, memBuf, memLen);
+
+		dataMemArrayHeader_ = (DataMemArrayHeader*)tmpMem;
+
+		//
+		// create free slot list
+		//
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		for (uint32_t idx = 0; idx < dataMemArrayHeader_->actArraySize_; idx++) {
+			uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+			if (*pos != 0) {
+				DataMemArraySlot* slot = posToSlot(*pos);
+				freeSlotMap_.insert(std::make_pair(*pos, slot));
+			}
+		}
+
 		return true;
 	}
 
