@@ -141,4 +141,62 @@ BOOST_AUTO_TEST_CASE(DataMemArray_setMemBuf)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_unset)
+{
+	char* memBuf;
+	uint32_t memLen;
+	DataMemArray dataMemArray;
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+	BOOST_REQUIRE(dataMemArray.size() == 10);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		char mem[10];
+		memset(mem, idx, 10);
+		BOOST_REQUIRE(dataMemArray.set(idx, mem, 10) == true);
+	}
+
+	dataMemArray.logSlot();
+
+	// remove last element
+	BOOST_REQUIRE(dataMemArray.unset(9) == true);
+	dataMemArray.logSlot();
+
+	// remove first element
+	BOOST_REQUIRE(dataMemArray.unset(0) == true);
+	dataMemArray.logSlot();
+
+	// remove element before
+	BOOST_REQUIRE(dataMemArray.unset(8) == true);
+	dataMemArray.logSlot();
+
+	// remove element after
+	BOOST_REQUIRE(dataMemArray.unset(1) == true);
+	dataMemArray.logSlot();
+
+	// remove element in the middle
+	BOOST_REQUIRE(dataMemArray.unset(3) == true);
+	BOOST_REQUIRE(dataMemArray.unset(5) == true);
+	dataMemArray.logSlot();
+	BOOST_REQUIRE(dataMemArray.unset(4) == true);
+	dataMemArray.logSlot();
+	dataMemArray.logFreeSlots();
+
+	BOOST_REQUIRE(dataMemArray.exist(0) == false);
+	BOOST_REQUIRE(dataMemArray.exist(1) == false);
+	BOOST_REQUIRE(dataMemArray.exist(2) == true);
+	BOOST_REQUIRE(dataMemArray.exist(3) == false);
+	BOOST_REQUIRE(dataMemArray.exist(4) == false);
+	BOOST_REQUIRE(dataMemArray.exist(5) == false);
+	BOOST_REQUIRE(dataMemArray.exist(6) == true);
+	BOOST_REQUIRE(dataMemArray.exist(7) == true);
+	BOOST_REQUIRE(dataMemArray.exist(8) == false);
+	BOOST_REQUIRE(dataMemArray.exist(9) == false);
+
+	BOOST_REQUIRE(dataMemArray.unset(2) == true);
+	BOOST_REQUIRE(dataMemArray.unset(6) == true);
+	BOOST_REQUIRE(dataMemArray.unset(7) == true);
+	dataMemArray.logSlot();
+}
+
 BOOST_AUTO_TEST_SUITE_END()

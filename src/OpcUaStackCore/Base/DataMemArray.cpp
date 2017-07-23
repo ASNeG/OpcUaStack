@@ -70,6 +70,7 @@ namespace OpcUaStackCore
 		char* mem = (char*)this + sizeof(DataMemArraySlot);
 		memcpy(buf, mem, dataSize_);
 		bufLen = dataSize_;
+		return true;
 	}
 
 	bool
@@ -268,13 +269,14 @@ namespace OpcUaStackCore
 		DataMemArraySlot* lastSlot = slot->last();
 		DataMemArraySlot* nextSlot = slot->next();
 
+
 		//
 		// release slot
 		//
 		uint32_t freeSize = slot->memSize();
 
 		if (nextSlot != nullptr && nextSlot->type_ == 'F') {
-			freeSize += nextSlot->memSize() + sizeof(DataMemArray) + sizeof(uint32_t);
+			freeSize += (nextSlot->memSize() + sizeof(DataMemArraySlot) + sizeof(uint32_t));
 
 			DataMemArraySlot::Map::iterator it;
 			it = freeSlotMap_.find(ptrToPos((char*)nextSlot));
@@ -282,7 +284,7 @@ namespace OpcUaStackCore
 		}
 
 		if (lastSlot != nullptr && lastSlot->type_ == 'F') {
-			freeSize += lastSlot->memSize() + sizeof(DataMemArray) + sizeof(uint32_t);
+			freeSize += (lastSlot->memSize() + sizeof(DataMemArraySlot) + sizeof(uint32_t));
 
 			DataMemArraySlot::Map::iterator it;
 			it = freeSlotMap_.find(ptrToPos((char*)lastSlot));
@@ -364,7 +366,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataMemArray::get(uint32_t idx, char*buf, uint32_t& bufLen)
+	DataMemArray::get(uint32_t idx, char* buf, uint32_t& bufLen)
 	{
 		if (dataMemArrayHeader_ == nullptr) {
 			return false;
@@ -375,7 +377,9 @@ namespace OpcUaStackCore
 
 		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
 		uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
-		if (*pos == 0) return false;
+		if (*pos == 0) {
+			return false;
+		}
 		DataMemArraySlot* slot = posToSlot(*pos);
 
 		return slot->get(buf, bufLen);
