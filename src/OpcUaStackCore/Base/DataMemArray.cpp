@@ -679,7 +679,7 @@ namespace OpcUaStackCore
 		while (usedMemorySize > actMemorySize) actMemorySize += expandMemorySize_;
 		uint32_t dataSize = actMemorySize -
 			sizeof(DataMemArrayHeader) -
-			(3*(sizeof(DataMemArrayHeader) + sizeof(uint32_t))) -
+			(3*(sizeof(DataMemArraySlot) + sizeof(uint32_t))) -
 			(arraySize * sizeof(uint32_t));
 
 		//

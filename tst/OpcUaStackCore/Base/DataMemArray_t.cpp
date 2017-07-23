@@ -220,4 +220,18 @@ BOOST_AUTO_TEST_CASE(DataMemArray_unset)
 	dataMemArray.logSlot();
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_padding)
+{
+	DataMemArray dataMemArray;
+
+	dataMemArray.startMemorySize(1000);
+	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+	dataMemArray.logHeader();
+	dataMemArray.logSlot();
+
+	char buf[1840];
+}
+
 BOOST_AUTO_TEST_SUITE_END()
