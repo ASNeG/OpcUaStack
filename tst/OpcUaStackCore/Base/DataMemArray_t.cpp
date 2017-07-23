@@ -231,7 +231,22 @@ BOOST_AUTO_TEST_CASE(DataMemArray_padding)
 	dataMemArray.logHeader();
 	dataMemArray.logSlot();
 
-	char buf[1840];
+	char buf[500];
+	BOOST_REQUIRE(dataMemArray.set(0, buf, 500) == true);
+	dataMemArray.logSlot();
+
+	BOOST_REQUIRE(dataMemArray.set(1, buf, 350) == true);
+	dataMemArray.logSlot();
+
+	BOOST_REQUIRE(dataMemArray.unset(0) == true);
+	dataMemArray.logSlot();
+
+	BOOST_REQUIRE(dataMemArray.set(2, buf, 485) == true);
+	dataMemArray.logSlot();
+
+	BOOST_REQUIRE(dataMemArray.unset(1) == true);
+	BOOST_REQUIRE(dataMemArray.unset(2) == true);
+	dataMemArray.logSlot();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

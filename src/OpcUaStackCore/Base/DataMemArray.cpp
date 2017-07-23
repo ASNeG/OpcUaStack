@@ -147,7 +147,7 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	uint32_t DataMemArray::minMemorySize_ = 1000;
+	uint32_t DataMemArray::minMemorySize_ = 100;
 
 	DataMemArray::DataMemArray(void)
 	: debug_(true)
