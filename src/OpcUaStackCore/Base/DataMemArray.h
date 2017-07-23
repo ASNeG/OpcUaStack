@@ -50,6 +50,7 @@ namespace OpcUaStackCore
 		~DataMemArraySlot(void);
 
 		void set(const char* buf, uint32_t bufLen);
+		bool get(char* buf, uint32_t& bufLen);
 		bool isStartSlot(void);
 		bool isEndSlot(void);
 		bool isFreeSlot(void);
@@ -84,7 +85,7 @@ namespace OpcUaStackCore
 		uint32_t size(void);
 		bool resize(uint32_t arraySize);
 		bool set(uint32_t idx, const char* buf, uint32_t bufLen);
-		bool get(uint32_t idx, char**buf, uint32_t& bufLen);
+		bool get(uint32_t idx, char* buf, uint32_t& bufLen);
 		bool exist(uint32_t idx);
 
 		void log(void);

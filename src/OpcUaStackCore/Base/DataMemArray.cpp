@@ -62,6 +62,17 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	DataMemArraySlot::get(char* buf, uint32_t& bufLen)
+	{
+		if (dataSize_ > bufLen) {
+			return false;
+		}
+		char* mem = (char*)this + sizeof(DataMemArraySlot);
+		memcpy(buf, mem, dataSize_);
+		bufLen = dataSize_;
+	}
+
+	bool
 	DataMemArraySlot::isStartSlot(void)
 	{
 		return type_ == 'S';
@@ -294,10 +305,21 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	DataMemArray::get(uint32_t idx, char**buf, uint32_t& bufLen)
+	DataMemArray::get(uint32_t idx, char*buf, uint32_t& bufLen)
 	{
-		// FIXME: todo
-		return true;
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+		if (idx >= dataMemArrayHeader_->actArraySize_) {
+			return false;
+		}
+
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+		if (*pos == 0) return false;
+		DataMemArraySlot* slot = posToSlot(*pos);
+
+		return slot->get(buf, bufLen);
 	}
 
 	bool

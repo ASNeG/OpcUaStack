@@ -55,4 +55,46 @@ BOOST_AUTO_TEST_CASE(DataMemArray_set)
 	dataMemArray.log();
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_get)
+{
+	DataMemArray dataMemArray;
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+	BOOST_REQUIRE(dataMemArray.size() == 10);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		char mem[10];
+		memset(mem, idx, 10);
+		BOOST_REQUIRE(dataMemArray.set(idx, mem, 10) == true);
+	}
+
+	dataMemArray.log();
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		char mem[10];
+		uint32_t len = 10;
+		BOOST_REQUIRE(dataMemArray.get(idx, mem, len) == true);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(DataMemArray_exist)
+{
+	DataMemArray dataMemArray;
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+	BOOST_REQUIRE(dataMemArray.size() == 10);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		char mem[100];
+		memset(mem, idx, 100);
+		BOOST_REQUIRE(dataMemArray.set(idx, mem, 100) == true);
+	}
+
+	dataMemArray.log();
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(dataMemArray.exist(idx) == true);
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()
