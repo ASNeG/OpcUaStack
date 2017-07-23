@@ -95,6 +95,7 @@ BOOST_AUTO_TEST_CASE(DataMemArray_exist)
 	for (uint32_t idx=0; idx<10; idx++) {
 		BOOST_REQUIRE(dataMemArray.exist(idx) == true);
 	}
+	BOOST_REQUIRE(dataMemArray.exist(10) == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

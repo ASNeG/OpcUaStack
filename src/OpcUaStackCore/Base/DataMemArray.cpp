@@ -419,7 +419,13 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::getMemoryBuf(char** memBuf, uint32_t* memLen)
 	{
-		// FIXME: todo
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		*memBuf = (char*)dataMemArrayHeader_;
+		*memLen = dataMemArrayHeader_->actMemorySize_;
+
 		return true;
 	}
 
