@@ -247,8 +247,70 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	DataMemArray::unset(uint32_t idx)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+		if (idx >= dataMemArrayHeader_->actArraySize_) {
+			return false;
+		}
+
+		//
+		// get slot
+		//
+		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
+		if (*pos == 0) {
+			return true;
+		}
+		DataMemArraySlot* slot = posToSlot(*pos);
+		DataMemArraySlot* lastSlot = slot->last();
+		DataMemArraySlot* nextSlot = slot->next();
+
+		//
+		// release slot
+		//
+		uint32_t freeSize = slot->memSize();
+
+		if (nextSlot != nullptr && nextSlot->type_ == 'F') {
+			freeSize += nextSlot->memSize() + sizeof(DataMemArray) + sizeof(uint32_t);
+
+			DataMemArraySlot::Map::iterator it;
+			it = freeSlotMap_.find(ptrToPos((char*)nextSlot));
+			freeSlotMap_.erase(it);
+		}
+
+		if (lastSlot != nullptr && lastSlot->type_ == 'F') {
+			freeSize += lastSlot->memSize() + sizeof(DataMemArray) + sizeof(uint32_t);
+
+			DataMemArraySlot::Map::iterator it;
+			it = freeSlotMap_.find(ptrToPos((char*)lastSlot));
+			freeSlotMap_.erase(it);
+
+			slot = lastSlot;
+		}
+
+		slot = createNewSlot((char*)slot, 'F', freeSize);
+		freeSlotMap_.insert(std::make_pair(ptrToPos((char*)slot), slot));
+
+		//
+		// release array element
+		//
+		*pos = 0;
+
+		return true;
+	}
+
+	bool
 	DataMemArray::set(uint32_t idx, const char* buf, uint32_t bufLen)
 	{
+		if (buf == nullptr) {
+			return false;
+		}
+		if (bufLen == 0) {
+			return false;
+		}
 		if (dataMemArrayHeader_ == nullptr) {
 			return false;
 		}
