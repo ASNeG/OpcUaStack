@@ -143,6 +143,7 @@ namespace OpcUaStackCore
 	DataMemArray::DataMemArray(void)
 	: debug_(true)
 	, dataMemArrayHeader_(nullptr)
+	, freeSlotMap_()
 	, startMemorySize_(10000)
 	, maxMemorySize_(1000000)
 	, expandMemorySize_(10000)
@@ -151,11 +152,7 @@ namespace OpcUaStackCore
 
 	DataMemArray::~DataMemArray(void)
 	{
-		if (dataMemArrayHeader_ != nullptr) {
-			char* mem = (char*)dataMemArrayHeader_;
-			delete [] mem;
-			dataMemArrayHeader_ = nullptr;
-		}
+		clear();
 	}
 
 	void
@@ -339,6 +336,21 @@ namespace OpcUaStackCore
 	}
 
 	void
+	DataMemArray::clear(void)
+	{
+		if (dataMemArrayHeader_ != nullptr) {
+			char* mem = (char*)dataMemArrayHeader_;
+			delete [] mem;
+			dataMemArrayHeader_ = nullptr;
+		}
+		freeSlotMap_.clear();
+
+		startMemorySize_ = 10000;
+		maxMemorySize_ = 1000000;
+		expandMemorySize_ = 10000;
+	}
+
+	void
 	DataMemArray::log(void)
 	{
 		logHeader();
@@ -349,6 +361,10 @@ namespace OpcUaStackCore
 	void
 	DataMemArray::logHeader(void)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return;
+		}
+
 		Log(Debug, "Header")
 		    .parameter("MaxMemorySize", dataMemArrayHeader_->maxMemorySize_)
 			.parameter("ExpandMemorySize", dataMemArrayHeader_->expandMemorySize_)
@@ -359,6 +375,10 @@ namespace OpcUaStackCore
 	void
 	DataMemArray::logSlot(void)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return;
+		}
+
 		DataMemArraySlot* slot = firstSlot();
 		if (slot == nullptr) {
 			return;
@@ -399,6 +419,10 @@ namespace OpcUaStackCore
 	void
 	DataMemArray::logFreeSlots(void)
 	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return;
+		}
+
 		DataMemArraySlot::Map::iterator it;
 		for (it = freeSlotMap_.begin(); it != freeSlotMap_.end(); it++) {
 			DataMemArraySlot* slot = it->second;

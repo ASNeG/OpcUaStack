@@ -98,4 +98,21 @@ BOOST_AUTO_TEST_CASE(DataMemArray_exist)
 	BOOST_REQUIRE(dataMemArray.exist(10) == false);
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_clear)
+{
+	DataMemArray dataMemArray;
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+	BOOST_REQUIRE(dataMemArray.size() == 10);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		char mem[100];
+		memset(mem, idx, 100);
+		BOOST_REQUIRE(dataMemArray.set(idx, mem, 100) == true);
+	}
+
+	dataMemArray.clear();
+	dataMemArray.log();
+}
+
 BOOST_AUTO_TEST_SUITE_END()
