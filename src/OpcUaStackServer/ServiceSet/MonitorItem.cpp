@@ -94,6 +94,7 @@ namespace OpcUaStackServer
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
 		// check attribute
+		boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 		attribute_ = baseNodeClass->attribute((AttributeId)monitoredItemCreateRequest->itemToMonitor().attributeId());
 		if (attribute_ == nullptr) {
 			Log(Debug, "attribute not exist")
@@ -147,8 +148,8 @@ namespace OpcUaStackServer
 	MonitorItem::sample(void)
 	{
 		BaseNodeClass::SPtr baseNodeClass = baseNodeClass_.lock();
-		if (baseNodeClass.get() == nullptr) {
 
+		if (baseNodeClass.get() == nullptr) {
 			// base node class no longer exist. Generate final notification if necessary
 			if (dataValue_.statusCode() == BadNodeClassInvalid) return NodeNoLongerExist;
 
@@ -158,6 +159,8 @@ namespace OpcUaStackServer
 			monitorItemListPushBack(monitoredItemNotification);
 			return NodeNoLongerExist;
 		}
+
+		 boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
 		// check wheater an event schould be generated
 		if (!AttributeAccess::trigger(dataValue_, *attribute_)) return Ok; 

@@ -131,6 +131,8 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
+
 			// forward read request
 			forwardRead(baseNodeClass, readRequest, readValueId);
 
@@ -271,6 +273,8 @@ namespace OpcUaStackServer
 					.parameter("Class", baseNodeClass->nodeClass().data());
 				continue;
 			}
+
+			boost::unique_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
 			OpcUaStatusCode statusCode = forwardWrite(baseNodeClass, writeRequest, writeValue);
 			if (statusCode != Success) {

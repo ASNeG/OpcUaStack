@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		mutex_.unlock();
 	}
 
-	boost::mutex&
+	boost::shared_mutex&
 	AttributeBase::mutex(void)
 	{
 		return mutex_;

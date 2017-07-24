@@ -18,7 +18,7 @@
 #ifndef __OpcUaStackServer_AttributeBase_h__
 #define __OpcUaStackServer_AttributeBase_h__
 
-#include <boost/thread/mutex.hpp>
+#include <boost/thread/shared_mutex.hpp>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/Attribute.h"
@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 
 		void lock(void);
 		void unlock(void);
-		boost::mutex& mutex(void);
+		boost::shared_mutex& mutex(void);
 
 		Attribute* attribute(AttributeId attributeId);
 
@@ -287,7 +287,7 @@ namespace OpcUaStackServer
 		boost::optional<OpcUaDouble&> getMinimumSamplingInterval(void);
 
 	  private:
-		boost::mutex mutex_;
+		boost::shared_mutex mutex_;
 	};
 
 }
