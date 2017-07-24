@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	SimpleAttributeOperand::SimpleAttributeOperand(void)
 	: Object()
-	, typeIdSPtr_(constructSPtr<OpcUaNodeId>())
+	, typeId_()
 	, browsePathArraySPtr_(constructSPtr<OpcUaQualifiedNameArray>())
 	, attributeId_()
 	, indexRange_()
@@ -42,15 +42,15 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	SimpleAttributeOperand::typeId(const OpcUaNodeId::SPtr typeId)
+	SimpleAttributeOperand::typeId(const OpcUaNodeId& typeId)
 	{
-		typeIdSPtr_ = typeId;
+		typeId_ = typeId;
 	}
 	
-	OpcUaNodeId::SPtr 
-	SimpleAttributeOperand::typeId(void) const
+	OpcUaNodeId&
+	SimpleAttributeOperand::typeId(void)
 	{
-		return typeIdSPtr_;
+		return typeId_;
 	}
 	
 	void 
@@ -98,7 +98,7 @@ namespace OpcUaStackCore
 	void 
 	SimpleAttributeOperand::opcUaBinaryEncode(std::ostream& os) const
 	{
-		typeIdSPtr_->opcUaBinaryEncode(os);
+		typeId_.opcUaBinaryEncode(os);
 		browsePathArraySPtr_->opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, attributeId_);
 		indexRange_.opcUaBinaryEncode(os);
@@ -107,7 +107,7 @@ namespace OpcUaStackCore
 	void 
 	SimpleAttributeOperand::opcUaBinaryDecode(std::istream& is)
 	{
-		typeIdSPtr_->opcUaBinaryDecode(is);
+		typeId_.opcUaBinaryDecode(is);
 		browsePathArraySPtr_->opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, attributeId_);
 		indexRange_.opcUaBinaryDecode(is);

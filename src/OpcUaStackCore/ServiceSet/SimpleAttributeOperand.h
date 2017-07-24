@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,8 +38,8 @@ namespace OpcUaStackCore
 		SimpleAttributeOperand(void);
 		virtual ~SimpleAttributeOperand(void);
 
-		void typeId(const OpcUaNodeId::SPtr typeId);
-		OpcUaNodeId::SPtr typeId(void) const;
+		void typeId(const OpcUaNodeId& typeId);
+		OpcUaNodeId& typeId(void);
 		void browsePath(const OpcUaQualifiedNameArray::SPtr browsePath);
 		OpcUaQualifiedNameArray::SPtr browsePath(void);
 		void attributeId(const OpcUaUInt32& attributeId);
@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaNodeId::SPtr typeIdSPtr_;
+		OpcUaNodeId typeId_;
 		OpcUaQualifiedNameArray::SPtr browsePathArraySPtr_;
 		OpcUaUInt32 attributeId_;
 		OpcUaString indexRange_;

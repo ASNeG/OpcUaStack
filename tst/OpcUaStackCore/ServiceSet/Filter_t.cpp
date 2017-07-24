@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	std::iostream ios(&sb);
 
 	OpcUaString string;
-	OpcUaNodeId::SPtr typeIdSPtr;
+	OpcUaNodeId typeId;
 	OpcUaQualifiedName::SPtr qualifiedNameSPtr;
 	ElementOperand::SPtr elementOperandSPtr;
 	SimpleAttributeOperand::SPtr simpleAttributeOperandSPtr;
@@ -55,9 +55,8 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	EventFilter filter1, filter2;
 
 	// encode
-	typeIdSPtr = constructSPtr<OpcUaNodeId>();
-	typeIdSPtr->namespaceIndex(123);
-	typeIdSPtr->nodeId((OpcUaUInt32)321);
+	typeId.namespaceIndex(123);
+	typeId.nodeId((OpcUaUInt32)321);
 
 	string = "ABC";
 	qualifiedNameSPtr = constructSPtr<OpcUaQualifiedName>();
@@ -65,7 +64,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	qualifiedNameSPtr->name(string);
 
 	simpleAttributeOperandSPtr = constructSPtr<SimpleAttributeOperand>();
-	simpleAttributeOperandSPtr->typeId(typeIdSPtr);
+	simpleAttributeOperandSPtr->typeId(typeId);
 	simpleAttributeOperandSPtr->browsePath()->set(qualifiedNameSPtr);
 	simpleAttributeOperandSPtr->attributeId((OpcUaUInt32)123);
 	simpleAttributeOperandSPtr->indexRange("1:2");
@@ -90,8 +89,7 @@ BOOST_AUTO_TEST_CASE(Filter_Event)
 	BOOST_REQUIRE(filter2.selectClauses()->size() == 1);
 	filter2.selectClauses()->get(simpleAttributeOperandSPtr);
 
-	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeId()->namespaceIndex() == 123);
-	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeId()->nodeId<OpcUaUInt32>() == 321);
+	BOOST_REQUIRE(simpleAttributeOperandSPtr->typeId() == OpcUaNodeId(321, 123));
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->attributeId() == 123);
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->indexRange().value() == "1:2");
 	BOOST_REQUIRE(simpleAttributeOperandSPtr->browsePath()->size() == 1);
