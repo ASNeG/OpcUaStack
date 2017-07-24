@@ -572,13 +572,13 @@ namespace OpcUaStackCore
 		//
 		// create free slot list
 		//
-		char* mem = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
-		for (uint32_t idx = 0; idx < dataMemArrayHeader_->actArraySize_; idx++) {
-			uint32_t* pos = (uint32_t*)(mem - ((idx+1) * sizeof(uint32_t)));
-			if (*pos != 0) {
-				DataMemArraySlot* slot = posToSlot(*pos);
-				freeSlotMap_.insert(std::make_pair(*pos, slot));
+		freeSlotMap_.clear();
+		DataMemArraySlot* slot = (DataMemArraySlot*)((char*)dataMemArrayHeader_ + sizeof(DataMemArrayHeader));
+		while (slot->type_ != 'E') {
+			if (slot->type_ == 'F') {
+				freeSlotMap_.insert(std::make_pair(ptrToPos((char*)slot), slot));
 			}
+			slot = slot->next();
 		}
 
 		return true;
