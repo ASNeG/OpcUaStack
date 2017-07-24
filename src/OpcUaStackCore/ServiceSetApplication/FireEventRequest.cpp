@@ -15,35 +15,39 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-/*
-
- 	 SimpleAttributeOperand:
- 	 	 IN: TypeNodeId, BrowseNames
- 	 	 OUT: Variant
-
- */
-
-#ifndef __OpcUaStackCore_EventBase_h__
-#define __OpcUaStackCore_EventBase_h__
-
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSetApplication/FireEventRequest.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT EventBase
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// OpcUa FireEventRequest
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+
+	FireEventRequest::FireEventRequest(void)
+	: Object()
+	, eventBase_()
 	{
-	  public:
-		typedef boost::shared_ptr<EventBase> SPtr;
+	}
 
-		EventBase(void);
-		~EventBase(void);
+	FireEventRequest::~FireEventRequest(void)
+	{
+	}
 
-	  private:
-	};
+	void
+	FireEventRequest::eventBase(EventBase::SPtr& eventBase)
+	{
+		eventBase_ = eventBase;
+	}
 
+	EventBase::SPtr&
+	FireEventRequest::eventBase(void)
+	{
+		return eventBase_;
+	}
 
 }
-
-#endif
