@@ -784,7 +784,7 @@ namespace OpcUaStackCore
 			createNewSlot((char*)actSlot->next(), 'E', 0);
 		}
 		else {
-			uint32_t newSlotSize = diffMemorySize - sizeof(DataMemArrayHeader) - sizeof(uint32_t);
+			uint32_t newSlotSize = diffMemorySize - sizeof(DataMemArraySlot) - sizeof(uint32_t);
 			actSlot = createNewSlot((char*)actSlot, 'F', newSlotSize);
 			createNewSlot((char*)actSlot->next(), 'E', 0);
 		}

@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(DataMemArray_padding)
 	dataMemArray.logSlot();
 }
 
-BOOST_AUTO_TEST_CASE(DataMemArray_increase_memory_size)
+BOOST_AUTO_TEST_CASE(DataMemArray_increase_memory_size1)
 {
 	DataMemArray dataMemArray;
 
@@ -261,6 +261,22 @@ BOOST_AUTO_TEST_CASE(DataMemArray_increase_memory_size)
 
 	char buf[500];
 	BOOST_REQUIRE(dataMemArray.set(0, buf, 500) == true);
+	BOOST_REQUIRE(dataMemArray.set(0, buf, 500) == true);
+	dataMemArray.log();
+}
+
+BOOST_AUTO_TEST_CASE(DataMemArray_increase_memory_size2)
+{
+	DataMemArray dataMemArray;
+
+	dataMemArray.startMemorySize(1000);
+	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+
+	char buf[500];
+	BOOST_REQUIRE(dataMemArray.set(0, buf, 870) == true);
+	dataMemArray.log();
 	BOOST_REQUIRE(dataMemArray.set(0, buf, 500) == true);
 	dataMemArray.log();
 }
