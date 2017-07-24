@@ -323,4 +323,23 @@ BOOST_AUTO_TEST_CASE(DataMemArray_decrease_array2)
 	dataMemArray.log();
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_increase_array1)
+{
+	DataMemArray dataMemArray;
+
+	dataMemArray.startMemorySize(1000);
+	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		char buf[10];
+		dataMemArray.set(idx, buf, 10);
+	}
+	dataMemArray.log();
+
+	dataMemArray.resize(20);
+	dataMemArray.log();
+}
+
 BOOST_AUTO_TEST_SUITE_END()

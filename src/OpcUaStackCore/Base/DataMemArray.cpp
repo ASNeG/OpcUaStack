@@ -836,8 +836,32 @@ namespace OpcUaStackCore
 	bool
 	DataMemArray::increaseArraySize(uint32_t arraySize)
 	{
-		// FIXME: todo
-		return false;
+		char* memEnd = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t diffMemorySize = (arraySize - dataMemArrayHeader_->actArraySize_) * sizeof(uint32_t);
+		uint32_t arrayMemorySize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
+		uint32_t headerSlotMemorySize = dataMemArrayHeader_->actMemorySize_ - arrayMemorySize;
+
+		// get last two slots
+		char *endSlotMem = (char*)dataMemArrayHeader_ + headerSlotMemorySize - sizeof(DataMemArraySlot) - sizeof(uint32_t);
+		DataMemArraySlot* actSlot = (DataMemArraySlot*)endSlotMem;
+		DataMemArraySlot* lastSlot = actSlot->last();
+
+		if (lastSlot->type_ != 'F') {
+			return false;
+		}
+		if (lastSlot->dataSize() < diffMemorySize) {
+			return false;
+		}
+
+		lastSlot->dataSize_ -= diffMemorySize;
+		DataMemArraySlot* slot = lastSlot->next();
+		createNewSlot((char*)slot, 'E', 0);
+
+		char* mem = (char*)slot + sizeof(DataMemArraySlot) + sizeof(uint32_t);
+		memset(mem, 0x00, diffMemorySize);
+		dataMemArrayHeader_->actArraySize_ = arraySize;
+
+		return true;
 	}
 
 	bool
