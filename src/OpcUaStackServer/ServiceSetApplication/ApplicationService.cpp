@@ -63,6 +63,9 @@ namespace OpcUaStackServer
 			case OpcUaId_DelNodeInstanceRequest_Encoding_DefaultBinary:
 				receiveDelNodeInstanceRequest(serviceTransaction);
 				break;
+			case OpcUaId_FireEventRequest_Encoding_DefaultBinary:
+				receiveFireEventRequest(serviceTransaction);
+				break;
 			default:
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
@@ -364,6 +367,20 @@ namespace OpcUaStackServer
 		else {
 			trx->statusCode(BadInternalError);
 		}
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveFireEventRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionFireEvent::SPtr trx = boost::static_pointer_cast<ServiceTransactionFireEvent>(serviceTransaction);
+
+		FireEventRequest::SPtr fireEventRequest = trx->request();
+		FireEventResponse::SPtr fireEventResponse = trx->response();
+
+		// FIXME: todo - fire event handling
+
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
