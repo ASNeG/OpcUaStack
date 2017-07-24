@@ -254,7 +254,16 @@ namespace OpcUaStackCore
 			return true;
 		}
 
-		// FIXME: todo
+		if (arraySize == dataMemArrayHeader_->actArraySize_) {
+			return true;
+		}
+
+		if (arraySize < dataMemArrayHeader_->actArraySize_) {
+			return decreaseArraySize(arraySize);
+		}
+		else {
+			return increaseArraySize(arraySize);
+		}
 
 		return true;
 	}
@@ -822,6 +831,46 @@ namespace OpcUaStackCore
 		*sizeTag = dataMemArraySlot->memSize();
 
 		return dataMemArraySlot;
+	}
+
+	bool
+	DataMemArray::increaseArraySize(uint32_t arraySize)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	DataMemArray::decreaseArraySize(uint32_t arraySize)
+	{
+		char* memEnd = (char*)dataMemArrayHeader_ + dataMemArrayHeader_->actMemorySize_;
+		uint32_t diffMemorySize = (dataMemArrayHeader_->actArraySize_ - arraySize) * sizeof(uint32_t);
+		uint32_t arrayMemorySize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
+		uint32_t headerSlotMemorySize = dataMemArrayHeader_->actMemorySize_ - arrayMemorySize;
+
+		// remove entries
+		for (uint32_t idx = arraySize; idx < dataMemArrayHeader_->actMemorySize_; idx++) {
+			unset(idx);
+		}
+		dataMemArrayHeader_->actArraySize_ = arraySize;
+
+		//
+		// move end slot
+		//
+		char *endSlotMem = (char*)dataMemArrayHeader_ + headerSlotMemorySize - sizeof(DataMemArraySlot) - sizeof(uint32_t);
+		DataMemArraySlot* actSlot = (DataMemArraySlot*)endSlotMem;
+		DataMemArraySlot* lastSlot = actSlot->last();
+
+		if (lastSlot->type_ == 'U') {
+			lastSlot->paddingSize_ += diffMemorySize;
+		}
+		else {
+			lastSlot->dataSize_ += diffMemorySize;
+		}
+		DataMemArraySlot* slot = lastSlot->next();
+		createNewSlot((char*)slot, 'E', 0);
+
+		return true;
 	}
 
 }

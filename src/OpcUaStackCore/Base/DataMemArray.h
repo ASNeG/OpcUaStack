@@ -112,6 +112,8 @@ namespace OpcUaStackCore
 
 		bool createNewMemory(uint32_t arraySize);
 		bool increaseMemory(uint32_t size);
+		bool increaseArraySize(uint32_t arraySize);
+		bool decreaseArraySize(uint32_t arraySize);
 		DataMemArraySlot* createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize = 0);
 
 		bool debug_;

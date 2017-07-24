@@ -281,4 +281,24 @@ BOOST_AUTO_TEST_CASE(DataMemArray_increase_memory_size2)
 	dataMemArray.log();
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_decrease_array)
+{
+	DataMemArray dataMemArray;
+
+	BOOST_REQUIRE(dataMemArray.resize(20) == true);
+
+	dataMemArray.startMemorySize(1000);
+	dataMemArray.expandMemorySize(1000);
+
+	for (uint32_t idx=0; idx<20; idx++) {
+		char buf[10];
+		dataMemArray.set(idx, buf, 10);
+	}
+	dataMemArray.log();
+
+	std::cout << "XX" << std::endl;
+	dataMemArray.resize(10);
+	dataMemArray.log();
+}
+
 BOOST_AUTO_TEST_SUITE_END()
