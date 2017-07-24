@@ -281,14 +281,14 @@ BOOST_AUTO_TEST_CASE(DataMemArray_increase_memory_size2)
 	dataMemArray.log();
 }
 
-BOOST_AUTO_TEST_CASE(DataMemArray_decrease_array)
+BOOST_AUTO_TEST_CASE(DataMemArray_decrease_array1)
 {
 	DataMemArray dataMemArray;
 
-	BOOST_REQUIRE(dataMemArray.resize(20) == true);
-
 	dataMemArray.startMemorySize(1000);
 	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(20) == true);
 
 	for (uint32_t idx=0; idx<20; idx++) {
 		char buf[10];
@@ -296,7 +296,29 @@ BOOST_AUTO_TEST_CASE(DataMemArray_decrease_array)
 	}
 	dataMemArray.log();
 
-	std::cout << "XX" << std::endl;
+	dataMemArray.resize(10);
+	dataMemArray.log();
+}
+
+BOOST_AUTO_TEST_CASE(DataMemArray_decrease_array2)
+{
+	DataMemArray dataMemArray;
+
+	dataMemArray.startMemorySize(1000-250);
+	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(20) == true);
+
+	for (uint32_t idx=10; idx<20; idx++) {
+		char buf[10];
+		dataMemArray.set(idx, buf, 10);
+	}
+	for (uint32_t idx=0; idx<10; idx++) {
+		char buf[10];
+		dataMemArray.set(idx, buf, 10);
+	}
+	dataMemArray.log();
+
 	dataMemArray.resize(10);
 	dataMemArray.log();
 }
