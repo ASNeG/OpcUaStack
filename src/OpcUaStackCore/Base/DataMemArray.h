@@ -111,6 +111,7 @@ namespace OpcUaStackCore
 		void getIndex(uint32_t idx, uint32_t& value);
 
 		bool createNewMemory(uint32_t arraySize);
+		bool increaseMemory(uint32_t size);
 		DataMemArraySlot* createNewSlot(char* mem, char type, uint32_t size, uint32_t paddingSize = 0);
 
 		bool debug_;

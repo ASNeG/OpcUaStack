@@ -217,6 +217,10 @@ namespace OpcUaStackCore
 	void
 	DataMemArray::expandMemorySize(uint32_t expandMemorySize)
 	{
+		if (expandMemorySize < (sizeof(DataMemArraySlot) + sizeof(uint32_t))) {
+			expandMemorySize = (sizeof(DataMemArraySlot) + sizeof(uint32_t));
+		}
+
 		if (dataMemArrayHeader_ == nullptr) {
 			expandMemorySize_ = expandMemorySize;
 		}
@@ -341,6 +345,9 @@ namespace OpcUaStackCore
 			}
 		}
 		if (slot == nullptr) {
+			if (increaseMemory(bufLen)) {
+				return set(idx, buf, bufLen);
+			}
 			return false;
 		}
 
@@ -719,6 +726,80 @@ namespace OpcUaStackCore
 		// create end slot
 		mem += sizeof(DataMemArraySlot) + sizeof(uint32_t) + dataSize;
 		createNewSlot(mem, 'E', 0);
+
+		return true;
+	}
+
+	bool
+	DataMemArray::increaseMemory(uint32_t size)
+	{
+		if (dataMemArrayHeader_ == nullptr) {
+			return false;
+		}
+
+		// calcualte new memory size
+		uint32_t usedMemorySize = dataMemArrayHeader_->actMemorySize_ + size + sizeof(DataMemArraySlot) + sizeof(uint32_t);
+
+		//
+		// check max memory size
+		//
+		if (maxMemorySize_ != 0 && usedMemorySize > dataMemArrayHeader_->maxMemorySize_) {
+			Log(Error, "increase memory error - used memory size is bigger then max memory size")
+				.parameter("Id", this)
+				.parameter("UsedMemorySize", usedMemorySize)
+				.parameter("MaxMemorySize", dataMemArrayHeader_->maxMemorySize_);
+			return false;
+		}
+
+		//
+		// calculate actual memory size
+		//
+		uint32_t newMemorySize = dataMemArrayHeader_->actMemorySize_;
+		while (usedMemorySize > newMemorySize) newMemorySize += expandMemorySize_;
+		uint32_t diffMemorySize = newMemorySize - dataMemArrayHeader_->actMemorySize_;
+		uint32_t arrayMemorySize = dataMemArrayHeader_->actArraySize_ * sizeof(uint32_t);
+		uint32_t headerSlotMemorySize = dataMemArrayHeader_->actMemorySize_ - arrayMemorySize;
+
+		//
+		// create new memory an copy old memory to new memory
+		//
+		char* mem = new char [newMemorySize];
+		memcpy(mem, (char*)dataMemArrayHeader_, headerSlotMemorySize);
+		memcpy(&mem[newMemorySize-arrayMemorySize], (char*)dataMemArrayHeader_ + headerSlotMemorySize , arrayMemorySize);
+
+		delete [] (char*)dataMemArrayHeader_;
+		dataMemArrayHeader_ = (DataMemArrayHeader*)mem;
+		dataMemArrayHeader_->actMemorySize_ = newMemorySize;
+
+		//
+		// create new free slot
+		//
+		char *endSlotMem = (char*)dataMemArrayHeader_ + headerSlotMemorySize - sizeof(DataMemArraySlot) - sizeof(uint32_t);
+		DataMemArraySlot* actSlot = (DataMemArraySlot*)endSlotMem;
+		DataMemArraySlot* lastSlot = actSlot->last();
+
+		if (lastSlot->type_ == 'F') {
+			uint32_t newSlotSize = lastSlot->dataSize() + diffMemorySize;
+			actSlot = createNewSlot((char*)lastSlot, 'F', newSlotSize);
+			createNewSlot((char*)actSlot->next(), 'E', 0);
+		}
+		else {
+			uint32_t newSlotSize = diffMemorySize - sizeof(DataMemArrayHeader) - sizeof(uint32_t);
+			actSlot = createNewSlot((char*)actSlot, 'F', newSlotSize);
+			createNewSlot((char*)actSlot->next(), 'E', 0);
+		}
+
+		//
+		// create free slot list
+		//
+		freeSlotMap_.clear();
+		DataMemArraySlot* slot = (DataMemArraySlot*)((char*)dataMemArrayHeader_ + sizeof(DataMemArrayHeader));
+		while (slot->type_ != 'E') {
+			if (slot->type_ == 'F') {
+				freeSlotMap_.insert(std::make_pair(ptrToPos((char*)slot), slot));
+			}
+			slot = slot->next();
+		}
 
 		return true;
 	}
