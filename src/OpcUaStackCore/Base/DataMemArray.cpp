@@ -847,9 +847,15 @@ namespace OpcUaStackCore
 		DataMemArraySlot* lastSlot = actSlot->last();
 
 		if (lastSlot->type_ != 'F') {
+			if (increaseMemory(1)) {
+				return increaseArraySize(arraySize);
+			}
 			return false;
 		}
 		if (lastSlot->dataSize() < diffMemorySize) {
+			if (increaseMemory(1)) {
+				return increaseArraySize(arraySize);
+			}
 			return false;
 		}
 

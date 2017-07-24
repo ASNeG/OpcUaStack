@@ -342,4 +342,38 @@ BOOST_AUTO_TEST_CASE(DataMemArray_increase_array1)
 	dataMemArray.log();
 }
 
+BOOST_AUTO_TEST_CASE(DataMemArray_increase_array2)
+{
+	DataMemArray dataMemArray;
+
+	dataMemArray.startMemorySize(1000);
+	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+
+	char buf[1000];
+	dataMemArray.set(0, buf, 870);
+	dataMemArray.log();
+
+	dataMemArray.resize(20);
+	dataMemArray.log();
+}
+
+BOOST_AUTO_TEST_CASE(DataMemArray_increase_array3)
+{
+	DataMemArray dataMemArray;
+
+	dataMemArray.startMemorySize(1000);
+	dataMemArray.expandMemorySize(1000);
+
+	BOOST_REQUIRE(dataMemArray.resize(10) == true);
+
+	char buf[1000];
+	dataMemArray.set(0, buf, 830);
+	dataMemArray.log();
+
+	dataMemArray.resize(20);
+	dataMemArray.log();
+}
+
 BOOST_AUTO_TEST_SUITE_END()
