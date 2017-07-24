@@ -378,6 +378,7 @@ namespace OpcUaStackServer
 		FireEventRequest::SPtr fireEventRequest = trx->request();
 		FireEventResponse::SPtr fireEventResponse = trx->response();
 
+		std::cout << "fire event..." << std::endl;
 		// FIXME: todo - fire event handling
 
 		trx->statusCode(Success);

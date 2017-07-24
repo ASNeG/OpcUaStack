@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
+#include "OpcUaStackServer/ServiceSet/EventManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include <map>
 
@@ -95,6 +96,7 @@ namespace OpcUaStackServer
 
 		IOService* ioService_;
 		MonitorManager monitorManager_;
+		EventManager eventManager_;
 	};
 
 	typedef std::map<uint32_t, Subscription::SPtr> SubscriptionMap;

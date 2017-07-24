@@ -47,6 +47,7 @@ namespace OpcUaStackServer
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
 	, retransmissionQueue_()
 	, monitorManager_()
+	, eventManager_()
 	{
 	}
 
@@ -200,12 +201,16 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionCreateMonitoredItems::SPtr trx)
 	{
+		// FIXME: todo - handle events
+
 		return monitorManager_.receive(trx);
 	}
 
 	OpcUaStatusCode 
 	Subscription::receive(ServiceTransactionDeleteMonitoredItems::SPtr trx)
 	{
+		// FIXME: todo - handle events
+
 		return monitorManager_.receive(trx);
 	}
 
