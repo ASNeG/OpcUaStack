@@ -30,24 +30,11 @@ namespace OpcUaStackCore
 
 	FireEventResponse::FireEventResponse(void)
 	: Object()
-	, statusCode_(Success)
 	{
 	}
 
 	FireEventResponse::~FireEventResponse(void)
 	{
-	}
-
-	void
-	FireEventResponse::statusCode(OpcUaStatusCode& statusCode)
-	{
-		statusCode_ = statusCode;
-	}
-
-	OpcUaStatusCode
-	FireEventResponse::statusCode(void)
-	{
-		return statusCode_;
 	}
 
 	void
