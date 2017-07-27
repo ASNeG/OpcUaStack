@@ -38,6 +38,9 @@ namespace OpcUaStackCore
 		void eventBase(EventBase::SPtr& eventBase);
 		EventBase::SPtr& eventBase(void);
 
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+
 	  private:
 		EventBase::SPtr eventBase_;
 	};

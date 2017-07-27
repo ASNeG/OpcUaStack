@@ -50,4 +50,14 @@ namespace OpcUaStackCore
 		return eventBase_;
 	}
 
+	void
+	FireEventRequest::opcUaBinaryEncode(std::ostream& os) const
+	{
+	}
+
+	void
+	FireEventRequest::opcUaBinaryDecode(std::istream& is)
+	{
+	}
+
 }

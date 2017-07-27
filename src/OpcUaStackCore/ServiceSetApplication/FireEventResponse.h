@@ -38,6 +38,9 @@ namespace OpcUaStackCore
 		void statusCode(OpcUaStatusCode& statusCode);
 		OpcUaStatusCode statusCode(void);
 
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+
 	  private:
 		OpcUaStatusCode statusCode_;
 	};

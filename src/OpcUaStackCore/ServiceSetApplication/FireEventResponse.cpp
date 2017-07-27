@@ -50,4 +50,14 @@ namespace OpcUaStackCore
 		return statusCode_;
 	}
 
+	void
+	FireEventResponse::opcUaBinaryEncode(std::ostream& os) const
+	{
+	}
+
+	void
+	FireEventResponse::opcUaBinaryDecode(std::istream& is)
+	{
+	}
+
 }
