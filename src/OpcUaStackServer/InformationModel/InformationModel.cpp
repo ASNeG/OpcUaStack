@@ -105,6 +105,13 @@ namespace OpcUaStackServer
 		return informationModelMap_.size();
 	}
 
+	bool
+	InformationModel::fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	void 
 	InformationModel::checkForwardReferences(void)
 	{

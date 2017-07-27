@@ -378,8 +378,32 @@ namespace OpcUaStackServer
 		FireEventRequest::SPtr fireEventRequest = trx->request();
 		FireEventResponse::SPtr fireEventResponse = trx->response();
 
-		std::cout << "fire event..." << std::endl;
-		// FIXME: todo - fire event handling
+		//
+		// find object node
+		//
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(fireEventRequest->nodeId());
+		if (baseNodeClass.get() == nullptr) {
+			Log(Debug, "fire event error, because node not exist in information model")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Node", fireEventRequest->nodeId());
+
+			trx->statusCode(BadNodeIdUnknown);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
+
+		//
+		// fire event
+		//
+		if (!informationModel_->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase())) {
+			Log(Debug, "fire event error")
+				.parameter("Trx", serviceTransaction->transactionId())
+				.parameter("Node", fireEventRequest->nodeId());
+
+			trx->statusCode(BadInternalError);
+			trx->componentSession()->send(serviceTransaction);
+			return;
+		}
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);

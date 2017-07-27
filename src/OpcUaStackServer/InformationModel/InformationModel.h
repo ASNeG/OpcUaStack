@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaAttributeId.h"
+#include "OpcUaStackCore/EventType/EventBase.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/MethodMap.h"
 #include <map>
@@ -49,6 +50,7 @@ namespace OpcUaStackServer
 		bool remove(const OpcUaNodeId& opcUaNodeId);
 		bool remove(OpcUaNodeId::SPtr opcUaNodeId);
 		uint32_t size(void);
+		bool fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase);
 
 		InformationModelMap& informationModelMap(void);
 		MethodMap& methodMap(void);
