@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/EventType/EventBase.h"
 
 namespace OpcUaStackCore
@@ -37,12 +38,15 @@ namespace OpcUaStackCore
 
 		void eventBase(EventBase::SPtr& eventBase);
 		EventBase::SPtr& eventBase(void);
+		void nodeId(OpcUaNodeId& nodeId);
+		OpcUaNodeId& nodeId(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		EventBase::SPtr eventBase_;
+		OpcUaNodeId nodeId_;
 	};
 
 }

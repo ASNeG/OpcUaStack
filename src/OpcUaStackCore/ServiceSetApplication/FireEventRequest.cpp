@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 	FireEventRequest::FireEventRequest(void)
 	: Object()
 	, eventBase_()
+	, nodeId_()
 	{
 	}
 
@@ -48,6 +49,18 @@ namespace OpcUaStackCore
 	FireEventRequest::eventBase(void)
 	{
 		return eventBase_;
+	}
+
+	void
+	FireEventRequest::nodeId(OpcUaNodeId& nodeId)
+	{
+		nodeId_ = nodeId;
+	}
+
+	OpcUaNodeId&
+	FireEventRequest::nodeId(void)
+	{
+		return nodeId_;
 	}
 
 	void
