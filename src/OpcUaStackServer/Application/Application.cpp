@@ -102,7 +102,6 @@ namespace OpcUaStackServer
 	void
 	Application::receive(Message::SPtr message)
 	{
-		std::cout << "Application::receive" << std::endl;
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 
 		// check if transaction is synchron
@@ -158,6 +157,7 @@ namespace OpcUaStackServer
 			case OpcUaId_RegisterForwardGlobalRequest_Encoding_DefaultBinary:
 			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
 			case OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary:
+			case OpcUaId_FireEventRequest_Encoding_DefaultBinary:
 			{
 				serviceTransaction->componentSession(this);
 				break;
