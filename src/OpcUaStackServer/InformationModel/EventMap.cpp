@@ -29,13 +29,14 @@ namespace OpcUaStackServer
 	{
 	}
 
-#if 0
 	void
 	EventMap::clear(void)
 	{
-		forwardEventSyncMap_.clear();
+		// FIXME:
+		// forwardEventSyncMap_.clear();
 	}
 
+#if 0
 	bool
 	EventMap::existEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
 	{

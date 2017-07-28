@@ -25,6 +25,7 @@
 #include "OpcUaStackCore/EventType/EventBase.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/MethodMap.h"
+#include "OpcUaStackServer/InformationModel/EventMap.h"
 #include <map>
 
 using namespace OpcUaStackCore;
@@ -54,6 +55,7 @@ namespace OpcUaStackServer
 
 		InformationModelMap& informationModelMap(void);
 		MethodMap& methodMap(void);
+		EventMap& eventMap(void);
 
 		void checkForwardReferences(void);
 
@@ -71,6 +73,7 @@ namespace OpcUaStackServer
 		boost::mutex mutex_;
 		InformationModelMap informationModelMap_;
 		MethodMap methodMap_;
+		EventMap eventMap_;
 
 	};
 

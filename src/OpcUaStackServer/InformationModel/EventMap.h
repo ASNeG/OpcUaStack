@@ -35,8 +35,8 @@ namespace OpcUaStackServer
 		EventMap(void);
 		~EventMap(void);
 
-#if 0
 		void clear(void);
+#if 0
 		bool existEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
 		bool registerEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId, ForwardEventSync::SPtr& forwardEventSync);
 		bool deregisterEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
