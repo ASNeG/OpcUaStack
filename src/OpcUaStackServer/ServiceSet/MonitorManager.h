@@ -63,6 +63,12 @@ namespace OpcUaStackServer
 			CreateMonitoredItemsRequest::SPtr& createMonitorItemRequest,
 			CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
 		);
+		void createEventItem(
+			uint32_t idx,
+			ServiceTransactionCreateMonitoredItems::SPtr& trx,
+			CreateMonitoredItemsRequest::SPtr& createMonitorItemRequest,
+			CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
+		);
 		void forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
 		void forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
 		void sampleTimeout(MonitorItem::SPtr monitorItem);
