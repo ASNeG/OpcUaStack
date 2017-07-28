@@ -106,66 +106,77 @@ namespace OpcUaStackServer
 		createMonitorItemResponse->results()->resize(size);
 
 		for (uint32_t idx=0; idx<size; idx++) {
-			MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
-			monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
-			createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
-
-			// get request parameter
-			MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
-			if (!createMonitorItemRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest)) {
-				monitoredItemCreateResult->statusCode(BadInvalidArgument);
-				continue;
-			}
-
-			// find base node class
-			BaseNodeClass::SPtr baseNodeClass;
-			baseNodeClass = informationModel_->find(monitoredItemCreateRequest->itemToMonitor().nodeId());
-			if (baseNodeClass.get() == nullptr) {
-				monitoredItemCreateResult->statusCode(BadNodeIdUnknown);
-				continue;
-			}
-
-			// check parameter
-			if (monitoredItemCreateRequest->requestedParameters().samplingInterval() < 200) {
-				monitoredItemCreateRequest->requestedParameters().samplingInterval(200);
-			}
-			if (monitoredItemCreateRequest->requestedParameters().queueSize() < 1) {
-				monitoredItemCreateRequest->requestedParameters().queueSize(1);
-			}
-
-			// create new monitor item
-			MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
-			OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
-
-			if (statusCode != Success) {
-				monitoredItemCreateResult->statusCode(statusCode);
-				continue;
-			}
-
-			// insert monitor item into monitor item map
-			monitoredItemCreateResult->statusCode(Success);
-			monitoredItemCreateResult->monitoredItemId(monitorItem->monitorItemId());
-			monitoredItemCreateResult->revisedSamplingInterval(monitorItem->samplingInterval());
-			monitoredItemCreateResult->revisedQueueSize(monitorItem->queSize());
-			monitorItemMap_.insert(std::make_pair(monitorItem->monitorItemId(), monitorItem));
-
-			// forward start monitored item
-			forwardStartMonitoredItem(baseNodeClass, monitorItem->monitorItemId());
-
-			// start sample timer
-			SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
-			slotTimerElement->interval(monitorItem->samplingInterval());
-			slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
-			slotTimer_->start(slotTimerElement);
-
-			Log(Debug, "monitor item create")
-				.parameter("MonitorId", monitorItem->monitorItemId())
-				.parameter("Trx", trx->transactionId())
-				.parameter("SessionId", trx->sessionId())
-				.parameter("NodeId", monitoredItemCreateRequest->itemToMonitor().nodeId())
-				.parameter("Subscription", createMonitorItemRequest->subscriptionId());
+			createMonitoredItem(idx, trx, createMonitorItemRequest, createMonitorItemResponse);
 		}
 		return Success;
+	}
+
+	void
+	MonitorManager::createMonitoredItem(
+		uint32_t idx,
+		ServiceTransactionCreateMonitoredItems::SPtr& trx,
+		CreateMonitoredItemsRequest::SPtr& createMonitorItemRequest,
+		CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
+	)
+	{
+		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
+		monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
+		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
+
+		// get request parameter
+		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
+		if (!createMonitorItemRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest)) {
+			monitoredItemCreateResult->statusCode(BadInvalidArgument);
+			return;
+		}
+
+		// find base node class
+		BaseNodeClass::SPtr baseNodeClass;
+		baseNodeClass = informationModel_->find(monitoredItemCreateRequest->itemToMonitor().nodeId());
+		if (baseNodeClass.get() == nullptr) {
+			monitoredItemCreateResult->statusCode(BadNodeIdUnknown);
+			return;
+		}
+
+		// check parameter
+		if (monitoredItemCreateRequest->requestedParameters().samplingInterval() < 200) {
+			monitoredItemCreateRequest->requestedParameters().samplingInterval(200);
+		}
+		if (monitoredItemCreateRequest->requestedParameters().queueSize() < 1) {
+			monitoredItemCreateRequest->requestedParameters().queueSize(1);
+		}
+
+		// create new monitor item
+		MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
+		OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
+
+		if (statusCode != Success) {
+			monitoredItemCreateResult->statusCode(statusCode);
+			return;
+		}
+
+		// insert monitor item into monitor item map
+		monitoredItemCreateResult->statusCode(Success);
+		monitoredItemCreateResult->monitoredItemId(monitorItem->monitorItemId());
+		monitoredItemCreateResult->revisedSamplingInterval(monitorItem->samplingInterval());
+		monitoredItemCreateResult->revisedQueueSize(monitorItem->queSize());
+		monitorItemMap_.insert(std::make_pair(monitorItem->monitorItemId(), monitorItem));
+
+		// forward start monitored item
+		forwardStartMonitoredItem(baseNodeClass, monitorItem->monitorItemId());
+
+		// start sample timer
+		SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
+		slotTimerElement->interval(monitorItem->samplingInterval());
+		slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
+		slotTimer_->start(slotTimerElement);
+
+		Log(Debug, "monitor item create")
+			.parameter("MonitorId", monitorItem->monitorItemId())
+			.parameter("Trx", trx->transactionId())
+			.parameter("SessionId", trx->sessionId())
+			.parameter("NodeId", monitoredItemCreateRequest->itemToMonitor().nodeId())
+			.parameter("Subscription", createMonitorItemRequest->subscriptionId());
 	}
 
 	OpcUaStatusCode 
