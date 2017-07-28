@@ -393,17 +393,21 @@ namespace OpcUaStackServer
 		}
 
 		//
-		// fire event
+		// FIXME: todo
+		// we do not handle the event hirachy at the moment
 		//
-		if (!informationModel_->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase())) {
-			Log(Debug, "fire event error")
-				.parameter("Trx", serviceTransaction->transactionId())
-				.parameter("Node", fireEventRequest->nodeId());
 
-			trx->statusCode(BadInternalError);
+		//
+		// find event filter
+		//
+		EventMap& eventMap = informationModel_->eventMap();
+		EventFilterBase::SPtr eventFilter = eventMap.getEvent(fireEventRequest->nodeId());
+		if (eventFilter.get() == nullptr) {
+			trx->statusCode(Success);
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
+		eventFilter->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);

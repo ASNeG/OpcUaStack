@@ -51,7 +51,6 @@ namespace OpcUaStackServer
 		bool remove(const OpcUaNodeId& opcUaNodeId);
 		bool remove(OpcUaNodeId::SPtr opcUaNodeId);
 		uint32_t size(void);
-		bool fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase);
 
 		InformationModelMap& informationModelMap(void);
 		MethodMap& methodMap(void);
