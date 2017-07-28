@@ -274,32 +274,52 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			// FIXME: delete event item
+			bool monitoredItem;
 
 			// find monitor item in monitor map
-			MonitorItemMap::iterator it;
-			it = monitorItemMap_.find(monitorItemId);
-			if (it == monitorItemMap_.end()) {
+			MonitorItemMap::iterator it1;
+			EventItem::Map::iterator it2;
+			it1 = monitorItemMap_.find(monitorItemId);
+			if (it1 == monitorItemMap_.end()) {
+
+				it2 = eventItemMap_.find(monitorItemId);
+				if (it2 == eventItemMap_.end()) {
+					deleteMonitorItemResponse->results()->set(idx, Success);
+					continue;
+				}
+				monitoredItem = false;
+			}
+			else {
+				monitoredItem = true;
+			}
+
+			if (monitoredItem) {
+				// forward stop monitored item
+				BaseNodeClass::SPtr baseNodeClass = it1->second->baseNodeClass();
+				if (baseNodeClass.get() != nullptr) {
+					forwardStopMonitoredItem(baseNodeClass, monitorItemId);
+				}
+
+				Log(Trace, "monitor item remove")
+					.parameter("MonitorId", it1->second->monitorItemId())
+					.parameter("Trx", trx->transactionId())
+					.parameter("SessionId", trx->sessionId())
+					.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
+
+				// stop sample timer an remove monitor item#
+				slotTimer_->stop(it1->second->slotTimerElement());
+				monitorItemMap_.erase(it1);
 				deleteMonitorItemResponse->results()->set(idx, Success);
-				continue;
 			}
+			else {
+				Log(Trace, "event item remove")
+					.parameter("EventId", it2->second->eventItemId())
+					.parameter("Trx", trx->transactionId())
+					.parameter("SessionId", trx->sessionId())
+					.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
 
-			// forward stop monitored item
-			BaseNodeClass::SPtr baseNodeClass = it->second->baseNodeClass();
-			if (baseNodeClass.get() != nullptr) {
-				forwardStopMonitoredItem(baseNodeClass, monitorItemId);
+				eventItemMap_.erase(it2);
 			}
-
-			Log(Trace, "monitor item remove")
-				.parameter("MonitorId", it->second->monitorItemId())
-				.parameter("Trx", trx->transactionId())
-				.parameter("SessionId", trx->sessionId())
-				.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
-
-			// stop sample timer an remove monitor item#
-			slotTimer_->stop(it->second->slotTimerElement());
-			monitorItemMap_.erase(it);
-			deleteMonitorItemResponse->results()->set(idx, Success);
 		}
 
 		return Success;
