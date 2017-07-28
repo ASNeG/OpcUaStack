@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		uint32_t eventItemId(void);
 
 	  private:
+		uint32_t eventItemId_;
 	};
 
 }

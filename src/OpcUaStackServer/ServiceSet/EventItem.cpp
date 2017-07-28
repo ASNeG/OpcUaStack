@@ -17,12 +17,14 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
+#include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
 
 namespace OpcUaStackServer
 {
 
 
 	EventItem::EventItem(void)
+	: eventItemId_(MonitorItemId::monitorItemId())
 	{
 	}
 
@@ -46,8 +48,7 @@ namespace OpcUaStackServer
 	uint32_t
 	EventItem::eventItemId(void)
 	{
-		// FIXME: todo
-		return 0;
+		return eventItemId_;
 	}
 
 

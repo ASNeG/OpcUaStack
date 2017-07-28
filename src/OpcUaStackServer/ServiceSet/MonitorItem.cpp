@@ -17,24 +17,14 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItem.h"
+#include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
 namespace OpcUaStackServer
 {
 
-	boost::mutex MonitorItem::mutex_;
-	uint32_t MonitorItem::uniqueMonitorItemId_ = 0;
-
-	uint32_t 
-	MonitorItem::uniqueMonitorItemId(void)
-	{
-		boost::mutex::scoped_lock g(mutex_);
-		uniqueMonitorItemId_++;
-		return uniqueMonitorItemId_;
-	}
-
 	MonitorItem::MonitorItem(void)
-	: monitorItemId_(uniqueMonitorItemId())
+	: monitorItemId_(MonitorItemId::monitorItemId())
 	, monitorItemList_()
 	, baseNodeClass_()
 	, attribute_(nullptr)
