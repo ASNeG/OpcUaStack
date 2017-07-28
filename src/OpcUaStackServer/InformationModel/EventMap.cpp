@@ -22,6 +22,7 @@ namespace OpcUaStackServer
 {
 
 	EventMap::EventMap(void)
+	: eventFilterBaseMap_()
 	{
 	}
 
@@ -32,74 +33,51 @@ namespace OpcUaStackServer
 	void
 	EventMap::clear(void)
 	{
-		// FIXME:
-		// forwardEventSyncMap_.clear();
-	}
-
-#if 0
-	bool
-	EventMap::existEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
-	{
-		EventId methodId;
-		ForwardEventSyncMap::iterator it;
-
-		methodId.objectNodeId().copyFrom(objectNodeId);
-		methodId.methodNodeId().copyFrom(methodNodeId);
-		it = forwardEventSyncMap_.find(methodId);
-		return (it != forwardEventSyncMap_.end());
+		eventFilterBaseMap_.clear();
 	}
 
 	bool
-	EventMap::registerEvent(
-		OpcUaNodeId& objectNodeId,
-		OpcUaNodeId& methodNodeId,
-		ForwardEventSync::SPtr& forwardEventSync
-	)
+	EventMap::existEvent(OpcUaNodeId& nodeId)
 	{
-		if (existEvent(objectNodeId, methodNodeId)) {
-			deregisterEvent(objectNodeId, methodNodeId);
+		EventFilterBaseMap::iterator it;
+		it = eventFilterBaseMap_.find(nodeId);
+		if (it != eventFilterBaseMap_.end());
+	}
+
+	bool
+	EventMap::registerEvent(OpcUaNodeId& nodeId, EventFilterBase::SPtr& eventFilterBase)
+	{
+		if (existEvent(nodeId)) {
+			return false;
 		}
 
-		EventId methodId;
-		methodId.objectNodeId().copyFrom(objectNodeId);
-		methodId.methodNodeId().copyFrom(methodNodeId);
-
-		forwardEventSyncMap_.insert(std::make_pair(methodId, forwardEventSync));
-
+		eventFilterBaseMap_.insert(std::make_pair(nodeId, eventFilterBase));
 		return true;
 	}
 
 	bool
-	EventMap::deregisterEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
+	EventMap::deregisterEvent(OpcUaNodeId& nodeId)
 	{
-		EventId methodId;
-		methodId.objectNodeId().copyFrom(objectNodeId);
-		methodId.methodNodeId().copyFrom(methodNodeId);
-
-		ForwardEventSyncMap::iterator it;
-		it = forwardEventSyncMap_.find(methodId);
-		if (it == forwardEventSyncMap_.end()) return true;
-		forwardEventSyncMap_.erase(it);
-
+		EventFilterBaseMap::iterator it;
+		it = eventFilterBaseMap_.find(nodeId);
+		if (it == eventFilterBaseMap_.end()) {
+			return true;
+		}
+		eventFilterBaseMap_.erase(it);
 		return true;
 	}
 
-	ForwardEventSync::SPtr
-	EventMap::getEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId)
+	EventFilterBase::SPtr
+	EventMap::getEvent(OpcUaNodeId& nodeId)
 	{
-		EventId methodId;
-		methodId.objectNodeId().copyFrom(objectNodeId);
-		methodId.methodNodeId().copyFrom(methodNodeId);
+		EventFilterBase::SPtr eventFilterBase;
 
-		ForwardEventSyncMap::iterator it;
-		it = forwardEventSyncMap_.find(methodId);
-		if (it != forwardEventSyncMap_.end()) {
-			return it->second;
+		EventFilterBaseMap::iterator it;
+		it = eventFilterBaseMap_.find(nodeId);
+		if (it == eventFilterBaseMap_.end()) {
+			return eventFilterBase;
 		}
-
-		ForwardEventSync::SPtr forwardEventSync;
-		return forwardEventSync;
+		return it->second;
 	}
-#endif
 
 }

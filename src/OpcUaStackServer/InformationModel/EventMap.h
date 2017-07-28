@@ -18,11 +18,11 @@
 #ifndef __OpcUaStackServer_EventMap_h__
 #define __OpcUaStackServer_EventMap_h__
 
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
-//#include "OpcUaStackCore/ServiceSetApplication/ForwardEventSync.h"
-//#include "OpcUaStackServer/InformationModel/EventId.h"
+#include "OpcUaStackCore/EventType/EventFilterBase.h"
 
-//using namespace OpcUaStackCore;
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -30,21 +30,19 @@ namespace OpcUaStackServer
 	class DLLEXPORT EventMap
 	{
 	  public:
-		//typedef std::map<OpcUaNodeId, ForwardEventSync::SPtr> ForwardEventSyncMap;
+		typedef std::map<OpcUaNodeId, EventFilterBase::SPtr> EventFilterBaseMap;
 
 		EventMap(void);
 		~EventMap(void);
 
 		void clear(void);
-#if 0
-		bool existEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
-		bool registerEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId, ForwardEventSync::SPtr& forwardEventSync);
-		bool deregisterEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
-		ForwardEventSync::SPtr getEvent(OpcUaNodeId& objectNodeId, OpcUaNodeId& methodNodeId);
+		bool existEvent(OpcUaNodeId& nodeId);
+		bool registerEvent(OpcUaNodeId& nodeId, EventFilterBase::SPtr& eventFilterBase);
+		bool deregisterEvent(OpcUaNodeId& nodeId);
+		EventFilterBase::SPtr getEvent(OpcUaNodeId& nodeId);
 
 	  private:
-		ForwardEventSyncMap forwardEventSyncMap_;
-#endif
+		EventFilterBaseMap eventFilterBaseMap_;
 	};
 
 }
