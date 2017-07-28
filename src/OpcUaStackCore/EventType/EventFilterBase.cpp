@@ -32,6 +32,7 @@ namespace OpcUaStackCore
 	bool
 	EventFilterBase::fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase)
 	{
+		std::cout << "EventFilterBase::fireEvent" << std::endl;
 		// FIXME: todo
 		return true;
 	}

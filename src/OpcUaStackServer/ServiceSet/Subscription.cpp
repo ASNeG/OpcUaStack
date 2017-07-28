@@ -47,7 +47,6 @@ namespace OpcUaStackServer
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
 	, retransmissionQueue_()
 	, monitorManager_()
-	, eventManager_()
 	{
 	    monitorManager_.subscriptionId(subscriptionId_);
 	}
@@ -94,14 +93,12 @@ namespace OpcUaStackServer
 	{
 		ioService_ = ioService;
 		monitorManager_.ioService(ioService);
-		eventManager_.ioService(ioService);
 	}
 
 	void 
 	Subscription::informationModel(InformationModel::SPtr informationModel)
 	{
 		monitorManager_.informationModel(informationModel);
-		eventManager_.informationModel(informationModel);
 	}
 		
 	uint32_t 
