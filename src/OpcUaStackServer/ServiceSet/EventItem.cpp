@@ -30,4 +30,25 @@ namespace OpcUaStackServer
 	{
 	}
 
+	OpcUaStatusCode
+	EventItem::receive(
+		MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
+		MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
+	)
+	{
+		// FIXME: todo
+		std::cout << "Event item" << std::endl;
+
+		// FIXME: todo
+		return Success;
+	}
+
+	uint32_t
+	EventItem::eventItemId(void)
+	{
+		// FIXME: todo
+		return 0;
+	}
+
+
 }

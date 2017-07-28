@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
+#include "OpcUaStackServer/ServiceSet/EventItem.h"
 
 namespace OpcUaStackServer
 {
@@ -27,6 +28,7 @@ namespace OpcUaStackServer
 	MonitorManager::MonitorManager(void)
 	: ioService_(nullptr)
 	, monitorItemMap_()
+	, eventItemMap_()
 	, slotTimer_(constructSPtr<SlotTimer>())
 	, monitoredItemIds_()
 	{
@@ -34,6 +36,9 @@ namespace OpcUaStackServer
 
 	MonitorManager::~MonitorManager(void)
 	{
+		//
+		// cleanup monitored item
+		//
 		MonitorItemMap::iterator it;
 		for (it=monitorItemMap_.begin(); it!=monitorItemMap_.end(); it++) {
 		    MonitorItem::SPtr monitorItem = it->second;
@@ -48,6 +53,11 @@ namespace OpcUaStackServer
 
 		monitorItemMap_.clear();
 		slotTimer_->stopSlotTimerLoop(slotTimer_);
+
+		//
+		// cleanup event item
+		//
+		eventItemMap_.clear();
 	}
 
 	void 
@@ -200,16 +210,9 @@ namespace OpcUaStackServer
 		CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
 	)
 	{
-		// FIXME: todo
-		std::cout << "Event item" << std::endl;
-
 		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
 		monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
 		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
-
-
-#if 0
-
 
 		// get request parameter
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
@@ -226,46 +229,31 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		// check parameter
-		if (monitoredItemCreateRequest->requestedParameters().samplingInterval() < 200) {
-			monitoredItemCreateRequest->requestedParameters().samplingInterval(200);
-		}
-		if (monitoredItemCreateRequest->requestedParameters().queueSize() < 1) {
-			monitoredItemCreateRequest->requestedParameters().queueSize(1);
-		}
-
 		// create new monitor item
-		MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
-		OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
+		EventItem::SPtr eventItem = constructSPtr<EventItem>();
+		OpcUaStatusCode statusCode = eventItem->receive(
+			monitoredItemCreateRequest,
+			monitoredItemCreateResult
+		);
 
 		if (statusCode != Success) {
 			monitoredItemCreateResult->statusCode(statusCode);
 			return;
 		}
 
-		// insert monitor item into monitor item map
+		// insert event item into event item map
 		monitoredItemCreateResult->statusCode(Success);
-		monitoredItemCreateResult->monitoredItemId(monitorItem->monitorItemId());
-		monitoredItemCreateResult->revisedSamplingInterval(monitorItem->samplingInterval());
-		monitoredItemCreateResult->revisedQueueSize(monitorItem->queSize());
-		monitorItemMap_.insert(std::make_pair(monitorItem->monitorItemId(), monitorItem));
+		monitoredItemCreateResult->monitoredItemId(eventItem->eventItemId());
+		monitoredItemCreateResult->revisedSamplingInterval(0);
+		monitoredItemCreateResult->revisedQueueSize(0);
+		eventItemMap_.insert(std::make_pair(eventItem->eventItemId(), eventItem));
 
-		// forward start monitored item
-		forwardStartMonitoredItem(baseNodeClass, monitorItem->monitorItemId());
-
-		// start sample timer
-		SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
-		slotTimerElement->interval(monitorItem->samplingInterval());
-		slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
-		slotTimer_->start(slotTimerElement);
-
-		Log(Debug, "monitor item create")
-			.parameter("MonitorId", monitorItem->monitorItemId())
+		Log(Debug, "event item create")
+			.parameter("MonitorId", eventItem->eventItemId())
 			.parameter("Trx", trx->transactionId())
 			.parameter("SessionId", trx->sessionId())
 			.parameter("NodeId", monitoredItemCreateRequest->itemToMonitor().nodeId())
 			.parameter("Subscription", createMonitorItemRequest->subscriptionId());
-#endif
 	}
 
 	OpcUaStatusCode 
@@ -285,6 +273,8 @@ namespace OpcUaStackServer
 				deleteMonitorItemResponse->results()->set(idx, BadInvalidArgument);
 				continue;
 			}
+
+			// FIXME: delete event item
 
 			// find monitor item in monitor map
 			MonitorItemMap::iterator it;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2106 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2107 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemNotification.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItem.h"
+#include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 using namespace OpcUaStackCore;
@@ -76,6 +77,7 @@ namespace OpcUaStackServer
 		IOService* ioService_;
 		uint32_t subscriptionId_;
 		MonitorItemMap monitorItemMap_;
+		EventItem::Map eventItemMap_;
 		InformationModel::SPtr informationModel_;
 		SlotTimer::SPtr slotTimer_;
 

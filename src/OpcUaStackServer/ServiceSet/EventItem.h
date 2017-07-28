@@ -19,6 +19,9 @@
 #define __OpcUaStackServer_EventItem_h__
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 using namespace OpcUaStackCore;
 
@@ -30,9 +33,17 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef boost::shared_ptr<EventItem> SPtr;
+		typedef std::map<uint32_t, EventItem::SPtr> Map;
 
 		EventItem(void);
 		~EventItem(void);
+
+		OpcUaStatusCode receive(
+			MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
+			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
+		);
+
+		uint32_t eventItemId(void);
 
 	  private:
 	};
