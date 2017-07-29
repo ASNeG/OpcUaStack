@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,6 +39,8 @@ namespace OpcUaStackServer
 		EventItem(void);
 		~EventItem(void);
 
+		void informationModel(InformationModel::SPtr& informationModel);
+
 		OpcUaStatusCode receive(
 			MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
 			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
@@ -47,6 +50,8 @@ namespace OpcUaStackServer
 
 	  private:
 		uint32_t eventItemId_;
+		InformationModel::SPtr informationModel_;
+
 	};
 
 }

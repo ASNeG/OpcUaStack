@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
 
@@ -25,11 +26,18 @@ namespace OpcUaStackServer
 
 	EventItem::EventItem(void)
 	: eventItemId_(MonitorItemId::monitorItemId())
+	, informationModel_()
 	{
 	}
 
 	EventItem::~EventItem(void)
 	{
+	}
+
+	void
+	EventItem::informationModel(InformationModel::SPtr& informationModel)
+	{
+		informationModel_ = informationModel;
 	}
 
 	OpcUaStatusCode
@@ -40,6 +48,13 @@ namespace OpcUaStackServer
 	{
 		// FIXME: todo
 		std::cout << "Event item" << std::endl;
+
+		// get event filter
+		EventFilter::SPtr eventFilter;
+		eventFilter = monitoredItemCreateRequest->requestedParameters().filter().parameter<EventFilter>();
+		if (eventFilter.get() == nullptr) {
+			return BadInvalidArgument;
+		}
 
 		// FIXME: todo
 		return Success;

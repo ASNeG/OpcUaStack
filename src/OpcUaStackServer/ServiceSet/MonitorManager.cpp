@@ -231,6 +231,7 @@ namespace OpcUaStackServer
 
 		// create new monitor item
 		EventItem::SPtr eventItem = constructSPtr<EventItem>();
+		eventItem->informationModel(informationModel_);
 		OpcUaStatusCode statusCode = eventItem->receive(
 			monitoredItemCreateRequest,
 			monitoredItemCreateResult
