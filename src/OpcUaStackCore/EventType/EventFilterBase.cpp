@@ -22,6 +22,7 @@ namespace OpcUaStackCore
 {
 
 	EventFilterBase::EventFilterBase(void)
+	: eventId_(0)
 	{
 	}
 
@@ -29,12 +30,24 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	EventFilterBase::eventId(uint32_t eventId)
+	{
+		eventId_ = eventId;
+	}
+
+	uint32_t
+	EventFilterBase::eventId(void)
+	{
+		return eventId_;
+	}
+
 	bool
 	EventFilterBase::fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase)
 	{
-		std::cout << "EventFilterBase::fireEvent" << std::endl;
-		// FIXME: todo
-		return true;
+		Log(Warning, "fire event method is not implemented")
+			.parameter("NodeId", nodeId);
+		return false;
 	}
 
 }

@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Callback.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/EventType/EventBase.h"
 
@@ -32,11 +33,15 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<EventFilterBase> SPtr;
 
 		EventFilterBase(void);
-		~EventFilterBase(void);
+		virtual ~EventFilterBase(void);
 
-		bool fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase);
+		void eventId(uint32_t eventId);
+		uint32_t eventId(void);
+
+		virtual bool fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase);
 
 	  private:
+		uint32_t eventId_;
 	};
 
 
