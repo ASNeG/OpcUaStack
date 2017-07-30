@@ -24,7 +24,7 @@ namespace OpcUaStackServer
 
 	InformationModel::InformationModel(void)
 	: methodMap_()
-	, eventMap_()
+	, eventHandlerMap_()
 	{
 	}
 
@@ -44,10 +44,10 @@ namespace OpcUaStackServer
 		return methodMap_;
 	}
 
-	EventMap&
-	InformationModel::eventMap(void)
+	EventHandlerMap&
+	InformationModel::eventHandlerMap(void)
 	{
-		return eventMap_;
+		return eventHandlerMap_;
 	}
 
 	void
@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 	{
 		informationModelMap_.clear();
 		methodMap_.clear();
-		eventMap_.clear();
+		eventHandlerMap_.clear();
 	}
 
 	bool 
