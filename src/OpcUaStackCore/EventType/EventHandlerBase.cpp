@@ -15,37 +15,39 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_EventFilterBase_h__
-#define __OpcUaStackCore_EventFilterBase_h__
-
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Callback.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
-#include "OpcUaStackCore/EventType/EventBase.h"
+#include <OpcUaStackCore/EventType/EventHandlerBase.h>
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT EventFilterBase
+	EventHandlerBase::EventHandlerBase(void)
+	: eventId_(0)
 	{
-	  public:
-		typedef boost::shared_ptr<EventFilterBase> SPtr;
-		typedef std::vector<EventFilterBase::SPtr> Vec;
+	}
 
-		EventFilterBase(void);
-		virtual ~EventFilterBase(void);
+	EventHandlerBase::~EventHandlerBase(void)
+	{
+	}
 
-		void eventId(uint32_t eventId);
-		uint32_t eventId(void);
+	void
+	EventHandlerBase::eventId(uint32_t eventId)
+	{
+		eventId_ = eventId;
+	}
 
-		virtual bool fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase);
+	uint32_t
+	EventHandlerBase::eventId(void)
+	{
+		return eventId_;
+	}
 
-	  private:
-		uint32_t eventId_;
-	};
-
+	bool
+	EventHandlerBase::fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase)
+	{
+		Log(Warning, "fire event method is not implemented")
+			.parameter("NodeId", nodeId);
+		return false;
+	}
 
 }
-
-#endif
