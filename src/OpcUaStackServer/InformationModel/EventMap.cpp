@@ -56,28 +56,32 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	EventMap::deregisterEvent(OpcUaNodeId& nodeId)
+	EventMap::deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId)
 	{
 		EventFilterBaseMap::iterator it;
-		it = eventFilterBaseMap_.find(nodeId);
-		if (it == eventFilterBaseMap_.end()) {
-			return true;
+		std::pair<EventFilterBaseMap::iterator, EventFilterBaseMap::iterator> ret;
+
+		ret = eventFilterBaseMap_.equal_range(nodeId);
+		for (it = ret.first; it != ret.second; ++it) {
+			EventFilterBase::SPtr eventFilterBase = it->second;
+			if (eventFilterBase->eventId() == eventId) {
+				eventFilterBaseMap_.erase(it);
+			}
 		}
-		eventFilterBaseMap_.erase(it);
+
 		return true;
 	}
 
-	EventFilterBase::SPtr
-	EventMap::getEvent(OpcUaNodeId& nodeId)
+	void
+	EventMap::getEvent(OpcUaNodeId& nodeId, EventFilterBase::Vec& eventFilterBaseVec)
 	{
-		EventFilterBase::SPtr eventFilterBase;
-
 		EventFilterBaseMap::iterator it;
-		it = eventFilterBaseMap_.find(nodeId);
-		if (it == eventFilterBaseMap_.end()) {
-			return eventFilterBase;
+		std::pair<EventFilterBaseMap::iterator, EventFilterBaseMap::iterator> ret;
+
+		ret = eventFilterBaseMap_.equal_range(nodeId);
+		for (it = ret.first; it != ret.second; ++it) {
+			eventFilterBaseVec.push_back(it->second);
 		}
-		return it->second;
 	}
 
 }

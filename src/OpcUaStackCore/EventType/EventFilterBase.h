@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<EventFilterBase> SPtr;
+		typedef std::vector<EventFilterBase::SPtr> Vec;
 
 		EventFilterBase(void);
 		virtual ~EventFilterBase(void);

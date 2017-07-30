@@ -401,13 +401,15 @@ namespace OpcUaStackServer
 		// find event filter
 		//
 		EventMap& eventMap = informationModel_->eventMap();
-		EventFilterBase::SPtr eventFilter = eventMap.getEvent(fireEventRequest->nodeId());
-		if (eventFilter.get() == nullptr) {
-			trx->statusCode(Success);
-			trx->componentSession()->send(serviceTransaction);
-			return;
+
+		EventFilterBase::Vec eventFilterBaseVec;
+		EventFilterBase::Vec::iterator it;
+
+		eventMap.getEvent(fireEventRequest->nodeId(), eventFilterBaseVec);
+		for (it = eventFilterBaseVec.begin(); it != eventFilterBaseVec.end(); it++) {
+			EventFilterBase::SPtr eventFilterBase = *it;
+			eventFilterBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
 		}
-		eventFilter->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);

@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT EventMap
 	{
 	  public:
-		typedef std::map<OpcUaNodeId, EventFilterBase::SPtr> EventFilterBaseMap;
+		typedef std::multimap<OpcUaNodeId, EventFilterBase::SPtr> EventFilterBaseMap;
 
 		EventMap(void);
 		~EventMap(void);
@@ -38,8 +38,8 @@ namespace OpcUaStackServer
 		void clear(void);
 		bool existEvent(OpcUaNodeId& nodeId);
 		bool registerEvent(OpcUaNodeId& nodeId, EventFilterBase::SPtr& eventFilterBase);
-		bool deregisterEvent(OpcUaNodeId& nodeId);
-		EventFilterBase::SPtr getEvent(OpcUaNodeId& nodeId);
+		bool deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId);
+		void getEvent(OpcUaNodeId& nodeId, EventFilterBase::Vec& eventFilterBaseVec);
 
 	  private:
 		EventFilterBaseMap eventFilterBaseMap_;
