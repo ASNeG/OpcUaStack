@@ -18,9 +18,9 @@
 #ifndef __OpcUaStackServer_EventMap_h__
 #define __OpcUaStackServer_EventMap_h__
 
+#include <OpcUaStackCore/EventType/EventHandlerBase.h>
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/EventType/EventFilterBase.h"
 
 using namespace OpcUaStackCore;
 
@@ -30,19 +30,19 @@ namespace OpcUaStackServer
 	class DLLEXPORT EventMap
 	{
 	  public:
-		typedef std::multimap<OpcUaNodeId, EventFilterBase::SPtr> EventFilterBaseMap;
+		typedef std::multimap<OpcUaNodeId, EventHandlerBase::SPtr> EventHandlerBaseMap;
 
 		EventMap(void);
 		~EventMap(void);
 
 		void clear(void);
 		bool existEvent(OpcUaNodeId& nodeId);
-		bool registerEvent(OpcUaNodeId& nodeId, EventFilterBase::SPtr& eventFilterBase);
+		bool registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase);
 		bool deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId);
-		void getEvent(OpcUaNodeId& nodeId, EventFilterBase::Vec& eventFilterBaseVec);
+		void getEvent(OpcUaNodeId& nodeId, EventHandlerBase::Vec& eventHandlerBaseVec);
 
 	  private:
-		EventFilterBaseMap eventFilterBaseMap_;
+		EventHandlerBaseMap eventHandlerBaseMap_;
 	};
 
 }

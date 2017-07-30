@@ -22,7 +22,7 @@ namespace OpcUaStackServer
 {
 
 	EventMap::EventMap(void)
-	: eventFilterBaseMap_()
+	: eventHandlerBaseMap_()
 	{
 	}
 
@@ -33,39 +33,39 @@ namespace OpcUaStackServer
 	void
 	EventMap::clear(void)
 	{
-		eventFilterBaseMap_.clear();
+		eventHandlerBaseMap_.clear();
 	}
 
 	bool
 	EventMap::existEvent(OpcUaNodeId& nodeId)
 	{
-		EventFilterBaseMap::iterator it;
-		it = eventFilterBaseMap_.find(nodeId);
-		if (it != eventFilterBaseMap_.end());
+		EventHandlerBaseMap::iterator it;
+		it = eventHandlerBaseMap_.find(nodeId);
+		if (it != eventHandlerBaseMap_.end());
 	}
 
 	bool
-	EventMap::registerEvent(OpcUaNodeId& nodeId, EventFilterBase::SPtr& eventFilterBase)
+	EventMap::registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase)
 	{
 		if (existEvent(nodeId)) {
 			return false;
 		}
 
-		eventFilterBaseMap_.insert(std::make_pair(nodeId, eventFilterBase));
+		eventHandlerBaseMap_.insert(std::make_pair(nodeId, eventHandlerBase));
 		return true;
 	}
 
 	bool
 	EventMap::deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId)
 	{
-		EventFilterBaseMap::iterator it;
-		std::pair<EventFilterBaseMap::iterator, EventFilterBaseMap::iterator> ret;
+		EventHandlerBaseMap::iterator it;
+		std::pair<EventHandlerBaseMap::iterator, EventHandlerBaseMap::iterator> ret;
 
-		ret = eventFilterBaseMap_.equal_range(nodeId);
+		ret = eventHandlerBaseMap_.equal_range(nodeId);
 		for (it = ret.first; it != ret.second; ++it) {
-			EventFilterBase::SPtr eventFilterBase = it->second;
-			if (eventFilterBase->eventId() == eventId) {
-				eventFilterBaseMap_.erase(it);
+			EventHandlerBase::SPtr eventHandlerBase = it->second;
+			if (eventHandlerBase->eventId() == eventId) {
+				eventHandlerBaseMap_.erase(it);
 			}
 		}
 
@@ -73,14 +73,14 @@ namespace OpcUaStackServer
 	}
 
 	void
-	EventMap::getEvent(OpcUaNodeId& nodeId, EventFilterBase::Vec& eventFilterBaseVec)
+	EventMap::getEvent(OpcUaNodeId& nodeId, EventHandlerBase::Vec& eventHandlerBaseVec)
 	{
-		EventFilterBaseMap::iterator it;
-		std::pair<EventFilterBaseMap::iterator, EventFilterBaseMap::iterator> ret;
+		EventHandlerBaseMap::iterator it;
+		std::pair<EventHandlerBaseMap::iterator, EventHandlerBaseMap::iterator> ret;
 
-		ret = eventFilterBaseMap_.equal_range(nodeId);
+		ret = eventHandlerBaseMap_.equal_range(nodeId);
 		for (it = ret.first; it != ret.second; ++it) {
-			eventFilterBaseVec.push_back(it->second);
+			eventHandlerBaseVec.push_back(it->second);
 		}
 	}
 
