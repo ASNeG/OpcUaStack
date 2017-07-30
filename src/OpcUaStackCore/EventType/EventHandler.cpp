@@ -37,6 +37,12 @@ namespace OpcUaStackCore
 		callback_ = callback;
 	}
 
+	Callback&
+	EventHandler::callback(void)
+	{
+		return callback_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -51,7 +57,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		callback_(nodeId, eventBase);
+		callback_(eventBase);
 		return true;
 	}
 

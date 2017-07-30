@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		virtual ~EventHandler(void);
 
 		void callback(Callback& callback);
+		Callback& callback(void);
 
 		// - interface EventHandlerBase
 		virtual bool fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase);
