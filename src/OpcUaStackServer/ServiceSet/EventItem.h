@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/EventType/EventHandler.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
@@ -49,9 +50,14 @@ namespace OpcUaStackServer
 		uint32_t eventItemId(void);
 
 	  private:
+		void clear(void);
+		void fireEvent(EventBase::SPtr eventBase);
+
+		OpcUaNodeId nodeId_;
 		uint32_t eventItemId_;
 		InformationModel::SPtr informationModel_;
 
+		EventHandler::SPtr eventHandler_;
 	};
 
 }

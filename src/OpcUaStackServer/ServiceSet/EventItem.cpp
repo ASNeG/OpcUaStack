@@ -27,11 +27,14 @@ namespace OpcUaStackServer
 	EventItem::EventItem(void)
 	: eventItemId_(MonitorItemId::monitorItemId())
 	, informationModel_()
+	, eventHandler_(constructSPtr<EventHandler>())
+	, nodeId_()
 	{
 	}
 
 	EventItem::~EventItem(void)
 	{
+		clear();
 	}
 
 	void
@@ -46,8 +49,9 @@ namespace OpcUaStackServer
 		MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 	)
 	{
-		// FIXME: todo
-		std::cout << "Event item" << std::endl;
+		// FIXME: lock...
+
+		nodeId_ = *monitoredItemCreateRequest->itemToMonitor().nodeId();
 
 		// get event filter
 		EventFilter::SPtr eventFilter;
@@ -56,7 +60,17 @@ namespace OpcUaStackServer
 			return BadInvalidArgument;
 		}
 
-		// FIXME: todo
+		//
+		// FIXME: construct filter stack
+		//
+
+		// init event handler
+		eventHandler_->callback().reset(boost::bind(&EventItem::fireEvent, this, _1));
+
+		EventHandlerBase::SPtr eventHandlerBase = boost::static_pointer_cast<EventHandlerBase>(eventHandler_);
+		informationModel_->eventHandlerMap().registerEvent(nodeId_, eventHandlerBase);
+		monitoredItemCreateResult->statusCode(Success);
+
 		return Success;
 	}
 
@@ -64,6 +78,18 @@ namespace OpcUaStackServer
 	EventItem::eventItemId(void)
 	{
 		return eventItemId_;
+	}
+
+	void
+	EventItem::clear(void)
+	{
+		informationModel_->eventHandlerMap().deregisterEvent(nodeId_, eventHandler_->eventId());
+	}
+
+	void
+	EventItem::fireEvent(EventBase::SPtr eventBase)
+	{
+		std::cout << "EventItem::fireEvent" << std::endl;
 	}
 
 
