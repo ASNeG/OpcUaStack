@@ -405,6 +405,7 @@ namespace OpcUaStackServer
 		EventHandlerBase::Vec eventHandlerBaseVec;
 		EventHandlerBase::Vec::iterator it;
 
+		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandlerMap.getEvent(fireEventRequest->nodeId(), eventHandlerBaseVec);
 		for (it = eventHandlerBaseVec.begin(); it != eventHandlerBaseVec.end(); it++) {
 			EventHandlerBase::SPtr eventHandlerBase = *it;

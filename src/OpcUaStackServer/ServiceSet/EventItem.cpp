@@ -64,11 +64,13 @@ namespace OpcUaStackServer
 		// FIXME: construct filter stack
 		//
 
-		// init event handler
+		// register event handler
+		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
+		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandler_->callback().reset(boost::bind(&EventItem::fireEvent, this, _1));
-
 		EventHandlerBase::SPtr eventHandlerBase = boost::static_pointer_cast<EventHandlerBase>(eventHandler_);
-		informationModel_->eventHandlerMap().registerEvent(nodeId_, eventHandlerBase);
+		eventHandlerMap.registerEvent(nodeId_, eventHandlerBase);
+
 		monitoredItemCreateResult->statusCode(Success);
 
 		return Success;
@@ -83,7 +85,9 @@ namespace OpcUaStackServer
 	void
 	EventItem::clear(void)
 	{
-		informationModel_->eventHandlerMap().deregisterEvent(nodeId_, eventHandler_->eventId());
+		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
+		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
+		eventHandlerMap.deregisterEvent(nodeId_, eventHandler_->eventId());
 	}
 
 	void
