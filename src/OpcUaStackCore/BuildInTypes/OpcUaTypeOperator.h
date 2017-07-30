@@ -28,6 +28,12 @@ namespace OpcUaStackCore
 	  public:
 		OpcUaTypeOperator(void);
 		~OpcUaTypeOperator(void);
+
+		// bool op(Operator, Operanden, Result);
+		// Operator -> OpcUaOperator
+		// Operanden -> OpcUaVariant
+		// Result -> OpcuaVariant
+
 	};
 
 }

@@ -70,7 +70,12 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr& targetVariant 		// target variant data
 	)
 	{
+		if (sourceVariant.get() == nullptr) return false;
+		OpcUaBuildInType sourceType = sourceVariant->variantType();
+		if (sourceType == OpcUaBuildInType_Unknown) return false;
+
 		// FIXME: todo
+
 		return false;
 	}
 
