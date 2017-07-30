@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_EventMap_h__
-#define __OpcUaStackServer_EventMap_h__
+#ifndef __OpcUaStackServer_EventHandlerMap_h__
+#define __OpcUaStackServer_EventHandlerMap_h__
 
 #include <OpcUaStackCore/EventType/EventHandlerBase.h>
 #include <map>
@@ -27,13 +27,13 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT EventMap
+	class DLLEXPORT EventHandlerMap
 	{
 	  public:
 		typedef std::multimap<OpcUaNodeId, EventHandlerBase::SPtr> EventHandlerBaseMap;
 
-		EventMap(void);
-		~EventMap(void);
+		EventHandlerMap(void);
+		~EventHandlerMap(void);
 
 		void clear(void);
 		bool existEvent(OpcUaNodeId& nodeId);

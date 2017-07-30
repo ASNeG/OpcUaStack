@@ -15,29 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackServer/InformationModel/EventMap.h"
+#include <OpcUaStackServer/InformationModel/EventHandlerMap.h>
 #include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackServer
 {
 
-	EventMap::EventMap(void)
+	EventHandlerMap::EventHandlerMap(void)
 	: eventHandlerBaseMap_()
 	{
 	}
 
-	EventMap::~EventMap(void)
+	EventHandlerMap::~EventHandlerMap(void)
 	{
 	}
 
 	void
-	EventMap::clear(void)
+	EventHandlerMap::clear(void)
 	{
 		eventHandlerBaseMap_.clear();
 	}
 
 	bool
-	EventMap::existEvent(OpcUaNodeId& nodeId)
+	EventHandlerMap::existEvent(OpcUaNodeId& nodeId)
 	{
 		EventHandlerBaseMap::iterator it;
 		it = eventHandlerBaseMap_.find(nodeId);
@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	EventMap::registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase)
+	EventHandlerMap::registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase)
 	{
 		if (existEvent(nodeId)) {
 			return false;
@@ -56,7 +56,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	EventMap::deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId)
+	EventHandlerMap::deregisterEvent(OpcUaNodeId& nodeId, uint32_t eventId)
 	{
 		EventHandlerBaseMap::iterator it;
 		std::pair<EventHandlerBaseMap::iterator, EventHandlerBaseMap::iterator> ret;
@@ -73,7 +73,7 @@ namespace OpcUaStackServer
 	}
 
 	void
-	EventMap::getEvent(OpcUaNodeId& nodeId, EventHandlerBase::Vec& eventHandlerBaseVec)
+	EventHandlerMap::getEvent(OpcUaNodeId& nodeId, EventHandlerBase::Vec& eventHandlerBaseVec)
 	{
 		EventHandlerBaseMap::iterator it;
 		std::pair<EventHandlerBaseMap::iterator, EventHandlerBaseMap::iterator> ret;
