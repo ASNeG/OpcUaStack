@@ -23,11 +23,36 @@ namespace OpcUaStackCore
 
 	EventHandler::EventHandler(void)
 	: EventHandlerBase()
+	, callback_()
 	{
 	}
 
 	EventHandler::~EventHandler(void)
 	{
+	}
+
+	void
+	EventHandler::callback(Callback& callback)
+	{
+		callback_ = callback;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// interface EventHandlerBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	EventHandler::fireEvent(OpcUaNodeId& nodeId, EventBase::SPtr& eventBase)
+	{
+		if (!callback_.exist()) {
+			return false;
+		}
+
+		callback_(nodeId, eventBase);
+		return true;
 	}
 
 }
