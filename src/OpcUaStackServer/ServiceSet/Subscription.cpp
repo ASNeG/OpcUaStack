@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -127,11 +127,41 @@ namespace OpcUaStackServer
 		// check lifetime counter
 		actLifetimeCount_ = lifetimeCount_;
 
-		ExtensibleParameter::SPtr extensibleParameter = constructSPtr<ExtensibleParameter>();
+		ExtensibleParameter::SPtr extensibleParameter;
+		OpcUaStatusCode statusCode;
+
+		//
+		// handle event notification
+		//
+		extensibleParameter = constructSPtr<ExtensibleParameter>();
+		extensibleParameter->parameterTypeId().nodeId(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
+		EventNotificationList::SPtr eventNotificationList = extensibleParameter->parameter<EventNotificationList>();
+		statusCode = monitorManager_.receive(eventNotificationList->events());
+		if (eventNotificationList->events()->size() > 0) {
+			actMaxKeepAliveCount_ = maxKeepAliveCount_;
+
+			PublishResponse::SPtr publishResponse = trx->response();
+			publishResponse->notificationMessage()->notificationData()->set(0, extensibleParameter);
+			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
+			publishResponse->notificationMessage()->sequenceNumber(sequenceNumber());
+			publishResponse->subscriptionId(subscriptionId_);
+			publishResponse->moreNotifications(false);
+
+			publishResponse->availableSequenceNumbers()->resize(1);
+			publishResponse->availableSequenceNumbers()->set(0, publishResponse->notificationMessage()->sequenceNumber());
+
+			if (statusCode == BadOutOfMemory) return NeedAttention;
+			return SendPublish;
+		}
+
+		//
+		// handle data change notification
+		//
+		extensibleParameter = constructSPtr<ExtensibleParameter>();
 		extensibleParameter->parameterTypeId().nodeId(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		DataChangeNotification::SPtr dataChangeNotification = extensibleParameter->parameter<DataChangeNotification>();
 		
-		OpcUaStatusCode statusCode = monitorManager_.receive(dataChangeNotification->monitoredItems());
+		statusCode = monitorManager_.receive(dataChangeNotification->monitoredItems());
 		if (dataChangeNotification->monitoredItems()->size() > 0) {
 			actMaxKeepAliveCount_ = maxKeepAliveCount_;
 
@@ -149,7 +179,9 @@ namespace OpcUaStackServer
 			return SendPublish;
 		}
 
+		//
 		// check keepalive counter
+		//
 		actMaxKeepAliveCount_--;
 		if (actMaxKeepAliveCount_ == 0) {
 			actMaxKeepAliveCount_  = maxKeepAliveCount_;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
+#include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackCore/ServiceSet/ObjectAttributes.h"
 #include "OpcUaStackCore/ServiceSet/VariableAttributes.h"
 #include "OpcUaStackCore/ServiceSet/MethodAttributes.h"
@@ -101,6 +102,7 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
+		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
 		ep.registerFactoryElement<ObjectAttributes>(OpcUaId_ObjectAttributes);
 		ep.registerFactoryElement<VariableAttributes>(OpcUaId_VariableAttributes);
@@ -148,6 +150,7 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
 
 		ep.deregisterFactoryElement(OpcUaId_ObjectAttributes);
 		ep.deregisterFactoryElement(OpcUaId_VariableAttributes);

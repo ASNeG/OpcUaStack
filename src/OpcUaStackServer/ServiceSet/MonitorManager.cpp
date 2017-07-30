@@ -379,12 +379,16 @@ namespace OpcUaStackServer
 			numberNotifications += it->second->size();
 		}
 
-		if (numberNotifications == 0) return Success;
+		if (numberNotifications == 0) {
+			return Success;
+		}
 
 		monitoredItemNotificationArray->resize(numberNotifications);
 		for (it = monitorItemMap_.begin(); it != monitorItemMap_.end(); it++) {
 			OpcUaStatusCode statusCode = it->second->receive(monitoredItemNotificationArray);
-			if (statusCode == BadOutOfMemory) return statusCode;
+			if (statusCode == BadOutOfMemory) {
+				return statusCode;
+			}
 		}
 
 		return Success;
@@ -399,12 +403,16 @@ namespace OpcUaStackServer
 			numberNotifications += it->second->size();
 		}
 
-		if (numberNotifications == 0) return Success;
+		if (numberNotifications == 0) {
+			return Success;
+		}
 
 		eventFieldListArray->resize(numberNotifications);
 		for (it = eventItemMap_.begin(); it != eventItemMap_.end(); it++) {
 			OpcUaStatusCode statusCode = it->second->receive(eventFieldListArray);
-			if (statusCode == BadOutOfMemory) return statusCode;
+			if (statusCode == BadOutOfMemory) {
+				return statusCode;
+			}
 		}
 
 		return Success;
