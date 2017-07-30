@@ -23,11 +23,18 @@ namespace OpcUaStackServer
 
 	EventHandlerMap::EventHandlerMap(void)
 	: eventHandlerBaseMap_()
+	, mutex_()
 	{
 	}
 
 	EventHandlerMap::~EventHandlerMap(void)
 	{
+	}
+
+	boost::mutex&
+	EventHandlerMap::mutex(void)
+	{
+		return mutex_;
 	}
 
 	void

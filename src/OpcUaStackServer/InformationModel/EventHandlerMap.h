@@ -18,8 +18,9 @@
 #ifndef __OpcUaStackServer_EventHandlerMap_h__
 #define __OpcUaStackServer_EventHandlerMap_h__
 
-#include <OpcUaStackCore/EventType/EventHandlerBase.h>
 #include <map>
+#include <boost/thread/mutex.hpp>
+#include "OpcUaStackCore/EventType/EventHandlerBase.h"
 #include "OpcUaStackCore/Base/os.h"
 
 using namespace OpcUaStackCore;
@@ -35,6 +36,7 @@ namespace OpcUaStackServer
 		EventHandlerMap(void);
 		~EventHandlerMap(void);
 
+		boost::mutex& mutex(void);
 		void clear(void);
 		bool existEvent(OpcUaNodeId& nodeId);
 		bool registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase);
@@ -43,6 +45,7 @@ namespace OpcUaStackServer
 
 	  private:
 		EventHandlerBaseMap eventHandlerBaseMap_;
+		boost::mutex mutex_;
 	};
 
 }
