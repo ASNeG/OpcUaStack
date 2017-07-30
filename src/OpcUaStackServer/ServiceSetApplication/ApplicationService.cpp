@@ -400,15 +400,15 @@ namespace OpcUaStackServer
 		//
 		// find event filter
 		//
-		EventMap& eventMap = informationModel_->eventMap();
+		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
 
-		EventFilterBase::Vec eventFilterBaseVec;
-		EventFilterBase::Vec::iterator it;
+		EventHandlerBase::Vec eventHandlerBaseVec;
+		EventHandlerBase::Vec::iterator it;
 
-		eventMap.getEvent(fireEventRequest->nodeId(), eventFilterBaseVec);
-		for (it = eventFilterBaseVec.begin(); it != eventFilterBaseVec.end(); it++) {
-			EventFilterBase::SPtr eventFilterBase = *it;
-			eventFilterBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
+		eventHandlerMap.getEvent(fireEventRequest->nodeId(), eventHandlerBaseVec);
+		for (it = eventHandlerBaseVec.begin(); it != eventHandlerBaseVec.end(); it++) {
+			EventHandlerBase::SPtr eventHandlerBase = *it;
+			eventHandlerBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
 		}
 
 		trx->statusCode(Success);
