@@ -29,4 +29,44 @@ namespace OpcUaStackCore
 	{
 	}
 
+	void
+	EventBase::registerVariant(OpcUaNodeId& parentEventType, OpcUaNodeId& eventType, OpcUaQualifiedName& browseName, OpcUaVariant::SPtr& variant)
+	{
+		// FIXME: todo
+	}
+
+	bool
+	EventBase::exist(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	bool
+	EventBase::exist(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	OpcUaVariant::SPtr
+	EventBase::get(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray)
+	{
+		OpcUaVariant::SPtr variant;
+
+		// FIXME: todo
+
+		return variant;
+	}
+
+	OpcUaVariant::SPtr
+	EventBase::get(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName)
+	{
+		OpcUaVariant::SPtr variant;
+
+		// FIXME: todo
+
+		return variant;
+	}
+
 }

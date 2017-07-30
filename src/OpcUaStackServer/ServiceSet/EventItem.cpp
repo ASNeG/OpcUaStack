@@ -51,8 +51,6 @@ namespace OpcUaStackServer
 		MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 	)
 	{
-		// FIXME: lock...
-
 		nodeId_ = *monitoredItemCreateRequest->itemToMonitor().nodeId();
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
@@ -68,6 +66,7 @@ namespace OpcUaStackServer
 		//
 
 		// register event handler
+		// FIXME: lock...
 		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
 		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandler_->callback().reset(boost::bind(&EventItem::fireEvent, this, _1));

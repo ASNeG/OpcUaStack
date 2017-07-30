@@ -64,7 +64,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 
 		EventHandler::SPtr eventHandler_;
-		EventFieldListList eventFieldListList_;
+		EventFieldListList eventFieldListList_; // FIXME: need lock...
 	};
 
 }

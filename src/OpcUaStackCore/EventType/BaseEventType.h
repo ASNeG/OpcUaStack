@@ -34,9 +34,21 @@ namespace OpcUaStackCore
 		BaseEventType(void);
 		virtual ~BaseEventType(void);
 
-	  private:
-	};
+		void eventId(OpcUaByteString::SPtr& eventId);
+		OpcUaByteString::SPtr eventId(void);
+		// FIXME: todo ... all parameter
 
+	  private:
+		OpcUaVariant::SPtr eventId_;		// OpcUaByteString
+		OpcUaVariant::SPtr eventType_;		// OpcUaNodeId
+		OpcUaVariant::SPtr sourceName_;		// OpcUaString
+		OpcUaVariant::SPtr localTime_;		// OpcUaDateTime
+		OpcUaVariant::SPtr message_;		// OpcUaLocalizedText
+		OpcUaVariant::SPtr receiveTime_;	// OpcUaDateTime
+		OpcUaVariant::SPtr severity_;		// OpcUaUInt16
+		OpcUaVariant::SPtr sourceNode_;		// OpcUaNodeId
+		OpcUaVariant::SPtr time_;			// OpcUaDateTime
+	};
 
 }
 

@@ -28,6 +28,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
@@ -38,7 +39,13 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<EventBase> SPtr;
 
 		EventBase(void);
-		~EventBase(void);
+		virtual ~EventBase(void);
+
+		void registerVariant(OpcUaNodeId& parentEventType, OpcUaNodeId& eventType, OpcUaQualifiedName& browseName, OpcUaVariant::SPtr& variant);
+		bool exist(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName);
+		bool exist(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray);
+		OpcUaVariant::SPtr get(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName);
+		OpcUaVariant::SPtr get(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray);
 
 	  private:
 	};
