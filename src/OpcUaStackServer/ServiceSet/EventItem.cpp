@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 	, informationModel_()
 	, eventHandler_(constructSPtr<EventHandler>())
 	, nodeId_()
+	, eventFieldListList_()
 	{
 	}
 
@@ -94,7 +95,64 @@ namespace OpcUaStackServer
 	EventItem::fireEvent(EventBase::SPtr eventBase)
 	{
 		std::cout << "EventItem::fireEvent" << std::endl;
+
+		// FIXME: todo
+		// process where clause
+		// process select clause
+
+		// FIXME: lock
+
+		//
+		//
+		// FIXME: test code
+		//
+		//
+		//
+
+		OpcUaVariant::SPtr variant;
+		EventField::SPtr eventField;
+
+		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
+		eventFieldList->clientHandle(4711);
+		eventFieldList->eventFields()->resize(1);
+
+		// event id (OpcUaByteString)
+		OpcUaByteString::SPtr eventId = constructSPtr<OpcUaByteString>();
+		eventId->value("EventId");
+		variant = constructSPtr<OpcUaVariant>();
+		variant->set(eventId);
+		eventField = constructSPtr<EventField>();
+		eventField->variant(variant);
+		eventFieldList->eventFields()->push_back(eventField);
+
+		// event type (OpcUaNodeId - 17)
+		// local time (OpcUaDateTime)
+		// message (OpcUaLocalizedText)
+		// receive time (OpcUaDateTime)
+		// severity (OpcUaUInt16)
+		// source name (OpcUaString)
+		// source node (OpcUaNodeId)
+		// time (OpcUaDatetime)
+
+		eventFieldListList_.push_back(eventFieldList);
 	}
 
+	OpcUaStatusCode
+	EventItem::receive(EventFieldListArray::SPtr eventFieldListArray)
+	{
+		// FIXME: lock
+
+		uint32_t freeSize = eventFieldListArray->freeSize();
+		do {
+			if (eventFieldListList_.size() == 0) return Success;
+			if (freeSize == 0) return BadOutOfMemory;
+			freeSize--;
+
+			eventFieldListArray->push_back(eventFieldListList_.front());
+			eventFieldListList_.pop_front();
+		} while (true);
+
+		return Success;
+	}
 
 }

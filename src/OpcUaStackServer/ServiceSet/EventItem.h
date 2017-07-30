@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/EventType/EventHandler.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 
@@ -29,6 +30,8 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
+
+	typedef std::list<EventFieldList::SPtr> EventFieldListList;
 
 	class EventItem
 	: public Object
@@ -46,6 +49,7 @@ namespace OpcUaStackServer
 			MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
 			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 		);
+		OpcUaStatusCode receive(EventFieldListArray::SPtr eventFieldListArray);
 
 		uint32_t eventItemId(void);
 
@@ -58,6 +62,7 @@ namespace OpcUaStackServer
 		InformationModel::SPtr informationModel_;
 
 		EventHandler::SPtr eventHandler_;
+		EventFieldListList eventFieldListList_;
 	};
 
 }
