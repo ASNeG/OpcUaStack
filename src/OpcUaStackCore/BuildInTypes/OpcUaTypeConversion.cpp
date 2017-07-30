@@ -33,4 +33,80 @@ namespace OpcUaStackCore
 	{
 	}
 
+	char
+	OpcUaTypeConversion::conversionType(OpcUaBuildInType sourceType, OpcUaBuildInType targetType)
+	{
+		switch (sourceType)
+		{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				switch (targetType)
+				{
+					case OpcUaBuildInType_OpcUaSByte: return 'I';
+					case OpcUaBuildInType_OpcUaByte: return 'I';
+					case OpcUaBuildInType_OpcUaDouble: return 'I';
+					case OpcUaBuildInType_OpcUaFloat: return 'I';
+					case OpcUaBuildInType_OpcUaInt16: return 'I';
+					case OpcUaBuildInType_OpcUaInt32: return 'I';
+					case OpcUaBuildInType_OpcUaInt64: return 'I';
+					case OpcUaBuildInType_OpcUaString: return 'E';
+					case OpcUaBuildInType_OpcUaUInt16: return 'I';
+					case OpcUaBuildInType_OpcUaUInt32: return 'I';
+					case OpcUaBuildInType_OpcUaUInt64: return 'I';
+					default: return 'X';
+				}
+				break;
+			}
+
+			// FIXME: todo ...
+
+			default: return 'X';
+		}
+	}
+
+	bool conversion(
+		OpcUaVariant::SPtr& sourceVariant,		// source variant data
+		OpcUaBuildInType targetType,			// target type
+		OpcUaVariant::SPtr& targetVariant 		// target variant data
+	)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+
+#if 0
+
+	typedef enum
+	{
+		OpcUaBuildInType_Unknown = 0,
+		OpcUaBuildInType_OpcUaBoolean = 1,
+		OpcUaBuildInType_OpcUaSByte = 2,
+		OpcUaBuildInType_OpcUaByte = 3,
+		OpcUaBuildInType_OpcUaInt16 = 4,
+		OpcUaBuildInType_OpcUaUInt16 = 5,
+		OpcUaBuildInType_OpcUaInt32 = 6,
+		OpcUaBuildInType_OpcUaUInt32 = 7,
+		OpcUaBuildInType_OpcUaInt64 = 8,
+		OpcUaBuildInType_OpcUaUInt64 = 9,
+		OpcUaBuildInType_OpcUaFloat = 10,
+		OpcUaBuildInType_OpcUaDouble = 11,
+		OpcUaBuildInType_OpcUaString = 12,
+		OpcUaBuildInType_OpcUaDateTime = 13,
+		OpcUaBuildInType_OpcUaGuid = 14,
+		OpcUaBuildInType_OpcUaByteString = 15,
+		OpcUaBuildInType_OpcUaXmlElement = 16,
+		OpcUaBuildInType_OpcUaNodeId = 17,
+		OpcUaBuildInType_OpcUaExpandedNodeId = 18,
+		OpcUaBuildInType_OpcUaStatusCode = 19,
+		OpcUaBuildInType_OpcUaQualifiedName = 20,
+		OpcUaBuildInType_OpcUaLocalizedText = 21,
+		OpcUaBuildInType_OpcUaExtensionObject = 22,
+		OpcUaBuildInType_OpcUaDataValue = 23,
+		OpcUaBuildInType_OpcUaVariant = 24,
+		OpcUaBuildInType_OpcUaDiagnosticInfo = 25
+	} OpcUaBuildInType;
+
+#endif
+
 }

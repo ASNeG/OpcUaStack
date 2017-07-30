@@ -15,25 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+/*
+  OPC UA Specification Part 4:
+  Chapter 7.4.3 Filter Operator
+  Table 118 Conversion Rules
+ */
+
 #ifndef __OpcUaStackCore_OpcUaTypeConversion_h__
 #define __OpcUaStackCore_OpcUaTypeConversion_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 
 namespace OpcUaStackCore
 {
 
-	// operator bool(const std::string& value) const;
-	// CGPoint& operator|=(CGPoint& cPoint, CGSize const& cSize)
-
 	class DLLEXPORT OpcUaTypeConversion
 	{
 	  public:
+
 		OpcUaTypeConversion(void);
 		~OpcUaTypeConversion(void);
 
-		// FIXME: todo
+		char conversionType(OpcUaBuildInType sourceType, OpcUaBuildInType targetType);
+		bool conversion(
+			OpcUaVariant::SPtr& sourceVariant,		// source variant data
+			OpcUaBuildInType targetType,			// target type
+			OpcUaVariant::SPtr& targetVariant 		// target variant data
+		);
 
 	  private:
 	};
