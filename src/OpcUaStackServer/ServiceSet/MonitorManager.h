@@ -56,6 +56,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(ServiceTransactionSetMonitoringMode::SPtr trx);
 		OpcUaStatusCode receive(ServiceTransactionSetTriggering::SPtr trx);
 		OpcUaStatusCode receive(MonitoredItemNotificationArray::SPtr monitoredItemNotificationArray);
+		OpcUaStatusCode receive(EventFieldListArray::SPtr eventFieldListArray);
 
 	  private:
 		void createMonitoredItem(

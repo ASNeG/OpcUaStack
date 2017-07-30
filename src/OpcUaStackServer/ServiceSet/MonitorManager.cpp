@@ -390,6 +390,26 @@ namespace OpcUaStackServer
 		return Success;
 	}
 
+	OpcUaStatusCode
+	MonitorManager::receive(EventFieldListArray::SPtr eventFieldListArray)
+	{
+		uint32_t numberNotifications = 0;
+		EventItem::Map::iterator it;
+		for (it = eventItemMap_.begin(); it != eventItemMap_.end(); it++) {
+			numberNotifications += it->second->size();
+		}
+
+		if (numberNotifications == 0) return Success;
+
+		eventFieldListArray->resize(numberNotifications);
+		for (it = eventItemMap_.begin(); it != eventItemMap_.end(); it++) {
+			OpcUaStatusCode statusCode = it->second->receive(eventFieldListArray);
+			if (statusCode == BadOutOfMemory) return statusCode;
+		}
+
+		return Success;
+	}
+
 	void
 	MonitorManager::forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
 	{

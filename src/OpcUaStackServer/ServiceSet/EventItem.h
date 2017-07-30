@@ -51,6 +51,7 @@ namespace OpcUaStackServer
 		);
 		OpcUaStatusCode receive(EventFieldListArray::SPtr eventFieldListArray);
 
+		uint32_t size(void);
 		uint32_t eventItemId(void);
 
 	  private:

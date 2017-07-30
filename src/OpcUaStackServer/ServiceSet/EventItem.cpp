@@ -78,6 +78,12 @@ namespace OpcUaStackServer
 	}
 
 	uint32_t
+	EventItem::size(void)
+	{
+		return eventFieldListList_.size();
+	}
+
+	uint32_t
 	EventItem::eventItemId(void)
 	{
 		return eventItemId_;
