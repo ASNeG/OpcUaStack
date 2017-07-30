@@ -30,6 +30,7 @@ namespace OpcUaStackServer
 	, eventHandler_(constructSPtr<EventHandler>())
 	, nodeId_()
 	, eventFieldListList_()
+	, clientHandle_(0)
 	{
 	}
 
@@ -53,6 +54,7 @@ namespace OpcUaStackServer
 		// FIXME: lock...
 
 		nodeId_ = *monitoredItemCreateRequest->itemToMonitor().nodeId();
+		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
 		// get event filter
 		EventFilter::SPtr eventFilter;
@@ -119,7 +121,7 @@ namespace OpcUaStackServer
 		EventField::SPtr eventField;
 
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
-		eventFieldList->clientHandle(4711);
+		eventFieldList->clientHandle(clientHandle_);
 		eventFieldList->eventFields()->resize(1);
 
 		// event id (OpcUaByteString)

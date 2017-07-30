@@ -60,6 +60,7 @@ namespace OpcUaStackServer
 
 		OpcUaNodeId nodeId_;
 		uint32_t eventItemId_;
+		uint32_t clientHandle_;
 		InformationModel::SPtr informationModel_;
 
 		EventHandler::SPtr eventHandler_;
