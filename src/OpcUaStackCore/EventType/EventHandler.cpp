@@ -15,29 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_EventFilter_h__
-#define __OpcUaStackCore_EventFilter_h__
-
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Callback.h"
-#include "OpcUaStackCore/EventType/EventFilterBase.h"
+#include <OpcUaStackCore/EventType/EventHandler.h>
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT EventFilter
-	: public EventFilterBase
+	EventHandler::EventHandler(void)
+	: EventHandlerBase()
 	{
-	  public:
-		typedef boost::shared_ptr<EventFilter> SPtr;
+	}
 
-		EventFilter(void);
-		virtual ~EventFilter(void);
-
-	  private:
-	};
-
+	EventHandler::~EventHandler(void)
+	{
+	}
 
 }
-
-#endif
