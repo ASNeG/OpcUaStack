@@ -122,7 +122,7 @@ namespace OpcUaStackServer
 
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
 		eventFieldList->clientHandle(clientHandle_);
-		eventFieldList->eventFields()->resize(1);
+		eventFieldList->eventFields()->resize(4);
 
 		// event id (OpcUaByteString)
 		OpcUaByteString::SPtr eventId = constructSPtr<OpcUaByteString>();
@@ -133,12 +133,44 @@ namespace OpcUaStackServer
 		eventField->variant(variant);
 		eventFieldList->eventFields()->push_back(eventField);
 
-		// event type (OpcUaNodeId - 17)
+		// event type (OpcUaNodeId)
+		OpcUaNodeId::SPtr eventType = constructSPtr<OpcUaNodeId>(2041);
+		variant = constructSPtr<OpcUaVariant>();
+		variant->set(eventType);
+		eventField = constructSPtr<EventField>();
+		eventField->variant(variant);
+		eventFieldList->eventFields()->push_back(eventField);
+
+		// source name (OpcUaString)
+		OpcUaString::SPtr sourceName = constructSPtr<OpcUaString>();
+		sourceName->value("SourceName");
+		variant = constructSPtr<OpcUaVariant>();
+		variant->set(sourceName);
+		eventField = constructSPtr<EventField>();
+		eventField->variant(variant);
+		eventFieldList->eventFields()->push_back(eventField);
+
 		// local time (OpcUaDateTime)
+		OpcUaDateTime localTime;
+		localTime.dateTime(boost::posix_time::microsec_clock::local_time());
+		variant = constructSPtr<OpcUaVariant>();
+		variant->set(localTime);
+		eventField = constructSPtr<EventField>();
+		eventField->variant(variant);
+		eventFieldList->eventFields()->push_back(eventField);
+
 		// message (OpcUaLocalizedText)
+		OpcUaLocalizedText::SPtr message = constructSPtr<OpcUaLocalizedText>();
+		message->set("de", "test message");
+		variant = constructSPtr<OpcUaVariant>();
+		variant->set(message);
+		eventField = constructSPtr<EventField>();
+		eventField->variant(variant);
+		eventFieldList->eventFields()->push_back(eventField);
+
+
 		// receive time (OpcUaDateTime)
 		// severity (OpcUaUInt16)
-		// source name (OpcUaString)
 		// source node (OpcUaNodeId)
 		// time (OpcUaDatetime)
 
