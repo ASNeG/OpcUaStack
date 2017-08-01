@@ -29,43 +29,30 @@ namespace OpcUaStackCore
 	{
 	}
 
+	uint32_t
+	EventBase::findNamespaceIndex(const std::string& namespaceUri)
+	{
+		// FIXME: todo
+		return 0;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// virtual interface functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
-	EventBase::registerVariant(OpcUaNodeId& parentEventType, OpcUaNodeId& eventType, OpcUaQualifiedName& browseName, OpcUaVariant::SPtr& variant)
+	EventBase::mapNamespaceUri(void)
 	{
-		// FIXME: todo
-	}
-
-	bool
-	EventBase::exist(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName)
-	{
-		// FIXME: todo
-		return false;
-	}
-
-	bool
-	EventBase::exist(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray)
-	{
-		// FIXME: todo
-		return false;
+		return;
 	}
 
 	OpcUaVariant::SPtr
-	EventBase::get(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray)
+	EventBase::get(OpcUaNodeId& eventType, std::list<OpcUaQualifiedName::SPtr>& browseNameList)
 	{
 		OpcUaVariant::SPtr variant;
-
-		// FIXME: todo
-
-		return variant;
-	}
-
-	OpcUaVariant::SPtr
-	EventBase::get(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName)
-	{
-		OpcUaVariant::SPtr variant;
-
-		// FIXME: todo
-
 		return variant;
 	}
 

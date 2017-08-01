@@ -41,11 +41,10 @@ namespace OpcUaStackCore
 		EventBase(void);
 		virtual ~EventBase(void);
 
-		void registerVariant(OpcUaNodeId& parentEventType, OpcUaNodeId& eventType, OpcUaQualifiedName& browseName, OpcUaVariant::SPtr& variant);
-		bool exist(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName);
-		bool exist(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray);
-		OpcUaVariant::SPtr get(OpcUaNodeId& eventType, OpcUaQualifiedName::SPtr& browseName);
-		OpcUaVariant::SPtr get(OpcUaNodeId& eventType, OpcUaQualifiedNameArray::SPtr& browseNameArray);
+		uint32_t findNamespaceIndex(const std::string& namespaceUri);
+
+		virtual void mapNamespaceUri(void);
+		virtual OpcUaVariant::SPtr get(OpcUaNodeId& eventType, std::list<OpcUaQualifiedName::SPtr>& browseNameList);
 
 	  private:
 	};

@@ -38,7 +38,16 @@ namespace OpcUaStackCore
 		OpcUaByteString::SPtr eventId(void);
 		// FIXME: todo ... all parameter
 
+		//- EventBase interface
+		virtual void mapNamespaceUri(void);
+		virtual OpcUaVariant::SPtr get(OpcUaNodeId& eventType, std::list<OpcUaQualifiedName::SPtr>& browseNameList);
+		//- EventBase interface
+
 	  private:
+		std::string namespaceUri_;
+		uint32_t namespaceIndex_;
+		OpcUaNodeId typeNodeId_;
+
 		OpcUaVariant::SPtr eventId_;		// OpcUaByteString
 		OpcUaVariant::SPtr eventType_;		// OpcUaNodeId
 		OpcUaVariant::SPtr sourceName_;		// OpcUaString
