@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	: EventBase()
 	, namespaceUri_("")
 	, typeNodeId_((OpcUaUInt32)2041)
+	, browseName_("BaseEventType")
 	, eventId_(constructSPtr<OpcUaVariant>())
 	, eventType_(constructSPtr<OpcUaVariant>())
 	, sourceName_(constructSPtr<OpcUaVariant>())
@@ -67,6 +68,7 @@ namespace OpcUaStackCore
 	{
 		EventBase::mapNamespaceUri();
 		namespaceIndex_ = findNamespaceIndex(namespaceUri_);
+		browseName_.namespaceIndex(namespaceIndex_);
 	}
 
 	OpcUaVariant::SPtr
@@ -77,28 +79,65 @@ namespace OpcUaStackCore
 		bool& error
 	)
 	{
-		// browse name list is empty
+		// browse name list must contain at least one element
 		if (browseNameList.empty()) {
 			error = true;
 			OpcUaVariant::SPtr variant;
 			return variant;
 		}
 
-		// check event type
-		if (eventType != typeNodeId_) {
+		// check whether eventType and typeNodeId are identical
+		if (eventType == typeNodeId_) {
 			OpcUaVariant::SPtr variant;
-			variant = BaseEventType::get(eventType, eventTypeFound, browseNameList, error);
-			if (error) {
-				OpcUaVariant::SPtr variant;
-				return variant;
+			eventTypeFound = true;
+
+			if (browseNameList.size() == 1) {
+				OpcUaQualifiedName::SPtr browseName = browseNameList.front();
+				browseNameList.pop_front();
+
+				variant = get(browseName);
+				if (variant.get() == nullptr) {
+					error = true;
+				}
 			}
 
-			// FIXME: todo
+			return variant;
 		}
 
-		// FIXME: todo
-
+		// the start item was not found. We delegate the search to the base class
 		OpcUaVariant::SPtr variant;
+		variant = EventBase::get(eventType, eventTypeFound, browseNameList, error);
+		if (!eventTypeFound || error) {
+			return variant;
+		}
+
+		if (browseNameList.size() == 0) {
+			return variant;
+		}
+
+		if (browseNameList.size() < 2) {
+			error = true;
+			return variant;
+		}
+
+		// the browse name must match the first element in the browse name list
+		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
+		browseNameList.pop_front();
+		if (*browseName != browseName_) {
+			error = true;
+			return variant;
+		}
+
+		if (browseNameList.size() == 1) {
+			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
+			browseNameList.pop_front();
+
+			variant = get(browseName);
+			if (variant.get() == nullptr) {
+				error = true;
+			}
+		}
+
 		return variant;
 	}
 
@@ -106,6 +145,22 @@ namespace OpcUaStackCore
 	BaseEventType::get(OpcUaQualifiedName::SPtr& browseName)
 	{
 		OpcUaVariant::SPtr variant;
+
+		if (*browseName == OpcUaQualifiedName("EventId", namespaceIndex_)) {
+			return eventId_;
+		}
+
+#if 0
+		OpcUaVariant::SPtr eventType_;		// OpcUaNodeId
+		OpcUaVariant::SPtr sourceName_;		// OpcUaString
+		OpcUaVariant::SPtr localTime_;		// OpcUaDateTime
+		OpcUaVariant::SPtr message_;		// OpcUaLocalizedText
+		OpcUaVariant::SPtr receiveTime_;	// OpcUaDateTime
+		OpcUaVariant::SPtr severity_;		// OpcUaUInt16
+		OpcUaVariant::SPtr sourceNode_;		// OpcUaNodeId
+		OpcUaVariant::SPtr time_;			// OpcUaDateTime
+#endif
+
 		return variant;
 	}
 
