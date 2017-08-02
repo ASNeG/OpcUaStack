@@ -68,7 +68,9 @@ namespace OpcUaStackCore
 	BaseEventType::mapNamespaceUri(void)
 	{
 		EventBase::mapNamespaceUri();
-		namespaceIndex_ = findNamespaceIndex(namespaceUri_);
+		int32_t ns = findNamespaceIndex(namespaceUri_);
+		if (ns < 0) namespaceIndex_ = 0;
+		namespaceIndex_ = ns;
 		browseName_.namespaceIndex(namespaceIndex_);
 	}
 

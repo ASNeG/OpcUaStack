@@ -15,14 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-/*
-
- 	 SimpleAttributeOperand:
- 	 	 IN: TypeNodeId, BrowseNames
- 	 	 OUT: Variant
-
- */
-
 #ifndef __OpcUaStackCore_EventBase_h__
 #define __OpcUaStackCore_EventBase_h__
 
@@ -41,17 +33,28 @@ namespace OpcUaStackCore
 		EventBase(void);
 		virtual ~EventBase(void);
 
-		uint32_t findNamespaceIndex(const std::string& namespaceUri);
+		void namespaceArray(std::vector<std::string>* namespaceArray);
+		int32_t findNamespaceIndex(const std::string& namespaceUri);
 
 		virtual void mapNamespaceUri(void);
+
+		//
+		// The get call succeeds under the following conditions
+		//
+		// 1. The variant result is not null
+		// 2. The eventTypeFound value is true
+		// 3. The error value is false
+		// 4. The size of browseNameList is 0
+		//
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
-			bool eventTypeFound,
+			bool eventTypeFound,			// The pass value must be true
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			bool& error
+			bool& error						// The pass value must be false
 		);
 
 	  private:
+		std::vector<std::string>* namespaceArray_;
 	};
 
 

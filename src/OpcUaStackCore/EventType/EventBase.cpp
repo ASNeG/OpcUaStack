@@ -22,6 +22,7 @@ namespace OpcUaStackCore
 {
 
 	EventBase::EventBase(void)
+	: namespaceArray_(nullptr)
 	{
 	}
 
@@ -29,11 +30,23 @@ namespace OpcUaStackCore
 	{
 	}
 
-	uint32_t
+	void
+	EventBase::namespaceArray(std::vector<std::string>* namespaceArray)
+	{
+		namespaceArray_ = namespaceArray;
+		mapNamespaceUri();
+		namespaceArray_ = nullptr;
+	}
+
+	int32_t
 	EventBase::findNamespaceIndex(const std::string& namespaceUri)
 	{
-		// FIXME: todo
-		return 0;
+		if (namespaceArray_ == nullptr) return -1;
+
+		for (uint32_t idx=0; idx<namespaceArray_->size(); idx++) {
+			if ((*namespaceArray_)[idx] == namespaceUri) return idx;
+		}
+		return -1;
 	}
 
 	// ------------------------------------------------------------------------

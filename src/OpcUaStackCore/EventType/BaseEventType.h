@@ -40,19 +40,11 @@ namespace OpcUaStackCore
 
 		//- EventBase interface
 		virtual void mapNamespaceUri(void);
-		//
-		// The get call succeeds under the following conditions
-		//
-		// 1. The variant result is not null
-		// 2. The eventTypeFound value is true
-		// 3. The error value is false
-		// 4. The size of browseNameList is 0
-		//
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
-			bool eventTypeFound,		// The pass value must be true
+			bool eventTypeFound,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			bool& error					// The pass value must be false
+			bool& error
 		);
 		//- EventBase interface
 
