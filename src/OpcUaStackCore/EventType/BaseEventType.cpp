@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 	BaseEventType::BaseEventType(void)
 	: EventBase()
 	, namespaceUri_("")
+	, namespaceIndex_(0)
 	, typeNodeId_((OpcUaUInt32)2041)
 	, browseName_("BaseEventType")
 	, eventId_(constructSPtr<OpcUaVariant>())
@@ -107,11 +108,7 @@ namespace OpcUaStackCore
 		// the start item was not found. We delegate the search to the base class
 		OpcUaVariant::SPtr variant;
 		variant = EventBase::get(eventType, eventTypeFound, browseNameList, error);
-		if (!eventTypeFound || error) {
-			return variant;
-		}
-
-		if (browseNameList.size() == 0) {
+		if (!eventTypeFound || error || browseNameList.size() == 0) {
 			return variant;
 		}
 
@@ -144,23 +141,35 @@ namespace OpcUaStackCore
 	OpcUaVariant::SPtr
 	BaseEventType::get(OpcUaQualifiedName::SPtr& browseName)
 	{
-		OpcUaVariant::SPtr variant;
-
 		if (*browseName == OpcUaQualifiedName("EventId", namespaceIndex_)) {
 			return eventId_;
 		}
+		if (*browseName == OpcUaQualifiedName("EventType", namespaceIndex_)) {
+			return eventType_;
+		}
+		if (*browseName == OpcUaQualifiedName("SourceName", namespaceIndex_)) {
+			return sourceName_;
+		}
+		if (*browseName == OpcUaQualifiedName("LocalTime", namespaceIndex_)) {
+			return localTime_;
+		}
+		if (*browseName == OpcUaQualifiedName("Message", namespaceIndex_)) {
+			return message_;
+		}
+		if (*browseName == OpcUaQualifiedName("ReceiveTime", namespaceIndex_)) {
+			return receiveTime_;
+		}
+		if (*browseName == OpcUaQualifiedName("Severity", namespaceIndex_)) {
+			return severity_;
+		}
+		if (*browseName == OpcUaQualifiedName("SourceNode", namespaceIndex_)) {
+			return sourceNode_;
+		}
+		if (*browseName == OpcUaQualifiedName("Time", namespaceIndex_)) {
+			return time_;
+		}
 
-#if 0
-		OpcUaVariant::SPtr eventType_;		// OpcUaNodeId
-		OpcUaVariant::SPtr sourceName_;		// OpcUaString
-		OpcUaVariant::SPtr localTime_;		// OpcUaDateTime
-		OpcUaVariant::SPtr message_;		// OpcUaLocalizedText
-		OpcUaVariant::SPtr receiveTime_;	// OpcUaDateTime
-		OpcUaVariant::SPtr severity_;		// OpcUaUInt16
-		OpcUaVariant::SPtr sourceNode_;		// OpcUaNodeId
-		OpcUaVariant::SPtr time_;			// OpcUaDateTime
-#endif
-
+		OpcUaVariant::SPtr variant;
 		return variant;
 	}
 
