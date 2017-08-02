@@ -40,10 +40,17 @@ namespace OpcUaStackCore
 
 		//- EventBase interface
 		virtual void mapNamespaceUri(void);
-		virtual OpcUaVariant::SPtr get(OpcUaNodeId& eventType, std::list<OpcUaQualifiedName::SPtr>& browseNameList);
+		virtual OpcUaVariant::SPtr get(
+			OpcUaNodeId& eventType,
+			bool eventTypeFound,
+			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
+			bool& error
+		);
 		//- EventBase interface
 
 	  private:
+		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName);
+
 		std::string namespaceUri_;
 		uint32_t namespaceIndex_;
 		OpcUaNodeId typeNodeId_;

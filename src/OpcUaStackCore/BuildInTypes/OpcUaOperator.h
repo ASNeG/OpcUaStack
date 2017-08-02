@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_OpcUaOpterator_h__
-#define __OpcUaStackCore_OpcUaOpterator_h__
+#ifndef __OpcUaStackCore_OpcUaOperator_h__
+#define __OpcUaStackCore_OpcUaOperator_h__
 
 #include "OpcUaStackCore/Base/os.h"
 
@@ -175,7 +175,7 @@ namespace OpcUaStackCore
 		// [1]: Any operand that resolves to a Integer.
 		// If any operand cannot be resolved to a Integer it is considered a NULL. See below
 		// for a discussion on the handling of NULL.
-	} OpcUaOpterator;
+	} OpcUaOperator;
 
 }
 

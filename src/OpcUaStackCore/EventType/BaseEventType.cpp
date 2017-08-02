@@ -70,10 +70,42 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaVariant::SPtr
-	BaseEventType::get(OpcUaNodeId& eventType, std::list<OpcUaQualifiedName::SPtr>& browseNameList)
+	BaseEventType::get(
+		OpcUaNodeId& eventType,
+		bool eventTypeFound,
+		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
+		bool& error
+	)
+	{
+		// browse name list is empty
+		if (browseNameList.empty()) {
+			error = true;
+			OpcUaVariant::SPtr variant;
+			return variant;
+		}
+
+		// check event type
+		if (eventType != typeNodeId_) {
+			OpcUaVariant::SPtr variant;
+			variant = BaseEventType::get(eventType, eventTypeFound, browseNameList, error);
+			if (error) {
+				OpcUaVariant::SPtr variant;
+				return variant;
+			}
+
+			// FIXME: todo
+		}
+
+		// FIXME: todo
+
+		OpcUaVariant::SPtr variant;
+		return variant;
+	}
+
+	OpcUaVariant::SPtr
+	BaseEventType::get(OpcUaQualifiedName::SPtr& browseName)
 	{
 		OpcUaVariant::SPtr variant;
-
 		return variant;
 	}
 
