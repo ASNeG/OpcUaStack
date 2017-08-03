@@ -36,6 +36,14 @@ namespace OpcUaStackCore
 	, value_(NULL)
 	{
 	}
+
+	OpcUaByteString::OpcUaByteString(const std::string& value)
+	: Object()
+	, length_(-1)
+	, value_(NULL)
+	{
+		this->value(value);
+	}
 		
 	OpcUaByteString::~OpcUaByteString(void)
 	{

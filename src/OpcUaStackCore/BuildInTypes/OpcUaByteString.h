@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaByteString> SPtr;
 
 	    OpcUaByteString(void);
+	    OpcUaByteString(const std::string& value);
 		~OpcUaByteString(void);
 
 		void value(OpcUaByte** value, OpcUaInt32* lenth) const;
