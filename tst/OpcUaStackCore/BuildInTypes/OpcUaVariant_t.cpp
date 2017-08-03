@@ -1,6 +1,8 @@
 #include "unittest.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Utility.h"
+#include "OpcUaStackCore/StandardDataTypes/StatusResult.h"
 #include <boost/iostreams/stream.hpp>
 #include <boost/property_tree/ptree.hpp>
 
@@ -997,18 +999,67 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_expandedNodeId)
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.getValue(value) == true);
-	std::cout << expandedNodeId.toString() << std::endl;
-	std::cout << value.toString() << std::endl;
+	// FIXME: todo
 	//BOOST_REQUIRE(value == expandedNodeId);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_statusCode)
+{
+	OpcUaStatusCode value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
 
-#if 0
-void setValue(const OpcUaExpandedNodeId& value);
-void setValue(const OpcUaStatusCode& value);
-void setValue(const OpcUaQualifiedName& value);
-void setValue(const OpcUaLocalizedText& value);
-void setValue(const OpcUaExtensionObject& value);
-#endif
+	value1.setValue(Success);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == Success);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_qualifiedName)
+{
+	OpcUaQualifiedName value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue(OpcUaQualifiedName("QualifiedName", 123));
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == OpcUaQualifiedName("QualifiedName", 123));
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_localizedText)
+{
+	OpcUaLocalizedText value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue(OpcUaLocalizedText("de", "OpcUaLocalizedText"));
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == OpcUaLocalizedText("de", "OpcUaLocalizedText"));
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_extensionObject)
+{
+	OpcUaExtensionObject eo;
+	eo.registerFactoryElement<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
+
+	OpcUaExtensionObject v1, v2;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	StatusResult::SPtr statusResult;
+	statusResult = v1.parameter<StatusResult>(OpcUaId_StatusResult_Encoding_DefaultBinary);
+	statusResult->statusCode(3494);
+
+	value1.setValue(v1);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(v2) == true);
+	BOOST_REQUIRE(v1 == v2);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
