@@ -2030,132 +2030,185 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::getValue(OpcUaBoolean& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaBoolean) return false;
+		value = variant<OpcUaBoolean>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaByte& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaByte) return false;
+		value = variant<OpcUaByte>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaSByte& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaSByte) return false;
+		value = variant<OpcUaSByte>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaUInt16& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaUInt16) return false;
+		value = variant<OpcUaUInt16>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaInt16& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaInt16) return false;
+		value = variant<OpcUaInt16>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaUInt32& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaUInt32) return false;
+		value = variant<OpcUaUInt32>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaInt32& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaInt32) return false;
+		value = variant<OpcUaInt32>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaUInt64& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaUInt64) return false;
+		value = variant<OpcUaUInt64>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaInt64& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaInt64) return false;
+		value = variant<OpcUaInt64>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaFloat& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaFloat) return false;
+		value = variant<OpcUaFloat>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaDouble& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaDouble) return false;
+		value = variant<OpcUaDouble>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaString& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaString) return false;
+		OpcUaString::SPtr tmpValue = variantSPtr<OpcUaString>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaDateTime& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
+		value = variant<OpcUaDateTime>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaGuid& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaGuid) return false;
+		OpcUaGuid::SPtr tmpValue = variantSPtr<OpcUaGuid>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaByteString& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaByteString) return false;
+		OpcUaByteString::SPtr tmpValue = variantSPtr<OpcUaByteString>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaXmlElement& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaXmlElement) return false;
+		OpcUaXmlElement::SPtr tmpValue = variantSPtr<OpcUaXmlElement>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaNodeId& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaNodeId) return false;
+		OpcUaNodeId::SPtr tmpValue = variantSPtr<OpcUaNodeId>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaExpandedNodeId& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaExpandedNodeId) return false;
+		OpcUaExpandedNodeId::SPtr tmpValue = variantSPtr<OpcUaExpandedNodeId>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaStatusCode& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaStatusCode) return false;
+		value = variant<OpcUaStatusCode>();
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaQualifiedName& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaQualifiedName) return false;
+		OpcUaQualifiedName::SPtr tmpValue = variantSPtr<OpcUaQualifiedName>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaLocalizedText& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaLocalizedText) return false;
+		OpcUaLocalizedText::SPtr tmpValue = variantSPtr<OpcUaLocalizedText>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::getValue(OpcUaExtensionObject& value)
 	{
+		if (variantType() != OpcUaBuildInType_OpcUaExtensionObject) return false;
+		OpcUaExtensionObject::SPtr tmpValue = variantSPtr<OpcUaExtensionObject>();
+		tmpValue->copyTo(value);
 		return true;
 	}
 
