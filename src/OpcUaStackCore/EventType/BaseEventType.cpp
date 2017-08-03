@@ -178,6 +178,12 @@ namespace OpcUaStackCore
 		return time_;
 	}
 
+	OpcUaNodeId&
+	BaseEventType::typeNodeId(void)
+	{
+		return typeNodeId_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
