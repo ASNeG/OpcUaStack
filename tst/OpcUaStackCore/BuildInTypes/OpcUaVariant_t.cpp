@@ -758,5 +758,257 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_array_string)
 	BOOST_REQUIRE(value2.arrayLength() == 3);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_boolean_error)
+{
+	OpcUaByte value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	// OpcUaBoolean
+	value1.setValue((OpcUaBoolean)true);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == false);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_boolean)
+{
+	OpcUaBoolean value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaBoolean)true);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == true);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_byte)
+{
+	OpcUaByte value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaByte)12);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == 12);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_sbyte)
+{
+	OpcUaSByte value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaSByte)-12);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == -12);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_uint16)
+{
+	OpcUaUInt16 value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaUInt16)123);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == 123);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_int16)
+{
+	OpcUaInt16 value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaInt16)-123);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == -123);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_uint32)
+{
+	OpcUaUInt32 value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaUInt32)1234);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == 1234);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_int32)
+{
+	OpcUaInt32 value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaInt32)-1234);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == -1234);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_uint64)
+{
+	OpcUaUInt64 value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaUInt64)12345);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == 12345);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_int64)
+{
+	OpcUaInt64 value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaInt64)-12345);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == -12345);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_float)
+{
+	OpcUaFloat value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaFloat)12);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == 12);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_double)
+{
+	OpcUaDouble value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue((OpcUaDouble)12);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == 12);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_string)
+{
+	OpcUaString value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue(OpcUaString("String"));
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == OpcUaString("String"));
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_datetime)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	OpcUaDateTime value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue(OpcUaDateTime(now));
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == OpcUaDateTime(now));
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_guid)
+{
+	OpcUaGuid value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	OpcUaGuid guid;
+	guid.value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	value1.setValue(guid);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value.value() == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_byteString)
+{
+	OpcUaByteString value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	OpcUaByteString byteString;
+	byteString.fromString("ByteString");
+	value1.setValue(byteString);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value.toString() == "ByteString");
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_nodeId)
+{
+	OpcUaNodeId value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	value1.setValue(OpcUaNodeId(12, 34));
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == OpcUaNodeId(12, 34));
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_expandedNodeId)
+{
+	OpcUaExpandedNodeId value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	OpcUaExpandedNodeId expandedNodeId;
+	BOOST_REQUIRE(expandedNodeId.fromString("svr=4711;ns=1;s=NodeName"));
+
+	value1.setValue(expandedNodeId);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	std::cout << expandedNodeId.toString() << std::endl;
+	std::cout << value.toString() << std::endl;
+	//BOOST_REQUIRE(value == expandedNodeId);
+}
+
+
+#if 0
+void setValue(const OpcUaExpandedNodeId& value);
+void setValue(const OpcUaStatusCode& value);
+void setValue(const OpcUaQualifiedName& value);
+void setValue(const OpcUaLocalizedText& value);
+void setValue(const OpcUaExtensionObject& value);
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
