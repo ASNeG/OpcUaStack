@@ -1877,6 +1877,288 @@ namespace OpcUaStackCore
 		}
 	}
 
+	void
+	OpcUaVariant::setValue(const OpcUaBoolean value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaByte value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaSByte value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaUInt16 value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaInt16 value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaUInt32 value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaInt32 value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaUInt64 value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaInt64 value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaFloat value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaDouble value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaString& value)
+	{
+		OpcUaString::SPtr tmpValue = constructSPtr<OpcUaString>();
+		const_cast<OpcUaString*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaDateTime& value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaGuid& value)
+	{
+		OpcUaGuid::SPtr tmpValue = constructSPtr<OpcUaGuid>();
+		const_cast<OpcUaGuid*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaByteString& value)
+	{
+		OpcUaByteString::SPtr tmpValue = constructSPtr<OpcUaByteString>();
+		const_cast<OpcUaByteString*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaXmlElement& value)
+	{
+		OpcUaXmlElement::SPtr tmpValue = constructSPtr<OpcUaXmlElement>();
+		const_cast<OpcUaXmlElement*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaNodeId& value)
+	{
+		OpcUaNodeId::SPtr tmpValue = constructSPtr<OpcUaNodeId>();
+		const_cast<OpcUaNodeId*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaExpandedNodeId& value)
+	{
+		OpcUaExpandedNodeId::SPtr tmpValue = constructSPtr<OpcUaExpandedNodeId>();
+		const_cast<OpcUaExpandedNodeId*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaStatusCode& value)
+	{
+		variant(value);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaQualifiedName& value)
+	{
+		OpcUaQualifiedName::SPtr tmpValue = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaLocalizedText& value)
+	{
+		OpcUaLocalizedText::SPtr tmpValue = constructSPtr<OpcUaLocalizedText>();
+		const_cast<OpcUaLocalizedText*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	void
+	OpcUaVariant::setValue(const OpcUaExtensionObject& value)
+	{
+		OpcUaExtensionObject::SPtr tmpValue = constructSPtr<OpcUaExtensionObject>();
+		const_cast<OpcUaExtensionObject*>(&value)->copyTo(*tmpValue);
+		variant(tmpValue);
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaBoolean& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaByte& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaSByte& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaUInt16& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaInt16& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaUInt32& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaInt32& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaUInt64& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaInt64& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaFloat& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaDouble& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaString& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaDateTime& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaGuid& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaByteString& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaXmlElement& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaNodeId& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaExpandedNodeId& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaStatusCode& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaQualifiedName& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaLocalizedText& value)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::getValue(OpcUaExtensionObject& value)
+	{
+		return true;
+	}
+
 	void 
 	OpcUaVariant::opcUaBinaryEncode(std::ostream& os) const
 	{

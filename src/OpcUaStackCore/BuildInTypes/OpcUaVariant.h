@@ -240,6 +240,52 @@ namespace OpcUaStackCore
 			return os;
 		}
 
+		void setValue(const OpcUaBoolean value);
+		void setValue(const OpcUaByte value);
+		void setValue(const OpcUaSByte value);
+		void setValue(const OpcUaUInt16 value);
+		void setValue(const OpcUaInt16 value);
+		void setValue(const OpcUaUInt32 value);
+		void setValue(const OpcUaInt32 value);
+		void setValue(const OpcUaUInt64 value);
+		void setValue(const OpcUaInt64 value);
+		void setValue(const OpcUaFloat value);
+		void setValue(const OpcUaDouble value);
+		void setValue(const OpcUaString& value);
+		void setValue(const OpcUaDateTime& value);
+		void setValue(const OpcUaGuid& value);
+		void setValue(const OpcUaByteString& value);
+		void setValue(const OpcUaXmlElement& value);
+		void setValue(const OpcUaNodeId& value);
+		void setValue(const OpcUaExpandedNodeId& value);
+		void setValue(const OpcUaStatusCode& value);
+		void setValue(const OpcUaQualifiedName& value);
+		void setValue(const OpcUaLocalizedText& value);
+		void setValue(const OpcUaExtensionObject& value);
+
+		bool getValue(OpcUaBoolean& value);
+		bool getValue(OpcUaByte& value);
+		bool getValue(OpcUaSByte& value);
+		bool getValue(OpcUaUInt16& value);
+		bool getValue(OpcUaInt16& value);
+		bool getValue(OpcUaUInt32& value);
+		bool getValue(OpcUaInt32& value);
+		bool getValue(OpcUaUInt64& value);
+		bool getValue(OpcUaInt64& value);
+		bool getValue(OpcUaFloat& value);
+		bool getValue(OpcUaDouble& value);
+		bool getValue(OpcUaString& value);
+		bool getValue(OpcUaDateTime& value);
+		bool getValue(OpcUaGuid& value);
+		bool getValue(OpcUaByteString& value);
+		bool getValue(OpcUaXmlElement& value);
+		bool getValue(OpcUaNodeId& value);
+		bool getValue(OpcUaExpandedNodeId& value);
+		bool getValue(OpcUaStatusCode& value);
+		bool getValue(OpcUaQualifiedName& value);
+		bool getValue(OpcUaLocalizedText& value);
+		bool getValue(OpcUaExtensionObject& value);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		bool encode(boost::property_tree::ptree& pt) const;
