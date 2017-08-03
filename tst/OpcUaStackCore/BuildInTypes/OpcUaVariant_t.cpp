@@ -986,7 +986,7 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_nodeId)
 	BOOST_REQUIRE(value == OpcUaNodeId(12, 34));
 }
 
-BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_expandedNodeId)
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_expandedNodeId1)
 {
 	OpcUaExpandedNodeId value;
 	std::stringstream ss;
@@ -999,8 +999,23 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_expandedNodeId)
 	value1.opcUaBinaryEncode(ss);
 	value2.opcUaBinaryDecode(ss);
 	BOOST_REQUIRE(value2.getValue(value) == true);
-	// FIXME: todo
-	//BOOST_REQUIRE(value == expandedNodeId);
+	BOOST_REQUIRE(value == expandedNodeId);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_expandedNodeId2)
+{
+	OpcUaExpandedNodeId value;
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+
+	OpcUaExpandedNodeId expandedNodeId;
+	BOOST_REQUIRE(expandedNodeId.fromString("svr=4711;nsu=xyz;s=NodeName"));
+
+	value1.setValue(expandedNodeId);
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+	BOOST_REQUIRE(value2.getValue(value) == true);
+	BOOST_REQUIRE(value == expandedNodeId);
 }
 
 BOOST_AUTO_TEST_CASE(OpcUaVariant_getValue_setValue_statusCode)
