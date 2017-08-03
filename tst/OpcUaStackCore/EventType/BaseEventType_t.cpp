@@ -176,5 +176,116 @@ BOOST_AUTO_TEST_CASE(BaseEventType_namespace_index)
 	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
 }
 
+BOOST_AUTO_TEST_CASE(BaseEventType_broeseNameList_empty)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	OpcUaVariant::SPtr value;
+	BaseEventType baseEventType;
+
+	//
+	// map namespace uri to namespace index
+	//
+	EventBase* eventBase = &baseEventType;
+	std::vector<std::string> namespaceVec;
+	namespaceVec.push_back("");
+	eventBase->namespaceArray(&namespaceVec);
+	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	// get event type
+	OpcUaNodeId eventType("Unknown");
+	bool eventFound = false;
+	std::list<OpcUaQualifiedName::SPtr> browseNameList;
+	bool error = false;
+	OpcUaVariant::SPtr variant = eventBase->get(eventType, eventFound, browseNameList, error);
+	BOOST_REQUIRE(eventFound == false);
+	BOOST_REQUIRE(error == true);
+	BOOST_REQUIRE(variant.get() == nullptr);
+	BOOST_REQUIRE(browseNameList.size() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(BaseEventType_typeId_unknwon)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	OpcUaVariant::SPtr value;
+	BaseEventType baseEventType;
+
+	//
+	// map namespace uri to namespace index
+	//
+	EventBase* eventBase = &baseEventType;
+	std::vector<std::string> namespaceVec;
+	namespaceVec.push_back("");
+	eventBase->namespaceArray(&namespaceVec);
+	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	// get event type
+	OpcUaNodeId eventType("Unknown");
+	bool eventFound = false;
+	std::list<OpcUaQualifiedName::SPtr> browseNameList;
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
+	bool error = false;
+	OpcUaVariant::SPtr variant = eventBase->get(eventType, eventFound, browseNameList, error);
+	BOOST_REQUIRE(eventFound == false);
+	BOOST_REQUIRE(error == true);
+	BOOST_REQUIRE(variant.get() == nullptr);
+	BOOST_REQUIRE(browseNameList.size() == 1);
+}
+
+BOOST_AUTO_TEST_CASE(BaseEventType_browsName_unknwon)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	OpcUaVariant::SPtr value;
+	BaseEventType baseEventType;
+
+	//
+	// map namespace uri to namespace index
+	//
+	EventBase* eventBase = &baseEventType;
+	std::vector<std::string> namespaceVec;
+	namespaceVec.push_back("");
+	eventBase->namespaceArray(&namespaceVec);
+	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	// get event type
+	OpcUaNodeId eventType((OpcUaUInt32)2041);
+	bool eventFound = false;
+	std::list<OpcUaQualifiedName::SPtr> browseNameList;
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
+	bool error = false;
+	OpcUaVariant::SPtr variant = eventBase->get(eventType, eventFound, browseNameList, error);
+	BOOST_REQUIRE(eventFound == true);
+	BOOST_REQUIRE(error == true);
+	BOOST_REQUIRE(variant.get() == nullptr);
+	BOOST_REQUIRE(browseNameList.size() == 0);
+}
+
+BOOST_AUTO_TEST_CASE(BaseEventType_variant_not_exist)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	OpcUaVariant::SPtr value;
+	BaseEventType baseEventType;
+
+	//
+	// map namespace uri to namespace index
+	//
+	EventBase* eventBase = &baseEventType;
+	std::vector<std::string> namespaceVec;
+	namespaceVec.push_back("");
+	eventBase->namespaceArray(&namespaceVec);
+	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	// get event type
+	OpcUaNodeId eventType((OpcUaUInt32)2041);
+	bool eventFound = false;
+	std::list<OpcUaQualifiedName::SPtr> browseNameList;
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("EventId"));
+	bool error = false;
+	OpcUaVariant::SPtr variant = eventBase->get(eventType, eventFound, browseNameList, error);
+	BOOST_REQUIRE(eventFound == true);
+	BOOST_REQUIRE(error == true);
+	BOOST_REQUIRE(variant.get() == nullptr);
+	BOOST_REQUIRE(browseNameList.size() == 0);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
