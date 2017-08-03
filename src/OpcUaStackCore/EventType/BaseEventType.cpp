@@ -204,7 +204,7 @@ namespace OpcUaStackCore
 	OpcUaVariant::SPtr
 	BaseEventType::get(
 		OpcUaNodeId& eventType,
-		bool eventTypeFound,
+		bool& eventTypeFound,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 		bool& error
 	)

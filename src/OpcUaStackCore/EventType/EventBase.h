@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 		//
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
-			bool eventTypeFound,			// The pass value must be true
+			bool& eventTypeFound,			// The pass value must be true
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 			bool& error						// The pass value must be false
 		);
