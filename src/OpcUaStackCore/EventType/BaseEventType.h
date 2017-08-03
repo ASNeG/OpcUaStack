@@ -34,9 +34,24 @@ namespace OpcUaStackCore
 		BaseEventType(void);
 		virtual ~BaseEventType(void);
 
-		void eventId(OpcUaByteString::SPtr& eventId);
-		OpcUaByteString::SPtr eventId(void);
-		// FIXME: todo ... all parameter
+		void eventId(OpcUaVariant::SPtr& eventId);
+		OpcUaVariant::SPtr& eventId(void);
+		void eventType(OpcUaVariant::SPtr& eventType);
+		OpcUaVariant::SPtr& eventType(void);
+		void sourceName(OpcUaVariant::SPtr& sourceName);
+		OpcUaVariant::SPtr& sourceName(void);
+		void localTime(OpcUaVariant::SPtr& localTime);
+		OpcUaVariant::SPtr& localTime(void);
+		void message(OpcUaVariant::SPtr& message);
+		OpcUaVariant::SPtr& message(void);
+		void receiveTime(OpcUaVariant::SPtr& receiveTime);
+		OpcUaVariant::SPtr& receiveTime(void);
+		void severity(OpcUaVariant::SPtr& severity);
+		OpcUaVariant::SPtr& severity(void);
+		void sourceNode(OpcUaVariant::SPtr& sourceNode);
+		OpcUaVariant::SPtr& sourceNode(void);
+		void time(OpcUaVariant::SPtr& time);
+		OpcUaVariant::SPtr& time(void);
 
 		//- EventBase interface
 		virtual void mapNamespaceUri(void);

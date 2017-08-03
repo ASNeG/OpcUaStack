@@ -27,15 +27,15 @@ namespace OpcUaStackCore
 	, namespaceIndex_(0)
 	, typeNodeId_((OpcUaUInt32)2041)
 	, browseName_("BaseEventType")
-	, eventId_(constructSPtr<OpcUaVariant>())
-	, eventType_(constructSPtr<OpcUaVariant>())
-	, sourceName_(constructSPtr<OpcUaVariant>())
-	, localTime_(constructSPtr<OpcUaVariant>())
-	, message_(constructSPtr<OpcUaVariant>())
-	, receiveTime_(constructSPtr<OpcUaVariant>())
-	, severity_(constructSPtr<OpcUaVariant>())
-	, sourceNode_(constructSPtr<OpcUaVariant>())
-	, time_(constructSPtr<OpcUaVariant>())
+	, eventId_()
+	, eventType_()
+	, sourceName_()
+	, localTime_()
+	, message_()
+	, receiveTime_()
+	, severity_()
+	, sourceNode_()
+	, time_()
 	{
 	}
 
@@ -44,17 +44,111 @@ namespace OpcUaStackCore
 	}
 
 	void
-	BaseEventType::eventId(OpcUaByteString::SPtr& eventId)
+	BaseEventType::eventId(OpcUaVariant::SPtr& eventId)
 	{
-		// FIXME: todo
+		eventId_ = eventId;
 	}
 
-	OpcUaByteString::SPtr
+	OpcUaVariant::SPtr&
 	BaseEventType::eventId(void)
 	{
-		OpcUaByteString::SPtr tmp;
-		// FIXME: todo
-		return tmp;
+		return eventId_;
+	}
+
+	void
+	BaseEventType::eventType(OpcUaVariant::SPtr& eventType)
+	{
+		eventType_ = eventType;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::eventType(void)
+	{
+		return eventType_;
+	}
+
+	void
+	BaseEventType::sourceName(OpcUaVariant::SPtr& sourceName)
+	{
+		sourceName_ = sourceName;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::sourceName(void)
+	{
+		return sourceName_;
+	}
+
+	void
+	BaseEventType::localTime(OpcUaVariant::SPtr& localTime)
+	{
+		localTime_ = localTime;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::localTime(void)
+	{
+		return localTime_;
+	}
+
+	void
+	BaseEventType::message(OpcUaVariant::SPtr& message)
+	{
+		message_ = message;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::message(void)
+	{
+		return message_;
+	}
+
+	void
+	BaseEventType::receiveTime(OpcUaVariant::SPtr& receiveTime)
+	{
+		receiveTime_ = receiveTime;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::receiveTime(void)
+	{
+		return receiveTime_;
+	}
+
+	void
+	BaseEventType::severity(OpcUaVariant::SPtr& severity)
+	{
+		severity_ = severity;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::severity(void)
+	{
+		return severity_;
+	}
+
+	void
+	BaseEventType::sourceNode(OpcUaVariant::SPtr& sourceNode)
+	{
+		sourceNode_ = sourceNode;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::sourceNode(void)
+	{
+		return sourceNode_;
+	}
+
+	void
+	BaseEventType::time(OpcUaVariant::SPtr& time)
+	{
+		time_ = time;
+	}
+
+	OpcUaVariant::SPtr&
+	BaseEventType::time(void)
+	{
+		return time_;
 	}
 
 	// ------------------------------------------------------------------------
