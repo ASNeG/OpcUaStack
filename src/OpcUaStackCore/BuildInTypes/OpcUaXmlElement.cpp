@@ -36,6 +36,11 @@ namespace OpcUaStackCore
 	{
 	}
 
+	bool OpcUaXmlElement::copyTo(OpcUaXmlElement& value)
+	{
+		return false;
+	}
+
 	void 
 	OpcUaXmlElement::opcUaBinaryEncode(std::ostream& os) const
 	{
