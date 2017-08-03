@@ -43,10 +43,13 @@ namespace OpcUaStackCore
 	{
 	}
 
-	void
+	bool
 	BaseEventType::eventId(OpcUaVariant::SPtr& eventId)
 	{
+		if (eventId.get() == nullptr) return false;
+		if (eventId->variantType() != OpcUaBuildInType_OpcUaByteString) return false;
 		eventId_ = eventId;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -55,10 +58,13 @@ namespace OpcUaStackCore
 		return eventId_;
 	}
 
-	void
+	bool
 	BaseEventType::eventType(OpcUaVariant::SPtr& eventType)
 	{
+		if (eventType.get() == nullptr) return false;
+		if (eventType->variantType() != OpcUaBuildInType_OpcUaNodeId) return false;
 		eventType_ = eventType;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -67,10 +73,13 @@ namespace OpcUaStackCore
 		return eventType_;
 	}
 
-	void
+	bool
 	BaseEventType::sourceName(OpcUaVariant::SPtr& sourceName)
 	{
+		if (sourceName.get() == nullptr) return false;
+		if (sourceName->variantType() != OpcUaBuildInType_OpcUaString) return false;
 		sourceName_ = sourceName;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -79,10 +88,13 @@ namespace OpcUaStackCore
 		return sourceName_;
 	}
 
-	void
+	bool
 	BaseEventType::localTime(OpcUaVariant::SPtr& localTime)
 	{
+		if (localTime.get() == nullptr) return false;
+		if (localTime->variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
 		localTime_ = localTime;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -91,10 +103,13 @@ namespace OpcUaStackCore
 		return localTime_;
 	}
 
-	void
+	bool
 	BaseEventType::message(OpcUaVariant::SPtr& message)
 	{
+		if (message.get() == nullptr) return false;
+		if (message->variantType() != OpcUaBuildInType_OpcUaLocalizedText) return false;
 		message_ = message;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -103,10 +118,13 @@ namespace OpcUaStackCore
 		return message_;
 	}
 
-	void
+	bool
 	BaseEventType::receiveTime(OpcUaVariant::SPtr& receiveTime)
 	{
+		if (receiveTime.get() == nullptr) return false;
+		if (receiveTime->variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
 		receiveTime_ = receiveTime;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -115,10 +133,13 @@ namespace OpcUaStackCore
 		return receiveTime_;
 	}
 
-	void
+	bool
 	BaseEventType::severity(OpcUaVariant::SPtr& severity)
 	{
+		if (severity.get() == nullptr) return false;
+		if (severity->variantType() != OpcUaBuildInType_OpcUaUInt16) return false;
 		severity_ = severity;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -127,10 +148,13 @@ namespace OpcUaStackCore
 		return severity_;
 	}
 
-	void
+	bool
 	BaseEventType::sourceNode(OpcUaVariant::SPtr& sourceNode)
 	{
+		if (sourceNode.get() == nullptr) return false;
+		if (sourceNode->variantType() != OpcUaBuildInType_OpcUaNodeId) return false;
 		sourceNode_ = sourceNode;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&
@@ -139,10 +163,13 @@ namespace OpcUaStackCore
 		return sourceNode_;
 	}
 
-	void
+	bool
 	BaseEventType::time(OpcUaVariant::SPtr& time)
 	{
+		if (time.get() == nullptr) return false;
+		if (time->variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
 		time_ = time;
+		return true;
 	}
 
 	OpcUaVariant::SPtr&

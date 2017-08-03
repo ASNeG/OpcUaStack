@@ -34,23 +34,23 @@ namespace OpcUaStackCore
 		BaseEventType(void);
 		virtual ~BaseEventType(void);
 
-		void eventId(OpcUaVariant::SPtr& eventId);
+		bool eventId(OpcUaVariant::SPtr& eventId);
 		OpcUaVariant::SPtr& eventId(void);
-		void eventType(OpcUaVariant::SPtr& eventType);
+		bool eventType(OpcUaVariant::SPtr& eventType);
 		OpcUaVariant::SPtr& eventType(void);
-		void sourceName(OpcUaVariant::SPtr& sourceName);
+		bool sourceName(OpcUaVariant::SPtr& sourceName);
 		OpcUaVariant::SPtr& sourceName(void);
-		void localTime(OpcUaVariant::SPtr& localTime);
+		bool localTime(OpcUaVariant::SPtr& localTime);
 		OpcUaVariant::SPtr& localTime(void);
-		void message(OpcUaVariant::SPtr& message);
+		bool message(OpcUaVariant::SPtr& message);
 		OpcUaVariant::SPtr& message(void);
-		void receiveTime(OpcUaVariant::SPtr& receiveTime);
+		bool receiveTime(OpcUaVariant::SPtr& receiveTime);
 		OpcUaVariant::SPtr& receiveTime(void);
-		void severity(OpcUaVariant::SPtr& severity);
+		bool severity(OpcUaVariant::SPtr& severity);
 		OpcUaVariant::SPtr& severity(void);
-		void sourceNode(OpcUaVariant::SPtr& sourceNode);
+		bool sourceNode(OpcUaVariant::SPtr& sourceNode);
 		OpcUaVariant::SPtr& sourceNode(void);
-		void time(OpcUaVariant::SPtr& time);
+		bool time(OpcUaVariant::SPtr& time);
 		OpcUaVariant::SPtr& time(void);
 
 		//- EventBase interface
