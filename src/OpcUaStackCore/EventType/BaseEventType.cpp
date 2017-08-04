@@ -25,7 +25,6 @@ namespace OpcUaStackCore
 	: EventBase()
 	, namespaceUri_("")
 	, namespaceIndex_(0)
-	, typeNodeId_((OpcUaUInt32)2041)
 	, browseName_("BaseEventType")
 	, eventId_()
 	, eventType_()
@@ -37,6 +36,8 @@ namespace OpcUaStackCore
 	, sourceNode_()
 	, time_()
 	{
+		eventType_ = constructSPtr<OpcUaVariant>();
+		eventType_->setValue(OpcUaNodeId((OpcUaUInt32)2041));
 	}
 
 	BaseEventType::~BaseEventType(void)
@@ -178,10 +179,17 @@ namespace OpcUaStackCore
 		return time_;
 	}
 
-	OpcUaNodeId&
+	OpcUaNodeId
 	BaseEventType::typeNodeId(void)
 	{
-		return typeNodeId_;
+		OpcUaNodeId nodeId;
+
+		if (eventType_.get() == nullptr) {
+			return nodeId;
+		}
+
+		eventType_->getValue(nodeId);
+		return nodeId;
 	}
 
 	// ------------------------------------------------------------------------
@@ -219,7 +227,7 @@ namespace OpcUaStackCore
 		}
 
 		// check whether eventType and typeNodeId are identical
-		if (eventType == typeNodeId_) {
+		if (eventType == typeNodeId()) {
 			OpcUaVariant::SPtr variant;
 			eventTypeFound = true;
 

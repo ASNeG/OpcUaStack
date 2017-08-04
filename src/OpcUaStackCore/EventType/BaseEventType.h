@@ -53,7 +53,7 @@ namespace OpcUaStackCore
 		bool time(OpcUaVariant::SPtr& time);
 		OpcUaVariant::SPtr& time(void);
 
-		OpcUaNodeId& typeNodeId(void);
+		OpcUaNodeId typeNodeId(void);
 
 		//- EventBase interface
 		virtual void mapNamespaceUri(void);
@@ -70,7 +70,6 @@ namespace OpcUaStackCore
 
 		std::string namespaceUri_;
 		uint32_t namespaceIndex_;
-		OpcUaNodeId typeNodeId_;
 		OpcUaQualifiedName browseName_;
 
 		OpcUaVariant::SPtr eventId_;		// OpcUaByteString
