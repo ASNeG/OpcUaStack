@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 
     }
 
-    OpcUaStatusCode FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult::SPtr contentilterResult)
+    OpcUaStatusCode FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult)
     {
         //TODO: should work for many elements recursively
         ContentFilterElement::SPtr el;

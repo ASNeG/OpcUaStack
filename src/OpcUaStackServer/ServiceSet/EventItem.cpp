@@ -66,7 +66,7 @@ namespace OpcUaStackServer
 		//
 
 		whereFilter_ = constructSPtr<FilterStack>();
-		whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>());
+		whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->whereClauseResult());
 
 
 

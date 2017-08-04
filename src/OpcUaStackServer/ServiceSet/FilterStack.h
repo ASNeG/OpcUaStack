@@ -39,7 +39,7 @@ namespace OpcUaStackServer
         FilterStack(void);
         virtual ~FilterStack(void);
 
-        OpcUaStatusCode receive(const ContentFilter& contentFilter, ContentFilterResult::SPtr contentilterResult);
+        OpcUaStatusCode receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
         bool process() const;
 
       private:
