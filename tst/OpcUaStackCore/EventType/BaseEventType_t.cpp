@@ -278,5 +278,43 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_not_exist)
 	BOOST_REQUIRE(variant.get() == nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(BaseEventType_variant_success)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	OpcUaVariant::SPtr value;
+	BaseEventType baseEventType;
+
+	//
+	// set event id
+	//
+	value = constructSPtr<OpcUaVariant>();
+	value->setValue(OpcUaByteString("ByteString"));
+	BOOST_REQUIRE(baseEventType.eventId(value) == true);
+
+	//
+	// map namespace uri to namespace index
+	//
+	EventBase* eventBase = &baseEventType;
+	std::vector<std::string> namespaceVec;
+	namespaceVec.push_back("");
+	eventBase->namespaceArray(&namespaceVec);
+	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	//
+	// get event type
+	//
+	OpcUaNodeId eventType((OpcUaUInt32)2041);
+	bool eventFound = false;
+	std::list<OpcUaQualifiedName::SPtr> browseNameList;
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("EventId"));
+	bool error = false;
+	OpcUaVariant::SPtr variant;
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::Success);
+	BOOST_REQUIRE(variant.get() != nullptr);
+	OpcUaByteString byteString;
+	BOOST_REQUIRE(variant->getValue(byteString) == true);
+	BOOST_REQUIRE(byteString == OpcUaByteString("ByteString"));
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
