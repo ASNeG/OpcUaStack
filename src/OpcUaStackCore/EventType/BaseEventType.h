@@ -61,7 +61,6 @@ namespace OpcUaStackCore
 			OpcUaNodeId& eventType,
 			bool& eventTypeFound,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			bool& error,
 			ResultCode& resultCode
 		);
 		//- EventBase interface

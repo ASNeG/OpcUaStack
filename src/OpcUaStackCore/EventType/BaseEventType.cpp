@@ -206,7 +206,6 @@ namespace OpcUaStackCore
 		OpcUaNodeId& eventType,
 		bool& eventTypeFound,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-		bool& error,
 		ResultCode& resultCode
 	)
 	{
@@ -214,7 +213,6 @@ namespace OpcUaStackCore
 
 		// browse name list must contain at least one element
 		if (browseNameList.empty()) {
-			error = true;
 			resultCode = BadBrowseNameListEmpty;
 			OpcUaVariant::SPtr variant;
 			return variant;
@@ -237,13 +235,12 @@ namespace OpcUaStackCore
 
 		// the start item was not found. We delegate the search to the base class
 		OpcUaVariant::SPtr variant;
-		variant = EventBase::get(eventType, eventTypeFound, browseNameList, error, resultCode);
+		variant = EventBase::get(eventType, eventTypeFound, browseNameList, resultCode);
 		if (!eventTypeFound || resultCode != Success || browseNameList.size() == 0) {
 			return variant;
 		}
 
 		if (browseNameList.size() < 2) {
-			error = true;
 			resultCode = BadBrowseNameNotExist;
 			return variant;
 		}
@@ -252,7 +249,6 @@ namespace OpcUaStackCore
 		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
 		browseNameList.pop_front();
 		if (*browseName != browseName_) {
-			error = true;
 			resultCode = BadBrowseNameNotExist;
 			return variant;
 		}
