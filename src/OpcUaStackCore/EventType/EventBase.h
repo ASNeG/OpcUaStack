@@ -30,11 +30,26 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<EventBase> SPtr;
 
+		typedef enum
+		{
+			Success,
+			BadEventTypeNotExist,
+			BadBrowseNameListEmpty,
+			BadBrowseNameNotExist,
+			BadValueNotExist,
+		} ResultCode;
+
 		EventBase(void);
 		virtual ~EventBase(void);
 
 		void namespaceArray(std::vector<std::string>* namespaceArray);
 		int32_t findNamespaceIndex(const std::string& namespaceUri);
+
+		ResultCode get(
+			OpcUaNodeId& eventType,
+			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
+			OpcUaVariant::SPtr& variant
+		);
 
 		virtual void mapNamespaceUri(void);
 
@@ -50,7 +65,8 @@ namespace OpcUaStackCore
 			OpcUaNodeId& eventType,
 			bool& eventTypeFound,			// The pass value must be true
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			bool& error						// The pass value must be false
+			bool& error,					// The pass value must be false
+			ResultCode& resultCode
 		);
 
 	  private:

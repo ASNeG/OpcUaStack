@@ -206,12 +206,16 @@ namespace OpcUaStackCore
 		OpcUaNodeId& eventType,
 		bool& eventTypeFound,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-		bool& error
+		bool& error,
+		ResultCode& resultCode
 	)
 	{
+		resultCode = Success;
+
 		// browse name list must contain at least one element
 		if (browseNameList.empty()) {
 			error = true;
+			resultCode = BadBrowseNameListEmpty;
 			OpcUaVariant::SPtr variant;
 			return variant;
 		}
@@ -225,10 +229,7 @@ namespace OpcUaStackCore
 				OpcUaQualifiedName::SPtr browseName = browseNameList.front();
 				browseNameList.pop_front();
 
-				variant = get(browseName);
-				if (variant.get() == nullptr) {
-					error = true;
-				}
+				variant = get(browseName, resultCode);
 			}
 
 			return variant;
@@ -236,13 +237,14 @@ namespace OpcUaStackCore
 
 		// the start item was not found. We delegate the search to the base class
 		OpcUaVariant::SPtr variant;
-		variant = EventBase::get(eventType, eventTypeFound, browseNameList, error);
-		if (!eventTypeFound || error || browseNameList.size() == 0) {
+		variant = EventBase::get(eventType, eventTypeFound, browseNameList, error, resultCode);
+		if (!eventTypeFound || resultCode != Success || browseNameList.size() == 0) {
 			return variant;
 		}
 
 		if (browseNameList.size() < 2) {
 			error = true;
+			resultCode = BadBrowseNameNotExist;
 			return variant;
 		}
 
@@ -251,6 +253,7 @@ namespace OpcUaStackCore
 		browseNameList.pop_front();
 		if (*browseName != browseName_) {
 			error = true;
+			resultCode = BadBrowseNameNotExist;
 			return variant;
 		}
 
@@ -258,46 +261,54 @@ namespace OpcUaStackCore
 			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
 			browseNameList.pop_front();
 
-			variant = get(browseName);
-			if (variant.get() == nullptr) {
-				error = true;
-			}
+			variant = get(browseName, resultCode);
 		}
 
 		return variant;
 	}
 
 	OpcUaVariant::SPtr
-	BaseEventType::get(OpcUaQualifiedName::SPtr& browseName)
+	BaseEventType::get(OpcUaQualifiedName::SPtr& browseName, ResultCode& resultCode)
 	{
+		resultCode = Success;
 		if (*browseName == OpcUaQualifiedName("EventId", namespaceIndex_)) {
+			if (eventId_.get() == nullptr) resultCode = BadValueNotExist;
 			return eventId_;
 		}
 		if (*browseName == OpcUaQualifiedName("EventType", namespaceIndex_)) {
+			if (eventType_.get() == nullptr) resultCode = BadValueNotExist;
 			return eventType_;
 		}
 		if (*browseName == OpcUaQualifiedName("SourceName", namespaceIndex_)) {
+			if (sourceName_.get() == nullptr) resultCode = BadValueNotExist;
 			return sourceName_;
 		}
 		if (*browseName == OpcUaQualifiedName("LocalTime", namespaceIndex_)) {
+			if (localTime_.get() == nullptr) resultCode = BadValueNotExist;
 			return localTime_;
 		}
 		if (*browseName == OpcUaQualifiedName("Message", namespaceIndex_)) {
+			if (message_.get() == nullptr) resultCode = BadValueNotExist;
 			return message_;
 		}
 		if (*browseName == OpcUaQualifiedName("ReceiveTime", namespaceIndex_)) {
+			if (receiveTime_.get() == nullptr) resultCode = BadValueNotExist;
 			return receiveTime_;
 		}
 		if (*browseName == OpcUaQualifiedName("Severity", namespaceIndex_)) {
+			if (severity_.get() == nullptr) resultCode = BadValueNotExist;
 			return severity_;
 		}
 		if (*browseName == OpcUaQualifiedName("SourceNode", namespaceIndex_)) {
+			if (sourceNode_.get() == nullptr) resultCode = BadValueNotExist;
 			return sourceNode_;
 		}
 		if (*browseName == OpcUaQualifiedName("Time", namespaceIndex_)) {
+			if (time_.get() == nullptr) resultCode = BadValueNotExist;
 			return time_;
 		}
 
+		resultCode = BadBrowseNameNotExist;
 		OpcUaVariant::SPtr variant;
 		return variant;
 	}

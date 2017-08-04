@@ -49,6 +49,22 @@ namespace OpcUaStackCore
 		return -1;
 	}
 
+	EventBase::ResultCode
+	EventBase::get(
+		OpcUaNodeId& eventType,
+		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
+		OpcUaVariant::SPtr& variant
+	)
+	{
+		bool error = false;
+		ResultCode resultCode = Success;
+		bool eventTypeFound;
+
+		variant = get(eventType, eventTypeFound, browseNameList, error, resultCode);
+
+		return resultCode;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -67,10 +83,12 @@ namespace OpcUaStackCore
 		OpcUaNodeId& eventType,
 		bool& eventTypeFound,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-		bool& error
+		bool& error,
+		ResultCode& resultCode
 	)
 	{
 		error = true;
+		resultCode = BadEventTypeNotExist;
 		OpcUaVariant::SPtr variant;
 		return variant;
 	}

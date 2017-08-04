@@ -61,12 +61,13 @@ namespace OpcUaStackCore
 			OpcUaNodeId& eventType,
 			bool& eventTypeFound,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			bool& error
+			bool& error,
+			ResultCode& resultCode
 		);
 		//- EventBase interface
 
 	  private:
-		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName);
+		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName, ResultCode& resultCode);
 
 		std::string namespaceUri_;
 		uint32_t namespaceIndex_;
