@@ -16,11 +16,12 @@
  */
 
 #include "OpcUaStackServer/ServiceSet/FilterStack.h"
-
 #include "OpcUaStackServer/ServiceSet/LiteralFilterNode.h"
 #include "OpcUaStackServer/ServiceSet/EqualsFilterNode.h"
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 
 
 namespace OpcUaStackServer
@@ -37,36 +38,56 @@ namespace OpcUaStackServer
 
     }
 
-    OpcUaStatusCode FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult)
+    OpcUaStatusCode FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
-        //TODO: should work for many elements recursively
-        ContentFilterElement::SPtr el;
-        contentFilter.elements()->get(0, el);
-
-        switch (el->filterOperator()) {
-        case BasicFilterOperator_Equals: {
-
-            //TODO: check args
-            ExtensibleParameter::SPtr op1;
-            el->filterOperands()->get(0, op1);
-            FilterNode::SPtr arg1 = constructSPtr<LiteralFilterNode, OpcUaVariant>(op1->parameter<LiteralOperand>()->value());
-
-
-            ExtensibleParameter::SPtr op2;
-            el->filterOperands()->get(1, op2);
-            FilterNode::SPtr arg2 = constructSPtr<LiteralFilterNode, OpcUaVariant>(op2->parameter<LiteralOperand>()->value());
-
-
-            root_ = EqualsFilterNode::SPtr(new EqualsFilterNode(arg1, arg2));
-            break;
-        }
-
-        }
-
+        buildOperatorNode(contentFilter, 0, root_);
         return OpcUaStatusCode::Success;
     }
 
+    OpcUaStatusCode FilterStack::buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node)
+    {
+        ContentFilterElement::SPtr el;
+        contentFilter.elements()->get(idx, el);
 
+        std::vector<FilterNode::SPtr> args;
+
+        for (int idxArg = 0; idxArg < el->filterOperands()->size(); ++idxArg) {
+            ExtensibleParameter::SPtr operand;
+
+            el->filterOperands()->get(idxArg, operand);
+
+            uint32_t typeId;
+            uint16_t nsIdx;
+            operand->parameterTypeId().get(typeId, nsIdx);
+            switch (typeId) {
+            case OpcUaId_LiteralOperand:
+                args.push_back(
+                        constructSPtr<LiteralFilterNode, OpcUaVariant>(operand->parameter<LiteralOperand>()->value()));
+                break;
+
+            case OpcUaId_ElementOperand:
+                FilterNode::SPtr operator_;
+                uint32_t operatorIdx = operand->parameter<ElementOperand>()->index();
+
+                buildOperatorNode(contentFilter, operatorIdx, operator_);
+
+                args.push_back(operator_);
+                break;
+            }
+
+
+        }
+
+        switch (el->filterOperator()) {
+            case BasicFilterOperator_Equals: {
+                node = EqualsFilterNode::SPtr(new EqualsFilterNode(args));
+                break;
+            }
+        }
+
+        return OpcUaStatusCode::Success;
+
+    }
     bool FilterStack::process() const
     {
         return root_->evaluate().get<OpcUaBoolean>();

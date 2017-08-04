@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 
         typedef boost::shared_ptr<EqualsFilterNode> SPtr;
 
-        EqualsFilterNode(FilterNode::SPtr arg1, FilterNode::SPtr arg2);
+        EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
         virtual ~EqualsFilterNode(void);
 
         virtual OpcUaVariant evaluate() override;

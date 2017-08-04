@@ -19,10 +19,10 @@
 
 namespace OpcUaStackServer
 {
-    EqualsFilterNode::EqualsFilterNode(FilterNode::SPtr arg1, FilterNode::SPtr arg2)
+    EqualsFilterNode::EqualsFilterNode(const std::vector<FilterNode::SPtr>& args)
     {
-        arg1_ = arg1;
-        arg2_ = arg2;
+        arg1_ = args[0];
+        arg2_ = args[1];
     }
 
     EqualsFilterNode::~EqualsFilterNode()

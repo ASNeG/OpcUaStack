@@ -44,6 +44,8 @@ namespace OpcUaStackServer
 
       private:
         FilterNode::SPtr root_;
+
+        OpcUaStatusCode buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node);
     };
 
 }
