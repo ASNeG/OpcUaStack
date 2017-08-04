@@ -173,7 +173,10 @@ BOOST_AUTO_TEST_CASE(BaseEventType_namespace_index)
 	std::vector<std::string> namespaceVec;
 	namespaceVec.push_back("");
 	eventBase->namespaceArray(&namespaceVec);
-	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	OpcUaNodeId typeNodeId;
+	baseEventType.eventType()->getValue(typeNodeId);
+	BOOST_REQUIRE(typeNodeId == OpcUaNodeId((OpcUaUInt32)2041));
 }
 
 BOOST_AUTO_TEST_CASE(BaseEventType_broeseNameList_empty)
@@ -189,7 +192,10 @@ BOOST_AUTO_TEST_CASE(BaseEventType_broeseNameList_empty)
 	std::vector<std::string> namespaceVec;
 	namespaceVec.push_back("");
 	eventBase->namespaceArray(&namespaceVec);
-	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	OpcUaNodeId typeNodeId;
+	baseEventType.eventType()->getValue(typeNodeId);
+	BOOST_REQUIRE(typeNodeId == OpcUaNodeId((OpcUaUInt32)2041));
 
 	// get event type
 	OpcUaNodeId eventType("Unknown");
@@ -213,7 +219,10 @@ BOOST_AUTO_TEST_CASE(BaseEventType_typeId_unknwon)
 	std::vector<std::string> namespaceVec;
 	namespaceVec.push_back("");
 	eventBase->namespaceArray(&namespaceVec);
-	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	OpcUaNodeId typeNodeId;
+	baseEventType.eventType()->getValue(typeNodeId);
+	BOOST_REQUIRE(typeNodeId == OpcUaNodeId((OpcUaUInt32)2041));
 
 	// get event type
 	OpcUaNodeId eventType("Unknown");
@@ -239,7 +248,10 @@ BOOST_AUTO_TEST_CASE(BaseEventType_browsName_unknwon)
 	std::vector<std::string> namespaceVec;
 	namespaceVec.push_back("");
 	eventBase->namespaceArray(&namespaceVec);
-	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	OpcUaNodeId typeNodeId;
+	baseEventType.eventType()->getValue(typeNodeId);
+	BOOST_REQUIRE(typeNodeId == OpcUaNodeId((OpcUaUInt32)2041));
 
 	// get event type
 	OpcUaNodeId eventType((OpcUaUInt32)2041);
@@ -265,7 +277,10 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_not_exist)
 	std::vector<std::string> namespaceVec;
 	namespaceVec.push_back("");
 	eventBase->namespaceArray(&namespaceVec);
-	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	OpcUaNodeId typeNodeId;
+	baseEventType.eventType()->getValue(typeNodeId);
+	BOOST_REQUIRE(typeNodeId == OpcUaNodeId((OpcUaUInt32)2041));
 
 	// get event type
 	OpcUaNodeId eventType((OpcUaUInt32)2041);
@@ -298,7 +313,10 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_success)
 	std::vector<std::string> namespaceVec;
 	namespaceVec.push_back("");
 	eventBase->namespaceArray(&namespaceVec);
-	BOOST_REQUIRE(baseEventType.typeNodeId() == OpcUaNodeId((OpcUaUInt32)2041));
+
+	OpcUaNodeId typeNodeId;
+	baseEventType.eventType()->getValue(typeNodeId);
+	BOOST_REQUIRE(typeNodeId == OpcUaNodeId((OpcUaUInt32)2041));
 
 	//
 	// get event type
