@@ -15,7 +15,7 @@ include_directories(
 file(
 	GLOB OpcUaStackServerTest_SRC 
 	${PROJECT_SOURCE_DIR}/unittest.cpp
-	${PROJECT_SOURCE_DIR}/OpcUaStackServer/*/*.cpp 
+	${PROJECT_SOURCE_DIR}/OpcUaStackServer/*/*.cpp
 	${PROJECT_SOURCE_DIR}/unittest.cpp
 )
 add_executable(
