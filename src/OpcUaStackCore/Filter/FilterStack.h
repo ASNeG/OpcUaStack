@@ -48,7 +48,7 @@ namespace OpcUaStackCore
         AttributeIf* attributeIf_;
         SimpleAttributeIf* simpleAttributeIf_;
 
-        OpcUaStatusCode buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node);
+        OpcUaStatusCode buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
     };
 
 }
