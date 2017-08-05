@@ -15,23 +15,31 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include "OpcUaStackServer/ServiceSet/LiteralFilterNode.h"
+#include "OpcUaStackServer/Filter/EqualsFilterNode.h"
 
 namespace OpcUaStackServer
 {
-    LiteralFilterNode::LiteralFilterNode(const OpcUaVariant& value)
+    EqualsFilterNode::EqualsFilterNode(const std::vector<FilterNode::SPtr>& args)
     {
-        value_ = value;
+        arg1_ = args[0];
+        arg2_ = args[1];
     }
 
-    LiteralFilterNode::~LiteralFilterNode()
+    EqualsFilterNode::~EqualsFilterNode()
     {
 
     }
 
-    OpcUaVariant LiteralFilterNode::evaluate()
+    OpcUaVariant EqualsFilterNode::evaluate()
     {
-        return value_;
+        //FIXME: Need conversions;
+        OpcUaVariant result;
+
+        OpcUaVariant v1 = arg1_->evaluate();
+        OpcUaVariant v2 = arg2_->evaluate();
+
+        result.set<OpcUaBoolean>(v1 == v2);
+
+        return result;
     }
 }
-

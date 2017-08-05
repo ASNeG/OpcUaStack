@@ -27,6 +27,7 @@ namespace OpcUaStackServer
 	EventItem::EventItem(void)
 	: eventItemId_(MonitorItemId::monitorItemId())
 	, informationModel_()
+	, whereFilter_()
 	, eventHandler_(constructSPtr<EventHandler>())
 	, nodeId_()
 	, eventFieldListList_()

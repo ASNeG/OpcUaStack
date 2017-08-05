@@ -25,7 +25,7 @@
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/ServiceSet/FilterStack.h"
+#include "OpcUaStackServer/Filter/FilterStack.h"
 
 using namespace OpcUaStackCore;
 

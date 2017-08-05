@@ -15,14 +15,13 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include "OpcUaStackServer/ServiceSet/FilterStack.h"
-#include "OpcUaStackServer/ServiceSet/LiteralFilterNode.h"
-#include "OpcUaStackServer/ServiceSet/EqualsFilterNode.h"
-
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 
+#include "OpcUaStackServer/Filter/FilterStack.h"
+#include "OpcUaStackServer/Filter/LiteralFilterNode.h"
+#include "OpcUaStackServer/Filter/EqualsFilterNode.h"
 
 namespace OpcUaStackServer
 {

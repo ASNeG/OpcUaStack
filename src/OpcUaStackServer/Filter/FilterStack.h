@@ -15,29 +15,38 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackServer_EqualsFilterNode_h__
-#define __OpcUaStackServer_EqualsFilterNode_h__
+#ifndef __OpcUaStackServer_FilterStack_h__
+#define __OpcUaStackServer_FilterStack_h__
 
-#include "OpcUaStackServer/ServiceSet/FilterNode.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackServer/Filter/FilterNode.h"
+
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
-    class DLLEXPORT EqualsFilterNode : public FilterNode
+    class DLLEXPORT FilterStack
+    : public  Object
     {
       public:
+        typedef boost::shared_ptr<FilterStack> SPtr;
 
-        typedef boost::shared_ptr<EqualsFilterNode> SPtr;
+        FilterStack(void);
+        virtual ~FilterStack(void);
 
-        EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
-        virtual ~EqualsFilterNode(void);
-
-        virtual OpcUaVariant evaluate() override;
+        OpcUaStatusCode receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
+        bool process() const;
 
       private:
-        FilterNode::SPtr arg1_;
-        FilterNode::SPtr arg2_;
+        FilterNode::SPtr root_;
+
+        OpcUaStatusCode buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node);
     };
+
 }
 #endif

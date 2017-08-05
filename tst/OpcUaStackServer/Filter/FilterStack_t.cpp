@@ -1,9 +1,9 @@
 #include "unittest.h"
 
-#include "OpcUaStackServer/ServiceSet/FilterStack.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackServer/Filter/FilterStack.h"
 
 using namespace OpcUaStackServer;
 
