@@ -19,10 +19,15 @@
 
 namespace OpcUaStackServer
 {
-    AttributeFilterNode::AttributeFilterNode(const OpcUaVariant& value)
+    AttributeFilterNode::AttributeFilterNode(void)
     : FilterNode()
+    , attributeIf_(nullptr)
+    , typeId_()
+    , alias_("")
+    , relativePath_()
+    , attributeId_(0)
+    , numericRange_("")
     {
-        value_ = value;
     }
 
     AttributeFilterNode::~AttributeFilterNode()
@@ -30,9 +35,34 @@ namespace OpcUaStackServer
 
     }
 
-    OpcUaVariant AttributeFilterNode::evaluate()
+    void
+	AttributeFilterNode::attributeIf(AttributeIf* attributeIf)
     {
-        return value_;
+    	attributeIf_ = attributeIf;
+    }
+
+    OpcUaVariant
+	AttributeFilterNode::evaluate()
+    {
+    	OpcUaVariant value;
+        return value;
+    }
+
+    bool
+	AttributeFilterNode::evaluate(OpcUaVariant& value)
+    {
+    	if (attributeIf_ == nullptr) {
+    		return false;
+    	}
+
+    	return attributeIf_->getAttribute(
+    		typeId_,
+			alias_,
+			relativePath_,
+			attributeId_,
+			numericRange_,
+			value
+    	);
     }
 }
 
