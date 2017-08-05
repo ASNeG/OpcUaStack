@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_FilterNode_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
+#include "OpcUaStackCore/ServiceSet/ContentFilterElementResult.h"
 
 namespace OpcUaStackCore
 {
@@ -31,8 +32,11 @@ namespace OpcUaStackCore
         virtual ~FilterNode(void) {}
 
         virtual bool evaluate(OpcUaVariant& value) = 0;
+        virtual OpcUaStatusCode& status() = 0;
+        virtual std::vector<OpcUaStatusCode>& operandStatuses() = 0;
 
     };
 
 }
 #endif
+

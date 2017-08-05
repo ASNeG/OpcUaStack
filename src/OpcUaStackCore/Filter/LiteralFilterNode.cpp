@@ -21,7 +21,10 @@ namespace OpcUaStackCore
 {
     LiteralFilterNode::LiteralFilterNode(const OpcUaVariant& value)
     {
+
         value_.copyFrom(*const_cast<OpcUaVariant*>(&value));
+        status_ = OpcUaStatusCode::Success;
+        operandStatuses_ = std::vector<OpcUaStatusCode>();
     }
 
     LiteralFilterNode::~LiteralFilterNode()
@@ -35,5 +38,17 @@ namespace OpcUaStackCore
     	value_.copyTo(value);
         return true;
     }
+
+    OpcUaStatusCode& LiteralFilterNode::status()
+    {
+    	return status_;
+    }
+
+    std::vector<OpcUaStatusCode>& LiteralFilterNode::operandStatuses()
+    {
+    	return operandStatuses_;
+    }
+
+
 }
 

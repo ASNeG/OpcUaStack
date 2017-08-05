@@ -21,8 +21,19 @@ namespace OpcUaStackCore
 {
     EqualsFilterNode::EqualsFilterNode(const std::vector<FilterNode::SPtr>& args)
     {
-        arg1_ = args[0];
-        arg2_ = args[1];
+        value_ = OpcUaVariant();
+        value_.set<OpcUaBoolean>(false);
+
+        status_ = OpcUaStatusCode::Success;
+        operandStatuses_ = std::vector<OpcUaStatusCode>();
+
+        if (args.size() == 2) {
+        	arg1_ = args[0];
+        	arg2_ = args[1];
+        }
+        else {
+        	status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
+        }
     }
 
     EqualsFilterNode::~EqualsFilterNode()

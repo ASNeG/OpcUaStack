@@ -1,13 +1,11 @@
 #include "unittest.h"
 #include "FilterOperatorHelpers.h"
 
-<<<<<<< HEAD:tst/OpcUaStackCore/Filter/FilterStack_t.cpp
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/Filter/FilterStack.h"
-=======
->>>>>>> add checking of ContentFilter operators:tst/OpcUaStackServer/ServiceSet/FilterStack_t.cpp
+
 
 using namespace OpcUaStackCore;
 
@@ -59,59 +57,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperatorInvalid)
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperatorInvalid);
 }
 
-
-BOOST_AUTO_TEST_CASE(FilterStack_Equals_returns_false)
-{
-    FilterStack stack;
-
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 100, 120);
-
-
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
-
-
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
-}
-
-
-
-BOOST_AUTO_TEST_CASE(FilterStack_Equals_returns_true)
-{
-    FilterStack stack;
-
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 100, 100);
-
-
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
-
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == true);
-}
-
-BOOST_AUTO_TEST_CASE(FilterStack_10_eq_10_eq_20_eq_20_true)
+BOOST_AUTO_TEST_CASE(FilterStack_2_level_tree)
 {
     // (10 == 10) == (20 == 20) => true
     FilterStack stack;
@@ -149,7 +95,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_10_eq_10_eq_20_eq_20_true)
     BOOST_REQUIRE(filterResult == true);
 }
 
-BOOST_AUTO_TEST_CASE(FilterStack_10_eq_20_eq_30_false)
+BOOST_AUTO_TEST_CASE(FilterStack_2_level_half_tree)
 {
     // 10  == (20 == 30) => false
     FilterStack stack;

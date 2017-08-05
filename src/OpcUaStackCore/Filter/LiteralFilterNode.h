@@ -33,10 +33,13 @@ namespace OpcUaStackCore
         virtual ~LiteralFilterNode(void);
 
         virtual bool evaluate(OpcUaVariant& value) override;
+        virtual OpcUaStatusCode& status() override;
+        virtual std::vector<OpcUaStatusCode>& operandStatuses() override;
 
       private:
         OpcUaVariant value_;
-
+        OpcUaStatusCode status_;
+        std::vector<OpcUaStatusCode> operandStatuses_;
 
     };
 
