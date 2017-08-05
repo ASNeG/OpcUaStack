@@ -19,10 +19,14 @@
 
 namespace OpcUaStackServer
 {
-    SimpleAttributeFilterNode::SimpleAttributeFilterNode(const OpcUaVariant& value)
+    SimpleAttributeFilterNode::SimpleAttributeFilterNode(void)
     : FilterNode()
+    , typeId_()
+    , browsePath_()
+    , attributeId_(0)
+    , numericRange_("")
+    , simpleAttributeIf_(nullptr)
     {
-        value_ = value;
     }
 
     SimpleAttributeFilterNode::~SimpleAttributeFilterNode()
@@ -30,9 +34,35 @@ namespace OpcUaStackServer
 
     }
 
-    OpcUaVariant SimpleAttributeFilterNode::evaluate()
+    void
+	SimpleAttributeFilterNode::simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf)
     {
-        return value_;
+    	simpleAttributeIf_ = simpleAttributeIf;
+    }
+
+    OpcUaVariant
+	SimpleAttributeFilterNode::evaluate(void)
+    {
+    	// FIXME: todo
+    	OpcUaVariant value;
+        return value;
+    }
+
+    bool
+	SimpleAttributeFilterNode::evaluate(OpcUaVariant& value)
+    {
+    	if (simpleAttributeIf_ == nullptr) {
+    		return false;
+    	}
+
+    	return simpleAttributeIf_->getAttribute(
+    		typeId_,
+			browsePath_,
+			attributeId_,
+			numericRange_,
+			value
+    	);
+
     }
 }
 

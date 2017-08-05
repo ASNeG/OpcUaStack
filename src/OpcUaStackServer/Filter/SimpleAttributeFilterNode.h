@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_SimpleAttributeFilterNode_h__
 
 #include "OpcUaStackServer/Filter/FilterNode.h"
+#include "OpcUaStackServer/Filter/SimpleAttributeIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -31,15 +32,21 @@ namespace OpcUaStackServer
 
         typedef boost::shared_ptr<SimpleAttributeFilterNode> SPtr;
 
-        SimpleAttributeFilterNode(const OpcUaVariant& value);
+        SimpleAttributeFilterNode(void);
         virtual ~SimpleAttributeFilterNode(void);
 
+        void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
+
         virtual OpcUaVariant evaluate() override;
+        bool evaluate(OpcUaVariant& value);
 
       private:
-        OpcUaVariant value_;
+        SimpleAttributeIf* simpleAttributeIf_;
 
-
+        OpcUaNodeId typeId_;
+        std::list<OpcUaQualifiedName> browsePath_;
+        OpcUaUInt32 attributeId_;
+        OpcUaString numericRange_;
     };
 
 }

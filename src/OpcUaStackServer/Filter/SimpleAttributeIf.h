@@ -30,7 +30,13 @@ namespace OpcUaStackServer
         SimpleAttributeIf(void);
         virtual ~SimpleAttributeIf(void);
 
-        virtual bool getAttribute(OpcUaNodeId& typeId, std::list<OpcUaQualifiedName>& browsePath, OpcUaUInt32 attributeId, OpcUaString& numericRange) = 0;
+        virtual bool getAttribute(
+        	OpcUaNodeId& typeId,
+			std::list<OpcUaQualifiedName>& browsePath,
+			OpcUaUInt32 attributeId,
+			OpcUaString& numericRange,
+			OpcUaVariant& value
+		) = 0;
     };
 
 }
