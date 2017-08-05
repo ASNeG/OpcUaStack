@@ -65,6 +65,12 @@ namespace OpcUaStackServer
 		// FIXME: construct filter stack
 		//
 
+		whereFilter_ = constructSPtr<FilterStack>();
+		whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->whereClauseResult());
+
+
+
+
 		// register event handler
 		// FIXME: lock...
 		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
@@ -106,6 +112,8 @@ namespace OpcUaStackServer
 		// FIXME: todo
 		// process where clause
 		// process select clause
+
+
 
 		// FIXME: lock
 

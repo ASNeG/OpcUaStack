@@ -25,6 +25,7 @@
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/ServiceSet/FilterStack.h"
 
 using namespace OpcUaStackCore;
 
@@ -62,6 +63,7 @@ namespace OpcUaStackServer
 		uint32_t eventItemId_;
 		uint32_t clientHandle_;
 		InformationModel::SPtr informationModel_;
+		FilterStack::SPtr whereFilter_;
 
 		EventHandler::SPtr eventHandler_;
 		EventFieldListList eventFieldListList_; // FIXME: need lock...
