@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Bool)
 	// bool -> string
 	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaBoolean, OpcUaBuildInType_OpcUaString));
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaString, value2));
-	BOOST_REQUIRE_EQUAL(OpcUaString("true"), *value2->getSPtr<OpcUaString>());
+	BOOST_REQUIRE_EQUAL(OpcUaString("1"), *value2->getSPtr<OpcUaString>());
 
 	// bool -> localizedText
 	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaBoolean, OpcUaBuildInType_OpcUaLocalizedText));

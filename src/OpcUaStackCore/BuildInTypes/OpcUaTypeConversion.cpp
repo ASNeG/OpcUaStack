@@ -114,7 +114,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaBoolean, OpcUaInt64>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaSByte:	return cast<OpcUaBoolean, OpcUaSByte>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaString: {
-				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->get<OpcUaBoolean>() ? "true" : "false");
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->get<OpcUaBoolean>() ? "1" : "0");
 				targetVariant->variant(value);
 
 				return true;
