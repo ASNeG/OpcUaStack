@@ -28,6 +28,7 @@ namespace OpcUaStackServer
 	: eventItemId_(MonitorItemId::monitorItemId())
 	, informationModel_()
 	, whereFilter_()
+	, selectClauses_()
 	, eventHandler_(constructSPtr<EventHandler>())
 	, nodeId_()
 	, eventFieldListList_()
@@ -52,6 +53,8 @@ namespace OpcUaStackServer
 		MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		nodeId_ = *monitoredItemCreateRequest->itemToMonitor().nodeId();
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
@@ -62,8 +65,16 @@ namespace OpcUaStackServer
 			return BadInvalidArgument;
 		}
 
+		// select clause
+		SimpleAttributeOperandArray::SPtr selectClauses = eventFilter->selectClauses();
+		OpcUaStatusCodeArray::SPtr statusCodeArray = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->selectClauseResults();
+		statusCode = receive(selectClauses, statusCodeArray);
+		if (statusCode != Success) {
+			monitoredItemCreateResult->statusCode(statusCode);
+			return statusCode;
+		}
+
 		// construct where filter
-		OpcUaStatusCode statusCode;
 		whereFilter_ = constructSPtr<FilterStack>();
 		statusCode = whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->whereClauseResult());
 		if (statusCode != Success) {
@@ -132,6 +143,10 @@ namespace OpcUaStackServer
 
 		// process where clause
 		std::cout << "where clause..." << std::endl;
+
+		for (uint32_t idx=0; idx<selectClauses_->size(); idx++) {
+			// get variant value from event
+		}
 
 		//
 		//
@@ -217,5 +232,24 @@ namespace OpcUaStackServer
 
 		return Success;
 	}
+
+	OpcUaStatusCode
+	EventItem::receive(SimpleAttributeOperandArray::SPtr& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray)
+	{
+		if (selectClauses.get() == nullptr) {
+			return BadContentFilterInvalid;
+		}
+		if (selectClauses->size() == 0) {
+			return BadContentFilterInvalid;
+		}
+
+		selectClauses_ = selectClauses;
+		for (uint32_t idx=0; idx<selectClauses->size(); idx++) {
+			// FIXME: check if attributes exist in type system
+		}
+
+		return Success;
+	}
+
 
 }

@@ -58,12 +58,14 @@ namespace OpcUaStackServer
 	  private:
 		void clear(void);
 		void fireEvent(EventBase::SPtr eventBase);
+		OpcUaStatusCode receive(SimpleAttributeOperandArray::SPtr& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray);
 
 		OpcUaNodeId nodeId_;
 		uint32_t eventItemId_;
 		uint32_t clientHandle_;
 		InformationModel::SPtr informationModel_;
 		FilterStack::SPtr whereFilter_;
+		SimpleAttributeOperandArray::SPtr selectClauses_;
 
 		EventHandler::SPtr eventHandler_;
 		EventFieldListList eventFieldListList_; // FIXME: need lock...
