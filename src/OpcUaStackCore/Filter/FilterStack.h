@@ -15,20 +15,17 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackServer_FilterStack_h__
-#define __OpcUaStackServer_FilterStack_h__
+#ifndef __OpcUaStackCore_FilterStack_h__
+#define __OpcUaStackCore_FilterStack_h__
 
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
-#include "OpcUaStackServer/Filter/FilterNode.h"
+#include "OpcUaStackCore/Filter/FilterNode.h"
 
-
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
     class DLLEXPORT FilterStack
     : public  Object

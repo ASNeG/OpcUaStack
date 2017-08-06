@@ -15,25 +15,27 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include "OpcUaStackServer/Filter/LiteralFilterNode.h"
+#ifndef __OpcUaStackCore_SimpleAttributeIf_h__
+#define __OpcUaStackCore_SimpleAttributeIf_h__
 
-namespace OpcUaStackServer
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+
+namespace OpcUaStackCore
 {
-    LiteralFilterNode::LiteralFilterNode(const OpcUaVariant& value)
+    class DLLEXPORT SimpleAttributeIf
     {
-        value_.copyFrom(*const_cast<OpcUaVariant*>(&value));
-    }
+      public:
+        SimpleAttributeIf(void);
+        virtual ~SimpleAttributeIf(void);
 
-    LiteralFilterNode::~LiteralFilterNode()
-    {
+        virtual bool getAttribute(
+        	OpcUaNodeId& typeId,
+			std::list<OpcUaQualifiedName>& browsePath,
+			OpcUaUInt32 attributeId,
+			OpcUaString& numericRange,
+			OpcUaVariant& value
+		) = 0;
+    };
 
-    }
-
-    bool
-	LiteralFilterNode::evaluate(OpcUaVariant& value)
-    {
-    	value_.copyTo(value);
-        return true;
-    }
 }
-
+#endif

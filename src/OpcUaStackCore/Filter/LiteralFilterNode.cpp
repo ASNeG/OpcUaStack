@@ -15,29 +15,25 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackServer_EqualsFilterNode_h__
-#define __OpcUaStackServer_EqualsFilterNode_h__
+#include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 
-#include "OpcUaStackServer/Filter/FilterNode.h"
-
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
-    class DLLEXPORT EqualsFilterNode : public FilterNode
+    LiteralFilterNode::LiteralFilterNode(const OpcUaVariant& value)
     {
-      public:
+        value_.copyFrom(*const_cast<OpcUaVariant*>(&value));
+    }
 
-        typedef boost::shared_ptr<EqualsFilterNode> SPtr;
+    LiteralFilterNode::~LiteralFilterNode()
+    {
 
-        EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
-        virtual ~EqualsFilterNode(void);
+    }
 
-        virtual bool evaluate(OpcUaVariant& value) override;
-
-      private:
-        FilterNode::SPtr arg1_;
-        FilterNode::SPtr arg2_;
-    };
+    bool
+	LiteralFilterNode::evaluate(OpcUaVariant& value)
+    {
+    	value_.copyTo(value);
+        return true;
+    }
 }
-#endif
+

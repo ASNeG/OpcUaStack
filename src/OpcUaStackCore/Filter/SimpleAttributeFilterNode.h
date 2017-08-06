@@ -15,38 +15,37 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackServer_AttributeFilterNode_h__
-#define __OpcUaStackServer_AttributeFilterNode_h__
+#ifndef __OpcUaStackCore_SimpleAttributeFilterNode_h__
+#define __OpcUaStackCore_SimpleAttributeFilterNode_h__
 
-#include "OpcUaStackServer/Filter/FilterNode.h"
-#include "OpcUaStackServer/Filter/AttributeIf.h"
+#include "OpcUaStackCore/Filter/FilterNode.h"
+#include "OpcUaStackCore/Filter/SimpleAttributeIf.h"
 
 using namespace OpcUaStackCore;
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
-    class DLLEXPORT AttributeFilterNode
+    class DLLEXPORT SimpleAttributeFilterNode
 	: public FilterNode
     {
       public:
 
-        typedef boost::shared_ptr<AttributeFilterNode> SPtr;
+        typedef boost::shared_ptr<SimpleAttributeFilterNode> SPtr;
 
-        AttributeFilterNode(void);
-        virtual ~AttributeFilterNode(void);
+        SimpleAttributeFilterNode(void);
+        virtual ~SimpleAttributeFilterNode(void);
 
-        void attributeIf(AttributeIf* attributeIf);
+        void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
       private:
-        AttributeIf* attributeIf_;
+        SimpleAttributeIf* simpleAttributeIf_;
 
-       	OpcUaNodeId typeId_;
-       	OpcUaString alias_;
-		RelativePath::SPtr relativePath_;
-		OpcUaUInt32 attributeId_;
-		OpcUaString numericRange_;
+        OpcUaNodeId typeId_;
+        std::list<OpcUaQualifiedName> browsePath_;
+        OpcUaUInt32 attributeId_;
+        OpcUaString numericRange_;
     };
 
 }

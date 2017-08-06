@@ -23,9 +23,9 @@
 #include "OpcUaStackCore/EventType/EventHandler.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
+#include "OpcUaStackCore/Filter/FilterStack.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/Filter/FilterStack.h"
 
 using namespace OpcUaStackCore;
 

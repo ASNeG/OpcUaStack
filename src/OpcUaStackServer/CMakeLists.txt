@@ -49,7 +49,6 @@ file(GLOB INC_OpcUaStackServer_InformationModel OpcUaStackServer/InformationMode
 file(GLOB INC_OpcUaStackServer_NodeSet OpcUaStackServer/NodeSet/*.h)
 file(GLOB INC_OpcUaStackServer_SecureChannel OpcUaStackServer/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceManager OpcUaStackServer/ServiceManager/*.h)
-file(GLOB INC_OpcUaStackServer_Filter OpcUaStackServer/Filter/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServer/ServiceSet/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceSetApplication OpcUaStackServer/ServiceSetApplication/*.h)
 file(GLOB INC_OpcUaStackServer_ApplicationUtility OpcUaStackServer/ApplicationUtility/*.h)
@@ -100,12 +99,6 @@ install(
 install(
     FILES ${INC_OpcUaStackServer_ServiceManager} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ServiceManager
-    COMPONENT headers
-)
-
-install(
-    FILES ${INC_OpcUaStackServer_Filter} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/Filter
     COMPONENT headers
 )
 

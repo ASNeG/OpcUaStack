@@ -15,9 +15,9 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include "OpcUaStackServer/Filter/SimpleAttributeFilterNode.h"
+#include "OpcUaStackCore/Filter/SimpleAttributeFilterNode.h"
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
     SimpleAttributeFilterNode::SimpleAttributeFilterNode(void)
     : FilterNode()

@@ -3,9 +3,9 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
-#include "OpcUaStackServer/Filter/FilterStack.h"
+#include "OpcUaStackCore/Filter/FilterStack.h"
 
-using namespace OpcUaStackServer;
+using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(FilterStack_)
 
@@ -13,7 +13,9 @@ BOOST_AUTO_TEST_CASE(FilterStack_returns_True_if_empty)
 {
     FilterStack stack;
 
-    BOOST_REQUIRE(stack.process());
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == true);
 }
 
 template<typename T1, typename T2>
@@ -99,7 +101,9 @@ BOOST_AUTO_TEST_CASE(FilterStack_Equals_returns_false)
     ContentFilterResult result;
     stack.receive(filter, result);
 
-    BOOST_REQUIRE(!stack.process());
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
 }
 
 
@@ -118,7 +122,9 @@ BOOST_AUTO_TEST_CASE(FilterStack_Equals_returns_true)
     ContentFilterResult result;
     stack.receive(filter, result);
 
-    BOOST_REQUIRE(stack.process());
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == true);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_10_eq_10_eq_20_eq_20_true)
@@ -144,7 +150,9 @@ BOOST_AUTO_TEST_CASE(FilterStack_10_eq_10_eq_20_eq_20_true)
     ContentFilterResult result;
     stack.receive(filter, result);
 
-    BOOST_REQUIRE(stack.process());
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == true);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_10_eq_20_eq_30_false)
@@ -167,7 +175,9 @@ BOOST_AUTO_TEST_CASE(FilterStack_10_eq_20_eq_30_false)
     ContentFilterResult result;
     stack.receive(filter, result);
 
-    BOOST_REQUIRE(!stack.process());
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
 }
 
 

@@ -15,9 +15,9 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include "OpcUaStackServer/Filter/AttributeFilterNode.h"
+#include "OpcUaStackCore/Filter/AttributeFilterNode.h"
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
     AttributeFilterNode::AttributeFilterNode(void)
     : FilterNode()

@@ -19,11 +19,11 @@
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 
-#include "OpcUaStackServer/Filter/FilterStack.h"
-#include "OpcUaStackServer/Filter/LiteralFilterNode.h"
-#include "OpcUaStackServer/Filter/EqualsFilterNode.h"
+#include "OpcUaStackCore/Filter/FilterStack.h"
+#include "OpcUaStackCore/Filter/LiteralFilterNode.h"
+#include "OpcUaStackCore/Filter/EqualsFilterNode.h"
 
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
     FilterStack::FilterStack()
     {
@@ -96,9 +96,7 @@ namespace OpcUaStackServer
     		return false;
     	}
 
-    	if (value.variantType() != OpcUaBuildInType_OpcUaBoolean) {
-    		return false;
-    	}
+    	// FIXME: type conversion
 
     	if (!value.getValue(filterResult)) {
     		return false;

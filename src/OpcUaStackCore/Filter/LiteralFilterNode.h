@@ -15,36 +15,30 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include "OpcUaStackServer/Filter/EqualsFilterNode.h"
+#ifndef __OpcUaStackCore_LiteralFilterNode_h__
+#define __OpcUaStackCore_LiteralFilterNode_h__
 
-namespace OpcUaStackServer
+#include "OpcUaStackCore/Filter/FilterNode.h"
+
+namespace OpcUaStackCore
 {
-    EqualsFilterNode::EqualsFilterNode(const std::vector<FilterNode::SPtr>& args)
+    class DLLEXPORT LiteralFilterNode
+	: public FilterNode
     {
-        arg1_ = args[0];
-        arg2_ = args[1];
-    }
+      public:
 
-    EqualsFilterNode::~EqualsFilterNode()
-    {
+        typedef boost::shared_ptr<LiteralFilterNode> SPtr;
 
-    }
+        LiteralFilterNode(const OpcUaVariant& value);
+        virtual ~LiteralFilterNode(void);
 
-    bool
-	EqualsFilterNode::evaluate(OpcUaVariant& value)
-    {
-        //FIXME: Need conversions;
+        virtual bool evaluate(OpcUaVariant& value) override;
 
-        OpcUaVariant v1;
-        if (!arg1_->evaluate(v1)) {
-        	return false;
-        }
-        OpcUaVariant v2;
-        if (!arg2_->evaluate(v2)) {
-        	return false;
-        }
+      private:
+        OpcUaVariant value_;
 
-        value.set<OpcUaBoolean>(v1 == v2);
-        return true;
-    }
+
+    };
+
 }
+#endif

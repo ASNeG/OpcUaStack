@@ -15,29 +15,28 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackServer_SimpleAttributeIf_h__
-#define __OpcUaStackServer_SimpleAttributeIf_h__
+#ifndef __OpcUaStackCore_EqualsFilterNode_h__
+#define __OpcUaStackCore_EqualsFilterNode_h__
 
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/Filter/FilterNode.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
-    class DLLEXPORT SimpleAttributeIf
+    class DLLEXPORT EqualsFilterNode
+	: public FilterNode
     {
       public:
-        SimpleAttributeIf(void);
-        virtual ~SimpleAttributeIf(void);
 
-        virtual bool getAttribute(
-        	OpcUaNodeId& typeId,
-			std::list<OpcUaQualifiedName>& browsePath,
-			OpcUaUInt32 attributeId,
-			OpcUaString& numericRange,
-			OpcUaVariant& value
-		) = 0;
+        typedef boost::shared_ptr<EqualsFilterNode> SPtr;
+
+        EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
+        virtual ~EqualsFilterNode(void);
+
+        virtual bool evaluate(OpcUaVariant& value) override;
+
+      private:
+        FilterNode::SPtr arg1_;
+        FilterNode::SPtr arg2_;
     };
-
 }
 #endif

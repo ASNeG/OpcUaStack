@@ -15,30 +15,23 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackServer_AttributeIf_h__
-#define __OpcUaStackServer_AttributeIf_h__
+#ifndef __OpcUaStackCore_FilterNode_h__
+#define __OpcUaStackCore_FilterNode_h__
 
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/ServiceSet/RelativePath.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
-    class DLLEXPORT AttributeIf
+    class DLLEXPORT FilterNode
     {
       public:
-        AttributeIf(void);
-        virtual ~AttributeIf(void);
 
-        virtual bool getAttribute(
-        	OpcUaNodeId& typeId,
-			OpcUaString& alias,
-			RelativePath::SPtr& relativePath,
-			OpcUaUInt32 attributeId,
-			OpcUaString& numericRange,
-			OpcUaVariant& value
-		) = 0;
+        typedef boost::shared_ptr<FilterNode> SPtr;
+
+        virtual ~FilterNode(void) {}
+
+        virtual bool evaluate(OpcUaVariant& value) = 0;
+
     };
 
 }
