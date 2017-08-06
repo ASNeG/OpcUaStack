@@ -52,12 +52,18 @@ namespace OpcUaStackCore
     	simpleAttributeIf_ = simpleAttributeIf;
     }
 
-    OpcUaStatusCode FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
+    OpcUaStatusCode
+	FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
+    	if (contentFilter.elements()->size() == 0) {
+    		return Success;
+    	}
+
         return buildOperatorNode(contentFilter, 0, root_);
     }
 
-    OpcUaStatusCode FilterStack::buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node)
+    OpcUaStatusCode
+	FilterStack::buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node)
     {
         ContentFilterElement::SPtr el;
         contentFilter.elements()->get(idx, el);
