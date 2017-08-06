@@ -26,8 +26,8 @@ namespace OpcUaStackCore
     class DLLEXPORT AttributeIf
     {
       public:
-        AttributeIf(void);
-        virtual ~AttributeIf(void);
+        AttributeIf(void) {}
+        virtual ~AttributeIf(void) {}
 
         virtual bool getAttribute(
         	OpcUaNodeId& typeId,

@@ -25,12 +25,12 @@ namespace OpcUaStackCore
     class DLLEXPORT SimpleAttributeIf
     {
       public:
-        SimpleAttributeIf(void);
-        virtual ~SimpleAttributeIf(void);
+        SimpleAttributeIf(void) {}
+        virtual ~SimpleAttributeIf(void) {}
 
         virtual bool getAttribute(
         	OpcUaNodeId& typeId,
-			std::list<OpcUaQualifiedName>& browsePath,
+			std::list<OpcUaQualifiedName::SPtr>& browsePath,
 			OpcUaUInt32 attributeId,
 			OpcUaString& numericRange,
 			OpcUaVariant& value

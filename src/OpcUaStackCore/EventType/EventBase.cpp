@@ -66,6 +66,34 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// SimpleAttributeIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+    bool
+	EventBase::getAttribute(
+        OpcUaNodeId& typeId,
+		std::list<OpcUaQualifiedName::SPtr>& browsePath,
+		OpcUaUInt32 attributeId,
+		OpcUaString& numericRange,
+		OpcUaVariant& value
+	)
+    {
+    	std::list<OpcUaQualifiedName::SPtr> tmpBrowsePath = browsePath;
+
+    	OpcUaVariant::SPtr variant;
+    	ResultCode resultCode = get(typeId, tmpBrowsePath, variant);
+    	if (resultCode != Success) {
+    		return resultCode;
+    	}
+
+    	value.copyFrom(*variant);
+    	return Success;
+    }
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// virtual interface functions
 	//
 	// ------------------------------------------------------------------------

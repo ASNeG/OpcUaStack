@@ -43,7 +43,7 @@ namespace OpcUaStackCore
         SimpleAttributeIf* simpleAttributeIf_;
 
         OpcUaNodeId typeId_;
-        std::list<OpcUaQualifiedName> browsePath_;
+        std::list<OpcUaQualifiedName::SPtr> browsePath_;
         OpcUaUInt32 attributeId_;
         OpcUaString numericRange_;
     };

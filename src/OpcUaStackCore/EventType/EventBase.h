@@ -21,11 +21,13 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/Filter/SimpleAttributeIf.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT EventBase
+	: public SimpleAttributeIf
 	{
 	  public:
 		typedef boost::shared_ptr<EventBase> SPtr;
@@ -62,6 +64,16 @@ namespace OpcUaStackCore
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 			ResultCode& resultCode
 		);
+
+		//- SimpleAttributeIf -------------------------------------------------
+	    virtual bool getAttribute(
+	        OpcUaNodeId& typeId,
+			std::list<OpcUaQualifiedName::SPtr>& browsePath,
+			OpcUaUInt32 attributeId,
+			OpcUaString& numericRange,
+			OpcUaVariant& value
+		);
+		//- SimpleAttributeIf -------------------------------------------------
 
 	  private:
 		std::vector<std::string>* namespaceArray_;
