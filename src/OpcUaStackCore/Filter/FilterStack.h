@@ -24,6 +24,8 @@
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/Filter/FilterNode.h"
+#include "OpcUaStackCore/Filter/AttributeIf.h"
+#include "OpcUaStackCore/Filter/SimpleAttributeIf.h"
 
 namespace OpcUaStackCore
 {
@@ -36,11 +38,15 @@ namespace OpcUaStackCore
         FilterStack(void);
         virtual ~FilterStack(void);
 
+        void attributeIf(AttributeIf* attributeIf);
+        void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
         OpcUaStatusCode receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
         bool process(bool& filterResult) const;
 
       private:
         FilterNode::SPtr root_;
+        AttributeIf* attributeIf_;
+        SimpleAttributeIf* simpleAttributeIf_;
 
         OpcUaStatusCode buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node);
     };

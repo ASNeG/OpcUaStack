@@ -26,6 +26,9 @@
 namespace OpcUaStackCore
 {
     FilterStack::FilterStack()
+    : root_()
+    , attributeIf_(nullptr)
+    , simpleAttributeIf_(nullptr)
     {
         OpcUaVariant value;
         value.set<OpcUaBoolean>(true);
@@ -37,10 +40,21 @@ namespace OpcUaStackCore
 
     }
 
+    void
+	FilterStack::attributeIf(AttributeIf* attributeIf)
+    {
+    	attributeIf_ = attributeIf;
+    }
+
+    void
+	FilterStack::simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf)
+    {
+    	simpleAttributeIf_ = simpleAttributeIf;
+    }
+
     OpcUaStatusCode FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
-        buildOperatorNode(contentFilter, 0, root_);
-        return OpcUaStatusCode::Success;
+        return buildOperatorNode(contentFilter, 0, root_);
     }
 
     OpcUaStatusCode FilterStack::buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node)
@@ -58,30 +72,56 @@ namespace OpcUaStackCore
             uint32_t typeId;
             uint16_t nsIdx;
             operand->parameterTypeId().get(typeId, nsIdx);
-            switch (typeId) {
-            case OpcUaId_LiteralOperand:
-                args.push_back(
+            switch (typeId)
+            {
+            	case OpcUaId_LiteralOperand:
+            	{
+            		args.push_back(
                         constructSPtr<LiteralFilterNode, OpcUaVariant>(operand->parameter<LiteralOperand>()->value()));
-                break;
+            		break;
+            	}
+            	case OpcUaId_ElementOperand:
+            	{
+            		FilterNode::SPtr operator_;
+            		uint32_t operatorIdx = operand->parameter<ElementOperand>()->index();
 
-            case OpcUaId_ElementOperand:
-                FilterNode::SPtr operator_;
-                uint32_t operatorIdx = operand->parameter<ElementOperand>()->index();
+            		buildOperatorNode(contentFilter, operatorIdx, operator_);
 
-                buildOperatorNode(contentFilter, operatorIdx, operator_);
-
-                args.push_back(operator_);
-                break;
-            }
-
+            		args.push_back(operator_);
+            		break;
+            	}
+            	case OpcUaId_AttributeOperand:
+            	{
+            		// FIXME: todo - use AttributeIf to access variant value
+            		break;
+            	}
+            	case OpcUaId_SimpleAttributeOperand:
+            	{
+            		// FIXME: todo - use SimpleAttributeIf to acess variant value
+            		break;
+            	}
+            	default:
+            	{
+            		Log(Error, "unknown filter operand found")
+            			.parameter("FilterOperand", operand->parameterTypeId());
+            		return BadTypeMismatch;
+            	}
+        	}
 
         }
 
         switch (el->filterOperator()) {
-            case BasicFilterOperator_Equals: {
+            case BasicFilterOperator_Equals:
+            {
                 node = EqualsFilterNode::SPtr(new EqualsFilterNode(args));
                 break;
             }
+        	default:
+        	{
+        		Log(Error, "unknown filter operator found")
+        			.parameter("FilterOperator", (uint32_t)el->filterOperator());
+        		return BadTypeMismatch;
+        	}
         }
 
         return OpcUaStatusCode::Success;

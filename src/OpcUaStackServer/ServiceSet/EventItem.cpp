@@ -62,15 +62,14 @@ namespace OpcUaStackServer
 			return BadInvalidArgument;
 		}
 
-		//
-		// FIXME: construct filter stack
-		//
-
+		// construct where filter
+		OpcUaStatusCode statusCode;
 		whereFilter_ = constructSPtr<FilterStack>();
-		whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->whereClauseResult());
-
-
-
+		statusCode = whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->whereClauseResult());
+		if (statusCode != Success) {
+			monitoredItemCreateResult->statusCode(statusCode);
+			return statusCode;
+		}
 
 		// register event handler
 		// FIXME: lock...
@@ -108,15 +107,31 @@ namespace OpcUaStackServer
 	void
 	EventItem::fireEvent(EventBase::SPtr eventBase)
 	{
-		std::cout << "EventItem::fireEvent" << std::endl;
-
-		// FIXME: todo
-		// process where clause
-		// process select clause
-
-
-
 		// FIXME: lock
+
+		// check event
+		if (eventBase.get() == nullptr) {
+			return;
+		}
+
+		// map namespace
+		// FIXME: todo
+
+		// process select clause
+		whereFilter_->simpleAttributeIf(eventBase.get());
+
+		bool resultCode;
+		if (!whereFilter_->process(resultCode)) {
+			Log(Error, "processEventFilter error");
+			return;
+		}
+		if (!resultCode) {
+			// ignore event
+			return;
+		}
+
+		// process where clause
+		std::cout << "where clause..." << std::endl;
 
 		//
 		//
