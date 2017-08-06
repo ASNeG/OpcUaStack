@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
@@ -55,6 +56,13 @@ namespace OpcUaStackServer
 	{
 		OpcUaStatusCode statusCode;
 
+		if (monitoredItemCreateRequest.get() == nullptr) {
+			return BadInvalidArgument;
+		}
+		if (monitoredItemCreateResult.get() == nullptr) {
+			return BadInvalidArgument;
+		}
+
 		nodeId_ = *monitoredItemCreateRequest->itemToMonitor().nodeId();
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
@@ -65,10 +73,13 @@ namespace OpcUaStackServer
 			return BadInvalidArgument;
 		}
 
+		// create event filter result
+		EventFilterResult::SPtr eventFilterResult = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
+
 		// select clause
 		SimpleAttributeOperandArray::SPtr selectClauses = eventFilter->selectClauses();
-		OpcUaStatusCodeArray::SPtr statusCodeArray = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->selectClauseResults();
-		statusCode = receive(selectClauses, statusCodeArray);
+		OpcUaStatusCodeArray::SPtr selectClauseResults = eventFilterResult->selectClauseResults();
+		statusCode = receive(selectClauses, selectClauseResults);
 		if (statusCode != Success) {
 			monitoredItemCreateResult->statusCode(statusCode);
 			return statusCode;
@@ -76,7 +87,7 @@ namespace OpcUaStackServer
 
 		// construct where filter
 		whereFilter_ = constructSPtr<FilterStack>();
-		statusCode = whereFilter_->receive(eventFilter->whereClause(), monitoredItemCreateResult->filterResult().parameter<EventFilterResult>()->whereClauseResult());
+		statusCode = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
 		if (statusCode != Success) {
 			monitoredItemCreateResult->statusCode(statusCode);
 			return statusCode;
@@ -118,6 +129,7 @@ namespace OpcUaStackServer
 	void
 	EventItem::fireEvent(EventBase::SPtr eventBase)
 	{
+		std::cout << "fireEvent" << std::endl;
 		// FIXME: lock
 
 		// check event
@@ -152,11 +164,15 @@ namespace OpcUaStackServer
 			SimpleAttributeOperand::SPtr simpleAttributeOperand;
 			selectClauses_->get(idx, simpleAttributeOperand);
 
+			std::cout << "NodeId=" << simpleAttributeOperand->typeId() << std::endl;
+
 			std::list<OpcUaQualifiedName::SPtr> browseNameList;
 			for (uint32_t j=0; j<simpleAttributeOperand->browsePath()->size(); j++) {
 				OpcUaQualifiedName::SPtr browseName;
 				simpleAttributeOperand->browsePath()->get(j, browseName);
 				browseNameList.push_back(browseName);
+
+				std::cout << " BrowseName=" <<  browseName->toString() << std::endl;
 			}
 
 			// get variant value from event
@@ -171,12 +187,14 @@ namespace OpcUaStackServer
 			EventField::SPtr eventField;
 			eventField = constructSPtr<EventField>();
 			if (resultCode == EventBase::Success) {
+				std::cout << "FOUND!!!!" << std::endl;
 				eventField->variant(value);
+				//eventFieldList->eventFields()->set(idx, eventField);
 			}
 			eventFieldList->eventFields()->push_back(eventField);
 		}
 
-		eventFieldListList_.push_back(eventFieldList);
+		//eventFieldListList_.push_back(eventFieldList);
 	}
 
 	OpcUaStatusCode
