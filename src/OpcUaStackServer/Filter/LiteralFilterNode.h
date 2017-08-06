@@ -24,7 +24,8 @@ using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
-    class DLLEXPORT LiteralFilterNode : public FilterNode
+    class DLLEXPORT LiteralFilterNode
+	: public FilterNode
     {
       public:
 
@@ -33,7 +34,7 @@ namespace OpcUaStackServer
         LiteralFilterNode(const OpcUaVariant& value);
         virtual ~LiteralFilterNode(void);
 
-        virtual OpcUaVariant evaluate() override;
+        virtual bool evaluate(OpcUaVariant& value) override;
 
       private:
         OpcUaVariant value_;

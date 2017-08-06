@@ -87,8 +87,23 @@ namespace OpcUaStackServer
         return OpcUaStatusCode::Success;
 
     }
-    bool FilterStack::process() const
+
+    bool
+	FilterStack::process(bool& filterResult) const
     {
-        return root_->evaluate().get<OpcUaBoolean>();
+    	OpcUaVariant value;
+    	if (!root_->evaluate(value)) {
+    		return false;
+    	}
+
+    	if (value.variantType() != OpcUaBuildInType_OpcUaBoolean) {
+    		return false;
+    	}
+
+    	if (!value.getValue(filterResult)) {
+    		return false;
+    	}
+
+    	return true;
     }
 }

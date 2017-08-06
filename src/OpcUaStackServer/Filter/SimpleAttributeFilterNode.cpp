@@ -40,14 +40,6 @@ namespace OpcUaStackServer
     	simpleAttributeIf_ = simpleAttributeIf;
     }
 
-    OpcUaVariant
-	SimpleAttributeFilterNode::evaluate(void)
-    {
-    	// FIXME: todo
-    	OpcUaVariant value;
-        return value;
-    }
-
     bool
 	SimpleAttributeFilterNode::evaluate(OpcUaVariant& value)
     {

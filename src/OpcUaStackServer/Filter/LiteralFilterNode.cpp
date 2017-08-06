@@ -21,7 +21,7 @@ namespace OpcUaStackServer
 {
     LiteralFilterNode::LiteralFilterNode(const OpcUaVariant& value)
     {
-        value_ = value;
+        value_.copyFrom(*const_cast<OpcUaVariant*>(&value));
     }
 
     LiteralFilterNode::~LiteralFilterNode()
@@ -29,9 +29,11 @@ namespace OpcUaStackServer
 
     }
 
-    OpcUaVariant LiteralFilterNode::evaluate()
+    bool
+	LiteralFilterNode::evaluate(OpcUaVariant& value)
     {
-        return value_;
+    	value_.copyTo(value);
+        return true;
     }
 }
 

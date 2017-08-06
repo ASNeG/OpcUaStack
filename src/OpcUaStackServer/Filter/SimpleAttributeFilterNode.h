@@ -37,8 +37,7 @@ namespace OpcUaStackServer
 
         void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
 
-        virtual OpcUaVariant evaluate() override;
-        bool evaluate(OpcUaVariant& value);
+        virtual bool evaluate(OpcUaVariant& value) override;
 
       private:
         SimpleAttributeIf* simpleAttributeIf_;

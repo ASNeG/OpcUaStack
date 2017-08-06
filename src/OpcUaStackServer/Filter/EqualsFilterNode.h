@@ -33,7 +33,7 @@ namespace OpcUaStackServer
         EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
         virtual ~EqualsFilterNode(void);
 
-        virtual OpcUaVariant evaluate() override;
+        virtual bool evaluate(OpcUaVariant& value) override;
 
       private:
         FilterNode::SPtr arg1_;

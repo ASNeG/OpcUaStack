@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 
         virtual ~FilterNode(void) {}
 
-        virtual OpcUaVariant evaluate() = 0;
+        virtual bool evaluate(OpcUaVariant& value) = 0;
 
     };
 

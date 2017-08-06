@@ -30,16 +30,21 @@ namespace OpcUaStackServer
 
     }
 
-    OpcUaVariant EqualsFilterNode::evaluate()
+    bool
+	EqualsFilterNode::evaluate(OpcUaVariant& value)
     {
         //FIXME: Need conversions;
-        OpcUaVariant result;
 
-        OpcUaVariant v1 = arg1_->evaluate();
-        OpcUaVariant v2 = arg2_->evaluate();
+        OpcUaVariant v1;
+        if (!arg1_->evaluate(v1)) {
+        	return false;
+        }
+        OpcUaVariant v2;
+        if (!arg2_->evaluate(v2)) {
+        	return false;
+        }
 
-        result.set<OpcUaBoolean>(v1 == v2);
-
-        return result;
+        value.set<OpcUaBoolean>(v1 == v2);
+        return true;
     }
 }

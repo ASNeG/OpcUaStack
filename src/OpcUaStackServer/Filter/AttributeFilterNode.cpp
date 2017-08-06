@@ -41,13 +41,6 @@ namespace OpcUaStackServer
     	attributeIf_ = attributeIf;
     }
 
-    OpcUaVariant
-	AttributeFilterNode::evaluate()
-    {
-    	OpcUaVariant value;
-        return value;
-    }
-
     bool
 	AttributeFilterNode::evaluate(OpcUaVariant& value)
     {
