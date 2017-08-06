@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
 /*
@@ -28,13 +28,14 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 
+
 namespace OpcUaStackCore
 {
 
+	const int TYPE_CONVERSATION_TABLE_SIZE = 21;
 	class DLLEXPORT OpcUaTypeConversion
 	{
 	  public:
-
 		OpcUaTypeConversion(void);
 		~OpcUaTypeConversion(void);
 
@@ -46,6 +47,29 @@ namespace OpcUaStackCore
 		);
 
 	  private:
+		int8_t indexForConversationTable(OpcUaBuildInType type);
+
+		static char conversationTypeTable[TYPE_CONVERSATION_TABLE_SIZE][TYPE_CONVERSATION_TABLE_SIZE];
+
+		bool cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant);
+
+		template <typename T1, typename T2>
+		bool cast(OpcUaVariant::SPtr& src, OpcUaVariant::SPtr& target)
+		{
+			if (src->isArray()) {
+				target->clear();
+				for (int i = 0; i < src->arrayLength(); ++i) {
+					T2 val = src->get<T1>(i);
+
+					target->pushBack(val);
+				}
+			} else {
+				T2 val = src->get<T1>();
+				target->set<T2>(val);
+			}
+
+			return true;
+		}
 	};
 
 }

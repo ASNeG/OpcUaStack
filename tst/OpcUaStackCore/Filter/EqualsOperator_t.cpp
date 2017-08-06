@@ -29,8 +29,6 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_returns_false)
     BOOST_REQUIRE(!stack.process());
 }
 
-
-
 BOOST_AUTO_TEST_CASE(EqualsOperator_returns_true)
 {
 	// 100 == 100 -> true
@@ -77,7 +75,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
     BOOST_REQUIRE_NO_THROW(stack.process());
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_too_much)
+BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
 {
     FilterStack stack;
 
