@@ -21,7 +21,12 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaExtensionObject.h"
 
 #include "OpcUaStackCore/ServiceSet/AnonymousIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
+#include "OpcUaStackCore/ServiceSet/SimpleAttributeOperand.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
 #include "OpcUaStackCore/ServiceSet/EventNotificationList.h"
@@ -100,6 +105,11 @@ namespace OpcUaStackCore
 		ExtensibleParameter ep;
 		ep.registerFactoryElement<AnonymousIdentityToken>(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
+		ep.registerFactoryElement<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
+		ep.registerFactoryElement<ElementOperand>(OpcUaId_ElementOperand_Encoding_DefaultBinary);
+		ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
+		ep.registerFactoryElement<AttributeOperand>(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
+		ep.registerFactoryElement<SimpleAttributeOperand>(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 		ep.registerFactoryElement<LiteralOperand>(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		ep.registerFactoryElement<DataChangeNotification>(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.registerFactoryElement<EventNotificationList>(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
@@ -147,7 +157,12 @@ namespace OpcUaStackCore
 	{
 		ExtensibleParameter ep;
 		ep.deregisterFactoryElement(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_ElementOperand_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_AttributeOperand_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_SimpleAttributeOperand_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_LiteralOperand_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_DataChangeNotification_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_EventNotificationList_Encoding_DefaultBinary);
