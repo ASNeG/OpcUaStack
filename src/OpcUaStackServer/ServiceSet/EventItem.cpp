@@ -142,75 +142,39 @@ namespace OpcUaStackServer
 		}
 
 		// process where clause
-		std::cout << "where clause..." << std::endl;
-
-		for (uint32_t idx=0; idx<selectClauses_->size(); idx++) {
-			// get variant value from event
-		}
-
-		//
-		//
-		// FIXME: test code
-		//
-		//
-		//
-
-		OpcUaVariant::SPtr variant;
-		EventField::SPtr eventField;
-
 		EventFieldList::SPtr eventFieldList = constructSPtr<EventFieldList>();
 		eventFieldList->clientHandle(clientHandle_);
-		eventFieldList->eventFields()->resize(4);
+		eventFieldList->eventFields()->resize(selectClauses_->size());
 
-		// event id (OpcUaByteString)
-		OpcUaByteString::SPtr eventId = constructSPtr<OpcUaByteString>();
-		eventId->value("EventId");
-		variant = constructSPtr<OpcUaVariant>();
-		variant->set(eventId);
-		eventField = constructSPtr<EventField>();
-		eventField->variant(variant);
-		eventFieldList->eventFields()->push_back(eventField);
+		for (uint32_t idx=0; idx<selectClauses_->size(); idx++) {
 
-		// event type (OpcUaNodeId)
-		OpcUaNodeId::SPtr eventType = constructSPtr<OpcUaNodeId>(2041);
-		variant = constructSPtr<OpcUaVariant>();
-		variant->set(eventType);
-		eventField = constructSPtr<EventField>();
-		eventField->variant(variant);
-		eventFieldList->eventFields()->push_back(eventField);
+			// get simple attribute operand
+			SimpleAttributeOperand::SPtr simpleAttributeOperand;
+			selectClauses_->get(idx, simpleAttributeOperand);
 
-		// source name (OpcUaString)
-		OpcUaString::SPtr sourceName = constructSPtr<OpcUaString>();
-		sourceName->value("SourceName");
-		variant = constructSPtr<OpcUaVariant>();
-		variant->set(sourceName);
-		eventField = constructSPtr<EventField>();
-		eventField->variant(variant);
-		eventFieldList->eventFields()->push_back(eventField);
+			std::list<OpcUaQualifiedName::SPtr> browseNameList;
+			for (uint32_t j=0; j<simpleAttributeOperand->browsePath()->size(); j++) {
+				OpcUaQualifiedName::SPtr browseName;
+				simpleAttributeOperand->browsePath()->get(j, browseName);
+				browseNameList.push_back(browseName);
+			}
 
-		// local time (OpcUaDateTime)
-		OpcUaDateTime localTime;
-		localTime.dateTime(boost::posix_time::microsec_clock::local_time());
-		variant = constructSPtr<OpcUaVariant>();
-		variant->set(localTime);
-		eventField = constructSPtr<EventField>();
-		eventField->variant(variant);
-		eventFieldList->eventFields()->push_back(eventField);
+			// get variant value from event
+			OpcUaVariant::SPtr value = constructSPtr<OpcUaVariant>();
+			EventBase::ResultCode resultCode = eventBase->get(
+				simpleAttributeOperand->typeId(),
+				browseNameList,
+				value
+			);
 
-		// message (OpcUaLocalizedText)
-		OpcUaLocalizedText::SPtr message = constructSPtr<OpcUaLocalizedText>();
-		message->set("de", "test message");
-		variant = constructSPtr<OpcUaVariant>();
-		variant->set(message);
-		eventField = constructSPtr<EventField>();
-		eventField->variant(variant);
-		eventFieldList->eventFields()->push_back(eventField);
-
-
-		// receive time (OpcUaDateTime)
-		// severity (OpcUaUInt16)
-		// source node (OpcUaNodeId)
-		// time (OpcUaDatetime)
+			// insert variant into event field list
+			EventField::SPtr eventField;
+			eventField = constructSPtr<EventField>();
+			if (resultCode == EventBase::Success) {
+				eventField->variant(value);
+			}
+			eventFieldList->eventFields()->push_back(eventField);
+		}
 
 		eventFieldListList_.push_back(eventFieldList);
 	}
