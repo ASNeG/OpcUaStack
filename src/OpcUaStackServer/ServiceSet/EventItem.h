@@ -36,6 +36,7 @@ namespace OpcUaStackServer
 
 	class EventItem
 	: public Object
+	, public SimpleAttributeIf
 	{
 	  public:
 		typedef boost::shared_ptr<EventItem> SPtr;
@@ -55,6 +56,16 @@ namespace OpcUaStackServer
 		uint32_t size(void);
 		uint32_t eventItemId(void);
 
+		//- Interface SimpleAttributeIf ---------------------------------------
+	    virtual bool getAttribute(
+	        OpcUaNodeId& typeId,
+			std::list<OpcUaQualifiedName::SPtr>& browsePath,
+			OpcUaUInt32 attributeId,
+			OpcUaString& numericRange,
+			OpcUaVariant& value
+		);
+		//- Interface SimpleAttributeIf ---------------------------------------
+
 	  private:
 		void clear(void);
 		void fireEvent(EventBase::SPtr eventBase);
@@ -69,6 +80,8 @@ namespace OpcUaStackServer
 
 		EventHandler::SPtr eventHandler_;
 		EventFieldListList eventFieldListList_; // FIXME: need lock...
+
+		EventBase::SPtr eventBase_;
 	};
 
 }

@@ -34,6 +34,7 @@ namespace OpcUaStackServer
 	, nodeId_()
 	, eventFieldListList_()
 	, clientHandle_(0)
+	, eventBase_()
 	{
 	}
 
@@ -87,6 +88,7 @@ namespace OpcUaStackServer
 
 		// construct where filter
 		whereFilter_ = constructSPtr<FilterStack>();
+		whereFilter_->simpleAttributeIf(this);
 		statusCode = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
 		if (statusCode != Success) {
 			monitoredItemCreateResult->statusCode(statusCode);
@@ -141,10 +143,11 @@ namespace OpcUaStackServer
 		// FIXME: todo
 
 		// process select clause
-		whereFilter_->simpleAttributeIf(eventBase.get());
-
 		bool resultCode;
-		if (!whereFilter_->process(resultCode)) {
+		eventBase_ = eventBase;
+	    bool rc = whereFilter_->process(resultCode);
+	    eventBase_.reset();
+		if (!rc) {
 			Log(Error, "processEventFilter error");
 			return;
 		}
@@ -233,5 +236,25 @@ namespace OpcUaStackServer
 		return Success;
 	}
 
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+    bool
+	EventItem::getAttribute(
+        OpcUaNodeId& typeId,
+		std::list<OpcUaQualifiedName::SPtr>& browsePath,
+		OpcUaUInt32 attributeId,
+		OpcUaString& numericRange,
+		OpcUaVariant& value
+	)
+    {
+    	if (eventBase_.get() == nullptr) {
+    		return false;
+    	}
+
+    	return eventBase_->getAttribute(
+    		typeId, browsePath, attributeId, numericRange, value
+    	);
+    }
 
 }
