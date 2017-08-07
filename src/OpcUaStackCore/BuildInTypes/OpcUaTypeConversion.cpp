@@ -63,6 +63,31 @@ namespace OpcUaStackCore
 		}
 	}
 
+	uint8_t OpcUaTypeConversion::precedenceRank(OpcUaBuildInType type)
+	{
+		switch (type) {
+		case OpcUaBuildInType_OpcUaDouble: 			return 0;
+		case OpcUaBuildInType_OpcUaFloat:           return 1;
+		case OpcUaBuildInType_OpcUaInt64:           return 2;
+		case OpcUaBuildInType_OpcUaUInt64:          return 3;
+		case OpcUaBuildInType_OpcUaInt32:           return 4;
+		case OpcUaBuildInType_OpcUaUInt32:          return 5;
+		case OpcUaBuildInType_OpcUaStatusCode:      return 6;
+		case OpcUaBuildInType_OpcUaInt16:           return 7;
+		case OpcUaBuildInType_OpcUaUInt16:          return 8;
+		case OpcUaBuildInType_OpcUaSByte:           return 9;
+		case OpcUaBuildInType_OpcUaByte:            return 10;
+		case OpcUaBuildInType_OpcUaBoolean:         return 11;
+		case OpcUaBuildInType_OpcUaGuid:            return 12;
+		case OpcUaBuildInType_OpcUaString:          return 13;
+		case OpcUaBuildInType_OpcUaExpandedNodeId:  return 14;
+		case OpcUaBuildInType_OpcUaNodeId:          return 15;
+		case OpcUaBuildInType_OpcUaLocalizedText:   return 16;
+		case OpcUaBuildInType_OpcUaQualifiedName:   return 17;
+		default: return -1;
+		}
+	}
+
 	char
 	OpcUaTypeConversion::conversionType(OpcUaBuildInType sourceType, OpcUaBuildInType targetType)
 	{

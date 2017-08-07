@@ -98,4 +98,48 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
     BOOST_REQUIRE_NO_THROW(stack.process());
 }
 
+BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast1)
+{
+    FilterStack stack;
+
+    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaBoolean,OpcUaUInt32>(
+            BasicFilterOperator::BasicFilterOperator_Equals, true, 1);
+
+
+    ContentFilter filter;
+    filter.elements()->push_back(eqElement);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+
+    ContentFilterElementResult::SPtr elementResult;
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+    BOOST_REQUIRE(stack.process());
+}
+
+BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast2)
+{
+    FilterStack stack;
+
+    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32, OpcUaBoolean>(
+            BasicFilterOperator::BasicFilterOperator_Equals, 1, true);
+
+
+    ContentFilter filter;
+    filter.elements()->push_back(eqElement);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+
+    ContentFilterElementResult::SPtr elementResult;
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+    BOOST_REQUIRE(stack.process());
+}
+
 BOOST_AUTO_TEST_SUITE_END()

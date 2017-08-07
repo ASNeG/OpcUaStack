@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 			OpcUaVariant::SPtr& targetVariant 		// target variant data
 		);
 
+		uint8_t precedenceRank(OpcUaBuildInType type);
 	  private:
 		int8_t indexForConversationTable(OpcUaBuildInType type);
 

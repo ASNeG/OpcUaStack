@@ -65,6 +65,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Bool)
 
 	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();
 
+	BOOST_REQUIRE_EQUAL(11, converter.precedenceRank(OpcUaBuildInType_OpcUaBoolean));
 	// bool -> bool
 	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_OpcUaBoolean, OpcUaBuildInType_OpcUaBoolean));
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaBoolean, value2));

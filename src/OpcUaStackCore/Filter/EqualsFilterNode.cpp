@@ -15,7 +15,10 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
+
 #include "OpcUaStackCore/Filter/EqualsFilterNode.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
+
 
 namespace OpcUaStackCore
 {
@@ -44,8 +47,6 @@ namespace OpcUaStackCore
     bool
 	EqualsFilterNode::evaluate(OpcUaVariant& value)
     {
-        //FIXME: Need conversions;
-
         OpcUaVariant v1;
         if (!arg1_->evaluate(v1)) {
         	return false;
@@ -56,7 +57,36 @@ namespace OpcUaStackCore
         	return false;
         }
 
-        value.set<OpcUaBoolean>(v1 == v2);
-        return true;
+    	if (status_ == OpcUaStatusCode::Success) {
+    		OpcUaVariant::SPtr v1 = constructSPtr<OpcUaVariant>();
+    		arg1_->evaluate(*v1);
+
+    		OpcUaVariant::SPtr v2 = constructSPtr<OpcUaVariant>();
+    		arg2_->evaluate(*v2);
+
+    		OpcUaTypeConversion converter;
+    		// Convert variable with greater precedence rank
+    		if (converter.precedenceRank(v1->variantType()) < converter.precedenceRank(v2->variantType())) {
+    			v1.swap(v2);
+    		}
+    	    char conveType = converter.conversionType(v1->variantType(), v2->variantType());
+
+    	    switch (conveType)
+    	    {
+    	    case '-':
+    	    {
+    	    	value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    	break;
+    	    }
+    	    case 'I':
+    	    {
+    	    	converter.conversion(v1, v2->variantType(), v1);
+    	    	value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    	break;
+    	    }
+    	    }
+    	}
+
+        return value_;
     }
 }
