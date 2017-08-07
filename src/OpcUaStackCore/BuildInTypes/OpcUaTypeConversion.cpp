@@ -35,37 +35,12 @@ namespace OpcUaStackCore
 	{
 	}
 
-	int8_t OpcUaTypeConversion::indexForConversationTable(OpcUaBuildInType type) {
-		switch (type) {
-		case OpcUaBuildInType_OpcUaBoolean: 		return 0;
-		case OpcUaBuildInType_OpcUaByte:			return 1;
-		case OpcUaBuildInType_OpcUaByteString: 		return 2;
-		case OpcUaBuildInType_OpcUaDateTime: 		return 3;
-		case OpcUaBuildInType_OpcUaDouble: 			return 4;
-		case OpcUaBuildInType_OpcUaExpandedNodeId:	return 5;
-		case OpcUaBuildInType_OpcUaFloat: 			return 6;
-		case OpcUaBuildInType_OpcUaGuid: 			return 7;
-		case OpcUaBuildInType_OpcUaInt16: 			return 8;
-		case OpcUaBuildInType_OpcUaInt32: 			return 9;
-		case OpcUaBuildInType_OpcUaInt64: 			return 10;
-		case OpcUaBuildInType_OpcUaNodeId: 			return 11;
-		case OpcUaBuildInType_OpcUaSByte: 			return 12;
-		case OpcUaBuildInType_OpcUaStatusCode: 		return 13;
-		case OpcUaBuildInType_OpcUaString: 			return 14;
-		case OpcUaBuildInType_OpcUaLocalizedText: 	return 15;
-		case OpcUaBuildInType_OpcUaQualifiedName: 	return 16;
-		case OpcUaBuildInType_OpcUaUInt16: 			return 17;
-		case OpcUaBuildInType_OpcUaUInt32: 			return 18;
-		case OpcUaBuildInType_OpcUaUInt64: 			return 19;
-		case OpcUaBuildInType_OpcUaXmlElement: 		return 20;
 
-		default: return -1;
-		}
-	}
-
-	uint8_t OpcUaTypeConversion::precedenceRank(OpcUaBuildInType type)
+	uint8_t
+	OpcUaTypeConversion::precedenceRank(OpcUaBuildInType type)
 	{
-		switch (type) {
+		switch (type)
+		{
 		case OpcUaBuildInType_OpcUaDouble: 			return 0;
 		case OpcUaBuildInType_OpcUaFloat:           return 1;
 		case OpcUaBuildInType_OpcUaInt64:           return 2;
@@ -101,7 +76,8 @@ namespace OpcUaStackCore
 		return 'X';
 	}
 
-	bool OpcUaTypeConversion::conversion(
+	bool
+	OpcUaTypeConversion::conversion(
 		OpcUaVariant::SPtr& sourceVariant,		// source variant data
 		OpcUaBuildInType targetType,			// target type
 		OpcUaVariant::SPtr& targetVariant 		// target variant data
@@ -110,12 +86,16 @@ namespace OpcUaStackCore
 		if (sourceVariant.get() == nullptr) return false;
 		OpcUaBuildInType sourceType = sourceVariant->variantType();
 
-		switch (conversionType(sourceType, targetType)){
+		switch (conversionType(sourceType, targetType))
+		{
 		case '-':
+		{
 			targetVariant->copyFrom(*sourceVariant);
 			return true;
+		}
 		case 'I':
-		case 'E': {
+		case 'E':
+		{
 			return cast(sourceVariant, targetType, targetVariant);
 		}
 
@@ -126,11 +106,14 @@ namespace OpcUaStackCore
 		return false;
 	}
 
-	bool OpcUaTypeConversion::cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant)
+	bool
+	OpcUaTypeConversion::cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant)
 	{
-		switch (sourceVariant->variantType()) {
+		switch (sourceVariant->variantType())
+		{
 		case OpcUaBuildInType_OpcUaBoolean:
-			switch (targetType) {
+			switch (targetType)
+			{
 			case OpcUaBuildInType_OpcUaByte:	return cast<OpcUaBoolean, OpcUaByte>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaBoolean, OpcUaDouble>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaBoolean, OpcUaFloat>(sourceVariant, targetVariant);
@@ -138,7 +121,8 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaBoolean, OpcUaInt32>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaBoolean, OpcUaInt64>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaSByte:	return cast<OpcUaBoolean, OpcUaSByte>(sourceVariant, targetVariant);
-			case OpcUaBuildInType_OpcUaString: {
+			case OpcUaBuildInType_OpcUaString:
+			{
 				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->get<OpcUaBoolean>() ? "1" : "0");
 				targetVariant->variant(value);
 
@@ -153,7 +137,9 @@ namespace OpcUaStackCore
 		}
 	}
 
-	char OpcUaTypeConversion::conversationTypeTable[TYPE_CONVERSATION_TABLE_SIZE][TYPE_CONVERSATION_TABLE_SIZE] = {
+	char
+	OpcUaTypeConversion::conversationTypeTable[TYPE_CONVERSATION_TABLE_SIZE][TYPE_CONVERSATION_TABLE_SIZE] =
+	{
 			{'-', 'I', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'I', 'X', 'E', 'X', 'X', 'I', 'I', 'I', 'X'}, //bool
 			{'E', '-', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'I', 'X', 'E', 'X', 'X', 'I', 'I', 'I', 'X'}, //byte
 			{'X', 'X', '-', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}, //byte string
@@ -177,38 +163,33 @@ namespace OpcUaStackCore
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '-'}, //xmlElemnt
 	};
 
-#if 0
+	int8_t
+	OpcUaTypeConversion::indexForConversationTable(OpcUaBuildInType type) {
+		switch (type) {
+		case OpcUaBuildInType_OpcUaBoolean: 		return 0;
+		case OpcUaBuildInType_OpcUaByte:			return 1;
+		case OpcUaBuildInType_OpcUaByteString: 		return 2;
+		case OpcUaBuildInType_OpcUaDateTime: 		return 3;
+		case OpcUaBuildInType_OpcUaDouble: 			return 4;
+		case OpcUaBuildInType_OpcUaExpandedNodeId:	return 5;
+		case OpcUaBuildInType_OpcUaFloat: 			return 6;
+		case OpcUaBuildInType_OpcUaGuid: 			return 7;
+		case OpcUaBuildInType_OpcUaInt16: 			return 8;
+		case OpcUaBuildInType_OpcUaInt32: 			return 9;
+		case OpcUaBuildInType_OpcUaInt64: 			return 10;
+		case OpcUaBuildInType_OpcUaNodeId: 			return 11;
+		case OpcUaBuildInType_OpcUaSByte: 			return 12;
+		case OpcUaBuildInType_OpcUaStatusCode: 		return 13;
+		case OpcUaBuildInType_OpcUaString: 			return 14;
+		case OpcUaBuildInType_OpcUaLocalizedText: 	return 15;
+		case OpcUaBuildInType_OpcUaQualifiedName: 	return 16;
+		case OpcUaBuildInType_OpcUaUInt16: 			return 17;
+		case OpcUaBuildInType_OpcUaUInt32: 			return 18;
+		case OpcUaBuildInType_OpcUaUInt64: 			return 19;
+		case OpcUaBuildInType_OpcUaXmlElement: 		return 20;
 
-	typedef enum
-	{
-		OpcUaBuildInType_Unknown = 0,
-		OpcUaBuildInType_OpcUaBoolean = 1,
-		OpcUaBuildInType_OpcUaSByte = 2,
-		OpcUaBuildInType_OpcUaByte = 3,
-		OpcUaBuildInType_OpcUaInt16 = 4,
-		OpcUaBuildInType_OpcUaUInt16 = 5,
-		OpcUaBuildInType_OpcUaInt32 = 6,
-		OpcUaBuildInType_OpcUaUInt32 = 7,
-		OpcUaBuildInType_OpcUaInt64 = 8,
-		OpcUaBuildInType_OpcUaUInt64 = 9,
-		OpcUaBuildInType_OpcUaFloat = 10,
-		OpcUaBuildInType_OpcUaDouble = 11,
-		OpcUaBuildInType_OpcUaString = 12,
-		OpcUaBuildInType_OpcUaDateTime = 13,
-		OpcUaBuildInType_OpcUaGuid = 14,
-		OpcUaBuildInType_OpcUaByteString = 15,
-		OpcUaBuildInType_OpcUaXmlElement = 16,
-		OpcUaBuildInType_OpcUaNodeId = 17,
-		OpcUaBuildInType_OpcUaExpandedNodeId = 18,
-		OpcUaBuildInType_OpcUaStatusCode = 19,
-		OpcUaBuildInType_OpcUaQualifiedName = 20,
-		OpcUaBuildInType_OpcUaLocalizedText = 21,
-		OpcUaBuildInType_OpcUaExtensionObject = 22,
-		OpcUaBuildInType_OpcUaDataValue = 23,
-		OpcUaBuildInType_OpcUaVariant = 24,
-		OpcUaBuildInType_OpcUaDiagnosticInfo = 25
-	} OpcUaBuildInType;
-
-#endif
+		default: return -1;
+		}
+	}
 
 }

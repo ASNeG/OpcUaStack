@@ -1,10 +1,18 @@
-#ifndef OPCUASTACKSERVER_SERVICESET_FILTEROPERATORHELPERS_H_
-#define OPCUASTACKSERVER_SERVICESET_FILTEROPERATORHELPERS_H_
+#ifndef OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
+#define OPCUASTACKCORE_FILTER_FILTEROPERATORHELPERS_H_
 
-#include "OpcUaStackServer/ServiceSet/FilterStack.h"
+
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+
+#include "OpcUaStackCore/ServiceSet/ContentFilterElement.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
+#include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
+
+#include "OpcUaStackCore/Filter/FilterStack.h"
+
+using namespace OpcUaStackCore;
 
 template<typename T1, typename T2>
 static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(BasicFilterOperator op, T1 arg1, T2 arg2)

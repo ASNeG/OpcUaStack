@@ -11,6 +11,11 @@ using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(FilterStack_)
 
+BOOST_AUTO_TEST_CASE(FilterStack_)
+{
+	std::cout << "FilterStack_" << std::endl;
+}
+
 BOOST_AUTO_TEST_CASE(FilterStack_returns_True_if_empty)
 {
     FilterStack stack;

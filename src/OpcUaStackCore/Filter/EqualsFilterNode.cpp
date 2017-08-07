@@ -44,25 +44,31 @@ namespace OpcUaStackCore
 
     }
 
+    OpcUaStatusCode&
+	EqualsFilterNode::status()
+    {
+    	return status_;
+    }
+
+    std::vector<OpcUaStatusCode>&
+	EqualsFilterNode::operandStatuses()
+    {
+    	return operandStatuses_;
+    }
+
     bool
 	EqualsFilterNode::evaluate(OpcUaVariant& value)
     {
-        OpcUaVariant v1;
-        if (!arg1_->evaluate(v1)) {
-        	return false;
-        }
-
-        OpcUaVariant v2;
-        if (!arg2_->evaluate(v2)) {
-        	return false;
-        }
-
     	if (status_ == OpcUaStatusCode::Success) {
     		OpcUaVariant::SPtr v1 = constructSPtr<OpcUaVariant>();
-    		arg1_->evaluate(*v1);
+            if (!arg1_->evaluate(*v1)) {
+            	return false;
+            }
 
-    		OpcUaVariant::SPtr v2 = constructSPtr<OpcUaVariant>();
-    		arg2_->evaluate(*v2);
+            OpcUaVariant::SPtr v2 = constructSPtr<OpcUaVariant>();
+            if (!arg2_->evaluate(*v2)) {
+            	return false;
+            }
 
     		OpcUaTypeConversion converter;
     		// Convert variable with greater precedence rank
@@ -85,8 +91,12 @@ namespace OpcUaStackCore
     	    	break;
     	    }
     	    }
-    	}
 
-        return value_;
+
+			value_.copyTo(value);
+			return true;
+		}
+
+		return false;
     }
 }

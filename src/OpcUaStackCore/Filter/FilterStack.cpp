@@ -121,6 +121,7 @@ namespace OpcUaStackCore
             case BasicFilterOperator_Equals:
             {
                 node = EqualsFilterNode::SPtr(new EqualsFilterNode(args));
+                elementStatus = node->status();
                 break;
             }
 
@@ -148,7 +149,7 @@ namespace OpcUaStackCore
         	{
         		Log(Error, "unknown filter operator found")
         			.parameter("FilterOperator", (uint32_t)el->filterOperator());
-        		elementStatus = BadTypeMismatch;
+        		elementStatus = BadFilterOperatorInvalid;
         	}
         }
 

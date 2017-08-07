@@ -1,9 +1,14 @@
 #include "unittest.h"
 #include "FilterOperatorHelpers.h"
 
-using namespace OpcUaStackServer;
+using namespace OpcUaStackCore;
 
 BOOST_AUTO_TEST_SUITE(EqualsOperator_)
+
+BOOST_AUTO_TEST_CASE(EqualsOperator_)
+{
+	std::cout << "EqualsOperator_" << std::endl;
+}
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_returns_false)
 {
@@ -26,7 +31,9 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_returns_false)
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
 
-    BOOST_REQUIRE(!stack.process());
+    bool retVal;
+    BOOST_REQUIRE(stack.process(retVal));
+    BOOST_REQUIRE(!retVal);
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_returns_true)
@@ -49,7 +56,9 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_returns_true)
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
 
-    BOOST_REQUIRE(stack.process());
+    bool retVal;
+    BOOST_REQUIRE(stack.process(retVal));
+    BOOST_REQUIRE(retVal);
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
@@ -66,13 +75,14 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::BadFilterOperandCountMismatch);
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandCountMismatch);
 
-    BOOST_REQUIRE_NO_THROW(stack.process());
+    bool retVal;
+    BOOST_REQUIRE(!stack.process(retVal));
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
@@ -89,13 +99,14 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::BadFilterOperandCountMismatch);
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandCountMismatch);
 
-    BOOST_REQUIRE_NO_THROW(stack.process());
+    bool retVal;
+    BOOST_REQUIRE(!stack.process(retVal));
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast1)
@@ -117,7 +128,9 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast1)
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
 
-    BOOST_REQUIRE(stack.process());
+    bool retVal;
+    BOOST_REQUIRE(stack.process(retVal));
+    BOOST_REQUIRE(retVal);
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast2)
@@ -139,7 +152,10 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast2)
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
 
-    BOOST_REQUIRE(stack.process());
+    bool retVal;
+    BOOST_REQUIRE(stack.process(retVal));
+    BOOST_REQUIRE(retVal);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+

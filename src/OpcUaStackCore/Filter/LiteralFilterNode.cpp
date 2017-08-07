@@ -39,16 +39,16 @@ namespace OpcUaStackCore
         return true;
     }
 
-    OpcUaStatusCode& LiteralFilterNode::status()
+    OpcUaStatusCode&
+	LiteralFilterNode::status()
     {
     	return status_;
     }
 
-    std::vector<OpcUaStatusCode>& LiteralFilterNode::operandStatuses()
+    std::vector<OpcUaStatusCode>&
+	LiteralFilterNode::operandStatuses()
     {
     	return operandStatuses_;
     }
-
-
 }
 
