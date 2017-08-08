@@ -57,7 +57,7 @@ namespace OpcUaStackCore
 	)
 	{
 		ResultCode resultCode = Success;
-		bool eventTypeFound;
+		bool eventTypeFound = false;
 
 		variant = get(eventType, eventTypeFound, browseNameList, resultCode);
 		return resultCode;
