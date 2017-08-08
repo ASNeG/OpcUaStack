@@ -235,8 +235,10 @@ namespace OpcUaStackCore
 				browseNameList.pop_front();
 
 				variant = get(browseName, resultCode);
+				return variant;
 			}
 
+			resultCode = BadBrowseNameNotExist;
 			return variant;
 		}
 
