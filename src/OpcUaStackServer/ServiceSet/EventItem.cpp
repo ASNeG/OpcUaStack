@@ -139,6 +139,7 @@ namespace OpcUaStackServer
 	void
 	EventItem::fireEvent(EventBase::SPtr eventBase)
 	{
+		boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 		BaseEventType::SPtr baseEventType = boost::static_pointer_cast<BaseEventType>(eventBase);
 		std::cout << "fireEvent" << std::endl;
 		// FIXME: lock
@@ -171,6 +172,40 @@ namespace OpcUaStackServer
 			baseEventType->sourceNode(variant);
 		}
 
+		// set source name if necessary
+		if (baseEventType->sourceName().get() == nullptr) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(browseName_.name());
+			baseEventType->sourceName(variant);
+		}
+
+		// set time if necessary
+		if (baseEventType->time().get() == nullptr) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(OpcUaDateTime(now));
+			baseEventType->time(variant);
+		}
+
+		// set receive time if necessary
+		if (baseEventType->time().get() == nullptr) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(OpcUaDateTime(now));
+			baseEventType->receiveTime(variant);
+		}
+
+		// set message if necessary
+		if (baseEventType->time().get() == nullptr) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(OpcUaLocalizedText("", browseName_.name().toStdString()));
+			baseEventType->message(variant);
+		}
+
+		// set severity if necessary
+		if (baseEventType->time().get() == nullptr) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue((OpcUaUInt16)100);
+			baseEventType->severity(variant);
+		}
 
 		// process select clause
 		bool resultCode;
