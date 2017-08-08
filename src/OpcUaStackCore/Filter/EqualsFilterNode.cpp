@@ -15,14 +15,28 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
+
 #include "OpcUaStackCore/Filter/EqualsFilterNode.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
+
 
 namespace OpcUaStackCore
 {
     EqualsFilterNode::EqualsFilterNode(const std::vector<FilterNode::SPtr>& args)
     {
-        arg1_ = args[0];
-        arg2_ = args[1];
+        value_ = OpcUaVariant();
+        value_.set<OpcUaBoolean>(false);
+
+        status_ = OpcUaStatusCode::Success;
+        operandStatuses_ = std::vector<OpcUaStatusCode>();
+
+        if (args.size() == 2) {
+        	arg1_ = args[0];
+        	arg2_ = args[1];
+        }
+        else {
+        	status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
+        }
     }
 
     EqualsFilterNode::~EqualsFilterNode()
@@ -30,22 +44,59 @@ namespace OpcUaStackCore
 
     }
 
+    OpcUaStatusCode&
+	EqualsFilterNode::status()
+    {
+    	return status_;
+    }
+
+    std::vector<OpcUaStatusCode>&
+	EqualsFilterNode::operandStatuses()
+    {
+    	return operandStatuses_;
+    }
+
     bool
 	EqualsFilterNode::evaluate(OpcUaVariant& value)
     {
-        //FIXME: Need conversions;
+    	if (status_ == OpcUaStatusCode::Success) {
+    		OpcUaVariant::SPtr v1 = constructSPtr<OpcUaVariant>();
+            if (!arg1_->evaluate(*v1)) {
+            	return false;
+            }
 
-        OpcUaVariant v1;
-        if (!arg1_->evaluate(v1)) {
-        	return false;
-        }
+            OpcUaVariant::SPtr v2 = constructSPtr<OpcUaVariant>();
+            if (!arg2_->evaluate(*v2)) {
+            	return false;
+            }
 
-        OpcUaVariant v2;
-        if (!arg2_->evaluate(v2)) {
-        	return false;
-        }
+    		OpcUaTypeConversion converter;
+    		// Convert variable with greater precedence rank
+    		if (converter.precedenceRank(v1->variantType()) < converter.precedenceRank(v2->variantType())) {
+    			v1.swap(v2);
+    		}
+    	    char conveType = converter.conversionType(v1->variantType(), v2->variantType());
 
-        value.set<OpcUaBoolean>(v1 == v2);
-        return true;
+    	    switch (conveType)
+    	    {
+    	    case '-':
+    	    {
+    	    	value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    	break;
+    	    }
+    	    case 'I':
+    	    {
+    	    	converter.conversion(v1, v2->variantType(), v1);
+    	    	value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    	break;
+    	    }
+    	    }
+
+
+			value_.copyTo(value);
+			return true;
+		}
+
+		return false;
     }
 }

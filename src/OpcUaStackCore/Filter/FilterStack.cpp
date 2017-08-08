@@ -55,16 +55,16 @@ namespace OpcUaStackCore
     OpcUaStatusCode
 	FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
-    	if (contentFilter.elements()->size() == 0) {
-    		return Success;
-    	}
-
-        return buildOperatorNode(contentFilter, 0, root_);
+    	contentFilterResult.elementResults()->resize(contentFilter.elements()->size());
+        return buildOperatorNode(contentFilter, contentFilterResult, 0, root_);
     }
 
     OpcUaStatusCode
-	FilterStack::buildOperatorNode(const ContentFilter& contentFilter, int idx, FilterNode::SPtr& node)
+	FilterStack::buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult,  int idx, FilterNode::SPtr& node)
     {
+
+    	OpcUaStatusCode elementStatus = OpcUaStatusCode::Success;
+
         ContentFilterElement::SPtr el;
         contentFilter.elements()->get(idx, el);
 
@@ -91,7 +91,8 @@ namespace OpcUaStackCore
             		FilterNode::SPtr operator_;
             		uint32_t operatorIdx = operand->parameter<ElementOperand>()->index();
 
-            		buildOperatorNode(contentFilter, operatorIdx, operator_);
+            		//FIXME: Needs checking index to avoid an endless cycle
+            		buildOperatorNode(contentFilter, contentFilterResult, operatorIdx, operator_);
 
             		args.push_back(operator_);
             		break;
@@ -120,17 +121,44 @@ namespace OpcUaStackCore
             case BasicFilterOperator_Equals:
             {
                 node = EqualsFilterNode::SPtr(new EqualsFilterNode(args));
+                elementStatus = node->status();
                 break;
             }
+
+            case BasicFilterOperator_IsNull:
+			case BasicFilterOperator_GreaterThan:
+			case BasicFilterOperator_LessThan:
+			case BasicFilterOperator_GreaterThanOrEqual:
+			case BasicFilterOperator_LassThanOrEqual:
+			case BasicFilterOperator_Like:
+			case BasicFilterOperator_Not:
+			case BasicFilterOperator_Between:
+			case BasicFilterOperator_InList:
+			case BasicFilterOperator_And:
+			case BasicFilterOperator_Or:
+			case BasicFilterOperator_Cast:
+			case BasicFilterOperator_BitwiseAnd:
+			case BasicFilterOperator_BitwiseOr:
+			{
+				Log(Error, "filter operator is not supported")
+			        			.parameter("FilterOperator", (uint32_t)el->filterOperator());
+				elementStatus = OpcUaStatusCode::BadFilterOperatorUnsupported;
+				break;
+			}
         	default:
         	{
         		Log(Error, "unknown filter operator found")
         			.parameter("FilterOperator", (uint32_t)el->filterOperator());
-        		return BadTypeMismatch;
+        		elementStatus = BadFilterOperatorInvalid;
         	}
         }
 
-        return OpcUaStatusCode::Success;
+        ContentFilterElementResult::SPtr elementResult = constructSPtr<ContentFilterElementResult>();
+        elementResult->statusCode(elementStatus);
+
+        contentFilterResult.elementResults()->set(idx, elementResult);
+
+        return elementStatus;
 
     }
 

@@ -34,9 +34,16 @@ namespace OpcUaStackCore
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
+        virtual OpcUaStatusCode& status() override;
+        virtual std::vector<OpcUaStatusCode>& operandStatuses() override;
+
       private:
         FilterNode::SPtr arg1_;
         FilterNode::SPtr arg2_;
+
+        OpcUaVariant value_;
+        OpcUaStatusCode status_;
+        std::vector<OpcUaStatusCode> operandStatuses_;
     };
 }
 #endif
