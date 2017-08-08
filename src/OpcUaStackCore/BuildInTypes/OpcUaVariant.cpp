@@ -79,6 +79,12 @@ namespace OpcUaStackCore
 		return opcUaVariantTypeVisitor.opcUaBuildInType_;
 	}
 
+	bool
+	OpcUaVariantValue::isNull(void) const
+	{
+		return variantType() == OpcUaBuildInType_Unknown;
+	}
+
 	void 
 	OpcUaVariantValue::variant(const OpcUaGuid::SPtr valSPtr) 
 	{
@@ -1758,6 +1764,12 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaVariant::isNull(void) const
+	{
+		return variantType() == OpcUaBuildInType_Unknown;
+	}
+
+	bool
 	OpcUaVariant::fromString(const std::string& string)
 	{
 		// split string into type and variable
@@ -2219,6 +2231,13 @@ namespace OpcUaStackCore
 		OpcUaByte encodingMask = (OpcUaByte)variantType;
 		OpcUaInt32 arrayLength = arrayLength_;
 
+		// handle null value
+		if (arrayLength_ == -1 && isNull()) {
+			encodingMask = 0x00;
+			OpcUaNumber::opcUaBinaryEncode(os, encodingMask);
+			return;
+		}
+
 		// handle array 
 		if (arrayLength != -1 && arrayLength != variantValueVec_.size()) arrayLength = 0;
 		if (arrayLength != -1 && variantType == OpcUaBuildInType_Unknown) arrayLength = 0; 
@@ -2264,6 +2283,9 @@ namespace OpcUaStackCore
 		OpcUaByte encodingMask;
 
 		OpcUaNumber::opcUaBinaryDecode(is, encodingMask);
+
+		// handle null value
+		if (encodingMask == 0x00) return;
 
 		arrayLength_ = -1;
 		if ((encodingMask & 128) == 128) {

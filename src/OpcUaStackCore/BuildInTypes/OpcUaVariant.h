@@ -83,6 +83,7 @@ namespace OpcUaStackCore
 		~OpcUaVariantValue(void);
 
 		OpcUaBuildInType variantType(void) const;
+		bool isNull(void) const;
 
 		template<typename VAL>
 		  void variant(const VAL& val) {
@@ -159,6 +160,8 @@ namespace OpcUaStackCore
 		void pushBack(const OpcUaVariantValue& variantValue);
 
 		OpcUaBuildInType variantType(void) const;
+		bool isNull(void) const;
+
 		template<typename VAL>
 		  void variant(uint32_t pos, const VAL& val) {
 			  variantValueVec_[pos].variant(val);

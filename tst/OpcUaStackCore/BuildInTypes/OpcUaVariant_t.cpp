@@ -28,6 +28,21 @@ BOOST_AUTO_TEST_CASE(OpcUaVariant_encode_decode)
 	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_Unknown);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaVariant_isNull)
+{
+	std::stringstream ss;
+	OpcUaVariant value1, value2;
+	BOOST_REQUIRE(value1.variantType() == OpcUaBuildInType_Unknown);
+	BOOST_REQUIRE(value1.isNulll() == true)
+
+	value1.opcUaBinaryEncode(ss);
+	value2.opcUaBinaryDecode(ss);
+
+	BOOST_REQUIRE(value2.arrayLength() == -1);
+	BOOST_REQUIRE(value2.variantType() == OpcUaBuildInType_Unknown);
+	BOOST_REQUIRE(value2.isNull() == true);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaVariant_OpcUaBoolean)
 {
 	std::stringstream ss;
