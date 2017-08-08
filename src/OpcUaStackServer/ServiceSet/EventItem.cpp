@@ -18,6 +18,7 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/EventType/BaseEventType.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
 
@@ -131,6 +132,7 @@ namespace OpcUaStackServer
 	void
 	EventItem::fireEvent(EventBase::SPtr eventBase)
 	{
+		BaseEventType::SPtr baseEventType = boost::static_pointer_cast<BaseEventType>(eventBase);
 		std::cout << "fireEvent" << std::endl;
 		// FIXME: lock
 
@@ -141,6 +143,21 @@ namespace OpcUaStackServer
 
 		// map namespace
 		// FIXME: todo
+
+		// generate event id if necessary
+		if (baseEventType->eventId().get() == nullptr) {
+			boost::posix_time::ptime time = boost::posix_time::microsec_clock::local_time();
+
+			OpcUaByteString byteString;
+			byteString.value((char*)&time, sizeof(boost::posix_time::ptime));
+
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(byteString);
+
+			baseEventType->eventId(variant);
+		}
+
+
 
 		// process select clause
 		bool resultCode;
@@ -179,7 +196,7 @@ namespace OpcUaStackServer
 			}
 
 			// get variant value from event
-			OpcUaVariant::SPtr value = constructSPtr<OpcUaVariant>();
+			OpcUaVariant::SPtr value;
 			EventBase::ResultCode resultCode = eventBase->get(
 				simpleAttributeOperand->typeId(),
 				browseNameList,
@@ -189,15 +206,19 @@ namespace OpcUaStackServer
 			// insert variant into event field list
 			EventField::SPtr eventField;
 			eventField = constructSPtr<EventField>();
-			if (resultCode == EventBase::Success) {
-				std::cout << "FOUND!!!!" << std::endl;
-				eventField->variant(value);
-				//eventFieldList->eventFields()->set(idx, eventField);
+			if (resultCode != EventBase::Success) {
+				value = constructSPtr<OpcUaVariant>();
+
 			}
+			else {
+				std::cout << "FOUND!!!!" << std::endl;
+			}
+			if (value.get() == nullptr) std::cout << "value is null" << std::endl;
+			eventField->variant(value);
 			eventFieldList->eventFields()->push_back(eventField);
 		}
 
-		//eventFieldListList_.push_back(eventFieldList);
+		eventFieldListList_.push_back(eventFieldList);
 	}
 
 	OpcUaStatusCode
