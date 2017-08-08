@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		~EventItem(void);
 
 		void informationModel(InformationModel::SPtr& informationModel);
+		void browseName(OpcUaQualifiedName& browseName);
 
 		OpcUaStatusCode receive(
 			MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
@@ -72,6 +73,8 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(SimpleAttributeOperandArray::SPtr& selectClauses, OpcUaStatusCodeArray::SPtr& statusCodeArray);
 
 		OpcUaNodeId nodeId_;
+		OpcUaQualifiedName browseName_;
+
 		uint32_t eventItemId_;
 		uint32_t clientHandle_;
 		InformationModel::SPtr informationModel_;

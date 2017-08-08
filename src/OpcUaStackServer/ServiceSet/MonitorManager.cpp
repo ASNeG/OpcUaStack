@@ -228,10 +228,13 @@ namespace OpcUaStackServer
 			monitoredItemCreateResult->statusCode(BadNodeIdUnknown);
 			return;
 		}
+		OpcUaQualifiedName browseName;
+		baseNodeClass->getBrowseName(browseName);
 
 		// create new monitor item
 		EventItem::SPtr eventItem = constructSPtr<EventItem>();
 		eventItem->informationModel(informationModel_);
+		eventItem->browseName(browseName);
 		OpcUaStatusCode statusCode = eventItem->receive(
 			monitoredItemCreateRequest,
 			monitoredItemCreateResult

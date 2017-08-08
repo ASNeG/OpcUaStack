@@ -33,6 +33,7 @@ namespace OpcUaStackServer
 	, selectClauses_()
 	, eventHandler_(constructSPtr<EventHandler>())
 	, nodeId_()
+	, browseName_()
 	, eventFieldListList_()
 	, clientHandle_(0)
 	, eventBase_()
@@ -48,6 +49,12 @@ namespace OpcUaStackServer
 	EventItem::informationModel(InformationModel::SPtr& informationModel)
 	{
 		informationModel_ = informationModel;
+	}
+
+	void
+	EventItem::browseName(OpcUaQualifiedName& browseName)
+	{
+		browseName.copyTo(browseName_);
 	}
 
 	OpcUaStatusCode
@@ -157,6 +164,12 @@ namespace OpcUaStackServer
 			baseEventType->eventId(variant);
 		}
 
+		// set source node id if necessary
+		if (baseEventType->sourceNode().get() == nullptr) {
+			OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(nodeId_);
+			baseEventType->sourceNode(variant);
+		}
 
 
 		// process select clause
