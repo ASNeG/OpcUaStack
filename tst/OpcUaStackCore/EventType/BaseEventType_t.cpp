@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_browsName_unknwon)
 	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
-	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::BadBrowseNameNotExist);
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::BadValueNotExist);
 	BOOST_REQUIRE(variant.get() == nullptr);
 }
 
