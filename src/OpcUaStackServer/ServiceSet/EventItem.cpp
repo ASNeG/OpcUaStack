@@ -245,7 +245,7 @@ namespace OpcUaStackServer
 
 			// get variant value from event
 			OpcUaVariant::SPtr value;
-			EventBase::ResultCode resultCode = eventBase->get(
+			EventResult::Code resultCode = eventBase->get(
 				simpleAttributeOperand->typeId(),
 				browseNameList,
 				value
@@ -254,7 +254,7 @@ namespace OpcUaStackServer
 			// insert variant into event field list
 			EventField::SPtr eventField;
 			eventField = constructSPtr<EventField>();
-			if (resultCode != EventBase::Success) {
+			if (resultCode != EventResult::Success) {
 				value = constructSPtr<OpcUaVariant>();
 
 			}

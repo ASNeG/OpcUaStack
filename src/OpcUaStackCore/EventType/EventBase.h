@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_EventBase_h__
 
 #include <boost/shared_ptr.hpp>
+#include <OpcUaStackCore/EventType/EventResult.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/Filter/SimpleAttributeIf.h"
@@ -32,15 +33,6 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<EventBase> SPtr;
 
-		typedef enum
-		{
-			Success,
-			BadEventTypeNotExist,
-			BadBrowseNameListEmpty,
-			BadBrowseNameNotExist,
-			BadValueNotExist,
-		} ResultCode;
-
 		EventBase(void);
 		virtual ~EventBase(void);
 
@@ -52,7 +44,7 @@ namespace OpcUaStackCore
 			OpcUaVariant::SPtr& eventType_
 		);
 
-		ResultCode get(
+		EventResult::Code get(
 			OpcUaNodeId& eventType,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 			OpcUaVariant::SPtr& variant
@@ -63,7 +55,7 @@ namespace OpcUaStackCore
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			ResultCode& resultCode
+			EventResult::Code& resultCode
 		);
 
 		//- SimpleAttributeIf -------------------------------------------------

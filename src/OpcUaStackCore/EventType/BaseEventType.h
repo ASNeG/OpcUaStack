@@ -59,28 +59,16 @@ namespace OpcUaStackCore
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-			ResultCode& resultCode
+			EventResult::Code& resultCode
 		);
 		//- EventBase interface
 
 	  private:
-		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName, ResultCode& resultCode);
-
 		EventVariables eventVariables_;
 
 		std::string namespaceUri_;
 		uint32_t namespaceIndex_;
 		OpcUaQualifiedName browseName_;
-
-		OpcUaVariant::SPtr eventId_;		// OpcUaByteString
-		OpcUaVariant::SPtr eventType_;		// OpcUaNodeId
-		OpcUaVariant::SPtr sourceName_;		// OpcUaString
-		OpcUaVariant::SPtr localTime_;		// OpcUaDateTime
-		OpcUaVariant::SPtr message_;		// OpcUaLocalizedText
-		OpcUaVariant::SPtr receiveTime_;	// OpcUaDateTime
-		OpcUaVariant::SPtr severity_;		// OpcUaUInt16
-		OpcUaVariant::SPtr sourceNode_;		// OpcUaNodeId
-		OpcUaVariant::SPtr time_;			// OpcUaDateTime
 	};
 
 }

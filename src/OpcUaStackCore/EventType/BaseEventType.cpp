@@ -27,15 +27,6 @@ namespace OpcUaStackCore
 	, namespaceUri_("")
 	, namespaceIndex_(0)
 	, browseName_("BaseEventType")
-	, eventId_()
-	, eventType_()
-	, sourceName_()
-	, localTime_()
-	, message_()
-	, receiveTime_()
-	, severity_()
-	, sourceNode_()
-	, time_()
 	{
 		eventVariables_.registerEventVariable("EventId", OpcUaBuildInType_OpcUaByteString);
 		eventVariables_.registerEventVariable("EventType", OpcUaBuildInType_OpcUaNodeId);
@@ -49,7 +40,7 @@ namespace OpcUaStackCore
 
 		OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
 		eventType->setValue(OpcUaNodeId((OpcUaUInt32)2041));
-		eventVariables_.setValue("EventId", eventType);
+		eventVariables_.setValue("EventType", eventType);
 	}
 
 	BaseEventType::~BaseEventType(void)
@@ -59,136 +50,127 @@ namespace OpcUaStackCore
 	bool
 	BaseEventType::eventId(OpcUaVariant::SPtr& eventId)
 	{
-		if (eventId.get() == nullptr) return false;
-		if (eventId->variantType() != OpcUaBuildInType_OpcUaByteString) return false;
-		eventId_ = eventId;
-		return true;
+		return eventVariables_.setValue("EventId", eventId);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::eventId(void)
 	{
-		return eventId_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("EventId", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::eventType(OpcUaVariant::SPtr& eventType)
 	{
-		if (eventType.get() == nullptr) return false;
-		if (eventType->variantType() != OpcUaBuildInType_OpcUaNodeId) return false;
-		eventType_ = eventType;
-		return true;
+		return eventVariables_.setValue("EventType", eventType);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::eventType(void)
 	{
-		return eventType_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("EventType", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::sourceName(OpcUaVariant::SPtr& sourceName)
 	{
-		if (sourceName.get() == nullptr) return false;
-		if (sourceName->variantType() != OpcUaBuildInType_OpcUaString) return false;
-		sourceName_ = sourceName;
-		return true;
+		return eventVariables_.setValue("SourceName", sourceName);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::sourceName(void)
 	{
-		return sourceName_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("SourceName", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::localTime(OpcUaVariant::SPtr& localTime)
 	{
-		if (localTime.get() == nullptr) return false;
-		if (localTime->variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
-		localTime_ = localTime;
-		return true;
+		return eventVariables_.setValue("LocalTime", localTime);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::localTime(void)
 	{
-		return localTime_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("LocalTime", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::message(OpcUaVariant::SPtr& message)
 	{
-		if (message.get() == nullptr) return false;
-		if (message->variantType() != OpcUaBuildInType_OpcUaLocalizedText) return false;
-		message_ = message;
-		return true;
+		return eventVariables_.setValue("Message", message);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::message(void)
 	{
-		return message_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("Message", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::receiveTime(OpcUaVariant::SPtr& receiveTime)
 	{
-		if (receiveTime.get() == nullptr) return false;
-		if (receiveTime->variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
-		receiveTime_ = receiveTime;
-		return true;
+		return eventVariables_.setValue("ReceiveTime", receiveTime);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::receiveTime(void)
 	{
-		return receiveTime_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("ReceiveTime", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::severity(OpcUaVariant::SPtr& severity)
 	{
-		if (severity.get() == nullptr) return false;
-		if (severity->variantType() != OpcUaBuildInType_OpcUaUInt16) return false;
-		severity_ = severity;
-		return true;
+		return eventVariables_.setValue("Severity", severity);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::severity(void)
 	{
-		return severity_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("Severity", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::sourceNode(OpcUaVariant::SPtr& sourceNode)
 	{
-		if (sourceNode.get() == nullptr) return false;
-		if (sourceNode->variantType() != OpcUaBuildInType_OpcUaNodeId) return false;
-		sourceNode_ = sourceNode;
-		return true;
+		return eventVariables_.setValue("SourceNode", sourceNode);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::sourceNode(void)
 	{
-		return sourceNode_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("SourceNode", value);
+		return value;
 	}
 
 	bool
 	BaseEventType::time(OpcUaVariant::SPtr& time)
 	{
-		if (time.get() == nullptr) return false;
-		if (time->variantType() != OpcUaBuildInType_OpcUaDateTime) return false;
-		time_ = time;
-		return true;
+		return eventVariables_.setValue("Time", time);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::time(void)
 	{
-		return time_;
+		OpcUaVariant::SPtr value;
+		eventVariables_.getValue("Time", value);
+		return value;
 	}
 
 	// ------------------------------------------------------------------------
@@ -201,97 +183,56 @@ namespace OpcUaStackCore
 	void
 	BaseEventType::mapNamespaceUri(void)
 	{
+		OpcUaVariant::SPtr eventType = this->eventType();
+
 		EventBase::mapNamespaceUri();
-		setNamespaceIndex(namespaceUri_, namespaceIndex_, browseName_, eventType_);
+		setNamespaceIndex(namespaceUri_, namespaceIndex_, browseName_, eventType);
+
+		this->eventType(eventType);
+		eventVariables_.namespaceIndex(namespaceIndex_);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::get(
 		OpcUaNodeId& eventType,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-		ResultCode& resultCode
+		EventResult::Code& resultCode
 	)
 	{
 		OpcUaNodeId typeNodeId;
 		this->eventType()->getValue(typeNodeId);
-		resultCode = Success;
+		resultCode = EventResult::Success;
 
 		// check whether eventType and typeNodeId are identical
 		if (eventType == typeNodeId) {
 			OpcUaVariant::SPtr variant;
 
 			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
-			variant = get(browseName, resultCode);
+			variant = eventVariables_.get(browseName, resultCode);
 
-			if (resultCode == Success) {
+			if (resultCode == EventResult::Success) {
 				browseNameList.pop_front();
 			}
 
-			resultCode = Success;
+			resultCode = EventResult::Success;
 			return variant;
 		}
 
 		// the start item was not found. We delegate the search to the base class
 		OpcUaVariant::SPtr variant;
 		variant = EventBase::get(eventType, browseNameList, resultCode);
-		if (resultCode != Success || browseNameList.empty()) {
+		if (resultCode != EventResult::Success || browseNameList.empty()) {
 			return variant;
 		}
 
 		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
-		variant = get(browseName, resultCode);
+		variant = eventVariables_.get(browseName, resultCode);
 
-		if (resultCode == Success) {
+		if (resultCode == EventResult::Success) {
 			browseNameList.pop_front();
 		}
 
-		resultCode = Success;
-		return variant;
-	}
-
-	OpcUaVariant::SPtr
-	BaseEventType::get(OpcUaQualifiedName::SPtr& browseName, ResultCode& resultCode)
-	{
-		resultCode = Success;
-		if (*browseName == OpcUaQualifiedName("EventId", namespaceIndex_)) {
-			if (eventId_.get() == nullptr) resultCode = BadValueNotExist;
-			return eventId_;
-		}
-		if (*browseName == OpcUaQualifiedName("EventType", namespaceIndex_)) {
-			if (eventType_.get() == nullptr) resultCode = BadValueNotExist;
-			return eventType_;
-		}
-		if (*browseName == OpcUaQualifiedName("SourceName", namespaceIndex_)) {
-			if (sourceName_.get() == nullptr) resultCode = BadValueNotExist;
-			return sourceName_;
-		}
-		if (*browseName == OpcUaQualifiedName("LocalTime", namespaceIndex_)) {
-			if (localTime_.get() == nullptr) resultCode = BadValueNotExist;
-			return localTime_;
-		}
-		if (*browseName == OpcUaQualifiedName("Message", namespaceIndex_)) {
-			if (message_.get() == nullptr) resultCode = BadValueNotExist;
-			return message_;
-		}
-		if (*browseName == OpcUaQualifiedName("ReceiveTime", namespaceIndex_)) {
-			if (receiveTime_.get() == nullptr) resultCode = BadValueNotExist;
-			return receiveTime_;
-		}
-		if (*browseName == OpcUaQualifiedName("Severity", namespaceIndex_)) {
-			if (severity_.get() == nullptr) resultCode = BadValueNotExist;
-			return severity_;
-		}
-		if (*browseName == OpcUaQualifiedName("SourceNode", namespaceIndex_)) {
-			if (sourceNode_.get() == nullptr) resultCode = BadValueNotExist;
-			return sourceNode_;
-		}
-		if (*browseName == OpcUaQualifiedName("Time", namespaceIndex_)) {
-			if (time_.get() == nullptr) resultCode = BadValueNotExist;
-			return time_;
-		}
-
-		resultCode = BadBrowseNameNotExist;
-		OpcUaVariant::SPtr variant;
+		resultCode = EventResult::Success;
 		return variant;
 	}
 

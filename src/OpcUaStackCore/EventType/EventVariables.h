@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/EventType/EventResult.h"
 
 namespace OpcUaStackCore
 {
@@ -42,13 +43,16 @@ namespace OpcUaStackCore
 		EventVariables(void);
 		virtual ~EventVariables(void);
 
+		uint32_t namespaceIndex(uint32_t namespaceIndex);
 		bool registerEventVariable(const std::string& variableName, OpcUaBuildInType buildInType);
 		bool deregisterEventVariable(const std::string& variableName);
 		bool setValue(const std::string& variableName, OpcUaVariant::SPtr& value);
 		bool getValue(const std::string& variableName, OpcUaVariant::SPtr& value);
+		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName, EventResult::Code& resultCode);
 
 	  private:
 		EventVariableMap eventVariableMap_;
+		uint32_t namespaceIndex_;
 	};
 
 

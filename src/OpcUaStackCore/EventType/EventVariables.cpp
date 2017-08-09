@@ -48,11 +48,18 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	EventVariables::EventVariables(void)
 	: eventVariableMap_()
+	,namespaceIndex_(0)
 	{
 	}
 
 	EventVariables::~EventVariables(void)
 	{
+	}
+
+	uint32_t
+	EventVariables::namespaceIndex(uint32_t namespaceIndex)
+	{
+		namespaceIndex_ = namespaceIndex;
 	}
 
 	bool
@@ -114,6 +121,27 @@ namespace OpcUaStackCore
 
 		variable = it->second.variable_;
 		return true;
+	}
+
+	OpcUaVariant::SPtr
+	EventVariables::get(OpcUaQualifiedName::SPtr& browseName, EventResult::Code& resultCode)
+	{
+		EventVariableMap::iterator it;
+
+		resultCode = EventResult::Success;
+		for (it = eventVariableMap_.begin(); it != eventVariableMap_.end(); it++) {
+			if (*browseName == OpcUaQualifiedName(it->first, namespaceIndex_)) {
+				OpcUaVariant::SPtr variant;
+				if (it->second.variable_.get() == nullptr) {
+					resultCode = EventResult::BadValueNotExist;
+				}
+				return it->second.variable_;
+			}
+		}
+
+		resultCode = EventResult::BadBrowseNameNotExist;
+		OpcUaVariant::SPtr variant;
+		return variant;
 	}
 
 }

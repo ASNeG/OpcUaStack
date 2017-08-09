@@ -80,29 +80,29 @@ namespace OpcUaStackCore
 	}
 
 
-	EventBase::ResultCode
+	EventResult::Code
 	EventBase::get(
 		OpcUaNodeId& eventType,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 		OpcUaVariant::SPtr& variant
 	)
 	{
-		ResultCode resultCode = Success;
+		EventResult::Code resultCode = EventResult::Success;
 
 		if (browseNameList.empty()) {
-			return BadBrowseNameListEmpty;
+			return EventResult::BadBrowseNameListEmpty;
 		}
 
 		variant = get(eventType, browseNameList, resultCode);
-		if (resultCode != Success) {
+		if (resultCode != EventResult::Success) {
 			return resultCode;
 		}
 
 	   	if (!browseNameList.empty()) {
-	    	return BadValueNotExist;
+	    	return EventResult::BadValueNotExist;
 	    }
 
-		return Success;
+		return EventResult::Success;
 	}
 
 	// ------------------------------------------------------------------------
@@ -124,13 +124,13 @@ namespace OpcUaStackCore
     	std::list<OpcUaQualifiedName::SPtr> tmpBrowsePath = browsePath;
 
     	OpcUaVariant::SPtr variant;
-    	ResultCode resultCode = get(typeId, tmpBrowsePath, variant);
-    	if (resultCode != Success) {
+    	EventResult::Code resultCode = get(typeId, tmpBrowsePath, variant);
+    	if (resultCode != EventResult::Success) {
     		return resultCode;
     	}
 
     	value.copyFrom(*variant);
-    	return Success;
+    	return EventResult::Success;
     }
 
 	// ------------------------------------------------------------------------
@@ -150,10 +150,10 @@ namespace OpcUaStackCore
 	EventBase::get(
 		OpcUaNodeId& eventType,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
-		ResultCode& resultCode
+		EventResult::Code& resultCode
 	)
 	{
-		resultCode = BadEventTypeNotExist;
+		resultCode = EventResult::BadEventTypeNotExist;
 		OpcUaVariant::SPtr variant;
 		return variant;
 	}

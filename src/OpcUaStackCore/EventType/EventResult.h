@@ -22,7 +22,6 @@
 namespace OpcUaStackCore
 {
 
-
 	class EventResult
 	{
 	  public:
@@ -35,7 +34,7 @@ namespace OpcUaStackCore
 			BadBrowseNameNotExist,
 			BadValueNotExist,
 		} Code;
-	}
+	};
 
 }
 
