@@ -31,20 +31,32 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<AttributeFilterNode> SPtr;
 
         AttributeFilterNode(void);
+        AttributeFilterNode(const OpcUaNodeId& typeId,
+            const OpcUaString& alias,
+            const RelativePath& browsePath,
+            OpcUaUInt32 attributeId,
+            const OpcUaString& numericRange);
+
         virtual ~AttributeFilterNode(void);
 
         void attributeIf(AttributeIf* attributeIf);
 
+        // FilterNode interface
         virtual bool evaluate(OpcUaVariant& value) override;
+        virtual OpcUaStatusCode& status();
+        virtual std::vector<OpcUaStatusCode>& operandStatuses();
 
       private:
         AttributeIf* attributeIf_;
 
        	OpcUaNodeId typeId_;
        	OpcUaString alias_;
-		RelativePath::SPtr relativePath_;
+		RelativePath::SPtr browsePath_;
 		OpcUaUInt32 attributeId_;
 		OpcUaString numericRange_;
+
+        OpcUaStatusCode status_;
+        std::vector<OpcUaStatusCode> operandStatuses_;
     };
 
 }
