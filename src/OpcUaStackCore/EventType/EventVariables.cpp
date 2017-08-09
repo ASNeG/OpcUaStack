@@ -56,10 +56,16 @@ namespace OpcUaStackCore
 	{
 	}
 
-	uint32_t
+	void
 	EventVariables::namespaceIndex(uint32_t namespaceIndex)
 	{
 		namespaceIndex_ = namespaceIndex;
+	}
+
+	uint32_t
+	EventVariables::namespaceIndex(void)
+	{
+		return namespaceIndex_;
 	}
 
 	bool

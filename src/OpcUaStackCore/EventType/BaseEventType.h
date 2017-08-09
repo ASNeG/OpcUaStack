@@ -67,7 +67,6 @@ namespace OpcUaStackCore
 		EventVariables eventVariables_;
 
 		std::string namespaceUri_;
-		uint32_t namespaceIndex_;
 		OpcUaQualifiedName browseName_;
 	};
 

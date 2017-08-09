@@ -43,7 +43,8 @@ namespace OpcUaStackCore
 		EventVariables(void);
 		virtual ~EventVariables(void);
 
-		uint32_t namespaceIndex(uint32_t namespaceIndex);
+		void namespaceIndex(uint32_t namespaceIndex);
+		uint32_t namespaceIndex(void);
 		bool registerEventVariable(const std::string& variableName, OpcUaBuildInType buildInType);
 		bool deregisterEventVariable(const std::string& variableName);
 		bool setValue(const std::string& variableName, OpcUaVariant::SPtr& value);
