@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_broeseNameList_empty)
 	bool eventFound = false;
 	std::list<OpcUaQualifiedName::SPtr> browseNameList;
 	OpcUaVariant::SPtr variant;
-	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::BadBrowseNameListEmpty);
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadBrowseNameListEmpty);
 	BOOST_REQUIRE(variant.get() == nullptr);
 }
 
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_typeId_unknwon)
 	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
-	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::BadEventTypeNotExist);
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadEventTypeNotExist);
 	BOOST_REQUIRE(variant.get() == nullptr);
 }
 
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_browsName_unknwon)
 	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Unknown"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
-	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::BadValueNotExist);
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadValueNotExist);
 	BOOST_REQUIRE(variant.get() == nullptr);
 }
 
@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_not_exist)
 	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("EventId"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
-	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::BadValueNotExist);
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::BadValueNotExist);
 	BOOST_REQUIRE(variant.get() == nullptr);
 }
 
@@ -327,7 +327,7 @@ BOOST_AUTO_TEST_CASE(BaseEventType_variant_success)
 	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("EventId"));
 	bool error = false;
 	OpcUaVariant::SPtr variant;
-	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventBase::Success);
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
 	BOOST_REQUIRE(variant.get() != nullptr);
 	OpcUaByteString byteString;
 	BOOST_REQUIRE(variant->getValue(byteString) == true);

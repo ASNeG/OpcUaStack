@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		eventVariables_.registerEventVariable("ReceiveTime", OpcUaBuildInType_OpcUaDateTime);
 		eventVariables_.registerEventVariable("Severity", OpcUaBuildInType_OpcUaUInt16);
 		eventVariables_.registerEventVariable("SourceNode", OpcUaBuildInType_OpcUaNodeId);
-		eventVariables_.registerEventVariable("time", OpcUaBuildInType_OpcUaDateTime);
+		eventVariables_.registerEventVariable("Time", OpcUaBuildInType_OpcUaDateTime);
 
 		OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
 		eventType->setValue(OpcUaNodeId((OpcUaUInt32)2041));
