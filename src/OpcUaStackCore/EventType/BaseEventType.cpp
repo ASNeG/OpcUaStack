@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 
 	BaseEventType::BaseEventType(void)
 	: EventBase()
+	, eventVariables_()
 	, namespaceUri_("")
 	, namespaceIndex_(0)
 	, browseName_("BaseEventType")
@@ -36,9 +37,19 @@ namespace OpcUaStackCore
 	, sourceNode_()
 	, time_()
 	{
+		eventVariables_.registerEventVariable("EventId", OpcUaBuildInType_OpcUaByteString);
+		eventVariables_.registerEventVariable("EventType", OpcUaBuildInType_OpcUaNodeId);
+		eventVariables_.registerEventVariable("SourceName", OpcUaBuildInType_OpcUaString);
+		eventVariables_.registerEventVariable("LocalTime", OpcUaBuildInType_OpcUaDateTime);
+		eventVariables_.registerEventVariable("Message", OpcUaBuildInType_OpcUaLocalizedText);
+		eventVariables_.registerEventVariable("ReceiveTime", OpcUaBuildInType_OpcUaDateTime);
+		eventVariables_.registerEventVariable("Severity", OpcUaBuildInType_OpcUaUInt16);
+		eventVariables_.registerEventVariable("SourceNode", OpcUaBuildInType_OpcUaNodeId);
+		eventVariables_.registerEventVariable("time", OpcUaBuildInType_OpcUaDateTime);
+
 		OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
 		eventType->setValue(OpcUaNodeId((OpcUaUInt32)2041));
-		this->eventType(eventType);
+		eventVariables_.setValue("EventId", eventType);
 	}
 
 	BaseEventType::~BaseEventType(void)
@@ -54,7 +65,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::eventId(void)
 	{
 		return eventId_;
@@ -69,7 +80,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::eventType(void)
 	{
 		return eventType_;
@@ -84,7 +95,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::sourceName(void)
 	{
 		return sourceName_;
@@ -99,7 +110,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::localTime(void)
 	{
 		return localTime_;
@@ -114,7 +125,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::message(void)
 	{
 		return message_;
@@ -129,7 +140,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::receiveTime(void)
 	{
 		return receiveTime_;
@@ -144,7 +155,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::severity(void)
 	{
 		return severity_;
@@ -159,7 +170,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::sourceNode(void)
 	{
 		return sourceNode_;
@@ -174,7 +185,7 @@ namespace OpcUaStackCore
 		return true;
 	}
 
-	OpcUaVariant::SPtr&
+	OpcUaVariant::SPtr
 	BaseEventType::time(void)
 	{
 		return time_;

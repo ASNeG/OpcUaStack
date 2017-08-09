@@ -27,6 +27,9 @@ namespace OpcUaStackCore
 	class EventVariable
 	{
 	  public:
+		EventVariable(OpcUaBuildInType buildInType);
+		~EventVariable(void);
+
 		OpcUaVariant::SPtr variable_;
 		OpcUaBuildInType buildInType_;
 	};
@@ -38,6 +41,11 @@ namespace OpcUaStackCore
 
 		EventVariables(void);
 		virtual ~EventVariables(void);
+
+		bool registerEventVariable(const std::string& variableName, OpcUaBuildInType buildInType);
+		bool deregisterEventVariable(const std::string& variableName);
+		bool setValue(const std::string& variableName, OpcUaVariant::SPtr& value);
+		bool getValue(const std::string& variableName, OpcUaVariant::SPtr& value);
 
 	  private:
 		EventVariableMap eventVariableMap_;

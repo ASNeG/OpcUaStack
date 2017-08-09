@@ -21,6 +21,31 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// class EventVariable
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	EventVariable::EventVariable(OpcUaBuildInType buildInType)
+	: variable_()
+	, buildInType_(buildInType)
+	{
+	}
+
+	EventVariable::~EventVariable(void)
+	{
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// class EventVariables
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	EventVariables::EventVariables(void)
 	: eventVariableMap_()
 	{
@@ -28,6 +53,67 @@ namespace OpcUaStackCore
 
 	EventVariables::~EventVariables(void)
 	{
+	}
+
+	bool
+	EventVariables::registerEventVariable(const std::string& variableName, OpcUaBuildInType buildInType)
+	{
+		EventVariableMap::iterator it;
+		it = eventVariableMap_.find(variableName);
+		if (it != eventVariableMap_.end()) {
+			return false;
+		}
+
+		EventVariable eventVariable(buildInType);
+		eventVariableMap_.insert(std::make_pair(variableName, eventVariable));
+		return true;
+	}
+
+	bool
+	EventVariables::deregisterEventVariable(const std::string& variableName)
+	{
+		EventVariableMap::iterator it;
+		it = eventVariableMap_.find(variableName);
+		if (it == eventVariableMap_.end()) {
+			return true;
+		}
+		eventVariableMap_.erase(it);
+		return true;
+	}
+
+	bool
+	EventVariables::setValue(const std::string& variableName, OpcUaVariant::SPtr& value)
+	{
+		if (value.get() == nullptr) {
+			return false;
+		}
+
+		EventVariableMap::iterator it;
+		it = eventVariableMap_.find(variableName);
+		if (it == eventVariableMap_.end()) {
+			return false;
+		}
+
+		if (value->variantType() != it->second.buildInType_) {
+			return false;
+		}
+
+		it->second.variable_ = value;
+		return true;
+	}
+
+	bool
+	EventVariables::getValue(const std::string& variableName, OpcUaVariant::SPtr& variable)
+	{
+		EventVariableMap::iterator it;
+		it = eventVariableMap_.find(variableName);
+		if (it == eventVariableMap_.end()) {
+			variable.reset();
+			return false;
+		}
+
+		variable = it->second.variable_;
+		return true;
 	}
 
 }

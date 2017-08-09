@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/EventType/EventBase.h"
+#include "OpcUaStackCore/EventType/EventVariables.h"
 
 namespace OpcUaStackCore
 {
@@ -35,23 +36,23 @@ namespace OpcUaStackCore
 		virtual ~BaseEventType(void);
 
 		bool eventId(OpcUaVariant::SPtr& eventId);
-		OpcUaVariant::SPtr& eventId(void);
+		OpcUaVariant::SPtr eventId(void);
 		bool eventType(OpcUaVariant::SPtr& eventType);
-		OpcUaVariant::SPtr& eventType(void);
+		OpcUaVariant::SPtr eventType(void);
 		bool sourceName(OpcUaVariant::SPtr& sourceName);
-		OpcUaVariant::SPtr& sourceName(void);
+		OpcUaVariant::SPtr sourceName(void);
 		bool localTime(OpcUaVariant::SPtr& localTime);
-		OpcUaVariant::SPtr& localTime(void);
+		OpcUaVariant::SPtr localTime(void);
 		bool message(OpcUaVariant::SPtr& message);
-		OpcUaVariant::SPtr& message(void);
+		OpcUaVariant::SPtr message(void);
 		bool receiveTime(OpcUaVariant::SPtr& receiveTime);
-		OpcUaVariant::SPtr& receiveTime(void);
+		OpcUaVariant::SPtr receiveTime(void);
 		bool severity(OpcUaVariant::SPtr& severity);
-		OpcUaVariant::SPtr& severity(void);
+		OpcUaVariant::SPtr severity(void);
 		bool sourceNode(OpcUaVariant::SPtr& sourceNode);
-		OpcUaVariant::SPtr& sourceNode(void);
+		OpcUaVariant::SPtr sourceNode(void);
 		bool time(OpcUaVariant::SPtr& time);
-		OpcUaVariant::SPtr& time(void);
+		OpcUaVariant::SPtr time(void);
 
 		//- EventBase interface
 		virtual void mapNamespaceUri(void);
@@ -64,6 +65,8 @@ namespace OpcUaStackCore
 
 	  private:
 		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName, ResultCode& resultCode);
+
+		EventVariables eventVariables_;
 
 		std::string namespaceUri_;
 		uint32_t namespaceIndex_;
