@@ -65,8 +65,12 @@ namespace OpcUaStackCore
 	)
 	{
 		int32_t ns = findNamespaceIndex(namespaceUri);
-		if (ns < 0) namespaceIndex = 0;
-		namespaceIndex = ns;
+		if (ns < 0) {
+			namespaceIndex = 0;
+		}
+		else {
+			namespaceIndex = ns;
+		}
 
 		browseName.namespaceIndex(namespaceIndex);
 

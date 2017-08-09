@@ -184,12 +184,14 @@ namespace OpcUaStackCore
 	BaseEventType::mapNamespaceUri(void)
 	{
 		uint32_t namespaceIndex;
-		OpcUaVariant::SPtr eventType = this->eventType();
-
 		EventBase::mapNamespaceUri();
+
+		OpcUaVariant::SPtr eventType;
+		eventVariables_.getValue("EventType", eventType);
+
 		setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);
 
-		this->eventType(eventType);
+		eventVariables_.setValue("EventType", eventType);
 		eventVariables_.namespaceIndex(namespaceIndex);
 	}
 
@@ -200,9 +202,12 @@ namespace OpcUaStackCore
 		EventResult::Code& resultCode
 	)
 	{
-		OpcUaNodeId typeNodeId;
-		this->eventType()->getValue(typeNodeId);
 		resultCode = EventResult::Success;
+
+		OpcUaNodeId typeNodeId;
+		OpcUaVariant::SPtr tmpVariant;
+		eventVariables_.getValue("EventType", tmpVariant);
+		tmpVariant->getValue(typeNodeId);
 
 		// check whether eventType and typeNodeId are identical
 		if (eventType == typeNodeId) {
