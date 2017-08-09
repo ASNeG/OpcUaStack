@@ -43,6 +43,8 @@ namespace OpcUaStackCore
 		EventVariables(void);
 		virtual ~EventVariables(void);
 
+		void browseName(const OpcUaQualifiedName& browseName);
+		OpcUaQualifiedName& browseName(void);
 		void namespaceIndex(uint32_t namespaceIndex);
 		uint32_t namespaceIndex(void);
 		bool registerEventVariable(const std::string& variableName, OpcUaBuildInType buildInType);
@@ -53,8 +55,9 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr get(std::list<OpcUaQualifiedName::SPtr>& browseNameList, EventResult::Code& resultCode);
 
 	  private:
-		EventVariableMap eventVariableMap_;
+		OpcUaQualifiedName browseName_;
 		uint32_t namespaceIndex_;
+		EventVariableMap eventVariableMap_;
 	};
 
 

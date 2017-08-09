@@ -57,6 +57,18 @@ namespace OpcUaStackCore
 	}
 
 	void
+	EventVariables::browseName(const OpcUaQualifiedName& browseName)
+	{
+		browseName_ = browseName;
+	}
+
+	OpcUaQualifiedName&
+	EventVariables::browseName(void)
+	{
+		return browseName_;
+	}
+
+	void
 	EventVariables::namespaceIndex(uint32_t namespaceIndex)
 	{
 		namespaceIndex_ = namespaceIndex;
