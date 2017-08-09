@@ -15,18 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/EventType/EventVariable.h"
-#include "OpcUaStackCore/Base/Log.h"
+#ifndef __OpcUaStackCore_EventVariables_h__
+#define __OpcUaStackCore_EventVariables_h__
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
 
-	EventVariable::EventVariable(void)
+	class EventVariable
 	{
-	}
+	  public:
+		OpcUaVariant::SPtr variable_;
+		OpcUaBuildInType buildInType_;
+	};
 
-	EventVariable::~EventVariable(void)
+	class DLLEXPORT EventVariables
 	{
-	}
+	  public:
+		typedef std::map<std::string, EventVariable> EventVariableMap;
+
+		EventVariables(void);
+		virtual ~EventVariables(void);
+
+	  private:
+		EventVariableMap eventVariableMap_;
+	};
+
 
 }
+
+#endif

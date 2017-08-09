@@ -15,23 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_EventVariable_h__
-#define __OpcUaStackCore_EventVariable_h__
-
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/EventType/EventVariables.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT EventVariable
+	EventVariables::EventVariables(void)
+	: eventVariableMap_()
 	{
-	  public:
-		EventVariable(void);
-		virtual ~EventVariable(void);
-	};
+	}
 
+	EventVariables::~EventVariables(void)
+	{
+	}
 
 }
-
-#endif
