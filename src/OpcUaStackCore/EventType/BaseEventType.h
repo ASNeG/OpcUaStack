@@ -65,8 +65,6 @@ namespace OpcUaStackCore
 
 	  private:
 		EventVariables eventVariables_;
-
-		std::string namespaceUri_;
 	};
 
 }

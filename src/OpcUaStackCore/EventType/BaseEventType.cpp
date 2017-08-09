@@ -24,7 +24,6 @@ namespace OpcUaStackCore
 	BaseEventType::BaseEventType(void)
 	: EventBase()
 	, eventVariables_()
-	, namespaceUri_("")
 	{
 		eventVariables_.registerEventVariable("EventId", OpcUaBuildInType_OpcUaByteString);
 		eventVariables_.registerEventVariable("EventType", OpcUaBuildInType_OpcUaNodeId);
@@ -41,6 +40,7 @@ namespace OpcUaStackCore
 		eventVariables_.setValue("EventType", eventType);
 		eventVariables_.namespaceIndex(0);
 		eventVariables_.browseName(OpcUaQualifiedName("BaseEventType"));
+		eventVariables_.namespaceUri("");
 	}
 
 	BaseEventType::~BaseEventType(void)
@@ -187,7 +187,7 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr eventType = this->eventType();
 
 		EventBase::mapNamespaceUri();
-		setNamespaceIndex(namespaceUri_, namespaceIndex, eventVariables_.browseName(), eventType);
+		setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);
 
 		this->eventType(eventType);
 		eventVariables_.namespaceIndex(namespaceIndex);

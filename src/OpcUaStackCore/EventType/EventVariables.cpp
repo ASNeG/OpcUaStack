@@ -48,12 +48,25 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	EventVariables::EventVariables(void)
 	: eventVariableMap_()
-	,namespaceIndex_(0)
+	, namespaceIndex_(0)
+	, namespaceUri_("")
 	{
 	}
 
 	EventVariables::~EventVariables(void)
 	{
+	}
+
+	void
+	EventVariables::namespaceUri(const std::string& namespaceUri)
+	{
+		namespaceUri_ = namespaceUri;
+	}
+
+	std::string&
+	EventVariables::namespaceUri(void)
+	{
+		return namespaceUri_;
 	}
 
 	void
