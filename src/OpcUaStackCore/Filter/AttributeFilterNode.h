@@ -43,8 +43,8 @@ namespace OpcUaStackCore
 
         // FilterNode interface
         virtual bool evaluate(OpcUaVariant& value) override;
-        virtual OpcUaStatusCode& status();
-        virtual std::vector<OpcUaStatusCode>& operandStatuses();
+        virtual OpcUaStatusCode& status() override;
+        virtual std::vector<OpcUaStatusCode>& operandStatuses() override;
 
       private:
         AttributeIf* attributeIf_;
