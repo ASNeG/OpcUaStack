@@ -21,6 +21,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// class EventBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	EventBase::EventBase(void)
 	: namespaceArray_(nullptr)
 	{
@@ -81,6 +88,10 @@ namespace OpcUaStackCore
 	)
 	{
 		ResultCode resultCode = Success;
+
+		if (browseNameList.empty()) {
+			return BadBrowseNameListEmpty;
+		}
 
 		variant = get(eventType, browseNameList, resultCode);
 		if (resultCode != Success) {

@@ -203,15 +203,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaNodeId typeNodeId;
 		this->eventType()->getValue(typeNodeId);
-
 		resultCode = Success;
-
-		// browse name list must contain at least one element
-		if (browseNameList.empty()) {
-			resultCode = BadBrowseNameListEmpty;
-			OpcUaVariant::SPtr variant;
-			return variant;
-		}
 
 		// check whether eventType and typeNodeId are identical
 		if (eventType == typeNodeId) {
@@ -235,7 +227,6 @@ namespace OpcUaStackCore
 			return variant;
 		}
 
-		// the browse name must match the first element in the browse name list
 		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
 		variant = get(browseName, resultCode);
 
