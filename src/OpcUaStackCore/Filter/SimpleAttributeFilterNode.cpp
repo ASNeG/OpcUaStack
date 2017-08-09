@@ -26,13 +26,50 @@ namespace OpcUaStackCore
     , attributeId_(0)
     , numericRange_("")
     , simpleAttributeIf_(nullptr)
+    , status_(OpcUaStatusCode::Success)
+    , operandStatuses_(0)
     {
+    }
+
+    SimpleAttributeFilterNode::SimpleAttributeFilterNode(
+            const OpcUaNodeId& typeId,
+            OpcUaQualifiedNameArray& browsePath,
+            OpcUaUInt32 attributeId,
+            const OpcUaString& numericRange)
+    : FilterNode()
+    , typeId_(typeId)
+    , browsePath_(0)
+    , attributeId_(attributeId)
+    , numericRange_(numericRange)
+    , simpleAttributeIf_(nullptr)
+    , operandStatuses_(0)
+    {
+        for (int i = 0; i < browsePath.size(); ++i) {
+            OpcUaQualifiedName::SPtr el;
+
+            browsePath.get(i, el);
+            browsePath_.push_back(el);
+        }
+
+        //FIXME: Check arguments
+        status_ = OpcUaStatusCode::Success;
     }
 
     SimpleAttributeFilterNode::~SimpleAttributeFilterNode()
     {
 
     }
+
+    OpcUaStatusCode& SimpleAttributeFilterNode::status()
+    {
+        return status_;
+    }
+
+    std::vector<OpcUaStatusCode>& SimpleAttributeFilterNode::operandStatuses()
+    {
+        return operandStatuses_;
+    }
+
 
     void
 	SimpleAttributeFilterNode::simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf)

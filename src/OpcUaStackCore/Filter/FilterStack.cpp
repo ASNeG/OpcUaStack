@@ -20,8 +20,9 @@
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
 
-#include "OpcUaStackCore/Filter/AttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/FilterStack.h"
+#include "OpcUaStackCore/Filter/AttributeFilterNode.h"
+#include "OpcUaStackCore/Filter/SimpleAttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 #include "OpcUaStackCore/Filter/EqualsFilterNode.h"
 
@@ -117,7 +118,16 @@ namespace OpcUaStackCore
             	}
             	case OpcUaId_SimpleAttributeOperand:
             	{
-            		// FIXME: todo - use SimpleAttributeIf to acess variant value
+            	    SimpleAttributeOperand::SPtr simpleAttributeOperand = operand->parameter<SimpleAttributeOperand>();
+            	    SimpleAttributeFilterNode::SPtr simpleAttributeNode(new SimpleAttributeFilterNode(
+            	            simpleAttributeOperand->typeId(),
+            	            *simpleAttributeOperand->browsePath(),
+            	            simpleAttributeOperand->attributeId(),
+            	            simpleAttributeOperand->indexRange()));
+
+            	    simpleAttributeNode->simpleAttributeIf(simpleAttributeIf_);
+
+            	    args.push_back(simpleAttributeNode);
             		break;
             	}
             	default:

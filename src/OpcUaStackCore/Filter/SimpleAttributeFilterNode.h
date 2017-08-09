@@ -33,11 +33,19 @@ namespace OpcUaStackCore
         typedef boost::shared_ptr<SimpleAttributeFilterNode> SPtr;
 
         SimpleAttributeFilterNode(void);
+        SimpleAttributeFilterNode(
+                const OpcUaNodeId& typeId,
+                OpcUaQualifiedNameArray& browsePath,
+                OpcUaUInt32 attributeId,
+                const OpcUaString& numericRange);
+
         virtual ~SimpleAttributeFilterNode(void);
 
         void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
 
         virtual bool evaluate(OpcUaVariant& value) override;
+        virtual OpcUaStatusCode& status() override;
+        virtual std::vector<OpcUaStatusCode>& operandStatuses() override;
 
       private:
         SimpleAttributeIf* simpleAttributeIf_;
@@ -46,6 +54,9 @@ namespace OpcUaStackCore
         std::list<OpcUaQualifiedName::SPtr> browsePath_;
         OpcUaUInt32 attributeId_;
         OpcUaString numericRange_;
+
+        OpcUaStatusCode status_;
+        std::vector<OpcUaStatusCode> operandStatuses_;
     };
 
 }
