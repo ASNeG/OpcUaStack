@@ -45,7 +45,12 @@ namespace OpcUaStackCore
 		virtual ~EventBase(void);
 
 		void namespaceArray(std::vector<std::string>* namespaceArray);
-		int32_t findNamespaceIndex(const std::string& namespaceUri);
+		bool setNamespaceIndex(
+			const std::string& namespaceUri_,
+			uint32_t& namespaceIndex,
+			OpcUaQualifiedName& browseName_,
+			OpcUaVariant::SPtr& eventType_
+		);
 
 		ResultCode get(
 			OpcUaNodeId& eventType,
@@ -55,12 +60,8 @@ namespace OpcUaStackCore
 
 		virtual void mapNamespaceUri(void);
 
-		//
-		// The get call succeeds under the following conditions
-		//
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
-			bool& eventTypeFound,			// The pass value must be true
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 			ResultCode& resultCode
 		);
@@ -76,6 +77,8 @@ namespace OpcUaStackCore
 		//- SimpleAttributeIf -------------------------------------------------
 
 	  private:
+	    int32_t findNamespaceIndex(const std::string& namespaceUri);
+
 		std::vector<std::string>* namespaceArray_;
 	};
 

@@ -191,29 +191,19 @@ namespace OpcUaStackCore
 	BaseEventType::mapNamespaceUri(void)
 	{
 		EventBase::mapNamespaceUri();
-		int32_t ns = findNamespaceIndex(namespaceUri_);
-		if (ns < 0) namespaceIndex_ = 0;
-		namespaceIndex_ = ns;
-
-		browseName_.namespaceIndex(namespaceIndex_);
-
-		OpcUaNodeId typeNodeId;
-		this->eventType()->getValue(typeNodeId);
-		typeNodeId.namespaceIndex(namespaceIndex_);
-
-		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
-		variant->setValue(typeNodeId);
-		this->eventType()->setValue(typeNodeId);
+		setNamespaceIndex(namespaceUri_, namespaceIndex_, browseName_, eventType_);
 	}
 
 	OpcUaVariant::SPtr
 	BaseEventType::get(
 		OpcUaNodeId& eventType,
-		bool& eventTypeFound,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 		ResultCode& resultCode
 	)
 	{
+		OpcUaNodeId typeNodeId;
+		this->eventType()->getValue(typeNodeId);
+
 		resultCode = Success;
 
 		// browse name list must contain at least one element
@@ -224,11 +214,8 @@ namespace OpcUaStackCore
 		}
 
 		// check whether eventType and typeNodeId are identical
-		OpcUaNodeId typeNodeId;
-		this->eventType()->getValue(typeNodeId);
 		if (eventType == typeNodeId) {
 			OpcUaVariant::SPtr variant;
-			eventTypeFound = true;
 
 			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
 			variant = get(browseName, resultCode);
@@ -243,12 +230,8 @@ namespace OpcUaStackCore
 
 		// the start item was not found. We delegate the search to the base class
 		OpcUaVariant::SPtr variant;
-		variant = EventBase::get(eventType, eventTypeFound, browseNameList, resultCode);
-		if (!eventTypeFound || resultCode != Success || browseNameList.size() == 0) {
-			return variant;
-		}
-
-		if (browseNameList.empty()) {
+		variant = EventBase::get(eventType, browseNameList, resultCode);
+		if (resultCode != Success || browseNameList.empty()) {
 			return variant;
 		}
 

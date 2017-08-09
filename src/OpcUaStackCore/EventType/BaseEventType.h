@@ -57,7 +57,6 @@ namespace OpcUaStackCore
 		virtual void mapNamespaceUri(void);
 		virtual OpcUaVariant::SPtr get(
 			OpcUaNodeId& eventType,
-			bool& eventTypeFound,
 			std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 			ResultCode& resultCode
 		);

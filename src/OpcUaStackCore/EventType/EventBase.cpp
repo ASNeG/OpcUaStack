@@ -49,6 +49,30 @@ namespace OpcUaStackCore
 		return -1;
 	}
 
+	bool
+	EventBase::setNamespaceIndex(
+		const std::string& namespaceUri,
+		uint32_t& namespaceIndex,
+		OpcUaQualifiedName& browseName,
+		OpcUaVariant::SPtr& eventType
+	)
+	{
+		int32_t ns = findNamespaceIndex(namespaceUri);
+		if (ns < 0) namespaceIndex = 0;
+		namespaceIndex = ns;
+
+		browseName.namespaceIndex(namespaceIndex);
+
+		OpcUaNodeId typeNodeId;
+		eventType->getValue(typeNodeId);
+		typeNodeId.namespaceIndex(namespaceIndex);
+
+		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
+		variant->setValue(typeNodeId);
+		eventType->setValue(typeNodeId);
+	}
+
+
 	EventBase::ResultCode
 	EventBase::get(
 		OpcUaNodeId& eventType,
@@ -57,9 +81,8 @@ namespace OpcUaStackCore
 	)
 	{
 		ResultCode resultCode = Success;
-		bool eventTypeFound = false;
 
-		variant = get(eventType, eventTypeFound, browseNameList, resultCode);
+		variant = get(eventType, browseNameList, resultCode);
 		if (resultCode != Success) {
 			return resultCode;
 		}
@@ -115,7 +138,6 @@ namespace OpcUaStackCore
 	OpcUaVariant::SPtr
 	EventBase::get(
 		OpcUaNodeId& eventType,
-		bool& eventTypeFound,
 		std::list<OpcUaQualifiedName::SPtr>& browseNameList,
 		ResultCode& resultCode
 	)
