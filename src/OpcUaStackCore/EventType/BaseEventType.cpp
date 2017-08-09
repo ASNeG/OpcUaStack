@@ -230,15 +230,14 @@ namespace OpcUaStackCore
 			OpcUaVariant::SPtr variant;
 			eventTypeFound = true;
 
-			if (browseNameList.size() == 1) {
-				OpcUaQualifiedName::SPtr browseName = browseNameList.front();
-				browseNameList.pop_front();
+			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
+			variant = get(browseName, resultCode);
 
-				variant = get(browseName, resultCode);
-				return variant;
+			if (resultCode == Success) {
+				browseNameList.pop_front();
 			}
 
-			resultCode = BadBrowseNameNotExist;
+			resultCode = Success;
 			return variant;
 		}
 
@@ -249,26 +248,19 @@ namespace OpcUaStackCore
 			return variant;
 		}
 
-		if (browseNameList.size() < 2) {
-			resultCode = BadBrowseNameNotExist;
+		if (browseNameList.empty()) {
 			return variant;
 		}
 
 		// the browse name must match the first element in the browse name list
 		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
-		browseNameList.pop_front();
-		if (*browseName != browseName_) {
-			resultCode = BadBrowseNameNotExist;
-			return variant;
-		}
+		variant = get(browseName, resultCode);
 
-		if (browseNameList.size() == 1) {
-			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
+		if (resultCode == Success) {
 			browseNameList.pop_front();
-
-			variant = get(browseName, resultCode);
 		}
 
+		resultCode = Success;
 		return variant;
 	}
 

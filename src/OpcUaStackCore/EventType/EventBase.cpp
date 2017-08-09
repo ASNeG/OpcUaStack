@@ -60,6 +60,10 @@ namespace OpcUaStackCore
 		bool eventTypeFound = false;
 
 		variant = get(eventType, eventTypeFound, browseNameList, resultCode);
+	   	if (!browseNameList.empty()) {
+	    	return BadBrowseNameNotExist;
+	    }
+
 		return resultCode;
 	}
 
