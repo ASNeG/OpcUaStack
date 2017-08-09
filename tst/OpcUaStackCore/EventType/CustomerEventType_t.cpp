@@ -20,10 +20,7 @@ using namespace OpcUaStackCore;
 		: BaseEventType()
 		, eventVariables_()
 		{
-		}
-
-		virtual ~CustomerEventType(void)
-		{
+			eventVariables_.registerEventVariable("EventType", OpcUaBuildInType_OpcUaNodeId);
 			eventVariables_.registerEventVariable("Variable1", OpcUaBuildInType_OpcUaDouble);
 			eventVariables_.registerEventVariable("Variable2", OpcUaBuildInType_OpcUaDouble);
 
@@ -33,6 +30,10 @@ using namespace OpcUaStackCore;
 			eventVariables_.namespaceIndex(0);
 			eventVariables_.browseName(OpcUaQualifiedName("CustomerEventType"));
 			eventVariables_.namespaceUri("http://ASNeG-Demo.de/Event/");
+		}
+
+		virtual ~CustomerEventType(void)
+		{
 		}
 
 		bool variable1(OpcUaVariant::SPtr& variable1)
@@ -64,12 +65,14 @@ using namespace OpcUaStackCore;
 		virtual void mapNamespaceUri(void)
 		{
 			uint32_t namespaceIndex;
-			OpcUaVariant::SPtr eventType = this->eventType();
+			BaseEventType::mapNamespaceUri();
 
-			EventBase::mapNamespaceUri();
+			OpcUaVariant::SPtr eventType;
+			eventVariables_.getValue("EventType", eventType);
+
 			setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);
 
-			this->eventType(eventType);
+			eventVariables_.setValue("EventType", eventType);
 			eventVariables_.namespaceIndex(namespaceIndex);
 		}
 
@@ -79,9 +82,12 @@ using namespace OpcUaStackCore;
 			EventResult::Code& resultCode
 		)
 		{
-			OpcUaNodeId typeNodeId;
-			this->eventType()->getValue(typeNodeId);
 			resultCode = EventResult::Success;
+
+			OpcUaNodeId typeNodeId;
+			OpcUaVariant::SPtr tmpVariant;
+			eventVariables_.getValue("EventType", tmpVariant);
+			tmpVariant->getValue(typeNodeId);
 
 			// check whether eventType and typeNodeId are identical
 			if (eventType == typeNodeId) {
@@ -109,6 +115,87 @@ BOOST_AUTO_TEST_SUITE(CustomerEventType_)
 BOOST_AUTO_TEST_CASE(CustomerEventType_)
 {
 	std::cout << "CustomerEventType_t" << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(CustomerEventType_construct_destruct)
+{
+	CustomerEventType::SPtr customerEventType = constructSPtr<CustomerEventType>();
+}
+
+BOOST_AUTO_TEST_CASE(CustomerEventType_success)
+{
+	OpcUaVariant::SPtr variant;
+
+	CustomerEventType customerEventType;
+
+	variant = constructSPtr<OpcUaVariant>();
+	variant->setValue(OpcUaLocalizedText("de", "Dies ist eine Event Message"));
+	BOOST_REQUIRE(customerEventType.message(variant) == true);
+
+	variant = constructSPtr<OpcUaVariant>();
+	variant->setValue((OpcUaDouble)123);
+	BOOST_REQUIRE(customerEventType.variable1(variant) == true);
+
+	variant = constructSPtr<OpcUaVariant>();
+	variant->setValue((OpcUaDouble)456);
+	BOOST_REQUIRE(customerEventType.variable2(variant) == true);
+
+	EventBase* eventBase = &customerEventType;
+	std::vector<std::string> namespaceVec;
+	namespaceVec.push_back("http://opcfoundation.org/UA/");
+	namespaceVec.push_back("http://ASNeG-Demo.de/Event/");
+	eventBase->namespaceArray(&namespaceVec);
+
+
+	OpcUaLocalizedText localizedText;
+	OpcUaDouble doubleValue;
+	OpcUaNodeId eventType;
+	std::list<OpcUaQualifiedName::SPtr> browseNameList;
+
+	// find message (BaseEventType)
+	eventType.set((OpcUaUInt32)2041);
+	browseNameList.clear();
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Message"));
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
+	BOOST_REQUIRE(variant.get() != nullptr);
+	BOOST_REQUIRE(variant->getValue(localizedText) == true);
+	BOOST_REQUIRE(localizedText == OpcUaLocalizedText("de", "Dies ist eine Event Message"));
+
+	// find variable1 (BaseEventType)
+	eventType.set((OpcUaUInt32)2041);
+	browseNameList.clear();
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable1", 1));
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
+	BOOST_REQUIRE(variant.get() != nullptr);
+	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
+	BOOST_REQUIRE(doubleValue == 123);
+
+	// find variable2 (BaseEventType)
+	eventType.set((OpcUaUInt32)2041);
+	browseNameList.clear();
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable2", 1));
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
+	BOOST_REQUIRE(variant.get() != nullptr);
+	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
+	BOOST_REQUIRE(doubleValue == 456);
+
+	// find variable1 (CustomerEventType)
+	eventType.set((OpcUaUInt32)10000, 1);
+	browseNameList.clear();
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable1", 1));
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
+	BOOST_REQUIRE(variant.get() != nullptr);
+	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
+	BOOST_REQUIRE(doubleValue == 123);
+
+	// find variable2 (CustomerEventType)
+	eventType.set((OpcUaUInt32)10000, 1);
+	browseNameList.clear();
+	browseNameList.push_back(constructSPtr<OpcUaQualifiedName>("Variable2", 1));
+	BOOST_REQUIRE(eventBase->get(eventType, browseNameList, variant) == EventResult::Success);
+	BOOST_REQUIRE(variant.get() != nullptr);
+	BOOST_REQUIRE(variant->getValue(doubleValue) == true);
+	BOOST_REQUIRE(doubleValue == 456);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
