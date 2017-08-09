@@ -49,6 +49,7 @@ namespace OpcUaStackCore
 		bool setValue(const std::string& variableName, OpcUaVariant::SPtr& value);
 		bool getValue(const std::string& variableName, OpcUaVariant::SPtr& value);
 		OpcUaVariant::SPtr get(OpcUaQualifiedName::SPtr& browseName, EventResult::Code& resultCode);
+		OpcUaVariant::SPtr get(std::list<OpcUaQualifiedName::SPtr>& browseNameList, EventResult::Code& resultCode);
 
 	  private:
 		EventVariableMap eventVariableMap_;

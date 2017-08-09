@@ -144,4 +144,20 @@ namespace OpcUaStackCore
 		return variant;
 	}
 
+	OpcUaVariant::SPtr
+	EventVariables::get(std::list<OpcUaQualifiedName::SPtr>& browseNameList, EventResult::Code& resultCode)
+	{
+		OpcUaVariant::SPtr variant;
+
+		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
+		variant = get(browseName, resultCode);
+
+		if (resultCode == EventResult::Success) {
+			browseNameList.pop_front();
+		}
+
+		resultCode = EventResult::Success;
+		return variant;
+	}
+
 }

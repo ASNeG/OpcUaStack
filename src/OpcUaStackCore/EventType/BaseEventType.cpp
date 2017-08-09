@@ -205,17 +205,7 @@ namespace OpcUaStackCore
 
 		// check whether eventType and typeNodeId are identical
 		if (eventType == typeNodeId) {
-			OpcUaVariant::SPtr variant;
-
-			OpcUaQualifiedName::SPtr browseName = browseNameList.front();
-			variant = eventVariables_.get(browseName, resultCode);
-
-			if (resultCode == EventResult::Success) {
-				browseNameList.pop_front();
-			}
-
-			resultCode = EventResult::Success;
-			return variant;
+			return eventVariables_.get(browseNameList, resultCode);
 		}
 
 		// the start item was not found. We delegate the search to the base class
@@ -225,15 +215,7 @@ namespace OpcUaStackCore
 			return variant;
 		}
 
-		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
-		variant = eventVariables_.get(browseName, resultCode);
-
-		if (resultCode == EventResult::Success) {
-			browseNameList.pop_front();
-		}
-
-		resultCode = EventResult::Success;
-		return variant;
+		return eventVariables_.get(browseNameList, resultCode);
 	}
 
 }
