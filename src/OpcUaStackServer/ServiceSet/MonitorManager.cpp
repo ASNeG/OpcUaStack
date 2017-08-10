@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	, eventItemMap_()
 	, slotTimer_(constructSPtr<SlotTimer>())
 	, monitoredItemIds_()
+	, subscriptionId_(0)
 	{
 	}
 
