@@ -125,7 +125,7 @@ namespace OpcUaStackServer
 				if (parameterTypeId == OpcUaNodeId(OpcUaId_EventFilter_Encoding_DefaultBinary)) {
 
 					createEventItem(idx, trx, createMonitorItemRequest, createMonitorItemResponse);
-					return Success;
+					continue;
 				}
 			}
 
