@@ -58,6 +58,24 @@ namespace OpcUaStackCore
 	}
 
 	void
+	EventVariables::eventType(const OpcUaNodeId& eventType)
+	{
+		eventType_ = eventType;
+	}
+
+	void
+	EventVariables::eventType(const OpcUaVariant::SPtr& eventType)
+	{
+		eventType->getValue(eventType_);
+	}
+
+	OpcUaNodeId&
+	EventVariables::eventType(void)
+	{
+		return eventType_;
+	}
+
+	void
 	EventVariables::namespaceUri(const std::string& namespaceUri)
 	{
 		namespaceUri_ = namespaceUri;

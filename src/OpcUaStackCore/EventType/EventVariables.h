@@ -43,6 +43,9 @@ namespace OpcUaStackCore
 		EventVariables(void);
 		virtual ~EventVariables(void);
 
+		void eventType(const OpcUaNodeId& eventType);
+		void eventType(const OpcUaVariant::SPtr& eventType);
+		OpcUaNodeId& eventType(void);
 		void namespaceUri(const std::string& namespaceUri);
 		std::string& namespaceUri(void);
 		void browseName(const OpcUaQualifiedName& browseName);
@@ -57,6 +60,7 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr get(std::list<OpcUaQualifiedName::SPtr>& browseNameList, EventResult::Code& resultCode);
 
 	  private:
+		OpcUaNodeId eventType_;
 		std::string namespaceUri_;
 		OpcUaQualifiedName browseName_;
 		uint32_t namespaceIndex_;
