@@ -24,10 +24,31 @@ namespace OpcUaStackCore
     , attributeIf_(nullptr)
     , typeId_()
     , alias_("")
-    , relativePath_()
+    , browsePath_()
     , attributeId_(0)
     , numericRange_("")
+    , status_(OpcUaStatusCode::Success)
+    , operandStatuses_(0)
     {
+    }
+
+    AttributeFilterNode::AttributeFilterNode(const OpcUaNodeId& typeId,
+            const OpcUaString& alias,
+            const RelativePath& browsePath,
+            OpcUaUInt32 attributeId,
+            const OpcUaString& numericRange)
+    : FilterNode()
+    , attributeIf_(nullptr)
+    , typeId_(typeId)
+    , alias_(alias)
+    , attributeId_(attributeId)
+    , numericRange_(numericRange)
+    , operandStatuses_(0)
+    {
+        browsePath_ = constructSPtr<RelativePath>(browsePath);
+
+        //FIXME: Check arguments
+        status_ = OpcUaStatusCode::Success;
     }
 
     AttributeFilterNode::~AttributeFilterNode()
@@ -41,6 +62,17 @@ namespace OpcUaStackCore
     	attributeIf_ = attributeIf;
     }
 
+    OpcUaStatusCode& AttributeFilterNode::status()
+    {
+        return status_;
+    }
+
+    std::vector<OpcUaStatusCode>& AttributeFilterNode::operandStatuses()
+    {
+        return operandStatuses_;
+    }
+
+
     bool
 	AttributeFilterNode::evaluate(OpcUaVariant& value)
     {
@@ -51,7 +83,7 @@ namespace OpcUaStackCore
     	return attributeIf_->getAttribute(
     		typeId_,
 			alias_,
-			relativePath_,
+			browsePath_,
 			attributeId_,
 			numericRange_,
 			value

@@ -133,5 +133,113 @@ BOOST_AUTO_TEST_CASE(FilterStack_2_level_half_tree)
     BOOST_REQUIRE(filterResult == false);
 }
 
+BOOST_AUTO_TEST_CASE(FilterStack_attribute_operand)
+{
+    // "someAttribute=10" == 10 => true
+    FilterStack stack;
+    MockAttribute mockAttrIf;
+
+    stack.attributeIf(&mockAttrIf);
+
+    AttributeOperand someAttribute;
+
+    someAttribute.nodeId(constructSPtr<OpcUaNodeId>("someAttribute"));
+    someAttribute.alias("alias");
+
+    RelativePathElement::SPtr tagname = constructSPtr<RelativePathElement>();
+    tagname->targetName(OpcUaQualifiedName("someAttibute"));
+    someAttribute.browsePath().elements()->set(tagname);
+
+    someAttribute.attributeId(199);
+    someAttribute.indexRange("someRange");
+
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWithAttributeAndLiteralOperands<OpcUaUInt32>(
+            BasicFilterOperator::BasicFilterOperator_Equals, someAttribute, 10);
+
+    ContentFilter filter;
+    ContentFilterResult result;
+
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+
+    mockAttrIf.expectedValue_.set<OpcUaUInt32>(10);
+    mockAttrIf.expectedResult_ = true;
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == true);
+
+    BOOST_REQUIRE_EQUAL(*someAttribute.nodeId(), mockAttrIf.calledTypeId_);
+    BOOST_REQUIRE_EQUAL(someAttribute.alias(), mockAttrIf.calledAlias_);
+
+    RelativePathElement::SPtr expectedPathElement, actualPathElement;
+    someAttribute.browsePath().elements()->get(expectedPathElement);
+    mockAttrIf.calledBrowsePath_->elements()->get(actualPathElement);
+    BOOST_REQUIRE_EQUAL(expectedPathElement, actualPathElement);
+
+    BOOST_REQUIRE_EQUAL(someAttribute.attributeId(), mockAttrIf.calledAttributeId_);
+    BOOST_REQUIRE_EQUAL(someAttribute.indexRange(), mockAttrIf.calledNumericRange_);
+
+    // "someAttribute=11" == 10 => false
+    mockAttrIf.expectedValue_.set<OpcUaUInt32>(11);
+
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
+{
+    // "someAttribute=10" == 10 => true
+    FilterStack stack;
+    MockSimpleAttribute mockAttrIf;
+
+    stack.simpleAttributeIf(&mockAttrIf);
+
+    SimpleAttributeOperand someAttribute;
+
+    someAttribute.typeId(OpcUaId_BaseEventType_EventId);
+
+    OpcUaQualifiedName::SPtr tagname = constructSPtr<OpcUaQualifiedName>("someAttibute");
+    someAttribute.browsePath()->set(0, tagname);
+
+    someAttribute.attributeId(199);
+    someAttribute.indexRange("someRange");
+
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWithSimpleAttributeAndLiteralOperands<OpcUaUInt32>(
+          BasicFilterOperator::BasicFilterOperator_Equals, someAttribute, 10);
+
+    ContentFilter filter;
+    ContentFilterResult result;
+
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+
+    mockAttrIf.expectedValue_.set<OpcUaUInt32>(10);
+    mockAttrIf.expectedResult_ = true;
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == true);
+
+    BOOST_REQUIRE_EQUAL(someAttribute.typeId(), mockAttrIf.calledtypeId_);
+
+    OpcUaQualifiedName::SPtr expectedPathElement, actualPathElement;
+    someAttribute.browsePath()->get(expectedPathElement);
+    actualPathElement = mockAttrIf.calledBrowsePath_.front();
+    BOOST_REQUIRE_EQUAL(expectedPathElement, actualPathElement);
+
+    BOOST_REQUIRE_EQUAL(someAttribute.attributeId(), mockAttrIf.calledAttributeId_);
+    BOOST_REQUIRE_EQUAL(someAttribute.indexRange(), mockAttrIf.calledNumericRange_);
+
+    // "someAttribute=11" == 10 => false
+    mockAttrIf.expectedValue_.set<OpcUaUInt32>(11);
+
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
 
 BOOST_AUTO_TEST_SUITE_END()

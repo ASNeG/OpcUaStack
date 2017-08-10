@@ -18,13 +18,17 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
+#include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
 
 #include "OpcUaStackCore/Filter/FilterStack.h"
+#include "OpcUaStackCore/Filter/AttributeFilterNode.h"
+#include "OpcUaStackCore/Filter/SimpleAttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 #include "OpcUaStackCore/Filter/EqualsFilterNode.h"
 
 namespace OpcUaStackCore
 {
+
     FilterStack::FilterStack()
     : root_()
     , attributeIf_(nullptr)
@@ -88,23 +92,42 @@ namespace OpcUaStackCore
             	}
             	case OpcUaId_ElementOperand:
             	{
-            		FilterNode::SPtr operator_;
+            		FilterNode::SPtr operatorNode;
             		uint32_t operatorIdx = operand->parameter<ElementOperand>()->index();
 
             		//FIXME: Needs checking index to avoid an endless cycle
-            		buildOperatorNode(contentFilter, contentFilterResult, operatorIdx, operator_);
+            		buildOperatorNode(contentFilter, contentFilterResult, operatorIdx, operatorNode);
 
-            		args.push_back(operator_);
+            		args.push_back(operatorNode);
             		break;
             	}
             	case OpcUaId_AttributeOperand:
             	{
-            		// FIXME: todo - use AttributeIf to access variant value
+            	    AttributeOperand::SPtr attributeOperand = operand->parameter<AttributeOperand>();
+            	    AttributeFilterNode::SPtr attributeNode(new AttributeFilterNode(
+            	            *attributeOperand->nodeId(),
+            	            attributeOperand->alias(),
+            	            attributeOperand->browsePath(),
+            	            attributeOperand->attributeId(),
+            	            attributeOperand->indexRange()));
+
+            	    attributeNode->attributeIf(attributeIf_);
+
+            	    args.push_back(attributeNode);
             		break;
             	}
             	case OpcUaId_SimpleAttributeOperand:
             	{
-            		// FIXME: todo - use SimpleAttributeIf to acess variant value
+            	    SimpleAttributeOperand::SPtr simpleAttributeOperand = operand->parameter<SimpleAttributeOperand>();
+            	    SimpleAttributeFilterNode::SPtr simpleAttributeNode(new SimpleAttributeFilterNode(
+            	            simpleAttributeOperand->typeId(),
+            	            *simpleAttributeOperand->browsePath(),
+            	            simpleAttributeOperand->attributeId(),
+            	            simpleAttributeOperand->indexRange()));
+
+            	    simpleAttributeNode->simpleAttributeIf(simpleAttributeIf_);
+
+            	    args.push_back(simpleAttributeNode);
             		break;
             	}
             	default:
