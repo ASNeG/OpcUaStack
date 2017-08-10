@@ -55,10 +55,6 @@ namespace OpcUaStackCore
     OpcUaStatusCode
 	FilterStack::receive(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult)
     {
-    	if (contentFilter.elements()->size() == 0) {
-    		return Success;
-    	}
-
     	contentFilterResult.elementResults()->resize(contentFilter.elements()->size());
         return buildOperatorNode(contentFilter, contentFilterResult, 0, root_);
     }

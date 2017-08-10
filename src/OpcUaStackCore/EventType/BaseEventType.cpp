@@ -35,9 +35,7 @@ namespace OpcUaStackCore
 		eventVariables_.registerEventVariable("SourceNode", OpcUaBuildInType_OpcUaNodeId);
 		eventVariables_.registerEventVariable("Time", OpcUaBuildInType_OpcUaDateTime);
 
-		OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
-		eventType->setValue(OpcUaNodeId((OpcUaUInt32)2041));
-		eventVariables_.setValue("EventType", eventType);
+		eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2041));
 		eventVariables_.namespaceIndex(0);
 		eventVariables_.browseName(OpcUaQualifiedName("BaseEventType"));
 		eventVariables_.namespaceUri("");
@@ -183,15 +181,19 @@ namespace OpcUaStackCore
 	void
 	BaseEventType::mapNamespaceUri(void)
 	{
+		std::cout << "BaseEventType::mapNamespaceUri" << std::endl;
+
 		uint32_t namespaceIndex;
 		EventBase::mapNamespaceUri();
 
-		OpcUaVariant::SPtr eventType;
-		eventVariables_.getValue("EventType", eventType);
+		OpcUaVariant::SPtr eventTypeVariable = constructSPtr<OpcUaVariant>();
+		eventTypeVariable->setValue(eventVariables_.eventType());
 
-		setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);
+		setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventTypeVariable);
 
-		eventVariables_.setValue("EventType", eventType);
+		std::cout << "1 set event type: " << *eventTypeVariable << std::endl;
+		eventType(eventTypeVariable);
+		eventVariables_.eventType(eventTypeVariable);
 		eventVariables_.namespaceIndex(namespaceIndex);
 	}
 
@@ -204,13 +206,8 @@ namespace OpcUaStackCore
 	{
 		resultCode = EventResult::Success;
 
-		OpcUaNodeId typeNodeId;
-		OpcUaVariant::SPtr tmpVariant;
-		eventVariables_.getValue("EventType", tmpVariant);
-		tmpVariant->getValue(typeNodeId);
-
 		// check whether eventType and typeNodeId are identical
-		if (eventType == typeNodeId) {
+		if (eventType == eventVariables_.eventType()) {
 			return eventVariables_.get(browseNameList, resultCode);
 		}
 

@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/EventType/BaseEventType.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
 
@@ -83,7 +84,9 @@ namespace OpcUaStackServer
 		}
 
 		// create event filter result
-		EventFilterResult::SPtr eventFilterResult = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
+		//EventFilterResult::SPtr eventFilterResult = monitoredItemCreateResult->filterResult().parameter<EventFilterResult>(OpcUaId_EventFilterResult_Encoding_DefaultBinary);
+
+		EventFilterResult::SPtr eventFilterResult = constructSPtr<EventFilterResult>();
 
 		// select clause
 		SimpleAttributeOperandArray::SPtr selectClauses = eventFilter->selectClauses();
@@ -97,10 +100,12 @@ namespace OpcUaStackServer
 		// construct where filter
 		whereFilter_ = constructSPtr<FilterStack>();
 		whereFilter_->simpleAttributeIf(this);
-		statusCode = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
-		if (statusCode != Success) {
-			monitoredItemCreateResult->statusCode(statusCode);
-			return statusCode;
+		if (eventFilter->whereClause().elements()->size() != 0) {
+			statusCode = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
+			if (statusCode != Success) {
+				monitoredItemCreateResult->statusCode(statusCode);
+				return statusCode;
+			}
 		}
 
 		// register event handler
@@ -150,7 +155,8 @@ namespace OpcUaStackServer
 		}
 
 		// map namespace
-		// FIXME: todo
+		NodeSetNamespace nodeSetNamespace;
+		eventBase->namespaceArray(&nodeSetNamespace.globalNamespaceVec());
 
 		// generate event id if necessary
 		if (baseEventType->eventId().get() == nullptr) {
@@ -298,8 +304,12 @@ namespace OpcUaStackServer
 		}
 
 		selectClauses_ = selectClauses;
+		statusCodeArray = constructSPtr<OpcUaStatusCodeArray>();
+		statusCodeArray->resize(selectClauses->size());
 		for (uint32_t idx=0; idx<selectClauses->size(); idx++) {
 			// FIXME: check if attributes exist in type system
+
+			statusCodeArray->set(idx, (OpcUaStatusCode)Success);
 		}
 
 		return Success;
