@@ -217,6 +217,28 @@ namespace OpcUaStackCore
 			default:							return false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaExpandedNodeId:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+
+				OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+				((OpcUaNodeIdBase*)sourceVariant->getSPtr<OpcUaExpandedNodeId>().get())->copyTo((OpcUaNodeId&)*nodeId);
+
+				targetVariant->variant(nodeId);
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaExpandedNodeId>()->toString());
+				targetVariant->variant(value);
+				return true;
+			}
+			default:							return false;
+			}
+		}
 		default:	return false;
 		}
 	}
