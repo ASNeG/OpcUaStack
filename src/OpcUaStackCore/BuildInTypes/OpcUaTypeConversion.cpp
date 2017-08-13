@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 		case OpcUaBuildInType_OpcUaLocalizedText:   return 16;
 		case OpcUaBuildInType_OpcUaQualifiedName:   return 17;
 		case OpcUaBuildInType_OpcUaByteString:   	return 18;
+		case OpcUaBuildInType_OpcUaDateTime:   		return 19;
 		default: return -1;
 		}
 	}
@@ -180,6 +181,20 @@ namespace OpcUaStackCore
 				}
 
 				return false;
+			}
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaDateTime:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->get<OpcUaDateTime>().toISOString());
+				targetVariant->variant(value);
+
+				return true;
 			}
 			default:							return false;
 			}

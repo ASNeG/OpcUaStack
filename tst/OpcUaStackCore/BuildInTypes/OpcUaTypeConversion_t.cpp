@@ -386,4 +386,111 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ByteString)
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_DateTime)
+{
+	OpcUaTypeConversion converter;
+
+	OpcUaDateTime dt;
+	dt.fromISOString("20020131T100001.123456");
+
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();
+	value1->variant(dt);
+
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();
+
+	BOOST_REQUIRE_EQUAL(19, converter.precedenceRank(OpcUaBuildInType_OpcUaDateTime));
+
+	// dateTime -> bool
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaBoolean));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaBoolean, value2));
+
+	// dateTime -> byte
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaByte));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaByte, value2));
+
+	// dateTime -> byteString
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaByteString));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaByteString, value2));
+
+	// dateTime -> dateTime
+	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaDateTime));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaDateTime, value2));
+	BOOST_REQUIRE_EQUAL("20020131T100001.123456", value2->get<OpcUaDateTime>().toISOString());
+
+	// dateTime -> double
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaDouble));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaDouble, value2));
+
+	// dateTime -> expandedNodeId
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaExpandedNodeId));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaExpandedNodeId, value2));
+
+	// dateTime -> float
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaFloat));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaFloat, value2));
+
+	// dateTime -> guid
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaGuid));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
+
+	// dateTime -> int16
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaInt16));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt16, value2));
+
+	// dateTime -> int32
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaInt32));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt32, value2));
+
+	// dateTime -> int64
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaInt64));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt64, value2));
+
+	// dateTime -> nodeId
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaNodeId));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaNodeId, value2));
+
+	// dateTime -> sbyte
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaSByte));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+
+	// dateTime -> sbyte
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaSByte));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+
+	// dateTime -> statusCode
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaStatusCode));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaStatusCode, value2));
+
+	// dateTime -> string
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaString));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaString, value2));
+	BOOST_REQUIRE_EQUAL("20020131T100001.123456", value2->getSPtr<OpcUaString>()->toStdString());
+
+	// dateTime -> localizedTest
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaLocalizedText));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaLocalizedText, value2));
+
+	// dateTime -> qualifiedName
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaQualifiedName));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaQualifiedName, value2));
+
+	// dateTime -> uint16
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaUInt16));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt16, value2));
+
+	// dateTime -> uint32
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaUInt32));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt32, value2));
+
+	// dateTime -> uint64
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaUInt64));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt64, value2));
+
+	// dateTime -> xmlElement
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaXmlElement));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaXmlElement, value2));
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
+
