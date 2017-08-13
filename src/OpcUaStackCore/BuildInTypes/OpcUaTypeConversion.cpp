@@ -133,6 +133,31 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaBoolean, OpcUaUInt64>(sourceVariant, targetVariant);
 			default: 							return false;
 			}
+		case OpcUaBuildInType_OpcUaByte:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaByte, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaByte, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaByte, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return cast<OpcUaByte, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaByte, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaByte, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return cast<OpcUaByte, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(
+						boost::lexical_cast<std::string>((int)sourceVariant->get<OpcUaByte>()));
+				targetVariant->variant(value);
+
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:	return cast<OpcUaByte, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaByte, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaByte, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
 		default:	return false;
 		}
 	}
