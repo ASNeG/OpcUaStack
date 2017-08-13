@@ -263,11 +263,127 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Byte)
 	// byte -> int64
 	BOOST_REQUIRE_EQUAL('I', converter.conversionType(OpcUaBuildInType_OpcUaByte, OpcUaBuildInType_OpcUaUInt64));
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaUInt64, value2));
-	BOOST_REQUIRE_EQUAL(128, value2->get<OpcUaUInt64>());\
+	BOOST_REQUIRE_EQUAL(128, value2->get<OpcUaUInt64>());
 
 	// byte -> xmlElement
 	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByte, OpcUaBuildInType_OpcUaXmlElement));
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaXmlElement, value2));
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ByteString)
+{
+	OpcUaTypeConversion converter;
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();
+	const std::string guidString = "\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38";
+
+	OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>(guidString);
+
+	value1->variant(byteString);
+
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();
+
+	BOOST_REQUIRE_EQUAL(18, converter.precedenceRank(OpcUaBuildInType_OpcUaByteString));
+
+	// byteString -> bool
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaBoolean));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaBoolean, value2));
+
+	// byteString -> byte
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaByte));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaByte, value2));
+
+	// byteString -> byteString
+	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaByteString));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaByteString, value2));
+	BOOST_REQUIRE_EQUAL(guidString, value2->getSPtr<OpcUaByteString>()->toString());
+
+	// byteString -> dateTime
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaDateTime));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaDateTime, value2));
+
+	// byteString -> double
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaDouble));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaDouble, value2));
+
+	// byteString -> expandedNodeId
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaExpandedNodeId));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaExpandedNodeId, value2));
+
+	// byteString -> float
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaFloat));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaFloat, value2));
+
+	// byteString -> Guid
+	OpcUaGuid guid;
+	guid.value("01020304-1112-2122-3132-333435363738");
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaGuid));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
+	BOOST_REQUIRE_EQUAL(guid, *value2->getSPtr<OpcUaGuid>());
+
+	// byteString -> int16
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaInt16));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt16, value2));
+
+	// byteString -> int32
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaInt32));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt32, value2));
+
+	// byteString -> int64
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaInt64));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt64, value2));
+
+	// byteString -> nodeId
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaNodeId));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaNodeId, value2));
+
+	// byteString -> sbyte
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaSByte));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+
+	// byteString -> sbyte
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaSByte));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+
+	// byteString -> statusCode
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaStatusCode));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaStatusCode, value2));
+
+	// byteString -> string
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaString));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaString, value2));
+
+	// byteString -> localizedText
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaLocalizedText));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaLocalizedText, value2));
+
+	// byteString -> qualifiedName
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaQualifiedName));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaQualifiedName, value2));
+
+	// byteString -> uint16
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaUInt16));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt16, value2));
+
+	// byteString -> uint32
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaUInt32));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt32, value2));
+
+	// byteString -> uint64
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaUInt64));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt64, value2));
+
+	// byteString -> xmlElement
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaByteString, OpcUaBuildInType_OpcUaXmlElement));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaXmlElement, value2));
+
+	// byteString -> Guid wrong format
+	byteString = constructSPtr<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38\x39");
+	value1->variant(byteString);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
+
+	byteString = constructSPtr<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37");
+	value1->variant(byteString);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
