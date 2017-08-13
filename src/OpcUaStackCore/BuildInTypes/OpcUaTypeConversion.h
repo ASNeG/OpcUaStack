@@ -55,19 +55,46 @@ namespace OpcUaStackCore
 		bool cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant);
 
 		template <typename T1, typename T2>
-		bool cast(OpcUaVariant::SPtr& src, OpcUaVariant::SPtr& target)
+		bool cast(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
 		{
-			if (src->isArray()) {
+			if (source->isArray()) {
 				target->clear();
-				for (int i = 0; i < src->arrayLength(); ++i) {
-					T2 val = src->get<T1>(i);
+				for (int i = 0; i < source->arrayLength(); ++i) {
+					T2 val = source->get<T1>(i);
 
 					target->pushBack(val);
 				}
 			} else {
-				T2 val = src->get<T1>();
+				T2 val = source->get<T1>();
 				target->set<T2>(val);
 			}
+
+			return true;
+		}
+
+		template <typename T1, typename T2>
+		bool castRealToInteger(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		{
+			T1 val = source->get<T1>();
+
+			if ((val <= std::numeric_limits<T2>::max())
+					&& (val >= std::numeric_limits<T2>::min())) {
+
+				OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
+				tmpVariant->variant(val + 0.5);
+
+				return cast<T1, T2>(tmpVariant, target);
+			}
+
+			return false;
+		}
+
+		template <typename T>
+		bool castToString(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		{
+			OpcUaString::SPtr value = constructSPtr<OpcUaString>(
+					boost::lexical_cast<std::string>(source->get<T>()));
+			target->variant(value);
 
 			return true;
 		}

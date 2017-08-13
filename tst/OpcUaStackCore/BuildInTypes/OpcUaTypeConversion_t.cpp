@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_DateTime)
 	// dateTime -> dateTime
 	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaDateTime));
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaDateTime, value2));
-	BOOST_REQUIRE_EQUAL("20020131T100001.123456", value2->get<OpcUaDateTime>().toISOString());
+	BOOST_REQUIRE_EQUAL(dt, value2->get<OpcUaDateTime>());
 
 	// dateTime -> double
 	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDateTime, OpcUaBuildInType_OpcUaDouble));
@@ -491,6 +491,170 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_DateTime)
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaXmlElement, value2));
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Double)
+{
+	OpcUaTypeConversion converter;
+
+	OpcUaDouble doubleValue = 24.5;
+
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();
+	value1->variant(doubleValue);
+
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();
+
+	BOOST_REQUIRE_EQUAL(0, converter.precedenceRank(OpcUaBuildInType_OpcUaDouble));
+
+	// double -> bool
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaBoolean));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaBoolean, value2));
+	BOOST_REQUIRE_EQUAL(true, value2->get<OpcUaBoolean>());
+
+	// double -> byte
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaByte));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaByte, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaByte>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaByte>::max() + 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaByte, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaByte>::min() - 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaByte, value2));
+
+	// double -> byteString
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaByteString));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaByteString, value2));
+
+	// double -> dateTime
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaDateTime));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaDateTime, value2));
+
+	// double -> double
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaDouble));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaDouble, value2));
+	BOOST_REQUIRE_EQUAL(doubleValue, value2->get<OpcUaDouble>());
+
+	// double -> expandedNodeId
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaExpandedNodeId));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaExpandedNodeId, value2));
+
+	// double -> float
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaFloat));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaFloat, value2));
+	BOOST_REQUIRE_EQUAL(doubleValue, value2->get<OpcUaFloat>());
+
+	// double -> guid
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaGuid));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
+
+	// double -> int16
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaInt16));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaInt16, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaInt16>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt16>::max() + 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt16, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt16>::min() - 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt16, value2));
+
+	// double -> int32
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaInt32));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaInt32, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaInt32>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt32>::max() + 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt32, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt32>::min() - 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt32, value2));
+
+	// double -> int64
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaInt64));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaInt64, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaInt64>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt64>::max() + 10000);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt64, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt64>::min() - 10000);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaInt64, value2));
+
+	// double -> nodeId
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaNodeId));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaNodeId, value2));
+
+	// double -> sbyte
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaSByte));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaSByte>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaSByte>::max() + 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaSByte>::min() - 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaSByte, value2));
+
+	// double -> statusCode
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaStatusCode));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaStatusCode, value2));
+
+	// double -> string
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaString));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaString, value2));
+	BOOST_REQUIRE_EQUAL("24.5", value2->getSPtr<OpcUaString>()->toStdString());
+
+	// double -> localizedTest
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaLocalizedText));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaLocalizedText, value2));
+
+	// double -> qualifiedName
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaQualifiedName));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaQualifiedName, value2));
+
+	// double -> int16
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaUInt16));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaUInt16, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaUInt16>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaUInt16>::max() + 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt16, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaUInt16>::min() - 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt16, value2));
+
+	// double -> int32
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaUInt32));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaUInt32, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaUInt32>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaUInt32>::max() + 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt32, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaUInt32>::min() - 1);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt32, value2));
+
+	// double -> int64
+	value1->variant(doubleValue);
+	BOOST_REQUIRE_EQUAL('E', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaUInt64));
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_OpcUaUInt64, value2));
+	BOOST_REQUIRE_EQUAL(25, value2->get<OpcUaUInt64>());
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaUInt64>::max() + 10000);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt64, value2));
+
+	value1->set<OpcUaDouble>((OpcUaDouble)std::numeric_limits<OpcUaInt64>::min() - 10000);
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaUInt64, value2));
+
+	// double -> xmlElement
+	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_OpcUaDouble, OpcUaBuildInType_OpcUaXmlElement));
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaXmlElement, value2));
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
