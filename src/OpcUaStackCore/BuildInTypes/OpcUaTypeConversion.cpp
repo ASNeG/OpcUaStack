@@ -239,8 +239,29 @@ namespace OpcUaStackCore
 			default:							return false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaFloat:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaFloat, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castRealToInteger<OpcUaFloat, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaFloat, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castRealToInteger<OpcUaFloat, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castRealToInteger<OpcUaFloat, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return castRealToInteger<OpcUaFloat, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castRealToInteger<OpcUaFloat, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castRealToInteger<OpcUaFloat, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castRealToInteger<OpcUaFloat, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return castRealToInteger<OpcUaFloat, OpcUaUInt64>(sourceVariant, targetVariant);
+			default: 							false;
+			}
+		}
+
 		default:	return false;
 		}
+
+
 	}
 
 	char
@@ -252,7 +273,7 @@ namespace OpcUaStackCore
 			{'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X'}, //datetime
 			{'E', 'E', 'X', 'X', '-', 'X', 'E', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //double
 			{'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //expNodeId
-			{'E', 'X', 'X', 'X', 'I', 'X', '-', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //float
+			{'E', 'E', 'X', 'X', 'I', 'X', '-', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //float
 			{'X', 'X', 'E', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X'}, //guid
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', '-', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'I', 'E', 'X'}, //int16
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', '-', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'X', 'X'}, //int32

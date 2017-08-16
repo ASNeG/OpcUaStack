@@ -81,7 +81,7 @@ namespace OpcUaStackCore
 					&& (val >= std::numeric_limits<T2>::min())) {
 
 				OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
-				tmpVariant->variant(val + 0.5);
+				tmpVariant->set<T1>(val + 0.5);
 
 				return cast<T1, T2>(tmpVariant, target);
 			}
