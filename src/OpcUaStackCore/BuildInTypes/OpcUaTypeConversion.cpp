@@ -145,7 +145,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt16:	return cast<OpcUaByte, OpcUaInt16>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaByte, OpcUaInt32>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaByte, OpcUaInt64>(sourceVariant, targetVariant);
-			case OpcUaBuildInType_OpcUaSByte:	return cast<OpcUaByte, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaByte, OpcUaSByte>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaString:
 			{
 				OpcUaString::SPtr value = constructSPtr<OpcUaString>(

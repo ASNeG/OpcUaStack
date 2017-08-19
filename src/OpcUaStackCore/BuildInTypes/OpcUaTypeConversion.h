@@ -89,6 +89,20 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		template <typename T1, typename T2>
+		bool castIntegerToInteger(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		{
+			T1 val = source->get<T1>();
+
+			if ((val <= std::numeric_limits<T2>::max())
+					&& (val >= std::numeric_limits<T2>::min())) {
+
+				return cast<T1, T2>(source, target);
+			}
+
+			return false;
+		}
+
 		template <typename T>
 		bool castToString(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
 		{
