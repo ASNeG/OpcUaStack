@@ -258,6 +258,31 @@ namespace OpcUaStackCore
 			}
 		}
 
+		case OpcUaBuildInType_OpcUaGuid:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				std::string guidString =  sourceVariant->getSPtr<OpcUaGuid>()->value();
+				boost::replace_all(guidString, "-", "");
+
+				OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+				byteString->fromHexString(guidString);
+
+				targetVariant->variant(byteString);
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaGuid>()->value());
+				targetVariant->variant(value);
+				return true;
+			}
+			default: 							false;
+			}
+		}
+
 		default:	return false;
 		}
 

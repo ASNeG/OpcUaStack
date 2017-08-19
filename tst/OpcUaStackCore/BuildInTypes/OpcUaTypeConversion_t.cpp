@@ -391,6 +391,36 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Float)
 	SHOULD_NOT_CONVERT			(OpcUaFloat, OpcUaXmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Guid)
+{
+	OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
+	guid->value("01020304-1112-2122-3132-333435363738");
+	guid->value();
+
+	SHOULD_HAVE_RANK			(OpcUaGuid, 12);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaBoolean);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaByte);
+	SHOULD_CONVERT_2PTR			('E', OpcUaGuid, OpcUaByteString, guid, OpcUaByteString("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38"));
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaDateTime);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaDouble);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaExpandedNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaFloat);
+	SHOULD_BE_SAME_PTR			(OpcUaGuid, guid);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaInt64);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaSByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaStatusCode);
+	SHOULD_CONVERT_2PTR			('E', OpcUaGuid, OpcUaString, guid, OpcUaString(guid->value()));
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaQualifiedName);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaUInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaUInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaUInt64);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaXmlElement);
+
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
