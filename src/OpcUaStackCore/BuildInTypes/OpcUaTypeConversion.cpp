@@ -300,6 +300,33 @@ namespace OpcUaStackCore
 			default:							false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaInt32:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaInt32, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaInt32, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaInt32, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaInt32, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaInt32, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaInt32, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaInt32, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode:
+			{
+				OpcUaStatusCode status = (OpcUaStatusCode) sourceVariant->get<OpcUaInt32>();
+				if (OpcUaStatusCodeMap::shortString(status) != "") {
+					targetVariant->set<OpcUaStatusCode>(status);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaInt32, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castIntegerToInteger<OpcUaInt32, OpcUaUInt32>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
 
 		default:	return false;
 		}

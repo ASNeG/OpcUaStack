@@ -108,6 +108,15 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2)); \
 } while(0)
 
+#define CHECK_BAD_VALUE(sourceType, targetType, value) do {\
+	OpcUaTypeConversion converter; \
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+															  \
+	value1->set<sourceType>(value); \
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2)); \
+} while(0)
+
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Bool)
 {
 	SHOULD_HAVE_RANK			(OpcUaBoolean, 11);
@@ -462,6 +471,55 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int16)
 	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaUInt32, intVal, 28);
 	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaUInt64, intVal, 28);
 	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaXmlElement);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int32)
+{
+	OpcUaInt32 intVal = 28;
+
+	SHOULD_HAVE_RANK			(OpcUaInt32, 4);
+
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaBoolean, intVal, true);
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaByte, intVal, 28);
+	CHECK_MAX					(OpcUaInt32, OpcUaByte, 1);
+	CHECK_MIN					(OpcUaInt32, OpcUaByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaByteString);
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaDateTime);
+	SHOULD_CONVERT				('I', OpcUaInt32, OpcUaDouble, intVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaExpandedNodeId);
+	SHOULD_CONVERT				('I', OpcUaInt32, OpcUaFloat, intVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaGuid);
+
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaInt16, intVal, 28);
+	CHECK_MAX					(OpcUaInt32, OpcUaInt16, 1);
+	CHECK_MIN					(OpcUaInt32, OpcUaInt16, 1);
+
+	SHOULD_BE_SAME				(OpcUaInt32, intVal);
+
+	SHOULD_CONVERT				('I', OpcUaInt32, OpcUaInt64, intVal, 28);
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaNodeId);
+
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaSByte, intVal, 28);
+	CHECK_MAX					(OpcUaInt32, OpcUaSByte, 1);
+	CHECK_MIN					(OpcUaInt32, OpcUaSByte, 1);
+
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaStatusCode, 0x80350000, OpcUaStatusCode::BadAttributeIdInvalid);
+	CHECK_BAD_VALUE				(OpcUaInt32, OpcUaStatusCode, 0xEFFFFFFF);
+
+	SHOULD_CONVERT_PTR			('E', OpcUaInt32, OpcUaString, intVal, "28");
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaQualifiedName);
+
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaUInt16, intVal, 28);
+	CHECK_MAX					(OpcUaInt32, OpcUaUInt16, 1);
+	CHECK_MIN					(OpcUaInt32, OpcUaUInt16, 1);
+
+	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaUInt32, intVal, 28);
+	CHECK_MIN					(OpcUaInt32, OpcUaUInt32, 1);
+
+	SHOULD_CONVERT				('I', OpcUaInt32, OpcUaUInt64, intVal, 28);
+	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaXmlElement);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

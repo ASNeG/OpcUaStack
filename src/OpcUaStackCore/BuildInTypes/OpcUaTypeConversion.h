@@ -94,13 +94,17 @@ namespace OpcUaStackCore
 		{
 			T1 val = source->get<T1>();
 
-			if ((val <= std::numeric_limits<T2>::max())
-					&& (val >= std::numeric_limits<T2>::min())) {
-
-				return cast<T1, T2>(source, target);
+			if ((val < 0) && (std::numeric_limits<T2>::min() == 0)) {
+				// unsigned issue
+				return false;
 			}
 
-			return false;
+			if ((val > std::numeric_limits<T2>::max())
+					|| (val < std::numeric_limits<T2>::min())) {
+				return false;
+			}
+
+			return cast<T1, T2>(source, target);
 		}
 
 		template <typename T>
