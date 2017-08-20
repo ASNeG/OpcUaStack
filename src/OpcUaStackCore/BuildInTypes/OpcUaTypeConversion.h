@@ -116,6 +116,18 @@ namespace OpcUaStackCore
 
 			return true;
 		}
+
+		template <typename T>
+		bool castStatusCode(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		{
+			OpcUaStatusCode status = (OpcUaStatusCode) source->get<T>();
+			if (OpcUaStatusCodeMap::shortString(status) != "") {
+				target->set<OpcUaStatusCode>(status);
+				return true;
+			}
+
+			return false;
+		}
 	};
 
 }

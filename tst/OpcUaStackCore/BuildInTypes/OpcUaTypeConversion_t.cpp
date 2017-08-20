@@ -522,6 +522,63 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int32)
 	SHOULD_NOT_CONVERT			(OpcUaInt32, OpcUaXmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int64)
+{
+	OpcUaInt64 intVal = 28;
+
+	SHOULD_HAVE_RANK			(OpcUaInt64, 2);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaBoolean, intVal, true);
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaByte, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaByte, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaByteString);
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaDateTime);
+	SHOULD_CONVERT				('I', OpcUaInt64, OpcUaDouble, intVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaExpandedNodeId);
+	SHOULD_CONVERT				('I', OpcUaInt64, OpcUaFloat, intVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaGuid);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaInt16, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaInt16, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaInt16, 1);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaInt32, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaInt32, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaInt32, 1);
+
+	SHOULD_BE_SAME				(OpcUaInt64, intVal);
+
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaNodeId);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaSByte, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaSByte, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaSByte, 1);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaStatusCode, 0x80350000, OpcUaStatusCode::BadAttributeIdInvalid);
+	CHECK_BAD_VALUE				(OpcUaInt64, OpcUaStatusCode, 0xEFFFFFFF);
+
+	SHOULD_CONVERT_PTR			('E', OpcUaInt64, OpcUaString, intVal, "28");
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaQualifiedName);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaUInt16, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaUInt16, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaUInt16, 1);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaUInt32, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaUInt32, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaUInt32, 1);
+
+	SHOULD_CONVERT				('E', OpcUaInt64, OpcUaUInt64, intVal, 28);
+	CHECK_MAX					(OpcUaInt64, OpcUaUInt32, 1);
+	CHECK_MIN					(OpcUaInt64, OpcUaUInt32, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaXmlElement);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
 
