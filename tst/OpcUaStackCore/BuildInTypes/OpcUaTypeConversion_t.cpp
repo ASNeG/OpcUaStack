@@ -338,7 +338,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Float)
 {
 	OpcUaFloat floatValue = 24.5;
 
-	SHOULD_HAVE_RANK			(OpcUaDouble, 0);
+	SHOULD_HAVE_RANK			(OpcUaFloat, 1);
 	SHOULD_CONVERT				('E', OpcUaFloat, OpcUaBoolean, floatValue, true);
 
 	SHOULD_CONVERT				('E', OpcUaFloat, OpcUaByte, floatValue, 25);
@@ -422,6 +422,49 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Guid)
 
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int16)
+{
+	OpcUaInt16 intVal = 28;
+
+	SHOULD_HAVE_RANK			(OpcUaInt16, 7);
+
+	SHOULD_CONVERT				('E', OpcUaInt16, OpcUaBoolean, intVal, true);
+
+	SHOULD_CONVERT				('E', OpcUaInt16, OpcUaByte, intVal, 28);
+	CHECK_MAX					(OpcUaInt16, OpcUaByte, 1);
+	CHECK_MIN					(OpcUaInt16, OpcUaByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaByteString);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaDateTime);
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaDouble, intVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaExpandedNodeId);
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaFloat, intVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaGuid);
+
+	SHOULD_BE_SAME				(OpcUaInt16, intVal);
+
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaInt32, intVal, 28);
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaInt64, intVal, 28);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaNodeId);
+
+	SHOULD_CONVERT				('E', OpcUaInt16, OpcUaSByte, intVal, 28);
+	CHECK_MAX					(OpcUaInt16, OpcUaSByte, 1);
+	CHECK_MIN					(OpcUaInt16, OpcUaSByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaStatusCode);
+	SHOULD_CONVERT_PTR			('E', OpcUaInt16, OpcUaString, intVal, "28");
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaQualifiedName);
+
+	SHOULD_CONVERT				('E', OpcUaInt16, OpcUaUInt16, intVal, 28);
+	CHECK_MIN					(OpcUaInt16, OpcUaUInt16, 1);
+
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaUInt32, intVal, 28);
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaUInt64, intVal, 28);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaXmlElement);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
+
 
 

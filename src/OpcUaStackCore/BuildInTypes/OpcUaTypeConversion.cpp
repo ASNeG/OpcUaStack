@@ -282,6 +282,24 @@ namespace OpcUaStackCore
 			default: 							false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaInt16:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaInt16, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaInt16, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaInt16, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaInt16, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaInt16, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaInt16, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaInt16, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaInt16, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaInt16, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaInt16, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
 
 		default:	return false;
 		}
@@ -300,7 +318,7 @@ namespace OpcUaStackCore
 			{'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //expNodeId
 			{'E', 'E', 'X', 'X', 'I', 'X', '-', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //float
 			{'X', 'X', 'E', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X'}, //guid
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', '-', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'I', 'E', 'X'}, //int16
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', '-', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'I', 'I', 'X'}, //int16
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', '-', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'X', 'X'}, //int32
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', '-', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'I', 'X'}, //int64
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //nodeId
