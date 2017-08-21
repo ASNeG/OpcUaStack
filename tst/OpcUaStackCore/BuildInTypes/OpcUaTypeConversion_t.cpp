@@ -579,6 +579,40 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int64)
 }
 
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_NodeId)
+{
+	OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>(1000, 1);
+
+	SHOULD_HAVE_RANK			(OpcUaNodeId, 15);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaBoolean);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaByteString);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaDateTime);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaDouble);
+
+	OpcUaExpandedNodeId expandedNodeId;
+	expandedNodeId.nodeId<OpcUaUInt32>(1000);
+	expandedNodeId.namespaceIndex(1);
+
+	SHOULD_CONVERT_2PTR			('I', OpcUaNodeId, OpcUaExpandedNodeId, nodeId, expandedNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaFloat);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaGuid);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaInt64);
+	SHOULD_BE_SAME_PTR			(OpcUaNodeId, nodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaSByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaStatusCode);
+	SHOULD_CONVERT_2PTR			('I', OpcUaNodeId, OpcUaString, nodeId, OpcUaString("ns=1;i=1000"));
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaQualifiedName);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaUInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaUInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaUInt64);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaXmlElement);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
 
