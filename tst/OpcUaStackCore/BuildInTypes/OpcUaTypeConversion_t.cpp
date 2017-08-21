@@ -128,7 +128,6 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Bool)
 	SHOULD_CONVERT				('I', OpcUaBoolean, OpcUaDouble, true, 1.0);
 	SHOULD_NOT_CONVERT			(OpcUaBoolean, OpcUaExpandedNodeId);
 	SHOULD_CONVERT				('I', OpcUaBoolean, OpcUaFloat, true, 1.0);
-	SHOULD_NOT_CONVERT			(OpcUaBoolean, OpcUaExpandedNodeId);
 	SHOULD_NOT_CONVERT			(OpcUaBoolean, OpcUaGuid);
 	SHOULD_CONVERT				('I', OpcUaBoolean, OpcUaInt16, true, 1);
 	SHOULD_CONVERT				('I', OpcUaBoolean, OpcUaInt32, true, 1);
@@ -156,7 +155,6 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Byte)
 	SHOULD_CONVERT				('I', OpcUaByte, OpcUaDouble, 128, 128.0);
 	SHOULD_NOT_CONVERT			(OpcUaByte, OpcUaExpandedNodeId);
 	SHOULD_CONVERT				('I', OpcUaByte, OpcUaFloat, 128, 128.0f);
-	SHOULD_NOT_CONVERT			(OpcUaByte, OpcUaExpandedNodeId);
 	SHOULD_NOT_CONVERT			(OpcUaByte, OpcUaGuid);
 	SHOULD_CONVERT				('I', OpcUaByte, OpcUaInt16, 128, 128);
 	SHOULD_CONVERT				('I', OpcUaByte, OpcUaInt32, 128, 128);
@@ -578,7 +576,6 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Int64)
 	SHOULD_NOT_CONVERT			(OpcUaInt64, OpcUaXmlElement);
 }
 
-
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_NodeId)
 {
 	OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>(1000, 1);
@@ -612,6 +609,44 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_NodeId)
 	SHOULD_NOT_CONVERT_PTR		(OpcUaNodeId, OpcUaXmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_SByte)
+{
+	OpcUaSByte sbyte = -46;
+	SHOULD_HAVE_RANK			(OpcUaSByte, 9);
+
+	SHOULD_CONVERT				('E', OpcUaSByte, OpcUaBoolean, sbyte, true);
+
+	SHOULD_CONVERT				('E', OpcUaSByte, OpcUaByte, 45, 45);
+	CHECK_MIN					(OpcUaSByte, OpcUaByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaByte, OpcUaByteString);
+	SHOULD_NOT_CONVERT			(OpcUaByte, OpcUaDateTime);
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaDouble, sbyte, -46.0);
+	SHOULD_NOT_CONVERT			(OpcUaByte, OpcUaExpandedNodeId);
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaFloat, sbyte, -46.0f);
+	SHOULD_NOT_CONVERT			(OpcUaBoolean, OpcUaGuid);
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaInt16, sbyte, -46);
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaInt32, sbyte, -46);
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaInt64, sbyte, -46);
+	SHOULD_NOT_CONVERT			(OpcUaSByte, OpcUaNodeId);
+
+	SHOULD_BE_SAME				(OpcUaSByte, sbyte);
+
+	SHOULD_NOT_CONVERT			(OpcUaSByte, OpcUaStatusCode);
+	SHOULD_CONVERT_PTR 			('E', OpcUaSByte, OpcUaString, sbyte, "-46");
+	SHOULD_NOT_CONVERT			(OpcUaSByte, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT			(OpcUaSByte, OpcUaQualifiedName);
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaUInt16, 45, 45);
+	CHECK_MIN					(OpcUaSByte, OpcUaUInt16, 1);
+
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaUInt32, 45, 45);
+	CHECK_MIN					(OpcUaSByte, OpcUaUInt32, 1);
+
+	SHOULD_CONVERT				('I', OpcUaSByte, OpcUaUInt64, 45, 45);
+	CHECK_MIN					(OpcUaSByte, OpcUaUInt64, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaSByte, OpcUaXmlElement);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
