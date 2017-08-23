@@ -385,6 +385,24 @@ namespace OpcUaStackCore
 			default:							return false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaStatusCode:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaStatusCode, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaStatusCode, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value = (0xFFFF0000 & sourceVariant->get<OpcUaStatusCode>()) >> 16;
+				targetVariant->variant(value);
+
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaStatusCode, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaStatusCode, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
 		default:	return false;
 		}
 

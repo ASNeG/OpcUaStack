@@ -648,7 +648,39 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_SByte)
 	SHOULD_NOT_CONVERT			(OpcUaSByte, OpcUaXmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
+{
+	OpcUaStatusCode status = OpcUaStatusCode::BadAggregateConfigurationRejected;
+
+	SHOULD_HAVE_RANK			(OpcUaStatusCode, 6);
+
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaBoolean);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaByte);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaByteString);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaDateTime);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaExpandedNodeId);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaFloat);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaGuid);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaInt16);
+
+	SHOULD_CONVERT				('I', OpcUaStatusCode, OpcUaInt32, status, 0x80DA0000);
+	SHOULD_CONVERT				('I', OpcUaStatusCode, OpcUaInt64, status, 0x80DA0000);
+
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaNodeId);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaSByte);
+
+	SHOULD_BE_SAME				(OpcUaStatusCode, status);
+
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaString);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaQualifiedName);
+
+	SHOULD_CONVERT				('E', OpcUaStatusCode, OpcUaUInt16, status, 0x80DA);
+	SHOULD_CONVERT				('I', OpcUaStatusCode, OpcUaUInt32, status, 0x80DA0000);
+	SHOULD_CONVERT				('I', OpcUaStatusCode, OpcUaUInt64, status, 0x80DA0000);
+
+	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaXmlElement);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
-
-
 
