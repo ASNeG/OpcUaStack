@@ -713,7 +713,7 @@ namespace OpcUaStackCore
 			}
 			case  OpcUaBuildInType_OpcUaStatusCode:
 			{
-				OpcUaInt32 value; 
+				OpcUaStatusCode value;
 				value = boost::get<OpcUaStatusCode>(variantValue_);
 				variantValue.variant(value);
 				break;
