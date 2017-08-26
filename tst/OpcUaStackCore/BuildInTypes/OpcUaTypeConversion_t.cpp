@@ -806,5 +806,36 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_String)
 	SHOULD_NOT_CONVERT_PTR		(OpcUaString, OpcUaXmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_LocalizedText)
+{
+	OpcUaLocalizedText::SPtr localizedText = constructSPtr<OpcUaLocalizedText>("ru", "Какой-то текст на русском.");
+
+	SHOULD_HAVE_RANK			(OpcUaLocalizedText, 16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaBoolean);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaByteString);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaDateTime);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaDouble);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaExpandedNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaFloat);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaGuid);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaInt64);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaSByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaStatusCode);
+
+	SHOULD_CONVERT_2PTR			('I', OpcUaLocalizedText, OpcUaString, localizedText, OpcUaString("Какой-то текст на русском."));
+	SHOULD_BE_SAME_PTR			(OpcUaLocalizedText, localizedText);
+
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaQualifiedName);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaUInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaUInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaUInt64);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaXmlElement);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 

@@ -504,6 +504,19 @@ namespace OpcUaStackCore
 			default:							return false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaLocalizedText:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaLocalizedText>()->text());
+				targetVariant->variant(value);
+				return true;
+			}
+			default:							return false;
+			}
+		}
 		default:	return false;
 		}
 
@@ -528,7 +541,7 @@ namespace OpcUaStackCore
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', '-', 'X', 'E', 'X', 'X', 'I', 'I', 'I', 'X'}, //sbyte
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'I', 'X', 'X', '-', 'X', 'X', 'X', 'E', 'I', 'I', 'X'}, //statusCode
 			{'I', 'I', 'X', 'E', 'I', 'E', 'I', 'I', 'I', 'I', 'I', 'E', 'I', 'X', '-', 'E', 'E', 'I', 'I', 'I', 'X'}, //string
-			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', '-', 'E', 'X', 'X', 'X', 'X'}, //localizedText
+			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', '-', 'X', 'X', 'X', 'X', 'X'}, //localizedText
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'X', '-', 'X', 'X', 'X', 'X'}, //qualifiedText
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'I', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', '-', 'I', 'X'}, //uint32
