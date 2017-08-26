@@ -402,7 +402,6 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Guid)
 {
 	OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
 	guid->value("01020304-1112-2122-3132-333435363738");
-	guid->value();
 
 	SHOULD_HAVE_RANK			(OpcUaGuid, 12);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaGuid, OpcUaBoolean);
@@ -680,6 +679,131 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
 	SHOULD_CONVERT				('I', OpcUaStatusCode, OpcUaUInt64, status, 0x80DA0000);
 
 	SHOULD_NOT_CONVERT			(OpcUaStatusCode, OpcUaXmlElement);
+}
+
+#define SHOULD_CONVERT_STR(convType, targetType, sourceValue, targetValue) do {\
+	OpcUaTypeConversion converter; \
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
+	value1->variant(constructSPtr<OpcUaString>(sourceValue)); \
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+															  \
+	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_OpcUaString, OpcUaBuildInType_##targetType)); \
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
+	BOOST_REQUIRE_EQUAL(targetType(targetValue), value2->get<targetType>()); \
+} while(0)
+
+#define SHOULD_NOT_CONVERT_STR(targetType, sourceValue) do {\
+	OpcUaTypeConversion converter; \
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
+	value1->variant(constructSPtr<OpcUaString>(sourceValue)); \
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+															  \
+	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
+} while(0)
+
+#define SHOULD_CONVERT_STR_PTR(convType, targetType, sourceValue, targetValue) do {\
+	OpcUaTypeConversion converter; \
+	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
+	value1->variant(constructSPtr<OpcUaString>(sourceValue)); \
+	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+															  \
+	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_OpcUaString, OpcUaBuildInType_##targetType)); \
+	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
+	BOOST_REQUIRE_EQUAL(targetValue, *value2->getSPtr<targetType>()); \
+} while(0)
+
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_String)
+{
+	OpcUaString::SPtr string = constructSPtr<OpcUaString>("The String.");
+
+	SHOULD_HAVE_RANK			(OpcUaGuid, 12);
+
+	SHOULD_CONVERT_STR			('I', OpcUaBoolean, "0", false);
+	SHOULD_CONVERT_STR			('I', OpcUaBoolean, "false", false);
+	SHOULD_CONVERT_STR			('I', OpcUaBoolean, "1", true);
+	SHOULD_CONVERT_STR			('I', OpcUaBoolean, "true", true);
+	SHOULD_NOT_CONVERT_STR		(OpcUaBoolean, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaByte, "14", 14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaByte, "-1");
+	SHOULD_NOT_CONVERT_STR		(OpcUaByte, "256");
+	SHOULD_NOT_CONVERT_STR		(OpcUaByte, "???");
+
+	SHOULD_NOT_CONVERT_PTR		(OpcUaString, OpcUaByteString);
+
+	OpcUaDateTime dt;
+	dt.fromISOString("20020131T100001.123456");
+	SHOULD_CONVERT_STR			('E', OpcUaDateTime, "20020131T100001.123456", dt);
+	SHOULD_NOT_CONVERT_STR		(OpcUaDateTime, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaDouble, "14.0", 14.0);
+	SHOULD_NOT_CONVERT_STR		(OpcUaDouble, "???");
+
+	OpcUaExpandedNodeId expandedNodeId;
+	expandedNodeId.serverIndex(1);
+	expandedNodeId.namespaceUri("uri://test.namespace.org");
+	expandedNodeId.nodeId<OpcUaInt32>(1000);
+	SHOULD_CONVERT_STR_PTR		('E', OpcUaExpandedNodeId, "svr=1;nsu=uri://test.namespace.org;i=1000", expandedNodeId);
+	SHOULD_NOT_CONVERT_STR		(OpcUaExpandedNodeId, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaFloat, "14.0", 14.0f);
+	SHOULD_NOT_CONVERT_STR		(OpcUaFloat, "???");
+
+	OpcUaGuid guid;
+	guid.value("01020304-1112-2122-3132-333435363738");
+	SHOULD_CONVERT_STR_PTR		('I', OpcUaGuid, "01020304-1112-2122-3132-333435363738", guid);
+	SHOULD_NOT_CONVERT_STR		(OpcUaExpandedNodeId, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaInt16, "-14", -14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt16, "-32769");
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt16, "32768");
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt16, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaInt32, "-14", -14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt32, "-2147483649");
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt32, "2147483648");
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt32, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaInt64, "-14", -14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt64, "-9223372036854775809");
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt64, "9223372036854775808");
+	SHOULD_NOT_CONVERT_STR		(OpcUaInt64, "???");
+
+	OpcUaNodeId nodeId(1000, 1);
+	SHOULD_CONVERT_STR_PTR		('E', OpcUaExpandedNodeId, "ns=1;i=1000", nodeId);
+	SHOULD_NOT_CONVERT_STR		(OpcUaExpandedNodeId, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaSByte, "-14", -14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaSByte, "128");
+	SHOULD_NOT_CONVERT_STR		(OpcUaSByte, "-129");
+	SHOULD_NOT_CONVERT_STR		(OpcUaSByte, "???");
+
+	SHOULD_BE_SAME_PTR			(OpcUaString, string);
+
+	OpcUaLocalizedText localizedText("", "Text.");
+	SHOULD_CONVERT_STR_PTR		('E', OpcUaLocalizedText, "Text.", localizedText);
+
+	OpcUaQualifiedName qualifiedName("Name");
+	SHOULD_CONVERT_STR_PTR		('E', OpcUaQualifiedName, "Name", qualifiedName);
+
+	SHOULD_CONVERT_STR			('I', OpcUaUInt16, "14", 14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt16, "-1");
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt16, "65536");
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt16, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaUInt32, "14", 14);
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt32, "-1");
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt32, "4294967296");
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt32, "???");
+
+	SHOULD_CONVERT_STR			('I', OpcUaUInt64, "14", 14);
+
+	// FIXME: Can't check for overflow
+	//SHOULD_NOT_CONVERT_STR		(OpcUaUInt64, "-1");
+	//SHOULD_NOT_CONVERT_STR		(OpcUaUInt64, "18446744073709551616");
+	SHOULD_NOT_CONVERT_STR		(OpcUaUInt64, "???");
+
+	SHOULD_NOT_CONVERT_PTR		(OpcUaString, OpcUaXmlElement);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

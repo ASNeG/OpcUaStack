@@ -111,6 +111,11 @@ namespace OpcUaStackCore
 	bool
 	OpcUaTypeConversion::cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant)
 	{
+		if (sourceVariant->isArray()) {
+			Log(LogLevel::Warning, "array conversion is not supported");
+			return false;
+		}
+
 		switch (sourceVariant->variantType())
 		{
 		case OpcUaBuildInType_OpcUaBoolean:
@@ -403,6 +408,102 @@ namespace OpcUaStackCore
 			default:							return false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaString:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				std::string value = sourceVariant->getSPtr<OpcUaString>()->toStdString();
+				if (value == "0" || value == "false") {
+					targetVariant->set<OpcUaBoolean>(false);
+					return true;
+				}
+
+				if (value == "1" || value == "true") {
+					targetVariant->set<OpcUaBoolean>(true);
+					return true;
+				}
+
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaByte:	return castStringToInteger<OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime value;
+				if (value.fromISOString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaDouble: 	return castStringToReal<OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+
+			}
+			case OpcUaBuildInType_OpcUaFloat: 	return castStringToReal<OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				if (value->value(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+
+			}
+			case OpcUaBuildInType_OpcUaInt16:	return castStringToInteger<OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castStringToInteger<OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return castStringToInteger<OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+
+			}
+			case OpcUaBuildInType_OpcUaSByte:	return castStringToInteger<OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:	return castStringToInteger<OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castStringToInteger<OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return castStringToInteger<OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
 		default:	return false;
 		}
 
@@ -426,7 +527,7 @@ namespace OpcUaStackCore
 			{'X', 'X', 'X', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //nodeId
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', '-', 'X', 'E', 'X', 'X', 'I', 'I', 'I', 'X'}, //sbyte
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'I', 'X', 'X', '-', 'X', 'X', 'X', 'E', 'I', 'I', 'X'}, //statusCode
-			{'I', 'I', 'X', 'E', 'I', 'E', 'I', 'I', 'I', 'I', 'I', 'E', 'I', 'X', '-', 'E', 'X', 'I', 'I', 'I', 'X'}, //string
+			{'I', 'I', 'X', 'E', 'I', 'E', 'I', 'I', 'I', 'I', 'I', 'E', 'I', 'X', '-', 'E', 'E', 'I', 'I', 'I', 'X'}, //string
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', '-', 'E', 'X', 'X', 'X', 'X'}, //localizedText
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'X', '-', 'X', 'X', 'X', 'X'}, //qualifiedText
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
@@ -465,3 +566,4 @@ namespace OpcUaStackCore
 	}
 
 }
+
