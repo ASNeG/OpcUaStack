@@ -117,6 +117,19 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2)); \
 } while(0)
 
+
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ArrayIsNotSupported)
+{
+	OpcUaTypeConversion converter;
+	OpcUaVariant::SPtr source = constructSPtr<OpcUaVariant>();
+	source->pushBack<OpcUaUInt16>(1);
+	source->pushBack<OpcUaUInt16>(1);
+
+	OpcUaVariant::SPtr target = constructSPtr<OpcUaVariant>();
+
+	BOOST_REQUIRE(converter.conversion(source, OpcUaBuildInType_OpcUaDouble, target) == false);
+}
+
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_Bool)
 {
 	SHOULD_HAVE_RANK			(OpcUaBoolean, 11);
