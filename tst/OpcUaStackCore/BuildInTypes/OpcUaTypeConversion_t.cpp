@@ -817,6 +817,7 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_LocalizedText)
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaDateTime);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaDouble);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaExpandedNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaString);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaFloat);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaGuid);
 	SHOULD_NOT_CONVERT_PTR		(OpcUaLocalizedText, OpcUaInt16);
@@ -1013,6 +1014,37 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_UInt64)
 	SHOULD_BE_SAME				(OpcUaUInt64, uintVal);
 
 	SHOULD_NOT_CONVERT			(OpcUaUInt64, OpcUaXmlElement);
+}
+
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_XmlElement)
+{
+	OpcUaXmlElement::SPtr xmlElement = constructSPtr<OpcUaXmlElement>();
+
+
+	SHOULD_HAVE_RANK			(OpcUaXmlElement, 20);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaBoolean);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaByteString);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaDateTime);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaDouble);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaExpandedNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaFloat);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaGuid);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaInt64);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaNodeId);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaSByte);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaStatusCode);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaString);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaQualifiedName);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaUInt16);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaUInt32);
+	SHOULD_NOT_CONVERT_PTR		(OpcUaXmlElement, OpcUaUInt64);
+
+	// FIXME: OpcUaXmlElement doesn't implement == operator
+	// SHOULD_BE_SAME_PTR			(OpcUaXmlElement, xmlElement);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

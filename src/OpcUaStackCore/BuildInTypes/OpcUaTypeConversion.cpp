@@ -61,6 +61,7 @@ namespace OpcUaStackCore
 		case OpcUaBuildInType_OpcUaQualifiedName:   return 17;
 		case OpcUaBuildInType_OpcUaByteString:   	return 18;
 		case OpcUaBuildInType_OpcUaDateTime:   		return 19;
+		case OpcUaBuildInType_OpcUaXmlElement: 		return 20;
 		default: return -1;
 		}
 	}
