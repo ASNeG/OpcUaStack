@@ -897,7 +897,9 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_UInt16)
 	CHECK_MAX					(OpcUaUInt16, OpcUaSByte, 1);
 	CHECK_MIN					(OpcUaUInt16, OpcUaSByte, 1);
 
-	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaStatusCode);
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaStatusCode, 0x8035, OpcUaStatusCode::BadAttributeIdInvalid);
+	CHECK_BAD_VALUE				(OpcUaUInt16, OpcUaStatusCode, 0xEFFF);
+
 	SHOULD_CONVERT_PTR			('E', OpcUaUInt16, OpcUaString, uintVal, "28");
 	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaLocalizedText);
 	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaQualifiedName);
@@ -942,8 +944,8 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_UInt32)
 	CHECK_MAX					(OpcUaUInt32, OpcUaSByte, 1);
 	CHECK_MIN					(OpcUaUInt32, OpcUaSByte, 1);
 
-	SHOULD_CONVERT				('E', OpcUaInt32, OpcUaStatusCode, 0x80350000, OpcUaStatusCode::BadAttributeIdInvalid);
-	CHECK_BAD_VALUE				(OpcUaInt32, OpcUaStatusCode, 0xEFFFFFFF);
+	SHOULD_CONVERT				('E', OpcUaUInt32, OpcUaStatusCode, 0x80350000, OpcUaStatusCode::BadAttributeIdInvalid);
+	CHECK_BAD_VALUE				(OpcUaUInt32, OpcUaStatusCode, 0xEFFFFFFF);
 
 	SHOULD_CONVERT_PTR			('E', OpcUaUInt32, OpcUaString, uintVal, "28");
 	SHOULD_NOT_CONVERT			(OpcUaUInt32, OpcUaLocalizedText);

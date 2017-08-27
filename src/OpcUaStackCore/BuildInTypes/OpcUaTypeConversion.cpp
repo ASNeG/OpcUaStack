@@ -548,6 +548,13 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaUInt16, OpcUaInt32>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaUInt16, OpcUaInt64>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaUInt16, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode:
+			{
+				OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
+				tmpVariant->variant(static_cast<OpcUaUInt64>(sourceVariant->get<OpcUaUInt16>() << 16));
+
+				return castStatusCode<OpcUaUInt64>(tmpVariant, targetVariant);
+			}
 			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaUInt16>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaUInt16, OpcUaUInt32>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaUInt16, OpcUaUInt64>(sourceVariant, targetVariant);
@@ -599,7 +606,7 @@ namespace OpcUaStackCore
 			{'I', 'I', 'X', 'E', 'I', 'E', 'I', 'I', 'I', 'I', 'I', 'E', 'I', 'X', '-', 'E', 'E', 'I', 'I', 'I', 'X'}, //string
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', '-', 'X', 'X', 'X', 'X', 'X'}, //localizedText
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'I', '-', 'X', 'X', 'X', 'X'}, //qualifiedText
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'I', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'I', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', '-', 'I', 'X'}, //uint32
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'Y', '-', 'X'}, //uint64
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '-'}, //xmlElemnt
