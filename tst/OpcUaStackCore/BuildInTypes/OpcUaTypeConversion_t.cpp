@@ -866,6 +866,49 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_QualifiedName)
 	SHOULD_NOT_CONVERT_PTR		(OpcUaQualifiedName, OpcUaXmlElement);
 }
 
+BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_UInt16)
+{
+	OpcUaUInt16 uintVal = 28;
+
+	SHOULD_HAVE_RANK			(OpcUaUInt16, 8);
+
+	SHOULD_CONVERT				('E', OpcUaUInt16, OpcUaBoolean, uintVal, true);
+
+	SHOULD_CONVERT				('E', OpcUaUInt16, OpcUaByte, uintVal, 28);
+	CHECK_MAX					(OpcUaUInt16, OpcUaByte, 1);
+	CHECK_MIN					(OpcUaUInt16, OpcUaByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaByteString);
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaDateTime);
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaDouble, uintVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaExpandedNodeId);
+	SHOULD_CONVERT				('I', OpcUaInt16, OpcUaFloat, uintVal, 28.0);
+	SHOULD_NOT_CONVERT			(OpcUaInt16, OpcUaGuid);
+
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaInt16, uintVal, 28);
+	CHECK_MAX					(OpcUaUInt16, OpcUaInt16, 1);
+
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaInt32, uintVal, 28);
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaInt64, uintVal, 28);
+
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaNodeId);
+
+	SHOULD_CONVERT				('E', OpcUaUInt16, OpcUaSByte, uintVal, 28);
+	CHECK_MAX					(OpcUaUInt16, OpcUaSByte, 1);
+	CHECK_MIN					(OpcUaUInt16, OpcUaSByte, 1);
+
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaStatusCode);
+	SHOULD_CONVERT_PTR			('E', OpcUaUInt16, OpcUaString, uintVal, "28");
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaLocalizedText);
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaQualifiedName);
+
+	SHOULD_BE_SAME				(OpcUaUInt16, uintVal);
+
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaUInt32, uintVal, 28);
+	SHOULD_CONVERT				('I', OpcUaUInt16, OpcUaUInt64, uintVal, 28);
+	SHOULD_NOT_CONVERT			(OpcUaUInt16, OpcUaXmlElement);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
