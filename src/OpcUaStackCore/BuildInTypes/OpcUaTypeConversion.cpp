@@ -580,6 +580,25 @@ namespace OpcUaStackCore
 			default:							false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaUInt64:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaUInt64, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaUInt64, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaUInt64, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaUInt64, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaUInt64, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castIntegerToInteger<OpcUaUInt64, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return castIntegerToInteger<OpcUaUInt64, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaUInt64, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode: return castStatusCode<OpcUaUInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaUInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaUInt64, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castIntegerToInteger<OpcUaUInt64, OpcUaUInt32>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
 		default:	return false;
 		}
 
@@ -608,7 +627,7 @@ namespace OpcUaStackCore
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'I', '-', 'X', 'X', 'X', 'X'}, //qualifiedText
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'I', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'I', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', '-', 'I', 'X'}, //uint32
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'Y', '-', 'X'}, //uint64
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', '-', 'X'}, //uint64
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '-'}, //xmlElemnt
 	};
 
