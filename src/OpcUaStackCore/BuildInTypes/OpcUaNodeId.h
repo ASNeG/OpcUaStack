@@ -45,7 +45,7 @@ namespace OpcUaStackCore
 	class OpcUaNodeSPtrLess
 	{
 	  public:
-		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) {
+		bool operator()(const OpcUaNodeId::SPtr a, const OpcUaNodeId::SPtr b) const {
 			if (a.get() == nullptr && b.get() != nullptr) return true;
 			if (a.get() != nullptr && b.get() == nullptr) return false;
 			if (a.get() == nullptr && b.get() == nullptr) return false;

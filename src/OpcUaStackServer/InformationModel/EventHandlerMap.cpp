@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 	{
 		EventHandlerBaseMap::iterator it;
 		it = eventHandlerBaseMap_.find(nodeId);
-		if (it != eventHandlerBaseMap_.end());
+		return (it != eventHandlerBaseMap_.end());
 	}
 
 	bool

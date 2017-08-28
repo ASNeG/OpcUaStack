@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
 	OpcUaServer::WindowsService* ws = OpcUaServer::WindowsService::instance();
 	ws->programFileName(programFileName);
-	ws->main("OpcUaServer", argc, argv);
+	ws->main(argc, argv);
 }
 
 

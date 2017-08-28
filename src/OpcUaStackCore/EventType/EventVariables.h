@@ -25,7 +25,7 @@
 namespace OpcUaStackCore
 {
 
-	class EventVariable
+	class DLLEXPORT EventVariable
 	{
 	  public:
 		EventVariable(OpcUaBuildInType buildInType);
