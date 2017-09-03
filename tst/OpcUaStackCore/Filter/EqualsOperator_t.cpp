@@ -157,5 +157,29 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast2)
     BOOST_REQUIRE(retVal);
 }
 
+BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast_fail)
+{
+    FilterStack stack;
+
+    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32, OpcUaDateTime>(
+            BasicFilterOperator::BasicFilterOperator_Equals, 1, OpcUaDateTime());
+
+
+    ContentFilter filter;
+    filter.elements()->push_back(eqElement);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+
+    ContentFilterElementResult::SPtr elementResult;
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+    bool retVal;
+    BOOST_REQUIRE(stack.process(retVal));
+    BOOST_REQUIRE(retVal == false);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 

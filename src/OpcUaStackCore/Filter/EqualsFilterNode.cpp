@@ -86,10 +86,17 @@ namespace OpcUaStackCore
     	    }
     	    case 'I':
     	    {
-    	    	converter.conversion(v1, v2->variantType(), v1);
-    	    	value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    	if (converter.conversion(v1, v2->variantType(), v1)) {
+    	    		value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    	} else {
+    	    		value_.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
+    	    	}
+
+
     	    	break;
     	    }
+    	    default:
+    	    	value_.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
     	    }
 
 
