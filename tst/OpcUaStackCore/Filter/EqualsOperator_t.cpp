@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_returns_false)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_returns_true)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::BadFilterOperandCountMismatch);
+    BOOST_REQUIRE(stack.receive(filter, result) == false);
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::BadFilterOperandCountMismatch);
+    BOOST_REQUIRE(stack.receive(filter, result) == false);
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast1)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast2)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast_fail)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);

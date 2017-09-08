@@ -114,7 +114,7 @@ static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(BasicFilterOp
     ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
     arg2_->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_ElementOperand);
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg2_->parameter<ElementOperand>()->index(idx1);
+    arg2_->parameter<ElementOperand>()->index(idx2);
 
     eqElement->filterOperator(op);
     eqElement->filterOperands()->resize(2);

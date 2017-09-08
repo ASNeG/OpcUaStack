@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_2_level_tree)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
 
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_2_level_half_tree)
 
     ContentFilterResult result;
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     ContentFilterElementResult::SPtr elementResult;
 
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_attribute_operand)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     mockAttrIf.expectedValue_.set<OpcUaUInt32>(10);
     mockAttrIf.expectedResult_ = true;
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    BOOST_REQUIRE(stack.receive(filter, result) == OpcUaStatusCode::Success);
+    BOOST_REQUIRE(stack.receive(filter, result));
 
     mockAttrIf.expectedValue_.set<OpcUaUInt32>(10);
     mockAttrIf.expectedResult_ = true;
@@ -240,6 +240,60 @@ BOOST_AUTO_TEST_CASE(FilterStack_simple_attribute_operand)
 
     BOOST_REQUIRE(stack.process(filterResult));
     BOOST_REQUIRE(filterResult == false);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_loop)
+{
+    FilterStack stack;
+
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2ElementOperands(
+            BasicFilterOperator::BasicFilterOperator_Equals, 1, 2);
+
+    ContentFilterElement::SPtr eqElement2 = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
+            BasicFilterOperator::BasicFilterOperator_Equals, 10, 10);
+
+    ContentFilterElement::SPtr eqElement3 =  makeOperatorWith2ElementOperands(
+                BasicFilterOperator::BasicFilterOperator_Equals, 0, 1); // make loop
+
+    ContentFilter filter;
+    filter.elements()->resize(3);
+    filter.elements()->push_back(eqElement1);
+    filter.elements()->push_back(eqElement2);
+    filter.elements()->push_back(eqElement3);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result) == false);
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    // First operator result
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandInvalid);
+
+    OpcUaStatusCode operandStatus;
+    elementResult->operandStatusCodes()->get(0, operandStatus);
+    BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::Success);
+
+    elementResult->operandStatusCodes()->get(1, operandStatus);
+    BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterOperandInvalid);
+
+    // Second operator result
+    result.elementResults()->get(1, elementResult);
+	BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+	BOOST_REQUIRE_EQUAL(elementResult->operandStatusCodes()->size(), 0);
+
+
+	// Third operator result
+	result.elementResults()->get(2, elementResult);
+	BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandInvalid);
+
+	elementResult->operandStatusCodes()->get(0, operandStatus);
+	BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterElementInvalid);
+
+	elementResult->operandStatusCodes()->get(1, operandStatus);
+	BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterElementInvalid);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()

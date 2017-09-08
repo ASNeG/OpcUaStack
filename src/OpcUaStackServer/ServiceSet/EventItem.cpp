@@ -101,8 +101,9 @@ namespace OpcUaStackServer
 		whereFilter_ = constructSPtr<FilterStack>();
 		whereFilter_->simpleAttributeIf(this);
 		if (eventFilter->whereClause().elements()->size() != 0) {
-			statusCode = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
-			if (statusCode != Success) {
+			bool whereFilterIsValid = whereFilter_->receive(eventFilter->whereClause(), eventFilterResult->whereClauseResult());
+			if (!whereFilterIsValid) {
+				statusCode = OpcUaStatusCode::BadMonitoredItemFilterInvalid;
 				monitoredItemCreateResult->statusCode(statusCode);
 				return statusCode;
 			}

@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 
         void attributeIf(AttributeIf* attributeIf);
         void simpleAttributeIf(SimpleAttributeIf* simpleAttributeIf);
-        OpcUaStatusCode receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
+        bool receive(const ContentFilter& contentFilter, ContentFilterResult& contentilterResult);
         bool process(bool& filterResult) const;
 
       private:
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
         AttributeIf* attributeIf_;
         SimpleAttributeIf* simpleAttributeIf_;
 
-        OpcUaStatusCode buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
+        bool buildOperatorNode(const ContentFilter& contentFilter, ContentFilterResult& contentFilterResult, int idx, FilterNode::SPtr& node);
     };
 
 }
