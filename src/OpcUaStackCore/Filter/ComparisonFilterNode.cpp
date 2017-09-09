@@ -16,48 +16,56 @@
  */
 
 
-#include "OpcUaStackCore/Filter/EqualsFilterNode.h"
+#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
 #include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
 
 
 namespace OpcUaStackCore
 {
-    EqualsFilterNode::EqualsFilterNode(const std::vector<FilterNode::SPtr>& args)
+
+    ComparisonFilterNode::ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args)
     {
-        value_ = OpcUaVariant();
-        value_.set<OpcUaBoolean>(false);
+    	operator_ = op;
 
-        status_ = OpcUaStatusCode::Success;
-        operandStatuses_ = std::vector<OpcUaStatusCode>();
+    	switch(operator_) {
+    	case OpcUaOperator::Equals:
+    	{
+			status_ = OpcUaStatusCode::Success;
+			operandStatuses_ = std::vector<OpcUaStatusCode>();
 
-        if (args.size() == 2) {
-        	arg1_ = args[0];
-        	arg2_ = args[1];
-        }
-        else {
-        	status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
-        }
+			if (args.size() == 2) {
+				arg1_ = args[0];
+				arg2_ = args[1];
+			}
+			else {
+				status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
+			}
+			break;
+    	}
+    	default:
+    		status_ = OpcUaStatusCode::BadFilterOperandInvalid;
+    	}
     }
 
-    EqualsFilterNode::~EqualsFilterNode()
+    ComparisonFilterNode::~ComparisonFilterNode()
     {
 
     }
 
     OpcUaStatusCode&
-	EqualsFilterNode::status()
+	ComparisonFilterNode::status()
     {
     	return status_;
     }
 
     std::vector<OpcUaStatusCode>&
-	EqualsFilterNode::operandStatuses()
+	ComparisonFilterNode::operandStatuses()
     {
     	return operandStatuses_;
     }
 
     bool
-	EqualsFilterNode::evaluate(OpcUaVariant& value)
+	ComparisonFilterNode::evaluate(OpcUaVariant& value)
     {
     	if (status_ == OpcUaStatusCode::Success) {
     		OpcUaVariant::SPtr v1 = constructSPtr<OpcUaVariant>();
@@ -81,29 +89,41 @@ namespace OpcUaStackCore
     	    {
     	    case '-':
     	    {
-    	    	value_.set<OpcUaBoolean>(*v1 == *v2);
-    	    	break;
+    	    	return compare(v1, v2, value);
     	    }
     	    case 'I':
     	    {
     	    	if (converter.conversion(v1, v2->variantType(), v1)) {
-    	    		value_.set<OpcUaBoolean>(*v1 == *v2);
+    	    		return compare(v1, v2, value);
     	    	} else {
-    	    		value_.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
+    	    		value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
     	    	}
 
 
     	    	break;
     	    }
     	    default:
-    	    	value_.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
+    	    	value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
     	    }
 
-
-			value_.copyTo(value);
 			return true;
 		}
 
 		return false;
     }
+
+    bool ComparisonFilterNode::compare(OpcUaVariant::SPtr lhs, OpcUaVariant::SPtr rhs, OpcUaVariant& result)
+	{
+    	switch (operator_) {
+		case OpcUaOperator::Equals:
+		{
+			result.set<OpcUaBoolean>(*lhs == *rhs);
+			return true;
+		}
+
+		}
+
+    	return false;
+
+	}
 }

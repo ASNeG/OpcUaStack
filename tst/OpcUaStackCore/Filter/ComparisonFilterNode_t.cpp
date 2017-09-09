@@ -1,17 +1,17 @@
+#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
 #include "unittest.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
-#include "OpcUaStackCore/Filter/EqualsFilterNode.h"
 
 using namespace OpcUaStackCore;
 
-BOOST_AUTO_TEST_SUITE(EqualsOperator_)
+BOOST_AUTO_TEST_SUITE(ComparisonFilterNode_)
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_)
 {
-	std::cout << "EqualsOperator_" << std::endl;
+	std::cout << "ComparisonFilterNode_" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_100_not_equals_120)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_equals_120)
 {
 	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
@@ -23,14 +23,14 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_100_not_equals_120)
 	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
     OpcUaVariant operatorResult;
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_100_equals_100)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_equals_100)
 {
 	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
@@ -42,17 +42,17 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_100_equals_100)
 	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
     OpcUaVariant operatorResult;
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_too_few_args)
 {
     std::vector<FilterNode::SPtr> args(0);
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
 	BOOST_REQUIRE(equalsOperator.status() == OpcUaStatusCode::BadFilterOperandCountMismatch);
 
@@ -60,10 +60,10 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult) == false);
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_too_much_args)
 {
     std::vector<FilterNode::SPtr> args(3);
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
 	BOOST_REQUIRE(equalsOperator.status() == OpcUaStatusCode::BadFilterOperandCountMismatch);
 
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult) == false);
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_1_equals_true)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_1_equals_true)
 {
 	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
@@ -83,14 +83,14 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_1_equals_true)
 	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
     OpcUaVariant operatorResult;
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_true_equals_1)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_true_equals_1)
 {
 	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
@@ -102,14 +102,14 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_true_equals_1)
 	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
     OpcUaVariant operatorResult;
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast_fail)
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_implicit_cast_fail)
 {
 	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast_fail)
 	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    EqualsFilterNode equalsOperator(args);
+    ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
     OpcUaVariant operatorResult;
 	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));

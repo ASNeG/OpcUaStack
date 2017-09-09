@@ -19,18 +19,19 @@
 #define __OpcUaStackCore_EqualsFilterNode_h__
 
 #include "OpcUaStackCore/Filter/FilterNode.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaOperator.h"
 
 namespace OpcUaStackCore
 {
-    class DLLEXPORT EqualsFilterNode
+    class DLLEXPORT ComparisonFilterNode
 	: public FilterNode
     {
       public:
 
-        typedef boost::shared_ptr<EqualsFilterNode> SPtr;
+        typedef boost::shared_ptr<ComparisonFilterNode> SPtr;
 
-        EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
-        virtual ~EqualsFilterNode(void);
+        ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args);
+        virtual ~ComparisonFilterNode(void);
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
@@ -38,12 +39,16 @@ namespace OpcUaStackCore
         virtual std::vector<OpcUaStatusCode>& operandStatuses() override;
 
       private:
+        OpcUaOperator operator_;
+
         FilterNode::SPtr arg1_;
         FilterNode::SPtr arg2_;
 
-        OpcUaVariant value_;
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
+
+        bool compare(OpcUaVariant::SPtr lhs, OpcUaVariant::SPtr rhs, OpcUaVariant& result);
     };
+
 }
 #endif

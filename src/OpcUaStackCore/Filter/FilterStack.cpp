@@ -15,6 +15,7 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
+#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
@@ -25,7 +26,6 @@
 #include "OpcUaStackCore/Filter/SimpleAttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 
-#include "OpcUaStackCore/Filter/EqualsFilterNode.h"
 #include "OpcUaStackCore/Filter/IsNullFilterNode.h"
 
 namespace OpcUaStackCore
@@ -187,7 +187,7 @@ namespace OpcUaStackCore
 			switch (el->filterOperator()) {
 				case BasicFilterOperator_Equals:
 				{
-					node = EqualsFilterNode::SPtr(new EqualsFilterNode(args));
+					node = ComparisonFilterNode::SPtr(new ComparisonFilterNode(OpcUaOperator::Equals, args));
 					operatorStatus = node->status();
 					break;
 				}
