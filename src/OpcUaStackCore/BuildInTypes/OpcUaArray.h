@@ -208,7 +208,7 @@ namespace OpcUaStackCore
 
 		  static bool decode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value)
 		  {
-			  value = T::construct();
+			  value = constructSPtr<T>();
 			  return value->decode(pt);
 		  }
 		  static bool xmlEncode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value, const std::string& element)
@@ -218,7 +218,7 @@ namespace OpcUaStackCore
 
 		  static bool xmlDecode(boost::property_tree::ptree& pt, boost::shared_ptr<T>& value, const std::string& element)
 		  {
-			  value = T::construct();
+			  value = constructSPtr<T>();
 			  return value->xmlDecode(pt);
 		  }
 

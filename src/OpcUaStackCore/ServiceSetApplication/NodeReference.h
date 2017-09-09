@@ -51,6 +51,8 @@ namespace OpcUaStackCore
 		bool encode(boost::property_tree::ptree& pt) const { return false; }
 		bool decode(boost::property_tree::ptree& pt) { return false; }
 
+		bool xmlEncode(boost::property_tree::ptree& pt) const { return false; }
+		bool xmlDecode(boost::property_tree::ptree& pt) { return false; }
 		
 	  private:
 		OpcUaStatusCode statusCode_;

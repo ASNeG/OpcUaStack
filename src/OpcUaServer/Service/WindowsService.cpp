@@ -224,7 +224,7 @@ namespace OpcUaServer
 	bool 
 	WindowsService::runConsole(const std::string& serviceName, unsigned int argc, char** argv)
 	{
-		serverApplicationIf_->serviceName(serviceName, argc, argv);
+		serverApplicationIf_->serviceCommandLine(serviceName, argc, argv);
 		if (!serverApplicationIf_->startup()) return false;
 		if (!serverApplicationIf_->run()) return false;
 		serverApplicationIf_->shutdown();

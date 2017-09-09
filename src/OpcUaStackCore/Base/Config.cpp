@@ -75,6 +75,7 @@ namespace OpcUaStackCore
 	Config::setValue(const std::string& value)
 	{
 		child_.put_value(value);
+		return true;
 	}
 
 	bool

@@ -81,6 +81,8 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr variant = constructSPtr<OpcUaVariant>();
 		variant->setValue(typeNodeId);
 		eventType->setValue(typeNodeId);
+
+		return true;
 	}
 
 

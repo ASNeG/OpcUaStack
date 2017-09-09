@@ -64,6 +64,6 @@ namespace OpcUaStackCore
         }
 
         freeifaddrs(ifaddr);
-	}
 #endif
+	}
 }

@@ -61,6 +61,7 @@ namespace OpcUaStackCore
 		case OpcUaBuildInType_OpcUaQualifiedName:   return 17;
 		case OpcUaBuildInType_OpcUaByteString:   	return 18;
 		case OpcUaBuildInType_OpcUaDateTime:   		return 19;
+		case OpcUaBuildInType_OpcUaXmlElement: 		return 20;
 		default: return -1;
 		}
 	}
@@ -111,6 +112,11 @@ namespace OpcUaStackCore
 	bool
 	OpcUaTypeConversion::cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant)
 	{
+		if (sourceVariant->isArray()) {
+			Log(LogLevel::Warning, "array conversion is not supported");
+			return false;
+		}
+
 		switch (sourceVariant->variantType())
 		{
 		case OpcUaBuildInType_OpcUaBoolean:
@@ -145,7 +151,7 @@ namespace OpcUaStackCore
 			case OpcUaBuildInType_OpcUaInt16:	return cast<OpcUaByte, OpcUaInt16>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaByte, OpcUaInt32>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaByte, OpcUaInt64>(sourceVariant, targetVariant);
-			case OpcUaBuildInType_OpcUaSByte:	return cast<OpcUaByte, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaByte, OpcUaSByte>(sourceVariant, targetVariant);
 			case OpcUaBuildInType_OpcUaString:
 			{
 				OpcUaString::SPtr value = constructSPtr<OpcUaString>(
@@ -239,8 +245,365 @@ namespace OpcUaStackCore
 			default:							return false;
 			}
 		}
+		case OpcUaBuildInType_OpcUaFloat:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaFloat, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castRealToInteger<OpcUaFloat, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaFloat, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castRealToInteger<OpcUaFloat, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castRealToInteger<OpcUaFloat, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return castRealToInteger<OpcUaFloat, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castRealToInteger<OpcUaFloat, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castRealToInteger<OpcUaFloat, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castRealToInteger<OpcUaFloat, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return castRealToInteger<OpcUaFloat, OpcUaUInt64>(sourceVariant, targetVariant);
+			default: 							false;
+			}
+		}
+
+		case OpcUaBuildInType_OpcUaGuid:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaByteString:
+			{
+				std::string guidString =  sourceVariant->getSPtr<OpcUaGuid>()->value();
+				boost::replace_all(guidString, "-", "");
+
+				OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+				byteString->fromHexString(guidString);
+
+				targetVariant->variant(byteString);
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaGuid>()->value());
+				targetVariant->variant(value);
+				return true;
+			}
+			default: 							false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaInt16:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaInt16, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaInt16, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaInt16, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaInt16, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaInt16, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaInt16, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaInt16, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaInt16, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaInt16, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaInt16, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaInt32:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaInt32, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaInt32, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaInt32, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaInt32, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaInt32, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaInt32, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaInt32, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode: return castStatusCode<OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaInt32, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castIntegerToInteger<OpcUaInt32, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaInt32, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
+
+		case OpcUaBuildInType_OpcUaInt64:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaInt64, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaInt64, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaInt64, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaInt64, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaInt64, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castIntegerToInteger<OpcUaInt64, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaInt64, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode: return castStatusCode<OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaInt64, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castIntegerToInteger<OpcUaInt64, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return castIntegerToInteger<OpcUaInt64, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaNodeId:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+				expandedNodeId->copyFrom(*sourceVariant->getSPtr<OpcUaNodeId>());
+				targetVariant->variant(expandedNodeId);
+				return true;
+
+			}
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaNodeId>()->toString());
+				targetVariant->variant(value);
+				return true;
+			}
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaSByte:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaSByte, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaSByte, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaSByte, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaSByte, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return cast<OpcUaSByte, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaSByte, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaSByte, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(
+						boost::lexical_cast<std::string>((int)sourceVariant->get<OpcUaSByte>()));
+				targetVariant->variant(value);
+
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaSByte, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castIntegerToInteger<OpcUaSByte, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return castIntegerToInteger<OpcUaSByte, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaStatusCode:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaStatusCode, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaStatusCode, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value = (0xFFFF0000 & sourceVariant->get<OpcUaStatusCode>()) >> 16;
+				targetVariant->variant(value);
+
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaStatusCode, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaStatusCode, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaString:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:
+			{
+				std::string value = sourceVariant->getSPtr<OpcUaString>()->toStdString();
+				if (value == "0" || value == "false") {
+					targetVariant->set<OpcUaBoolean>(false);
+					return true;
+				}
+
+				if (value == "1" || value == "true") {
+					targetVariant->set<OpcUaBoolean>(true);
+					return true;
+				}
+
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaByte:	return castStringToInteger<OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime value;
+				if (value.fromISOString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaDouble: 	return castStringToReal<OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				OpcUaExpandedNodeId::SPtr value = constructSPtr<OpcUaExpandedNodeId>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+
+			}
+			case OpcUaBuildInType_OpcUaFloat: 	return castStringToReal<OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaGuid::SPtr value = constructSPtr<OpcUaGuid>();
+				if (value->value(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+
+			}
+			case OpcUaBuildInType_OpcUaInt16:	return castStringToInteger<OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castStringToInteger<OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return castStringToInteger<OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+
+			}
+			case OpcUaBuildInType_OpcUaSByte:	return castStringToInteger<OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				OpcUaQualifiedName::SPtr value = constructSPtr<OpcUaQualifiedName>();
+				if (value->fromString(sourceVariant->getSPtr<OpcUaString>()->toStdString())) {
+					targetVariant->variant(value);
+					return true;
+				}
+
+				return false;
+			}
+			case OpcUaBuildInType_OpcUaUInt16:	return castStringToInteger<OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castStringToInteger<OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return castStringToInteger<OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaLocalizedText:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaLocalizedText>()->text());
+				targetVariant->variant(value);
+				return true;
+			}
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaQualifiedName:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaString::SPtr value = constructSPtr<OpcUaString>(sourceVariant->getSPtr<OpcUaQualifiedName>()->toString());
+				targetVariant->variant(value);
+				return true;
+			}
+			case OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>("", sourceVariant->getSPtr<OpcUaQualifiedName>()->toString());
+				targetVariant->variant(value);
+				return true;
+			}
+			default:							return false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaUInt16:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaUInt16, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaUInt16, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaUInt16, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaUInt16, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaUInt16, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return cast<OpcUaUInt16, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaUInt16, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaUInt16, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode:
+			{
+				OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
+				tmpVariant->variant(static_cast<OpcUaUInt64>(sourceVariant->get<OpcUaUInt16>() << 16));
+
+				return castStatusCode<OpcUaUInt64>(tmpVariant, targetVariant);
+			}
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return cast<OpcUaUInt16, OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaUInt16, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaUInt32:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaUInt32, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaUInt32, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaUInt32, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaUInt32, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaUInt32, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castIntegerToInteger<OpcUaUInt32, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return cast<OpcUaUInt32, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaUInt32, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode: return castStatusCode<OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaUInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaUInt32, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt64:	return cast<OpcUaUInt32, OpcUaUInt64>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
+		case OpcUaBuildInType_OpcUaUInt64:
+		{
+			switch (targetType)
+			{
+			case OpcUaBuildInType_OpcUaBoolean:	return cast<OpcUaUInt64, OpcUaBoolean>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaByte:	return castIntegerToInteger<OpcUaUInt64, OpcUaByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaDouble:	return cast<OpcUaUInt64, OpcUaDouble>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaFloat:	return cast<OpcUaUInt64, OpcUaFloat>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt16:	return castIntegerToInteger<OpcUaUInt64, OpcUaInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt32:	return castIntegerToInteger<OpcUaUInt64, OpcUaInt32>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaInt64:	return castIntegerToInteger<OpcUaUInt64, OpcUaInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaSByte:	return castIntegerToInteger<OpcUaUInt64, OpcUaSByte>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaStatusCode: return castStatusCode<OpcUaUInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaString:  return castToString<OpcUaUInt64>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt16:	return castIntegerToInteger<OpcUaUInt64, OpcUaUInt16>(sourceVariant, targetVariant);
+			case OpcUaBuildInType_OpcUaUInt32:	return castIntegerToInteger<OpcUaUInt64, OpcUaUInt32>(sourceVariant, targetVariant);
+			default:							false;
+			}
+		}
 		default:	return false;
 		}
+
+
 	}
 
 	char
@@ -252,20 +615,20 @@ namespace OpcUaStackCore
 			{'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X'}, //datetime
 			{'E', 'E', 'X', 'X', '-', 'X', 'E', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //double
 			{'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //expNodeId
-			{'E', 'X', 'X', 'X', 'I', 'X', '-', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //float
+			{'E', 'E', 'X', 'X', 'I', 'X', '-', 'X', 'E', 'E', 'E', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //float
 			{'X', 'X', 'E', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X'}, //guid
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', '-', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'I', 'E', 'X'}, //int16
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', '-', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'X', 'X'}, //int32
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', '-', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'I', 'X'}, //int64
-			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //nodeId
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', '-', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', 'E', 'I', 'I', 'X'}, //int16
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', '-', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'I', 'X'}, //int32
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', '-', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', 'E', 'X'}, //int64
+			{'X', 'X', 'X', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', '-', 'X', 'X', 'I', 'X', 'X', 'X', 'X', 'X', 'X'}, //nodeId
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', '-', 'X', 'E', 'X', 'X', 'I', 'I', 'I', 'X'}, //sbyte
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'I', 'X', 'X', '-', 'X', 'X', 'X', 'E', 'I', 'I', 'X'}, //statusCode
-			{'I', 'I', 'X', 'E', 'I', 'E', 'I', 'I', 'I', 'I', 'I', 'E', 'I', 'X', '-', 'E', 'X', 'I', 'I', 'I', 'X'}, //string
-			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', '-', 'E', 'X', 'X', 'X', 'X'}, //localizedText
-			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'X', '-', 'X', 'X', 'X', 'X'}, //qualifiedText
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'X', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
+			{'I', 'I', 'X', 'E', 'I', 'E', 'I', 'I', 'I', 'I', 'I', 'E', 'I', 'X', '-', 'E', 'E', 'I', 'I', 'I', 'X'}, //string
+			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', '-', 'X', 'X', 'X', 'X', 'X'}, //localizedText
+			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'I', 'I', '-', 'X', 'X', 'X', 'X'}, //qualifiedText
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'I', 'I', 'I', 'X', 'E', 'I', 'E', 'X', 'X', '-', 'I', 'I', 'X'}, //uint16
 			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'I', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', '-', 'I', 'X'}, //uint32
-			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'Y', '-', 'X'}, //uint64
+			{'E', 'E', 'X', 'X', 'I', 'X', 'I', 'X', 'E', 'E', 'I', 'X', 'E', 'E', 'E', 'X', 'X', 'E', 'E', '-', 'X'}, //uint64
 			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', '-'}, //xmlElemnt
 	};
 
@@ -299,3 +662,4 @@ namespace OpcUaStackCore
 	}
 
 }
+
