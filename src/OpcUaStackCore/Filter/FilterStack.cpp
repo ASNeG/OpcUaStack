@@ -24,7 +24,9 @@
 #include "OpcUaStackCore/Filter/AttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/SimpleAttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
+
 #include "OpcUaStackCore/Filter/EqualsFilterNode.h"
+#include "OpcUaStackCore/Filter/IsNullFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -191,6 +193,11 @@ namespace OpcUaStackCore
 				}
 
 				case BasicFilterOperator_IsNull:
+				{
+					node = IsNullFilterNode::SPtr(new IsNullFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_GreaterThan:
 				case BasicFilterOperator_LessThan:
 				case BasicFilterOperator_GreaterThanOrEqual:
