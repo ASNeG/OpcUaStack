@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_FilterOperatorUnsupported)
     FilterStack stack;
 
     ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-               BasicFilterOperator::BasicFilterOperator_IsNull, 100, 120);
+               BasicFilterOperator::BasicFilterOperator_GreaterThan, 100, 120);
 
     ContentFilter filter;
     filter.elements()->push_back(eqElement);
@@ -55,11 +55,31 @@ BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperatorInvalid)
     filter.elements()->push_back(eqElement);
 
     ContentFilterResult result;
-    stack.receive(filter, result);
+    BOOST_REQUIRE(stack.receive(filter, result) == false);
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
     BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperatorInvalid);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperandCountMismatch)
+{
+    FilterStack stack;
+    const int INVALID_OPERATOR_ID = 1000;
+
+    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
+               BasicFilterOperator::BasicFilterOperator_Equals, 100, 120);
+
+    ContentFilter filter;
+    eqElement->filterOperands()->resize(3);
+    filter.elements()->push_back(eqElement);
+
+    ContentFilterResult result;
+    BOOST_REQUIRE(stack.receive(filter, result) == false);
+
+    ContentFilterElementResult::SPtr elementResult;
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandCountMismatch);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_2_level_tree)
@@ -294,6 +314,45 @@ BOOST_AUTO_TEST_CASE(FilterStack_loop)
 	elementResult->operandStatusCodes()->get(1, operandStatus);
 	BOOST_REQUIRE_EQUAL(operandStatus, OpcUaStatusCode::BadFilterElementInvalid);
 
+}
+
+BOOST_AUTO_TEST_CASE(IsNullFilterNode_support_IsNullOperator)
+{
+    FilterStack stack;
+
+    ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+
+	MockAttribute mockAttrIf;
+	stack.attributeIf(&mockAttrIf);
+	mockAttrIf.expectedResult_ = false; // attribute's value can't be get
+
+    ExtensibleParameter::SPtr arg = constructSPtr<ExtensibleParameter>();
+	arg->registerFactoryElement<AttributeOperand>((OpcUaUInt32)OpcUaId_AttributeOperand);
+	arg->parameterTypeId().set((OpcUaUInt32)OpcUaId_AttributeOperand);
+	AttributeOperand::SPtr attr = arg->parameter<AttributeOperand>();
+
+	AttributeOperand nullAttribute;
+	*attr = nullAttribute;
+
+
+    eqElement->filterOperator(BasicFilterOperator::BasicFilterOperator_IsNull);
+    eqElement->filterOperands()->resize(1);
+    eqElement->filterOperands()->push_back(arg);
+
+    ContentFilter filter;
+    filter.elements()->push_back(eqElement);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

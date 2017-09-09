@@ -1,5 +1,6 @@
 #include "unittest.h"
-#include "FilterOperatorHelpers.h"
+#include "OpcUaStackCore/Filter/LiteralFilterNode.h"
+#include "OpcUaStackCore/Filter/EqualsFilterNode.h"
 
 using namespace OpcUaStackCore;
 
@@ -10,175 +11,121 @@ BOOST_AUTO_TEST_CASE(EqualsOperator_)
 	std::cout << "EqualsOperator_" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_returns_false)
+BOOST_AUTO_TEST_CASE(EqualsOperator_100_not_equals_120)
 {
-	// 100 == 120 -> false
-    FilterStack stack;
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 100, 120);
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaUInt32>(120);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
+    EqualsFilterNode equalsOperator(args);
 
-
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool retVal;
-    BOOST_REQUIRE(stack.process(retVal));
-    BOOST_REQUIRE(!retVal);
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_returns_true)
+BOOST_AUTO_TEST_CASE(EqualsOperator_100_equals_100)
 {
-	// 100 == 100 -> true
-    FilterStack stack;
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 100, 100);
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
+    EqualsFilterNode equalsOperator(args);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool retVal;
-    BOOST_REQUIRE(stack.process(retVal));
-    BOOST_REQUIRE(retVal);
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_too_few_args)
 {
-    FilterStack stack;
+    std::vector<FilterNode::SPtr> args(0);
+    EqualsFilterNode equalsOperator(args);
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 100, 100);
-    eqElement->filterOperands()->resize(1);
+	BOOST_REQUIRE(equalsOperator.status() == OpcUaStatusCode::BadFilterOperandCountMismatch);
 
-
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
-
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result) == false);
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandCountMismatch);
-
-    bool retVal;
-    BOOST_REQUIRE(!stack.process(retVal));
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult) == false);
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_too_much_args)
 {
-    FilterStack stack;
+    std::vector<FilterNode::SPtr> args(3);
+    EqualsFilterNode equalsOperator(args);
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 100, 100);
-    eqElement->filterOperands()->resize(3);
+	BOOST_REQUIRE(equalsOperator.status() == OpcUaStatusCode::BadFilterOperandCountMismatch);
 
-
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
-
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result) == false);
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperandCountMismatch);
-
-    bool retVal;
-    BOOST_REQUIRE(!stack.process(retVal));
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult) == false);
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast1)
+BOOST_AUTO_TEST_CASE(EqualsOperator_1_equals_true)
 {
-    FilterStack stack;
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaBoolean,OpcUaUInt32>(
-            BasicFilterOperator::BasicFilterOperator_Equals, true, 1);
+	value.set<OpcUaUInt32>(1);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaBoolean>(true);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
+    EqualsFilterNode equalsOperator(args);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool retVal;
-    BOOST_REQUIRE(stack.process(retVal));
-    BOOST_REQUIRE(retVal);
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
-BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast2)
+BOOST_AUTO_TEST_CASE(EqualsOperator_true_equals_1)
 {
-    FilterStack stack;
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32, OpcUaBoolean>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 1, true);
+	value.set<OpcUaBoolean>(true);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaUInt32>(1);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
+    EqualsFilterNode equalsOperator(args);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool retVal;
-    BOOST_REQUIRE(stack.process(retVal));
-    BOOST_REQUIRE(retVal);
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
 BOOST_AUTO_TEST_CASE(EqualsOperator_implicit_cast_fail)
 {
-    FilterStack stack;
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
 
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32, OpcUaDateTime>(
-            BasicFilterOperator::BasicFilterOperator_Equals, 1, OpcUaDateTime());
+	value.set<OpcUaBoolean>(true);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaDateTime>(OpcUaDateTime());
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
 
 
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
+    EqualsFilterNode equalsOperator(args);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool retVal;
-    BOOST_REQUIRE(stack.process(retVal));
-    BOOST_REQUIRE(retVal == false);
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(equalsOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
