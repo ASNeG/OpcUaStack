@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 
     	switch(operator_) {
     	case OpcUaOperator::Equals:
+    	case OpcUaOperator::GreaterThan:
     	{
 			status_ = OpcUaStatusCode::Success;
 			operandStatuses_ = std::vector<OpcUaStatusCode>();
@@ -43,7 +44,7 @@ namespace OpcUaStackCore
 			break;
     	}
     	default:
-    		status_ = OpcUaStatusCode::BadFilterOperandInvalid;
+    		status_ = OpcUaStatusCode::BadFilterOperatorInvalid;
     	}
     }
 
@@ -114,10 +115,16 @@ namespace OpcUaStackCore
 
     bool ComparisonFilterNode::compare(OpcUaVariant::SPtr lhs, OpcUaVariant::SPtr rhs, OpcUaVariant& result)
 	{
+    	// FIXME: doesn't compare arrays
     	switch (operator_) {
 		case OpcUaOperator::Equals:
 		{
-			result.set<OpcUaBoolean>(*lhs == *rhs);
+			result.set<OpcUaBoolean>(lhs->variant()[0] == rhs->variant()[0]);
+			return true;
+		}
+		case OpcUaOperator::GreaterThan:
+		{
+			result.set<OpcUaBoolean>(lhs->variant()[0] > rhs->variant()[0]);
 			return true;
 		}
 
