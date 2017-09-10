@@ -49,6 +49,7 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_equals_100)
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
 }
 
+// GreaterThan
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_greater_than_100)
 {
 	OpcUaVariant value;
@@ -106,6 +107,7 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_100)
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
+// LessThan
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_120)
 {
 	OpcUaVariant value;
@@ -144,7 +146,7 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_less_than_100)
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
-
+// GreaterThanOrEqual
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_greater_than_or_equal_100)
 {
 	OpcUaVariant value;
@@ -202,7 +204,63 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_or_equal_120)
     BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
+// LessOrEqual
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_or_eaual_120)
+{
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
 
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaUInt32>(120);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+
+    ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
+
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(lessThanOrEqualOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
+}
+
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_or_eaual_100)
+{
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
+
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+
+    ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
+
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(lessThanOrEqualOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>());
+}
+
+BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_less_than_or_eaual_100)
+{
+	OpcUaVariant value;
+	std::vector<FilterNode::SPtr> args;
+
+	value.set<OpcUaUInt32>(120);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+	value.set<OpcUaUInt32>(100);
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+
+
+    ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
+
+    OpcUaVariant operatorResult;
+	BOOST_REQUIRE(lessThanOrEqualOperator.evaluate(operatorResult));
+    BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
+}
 
 //------------------------------------------------
 // Handle errors
