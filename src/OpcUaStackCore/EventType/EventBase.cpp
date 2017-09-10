@@ -132,11 +132,11 @@ namespace OpcUaStackCore
     	OpcUaVariant::SPtr variant;
     	EventResult::Code resultCode = get(typeId, tmpBrowsePath, variant);
     	if (resultCode != EventResult::Success) {
-    		return resultCode;
+    		return false;
     	}
 
     	value.copyFrom(*variant);
-    	return EventResult::Success;
+    	return true;
     }
 
 	// ------------------------------------------------------------------------

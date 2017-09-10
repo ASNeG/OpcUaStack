@@ -305,7 +305,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = (OpcUaByte)boost::lexical_cast<OpcUaUInt16>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaByte xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -319,7 +319,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = (OpcUaSByte)boost::lexical_cast<OpcUaInt16>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaSByte xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -333,7 +333,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<uint16_t>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaUInt16 xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -347,7 +347,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<int16_t>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaInt16 xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -361,7 +361,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<uint32_t>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaUInt32 xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -375,7 +375,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<int32_t>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaInt32 xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -389,7 +389,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<uint64_t>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaUInt64 xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -403,7 +403,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<int64_t>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaInt64 xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -417,7 +417,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<float>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaFloat xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
@@ -431,7 +431,7 @@ namespace OpcUaStackCore
 		std::string sourceValue = pt.get_value<std::string>();
 		try {
 			value = boost::lexical_cast<double>(sourceValue);
-		} catch(boost::bad_lexical_cast& e) {
+		} catch(boost::bad_lexical_cast& /*e*/) {
 			Log(Error, "OpcUaDouble xml decoder error - value format error")
 				.parameter("Value", sourceValue);
 			return false;
