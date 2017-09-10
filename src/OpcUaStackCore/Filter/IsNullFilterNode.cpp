@@ -22,9 +22,6 @@ namespace OpcUaStackCore
 {
     IsNullFilterNode::IsNullFilterNode(const std::vector<FilterNode::SPtr>& args)
     {
-        value_ = OpcUaVariant();
-        value_.set<OpcUaBoolean>(false);
-
         status_ = OpcUaStatusCode::Success;
         operandStatuses_ = std::vector<OpcUaStatusCode>();
 
@@ -58,10 +55,9 @@ namespace OpcUaStackCore
     {
     	if (status_ == OpcUaStatusCode::Success) {
     		OpcUaVariant tmpVariant;
-    		OpcUaBoolean isNotNull = arg_->evaluate(tmpVariant);
+    		OpcUaBoolean isNotNull = arg_->evaluate(tmpVariant) && !tmpVariant.isNull();
 
-    		value_.set(!isNotNull);
-    		value_.copyTo(value);
+    		value.set(!isNotNull);
     		return true;
     	}
 

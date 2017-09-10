@@ -40,7 +40,6 @@ namespace OpcUaStackCore
       private:
         FilterNode::SPtr arg_;
 
-        OpcUaVariant value_;
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
     };
