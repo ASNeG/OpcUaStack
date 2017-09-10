@@ -31,6 +31,7 @@ namespace OpcUaStackCore
     	case OpcUaOperator::Equals:
     	case OpcUaOperator::GreaterThan:
     	case OpcUaOperator::LessThan:
+    	case OpcUaOperator::GreaterThanOrEqual:
     	{
 			status_ = OpcUaStatusCode::Success;
 			operandStatuses_ = std::vector<OpcUaStatusCode>();
@@ -133,8 +134,12 @@ namespace OpcUaStackCore
 			result.set<OpcUaBoolean>(lhs->variant()[0] < rhs->variant()[0]);
 			return true;
 		}
+		case OpcUaOperator::GreaterThanOrEqual:
+		{
+			result.set<OpcUaBoolean>(lhs->variant()[0] >= rhs->variant()[0]);
+			return true;
 		}
-
+    	}
     	return false;
 
 	}
