@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 namespace OpcUaStackCore
 {
@@ -32,8 +33,27 @@ namespace OpcUaStackCore
 		EventTypeGenerator(void);
 		~EventTypeGenerator(void);
 
+		void eventType(OpcUaNodeId& eventType);
+		std::string& sourceContent(void);
+		std::string& headerContent(void);
+
+		bool generate(void);
+
 	  private:
 
+		//
+		// header functions
+		//
+		bool generateHeader(void);
+
+		//
+		// source functions
+		//
+		bool generateSource(void);
+
+		OpcUaNodeId eventType_;
+		std::string sourceContent_;
+		std::string headerContent_;
 	};
 
 

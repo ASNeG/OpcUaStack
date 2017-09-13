@@ -22,11 +22,63 @@ namespace OpcUaStackCore
 {
 
 	EventTypeGenerator::EventTypeGenerator(void)
+	: sourceContent_("")
+	, headerContent_("")
 	{
 	}
 
 	EventTypeGenerator::~EventTypeGenerator(void)
 	{
+	}
+
+	bool
+	EventTypeGenerator::generate(void)
+	{
+		return false;
+	}
+
+	void
+	EventTypeGenerator::eventType(OpcUaNodeId& eventType)
+	{
+		eventType_ = eventType;
+	}
+
+	std::string&
+	EventTypeGenerator::sourceContent(void)
+	{
+		return sourceContent_;
+	}
+
+	std::string&
+	EventTypeGenerator::headerContent(void)
+	{
+		return headerContent_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// header functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	EventTypeGenerator::generateHeader(void)
+	{
+		return false;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// source functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	EventTypeGenerator::generateSource(void)
+	{
+		return false;
 	}
 
 }
