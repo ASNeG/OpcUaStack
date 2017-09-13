@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8.9)
 project	(OpcUaStack)
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+cmake_policy(SET CMP0053 OLD)
 
 # ----------------------------------------------------------------------------
 # ----------------------------------------------------------------------------
@@ -81,7 +82,6 @@ endif ()
 #
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
-include(cmake/CMakeLists.txt)
 message(STATUS "Version info")
 message(STATUS "  product version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -193,6 +193,7 @@ include(OpcUaStackServer/CMakeLists.txt)
 include(OpcUaServer/CMakeLists.txt)
 include(OpcUaClient/CMakeLists.txt) 
 include(OpcUaProjectBuilder/CMakeLists.txt)
+include(cmake/CMakeLists.txt)
 
 
 
