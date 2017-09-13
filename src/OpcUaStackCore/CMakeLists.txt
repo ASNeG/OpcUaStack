@@ -36,6 +36,25 @@ set_target_properties(
     SOVERSION ${VERSION_MAJOR}
 )
 
+get_target_property(
+    OpcUaStackCoreLibName 
+    OpcUaStack 
+    OUTPUT_NAME
+)
+
+if (WIN32)
+    message(STATUS "OpcUaStackCore")
+    message(STATUS "  Prefix: ${CMAKE_SHARED_LIBRARY_PREFX}")
+    message(STATUS "  Suffix: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    
+    set_target_properties(
+    	OpcUaStackCore 
+    	PROPERTIES OUTPUT_NAME 
+    	"OpcUaStack${VERSION_MAJOR}"
+)
+    
+    
+endif()
 
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
