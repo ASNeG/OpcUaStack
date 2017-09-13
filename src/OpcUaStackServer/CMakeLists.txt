@@ -35,6 +35,15 @@ set_target_properties(
     SOVERSION ${VERSION_MAJOR}
 )
 
+if (WIN32)
+    set_target_properties(
+    	OpcUaStackServer 
+    	PROPERTIES OUTPUT_NAME 
+    	"OpcUaStackServer${VERSION_MAJOR}"
+	)
+endif()
+
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #

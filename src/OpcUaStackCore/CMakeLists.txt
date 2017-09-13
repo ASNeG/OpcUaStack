@@ -38,22 +38,16 @@ set_target_properties(
 
 get_target_property(
     OpcUaStackCoreLibName 
-    OpcUaStack 
+    OpcUaStackCore
     OUTPUT_NAME
 )
 
 if (WIN32)
-    message(STATUS "OpcUaStackCore")
-    message(STATUS "  Prefix: ${CMAKE_SHARED_LIBRARY_PREFX}")
-    message(STATUS "  Suffix: ${CMAKE_SHARED_LIBRARY_SUFFIX}")
-    
     set_target_properties(
     	OpcUaStackCore 
     	PROPERTIES OUTPUT_NAME 
-    	"OpcUaStack${VERSION_MAJOR}"
-)
-    
-    
+    	"OpcUaStackCore${VERSION_MAJOR}"
+    )
 endif()
 
 # -----------------------------------------------------------------------------
