@@ -15,10 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/EventType/EventTypeGenerator.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/EventType/EventTypeGenerator.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	EventTypeGenerator::EventTypeGenerator(void)

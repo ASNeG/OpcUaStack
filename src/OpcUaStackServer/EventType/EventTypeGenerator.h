@@ -22,7 +22,9 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT EventTypeGenerator
