@@ -8,7 +8,6 @@ cmake.exe -G"Visual Studio 12 2013" -H./src/ -B./build
 
 
 
-set CMAKE_INSTALL_PREFIX=C:\install
 set DESTDIR=C:\install
 C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe ./build/INSTALL.vcxproj
 
