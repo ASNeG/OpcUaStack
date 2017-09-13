@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "BuildConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/EventType/EventTypeGenerator.h"
 
@@ -24,6 +25,10 @@ namespace OpcUaStackServer
 	EventTypeGenerator::EventTypeGenerator(void)
 	: sourceContent_("")
 	, headerContent_("")
+	, eventTypeNodeId_()
+	, eventTypeName_("")
+	, informationModel_(nullptr)
+	, eventTypeNode_()
 	{
 	}
 
@@ -34,13 +39,43 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generate(void)
 	{
-		return false;
+		// check information model
+		if (informationModel_ == nullptr) {
+			Log(Error, "information model is empty");
+			return false;
+		}
+
+		// find event node
+		eventTypeNode_ = informationModel_->find(eventTypeNodeId_);
+		if (!eventTypeNode_) {
+			Log(Error, "event type do not not exist in information model")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		// get event name
+		OpcUaQualifiedName browseName;
+		if (!eventTypeNode_->getBrowseName(browseName)) {
+			Log(Error, "event name not found in node")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+		eventTypeName_ = browseName.name().toStdString();
+
+		// generate source file and header file
+		return generateSource() && generateHeader();
+	}
+
+	void
+	EventTypeGenerator::informationModel(InformationModel& informationModel)
+	{
+		informationModel_ = &informationModel;
 	}
 
 	void
 	EventTypeGenerator::eventType(OpcUaNodeId& eventType)
 	{
-		eventType_ = eventType;
+		eventTypeNodeId_ = eventType;
 	}
 
 	std::string&
@@ -65,7 +100,27 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generateHeader(void)
 	{
-		return false;
+		return generateHeaderComments();
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderComments(void)
+	{
+		std::stringstream ss;
+
+		ss << "/*" << std::endl;
+		ss << "    EventTypeClass: " << eventTypeName_ << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    EventTypeCodeGenerator Version:"  << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
@@ -78,7 +133,27 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generateSource(void)
 	{
-		return false;
+		return generateSourceComments();
+	}
+
+	bool
+	EventTypeGenerator::generateSourceComments(void)
+	{
+		std::stringstream ss;
+
+		ss << "/*" << std::endl;
+		ss << "    EventTypeClass: " << eventTypeName_ << std::endl;
+		ss << std::endl;
+		ss << "    Generated Source Code - please do not change this source code" << std::endl;
+		ss << std::endl;
+		ss << "    EventTypeCodeGenerator Version:" << std::endl;
+		ss << "        OpcUaStackCore - " << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH  << std::endl;
+		ss << std::endl;
+		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
+		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
 	}
 
 }

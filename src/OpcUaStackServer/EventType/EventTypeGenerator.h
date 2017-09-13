@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -35,6 +36,7 @@ namespace OpcUaStackServer
 		EventTypeGenerator(void);
 		~EventTypeGenerator(void);
 
+		void informationModel(InformationModel& informationModel);
 		void eventType(OpcUaNodeId& eventType);
 		std::string& sourceContent(void);
 		std::string& headerContent(void);
@@ -47,13 +49,18 @@ namespace OpcUaStackServer
 		// header functions
 		//
 		bool generateHeader(void);
+		bool generateHeaderComments(void);
 
 		//
 		// source functions
 		//
 		bool generateSource(void);
+		bool generateSourceComments(void);
 
-		OpcUaNodeId eventType_;
+		BaseNodeClass::SPtr eventTypeNode_;
+		InformationModel* informationModel_;
+		OpcUaNodeId eventTypeNodeId_;
+		std::string eventTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
 	};
