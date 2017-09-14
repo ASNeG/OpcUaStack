@@ -21,6 +21,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
@@ -29,7 +30,7 @@
 namespace OpcUaStackCore
 {
 
-	class SecureChannelServer
+	class DLLEXPORT SecureChannelServer
 	: public SecureChannelBase
 	{
 	  public:
