@@ -26,8 +26,9 @@ add_executable(
 
 target_link_libraries(
     OpcUaStackClientTest
-    ${OpcUaStackCore_LIBRARY}
-    ${OpcUaStackClient_LIBRARY}
+    ${OPCUASTACK_LIBRARY_CORE}
+    ${OPCUASTACK_LIBRARY_CLIENT}
+    ${OPCUASTACK_LIBRARY_SERVER}
     ${CMAKE_DL_LIBS}
     ${pthread}
     ${Boost_LIBRARIES}
