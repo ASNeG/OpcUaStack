@@ -26,7 +26,7 @@
 namespace OpcUaStackCore
 {
 
-	class PoolListEntry
+	class DLLEXPORT PoolListEntry
 	{
 	  public:
 		PoolListEntry(void);
@@ -52,7 +52,7 @@ namespace OpcUaStackCore
 
 	typedef PoolListEntry BufferListEntry;
 
-	class PoolList
+	class DLLEXPORT PoolList
 	: public PoolListEntry
 	{
 	  public:
