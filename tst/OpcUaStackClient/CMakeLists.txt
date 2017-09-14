@@ -9,7 +9,8 @@ include_directories(
     ./
     ${PROJECT_BINARY_DIR}
     ../src/
-    ${Boost_INCLUDE_DIRS}
+	${Boost_INCLUDE_DIRS}
+    ${OPENSSL_INCLUDE_DIR}
 )
 
 file(

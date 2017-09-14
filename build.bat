@@ -81,8 +81,12 @@ REM ---------------------------------------------------------------------------
 	REM
 	REM build unittest
 	REM
-	%CMAKE% -G"%VS%" -H./tst/ -B./build_tst
+	%CMAKE% -G"%VS%" -DOPCUASTACK_INSTALL_PREFIX=C:\install -H./tst/ -B./build_tst
 
+	REM
+	REM install OpcUaStack
+	REM
+	%MSBUILD% ./build_tst/ALL_BUILD.vcxproj
 goto:eof
 
 
