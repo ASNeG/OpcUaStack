@@ -38,6 +38,7 @@ namespace OpcUaStackServer
 
 		void informationModel(InformationModel& informationModel);
 		void eventType(OpcUaNodeId& eventType);
+		void projectNamespace(const std::string& projectNamespace);
 		std::string& sourceContent(void);
 		std::string& headerContent(void);
 
@@ -50,6 +51,8 @@ namespace OpcUaStackServer
 		//
 		bool generateHeader(void);
 		bool generateHeaderComments(void);
+		bool generateHeaderBegin(void);
+		bool generateHeaderEnd(void);
 
 		//
 		// source functions
@@ -63,6 +66,8 @@ namespace OpcUaStackServer
 		std::string eventTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
+
+		std::string projectNamespace_;
 	};
 
 

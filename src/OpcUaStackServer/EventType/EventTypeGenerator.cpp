@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 	, eventTypeName_("")
 	, informationModel_(nullptr)
 	, eventTypeNode_()
+	, projectNamespace_("OpcUaStackCore")
 	{
 	}
 
@@ -78,6 +79,12 @@ namespace OpcUaStackServer
 		eventTypeNodeId_ = eventType;
 	}
 
+	void
+	EventTypeGenerator::projectNamespace(const std::string& projectNamespace)
+	{
+		projectNamespace_ = projectNamespace;
+	}
+
 	std::string&
 	EventTypeGenerator::sourceContent(void)
 	{
@@ -100,7 +107,10 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generateHeader(void)
 	{
-		return generateHeaderComments();
+		return
+			generateHeaderComments() &&
+			generateHeaderBegin() &&
+			generateHeaderEnd();
 	}
 
 	bool
@@ -118,6 +128,59 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#ifndef __" << projectNamespace_ << "_" << eventTypeName_ << "_h__" << std::endl;
+		ss << "#define __" << projectNamespace_ << "_" << eventTypeName_ << "_h__" << std::endl;
+
+		//
+		// added includes
+		//
+		ss << std::endl;
+		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "namespace " << projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#endif" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
