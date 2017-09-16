@@ -193,6 +193,7 @@ include(OpcUaStackServer/CMakeLists.txt)
 include(OpcUaServer/CMakeLists.txt)
 include(OpcUaClient/CMakeLists.txt) 
 include(OpcUaProjectBuilder/CMakeLists.txt)
+include(OpcUaEventTypeGenerator/CMakeLists.txt)
 
 
 
