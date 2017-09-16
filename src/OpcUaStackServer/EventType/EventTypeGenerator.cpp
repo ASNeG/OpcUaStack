@@ -97,7 +97,9 @@ namespace OpcUaStackServer
 		eventTypeName_ = browseName.name().toStdString();
 
 		// get opc ua namesapce name
-		// FIXME: todo
+		if (eventTypeNodeId_.namespaceIndex() != 0) {
+			// FIXME: todo
+		}
 
 		// get parent event type name
 		if (!parentEventTypeNode_->getBrowseName(browseName)) {

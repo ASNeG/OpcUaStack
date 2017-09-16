@@ -18,7 +18,7 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
-#include "OpcUaStackCore/EventType/BaseEventType.h"
+#include "OpcUaStackCore/StandardEventType/BaseEventType.h"
 #include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItemId.h"
