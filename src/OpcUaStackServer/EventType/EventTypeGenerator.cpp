@@ -411,6 +411,7 @@ namespace OpcUaStackServer
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
 				generateSourceClassSetter("    ") &&
+				generateSourceClassNamespaceUri("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -670,6 +671,30 @@ namespace OpcUaStackServer
 			ss << prefix << "	return eventVariables_.setValue(\"" << propertyName << "\", " << propertyNameLower << ");" << std::endl;
 			ss << prefix << "}" << std::endl;
 		}
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceClassNamespaceUri(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "virtual void mapNamespaceUri(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    uint32_t namespaceIndex;" << std::endl;
+		ss << prefix << "    " << parentEventTypeName_ << "::mapNamespaceUri();" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr eventType;" << std::endl;
+		ss << prefix << "    eventVariables_.getValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "	eventVariables_.setValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
+		ss << prefix << "	eventVariables_.namespaceIndex(namespaceIndex);" << std::endl;
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
