@@ -302,8 +302,52 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
 	{
+		OpcUaQualifiedName browseName;
+		bool success;
 		std::stringstream ss;
 
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			eventTypeNode_,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			Log(Error, "event properties error")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		ss << prefix << std::endl;
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+
+			// get property node class
+			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
+			if (!propertyNodeClass) {
+				Log(Error, "property node class not exist in information model")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+
+			// get property class name
+			if (!propertyNodeClass->getBrowseName(browseName)) {
+				Log(Error, "property name not found in node")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+			std::string propertyName = browseName.name().toStdString();
+			propertyName[0] = boost::to_lower_copy(propertyName.substr(0,1))[0];
+
+			ss << prefix << "bool " << propertyName << "(OpcUaVariant::SPtr& variable);" << std::endl;
+			ss << prefix << "OpcUaVariant::SPtr " << propertyName << "(void);" << std::endl;
+			ss << prefix << std::endl;
+		}
 		ss << prefix << std::endl;
 		ss << prefix << "//- EventBase interface" << std::endl;
 		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
