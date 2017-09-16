@@ -409,6 +409,8 @@ namespace OpcUaStackServer
 			generateSourceClassBegin() &&
 				generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
+				generateSourceClassGetter("    ") &&
+				generateSourceClassSetter("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -556,7 +558,121 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	//bool generateSourceClassGetter(const std::string& prefix);
-	//bool generateSourceClassSetter(const std::string& prefix);
+	bool
+	EventTypeGenerator::generateSourceClassGetter(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		OpcUaQualifiedName browseName;
+		bool success;
+
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			eventTypeNode_,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			Log(Error, "event properties error")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+
+			// get property node class
+			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
+			if (!propertyNodeClass) {
+				Log(Error, "property node class not exist in information model")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+
+			// get property class name
+			if (!propertyNodeClass->getBrowseName(browseName)) {
+				Log(Error, "property name not found in node")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+			std::string propertyName = browseName.name().toStdString();
+			std::string propertyNameLower = propertyName;
+			propertyNameLower[0] = boost::to_lower_copy(propertyNameLower.substr(0,1))[0];
+
+			ss << prefix << std::endl;
+			ss << prefix << "OpcUaVariant::SPtr " << propertyNameLower << "(void)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "	OpcUaVariant::SPtr value;" << std::endl;
+			ss << prefix << "	eventVariables_.getValue(\"" << propertyNameLower << "\", value);" << std::endl;
+			ss << prefix << "	return value;" << std::endl;
+			ss << prefix << "}" << std::endl;
+
+		}
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceClassSetter(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		OpcUaQualifiedName browseName;
+		bool success;
+
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			eventTypeNode_,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			Log(Error, "event properties error")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+
+			// get property node class
+			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
+			if (!propertyNodeClass) {
+				Log(Error, "property node class not exist in information model")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+
+			// get property class name
+			if (!propertyNodeClass->getBrowseName(browseName)) {
+				Log(Error, "property name not found in node")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+			std::string propertyName = browseName.name().toStdString();
+			std::string propertyNameLower = propertyName;
+			propertyNameLower[0] = boost::to_lower_copy(propertyNameLower.substr(0,1))[0];
+
+			ss << prefix << std::endl;
+			ss << prefix << "bool " << propertyNameLower << "(OpcUaVariant::SPtr& " << propertyNameLower << ")" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "	return eventVariables_.setValue(\"" << propertyName << "\", " << propertyNameLower << ");" << std::endl;
+			ss << prefix << "}" << std::endl;
+		}
+
+		sourceContent_ += ss.str();
+		return true;
+	}
 
 }
