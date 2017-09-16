@@ -178,6 +178,10 @@ namespace OpcUaStackServer
 		return
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
+			generateHeaderClassBegin("    ") &&
+				generateHeaderClassPublic("        ") &&
+				generateHeaderClassPrivate("    ") &&
+		    generateHeaderClassEnd("    ") &&
 			generateHeaderEnd();
 	}
 
@@ -225,6 +229,10 @@ namespace OpcUaStackServer
 		//
 		// added namespace
 		//
+		if (projectNamespace_ != parentProjectNamespace_) {
+			ss << "using namespace " << parentProjectNamespace_ << ";";
+			ss << std::endl;
+		}
 		ss << std::endl;
 		ss << "namespace " << projectNamespace_ << std::endl;
 		ss << "{" << std::endl;
@@ -249,6 +257,80 @@ namespace OpcUaStackServer
 		//
 		ss << std::endl;
 		ss << "#endif" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderClassBegin(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "class " << eventTypeName_ << std::endl;
+		ss << prefix << ": public " << parentEventTypeName_ << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "    typedef boost::shared_ptr<" << eventTypeName_  << "> SPtr;" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    " << eventTypeName_ << "(void);" << std::endl;
+		ss << prefix << "    virtual ~" << eventTypeName_ << "(void);" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderClassEnd(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "};" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "//- EventBase interface" << std::endl;
+		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "virtual OpcUaVariant::SPtr get(" << std::endl;
+		ss << prefix << "    OpcUaNodeId& eventType," << std::endl;
+		ss << prefix << "    std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
+		ss << prefix << "    EventResult::Code& resultCode" << std::endl;
+		ss << prefix << ");" << std::endl;
+		ss << prefix << "//- EventBase interface" << std::endl;
+		ss << prefix << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added private
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "  private:" << std::endl;
+		ss << prefix << "    EventVariables eventVariables_;" << std::endl;
 
 		headerContent_ += ss.str();
 		return true;
