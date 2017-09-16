@@ -412,6 +412,7 @@ namespace OpcUaStackServer
 				generateSourceClassGetter("    ") &&
 				generateSourceClassSetter("    ") &&
 				generateSourceClassNamespaceUri("    ") &&
+				generateSourceClassGet("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -694,6 +695,44 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << "	eventVariables_.setValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
 		ss << prefix << "	eventVariables_.namespaceIndex(namespaceIndex);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceClassGet(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << prefix << "virtual OpcUaVariant::SPtr get(" << std::endl;
+		ss << prefix << "	OpcUaNodeId& eventType," << std::endl;
+		ss << prefix << "	std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
+		ss << prefix << "	EventResult::Code& resultCode" << std::endl;
+		ss << prefix << ")" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	resultCode = EventResult::Success;" << std::endl;
+		ss << std::endl;
+		ss << prefix << "	OpcUaNodeId typeNodeId;" << std::endl;
+		ss << prefix << "	OpcUaVariant::SPtr tmpVariant;" << std::endl;
+		ss << prefix << "	eventVariables_.getValue(\"" << eventTypeName_ << "\", tmpVariant);" << std::endl;
+		ss << prefix << "	tmpVariant->getValue(typeNodeId);" << std::endl;
+		ss << std::endl;
+		ss << prefix << "	// check whether eventType and typeNodeId are identical" << std::endl;
+		ss << prefix << "	if (eventType == typeNodeId) {" << std::endl;
+		ss << prefix << "		return eventVariables_.get(browseNameList, resultCode);" << std::endl;
+		ss << prefix <<	"	}" << std::endl;
+		ss << std::endl;
+		ss << prefix << "	// the start item was not found. We delegate the search to the base class" << std::endl;
+		ss << prefix << "	OpcUaVariant::SPtr variant;" << std::endl;
+		ss << prefix << "	variant = BaseEventType::get(eventType, browseNameList, resultCode);" << std::endl;
+		ss << prefix << "	if (resultCode != EventResult::Success || browseNameList.empty()) {" << std::endl;
+		ss << prefix << "		return variant;" << std::endl;
+		ss << prefix << "	}" << std::endl;
+		ss << std::endl;
+		ss << prefix << "	return eventVariables_.get(browseNameList, resultCode);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
