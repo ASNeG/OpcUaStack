@@ -151,7 +151,7 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
-		ss << "#include \"OpcUaStackCore/Base/ObjectPool.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/EventType/BaseEventType.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
 
 		//
