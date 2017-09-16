@@ -37,6 +37,8 @@ namespace OpcUaStackServer
 	, parentProjectNamespace_("")
 	, projectDirectory_("")
 	, parentProjectDirectory_("")
+	, eventTypeNumber_(0)
+	, namespaceUri_("")
 	{
 	}
 
@@ -63,6 +65,14 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		// get event type number
+		if (eventTypeNodeId_.nodeIdType() != OpcUaBuildInType_OpcUaUInt32) {
+			Log(Error, "event type node id mismatch - id must be a uint32 value")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+		eventTypeNumber_ = eventTypeNodeId_.nodeId<uint32_t>();
+
 		// find parent event type node
 		InformationModelAccess ima;
 		ima.informationModel(informationModel_);
@@ -85,6 +95,9 @@ namespace OpcUaStackServer
 			return false;
 		}
 		eventTypeName_ = browseName.name().toStdString();
+
+		// get opc ua namesapce name
+		// FIXME: todo
 
 		// get parent event type name
 		if (!parentEventTypeNode_->getBrowseName(browseName)) {
@@ -394,6 +407,8 @@ namespace OpcUaStackServer
 			generateSourceComments() &&
 			generateSourceIncludes() &&
 			generateSourceClassBegin() &&
+				generateSourceClassConstructor("    ") &&
+				generateSourceClassDestructor("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -459,5 +474,89 @@ namespace OpcUaStackServer
 		sourceContent_ += ss.str();
 		return true;
 	}
+
+	bool
+	EventTypeGenerator::generateSourceClassConstructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << eventTypeName_ << "(void)" << std::endl;
+		ss << prefix << ": " << parentEventTypeName_ << "()" << std::endl;
+		ss << prefix << ", eventVariables_()" << std::endl;
+		ss << prefix << "{" << std::endl;
+
+		OpcUaQualifiedName browseName;
+		bool success;
+
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			eventTypeNode_,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			Log(Error, "event properties error")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+
+			// get property node class
+			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
+			if (!propertyNodeClass) {
+				Log(Error, "property node class not exist in information model")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+
+			// get property class name
+			if (!propertyNodeClass->getBrowseName(browseName)) {
+				Log(Error, "property name not found in node")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+			std::string propertyName = browseName.name().toStdString();
+
+			ss << prefix << "    eventVariables_.registerEventVariable(\"" << propertyName << "\", OpcUaBuildInType_OpcUaNodeId);" << std::endl;
+		}
+
+
+		ss << prefix << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();" << std::endl;
+		ss << prefix << "    eventType->setValue(OpcUaNodeId((OpcUaUInt32)" << eventTypeNumber_ << "));" << std::endl;
+		ss << prefix << "    eventVariables_.setValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
+		ss << prefix << "    eventVariables_.namespaceIndex(0);" << std::endl;
+		ss << prefix << "    eventVariables_.browseName(OpcUaQualifiedName(\"" << eventTypeName_ <<  "\"));" << std::endl;
+		ss << prefix << "    eventVariables_.namespaceUri(\"" << namespaceUri_ <<  "\");" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceClassDestructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "virtual ~" << eventTypeName_ << "(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	//bool generateSourceClassGetter(const std::string& prefix);
+	//bool generateSourceClassSetter(const std::string& prefix);
 
 }

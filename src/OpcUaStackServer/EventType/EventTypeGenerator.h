@@ -67,17 +67,23 @@ namespace OpcUaStackServer
 		bool generateSourceIncludes(void);
 		bool generateSourceClassBegin(void);
 		bool generateSourceClassEnd(void);
+		bool generateSourceClassConstructor(const std::string& prefix);
+		bool generateSourceClassDestructor(const std::string& prefix);
+		//bool generateSourceClassGetter(const std::string& prefix);
+		//bool generateSourceClassSetter(const std::string& prefix);
 
 		InformationModel::SPtr informationModel_;
 		BaseNodeClass::SPtr eventTypeNode_;
 		BaseNodeClass::SPtr parentEventTypeNode_;
 		OpcUaNodeId eventTypeNodeId_;
 		OpcUaNodeId parentEventTypeNodeId_;
+		uint32_t eventTypeNumber_;
 		std::string eventTypeName_;
 		std::string parentEventTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
 
+		std::string namespaceUri_;
 		std::string projectNamespace_;
 		std::string parentProjectNamespace_;
 		std::string projectDirectory_;
