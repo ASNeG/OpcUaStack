@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(EventTypeGenerator_xx)
 	// gernerate event type source
 	OpcUaNodeId eventTypeNodeId(2052);
 	EventTypeGenerator eventTypeGenerator;
-	eventTypeGenerator.informationModel(*informationModel);
+	eventTypeGenerator.informationModel(informationModel);
 	eventTypeGenerator.eventType(eventTypeNodeId);
 	BOOST_REQUIRE(eventTypeGenerator.generate() == true);
 

@@ -36,9 +36,10 @@ namespace OpcUaStackServer
 		EventTypeGenerator(void);
 		~EventTypeGenerator(void);
 
-		void informationModel(InformationModel& informationModel);
+		void informationModel(InformationModel::SPtr& informationModel);
 		void eventType(OpcUaNodeId& eventType);
 		void projectNamespace(const std::string& projectNamespace);
+		void parentProjectNamespace(const std::string& parentProjectNamespace);
 		std::string& sourceContent(void);
 		std::string& headerContent(void);
 
@@ -59,15 +60,22 @@ namespace OpcUaStackServer
 		//
 		bool generateSource(void);
 		bool generateSourceComments(void);
+		bool generateSourceIncludes(void);
 
+		InformationModel::SPtr informationModel_;
 		BaseNodeClass::SPtr eventTypeNode_;
-		InformationModel* informationModel_;
+		BaseNodeClass::SPtr parentEventTypeNode_;
 		OpcUaNodeId eventTypeNodeId_;
+		OpcUaNodeId parentEventTypeNodeId_;
 		std::string eventTypeName_;
+		std::string parentEventTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
 
 		std::string projectNamespace_;
+		std::string parentProjectNamespace_;
+		std::string projectDirectory_;
+		std::string parentProjectDirectory_;
 	};
 
 

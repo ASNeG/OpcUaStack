@@ -18,6 +18,7 @@
 #include "BuildConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/EventType/EventTypeGenerator.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 namespace OpcUaStackServer
 {
@@ -25,11 +26,17 @@ namespace OpcUaStackServer
 	EventTypeGenerator::EventTypeGenerator(void)
 	: sourceContent_("")
 	, headerContent_("")
-	, eventTypeNodeId_()
-	, eventTypeName_("")
 	, informationModel_(nullptr)
+	, eventTypeNodeId_()
+	, parentEventTypeNodeId_()
+	, eventTypeName_("")
+	, parentEventTypeName_("")
 	, eventTypeNode_()
-	, projectNamespace_("OpcUaStackCore")
+	, parentEventTypeNode_()
+	, projectNamespace_("")
+	, parentProjectNamespace_("")
+	, projectDirectory_("")
+	, parentProjectDirectory_("")
 	{
 	}
 
@@ -40,6 +47,8 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generate(void)
 	{
+		OpcUaQualifiedName browseName;
+
 		// check information model
 		if (informationModel_ == nullptr) {
 			Log(Error, "information model is empty");
@@ -54,8 +63,22 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// get event name
-		OpcUaQualifiedName browseName;
+		// find parent event type node
+		InformationModelAccess ima;
+		ima.informationModel(informationModel_);
+		if (!ima.getSubType(eventTypeNode_, parentEventTypeNodeId_)) {
+			Log(Error, "parent event type do not not exist in information model")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+		parentEventTypeNode_ = informationModel_->find(parentEventTypeNodeId_);
+		if (!parentEventTypeNode_) {
+			Log(Error, "parent event type do not not exist in information model")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		// get event type name
 		if (!eventTypeNode_->getBrowseName(browseName)) {
 			Log(Error, "event name not found in node")
 				.parameter("EventType", eventTypeNodeId_);
@@ -63,14 +86,53 @@ namespace OpcUaStackServer
 		}
 		eventTypeName_ = browseName.name().toStdString();
 
+		// get parent event type name
+		if (!parentEventTypeNode_->getBrowseName(browseName)) {
+			Log(Error, "parent event name not found in node")
+				.parameter("EventType", eventTypeNodeId_)
+				.parameter("ParentEventType", parentEventTypeNodeId_);
+			return false;
+		}
+		parentEventTypeName_ = browseName.name().toStdString();
+
+		// set project directory
+		if (projectDirectory_ == "") {
+			if (eventTypeNodeId_.namespaceIndex() == 0) {
+				projectDirectory_ = "StandardEventType";
+			}
+			else {
+				projectDirectory_ = "CustomerEventType";
+			}
+		}
+
+		// set parent project directory
+		if (parentProjectDirectory_ == "") {
+			if (parentEventTypeNodeId_.namespaceIndex() == 0) {
+				parentProjectDirectory_ = "StandardEventType";
+			}
+			else {
+				parentProjectDirectory_ = "CustomerEventType";
+			}
+		}
+
+		// set project namespace
+		if (projectNamespace_ == "") {
+			projectNamespace_ = "OpcUaStackCore";
+		}
+
+		// set parent project namespace
+		if (parentProjectNamespace_ == "") {
+			parentProjectNamespace_ = "OpcUaStackCore";
+		}
+
 		// generate source file and header file
 		return generateSource() && generateHeader();
 	}
 
 	void
-	EventTypeGenerator::informationModel(InformationModel& informationModel)
+	EventTypeGenerator::informationModel(InformationModel::SPtr& informationModel)
 	{
-		informationModel_ = &informationModel;
+		informationModel_ = informationModel;
 	}
 
 	void
@@ -83,6 +145,12 @@ namespace OpcUaStackServer
 	EventTypeGenerator::projectNamespace(const std::string& projectNamespace)
 	{
 		projectNamespace_ = projectNamespace;
+	}
+
+	void
+	EventTypeGenerator::parentProjectNamespace(const std::string& parentProjectNamespace)
+	{
+		parentProjectNamespace_ = parentProjectNamespace;
 	}
 
 	std::string&
@@ -151,8 +219,8 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
-		ss << "#include \"OpcUaStackCore/EventType/BaseEventType.h\"" << std::endl;
 		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"" << parentProjectNamespace_ << "/" << parentProjectDirectory_ << "/" << parentEventTypeName_ << ".h\"" << std::endl;
 
 		//
 		// added namespace
@@ -196,7 +264,9 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generateSource(void)
 	{
-		return generateSourceComments();
+		return
+			generateSourceComments() &&
+			generateSourceIncludes();
 	}
 
 	bool
@@ -214,6 +284,18 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "    Autor: Kai Huebl (kai@huebl-sgh.de)" << std::endl;
 		ss << "*/" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceIncludes(void)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#include \"" << projectNamespace_ << "/" << projectDirectory_ << "/" << eventTypeName_ << ".h\"" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
