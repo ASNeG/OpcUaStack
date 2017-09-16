@@ -65,6 +65,8 @@ namespace OpcUaStackServer
 		bool generateSource(void);
 		bool generateSourceComments(void);
 		bool generateSourceIncludes(void);
+		bool generateSourceClassBegin(void);
+		bool generateSourceClassEnd(void);
 
 		InformationModel::SPtr informationModel_;
 		BaseNodeClass::SPtr eventTypeNode_;

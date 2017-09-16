@@ -392,7 +392,9 @@ namespace OpcUaStackServer
 	{
 		return
 			generateSourceComments() &&
-			generateSourceIncludes();
+			generateSourceIncludes() &&
+			generateSourceClassBegin() &&
+			generateSourceClassEnd();
 	}
 
 	bool
@@ -422,6 +424,37 @@ namespace OpcUaStackServer
 
 		ss << std::endl;
 		ss << "#include \"" << projectNamespace_ << "/" << projectDirectory_ << "/" << eventTypeName_ << ".h\"" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceClassBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "namespace " <<  projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	EventTypeGenerator::generateSourceClassEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
