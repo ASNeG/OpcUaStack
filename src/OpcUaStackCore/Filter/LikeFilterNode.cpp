@@ -90,32 +90,51 @@ namespace OpcUaStackCore
     			case '%':
     			{
     				if ((j + 1) == stdPattern.size()) {
-    					j++; // the last char of the pattern is %. Finish cycle.
+    					i = stdString.size(); // the last char of the pattern is %. Finish cycle.
     					break;
     				} else {
     					// Check next character after %
     					if (stdPattern[j+1] == stdString[i]) {
     						j += 2;
     					}
-    					if ((++i) == stdString.size()) {
+    					if ((++i) >= stdString.size()) {
     						matches = false;
     					}
     				}
 
     				break;
     			}
+    			case '_':
+    			{
+    				i++;
+    				j++;
+    				break;
+    			}
+    			case '\\':
+				{
+					// Check if \ is the last character of the pattern
+    				if ((j+1) >= stdPattern.size()) {
+    					matches = stdPattern[j] == stdString[i];
+    					break;
+    				}
+
+    				matches = stdPattern[++j] == stdString[i];
+
+    				i++;
+    				j++;
+    				break;
+				}
     			default:
     			{
-    				if (stdPattern[j] != stdString[i]) {
-    					matches = false;
-    				} else {
-    					i++;
-    					j++;
-    				}
+    				matches = stdPattern[j++] == stdString[i++];
     			}
     			}
     		}
 
+
+    		if (i < stdString.size()) {
+    			matches = false;
+    		}
 
     		value.setValue(matches);
 

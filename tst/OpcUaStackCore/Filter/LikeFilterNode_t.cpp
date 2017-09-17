@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_xxx_like_xxx)
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
 }
 
-BOOST_AUTO_TEST_CASE(LikeFilterNode_match1)
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_str_1)
 {
     std::vector<FilterNode::SPtr> args;
 
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match1)
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
 }
 
-BOOST_AUTO_TEST_CASE(LikeFilterNode_match1_)
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_str_1_)
 {
     std::vector<FilterNode::SPtr> args;
 
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match1_)
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
-BOOST_AUTO_TEST_CASE(LikeFilterNode_match2)
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_str_2)
 {
     std::vector<FilterNode::SPtr> args;
 
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match2)
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
 }
 
-BOOST_AUTO_TEST_CASE(LikeFilterNode_match2_)
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_str_2_)
 {
     std::vector<FilterNode::SPtr> args;
 
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match2_)
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
 
-BOOST_AUTO_TEST_CASE(LikeFilterNode_match3)
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_str_3)
 {
     std::vector<FilterNode::SPtr> args;
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match3)
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
 }
 
-BOOST_AUTO_TEST_CASE(LikeFilterNode_match3_)
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_str_3_)
 {
     std::vector<FilterNode::SPtr> args;
 
@@ -140,6 +140,116 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match3_)
 	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
 	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
 }
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_chr_1)
+{
+    std::vector<FilterNode::SPtr> args;
+
+    OpcUaVariant str, pattern;
+    str.setValue(OpcUaString("maintain"));
+    pattern.setValue(OpcUaString("m_intain"));
+
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+
+    LikeFilterNode likeOperator(args);
+
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
+	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
+}
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_chr_1_)
+{
+    std::vector<FilterNode::SPtr> args;
+
+    OpcUaVariant str, pattern;
+    str.setValue(OpcUaString("maintain"));
+    pattern.setValue(OpcUaString("m_inTain"));
+
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+
+    LikeFilterNode likeOperator(args);
+
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
+	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
+}
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_chr_and_str_1)
+{
+    std::vector<FilterNode::SPtr> args;
+
+    OpcUaVariant str, pattern;
+    str.setValue(OpcUaString("maintain"));
+    pattern.setValue(OpcUaString("m_int%"));
+
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+
+    LikeFilterNode likeOperator(args);
+
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
+	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
+}
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_chr_and_str_1_)
+{
+    std::vector<FilterNode::SPtr> args;
+
+    OpcUaVariant str, pattern;
+    str.setValue(OpcUaString("maintain"));
+    pattern.setValue(OpcUaString("m_1nt%"));
+
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+
+    LikeFilterNode likeOperator(args);
+
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
+	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
+}
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_escape_1)
+{
+    std::vector<FilterNode::SPtr> args;
+
+    OpcUaVariant str, pattern;
+    str.setValue(OpcUaString("10 %"));
+    pattern.setValue(OpcUaString("10 \\%"));
+
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+
+    LikeFilterNode likeOperator(args);
+
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
+	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == true);
+}
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_escape_1_)
+{
+    std::vector<FilterNode::SPtr> args;
+
+    OpcUaVariant str, pattern;
+    str.setValue(OpcUaString("10 % 3"));
+    pattern.setValue(OpcUaString("10 \\%"));
+
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(str));
+    args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(pattern));
+
+    LikeFilterNode likeOperator(args);
+
+	OpcUaVariant operatorResult;
+	BOOST_REQUIRE(likeOperator.evaluate(operatorResult));
+	BOOST_REQUIRE(operatorResult.get<OpcUaBoolean>() == false);
+}
+
+
 
 BOOST_AUTO_TEST_CASE(LikeFilterNode_use_conversion)
 {
