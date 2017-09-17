@@ -522,6 +522,23 @@ namespace OpcUaStackServer
 				return false;
 			}
 
+			// get property type
+			OpcUaNodeId propertyTypeNodeId;
+			if (!propertyNodeClass->getDataType(propertyTypeNodeId)) {
+				Log(Error, "property data type not found in node")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it);
+				return false;
+			}
+			std::string propertyTypeName = getTypeNameFromNodeId(propertyTypeNodeId);
+			if (propertyTypeName == "Unknown") {
+				Log(Error, "property data type is not a build in type")
+					.parameter("EventType", eventTypeNodeId_)
+					.parameter("PropertyNodeId", *it)
+					.parameter("PropertyTypeNodeId", propertyTypeNodeId);
+				return false;
+			}
+
 			// get property class name
 			if (!propertyNodeClass->getBrowseName(browseName)) {
 				Log(Error, "property name not found in node")
@@ -531,7 +548,7 @@ namespace OpcUaStackServer
 			}
 			std::string propertyName = browseName.name().toStdString();
 
-			ss << prefix << "    eventVariables_.registerEventVariable(\"" << propertyName << "\", OpcUaBuildInType_OpcUaNodeId);" << std::endl;
+			ss << prefix << "    eventVariables_.registerEventVariable(\"" << propertyName << "\", OpcUaBuildInType_OpcUa" << propertyTypeName << ");" << std::endl;
 		}
 
 
@@ -743,6 +760,33 @@ namespace OpcUaStackServer
 
 		sourceContent_ += ss.str();
 		return true;
+	}
+
+	std::string
+	EventTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
+	{
+		// build in type possible
+		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+			uint32_t type;
+			uint16_t namespaceIndex;
+			typeNodeId.get(type, namespaceIndex);
+			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+			if (buildInType != "Unknown") return buildInType;
+		}
+
+		// get property node class
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
+		if (!nodeClass) {
+			return "Unknown";
+		}
+
+		// get property class name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			return "Unknown";
+		}
+
+		return browseName.name().toStdString();
 	}
 
 }
