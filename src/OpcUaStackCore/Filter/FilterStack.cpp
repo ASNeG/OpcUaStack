@@ -15,7 +15,7 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
+
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
@@ -26,7 +26,9 @@
 #include "OpcUaStackCore/Filter/SimpleAttributeFilterNode.h"
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 
+#include "OpcUaStackCore/Filter/ComparisonFilterNode.h"
 #include "OpcUaStackCore/Filter/IsNullFilterNode.h"
+#include "OpcUaStackCore/Filter/LikeFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -202,7 +204,13 @@ namespace OpcUaStackCore
 				case BasicFilterOperator_LessThan:
 				case BasicFilterOperator_GreaterThanOrEqual:
 				case BasicFilterOperator_LassThanOrEqual:
+					break;
 				case BasicFilterOperator_Like:
+				{
+					node = LikeFilterNode::SPtr(new LikeFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Not:
 				case BasicFilterOperator_Between:
 				case BasicFilterOperator_InList:
