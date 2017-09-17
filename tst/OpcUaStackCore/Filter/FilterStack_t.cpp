@@ -316,7 +316,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_loop)
 
 }
 
-BOOST_AUTO_TEST_CASE(IsNullFilterNode_support_IsNullOperator)
+BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_IsNullOperator)
 {
     FilterStack stack;
 
@@ -324,7 +324,8 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_support_IsNullOperator)
 
 	MockAttribute mockAttrIf;
 	stack.attributeIf(&mockAttrIf);
-	mockAttrIf.expectedResult_ = false; // attribute's value can't be get
+	mockAttrIf.expectedResult_ = true; // attribute's value can be get
+	mockAttrIf.expectedValue_.set<OpcUaUInt16>(5);
 
     ExtensibleParameter::SPtr arg = constructSPtr<ExtensibleParameter>();
 	arg->registerFactoryElement<AttributeOperand>((OpcUaUInt32)OpcUaId_AttributeOperand);
@@ -352,16 +353,14 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_support_IsNullOperator)
 
     bool filterResult;
     BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult);
+    BOOST_REQUIRE(filterResult == false);
 }
 
-
-BOOST_AUTO_TEST_CASE(FilterStack_supports_LikeOperator)
+BOOST_AUTO_TEST_CASE(FilterStack_supports_GreaterThan)
 {
-    // (10 == 10) == (20 == 20) => true
     FilterStack stack;
-    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaString,OpcUaString>(
-            BasicFilterOperator::BasicFilterOperator_Like, OpcUaString("xxx"), OpcUaString("xxx"));
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaFloat,OpcUaFloat>(
+            BasicFilterOperator::BasicFilterOperator_GreaterThan, 10.0, 20.0);
 
     ContentFilter filter;
     filter.elements()->resize(1);
@@ -379,7 +378,109 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_LikeOperator)
 
     bool filterResult;
     BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == true);
+    BOOST_REQUIRE(filterResult == false);
+}
+
+
+BOOST_AUTO_TEST_CASE(FilterStack_supports_LessThan)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaFloat,OpcUaFloat>(
+            BasicFilterOperator::BasicFilterOperator_LessThan, 20.0, 10.0);
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_supports_GreateThanOrEqual)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaFloat,OpcUaFloat>(
+            BasicFilterOperator::BasicFilterOperator_GreaterThanOrEqual, 10.0, 20.0);
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_supports_LessThanOrEqual)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaFloat,OpcUaFloat>(
+            BasicFilterOperator::BasicFilterOperator_LessThanOrEqual, 20.0, 10.0);
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_supports_LikeOperator)
+{
+    // "xxx" like not "yyy"
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaString,OpcUaString>(
+            BasicFilterOperator::BasicFilterOperator_Like, OpcUaString("xxx"), OpcUaString("yyy"));
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

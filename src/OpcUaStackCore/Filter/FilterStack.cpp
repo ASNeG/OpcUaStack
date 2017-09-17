@@ -187,24 +187,22 @@ namespace OpcUaStackCore
 
         if (!hasOperandError) {
 			switch (el->filterOperator()) {
-				case BasicFilterOperator_Equals:
-				{
-					node = ComparisonFilterNode::SPtr(new ComparisonFilterNode(OpcUaOperator::Equals, args));
-					operatorStatus = node->status();
-					break;
-				}
-
 				case BasicFilterOperator_IsNull:
 				{
 					node = IsNullFilterNode::SPtr(new IsNullFilterNode(args));
 					operatorStatus = node->status();
 					break;
 				}
+				case BasicFilterOperator_Equals:
 				case BasicFilterOperator_GreaterThan:
 				case BasicFilterOperator_LessThan:
 				case BasicFilterOperator_GreaterThanOrEqual:
-				case BasicFilterOperator_LassThanOrEqual:
+				case BasicFilterOperator_LessThanOrEqual:
+				{
+					node = ComparisonFilterNode::SPtr(new ComparisonFilterNode((OpcUaOperator)el->filterOperator(), args));
+					operatorStatus = node->status();
 					break;
+				}
 				case BasicFilterOperator_Like:
 				{
 					node = LikeFilterNode::SPtr(new LikeFilterNode(args));
@@ -251,8 +249,6 @@ namespace OpcUaStackCore
     	if (!root_->evaluate(value)) {
     		return false;
     	}
-
-    	// FIXME: type conversion
 
     	if (!value.getValue(filterResult)) {
     		return false;
