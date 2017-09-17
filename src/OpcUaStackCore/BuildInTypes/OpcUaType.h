@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 		OpcUaBuildInType_OpcUaDuration = 11,
 		OpcUaBuildInType_OpcUaString = 12,
 		OpcUaBuildInType_OpcUaDateTime = 13,
+		OpcUaBuildInType_OpcUaUtcTime = 13,
 		OpcUaBuildInType_OpcUaGuid = 14,
 		OpcUaBuildInType_OpcUaByteString = 15,
 		OpcUaBuildInType_OpcUaXmlElement = 16,
