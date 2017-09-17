@@ -19,8 +19,8 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("InputNode", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("SuppressedOrShelved", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("MaxTimeShelved", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("SuppressedOrShelved", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("MaxTimeShelved", OpcUaBuildInType_OpcUaDuration);
     
         OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
         eventType->setValue(OpcUaNodeId((OpcUaUInt32)2915));

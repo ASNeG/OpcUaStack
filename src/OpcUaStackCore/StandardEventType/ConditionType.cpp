@@ -19,11 +19,11 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("ConditionClassId", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("ConditionClassName", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("ConditionName", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("ConditionClassName", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ConditionName", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("BranchId", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("Retain", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("Retain", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaString);
     
         OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
         eventType->setValue(OpcUaNodeId((OpcUaUInt32)2782));

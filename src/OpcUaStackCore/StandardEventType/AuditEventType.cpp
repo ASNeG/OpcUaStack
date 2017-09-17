@@ -18,11 +18,11 @@ namespace OpcUaStackCore
     : BaseEventType()
     , eventVariables_()
     {
-        eventVariables_.registerEventVariable("ActionTimeStamp", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("Status", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("ServerId", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("ClientAuditEntryId", OpcUaBuildInType_OpcUaNodeId);
-        eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("ActionTimeStamp", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("Status", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("ServerId", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("ClientAuditEntryId", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaString);
     
         OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
         eventType->setValue(OpcUaNodeId((OpcUaUInt32)2052));
