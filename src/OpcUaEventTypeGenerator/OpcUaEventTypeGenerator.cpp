@@ -181,7 +181,6 @@ namespace OpcUaEventTypeGenerator
 			}
 		}
 
-		std::cout << "event type " << eventTypeName << " not found in information model" << std::endl;
 		return false;
 	}
 
