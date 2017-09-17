@@ -64,13 +64,17 @@ namespace OpcUaStackCore
     		OpcUaVariant::SPtr argValue = constructSPtr<OpcUaVariant>();
 
     		arg1_->evaluate(*argValue);
-    		converter.conversion(argValue, OpcUaBuildInType_OpcUaString, tmpVariant);
+    		if (!converter.conversion(argValue, OpcUaBuildInType_OpcUaString, tmpVariant)) {
+    			return false;
+    		}
 
     		OpcUaString string;
     		tmpVariant->getValue(string);
 
     		arg2_->evaluate(*argValue);
-    		converter.conversion(argValue, OpcUaBuildInType_OpcUaString, tmpVariant);
+    		if (!converter.conversion(argValue, OpcUaBuildInType_OpcUaString, tmpVariant)) {
+    			return false;
+    		}
 
     		OpcUaString patern;
     		tmpVariant->getValue(patern);
