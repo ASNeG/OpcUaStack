@@ -20,8 +20,13 @@
 #include <sstream>
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaEventTypeGenerator/OpcUaEventTypeGenerator.h"
+#include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackServer/EventType/EventTypeGenerator.h"
+#include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
+#include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 
 using namespace OpcUaStackCore;
+using namespace OpcUaStackServer;
 
 namespace OpcUaEventTypeGenerator
 {
@@ -49,6 +54,31 @@ namespace OpcUaEventTypeGenerator
 			usage();
 			return 1;
 		}
+
+		std::string fileName = argv[1];
+		std::string eventTypeName = argv[2];
+
+		// read opc ua nodeset
+		ConfigXml configXml;
+	    if (!configXml.parse(fileName)) {
+	    	std::cout << configXml.errorMessage() << std::endl;
+	    	return -1;
+	    }
+
+	    // parse node set file
+	    NodeSetXmlParser nodeSetXmlParser;
+	    if (!nodeSetXmlParser.decode(configXml.ptree())) {
+	    	std::cout << "node set parser error" << std::endl;
+	    	return -2;
+	    }
+
+	    // init information model
+		InformationModel::SPtr informationModel = constructSPtr<InformationModel>();
+		if (!InformationModelNodeSet::initial(informationModel, nodeSetXmlParser)) {
+			std::cout << "init information model error" << std::endl;
+			return -3;
+		}
+		informationModel->checkForwardReferences();
 
 		return 0;
 	}
