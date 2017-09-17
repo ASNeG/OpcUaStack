@@ -18,6 +18,12 @@
 #ifndef __OpcUaEventTypeGenerator_OpcUaEventTypeGenerator_h__
 #define __OpcUaEventTypeGenerator_OpcUaEventTypeGenerator_h__
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+#include "OpcUaStackServer/InformationModel/InformationModel.h"
+
+using namespace OpcUaStackCore;
+using namespace OpcUaStackServer;
+
 namespace OpcUaEventTypeGenerator
 {
 
@@ -30,7 +36,11 @@ namespace OpcUaEventTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
+		InformationModel::SPtr informationModel_;
+		OpcUaNodeId eventTypeNodeId_;
+
 		void usage(void);
+		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
 
 	};
 
