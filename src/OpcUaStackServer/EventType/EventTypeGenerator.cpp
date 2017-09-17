@@ -487,7 +487,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << eventTypeName_ << "(void)" << std::endl;
+		ss << prefix << eventTypeName_ << "::" << eventTypeName_ << "(void)" << std::endl;
 		ss << prefix << ": " << parentEventTypeName_ << "()" << std::endl;
 		ss << prefix << ", eventVariables_()" << std::endl;
 		ss << prefix << "{" << std::endl;
@@ -554,7 +554,7 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "virtual ~" << eventTypeName_ << "(void)" << std::endl;
+		ss << prefix << eventTypeName_ << "::~" << eventTypeName_ << "(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "}" << std::endl;
 
@@ -609,7 +609,8 @@ namespace OpcUaStackServer
 			propertyNameLower[0] = boost::to_lower_copy(propertyNameLower.substr(0,1))[0];
 
 			ss << prefix << std::endl;
-			ss << prefix << "OpcUaVariant::SPtr " << propertyNameLower << "(void)" << std::endl;
+			ss << prefix << "OpcUaVariant::SPtr " << std::endl;
+			ss << prefix << eventTypeName_ << "::" << propertyNameLower << "(void)" << std::endl;
 			ss << prefix << "{" << std::endl;
 			ss << prefix << "	OpcUaVariant::SPtr value;" << std::endl;
 			ss << prefix << "	eventVariables_.getValue(\"" << propertyNameLower << "\", value);" << std::endl;
@@ -669,7 +670,8 @@ namespace OpcUaStackServer
 			propertyNameLower[0] = boost::to_lower_copy(propertyNameLower.substr(0,1))[0];
 
 			ss << prefix << std::endl;
-			ss << prefix << "bool " << propertyNameLower << "(OpcUaVariant::SPtr& " << propertyNameLower << ")" << std::endl;
+			ss << prefix << "bool " << std::endl;
+			ss << prefix << eventTypeName_ << "::" << propertyNameLower << "(OpcUaVariant::SPtr& " << propertyNameLower << ")" << std::endl;
 			ss << prefix << "{" << std::endl;
 			ss << prefix << "	return eventVariables_.setValue(\"" << propertyName << "\", " << propertyNameLower << ");" << std::endl;
 			ss << prefix << "}" << std::endl;
@@ -685,7 +687,8 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << prefix << std::endl;
-		ss << prefix << "virtual void mapNamespaceUri(void)" << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << eventTypeName_ << "::" << "mapNamespaceUri(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "    uint32_t namespaceIndex;" << std::endl;
 		ss << prefix << "    " << parentEventTypeName_ << "::mapNamespaceUri();" << std::endl;
@@ -709,7 +712,8 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		ss << std::endl;
-		ss << prefix << "virtual OpcUaVariant::SPtr get(" << std::endl;
+		ss << prefix << "OpcUaVariant::SPtr" << std::endl;
+		ss << prefix << eventTypeName_ << "::" << "get(" << std::endl;
 		ss << prefix << "	OpcUaNodeId& eventType," << std::endl;
 		ss << prefix << "	std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
 		ss << prefix << "	EventResult::Code& resultCode" << std::endl;
