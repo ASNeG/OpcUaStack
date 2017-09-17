@@ -293,7 +293,7 @@ build_tst()
     then
         cmake ../tst \
   	     "${CMAKE_GENERATOR_LOCAL}" \
-	     -DINSTALL_PREFIX_OpcUaStack="${HOME}/install"
+	     -DOPCUASTACK_INSTALL_PREFIX="${HOME}/install"
         RESULT=$?
         if [ ${RESULT} -ne 0 ] ;
         then
