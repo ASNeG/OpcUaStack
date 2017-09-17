@@ -286,7 +286,7 @@ namespace OpcUaStackServer
 		// added class
 		//
 		ss << prefix << std::endl;
-		ss << prefix << "class " << eventTypeName_ << std::endl;
+		ss << prefix << "class DLLEXPORT " << eventTypeName_ << std::endl;
 		ss << prefix << ": public " << parentEventTypeName_ << std::endl;
 		ss << prefix << "{" << std::endl;
 		ss << prefix << "  public:" << std::endl;

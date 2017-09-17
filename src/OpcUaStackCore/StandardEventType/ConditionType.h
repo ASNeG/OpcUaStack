@@ -20,7 +20,7 @@
 namespace OpcUaStackCore
 {
     
-    class ConditionType
+    class DLLEXPORT ConditionType
     : public BaseEventType
     {
       public:

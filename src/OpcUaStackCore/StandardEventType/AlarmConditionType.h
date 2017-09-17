@@ -20,7 +20,7 @@
 namespace OpcUaStackCore
 {
     
-    class AlarmConditionType
+    class DLLEXPORT AlarmConditionType
     : public AcknowledgeableConditionType
     {
       public:

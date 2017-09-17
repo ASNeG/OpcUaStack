@@ -20,7 +20,7 @@
 namespace OpcUaStackCore
 {
     
-    class AuditEventType
+    class DLLEXPORT AuditEventType
     : public BaseEventType
     {
       public:

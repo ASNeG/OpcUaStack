@@ -20,7 +20,7 @@
 namespace OpcUaStackCore
 {
     
-    class AcknowledgeableConditionType
+    class DLLEXPORT AcknowledgeableConditionType
     : public ConditionType
     {
       public:
