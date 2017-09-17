@@ -76,10 +76,48 @@ namespace OpcUaStackCore
     			return false;
     		}
 
-    		OpcUaString patern;
-    		tmpVariant->getValue(patern);
+    		OpcUaString pattern;
+    		tmpVariant->getValue(pattern);
 
-    		value.setValue(patern == string);
+
+    		bool matches = true;
+    		std::string stdString = string.toStdString();
+    		std::string stdPattern = pattern.toStdString();
+    		int i = 0;
+    		int j = 0;
+    		while(i < stdString.size() && j < stdPattern.size() && matches) {
+    			switch (stdPattern[j]) {
+    			case '%':
+    			{
+    				if ((j + 1) == stdPattern.size()) {
+    					j++; // the last char of the pattern is %. Finish cycle.
+    					break;
+    				} else {
+    					// Check next character after %
+    					if (stdPattern[j+1] == stdString[i]) {
+    						j += 2;
+    					}
+    					if ((++i) == stdString.size()) {
+    						matches = false;
+    					}
+    				}
+
+    				break;
+    			}
+    			default:
+    			{
+    				if (stdPattern[j] != stdString[i]) {
+    					matches = false;
+    				} else {
+    					i++;
+    					j++;
+    				}
+    			}
+    			}
+    		}
+
+
+    		value.setValue(matches);
 
     		return true;
     	}
