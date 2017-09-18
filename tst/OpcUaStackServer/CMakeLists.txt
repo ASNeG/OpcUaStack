@@ -10,6 +10,7 @@ include_directories(
     ${PROJECT_BINARY_DIR}
     ../inc/
 	${Boost_INCLUDE_DIRS}
+	${OPENSSL_INCLUDE_DIR}
 )
 
 file(
@@ -26,8 +27,9 @@ add_executable(
 
 target_link_libraries(
     OpcUaStackServerTest
-    ${OpcUaStackCore_LIBRARY}
-    ${OpcUaStackServer_LIBRARY}
+    ${OPCUASTACK_LIBRARY_CORE}
+    ${OPCUASTACK_LIBRARY_CLIENT}
+    ${OPCUASTACK_LIBRARY_SERVER}
     ${CMAKE_DL_LIBS}
     ${pthread}
     ${Boost_LIBRARIES}

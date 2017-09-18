@@ -36,6 +36,20 @@ set_target_properties(
     SOVERSION ${VERSION_MAJOR}
 )
 
+if (WIN32)
+    set_target_properties(
+    	OpcUaStackClient 
+    	PROPERTIES OUTPUT_NAME 
+    	"OpcUaStackClient${VERSION_MAJOR}"
+	)
+	set(OPCUASTACK_CLIENT_LIB_NAME OpcUaStackClient@VERSION_MAJOR@.lib)
+else()
+    set(OPCUASTACK_CLIENT_LIB_NAME libOpcUaStackClient.so.@VERSION_MAJOR@)
+endif()
+
+message(STATUS "OpcUaStackClient")
+message(STATUS "  library name: ${OPCUASTACK_CLIENT_LIB_NAME}")
+
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #

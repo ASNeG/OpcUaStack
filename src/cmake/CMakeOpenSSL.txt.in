@@ -10,7 +10,7 @@
 # -----------------------------------------------------------------------------
 find_package(
     OpenSSL 
-    "@OPENSSL_VERSION_MAJOR@.@OPENSSL_VERSION_MINOR@.@OPENSSL_VERSION_PATCH@" 
+    "@OPENSSL_VERSION_MAJOR@.@OPENSSL_VERSION_MINOR@" 
     COMPONENTS openssl crypto 
     REQUIRED
 )
