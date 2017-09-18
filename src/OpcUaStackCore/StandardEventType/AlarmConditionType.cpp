@@ -22,9 +22,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("SuppressedOrShelved", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("MaxTimeShelved", OpcUaBuildInType_OpcUaDuration);
     
-        OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();
-        eventType->setValue(OpcUaNodeId((OpcUaUInt32)2915));
-        eventVariables_.setValue("AlarmConditionType", eventType);
+        eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2915));
         eventVariables_.namespaceIndex(0);
         eventVariables_.browseName(OpcUaQualifiedName("AlarmConditionType"));
         eventVariables_.namespaceUri("");
@@ -82,13 +80,14 @@ namespace OpcUaStackCore
         uint32_t namespaceIndex;
         AcknowledgeableConditionType::mapNamespaceUri();
     
-        OpcUaVariant::SPtr eventType;
-        eventVariables_.getValue("AlarmConditionType", eventType);
+        OpcUaVariant::SPtr eventTypeVariable = constructSPtr<OpcUaVariant>();
+        eventTypeVariable->setValue(eventVariables_.eventType());
     
-        setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);
+        setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventTypeVariable);
     
-    	eventVariables_.setValue("AlarmConditionType", eventType);
-    	eventVariables_.namespaceIndex(namespaceIndex);
+        eventType(eventTypeVariable);
+        eventVariables_.eventType(eventTypeVariable);
+        eventVariables_.namespaceIndex(namespaceIndex);
     }
 
     OpcUaVariant::SPtr
@@ -98,26 +97,21 @@ namespace OpcUaStackCore
     	EventResult::Code& resultCode
     )
     {
-    	resultCode = EventResult::Success;
+        resultCode = EventResult::Success;
 
-    	OpcUaNodeId typeNodeId;
-    	OpcUaVariant::SPtr tmpVariant;
-    	eventVariables_.getValue("AlarmConditionType", tmpVariant);
-    	tmpVariant->getValue(typeNodeId);
+        // check whether eventType and typeNodeId are identical
+        if (eventType == eventVariables_.eventType()) {
+    	    return eventVariables_.get(browseNameList, resultCode);
+        }
 
-    	// check whether eventType and typeNodeId are identical
-    	if (eventType == typeNodeId) {
-    		return eventVariables_.get(browseNameList, resultCode);
-    	}
+        // the start item was not found. We delegate the search to the base class
+        OpcUaVariant::SPtr variant;
+        variant = AcknowledgeableConditionType::get(eventType, browseNameList, resultCode);
+        if (resultCode != EventResult::Success || browseNameList.empty()) {
+    	    return variant;
+        }
 
-    	// the start item was not found. We delegate the search to the base class
-    	OpcUaVariant::SPtr variant;
-    	variant = BaseEventType::get(eventType, browseNameList, resultCode);
-    	if (resultCode != EventResult::Success || browseNameList.empty()) {
-    		return variant;
-    	}
-
-    	return eventVariables_.get(browseNameList, resultCode);
+        return eventVariables_.get(browseNameList, resultCode);
     }
 
 }
