@@ -553,9 +553,7 @@ namespace OpcUaStackServer
 
 
 		ss << prefix << std::endl;
-		ss << prefix << "    OpcUaVariant::SPtr eventType = constructSPtr<OpcUaVariant>();" << std::endl;
-		ss << prefix << "    eventType->setValue(OpcUaNodeId((OpcUaUInt32)" << eventTypeNumber_ << "));" << std::endl;
-		ss << prefix << "    eventVariables_.setValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
+		ss << prefix << "    eventVariables_.eventType(" << "OpcUaNodeId((OpcUaUInt32)" << eventTypeNumber_ << "));" << std::endl;
 		ss << prefix << "    eventVariables_.namespaceIndex(0);" << std::endl;
 		ss << prefix << "    eventVariables_.browseName(OpcUaQualifiedName(\"" << eventTypeName_ <<  "\"));" << std::endl;
 		ss << prefix << "    eventVariables_.namespaceUri(\"" << namespaceUri_ <<  "\");" << std::endl;
@@ -710,13 +708,14 @@ namespace OpcUaStackServer
 		ss << prefix << "    uint32_t namespaceIndex;" << std::endl;
 		ss << prefix << "    " << parentEventTypeName_ << "::mapNamespaceUri();" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix << "    OpcUaVariant::SPtr eventType;" << std::endl;
-		ss << prefix << "    eventVariables_.getValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr eventTypeVariable = constructSPtr<OpcUaVariant>();" << std::endl;
+		ss << prefix << "    eventTypeVariable->setValue(eventVariables_.eventType());" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix << "    setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventType);" << std::endl;
+		ss << prefix << "    setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventTypeVariable);" << std::endl;
 		ss << prefix << std::endl;
-		ss << prefix << "	eventVariables_.setValue(\"" << eventTypeName_ << "\", eventType);" << std::endl;
-		ss << prefix << "	eventVariables_.namespaceIndex(namespaceIndex);" << std::endl;
+		ss << prefix << "    eventType(eventTypeVariable);" << std::endl;
+		ss << prefix << "    eventVariables_.eventType(eventTypeVariable);" << std::endl;
+		ss << prefix << "    eventVariables_.namespaceIndex(namespaceIndex);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
@@ -736,26 +735,21 @@ namespace OpcUaStackServer
 		ss << prefix << "	EventResult::Code& resultCode" << std::endl;
 		ss << prefix << ")" << std::endl;
 		ss << prefix << "{" << std::endl;
-		ss << prefix << "	resultCode = EventResult::Success;" << std::endl;
+		ss << prefix << "    resultCode = EventResult::Success;" << std::endl;
 		ss << std::endl;
-		ss << prefix << "	OpcUaNodeId typeNodeId;" << std::endl;
-		ss << prefix << "	OpcUaVariant::SPtr tmpVariant;" << std::endl;
-		ss << prefix << "	eventVariables_.getValue(\"" << eventTypeName_ << "\", tmpVariant);" << std::endl;
-		ss << prefix << "	tmpVariant->getValue(typeNodeId);" << std::endl;
+		ss << prefix << "    // check whether eventType and typeNodeId are identical" << std::endl;
+		ss << prefix << "    if (eventType == eventVariables_.eventType()) {" << std::endl;
+		ss << prefix << "	    return eventVariables_.get(browseNameList, resultCode);" << std::endl;
+		ss << prefix << "    }" << std::endl;
 		ss << std::endl;
-		ss << prefix << "	// check whether eventType and typeNodeId are identical" << std::endl;
-		ss << prefix << "	if (eventType == typeNodeId) {" << std::endl;
-		ss << prefix << "		return eventVariables_.get(browseNameList, resultCode);" << std::endl;
-		ss << prefix <<	"	}" << std::endl;
+		ss << prefix << "    // the start item was not found. We delegate the search to the base class" << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr variant;" << std::endl;
+		ss << prefix << "    variant = " << parentEventTypeName_ << "::get(eventType, browseNameList, resultCode);" << std::endl;
+		ss << prefix << "    if (resultCode != EventResult::Success || browseNameList.empty()) {" << std::endl;
+		ss << prefix << "	    return variant;" << std::endl;
+		ss << prefix << "    }" << std::endl;
 		ss << std::endl;
-		ss << prefix << "	// the start item was not found. We delegate the search to the base class" << std::endl;
-		ss << prefix << "	OpcUaVariant::SPtr variant;" << std::endl;
-		ss << prefix << "	variant = BaseEventType::get(eventType, browseNameList, resultCode);" << std::endl;
-		ss << prefix << "	if (resultCode != EventResult::Success || browseNameList.empty()) {" << std::endl;
-		ss << prefix << "		return variant;" << std::endl;
-		ss << prefix << "	}" << std::endl;
-		ss << std::endl;
-		ss << prefix << "	return eventVariables_.get(browseNameList, resultCode);" << std::endl;
+		ss << prefix << "    return eventVariables_.get(browseNameList, resultCode);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
