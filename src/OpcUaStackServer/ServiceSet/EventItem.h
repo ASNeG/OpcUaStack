@@ -58,6 +58,7 @@ namespace OpcUaStackServer
 
 		uint32_t size(void);
 		uint32_t eventItemId(void);
+		void erase(void);
 
 		//- Interface SimpleAttributeIf ---------------------------------------
 	    virtual bool getAttribute(

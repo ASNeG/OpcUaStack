@@ -323,6 +323,7 @@ namespace OpcUaStackServer
 					.parameter("SessionId", trx->sessionId())
 					.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
 
+				it2->second->erase();
 				eventItemMap_.erase(it2);
 			}
 		}

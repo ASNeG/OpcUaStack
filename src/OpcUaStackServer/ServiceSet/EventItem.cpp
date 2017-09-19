@@ -134,9 +134,16 @@ namespace OpcUaStackServer
 	}
 
 	void
+	EventItem::erase(void)
+	{
+		clear();
+	}
+
+	void
 	EventItem::clear(void)
 	{
 		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
+
 		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandlerMap.deregisterEvent(nodeId_, eventHandler_->eventId());
 	}
