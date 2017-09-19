@@ -25,6 +25,7 @@ namespace OpcUaStackServer
 	InformationModel::InformationModel(void)
 	: methodMap_()
 	, eventHandlerMap_()
+	, mutex_()
 	{
 	}
 
@@ -48,6 +49,12 @@ namespace OpcUaStackServer
 	InformationModel::eventHandlerMap(void)
 	{
 		return eventHandlerMap_;
+	}
+
+	boost::mutex&
+	InformationModel::mutex(void)
+	{
+		return mutex_;
 	}
 
 	void

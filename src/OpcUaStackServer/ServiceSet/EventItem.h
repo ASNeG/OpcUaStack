@@ -52,7 +52,9 @@ namespace OpcUaStackServer
 			MonitoredItemCreateRequest::SPtr& monitoredItemCreateRequest,
 			MonitoredItemCreateResult::SPtr& monitoredItemCreateResult
 		);
-		OpcUaStatusCode receive(EventFieldListArray::SPtr eventFieldListArray);
+		OpcUaStatusCode receive(
+			EventFieldListArray::SPtr eventFieldListArray
+		);
 
 		uint32_t size(void);
 		uint32_t eventItemId(void);

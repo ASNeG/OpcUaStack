@@ -109,7 +109,6 @@ namespace OpcUaStackServer
 		}
 
 		// register event handler
-		// FIXME: lock...
 		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
 		eventHandler_->callback().reset(boost::bind(&EventItem::fireEvent, this, _1));
 		EventHandlerBase::SPtr eventHandlerBase = boost::static_pointer_cast<EventHandlerBase>(eventHandler_);

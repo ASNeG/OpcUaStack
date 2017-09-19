@@ -55,6 +55,7 @@ namespace OpcUaStackServer
 		InformationModelMap& informationModelMap(void);
 		MethodMap& methodMap(void);
 		EventHandlerMap& eventHandlerMap(void);
+		boost::mutex& mutex(void);
 
 		void checkForwardReferences(void);
 
