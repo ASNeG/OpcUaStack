@@ -1321,7 +1321,7 @@ namespace OpcUaStackServer
 	AttributeBase::setValueSync(OpcUaDataValue& value)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
-		return setValueSync(value);
+		return setValue(value);
 	}
 
 	bool
@@ -1997,7 +1997,7 @@ namespace OpcUaStackServer
 	AttributeBase::setMinimumSamplingIntervalSync(OpcUaDouble& minimumSamplingInterval)
 	{
 		boost::unique_lock<boost::shared_mutex> lock(mutex_);
-		return setMinimumSamplingIntervalSync(minimumSamplingInterval);
+		return setMinimumSamplingInterval(minimumSamplingInterval);
 	}
 
 	bool
