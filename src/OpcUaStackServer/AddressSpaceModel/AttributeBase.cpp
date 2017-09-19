@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/thread.hpp>
 #include <boost/thread/shared_mutex.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeBase.h"
