@@ -82,7 +82,8 @@ namespace OpcUaStackServer
 		SimpleAttributeOperandArray::SPtr selectClauses_;
 
 		EventHandler::SPtr eventHandler_;
-		EventFieldListList eventFieldListList_; // FIXME: need lock...
+		EventFieldListList eventFieldListList_;
+		boost::mutex eventFieldListListMutex_;
 
 		EventBase::SPtr eventBase_;
 	};

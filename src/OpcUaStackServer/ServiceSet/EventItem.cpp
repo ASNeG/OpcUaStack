@@ -111,9 +111,10 @@ namespace OpcUaStackServer
 		// register event handler
 		// FIXME: lock...
 		EventHandlerMap& eventHandlerMap = informationModel_->eventHandlerMap();
-		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandler_->callback().reset(boost::bind(&EventItem::fireEvent, this, _1));
 		EventHandlerBase::SPtr eventHandlerBase = boost::static_pointer_cast<EventHandlerBase>(eventHandler_);
+
+		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
 		eventHandlerMap.registerEvent(nodeId_, eventHandlerBase);
 
 		monitoredItemCreateResult->statusCode(Success);
@@ -272,14 +273,14 @@ namespace OpcUaStackServer
 			eventFieldList->eventFields()->push_back(eventField);
 		}
 
+		boost::mutex::scoped_lock g(eventFieldListListMutex_);
 		eventFieldListList_.push_back(eventFieldList);
 	}
 
 	OpcUaStatusCode
 	EventItem::receive(EventFieldListArray::SPtr eventFieldListArray)
 	{
-		// FIXME: lock
-
+		boost::mutex::scoped_lock g(eventFieldListListMutex_);
 		uint32_t freeSize = eventFieldListArray->freeSize();
 		do {
 			if (eventFieldListList_.size() == 0) return Success;
