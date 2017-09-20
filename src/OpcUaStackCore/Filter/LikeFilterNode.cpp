@@ -54,6 +54,7 @@ namespace OpcUaStackCore
     	return operandStatuses_;
     }
 
+
     bool
 	LikeFilterNode::evaluate(OpcUaVariant& value)
     {
@@ -80,114 +81,105 @@ namespace OpcUaStackCore
     		tmpVariant->getValue(pattern);
 
 
-    		bool matches = true;
-    		std::string stdString = string.toStdString();
-    		std::string stdPattern = pattern.toStdString();
-
-    		int i = 0;
-    		int j = 0;
-    		while(i < stdString.size() && j < stdPattern.size() && matches) {
-    			switch (stdPattern[j]) {
-    			case '%':
-    			{
-    				if ((j + 1) == stdPattern.size()) {
-    					i = stdString.size(); // the last char of the pattern is %. Finish cycle.
-    					break;
-    				} else {
-    					// Check next character after %
-    					if (stdPattern[j+1] == stdString[i]) {
-    						j += 2;
-    					}
-    					if ((++i) >= stdString.size()) {
-    						matches = false;
-    					}
-    				}
-
-    				break;
-    			}
-    			case '_':
-    			{
-    				i++;
-    				j++;
-    				break;
-    			}
-    			case '\\':
-				{
-					// Check if \ is the last character of the pattern
-    				if ((j+1) >= stdPattern.size()) {
-    					matches = stdPattern[j] == stdString[i];
-    					break;
-    				}
-
-    				matches = stdPattern[++j] == stdString[i];
-
-    				i++;
-    				j++;
-    				break;
-				}
-    			case '[':
-    			{
-    				bool inversed = false;
-    				if (stdPattern[j+1] == '^') {
-    					inversed = true;
-    					j++;
-    				}
-
-    				std::list<char> charList;
-    				bool stop = false;
-    				while(j < stdPattern.size() && !stop) {
-    					switch (stdPattern[++j]) {
-						case ']':
-							j++;
-							stop = true;
-							break;
-						case '-':
-						{
-							char currentChar = stdPattern[j-1];
-
-							j++;
-							while (stdPattern[j] >= currentChar) {
-								charList.push_back(currentChar++);
-							}
-
-							break;
-						}
-						case '\\':
-						{
-							charList.push_back(stdPattern[++j]);
-							break;
-						}
-						default:
-							charList.push_back(stdPattern[j]);
-							break;
-						}
-    				}
-
-    				std::list<char>::iterator it  = std::find(charList.begin(), charList.end(), stdString[i++]);
-    				matches = (it != charList.end()) ^ inversed;
-
-    				break;
-    			}
-
-    			default:
-    			{
-    				matches = stdPattern[j++] == stdString[i++];
-    			}
-    			}
-    		}
-
-
-    		if (i < stdString.size()) {
-    			matches = false;
-    		}
-
-    		value.setValue(matches);
+    		value.setValue(matches(string, pattern));
 
     		return true;
     	}
 
 		return false;
     }
+
+    bool
+	LikeFilterNode::matches(const OpcUaString& string, const OpcUaString& pattern)
+    {
+		bool result = true;
+
+		std::string string_ = string.toStdString();
+		std::string pattern_ = pattern.toStdString();
+
+		int i = 0;
+		int j = 0;
+		while (i < string_.size() && j < pattern_.size() && result) {
+			switch (pattern_[j]) {
+			case '%': {
+				if ((j + 1) == pattern_.size()) {
+					i = string_.size(); // the last char of the pattern is %. Finish cycle.
+					break;
+				} else {
+					// Check next character after %
+					if (pattern_[j + 1] == string_[i]) {
+						j += 2;
+					}
+					if ((++i) >= string_.size()) {
+						result = false;
+					}
+				}
+				break;
+			}
+			case '_': {
+				i++;
+				j++;
+				break;
+			}
+			case '\\': {
+				// Check if \ is the last character of the pattern
+				if ((j + 1) >= pattern_.size()) {
+					result = pattern_[j] == string_[i];
+					break;
+				}
+				result = pattern_[++j] == string_[i];
+				i++;
+				j++;
+				break;
+			}
+			case '[': {
+				bool inversed = false;
+				if (pattern_[j + 1] == '^') {
+					inversed = true;
+					j++;
+				}
+				std::list<char> charList;
+				bool stop = false;
+				while (j < pattern_.size() && !stop) {
+					switch (pattern_[++j]) {
+					case ']':
+						j++;
+						stop = true;
+						break;
+					case '-': {
+						char currentChar = pattern_[j - 1];
+						j++;
+						while (pattern_[j] >= currentChar) {
+							charList.push_back(currentChar++);
+						}
+						break;
+					}
+					case '\\': {
+						charList.push_back(pattern_[++j]);
+						break;
+					}
+					default:
+						charList.push_back(pattern_[j]);
+						break;
+					}
+				}
+				std::list<char>::iterator it = std::find(charList.begin(),
+						charList.end(), string_[i++]);
+				result = (it != charList.end()) ^ inversed;
+				break;
+			}
+			default: {
+				result = pattern_[j++] == string_[i++];
+			}
+			}
+		}
+
+		if (i < string_.size()) {
+			result = false;
+		}
+
+		return result;
+	}
 
 
 }

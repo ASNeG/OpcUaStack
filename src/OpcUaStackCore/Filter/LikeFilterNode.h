@@ -43,7 +43,9 @@ namespace OpcUaStackCore
 
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
-    };
+
+        bool matches(const OpcUaString& string, const OpcUaString& pattern);
+};
 
 }
 #endif
