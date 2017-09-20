@@ -74,7 +74,34 @@ BOOST_AUTO_TEST_CASE(LikeFilterNode_match_chr_and_str)
 BOOST_AUTO_TEST_CASE(LikeFilterNode_match_escape)
 {
 	SHOULD_MATCH("10 %", "10 \\%");
+	SHOULD_MATCH("abc_", "abc\\_");
+	SHOULD_MATCH("abc[]", "abc\\[\\]");
+	SHOULD_MATCH("abc\\", "abc\\\\");
+
 	SHOULD_NOT_MATCH("10 % 3", "10 \\%");
+}
+
+BOOST_AUTO_TEST_CASE(LikeFilterNode_match_list)
+{
+	SHOULD_MATCH("abc1", "abc[1]");
+	SHOULD_NOT_MATCH("abc1", "abc[2]");
+
+	SHOULD_MATCH("abc1N", "abc[1]N");
+	SHOULD_NOT_MATCH("abc1#", "abc[1]N");
+
+	SHOULD_MATCH("abc1", "abc[13]");
+	SHOULD_MATCH("abc3", "abc[13]");
+	SHOULD_NOT_MATCH("abc2", "abc[13]");
+
+	SHOULD_MATCH("abc1", "abc[13-9A]");
+	SHOULD_MATCH("abc3", "abc[13-9A]");
+	SHOULD_MATCH("abc5", "abc[13-9A]");
+	SHOULD_MATCH("abc9", "abc[13-9A]");
+	SHOULD_MATCH("abcA", "abc[13-9A]");
+
+	SHOULD_NOT_MATCH("abc2", "abc[13-9A]");
+
+	SHOULD_MATCH("abc-", "abc[13\\-9A]");
 }
 
 BOOST_AUTO_TEST_CASE(LikeFilterNode_use_conversion)

@@ -83,6 +83,7 @@ namespace OpcUaStackCore
     		bool matches = true;
     		std::string stdString = string.toStdString();
     		std::string stdPattern = pattern.toStdString();
+
     		int i = 0;
     		int j = 0;
     		while(i < stdString.size() && j < stdPattern.size() && matches) {
@@ -124,6 +125,44 @@ namespace OpcUaStackCore
     				j++;
     				break;
 				}
+    			case '[':
+    			{
+    				std::list<char> charList;
+    				bool stop = false;
+    				while(j < stdPattern.size() && !stop) {
+    					switch (stdPattern[++j]) {
+						case ']':
+							j++;
+							stop = true;
+							break;
+						case '-':
+						{
+							char currentChar = stdPattern[j-1];
+
+							j++;
+							while (stdPattern[j] >= currentChar) {
+								charList.push_back(currentChar++);
+							}
+
+							break;
+						}
+						case '\\':
+						{
+							charList.push_back(stdPattern[++j]);
+							break;
+						}
+						default:
+							charList.push_back(stdPattern[j]);
+							break;
+						}
+    				}
+
+    				std::list<char>::iterator it  = std::find(charList.begin(), charList.end(), stdString[i++]);
+    				matches = it != charList.end();
+
+    				break;
+    			}
+
     			default:
     			{
     				matches = stdPattern[j++] == stdString[i++];
