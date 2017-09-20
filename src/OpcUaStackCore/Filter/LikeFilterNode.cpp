@@ -127,6 +127,12 @@ namespace OpcUaStackCore
 				}
     			case '[':
     			{
+    				bool inversed = false;
+    				if (stdPattern[j+1] == '^') {
+    					inversed = true;
+    					j++;
+    				}
+
     				std::list<char> charList;
     				bool stop = false;
     				while(j < stdPattern.size() && !stop) {
@@ -158,7 +164,7 @@ namespace OpcUaStackCore
     				}
 
     				std::list<char>::iterator it  = std::find(charList.begin(), charList.end(), stdString[i++]);
-    				matches = it != charList.end();
+    				matches = (it != charList.end()) ^ inversed;
 
     				break;
     			}
