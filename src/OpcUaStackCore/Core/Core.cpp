@@ -97,6 +97,8 @@ namespace OpcUaStackCore
 	{
 		cleanupExtensionObject();
 		cleanupExtensibleParameter();
+
+		init_ = false;
 	}
 
 	void
