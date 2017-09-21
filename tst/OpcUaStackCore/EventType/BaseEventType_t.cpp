@@ -1,5 +1,5 @@
 #include "unittest.h"
-#include "OpcUaStackCore/EventType/BaseEventType.h"
+#include "OpcUaStackCore/StandardEventType/BaseEventType.h"
 
 using namespace OpcUaStackCore;
 
