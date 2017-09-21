@@ -86,12 +86,12 @@ static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(BasicFilterO
     ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
     arg1_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
-    arg1_->parameter<LiteralOperand>()->value().set<T1>(arg1);
+    arg1_->parameter<LiteralOperand>()->value().setValue(arg1);
 
     ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
     arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
-    arg2_->parameter<LiteralOperand>()->value().set<T2>(arg2);
+    arg2_->parameter<LiteralOperand>()->value().setValue(arg2);
 
     eqElement->filterOperator(op);
     eqElement->filterOperands()->resize(2);
@@ -114,7 +114,7 @@ static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(BasicFilterOp
     ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
     arg2_->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_ElementOperand);
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg2_->parameter<ElementOperand>()->index(idx1);
+    arg2_->parameter<ElementOperand>()->index(idx2);
 
     eqElement->filterOperator(op);
     eqElement->filterOperands()->resize(2);

@@ -339,6 +339,179 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaVariantValue::operator<(OpcUaVariantValue& variantValue)
+	{
+		if (variantValue.variantType() != variantType()) return false;
+		switch (variantType())
+		{
+			case OpcUaBuildInType_Unknown:
+			{
+				return false;
+			}
+			case  OpcUaBuildInType_OpcUaBoolean:
+			{
+				OpcUaBoolean value1 = boost::get<OpcUaBoolean>(variantValue_);
+				OpcUaBoolean value2 = variantValue.variant<OpcUaBoolean>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaSByte:
+			{
+				OpcUaSByte value1 = boost::get<OpcUaSByte>(variantValue_);
+				OpcUaSByte value2 = variantValue.variant<OpcUaSByte>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaByte:
+			{
+				OpcUaByte value1 = boost::get<OpcUaByte>(variantValue_);
+				OpcUaByte value2 = variantValue.variant<OpcUaByte>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaInt16:
+			{
+				OpcUaInt16 value1 = boost::get<OpcUaInt16>(variantValue_);
+				OpcUaInt16 value2 = variantValue.variant<OpcUaInt16>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaUInt16:
+			{
+				OpcUaUInt16 value1 = boost::get<OpcUaUInt16>(variantValue_);
+				OpcUaUInt16 value2 = variantValue.variant<OpcUaUInt16>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaInt32:
+			{
+				OpcUaInt32 value1 = boost::get<OpcUaInt32>(variantValue_);
+				OpcUaInt32 value2 = variantValue.variant<OpcUaInt32>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaUInt32:
+			{
+				OpcUaUInt32 value1 = boost::get<OpcUaUInt32>(variantValue_);
+				OpcUaUInt32 value2 = variantValue.variant<OpcUaUInt32>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaInt64:
+			{
+				OpcUaInt64 value1 = boost::get<OpcUaInt64>(variantValue_);
+				OpcUaInt64 value2 = variantValue.variant<OpcUaInt64>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaUInt64:
+			{
+				OpcUaUInt64 value1 = boost::get<OpcUaUInt64>(variantValue_);
+				OpcUaUInt64 value2 = variantValue.variant<OpcUaUInt64>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaFloat:
+			{
+				OpcUaFloat value1 = boost::get<OpcUaFloat>(variantValue_);
+				OpcUaFloat value2 = variantValue.variant<OpcUaFloat>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaDouble:
+			{
+				OpcUaDouble value1 = boost::get<OpcUaDouble>(variantValue_);
+				OpcUaDouble value2 = variantValue.variant<OpcUaDouble>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaDateTime:
+			{
+				OpcUaDateTime value1 = boost::get<OpcUaDateTime>(variantValue_);
+				OpcUaDateTime value2 = variantValue.variant<OpcUaDateTime>();
+				return value1 < value2;
+			}
+			case  OpcUaBuildInType_OpcUaStatusCode:
+			{
+				OpcUaInt32 value1 = boost::get<OpcUaStatusCode>(variantValue_);
+				OpcUaInt32 value2 = variantValue.variant<OpcUaStatusCode>();
+				return value1 == value2;
+			}
+			case  OpcUaBuildInType_OpcUaGuid:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaGuid::SPtr value1 = boost::static_pointer_cast<OpcUaGuid>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaGuid::SPtr value2 = boost::static_pointer_cast<OpcUaGuid>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaByteString:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaByteString::SPtr value1 = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaByteString::SPtr value2 = boost::static_pointer_cast<OpcUaByteString>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaString:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaString::SPtr value1 = boost::static_pointer_cast<OpcUaString>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaString::SPtr value2 = boost::static_pointer_cast<OpcUaString>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaXmlElement:
+			{
+				// FIXME: actualy not used
+				return false;
+			}
+			case  OpcUaBuildInType_OpcUaNodeId:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaNodeId::SPtr value1 = boost::static_pointer_cast<OpcUaNodeId>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaNodeId::SPtr value2 = boost::static_pointer_cast<OpcUaNodeId>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaExpandedNodeId:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaExpandedNodeId::SPtr value1 = boost::static_pointer_cast<OpcUaExpandedNodeId>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaExpandedNodeId::SPtr value2 = boost::static_pointer_cast<OpcUaExpandedNodeId>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaQualifiedName:
+			{
+				OpcUaVariantSPtr opcUaVariantSPtr1 = boost::get<OpcUaVariantSPtr>(variantValue_);
+				OpcUaVariantSPtr opcUaVariantSPtr2 = variantValue.variant<OpcUaVariantSPtr>();
+				OpcUaQualifiedName::SPtr value1 = boost::static_pointer_cast<OpcUaQualifiedName>(opcUaVariantSPtr1.objectSPtr_);
+				OpcUaQualifiedName::SPtr value2 = boost::static_pointer_cast<OpcUaQualifiedName>(opcUaVariantSPtr2.objectSPtr_);
+				return *value1 < *value2;
+			}
+			case  OpcUaBuildInType_OpcUaLocalizedText:
+			{
+				// FIXME: actualy not used
+				return false;
+			}
+			case  OpcUaBuildInType_OpcUaExtensionObject:
+			{
+				// FIXME: actualy not used
+				return false;
+			}
+		}
+		return false;
+	}
+
+	bool
+	OpcUaVariantValue::operator<=(OpcUaVariantValue& variantValue)
+	{
+		return operator==(variantValue) || operator<(variantValue);
+	}
+
+	bool
+	OpcUaVariantValue::operator>(OpcUaVariantValue& variantValue)
+	{
+		return operator!=(variantValue) && !operator<(variantValue);
+	}
+
+	bool
+	OpcUaVariantValue::operator>=(OpcUaVariantValue& variantValue)
+	{
+		return !operator<(variantValue);
+	}
+
+	bool
 	OpcUaVariantValue::fromString(const std::string& string)
 	{
 		// get type and value
