@@ -56,6 +56,12 @@ namespace OpcUaStackServer
 		return queSize_;
 	}
 
+	bool
+	MonitorItem::discardOldest()
+	{
+	    return discardOldest_;
+	}
+
 	SlotTimerElement::SPtr 
 	MonitorItem::slotTimerElement(void)
 	{
@@ -81,6 +87,7 @@ namespace OpcUaStackServer
 		monitoredItemCreateRequest_ = monitoredItemCreateRequest;
 		samplingInterval_ = (uint32_t)monitoredItemCreateRequest->requestedParameters().samplingInterval();
 		queSize_ = monitoredItemCreateRequest->requestedParameters().queueSize();
+		discardOldest_ = monitoredItemCreateRequest->requestedParameters().discardOldest();
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
 
 		// check attribute
@@ -128,6 +135,7 @@ namespace OpcUaStackServer
 			freeSize--;
 
 			monitoredItemNotificationArray->push_back(monitorItemList_.front());
+
 			monitorItemList_.pop_front();
 		} while (true);
 
@@ -183,7 +191,14 @@ namespace OpcUaStackServer
 			.parameter("ActQueueSize", actQueueSize)
 			.parameter("MaxQueueSize", queSize_);
 		
-		if (actQueueSize >= queSize_) return;
+		if (actQueueSize >= queSize_) {
+		    if (discardOldest_) {
+		        monitorItemList_.pop_back();
+		    } else {
+		        monitorItemList_.pop_front();
+		    }
+		}
+
 		monitoredItemNotification->clientHandle(clientHandle_);
 		monitorItemList_.push_back(monitoredItemNotification);
 	}
