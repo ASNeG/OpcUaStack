@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,7 +34,8 @@ namespace OpcUaStackServer
 	bool 
 	ApplicationManager::registerApplication(
 		const std::string& applicationName,
-		ApplicationIf* applicationIf
+		ApplicationIf* applicationIf,
+		RestartIf* restartIf
 	)
 	{
 		Application::Map::iterator it;
@@ -47,6 +48,7 @@ namespace OpcUaStackServer
 
 		Application::SPtr application = constructSPtr<Application>();
 		application->applicationIf(applicationIf);
+		application->restartIf(restartIf);
 		application->applicationName(applicationName);
 		application->serviceComponent(serviceComponent_);
 		applicationMap_.insert(

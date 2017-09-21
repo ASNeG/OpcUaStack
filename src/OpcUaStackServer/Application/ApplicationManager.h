@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
+#include "OpcUaStackServer/Application/RestartIf.h"
 #include "OpcUaStackServer/Application/Application.h"
 
 using namespace OpcUaStackCore;
@@ -36,7 +37,8 @@ namespace OpcUaStackServer
 
 		bool registerApplication(
 			const std::string& applicationName,
-			ApplicationIf* applicationIf
+			ApplicationIf* applicationIf,
+			RestartIf* restartIf
 		);
 		bool deregisterApplication(const std::string& applicationName);
 		void serviceComponent(Component* serviceComponent);

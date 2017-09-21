@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationBase.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
-
+#include "OpcUaStackServer/Application/RestartIf.h"
 #include <map>
 
 namespace OpcUaStackServer
@@ -49,6 +49,7 @@ namespace OpcUaStackServer
 		~Application(void);
 
 		void applicationIf(ApplicationIf* applicationIf);
+		void restartIf(RestartIf* restartIf);
 		void applicationName(const std::string& applicationName);
 		void serviceComponent(Component* serviceComponent);
 
@@ -62,6 +63,7 @@ namespace OpcUaStackServer
 		//- ApplicationServiceIf ------------------------------------------------------
 		virtual void send(ServiceTransaction::SPtr serviceTransaction);
 		virtual void sendSync(ServiceTransaction::SPtr serviceTransaction);
+		virtual void restart(void);
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
@@ -69,6 +71,7 @@ namespace OpcUaStackServer
 
 		State state_;
 		ApplicationIf* applicationIf_;
+		RestartIf* restartIf_;
 		std::string applicationName_;
 		Component* serviceComponent_;
 	};

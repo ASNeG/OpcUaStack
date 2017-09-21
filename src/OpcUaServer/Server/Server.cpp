@@ -80,7 +80,8 @@ namespace OpcUaServer
 			ApplicationLibrary::SPtr applicationLibrary = it->second;
 			bool success = server_.applicationManager().registerApplication(
 				it->first,
-				applicationLibrary->applicationIf()
+				applicationLibrary->applicationIf(),
+				this
 			);
 			if (!success) return false;
 
@@ -134,6 +135,13 @@ namespace OpcUaServer
 
 		// shutdown opc ua server
 		server_.shutdown();
+	}
+
+	void
+	Server::restart(void)
+	{
+		// FIXME: todo
+		std::cout << "restart..." << std::endl;
 	}
 
 	bool 

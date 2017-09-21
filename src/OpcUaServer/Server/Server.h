@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackServer/Server/Server.h"
+#include "OpcUaStackServer/Application/RestartIf.h"
 #include "OpcUaServer/Server/DiscoveryClient.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
 
@@ -33,6 +34,7 @@ namespace OpcUaServer
 {
 
 	class Server 
+	: public RestartIf
 	{
 	  public:
 		Server(void);
@@ -43,6 +45,10 @@ namespace OpcUaServer
 		void stop(void);
 		void shutdown(void);
 		
+		// -- interface RestartIf ---------------------------------------------
+		virtual void restart(void);
+		// -- interface RestartIf ---------------------------------------------
+
 	  private:
 		bool readConfigurationFile(void);
 		bool initLogging(void);
