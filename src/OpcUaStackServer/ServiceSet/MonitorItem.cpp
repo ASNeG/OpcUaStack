@@ -30,6 +30,10 @@ namespace OpcUaStackServer
 	, attribute_(nullptr)
 	, dataValue_()
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
+	, discardOldest_(true)
+	, clientHandle_(0)
+	, queSize_(0)
+	, samplingInterval_(1000)
 	{
 	}
 
