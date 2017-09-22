@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 
 		virtual void send(ServiceTransaction::SPtr serviceTransaction) = 0;
 		virtual void sendSync(ServiceTransaction::SPtr serviceTransaction) = 0;
-		virtual void reset(void) {}
+		virtual void restart(void) {}
 	};
 
 }
