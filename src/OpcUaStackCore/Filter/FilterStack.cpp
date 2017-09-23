@@ -29,6 +29,7 @@
 #include "OpcUaStackCore/Filter/ComparisonFilterNode.h"
 #include "OpcUaStackCore/Filter/IsNullFilterNode.h"
 #include "OpcUaStackCore/Filter/LikeFilterNode.h"
+#include "OpcUaStackCore/Filter/NotFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -210,6 +211,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_Not:
+				{
+					node = NotFilterNode::SPtr(new NotFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Between:
 				case BasicFilterOperator_InList:
 				case BasicFilterOperator_And:
