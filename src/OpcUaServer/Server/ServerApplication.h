@@ -18,13 +18,17 @@
 #ifndef __OpcUaServer_ServerApplication_h__
 #define __OpcUaServer_ServerApplication_h__
 
+#include "OpcUaStackServer/Application/RestartIf.h"
 #include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include "OpcUaServer/Server/Server.h"
+
+using namespace OpcUaStackServer;
 
 namespace OpcUaServer
 {
 	class ServerApplication
 	: public ServerApplicationIf
+	, public RestartIf
 	{
 	  public:
 		ServerApplication(void);
@@ -35,6 +39,10 @@ namespace OpcUaServer
 		virtual bool shutdown(void);
 		virtual bool run(void);
 		virtual void stop(void);
+
+		// -- interface RestartIf ---------------------------------------------
+		virtual void restart(void);
+		// -- interface RestartIf ---------------------------------------------
 
 	  private:
 		OpcUaServer::Server server_;

@@ -67,11 +67,14 @@ namespace OpcUaServer
 	bool 
 	ServerApplication::run(void)
 	{
+		server_.restartIf(this);
 		if (!server_.startup(configFileName_)) return false;
 		if (!server_.start()) return false;
 		
 		running_ = true;
-		while (running_) boost::this_thread::sleep(boost::posix_time::seconds(1));
+		while (running_) {
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+		}
 		server_.shutdown();
 		return true;
 	}
@@ -81,6 +84,13 @@ namespace OpcUaServer
 	{
 		server_.stop();
 		running_ = false;
+	}
+
+	void
+	ServerApplication::restart(void)
+	{
+		// FIXME: todo
+		std::cout << "restart ..." << std::endl;
 	}
 
 }

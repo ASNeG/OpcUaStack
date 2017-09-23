@@ -34,20 +34,16 @@ namespace OpcUaServer
 {
 
 	class Server 
-	: public RestartIf
 	{
 	  public:
 		Server(void);
 		~Server(void);
 
+		void restartIf(RestartIf* restartIf);
 		bool startup(const std::string& configurationFile);
 		bool start(void);
 		void stop(void);
 		void shutdown(void);
-		
-		// -- interface RestartIf ---------------------------------------------
-		virtual void restart(void);
-		// -- interface RestartIf ---------------------------------------------
 
 	  private:
 		bool readConfigurationFile(void);
@@ -59,6 +55,7 @@ namespace OpcUaServer
 		OpcUaStackServer::Server server_;
 		FileLogger fileLogger_;
 
+		RestartIf* restartIf_;
 		DiscoveryClient discoveryClient_;
 		ApplicationManager applicationManager_;
 	};

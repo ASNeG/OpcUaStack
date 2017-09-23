@@ -32,11 +32,18 @@ namespace OpcUaServer
 	, server_()
 	, fileLogger_()
 	, applicationManager_()
+	, restartIf_(nullptr)
 	{
 	}
 
 	Server::~Server(void)
 	{
+	}
+
+	void
+	Server::restartIf(RestartIf* restartIf)
+	{
+		restartIf_ = restartIf;
 	}
 
 	bool
@@ -81,7 +88,7 @@ namespace OpcUaServer
 			bool success = server_.applicationManager().registerApplication(
 				it->first,
 				applicationLibrary->applicationIf(),
-				this
+				restartIf_
 			);
 			if (!success) return false;
 
@@ -135,13 +142,6 @@ namespace OpcUaServer
 
 		// shutdown opc ua server
 		server_.shutdown();
-	}
-
-	void
-	Server::restart(void)
-	{
-		// FIXME: todo
-		std::cout << "restart..." << std::endl;
 	}
 
 	bool 
