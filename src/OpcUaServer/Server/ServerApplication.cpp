@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,7 @@ namespace OpcUaServer
 	ServerApplication::ServerApplication(void)
 	: ServerApplicationIf()
 	, running_(false)
+	, restart_(false)
 	, serviceName_("")
 	, server_()
 	, configFileName_("")
@@ -73,6 +74,10 @@ namespace OpcUaServer
 		
 		running_ = true;
 		while (running_) {
+			if (restart_) {
+				processRestart();
+				restart_ = false;
+			}
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
 		}
 		server_.shutdown();
@@ -89,8 +94,14 @@ namespace OpcUaServer
 	void
 	ServerApplication::restart(void)
 	{
+		restart_ = true;
+	}
+
+	void
+	ServerApplication::processRestart(void)
+	{
 		// FIXME: todo
-		std::cout << "restart ..." << std::endl;
+		std::cout << "process restart..." << std::endl;
 	}
 
 }
