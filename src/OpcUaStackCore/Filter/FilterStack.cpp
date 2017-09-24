@@ -30,6 +30,7 @@
 #include "OpcUaStackCore/Filter/IsNullFilterNode.h"
 #include "OpcUaStackCore/Filter/LikeFilterNode.h"
 #include "OpcUaStackCore/Filter/NotFilterNode.h"
+#include "OpcUaStackCore/Filter/BetweenFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -217,6 +218,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_Between:
+				{
+					node = BetweenFilterNode::SPtr(new BetweenFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_InList:
 				case BasicFilterOperator_And:
 				case BasicFilterOperator_Or:
