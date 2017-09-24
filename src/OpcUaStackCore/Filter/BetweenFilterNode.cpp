@@ -67,27 +67,27 @@ namespace OpcUaStackCore
     		arg3_->evaluate(*max);
 
     		OpcUaTypeConversion converter;
-    		OpcUaBuildInType mostRankedType = converter.precedenceRank(operand->variantType()) <
+    		OpcUaBuildInType mostPrecedenceType = converter.precedenceRank(operand->variantType()) <
     		 	 converter.precedenceRank(min->variantType()) ? operand->variantType() : min->variantType();
 
-    		mostRankedType = converter.precedenceRank(mostRankedType) <
-    		    		 	 converter.precedenceRank(max->variantType()) ? mostRankedType : max->variantType();
+    		mostPrecedenceType = converter.precedenceRank(mostPrecedenceType) <
+    		    		 	 converter.precedenceRank(max->variantType()) ? mostPrecedenceType : max->variantType();
 
     		OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
     		operand->copyTo(*tmpVariant);
-    		if (!converter.conversion(tmpVariant, mostRankedType, operand)) {
+    		if (!converter.conversion(tmpVariant, mostPrecedenceType, operand)) {
     			value.set<OpcUaBoolean>(false);
     			return true;
     		}
 
     		min->copyTo(*tmpVariant);
-    		if (!converter.conversion(tmpVariant, mostRankedType, min)) {
+    		if (!converter.conversion(tmpVariant, mostPrecedenceType, min)) {
     			value.set<OpcUaBoolean>(false);
     			return true;
     		}
 
     		max->copyTo(*tmpVariant);
-    		if (!converter.conversion(tmpVariant, mostRankedType, max)) {
+    		if (!converter.conversion(tmpVariant, mostPrecedenceType, max)) {
     			value.set<OpcUaBoolean>(false);
     			return true;
     		}

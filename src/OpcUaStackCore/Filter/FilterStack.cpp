@@ -31,6 +31,7 @@
 #include "OpcUaStackCore/Filter/LikeFilterNode.h"
 #include "OpcUaStackCore/Filter/NotFilterNode.h"
 #include "OpcUaStackCore/Filter/BetweenFilterNode.h"
+#include "OpcUaStackCore/Filter/InListFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -224,6 +225,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_InList:
+				{
+					node = InListFilterNode::SPtr(new InListFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_And:
 				case BasicFilterOperator_Or:
 				case BasicFilterOperator_Cast:

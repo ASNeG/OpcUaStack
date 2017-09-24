@@ -568,5 +568,51 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_BetweenOperator)
     BOOST_REQUIRE(filterResult == false);
 }
 
+
+BOOST_AUTO_TEST_CASE(FilterStack_supports_InListOperator)
+{
+    FilterStack stack;
+	ContentFilterElement::SPtr eqElement = constructSPtr<ContentFilterElement>();
+
+	ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
+	arg1_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+	arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
+	arg1_->parameter<LiteralOperand>()->value().setValue(10);
+
+	ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
+	arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+	arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
+	arg2_->parameter<LiteralOperand>()->value().setValue(20);
+
+	ExtensibleParameter::SPtr arg3_ = constructSPtr<ExtensibleParameter>();
+	arg3_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
+	arg3_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
+	arg3_->parameter<LiteralOperand>()->value().setValue(30);
+
+	eqElement->filterOperator(BasicFilterOperator::BasicFilterOperator_InList);
+	eqElement->filterOperands()->resize(3);
+	eqElement->filterOperands()->push_back(arg1_);
+	eqElement->filterOperands()->push_back(arg2_);
+	eqElement->filterOperands()->push_back(arg3_);
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
