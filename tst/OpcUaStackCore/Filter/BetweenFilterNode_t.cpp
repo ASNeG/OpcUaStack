@@ -13,18 +13,6 @@ BOOST_AUTO_TEST_CASE(BetweenFilterNode_)
 	std::cout << "BetweenFilterNode_" << std::endl;
 }
 
-#define MAKE_THREE_LITERAL_ARGS(args, arg1, arg2, arg3) do {\
-	OpcUaVariant value;																\
-	value.setValue(arg1);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
-                                                                                    \
-	value.setValue(arg2);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
-                                                                                    \
-	value.setValue(arg3);                                                           \
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
-} while(0)
-
 BOOST_AUTO_TEST_CASE(BetweenFilterNode_100_between_50_and_120)
 {
 	std::vector<FilterNode::SPtr> args;

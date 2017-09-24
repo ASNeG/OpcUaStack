@@ -15,11 +15,8 @@ BOOST_AUTO_TEST_CASE(NotFilterNode_)
 
 BOOST_AUTO_TEST_CASE(NotFilterNode_false)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaBoolean>(false);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	MAKE_ONE_LITERAL_ARG(args, false);
 
     NotFilterNode notOperator(args);
 
@@ -30,11 +27,8 @@ BOOST_AUTO_TEST_CASE(NotFilterNode_false)
 
 BOOST_AUTO_TEST_CASE(NotFilterNode_true)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaBoolean>(true);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	MAKE_ONE_LITERAL_ARG(args, true);
 
     NotFilterNode notOperator(args);
 
@@ -45,11 +39,8 @@ BOOST_AUTO_TEST_CASE(NotFilterNode_true)
 
 BOOST_AUTO_TEST_CASE(NotFilterNode_cast)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.setValue(OpcUaString("false"));
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	MAKE_ONE_LITERAL_ARG(args, OpcUaString("false"));
 
     NotFilterNode notOperator(args);
 
@@ -60,11 +51,8 @@ BOOST_AUTO_TEST_CASE(NotFilterNode_cast)
 
 BOOST_AUTO_TEST_CASE(NotFilterNode_null)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.setValue(OpcUaString("xxx"));
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
+	MAKE_ONE_LITERAL_ARG(args, OpcUaString("xxx"));
 
     NotFilterNode notOperator(args);
 
