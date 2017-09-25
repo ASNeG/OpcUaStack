@@ -108,7 +108,7 @@ namespace OpcUaStackServer
 	{
 
 		// startup application
-		Log(Info, "start application");
+		Log(Info, "startup application");
 		Component* applicationService = Component::getComponent("ApplicationService");
 		applicationManager_.serviceComponent(applicationService);
 
@@ -136,6 +136,7 @@ namespace OpcUaStackServer
 		ioService_.stop();
 
 		// shutdown application
+		Log(Info, "shutdown application");
 		applicationManager_.shutdown();
 	}
 
