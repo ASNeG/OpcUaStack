@@ -40,8 +40,12 @@ namespace OpcUaStackServer
 			ApplicationIf* applicationIf,
 			RestartIf* restartIf
 		);
-		bool deregisterApplication(const std::string& applicationName);
-		void serviceComponent(Component* serviceComponent);
+		bool deregisterApplication(
+			const std::string& applicationName
+		);
+		void serviceComponent(
+			Component* serviceComponent
+		);
 
 		bool startup(void);
 		bool shutdown(void);
