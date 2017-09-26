@@ -1,8 +1,16 @@
 #!/bin/bash
 
-OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype AuditEventType
-OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype ConditionType
-OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype AcknowledgeableConditionType
-OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype AlarmConditionType
-
-OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype BaseEventType --buildSubTypes 1 
+OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype BaseEventType --buildSubTypes 1 \
+	--ignoreEventTypeName AuditActivateSessionEventType \
+	--ignoreEventTypeName AuditAddNodesEventType \
+	--ignoreEventTypeName AuditAddReferencesEventType \
+	--ignoreEventTypeName AuditDeleteNodesEventType \
+	--ignoreEventTypeName AuditDeleteReferencesEventType \
+	--ignoreEventTypeName AuditHistoryEventDeleteEventType \
+	--ignoreEventTypeName AuditHistoryEventUpdateEventType \
+	--ignoreEventTypeName AuditHistoryValueUpdateEventType \
+	--ignoreEventTypeName AuditOpenSecureChannelEventType \
+	--ignoreEventTypeName AuditWriteUpdateEventType \
+	--ignoreEventTypeName GeneralModelChangeEventType \
+	--ignoreEventTypeName SemanticChangeEventType \
+	--ignoreEventTypeName SystemStatusChangeEventType
