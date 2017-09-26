@@ -51,6 +51,7 @@ namespace OpcUaEventTypeGenerator
 	, parentProjectNamespace_("")
 	, buildSubTypes_(false)
 	, eventTypeNameVec_()
+	, ignoreEventTypeNameVec_()
 	{
 	}
 
@@ -95,6 +96,11 @@ namespace OpcUaEventTypeGenerator
 				"buildSubTypes",
 				boost::program_options::value<bool>()->default_value(false),
 			    "build all subtypes"
+			)
+			(
+				"ignoreEventTypeName",
+				boost::program_options::value< std::vector<std::string> >(),
+			    "ignore event type name"
 			)
 		;
 

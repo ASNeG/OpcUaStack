@@ -41,6 +41,7 @@ namespace OpcUaEventTypeGenerator
 		std::string projectNamespace_;
 		std::string parentProjectNamespace_;
 		bool buildSubTypes_;
+		std::vector<std::string> ignoreEventTypeNameVec_;
 
 		std::vector<std::string> eventTypeNameVec_;
 		InformationModel::SPtr informationModel_;
