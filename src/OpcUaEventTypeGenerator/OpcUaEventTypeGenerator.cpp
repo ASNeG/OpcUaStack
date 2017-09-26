@@ -109,6 +109,13 @@ namespace OpcUaEventTypeGenerator
 			return 1;
 		}
 
+		return generateEventTypeSource();
+	}
+
+	int32_t
+	OpcUaEventTypeGenerator::generateEventTypeSource(void)
+	{
+
 		// read opc ua nodeset
 		ConfigXml configXml;
 	    if (!configXml.parse(fileName_)) {

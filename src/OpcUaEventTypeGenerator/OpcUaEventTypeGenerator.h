@@ -43,7 +43,7 @@ namespace OpcUaEventTypeGenerator
 		OpcUaNodeId eventTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
-
+		int32_t generateEventTypeSource(void);
 	};
 
 }
