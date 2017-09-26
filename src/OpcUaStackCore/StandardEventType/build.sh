@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OpcUaEventTypeGenerator3 Opc.Ua.NodeSet.xml AuditEventType
-OpcUaEventTypeGenerator3 Opc.Ua.NodeSet.xml ConditionType
-OpcUaEventTypeGenerator3 Opc.Ua.NodeSet.xml AcknowledgeableConditionType
-OpcUaEventTypeGenerator3 Opc.Ua.NodeSet.xml AlarmConditionType
+OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype AuditEventType
+OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype ConditionType
+OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype AcknowledgeableConditionType
+OpcUaEventTypeGenerator3 --nodeset Opc.Ua.NodeSet.xml --eventtype AlarmConditionType
