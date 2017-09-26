@@ -38,6 +38,8 @@ namespace OpcUaEventTypeGenerator
 	  private:
 		std::string fileName_;
 		std::string eventTypeName_;
+		std::string projectNamespace_;
+		std::string parentProjectNamespace_;
 
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId eventTypeNodeId_;

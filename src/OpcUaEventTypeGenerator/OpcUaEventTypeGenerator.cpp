@@ -47,6 +47,8 @@ namespace OpcUaEventTypeGenerator
 	, informationModel_()
 	, fileName_("")
 	, eventTypeName_("")
+	, projectNamespace_("")
+	, parentProjectNamespace_("")
 	{
 	}
 
@@ -59,19 +61,33 @@ namespace OpcUaEventTypeGenerator
 	{
 		boost::program_options::options_description desc("Allowed options");
 		desc.add_options()
-		    ( "help",
-		      "produce help message"
+		    (
+		    	"help",
+				"produce help message"
 		    )
-			( "version",
-			  "print version string"
+			(
+				"version",
+				"print version string"
 			)
-		    ( "nodeset",
-		      boost::program_options::value<std::string>(),
-			  "set nodeset file name (mandatory)"
+		    (
+		    	"nodeset",
+				boost::program_options::value<std::string>(),
+				"set nodeset file name (mandatory)"
 			)
-			( "eventtype",
-			  boost::program_options::value<std::string>(),
-			  "set event type name (mandatory)"
+			(
+				"eventtype",
+				boost::program_options::value<std::string>(),
+				"set event type name (mandatory)"
+			)
+			(
+				"projectNamespace",
+				boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
+			    "set project namespace"
+			)
+			(
+				"parentProjectNamespace",
+				boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
+			    "set parent project namespace"
 			)
 		;
 
@@ -103,6 +119,8 @@ namespace OpcUaEventTypeGenerator
 
 		fileName_ = vm["nodeset"].as<std::string>();
 		eventTypeName_ = vm["eventtype"].as<std::string>();
+		projectNamespace_ = vm["projectNamespace"].as<std::string>();
+		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
 
 		// ignore BaseEventType
 		if (eventTypeName_ == "BaseEventType") {
@@ -147,6 +165,8 @@ namespace OpcUaEventTypeGenerator
 
 		// generate event type source code
 		EventTypeGenerator eventTypeGenerator;
+		eventTypeGenerator.projectNamespace(projectNamespace_);
+		eventTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
 		eventTypeGenerator.informationModel(informationModel_);
 		eventTypeGenerator.eventType(eventTypeNodeId_);
 		if (!eventTypeGenerator.generate()) {
