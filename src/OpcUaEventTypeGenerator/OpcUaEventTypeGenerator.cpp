@@ -235,7 +235,6 @@ namespace OpcUaEventTypeGenerator
 		}
 
 		if (browseName.name().toStdString() != "BaseEventType") {
-			std::cout << "::" << browseName.name().toStdString() << std::endl;
 			eventTypeNameVec_.push_back(browseName.name().toStdString());
 		}
 
