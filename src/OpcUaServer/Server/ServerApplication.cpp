@@ -20,6 +20,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "OpcUaServer/Server/ServerApplication.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Utility/Environment.h"
 
 using namespace OpcUaStackCore;
@@ -81,6 +82,8 @@ namespace OpcUaServer
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
 		}
 		server_.shutdown();
+		Log(Debug, "shutdown application server complete");
+
 		return true;
 	}
 
@@ -94,6 +97,7 @@ namespace OpcUaServer
 	void
 	ServerApplication::restart(void)
 	{
+		Log(Debug, "restart application server");
 		restart_ = true;
 	}
 
@@ -102,6 +106,18 @@ namespace OpcUaServer
 	{
 		// FIXME: todo
 		std::cout << "process restart..." << std::endl;
+
+		server_.stop();
+		server_.shutdown();
+		Config::destroy();
+		Log(Debug, "shutdown application server complete");
+
+		boost::this_thread::sleep(boost::posix_time::seconds(5));
+
+		Log(Debug, "startup application server");
+		startup();
+		server_.startup(configFileName_);
+		server_.start();
 	}
 
 }

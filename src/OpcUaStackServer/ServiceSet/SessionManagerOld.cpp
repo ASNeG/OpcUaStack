@@ -174,6 +174,10 @@ namespace OpcUaStackServer
 	bool
 	SessionManagerOld::closeListenerSocket(void)
 	{
+		Log(Info, "close opc ua listener socket")
+			.parameter("Address", url_.host())
+			.parameter("Port", url_.port());
+
 		tcpAcceptor_->close();
 		return true;
 	}
