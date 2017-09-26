@@ -135,6 +135,7 @@ namespace OpcUaEventTypeGenerator
 		projectNamespace_ = vm["projectNamespace"].as<std::string>();
 		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
 		buildSubTypes_ = vm["buildSubTypes"].as<bool>();
+		ignoreEventTypeNameVec_ = vm["ignoreEventTypeName"].as< std::vector<std::string> >();
 
 		if (buildSubTypes_) {
 			return buildAllSubTypes();
@@ -265,6 +266,14 @@ namespace OpcUaEventTypeGenerator
 	int32_t
 	OpcUaEventTypeGenerator::generateEventTypeSource(void)
 	{
+		// check event type name
+		std::vector<std::string>::iterator it;
+		for (it=ignoreEventTypeNameVec_.begin(); it!=ignoreEventTypeNameVec_.end(); it++) {
+			if (*it == eventTypeName_) {
+				return 0;
+			}
+		}
+
 		// find node id for event type name
 		eventTypeNodeId_.set(0,0);
 		if (!findNodeId(eventTypeName_, OpcUaNodeId(2041))) {
