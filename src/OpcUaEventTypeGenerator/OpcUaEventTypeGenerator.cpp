@@ -49,6 +49,8 @@ namespace OpcUaEventTypeGenerator
 	, eventTypeName_("")
 	, projectNamespace_("")
 	, parentProjectNamespace_("")
+	, buildSubTypes_(false)
+	, eventTypeNameVec_()
 	{
 	}
 
@@ -89,6 +91,11 @@ namespace OpcUaEventTypeGenerator
 				boost::program_options::value<std::string>()->default_value("OpcUaStackCore"),
 			    "set parent project namespace"
 			)
+			(
+				"buildSubTypes",
+				boost::program_options::value<bool>()->default_value(false),
+			    "build all subtypes"
+			)
 		;
 
 		boost::program_options::variables_map vm;
@@ -121,19 +128,29 @@ namespace OpcUaEventTypeGenerator
 		eventTypeName_ = vm["eventtype"].as<std::string>();
 		projectNamespace_ = vm["projectNamespace"].as<std::string>();
 		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
+		buildSubTypes_ = vm["buildSubTypes"].as<bool>();
+
+		if (buildSubTypes_) {
+			return buildAllSubTypes();
+		}
 
 		// ignore BaseEventType
 		if (eventTypeName_ == "BaseEventType") {
 			return 1;
 		}
 
+		// load inforomation model
+		int32_t rc = loadInformationModel();
+		if (rc < 0) {
+			return rc;
+		}
+
 		return generateEventTypeSource();
 	}
 
 	int32_t
-	OpcUaEventTypeGenerator::generateEventTypeSource(void)
+	OpcUaEventTypeGenerator::loadInformationModel(void)
 	{
-
 		// read opc ua nodeset
 		ConfigXml configXml;
 	    if (!configXml.parse(fileName_)) {
@@ -156,6 +173,85 @@ namespace OpcUaEventTypeGenerator
 		}
 		informationModel_->checkForwardReferences();
 
+		return 0;
+	}
+
+	int32_t
+	OpcUaEventTypeGenerator::buildAllSubTypes(void)
+	{
+		// load inforomation model
+		int32_t rc = loadInformationModel();
+		if (rc < 0) {
+			return rc;
+		}
+
+		// find node id for event type name
+		eventTypeNodeId_.set(0,0);
+		if (!findNodeId(eventTypeName_, OpcUaNodeId(2041))) {
+			std::cout << "node id not found for event type " << eventTypeName_ << std::endl;
+			return -3;
+		}
+
+		// find all sub types
+		if (findAllSubTypes(eventTypeNodeId_) < 0) {
+			return -4;
+		}
+
+		// FIYME: todo
+		return 0;
+	}
+
+	int32_t
+	OpcUaEventTypeGenerator::findAllSubTypes(const OpcUaNodeId& eventTypeNodeId)
+	{
+		// find node id in information model
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(eventTypeNodeId);
+		if (!nodeClass) {
+			std::cout << "node " << eventTypeNodeId << " not found in information model" << std::endl;
+			return false;
+		}
+
+		// get browse name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			std::cout << "browsename of node " << eventTypeNodeId << " error" << std::endl;
+			return false;
+		}
+
+		if (browseName.name().toStdString() != "BaseEventType") {
+			std::cout << "::" << browseName.name().toStdString() << std::endl;
+			eventTypeNameVec_.push_back(browseName.name().toStdString());
+		}
+
+		// find subtype childs
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(45);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		bool success = ima.getChildHierarchically(
+			nodeClass,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			std::cout << "node " << eventTypeNodeId << " subtype error" << std::endl;
+			return -1;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+			success = findAllSubTypes(*it);
+			if (success) {
+				return true;
+			}
+		}
+
+		return 0;
+	}
+
+	int32_t
+	OpcUaEventTypeGenerator::generateEventTypeSource(void)
+	{
 		// find node id for event type name
 		eventTypeNodeId_.set(0,0);
 		if (!findNodeId(eventTypeName_, OpcUaNodeId(2041))) {

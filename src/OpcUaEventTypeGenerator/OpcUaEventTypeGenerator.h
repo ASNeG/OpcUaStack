@@ -40,11 +40,16 @@ namespace OpcUaEventTypeGenerator
 		std::string eventTypeName_;
 		std::string projectNamespace_;
 		std::string parentProjectNamespace_;
+		bool buildSubTypes_;
 
+		std::vector<std::string> eventTypeNameVec_;
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId eventTypeNodeId_;
 
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
+		int32_t loadInformationModel(void);
+		int32_t buildAllSubTypes(void);
+		int32_t findAllSubTypes(const OpcUaNodeId& eventTypeNodeId);
 		int32_t generateEventTypeSource(void);
 	};
 
