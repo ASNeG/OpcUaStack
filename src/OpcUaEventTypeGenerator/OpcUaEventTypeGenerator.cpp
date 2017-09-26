@@ -197,7 +197,14 @@ namespace OpcUaEventTypeGenerator
 			return -4;
 		}
 
-		// FIYME: todo
+		// create source
+		std::vector<std::string>::iterator it;
+		for (it = eventTypeNameVec_.begin(); it != eventTypeNameVec_.end(); it++) {
+			eventTypeName_ = *it;
+			int32_t rc = generateEventTypeSource();
+			if (rc < 0) return rc;
+		}
+
 		return 0;
 	}
 
@@ -242,7 +249,7 @@ namespace OpcUaEventTypeGenerator
 		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
 			success = findAllSubTypes(*it);
 			if (success) {
-				return true;
+				return 0;
 			}
 		}
 
