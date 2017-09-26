@@ -135,7 +135,9 @@ namespace OpcUaEventTypeGenerator
 		projectNamespace_ = vm["projectNamespace"].as<std::string>();
 		parentProjectNamespace_ = vm["parentProjectNamespace"].as<std::string>();
 		buildSubTypes_ = vm["buildSubTypes"].as<bool>();
-		ignoreEventTypeNameVec_ = vm["ignoreEventTypeName"].as< std::vector<std::string> >();
+		if (vm.count("ignoreEventTypeName") != 0) {
+			ignoreEventTypeNameVec_ = vm["ignoreEventTypeName"].as< std::vector<std::string> >();
+		}
 
 		if (buildSubTypes_) {
 			return buildAllSubTypes();
