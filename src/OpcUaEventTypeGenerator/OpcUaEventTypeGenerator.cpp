@@ -17,6 +17,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/program_options.hpp>
 #include <iostream>
 #include <sstream>
 #include "OpcUaStackCore/Utility/Environment.h"
@@ -26,6 +27,7 @@
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "BuildConfig.h"
 
 using namespace OpcUaStackCore;
 using namespace OpcUaStackServer;
@@ -53,14 +55,42 @@ namespace OpcUaEventTypeGenerator
 	uint32_t
 	OpcUaEventTypeGenerator::start(int argc, char** argv)
 	{
-		// check command line arguments
-		if (argc != 3) {
-			usage();
-			return 1;
+		boost::program_options::options_description desc("Allowed options");
+		desc.add_options()
+		    ("help", "produce help message")
+			("version", "print version string")
+		    ("nodeset", boost::program_options::value<std::string>(), "set nodeset file name (mandatory)")
+			("eventtype", boost::program_options::value<std::string>(), "set event type name (mandatory)")
+		;
+
+		boost::program_options::variables_map vm;
+		boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+		boost::program_options::notify(vm);
+
+		if (vm.count("help")) {
+		    std::cout << desc << std::endl;
+		    return 1;
 		}
 
-		std::string fileName = argv[1];
-		std::string eventTypeName = argv[2];
+		if (vm.count("version")) {
+		    std::cout << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH <<  std::endl;
+		    return 1;
+		}
+
+		if (vm.count("nodeset") == 0) {
+		    std::cout << desc << std::endl;
+		    return 1;
+		}
+
+		if (vm.count("eventtype") == 0) {
+		    std::cout << desc << std::endl;
+		    return 1;
+		}
+
+		// vm["input-file"].as< vector<string> >()
+
+		std::string fileName = vm["nodeset"].as<std::string>();
+		std::string eventTypeName = vm["eventtype"].as<std::string>();
 
 		// read opc ua nodeset
 		ConfigXml configXml;
