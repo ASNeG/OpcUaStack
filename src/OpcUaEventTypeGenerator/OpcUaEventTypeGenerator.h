@@ -36,10 +36,12 @@ namespace OpcUaEventTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
+		std::string fileName_;
+		std::string eventTypeName_;
+
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId eventTypeNodeId_;
 
-		void usage(void);
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
 
 	};

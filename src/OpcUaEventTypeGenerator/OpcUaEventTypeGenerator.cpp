@@ -45,6 +45,8 @@ namespace OpcUaEventTypeGenerator
 	OpcUaEventTypeGenerator::OpcUaEventTypeGenerator(void)
 	: eventTypeNodeId_(0)
 	, informationModel_()
+	, fileName_("")
+	, eventTypeName_("")
 	{
 	}
 
@@ -57,10 +59,20 @@ namespace OpcUaEventTypeGenerator
 	{
 		boost::program_options::options_description desc("Allowed options");
 		desc.add_options()
-		    ("help", "produce help message")
-			("version", "print version string")
-		    ("nodeset", boost::program_options::value<std::string>(), "set nodeset file name (mandatory)")
-			("eventtype", boost::program_options::value<std::string>(), "set event type name (mandatory)")
+		    ( "help",
+		      "produce help message"
+		    )
+			( "version",
+			  "print version string"
+			)
+		    ( "nodeset",
+		      boost::program_options::value<std::string>(),
+			  "set nodeset file name (mandatory)"
+			)
+			( "eventtype",
+			  boost::program_options::value<std::string>(),
+			  "set event type name (mandatory)"
+			)
 		;
 
 		boost::program_options::variables_map vm;
@@ -89,12 +101,17 @@ namespace OpcUaEventTypeGenerator
 
 		// vm["input-file"].as< vector<string> >()
 
-		std::string fileName = vm["nodeset"].as<std::string>();
-		std::string eventTypeName = vm["eventtype"].as<std::string>();
+		fileName_ = vm["nodeset"].as<std::string>();
+		eventTypeName_ = vm["eventtype"].as<std::string>();
+
+		// ignore BaseEventType
+		if (eventTypeName_ == "BaseEventType") {
+			return 1;
+		}
 
 		// read opc ua nodeset
 		ConfigXml configXml;
-	    if (!configXml.parse(fileName)) {
+	    if (!configXml.parse(fileName_)) {
 	    	std::cout << configXml.errorMessage() << std::endl;
 	    	return -1;
 	    }
@@ -116,8 +133,8 @@ namespace OpcUaEventTypeGenerator
 
 		// find node id for event type name
 		eventTypeNodeId_.set(0,0);
-		if (!findNodeId(eventTypeName, OpcUaNodeId(2041))) {
-			std::cout << "node id not found for event type " << eventTypeName << std::endl;
+		if (!findNodeId(eventTypeName_, OpcUaNodeId(2041))) {
+			std::cout << "node id not found for event type " << eventTypeName_ << std::endl;
 			return -3;
 		}
 
@@ -126,7 +143,7 @@ namespace OpcUaEventTypeGenerator
 		eventTypeGenerator.informationModel(informationModel_);
 		eventTypeGenerator.eventType(eventTypeNodeId_);
 		if (!eventTypeGenerator.generate()) {
-			std::cout << "source code generator error - " << eventTypeName << std::endl;
+			std::cout << "source code generator error - " << eventTypeName_ << std::endl;
 			return -4;
 		}
 
@@ -135,32 +152,19 @@ namespace OpcUaEventTypeGenerator
 		std::string sourceContent = eventTypeGenerator.sourceContent();
 		std::string headerContent = eventTypeGenerator.headerContent();
 
-		std::string headerFileName = eventTypeName + ".h";
+		std::string headerFileName = eventTypeName_ + ".h";
 		boost::filesystem::remove(headerFileName);
 		ofStream.open(headerFileName, std::ios::out);
 		ofStream << headerContent;
 		ofStream.close();
 
-		std::string sourceFileName = eventTypeName + ".cpp";
+		std::string sourceFileName = eventTypeName_ + ".cpp";
 		boost::filesystem::remove(sourceFileName);
 		ofStream.open(sourceFileName, std::ios::out);
 		ofStream << sourceContent;
 		ofStream.close();
 
 		return 0;
-	}
-
-	void
-	OpcUaEventTypeGenerator::usage(void)
-	{
-		std::cout <<
-			"OpcUaEventTypeGenerator <NodeSetFileName> <EventTypeName>\n"
-			"\n"
-			"<NodeSetFileName>\n"
-			"  name of the nodesetfile\n"
-			"<EventTypeName>\n"
-			"  name of the event type\n"
-			"\n";
 	}
 
 	bool
@@ -215,10 +219,6 @@ namespace OpcUaEventTypeGenerator
 	}
 
 }
-
-#if 0
-
-#endif
 
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
