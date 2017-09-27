@@ -61,24 +61,24 @@ namespace OpcUaStackCore
     	if (status_ == OpcUaStatusCode::Success) {
     		OpcUaTypeConversion converter;
 
-    		OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
-    		OpcUaVariant::SPtr argValue = constructSPtr<OpcUaVariant>();
+    		OpcUaVariant tmpVariant;
+    		OpcUaVariant argValue;;
 
-    		arg1_->evaluate(*argValue);
+    		arg1_->evaluate(argValue);
     		if (!converter.conversion(argValue, OpcUaBuildInType_OpcUaString, tmpVariant)) {
     			return false;
     		}
 
     		OpcUaString string;
-    		tmpVariant->getValue(string);
+    		tmpVariant.getValue(string);
 
-    		arg2_->evaluate(*argValue);
+    		arg2_->evaluate(argValue);
     		if (!converter.conversion(argValue, OpcUaBuildInType_OpcUaString, tmpVariant)) {
     			return false;
     		}
 
     		OpcUaString pattern;
-    		tmpVariant->getValue(pattern);
+    		tmpVariant.getValue(pattern);
 
 
     		value.setValue(matches(string, pattern));

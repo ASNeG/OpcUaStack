@@ -57,16 +57,16 @@ namespace OpcUaStackCore
     	if (status_ == OpcUaStatusCode::Success) {
     		OpcUaTypeConversion converter;
 
-    		OpcUaVariant::SPtr argValue = constructSPtr<OpcUaVariant>();
-    		if (!arg_->evaluate(*argValue))
+    		OpcUaVariant argValue;
+    		if (!arg_->evaluate(argValue))
     			return false;
 
-    		OpcUaVariant::SPtr tmp = constructSPtr<OpcUaVariant>();
+    		OpcUaVariant tmp;
     		if (!converter.conversion(argValue, OpcUaBuildInType_OpcUaBoolean, tmp))
     			return false;
 
 
-    		value.set(!tmp->get<OpcUaBoolean>());
+    		value.set(!tmp.get<OpcUaBoolean>());
     		return true;
     	}
 

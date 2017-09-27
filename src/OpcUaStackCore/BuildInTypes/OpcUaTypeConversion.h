@@ -41,9 +41,9 @@ namespace OpcUaStackCore
 
 		char conversionType(OpcUaBuildInType sourceType, OpcUaBuildInType targetType);
 		bool conversion(
-			OpcUaVariant::SPtr& sourceVariant,		// source variant data
-			OpcUaBuildInType targetType,			// target type
-			OpcUaVariant::SPtr& targetVariant 		// target variant data
+			OpcUaVariant& sourceVariant,		// source variant data
+			OpcUaBuildInType targetType,		// target type
+			OpcUaVariant& targetVariant 		// target variant data
 		);
 
 		uint8_t precedenceRank(OpcUaBuildInType type);
@@ -52,26 +52,26 @@ namespace OpcUaStackCore
 
 		static char conversationTypeTable[TYPE_CONVERSATION_TABLE_SIZE][TYPE_CONVERSATION_TABLE_SIZE];
 
-		bool cast(OpcUaVariant::SPtr& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant::SPtr& targetVariant);
+		bool cast(OpcUaVariant& sourceVariant, OpcUaBuildInType targetType, OpcUaVariant& targetVariant);
 
 		template <typename T1, typename T2>
-		bool cast(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool cast(OpcUaVariant& source, OpcUaVariant& target)
 		{
-			T2 val = source->get<T1>();
-			target->set<T2>(val);
+			T2 val = source.get<T1>();
+			target.set<T2>(val);
 
 			return true;
 		}
 
 		template <typename T1, typename T2>
-		bool castRealToInteger(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool castRealToInteger(OpcUaVariant& source, OpcUaVariant& target)
 		{
-			T1 val = source->get<T1>();
+			T1 val = source.get<T1>();
 			if ((val <= std::numeric_limits<T2>::max())
 					&& (val >= std::numeric_limits<T2>::min())) {
 
-				T2 val = source->get<T1>() + 0.5;
-				target->set<T2>(val);
+				T2 val = source.get<T1>() + 0.5;
+				target.set<T2>(val);
 				return true;
 			}
 
@@ -79,12 +79,12 @@ namespace OpcUaStackCore
 		}
 
 		template <typename T1, typename T2>
-		bool castIntegerToInteger(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool castIntegerToInteger(OpcUaVariant& source, OpcUaVariant& target)
 		{
 			try {
 
-				T2 val = boost::numeric_cast<T2>(source->get<T1>());
-				target->set<T2>(val);
+				T2 val = boost::numeric_cast<T2>(source.get<T1>());
+				target.set<T2>(val);
 
 				return true;
 			} catch (boost::bad_numeric_cast &e) {
@@ -93,21 +93,21 @@ namespace OpcUaStackCore
 		}
 
 		template <typename T>
-		bool castToString(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool castToString(OpcUaVariant& source, OpcUaVariant& target)
 		{
-			OpcUaString::SPtr value = constructSPtr<OpcUaString>(
-					boost::lexical_cast<std::string>(source->get<T>()));
-			target->variant(value);
+			OpcUaString value(
+					boost::lexical_cast<std::string>(source.get<T>()));
+			target.setValue(value);
 
 			return true;
 		}
 
 		template <typename T>
-		bool castStatusCode(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool castStatusCode(OpcUaVariant& source, OpcUaVariant& target)
 		{
-			OpcUaStatusCode status = (OpcUaStatusCode) source->get<T>();
+			OpcUaStatusCode status = (OpcUaStatusCode) source.get<T>();
 			if (OpcUaStatusCodeMap::shortString(status) != "") {
-				target->set<OpcUaStatusCode>(status);
+				target.set<OpcUaStatusCode>(status);
 				return true;
 			}
 
@@ -115,11 +115,11 @@ namespace OpcUaStackCore
 		}
 
 		template <typename T>
-		bool castStringToReal(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool castStringToReal(OpcUaVariant& source, OpcUaVariant& target)
 		{
 			try {
-				T value = boost::lexical_cast<T>(source->getSPtr<OpcUaString>()->toStdString());
-				target->variant(value);
+				T value = boost::lexical_cast<T>(source.getSPtr<OpcUaString>()->toStdString());
+				target.variant(value);
 				return true;
 			} catch (boost::bad_lexical_cast &e) {
 				return false;
@@ -127,17 +127,17 @@ namespace OpcUaStackCore
 		}
 
 		template <typename T>
-		bool castStringToInteger(OpcUaVariant::SPtr& source, OpcUaVariant::SPtr& target)
+		bool castStringToInteger(OpcUaVariant& source, OpcUaVariant& target)
 		{
 			try {
-				OpcUaVariant::SPtr tmp = constructSPtr<OpcUaVariant>();
+				OpcUaVariant tmp;
 				if (std::numeric_limits<T>::min() == 0) {
-					uint64_t value = boost::lexical_cast<uint64_t>(source->getSPtr<OpcUaString>()->toStdString());
-					tmp->variant(value);
+					uint64_t value = boost::lexical_cast<uint64_t>(source.getSPtr<OpcUaString>()->toStdString());
+					tmp.variant(value);
 					return castIntegerToInteger<uint64_t, T>(tmp, target);
 				} else {
-					int64_t value = boost::lexical_cast<int64_t>(source->getSPtr<OpcUaString>()->toStdString());
-					tmp->variant(value);
+					int64_t value = boost::lexical_cast<int64_t>(source.getSPtr<OpcUaString>()->toStdString());
+					tmp.variant(value);
 					return castIntegerToInteger<int64_t, T>(tmp, target);
 				}
 

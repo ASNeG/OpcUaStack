@@ -47,7 +47,7 @@ namespace OpcUaStackCore
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
 
-        bool compare(OpcUaVariant::SPtr lhs, OpcUaVariant::SPtr rhs, OpcUaVariant& result);
+        bool compare(OpcUaVariant& lhs, OpcUaVariant& rhs, OpcUaVariant& result);
     };
 
 }

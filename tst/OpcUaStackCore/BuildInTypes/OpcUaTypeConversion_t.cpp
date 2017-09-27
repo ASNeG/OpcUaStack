@@ -12,9 +12,9 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 
 #define SHOULD_NOT_CONVERT(sourceType, targetType) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->set<sourceType>(sourceType()); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.set<sourceType>(sourceType()); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_##sourceType, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
@@ -22,9 +22,9 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 
 #define SHOULD_NOT_CONVERT_PTR(sourceType, targetType) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->variant(constructSPtr<sourceType>()); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.variant(constructSPtr<sourceType>()); \
+	OpcUaVariant value2; \
 															  \
 	BOOST_REQUIRE_EQUAL('X', converter.conversionType(OpcUaBuildInType_##sourceType, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
@@ -32,57 +32,57 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 
 #define SHOULD_CONVERT(convType, sourceType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->set<sourceType>(sourceValue); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.set<sourceType>(sourceValue); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_##sourceType, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
-	BOOST_REQUIRE_EQUAL(targetValue, value2->get<targetType>()); \
+	BOOST_REQUIRE_EQUAL(targetValue, value2.get<targetType>()); \
 } while(0)
 
 #define SHOULD_CONVERT_PTR(convType, sourceType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->set<sourceType>(sourceValue); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.set<sourceType>(sourceValue); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_##sourceType, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
-	BOOST_REQUIRE_EQUAL(targetType(targetValue), *value2->getSPtr<targetType>()); \
+	BOOST_REQUIRE_EQUAL(targetType(targetValue), *value2.getSPtr<targetType>()); \
 } while(0)
 
 #define SHOULD_CONVERT_2PTR(convType, sourceType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->variant(sourceValue); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1; \
+	value1.variant(sourceValue); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_##sourceType, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
-	BOOST_REQUIRE_EQUAL(targetValue, *value2->getSPtr<targetType>()); \
+	BOOST_REQUIRE_EQUAL(targetValue, *value2.getSPtr<targetType>()); \
 } while(0)
 
 #define SHOULD_BE_SAME(type, value) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->set<type>(value); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1; \
+	value1.set<type>(value); \
+	OpcUaVariant value2; \
 															  \
 	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_##type, OpcUaBuildInType_##type)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##type, value2));         \
-	BOOST_REQUIRE_EQUAL(value, value2->get<type>()); \
+	BOOST_REQUIRE_EQUAL(value, value2.get<type>()); \
 } while(0)
 
 #define SHOULD_BE_SAME_PTR(type, value) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->variant(value); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.variant(value); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL('-', converter.conversionType(OpcUaBuildInType_##type, OpcUaBuildInType_##type)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##type, value2));         \
-	BOOST_REQUIRE_EQUAL(*value, *value2->getSPtr<type>()); \
+	BOOST_REQUIRE_EQUAL(*value, *value2.getSPtr<type>()); \
 } while(0)
 
 #define SHOULD_HAVE_RANK(type, rank) do {\
@@ -92,28 +92,28 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 
 #define CHECK_MAX(sourceType, targetType, delta) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	OpcUaVariant value2;\
 															  \
-	value1->set<sourceType>((sourceType)std::numeric_limits<targetType>::max() + delta); \
+	value1.set<sourceType>((sourceType)std::numeric_limits<targetType>::max() + delta); \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2)); \
 } while(0)
 
 #define CHECK_MIN(sourceType, targetType, delta) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1; \
+	OpcUaVariant value2; \
 															  \
-	value1->set<sourceType>((sourceType)std::numeric_limits<targetType>::min() - delta); \
+	value1.set<sourceType>((sourceType)std::numeric_limits<targetType>::min() - delta); \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2)); \
 } while(0)
 
 #define CHECK_BAD_VALUE(sourceType, targetType, value) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1; \
+	OpcUaVariant value2; \
 															  \
-	value1->set<sourceType>(value); \
+	value1.set<sourceType>(value); \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2)); \
 } while(0)
 
@@ -121,11 +121,11 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_)
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ArrayIsNotSupported)
 {
 	OpcUaTypeConversion converter;
-	OpcUaVariant::SPtr source = constructSPtr<OpcUaVariant>();
-	source->pushBack<OpcUaUInt16>(1);
-	source->pushBack<OpcUaUInt16>(1);
+	OpcUaVariant source;
+	source.pushBack<OpcUaUInt16>(1);
+	source.pushBack<OpcUaUInt16>(1);
 
-	OpcUaVariant::SPtr target = constructSPtr<OpcUaVariant>();
+	OpcUaVariant target;
 
 	BOOST_REQUIRE(converter.conversion(source, OpcUaBuildInType_OpcUaDouble, target) == false);
 }
@@ -221,15 +221,15 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_ByteString)
 
 	// byteString -> Guid wrong format
 	OpcUaTypeConversion converter;
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();
+	OpcUaVariant value1;
+	OpcUaVariant value2;
 
 	OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37\x38\x39");
-	value1->variant(byteString);
+	value1.variant(byteString);
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
 
 	byteString = constructSPtr<OpcUaByteString>("\x01\x02\x03\x04\x11\x12\x21\x22\x31\x32\x33\x34\x35\x36\x37");
-	value1->variant(byteString);
+	value1.variant(byteString);
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_OpcUaGuid, value2));
 }
 
@@ -696,33 +696,33 @@ BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_StatusCode)
 
 #define SHOULD_CONVERT_STR(convType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->variant(constructSPtr<OpcUaString>(sourceValue)); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.variant(constructSPtr<OpcUaString>(sourceValue)); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_OpcUaString, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
-	BOOST_REQUIRE_EQUAL(targetType(targetValue), value2->get<targetType>()); \
+	BOOST_REQUIRE_EQUAL(targetType(targetValue), value2.get<targetType>()); \
 } while(0)
 
 #define SHOULD_NOT_CONVERT_STR(targetType, sourceValue) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->variant(constructSPtr<OpcUaString>(sourceValue)); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.variant(constructSPtr<OpcUaString>(sourceValue)); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE(!converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
 } while(0)
 
 #define SHOULD_CONVERT_STR_PTR(convType, targetType, sourceValue, targetValue) do {\
 	OpcUaTypeConversion converter; \
-	OpcUaVariant::SPtr value1 = constructSPtr<OpcUaVariant>();\
-	value1->variant(constructSPtr<OpcUaString>(sourceValue)); \
-	OpcUaVariant::SPtr value2 = constructSPtr<OpcUaVariant>();\
+	OpcUaVariant value1;\
+	value1.variant(constructSPtr<OpcUaString>(sourceValue)); \
+	OpcUaVariant value2;\
 															  \
 	BOOST_REQUIRE_EQUAL(convType, converter.conversionType(OpcUaBuildInType_OpcUaString, OpcUaBuildInType_##targetType)); \
 	BOOST_REQUIRE(converter.conversion(value1, OpcUaBuildInType_##targetType, value2));         \
-	BOOST_REQUIRE_EQUAL(targetValue, *value2->getSPtr<targetType>()); \
+	BOOST_REQUIRE_EQUAL(targetValue, *value2.getSPtr<targetType>()); \
 } while(0)
 
 BOOST_AUTO_TEST_CASE(OpcUaTypeConversion_String)

@@ -57,44 +57,44 @@ namespace OpcUaStackCore
 	BetweenFilterNode::evaluate(OpcUaVariant& value)
     {
     	if (status_ == OpcUaStatusCode::Success) {
-    		OpcUaVariant::SPtr operand = constructSPtr<OpcUaVariant>();
-    		OpcUaVariant::SPtr min = constructSPtr<OpcUaVariant>();
-    		OpcUaVariant::SPtr max = constructSPtr<OpcUaVariant>();
+    		OpcUaVariant operand;
+    		OpcUaVariant min;
+    		OpcUaVariant max;
 
 
-    		arg1_->evaluate(*operand);
-    		arg2_->evaluate(*min);
-    		arg3_->evaluate(*max);
+    		arg1_->evaluate(operand);
+    		arg2_->evaluate(min);
+    		arg3_->evaluate(max);
 
     		OpcUaTypeConversion converter;
-    		OpcUaBuildInType mostPrecedenceType = converter.precedenceRank(operand->variantType()) <
-    		 	 converter.precedenceRank(min->variantType()) ? operand->variantType() : min->variantType();
+    		OpcUaBuildInType mostPrecedenceType = converter.precedenceRank(operand.variantType()) <
+    		 	 converter.precedenceRank(min.variantType()) ? operand.variantType() : min.variantType();
 
     		mostPrecedenceType = converter.precedenceRank(mostPrecedenceType) <
-    		    		 	 converter.precedenceRank(max->variantType()) ? mostPrecedenceType : max->variantType();
+    		    		 	 converter.precedenceRank(max.variantType()) ? mostPrecedenceType : max.variantType();
 
-    		OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
-    		operand->copyTo(*tmpVariant);
+    		OpcUaVariant tmpVariant;
+    		operand.copyTo(tmpVariant);
     		if (!converter.conversion(tmpVariant, mostPrecedenceType, operand)) {
     			value.set<OpcUaBoolean>(false);
     			return true;
     		}
 
-    		min->copyTo(*tmpVariant);
+    		min.copyTo(tmpVariant);
     		if (!converter.conversion(tmpVariant, mostPrecedenceType, min)) {
     			value.set<OpcUaBoolean>(false);
     			return true;
     		}
 
-    		max->copyTo(*tmpVariant);
+    		max.copyTo(tmpVariant);
     		if (!converter.conversion(tmpVariant, mostPrecedenceType, max)) {
     			value.set<OpcUaBoolean>(false);
     			return true;
     		}
 
 
-    		value.set<OpcUaBoolean>((operand->variant()[0] >= min->variant()[0])
-    				&& (operand->variant()[0] <= max->variant()[0]));
+    		value.set<OpcUaBoolean>((operand.variant()[0] >= min.variant()[0])
+    				&& (operand.variant()[0] <= max.variant()[0]));
     		return true;
     	}
 

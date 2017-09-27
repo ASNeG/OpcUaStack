@@ -57,38 +57,38 @@ namespace OpcUaStackCore
     	if (status_ == OpcUaStatusCode::Success) {
     		OpcUaBoolean result = false;
 
-    		OpcUaVariant::SPtr argValue = constructSPtr<OpcUaVariant>();
-    		if (arg_->evaluate(*argValue)) {
+    		OpcUaVariant argValue;
+    		if (arg_->evaluate(argValue)) {
     			OpcUaTypeConversion converter;
-    			std::list<OpcUaVariant::SPtr> evaluatedOperands;
+    			std::list<OpcUaVariant> evaluatedOperands;
 
 				// Find the most ranked type and evaluate all operands
-				OpcUaBuildInType mostPrecedenceType = argValue->variantType();
+				OpcUaBuildInType mostPrecedenceType = argValue.variantType();
 				for (std::list<FilterNode::SPtr>::iterator it = list_.begin(); it != list_.end(); it++) {
-					OpcUaVariant::SPtr operandResult = constructSPtr<OpcUaVariant>();
+					OpcUaVariant operandResult;
 
 					// if an operand doesn't evaluate don't check it
-					if (!(*it)->evaluate(*operandResult)) {
+					if (!(*it)->evaluate(operandResult)) {
 						break;
 					}
 
 					evaluatedOperands.push_back(operandResult);
 
 					mostPrecedenceType = converter.precedenceRank(mostPrecedenceType) <
-							converter.precedenceRank(operandResult->variantType()) ? mostPrecedenceType : operandResult->variantType();
+							converter.precedenceRank(operandResult.variantType()) ? mostPrecedenceType : operandResult.variantType();
 				}
 
-				OpcUaVariant::SPtr tmpVariant = constructSPtr<OpcUaVariant>();
-				argValue->copyTo(*tmpVariant);
+				OpcUaVariant tmpVariant;
+				argValue.copyTo(tmpVariant);
 				if (converter.conversion(tmpVariant, mostPrecedenceType, argValue)) {
 
 					// Find in the list
-					for (std::list<OpcUaVariant::SPtr>::iterator it = evaluatedOperands.begin(); it != evaluatedOperands.end(); it++) {
+					for (std::list<OpcUaVariant>::iterator it = evaluatedOperands.begin(); it != evaluatedOperands.end(); it++) {
 
-						(*it)->copyTo(*tmpVariant);
+						(*it).copyTo(tmpVariant);
 						if (converter.conversion(tmpVariant, mostPrecedenceType, *it)) {
 
-							if ((*(*it) == *argValue)) {
+							if ((*it) == argValue) {
 								result = true;
 								break;
 							}
