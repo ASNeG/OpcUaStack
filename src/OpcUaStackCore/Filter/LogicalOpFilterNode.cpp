@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 
     	switch(operator_) {
     	case OpcUaOperator::And:
+    	case OpcUaOperator::Or:
     	{
 			status_ = OpcUaStatusCode::Success;
 			operandStatuses_ = std::vector<OpcUaStatusCode>();
@@ -69,7 +70,9 @@ namespace OpcUaStackCore
     {
     	if (status_ == OpcUaStatusCode::Success) {
 
-            LogicalValue result = andTable[toLogicalValue(arg1_)][toLogicalValue(arg2_)];
+            LogicalValue result = (operator_ == OpcUaOperator::And) ?
+            		andTable[toLogicalValue(arg1_)][toLogicalValue(arg2_)] :
+					 orTable[toLogicalValue(arg1_)][toLogicalValue(arg2_)];
 
             if (result == LogicalValue::Null) {
             	value.clear();
@@ -89,6 +92,14 @@ namespace OpcUaStackCore
     		{ LogicalValue::True, LogicalValue::False, LogicalValue::Null },
 			{ LogicalValue::False, LogicalValue::False, LogicalValue::False },
 			{ LogicalValue::Null, LogicalValue::False, LogicalValue::Null }
+    };
+
+    LogicalOpFilterNode::LogicalValue
+    LogicalOpFilterNode::orTable[3][3] =
+    {
+    		{ LogicalValue::True, LogicalValue::True, LogicalValue::True },
+			{ LogicalValue::True, LogicalValue::False, LogicalValue::Null },
+			{ LogicalValue::True, LogicalValue::Null, LogicalValue::Null }
     };
 
     LogicalOpFilterNode::LogicalValue

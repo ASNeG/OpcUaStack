@@ -54,6 +54,7 @@ namespace OpcUaStackCore
         };
 
         static LogicalValue andTable[3][3];
+        static LogicalValue orTable[3][3];
 
         LogicalValue toLogicalValue(FilterNode::SPtr arg);
     };

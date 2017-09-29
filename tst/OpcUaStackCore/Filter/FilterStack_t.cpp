@@ -639,5 +639,30 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_And)
     BOOST_REQUIRE(filterResult == false);
 }
 
+BOOST_AUTO_TEST_CASE(FilterStack_supports_Or)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaBoolean,OpcUaBoolean>(
+            BasicFilterOperator::BasicFilterOperator_Or, false, false);
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    ContentFilterResult result;
+
+    BOOST_REQUIRE(stack.receive(filter, result));
+
+    ContentFilterElementResult::SPtr elementResult;
+
+    result.elementResults()->get(0, elementResult);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
+
+
+    bool filterResult;
+    BOOST_REQUIRE(stack.process(filterResult));
+    BOOST_REQUIRE(filterResult == false);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 

@@ -238,6 +238,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_Or:
+				{
+					node = LogicalOpFilterNode::SPtr(new LogicalOpFilterNode(OpcUaOperator::Or, args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Cast:
 				case BasicFilterOperator_BitwiseAnd:
 				case BasicFilterOperator_BitwiseOr:

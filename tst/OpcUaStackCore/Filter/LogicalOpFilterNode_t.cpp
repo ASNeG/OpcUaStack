@@ -54,14 +54,30 @@ BOOST_AUTO_TEST_CASE(LogicalOpFilterNode_AND_Truth_Table)
 	SHOULD_BE_FALSE(OpcUaOperator::And, false, OpcUaString("xxx"));
 	SHOULD_BE_FALSE(OpcUaOperator::And, OpcUaString("xxx"), false);
 
-	SHOULD_BE_NULL(OpcUaOperator::And, true, OpcUaString("xxx"));
-	SHOULD_BE_NULL(OpcUaOperator::And, OpcUaString("xxx"), true);
-	SHOULD_BE_NULL(OpcUaOperator::And, OpcUaString("xxx"), OpcUaString("xxx"));
+	SHOULD_BE_NULL (OpcUaOperator::And, true, OpcUaString("xxx"));
+	SHOULD_BE_NULL (OpcUaOperator::And, OpcUaString("xxx"), true);
+	SHOULD_BE_NULL (OpcUaOperator::And, OpcUaString("xxx"), OpcUaString("xxx"));
+}
+
+BOOST_AUTO_TEST_CASE(LogicalOpFilterNode_OR_Truth_Table)
+{
+	SHOULD_BE_TRUE (OpcUaOperator::Or, true, true);
+	SHOULD_BE_TRUE (OpcUaOperator::Or, true, false);
+	SHOULD_BE_TRUE (OpcUaOperator::Or, false, true);
+	SHOULD_BE_TRUE (OpcUaOperator::Or, true, OpcUaString("xxx"));
+	SHOULD_BE_TRUE (OpcUaOperator::Or, OpcUaString("xxx"), true);
+
+	SHOULD_BE_FALSE(OpcUaOperator::Or, false, false);
+
+	SHOULD_BE_NULL (OpcUaOperator::Or, false, OpcUaString("xxx"));
+	SHOULD_BE_NULL (OpcUaOperator::Or, OpcUaString("xxx"), false);
+	SHOULD_BE_NULL (OpcUaOperator::Or, OpcUaString("xxx"), OpcUaString("xxx"));
 }
 
 BOOST_AUTO_TEST_CASE(LogicalOpFilterNode_AND_cast)
 {
 	SHOULD_BE_TRUE (OpcUaOperator::And, OpcUaDouble(1), OpcUaString("true"));
+	SHOULD_BE_TRUE (OpcUaOperator::Or, OpcUaDouble(1), OpcUaString("false"));
 }
 
 BOOST_AUTO_TEST_CASE(LogicalOpFilterNode_too_much_args)
