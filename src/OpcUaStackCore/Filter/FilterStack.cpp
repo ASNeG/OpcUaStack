@@ -32,6 +32,7 @@
 #include "OpcUaStackCore/Filter/NotFilterNode.h"
 #include "OpcUaStackCore/Filter/BetweenFilterNode.h"
 #include "OpcUaStackCore/Filter/InListFilterNode.h"
+#include "OpcUaStackCore/Filter/LogicalOpFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -231,6 +232,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_And:
+				{
+					node = LogicalOpFilterNode::SPtr(new LogicalOpFilterNode(OpcUaOperator::And, args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Or:
 				case BasicFilterOperator_Cast:
 				case BasicFilterOperator_BitwiseAnd:

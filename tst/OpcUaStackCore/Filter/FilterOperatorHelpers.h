@@ -12,6 +12,8 @@
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 
+#include "OpcUaStackCore/Filter/LiteralFilterNode.h"
+
 #include "OpcUaStackCore/Filter/FilterStack.h"
 
 using namespace OpcUaStackCore;
