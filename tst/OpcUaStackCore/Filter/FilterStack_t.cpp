@@ -6,8 +6,19 @@
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/Filter/FilterStack.h"
 
-
 using namespace OpcUaStackCore;
+
+#define SHOULD_PROCESS_FALSE(stack, filter) do {									\
+	ContentFilterResult result;														\
+	BOOST_REQUIRE(stack.receive(filter, result));                                   \
+	ContentFilterElementResult::SPtr elementResult;                                 \
+	result.elementResults()->get(0, elementResult);                                 \
+	BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);     \
+	bool filterResult;                                                              \
+	BOOST_REQUIRE(stack.process(filterResult));                                     \
+	BOOST_REQUIRE(filterResult == false);                                           \
+} while(0)
+
 
 BOOST_AUTO_TEST_SUITE(FilterStack_)
 
@@ -356,6 +367,8 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_IsNullOperator)
     BOOST_REQUIRE(filterResult == false);
 }
 
+
+
 BOOST_AUTO_TEST_CASE(FilterStack_supports_GreaterThan)
 {
     FilterStack stack;
@@ -366,19 +379,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_GreaterThan)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+	SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 
@@ -392,19 +393,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_LessThan)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_supports_GreateThanOrEqual)
@@ -417,19 +406,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_GreateThanOrEqual)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_supports_LessThanOrEqual)
@@ -442,19 +419,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_LessThanOrEqual)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_supports_LikeOperator)
@@ -468,19 +433,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_LikeOperator)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_NotOperator)
@@ -510,17 +463,7 @@ BOOST_AUTO_TEST_CASE(IsNullFilterNode_supports_NotOperator)
     ContentFilter filter;
     filter.elements()->push_back(eqElement);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_supports_BetweenOperator)
@@ -553,19 +496,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_BetweenOperator)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 
@@ -599,19 +530,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_InListOperator)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_supports_And)
@@ -624,19 +543,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_And)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_supports_Or)
@@ -649,19 +556,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_Or)
     filter.elements()->resize(1);
     filter.elements()->push_back(eqElement1);
 
-    ContentFilterResult result;
-
-    BOOST_REQUIRE(stack.receive(filter, result));
-
-    ContentFilterElementResult::SPtr elementResult;
-
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::Success);
-
-
-    bool filterResult;
-    BOOST_REQUIRE(stack.process(filterResult));
-    BOOST_REQUIRE(filterResult == false);
+    SHOULD_PROCESS_FALSE(stack, filter);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
