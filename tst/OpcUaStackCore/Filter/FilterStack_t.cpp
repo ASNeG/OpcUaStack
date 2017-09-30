@@ -559,5 +559,18 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_Or)
     SHOULD_PROCESS_FALSE(stack, filter);
 }
 
+BOOST_AUTO_TEST_CASE(FilterStack_supports_Cast)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaString, OpcUaNodeId>(
+            BasicFilterOperator::BasicFilterOperator_Cast, OpcUaString("0"), OpcUaNodeId(OpcUaId_UInt16, 0));
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    SHOULD_PROCESS_FALSE(stack, filter);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 

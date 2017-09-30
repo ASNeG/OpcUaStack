@@ -17,6 +17,8 @@
 
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
+
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
@@ -33,6 +35,7 @@
 #include "OpcUaStackCore/Filter/BetweenFilterNode.h"
 #include "OpcUaStackCore/Filter/InListFilterNode.h"
 #include "OpcUaStackCore/Filter/LogicalOpFilterNode.h"
+#include "OpcUaStackCore/Filter/CastFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -244,6 +247,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_Cast:
+				{
+					node = CastFilterNode::SPtr(new CastFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_BitwiseAnd:
 				case BasicFilterOperator_BitwiseOr:
 				{
@@ -279,9 +287,15 @@ namespace OpcUaStackCore
     		return false;
     	}
 
-    	if (!value.getValue(filterResult)) {
+    	OpcUaVariant boolValue;
+    	OpcUaTypeConversion converter;
+    	if (!converter.conversion(value, OpcUaBuildInType_OpcUaBoolean, boolValue)) {
     		return false;
     	}
+
+		if (!boolValue.getValue(filterResult)) {
+			return false;
+		}
 
     	return true;
     }
