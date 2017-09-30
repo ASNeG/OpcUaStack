@@ -568,5 +568,18 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_BitwiseAnd)
     SHOULD_PROCESS_FALSE(stack, filter);
 }
 
+BOOST_AUTO_TEST_CASE(FilterStack_supports_BitwiseOr)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaInt16, OpcUaUInt32>(
+            BasicFilterOperator::BasicFilterOperator_BitwiseOr, OpcUaInt16(0x0000), OpcUaUInt32(0x000));
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    SHOULD_PROCESS_FALSE(stack, filter);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 

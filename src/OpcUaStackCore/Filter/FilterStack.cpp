@@ -260,6 +260,11 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_BitwiseOr:
+				{
+					node = BitwiseOpFilterNode::SPtr(new BitwiseOpFilterNode(OpcUaOperator::BitwiseOr, args));
+					operatorStatus = node->status();
+					break;
+				}
 				default:
 				{
 					Log(Error, "filter operator is not supported")

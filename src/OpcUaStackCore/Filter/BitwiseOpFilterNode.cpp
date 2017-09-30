@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 
     	switch(operator_) {
     	case OpcUaOperator::BitwiseAnd:
+    	case OpcUaOperator::BitwiseOr:
     	{
 			status_ = OpcUaStatusCode::Success;
 			operandStatuses_ = std::vector<OpcUaStatusCode>();
@@ -131,7 +132,20 @@ namespace OpcUaStackCore
     			return false;
     		}
 
-    		tmpVariant.setValue(value1.get<OpcUaInt64>() & value2.get<OpcUaInt64>());
+        	switch(operator_) {
+        	case OpcUaOperator::BitwiseAnd:
+        	{
+        		tmpVariant.setValue(value1.get<OpcUaInt64>() & value2.get<OpcUaInt64>());
+        		break;
+        	}
+        	case OpcUaOperator::BitwiseOr:
+        	{
+				tmpVariant.setValue(value1.get<OpcUaInt64>() | value2.get<OpcUaInt64>());
+				break;
+			}
+        	default: return false;
+        	}
+
     		if (!converter.conversion(tmpVariant, mostPrecedenceType, value)) {
     			return false;
     		}
