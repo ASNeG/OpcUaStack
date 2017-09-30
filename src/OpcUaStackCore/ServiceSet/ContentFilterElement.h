@@ -35,7 +35,7 @@ namespace OpcUaStackCore
 		BasicFilterOperator_GreaterThan = 2,
 		BasicFilterOperator_LessThan = 3,
 		BasicFilterOperator_GreaterThanOrEqual = 4,
-		BasicFilterOperator_LassThanOrEqual = 5,
+		BasicFilterOperator_LessThanOrEqual = 5,
 		BasicFilterOperator_Like = 6,
 		BasicFilterOperator_Not = 7,
 		BasicFilterOperator_Between = 8,

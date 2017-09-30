@@ -123,6 +123,10 @@ namespace OpcUaStackCore
 
 		bool operator!=(OpcUaVariantValue& variantValue);
 		bool operator==(OpcUaVariantValue& variantValue);
+		bool operator<(OpcUaVariantValue& variantValue);
+		bool operator<=(OpcUaVariantValue& variantValue);
+		bool operator>(OpcUaVariantValue& variantValue);
+		bool operator>=(OpcUaVariantValue& variantValue);
 
 		void opcUaBinaryEncode(std::ostream& os, OpcUaBuildInType variantType) const;
 		void opcUaBinaryDecode(std::istream& is, OpcUaBuildInType variantType);

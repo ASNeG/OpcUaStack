@@ -1,0 +1,137 @@
+/*
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
+ */
+
+
+#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
+#include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
+
+
+namespace OpcUaStackCore
+{
+
+    ComparisonFilterNode::ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args)
+    {
+    	operator_ = op;
+
+    	switch(operator_) {
+    	case OpcUaOperator::Equals:
+    	case OpcUaOperator::GreaterThan:
+    	case OpcUaOperator::LessThan:
+    	case OpcUaOperator::GreaterThanOrEqual:
+    	case OpcUaOperator::LessThanOrEqual:
+    	{
+			status_ = OpcUaStatusCode::Success;
+			operandStatuses_ = std::vector<OpcUaStatusCode>();
+
+			if (args.size() == 2) {
+				arg1_ = args[0];
+				arg2_ = args[1];
+			}
+			else {
+				status_ = OpcUaStatusCode::BadFilterOperandCountMismatch;
+			}
+			break;
+    	}
+    	default:
+    		status_ = OpcUaStatusCode::BadFilterOperatorInvalid;
+    	}
+    }
+
+    ComparisonFilterNode::~ComparisonFilterNode()
+    {
+
+    }
+
+    OpcUaStatusCode&
+	ComparisonFilterNode::status()
+    {
+    	return status_;
+    }
+
+    std::vector<OpcUaStatusCode>&
+	ComparisonFilterNode::operandStatuses()
+    {
+    	return operandStatuses_;
+    }
+
+    bool
+	ComparisonFilterNode::evaluate(OpcUaVariant& value)
+    {
+    	if (status_ == OpcUaStatusCode::Success) {
+    		OpcUaVariant value1;
+            if (!arg1_->evaluate(value1)) {
+            	return false;
+            }
+
+            OpcUaVariant value2 ;
+            if (!arg2_->evaluate(value2)) {
+            	return false;
+            }
+
+    		OpcUaTypeConversion converter;
+    		// Convert variable with greater precedence rank
+    		if (converter.precedenceRank(value1.variantType()) < converter.precedenceRank(value2.variantType())) {
+    			std::swap(value1, value2);
+    		}
+    	    char conveType = converter.conversionType(value1.variantType(), value2.variantType());
+
+    	    if (converter.conversion(value1, value2.variantType(), value1)) {
+				return compare(value1, value2, value);
+			} else {
+				value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
+			}
+
+			return true;
+		}
+
+		return false;
+    }
+
+    bool ComparisonFilterNode::compare(OpcUaVariant& lhs, OpcUaVariant& rhs, OpcUaVariant& result)
+	{
+    	// FIXME: doesn't compare arrays
+    	switch (operator_) {
+		case OpcUaOperator::Equals:
+		{
+			result.set<OpcUaBoolean>(lhs.variant()[0] == rhs.variant()[0]);
+			return true;
+		}
+		case OpcUaOperator::GreaterThan:
+		{
+			result.set<OpcUaBoolean>(lhs.variant()[0] > rhs.variant()[0]);
+			return true;
+		}
+		case OpcUaOperator::LessThan:
+		{
+			result.set<OpcUaBoolean>(lhs.variant()[0] < rhs.variant()[0]);
+			return true;
+		}
+		case OpcUaOperator::GreaterThanOrEqual:
+		{
+			result.set<OpcUaBoolean>(lhs.variant()[0] >= rhs.variant()[0]);
+			return true;
+		}
+		case OpcUaOperator::LessThanOrEqual:
+		{
+			result.set<OpcUaBoolean>(lhs.variant()[0] <= rhs.variant()[0]);
+			return true;
+		}
+    	}
+    	return false;
+
+	}
+}

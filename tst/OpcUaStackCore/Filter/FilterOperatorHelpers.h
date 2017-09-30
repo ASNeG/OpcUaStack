@@ -12,6 +12,8 @@
 #include "OpcUaStackCore/ServiceSet/EventFilterResult.h"
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 
+#include "OpcUaStackCore/Filter/LiteralFilterNode.h"
+
 #include "OpcUaStackCore/Filter/FilterStack.h"
 
 using namespace OpcUaStackCore;
@@ -86,12 +88,12 @@ static ContentFilterElement::SPtr makeOperatorWith2LitteralOperands(BasicFilterO
     ExtensibleParameter::SPtr arg1_ = constructSPtr<ExtensibleParameter>();
     arg1_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg1_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
-    arg1_->parameter<LiteralOperand>()->value().set<T1>(arg1);
+    arg1_->parameter<LiteralOperand>()->value().setValue(arg1);
 
     ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
     arg2_->registerFactoryElement<LiteralOperand>((OpcUaUInt32)OpcUaId_LiteralOperand);
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_LiteralOperand);
-    arg2_->parameter<LiteralOperand>()->value().set<T2>(arg2);
+    arg2_->parameter<LiteralOperand>()->value().setValue(arg2);
 
     eqElement->filterOperator(op);
     eqElement->filterOperands()->resize(2);
@@ -114,7 +116,7 @@ static ContentFilterElement::SPtr makeOperatorWith2ElementOperands(BasicFilterOp
     ExtensibleParameter::SPtr arg2_ = constructSPtr<ExtensibleParameter>();
     arg2_->registerFactoryElement<ElementOperand>((OpcUaUInt32)OpcUaId_ElementOperand);
     arg2_->parameterTypeId().set((OpcUaUInt32)OpcUaId_ElementOperand);
-    arg2_->parameter<ElementOperand>()->index(idx1);
+    arg2_->parameter<ElementOperand>()->index(idx2);
 
     eqElement->filterOperator(op);
     eqElement->filterOperands()->resize(2);
@@ -195,5 +197,46 @@ static ContentFilterElement::SPtr makeOperatorWithSimpleAttributeAndLiteralOpera
 
     return eqElement;
 }
+#define MAKE_ONE_LITERAL_ARG(args, arg1) do {\
+	OpcUaVariant value;																\
+	value.setValue(arg1);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+} while(0)
+
+#define MAKE_TWO_LITERAL_ARGS(args, arg1, arg2) do {\
+	OpcUaVariant value;																\
+	value.setValue(arg1);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+                                                                                    \
+	value.setValue(arg2);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+} while(0)
+
+#define MAKE_THREE_LITERAL_ARGS(args, arg1, arg2, arg3) do {\
+	OpcUaVariant value;																\
+	value.setValue(arg1);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+                                                                                    \
+	value.setValue(arg2);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+                                                                                    \
+	value.setValue(arg3);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+} while(0)
+
+#define MAKE_FOUR_LITERAL_ARGS(args, arg1, arg2, arg3, arg4) do {\
+	OpcUaVariant value;																\
+	value.setValue(arg1);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+                                                                                    \
+	value.setValue(arg2);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+                                                                                    \
+	value.setValue(arg3);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+																					\
+	value.setValue(arg4);                                                           \
+	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));          \
+} while(0)
 
 #endif /* OPCUASTACKSERVER_SERVICESET_FILTEROPERATORHELPERS_H_ */

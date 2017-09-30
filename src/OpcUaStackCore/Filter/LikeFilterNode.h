@@ -15,22 +15,22 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackCore_EqualsFilterNode_h__
-#define __OpcUaStackCore_EqualsFilterNode_h__
+#ifndef __OpcUaStackCore_LikeFilterNode_h__
+#define __OpcUaStackCore_LikeFilterNode_h__
 
 #include "OpcUaStackCore/Filter/FilterNode.h"
 
 namespace OpcUaStackCore
 {
-    class DLLEXPORT EqualsFilterNode
+    class DLLEXPORT LikeFilterNode
 	: public FilterNode
     {
       public:
 
-        typedef boost::shared_ptr<EqualsFilterNode> SPtr;
+        typedef boost::shared_ptr<LikeFilterNode> SPtr;
 
-        EqualsFilterNode(const std::vector<FilterNode::SPtr>& args);
-        virtual ~EqualsFilterNode(void);
+        LikeFilterNode(const std::vector<FilterNode::SPtr>& args);
+        virtual ~LikeFilterNode(void);
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
@@ -41,9 +41,11 @@ namespace OpcUaStackCore
         FilterNode::SPtr arg1_;
         FilterNode::SPtr arg2_;
 
-        OpcUaVariant value_;
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
-    };
+
+        bool matches(const OpcUaString& string, const OpcUaString& pattern);
+};
+
 }
 #endif
