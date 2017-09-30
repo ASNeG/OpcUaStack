@@ -36,31 +36,14 @@ BOOST_AUTO_TEST_CASE(FilterStack_returns_True_if_empty)
     BOOST_REQUIRE(filterResult == true);
 }
 
+
 BOOST_AUTO_TEST_CASE(FilterStack_FilterOperatorUnsupported)
 {
     FilterStack stack;
+    const int UNSUPPORTED_OPERATOR_ID = 1000;
 
     ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-               BasicFilterOperator::BasicFilterOperator_BitwiseAnd, 100, 120);
-
-    ContentFilter filter;
-    filter.elements()->push_back(eqElement);
-
-    ContentFilterResult result;
-    stack.receive(filter, result);
-
-    ContentFilterElementResult::SPtr elementResult;
-    result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperatorUnsupported);
-}
-
-BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperatorInvalid)
-{
-    FilterStack stack;
-    const int INVALID_OPERATOR_ID = 1000;
-
-    ContentFilterElement::SPtr eqElement = makeOperatorWith2LitteralOperands<OpcUaUInt32,OpcUaUInt32>(
-               (BasicFilterOperator)INVALID_OPERATOR_ID, 100, 120);
+               (BasicFilterOperator)UNSUPPORTED_OPERATOR_ID, 100, 120);
 
     ContentFilter filter;
     filter.elements()->push_back(eqElement);
@@ -70,7 +53,7 @@ BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperatorInvalid)
 
     ContentFilterElementResult::SPtr elementResult;
     result.elementResults()->get(0, elementResult);
-    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperatorInvalid);
+    BOOST_REQUIRE_EQUAL(elementResult->statusCode(), OpcUaStatusCode::BadFilterOperatorUnsupported);
 }
 
 BOOST_AUTO_TEST_CASE(FilterStack_BadFilterOperandCountMismatch)
@@ -564,6 +547,19 @@ BOOST_AUTO_TEST_CASE(FilterStack_supports_Cast)
     FilterStack stack;
     ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaString, OpcUaNodeId>(
             BasicFilterOperator::BasicFilterOperator_Cast, OpcUaString("0"), OpcUaNodeId(OpcUaId_UInt16, 0));
+
+    ContentFilter filter;
+    filter.elements()->resize(1);
+    filter.elements()->push_back(eqElement1);
+
+    SHOULD_PROCESS_FALSE(stack, filter);
+}
+
+BOOST_AUTO_TEST_CASE(FilterStack_supports_BitwiseAnd)
+{
+    FilterStack stack;
+    ContentFilterElement::SPtr eqElement1 = makeOperatorWith2LitteralOperands<OpcUaInt16, OpcUaUInt32>(
+            BasicFilterOperator::BasicFilterOperator_BitwiseAnd, OpcUaInt16(0x0011), OpcUaUInt32(0x000));
 
     ContentFilter filter;
     filter.elements()->resize(1);

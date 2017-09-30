@@ -36,6 +36,7 @@
 #include "OpcUaStackCore/Filter/InListFilterNode.h"
 #include "OpcUaStackCore/Filter/LogicalOpFilterNode.h"
 #include "OpcUaStackCore/Filter/CastFilterNode.h"
+#include "OpcUaStackCore/Filter/BitwiseOpFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -253,18 +254,18 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_BitwiseAnd:
-				case BasicFilterOperator_BitwiseOr:
 				{
-					Log(Error, "filter operator is not supported")
-									.parameter("FilterOperator", (uint32_t)el->filterOperator());
-					operatorStatus = OpcUaStatusCode::BadFilterOperatorUnsupported;
+					node = BitwiseOpFilterNode::SPtr(new BitwiseOpFilterNode(OpcUaOperator::BitwiseAnd, args));
+					operatorStatus = node->status();
 					break;
 				}
+				case BasicFilterOperator_BitwiseOr:
 				default:
 				{
-					Log(Error, "unknown filter operator found")
-						.parameter("FilterOperator", (uint32_t)el->filterOperator());
-					operatorStatus = OpcUaStatusCode::BadFilterOperatorInvalid;
+					Log(Error, "filter operator is not supported")
+											.parameter("FilterOperator", (uint32_t)el->filterOperator());
+					operatorStatus = OpcUaStatusCode::BadFilterOperatorUnsupported;
+					break;
 				}
 			}
         } else { // hasOperandError == true
@@ -300,3 +301,4 @@ namespace OpcUaStackCore
     	return true;
     }
 }
+
