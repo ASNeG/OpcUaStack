@@ -18,7 +18,7 @@
 #ifndef __OpcUaServer_ServerApplication_h__
 #define __OpcUaServer_ServerApplication_h__
 
-#include "OpcUaStackServer/Application/RestartIf.h"
+#include "OpcUaStackServer/Application/ReloadIf.h"
 #include "OpcUaServer/Interface/ServerApplicationIf.h"
 #include "OpcUaServer/Server/Server.h"
 
@@ -28,7 +28,7 @@ namespace OpcUaServer
 {
 	class ServerApplication
 	: public ServerApplicationIf
-	, public RestartIf
+	, public ReloadIf
 	{
 	  public:
 		ServerApplication(void);
@@ -41,16 +41,16 @@ namespace OpcUaServer
 		virtual void stop(void);
 
 		// -- interface RestartIf ---------------------------------------------
-		virtual void restart(void);
+		virtual void reload(void);
 		// -- interface RestartIf ---------------------------------------------
 
 	  private:
-		void processRestart(void);
+		void processReload(void);
 
 		OpcUaServer::Server server_;
 		std::string serviceName_;
 		std::string configFileName_;
-		bool restart_;
+		bool reload_;
 		bool running_;
 	};
 }

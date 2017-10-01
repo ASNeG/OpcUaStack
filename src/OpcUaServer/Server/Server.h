@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackCore/Core/FileLogger.h"
 #include "OpcUaStackServer/Server/Server.h"
-#include "OpcUaStackServer/Application/RestartIf.h"
+#include "OpcUaStackServer/Application/ReloadIf.h"
 #include "OpcUaServer/Server/DiscoveryClient.h"
 #include "OpcUaServer/ApplicationLibrary/ApplicationManager.h"
 
@@ -39,7 +39,7 @@ namespace OpcUaServer
 		Server(void);
 		~Server(void);
 
-		void restartIf(RestartIf* restartIf);
+		void reloadIf(ReloadIf* reloadIf);
 		bool startup(const std::string& configurationFile);
 		bool start(void);
 		void stop(void);
@@ -55,7 +55,7 @@ namespace OpcUaServer
 		OpcUaStackServer::Server server_;
 		FileLogger fileLogger_;
 
-		RestartIf* restartIf_;
+		ReloadIf* reloadIf_;
 		DiscoveryClient discoveryClient_;
 		ApplicationManager applicationManager_;
 	};

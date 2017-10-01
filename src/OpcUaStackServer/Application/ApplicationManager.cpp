@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 	ApplicationManager::registerApplication(
 		const std::string& applicationName,
 		ApplicationIf* applicationIf,
-		RestartIf* restartIf
+		ReloadIf* reloadIf
 	)
 	{
 		Application::Map::iterator it;
@@ -48,7 +48,7 @@ namespace OpcUaStackServer
 
 		Application::SPtr application = constructSPtr<Application>();
 		application->applicationIf(applicationIf);
-		application->restartIf(restartIf);
+		application->reloadIf(reloadIf);
 		application->applicationName(applicationName);
 		application->serviceComponent(serviceComponent_);
 		applicationMap_.insert(

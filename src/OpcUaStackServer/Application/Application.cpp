@@ -27,7 +27,7 @@ namespace OpcUaStackServer
 
 	Application::Application(void)
 	: applicationIf_(nullptr)
-	, restartIf_(nullptr)
+	, reloadIf_(nullptr)
 	, state_(ApplConstruct)
 	, applicationName_("")
 	, serviceComponent_(nullptr)
@@ -46,9 +46,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	Application::restartIf(RestartIf* restartIf)
+	Application::reloadIf(ReloadIf* reloadIf)
 	{
-		restartIf_ = restartIf;
+		reloadIf_ = reloadIf;
 	}
 
 	void
@@ -148,10 +148,10 @@ namespace OpcUaStackServer
 	}
 
 	void
-	Application::restart(void)
+	Application::reload(void)
 	{
-		if (restartIf_ != nullptr) {
-			return restartIf_->restart();
+		if (reloadIf_ != nullptr) {
+			return reloadIf_->reload();
 		}
 	}
 

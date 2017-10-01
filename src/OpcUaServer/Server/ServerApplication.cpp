@@ -31,7 +31,7 @@ namespace OpcUaServer
 	ServerApplication::ServerApplication(void)
 	: ServerApplicationIf()
 	, running_(false)
-	, restart_(false)
+	, reload_(false)
 	, serviceName_("")
 	, server_()
 	, configFileName_("")
@@ -69,15 +69,15 @@ namespace OpcUaServer
 	bool 
 	ServerApplication::run(void)
 	{
-		server_.restartIf(this);
+		server_.reloadIf(this);
 		if (!server_.startup(configFileName_)) return false;
 		if (!server_.start()) return false;
 		
 		running_ = true;
 		while (running_) {
-			if (restart_) {
-				processRestart();
-				restart_ = false;
+			if (reload_) {
+				processReload();
+				reload_ = false;
 			}
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
 		}
@@ -95,17 +95,17 @@ namespace OpcUaServer
 	}
 
 	void
-	ServerApplication::restart(void)
+	ServerApplication::reload(void)
 	{
-		Log(Debug, "restart application server");
-		restart_ = true;
+		Log(Debug, "reload application server");
+		reload_ = true;
 	}
 
 	void
-	ServerApplication::processRestart(void)
+	ServerApplication::processReload(void)
 	{
 		// FIXME: todo
-		std::cout << "process restart..." << std::endl;
+		std::cout << "process reload..." << std::endl;
 
 		server_.stop();
 		server_.shutdown();

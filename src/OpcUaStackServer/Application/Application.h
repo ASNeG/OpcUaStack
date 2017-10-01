@@ -23,7 +23,7 @@
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationBase.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
-#include "OpcUaStackServer/Application/RestartIf.h"
+#include "OpcUaStackServer/Application/ReloadIf.h"
 #include <map>
 
 namespace OpcUaStackServer
@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		~Application(void);
 
 		void applicationIf(ApplicationIf* applicationIf);
-		void restartIf(RestartIf* restartIf);
+		void reloadIf(ReloadIf* reloadIf);
 		void applicationName(const std::string& applicationName);
 		void serviceComponent(Component* serviceComponent);
 
@@ -63,7 +63,7 @@ namespace OpcUaStackServer
 		//- ApplicationServiceIf ------------------------------------------------------
 		virtual void send(ServiceTransaction::SPtr serviceTransaction);
 		virtual void sendSync(ServiceTransaction::SPtr serviceTransaction);
-		virtual void restart(void);
+		virtual void reload(void);
 		//- ApplicationServiceIf ------------------------------------------------------
 
 	  private:
@@ -71,7 +71,7 @@ namespace OpcUaStackServer
 
 		State state_;
 		ApplicationIf* applicationIf_;
-		RestartIf* restartIf_;
+		ReloadIf* reloadIf_;
 		std::string applicationName_;
 		Component* serviceComponent_;
 	};

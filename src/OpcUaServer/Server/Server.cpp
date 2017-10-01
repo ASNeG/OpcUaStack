@@ -32,7 +32,7 @@ namespace OpcUaServer
 	, server_()
 	, fileLogger_()
 	, applicationManager_()
-	, restartIf_(nullptr)
+	, reloadIf_(nullptr)
 	{
 	}
 
@@ -41,9 +41,9 @@ namespace OpcUaServer
 	}
 
 	void
-	Server::restartIf(RestartIf* restartIf)
+	Server::reloadIf(ReloadIf* reloadIf)
 	{
-		restartIf_ = restartIf;
+		reloadIf_ = reloadIf;
 	}
 
 	bool
@@ -88,7 +88,7 @@ namespace OpcUaServer
 			bool success = server_.applicationManager().registerApplication(
 				it->first,
 				applicationLibrary->applicationIf(),
-				restartIf_
+				reloadIf_
 			);
 			if (!success) return false;
 

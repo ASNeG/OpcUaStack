@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
-#include "OpcUaStackServer/Application/RestartIf.h"
+#include "OpcUaStackServer/Application/ReloadIf.h"
 #include "OpcUaStackServer/Application/Application.h"
 
 using namespace OpcUaStackCore;
@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 		bool registerApplication(
 			const std::string& applicationName,
 			ApplicationIf* applicationIf,
-			RestartIf* restartIf
+			ReloadIf* reloadIf
 		);
 		bool deregisterApplication(
 			const std::string& applicationName
