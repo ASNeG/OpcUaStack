@@ -178,6 +178,15 @@ namespace OpcUaStackCore
 				.parameter("Port", secureChannel->partner_.port())
 				.parameter("Message", error.message());
 
+			// we do not need the secure channel anymore.
+			delete secureChannel;
+
+			// handle acceptor socket error
+			if (tcpAcceptor_ != nullptr) {
+				tcpAcceptor_->close();
+				delete tcpAcceptor_;
+				tcpAcceptor_ = nullptr;
+			}
 			secureChannelServerIf_->handleEndpointClose();
 
 			return;
@@ -218,7 +227,9 @@ namespace OpcUaStackCore
 		// check protocol version
 		if (hello.protocolVersion() != 0) {
 			Log(Error, "receive invalid protocol version in hello request");
-			// FIXME:
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
 		}
 		acknowledge.protocolVersion(0);
 
@@ -291,7 +302,9 @@ namespace OpcUaStackCore
 			}
 		}
 		if (!success) {
-			// FIXME: error
+			secureChannel->socket().cancel();
+			secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
+			return;
 		}
 
 		// create new security token
