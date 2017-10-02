@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -135,6 +135,14 @@ namespace OpcUaStackServer
 	bool 
 	SecureChannelServer::disconnect(void)
 	{
+		Log(Info, "close connection")
+			.parameter("ChannelId", channelId_)
+			.parameter("LocalAddress", localEndpointAddress_)
+			.parameter("LocalPort", localEndpointPort_)
+			.parameter("PartnerAddress",  remoteEndpointAddress_)
+			.parameter("PartnerPort", remoteEndpointPort_);
+		tcpConnection_.close();
+		secureChannelServerState_ = SecureChannelServerState_Close;
 		return true;
 	}
 
