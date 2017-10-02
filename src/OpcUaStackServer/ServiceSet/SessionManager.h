@@ -20,6 +20,10 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -31,6 +35,23 @@ namespace OpcUaStackServer
 
 		SessionManager(void);
 		virtual ~SessionManager(void);
+
+		void ioService(IOService* ioService);
+
+		void startup(void);
+		void shutdown(void);
+
+		//- SecureChannelServerIf ---------------------------------------------
+		virtual void handleConnect(SecureChannel* secureChannel);
+		virtual void handleDisconnect(SecureChannel* secureChannel);
+		virtual void handleMessageRequest(SecureChannel* secureChannel);
+
+		virtual void handleEndpointOpen(void);
+		virtual void handleEndpointClose(void);
+		//- SecureChannelServerId ---------------------------------------------
+
+	  private:
+		IOService* ioService_;
 	};
 
 }

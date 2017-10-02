@@ -21,11 +21,67 @@ namespace OpcUaStackServer
 {
 
 	SessionManager::SessionManager(void)
+	: ioService_()
 	{
 	}
 
 	SessionManager::~SessionManager(void)
 	{
+	}
+
+	void
+	SessionManager::ioService(IOService* ioService)
+	{
+		ioService_ = ioService;
+	}
+
+	void
+	SessionManager::startup(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionManager::shutdown(void)
+	{
+		// FIXME: todo
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelServerIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::handleConnect(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionManager::handleDisconnect(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionManager::handleMessageRequest(SecureChannel* secureChannel)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionManager::handleEndpointOpen(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	SessionManager::handleEndpointClose(void)
+	{
+		// FIXME: todo
 	}
 
 }
