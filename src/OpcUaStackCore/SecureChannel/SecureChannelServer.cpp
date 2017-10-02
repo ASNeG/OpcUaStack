@@ -67,12 +67,18 @@ namespace OpcUaStackCore
 	void
 	SecureChannelServer::disconnect(void)
 	{
-		if (tcpAcceptor_ != nullptr) tcpAcceptor_->cancel();
+		if (tcpAcceptor_ != nullptr) {
+			// close acceptor socket. The acceptComplete function will be called
+			// with an error
+			tcpAcceptor_->cancel();
+		}
 	}
 
 	void
 	SecureChannelServer::disconnect(SecureChannel* secureChannel)
 	{
+		// close secure channel socket. The handleDisconnect function will be
+		// clalled with an error
 		secureChannel->socket().cancel();
 		secureChannel->state_ = SecureChannel::S_CloseSecureChannel;
 	}
@@ -93,7 +99,7 @@ namespace OpcUaStackCore
 		secureChannel->debug_ = config->debug();
 		secureChannel->debugHeader_ = config->debugHeader();
 
-		// get ip address from hostname
+		// get ip address from endpoint hostname
 		Url url(config->endpointUrl());
 		secureChannel->partner_.port(url.port());
 		boost::asio::ip::tcp::resolver::query query(url.host(), url.portToString());
@@ -120,9 +126,17 @@ namespace OpcUaStackCore
 			Log(Error, "address resolver error")
 				.parameter("EndpointUrl", secureChannel->endpointUrl_)
 				.parameter("Message", error.message());
-			secureChannelServerIf_->handleDisconnect(secureChannel);
 
-			// FIXME: error
+			// we do not need the secure channel anymore.
+			delete secureChannel;
+
+			// handle acceptor socket error
+			if (tcpAcceptor_ != nullptr) {
+				tcpAcceptor_->close();
+				delete tcpAcceptor_;
+				tcpAcceptor_ = nullptr;
+			}
+			secureChannelServerIf_->handleEndpointClose();
 
 			return;
 		}
