@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelServerOld.h"
 #include <map>
 
 using namespace OpcUaStackCore;
@@ -43,7 +43,7 @@ namespace OpcUaStackServer
 
 		OpcUaUInt32 channelId_;
 		SecureChannelState secureChannelState_;
-		SecureChannelServer::SPtr secureChannelServer_;
+		SecureChannelServerOld::SPtr secureChannelServer_;
 	};
 
 
@@ -56,11 +56,11 @@ namespace OpcUaStackServer
 		~SecureChannelMap(void);
 
 		uint32_t size(void);
-		bool insert(OpcUaInt32 channelId, SecureChannelServer::SPtr secureChannelServer);
+		bool insert(OpcUaInt32 channelId, SecureChannelServerOld::SPtr secureChannelServer);
 		bool connect(OpcUaInt32 channelId);
 		bool disconnect(OpcUaInt32 channelId);
 
-		SecureChannelServer::SPtr get(OpcUaUInt32 channelId);
+		SecureChannelServerOld::SPtr get(OpcUaUInt32 channelId);
 
 	  private:
 		SecureChannelElement::SPtr secureChannelElement(OpcUaInt32 channelId);

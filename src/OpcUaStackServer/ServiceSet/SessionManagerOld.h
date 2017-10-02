@@ -83,14 +83,14 @@ namespace OpcUaStackServer
 		bool openListenerSocket(void);
 		bool closeListenerSocket(void);
 
-		SecureChannelServer::SPtr getSecureChannel(OpcUaUInt32 secureChannelId);
+		SecureChannelServerOld::SPtr getSecureChannel(OpcUaUInt32 secureChannelId);
 
 		SessionOld::SPtr getSession(OpcUaUInt32 authenticationToken, bool createIfNotExist = false);
 		SessionOld::SPtr createSession(void);
 
 		// function to handle secure channel
 		void acceptNewChannel(void);
-		void handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel);
+		void handleAccept(const boost::system::error_code& error, SecureChannelServerOld::SPtr secureChannel);
 
 		IOService* ioService_;
 		ConditionProcess shutdown_;

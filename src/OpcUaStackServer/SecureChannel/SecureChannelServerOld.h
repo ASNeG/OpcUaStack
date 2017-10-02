@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SecureChannelServer_h__
-#define __OpcUaStackServer_SecureChannelServer_h__
+#ifndef __OpcUaStackServer_SecureChannelServerOld_h__
+#define __OpcUaStackServer_SecureChannelServerOld_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -54,22 +54,22 @@ namespace OpcUaStackServer
 
 	typedef enum
 	{
-		SecureChannelServerState_Close,
-		SecureChannelServerState_WaitHello,
-		SecureChannelServerState_WaitOpenSecureChannel,
-		SecureChannelServerState_Ready,
-	} SecureChannelServerState;
+		SecureChannelServerOldState_Close,
+		SecureChannelServerOldState_WaitHello,
+		SecureChannelServerOldState_WaitOpenSecureChannel,
+		SecureChannelServerOldState_Ready,
+	} SecureChannelServerOldState;
 
-	class DLLEXPORT SecureChannelServer
+	class DLLEXPORT SecureChannelServerOld
 	: public SecureChannelOld
 	, public  Object
 	{
 	  public:
-		typedef boost::shared_ptr<SecureChannelServer> SPtr;
+		typedef boost::shared_ptr<SecureChannelServerOld> SPtr;
 		typedef std::vector<OpcUaUInt32> TokenIdVec;
 
-		SecureChannelServer(IOService& ioService);
-		~SecureChannelServer(void);
+		SecureChannelServerOld(IOService& ioService);
+		~SecureChannelServerOld(void);
 
 		void secureChannelManagerIf(SecureChannelManagerIf* secureChannelManagerIf);
 		OpcUaUInt32 channelId(void);
@@ -109,7 +109,7 @@ namespace OpcUaStackServer
 		TokenIdVec tokenIdVec_;
 		OpcUaUInt32 authenticationToken_;
 		SecureChannelManagerIf* secureChannelManagerIf_;
-		SecureChannelServerState secureChannelServerState_;
+		SecureChannelServerOldState secureChannelServerState_;
 
 		std::string remoteEndpointAddress_;
 		uint32_t remoteEndpointPort_;

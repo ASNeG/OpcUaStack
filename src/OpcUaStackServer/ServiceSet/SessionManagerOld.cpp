@@ -185,11 +185,11 @@ namespace OpcUaStackServer
 	void 
 	SessionManagerOld::acceptNewChannel(void)
 	{
-		SecureChannelServer::SPtr secureChannel;
+		SecureChannelServerOld::SPtr secureChannel;
 		bool rc;
 
 		// create secure channel
-		secureChannel = constructSPtr<SecureChannelServer>(*ioService_);
+		secureChannel = constructSPtr<SecureChannelServerOld>(*ioService_);
 		secureChannel->secureChannelManagerIf(this);
 		rc = SecureChannelServerConfig::initial(secureChannel, prefixSecureChannelConfig_, secureChannelConfig_);
 		if (!rc) {
@@ -210,7 +210,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SessionManagerOld::handleAccept(const boost::system::error_code& error, SecureChannelServer::SPtr secureChannel)
+	SessionManagerOld::handleAccept(const boost::system::error_code& error, SecureChannelServerOld::SPtr secureChannel)
 	{
 		if (shutdown_.isStart()) {
 			shutdown_.ready();
@@ -267,10 +267,10 @@ namespace OpcUaStackServer
 		return session;
 	}
 	
-	SecureChannelServer::SPtr 
+	SecureChannelServerOld::SPtr
 	SessionManagerOld::getSecureChannel(OpcUaUInt32 secureChannelId)
 	{
-		SecureChannelServer::SPtr secureChannel = secureChannelMap_.get(secureChannelId);
+		SecureChannelServerOld::SPtr secureChannel = secureChannelMap_.get(secureChannelId);
 		return secureChannel;
 	}
 
@@ -332,7 +332,7 @@ namespace OpcUaStackServer
 	void 
 	SessionManagerOld::sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
+		SecureChannelServerOld::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {
 			secureChannel->message(secureChannelTransaction);
 			return;
@@ -359,7 +359,7 @@ namespace OpcUaStackServer
 	void 
 	SessionManagerOld::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
 	{
-		SecureChannelServer::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
+		SecureChannelServerOld::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {
 			secureChannel->message(secureChannelTransaction);
 			return;

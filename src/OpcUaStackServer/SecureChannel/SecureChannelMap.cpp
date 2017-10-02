@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	SecureChannelMap::insert(OpcUaInt32 channelId, SecureChannelServer::SPtr secureChannelServer)
+	SecureChannelMap::insert(OpcUaInt32 channelId, SecureChannelServerOld::SPtr secureChannelServer)
 	{
 		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
 		if (secureChannelElement.get() != nullptr) {
@@ -83,7 +83,7 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	SecureChannelServer::SPtr 
+	SecureChannelServerOld::SPtr
 	SecureChannelMap::get(OpcUaUInt32 channelId)
 	{
 		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
@@ -91,7 +91,7 @@ namespace OpcUaStackServer
 			return secureChannelElement->secureChannelServer_;
 		}
 
-		SecureChannelServer::SPtr secureChannel;
+		SecureChannelServerOld::SPtr secureChannel;
 		return secureChannel;
 	}
 
