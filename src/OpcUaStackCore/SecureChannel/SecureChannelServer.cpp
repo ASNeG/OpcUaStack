@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -47,20 +47,21 @@ namespace OpcUaStackCore
 		return secureChannelServerIf_;
 	}
 
-	void
+	bool
 	SecureChannelServer::accept(SecureChannelServerConfig::SPtr secureChannelServerConfig)
 	{
+		// check interface
 		if (secureChannelServerIf_ == nullptr) {
-			Log(Error, "secure channel server interface invalid")
+			Log(Error, "secure channel server interface invalid; please register interface")
 				.parameter("EndpointUrl", secureChannelServerConfig->endpointUrl());
-			return;
+			return false;
 		}
 
 		// create new secure channel
 		SecureChannel* secureChannel = new SecureChannel(ioThread_);
 		secureChannel->config_ = secureChannelServerConfig;
 		accept(secureChannel);
-		return;
+		return true;
 	}
 
 	void
