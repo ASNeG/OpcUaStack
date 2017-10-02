@@ -27,7 +27,7 @@
 #include "OpcUaStackCore/Base/ConditionProcess.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelManagerIf.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelMap.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelMapOld.h"
 #include "OpcUaStackServer/ServiceSet/SessionConfig.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
@@ -106,7 +106,7 @@ namespace OpcUaStackServer
 		Config* sessionConfig_; 
 		Config* secureChannelConfig_;
 
-		SecureChannelMap secureChannelMap_;
+		SecureChannelMapOld secureChannelMap_;
 		SessionMap sessionMap_;
 	};
 

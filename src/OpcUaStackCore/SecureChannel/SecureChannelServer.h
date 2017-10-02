@@ -34,6 +34,8 @@ namespace OpcUaStackCore
 	: public SecureChannelBase
 	{
 	  public:
+		typedef boost::shared_ptr<SecureChannelServer> SPtr;
+
 		SecureChannelServer(IOThread* ioThread);
 		~SecureChannelServer(void);
 

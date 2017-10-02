@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 
 using namespace OpcUaStackCore;
 
@@ -52,6 +52,7 @@ namespace OpcUaStackServer
 
 	  private:
 		IOService* ioService_;
+		SecureChannelServer::SPtr secureChannelServer_;
 	};
 
 }

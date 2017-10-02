@@ -22,6 +22,7 @@ namespace OpcUaStackServer
 
 	SessionManager::SessionManager(void)
 	: ioService_()
+	, secureChannelServer_()
 	{
 	}
 
