@@ -16,38 +16,38 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelMap.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelMapOld.h"
 
 namespace OpcUaStackServer
 {
 
-	SecureChannelMap::SecureChannelMap(void)
+	SecureChannelMapOld::SecureChannelMapOld(void)
 	: secureChannelElementMap_()
 	{
 	}
 	
-	SecureChannelMap::~SecureChannelMap(void)
+	SecureChannelMapOld::~SecureChannelMapOld(void)
 	{
 		secureChannelElementMap_.clear();
 	}
 
 	uint32_t 
-	SecureChannelMap::size(void)
+	SecureChannelMapOld::size(void)
 	{
 		return secureChannelElementMap_.size();
 	}
 
 	bool 
-	SecureChannelMap::insert(OpcUaInt32 channelId, SecureChannelServerOld::SPtr secureChannelServer)
+	SecureChannelMapOld::insert(OpcUaInt32 channelId, SecureChannelServerOld::SPtr secureChannelServer)
 	{
-		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
+		SecureChannelElementOld::SPtr secureChannelElement = this->secureChannelElement(channelId);
 		if (secureChannelElement.get() != nullptr) {
 			Log(Error, "channel already exist in secure channel element map")
 				.parameter("ChannelId", channelId);
 			return false;
 		}
 
-		secureChannelElement = constructSPtr<SecureChannelElement>();
+		secureChannelElement = constructSPtr<SecureChannelElementOld>();
 		secureChannelElement->channelId_ = channelId;
 		secureChannelElement->secureChannelServer_ = secureChannelServer;
 		secureChannelElement->secureChannelState_ = SecureChannelState_Init;
@@ -56,9 +56,9 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	SecureChannelMap::connect(OpcUaInt32 channelId)
+	SecureChannelMapOld::connect(OpcUaInt32 channelId)
 	{
-		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
+		SecureChannelElementOld::SPtr secureChannelElement = this->secureChannelElement(channelId);
 		if (secureChannelElement.get() == nullptr) {
 			Log(Error, "channel not exist in secure channel element map")
 				.parameter("ChannelId", channelId);
@@ -70,9 +70,9 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	SecureChannelMap::disconnect(OpcUaInt32 channelId)
+	SecureChannelMapOld::disconnect(OpcUaInt32 channelId)
 	{
-		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
+		SecureChannelElementOld::SPtr secureChannelElement = this->secureChannelElement(channelId);
 		if (secureChannelElement.get() == nullptr) {
 			Log(Error, "channel not exist in secure channel element map")
 				.parameter("ChannelId", channelId);
@@ -84,9 +84,9 @@ namespace OpcUaStackServer
 	}
 
 	SecureChannelServerOld::SPtr
-	SecureChannelMap::get(OpcUaUInt32 channelId)
+	SecureChannelMapOld::get(OpcUaUInt32 channelId)
 	{
-		SecureChannelElement::SPtr secureChannelElement = this->secureChannelElement(channelId);
+		SecureChannelElementOld::SPtr secureChannelElement = this->secureChannelElement(channelId);
 		if (secureChannelElement.get() != nullptr) {
 			return secureChannelElement->secureChannelServer_;
 		}
@@ -95,16 +95,16 @@ namespace OpcUaStackServer
 		return secureChannel;
 	}
 
-	SecureChannelElement::SPtr 
-	SecureChannelMap::secureChannelElement(OpcUaInt32 channelId)
+	SecureChannelElementOld::SPtr
+	SecureChannelMapOld::secureChannelElement(OpcUaInt32 channelId)
 	{
-		SecureChannelElementMap::iterator it;
+		SecureChannelElementOldMap::iterator it;
 		it = secureChannelElementMap_.find(channelId);
 		if (it != secureChannelElementMap_.end()) {
 			return it->second;
 		}
 
-		SecureChannelElement::SPtr secureChannelElement;
+		SecureChannelElementOld::SPtr secureChannelElement;
 		return secureChannelElement;
 	}
 

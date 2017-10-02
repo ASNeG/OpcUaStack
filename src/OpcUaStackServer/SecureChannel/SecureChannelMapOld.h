@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SecureChannelMap_h__
-#define __OpcUaStackServer_SecureChannelMap_h__
+#ifndef __OpcUaStackServer_SecureChannelMapOld_h__
+#define __OpcUaStackServer_SecureChannelMapOld_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -35,11 +35,11 @@ namespace OpcUaStackServer
 	} SecureChannelState;
 
 
-	class DLLEXPORT SecureChannelElement
+	class DLLEXPORT SecureChannelElementOld
 	: public Object
 	{
 	  public:
-		typedef boost::shared_ptr<SecureChannelElement> SPtr;
+		typedef boost::shared_ptr<SecureChannelElementOld> SPtr;
 
 		OpcUaUInt32 channelId_;
 		SecureChannelState secureChannelState_;
@@ -47,13 +47,13 @@ namespace OpcUaStackServer
 	};
 
 
-	class DLLEXPORT SecureChannelMap
+	class DLLEXPORT SecureChannelMapOld
 	{
 	  public:
-		typedef std::map<OpcUaInt32, SecureChannelElement::SPtr> SecureChannelElementMap;
+		typedef std::map<OpcUaInt32, SecureChannelElementOld::SPtr> SecureChannelElementOldMap;
 
-		SecureChannelMap(void);
-		~SecureChannelMap(void);
+		SecureChannelMapOld(void);
+		~SecureChannelMapOld(void);
 
 		uint32_t size(void);
 		bool insert(OpcUaInt32 channelId, SecureChannelServerOld::SPtr secureChannelServer);
@@ -63,9 +63,9 @@ namespace OpcUaStackServer
 		SecureChannelServerOld::SPtr get(OpcUaUInt32 channelId);
 
 	  private:
-		SecureChannelElement::SPtr secureChannelElement(OpcUaInt32 channelId);
+		SecureChannelElementOld::SPtr secureChannelElement(OpcUaInt32 channelId);
 
-		SecureChannelElementMap secureChannelElementMap_;
+		SecureChannelElementOldMap secureChannelElementMap_;
 	};
 
 }
