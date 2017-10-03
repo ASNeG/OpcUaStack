@@ -20,7 +20,9 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 
 using namespace OpcUaStackCore;
@@ -29,6 +31,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT SessionManager
+	: public SecureChannelServerIf
 	{
 	  public:
 		typedef boost::shared_ptr<SessionManager> SPtr;
@@ -36,10 +39,14 @@ namespace OpcUaStackServer
 		SessionManager(void);
 		virtual ~SessionManager(void);
 
-		void ioService(IOService* ioService);
+		void ioThread(IOThread* ioThread);
+		void prefixSessionConfig(const std::string& prefixSessionConfig);
+		void prefixSecureChannelConfig(const std::string& prefixSecureChannelConfig);
+		void sessionConfig(Config* sessionConfig);
+		void secureChannelConfig(Config* secureChannelConfig);
 
-		void startup(void);
-		void shutdown(void);
+		bool startup(void);
+		bool shutdown(void);
 
 		//- SecureChannelServerIf ---------------------------------------------
 		virtual void handleConnect(SecureChannel* secureChannel);
@@ -51,7 +58,15 @@ namespace OpcUaStackServer
 		//- SecureChannelServerId ---------------------------------------------
 
 	  private:
-		IOService* ioService_;
+		bool readConfiguration(void);
+
+		IOThread* ioThread_;
+		std::string prefixSessionConfig_;
+		std::string prefixSecureChannelConfig_;
+		Config* sessionConfig_;
+		Config* secureChannelConfig_;
+		Url url_;
+
 		SecureChannelServer::SPtr secureChannelServer_;
 	};
 
