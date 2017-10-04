@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Url.h"
+#include "OpcUaStackCore/Base/ConditionProcess.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -70,6 +71,8 @@ namespace OpcUaStackServer
 		Config* config_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 
+		ConditionProcess secureChannelServerShutdown_;
+		SecureChannelServerConfig::SPtr secureChannelServerConfig_;
 		SecureChannelServer::SPtr secureChannelServer_;
 	};
 

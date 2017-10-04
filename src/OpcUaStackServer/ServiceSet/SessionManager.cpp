@@ -22,9 +22,11 @@ namespace OpcUaStackServer
 
 	SessionManager::SessionManager(void)
 	: ioThread_(nullptr)
+	, secureChannelServerConfig_()
 	, secureChannelServer_()
 	, config_(nullptr)
 	, endpointDescriptionArray_()
+	, secureChannelServerShutdown_()
 	{
 	}
 
@@ -74,8 +76,8 @@ namespace OpcUaStackServer
 			Log(Error, "read server configuration error - endpoint description array");
 			return false;
 		}
-		SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
-		if (!getSecureChannelServerConfig(secureChannelServerConfig, endpointDescription)) {
+		secureChannelServerConfig_ = constructSPtr<SecureChannelServerConfig>();
+		if (!getSecureChannelServerConfig(secureChannelServerConfig_, endpointDescription)) {
 			Log(Error, "read server configuration error - get endpoint description");
 			return false;
 		}
@@ -87,9 +89,9 @@ namespace OpcUaStackServer
 		secureChannelServer_->secureChannelServerIf(this);
 
 		// open acceptor socket
-		if (!secureChannelServer_->accept(secureChannelServerConfig)) {
+		if (!secureChannelServer_->accept(secureChannelServerConfig_)) {
 			Log(Error, "open secure channel endpoint error")
-				.parameter("Url", secureChannelServerConfig->endpointUrl());
+				.parameter("Url", secureChannelServerConfig_->endpointUrl());
 			return false;
 		}
 
@@ -101,7 +103,9 @@ namespace OpcUaStackServer
 	{
 		// close acceptor socket
 		if (secureChannelServer_.get() != nullptr) {
+			secureChannelServerShutdown_.start();
 			secureChannelServer_->disconnect();
+			secureChannelServerShutdown_.waitForReady();
 		}
 
 		// delete secure channel server
@@ -143,6 +147,9 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleEndpointOpen(void)
 	{
+		Log(Info, "open opc ua endpoint")
+			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl());
+
 		std::cout << "handleEndpointOpen..." << std::endl;
 		// FIXME: todo
 	}
@@ -150,6 +157,10 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleEndpointClose(void)
 	{
+		Log(Info, "close opc ua endpoint")
+			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl());
+		secureChannelServerShutdown_.ready();
+
 		std::cout << "handleEndpointClose..." << std::endl;
 		// FIXME: todo
 	}

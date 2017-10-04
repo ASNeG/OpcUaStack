@@ -72,6 +72,9 @@ namespace OpcUaStackCore
 			// with an error
 			tcpAcceptor_->cancel();
 		}
+		else {
+			secureChannelServerIf_->handleEndpointClose();
+		}
 	}
 
 	void
