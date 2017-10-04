@@ -63,7 +63,6 @@ namespace OpcUaStackServer
 
 		IOThread* ioThread_;
 		Config* config_;
-		Url url_;
 
 		SecureChannelServer::SPtr secureChannelServer_;
 	};

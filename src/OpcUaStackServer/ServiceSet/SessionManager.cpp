@@ -24,7 +24,6 @@ namespace OpcUaStackServer
 	: ioThread_(nullptr)
 	, secureChannelServer_()
 	, config_(nullptr)
-	, url_()
 	{
 	}
 
@@ -73,7 +72,7 @@ namespace OpcUaStackServer
 		// open acceptor socket
 		if (!secureChannelServer_->accept(secureChannelServerConfig)) {
 			Log(Error, "open secure channel endpoint error")
-				.parameter("Url", url_.url());
+				.parameter("Url", secureChannelServerConfig->endpointUrl());
 			return false;
 		}
 
@@ -103,30 +102,35 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleConnect(SecureChannel* secureChannel)
 	{
+		std::cout << "handleConnect..." << std::endl;
 		// FIXME: todo
 	}
 
 	void
 	SessionManager::handleDisconnect(SecureChannel* secureChannel)
 	{
+		std::cout << "handleDisconnect..." << std::endl;
 		// FIXME: todo
 	}
 
 	void
 	SessionManager::handleMessageRequest(SecureChannel* secureChannel)
 	{
+		std::cout << "handleMessageRequest..." << std::endl;
 		// FIXME: todo
 	}
 
 	void
 	SessionManager::handleEndpointOpen(void)
 	{
+		std::cout << "handleEndpointOpen..." << std::endl;
 		// FIXME: todo
 	}
 
 	void
 	SessionManager::handleEndpointClose(void)
 	{
+		std::cout << "handleEndpointClose..." << std::endl;
 		// FIXME: todo
 	}
 
