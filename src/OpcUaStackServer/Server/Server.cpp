@@ -31,7 +31,9 @@ namespace OpcUaStackServer
 
 	Server::Server(void)
 	: Core()
+	, ioThread_(constructSPtr<IOThread>())
 	, informationModel_(constructSPtr<InformationModel>())
+//	, sessionManagerOld_()
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()
@@ -49,10 +51,10 @@ namespace OpcUaStackServer
 		return informationModel_;
 	}
 
-	IOService*
-	Server::ioService(void)
+	IOThread*
+	Server::ioThread(void)
 	{
-		return &ioService_;
+		return ioThread_.get();
 	}
 
 	bool
@@ -118,11 +120,10 @@ namespace OpcUaStackServer
 
 		// startup opc ua stack
 		Log(Info, "start opc ua server stack");
-		ioService_.start();
-		sessionManager_.openServerSocket(
-			"OpcUaServer.Endpoints.EndpointDescription", config(),
-			"OpcUaServer.Endpoints.EndpointDescription", config()
-		);
+		ioThread_->startup();
+		if (sessionManager_.startup()) {
+			return false;
+		}
 	
 		return true;
 	}
@@ -132,8 +133,8 @@ namespace OpcUaStackServer
 	{
 		// shutdown opc ua stack
 		Log(Info, "stop opc ua server stack");
-		sessionManager_.closeServerSocket();
-		ioService_.stop();
+		sessionManager_.shutdown();
+		ioThread_->shutdown();
 
 		// shutdown application
 		Log(Info, "shutdown application");
@@ -312,7 +313,7 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		if (!serviceManager_.ioService(&ioService_)) {
+		if (!serviceManager_.ioThread(ioThread_.get())) {
 			Log log(Error, "init servcice manager error");
 			return false;
 		}
@@ -348,7 +349,8 @@ namespace OpcUaStackServer
 
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
 		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
-		sessionManager_.ioService(&ioService_);
+		sessionManager_.ioThread(ioThread_.get());
+		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
 
 		return true;
 	}
@@ -356,7 +358,6 @@ namespace OpcUaStackServer
 	bool
 	Server::shutdownSession(void)
 	{
-		// FIXME: todo
 		return true;
 	}
 

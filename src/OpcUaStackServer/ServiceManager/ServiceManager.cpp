@@ -65,7 +65,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServiceManager::init(SessionManagerOld& sessionManager)
+	ServiceManager::init(SessionManager& sessionManager)
 	{
 		//
 		// attribute service
@@ -270,17 +270,18 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	ServiceManager::ioService(IOService* ioService)
+	ServiceManager::ioThread(IOThread* ioThread)
 	{
-		attributeService_->ioService(ioService);
-		methodService_->ioService(ioService);
-		monitoredItemService_->ioService(ioService);
-		nodeManagementService_->ioService(ioService);
-		queryService_->ioService(ioService);
-		subscriptionService_->ioService(ioService);
-		viewService_->ioService(ioService);
-		applicationService_->ioService(ioService);
-		discoveryService_->ioService(ioService);
+		// FIXME: use IOThread in services...
+		attributeService_->ioService(ioThread->ioService().get());
+		methodService_->ioService(ioThread->ioService().get());
+		monitoredItemService_->ioService(ioThread->ioService().get());
+		nodeManagementService_->ioService(ioThread->ioService().get());
+		queryService_->ioService(ioThread->ioService().get());
+		subscriptionService_->ioService(ioThread->ioService().get());
+		viewService_->ioService(ioThread->ioService().get());
+		applicationService_->ioService(ioThread->ioService().get());
+		discoveryService_->ioService(ioThread->ioService().get());
 		return true;
 	}
 

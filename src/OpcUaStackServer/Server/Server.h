@@ -19,10 +19,11 @@
 #define __OpcUaStackServer_Server_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/IOService.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Core/Core.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-#include "OpcUaStackServer/ServiceSet/SessionManagerOld.h"
+//#include "OpcUaStackServer/ServiceSet/SessionManagerOld.h"
+#include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
 #include "OpcUaStackServer/Application/ApplicationManager.h"
 #include "OpcUaStackServer/Server/ServerStatusDataType.h"
@@ -43,7 +44,7 @@ namespace OpcUaStackServer
 		void stop(void);
 
 		InformationModel::SPtr getInformationModel(void);
-		IOService* ioService(void);
+		IOThread* ioThread(void);
 		ApplicationManager& applicationManager(void);
 		ServiceManager& serviceManager(void);
 
@@ -57,9 +58,10 @@ namespace OpcUaStackServer
 		bool initSession(void);
 		bool shutdownSession(void);
 
-		IOService ioService_;
+		IOThread::SPtr ioThread_;
 		InformationModel::SPtr informationModel_;
-		SessionManagerOld sessionManager_;
+		//SessionManagerOld sessionManagerOld_;
+		SessionManager sessionManager_;
 		ServiceManager serviceManager_;
 		ApplicationManager applicationManager_;
 

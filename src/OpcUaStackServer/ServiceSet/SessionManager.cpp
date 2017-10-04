@@ -24,6 +24,7 @@ namespace OpcUaStackServer
 	: ioThread_(nullptr)
 	, secureChannelServer_()
 	, config_(nullptr)
+	, endpointDescriptionArray_()
 	{
 	}
 
@@ -32,9 +33,30 @@ namespace OpcUaStackServer
 	}
 
 	void
+	SessionManager::discoveryService(DiscoveryService::SPtr& discoveryService)
+	{
+		// FIXME: todo
+		//discoveryService_ = discoveryService;
+		//discoveryService_->discoveryManagerIf(this);
+	}
+
+	void
+	SessionManager::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
+	{
+		// FIXME: todo
+		//transactionManagerSPtr_ = transactionManagerSPtr;
+	}
+
+	void
 	SessionManager::ioThread(IOThread* ioThread)
 	{
 		ioThread_ = ioThread;
+	}
+
+	void
+	SessionManager::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		endpointDescriptionArray_ = endpointDescriptionArray;
 	}
 
 	void
@@ -46,14 +68,9 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::startup(void)
 	{
-		// load endpoint configuration
-		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
-		if (!EndpointDescriptionConfig::endpointDescriptions(endpointDescriptionArray, "OpcUaServer.Endpoints", config_, config_->configFileName())) {
-			Log(Error, "read server configuration error - parse configuration");
-			return false;
-		}
+		// get endpoint configuration
 		EndpointDescription::SPtr endpointDescription;
-		if (!endpointDescriptionArray->get(endpointDescription)) {
+		if (!endpointDescriptionArray_->get(endpointDescription)) {
 			Log(Error, "read server configuration error - endpoint description array");
 			return false;
 		}

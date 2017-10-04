@@ -25,6 +25,8 @@
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
+#include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 
 using namespace OpcUaStackCore;
 
@@ -40,7 +42,10 @@ namespace OpcUaStackServer
 		SessionManager(void);
 		virtual ~SessionManager(void);
 
+		void discoveryService(DiscoveryService::SPtr& discoveryService);
+		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(IOThread* ioThread);
+		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 		void config(Config* config);
 
 		bool startup(void);
@@ -63,6 +68,7 @@ namespace OpcUaStackServer
 
 		IOThread* ioThread_;
 		Config* config_;
+		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 
 		SecureChannelServer::SPtr secureChannelServer_;
 	};
