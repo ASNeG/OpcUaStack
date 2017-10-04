@@ -83,6 +83,9 @@ namespace OpcUaStackServer
 	SessionManager::shutdown(void)
 	{
 		// close acceptor socket
+		if (secureChannelServer_.get() != nullptr) {
+			secureChannelServer_->disconnect();
+		}
 
 		// delete secure channel server
 		if (secureChannelServer_.get() != nullptr) {
