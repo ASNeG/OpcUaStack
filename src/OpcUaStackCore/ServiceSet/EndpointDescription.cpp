@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -74,12 +74,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	EndpointDescription::messageSecurityMode(const MessageSecurityMode messageSecurityMode)
+	EndpointDescription::messageSecurityMode(const SecurityMode messageSecurityMode)
 	{
 		messageSecurityMode_ = messageSecurityMode;
 	}
 
-	MessageSecurityMode 
+	SecurityMode
 	EndpointDescription::messageSecurityMode(void) const
 	{
 		return messageSecurityMode_;
@@ -95,6 +95,57 @@ namespace OpcUaStackCore
 	EndpointDescription::securityPolicyUri(void) const
 	{
 		return securityPolicyUri_.value();
+	}
+
+	void
+	EndpointDescription::securityPolicy(const SecurityPolicy securityPolicy)
+	{
+		switch (securityPolicy)
+		{
+			case SP_None:
+			{
+				securityPolicyUri_.value("http://opcfoundation.org/UA/SecurityPolicy#None");
+				break;
+			}
+			case SP_Basic128Rsa15:
+			{
+				securityPolicyUri_.value("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
+				break;
+			}
+			case SP_Basic256:
+			{
+				securityPolicyUri_.value("http://opcfoundation.org/UA/SecurityPolicy#Basic256");
+				break;
+			}
+			case SP_Basic256Sha256:
+			{
+				securityPolicyUri_.value("http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256");
+				break;
+			}
+			default:
+			{
+				securityPolicyUri_.value("http://opcfoundation.org/UA/SecurityPolicy#None");
+				break;
+			}
+		}
+	}
+
+	SecurityPolicy
+	EndpointDescription::securityPolicy(void) const
+	{
+		if (securityPolicyUri_.toStdString() == "http://opcfoundation.org/UA/SecurityPolicy#None") {
+			return SP_None;
+		}
+		if (securityPolicyUri_.toStdString() == "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15") {
+			return SP_Basic128Rsa15;
+		}
+		if (securityPolicyUri_.toStdString() == "http://opcfoundation.org/UA/SecurityPolicy#Basic256") {
+			return SP_Basic256;
+		}
+		if (securityPolicyUri_.toStdString() == "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256") {
+			return SP_Basic256Sha256;
+		}
+		return SP_None;
 	}
 
 	void 
@@ -158,7 +209,7 @@ namespace OpcUaStackCore
 		userIdentityTokens_->opcUaBinaryDecode(is);
 		transportProfileUri_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, securityLevel_);
-		messageSecurityMode_ = (MessageSecurityMode)messageSecurityMode;
+		messageSecurityMode_ = (SecurityMode)messageSecurityMode;
 	}
 
 	void

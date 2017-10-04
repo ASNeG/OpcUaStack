@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,19 +22,13 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 #include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
 #include "OpcUaStackCore/ServiceSet/UserTokenPolicy.h"
 
 namespace OpcUaStackCore
 {
-
-	typedef enum {
-		MessageSecurityMode_Unknown = 0,
-		MessageSecurityMode_None = 1,
-		MessageSecurityMode_Sign = 2,
-		MessageSecurityMode_SignAndEncrypt = 3,
-	} MessageSecurityMode;
 
 	class DLLEXPORT EndpointDescription
 	: public  Object
@@ -51,10 +45,12 @@ namespace OpcUaStackCore
 		ApplicationDescription::SPtr applicationDescription(void) const;
 		void serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
-		void messageSecurityMode(const MessageSecurityMode messageSecurityMode);
-		MessageSecurityMode messageSecurityMode(void) const;
+		void messageSecurityMode(const SecurityMode securityMode);
+		SecurityMode messageSecurityMode(void) const;
 		void securityPolicyUri(const std::string& securityPolicyUri);
 		std::string securityPolicyUri(void) const;
+		void securityPolicy(const SecurityPolicy securityPolicy);
+		SecurityPolicy securityPolicy(void) const;
 		void userIdentityTokens(const UserTokenPolicyArray::SPtr userIdentityTokens);
 		UserTokenPolicyArray::SPtr userIdentityTokens(void) const;
 		void transportProfileUri(const std::string& transportProfileUri);
@@ -70,7 +66,7 @@ namespace OpcUaStackCore
 		OpcUaString endpointUrl_;
 		ApplicationDescription::SPtr applicationDescription_;
 		OpcUaByteString serverCertificate_;
-		MessageSecurityMode messageSecurityMode_;
+		SecurityMode messageSecurityMode_;
 		OpcUaString securityPolicyUri_;
 		UserTokenPolicyArray::SPtr userIdentityTokens_;
 		OpcUaString transportProfileUri_;
