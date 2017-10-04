@@ -36,6 +36,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT SessionManager
 	: public SecureChannelServerIf
+	, public DiscoveryManagerIf
 	{
 	  public:
 		typedef boost::shared_ptr<SessionManager> SPtr;
@@ -59,7 +60,11 @@ namespace OpcUaStackServer
 
 		virtual void handleEndpointOpen(void);
 		virtual void handleEndpointClose(void);
-		//- SecureChannelServerId ---------------------------------------------
+		//- SecureChannelServerIf ---------------------------------------------
+
+		//- DiscoveryManagerIf ------------------------------------------------
+		void discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:
 		bool getSecureChannelServerConfig(
@@ -74,6 +79,9 @@ namespace OpcUaStackServer
 		ConditionProcess secureChannelServerShutdown_;
 		SecureChannelServerConfig::SPtr secureChannelServerConfig_;
 		SecureChannelServer::SPtr secureChannelServer_;
+
+		DiscoveryService::SPtr discoveryService_;
+		TransactionManager::SPtr transactionManagerSPtr_;
 	};
 
 }

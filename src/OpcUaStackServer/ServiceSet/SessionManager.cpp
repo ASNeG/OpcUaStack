@@ -27,6 +27,8 @@ namespace OpcUaStackServer
 	, config_(nullptr)
 	, endpointDescriptionArray_()
 	, secureChannelServerShutdown_()
+	, discoveryService_()
+	, transactionManagerSPtr_()
 	{
 	}
 
@@ -37,16 +39,14 @@ namespace OpcUaStackServer
 	void
 	SessionManager::discoveryService(DiscoveryService::SPtr& discoveryService)
 	{
-		// FIXME: todo
-		//discoveryService_ = discoveryService;
-		//discoveryService_->discoveryManagerIf(this);
+		discoveryService_ = discoveryService;
+		discoveryService_->discoveryManagerIf(this);
 	}
 
 	void
 	SessionManager::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
 	{
-		// FIXME: todo
-		//transactionManagerSPtr_ = transactionManagerSPtr;
+		transactionManagerSPtr_ = transactionManagerSPtr;
 	}
 
 	void
@@ -162,6 +162,19 @@ namespace OpcUaStackServer
 		secureChannelServerShutdown_.ready();
 
 		std::cout << "handleEndpointClose..." << std::endl;
+		// FIXME: todo
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DiscoveryManagerIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	{
 		// FIXME: todo
 	}
 
