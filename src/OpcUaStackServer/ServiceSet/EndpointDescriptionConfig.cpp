@@ -152,7 +152,7 @@ namespace OpcUaStackServer
 				return false;
 			}
 			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
-				endpointDescription->messageSecurityMode(MessageSecurityMode_None);
+				endpointDescription->messageSecurityMode(SM_None);
 				endpointDescription->securityPolicyUri(stringValue);
 			}
 			else {

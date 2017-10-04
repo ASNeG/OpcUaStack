@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaString.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelTypes.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaBaseEnums.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ApplicationInstanceCertificate.h"
 

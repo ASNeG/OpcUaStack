@@ -23,10 +23,7 @@ namespace OpcUaStackServer
 	SessionManager::SessionManager(void)
 	: ioThread_(nullptr)
 	, secureChannelServer_()
-	, prefixSessionConfig_("")
-	, prefixSecureChannelConfig_("")
-	, sessionConfig_(nullptr)
-	, secureChannelConfig_(nullptr)
+	, config_(nullptr)
 	, url_()
 	{
 	}
@@ -42,32 +39,31 @@ namespace OpcUaStackServer
 	}
 
 	void
-	SessionManager::prefixSessionConfig(const std::string& prefixSessionConfig)
+	SessionManager::config(Config* config)
 	{
-		prefixSessionConfig_ = prefixSessionConfig;
-	}
-
-	void
-	SessionManager::prefixSecureChannelConfig(const std::string& prefixSecureChannelConfig)
-	{
-		prefixSecureChannelConfig_ = prefixSecureChannelConfig;
-	}
-
-	void
-	SessionManager::sessionConfig(Config* sessionConfig)
-	{
-		sessionConfig_ = sessionConfig;
-	}
-
-	void
-	SessionManager::secureChannelConfig(Config* secureChannelConfig)
-	{
-		secureChannelConfig_ = secureChannelConfig;
+		config_ = config;
 	}
 
 	bool
 	SessionManager::startup(void)
 	{
+		// load endpoint configuration
+		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
+		if (!EndpointDescriptionConfig::endpointDescriptions(endpointDescriptionArray, "OpcUaServer.Endpoints", config_, config_->configFileName())) {
+			Log(Error, "read server configuration error - parse configuration");
+			return false;
+		}
+		EndpointDescription::SPtr endpointDescription;
+		if (!endpointDescriptionArray->get(endpointDescription)) {
+			Log(Error, "read server configuration error - endpoint description array");
+			return false;
+		}
+		SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
+		if (!getSecureChannelServerConfig(secureChannelServerConfig, endpointDescription)) {
+			Log(Error, "read server configuration error - get endpoint description");
+			return false;
+		}
+
 		// create secure channel server
 		secureChannelServer_ = constructSPtr<SecureChannelServer>(ioThread_);
 
@@ -75,6 +71,11 @@ namespace OpcUaStackServer
 		secureChannelServer_->secureChannelServerIf(this);
 
 		// open acceptor socket
+		if (!secureChannelServer_->accept(secureChannelServerConfig)) {
+			Log(Error, "open secure channel endpoint error")
+				.parameter("Url", url_.url());
+			return false;
+		}
 
 		return true;
 	}
@@ -137,37 +138,19 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	bool
-	SessionManager::readConfiguration(void)
+	SessionManager::getSecureChannelServerConfig(
+		SecureChannelServerConfig::SPtr& secureChannelServerConfig,
+		EndpointDescription::SPtr& endpointDescription
+	)
 	{
-		// get secure channel configuration
-		boost::optional<Config> childSecureChannelConfig = secureChannelConfig_->getChild(prefixSecureChannelConfig_);
-		if (!childSecureChannelConfig) {
-			Log(Error, "secure channel server configuration not found")
-				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
-				.parameter("ParameterPath", prefixSecureChannelConfig_);
-			return false;
-		}
+		// set endpoint url
+		secureChannelServerConfig->endpointUrl(endpointDescription->endpointUrl());
 
-		// get endpoint url from configuration
-		std::string endpointUrl;
-		if (childSecureChannelConfig->getConfigParameter("EndpointUrl", endpointUrl) == false) {
-			Log(Error, "mandatory parameter not found in configuration")
-				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
-				.parameter("ParameterPath", prefixSecureChannelConfig_)
-				.parameter("ParameterName", "EndpointUrl");
-			return false;
-		}
+		// set security mode
+		secureChannelServerConfig->securityMode(endpointDescription->messageSecurityMode());
 
-		// check endpoint url
-		url_.url(endpointUrl);
-		if (!url_.good()) {
-			Log(Error, "invalid endpoint url in server configuration")
-				.parameter("ConfigurationFileName", secureChannelConfig_->configFileName())
-				.parameter("ParameterPath", prefixSecureChannelConfig_)
-				.parameter("EndpointUrl", endpointUrl);
-			return false;
-
-		}
+		// set security policy
+		secureChannelServerConfig->securityPolicy(endpointDescription->securityPolicy());
 
 		return true;
 	}

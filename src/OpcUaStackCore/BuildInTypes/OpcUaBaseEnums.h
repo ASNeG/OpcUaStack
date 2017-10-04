@@ -38,7 +38,8 @@ namespace OpcUaStackCore
 
 
 	typedef enum {
-		SM_None = 1,
+		SN_Unknown,
+		SM_None,
 		SM_Sign,
 		SM_SignAndEncrypt
 	} SecurityMode;

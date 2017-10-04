@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 
 using namespace OpcUaStackCore;
 
@@ -40,10 +41,7 @@ namespace OpcUaStackServer
 		virtual ~SessionManager(void);
 
 		void ioThread(IOThread* ioThread);
-		void prefixSessionConfig(const std::string& prefixSessionConfig);
-		void prefixSecureChannelConfig(const std::string& prefixSecureChannelConfig);
-		void sessionConfig(Config* sessionConfig);
-		void secureChannelConfig(Config* secureChannelConfig);
+		void config(Config* config);
 
 		bool startup(void);
 		bool shutdown(void);
@@ -58,13 +56,13 @@ namespace OpcUaStackServer
 		//- SecureChannelServerId ---------------------------------------------
 
 	  private:
-		bool readConfiguration(void);
+		bool getSecureChannelServerConfig(
+			SecureChannelServerConfig::SPtr& secureChannelServerConfig,
+			EndpointDescription::SPtr& endpointDescription
+		);
 
 		IOThread* ioThread_;
-		std::string prefixSessionConfig_;
-		std::string prefixSecureChannelConfig_;
-		Config* sessionConfig_;
-		Config* secureChannelConfig_;
+		Config* config_;
 		Url url_;
 
 		SecureChannelServer::SPtr secureChannelServer_;
