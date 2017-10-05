@@ -66,16 +66,16 @@ namespace OpcUaStackServer
 		//- SecureChannelManagerIf --------------------------------------------
 		void connect(OpcUaUInt32 channelId);
 		void disconnect(OpcUaUInt32 channelId);
-		bool secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool secureChannelMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		//- SecureChannelManagerIf --------------------------------------------
 
 		//- SessionManagerIf---------------------------------------------------
-		void sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void sessionMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		void sessionDelete(uint32_t authenticationToken);
 		//- SessionManagerIf --------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
-		void discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:

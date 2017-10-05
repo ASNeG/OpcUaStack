@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 
 		bool first_;
 		bool asyncSend_;
-		SecureChannelTransaction::List secureChannelTransactionList_;
+		SecureChannelTransactionOld::List secureChannelTransactionList_;
 	};
 
 	class ReceiveMessageInfo
@@ -49,7 +49,7 @@ namespace OpcUaStackServer
 		char segmentFlag_;
 		bool segment_;
 		bool first_;
-		SecureChannelTransaction::SPtr secureChannelTransaction_;
+		SecureChannelTransactionOld::SPtr secureChannelTransaction_;
 	};
 
 	typedef enum
@@ -76,7 +76,7 @@ namespace OpcUaStackServer
 
 		bool connect(void);
 		bool disconnect(void);
-		void message(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 
 	  private:
 		static boost::mutex mutex_;

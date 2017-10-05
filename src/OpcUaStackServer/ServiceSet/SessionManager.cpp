@@ -173,7 +173,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SessionManager::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManager::discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		// FIXME: todo
 	}

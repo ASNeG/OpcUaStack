@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,7 +21,7 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelTransaction.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelTransactionOld.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 	  public:
 		virtual ~SessionManagerIf(void) {}
 
-		virtual void sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction) = 0;
+		virtual void sessionMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction) = 0;
 		virtual void sessionDelete(uint32_t authenticationToken) = 0;
 	};
 

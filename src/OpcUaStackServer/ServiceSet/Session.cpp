@@ -102,7 +102,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::message(SecureChannelTransaction::SPtr secureChannelTransaction)
+	Session::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
@@ -142,7 +142,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCreateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	Session::receiveCreateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		// FIXME: authenticationToken in secureChannelTransaction must be 0
 
@@ -182,7 +182,7 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	Session::receiveActivateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	Session::receiveActivateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		// FIXME: if authenticationToken in the secureChannelTransaction contains 0 then 
 		//        the session has a new sechure channel
@@ -219,7 +219,7 @@ namespace OpcUaStackServer
 	void
 	Session::activateSessionRequestError(
 		ActivateSessionRequest& activateSessionRequest,
-		SecureChannelTransaction::SPtr secureChannelTransaction,
+		SecureChannelTransactionOld::SPtr secureChannelTransaction,
 		OpcUaStatusCode statusCode,
 		bool deleteSession
 	)
@@ -239,7 +239,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCloseSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	Session::receiveCloseSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		std::iostream ios(&secureChannelTransaction->is_);
 		CloseSessionRequest closeSessionRequest;
@@ -256,14 +256,14 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	Session::receiveCancelRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	Session::receiveCancelRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		std::cout << "not implemented..." << std::endl;
 		return false;
 	}
 
 	bool 
-	Session::receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	Session::receiveMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		if (sessionState_ != SessionState_Ready) {
 			Log(Error, "receive message request in invalid state")
@@ -321,7 +321,7 @@ namespace OpcUaStackServer
 		responseHeader->requestHandle(requestHeader->requestHandle());
 		responseHeader->serviceResult(serviceTransactionSPtr->statusCode());
 
-		SecureChannelTransaction::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransaction>();
+		SecureChannelTransactionOld::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransactionOld>();
 		std::iostream ios(&secureChannelTransaction->os_);
 		responseHeader->opcUaBinaryEncode(ios);
 		serviceTransactionSPtr->opcUaBinaryEncodeResponse(ios);

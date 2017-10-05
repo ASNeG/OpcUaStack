@@ -20,7 +20,7 @@
 
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelTransaction.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelTransactionOld.h"
 
 using namespace OpcUaStackCore;
 
@@ -30,7 +30,7 @@ namespace OpcUaStackServer
 	class DiscoveryManagerIf
 	{
 	  public:
-		virtual void discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction) = 0;
+		virtual void discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction) = 0;
 	};
 
 };

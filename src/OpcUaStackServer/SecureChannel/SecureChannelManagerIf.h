@@ -20,7 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelTransaction.h"
+#include "OpcUaStackServer/SecureChannel/SecureChannelTransactionOld.h"
 
 using namespace OpcUaStackCore;
 
@@ -32,7 +32,7 @@ namespace OpcUaStackServer
 	  public:
 		virtual void connect(OpcUaUInt32 channelId) = 0;
 		virtual void disconnect(OpcUaUInt32 channelId) = 0;
-		virtual bool secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction) = 0;
+		virtual bool secureChannelMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction) = 0;
 	};
 
 }

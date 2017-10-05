@@ -20,8 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelServerOld.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include <map>
 
 using namespace OpcUaStackCore;
@@ -30,42 +29,35 @@ namespace OpcUaStackServer
 {
 
 	typedef enum {
-		SecureChannelState_Init,
-		SecureChannelState_Connect
+		SCS_Ready,
+		SCS_SecureChannelInvalid,
+		SCS_SessionInvalid
 	} SecureChannelState;
 
 
-	class DLLEXPORT SecureChannelElementOld
+	class DLLEXPORT SecureChannelElement
 	: public Object
 	{
 	  public:
-		typedef boost::shared_ptr<SecureChannelElementOld> SPtr;
+		typedef boost::shared_ptr<SecureChannelElement> SPtr;
 
-		OpcUaUInt32 channelId_;
 		SecureChannelState secureChannelState_;
-		SecureChannelServerOld::SPtr secureChannelServer_;
+		SecureChannel* secureChannel_;
 	};
 
 
 	class DLLEXPORT SecureChannelMap
 	{
 	  public:
-		typedef std::map<OpcUaInt32, SecureChannelElementOld::SPtr> SecureChannelElementOldMap;
+		typedef std::map<OpcUaInt32, SecureChannelElement::SPtr> SecureChannelElementMap;
 
 		SecureChannelMap(void);
 		~SecureChannelMap(void);
 
 		uint32_t size(void);
-		bool insert(OpcUaInt32 channelId, SecureChannelServerOld::SPtr secureChannelServer);
-		bool connect(OpcUaInt32 channelId);
-		bool disconnect(OpcUaInt32 channelId);
-
-		SecureChannelServerOld::SPtr get(OpcUaUInt32 channelId);
 
 	  private:
-		SecureChannelElementOld::SPtr secureChannelElement(OpcUaInt32 channelId);
-
-		SecureChannelElementOldMap secureChannelElementMap_;
+		SecureChannelElementMap secureChannelElementMap_;
 	};
 
 }

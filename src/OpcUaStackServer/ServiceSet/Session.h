@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		OpcUaUInt32 sessionId(void);
 		OpcUaUInt32 authenticationToken(void);
-		bool message(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
@@ -72,17 +72,17 @@ namespace OpcUaStackServer
 		static OpcUaUInt32 getUniqueSessionId(void);
 		static OpcUaUInt32 getUniqueAuthenticationToken(void);
 
-		bool receiveCreateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
-		bool receiveActivateSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveCreateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		bool receiveActivateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		void activateSessionRequestError(
 			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
-			SecureChannelTransaction::SPtr secureChannelTransaction,
+			SecureChannelTransactionOld::SPtr secureChannelTransaction,
 			OpcUaStatusCode statusCode,
 			bool deleteSession = true
 		);
-		bool receiveCloseSessionRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
-		bool receiveCancelRequest(SecureChannelTransaction::SPtr secureChannelTransaction);
-		bool receiveMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		bool receiveCloseSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		bool receiveCancelRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		bool receiveMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 
 		OpcUaUInt32 sessionId_;
 		OpcUaUInt32 authenticationToken_;

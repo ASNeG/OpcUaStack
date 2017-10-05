@@ -63,7 +63,7 @@ namespace OpcUaStackServer
 		//- SecureChannelServerIf ---------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
-		void discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction);
+		void discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:

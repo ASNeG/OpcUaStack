@@ -294,7 +294,7 @@ namespace OpcUaStackServer
 	}
 		
 	bool 
-	SessionManagerOld::secureChannelMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManagerOld::secureChannelMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		//
 		// this function is called by the secure channel when a new message
@@ -330,7 +330,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManagerOld::sessionMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManagerOld::sessionMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		SecureChannelServerOld::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {
@@ -357,7 +357,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void 
-	SessionManagerOld::discoveryMessage(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SessionManagerOld::discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		SecureChannelServerOld::SPtr secureChannel = getSecureChannel(secureChannelTransaction->channelId_);
 		if (secureChannel.get() != nullptr) {

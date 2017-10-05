@@ -499,7 +499,7 @@ namespace OpcUaStackServer
 		receiveMessageInfo_.first_ = false;
 
 		if (receiveMessageInfo_.secureChannelTransaction_.get() == nullptr) {
-			receiveMessageInfo_.secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
+			receiveMessageInfo_.secureChannelTransaction_ = constructSPtr<SecureChannelTransactionOld>();
 			receiveMessageInfo_.first_ = true;
 		}
 
@@ -641,7 +641,7 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	SecureChannelServerOld::message(SecureChannelTransaction::SPtr secureChannelTransaction)
+	SecureChannelServerOld::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		sendMessageInfo_.secureChannelTransactionList_.push_back(secureChannelTransaction);
 		sendMessage();
@@ -652,7 +652,7 @@ namespace OpcUaStackServer
 	{
 		if (sendMessageInfo_.secureChannelTransactionList_.size() == 0) return;
 		if (sendMessageInfo_.asyncSend_) return;
-		SecureChannelTransaction::SPtr secureChannelTransaction = sendMessageInfo_.secureChannelTransactionList_.front();
+		SecureChannelTransactionOld::SPtr secureChannelTransaction = sendMessageInfo_.secureChannelTransactionList_.front();
 
 		Log(Debug, "secure channel send message")
 			.parameter("ChannelId", channelId_)

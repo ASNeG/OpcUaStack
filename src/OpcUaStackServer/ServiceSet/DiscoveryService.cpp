@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::message(SecureChannelTransaction::SPtr secureChannelTransaction)
+	DiscoveryService::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		switch(secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>())
 		{
@@ -106,7 +106,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		std::iostream is(&secureChannelTransaction->is_);
 		RequestHeader requestHeader;
@@ -134,7 +134,7 @@ namespace OpcUaStackServer
 	}
 
 	bool 
-	DiscoveryService::receiveFindServersRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	DiscoveryService::receiveFindServersRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		std::iostream is(&secureChannelTransaction->is_);
 		RequestHeader requestHeader;
@@ -179,7 +179,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransaction::SPtr secureChannelTransaction)
+	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		std::iostream is(&secureChannelTransaction->is_);
 		RequestHeader requestHeader;
