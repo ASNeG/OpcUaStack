@@ -21,13 +21,63 @@ namespace OpcUaStackServer
 {
 
 	ChannelSessionHandle::ChannelSessionHandle(void)
-	: secureChannelServerState_(SCSS_Invalid)
-	, secureChannelServer_(nullptr)
+	: secureChannelState_(SCS_Invalid)
+	, secureChannel_(nullptr)
+	, sessionState_(SS_Invalid)
+	, session_()
 	{
 	}
 
 	ChannelSessionHandle::~ChannelSessionHandle(void)
 	{
+	}
+
+	ChannelSessionHandle::SecureChannelState
+	ChannelSessionHandle::secureChannelState(void)
+	{
+		return secureChannelState_;
+	}
+
+	void
+	ChannelSessionHandle::secureChannel(SecureChannel* secureChannel)
+	{
+		secureChannel_ = secureChannel;
+		if (secureChannel == nullptr) {
+			secureChannelState_ = SCS_Invalid;
+		}
+		else {
+			secureChannelState_ = SCS_Valid;
+		}
+	}
+
+	SecureChannel*
+	ChannelSessionHandle::secureChannel(void)
+	{
+		return secureChannel_;
+	}
+
+	ChannelSessionHandle::SessionState
+	ChannelSessionHandle::sessionState(void)
+	{
+		return sessionState_;
+	}
+
+	void
+	ChannelSessionHandle::session(Session::SPtr& session)
+	{
+		session_ = session;
+		if (session_.get() == nullptr) {
+			sessionState_ = SS_Invalid;
+		}
+		else {
+			sessionState_ = SS_Valid;
+		}
+	}
+
+	Session::SPtr&
+	ChannelSessionHandle::session(void)
+	{
+		return session_;
 	}
 
 }

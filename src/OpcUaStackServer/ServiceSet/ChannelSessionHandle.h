@@ -15,12 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_Session_h__
-#define __OpcUaStackServer_Session_h__
+#ifndef __OpcUaStackServer_ChannelSessionHandle_h__
+#define __OpcUaStackServer_ChannelSessionHandle_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
+#include "OpcUaStackServer/ServiceSet/Session.h"
 
 using namespace OpcUaStackCore;
 
@@ -35,16 +36,34 @@ namespace OpcUaStackServer
 
 		typedef enum
 		{
-			SCSS_Ready,
-			SCSS_Invalid
-		} SecureChannelServerState;
+			SCS_Valid,
+			SCS_Invalid
+		} SecureChannelState;
+
+		typedef enum
+		{
+			SS_Valid,
+			SS_Invalid
+		} SessionState;
 
 		ChannelSessionHandle(void);
 		~ChannelSessionHandle(void);
 
+		SecureChannelState secureChannelState(void);
+		void secureChannel(SecureChannel* secureChannel);
+		SecureChannel* secureChannel(void);
+
+		SessionState sessionState(void);
+		void session(Session::SPtr& session);
+		Session::SPtr& session(void);
+
+
 	  private:
-		SecureChannelServerState secureChannelServerState_;
-		SecureChannelServer* secureChannelServer_;
+		SecureChannelState secureChannelState_;
+		SecureChannel* secureChannel_;
+
+		SessionState sessionState_;
+		Session::SPtr session_;
 	};
 
 }
