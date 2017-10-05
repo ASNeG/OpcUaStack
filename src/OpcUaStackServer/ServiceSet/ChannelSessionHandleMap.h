@@ -34,7 +34,15 @@ namespace OpcUaStackServer
 		ChannelSessionHandleMap(void);
 		~ChannelSessionHandleMap(void);
 
+		ChannelSessionHandle::SPtr createSecureChannel(SecureChannel* secureChannel);
+		void deleteSecureChannel(SecureChannel* secureChannel);
+
+		ChannelSessionHandle::SPtr createSession(Session::SPtr& session, SecureChannel* secureChannel);
+		void deleteSession(Session::SPtr& session);
+
 	  private:
+		ChannelSessionHandle::Map channelIdMap_;
+		ChannelSessionHandle::Map sessionIdMap_;
 	};
 
 }

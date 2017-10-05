@@ -33,6 +33,7 @@ namespace OpcUaStackServer
 	  public:
 
 		typedef boost::shared_ptr<ChannelSessionHandle> SPtr;
+		typedef std::map<uint32_t,ChannelSessionHandle::SPtr> Map;
 
 		typedef enum
 		{
