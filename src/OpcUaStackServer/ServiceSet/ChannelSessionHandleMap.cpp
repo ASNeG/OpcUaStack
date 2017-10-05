@@ -116,4 +116,10 @@ namespace OpcUaStackServer
 		sessionIdMap_.erase(it);
 	}
 
+	uint32_t
+	ChannelSessionHandleMap::sessionSize(void)
+	{
+		return sessionIdMap_.size();
+	}
+
 }

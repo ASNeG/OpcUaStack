@@ -127,7 +127,14 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleConnect(SecureChannel* secureChannel)
 	{
+		// FIXME: todo
 		std::cout << "handleConnect..." << std::endl;
+
+		Log(Info, "open opc ua secure channel")
+			.parameter("OwnAddress", secureChannel->local_.address().to_string())
+			.parameter("PartnerAddress", secureChannel->partner_.address().to_string())
+			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
+			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
 		// create new secure channel handle
 		channelSessionHandleMap_.createSecureChannel(secureChannel);
@@ -136,10 +143,17 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleDisconnect(SecureChannel* secureChannel)
 	{
+		// FIXME: todo
 		std::cout << "handleDisconnect..." << std::endl;
 
 		// delete secure channel handle
 		channelSessionHandleMap_.deleteSecureChannel(secureChannel);
+
+		Log(Info, "close opc ua secure channel")
+			.parameter("OwnAddress", secureChannel->local_.address().to_string())
+			.parameter("PartnerAddress", secureChannel->partner_.address().to_string())
+			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
+			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
 		// no further secure channel handle available
 		if (channelSessionHandleMap_.secureChannelSize() == 0) {
@@ -158,7 +172,9 @@ namespace OpcUaStackServer
 	SessionManager::handleEndpointOpen(void)
 	{
 		Log(Info, "open opc ua endpoint")
-			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl());
+			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl())
+			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
+			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
 
 
@@ -171,7 +187,8 @@ namespace OpcUaStackServer
 	{
 		Log(Info, "close opc ua endpoint")
 			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl())
-			.parameter("ActChannelCount", channelSessionHandleMap_.secureChannelSize());
+			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
+			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
 		//
 		// close all channels
