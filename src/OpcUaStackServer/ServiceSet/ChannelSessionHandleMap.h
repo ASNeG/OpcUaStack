@@ -36,6 +36,8 @@ namespace OpcUaStackServer
 
 		ChannelSessionHandle::SPtr createSecureChannel(SecureChannel* secureChannel);
 		void deleteSecureChannel(SecureChannel* secureChannel);
+		void getSecureChannelList(std::vector<SecureChannel*>& secureChannelList);
+		uint32_t secureChannelSize(void);
 
 		ChannelSessionHandle::SPtr createSession(Session::SPtr& session, SecureChannel* secureChannel);
 		void deleteSession(Session::SPtr& session);

@@ -59,6 +59,24 @@ namespace OpcUaStackServer
 		channelIdMap_.erase(it);
 	}
 
+	void
+	ChannelSessionHandleMap::getSecureChannelList(std::vector<SecureChannel*>& secureChannelList)
+	{
+		// get all secure channel
+		ChannelSessionHandle::Map::iterator it;
+		for (it = channelIdMap_.begin(); it != channelIdMap_.end(); it++) {
+			if (it->second->secureChannelState() == ChannelSessionHandle::SCS_Valid) {
+				secureChannelList.push_back(it->second->secureChannel());
+			}
+		}
+	}
+
+	uint32_t
+	ChannelSessionHandleMap::secureChannelSize(void)
+	{
+		return channelIdMap_.size();
+	}
+
 	ChannelSessionHandle::SPtr
 	ChannelSessionHandleMap::createSession(Session::SPtr& session, SecureChannel* secureChannel)
 	{

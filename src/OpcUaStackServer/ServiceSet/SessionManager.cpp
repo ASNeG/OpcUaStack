@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 	, secureChannelServerShutdown_()
 	, discoveryService_()
 	, transactionManagerSPtr_()
+	, channelSessionHandleMap_()
 	{
 	}
 
@@ -127,14 +128,23 @@ namespace OpcUaStackServer
 	SessionManager::handleConnect(SecureChannel* secureChannel)
 	{
 		std::cout << "handleConnect..." << std::endl;
-		// FIXME: todo
+
+		// create new secure channel handle
+		channelSessionHandleMap_.createSecureChannel(secureChannel);
 	}
 
 	void
 	SessionManager::handleDisconnect(SecureChannel* secureChannel)
 	{
 		std::cout << "handleDisconnect..." << std::endl;
-		// FIXME: todo
+
+		// delete secure channel handle
+		channelSessionHandleMap_.deleteSecureChannel(secureChannel);
+
+		// no further secure channel handle available
+		if (channelSessionHandleMap_.secureChannelSize() == 0) {
+			secureChannelServerShutdown_.ready();
+		}
 	}
 
 	void
@@ -150,6 +160,8 @@ namespace OpcUaStackServer
 		Log(Info, "open opc ua endpoint")
 			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl());
 
+
+
 		std::cout << "handleEndpointOpen..." << std::endl;
 		// FIXME: todo
 	}
@@ -158,8 +170,22 @@ namespace OpcUaStackServer
 	SessionManager::handleEndpointClose(void)
 	{
 		Log(Info, "close opc ua endpoint")
-			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl());
-		secureChannelServerShutdown_.ready();
+			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl())
+			.parameter("ActChannelCount", channelSessionHandleMap_.secureChannelSize());
+
+		//
+		// close all channels
+		//
+		std::vector<SecureChannel*> secureChannelList;
+		std::vector<SecureChannel*>::iterator it;
+		channelSessionHandleMap_.getSecureChannelList(secureChannelList);
+		for (it = secureChannelList.begin(); it != secureChannelList.end(); it++) {
+			secureChannelServer_->disconnect(*it);
+		}
+
+		if (secureChannelList.size() == 0) {
+			secureChannelServerShutdown_.ready();
+		}
 
 		std::cout << "handleEndpointClose..." << std::endl;
 		// FIXME: todo

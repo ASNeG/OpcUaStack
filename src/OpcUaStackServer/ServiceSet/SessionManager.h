@@ -28,6 +28,7 @@
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
+#include "OpcUaStackServer/ServiceSet/ChannelSessionHandleMap.h"
 
 using namespace OpcUaStackCore;
 
@@ -82,6 +83,8 @@ namespace OpcUaStackServer
 
 		DiscoveryService::SPtr discoveryService_;
 		TransactionManager::SPtr transactionManagerSPtr_;
+
+		ChannelSessionHandleMap channelSessionHandleMap_;
 	};
 
 }
