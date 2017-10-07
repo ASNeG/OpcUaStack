@@ -45,7 +45,7 @@ namespace OpcUaStackServer
 
 	  private:
 		ChannelSessionHandle::Map channelIdMap_;
-		ChannelSessionHandle::Map sessionIdMap_;
+		ChannelSessionHandle::Map sessionMap_;
 	};
 
 }

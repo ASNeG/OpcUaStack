@@ -137,7 +137,8 @@ namespace OpcUaStackServer
 			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
 		// create new secure channel handle
-		channelSessionHandleMap_.createSecureChannel(secureChannel);
+		Object::SPtr handle = channelSessionHandleMap_.createSecureChannel(secureChannel);
+		secureChannel->handle(handle);
 	}
 
 	void
@@ -147,6 +148,7 @@ namespace OpcUaStackServer
 		std::cout << "handleDisconnect..." << std::endl;
 
 		// delete secure channel handle
+		secureChannel->handleReset();
 		channelSessionHandleMap_.deleteSecureChannel(secureChannel);
 
 		Log(Info, "close opc ua secure channel")
@@ -186,8 +188,11 @@ namespace OpcUaStackServer
 
 				// create new session
 				Session::SPtr session = constructSPtr<Session>();
+				session->sessionIf(this);
+				session->endpointDescriptionArray(endpointDescriptionArray_);
 				// FIXME: todo...
-				channelSessionHandleMap_.createSession(session, secureChannel);
+				Object::SPtr handle = channelSessionHandleMap_.createSession(session, secureChannel);
+				secureChannel->secureChannelTransaction_->handle_ = handle;
 
 				// handle create session request
 				session->createSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
@@ -253,6 +258,31 @@ namespace OpcUaStackServer
 
 		std::cout << "handleEndpointClose..." << std::endl;
 		// FIXME: todo
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SessionIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::responseMessage(
+		ResponseHeader::SPtr& responseHeader,
+		SecureChannelTransaction::SPtr& secureChannelTransaction
+	)
+	{
+		// get channel session handle
+		ChannelSessionHandle::SPtr channelSessionHandle;
+		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
+		if (!channelSessionHandle->secureChannelIsValid()) {
+			// channel do not exist anymore - ignore response
+			return;
+		}
+
+		// send response
+		secureChannelServer_->sendResponse(channelSessionHandle->secureChannel());
 	}
 
 	// ------------------------------------------------------------------------

@@ -29,6 +29,7 @@
 #include "OpcUaStackServer/ServiceSet/DiscoveryService.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/ChannelSessionHandleMap.h"
+#include "OpcUaStackServer/ServiceSet/SessionIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,6 +38,7 @@ namespace OpcUaStackServer
 
 	class DLLEXPORT SessionManager
 	: public SecureChannelServerIf
+	, public SessionIf
 	, public DiscoveryManagerIf
 	{
 	  public:
@@ -62,6 +64,13 @@ namespace OpcUaStackServer
 		virtual void handleEndpointOpen(void);
 		virtual void handleEndpointClose(void);
 		//- SecureChannelServerIf ---------------------------------------------
+
+		//- SessionIf ---------------------------------------------------------
+		virtual void responseMessage(
+			ResponseHeader::SPtr& responseHeader,
+			SecureChannelTransaction::SPtr& secureChannelTransaction
+		);
+		//- SessionIf ---------------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
 		void discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);

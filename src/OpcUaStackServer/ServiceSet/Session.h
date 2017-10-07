@@ -57,6 +57,7 @@ namespace OpcUaStackServer
 		void transactionManager(TransactionManager::SPtr transactionManager);
 
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
+		void sessionIf(SessionIf* sessionIf);
 		OpcUaUInt32 sessionId(void);
 		OpcUaUInt32 authenticationToken(void);
 
@@ -97,6 +98,7 @@ namespace OpcUaStackServer
 		OpcUaUInt32 sessionId_;
 		OpcUaUInt32 authenticationToken_;
 		SessionState sessionState_;
+		SessionIf* sessionIf_;
 		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 

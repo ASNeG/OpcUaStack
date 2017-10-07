@@ -32,7 +32,6 @@ namespace OpcUaStackServer
 	{ 
 	  public:
 		virtual ~SessionManagerIf(void) {}
-
 		virtual void sessionMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction) = 0;
 		virtual void sessionDelete(uint32_t authenticationToken) = 0;
 	};

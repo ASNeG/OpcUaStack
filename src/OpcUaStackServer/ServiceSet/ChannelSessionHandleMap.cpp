@@ -22,7 +22,7 @@ namespace OpcUaStackServer
 
 	ChannelSessionHandleMap::ChannelSessionHandleMap(void)
 	: channelIdMap_()
-	, sessionIdMap_()
+	, sessionMap_()
 	{
 	}
 
@@ -82,8 +82,6 @@ namespace OpcUaStackServer
 	{
 		ChannelSessionHandle::SPtr channelSessionHandle;
 
-		// FIXME: the session can be exist...
-
 		// find secure channel
 		ChannelSessionHandle::Map::iterator it;
 		it = channelIdMap_.find(secureChannel->channelId_);
@@ -94,7 +92,7 @@ namespace OpcUaStackServer
 
 		// set session and add session to session map
 		channelSessionHandle->session(session);
-		sessionIdMap_.insert(std::make_pair(session->sessionId(), channelSessionHandle));
+		sessionMap_.insert(std::make_pair(session->authenticationToken(), channelSessionHandle));
 
 		return channelSessionHandle;
 	}
@@ -104,8 +102,8 @@ namespace OpcUaStackServer
 	{
 		// find session
 		ChannelSessionHandle::Map::iterator it;
-		it = sessionIdMap_.find(session->sessionId());
-		if (it == sessionIdMap_.end()) {
+		it = sessionMap_.find(session->authenticationToken());
+		if (it == sessionMap_.end()) {
 			return;
 		}
 		Session::SPtr tmpSession;
@@ -113,13 +111,13 @@ namespace OpcUaStackServer
 		channelSessionHandle->session(tmpSession);
 
 		// delete element from map
-		sessionIdMap_.erase(it);
+		sessionMap_.erase(it);
 	}
 
 	uint32_t
 	ChannelSessionHandleMap::sessionSize(void)
 	{
-		return sessionIdMap_.size();
+		return sessionMap_.size();
 	}
 
 }

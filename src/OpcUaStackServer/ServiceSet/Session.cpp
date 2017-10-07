@@ -54,6 +54,7 @@ namespace OpcUaStackServer
 
 	Session::Session(void)
 	: Component()
+	, sessionIf_(nullptr)
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
@@ -81,6 +82,12 @@ namespace OpcUaStackServer
 	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
 	{
 		sessionManagerIf_ = sessionManagerIf;
+	}
+
+	void
+	Session::sessionIf(SessionIf* sessionIf)
+	{
+		sessionIf_ = sessionIf;
 	}
 
 	OpcUaUInt32 
@@ -139,7 +146,10 @@ namespace OpcUaStackServer
 
 		sessionState_ = SessionState_CreateSessionResponse;
 
-		//if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = createSessionResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
 	}
 
 	bool 
@@ -213,6 +223,7 @@ namespace OpcUaStackServer
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
 
+		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		createSessionResponse.opcUaBinaryEncode(iosres);
 
 		sessionState_ = SessionState_CreateSessionResponse;
