@@ -119,7 +119,6 @@ namespace OpcUaStackServer
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.opcUaBinaryDecode(ios);
 
-#if 0
 		// FIXME: analyse request data
 
 		std::iostream iosres(&secureChannelTransaction->os_);
@@ -140,10 +139,7 @@ namespace OpcUaStackServer
 
 		sessionState_ = SessionState_CreateSessionResponse;
 
-		secureChannelTransaction->authenticationToken_ = authenticationToken_;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
-		return true;
-#endif
+		//if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 	}
 
 	bool 

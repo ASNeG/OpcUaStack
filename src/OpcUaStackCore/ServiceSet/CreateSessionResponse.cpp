@@ -148,7 +148,7 @@ namespace OpcUaStackCore
 	void 
 	CreateSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeader_->opcUaBinaryEncode(os);
+		//responseHeader_->opcUaBinaryEncode(os);
 		sessionId_.opcUaBinaryEncode(os);
 		authenticationToken_.opcUaBinaryEncode(os);
 		OpcUaNumber::opcUaBinaryEncode(os, receivedSessionTimeout_);
@@ -163,7 +163,7 @@ namespace OpcUaStackCore
 	void 
 	CreateSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeader_->opcUaBinaryDecode(is);
+		//responseHeader_->opcUaBinaryDecode(is);
 		sessionId_.opcUaBinaryDecode(is);
 		authenticationToken_.opcUaBinaryDecode(is);
 		OpcUaNumber::opcUaBinaryDecode(is, receivedSessionTimeout_);
