@@ -164,8 +164,47 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleMessageRequest(SecureChannel* secureChannel)
 	{
-		std::cout << "handleMessageRequest..." << std::endl;
-		// FIXME: todo
+		//
+		// this function is called by the secure channel when a new request
+		// message is received
+		//
+
+		// decode request header
+		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
+		RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
+		requestHeader->opcUaBinaryDecode(ios);
+
+		std::cout << requestHeader->sessionAuthenticationToken().toString() << std::endl;
+		std::cout << secureChannel->secureChannelTransaction_->requestTypeNodeId_ << std::endl;
+
+		// process request
+		switch (secureChannel->secureChannelTransaction_->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
+		{
+			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "CreateSessionRequest" << std::endl;
+				break;
+			}
+			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "ActivateSessionRequest" << std::endl;
+				break;
+			}
+			case OpcUaId_CloseSessionRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "CloseSessionRequest" << std::endl;
+				break;
+			}
+			case OpcUaId_CancelRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "CancelSessionRequest" << std::endl;
+				break;
+			}
+			default:
+			{
+				std::cout << "Message" << std::endl;
+			}
+		}
 	}
 
 	void
