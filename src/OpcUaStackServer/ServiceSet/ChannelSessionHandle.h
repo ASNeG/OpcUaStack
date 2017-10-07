@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ChannelSessionHandle
+	: public Object
 	{
 	  public:
 
@@ -51,10 +52,12 @@ namespace OpcUaStackServer
 		~ChannelSessionHandle(void);
 
 		SecureChannelState secureChannelState(void);
+		bool secureChannelIsValid(void);
 		void secureChannel(SecureChannel* secureChannel);
 		SecureChannel* secureChannel(void);
 
 		SessionState sessionState(void);
+		bool sessionIsValid(void);
 		void session(Session::SPtr& session);
 		Session::SPtr& session(void);
 

@@ -38,6 +38,12 @@ namespace OpcUaStackServer
 		return secureChannelState_;
 	}
 
+	bool
+	ChannelSessionHandle::secureChannelIsValid(void)
+	{
+		return secureChannelState_ == SCS_Valid;
+	}
+
 	void
 	ChannelSessionHandle::secureChannel(SecureChannel* secureChannel)
 	{
@@ -60,6 +66,12 @@ namespace OpcUaStackServer
 	ChannelSessionHandle::sessionState(void)
 	{
 		return sessionState_;
+	}
+
+	bool
+	ChannelSessionHandle::sessionIsValid(void)
+	{
+		return sessionState_ == SS_Valid;
 	}
 
 	void
