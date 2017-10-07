@@ -147,7 +147,7 @@ namespace OpcUaStackCore
 	void 
 	CreateSessionRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
-		requestHeaderSPtr_->opcUaBinaryEncode(os);
+		//requestHeaderSPtr_->opcUaBinaryEncode(os);
 		clientDescriptionSPtr_->opcUaBinaryEncode(os);
 		serverUri_.opcUaBinaryEncode(os);
 		endpointUrl_.opcUaBinaryEncode(os);
@@ -161,7 +161,7 @@ namespace OpcUaStackCore
 	void 
 	CreateSessionRequest::opcUaBinaryDecode(std::istream& is)
 	{
-		requestHeaderSPtr_->opcUaBinaryDecode(is);
+		//requestHeaderSPtr_->opcUaBinaryDecode(is);
 		clientDescriptionSPtr_->opcUaBinaryDecode(is);
 		serverUri_.opcUaBinaryDecode(is);
 		endpointUrl_.opcUaBinaryDecode(is);
