@@ -101,6 +101,51 @@ namespace OpcUaStackServer
 		endpointDescriptionArray_ = endpointDescriptionArray;
 	}
 
+	void
+	Session::createSessionRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		std::cout << "create session request..." << std::endl;
+
+		if (sessionState_ != SessionState_Close) {
+			Log(Error, "receive create session request in invalid state")
+				.parameter("SessionState", sessionState_);
+			// FIXME: handle error ...
+		}
+
+		std::iostream ios(&secureChannelTransaction->is_);
+		CreateSessionRequest createSessionRequest;
+		createSessionRequest.opcUaBinaryDecode(ios);
+
+#if 0
+		// FIXME: analyse request data
+
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CreateSessionResponse createSessionResponse;
+		createSessionResponse.responseHeader()->requestHandle(createSessionRequest.requestHeader()->requestHandle());
+		createSessionResponse.responseHeader()->serviceResult(Success);
+
+		createSessionResponse.sessionId().namespaceIndex(1);
+		createSessionResponse.sessionId().nodeId(sessionId_);
+		createSessionResponse.authenticationToken().namespaceIndex(1);
+		createSessionResponse.authenticationToken().nodeId(sessionId_);
+		createSessionResponse.receivedSessionTimeout(120000);
+		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
+		createSessionResponse.maxRequestMessageSize(0);
+
+		createSessionResponse.opcUaBinaryEncode(iosres);
+
+		sessionState_ = SessionState_CreateSessionResponse;
+
+		secureChannelTransaction->authenticationToken_ = authenticationToken_;
+		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
+		return true;
+#endif
+	}
+
 	bool 
 	Session::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{

@@ -22,11 +22,13 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
-#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
-#include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+
 
 using namespace OpcUaStackCore;
 
@@ -57,9 +59,17 @@ namespace OpcUaStackServer
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		OpcUaUInt32 sessionId(void);
 		OpcUaUInt32 authenticationToken(void);
+
+		void createSessionRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
+
+
 		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
+
 
 		// - Component -------------------------------------------------------
 		void receive(Message::SPtr message);

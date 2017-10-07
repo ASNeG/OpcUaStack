@@ -183,6 +183,14 @@ namespace OpcUaStackServer
 			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
 			{
 				std::cout << "CreateSessionRequest" << std::endl;
+
+				// create new session
+				Session::SPtr session = constructSPtr<Session>();
+				// FIXME: todo...
+				channelSessionHandleMap_.createSession(session, secureChannel);
+
+				// handle create session request
+				session->createSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
 				break;
 			}
 			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
