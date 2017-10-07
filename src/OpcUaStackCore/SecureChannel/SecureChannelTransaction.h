@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 		OpcUaNodeId requestTypeNodeId_;
 		OpcUaNodeId responseTypeNodeId_;
 		OpcUaUInt32 requestId_;
+		Object::SPtr handle_;
 
 		boost::asio::streambuf is_;
 		boost::asio::streambuf os_;

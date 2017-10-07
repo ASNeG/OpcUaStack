@@ -87,6 +87,13 @@ namespace OpcUaStackCore
 	}
 
 	void
+	SecureChannelServer::sendResponse(SecureChannel* secureChannel)
+	{
+		// send open secure channel response
+		asyncWriteMessageResponse(secureChannel, secureChannel->secureChannelTransaction_);
+	}
+
+	void
 	SecureChannelServer::accept(SecureChannel* secureChannel)
 	{
 		SecureChannelServerConfig::SPtr config;

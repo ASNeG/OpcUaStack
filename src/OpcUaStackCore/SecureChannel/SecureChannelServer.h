@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		bool accept(SecureChannelServerConfig::SPtr secureChannelServerConfig);
 		void disconnect(void);
 		void disconnect(SecureChannel* secureChannel);
+		void sendResponse(SecureChannel* secureChannel);
 
 		//- SecureChannelBase -------------------------------------------------
 		void handleDisconnect(SecureChannel* secureChannel);
@@ -70,6 +71,8 @@ namespace OpcUaStackCore
 		boost::asio::ip::tcp::resolver resolver_;
 		SecureChannelServerIf* secureChannelServerIf_;
 		TCPAcceptor* tcpAcceptor_;
+
+		Object::SPtr handle_;
 	};
 
 }

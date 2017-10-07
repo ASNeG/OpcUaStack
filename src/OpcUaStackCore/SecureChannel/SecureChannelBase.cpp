@@ -1147,6 +1147,7 @@ namespace OpcUaStackCore
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		std::cout << "Run.." << std::endl;
 		secureChannel->secureChannelTransactionList_.push_back(secureChannelTransaction);
 		asyncWriteMessageResponse(secureChannel);
 	}

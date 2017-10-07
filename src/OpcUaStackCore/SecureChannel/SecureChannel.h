@@ -51,6 +51,10 @@ namespace OpcUaStackCore
 		SecureChannel(IOThread* ioThread);
 		virtual ~SecureChannel(void);
 
+		void handle(Object::SPtr& handle);
+		void handleReset(void);
+		Object::SPtr handle(void);
+
 		void debugRecvHeader(MessageHeader& messageHeader);
 		void debugRecvHello(HelloMessage& hello);
 		void debugRecvAcknowledge(AcknowledgeMessage& acknowledge);
@@ -112,6 +116,7 @@ namespace OpcUaStackCore
 		SecurityMode securityMode_;
 		SecurityPolicy securityPolicy_;
 
+		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
 
 	  private:

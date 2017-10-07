@@ -68,11 +68,31 @@ namespace OpcUaStackCore
 
 	, securityMode_(SM_None)
 	, securityPolicy_(SP_None)
+
+	, handle_()
 	{
 	}
 
 	SecureChannel::~SecureChannel(void)
 	{
+	}
+
+	void
+	SecureChannel::handle(Object::SPtr& handle)
+	{
+		handle_ = handle;
+	}
+
+	void
+	SecureChannel::handleReset(void)
+	{
+		handle_.reset();
+	}
+
+	Object::SPtr
+	SecureChannel::handle(void)
+	{
+		return handle_;
 	}
 
 	void
