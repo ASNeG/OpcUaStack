@@ -115,6 +115,7 @@ namespace OpcUaStackServer
 	)
 	{
 		std::cout << "create session request..." << std::endl;
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
 
 		if (sessionState_ != SessionState_Close) {
 			Log(Error, "receive create session request in invalid state")
@@ -142,6 +143,7 @@ namespace OpcUaStackServer
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
 
+		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		createSessionResponse.opcUaBinaryEncode(iosres);
 
 		sessionState_ = SessionState_CreateSessionResponse;
