@@ -100,9 +100,15 @@ namespace OpcUaStackServer
 	void
 	ChannelSessionHandleMap::deleteSession(Session::SPtr& session)
 	{
+		deleteSession(session->authenticationToken());
+	}
+
+	void
+	ChannelSessionHandleMap::deleteSession(uint32_t authenticationToken)
+	{
 		// find session
 		ChannelSessionHandle::Map::iterator it;
-		it = sessionMap_.find(session->authenticationToken());
+		it = sessionMap_.find(authenticationToken);
 		if (it == sessionMap_.end()) {
 			return;
 		}

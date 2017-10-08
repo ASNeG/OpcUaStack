@@ -41,6 +41,7 @@ namespace OpcUaStackServer
 
 		ChannelSessionHandle::SPtr createSession(Session::SPtr& session, SecureChannel* secureChannel);
 		void deleteSession(Session::SPtr& session);
+		void deleteSession(uint32_t authenticationToken);
 		uint32_t sessionSize(void);
 
 	  private:
