@@ -115,6 +115,7 @@ namespace OpcUaStackServer
 	)
 	{
 		std::cout << "create session request..." << std::endl;
+		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
 
 		if (sessionState_ != SessionState_Close) {
@@ -151,6 +152,78 @@ namespace OpcUaStackServer
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = createSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
+	void
+	Session::activateSessionRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		std::cout << "activate session request..." << std::endl;
+		Log(Debug, "receive activate session request");
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
+
+		// FIXME: if authenticationToken in the secureChannelTransaction contains 0 then
+		//        the session has a new sechure channel
+
+
+		std::iostream ios(&secureChannelTransaction->is_);
+		ActivateSessionRequest activateSessionRequest;
+		activateSessionRequest.opcUaBinaryDecode(ios);
+
+		if (sessionState_ != SessionState_CreateSessionResponse) {
+			Log(Error, "receive activate session request in invalid state")
+				.parameter("SessionState", sessionState_);
+			activateSessionRequestError(activateSessionRequest, secureChannelTransaction, BadIdentityTokenInvalid);
+			return;
+		}
+
+		// FIXME: analyse request data
+
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		ActivateSessionResponse activateSessionResponse;
+		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->serviceResult(Success);
+
+		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		activateSessionResponse.opcUaBinaryEncode(iosres);
+
+		sessionState_ = SessionState_Ready;
+
+		//secureChannelTransaction->authenticationToken_ = authenticationToken_;
+
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
+	void
+	Session::activateSessionRequestError(
+		ActivateSessionRequest& activateSessionRequest,
+		SecureChannelTransaction::SPtr secureChannelTransaction,
+		OpcUaStatusCode statusCode,
+		bool deleteSession
+	)
+	{
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		ActivateSessionResponse activateSessionResponse;
+		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->serviceResult(statusCode);
+
+		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		activateSessionResponse.opcUaBinaryEncode(iosres);
+
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+			if (deleteSession) {
+				sessionIf_->deleteSession(authenticationToken_);
+			}
 		}
 	}
 
@@ -249,7 +322,7 @@ namespace OpcUaStackServer
 		if (sessionState_ != SessionState_CreateSessionResponse) {
 			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
-			activateSessionRequestError(activateSessionRequest, secureChannelTransaction, BadIdentityTokenInvalid);
+			//activateSessionRequestError(activateSessionRequest, secureChannelTransaction, BadIdentityTokenInvalid);
 			return true;
 		}
 
@@ -268,28 +341,6 @@ namespace OpcUaStackServer
 		secureChannelTransaction->authenticationToken_ = authenticationToken_;
 		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
 		return true;
-	}
-
-	void
-	Session::activateSessionRequestError(
-		ActivateSessionRequest& activateSessionRequest,
-		SecureChannelTransactionOld::SPtr secureChannelTransaction,
-		OpcUaStatusCode statusCode,
-		bool deleteSession
-	)
-	{
-		std::iostream iosres(&secureChannelTransaction->os_);
-
-		ActivateSessionResponse activateSessionResponse;
-		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
-		activateSessionResponse.responseHeader()->serviceResult(statusCode);
-
-		activateSessionResponse.opcUaBinaryEncode(iosres);
-
-		if (sessionManagerIf_ != nullptr) {
-			sessionManagerIf_->sessionMessage(secureChannelTransaction);
-			if (deleteSession) sessionManagerIf_->sessionDelete(authenticationToken_);
-		}
 	}
 
 	bool 

@@ -65,6 +65,10 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
+		void activateSessionRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
 
 
 		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
@@ -77,6 +81,13 @@ namespace OpcUaStackServer
 		// - Component -------------------------------------------------------
 
 	  private:
+		void activateSessionRequestError(
+			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
+			SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStatusCode statusCode,
+			bool deleteSession = true
+		);
+
 		static boost::mutex mutex_;
 		static OpcUaUInt32 uniqueSessionId_;
 		static OpcUaUInt32 uniqueAuthenticationToken_;
@@ -85,12 +96,7 @@ namespace OpcUaStackServer
 
 		bool receiveCreateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		bool receiveActivateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		void activateSessionRequestError(
-			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
-			SecureChannelTransactionOld::SPtr secureChannelTransaction,
-			OpcUaStatusCode statusCode,
-			bool deleteSession = true
-		);
+
 		bool receiveCloseSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		bool receiveCancelRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		bool receiveMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);

@@ -71,6 +71,9 @@ namespace OpcUaStackServer
 			ResponseHeader::SPtr& responseHeader,
 			SecureChannelTransaction::SPtr& secureChannelTransaction
 		);
+		virtual void deleteSession(
+			uint32_t authenticationToken
+		);
 		//- SessionIf ---------------------------------------------------------
 
 		//- DiscoveryIf -------------------------------------------------------

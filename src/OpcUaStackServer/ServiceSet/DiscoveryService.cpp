@@ -57,6 +57,7 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		Log(Debug, "receive get endpoint request request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary;
 
 		std::iostream is(&secureChannelTransaction->is_);
