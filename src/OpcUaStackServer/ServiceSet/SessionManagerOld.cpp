@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 	SessionManagerOld::discoveryService(DiscoveryService::SPtr& discoveryService)
 	{
 		discoveryService_ = discoveryService;
-		discoveryService_->discoveryManagerIf(this);
+		//discoveryService_->discoveryManagerIf(this);
 	}
 
 	void 
@@ -307,7 +307,7 @@ namespace OpcUaStackServer
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			case OpcUaId_FindServersRequest_Encoding_DefaultBinary:
 			{
-				return discoveryService_->message(secureChannelTransaction);
+				//return discoveryService_->message(secureChannelTransaction);
 			}
 		}
 

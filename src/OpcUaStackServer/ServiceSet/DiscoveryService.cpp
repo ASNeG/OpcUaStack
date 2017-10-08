@@ -31,7 +31,7 @@ namespace OpcUaStackServer
 {
 
 	DiscoveryService::DiscoveryService(void)
-	: discoveryManagerIf_(nullptr)
+	: discoveryIf_(nullptr)
 	{
 	}
 
@@ -40,9 +40,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DiscoveryService::discoveryManagerIf(DiscoveryManagerIf* discoveryManagerIf)
+	DiscoveryService::discoveryIf(DiscoveryIf* discoveryIf)
 	{
-		discoveryManagerIf_ = discoveryManagerIf;
+		discoveryIf_ = discoveryIf;
 	}
 
 	void 
@@ -51,6 +51,38 @@ namespace OpcUaStackServer
 		endpointDescriptionArray_ = endpointDescriptionArray;
 	}
 
+	void
+	DiscoveryService::getEndpointRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		std::iostream is(&secureChannelTransaction->is_);
+		GetEndpointsRequest getEndpointsRequest;
+
+		getEndpointsRequest.opcUaBinaryDecode(is);
+
+		// FIXME: analyse request data
+
+		std::iostream os(&secureChannelTransaction->os_);
+
+		ResponseHeader responseHeader;
+		GetEndpointsResponse getEndpointsResponse;
+
+		responseHeader.requestHandle(requestHeader->requestHandle());
+		responseHeader.serviceResult(Success);
+		getEndpointsResponse.endpoints(endpointDescriptionArray_);
+
+		responseHeader.opcUaBinaryEncode(os);
+		getEndpointsResponse.opcUaBinaryEncode(os);
+
+		if (discoveryIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = getEndpointsResponse.responseHeader();
+			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
+#if 0
 	bool 
 	DiscoveryService::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
@@ -83,10 +115,12 @@ namespace OpcUaStackServer
 		}
 		return false;
 	}
+#endif
 
 	void
 	DiscoveryService::receive(Message::SPtr message)
 	{
+#if 0
 		ServiceTransaction::SPtr serviceTransaction = boost::static_pointer_cast<ServiceTransaction>(message);
 		switch (serviceTransaction->nodeTypeRequest().nodeId<uint32_t>())
 		{
@@ -103,8 +137,10 @@ namespace OpcUaStackServer
 				break;
 			}
 		}
+#endif
 	}
 
+#if 0
 	bool 
 	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
@@ -242,5 +278,6 @@ namespace OpcUaStackServer
 		trx->statusCode(ctx.statusCode_);
 		trx->componentSession()->send(serviceTransaction);
 	}
+#endif
 
 }

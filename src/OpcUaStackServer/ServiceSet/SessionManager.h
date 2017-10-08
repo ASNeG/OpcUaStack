@@ -30,6 +30,7 @@
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 #include "OpcUaStackServer/ServiceSet/ChannelSessionHandleMap.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -39,7 +40,7 @@ namespace OpcUaStackServer
 	class DLLEXPORT SessionManager
 	: public SecureChannelServerIf
 	, public SessionIf
-	, public DiscoveryManagerIf
+	, public DiscoveryIf
 	{
 	  public:
 		typedef boost::shared_ptr<SessionManager> SPtr;
@@ -71,6 +72,13 @@ namespace OpcUaStackServer
 			SecureChannelTransaction::SPtr& secureChannelTransaction
 		);
 		//- SessionIf ---------------------------------------------------------
+
+		//- DiscoveryIf -------------------------------------------------------
+		virtual void discoveryResponseMessage(
+			ResponseHeader::SPtr& responseHeader,
+			SecureChannelTransaction::SPtr& secureChannelTransaction
+		);
+		//- DiscoveryIf -------------------------------------------------------
 
 		//- DiscoveryManagerIf ------------------------------------------------
 		void discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);

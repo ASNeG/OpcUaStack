@@ -23,8 +23,9 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
-#include "OpcUaStackServer/ServiceSet/DiscoveryManagerIf.h"
+#include "OpcUaStackServer/ServiceSet/DiscoveryIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -41,10 +42,15 @@ namespace OpcUaStackServer
 		DiscoveryService(void);
 		~DiscoveryService(void);
 
-		void discoveryManagerIf(DiscoveryManagerIf* discoveryManagerIf);
+		void discoveryIf(DiscoveryIf* discoveryIf);
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
 
-		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		void getEndpointRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
+
+		//bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 
 		//- Component -----------------------------------------------------------------
 		void receive(Message::SPtr message);
@@ -52,12 +58,12 @@ namespace OpcUaStackServer
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
-		DiscoveryManagerIf* discoveryManagerIf_;
+		DiscoveryIf* discoveryIf_;
 
-		bool receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		bool receiveFindServersRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		bool receiveRegisterServerRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		void receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction);
+		//bool receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		//bool receiveFindServersRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		//bool receiveRegisterServerRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
+		//void receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

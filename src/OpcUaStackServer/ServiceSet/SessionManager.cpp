@@ -41,7 +41,7 @@ namespace OpcUaStackServer
 	SessionManager::discoveryService(DiscoveryService::SPtr& discoveryService)
 	{
 		discoveryService_ = discoveryService;
-		discoveryService_->discoveryManagerIf(this);
+		discoveryService_->discoveryIf(this);
 	}
 
 	void
@@ -182,6 +182,27 @@ namespace OpcUaStackServer
 		// process request
 		switch (secureChannel->secureChannelTransaction_->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
 		{
+			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "RegisterServiceRequest" << std::endl;
+				break;
+			}
+			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "GetEndpointsRequest" << std::endl;
+
+				// get handle from secure channel
+				secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle_;
+
+				// handle get endpoints request
+				discoveryService_->getEndpointRequest(requestHeader, secureChannel->secureChannelTransaction_);
+				break;
+			}
+			case OpcUaId_FindServersRequest_Encoding_DefaultBinary:
+			{
+				std::cout << "FindServersRequest" << std::endl;
+				break;
+			}
 			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
 			{
 				std::cout << "CreateSessionRequest" << std::endl;
@@ -269,6 +290,31 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	void
 	SessionManager::responseMessage(
+		ResponseHeader::SPtr& responseHeader,
+		SecureChannelTransaction::SPtr& secureChannelTransaction
+	)
+	{
+		// get channel session handle
+		ChannelSessionHandle::SPtr channelSessionHandle;
+		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannelTransaction->handle_);
+		if (!channelSessionHandle->secureChannelIsValid()) {
+			// channel do not exist anymore - ignore response
+			return;
+		}
+
+		// send response
+		secureChannelServer_->sendResponse(channelSessionHandle->secureChannel());
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// DiscoveryIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::discoveryResponseMessage(
 		ResponseHeader::SPtr& responseHeader,
 		SecureChannelTransaction::SPtr& secureChannelTransaction
 	)
