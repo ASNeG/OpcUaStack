@@ -88,6 +88,11 @@ namespace OpcUaStackServer
 		//- DiscoveryManagerIf ------------------------------------------------
 
 	  private:
+		void createSessionRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader
+		);
+
 		void activateSessionRequest(
 			SecureChannel* secureChannel,
 			RequestHeader::SPtr requestHeader
@@ -97,6 +102,8 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader,
 			OpcUaStatusCode statusCode
 		);
+
+
 
 
 		bool getSecureChannelServerConfig(

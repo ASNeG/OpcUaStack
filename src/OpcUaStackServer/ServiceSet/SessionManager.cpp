@@ -206,18 +206,7 @@ namespace OpcUaStackServer
 			}
 			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "CreateSessionRequest" << std::endl;
-
-				// create new session
-				Session::SPtr session = constructSPtr<Session>();
-				session->sessionIf(this);
-				session->endpointDescriptionArray(endpointDescriptionArray_);
-				// FIXME: todo...
-				Object::SPtr handle = channelSessionHandleMap_.createSession(session, secureChannel);
-				secureChannel->secureChannelTransaction_->handle_ = handle;
-
-				// handle create session request
-				session->createSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+				createSessionRequest(secureChannel, requestHeader);
 				break;
 			}
 			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
@@ -240,6 +229,33 @@ namespace OpcUaStackServer
 				std::cout << "Message" << std::endl;
 			}
 		}
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// create session request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::createSessionRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "CreateSessionRequest" << std::endl;
+
+		// create new session
+		Session::SPtr session = constructSPtr<Session>();
+		session->sessionIf(this);
+		session->endpointDescriptionArray(endpointDescriptionArray_);
+		// FIXME: todo...
+		Object::SPtr handle = channelSessionHandleMap_.createSession(session, secureChannel);
+		secureChannel->secureChannelTransaction_->handle_ = handle;
+
+		// handle create session request
+		session->createSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
 	}
 
 	// ------------------------------------------------------------------------
