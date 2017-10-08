@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 
 		OpcUaNodeId requestTypeNodeId_;
 		OpcUaNodeId responseTypeNodeId_;
+		OpcUaUInt32 securityTokenId_;
 		OpcUaUInt32 requestId_;
 		Object::SPtr handle_;
 

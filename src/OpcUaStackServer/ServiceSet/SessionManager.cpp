@@ -192,7 +192,7 @@ namespace OpcUaStackServer
 				std::cout << "GetEndpointsRequest" << std::endl;
 
 				// get handle from secure channel
-				secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle_;
+				secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
 				// handle get endpoints request
 				discoveryService_->getEndpointRequest(requestHeader, secureChannel->secureChannelTransaction_);

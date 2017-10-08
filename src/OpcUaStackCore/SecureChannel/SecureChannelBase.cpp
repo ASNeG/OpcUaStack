@@ -879,8 +879,8 @@ namespace OpcUaStackCore
 		// get channel id
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
 
-		OpcUaUInt32 securityTokenId;
-		OpcUaNumber::opcUaBinaryDecode(is, securityTokenId);
+		// get security token
+		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
@@ -1168,7 +1168,7 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode token id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->tokenId_);
+		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannelTransaction->securityTokenId_);
 
 		// encode sequence number
 		secureChannel->sendSequenceNumber_++;

@@ -333,14 +333,14 @@ namespace OpcUaStackCore
 		}
 
 		// create new security token
-		secureChannel->tokenIdVec_.push_back(std::rand());
+		secureChannel->secureTokenVec_.push_back(std::rand());
 
 		// create open secure channel response
 		OpenSecureChannelResponse openSecureChannelResponse;
 		OpcUaByte serverNonce[1];
 		serverNonce[0] = 0x01;
 		openSecureChannelResponse.securityToken()->channelId(secureChannel->channelId_);
-		openSecureChannelResponse.securityToken()->tokenId(secureChannel->tokenIdVec_[secureChannel->tokenIdVec_.size()-1]);
+		openSecureChannelResponse.securityToken()->tokenId(secureChannel->secureTokenVec_[secureChannel->secureTokenVec_.size()-1]);
 		openSecureChannelResponse.securityToken()->createAt().dateTime(boost::posix_time::microsec_clock::local_time());
 		openSecureChannelResponse.securityToken()->revisedLifetime(openSecureChannelRequest.requestedLifetime());
 		openSecureChannelResponse.responseHeader()->time().dateTime(boost::posix_time::microsec_clock::local_time());
@@ -349,7 +349,7 @@ namespace OpcUaStackCore
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
 
-		if (openSecureChannelRequest.requestType() ==  RT_RENEW) {
+		if (openSecureChannelRequest.requestType() ==  RT_ISSUE) {
 			secureChannelServerIf_->handleConnect(secureChannel);
 		}
 	}
