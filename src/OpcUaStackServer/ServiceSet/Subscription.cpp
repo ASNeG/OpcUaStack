@@ -89,10 +89,10 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Subscription::ioService(IOService* ioService)
+	Subscription::ioThread(IOThread* ioThread)
 	{
-		ioService_ = ioService;
-		monitorManager_.ioService(ioService);
+		ioThread_ = ioThread;
+		monitorManager_.ioThread(ioThread);
 	}
 
 	void 

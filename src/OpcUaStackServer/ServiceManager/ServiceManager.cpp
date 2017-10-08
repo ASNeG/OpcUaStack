@@ -273,15 +273,15 @@ namespace OpcUaStackServer
 	ServiceManager::ioThread(IOThread* ioThread)
 	{
 		// FIXME: use IOThread in services...
-		attributeService_->ioService(ioThread->ioService().get());
-		methodService_->ioService(ioThread->ioService().get());
-		monitoredItemService_->ioService(ioThread->ioService().get());
-		nodeManagementService_->ioService(ioThread->ioService().get());
-		queryService_->ioService(ioThread->ioService().get());
-		subscriptionService_->ioService(ioThread->ioService().get());
-		viewService_->ioService(ioThread->ioService().get());
-		applicationService_->ioService(ioThread->ioService().get());
-		discoveryService_->ioService(ioThread->ioService().get());
+		attributeService_->ioThread(ioThread);
+		methodService_->ioThread(ioThread);
+		monitoredItemService_->ioThread(ioThread);
+		nodeManagementService_->ioThread(ioThread);
+		queryService_->ioThread(ioThread);
+		subscriptionService_->ioThread(ioThread);
+		viewService_->ioThread(ioThread);
+		applicationService_->ioThread(ioThread);
+		discoveryService_->ioThread(ioThread);
 		return true;
 	}
 

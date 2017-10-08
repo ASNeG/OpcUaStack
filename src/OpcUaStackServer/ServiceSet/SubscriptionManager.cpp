@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,8 +24,7 @@ namespace OpcUaStackServer
 {
 
 	SubscriptionManager::SubscriptionManager(void)
-	: ioService_(nullptr)
-	, slotTimer_(constructSPtr<SlotTimer>())
+	: ioThread_(nullptr)
 	, minPublishingInterval_(10)
 	, minLifetimeCount_(2)
     , minMaxKeepAliveCount_(2)
@@ -34,14 +33,12 @@ namespace OpcUaStackServer
 
 	SubscriptionManager::~SubscriptionManager(void)
 	{
-		slotTimer_->stopSlotTimerLoop(slotTimer_);
 	}
 
 	void 
-	SubscriptionManager::ioService(IOService* ioService)
+	SubscriptionManager::ioThread(IOThread* ioThread)
 	{
-		ioService_ = ioService;
-		slotTimer_->startSlotTimerLoop(ioService);
+		ioThread_ = ioThread;
 	}
 
 	void 
@@ -69,7 +66,7 @@ namespace OpcUaStackServer
 		CreateSubscriptionResponse::SPtr createSubscriptionResponse = trx->response();
 
 		Subscription::SPtr subscription = constructSPtr<Subscription>();
-		subscription->ioService(ioService_);
+		subscription->ioThread(ioThread_);
 		subscription->informationModel(informationModel_);
 		subscriptionMap_.insert(std::make_pair(subscription->subscriptionId(), subscription));
 
@@ -92,7 +89,7 @@ namespace OpcUaStackServer
 		SlotTimerElement::SPtr slotTimerElement = subscription->slotTimerElement();
 		slotTimerElement->interval((uint32_t)publishingInterval);
 		slotTimerElement->callback().reset(boost::bind(&SubscriptionManager::subscriptionPublishTimeout, this, subscription));
-		slotTimer_->start(slotTimerElement);
+		ioThread_->slotTimer()->start(slotTimerElement);
 
 		// send create subscription response
 		createSubscriptionResponse->subscriptionId(subscription->subscriptionId());
@@ -121,7 +118,7 @@ namespace OpcUaStackServer
 				SubscriptionMap::iterator it = subscriptionMap_.find((uint32_t)id);
 				if (it != subscriptionMap_.end()) {
 					// stop subscription timer
-					slotTimer_->stop(it->second->slotTimerElement());
+					ioThread_->slotTimer()->stop(it->second->slotTimerElement());
 					it->second->slotTimerElement()->callback().reset();
 				}
 
@@ -191,7 +188,7 @@ namespace OpcUaStackServer
 					.parameter("SessionId", sessionId_)
 					.parameter("Subscription", subscription->subscriptionId());
 
-				slotTimer_->stop(subscription->slotTimerElement());
+				ioThread_->slotTimer()->stop(subscription->slotTimerElement());
 				subscription->slotTimerElement()->callback().reset();
 
 				subscriptionMap_.erase(subscription->subscriptionId());

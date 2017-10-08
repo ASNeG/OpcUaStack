@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -57,7 +57,7 @@ namespace OpcUaStackServer
 		void publishingInterval(double publishingInterval);	
 		void lifetimeCount(uint32_t lifetimeCount);
 		void maxKeepAliveCount(uint32_t maxKeepAliveCount);
-		void ioService(IOService* ioService);
+		void ioThread(IOThread* ioThread);
 		void informationModel(InformationModel::SPtr informationModel);
 
 		void retransmissionQueue(SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement);
@@ -93,7 +93,7 @@ namespace OpcUaStackServer
 		SlotTimerElement::SPtr slotTimerElement_;
 		RetransmissionQueue retransmissionQueue_;
 
-		IOService* ioService_;
+		IOThread* ioThread_;
 		MonitorManager monitorManager_;
 	};
 

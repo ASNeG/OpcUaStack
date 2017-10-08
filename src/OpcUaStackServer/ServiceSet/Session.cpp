@@ -426,8 +426,6 @@ namespace OpcUaStackServer
 		}
 	}
 
-
-
 	bool 
 	Session::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{

@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 		MonitorManager(void);
 		~MonitorManager(void);
 
-		void ioService(IOService* ioService);
+		void ioThread(IOThread* ioThread);
 		void subscriptionId(uint32_t subscriptionId);
 		uint32_t subscriptionId(void);
 		void informationModel(InformationModel::SPtr informationModel);
@@ -75,12 +75,11 @@ namespace OpcUaStackServer
 		void forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
 		void sampleTimeout(MonitorItem::SPtr monitorItem);
 
-		IOService* ioService_;
+		IOThread* ioThread_;
 		uint32_t subscriptionId_;
 		MonitorItemMap monitorItemMap_;
 		EventItem::Map eventItemMap_;
 		InformationModel::SPtr informationModel_;
-		SlotTimer::SPtr slotTimer_;
 
 		MonitoredItemIds monitoredItemIds_;
 	};

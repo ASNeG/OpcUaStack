@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -55,7 +55,7 @@ namespace OpcUaStackCore
 	}
 
 	Component::Component(void)
-	: ioService_(nullptr)
+	: ioThread_(nullptr)
 	, mutex_()
 	{
 	}
@@ -68,19 +68,13 @@ namespace OpcUaStackCore
 	void
 	Component::ioThread(IOThread* ioThread)
 	{
-		ioService_ = ioThread->ioService().get();
-	}
-		
-	void 
-	Component::ioService(IOService* ioService)
-	{
-		ioService_ = ioService;
+		ioThread_ = ioThread;
 	}
 
-	IOService* 
-	Component::ioService(void)
+	IOThread*
+	Component::ioThread(void)
 	{
-		return ioService_;
+		return ioThread_;
 	}
 
 	void 
@@ -117,13 +111,17 @@ namespace OpcUaStackCore
 	void 
 	Component::sendAsync(Message::SPtr message)
 	{
-		if (ioService_ == nullptr) {
+		if (ioThread_ == nullptr) {
+			send(message);
+			return;
+		}
+		if (ioThread_->ioService().get() == nullptr) {
 			send(message);
 			return;
 		}
 
 		boost::mutex::scoped_lock g(mutex_);
-		ioService_->io_service().post(
+		ioThread_->ioService()->io_service().post(
 			boost::bind(&Component::receive, this, message)
 		);
 	}

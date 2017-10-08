@@ -60,7 +60,6 @@ namespace OpcUaStackServer
 
 		IOThread::SPtr ioThread_;
 		InformationModel::SPtr informationModel_;
-		//SessionManagerOld sessionManagerOld_;
 		SessionManager sessionManager_;
 		ServiceManager serviceManager_;
 		ApplicationManager applicationManager_;

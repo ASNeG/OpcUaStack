@@ -26,10 +26,9 @@ namespace OpcUaStackServer
 {
 
 	MonitorManager::MonitorManager(void)
-	: ioService_(nullptr)
+	: ioThread_(nullptr)
 	, monitorItemMap_()
 	, eventItemMap_()
-	, slotTimer_(constructSPtr<SlotTimer>())
 	, monitoredItemIds_()
 	, subscriptionId_(0)
 	{
@@ -48,12 +47,11 @@ namespace OpcUaStackServer
 		        forwardStopMonitoredItem(monitorItem->baseNodeClass(), it->first);
 		    }
 
-			slotTimer_->stop(monitorItem->slotTimerElement());
+			ioThread_->slotTimer()->stop(monitorItem->slotTimerElement());
 			monitorItem->slotTimerElement().reset();
 		}
 
 		monitorItemMap_.clear();
-		slotTimer_->stopSlotTimerLoop(slotTimer_);
 
 		//
 		// cleanup event item
@@ -62,10 +60,9 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	MonitorManager::ioService(IOService* ioService)
+	MonitorManager::ioThread(IOThread* ioThread)
 	{
-		ioService_ = ioService;
-		slotTimer_->startSlotTimerLoop(ioService);
+		ioThread_ = ioThread;
 	}
 
 	void 
@@ -193,7 +190,7 @@ namespace OpcUaStackServer
 		SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
 		slotTimerElement->interval(monitorItem->samplingInterval());
 		slotTimerElement->callback().reset(boost::bind(&MonitorManager::sampleTimeout, this, monitorItem));
-		slotTimer_->start(slotTimerElement);
+		ioThread_->slotTimer()->start(slotTimerElement);
 
 		Log(Debug, "monitor item create")
 			.parameter("MonitorId", monitorItem->monitorItemId())
@@ -312,7 +309,7 @@ namespace OpcUaStackServer
 					.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
 
 				// stop sample timer an remove monitor item#
-				slotTimer_->stop(it1->second->slotTimerElement());
+				ioThread_->slotTimer()->stop(it1->second->slotTimerElement());
 				monitorItemMap_.erase(it1);
 				deleteMonitorItemResponse->results()->set(idx, Success);
 			}
@@ -369,7 +366,7 @@ namespace OpcUaStackServer
 				//	forwardStopMonitoredItem(baseNodeClass, monitorItemId);
 				//}
 
-				slotTimer_->stop(monitorItem->slotTimerElement());
+				ioThread_->slotTimer()->stop(monitorItem->slotTimerElement());
 				monitorItemMap_.erase(monitorItem->monitorItemId());
 				break;
 		}

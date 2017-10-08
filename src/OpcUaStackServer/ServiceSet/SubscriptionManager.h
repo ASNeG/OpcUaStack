@@ -47,7 +47,7 @@ namespace OpcUaStackServer
 		SubscriptionManager(void);
 		~SubscriptionManager(void);
 
-		void ioService(IOService* ioService);
+		void ioThread(IOThread* ioThread);
 		void informationModel(InformationModel::SPtr informationModel);
 		void sessionId(uint32_t sessionId);
 
@@ -66,7 +66,7 @@ namespace OpcUaStackServer
 	  private:
 		void subscriptionPublishTimeout(Subscription::SPtr subscription);
 
-		IOService* ioService_;
+		IOThread* ioThread_;
 		InformationModel::SPtr informationModel_;
 		SubscriptionMap subscriptionMap_;
 		uint32_t sessionId_;
@@ -77,7 +77,6 @@ namespace OpcUaStackServer
 		double minPublishingInterval_;
 		uint32_t minLifetimeCount_;
 		uint32_t minMaxKeepAliveCount_;
-		SlotTimer::SPtr slotTimer_;
 	};
 
 }

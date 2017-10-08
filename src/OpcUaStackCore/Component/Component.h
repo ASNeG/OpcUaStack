@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,8 +39,7 @@ namespace OpcUaStackCore
 		static Component* getComponent(const std::string& componentName);
 
 		void ioThread(IOThread* ioThread);
-		void ioService(IOService* ioService);
-		IOService* ioService(void);
+		IOThread* ioThread(void);
 		void componentName(const std::string& componentName);
 		std::string componentName(void);
 
@@ -65,7 +64,7 @@ namespace OpcUaStackCore
 		static void removeComponent(Component& component);
 
 		std::string componentName_;
-		IOService* ioService_;
+		IOThread* ioThread_;
 		boost::mutex mutex_;
 	};
 
