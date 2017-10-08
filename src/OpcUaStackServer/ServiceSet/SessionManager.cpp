@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 
 namespace OpcUaStackServer
@@ -263,13 +264,45 @@ namespace OpcUaStackServer
 		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
 		if (!channelSessionHandle->sessionIsValid()) {
 			// session do not exist anymore - send error response
-			// FIXME: todo
+
+			errorActivateSessionRequest(secureChannel, requestHeader, BadSessionClosed);
 			return;
 		}
 		Session::SPtr session = channelSessionHandle->session();
 
 		// handle activate session request
 		session->activateSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	void
+	SessionManager::errorActivateSessionRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader,
+		OpcUaStatusCode statusCode
+	)
+	{
+		// added response type
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
+
+		// get activate session request
+		std::iostream ios(&secureChannelTransaction->is_);
+		ActivateSessionRequest activateSessionRequest;
+		activateSessionRequest.opcUaBinaryDecode(ios);
+
+		// create activate session response
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		ActivateSessionResponse activateSessionResponse;
+		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->serviceResult(statusCode);
+
+		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		activateSessionResponse.opcUaBinaryEncode(iosres);
+
+		// send activate session response
+		ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+		responseMessage(responseHeader, secureChannelTransaction);
 	}
 
 	// ------------------------------------------------------------------------

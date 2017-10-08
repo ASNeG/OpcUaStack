@@ -92,6 +92,12 @@ namespace OpcUaStackServer
 			SecureChannel* secureChannel,
 			RequestHeader::SPtr requestHeader
 		);
+		void errorActivateSessionRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader,
+			OpcUaStatusCode statusCode
+		);
+
 
 		bool getSecureChannelServerConfig(
 			SecureChannelServerConfig::SPtr& secureChannelServerConfig,
