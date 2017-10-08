@@ -288,6 +288,9 @@ namespace OpcUaStackCore
 		// check parameter
 		bool success = true;
 		if (openSecureChannelRequest.requestType() == RT_ISSUE) {
+
+			// create a new security token for a new security channel
+
 			if (secureChannel->channelId_ != 0) {
 				success = false;
 				Log(Error, "receive invalid request type in OpenSecureChannelRequest")
@@ -300,7 +303,10 @@ namespace OpcUaStackCore
 			secureChannel->gChannelId_++;
 			secureChannel->channelId_ = secureChannel->gChannelId_;
 		}
-		else {
+		else if (openSecureChannelRequest.requestType() ==  RT_RENEW) {
+
+			// create a new security token for an existing security channel
+
 			if (secureChannel->channelId_ != channelId) {
 				success = false;
 				Log(Error, "receive invalid channel id in OpenSecureChannelRequest")
@@ -310,6 +316,15 @@ namespace OpcUaStackCore
 					.parameter("Partner-Port", secureChannel->partner_.port())
 					.parameter("ChannelId", channelId);
 			}
+		}
+		else {
+			success = false;
+			Log(Error, "receive invalid OpenSecureChannelRequest")
+				.parameter("Local-Address", secureChannel->local_.address().to_string())
+				.parameter("Local-Port", secureChannel->local_.port())
+				.parameter("Partner-Address", secureChannel->partner_.address().to_string())
+				.parameter("Partner-Port", secureChannel->partner_.port())
+				.parameter("ChannelId", channelId);
 		}
 		if (!success) {
 			secureChannel->socket().cancel();
@@ -334,7 +349,9 @@ namespace OpcUaStackCore
 		// send open secure channel response
 		asyncWriteOpenSecureChannelResponse(secureChannel, openSecureChannelResponse);
 
-		secureChannelServerIf_->handleConnect(secureChannel);
+		if (openSecureChannelRequest.requestType() ==  RT_RENEW) {
+			secureChannelServerIf_->handleConnect(secureChannel);
+		}
 	}
 
 	void
