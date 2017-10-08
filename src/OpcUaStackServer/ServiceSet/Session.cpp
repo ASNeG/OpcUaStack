@@ -139,7 +139,7 @@ namespace OpcUaStackServer
 		createSessionResponse.sessionId().namespaceIndex(1);
 		createSessionResponse.sessionId().nodeId(sessionId_);
 		createSessionResponse.authenticationToken().namespaceIndex(1);
-		createSessionResponse.authenticationToken().nodeId(sessionId_);
+		createSessionResponse.authenticationToken().nodeId(authenticationToken_);
 		createSessionResponse.receivedSessionTimeout(120000);
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
@@ -225,6 +225,24 @@ namespace OpcUaStackServer
 				sessionIf_->deleteSession(authenticationToken_);
 			}
 		}
+	}
+
+	void
+	Session::closeSessionRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		// FIXME: todo
+	}
+
+	void
+	Session::cancelRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		// FIXME: todo
 	}
 
 	bool 

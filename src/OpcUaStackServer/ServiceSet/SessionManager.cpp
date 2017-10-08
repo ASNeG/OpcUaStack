@@ -221,21 +221,7 @@ namespace OpcUaStackServer
 			}
 			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "ActivateSessionRequest" << std::endl;
-
-				// get handle from secure channel
-				secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
-				ChannelSessionHandle::SPtr channelSessionHandle;
-				channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
-				if (!channelSessionHandle->sessionIsValid()) {
-					// session do not exist anymore - send error response
-					// FIXME: todo
-					return;
-				}
-				Session::SPtr session = channelSessionHandle->session();
-
-				// handle activate session request
-				session->activateSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+				activateSessionRequest(secureChannel, requestHeader);
 				break;
 			}
 			case OpcUaId_CloseSessionRequest_Encoding_DefaultBinary:
@@ -255,6 +241,44 @@ namespace OpcUaStackServer
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// activate session request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::activateSessionRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "ActivateSessionRequest" << std::endl;
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+		ChannelSessionHandle::SPtr channelSessionHandle;
+		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		if (!channelSessionHandle->sessionIsValid()) {
+			// session do not exist anymore - send error response
+			// FIXME: todo
+			return;
+		}
+		Session::SPtr session = channelSessionHandle->session();
+
+		// handle activate session request
+		session->activateSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// handle endpoint callbacks
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
 	SessionManager::handleEndpointOpen(void)
 	{

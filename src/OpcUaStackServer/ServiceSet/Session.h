@@ -69,6 +69,14 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
+		void closeSessionRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
+		void cancelRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
 
 
 		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
