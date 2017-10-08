@@ -563,6 +563,8 @@ namespace OpcUaStackServer
 		}
 
 		// send response
+		// FIXME: todo
+		channelSessionHandle->secureChannel()->secureChannelTransaction_ = secureChannelTransaction;
 		secureChannelServer_->sendResponse(channelSessionHandle->secureChannel());
 	}
 
