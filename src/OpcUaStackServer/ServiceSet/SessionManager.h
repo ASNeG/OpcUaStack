@@ -103,6 +103,16 @@ namespace OpcUaStackServer
 			OpcUaStatusCode statusCode
 		);
 
+		void closeSessionRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader
+		);
+		void errorCloseSessionRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader,
+			OpcUaStatusCode statusCode
+		);
+
 
 
 

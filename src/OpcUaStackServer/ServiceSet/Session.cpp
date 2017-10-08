@@ -233,7 +233,28 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		// FIXME: todo
+		std::cout << "close session request..." << std::endl;
+		Log(Debug, "receive close session request");
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CloseSessionResponse_Encoding_DefaultBinary;
+
+		std::iostream ios(&secureChannelTransaction->is_);
+		CloseSessionRequest closeSessionRequest;
+		closeSessionRequest.opcUaBinaryDecode(ios);
+
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CloseSessionResponse closeSessionResponse;
+		closeSessionResponse.responseHeader()->requestHandle(closeSessionRequest.requestHeader()->requestHandle());
+		closeSessionResponse.responseHeader()->serviceResult(Success);
+
+		closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		closeSessionResponse.opcUaBinaryEncode(iosres);
+
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+			sessionIf_->deleteSession(authenticationToken_);
+		}
 	}
 
 	void

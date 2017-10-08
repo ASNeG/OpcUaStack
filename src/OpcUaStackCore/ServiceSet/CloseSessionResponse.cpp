@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 	}
 
 	ResponseHeader::SPtr 
-	CloseSessionResponse::responseHeader(void) const
+	CloseSessionResponse::responseHeader(void)
 	{
 		return responseHeader_;
 	}
@@ -45,13 +45,13 @@ namespace OpcUaStackCore
 	void 
 	CloseSessionResponse::opcUaBinaryEncode(std::ostream& os) const
 	{
-		responseHeader_->opcUaBinaryEncode(os);
+		//responseHeader_->opcUaBinaryEncode(os);
 	}
 
 	void 
 	CloseSessionResponse::opcUaBinaryDecode(std::istream& is)
 	{
-		responseHeader_->opcUaBinaryDecode(is);
+		//responseHeader_->opcUaBinaryDecode(is);
 	}
 
 }

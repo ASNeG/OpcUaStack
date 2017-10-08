@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 		virtual ~CloseSessionResponse(void);
 
 		void responseHeader(const ResponseHeader::SPtr responseHeader);
-		ResponseHeader::SPtr responseHeader(void) const;
+		ResponseHeader::SPtr responseHeader(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

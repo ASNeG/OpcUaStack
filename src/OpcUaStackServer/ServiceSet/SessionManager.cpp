@@ -16,6 +16,8 @@
  */
 
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 
 namespace OpcUaStackServer
@@ -216,7 +218,7 @@ namespace OpcUaStackServer
 			}
 			case OpcUaId_CloseSessionRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "CloseSessionRequest" << std::endl;
+				closeSessionRequest(secureChannel, requestHeader);
 				break;
 			}
 			case OpcUaId_CancelRequest_Encoding_DefaultBinary:
@@ -318,6 +320,69 @@ namespace OpcUaStackServer
 
 		// send activate session response
 		ResponseHeader::SPtr responseHeader = activateSessionResponse.responseHeader();
+		responseMessage(responseHeader, secureChannelTransaction);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// close session request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::closeSessionRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "CloseSessionRequest" << std::endl;
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+		ChannelSessionHandle::SPtr channelSessionHandle;
+		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		if (!channelSessionHandle->sessionIsValid()) {
+			// session do not exist anymore - send error response
+
+			errorCloseSessionRequest(secureChannel, requestHeader, BadSessionClosed);
+			return;
+		}
+		Session::SPtr session = channelSessionHandle->session();
+
+		// handle activate session request
+		session->closeSessionRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	void
+	SessionManager::errorCloseSessionRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader,
+		OpcUaStatusCode statusCode
+	)
+	{
+		// added response type
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CloseSessionResponse_Encoding_DefaultBinary;
+
+		// get activate session request
+		std::iostream ios(&secureChannelTransaction->is_);
+		CloseSessionRequest closeSessionRequest;
+		closeSessionRequest.opcUaBinaryDecode(ios);
+
+		// create close session response
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CloseSessionResponse closeSessionResponse;
+		closeSessionResponse.responseHeader()->requestHandle(closeSessionRequest.requestHeader()->requestHandle());
+		closeSessionResponse.responseHeader()->serviceResult(statusCode);
+
+		closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		closeSessionResponse.opcUaBinaryEncode(iosres);
+
+		// send close session response
+		ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
 		responseMessage(responseHeader, secureChannelTransaction);
 	}
 
