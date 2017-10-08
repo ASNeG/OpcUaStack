@@ -123,6 +123,16 @@ namespace OpcUaStackServer
 			OpcUaStatusCode statusCode
 		);
 
+		void messageRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader
+		);
+		void errorMessageRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader,
+			OpcUaStatusCode statusCode
+		);
+
 
 		bool getSecureChannelServerConfig(
 			SecureChannelServerConfig::SPtr& secureChannelServerConfig,

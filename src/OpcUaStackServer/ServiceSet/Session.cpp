@@ -326,6 +326,107 @@ namespace OpcUaStackServer
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// message request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	Session::messageRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		std::cout << "message request..." << std::endl;
+		Log(Debug, "receive message request");
+
+		if (sessionState_ != SessionState_Ready) {
+			Log(Error, "receive message request in invalid state")
+				.parameter("SessionState", sessionState_)
+				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);
+
+			// FIXME: error handling
+			return;
+		}
+
+		if (transactionManagerSPtr_.get() == nullptr) {
+			Log(Error, "transaction manager empty");
+			// ignore request - we cannot generate a response
+			return;
+		}
+
+		ServiceTransaction::SPtr serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
+		if (serviceTransactionSPtr.get() == nullptr) {
+			Log(Error, "receive invalid message type")
+				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);
+			// ignore request - we cannot generate a response
+			return;
+		}
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaNodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
+		serviceTransactionSPtr->componentSession(this);
+		serviceTransactionSPtr->sessionId(sessionId_);
+		Object::SPtr handle = secureChannelTransaction;
+		serviceTransactionSPtr->handle(handle);
+		// FIXME: serviceTransactionSPtr->channelId(secureChannelTransaction->channelId_);
+
+		std::iostream ios(&secureChannelTransaction->is_);
+		serviceTransactionSPtr->requestHeader(requestHeader);
+		//OpcUaStackCore::dumpHex(sb);
+		serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios);
+		//OpcUaStackCore::dumpHex(sb);
+		serviceTransactionSPtr->requestId_ = secureChannelTransaction->requestId_;
+		serviceTransactionSPtr->statusCode(Success);
+
+		Log(Debug, "receive request in session")
+			.parameter("TrxId", serviceTransactionSPtr->transactionId())
+			.parameter("TypeId", serviceTransactionSPtr->requestName())
+			.parameter("RequestId", serviceTransactionSPtr->requestId_);
+
+		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
+	}
+
+	void
+	Session::messageRequestError(
+		SecureChannelTransaction::SPtr secureChannelTransaction,
+		OpcUaStatusCode statusCode
+	)
+	{
+		// FIXME: todo
+	}
+
+	void
+	Session::receive(Message::SPtr message)
+	{
+		std::cout << "handle response message..." << std::endl;
+
+		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
+		Log(Debug, "receive response in session")
+			.parameter("TrxId", serviceTransactionSPtr->transactionId())
+			.parameter("TypeId", serviceTransactionSPtr->responseName())
+			.parameter("RequestId", serviceTransactionSPtr->requestId_)
+			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionSPtr->statusCode()));
+
+		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
+		ResponseHeader::SPtr responseHeader = serviceTransactionSPtr->responseHeader();
+		responseHeader->requestHandle(requestHeader->requestHandle());
+		responseHeader->serviceResult(serviceTransactionSPtr->statusCode());
+
+		SecureChannelTransaction::SPtr secureChannelTransaction;
+		secureChannelTransaction = boost::static_pointer_cast<SecureChannelTransaction>(serviceTransactionSPtr->handle());
+
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		responseHeader->opcUaBinaryEncode(iosres);
+		serviceTransactionSPtr->opcUaBinaryEncodeResponse(iosres);
+
+		if (sessionIf_ != nullptr) {
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
+
 
 	bool 
 	Session::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
@@ -511,31 +612,6 @@ namespace OpcUaStackServer
 		return true;
 	}
 
-	void  
-	Session::receive(Message::SPtr message)
-	{
-		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
-		Log(Debug, "receive response in session")
-			.parameter("TrxId", serviceTransactionSPtr->transactionId())
-			.parameter("TypeId", serviceTransactionSPtr->responseName())
-			.parameter("RequestId", serviceTransactionSPtr->requestId_)
-			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(serviceTransactionSPtr->statusCode()));
 
-		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
-		ResponseHeader::SPtr responseHeader = serviceTransactionSPtr->responseHeader();
-		responseHeader->requestHandle(requestHeader->requestHandle());
-		responseHeader->serviceResult(serviceTransactionSPtr->statusCode());
-
-		SecureChannelTransactionOld::SPtr secureChannelTransaction = constructSPtr<SecureChannelTransactionOld>();
-		std::iostream ios(&secureChannelTransaction->os_);
-		responseHeader->opcUaBinaryEncode(ios);
-		serviceTransactionSPtr->opcUaBinaryEncodeResponse(ios);
-
-		secureChannelTransaction->requestId_ = serviceTransactionSPtr->requestId_;
-		secureChannelTransaction->channelId_ = serviceTransactionSPtr->channelId();
-		secureChannelTransaction->responseTypeNodeId_.nodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
-
-	}
 
 }

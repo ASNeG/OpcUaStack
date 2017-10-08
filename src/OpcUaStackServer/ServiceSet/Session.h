@@ -78,6 +78,10 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
+		void messageRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
 
 
 		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
@@ -98,6 +102,10 @@ namespace OpcUaStackServer
 		);
 		void cancelRequestError(
 			OpcUaStackCore::CancelRequest& cancelRequest,
+			SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStatusCode statusCode
+		);
+		void messageRequestError(
 			SecureChannelTransaction::SPtr secureChannelTransaction,
 			OpcUaStatusCode statusCode
 		);

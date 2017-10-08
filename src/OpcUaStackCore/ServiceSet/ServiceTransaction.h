@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -39,6 +39,9 @@ namespace OpcUaStackCore
 		virtual ~ServiceTransaction(void);
 
 		virtual SPtr constructTransaction(void) = 0;
+
+		void handle(Object::SPtr& handle);
+		Object::SPtr handle(void);
 
 		OpcUaUInt32 transactionId(void);
 		OpcUaNodeId& nodeTypeRequest(void);
@@ -82,6 +85,8 @@ namespace OpcUaStackCore
 		static uint32_t uniqueTransactionId_;
 		static boost::mutex mutex_;
 		static uint32_t getUniqueTransactionId(void);
+
+		Object::SPtr handle_;
 
 		uint32_t requestTimeout_;
 

@@ -230,7 +230,7 @@ namespace OpcUaStackServer
 			}
 			default:
 			{
-				std::cout << "Message" << std::endl;
+				messageRequest(secureChannel, requestHeader);
 			}
 		}
 	}
@@ -254,7 +254,8 @@ namespace OpcUaStackServer
 		Session::SPtr session = constructSPtr<Session>();
 		session->sessionIf(this);
 		session->endpointDescriptionArray(endpointDescriptionArray_);
-		// FIXME: todo...
+		session->transactionManager(transactionManagerSPtr_);
+
 		Object::SPtr handle = channelSessionHandleMap_.createSession(session, secureChannel);
 		secureChannel->secureChannelTransaction_->handle_ = handle;
 
@@ -449,6 +450,48 @@ namespace OpcUaStackServer
 		// send cancel response
 		ResponseHeader::SPtr responseHeader = cancelResponse.responseHeader();
 		responseMessage(responseHeader, secureChannelTransaction);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// message request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::messageRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "MessageRequest" << std::endl;
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+		ChannelSessionHandle::SPtr channelSessionHandle;
+		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		if (!channelSessionHandle->sessionIsValid()) {
+			// session do not exist anymore - send error response
+
+			errorMessageRequest(secureChannel, requestHeader, BadSessionClosed);
+			return;
+		}
+		Session::SPtr session = channelSessionHandle->session();
+
+		// handle message request
+		session->messageRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	void
+	SessionManager::errorMessageRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader,
+		OpcUaStatusCode statusCode
+	)
+	{
+		// FIXME: todo
 	}
 
 	// ------------------------------------------------------------------------
