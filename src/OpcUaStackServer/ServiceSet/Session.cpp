@@ -24,6 +24,8 @@
 #include "OpcUaStackCore/ServiceSet/CreateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/CancelRequest.h"
+#include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 
 using namespace OpcUaStackCore;
@@ -108,6 +110,13 @@ namespace OpcUaStackServer
 		endpointDescriptionArray_ = endpointDescriptionArray;
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// create session request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
 	Session::createSessionRequest(
 		RequestHeader::SPtr requestHeader,
@@ -155,6 +164,13 @@ namespace OpcUaStackServer
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// activate session request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
 	Session::activateSessionRequest(
 		RequestHeader::SPtr requestHeader,
@@ -227,6 +243,13 @@ namespace OpcUaStackServer
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// close session request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
 	Session::closeSessionRequest(
 		RequestHeader::SPtr requestHeader,
@@ -257,14 +280,52 @@ namespace OpcUaStackServer
 		}
 	}
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// cancel request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	void
 	Session::cancelRequest(
 		RequestHeader::SPtr requestHeader,
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		// FIXME: todo
+		std::cout << "cancel request..." << std::endl;
+		Log(Debug, "receive cancel request");
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CancelResponse_Encoding_DefaultBinary;
+
+		std::iostream ios(&secureChannelTransaction->is_);
+		CancelRequest cancelRequest;
+		cancelRequest.opcUaBinaryDecode(ios);
+
+		cancelRequestError(cancelRequest, secureChannelTransaction, BadNotImplemented);
 	}
+
+	void
+	Session::cancelRequestError(
+		OpcUaStackCore::CancelRequest& cancelRequest,
+		SecureChannelTransaction::SPtr secureChannelTransaction,
+		OpcUaStatusCode statusCode
+	)
+	{
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CancelResponse cancelResponse;
+		cancelResponse.responseHeader()->requestHandle(cancelRequest.requestHeader()->requestHandle());
+		cancelResponse.responseHeader()->serviceResult(statusCode);
+
+		cancelResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		cancelResponse.opcUaBinaryEncode(iosres);
+
+		if (sessionIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = cancelResponse.responseHeader();
+			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
 
 	bool 
 	Session::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)

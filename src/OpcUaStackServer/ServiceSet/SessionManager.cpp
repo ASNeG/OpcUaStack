@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CloseSessionResponse.h"
+#include "OpcUaStackCore/ServiceSet/CancelRequest.h"
+#include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 
 namespace OpcUaStackServer
@@ -223,7 +225,7 @@ namespace OpcUaStackServer
 			}
 			case OpcUaId_CancelRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "CancelSessionRequest" << std::endl;
+				cancelRequest(secureChannel, requestHeader);
 				break;
 			}
 			default:
@@ -383,6 +385,69 @@ namespace OpcUaStackServer
 
 		// send close session response
 		ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
+		responseMessage(responseHeader, secureChannelTransaction);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// cancel request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::cancelRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "CancelRequest" << std::endl;
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+		ChannelSessionHandle::SPtr channelSessionHandle;
+		channelSessionHandle = boost::static_pointer_cast<ChannelSessionHandle>(secureChannel->secureChannelTransaction_->handle_);
+		if (!channelSessionHandle->sessionIsValid()) {
+			// session do not exist anymore - send error response
+
+			errorCancelRequest(secureChannel, requestHeader, BadSessionClosed);
+			return;
+		}
+		Session::SPtr session = channelSessionHandle->session();
+
+		// handle cancel request
+		session->cancelRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	void
+	SessionManager::errorCancelRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader,
+		OpcUaStatusCode statusCode
+	)
+	{
+		// added response type
+		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CancelResponse_Encoding_DefaultBinary;
+
+		// get cancel request
+		std::iostream ios(&secureChannelTransaction->is_);
+		CancelRequest cancelRequest;
+		cancelRequest.opcUaBinaryDecode(ios);
+
+		// create cancel response
+		std::iostream iosres(&secureChannelTransaction->os_);
+
+		CancelResponse cancelResponse;
+		cancelResponse.responseHeader()->requestHandle(cancelRequest.requestHeader()->requestHandle());
+		cancelResponse.responseHeader()->serviceResult(statusCode);
+
+		cancelResponse.responseHeader()->opcUaBinaryEncode(iosres);
+		cancelResponse.opcUaBinaryEncode(iosres);
+
+		// send cancel response
+		ResponseHeader::SPtr responseHeader = cancelResponse.responseHeader();
 		responseMessage(responseHeader, secureChannelTransaction);
 	}
 

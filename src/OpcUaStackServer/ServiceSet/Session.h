@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
+#include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
@@ -94,6 +95,11 @@ namespace OpcUaStackServer
 			SecureChannelTransaction::SPtr secureChannelTransaction,
 			OpcUaStatusCode statusCode,
 			bool deleteSession = true
+		);
+		void cancelRequestError(
+			OpcUaStackCore::CancelRequest& cancelRequest,
+			SecureChannelTransaction::SPtr secureChannelTransaction,
+			OpcUaStatusCode statusCode
 		);
 
 		static boost::mutex mutex_;
