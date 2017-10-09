@@ -49,6 +49,14 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
+		void registerServerRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
+		void findServersRequest(
+			RequestHeader::SPtr requestHeader,
+			SecureChannelTransaction::SPtr secureChannelTransaction
+		);
 
 		//bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 

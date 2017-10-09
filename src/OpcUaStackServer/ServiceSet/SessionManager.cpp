@@ -189,23 +189,17 @@ namespace OpcUaStackServer
 		{
 			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "RegisterServiceRequest" << std::endl;
+				registerServerRequest(secureChannel, requestHeader);
 				break;
 			}
 			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "GetEndpointsRequest" << std::endl;
-
-				// get handle from secure channel
-				secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
-
-				// handle get endpoints request
-				discoveryService_->getEndpointRequest(requestHeader, secureChannel->secureChannelTransaction_);
+				getEndpointsRequest(secureChannel, requestHeader);
 				break;
 			}
 			case OpcUaId_FindServersRequest_Encoding_DefaultBinary:
 			{
-				std::cout << "FindServersRequest" << std::endl;
+				findServersRequest(secureChannel, requestHeader);
 				break;
 			}
 			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
@@ -497,7 +491,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// message request
+	// get endpoints request
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -507,7 +501,57 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
+		std::cout << "GetEndpointsRequest" << std::endl;
 
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+
+		// handle get endpoints request
+		discoveryService_->getEndpointRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// find servers request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::findServersRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "findServersRequest" << std::endl;
+
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+
+		// handle find servers request
+		discoveryService_->findServersRequest(requestHeader, secureChannel->secureChannelTransaction_);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// register service request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::registerServerRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+		std::cout << "registerServerRequest" << std::endl;
+
+		// get handle from secure channel
+		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
+
+		// handle register server request
+		discoveryService_->registerServerRequest(requestHeader, secureChannel->secureChannelTransaction_);
 	}
 
 

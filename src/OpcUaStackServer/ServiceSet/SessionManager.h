@@ -138,6 +138,16 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader
 		);
 
+		void findServersRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader
+		);
+
+		void registerServerRequest(
+			SecureChannel* secureChannel,
+			RequestHeader::SPtr requestHeader
+		);
+
 
 		bool getSecureChannelServerConfig(
 			SecureChannelServerConfig::SPtr& secureChannelServerConfig,

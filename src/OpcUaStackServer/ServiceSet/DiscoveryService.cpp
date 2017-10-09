@@ -85,6 +85,59 @@ namespace OpcUaStackServer
 		}
 	}
 
+	void
+	DiscoveryService::registerServerRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		Log(Debug, "receive register server request request");
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_RegisterServerResponse_Encoding_DefaultBinary;
+
+		std::iostream is(&secureChannelTransaction->is_);
+		RegisterServerRequest registerServerRequest;
+
+		registerServerRequest.opcUaBinaryDecode(is);
+
+		// FIXME: analyse request data
+
+		std::iostream os(&secureChannelTransaction->os_);
+
+		ResponseHeader responseHeader;
+		RegisterServerResponse registerServerResponse;
+
+		responseHeader.requestHandle(requestHeader->requestHandle());
+
+		// check forward callback functions
+		ApplicationRegisterServerContext ctx;
+		ctx.statusCode_ = BadNotSupported;
+		if (forwardGlobalSync()->registerServerService().isCallback()) {
+
+			// forward register server request
+			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
+			registerServerRequest.server().copyTo(ctx.server_);
+			forwardGlobalSync()->registerServerService().callback()(&ctx);
+		}
+		responseHeader.serviceResult(ctx.statusCode_);
+
+		responseHeader.opcUaBinaryEncode(os);
+		registerServerResponse.opcUaBinaryEncode(os);
+
+		if (discoveryIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = registerServerResponse.responseHeader();
+			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
+		}
+	}
+
+	void
+	DiscoveryService::findServersRequest(
+		RequestHeader::SPtr requestHeader,
+		SecureChannelTransaction::SPtr secureChannelTransaction
+	)
+	{
+		// FIXME: todo
+	}
+
 #if 0
 	bool 
 	DiscoveryService::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
