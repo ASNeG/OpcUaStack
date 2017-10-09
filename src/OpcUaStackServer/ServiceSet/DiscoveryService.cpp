@@ -135,7 +135,48 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		// FIXME: todo
+		Log(Debug, "receive find servers request request");
+		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_FindServersResponse_Encoding_DefaultBinary;
+
+		std::iostream is(&secureChannelTransaction->is_);
+		FindServersRequest findServersRequest;
+
+		findServersRequest.opcUaBinaryDecode(is);
+
+		// FIXME: analyse request data
+
+		std::iostream os(&secureChannelTransaction->os_);
+
+		ResponseHeader responseHeader;
+		FindServersResponse findServersResponse;
+
+		responseHeader.requestHandle(requestHeader->requestHandle());
+
+		// check forward callback functions
+		ApplicationFindServerContext ctx;
+		ctx.statusCode_ = BadNotSupported;
+		if (forwardGlobalSync()->findServersService().isCallback()) {
+
+			// forward find server request
+			ctx.applicationContext_ = forwardGlobalSync()->findServersService().applicationContext();
+			findServersRequest.endpointUrl().copyTo(ctx.endpointUrl_);
+			ctx.localeIdArraySPtr_ = findServersRequest.localeIds();
+			ctx.serverUriArraySPtr_ = findServersRequest.serverUris();
+			forwardGlobalSync()->findServersService().callback()(&ctx);
+		}
+
+		responseHeader.serviceResult(ctx.statusCode_);
+		if (ctx.statusCode_ == Success) {
+			findServersResponse.servers(ctx.servers_);
+		}
+
+		responseHeader.opcUaBinaryEncode(os);
+		findServersResponse.opcUaBinaryEncode(os);
+
+		if (discoveryIf_ != nullptr) {
+			ResponseHeader::SPtr responseHeader = findServersResponse.responseHeader();
+			discoveryIf_->discoveryResponseMessage(responseHeader, secureChannelTransaction);
+		}
 	}
 
 #if 0
