@@ -497,6 +497,23 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// message request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SessionManager::getEndpointsRequest(
+		SecureChannel* secureChannel,
+		RequestHeader::SPtr requestHeader
+	)
+	{
+
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// handle endpoint callbacks
 	//
 	// ------------------------------------------------------------------------
@@ -563,9 +580,10 @@ namespace OpcUaStackServer
 		}
 
 		// send response
-		// FIXME: todo
-		channelSessionHandle->secureChannel()->secureChannelTransaction_ = secureChannelTransaction;
-		secureChannelServer_->sendResponse(channelSessionHandle->secureChannel());
+		secureChannelServer_->sendResponse(
+			channelSessionHandle->secureChannel(),
+			secureChannelTransaction
+		);
 	}
 
 	void
@@ -598,7 +616,10 @@ namespace OpcUaStackServer
 		}
 
 		// send response
-		secureChannelServer_->sendResponse(channelSessionHandle->secureChannel());
+		secureChannelServer_->sendResponse(
+			channelSessionHandle->secureChannel(),
+			secureChannelTransaction
+		);
 	}
 
 	// ------------------------------------------------------------------------
