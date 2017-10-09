@@ -28,6 +28,7 @@ namespace OpcUaStackServer
 	, minPublishingInterval_(10)
 	, minLifetimeCount_(2)
     , minMaxKeepAliveCount_(2)
+	, sessionId_(0)
 	{
 	}
 
@@ -138,6 +139,27 @@ namespace OpcUaStackServer
 	OpcUaStatusCode 
 	SubscriptionManager::receive(ServiceTransactionPublish::SPtr trx)
 	{
+		// get publish request
+		PublishRequest::SPtr publishRequest = trx->request();
+
+		// check acknowledgement list
+		if (trx->request()->subscriptionAcknowledgements()->size() > 0) {
+			trx->response()->results()->resize(trx->request()->subscriptionAcknowledgements()->size());
+			for (uint32_t idx = 0; idx < trx->request()->subscriptionAcknowledgements()->size(); idx++) {
+				SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement;
+				trx->request()->subscriptionAcknowledgements()->get(idx, subscriptionAcknowledgement);
+
+				OpcUaStatusCode statusCode;
+				statusCode = receiveAcknowledgement(
+					subscriptionAcknowledgement->subscriptionId(),
+					subscriptionAcknowledgement->sequenceNumber()
+				);
+				trx->response()->results()->set(idx, statusCode);
+			}
+
+		}
+
+		// save publish request
 		serviceTransactionPublishList_.push_back(trx);
 		return Success;
 	}
@@ -173,6 +195,7 @@ namespace OpcUaStackServer
 				Log(Debug, "publish response")
 					.parameter("Mode", mode)
 					.parameter("Trx", trx->transactionId())
+					.parameter("SubscriptionId", subscription->subscriptionId())
 					.parameter("SequenceNumber", trx->response()->notificationMessage()->sequenceNumber())
 					.parameter("Unack-SequenceNumber", *trx->response()->availableSequenceNumbers());
 
@@ -250,6 +273,15 @@ namespace OpcUaStackServer
 		it = subscriptionMap_.find(setTriggeringRequest->subscriptionId());
 		if (it == subscriptionMap_.end()) return BadSubscriptionIdInvalid;
 		return it->second->receive(trx);
+	}
+
+	OpcUaStatusCode
+	SubscriptionManager::receiveAcknowledgement(uint32_t subscriptionId, uint32_t acknowledgmentNumber)
+	{
+		SubscriptionMap::iterator it;
+		it = subscriptionMap_.find(subscriptionId);
+		if (it == subscriptionMap_.end()) return BadNotFound;
+		return it->second->receiveAcknowledgement(acknowledgmentNumber);
 	}
 
 }

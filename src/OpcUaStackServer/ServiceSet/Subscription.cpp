@@ -22,7 +22,6 @@ namespace OpcUaStackServer
 {
 
 	uint32_t Subscription::uniqueSubscriptionId_ = 0;
-	uint32_t Subscription::sequenceNumber_;
 	boost::mutex Subscription::mutex_;
 
 	uint32_t 
@@ -33,20 +32,14 @@ namespace OpcUaStackServer
 		return uniqueSubscriptionId_;
 	}
 
-	uint32_t 
-	Subscription::sequenceNumber(void)
-	{
-		boost::mutex::scoped_lock g(mutex_);
-		sequenceNumber_++;
-		if (sequenceNumber_ == 0) sequenceNumber_;
-		return sequenceNumber_;
-	}
+
 
 	Subscription::Subscription(void)
 	: subscriptionId_(uniqueSubscriptionId())
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
 	, retransmissionQueue_()
 	, monitorManager_()
+	, sequenceNumber_(0)
 	{
 	    monitorManager_.subscriptionId(subscriptionId_);
 	}
@@ -54,6 +47,22 @@ namespace OpcUaStackServer
 	Subscription::~Subscription(void)
 	{
 		retransmissionQueue_.clear();
+	}
+
+	uint32_t 
+	Subscription::sequenceNumber(void)
+	{
+		sequenceNumber_++;
+		if (sequenceNumber_ == 0) {
+			sequenceNumber_ = 1;
+		}
+		return sequenceNumber_;
+	}
+
+	uint32_t
+	Subscription::lastSequenceNumber(void)
+	{
+		return sequenceNumber_;
 	}
 
 	uint32_t 
@@ -100,6 +109,14 @@ namespace OpcUaStackServer
 	{
 		monitorManager_.informationModel(informationModel);
 	}
+
+	OpcUaStatusCode
+	Subscription::receiveAcknowledgement(uint32_t acknowledgmentNumber)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 		
 	uint32_t 
 	Subscription::publishPre(void)
@@ -201,7 +218,7 @@ namespace OpcUaStackServer
 		ServiceTransaction::SPtr serviceTransaction = trx;
 
 		publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-		publishResponse->notificationMessage()->sequenceNumber(sequenceNumber());
+		publishResponse->notificationMessage()->sequenceNumber(lastSequenceNumber());
 		publishResponse->subscriptionId(subscriptionId_);
 		publishResponse->moreNotifications(false);
 
@@ -264,5 +281,4 @@ namespace OpcUaStackServer
 	{
 		return monitorManager_.receive(trx);
 	}
-
 }

@@ -59,6 +59,7 @@ namespace OpcUaStackServer
 		void maxKeepAliveCount(uint32_t maxKeepAliveCount);
 		void ioThread(IOThread* ioThread);
 		void informationModel(InformationModel::SPtr informationModel);
+		OpcUaStatusCode receiveAcknowledgement(uint32_t acknowledgmentNumber);
 
 		void retransmissionQueue(SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement);
 		void retransmissionQueue(PublishResponse::SPtr publishResponse);
@@ -79,10 +80,11 @@ namespace OpcUaStackServer
 		void createKeepalive(ServiceTransactionPublish::SPtr trx);
 
 		static uint32_t uniqueSubscriptionId(void);
-		static uint32_t sequenceNumber(void);
+		uint32_t sequenceNumber(void);
+		uint32_t lastSequenceNumber(void);
 		static boost::mutex mutex_;
 		static uint32_t uniqueSubscriptionId_;
-		static uint32_t sequenceNumber_;
+		uint32_t sequenceNumber_;
 
 		uint32_t subscriptionId_;
 		double publishingInterval_;

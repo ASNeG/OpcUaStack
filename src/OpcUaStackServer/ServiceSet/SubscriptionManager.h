@@ -65,6 +65,7 @@ namespace OpcUaStackServer
 
 	  private:
 		void subscriptionPublishTimeout(Subscription::SPtr subscription);
+		OpcUaStatusCode receiveAcknowledgement(uint32_t subscriptionId, uint32_t acknowledgmentNumber);
 
 		IOThread* ioThread_;
 		InformationModel::SPtr informationModel_;
