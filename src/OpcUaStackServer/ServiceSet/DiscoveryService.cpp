@@ -179,40 +179,6 @@ namespace OpcUaStackServer
 		}
 	}
 
-#if 0
-	bool 
-	DiscoveryService::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		switch(secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>())
-		{
-			case OpcUaId_RegisterServerRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive register server request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_RegisterServerResponse_Encoding_DefaultBinary);
-				return receiveRegisterServerRequest(secureChannelTransaction);
-			}
-			case OpcUaId_GetEndpointsRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive get endpoints request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary);
-				return receiveGetEndpointsRequest(secureChannelTransaction);
-			}
-			case OpcUaId_FindServersRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive get endpoints request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_FindServersResponse_Encoding_DefaultBinary);
-				return receiveFindServersRequest(secureChannelTransaction);
-			}
-			default:
-			{
-				Log(Error, "Discovery service receives unknown message type")
-					.parameter("MessageType", secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaUInt32>());
-				break;
-			}
-		}
-		return false;
-	}
-#endif
 
 	void
 	DiscoveryService::receive(Message::SPtr message)
