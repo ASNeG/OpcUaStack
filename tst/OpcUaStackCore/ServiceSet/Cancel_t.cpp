@@ -55,23 +55,12 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	sequenceHeaderSPtr->opcUaBinaryEncode(ios1);
 
 	// encode message type id
-	typeId.nodeId(OpcUaId_CancelRequest_Encoding_DefaultBinary);
+	typeId.nodeId((OpcUaUInt32)OpcUaId_CancelRequest_Encoding_DefaultBinary);
 	typeId.opcUaBinaryEncode(ios1);
 
 	// encode CancelRequest
-	opcUaGuidSPtr = constructSPtr<OpcUaGuid>();
-	*opcUaGuidSPtr = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
 	cancelRequestSPtr = constructSPtr<CancelRequest>();
-
-	cancelRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex(1);
-	cancelRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId(opcUaGuidSPtr);
-	cancelRequestSPtr->requestHeader()->time(ptime);
-	cancelRequestSPtr->requestHeader()->requestHandle(2);
-	cancelRequestSPtr->requestHeader()->returnDisagnostics(0);
-	cancelRequestSPtr->requestHeader()->timeoutHint(10000);
-
 	cancelRequestSPtr->requestHandle(4711);
-
 	cancelRequestSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -85,11 +74,8 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 4e 00 00 00  d9 7a 25 09 01 00 00 00"
-		<< "8c 00 00 00 5a 00 00 00  01 00 df 01 04 01 00 12"
-		<< "34 56 78 9a bc de f0 12  34 56 78 9a bc de f0 00"
-		<< "00 00 00 00 00 00 00 02  00 00 00 00 00 00 00 ff"
-		<< "ff ff ff 10 27 00 00 00  00 00 67 12 00 00";
+	ss << "4d 53 47 46 20 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "8c 00 00 00 5a 00 00 00  01 00 df 01 67 12 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -119,16 +105,6 @@ BOOST_AUTO_TEST_CASE(Cancel_Request)
 	// decode CancelRequest
 	cancelRequestSPtr = constructSPtr<CancelRequest>();
 	cancelRequestSPtr->opcUaBinaryDecode(ios);
-
-	std::string str;
-	str = *cancelRequestSPtr->requestHeader()->sessionAuthenticationToken().nodeId<OpcUaGuid::SPtr>();
-	BOOST_REQUIRE(cancelRequestSPtr->requestHeader()->sessionAuthenticationToken().namespaceIndex() == 1);
-	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
-	BOOST_REQUIRE(cancelRequestSPtr->requestHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(cancelRequestSPtr->requestHeader()->requestHandle() == 2);
-	BOOST_REQUIRE(cancelRequestSPtr->requestHeader()->returnDisagnostics() == 0);
-	BOOST_REQUIRE(cancelRequestSPtr->requestHeader()->timeoutHint() == 10000);
-	BOOST_REQUIRE(cancelRequestSPtr->requestHandle() == 4711);
 }
 
 
@@ -191,10 +167,10 @@ BOOST_AUTO_TEST_CASE(Cancel_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 38 00 00 00  d9 7a 25 09 01 00 00 00"
-		<< "8c 00 00 00 5a 00 00 00  01 00 e2 01 00 00 00 00"
-		<< "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
-		<< "00 00 00 00 01 00 00 00";
+	ss << "4d 53 47 46 38 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "8c 00 00 00 5a 00 00 00  01 00 e2 01 00 00 00 00"
+	   << "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
+	   << "00 00 00 00 01 00 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader

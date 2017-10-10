@@ -173,10 +173,6 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	// encode CloseSessionResponse
 	closeSessionResponseSPtr = constructSPtr<CloseSessionResponse>();
 
-	closeSessionResponseSPtr->responseHeader()->time(ptime);
-	closeSessionResponseSPtr->responseHeader()->requestHandle(1);
-	closeSessionResponseSPtr->responseHeader()->serviceResult(Success);
-
 	closeSessionResponseSPtr->opcUaBinaryEncode(ios1);
 
 	// encode MessageHeader
@@ -190,10 +186,8 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	OpcUaStackCore::dumpHex(ios);
 
 	std::stringstream ss;
-	ss	<< "4d 53 47 46 34 00 00 00  d9 7a 25 09 01 00 00 00"
-		<< "8c 00 00 00 5a 00 00 00  01 00 dc 01 00 00 00 00"
-		<< "00 00 00 00 01 00 00 00  00 00 00 00 00 00 00 00"
-		<< "00 00 00 00";
+	ss << "4d 53 47 46 1c 00 00 00  d9 7a 25 09 01 00 00 00"
+	   << "8c 00 00 00 5a 00 00 00  01 00 dc 01";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	// decode MessageHeader
@@ -223,10 +217,6 @@ BOOST_AUTO_TEST_CASE(CloseSession_Response)
 	//decode CloseSessionResponse
 	closeSessionResponseSPtr = constructSPtr<CloseSessionResponse>();
 	closeSessionResponseSPtr->opcUaBinaryDecode(ios);
-
-	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->time().dateTime() == ptime);
-	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->requestHandle() == 1);
-	BOOST_REQUIRE(closeSessionResponseSPtr->responseHeader()->serviceResult() == Success);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	opcUaStringSPtr->value("opt.tcp://localhost:4841/0.0.0.0");
 	endpointDescriptionSPtr->applicationDescription()->discoveryUrls()->set(0, opcUaStringSPtr);
 	endpointDescriptionSPtr->serverCertificate((OpcUaByte*)"0123456789", 10);
-	endpointDescriptionSPtr->messageSecurityMode(MessageSecurityMode_None);
+	endpointDescriptionSPtr->messageSecurityMode(SM_None);
 	endpointDescriptionSPtr->securityPolicyUri("http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	endpointDescriptionSPtr->userIdentityTokens()->resize(1);
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(EndpointDescription_)
 	endpointDescriptionSPtr->serverCertificate(&opcUaByte, &opcUaByteLen);
 	BOOST_REQUIRE(opcUaByteLen == 10);
 	BOOST_REQUIRE(strncmp((char*)opcUaByte, "0123456789", 10) == 0);
-	BOOST_REQUIRE(endpointDescriptionSPtr->messageSecurityMode() == MessageSecurityMode_None);
+	BOOST_REQUIRE(endpointDescriptionSPtr->messageSecurityMode() == SM_None);
 	BOOST_REQUIRE(endpointDescriptionSPtr->securityPolicyUri() == "http://opcfoundation.org/UA/SecurityPolicy#None");
 
 	BOOST_REQUIRE(endpointDescriptionSPtr->userIdentityTokens()->size() == 1);

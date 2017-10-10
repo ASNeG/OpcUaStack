@@ -2,7 +2,6 @@
 #include "boost/asio.hpp"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/SecureChannel/SecureChannelTypes.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
