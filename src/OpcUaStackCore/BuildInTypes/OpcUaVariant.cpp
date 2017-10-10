@@ -2592,12 +2592,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaByte:
 			{
-				OpcUaSByte value = get<OpcUaByte>();
-				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"))) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "Byte");
-					return false;
-				}
+				if (isArray()) return xmlEncodeByteArray(pt, xmlns);
+				else return xmlEncodeByteScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt16:
@@ -2817,14 +2813,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaByte:
 			{
-				OpcUaByte value;
-				if (!XmlNumber::xmlDecode(tmpTree, value)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "Byte");
-					return false;
-				}
-				set(value);
+				if (isArray) return xmlDecodeByteArray(tmpTree, xmlns, element);
+				else return xmlDecodeByteScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaUInt16:
@@ -3248,24 +3238,65 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaByte value = get<OpcUaByte>();
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Byte"))) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "Byte");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaByte value = get<OpcUaByte>(idx);
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Byte"))) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "Byte");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfByte"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaByte value;
+		if (!XmlNumber::xmlDecode(pt, value)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "Byte");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "Byte") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Byte");
+				return false;
+			}
+			OpcUaByte value;
+			if (!XmlNumber::xmlDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Byte");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
