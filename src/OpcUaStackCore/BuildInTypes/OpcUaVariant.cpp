@@ -3140,7 +3140,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 		set(value);
-		return false;
+		return true;
 	}
 
 	bool
@@ -3162,8 +3162,8 @@ namespace OpcUaStackCore
 				return false;
 			}
 			pushBack(value);
-			return true;
 		}
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
@@ -3212,6 +3212,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 		set(value);
+		return true;
 	}
 
 	bool
@@ -3233,8 +3234,8 @@ namespace OpcUaStackCore
 				return false;
 			}
 			pushBack(value);
-			return true;
 		}
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
