@@ -3190,14 +3190,14 @@ namespace OpcUaStackCore
 	{
 		boost::property_tree::ptree list;
 		for (uint32_t idx=0; idx<arrayLength_; idx++) {
-			OpcUaSByte value = get<SByte>(idx);
+			OpcUaSByte value = get<OpcUaSByte>(idx);
 			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("SByte"))) {
 				Log(Error, "OpcUaVariant xml encoder error")
 					.parameter("Element", "SByte");
 				return false;
 			}
 		}
-		pt.add_child(xmlns.addxmlns("ListOfSByte), list);
+		pt.add_child(xmlns.addxmlns("ListOfSByte"), list);
 		return true;
 	}
 
@@ -3267,5 +3267,517 @@ namespace OpcUaStackCore
 	{
 		return true;
 	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode uint16
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeUInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeUInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeUInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeUInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode int16
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode uint32
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeUInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeUInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode int32
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode uint64
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeUInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeUInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeUInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeUInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode int64
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode float
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeFloatArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeFloatArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode double
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeDoubleArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeDoubleArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode date time
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode byte string
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode guid
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeGuidScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeGuidArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeGuidScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeGuidArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode nodeid
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode expanded nodeid
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeExpandedNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode qualified name
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeQualifiedNameScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeQualifiedNameArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeQualifiedNameArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode localized text
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeLocalizedTextArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeLocalizedTextArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode extension object
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeExtensionObjectArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeExtensionObjectArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
 
 };
