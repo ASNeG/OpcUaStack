@@ -125,7 +125,7 @@ namespace OpcUaStackServer
 
 		if (maxListSize_ != 0 && acknowledgementList_.size() > maxListSize_) {
 			// remove oldest element
-			acknowledgementList_.pop_back();
+			acknowledgementList_.pop_front();
 		}
 	}
 
