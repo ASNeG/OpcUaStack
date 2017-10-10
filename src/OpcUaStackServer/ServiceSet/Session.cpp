@@ -273,7 +273,9 @@ namespace OpcUaStackServer
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
-			sessionIf_->deleteSession(authenticationToken_);
+
+			// FIXME: BUG - After deleting the session, the monitored item will send a notification. -> CORE
+			//sessionIf_->deleteSession(authenticationToken_);
 		}
 	}
 
