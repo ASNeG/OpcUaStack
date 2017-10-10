@@ -123,7 +123,6 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		std::cout << "create session request..." << std::endl;
 		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
 
@@ -177,7 +176,6 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		std::cout << "activate session request..." << std::endl;
 		Log(Debug, "receive activate session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
 
@@ -256,7 +254,6 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		std::cout << "close session request..." << std::endl;
 		Log(Debug, "receive close session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CloseSessionResponse_Encoding_DefaultBinary;
 
@@ -293,7 +290,6 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		std::cout << "cancel request..." << std::endl;
 		Log(Debug, "receive cancel request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CancelResponse_Encoding_DefaultBinary;
 
@@ -339,7 +335,6 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		std::cout << "message request..." << std::endl;
 		Log(Debug, "receive message request");
 
 		if (sessionState_ != SessionState_Ready) {
@@ -399,8 +394,6 @@ namespace OpcUaStackServer
 	void
 	Session::receive(Message::SPtr message)
 	{
-		std::cout << "handle response message..." << std::endl;
-
 		ServiceTransaction::SPtr serviceTransactionSPtr = boost::static_pointer_cast<ServiceTransaction>(message);
 		Log(Debug, "receive response in session")
 			.parameter("TrxId", serviceTransactionSPtr->transactionId())

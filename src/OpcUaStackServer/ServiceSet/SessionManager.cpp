@@ -132,9 +132,6 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleConnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
-		std::cout << "handleConnect..." << std::endl;
-
 		Log(Info, "open opc ua secure channel")
 			.parameter("OwnAddress", secureChannel->local_.address().to_string())
 			.parameter("PartnerAddress", secureChannel->partner_.address().to_string())
@@ -149,9 +146,6 @@ namespace OpcUaStackServer
 	void
 	SessionManager::handleDisconnect(SecureChannel* secureChannel)
 	{
-		// FIXME: todo
-		std::cout << "handleDisconnect..." << std::endl;
-
 		// delete secure channel handle
 		secureChannel->handleReset();
 		channelSessionHandleMap_.deleteSecureChannel(secureChannel);
@@ -180,9 +174,6 @@ namespace OpcUaStackServer
 		std::iostream ios(&secureChannel->secureChannelTransaction_->is_);
 		RequestHeader::SPtr requestHeader = constructSPtr<RequestHeader>();
 		requestHeader->opcUaBinaryDecode(ios);
-
-		std::cout << requestHeader->sessionAuthenticationToken().toString() << std::endl;
-		std::cout << secureChannel->secureChannelTransaction_->requestTypeNodeId_ << std::endl;
 
 		// process request
 		switch (secureChannel->secureChannelTransaction_->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
@@ -242,8 +233,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "CreateSessionRequest" << std::endl;
-
 		// create new session
 		Session::SPtr session = constructSPtr<Session>();
 		session->sessionIf(this);
@@ -270,7 +259,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "ActivateSessionRequest" << std::endl;
 		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
@@ -333,7 +321,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "CloseSessionRequest" << std::endl;
 		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
@@ -396,7 +383,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "CancelRequest" << std::endl;
 		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
@@ -459,7 +445,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "MessageRequest" << std::endl;
 		SecureChannelTransaction::SPtr secureChannelTransaction = secureChannel->secureChannelTransaction_;
 
 		// get handle from secure channel
@@ -501,8 +486,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "GetEndpointsRequest" << std::endl;
-
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
@@ -523,8 +506,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "findServersRequest" << std::endl;
-
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
@@ -545,8 +526,6 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
-		std::cout << "registerServerRequest" << std::endl;
-
 		// get handle from secure channel
 		secureChannel->secureChannelTransaction_->handle_ = secureChannel->handle();
 
@@ -569,11 +548,6 @@ namespace OpcUaStackServer
 			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl())
 			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
 			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
-
-
-
-		std::cout << "handleEndpointOpen..." << std::endl;
-		// FIXME: todo
 	}
 
 	void
@@ -597,9 +571,6 @@ namespace OpcUaStackServer
 		if (secureChannelList.size() == 0) {
 			secureChannelServerShutdown_.ready();
 		}
-
-		std::cout << "handleEndpointClose..." << std::endl;
-		// FIXME: todo
 	}
 
 	// ------------------------------------------------------------------------
