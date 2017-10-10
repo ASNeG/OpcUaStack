@@ -15,23 +15,23 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackCore_ComparisonFilterNode_h__
-#define __OpcUaStackCore_ComparisonFilterNode_h__
+#ifndef __OpcUaStackCore_LogicalOpFilterNode_h__
+#define __OpcUaStackCore_LogicalOpFilterNode_h__
 
 #include "OpcUaStackCore/Filter/FilterNode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaOperator.h"
 
 namespace OpcUaStackCore
 {
-    class DLLEXPORT ComparisonFilterNode
+    class DLLEXPORT LogicalOpFilterNode
 	: public FilterNode
     {
       public:
 
-        typedef boost::shared_ptr<ComparisonFilterNode> SPtr;
+        typedef boost::shared_ptr<LogicalOpFilterNode> SPtr;
 
-        ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args);
-        virtual ~ComparisonFilterNode(void);
+        LogicalOpFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args);
+        virtual ~LogicalOpFilterNode(void);
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
@@ -47,7 +47,16 @@ namespace OpcUaStackCore
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
 
-        bool compare(OpcUaVariant& lhs, OpcUaVariant& rhs, OpcUaVariant& result);
+        enum LogicalValue {
+        	True = 0,
+			False,
+			Null
+        };
+
+        static LogicalValue andTable[3][3];
+        static LogicalValue orTable[3][3];
+
+        LogicalValue toLogicalValue(FilterNode::SPtr arg);
     };
 
 }

@@ -15,23 +15,22 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackCore_ComparisonFilterNode_h__
-#define __OpcUaStackCore_ComparisonFilterNode_h__
+#ifndef __OpcUaStackCore_CastFilterNode_h__
+#define __OpcUaStackCore_CastFilterNode_h__
 
 #include "OpcUaStackCore/Filter/FilterNode.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaOperator.h"
 
 namespace OpcUaStackCore
 {
-    class DLLEXPORT ComparisonFilterNode
+    class DLLEXPORT CastFilterNode
 	: public FilterNode
     {
       public:
 
-        typedef boost::shared_ptr<ComparisonFilterNode> SPtr;
+        typedef boost::shared_ptr<CastFilterNode> SPtr;
 
-        ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args);
-        virtual ~ComparisonFilterNode(void);
+        CastFilterNode(const std::vector<FilterNode::SPtr>& args);
+        virtual ~CastFilterNode(void);
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
@@ -39,15 +38,12 @@ namespace OpcUaStackCore
         virtual std::vector<OpcUaStatusCode>& operandStatuses() override;
 
       private:
-        OpcUaOperator operator_;
-
         FilterNode::SPtr arg1_;
         FilterNode::SPtr arg2_;
 
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
 
-        bool compare(OpcUaVariant& lhs, OpcUaVariant& rhs, OpcUaVariant& result);
     };
 
 }

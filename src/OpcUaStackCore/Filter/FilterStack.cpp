@@ -17,6 +17,8 @@
 
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaTypeConversion.h"
+
 #include "OpcUaStackCore/ServiceSet/LiteralOperand.h"
 #include "OpcUaStackCore/ServiceSet/ElementOperand.h"
 #include "OpcUaStackCore/ServiceSet/AttributeOperand.h"
@@ -29,6 +31,12 @@
 #include "OpcUaStackCore/Filter/ComparisonFilterNode.h"
 #include "OpcUaStackCore/Filter/IsNullFilterNode.h"
 #include "OpcUaStackCore/Filter/LikeFilterNode.h"
+#include "OpcUaStackCore/Filter/NotFilterNode.h"
+#include "OpcUaStackCore/Filter/BetweenFilterNode.h"
+#include "OpcUaStackCore/Filter/InListFilterNode.h"
+#include "OpcUaStackCore/Filter/LogicalOpFilterNode.h"
+#include "OpcUaStackCore/Filter/CastFilterNode.h"
+#include "OpcUaStackCore/Filter/BitwiseOpFilterNode.h"
 
 namespace OpcUaStackCore
 {
@@ -210,24 +218,59 @@ namespace OpcUaStackCore
 					break;
 				}
 				case BasicFilterOperator_Not:
+				{
+					node = NotFilterNode::SPtr(new NotFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Between:
+				{
+					node = BetweenFilterNode::SPtr(new BetweenFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_InList:
+				{
+					node = InListFilterNode::SPtr(new InListFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_And:
+				{
+					node = LogicalOpFilterNode::SPtr(new LogicalOpFilterNode(OpcUaOperator::And, args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Or:
+				{
+					node = LogicalOpFilterNode::SPtr(new LogicalOpFilterNode(OpcUaOperator::Or, args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_Cast:
+				{
+					node = CastFilterNode::SPtr(new CastFilterNode(args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_BitwiseAnd:
+				{
+					node = BitwiseOpFilterNode::SPtr(new BitwiseOpFilterNode(OpcUaOperator::BitwiseAnd, args));
+					operatorStatus = node->status();
+					break;
+				}
 				case BasicFilterOperator_BitwiseOr:
 				{
-					Log(Error, "filter operator is not supported")
-									.parameter("FilterOperator", (uint32_t)el->filterOperator());
-					operatorStatus = OpcUaStatusCode::BadFilterOperatorUnsupported;
+					node = BitwiseOpFilterNode::SPtr(new BitwiseOpFilterNode(OpcUaOperator::BitwiseOr, args));
+					operatorStatus = node->status();
 					break;
 				}
 				default:
 				{
-					Log(Error, "unknown filter operator found")
-						.parameter("FilterOperator", (uint32_t)el->filterOperator());
-					operatorStatus = OpcUaStatusCode::BadFilterOperatorInvalid;
+					Log(Error, "filter operator is not supported")
+											.parameter("FilterOperator", (uint32_t)el->filterOperator());
+					operatorStatus = OpcUaStatusCode::BadFilterOperatorUnsupported;
+					break;
 				}
 			}
         } else { // hasOperandError == true
@@ -250,10 +293,17 @@ namespace OpcUaStackCore
     		return false;
     	}
 
-    	if (!value.getValue(filterResult)) {
+    	OpcUaVariant boolValue;
+    	OpcUaTypeConversion converter;
+    	if (!converter.conversion(value, OpcUaBuildInType_OpcUaBoolean, boolValue)) {
     		return false;
     	}
+
+		if (!boolValue.getValue(filterResult)) {
+			return false;
+		}
 
     	return true;
     }
 }
+

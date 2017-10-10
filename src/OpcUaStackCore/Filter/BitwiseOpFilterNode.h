@@ -15,23 +15,23 @@
    Autor: Aleksey Timin (timin-ayu@nefteavtomatika.ru)
  */
 
-#ifndef __OpcUaStackCore_ComparisonFilterNode_h__
-#define __OpcUaStackCore_ComparisonFilterNode_h__
+#ifndef __OpcUaStackCore_BitwiseOpFilterNode_h__
+#define __OpcUaStackCore_BitwiseOpFilterNode_h__
 
 #include "OpcUaStackCore/Filter/FilterNode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaOperator.h"
 
 namespace OpcUaStackCore
 {
-    class DLLEXPORT ComparisonFilterNode
+    class DLLEXPORT BitwiseOpFilterNode
 	: public FilterNode
     {
       public:
 
-        typedef boost::shared_ptr<ComparisonFilterNode> SPtr;
+        typedef boost::shared_ptr<BitwiseOpFilterNode> SPtr;
 
-        ComparisonFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args);
-        virtual ~ComparisonFilterNode(void);
+        BitwiseOpFilterNode(OpcUaOperator op, const std::vector<FilterNode::SPtr>& args);
+        virtual ~BitwiseOpFilterNode(void);
 
         virtual bool evaluate(OpcUaVariant& value) override;
 
@@ -47,8 +47,8 @@ namespace OpcUaStackCore
         OpcUaStatusCode status_;
         std::vector<OpcUaStatusCode> operandStatuses_;
 
-        bool compare(OpcUaVariant& lhs, OpcUaVariant& rhs, OpcUaVariant& result);
-    };
+        OpcUaBuildInType findBiggestIntegerType(const OpcUaVariant& value1, const OpcUaVariant& value2);
+};
 
 }
 #endif

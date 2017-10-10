@@ -72,43 +72,28 @@ namespace OpcUaStackCore
 	ComparisonFilterNode::evaluate(OpcUaVariant& value)
     {
     	if (status_ == OpcUaStatusCode::Success) {
-    		OpcUaVariant::SPtr v1 = constructSPtr<OpcUaVariant>();
-            if (!arg1_->evaluate(*v1)) {
+    		OpcUaVariant value1;
+            if (!arg1_->evaluate(value1)) {
             	return false;
             }
 
-            OpcUaVariant::SPtr v2 = constructSPtr<OpcUaVariant>();
-            if (!arg2_->evaluate(*v2)) {
+            OpcUaVariant value2 ;
+            if (!arg2_->evaluate(value2)) {
             	return false;
             }
 
     		OpcUaTypeConversion converter;
     		// Convert variable with greater precedence rank
-    		if (converter.precedenceRank(v1->variantType()) < converter.precedenceRank(v2->variantType())) {
-    			v1.swap(v2);
+    		if (converter.precedenceRank(value1.variantType()) < converter.precedenceRank(value2.variantType())) {
+    			std::swap(value1, value2);
     		}
-    	    char conveType = converter.conversionType(v1->variantType(), v2->variantType());
+    	    char conveType = converter.conversionType(value1.variantType(), value2.variantType());
 
-    	    switch (conveType)
-    	    {
-    	    case '-':
-    	    {
-    	    	return compare(v1, v2, value);
-    	    }
-    	    case 'I':
-    	    {
-    	    	if (converter.conversion(v1, v2->variantType(), v1)) {
-    	    		return compare(v1, v2, value);
-    	    	} else {
-    	    		value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
-    	    	}
-
-
-    	    	break;
-    	    }
-    	    default:
-    	    	value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
-    	    }
+    	    if (converter.conversion(value1, value2.variantType(), value1)) {
+				return compare(value1, value2, value);
+			} else {
+				value.set<OpcUaBoolean>(false); // see the description in table 115 of part 4
+			}
 
 			return true;
 		}
@@ -116,33 +101,33 @@ namespace OpcUaStackCore
 		return false;
     }
 
-    bool ComparisonFilterNode::compare(OpcUaVariant::SPtr lhs, OpcUaVariant::SPtr rhs, OpcUaVariant& result)
+    bool ComparisonFilterNode::compare(OpcUaVariant& lhs, OpcUaVariant& rhs, OpcUaVariant& result)
 	{
     	// FIXME: doesn't compare arrays
     	switch (operator_) {
 		case OpcUaOperator::Equals:
 		{
-			result.set<OpcUaBoolean>(lhs->variant()[0] == rhs->variant()[0]);
+			result.set<OpcUaBoolean>(lhs.variant()[0] == rhs.variant()[0]);
 			return true;
 		}
 		case OpcUaOperator::GreaterThan:
 		{
-			result.set<OpcUaBoolean>(lhs->variant()[0] > rhs->variant()[0]);
+			result.set<OpcUaBoolean>(lhs.variant()[0] > rhs.variant()[0]);
 			return true;
 		}
 		case OpcUaOperator::LessThan:
 		{
-			result.set<OpcUaBoolean>(lhs->variant()[0] < rhs->variant()[0]);
+			result.set<OpcUaBoolean>(lhs.variant()[0] < rhs.variant()[0]);
 			return true;
 		}
 		case OpcUaOperator::GreaterThanOrEqual:
 		{
-			result.set<OpcUaBoolean>(lhs->variant()[0] >= rhs->variant()[0]);
+			result.set<OpcUaBoolean>(lhs.variant()[0] >= rhs.variant()[0]);
 			return true;
 		}
 		case OpcUaOperator::LessThanOrEqual:
 		{
-			result.set<OpcUaBoolean>(lhs->variant()[0] <= rhs->variant()[0]);
+			result.set<OpcUaBoolean>(lhs.variant()[0] <= rhs.variant()[0]);
 			return true;
 		}
     	}

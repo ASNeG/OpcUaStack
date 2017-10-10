@@ -25,6 +25,10 @@ namespace OpcUaStackServer
 
 	MonitorItem::MonitorItem(void)
 	: monitorItemId_(MonitorItemId::monitorItemId())
+	, samplingInterval_(0)
+	, queSize_(0)
+	, discardOldest_(false)
+	, clientHandle_(0)
 	, monitorItemList_()
 	, baseNodeClass_()
 	, attribute_(nullptr)
@@ -197,9 +201,9 @@ namespace OpcUaStackServer
 		
 		if (actQueueSize >= queSize_) {
 		    if (discardOldest_) {
-		        monitorItemList_.pop_back();
-		    } else {
 		        monitorItemList_.pop_front();
+		    } else {
+		        monitorItemList_.pop_back();
 		    }
 		}
 

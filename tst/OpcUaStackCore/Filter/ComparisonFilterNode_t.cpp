@@ -1,5 +1,7 @@
-#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
 #include "unittest.h"
+#include "FilterOperatorHelpers.h"
+
+#include <OpcUaStackCore/Filter/ComparisonFilterNode.h>
 #include "OpcUaStackCore/Filter/LiteralFilterNode.h"
 
 using namespace OpcUaStackCore;
@@ -16,12 +18,7 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_equals_120)
 	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
 
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 120);
 
     ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
@@ -32,15 +29,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_equals_120)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_equals_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 100);
 
     ComparisonFilterNode equalsOperator(OpcUaOperator::Equals, args);
 
@@ -52,15 +42,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_equals_100)
 // GreaterThan
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_greater_than_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 120, 100);
 
     ComparisonFilterNode greaterThanOperator(OpcUaOperator::GreaterThan, args);
 
@@ -71,15 +54,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_greater_than_100)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_120)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 120);
 
     ComparisonFilterNode greaterThanOperator(OpcUaOperator::GreaterThan, args);
 
@@ -90,15 +66,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_120)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 100);
 
     ComparisonFilterNode greaterThanOperator(OpcUaOperator::GreaterThan, args);
 
@@ -110,15 +79,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_100)
 // LessThan
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_120)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 120);
 
     ComparisonFilterNode lessThanOperator(OpcUaOperator::LessThan, args);
 
@@ -129,15 +91,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_120)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_less_than_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 100);
 
     ComparisonFilterNode lessThanOperator(OpcUaOperator::LessThan, args);
 
@@ -149,15 +104,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_less_than_100)
 // GreaterThanOrEqual
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_greater_than_or_equal_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 120, 100);
 
     ComparisonFilterNode greaterThanOrEqualOperator(OpcUaOperator::GreaterThanOrEqual, args);
 
@@ -168,15 +116,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_greater_than_or_equal_100)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_greater_than_or_equal_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 100);
 
     ComparisonFilterNode greaterThanOrEqualOperator(OpcUaOperator::GreaterThanOrEqual, args);
 
@@ -187,15 +128,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_greater_than_or_equal_100)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_or_equal_120)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 120);
 
     ComparisonFilterNode greaterThanOrEqualOperator(OpcUaOperator::GreaterThanOrEqual, args);
 
@@ -207,15 +141,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_not_greater_than_or_equal_120)
 // LessOrEqual
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_or_eaual_120)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 120);
 
     ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
 
@@ -226,15 +153,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_or_eaual_120)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_or_eaual_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 100, 100);
 
     ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
 
@@ -245,15 +165,8 @@ BOOST_AUTO_TEST_CASE(ComparisonFilterNode_100_less_than_or_eaual_100)
 
 BOOST_AUTO_TEST_CASE(ComparisonFilterNode_120_less_than_or_eaual_100)
 {
-	OpcUaVariant value;
 	std::vector<FilterNode::SPtr> args;
-
-	value.set<OpcUaUInt32>(120);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
-	value.set<OpcUaUInt32>(100);
-	args.push_back(constructSPtr<LiteralFilterNode, OpcUaVariant>(value));
-
+	MAKE_TWO_LITERAL_ARGS(args, 120, 100);
 
     ComparisonFilterNode lessThanOrEqualOperator(OpcUaOperator::LessThanOrEqual, args);
 
