@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string/predicate.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
 #include "OpcUaStackCore/BuildInTypes/Json.h"
@@ -2579,11 +2580,25 @@ namespace OpcUaStackCore
 		{
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
-				OpcUaBoolean value = get<OpcUaBoolean>();
-				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "Boolean");
-					return false;
+				if (isArray()) {
+					boost::property_tree::ptree list;
+					for (uint32_t idx=0; idx<arrayLength_; idx++) {
+						OpcUaBoolean value = get<OpcUaBoolean>(idx);
+						if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Boolean"))) {
+							Log(Error, "OpcUaVariant xml encoder error")
+								.parameter("Element", "Boolean");
+							return false;
+						}
+					}
+					pt.add_child(xmlns.addxmlns("ListOfBoolean"), list);
+				}
+				else {
+					OpcUaBoolean value = get<OpcUaBoolean>();
+					if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
+						Log(Error, "OpcUaVariant xml encoder error")
+							.parameter("Element", "Boolean");
+						return false;
+					}
 				}
 				break;
 			}
@@ -2783,6 +2798,9 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		bool isArray = false;
+		boost::property_tree::ptree::iterator it;
+
 		// check if first element exist
 		if (pt.empty()) {
 			Log(Error, "OpcUaVariant xml encode error - variable not exist");
@@ -2790,6 +2808,12 @@ namespace OpcUaStackCore
 		}
 		std::string element = pt.front().first;
 		boost::property_tree::ptree tmpTree = pt.front().second;
+
+		// check array
+		if (boost::starts_with(element, "ListOf")) {
+			isArray = true;
+			element = element.substr(6, element.size());
+		}
 
 		// get data type from element name
 		OpcUaBuildInType dataType = OpcUaBuildInTypeMap::string2BuildInType(element);
@@ -2804,14 +2828,34 @@ namespace OpcUaStackCore
 		{
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
-				OpcUaBoolean value;
-				if (!XmlNumber::xmlDecode(tmpTree, value)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "Boolean");
-					return false;
+				if (isArray) {
+					for (it = tmpTree.begin(); it != tmpTree.end(); it++) {
+						if (it->first != "Boolean") {
+							Log(Error, "OpcUaVariant xml decode error")
+								.parameter("Element", element)
+								.parameter("DataType", "Boolean");
+							return false;
+						}
+						OpcUaBoolean value;
+						if (!XmlNumber::xmlDecode(it->second, value)) {
+							Log(Error, "OpcUaVariant xml decode error")
+								.parameter("Element", element)
+								.parameter("DataType", "Boolean");
+							return false;
+						}
+						pushBack(value);
+					}
 				}
-				set(value);
+				else {
+					OpcUaBoolean value;
+					if (!XmlNumber::xmlDecode(tmpTree, value)) {
+						Log(Error, "OpcUaVariant xml decode error")
+							.parameter("Element", element)
+							.parameter("DataType", "Boolean");
+						return false;
+					}
+					set(value);
+				}
 				break;
 			}
 			case OpcUaBuildInType_OpcUaSByte:
