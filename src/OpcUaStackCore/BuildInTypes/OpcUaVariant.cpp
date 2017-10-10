@@ -2580,36 +2580,14 @@ namespace OpcUaStackCore
 		{
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
-				if (isArray()) {
-					boost::property_tree::ptree list;
-					for (uint32_t idx=0; idx<arrayLength_; idx++) {
-						OpcUaBoolean value = get<OpcUaBoolean>(idx);
-						if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Boolean"))) {
-							Log(Error, "OpcUaVariant xml encoder error")
-								.parameter("Element", "Boolean");
-							return false;
-						}
-					}
-					pt.add_child(xmlns.addxmlns("ListOfBoolean"), list);
-				}
-				else {
-					OpcUaBoolean value = get<OpcUaBoolean>();
-					if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
-						Log(Error, "OpcUaVariant xml encoder error")
-							.parameter("Element", "Boolean");
-						return false;
-					}
-				}
+				if (isArray()) return xmlEncodeBooleanArray(pt, xmlns);
+				else return xmlEncodeBooleanScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaSByte:
 			{
-				OpcUaSByte value = get<OpcUaSByte>();
-				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"))) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "SByte");
-					return false;
-				}
+				if (isArray()) return xmlEncodeSByteArray(pt, xmlns);
+				else return xmlEncodeSByteScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByte:
@@ -2799,7 +2777,6 @@ namespace OpcUaStackCore
 	OpcUaVariant::xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
 		bool isArray = false;
-		boost::property_tree::ptree::iterator it;
 
 		// check if first element exist
 		if (pt.empty()) {
@@ -2828,46 +2805,14 @@ namespace OpcUaStackCore
 		{
 			case OpcUaBuildInType_OpcUaBoolean:
 			{
-				if (isArray) {
-					for (it = tmpTree.begin(); it != tmpTree.end(); it++) {
-						if (it->first != "Boolean") {
-							Log(Error, "OpcUaVariant xml decode error")
-								.parameter("Element", element)
-								.parameter("DataType", "Boolean");
-							return false;
-						}
-						OpcUaBoolean value;
-						if (!XmlNumber::xmlDecode(it->second, value)) {
-							Log(Error, "OpcUaVariant xml decode error")
-								.parameter("Element", element)
-								.parameter("DataType", "Boolean");
-							return false;
-						}
-						pushBack(value);
-					}
-				}
-				else {
-					OpcUaBoolean value;
-					if (!XmlNumber::xmlDecode(tmpTree, value)) {
-						Log(Error, "OpcUaVariant xml decode error")
-							.parameter("Element", element)
-							.parameter("DataType", "Boolean");
-						return false;
-					}
-					set(value);
-				}
+				if (isArray) return xmlDecodeBooleanArray(tmpTree, xmlns, element);
+				else return xmlDecodeBooleanScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaSByte:
 			{
-				OpcUaSByte value;
-				if (!XmlNumber::xmlDecode(tmpTree, value)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "SByte");
-					return false;
-				}
-				set(value);
+				if (isArray) return xmlDecodeSByteArray(tmpTree, xmlns, element);
+				else return xmlDecodeSByteScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByte:
@@ -3146,6 +3091,180 @@ namespace OpcUaStackCore
 			}
 		}
 
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode boolean
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		OpcUaBoolean value = get<OpcUaBoolean>();
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Boolean"))) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "Boolean");
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeBooleanArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaBoolean value = get<OpcUaBoolean>(idx);
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Boolean"))) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "Boolean");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfBoolean"), list);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		OpcUaBoolean value;
+		if (!XmlNumber::xmlDecode(pt, value)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "Boolean");
+			return false;
+		}
+		set(value);
+		return false;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeBooleanArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "Boolean") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Boolean");
+				return false;
+			}
+			OpcUaBoolean value;
+			if (!XmlNumber::xmlDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Boolean");
+				return false;
+			}
+			pushBack(value);
+			return true;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode sbyte
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeSByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		OpcUaSByte value = get<OpcUaSByte>();
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("SByte"))) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "SByte");
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeSByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaSByte value = get<SByte>(idx);
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("SByte"))) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "SByte");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfSByte), list);
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeSByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		OpcUaSByte value;
+		if (!XmlNumber::xmlDecode(pt, value)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "SByte");
+			return false;
+		}
+		set(value);
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeSByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "SByte") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "SByte");
+				return false;
+			}
+			OpcUaSByte value;
+			if (!XmlNumber::xmlDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "SByte");
+				return false;
+			}
+			pushBack(value);
+			return true;
+		}
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// xml encode decode byte
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	OpcUaVariant::xmlEncodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlEncodeByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
+		return true;
+	}
+
+	bool
+	OpcUaVariant::xmlDecodeByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
+	{
 		return true;
 	}
 
