@@ -25,7 +25,7 @@ namespace OpcUaStackServer
 
 	MonitorItem::MonitorItem(void)
 	: monitorItemId_(MonitorItemId::monitorItemId())
-	, samplingInterval_(0)
+	, samplingInterval_(100)
 	, queSize_(0)
 	, discardOldest_(false)
 	, clientHandle_(0)
@@ -34,10 +34,6 @@ namespace OpcUaStackServer
 	, attribute_(nullptr)
 	, dataValue_()
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
-	, discardOldest_(true)
-	, clientHandle_(0)
-	, queSize_(0)
-	, samplingInterval_(1000)
 	{
 	}
 
