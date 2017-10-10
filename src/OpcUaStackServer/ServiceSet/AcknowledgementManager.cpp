@@ -69,7 +69,8 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	AcknowledgementManager::AcknowledgementManager(void)
-	: acknowledgementList_()
+	: maxListSize_(20)
+	, acknowledgementList_()
 	, sequenceNumber_(0)
 	{
 	}
@@ -100,6 +101,18 @@ namespace OpcUaStackServer
 	}
 
 	void
+	AcknowledgementManager::maxListSize(uint32_t maxListSize)
+	{
+		maxListSize_ = maxListSize;
+	}
+
+	uint32_t
+	AcknowledgementManager::maxListSize(void)
+	{
+		return maxListSize_;
+	}
+
+	void
 	AcknowledgementManager::addDataChangeNotification(
 		uint32_t sequenceNumber,
 		DataChangeNotification::SPtr& dataChangeNotification
@@ -109,6 +122,11 @@ namespace OpcUaStackServer
 		acknowledgementElement->sequenceNumber(sequenceNumber);
 		acknowledgementElement->dataChangeNotification(dataChangeNotification);
 		acknowledgementList_.push_back(acknowledgementElement);
+
+		if (maxListSize_ != 0 && acknowledgementList_.size() > maxListSize_) {
+			// remove oldest element
+			acknowledgementList_.pop_back();
+		}
 	}
 
 	void AcknowledgementManager::deleteDataChangeNotification(

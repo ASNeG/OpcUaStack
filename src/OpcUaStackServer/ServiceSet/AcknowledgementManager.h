@@ -60,6 +60,8 @@ namespace OpcUaStackServer
 		uint32_t actSequenceNumber(void);
 
 		uint32_t size(void);
+		void maxListSize(uint32_t maxListSize);
+		uint32_t maxListSize(void);
 		void addDataChangeNotification(
 			uint32_t sequenceNumber,
 			DataChangeNotification::SPtr& dataChangeNotification
@@ -77,6 +79,7 @@ namespace OpcUaStackServer
 		);
 
 	  private:
+		uint32_t maxListSize_;
 		uint32_t sequenceNumber_;
 		AcknowledgementList acknowledgementList_;
 	};
