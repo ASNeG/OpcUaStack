@@ -183,11 +183,9 @@ namespace OpcUaStackServer
 		//        the session has a new sechure channel
 
 
-		Log(Debug, "XXX Decode-Begin");
 		std::iostream ios(&secureChannelTransaction->is_);
 		ActivateSessionRequest activateSessionRequest;
 		activateSessionRequest.opcUaBinaryDecode(ios);
-		Log(Debug, "XXX Decode-End");
 
 		if (sessionState_ != SessionState_CreateSessionResponse) {
 			Log(Error, "receive activate session request in invalid state")
