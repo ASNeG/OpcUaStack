@@ -29,7 +29,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	AcknowledgementElement::AcknowledgementElement(void)
 	: sequenceNumber_(0)
-	, dataChangeNotification_()
+	, notification_()
 	{
 	}
 
@@ -50,15 +50,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	AcknowledgementElement::dataChangeNotification(DataChangeNotification::SPtr& dataChangeNotification)
+	AcknowledgementElement::notification(ExtensibleParameter::SPtr& notification)
 	{
-		dataChangeNotification_ = dataChangeNotification;
+		notification_ = notification;
 	}
 
-	DataChangeNotification::SPtr
-	AcknowledgementElement::dataChangeNotification(void)
+	ExtensibleParameter::SPtr
+	AcknowledgementElement::notification(void)
 	{
-		return dataChangeNotification_;
+		return notification_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -113,14 +113,14 @@ namespace OpcUaStackServer
 	}
 
 	void
-	AcknowledgementManager::addDataChangeNotification(
+	AcknowledgementManager::addNotification(
 		uint32_t sequenceNumber,
-		DataChangeNotification::SPtr& dataChangeNotification
+		ExtensibleParameter::SPtr& notification
 	)
 	{
 		AcknowledgementElement::SPtr acknowledgementElement = constructSPtr<AcknowledgementElement>();
 		acknowledgementElement->sequenceNumber(sequenceNumber);
-		acknowledgementElement->dataChangeNotification(dataChangeNotification);
+		acknowledgementElement->notification(notification);
 		acknowledgementList_.push_back(acknowledgementElement);
 
 		if (maxListSize_ != 0 && acknowledgementList_.size() > maxListSize_) {
@@ -129,7 +129,7 @@ namespace OpcUaStackServer
 		}
 	}
 
-	void AcknowledgementManager::deleteDataChangeNotification(
+	void AcknowledgementManager::deleteNotification(
 		uint32_t sequenceNumber
 	)
 	{
@@ -144,9 +144,9 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	AcknowledgementManager::firstDataChangeNotification(
+	AcknowledgementManager::firstNotification(
 		uint32_t& sequenceNumber,
-		DataChangeNotification::SPtr& dataChangeNotification
+		ExtensibleParameter::SPtr& notification
 	)
 	{
 		if (acknowledgementList_.size() == 0) {
@@ -154,25 +154,39 @@ namespace OpcUaStackServer
 		}
 
 		sequenceNumber_ = acknowledgementList_.front()->sequenceNumber();
-		dataChangeNotification = acknowledgementList_.front()->dataChangeNotification();
+		notification = acknowledgementList_.front()->notification();
 		return true;
 	}
 
 	bool
-	AcknowledgementManager::getDataChangeNotification(
+	AcknowledgementManager::getNotification(
 		uint32_t sequenceNumber,
-		DataChangeNotification::SPtr& dataChangeNotification
+		ExtensibleParameter::SPtr& notification
 	)
 	{
 		AcknowledgementList::iterator it;
 		for (it = acknowledgementList_.begin(); it != acknowledgementList_.end(); it++) {
 			AcknowledgementElement::SPtr& acknowledgementElement = *it;
 			if (acknowledgementElement->sequenceNumber() == sequenceNumber) {
-				dataChangeNotification = acknowledgementElement->dataChangeNotification();
+				notification = acknowledgementElement->notification();
 				return true;
 			}
 		}
 		return false;
+	}
+
+	void
+	AcknowledgementManager::availableSequenceNumbers(
+		OpcUaUInt32Array::SPtr& availableSequenceNumbers
+	)
+	{
+		if (acknowledgementList_.size() == 0) return;
+
+		AcknowledgementList::iterator it;
+		availableSequenceNumbers->resize(acknowledgementList_.size());
+		for (it = acknowledgementList_.begin(); it != acknowledgementList_.end(); it++) {
+			availableSequenceNumbers->push_back((*it)->sequenceNumber());
+		}
 	}
 
 }

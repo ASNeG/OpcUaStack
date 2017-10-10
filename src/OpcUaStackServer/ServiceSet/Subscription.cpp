@@ -39,7 +39,7 @@ namespace OpcUaStackServer
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
 	, retransmissionQueue_()
 	, monitorManager_()
-	, sequenceNumber_(0)
+	, acknowledgementManager_()
 	{
 	    monitorManager_.subscriptionId(subscriptionId_);
 	}
@@ -47,22 +47,6 @@ namespace OpcUaStackServer
 	Subscription::~Subscription(void)
 	{
 		retransmissionQueue_.clear();
-	}
-
-	uint32_t 
-	Subscription::sequenceNumber(void)
-	{
-		sequenceNumber_++;
-		if (sequenceNumber_ == 0) {
-			sequenceNumber_ = 1;
-		}
-		return sequenceNumber_;
-	}
-
-	uint32_t
-	Subscription::lastSequenceNumber(void)
-	{
-		return sequenceNumber_;
 	}
 
 	uint32_t 
@@ -113,7 +97,7 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Subscription::receiveAcknowledgement(uint32_t acknowledgmentNumber)
 	{
-		// FIXME: todo
+		acknowledgementManager_.deleteNotification(acknowledgmentNumber);
 		return Success;
 	}
 
@@ -157,15 +141,16 @@ namespace OpcUaStackServer
 		if (eventNotificationList->events()->size() > 0) {
 			actMaxKeepAliveCount_ = maxKeepAliveCount_;
 
+			uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber();
+			acknowledgementManager_.addNotification(sequencenumber, extensibleParameter);
+
 			PublishResponse::SPtr publishResponse = trx->response();
 			publishResponse->notificationMessage()->notificationData()->set(0, extensibleParameter);
 			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-			publishResponse->notificationMessage()->sequenceNumber(sequenceNumber());
+			publishResponse->notificationMessage()->sequenceNumber(sequencenumber);
 			publishResponse->subscriptionId(subscriptionId_);
 			publishResponse->moreNotifications(false);
-
-			publishResponse->availableSequenceNumbers()->resize(1);
-			publishResponse->availableSequenceNumbers()->set(0, publishResponse->notificationMessage()->sequenceNumber());
+			acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());
 
 			if (statusCode == BadOutOfMemory) return NeedAttention;
 			return SendPublish;
@@ -182,15 +167,16 @@ namespace OpcUaStackServer
 		if (dataChangeNotification->monitoredItems()->size() > 0) {
 			actMaxKeepAliveCount_ = maxKeepAliveCount_;
 
+			uint32_t sequencenumber = acknowledgementManager_.nextSequenceNumber();
+			acknowledgementManager_.addNotification(sequencenumber, extensibleParameter);
+
 			PublishResponse::SPtr publishResponse = trx->response();
 			publishResponse->notificationMessage()->notificationData()->set(0, extensibleParameter);
 			publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-			publishResponse->notificationMessage()->sequenceNumber(sequenceNumber());
+			publishResponse->notificationMessage()->sequenceNumber(sequencenumber);
 			publishResponse->subscriptionId(subscriptionId_);
 			publishResponse->moreNotifications(false);
-
-			publishResponse->availableSequenceNumbers()->resize(1);
-			publishResponse->availableSequenceNumbers()->set(0, publishResponse->notificationMessage()->sequenceNumber());
+			acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());
 
 			if (statusCode == BadOutOfMemory) return NeedAttention;
 			return SendPublish;
@@ -217,13 +203,13 @@ namespace OpcUaStackServer
 		PublishResponse::SPtr publishResponse = trx->response();
 		ServiceTransaction::SPtr serviceTransaction = trx;
 
+		uint32_t sequencenumber = acknowledgementManager_.actSequenceNumber();
+
 		publishResponse->notificationMessage()->publishTime().dateTime(boost::posix_time::microsec_clock::local_time());
-		publishResponse->notificationMessage()->sequenceNumber(lastSequenceNumber());
+		publishResponse->notificationMessage()->sequenceNumber(sequencenumber);
 		publishResponse->subscriptionId(subscriptionId_);
 		publishResponse->moreNotifications(false);
-
-		publishResponse->availableSequenceNumbers()->resize(1);
-		publishResponse->availableSequenceNumbers()->set(0, publishResponse->notificationMessage()->sequenceNumber());
+		acknowledgementManager_.availableSequenceNumbers(publishResponse->availableSequenceNumbers());
 	}
 
 	void 

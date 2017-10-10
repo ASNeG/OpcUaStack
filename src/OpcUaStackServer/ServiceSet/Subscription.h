@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
+#include "OpcUaStackServer/ServiceSet/AcknowledgementManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include <map>
 
@@ -80,12 +81,10 @@ namespace OpcUaStackServer
 		void createKeepalive(ServiceTransactionPublish::SPtr trx);
 
 		static uint32_t uniqueSubscriptionId(void);
-		uint32_t sequenceNumber(void);
-		uint32_t lastSequenceNumber(void);
 		static boost::mutex mutex_;
 		static uint32_t uniqueSubscriptionId_;
-		uint32_t sequenceNumber_;
 
+		AcknowledgementManager acknowledgementManager_;
 		uint32_t subscriptionId_;
 		double publishingInterval_;
 		uint32_t lifetimeCount_;

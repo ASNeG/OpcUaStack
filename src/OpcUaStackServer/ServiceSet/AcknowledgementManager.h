@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include <list>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
+#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,12 +38,12 @@ namespace OpcUaStackServer
 
 		void sequenceNumber(uint32_t sequenceNumber);
 		uint32_t sequenceNumber(void);
-		void dataChangeNotification(DataChangeNotification::SPtr& dataChangeNotification);
-		DataChangeNotification::SPtr dataChangeNotification(void);
+		void notification(ExtensibleParameter::SPtr& notification);
+		ExtensibleParameter::SPtr notification(void);
 
 	  private:
 		uint32_t sequenceNumber_;
-		DataChangeNotification::SPtr dataChangeNotification_;
+		ExtensibleParameter::SPtr notification_;
 
 	};
 
@@ -62,20 +62,23 @@ namespace OpcUaStackServer
 		uint32_t size(void);
 		void maxListSize(uint32_t maxListSize);
 		uint32_t maxListSize(void);
-		void addDataChangeNotification(
+		void addNotification(
 			uint32_t sequenceNumber,
-			DataChangeNotification::SPtr& dataChangeNotification
+			ExtensibleParameter::SPtr& notification
 		);
-		void deleteDataChangeNotification(
+		void deleteNotification(
 			uint32_t sequenceNumber
 		);
-		bool firstDataChangeNotification(
+		bool firstNotification(
 			uint32_t& sequenceNumber,
-			DataChangeNotification::SPtr& dataChangeNotification
+			ExtensibleParameter::SPtr& notification
 		);
-		bool getDataChangeNotification(
+		bool getNotification(
 			uint32_t sequenceNumber,
-			DataChangeNotification::SPtr& dataChangeNotification
+			ExtensibleParameter::SPtr& notification
+		);
+		void availableSequenceNumbers(
+			OpcUaUInt32Array::SPtr& availableSequenceNumbers
 		);
 
 	  private:

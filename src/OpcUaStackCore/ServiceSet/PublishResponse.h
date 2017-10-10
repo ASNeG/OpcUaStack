@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		void subscriptionId(const OpcUaUInt32& subscriptionId);
 		OpcUaUInt32 subscriptionId(void) const;
 		void availableSequenceNumbers(const OpcUaUInt32Array::SPtr availableSequenceNumbers);
-		OpcUaUInt32Array::SPtr availableSequenceNumbers(void) const;
+		OpcUaUInt32Array::SPtr& availableSequenceNumbers(void);
 		void moreNotifications(const OpcUaBoolean& moreNotifications);
 		OpcUaBoolean moreNotifications(void) const;
 		void notificationMessage(const NotificationMessage::SPtr notificationMessage);
