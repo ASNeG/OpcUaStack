@@ -19,21 +19,66 @@
 #define __OpcUaStackServer_AcknowledgementManager_h__
 
 #include <boost/shared_ptr.hpp>
+#include <list>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/ServiceSet/DataChangeNotification.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
+
+	class DLLEXPORT AcknowledgementElement
+	{
+	  public:
+		typedef boost::shared_ptr<AcknowledgementElement> SPtr;
+
+		AcknowledgementElement(void);
+		~AcknowledgementElement(void);
+
+		void sequenceNumber(uint32_t sequenceNumber);
+		uint32_t sequenceNumber(void);
+		void dataChangeNotification(DataChangeNotification::SPtr& dataChangeNotification);
+		DataChangeNotification::SPtr dataChangeNotification(void);
+
+	  private:
+		uint32_t sequenceNumber_;
+		DataChangeNotification::SPtr dataChangeNotification_;
+
+	};
 
 	class DLLEXPORT AcknowledgementManager
 	{
 	  public:
 		typedef boost::shared_ptr<AcknowledgementManager> SPtr;
+		typedef std::list<AcknowledgementElement::SPtr> AcknowledgementList;
 
 		AcknowledgementManager(void);
 		~AcknowledgementManager(void);
 
-	  private:
+		uint32_t nextSequenceNumber(void);
+		uint32_t actSequenceNumber(void);
 
+		uint32_t size(void);
+		void addDataChangeNotification(
+			uint32_t sequenceNumber,
+			DataChangeNotification::SPtr& dataChangeNotification
+		);
+		void deleteDataChangeNotification(
+			uint32_t sequenceNumber
+		);
+		bool firstDataChangeNotification(
+			uint32_t& sequenceNumber,
+			DataChangeNotification::SPtr& dataChangeNotification
+		);
+		bool getDataChangeNotification(
+			uint32_t sequenceNumber,
+			DataChangeNotification::SPtr& dataChangeNotification
+		);
+
+	  private:
+		uint32_t sequenceNumber_;
+		AcknowledgementList acknowledgementList_;
 	};
 
 }
