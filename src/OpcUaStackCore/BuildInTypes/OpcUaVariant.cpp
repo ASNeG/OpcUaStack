@@ -3863,6 +3863,18 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaByteString::SPtr value = getSPtr<OpcUaByteString>(idx);
+			boost::property_tree::ptree element;
+			if (!value->xmlEncode(element, xmlns)) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "ByteString");
+				return false;
+			}
+			list.add_child(xmlns.addxmlns("ByteString"), element);
+		}
+		pt.add_child(xmlns.addxmlns("ListOfByteString"), list);
 		return true;
 	}
 
@@ -3877,12 +3889,29 @@ namespace OpcUaStackCore
 			return false;
 		}
 		variant(value);
-		break;
+		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "ByteString") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "ByteString");
+				return false;
+			}
+			OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+			if (!value->xmlDecode(it->second, xmlns)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "ByteString");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
