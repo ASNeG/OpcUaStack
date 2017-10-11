@@ -1066,6 +1066,30 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_DateTime)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_String)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaString::SPtr string = constructSPtr<OpcUaString>();
+		string->value("Das ist ein ByteString");
+		value1.pushBack(string);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.getSPtr<OpcUaString>(idx)->value() == "Das ist ein ByteString");
+	}
+}
+
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ByteString)
 {
 	boost::property_tree::ptree pt;

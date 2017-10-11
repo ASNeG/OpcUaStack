@@ -362,6 +362,11 @@ namespace OpcUaStackCore
 		bool xmlDecodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
 		bool xmlDecodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
 
+		bool xmlEncodeStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
 		bool xmlEncodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlEncodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
 		bool xmlDecodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
