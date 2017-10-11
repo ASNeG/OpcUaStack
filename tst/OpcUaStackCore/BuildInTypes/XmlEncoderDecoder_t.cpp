@@ -1114,19 +1114,18 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Guid)
 	}
 }
 
-
-#if 0
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_NodeId)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_NodeId)
 {
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
 
-	OpcUaNodeId::SPtr nodeId1 = constructSPtr<OpcUaNodeId>();
-	nodeId1->set(4711,4712);
-	value1.variant(nodeId1);
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+		nodeId->set(4711, 4712);
+		value1.pushBack(nodeId);
+	}
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -1134,9 +1133,13 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_NodeId)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaNodeId::SPtr nodeId2 = value2.variantSPtr<OpcUaNodeId>();
-	BOOST_REQUIRE(*nodeId2 == OpcUaNodeId(4711,4712));
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaNodeId>(idx) == OpcUaNodeId(4711, 4712));
+	}
 }
+
+
+#if 0
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 {

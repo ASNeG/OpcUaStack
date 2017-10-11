@@ -2664,12 +2664,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
-				OpcUaNodeId::SPtr value = variantSPtr<OpcUaNodeId>();
-				if (!value->xmlEncode(pt, "NodeId", xmlns)) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "NodeId");
-					return false;
-				}
+				if (isArray()) return xmlEncodeNodeIdArray(pt, xmlns);
+				else return xmlEncodeNodeIdScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaExpandedNodeId:
@@ -2841,22 +2837,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaNodeId:
 			{
-				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("NodeId"));
-				if (!valueTree) {
-					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
-						.parameter("Element", element)
-						.parameter("DataType", "NodeId");
-					return false;
-				}
-
-				OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
-				if (!value->xmlDecode(*valueTree, xmlns)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "NodeId");
-					return false;
-				}
-				variant(value);
+				if (isArray) return xmlDecodeNodeIdArray(tmpTree, xmlns, element);
+				else return xmlDecodeNodeIdScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaExpandedNodeId:
@@ -3983,24 +3965,67 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaNodeId::SPtr value = variantSPtr<OpcUaNodeId>();
+		if (!value->xmlEncode(pt, "NodeId", xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "NodeId");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaNodeId::SPtr value = getSPtr<OpcUaNodeId>(idx);
+			boost::property_tree::ptree element;
+			if (!value->xmlEncode(element, xmlns)) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "NodeId");
+				return false;
+			}
+			list.add_child(xmlns.addxmlns("NodeId"), element);
+		}
+		pt.add_child(xmlns.addxmlns("ListOfNodeId"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+		if (!value->xmlDecode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "NodeId");
+			return false;
+		}
+		variant(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "NodeId") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "NodeId");
+				return false;
+			}
+			OpcUaNodeId::SPtr value = constructSPtr<OpcUaNodeId>();
+			if (!value->xmlDecode(it->second, xmlns)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "NodeId");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
