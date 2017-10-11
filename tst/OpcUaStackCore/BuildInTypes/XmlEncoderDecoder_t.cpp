@@ -1090,51 +1090,32 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ByteString)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Guid)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
+		*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+		value1.pushBack(guid);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.getSPtr<OpcUaGuid>(idx)->value() == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	}
+}
+
 
 #if 0
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
-{
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaVariant value1, value2;
-
-	OpcUaByteString::SPtr byteString1 = constructSPtr<OpcUaByteString>();
-	byteString1->value("Das ist ein ByteString xxxx");
-	value1.variant(byteString1);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaByteString::SPtr byteString2 = value2.variantSPtr<OpcUaByteString>();
-	BOOST_REQUIRE(byteString2->toString() == "Das ist ein ByteString xxxx");
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Guid)
-{
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaVariant value1, value2;
-
-	OpcUaGuid::SPtr guid1 = constructSPtr<OpcUaGuid>();
-	*guid1 = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
-	value1.variant(guid1);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaGuid::SPtr guid2 = value2.variantSPtr<OpcUaGuid>();
-	std::string str = *guid2;
-	BOOST_REQUIRE(str == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
-}
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_NodeId)
 {
