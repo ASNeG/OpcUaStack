@@ -976,6 +976,28 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Int64)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_UInt64)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaUInt64)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaUInt64>(idx) == idx);
+	}
+}
+
 
 #if 0
 
