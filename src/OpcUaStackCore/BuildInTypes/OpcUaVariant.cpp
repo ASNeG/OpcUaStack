@@ -2688,12 +2688,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaExtensionObject:
 			{
-				OpcUaExtensionObject::SPtr value = variantSPtr<OpcUaExtensionObject>();
-				if (!value->xmlEncode(pt, "ExtensionObject", xmlns)) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "ExtensionObject");
-					return false;
-				}
+				if (isArray()) return xmlEncodeExtensionObjectArray(pt, xmlns);
+				else return xmlEncodeExtensionObjectScalar(pt, xmlns);
 				break;
 			}
 			default:
@@ -2849,22 +2845,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaExtensionObject:
 			{
-				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("ExtensionObject"));
-				if (!valueTree) {
-					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
-						.parameter("Element", element)
-						.parameter("DataType", "ExtensionObject");
-					return false;
-				}
-
-				OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
-				if (!value->xmlDecode(*valueTree, xmlns)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "ExtensionObject");
-					return false;
-				}
-				variant(value);
+				if (isArray) return xmlDecodeExtensionObjectArray(tmpTree, xmlns, element);
+				else return xmlDecodeExtensionObjectScalar(tmpTree, xmlns, element);
 				break;
 			}
 			default:
@@ -4211,24 +4193,67 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaExtensionObject::SPtr value = variantSPtr<OpcUaExtensionObject>();
+		if (!value->xmlEncode(pt, "ExtensionObject", xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "ExtensionObject");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeExtensionObjectArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaExtensionObject::SPtr value = getSPtr<OpcUaExtensionObject>(idx);
+			boost::property_tree::ptree element;
+			if (!value->xmlEncode(element, xmlns)) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "ExtensionObject");
+				return false;
+			}
+			list.add_child(xmlns.addxmlns("ExtensionObject"), element);
+		}
+		pt.add_child(xmlns.addxmlns("ListOfExtensionObject"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+		if (!value->xmlDecode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "ExtensionObject");
+			return false;
+		}
+		variant(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeExtensionObjectArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "ExtensionObject") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "ExtensionObject");
+				return false;
+			}
+			OpcUaExtensionObject::SPtr value = constructSPtr<OpcUaExtensionObject>();
+			if (!value->xmlDecode(it->second, xmlns)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "ExtensionObject");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 

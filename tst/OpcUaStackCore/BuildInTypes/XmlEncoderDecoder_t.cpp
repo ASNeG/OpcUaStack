@@ -1215,33 +1215,26 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_LocalizedText)
 	}
 }
 
-
-#if 0
-
-
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
 {
-	OpcUaExtensionObject eo;
-	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-	eo.registerFactoryElement<Argument>(OpcUaId_Argument_Encoding_DefaultXml);
-
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
-	Argument::SPtr argument1, argument2;
 
-	OpcUaExtensionObject::SPtr extentionObject1 = constructSPtr<OpcUaExtensionObject>();
-	argument1 = extentionObject1->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
-	argument1->name().value("ArgumentName");
-	argument1->dataType().set("NodeName", 23);
-	argument1->arrayDimensions()->resize(3);
-	argument1->arrayDimensions()->set(0, 123);
-	argument1->arrayDimensions()->set(1, 456);
-	argument1->arrayDimensions()->set(2, 789);
-	argument1->description().set("de", "Description");
-	value1.variant(extentionObject1);
+	for (uint32_t idx=0; idx<10; idx++) {
+		Argument::SPtr argument;
+		OpcUaExtensionObject::SPtr extentionObject = constructSPtr<OpcUaExtensionObject>();
+		argument = extentionObject->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+		argument->name().value("ArgumentName");
+		argument->dataType().set("NodeName", 23);
+		argument->arrayDimensions()->resize(3);
+		argument->arrayDimensions()->set(0, 123);
+		argument->arrayDimensions()->set(1, 456);
+		argument->arrayDimensions()->set(2, 789);
+		argument->description().set("de", "Description");
+		value1.pushBack(extentionObject);
+	}
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -1249,14 +1242,15 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaExtensionObject::SPtr extentionObject2 = value2.variantSPtr<OpcUaExtensionObject>();
-	BOOST_REQUIRE(extentionObject2->typeId().nodeId<OpcUaUInt32>() == OpcUaId_Argument_Encoding_DefaultBinary);
-	argument2 = extentionObject2->parameter<Argument>();
-	BOOST_REQUIRE(argument2->name().toStdString() == "ArgumentName");
-	BOOST_REQUIRE(argument2->dataType() == OpcUaNodeId("NodeName", 23));
-	BOOST_REQUIRE(argument2->description() == OpcUaLocalizedText("de", "Description"));
+	for (uint32_t idx=0; idx<10; idx++) {
+		Argument::SPtr argument;
+		OpcUaExtensionObject::SPtr extentionObject2 = value2.getSPtr<OpcUaExtensionObject>(idx);
+		BOOST_REQUIRE(extentionObject2->typeId().nodeId<OpcUaUInt32>() == OpcUaId_Argument_Encoding_DefaultBinary);
+		argument = extentionObject2->parameter<Argument>();
+		BOOST_REQUIRE(argument->name().toStdString() == "ArgumentName");
+		BOOST_REQUIRE(argument->dataType() == OpcUaNodeId("NodeName", 23));
+		BOOST_REQUIRE(argument->description() == OpcUaLocalizedText("de", "Description"));
+	}
 }
-
-#endif
 
 BOOST_AUTO_TEST_SUITE_END()
