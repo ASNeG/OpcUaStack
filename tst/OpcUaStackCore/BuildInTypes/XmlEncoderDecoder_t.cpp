@@ -1167,20 +1167,18 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExpandedNodeId)
 	}
 }
 
-
-#if 0
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExpandedNodeId)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_QualifiedName)
 {
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
 
-	OpcUaExpandedNodeId::SPtr expandedNodeId1 = constructSPtr<OpcUaExpandedNodeId>();
-	expandedNodeId1->set(4711, 4712);
-	expandedNodeId1->serverIndex(4713);
-	value1.variant(expandedNodeId1);
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaQualifiedName::SPtr qualifiedName = constructSPtr<OpcUaQualifiedName>();
+		qualifiedName->set("String", 4711);
+		value1.pushBack(qualifiedName);
+	}
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -1188,10 +1186,13 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExpandedNodeId)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaExpandedNodeId::SPtr expandedNodeId2 = value2.variantSPtr<OpcUaExpandedNodeId>();
-	BOOST_REQUIRE(expandedNodeId2->namespaceIndex() == 4712);
-	BOOST_REQUIRE(expandedNodeId2->serverIndex() == 4713);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaQualifiedName>(idx) == OpcUaQualifiedName("String", 4711));
+	}
 }
+
+
+#if 0
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_QualifiedName)
 {
