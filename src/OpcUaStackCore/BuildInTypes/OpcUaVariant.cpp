@@ -2640,32 +2640,20 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaDouble:
 			{
-				OpcUaDouble value = get<OpcUaDouble>();
-				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"))) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "Double");
-					return false;
-				}
+				if (isArray()) return xmlEncodeDoubleArray(pt, xmlns);
+				else return xmlEncodeDoubleScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
-				OpcUaDateTime value = get<OpcUaDateTime>();
-				if (!value.xmlEncode(pt, "DateTime", xmlns)) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "DateTime");
-					return false;
-				}
+				if (isArray()) return xmlEncodeDateTimeArray(pt, xmlns);
+				else return xmlEncodeDateTimeScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByteString:
 			{
-				OpcUaByteString::SPtr value = variantSPtr<OpcUaByteString>();
-				if (!value->xmlEncode(pt, "ByteString", xmlns)) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "ByteString");
-					return false;
-				}
+				if (isArray()) return xmlEncodeByteStringArray(pt, xmlns);
+				else return xmlEncodeByteStringScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaGuid:
@@ -2833,54 +2821,20 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaDouble:
 			{
-				OpcUaDouble value;
-				if (!XmlNumber::xmlDecode(tmpTree, value)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "Double");
-					return false;
-				}
-				set(value);
+				if (isArray) return xmlDecodeDoubleArray(tmpTree, xmlns, element);
+				else return xmlDecodeDoubleScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaDateTime:
 			{
-				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("DateTime"));
-				if (!valueTree) {
-					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
-						.parameter("Element", element)
-						.parameter("DataType", "DateTime");
-					return false;
-				}
-
-				OpcUaDateTime value;
-				if (!value.xmlDecode(*valueTree, xmlns)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "DateTime");
-					return false;
-				}
-				set(value);
+				if (isArray) return xmlDecodeDateTimeArray(tmpTree, xmlns, element);
+				else return xmlDecodeDateTimeScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaByteString:
 			{
-				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("ByteString"));
-				if (!valueTree) {
-					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
-						.parameter("Element", element)
-						.parameter("DataType", "ByteString");
-					return false;
-				}
-
-				OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
-				if (!value->xmlDecode(*valueTree, xmlns)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "ByteString");
-					return false;
-				}
-				variant(value);
+				if (isArray) return xmlDecodeByteStringArray(tmpTree, xmlns, element);
+				else return xmlDecodeByteStringScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaGuid:
@@ -3751,24 +3705,65 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaDouble value = get<OpcUaDouble>();
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Double"))) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "Double");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeDoubleArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaDouble value = get<OpcUaDouble>(idx);
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Double"))) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "Double");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfDouble"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaDouble value;
+		if (!XmlNumber::xmlDecode(pt, value)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "Double");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeDoubleArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "Double") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Double");
+				return false;
+			}
+			OpcUaDouble value;
+			if (!XmlNumber::xmlDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Double");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
@@ -3783,24 +3778,65 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaDateTime value = get<OpcUaDateTime>();
+		if (!value.xmlEncode(pt, "DateTime", xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "DateTime");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaDateTime value = get<OpcUaDateTime>(idx);
+			if (!value.xmlEncode(list, "DateTime", xmlns)) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "DateTime");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfDateTime"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaDateTime value;
+		if (!value.xmlDecode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "DateTime");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "DateTime") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "DateTime");
+				return false;
+			}
+			OpcUaDateTime value;
+			if (!value.xmlDecode(it->second, xmlns)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "DateTime");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
@@ -3815,6 +3851,12 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaByteString::SPtr value = variantSPtr<OpcUaByteString>();
+		if (!value->xmlEncode(pt, "ByteString", xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "ByteString");
+			return false;
+		}
 		return true;
 	}
 
@@ -3827,7 +3869,15 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlDecodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
-		return true;
+		OpcUaByteString::SPtr value = constructSPtr<OpcUaByteString>();
+		if (!value->xmlDecode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "ByteString");
+			return false;
+		}
+		variant(value);
+		break;
 	}
 
 	bool

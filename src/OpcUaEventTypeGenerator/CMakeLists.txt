@@ -25,10 +25,10 @@ add_executable(
 target_link_libraries(
     OpcUaEventTypeGenerator${VERSION_MAJOR}
     OpcUaStackCore
+    OpcUaStackClient
     OpcUaStackServer
     ${CMAKE_DL_LIBS}
     ${Boost_LIBRARIES}
-    OpcUaStackCore
 )
 
 

@@ -1020,18 +1020,16 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Float)
 	}
 }
 
-
-#if 0
-
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Float)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Double)
 {
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
 
-	value1.set((OpcUaFloat)1.2);
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaDouble)idx);
+	}
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -1039,30 +1037,12 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Float)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaFloat v = value2.get<OpcUaFloat>();
-	BOOST_REQUIRE(v > 1.1 && v < 1.3);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaDouble>(idx) == idx);
+	}
 }
 
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Double)
-{
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaVariant value1, value2;
-
-	value1.set((OpcUaDouble)1.2);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaDouble v = value2.get<OpcUaDouble>();
-	BOOST_REQUIRE(v > 1.1 && v < 1.3);
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_DateTime)
 {
 	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 
@@ -1071,7 +1051,9 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
 
-	value1.set(OpcUaDateTime(now));
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack(OpcUaDateTime(now));
+	}
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -1079,8 +1061,13 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_DateTime)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.get<OpcUaDateTime>().dateTime() == now);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaDateTime>(idx) == now);
+	}
 }
+
+
+#if 0
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ByteString)
 {
