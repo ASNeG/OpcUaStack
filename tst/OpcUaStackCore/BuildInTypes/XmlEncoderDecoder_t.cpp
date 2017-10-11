@@ -1191,50 +1191,34 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_QualifiedName)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_LocalizedText)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaLocalizedText::SPtr localizedText = constructSPtr<OpcUaLocalizedText>();
+		localizedText->set("de", "TextString");
+		value1.pushBack(localizedText);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaLocalizedText>(idx) == OpcUaLocalizedText("de", "TextString"));
+	}
+}
+
 
 #if 0
 
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_QualifiedName)
-{
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaVariant value1, value2;
 
-	OpcUaQualifiedName::SPtr qualifiedName1 = constructSPtr<OpcUaQualifiedName>();
-	qualifiedName1->set("Name", 4712);
-	value1.variant(qualifiedName1);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaQualifiedName::SPtr qualifiedName2 = value2.variantSPtr<OpcUaQualifiedName>();
-	BOOST_REQUIRE(*qualifiedName2 == OpcUaQualifiedName("Name", 4712));
-}
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_LocalizedText)
-{
-	boost::property_tree::ptree pt;
-	Xmlns xmlns;
-	ConfigXml xml;
-	OpcUaVariant value1, value2;
-
-	OpcUaLocalizedText::SPtr localizedText1 = constructSPtr<OpcUaLocalizedText>();
-	localizedText1->set("de", "Name");
-	value1.variant(localizedText1);
-	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
-
-	xml.ptree(pt);
-	xml.write(std::cout);
-	std::cout << std::endl;
-
-	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	OpcUaLocalizedText::SPtr localizedText2 = value2.variantSPtr<OpcUaLocalizedText>();
-	BOOST_REQUIRE(*localizedText2 == OpcUaLocalizedText("de", "Name"));
-}
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_ExtensionObject)
 {

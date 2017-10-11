@@ -2682,12 +2682,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				OpcUaLocalizedText::SPtr value = variantSPtr<OpcUaLocalizedText>();
-				if (!value->xmlEncode(pt, "LocalizedText", xmlns)) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "LocalizedText");
-					return false;
-				}
+				if (isArray()) return xmlEncodeLocalizedTextArray(pt, xmlns);
+				else return xmlEncodeLocalizedTextScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaExtensionObject:
@@ -2847,22 +2843,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaLocalizedText:
 			{
-				boost::optional<boost::property_tree::ptree&> valueTree = pt.get_child_optional(xmlns.addxmlns("LocalizedText"));
-				if (!valueTree) {
-					Log(Error, "OpcUaVariant xml decoder error - element not exist in xml document")
-						.parameter("Element", element)
-						.parameter("DataType", "LocalizedText");
-					return false;
-				}
-
-				OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
-				if (!value->xmlDecode(*valueTree, xmlns)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "LocalizedText");
-					return false;
-				}
-				variant(value);
+				if (isArray) return xmlDecodeLocalizedTextArray(tmpTree, xmlns, element);
+				else return xmlDecodeLocalizedTextScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaExtensionObject:
@@ -4154,24 +4136,67 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaLocalizedText::SPtr value = variantSPtr<OpcUaLocalizedText>();
+		if (!value->xmlEncode(pt, "LocalizedText", xmlns)) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "LocalizedText");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeLocalizedTextArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaLocalizedText::SPtr value = getSPtr<OpcUaLocalizedText>(idx);
+			boost::property_tree::ptree element;
+			if (!value->xmlEncode(element, xmlns)) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "LocalizedText");
+				return false;
+			}
+			list.add_child(xmlns.addxmlns("LocalizedText"), element);
+		}
+		pt.add_child(xmlns.addxmlns("ListOfLocalizedText"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+		if (!value->xmlDecode(pt, xmlns)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "LocalizedText");
+			return false;
+		}
+		variant(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeLocalizedTextArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "LocalizedText") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "LocalizedText");
+				return false;
+			}
+			OpcUaLocalizedText::SPtr value = constructSPtr<OpcUaLocalizedText>();
+			if (!value->xmlDecode(it->second, xmlns)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "LocalizedText");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
