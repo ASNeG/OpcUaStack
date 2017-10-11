@@ -2616,12 +2616,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
-				OpcUaUInt32 value = get<OpcUaUInt32>();
-				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"))) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "UInt32");
-					return false;
-				}
+				if (isArray()) return xmlEncodeUInt32Array(pt, xmlns);
+				else return xmlEncodeUInt32Scalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt64:
@@ -2825,14 +2821,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaUInt32:
 			{
-				OpcUaUInt32 value;
-				if (!XmlNumber::xmlDecode(tmpTree, value)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "UInt32");
-					return false;
-				}
-				set(value);
+				if (isArray) return xmlDecodeUInt32Array(tmpTree, xmlns, element);
+				else return xmlDecodeUInt32Scalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaInt64:
@@ -3499,24 +3489,65 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaInt32 value = get<OpcUaUInt32>();
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("UInt32"))) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "UInt32");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeUInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaInt32 value = get<OpcUaUInt32>(idx);
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("UInt32"))) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "UInt32");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfUInt32"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaUInt32 value;
+		if (!XmlNumber::xmlDecode(pt, value)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "UInt32");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeUInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "UInt32") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "UInt32");
+				return false;
+			}
+			OpcUaUInt32 value;
+			if (!XmlNumber::xmlDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "UInt32");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 

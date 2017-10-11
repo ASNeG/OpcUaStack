@@ -932,17 +932,16 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Int32)
 	}
 }
 
-
-#if 0
-
-BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Int32)
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_UInt32)
 {
 	boost::property_tree::ptree pt;
 	Xmlns xmlns;
 	ConfigXml xml;
 	OpcUaVariant value1, value2;
 
-	value1.set((OpcUaInt32)-1234);
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaUInt32)idx);
+	}
 	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
 
 	xml.ptree(pt);
@@ -950,8 +949,14 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Int32)
 	std::cout << std::endl;
 
 	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
-	BOOST_REQUIRE(value2.get<OpcUaInt32>() == -1234);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaUInt32>(idx) == idx);
+	}
 }
+
+
+#if 0
+
 
 BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_UInt32)
 {
