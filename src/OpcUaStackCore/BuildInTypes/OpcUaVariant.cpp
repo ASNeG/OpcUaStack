@@ -2634,12 +2634,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaFloat:
 			{
-				OpcUaFloat value = get<OpcUaFloat>();
-				if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"))) {
-					Log(Error, "OpcUaVariant xml encoder error")
-						.parameter("Element", "Float");
-					return false;
-				}
+				if (isArray()) return xmlEncodeFloatArray(pt, xmlns);
+				else return xmlEncodeFloatScalar(pt, xmlns);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaDouble:
@@ -2831,14 +2827,8 @@ namespace OpcUaStackCore
 			}
 			case OpcUaBuildInType_OpcUaFloat:
 			{
-				OpcUaFloat value;
-				if (!XmlNumber::xmlDecode(tmpTree, value)) {
-					Log(Error, "OpcUaVariant xml decode error")
-						.parameter("Element", element)
-						.parameter("DataType", "Float");
-					return false;
-				}
-				set(value);
+				if (isArray) return xmlDecodeFloatArray(tmpTree, xmlns, element);
+				else return xmlDecodeFloatScalar(tmpTree, xmlns, element);
 				break;
 			}
 			case OpcUaBuildInType_OpcUaDouble:
@@ -3688,24 +3678,65 @@ namespace OpcUaStackCore
 	bool
 	OpcUaVariant::xmlEncodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		OpcUaFloat value = get<OpcUaFloat>();
+		if (!XmlNumber::xmlEncode(pt, value, xmlns.addxmlns("Float"))) {
+			Log(Error, "OpcUaVariant xml encoder error")
+				.parameter("Element", "Float");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlEncodeFloatArray(boost::property_tree::ptree& pt, Xmlns& xmlns)
 	{
+		boost::property_tree::ptree list;
+		for (uint32_t idx=0; idx<arrayLength_; idx++) {
+			OpcUaFloat value = get<OpcUaFloat>(idx);
+			if (!XmlNumber::xmlEncode(list, value, xmlns.addxmlns("Float"))) {
+				Log(Error, "OpcUaVariant xml encoder error")
+					.parameter("Element", "Float");
+				return false;
+			}
+		}
+		pt.add_child(xmlns.addxmlns("ListOfFloat"), list);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		OpcUaFloat value;
+		if (!XmlNumber::xmlDecode(pt, value)) {
+			Log(Error, "OpcUaVariant xml decode error")
+				.parameter("Element", element)
+				.parameter("DataType", "Float");
+			return false;
+		}
+		set(value);
 		return true;
 	}
 
 	bool
 	OpcUaVariant::xmlDecodeFloatArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element)
 	{
+		boost::property_tree::ptree::iterator it;
+		for (it = pt.begin(); it != pt.end(); it++) {
+			if (it->first != "Float") {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Float");
+				return false;
+			}
+			OpcUaFloat value;
+			if (!XmlNumber::xmlDecode(it->second, value)) {
+				Log(Error, "OpcUaVariant xml decode error")
+					.parameter("Element", element)
+					.parameter("DataType", "Float");
+				return false;
+			}
+			pushBack(value);
+		}
 		return true;
 	}
 
