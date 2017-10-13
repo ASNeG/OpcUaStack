@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -242,6 +242,40 @@ namespace OpcUaStackServer
 			return 999;
 		}
 		return inputNamespaceIndexVec_[localNamespaceIndex];
+	}
+
+	void
+	NodeSetNamespace::logGlobalNamespaceIndex(void)
+	{
+		std::stringstream namespaceList;
+
+		NamespaceVec::iterator it;
+		for (it = globalNamespaceVec_.begin(); it != globalNamespaceVec_.end(); it++) {
+			if (it != globalNamespaceVec_.begin()) {
+				namespaceList << ", ";
+			}
+			namespaceList << *it;
+		}
+
+		Log(Debug, "Global Namespaces")
+		    .parameter("Namespaces", namespaceList.str());
+	}
+
+	void
+	NodeSetNamespace::logLocalNamespaceIndex(void)
+	{
+		std::stringstream namespaceList;
+
+		NamespaceVec::iterator it;
+		for (it = localNamespaceVec_.begin(); it != localNamespaceVec_.end(); it++) {
+			if (it != localNamespaceVec_.begin()) {
+				namespaceList << ", ";
+			}
+			namespaceList << *it;
+		}
+
+		Log(Debug, "Local Namespaces")
+		    .parameter("Namespaces", namespaceList.str());
 	}
 
 	NamespaceVec& 
