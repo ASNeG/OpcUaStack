@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 using namespace OpcUaStackCore;
 
@@ -45,15 +45,20 @@ namespace OpcUaStackServer
 	void
 	NodeSetNamespace::clearGlobal(void)
 	{
+		Log(Debug, "clear global namespaces");
+
 		startup_ = false;
 		globalNamespaceVec_.clear();
 		globalNamespaceMap_.clear();
 		clear();
+		startup();
 	}
 
 	void
 	NodeSetNamespace::clear(void)
 	{
+		Log(Debug, "clear namespaces");
+
 		inputNamespaceIndexVec_.clear();
 		outputNamespaceIndexMap_.clear();
 		localNamespaceVec_.clear();
@@ -64,8 +69,11 @@ namespace OpcUaStackServer
 	void
 	NodeSetNamespace::startup(void)
 	{
-		if (startup_) return;
-		startup_ = true;
+		if (startup_) {
+			return;
+		}
+
+		Log(Debug, "init namespaces");
 
 		// clear namespace vector an namespace map
 		globalNamespaceVec_.clear();
@@ -74,6 +82,9 @@ namespace OpcUaStackServer
 		// add opc ua standard namespace
 		globalNamespaceVec_.push_back("http://opcfoundation.org/UA/");
 		globalNamespaceMap_.insert(std::make_pair("http://opcfoundation.org/UA/", 0));
+
+		// init only once
+		startup_ = true;
 	}
 
 	uint16_t 
