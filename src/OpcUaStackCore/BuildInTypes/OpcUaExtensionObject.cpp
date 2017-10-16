@@ -381,7 +381,7 @@ namespace OpcUaStackCore
 		typeId_ = epSPtr_->binaryTypeId();
 
 		// decode extension object from xml file
-		epSPtr_->decode(*body, xmlns);
+		return epSPtr_->decode(*body, xmlns);
 	}
 
 	bool
