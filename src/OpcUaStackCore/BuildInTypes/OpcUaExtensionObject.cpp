@@ -330,6 +330,7 @@ namespace OpcUaStackCore
 	{
 		// get typeId
 		boost::optional<boost::property_tree::ptree&> typeId = pt.get_child_optional(xmlns.addxmlns("TypeId"));
+		if (!typeId) typeId = pt.get_child_optional("TypeId");
 		if (!typeId) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("TypeId"));
@@ -338,6 +339,7 @@ namespace OpcUaStackCore
 
 		// get identifier
 		boost::optional<std::string> identifier = typeId->get_optional<std::string>(xmlns.addxmlns("Identifier"));
+		if (!identifier) identifier = typeId->get_optional<std::string>("Identifier");
 		if (!identifier) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Identifier"));
@@ -357,6 +359,7 @@ namespace OpcUaStackCore
 
 		// get body
 		boost::optional<boost::property_tree::ptree&> body = pt.get_child_optional(xmlns.addxmlns("Body"));
+		if (!body) body = pt.get_child_optional("Body");
 		if (!body) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Body"))
