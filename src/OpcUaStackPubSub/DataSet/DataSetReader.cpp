@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/Network/DataSetReader.h"
+#include "OpcUaStackPubSub/DataSet/DataSetReader.h"
 
 namespace OpcUaStackPubSub
 {
