@@ -15,6 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+/*
+   Parameters:
+   PublisherId
+   EncodingMimeType
+   PublishingInterval
+   KeepAliveTime
+   KeyFrameCount
+   Security Settings
+   NetworkMessageContentMask
+ */
+
 #ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
 #define __OpcUaStackPubSub_NetworkMessageProcessor_h__
 

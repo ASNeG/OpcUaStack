@@ -15,6 +15,14 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+/*
+   Parameters:
+   PublisherId
+   DataSetWriterId
+   DataSetClassId
+   Promoted fields
+ */
+
 #ifndef __OpcUaStackPubSub_NetworkMessageCreator_h__
 #define __OpcUaStackPubSub_NetworkMessageCreator_h__
 
