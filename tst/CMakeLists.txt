@@ -41,6 +41,13 @@ option(
     ON
 )
 
+option(
+    USE_OpcUaStackPubSub
+    "build opc ua pub sub library"
+    ON
+)
+
+
 #add_definitions(-DBOOST_ALL_DYN_LINK)
 
 #if (WIN32)
@@ -76,11 +83,6 @@ include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERS
 # -----------------------------------------------------------------------------
 include(${OPCUASTACK_INSTALL_PREFIX}/usr/share/cmake/OpcUaStack${OPCUASTACK_VERSION_MAJOR}/CMakeOpcUaStack.txt)
 
-#find_package(Boost COMPONENTS system unit_test_framework filesystem thread date_time chrono regex REQUIRED)
-#find_library(OpcUaStackCore_LIBRARY NAMES OpcUaStackCore PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-#find_library(OpcUaStackClient_LIBRARY NAMES OpcUaStackClient PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-#find_library(OpcUaStackServer_LIBRARY NAMES OpcUaStackServer PATHS ${OpcUaStack_INSTALL_DIR}/usr/lib/OpcUaStack)
-
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
@@ -98,4 +100,8 @@ endif ()
 
 if (USE_OpcUaStackServer)
     include(OpcUaStackServer/CMakeLists.txt) 
+endif ()
+
+if (USE_OpcUaStackPubSub)
+    include(OpcUaStackPubSub/CMakeLists.txt) 
 endif ()
