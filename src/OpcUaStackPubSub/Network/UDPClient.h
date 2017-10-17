@@ -86,7 +86,7 @@ namespace OpcUaStackPubSub
 		  }
 
 		template<typename BUFFER, typename HANDLER>
-		  void async_receive(BUFFER& buffer, HANDLER handler)
+		  void asyncReceive(BUFFER& buffer, HANDLER handler)
 		  {
 			  socket_->async_receive(
 				  buffer,

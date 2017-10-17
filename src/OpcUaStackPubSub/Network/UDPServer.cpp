@@ -29,17 +29,51 @@ namespace OpcUaStackPubSub
 	// ------------------------------------------------------------------------
 	UDPServer::UDPServer(void)
 	: ioThread_()
+	, endpoint_()
+	, socket_(nullptr)
 	{
 	}
 
 	UDPServer::~UDPServer(void)
 	{
+		if (socket_!= nullptr) {
+			socket_->close();
+			delete socket_;
+			socket_ = nullptr;
+		}
 	}
 
 	void
 	UDPServer::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
+	}
+
+	void
+	UDPServer::endpoint(boost::asio::ip::udp::endpoint endpoint)
+	{
+		endpoint_ = endpoint;
+	}
+
+	bool
+	UDPServer::open(void)
+	{
+		socket_ = new boost::asio::ip::udp::socket(
+		   ioThread_->ioService()->io_service(),
+		   endpoint_
+		);
+		return true;
+	}
+
+	bool
+	UDPServer::close(void)
+	{
+		if (socket_ != nullptr) {
+			socket_->close();
+			delete socket_;
+			socket_ = nullptr;
+		}
+		return true;
 	}
 
 }

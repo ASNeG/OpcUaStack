@@ -51,7 +51,9 @@ namespace OpcUaStackPubSub
 	bool
 	UDPClient::open(void)
 	{
-		socket_ = new boost::asio::ip::udp::socket(ioThread_->ioService()->io_service());
+		socket_ = new boost::asio::ip::udp::socket(
+		   ioThread_->ioService()->io_service()
+		);
 		socket_->open(boost::asio::ip::udp::v4());
 		return true;
 	}
