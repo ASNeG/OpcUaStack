@@ -18,10 +18,13 @@
 /*
    Parameters:
    PublisherId
-   DataSetWriterId
-   DataSetClassId
-   Promoted fields
- */
+   EncodingMimeType
+   PublishingInterval
+   KeepAliveTime
+   KeyFrameCount
+   Security Settings
+   NetworkMessageContentMask
+*/
 
 #ifndef __OpcUaStackPubSub_NetworkMessageCreator_h__
 #define __OpcUaStackPubSub_NetworkMessageCreator_h__

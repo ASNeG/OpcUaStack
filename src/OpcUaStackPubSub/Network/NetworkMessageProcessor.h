@@ -16,15 +16,13 @@
  */
 
 /*
-   Parameters:
+   Filter:
    PublisherId
-   EncodingMimeType
-   PublishingInterval
-   KeepAliveTime
-   KeyFrameCount
-   Security Settings
-   NetworkMessageContentMask
- */
+   DataSetWriterId
+   DataSetClassId
+   Promoted fields
+*/
+
 
 #ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
 #define __OpcUaStackPubSub_NetworkMessageProcessor_h__
