@@ -23,6 +23,22 @@
 namespace OpcUaStackPubSub
 {
 
+	class DLLEXPORT NetworkMessageHeader
+	{
+	  public:
+		NetworkMessageHeader(void);
+		~NetworkMessageHeader(void);
+	};
+
+
+	class DLLEXPORT ExtendedNetworkMessageHeader
+	{
+	  public:
+		ExtendedNetworkMessageHeader(void);
+		~ExtendedNetworkMessageHeader(void);
+	};
+
+
 	class DLLEXPORT NetworkMessage
 	{
 	  public:
