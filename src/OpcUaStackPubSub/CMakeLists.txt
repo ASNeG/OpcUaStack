@@ -67,7 +67,7 @@ file(GLOB INC_OpcUaStackPubSub_Base OpcUaStackPubSub/Base/*.h OpcUaStackPubSub/B
 file(GLOB INC_OpcUaStackPubSub_Network OpcUaStackPubSub/Network/*.h OpcUaStackPubSub/Network/*.txx)
 file(GLOB INC_OpcUaStackPubSub_MQTT OpcUaStackPubSub/MQTT/*.h OpcUaStackPubSub/MQTT/*.txx)
 file(GLOB INC_OpcUaStackPubSub_DataSet OpcUaStackPubSub/DataSet/*.h OpcUaStackPubSub/DataSet/*.txx)
-
+file(GLOB INC_OpcUaStackPubSub_DataSetDispatcher OpcUaStackPubSub/DataSetDispatcher/*.h OpcUaStackPubSub/DataSetDispatcher/*.txx)
 
 install(
     TARGETS OpcUaStackPubSub 
@@ -96,6 +96,12 @@ install(
 install(
     FILES ${INC_OpcUaStackPubSub_DataSet} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/DataSet
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_DataSetDispatcher} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/DataSetDispatcher
     COMPONENT headers
 )
 
