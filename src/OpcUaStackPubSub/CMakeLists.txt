@@ -64,6 +64,7 @@ message(STATUS "  library name: ${OPCUASTACK_PUBSUB_LIB_NAME}")
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 file(GLOB INC_OpcUaStackPubSub_Base OpcUaStackPubSub/Base/*.h OpcUaStackPubSub/Base/*.txx)
+file(GLOB INC_OpcUaStackPubSub_Network OpcUaStackPubSub/Network/*.h OpcUaStackPubSub/Network/*.txx)
 
 install(
     TARGETS OpcUaStackPubSub 
@@ -74,6 +75,12 @@ install(
 install(
     FILES ${INC_OpcUaStackPubSub_Base} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Base
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackPubSub_Network} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackPubSub/Network
     COMPONENT headers
 )
 
