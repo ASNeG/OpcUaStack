@@ -28,11 +28,43 @@ namespace OpcUaStackPubSub
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	UDPClient::UDPClient(void)
+	: ioThread_()
+	, socket_(nullptr)
 	{
 	}
 
 	UDPClient::~UDPClient(void)
 	{
+		if (socket_!= nullptr) {
+			socket_->close();
+			delete socket_;
+			socket_ = nullptr;
+		}
+	}
+
+	void
+	UDPClient::ioThread(IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	bool
+	UDPClient::open(void)
+	{
+		socket_ = new boost::asio::ip::udp::socket(ioThread_->ioService()->io_service());
+		socket_->open(boost::asio::ip::udp::v4());
+		return true;
+	}
+
+	bool
+	UDPClient::close(void)
+	{
+		if (socket_ != nullptr) {
+			socket_->close();
+			delete socket_;
+			socket_ = nullptr;
+		}
+		return true;
 	}
 
 }

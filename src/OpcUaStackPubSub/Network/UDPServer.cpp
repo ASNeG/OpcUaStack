@@ -28,11 +28,18 @@ namespace OpcUaStackPubSub
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	UDPServer::UDPServer(void)
+	: ioThread_()
 	{
 	}
 
 	UDPServer::~UDPServer(void)
 	{
+	}
+
+	void
+	UDPServer::ioThread(IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
 	}
 
 }

@@ -18,7 +18,13 @@
 #ifndef __OpcUaStackPubSub_UDPServer_h__
 #define __OpcUaStackPubSub_UDPServer_h__
 
+#include <iostream>
+#include <boost/asio.hpp>
+
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
@@ -28,6 +34,11 @@ namespace OpcUaStackPubSub
 	  public:
 		UDPServer(void);
 		~UDPServer(void);
+
+		void ioThread(IOThread::SPtr& ioThread);
+
+	  private:
+		IOThread::SPtr ioThread_;
 	};
 
 }
