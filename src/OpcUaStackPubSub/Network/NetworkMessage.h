@@ -39,6 +39,14 @@ namespace OpcUaStackPubSub
 	};
 
 
+	class DLLEXPORT SecurityHeader
+	{
+	  public:
+		SecurityHeader(void);
+		~SecurityHeader(void);
+	};
+
+
 	class DLLEXPORT NetworkMessage
 	{
 	  public:
