@@ -17,54 +17,54 @@
 
 #include "OpcUaStackPubSub/Network/UDPTestHandler.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackPubSub
 {
 
 	UDPTestHandler::UDPTestHandler(void)
-	: handleReadClientCount_(0)
-	, handleReadServerCount_(0)
-	, handleWriteClientCount_(0)
-	, handleWriteServerCount_(0)
+	: handleReceiveClientCount_(0)
+	, handleReceiveServerCount_(0)
+	, handleSendClientCount_(0)
+	, handleSendServerCount_(0)
 	{
 	}
 
-	void 
-	UDPTestHandler::handleReadClient(const boost::system::error_code& error, std::size_t bytes_transfered)
+	void
+	UDPTestHandler::handleReceiveClient(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
-		//std::cout << "handleReadClient" << std::endl;
-		handleReadClientCount_++;
-		handleReadClientError_ = error;
+		//std::cout << "handleReceiveClient" << std::endl;
+		handleReceiveClientCount_++;
+		handleReceiveClientError_ = error;
 		bytes_transfered_client_ = bytes_transfered;
-		handleReadClientCondition_.conditionValueInc();
+		handleReceiveClientCondition_.conditionValueInc();
 	}
 
 	void 
-	UDPTestHandler::handleReadServer(const boost::system::error_code& error, std::size_t bytes_transfered)
+	UDPTestHandler::handleReceiveServer(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
-		//std::cout << "handleReadServer" << std::endl;
+		//std::cout << "handleReceiveServer" << std::endl;
 		//std::cout << "bytes_transfered: " << bytes_transfered << std::endl;
-		handleReadServerCount_++;
-		handleReadServerError_ = error;
+		handleReceiveServerCount_++;
+		handleReceiveServerError_ = error;
 		bytes_transfered_server_ = bytes_transfered;
-		handleReadServerCondition_.conditionValueInc();
+		handleReceiveServerCondition_.conditionValueInc();
 	}
 
 	void 
-	UDPTestHandler::handleWriteClient(const boost::system::error_code& error)
+	UDPTestHandler::handleSendClient(const boost::system::error_code& error)
 	{
-		//std::cout << "handleWriteClient" << std::endl;
-		handleWriteClientCount_++;
-		handleWriteClientError_ = error;
-		handleWriteClientCondition_.conditionValueInc();
+		//std::cout << "handleSendClient" << std::endl;
+		handleSendClientCount_++;
+		handleSendClientError_ = error;
+		handleSendClientCondition_.conditionValueInc();
 	}
 
 	void 
-	UDPTestHandler::handleWriteServer(const boost::system::error_code& error)
+	UDPTestHandler::handleSendServer(const boost::system::error_code& error)
 	{
-		//std::cout << "handleWriteServer" << std::endl;
-		handleWriteServerCount_++;
-		handleWriteServerError_ = error;
-		handleWriteServerCondition_.conditionValueInc();
+		//std::cout << "handleSendServer" << std::endl;
+		handleSendServerCount_++;
+		handleSendServerError_ = error;
+		handleSendServerCondition_.conditionValueInc();
 	}
 
 

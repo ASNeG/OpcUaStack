@@ -69,4 +69,10 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
+	boost::asio::ip::udp::socket*
+	UDPClient::socket(void)
+	{
+		return socket_;
+	}
+
 }

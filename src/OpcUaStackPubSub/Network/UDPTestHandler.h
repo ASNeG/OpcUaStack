@@ -22,32 +22,34 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Base/os.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT UDPTestHandler
 	{
 	  public:
 	    UDPTestHandler(void);
-		void handleReadClient(const boost::system::error_code& error, std::size_t bytes_transfered);
-		void handleReadServer(const boost::system::error_code& error, std::size_t bytes_transfered);
-		void handleWriteClient(const boost::system::error_code& error);
-		void handleWriteServer(const boost::system::error_code& error);
+		void handleReceiveClient(const boost::system::error_code& error, std::size_t bytes_transfered);
+		void handleReceiveServer(const boost::system::error_code& error, std::size_t bytes_transfered);
+		void handleSendClient(const boost::system::error_code& error);
+		void handleSendServer(const boost::system::error_code& error);
 	
-		uint32_t handleReadClientCount_;
-		uint32_t handleReadServerCount_;
-		uint32_t handleWriteClientCount_;
-		uint32_t handleWriteServerCount_;
+		uint32_t handleReceiveClientCount_;
+		uint32_t handleReceiveServerCount_;
+		uint32_t handleSendClientCount_;
+		uint32_t handleSendServerCount_;
 
-		boost::system::error_code handleReadClientError_;
-		boost::system::error_code handleReadServerError_;
-		boost::system::error_code handleWriteClientError_;
-		boost::system::error_code handleWriteServerError_;
+		boost::system::error_code handleReceiveClientError_;
+		boost::system::error_code handleReceiveServerError_;
+		boost::system::error_code handleSendClientError_;
+		boost::system::error_code handleSendServerError_;
 
-		Condition handleReadClientCondition_;
-		Condition handleReadServerCondition_;
-		Condition handleWriteClientCondition_;
-		Condition handleWriteServerCondition_;
+		Condition handleReceiveClientCondition_;
+		Condition handleReceiveServerCondition_;
+		Condition handleSendClientCondition_;
+		Condition handleSendServerCondition_;
 
 		std::size_t bytes_transfered_client_;
 		std::size_t bytes_transfered_server_;
