@@ -56,10 +56,11 @@ BOOST_AUTO_TEST_CASE(UDP_construct_send_and_receive)
 	boost::asio::streambuf isServerBuffer;
 	std::ostream osClient(&osClientBuffer);
 	std::ostream osServer(&osServerBuffer);
-	std::istream isClient(&isClientBuffer);
-	std::istream isServer(&isServerBuffer);
 
-	boost::asio::streambuf::mutable_buffers_type buf = isServerBuffer.prepare(10000);
+	boost::asio::streambuf::mutable_buffers_type serverBuf = isServerBuffer.prepare(20);
+	boost::asio::streambuf::mutable_buffers_type clientBuf = isClientBuffer.prepare(20);
+	std::istream isServer(&isServerBuffer);
+	std::istream isClient(&isClientBuffer);
 
 	IOThread::SPtr ioThread = constructSPtr<IOThread>();
 	ioThread->startup();
@@ -81,16 +82,8 @@ BOOST_AUTO_TEST_CASE(UDP_construct_send_and_receive)
 
 	// server accepts package
 	serverTestHandler.handleReceiveServerCondition_.condition(0, 1);
-#if 0
-	udpServer.asyncReceive(
-		buf,
-		boost::bind(&UDPTestHandler::handleReceiveServer, &serverTestHandler)
-	);
-#endif
-
-    boost::array<char,1> recv_buffer;
 	udpServer.socket()->async_receive(
-		buf, //boost::asio::buffer(recv_buffer),
+		serverBuf,
 		boost::bind(
 			&UDPTestHandler::handleReceiveServer,
 			&serverTestHandler,
@@ -99,24 +92,20 @@ BOOST_AUTO_TEST_CASE(UDP_construct_send_and_receive)
 		)
 	);
 
-#if 0
-	boost::asio::buffer(buffer1.data())
-	  socket_->async_receive(
-					  buffer,
-					  handler
-				  );
-#endif
-
 	// client sends packet to server
-	for (uint32_t idx=0; idx<20; idx++) osClient << 'A';
+	osClient << "012345678901234567890";
 	udpClient.sendTo(
 		osClientBuffer,
 		endpoint
 	);
 
+	// server receive package
 	BOOST_REQUIRE(serverTestHandler.handleReceiveServerCondition_.waitForCondition(10000) == true);
-
-	// server sends packet to client
+	BOOST_REQUIRE(serverTestHandler.handleReceiveServerCount_ == 1);
+	BOOST_REQUIRE(serverTestHandler.bytes_transfered_server_ == 20);
+	std::string str;
+	isServer >> str;
+	std::cout << "Value=" << str << std::endl;
 
 	// close sockets
 	udpClient.close();
