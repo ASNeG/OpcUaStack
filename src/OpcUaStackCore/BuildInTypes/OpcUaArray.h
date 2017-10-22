@@ -255,6 +255,8 @@ namespace OpcUaStackCore
 		uint32_t maxSize(void);
 		uint32_t freeSize();
 		void clear(void);
+		bool isNull(void);
+		void setNull(void);
 
 		bool set(uint32_t pos, const T& value);
 		bool set(const T& value);
@@ -370,6 +372,23 @@ namespace OpcUaStackCore
 		clearArray();
 		initArray();
 	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::isNull(void)
+	{
+		// FIXME: todo
+		return false;
+	}
+
+	template<typename T, typename CODER>
+	void
+	OpcUaArray<T, CODER>::setNull(void)
+	{
+		// FIXME: todo
+		return;
+	}
+
 
 	template<typename T, typename CODER>
 	bool
