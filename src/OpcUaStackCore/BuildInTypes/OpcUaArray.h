@@ -288,6 +288,7 @@ namespace OpcUaStackCore
 		void initArray(void);
 		void clearArray(void);
 
+		bool isNull_;
 		uint32_t maxArrayLen_;
 		uint32_t actArrayLen_;
 
@@ -297,7 +298,8 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	OpcUaArray<T, CODER>::OpcUaArray(uint32_t maxArrayLen)
-	: maxArrayLen_(maxArrayLen)
+	: isNull_(false)
+	, maxArrayLen_(maxArrayLen)
 	, actArrayLen_(0)
 	{
 		initArray();
@@ -339,6 +341,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaArray<T, CODER>::resize(uint32_t maxArrayLen)
 	{
+		isNull_ = false;
 		clearArray();
 		maxArrayLen_ = maxArrayLen;
 		initArray();
@@ -377,16 +380,14 @@ namespace OpcUaStackCore
 	bool
 	OpcUaArray<T, CODER>::isNull(void)
 	{
-		// FIXME: todo
-		return false;
+		return isNull_;
 	}
 
 	template<typename T, typename CODER>
 	void
 	OpcUaArray<T, CODER>::setNull(void)
 	{
-		// FIXME: todo
-		return;
+		isNull_ = true;
 	}
 
 
