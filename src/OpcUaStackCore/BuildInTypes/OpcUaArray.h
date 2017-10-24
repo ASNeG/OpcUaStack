@@ -443,7 +443,10 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array)
 	{
-		if (isNull_) array.setNull();
+		if (isNull_) {
+			array.setNull();
+			return;
+		}
 		if (actArrayLen_ == 0) return;
 		array.resize(actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
@@ -465,6 +468,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::operator==(OpcUaArray<T, CODER>& array)
 	{
 		if (size() != array.size()) return false;
+		if (isNull() != array.isNull()) return false;
 		for (uint32_t pos = 0; pos < size();  pos++) {
 			T value1, value2;
 			get(pos, value1);
