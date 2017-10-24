@@ -556,6 +556,10 @@ namespace OpcUaStackCore
 	bool
 	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement) const
 	{
+		if (isNull_) {
+			return true;
+		}
+
 		boost::property_tree::ptree tmpTree;
 		if (!xmlEncode(tmpTree, listElement)) {
 			Log(Error, "OpcUaArray xml encoder error")
@@ -572,6 +576,10 @@ namespace OpcUaStackCore
 	bool
 	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const
 	{
+		if (isNull_) {
+			return true;
+		}
+
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			if (!CODER::xmlEncode(pt, valueArray_[idx], element)) {
 				Log(Error, "OpcUaArray xml encoder error")
