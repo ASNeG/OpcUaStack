@@ -443,6 +443,7 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array)
 	{
+		if (isNull_) array.setNull();
 		if (actArrayLen_ == 0) return;
 		array.resize(actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
