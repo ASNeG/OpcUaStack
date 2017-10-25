@@ -387,6 +387,8 @@ namespace OpcUaStackCore
 	void
 	OpcUaArray<T, CODER>::setNull(void)
 	{
+		clearArray();
+		initArray();
 		isNull_ = true;
 	}
 
