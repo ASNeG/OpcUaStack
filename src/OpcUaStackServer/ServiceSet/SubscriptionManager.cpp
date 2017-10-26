@@ -132,6 +132,20 @@ namespace OpcUaStackServer
 			}
 			deleteSubscriptionsResponse->results()->set(idx, Success);
 		}
+
+		if (subscriptionMap_.size() == 0) {
+			// answer all open publish requests with status code BadNoSubscriptions
+
+			while (serviceTransactionPublishList_.size() != 0) {
+				ServiceTransactionPublish::SPtr trx = serviceTransactionPublishList_.front();
+				serviceTransactionPublishList_.pop_front();
+
+				OpcUaNodeId typeId;
+				typeId.set(OpcUaId_PublishResponse_Encoding_DefaultBinary);
+				trx->statusCode(BadNoSubscription);
+				trx->componentSession()->send(trx);
+			}
+		}
 	
 		return Success;
 	}
@@ -156,7 +170,6 @@ namespace OpcUaStackServer
 				);
 				trx->response()->results()->set(idx, statusCode);
 			}
-
 		}
 
 		// save publish request
