@@ -95,13 +95,13 @@ namespace OpcUaStackServer
 
 	  private:
 		void activateSessionRequestError(
-			OpcUaStackCore::ActivateSessionRequest& activateSessionRequest,
+			RequestHeader::SPtr& requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction,
 			OpcUaStatusCode statusCode,
 			bool deleteSession = true
 		);
 		void cancelRequestError(
-			OpcUaStackCore::CancelRequest& cancelRequest,
+			RequestHeader::SPtr& requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction,
 			OpcUaStatusCode statusCode
 		);
