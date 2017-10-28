@@ -141,7 +141,7 @@ namespace OpcUaStackServer
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		CreateSessionResponse createSessionResponse;
-		createSessionResponse.responseHeader()->requestHandle(createSessionRequest.requestHeader()->requestHandle());
+		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		createSessionResponse.responseHeader()->serviceResult(Success);
 
 		createSessionResponse.sessionId().namespaceIndex(1);
@@ -190,7 +190,7 @@ namespace OpcUaStackServer
 		if (sessionState_ != SessionState_CreateSessionResponse) {
 			Log(Error, "receive activate session request in invalid state")
 				.parameter("SessionState", sessionState_);
-			activateSessionRequestError(activateSessionRequest, secureChannelTransaction, BadIdentityTokenInvalid);
+			activateSessionRequestError(requestHeader, secureChannelTransaction, BadIdentityTokenInvalid);
 			return;
 		}
 
@@ -199,7 +199,7 @@ namespace OpcUaStackServer
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		ActivateSessionResponse activateSessionResponse;
-		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(Success);
 
 		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
@@ -217,7 +217,7 @@ namespace OpcUaStackServer
 
 	void
 	Session::activateSessionRequestError(
-		ActivateSessionRequest& activateSessionRequest,
+		RequestHeader::SPtr& requestHeader,
 		SecureChannelTransaction::SPtr secureChannelTransaction,
 		OpcUaStatusCode statusCode,
 		bool deleteSession
@@ -226,7 +226,7 @@ namespace OpcUaStackServer
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		ActivateSessionResponse activateSessionResponse;
-		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
+		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
 
 		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
@@ -264,7 +264,7 @@ namespace OpcUaStackServer
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		CloseSessionResponse closeSessionResponse;
-		closeSessionResponse.responseHeader()->requestHandle(closeSessionRequest.requestHeader()->requestHandle());
+		closeSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		closeSessionResponse.responseHeader()->serviceResult(Success);
 
 		closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
@@ -299,12 +299,12 @@ namespace OpcUaStackServer
 		CancelRequest cancelRequest;
 		cancelRequest.opcUaBinaryDecode(ios);
 
-		cancelRequestError(cancelRequest, secureChannelTransaction, BadNotImplemented);
+		cancelRequestError(requestHeader, secureChannelTransaction, BadNotImplemented);
 	}
 
 	void
 	Session::cancelRequestError(
-		OpcUaStackCore::CancelRequest& cancelRequest,
+		RequestHeader::SPtr& requestHeader,
 		SecureChannelTransaction::SPtr secureChannelTransaction,
 		OpcUaStatusCode statusCode
 	)
@@ -312,7 +312,7 @@ namespace OpcUaStackServer
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		CancelResponse cancelResponse;
-		cancelResponse.responseHeader()->requestHandle(cancelRequest.requestHeader()->requestHandle());
+		cancelResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		cancelResponse.responseHeader()->serviceResult(statusCode);
 
 		cancelResponse.responseHeader()->opcUaBinaryEncode(iosres);
