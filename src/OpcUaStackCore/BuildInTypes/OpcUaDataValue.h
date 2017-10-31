@@ -57,6 +57,8 @@ namespace OpcUaStackCore
 
 		void copyFrom(OpcUaDataValue& dataValue);
 		void copyTo(OpcUaDataValue& dataValue);
+		bool operator!=(const OpcUaDataValue& opcUaDataValue) const;
+		bool operator==(const OpcUaDataValue& opcUaDataValue) const;
 		bool trigger(OpcUaDataValue::SPtr dataValue, DataChangeTrigger dataChangeTrigger = DCT_StatusValue);
 		bool trigger(OpcUaDataValue& dataValue, DataChangeTrigger dataChangeTrigger = DCT_StatusValue);
 
