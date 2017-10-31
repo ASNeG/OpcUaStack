@@ -69,6 +69,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaStatusCodeMap::getStatusCodeVec(std::vector<std::string>& statusCodeVec)
 	{
+		initial();
 		StatusCodeMap::iterator it;
 		for (it = shortStatusCodeMap_.begin(); it !=  shortStatusCodeMap_.end(); it++) {
 			statusCodeVec.push_back(it->second);
