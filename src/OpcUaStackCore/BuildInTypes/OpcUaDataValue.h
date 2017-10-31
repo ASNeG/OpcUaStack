@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 	    OpcUaDataValue(void);
 		~OpcUaDataValue(void);
 
+		bool exist(void);
 		bool isNullVariant(void);
 		OpcUaVariant::SPtr variant(void);
 		void statusCode(const OpcUaStatusCode& opcUaStatusCode);

@@ -44,6 +44,16 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaDataValue::exist(void)
+	{
+		if (opcUaVariantSPtr_.get() != nullptr) return false;
+		if (opcUaStatusCode_ != Success) return false;
+		if (sourceTimestamp_.exist()) return false;
+		if (serverTimestamp_.exist()) return false;
+		return true;
+	}
+
+	bool
 	OpcUaDataValue::isNullVariant(void)
 	{
 		return opcUaVariantSPtr_.get() == nullptr;
