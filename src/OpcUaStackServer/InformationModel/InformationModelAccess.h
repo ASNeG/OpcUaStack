@@ -87,6 +87,11 @@ namespace OpcUaStackServer
 			OpcUaNodeId& referenceTypeNodeId,
 			std::vector<OpcUaNodeId>& childNodeIdVec
 		);
+		bool getChildHierarchically(
+			BaseNodeClass::SPtr baseNodeClass,
+			std::vector<OpcUaNodeId>& referenceTypeNodeIdVec,
+			std::vector<OpcUaNodeId>& childNodeIdVec
+		);
 
 		// --------------------------------------------------------------------
 		// parent functions

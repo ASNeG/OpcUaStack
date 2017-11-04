@@ -322,13 +322,15 @@ namespace OpcUaStackServer
 		std::stringstream ss;
 
 		InformationModelAccess ima;
-		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> referenceTypeVec;
+		referenceTypeVec.push_back(OpcUaNodeId(46));
+		referenceTypeVec.push_back(OpcUaNodeId(47));
 		std::vector<OpcUaNodeId> childNodeIdVec;
 		std::vector<OpcUaNodeId>::iterator it;
 		ima.informationModel(informationModel_);
 		success = ima.getChildHierarchically(
 			eventTypeNode_,
-			referenceType,
+			referenceTypeVec,
 			childNodeIdVec
 		);
 		if (!success) {
@@ -347,6 +349,13 @@ namespace OpcUaStackServer
 					.parameter("EventType", eventTypeNodeId_)
 					.parameter("PropertyNodeId", *it);
 				return false;
+			}
+
+			// use only variable class
+			NodeClassType nodeClassType;
+			propertyNodeClass->getNodeClass(nodeClassType);
+			if (nodeClassType != NodeClassType_Variable) {
+				continue;
 			}
 
 			// get property class name
@@ -496,13 +505,15 @@ namespace OpcUaStackServer
 		bool success;
 
 		InformationModelAccess ima;
-		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> referenceTypeVec;
+		referenceTypeVec.push_back(OpcUaNodeId(46));
+		referenceTypeVec.push_back(OpcUaNodeId(47));
 		std::vector<OpcUaNodeId> childNodeIdVec;
 		std::vector<OpcUaNodeId>::iterator it;
 		ima.informationModel(informationModel_);
 		success = ima.getChildHierarchically(
 			eventTypeNode_,
-			referenceType,
+			referenceTypeVec,
 			childNodeIdVec
 		);
 		if (!success) {
@@ -520,6 +531,13 @@ namespace OpcUaStackServer
 					.parameter("EventType", eventTypeNodeId_)
 					.parameter("PropertyNodeId", *it);
 				return false;
+			}
+
+			// use only variable class
+			NodeClassType nodeClassType;
+			propertyNodeClass->getNodeClass(nodeClassType);
+			if (nodeClassType != NodeClassType_Variable) {
+				continue;
 			}
 
 			// get property type
@@ -586,13 +604,15 @@ namespace OpcUaStackServer
 		bool success;
 
 		InformationModelAccess ima;
-		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> referenceTypeVec;
+		referenceTypeVec.push_back(OpcUaNodeId(46));
+		referenceTypeVec.push_back(OpcUaNodeId(47));
 		std::vector<OpcUaNodeId> childNodeIdVec;
 		std::vector<OpcUaNodeId>::iterator it;
 		ima.informationModel(informationModel_);
 		success = ima.getChildHierarchically(
 			eventTypeNode_,
-			referenceType,
+			referenceTypeVec,
 			childNodeIdVec
 		);
 		if (!success) {
@@ -610,6 +630,13 @@ namespace OpcUaStackServer
 					.parameter("EventType", eventTypeNodeId_)
 					.parameter("PropertyNodeId", *it);
 				return false;
+			}
+
+			// use only variable class
+			NodeClassType nodeClassType;
+			propertyNodeClass->getNodeClass(nodeClassType);
+			if (nodeClassType != NodeClassType_Variable) {
+				continue;
 			}
 
 			// get property class name
@@ -647,13 +674,15 @@ namespace OpcUaStackServer
 		bool success;
 
 		InformationModelAccess ima;
-		OpcUaNodeId referenceType(46);
+		std::vector<OpcUaNodeId> referenceTypeVec;
+		referenceTypeVec.push_back(OpcUaNodeId(46));
+		referenceTypeVec.push_back(OpcUaNodeId(47));
 		std::vector<OpcUaNodeId> childNodeIdVec;
 		std::vector<OpcUaNodeId>::iterator it;
 		ima.informationModel(informationModel_);
 		success = ima.getChildHierarchically(
 			eventTypeNode_,
-			referenceType,
+			referenceTypeVec,
 			childNodeIdVec
 		);
 		if (!success) {
@@ -671,6 +700,13 @@ namespace OpcUaStackServer
 					.parameter("EventType", eventTypeNodeId_)
 					.parameter("PropertyNodeId", *it);
 				return false;
+			}
+
+			// use only variable class
+			NodeClassType nodeClassType;
+			propertyNodeClass->getNodeClass(nodeClassType);
+			if (nodeClassType != NodeClassType_Variable) {
+				continue;
 			}
 
 			// get property class name

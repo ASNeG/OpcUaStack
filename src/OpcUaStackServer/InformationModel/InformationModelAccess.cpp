@@ -310,6 +310,45 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	InformationModelAccess::getChildHierarchically(
+		BaseNodeClass::SPtr baseNodeClass,
+		std::vector<OpcUaNodeId>& referenceTypeNodeIdVec,
+		std::vector<OpcUaNodeId>& childNodeIdVec
+	)
+	{
+		childNodeIdVec.clear();
+
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			bool continueFlag = true;
+
+			std::vector<OpcUaNodeId>::iterator it2;
+			for (it2 = referenceTypeNodeIdVec.begin(); it2 != referenceTypeNodeIdVec.end(); it2++) {
+				OpcUaNodeId referenceTypeNodeId = *it2;
+
+				if (it->first == referenceTypeNodeId) {
+					continueFlag = false;
+					break;
+				}
+			}
+			if (continueFlag) continue;
+
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (!referenceItem->isForward_) continue;
+
+			childNodeIdVec.push_back(referenceItem->nodeId_);
+		}
+
+
+		return true;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

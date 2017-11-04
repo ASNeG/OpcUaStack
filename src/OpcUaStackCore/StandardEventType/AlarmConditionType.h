@@ -38,6 +38,15 @@ namespace OpcUaStackCore
         bool maxTimeShelved(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr maxTimeShelved(void);
         
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool activeState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState(void);
+        
+        bool suppressedState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr suppressedState(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

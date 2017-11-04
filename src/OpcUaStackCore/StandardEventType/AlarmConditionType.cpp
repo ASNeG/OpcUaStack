@@ -21,6 +21,9 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("InputNode", OpcUaBuildInType_OpcUaNodeId);
         eventVariables_.registerEventVariable("SuppressedOrShelved", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("MaxTimeShelved", OpcUaBuildInType_OpcUaDuration);
+        eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ActiveState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("SuppressedState", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2915));
         eventVariables_.namespaceIndex(0);
@@ -56,6 +59,30 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AlarmConditionType::enabledState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("enabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::activeState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("activeState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::suppressedState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("suppressedState", value);
+    	return value;
+    }
+    
     bool 
     AlarmConditionType::inputNode(OpcUaVariant::SPtr& inputNode)
     {
@@ -72,6 +99,24 @@ namespace OpcUaStackCore
     AlarmConditionType::maxTimeShelved(OpcUaVariant::SPtr& maxTimeShelved)
     {
     	return eventVariables_.setValue("MaxTimeShelved", maxTimeShelved);
+    }
+    
+    bool 
+    AlarmConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
+    {
+    	return eventVariables_.setValue("EnabledState", enabledState);
+    }
+    
+    bool 
+    AlarmConditionType::activeState(OpcUaVariant::SPtr& activeState)
+    {
+    	return eventVariables_.setValue("ActiveState", activeState);
+    }
+    
+    bool 
+    AlarmConditionType::suppressedState(OpcUaVariant::SPtr& suppressedState)
+    {
+    	return eventVariables_.setValue("SuppressedState", suppressedState);
     }
     
     void
