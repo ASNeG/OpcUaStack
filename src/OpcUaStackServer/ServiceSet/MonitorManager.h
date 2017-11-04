@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemNotification.h"
 #include "OpcUaStackServer/ServiceSet/MonitorItem.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
@@ -46,6 +47,7 @@ namespace OpcUaStackServer
 		void subscriptionId(uint32_t subscriptionId);
 		uint32_t subscriptionId(void);
 		void informationModel(InformationModel::SPtr informationModel);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 		uint32_t noticicationNumber(void);
 		bool notificationAvailable(void);
 
@@ -80,6 +82,7 @@ namespace OpcUaStackServer
 		MonitorItemMap monitorItemMap_;
 		EventItem::Map eventItemMap_;
 		InformationModel::SPtr informationModel_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 
 		MonitoredItemIds monitoredItemIds_;
 	};

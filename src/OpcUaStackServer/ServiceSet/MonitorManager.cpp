@@ -18,6 +18,8 @@
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
+#include "OpcUaStackCore/Application/ApplicationEventItemStartContext.h"
+#include "OpcUaStackCore/Application/ApplicationEventItemStopContext.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
 #include "OpcUaStackServer/ServiceSet/EventItem.h"
@@ -39,12 +41,12 @@ namespace OpcUaStackServer
 		//
 		// cleanup monitored item
 		//
-		MonitorItemMap::iterator it;
-		for (it=monitorItemMap_.begin(); it!=monitorItemMap_.end(); it++) {
-		    MonitorItem::SPtr monitorItem = it->second;
+		MonitorItemMap::iterator it1;
+		for (it1=monitorItemMap_.begin(); it1!=monitorItemMap_.end(); it1++) {
+		    MonitorItem::SPtr monitorItem = it1->second;
 
 		    if (monitorItem->baseNodeClass() != nullptr) {
-		        forwardStopMonitoredItem(monitorItem->baseNodeClass(), it->first);
+		        forwardStopMonitoredItem(monitorItem->baseNodeClass(), it1->first);
 		    }
 
 			ioThread_->slotTimer()->stop(monitorItem->slotTimerElement());
@@ -56,6 +58,25 @@ namespace OpcUaStackServer
 		//
 		// cleanup event item
 		//
+		EventItem::Map::iterator it2;
+		for (it2=eventItemMap_.begin(); it2!=eventItemMap_.end(); it2++) {
+		    EventItem::SPtr eventItem = it2->second;
+
+			// forward stop event item
+			if (forwardGlobalSync_.get() != nullptr) {
+				if (forwardGlobalSync_->eventItemStopService().isCallback()) {
+					ApplicationEventItemStopContext context;
+					context.applicationContext_ = forwardGlobalSync_->eventItemStopService().applicationContext();
+					context.eventItemId_ = it2->second->eventItemId();
+
+					forwardGlobalSync_->eventItemStopService().callback()(&context);
+				}
+			}
+
+			//ioThread_->slotTimer()->stop(eventItem->slotTimerElement());
+			//eventItem->slotTimerElement().reset();
+		}
+
 		eventItemMap_.clear();
 	}
 
@@ -81,6 +102,12 @@ namespace OpcUaStackServer
 	MonitorManager::informationModel(InformationModel::SPtr informationModel)
 	{
 		informationModel_ = informationModel;
+	}
+
+	void
+	MonitorManager::forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync)
+	{
+		forwardGlobalSync_ = forwardGlobalSync;
 	}
 
 	uint32_t 
@@ -250,6 +277,17 @@ namespace OpcUaStackServer
 		monitoredItemCreateResult->revisedQueueSize(0);
 		eventItemMap_.insert(std::make_pair(eventItem->eventItemId(), eventItem));
 
+		// forward start event item
+		if (forwardGlobalSync_.get() != nullptr) {
+			if (forwardGlobalSync_->eventItemStartService().isCallback()) {
+				ApplicationEventItemStartContext context;
+				context.applicationContext_ = forwardGlobalSync_->eventItemStartService().applicationContext();
+				context.eventItemId_ = eventItem->eventItemId();
+
+				forwardGlobalSync_->eventItemStartService().callback()(&context);
+			}
+		}
+
 		Log(Debug, "event item create")
 			.parameter("MonitorId", eventItem->eventItemId())
 			.parameter("Trx", trx->transactionId())
@@ -314,6 +352,17 @@ namespace OpcUaStackServer
 				deleteMonitorItemResponse->results()->set(idx, Success);
 			}
 			else {
+				// forward stop event item
+				if (forwardGlobalSync_.get() != nullptr) {
+					if (forwardGlobalSync_->eventItemStopService().isCallback()) {
+						ApplicationEventItemStopContext context;
+						context.applicationContext_ = forwardGlobalSync_->eventItemStopService().applicationContext();
+						context.eventItemId_ = it2->second->eventItemId();
+
+						forwardGlobalSync_->eventItemStopService().callback()(&context);
+					}
+				}
+
 				Log(Trace, "event item remove")
 					.parameter("EventId", it2->second->eventItemId())
 					.parameter("Trx", trx->transactionId())
