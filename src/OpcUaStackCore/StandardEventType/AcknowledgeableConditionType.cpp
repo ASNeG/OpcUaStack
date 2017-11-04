@@ -18,6 +18,9 @@ namespace OpcUaStackCore
     : ConditionType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("AckedState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ConfirmedState", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2881));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +30,48 @@ namespace OpcUaStackCore
     
     AcknowledgeableConditionType::~AcknowledgeableConditionType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::enabledState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("enabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::ackedState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ackedState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::confirmedState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("confirmedState", value);
+    	return value;
+    }
+    
+    bool 
+    AcknowledgeableConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
+    {
+    	return eventVariables_.setValue("EnabledState", enabledState);
+    }
+    
+    bool 
+    AcknowledgeableConditionType::ackedState(OpcUaVariant::SPtr& ackedState)
+    {
+    	return eventVariables_.setValue("AckedState", ackedState);
+    }
+    
+    bool 
+    AcknowledgeableConditionType::confirmedState(OpcUaVariant::SPtr& confirmedState)
+    {
+    	return eventVariables_.setValue("ConfirmedState", confirmedState);
     }
     
     void

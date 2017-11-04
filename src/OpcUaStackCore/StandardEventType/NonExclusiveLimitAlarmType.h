@@ -29,6 +29,21 @@ namespace OpcUaStackCore
         NonExclusiveLimitAlarmType(void);
         virtual ~NonExclusiveLimitAlarmType(void);
         
+        bool activeState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState(void);
+        
+        bool highHighState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr highHighState(void);
+        
+        bool highState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr highState(void);
+        
+        bool lowState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lowState(void);
+        
+        bool lowLowState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lowLowState(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

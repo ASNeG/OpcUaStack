@@ -24,6 +24,10 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("BranchId", OpcUaBuildInType_OpcUaNodeId);
         eventVariables_.registerEventVariable("Retain", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("Quality", OpcUaBuildInType_OpcUaStatusCode);
+        eventVariables_.registerEventVariable("LastSeverity", OpcUaBuildInType_OpcUaUInt16);
+        eventVariables_.registerEventVariable("Comment", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2782));
         eventVariables_.namespaceIndex(0);
@@ -83,6 +87,38 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    ConditionType::enabledState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("enabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::quality(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("quality", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::lastSeverity(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("lastSeverity", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::comment(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("comment", value);
+    	return value;
+    }
+    
     bool 
     ConditionType::conditionClassId(OpcUaVariant::SPtr& conditionClassId)
     {
@@ -117,6 +153,30 @@ namespace OpcUaStackCore
     ConditionType::clientUserId(OpcUaVariant::SPtr& clientUserId)
     {
     	return eventVariables_.setValue("ClientUserId", clientUserId);
+    }
+    
+    bool 
+    ConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
+    {
+    	return eventVariables_.setValue("EnabledState", enabledState);
+    }
+    
+    bool 
+    ConditionType::quality(OpcUaVariant::SPtr& quality)
+    {
+    	return eventVariables_.setValue("Quality", quality);
+    }
+    
+    bool 
+    ConditionType::lastSeverity(OpcUaVariant::SPtr& lastSeverity)
+    {
+    	return eventVariables_.setValue("LastSeverity", lastSeverity);
+    }
+    
+    bool 
+    ConditionType::comment(OpcUaVariant::SPtr& comment)
+    {
+    	return eventVariables_.setValue("Comment", comment);
     }
     
     void

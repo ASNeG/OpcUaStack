@@ -18,6 +18,11 @@ namespace OpcUaStackCore
     : LimitAlarmType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("ActiveState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("HighHighState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("HighState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("LowState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("LowLowState", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)9906));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +32,76 @@ namespace OpcUaStackCore
     
     NonExclusiveLimitAlarmType::~NonExclusiveLimitAlarmType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    NonExclusiveLimitAlarmType::activeState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("activeState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    NonExclusiveLimitAlarmType::highHighState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("highHighState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    NonExclusiveLimitAlarmType::highState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("highState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    NonExclusiveLimitAlarmType::lowState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("lowState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    NonExclusiveLimitAlarmType::lowLowState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("lowLowState", value);
+    	return value;
+    }
+    
+    bool 
+    NonExclusiveLimitAlarmType::activeState(OpcUaVariant::SPtr& activeState)
+    {
+    	return eventVariables_.setValue("ActiveState", activeState);
+    }
+    
+    bool 
+    NonExclusiveLimitAlarmType::highHighState(OpcUaVariant::SPtr& highHighState)
+    {
+    	return eventVariables_.setValue("HighHighState", highHighState);
+    }
+    
+    bool 
+    NonExclusiveLimitAlarmType::highState(OpcUaVariant::SPtr& highState)
+    {
+    	return eventVariables_.setValue("HighState", highState);
+    }
+    
+    bool 
+    NonExclusiveLimitAlarmType::lowState(OpcUaVariant::SPtr& lowState)
+    {
+    	return eventVariables_.setValue("LowState", lowState);
+    }
+    
+    bool 
+    NonExclusiveLimitAlarmType::lowLowState(OpcUaVariant::SPtr& lowLowState)
+    {
+    	return eventVariables_.setValue("LowLowState", lowLowState);
     }
     
     void

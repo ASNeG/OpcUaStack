@@ -47,6 +47,12 @@ namespace OpcUaStackCore
         bool lastResponse(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr lastResponse(void);
         
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool dialogState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr dialogState(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

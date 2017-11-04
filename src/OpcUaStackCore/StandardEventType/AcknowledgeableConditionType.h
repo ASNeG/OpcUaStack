@@ -29,6 +29,15 @@ namespace OpcUaStackCore
         AcknowledgeableConditionType(void);
         virtual ~AcknowledgeableConditionType(void);
         
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool ackedState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr ackedState(void);
+        
+        bool confirmedState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr confirmedState(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

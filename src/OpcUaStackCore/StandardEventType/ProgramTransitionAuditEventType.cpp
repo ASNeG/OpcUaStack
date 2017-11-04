@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : AuditUpdateStateEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("Transition", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)3806));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     ProgramTransitionAuditEventType::~ProgramTransitionAuditEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    ProgramTransitionAuditEventType::transition(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("transition", value);
+    	return value;
+    }
+    
+    bool 
+    ProgramTransitionAuditEventType::transition(OpcUaVariant::SPtr& transition)
+    {
+    	return eventVariables_.setValue("Transition", transition);
     }
     
     void

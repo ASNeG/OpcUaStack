@@ -29,6 +29,9 @@ namespace OpcUaStackCore
         ExclusiveLimitAlarmType(void);
         virtual ~ExclusiveLimitAlarmType(void);
         
+        bool activeState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

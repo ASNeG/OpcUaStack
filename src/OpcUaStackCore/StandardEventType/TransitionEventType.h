@@ -29,6 +29,15 @@ namespace OpcUaStackCore
         TransitionEventType(void);
         virtual ~TransitionEventType(void);
         
+        bool transition(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr transition(void);
+        
+        bool fromState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr fromState(void);
+        
+        bool toState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr toState(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

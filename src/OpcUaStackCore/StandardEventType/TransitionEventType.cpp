@@ -18,6 +18,9 @@ namespace OpcUaStackCore
     : BaseEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("Transition", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("FromState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ToState", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2311));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +30,48 @@ namespace OpcUaStackCore
     
     TransitionEventType::~TransitionEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::transition(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("transition", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::fromState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("fromState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::toState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("toState", value);
+    	return value;
+    }
+    
+    bool 
+    TransitionEventType::transition(OpcUaVariant::SPtr& transition)
+    {
+    	return eventVariables_.setValue("Transition", transition);
+    }
+    
+    bool 
+    TransitionEventType::fromState(OpcUaVariant::SPtr& fromState)
+    {
+    	return eventVariables_.setValue("FromState", fromState);
+    }
+    
+    bool 
+    TransitionEventType::toState(OpcUaVariant::SPtr& toState)
+    {
+    	return eventVariables_.setValue("ToState", toState);
     }
     
     void

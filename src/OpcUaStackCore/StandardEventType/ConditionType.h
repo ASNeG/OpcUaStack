@@ -47,6 +47,18 @@ namespace OpcUaStackCore
         bool clientUserId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr clientUserId(void);
         
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool quality(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr quality(void);
+        
+        bool lastSeverity(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lastSeverity(void);
+        
+        bool comment(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr comment(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

@@ -24,6 +24,8 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("OkResponse", OpcUaBuildInType_OpcUaInt32);
         eventVariables_.registerEventVariable("CancelResponse", OpcUaBuildInType_OpcUaInt32);
         eventVariables_.registerEventVariable("LastResponse", OpcUaBuildInType_OpcUaInt32);
+        eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("DialogState", OpcUaBuildInType_OpcUaLocalizedText);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2830));
         eventVariables_.namespaceIndex(0);
@@ -83,6 +85,22 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    DialogConditionType::enabledState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("enabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::dialogState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("dialogState", value);
+    	return value;
+    }
+    
     bool 
     DialogConditionType::prompt(OpcUaVariant::SPtr& prompt)
     {
@@ -117,6 +135,18 @@ namespace OpcUaStackCore
     DialogConditionType::lastResponse(OpcUaVariant::SPtr& lastResponse)
     {
     	return eventVariables_.setValue("LastResponse", lastResponse);
+    }
+    
+    bool 
+    DialogConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
+    {
+    	return eventVariables_.setValue("EnabledState", enabledState);
+    }
+    
+    bool 
+    DialogConditionType::dialogState(OpcUaVariant::SPtr& dialogState)
+    {
+    	return eventVariables_.setValue("DialogState", dialogState);
     }
     
     void
