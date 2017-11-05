@@ -70,7 +70,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	BrowsePathToNodeIdRequest::BrowsePathToNodeIdRequest(void)
 	: Object()
-	, browseNameArray_()
+	, browseNameArray_(constructSPtr<BrowseNameArray>())
 	{
 	}
 

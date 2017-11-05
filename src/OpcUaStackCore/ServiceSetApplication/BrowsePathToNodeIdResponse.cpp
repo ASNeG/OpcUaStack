@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	NodeIdResult::statusCode(OpcUaStatusCode& statusCode)
+	NodeIdResult::statusCode(OpcUaStatusCode statusCode)
 	{
 		statusCode_ = statusCode;
 	}
@@ -70,7 +70,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	BrowsePathToNodeIdResponse::BrowsePathToNodeIdResponse(void)
 	: Object()
-	, nodeIdResults_()
+	, nodeIdResults_(constructSPtr<NodeIdResultArray>())
 	{
 	}
 

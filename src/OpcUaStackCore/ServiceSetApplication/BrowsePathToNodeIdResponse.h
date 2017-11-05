@@ -34,7 +34,7 @@ namespace OpcUaStackCore
 		NodeIdResult(void);
 		~NodeIdResult(void);
 
-		void statusCode(OpcUaStatusCode& statusCode);
+		void statusCode(OpcUaStatusCode statusCode);
 		OpcUaStatusCode statusCode(void);
 		void nodeId(OpcUaNodeId& nodeId);
 		OpcUaNodeId& nodeId(void);
