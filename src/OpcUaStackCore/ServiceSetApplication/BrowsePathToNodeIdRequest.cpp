@@ -123,6 +123,73 @@ namespace OpcUaStackCore
 		pathNames_->push_back(element);
 	}
 
+	void
+	BrowseName::set(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4
+	)
+	{
+		pathNames_->resize(4);
+		nodeId_ = nodeId;
+
+		OpcUaQualifiedName::SPtr element;
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement4)->copyTo(*element);
+		pathNames_->push_back(element);
+	}
+
+	void
+	BrowseName::set(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4,
+		const OpcUaQualifiedName& pathElement5
+	)
+	{
+		pathNames_->resize(5);
+		nodeId_ = nodeId;
+
+		OpcUaQualifiedName::SPtr element;
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement4)->copyTo(*element);
+		pathNames_->push_back(element);
+
+		element = constructSPtr<OpcUaQualifiedName>();
+		const_cast<OpcUaQualifiedName*>(&pathElement5)->copyTo(*element);
+		pathNames_->push_back(element);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//

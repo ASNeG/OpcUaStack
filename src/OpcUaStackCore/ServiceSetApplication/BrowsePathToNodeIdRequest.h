@@ -56,6 +56,21 @@ namespace OpcUaStackCore
 			const OpcUaQualifiedName& pathElement2,
 			const OpcUaQualifiedName& pathElement3
 		);
+		void set(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4
+		);
+		void set(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4,
+			const OpcUaQualifiedName& pathElement5
+		);
 
 	  private:
 		OpcUaNodeId nodeId_;
