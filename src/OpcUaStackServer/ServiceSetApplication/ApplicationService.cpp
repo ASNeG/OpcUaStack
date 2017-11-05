@@ -482,6 +482,8 @@ namespace OpcUaStackServer
 
 			ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
 			ReferenceItemMultiMap::iterator it;
+
+			bool found = false;
 			for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
 				OpcUaNodeId referenceTypeNodeId = it->first;
 				ReferenceItem::SPtr referenceItem = it->second;
@@ -494,12 +496,18 @@ namespace OpcUaStackServer
 				if (baseNodeClassTarget->browseName().data() == *pathElement) {
 					nodeIdResult->nodeId(referenceItem->nodeId_);
 					baseNodeClass = baseNodeClassTarget;
+					found = true;
 					break;
 				}
 			}
+
+			if (!found) {
+				nodeIdResult->statusCode(BadNodeIdUnknown);
+				return;
+			}
 		}
 
-		nodeIdResult->statusCode(BadNodeIdUnknown);
+		nodeIdResult->statusCode(Success);
 		return;
 	}
 
