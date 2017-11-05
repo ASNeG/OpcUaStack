@@ -99,6 +99,37 @@ namespace OpcUaStackCore
 		void browseNameArray(BrowseNameArray::SPtr& browseNameArray);
 		BrowseNameArray::SPtr browseNameArray(void);
 
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4,
+			const OpcUaQualifiedName& pathElement5
+		);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 

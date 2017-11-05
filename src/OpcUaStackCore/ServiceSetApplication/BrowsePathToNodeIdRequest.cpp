@@ -220,6 +220,71 @@ namespace OpcUaStackCore
 	}
 
 	void
+	BrowsePathToNodeIdRequest::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement);
+		browseNameArray_->push_back(browseName);
+	}
+
+	void
+	BrowsePathToNodeIdRequest::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2);
+		browseNameArray_->push_back(browseName);
+	}
+
+	void
+	BrowsePathToNodeIdRequest::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2, pathElement3);
+		browseNameArray_->push_back(browseName);
+	}
+
+	void
+	BrowsePathToNodeIdRequest::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
+		browseNameArray_->push_back(browseName);
+	}
+
+	void
+	BrowsePathToNodeIdRequest::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4,
+		const OpcUaQualifiedName& pathElement5
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
+		browseNameArray_->push_back(browseName);
+	}
+
+	void
 	BrowsePathToNodeIdRequest::opcUaBinaryEncode(std::ostream& os) const
 	{
 	}
