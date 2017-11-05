@@ -66,6 +66,9 @@ namespace OpcUaStackServer
 			case OpcUaId_FireEventRequest_Encoding_DefaultBinary:
 				receiveFireEventRequest(serviceTransaction);
 				break;
+			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
+				receiveBrowsePathToNodeIdRequest(serviceTransaction);
+				break;
 			default:
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
@@ -411,6 +414,20 @@ namespace OpcUaStackServer
 			EventHandlerBase::SPtr eventHandlerBase = *it;
 			eventHandlerBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
 		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveBrowsePathToNodeIdRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionBrowsePathToNodeId::SPtr trx = boost::static_pointer_cast<ServiceTransactionBrowsePathToNodeId>(serviceTransaction);
+
+		BrowsePathToNodeIdRequest::SPtr req = trx->request();
+		BrowsePathToNodeIdResponse::SPtr res = trx->response();
+
+		std::cout << "receiveBrowsePathToNodeIdRequest" << std::endl;
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
