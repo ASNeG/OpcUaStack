@@ -41,6 +41,22 @@ namespace OpcUaStackCore
 		void pathNames(OpcUaQualifiedNameArray::SPtr& pathNames);
 		OpcUaQualifiedNameArray::SPtr pathNames(void);
 
+		void set(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement
+		);
+		void set(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2
+		);
+		void set(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3
+		);
+
 	  private:
 		OpcUaNodeId nodeId_;
 		OpcUaQualifiedNameArray::SPtr pathNames_;
