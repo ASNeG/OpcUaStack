@@ -767,65 +767,20 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		OpcUaQualifiedName browseName;
-		bool success;
-
-		InformationModelAccess ima;
-		std::vector<OpcUaNodeId> referenceTypeVec;
-		referenceTypeVec.push_back(OpcUaNodeId(46));
-		referenceTypeVec.push_back(OpcUaNodeId(47));
-		std::vector<OpcUaNodeId> childNodeIdVec;
-		std::vector<OpcUaNodeId>::iterator it;
-		ima.informationModel(informationModel_);
-		success = ima.getChildHierarchically(
-			eventTypeNode_,
-			referenceTypeVec,
-			childNodeIdVec
-		);
-		if (!success) {
-			Log(Error, "event properties error")
-				.parameter("EventType", eventTypeNodeId_);
-			return false;
-		}
-
-		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-
-			// get property node class
-			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
-			if (!propertyNodeClass) {
-				Log(Error, "property node class not exist in information model")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-
-			// use only variable class
-			NodeClassType nodeClassType;
-			propertyNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClassType_Variable) {
-				continue;
-			}
-
-			// get property class name
-			if (!propertyNodeClass->getBrowseName(browseName)) {
-				Log(Error, "property name not found in node")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-			std::string propertyName = browseName.name().toStdString();
-			std::string propertyNameLower = propertyName;
-			propertyNameLower[0] = boost::to_lower_copy(propertyNameLower.substr(0,1))[0];
+		VariableElement::Vec::iterator it;
+		for (it = variableElementVec_.begin(); it != variableElementVec_.end(); it++) {
+			VariableElement::SPtr variableElement = *it;
+			std::string functionName = variableElement->functionName();
+			std::string fullName = variableElement->fullName();
 
 			ss << prefix << std::endl;
 			ss << prefix << "OpcUaVariant::SPtr " << std::endl;
-			ss << prefix << eventTypeName_ << "::" << propertyNameLower << "(void)" << std::endl;
+			ss << prefix << eventTypeName_ << "::" << functionName << "(void)" << std::endl;
 			ss << prefix << "{" << std::endl;
 			ss << prefix << "	OpcUaVariant::SPtr value;" << std::endl;
-			ss << prefix << "	eventVariables_.getValue(\"" << propertyNameLower << "\", value);" << std::endl;
+			ss << prefix << "	eventVariables_.getValue(\"" << fullName << "\", value);" << std::endl;
 			ss << prefix << "	return value;" << std::endl;
 			ss << prefix << "}" << std::endl;
-
 		}
 
 		sourceContent_ += ss.str();
@@ -837,61 +792,18 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		OpcUaQualifiedName browseName;
-		bool success;
-
-		InformationModelAccess ima;
-		std::vector<OpcUaNodeId> referenceTypeVec;
-		referenceTypeVec.push_back(OpcUaNodeId(46));
-		referenceTypeVec.push_back(OpcUaNodeId(47));
-		std::vector<OpcUaNodeId> childNodeIdVec;
-		std::vector<OpcUaNodeId>::iterator it;
-		ima.informationModel(informationModel_);
-		success = ima.getChildHierarchically(
-			eventTypeNode_,
-			referenceTypeVec,
-			childNodeIdVec
-		);
-		if (!success) {
-			Log(Error, "event properties error")
-				.parameter("EventType", eventTypeNodeId_);
-			return false;
-		}
-
-		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-
-			// get property node class
-			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
-			if (!propertyNodeClass) {
-				Log(Error, "property node class not exist in information model")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-
-			// use only variable class
-			NodeClassType nodeClassType;
-			propertyNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClassType_Variable) {
-				continue;
-			}
-
-			// get property class name
-			if (!propertyNodeClass->getBrowseName(browseName)) {
-				Log(Error, "property name not found in node")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-			std::string propertyName = browseName.name().toStdString();
-			std::string propertyNameLower = propertyName;
-			propertyNameLower[0] = boost::to_lower_copy(propertyNameLower.substr(0,1))[0];
+		VariableElement::Vec::iterator it;
+		for (it = variableElementVec_.begin(); it != variableElementVec_.end(); it++) {
+			VariableElement::SPtr variableElement = *it;
+			std::string fullName = variableElement->fullName();
+			std::string variableName = variableElement->functionName();
+			std::string functionName = variableElement->functionName();
 
 			ss << prefix << std::endl;
 			ss << prefix << "bool " << std::endl;
-			ss << prefix << eventTypeName_ << "::" << propertyNameLower << "(OpcUaVariant::SPtr& " << propertyNameLower << ")" << std::endl;
+			ss << prefix << eventTypeName_ << "::" << functionName << "(OpcUaVariant::SPtr& " << variableName << ")" << std::endl;
 			ss << prefix << "{" << std::endl;
-			ss << prefix << "	return eventVariables_.setValue(\"" << propertyName << "\", " << propertyNameLower << ");" << std::endl;
+			ss << prefix << "	return eventVariables_.setValue(\"" << fullName << "\", " << variableName << ");" << std::endl;
 			ss << prefix << "}" << std::endl;
 		}
 
