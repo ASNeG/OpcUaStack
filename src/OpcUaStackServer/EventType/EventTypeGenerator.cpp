@@ -35,7 +35,7 @@ namespace OpcUaStackServer
 	, nodeId_()
 	, browseName_()
 	, fullName_("")
-	, variableName_("")
+	, globalVariableName_("")
 	, functionName_("")
 	{
 	}
@@ -52,7 +52,7 @@ namespace OpcUaStackServer
 			.parameter("Prefix", prefix_)
 			.parameter("BrowseName", browseName_)
 			.parameter("FullName", fullName_)
-			.parameter("VariableName", variableName_)
+			.parameter("GlobalVariableName", globalVariableName_)
 			.parameter("FunctionName", functionName_);
 	}
 
@@ -105,15 +105,15 @@ namespace OpcUaStackServer
 	}
 
 	void
-	VariableElement::variableName(const std::string& variableName)
+	VariableElement::globalVariableName(const std::string& globalVariableName)
 	{
-		variableName_ = variableName;
+		globalVariableName_ = globalVariableName;
 	}
 
 	std::string&
-	VariableElement::variableName(void)
+	VariableElement::globalVariableName(void)
 	{
-		return variableName_;
+		return globalVariableName_;
 	}
 
    	void
@@ -375,8 +375,8 @@ namespace OpcUaStackServer
 			functionName[0] = boost::to_lower_copy(functionName.substr(0,1))[0];
 
 			// create variable name
-			std::string variableName = functionName;
-			variableName.append("_");
+			std::string globalVariableName = functionName;
+			globalVariableName.append("_");
 
 			// create new variable element
 			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
@@ -384,7 +384,7 @@ namespace OpcUaStackServer
 			variableElement->nodeId(*it);
 			variableElement->browseName(browseName);
 			variableElement->fullName(fullName);
-			variableElement->variableName(variableName);
+			variableElement->globalVariableName(globalVariableName);
 			variableElement->functionName(functionName);
 			variableElement->log();
 			variableElementVec_.push_back(variableElement);
@@ -796,14 +796,14 @@ namespace OpcUaStackServer
 		for (it = variableElementVec_.begin(); it != variableElementVec_.end(); it++) {
 			VariableElement::SPtr variableElement = *it;
 			std::string fullName = variableElement->fullName();
-			std::string variableName = variableElement->functionName();
+			std::string localVariableName = variableElement->functionName();
 			std::string functionName = variableElement->functionName();
 
 			ss << prefix << std::endl;
 			ss << prefix << "bool " << std::endl;
-			ss << prefix << eventTypeName_ << "::" << functionName << "(OpcUaVariant::SPtr& " << variableName << ")" << std::endl;
+			ss << prefix << eventTypeName_ << "::" << functionName << "(OpcUaVariant::SPtr& " << localVariableName << ")" << std::endl;
 			ss << prefix << "{" << std::endl;
-			ss << prefix << "	return eventVariables_.setValue(\"" << fullName << "\", " << variableName << ");" << std::endl;
+			ss << prefix << "	return eventVariables_.setValue(\"" << fullName << "\", " << localVariableName << ");" << std::endl;
 			ss << prefix << "}" << std::endl;
 		}
 

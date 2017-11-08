@@ -46,8 +46,8 @@ namespace OpcUaStackServer
     	OpcUaQualifiedName& browseName(void);
     	void fullName(const std::string& fullName);
     	std::string& fullName(void);
-    	void variableName(const std::string& variableName);
-    	std::string& variableName(void);
+    	void globalVariableName(const std::string& globalVariableName);
+    	std::string& globalVariableName(void);
     	void functionName(const std::string& functionName);
     	std::string& functionName(void);
 
@@ -56,7 +56,7 @@ namespace OpcUaStackServer
     	OpcUaNodeId nodeId_;
     	OpcUaQualifiedName browseName_;
     	std::string fullName_;
-    	std::string variableName_;
+    	std::string globalVariableName_;
     	std::string functionName_;
 	};
 
