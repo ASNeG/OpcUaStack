@@ -35,6 +35,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("LastSeverity_SourceTimestamp", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("Comment", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("Comment_SourceTimestamp", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2782));
         eventVariables_.namespaceIndex(0);
@@ -182,6 +183,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    ConditionType::getConditionType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     ConditionType::conditionClassId(OpcUaVariant::SPtr& conditionClassId)
     {
@@ -282,6 +291,12 @@ namespace OpcUaStackCore
     ConditionType::comment_SourceTimestamp(OpcUaVariant::SPtr& comment_SourceTimestamp)
     {
     	return eventVariables_.setValue("Comment_SourceTimestamp", comment_SourceTimestamp);
+    }
+    
+    bool 
+    ConditionType::setConditionType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

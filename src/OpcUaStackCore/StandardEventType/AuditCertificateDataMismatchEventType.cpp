@@ -20,6 +20,7 @@ namespace OpcUaStackCore
     {
         eventVariables_.registerEventVariable("InvalidHostname", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("InvalidUri", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2082));
         eventVariables_.namespaceIndex(0);
@@ -47,6 +48,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditCertificateDataMismatchEventType::getAuditCertificateDataMismatchEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditCertificateDataMismatchEventType::invalidHostname(OpcUaVariant::SPtr& invalidHostname)
     {
@@ -57,6 +66,12 @@ namespace OpcUaStackCore
     AuditCertificateDataMismatchEventType::invalidUri(OpcUaVariant::SPtr& invalidUri)
     {
     	return eventVariables_.setValue("InvalidUri", invalidUri);
+    }
+    
+    bool 
+    AuditCertificateDataMismatchEventType::setAuditCertificateDataMismatchEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

@@ -20,6 +20,7 @@ namespace OpcUaStackCore
     {
         eventVariables_.registerEventVariable("ReqTimes", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("OldValues", OpcUaBuildInType_OpcUaDataValue);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)3019));
         eventVariables_.namespaceIndex(0);
@@ -47,6 +48,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditHistoryAtTimeDeleteEventType::getAuditHistoryAtTimeDeleteEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditHistoryAtTimeDeleteEventType::reqTimes(OpcUaVariant::SPtr& reqTimes)
     {
@@ -57,6 +66,12 @@ namespace OpcUaStackCore
     AuditHistoryAtTimeDeleteEventType::oldValues(OpcUaVariant::SPtr& oldValues)
     {
     	return eventVariables_.setValue("OldValues", oldValues);
+    }
+    
+    bool 
+    AuditHistoryAtTimeDeleteEventType::setAuditHistoryAtTimeDeleteEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

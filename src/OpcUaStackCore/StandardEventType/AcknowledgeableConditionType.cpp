@@ -26,6 +26,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("ConfirmedState", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("ConfirmedState_Id", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("ConfirmedState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2881));
         eventVariables_.namespaceIndex(0);
@@ -101,6 +102,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::getAcknowledgeableConditionType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AcknowledgeableConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
     {
@@ -147,6 +156,12 @@ namespace OpcUaStackCore
     AcknowledgeableConditionType::confirmedState_TransitionTime(OpcUaVariant::SPtr& confirmedState_TransitionTime)
     {
     	return eventVariables_.setValue("ConfirmedState_TransitionTime", confirmedState_TransitionTime);
+    }
+    
+    bool 
+    AcknowledgeableConditionType::setAcknowledgeableConditionType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

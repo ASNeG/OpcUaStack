@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         SystemEventType(void);
         virtual ~SystemEventType(void);
+        bool setSystemEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getSystemEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

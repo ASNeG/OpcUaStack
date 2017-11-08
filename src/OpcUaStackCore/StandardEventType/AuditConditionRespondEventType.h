@@ -31,6 +31,9 @@ namespace OpcUaStackCore
         bool selectedResponse(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr selectedResponse(void);
         
+        bool setAuditConditionRespondEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditConditionRespondEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

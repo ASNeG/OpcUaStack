@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : AlarmConditionType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)10523));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     DiscreteAlarmType::~DiscreteAlarmType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    DiscreteAlarmType::getDiscreteAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    DiscreteAlarmType::setDiscreteAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

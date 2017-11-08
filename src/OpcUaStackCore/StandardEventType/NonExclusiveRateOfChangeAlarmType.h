@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         NonExclusiveRateOfChangeAlarmType(void);
         virtual ~NonExclusiveRateOfChangeAlarmType(void);
+        bool setNonExclusiveRateOfChangeAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getNonExclusiveRateOfChangeAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

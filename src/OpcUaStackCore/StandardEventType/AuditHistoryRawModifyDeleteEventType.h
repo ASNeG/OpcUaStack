@@ -40,6 +40,9 @@ namespace OpcUaStackCore
         bool oldValues(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr oldValues(void);
         
+        bool setAuditHistoryRawModifyDeleteEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditHistoryRawModifyDeleteEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

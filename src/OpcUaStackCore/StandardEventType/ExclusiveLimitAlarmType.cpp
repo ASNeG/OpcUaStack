@@ -20,6 +20,7 @@ namespace OpcUaStackCore
     {
         eventVariables_.registerEventVariable("ActiveState", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("ActiveState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)9341));
         eventVariables_.namespaceIndex(0);
@@ -47,6 +48,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    ExclusiveLimitAlarmType::getExclusiveLimitAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     ExclusiveLimitAlarmType::activeState(OpcUaVariant::SPtr& activeState)
     {
@@ -57,6 +66,12 @@ namespace OpcUaStackCore
     ExclusiveLimitAlarmType::activeState_Id(OpcUaVariant::SPtr& activeState_Id)
     {
     	return eventVariables_.setValue("ActiveState_Id", activeState_Id);
+    }
+    
+    bool 
+    ExclusiveLimitAlarmType::setExclusiveLimitAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

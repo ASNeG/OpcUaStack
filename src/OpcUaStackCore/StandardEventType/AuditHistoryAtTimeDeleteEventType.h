@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool oldValues(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr oldValues(void);
         
+        bool setAuditHistoryAtTimeDeleteEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditHistoryAtTimeDeleteEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         AuditCertificateMismatchEventType(void);
         virtual ~AuditCertificateMismatchEventType(void);
+        bool setAuditCertificateMismatchEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateMismatchEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

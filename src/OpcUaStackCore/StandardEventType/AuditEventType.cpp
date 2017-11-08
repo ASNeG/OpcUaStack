@@ -23,6 +23,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("ServerId", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("ClientAuditEntryId", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2052));
         eventVariables_.namespaceIndex(0);
@@ -74,6 +75,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditEventType::getAuditEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditEventType::actionTimeStamp(OpcUaVariant::SPtr& actionTimeStamp)
     {
@@ -102,6 +111,12 @@ namespace OpcUaStackCore
     AuditEventType::clientUserId(OpcUaVariant::SPtr& clientUserId)
     {
     	return eventVariables_.setValue("ClientUserId", clientUserId);
+    }
+    
+    bool 
+    AuditEventType::setAuditEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

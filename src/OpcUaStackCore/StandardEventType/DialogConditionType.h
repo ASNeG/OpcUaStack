@@ -61,6 +61,9 @@ namespace OpcUaStackCore
         bool dialogState_TransitionTime(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr dialogState_TransitionTime(void);
         
+        bool setDialogConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getDialogConditionType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

@@ -67,6 +67,9 @@ namespace OpcUaStackCore
         bool suppressedState_TransitionTime(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr suppressedState_TransitionTime(void);
         
+        bool setAlarmConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAlarmConditionType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

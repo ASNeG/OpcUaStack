@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("TransitionNumber", OpcUaBuildInType_OpcUaUInt32);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)11856));
         eventVariables_.namespaceIndex(0);
@@ -38,10 +39,24 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditProgramTransitionEventType::getAuditProgramTransitionEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditProgramTransitionEventType::transitionNumber(OpcUaVariant::SPtr& transitionNumber)
     {
     	return eventVariables_.setValue("TransitionNumber", transitionNumber);
+    }
+    
+    bool 
+    AuditProgramTransitionEventType::setAuditProgramTransitionEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

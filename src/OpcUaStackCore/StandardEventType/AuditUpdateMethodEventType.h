@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool inputArguments(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr inputArguments(void);
         
+        bool setAuditUpdateMethodEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditUpdateMethodEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

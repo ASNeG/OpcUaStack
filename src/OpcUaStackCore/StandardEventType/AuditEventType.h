@@ -43,6 +43,9 @@ namespace OpcUaStackCore
         bool clientUserId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr clientUserId(void);
         
+        bool setAuditEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

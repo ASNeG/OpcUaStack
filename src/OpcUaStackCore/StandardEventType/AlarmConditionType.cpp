@@ -31,6 +31,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("SuppressedState", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("SuppressedState_Id", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("SuppressedState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2915));
         eventVariables_.namespaceIndex(0);
@@ -146,6 +147,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AlarmConditionType::getAlarmConditionType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AlarmConditionType::inputNode(OpcUaVariant::SPtr& inputNode)
     {
@@ -222,6 +231,12 @@ namespace OpcUaStackCore
     AlarmConditionType::suppressedState_TransitionTime(OpcUaVariant::SPtr& suppressedState_TransitionTime)
     {
     	return eventVariables_.setValue("SuppressedState_TransitionTime", suppressedState_TransitionTime);
+    }
+    
+    bool 
+    AlarmConditionType::setAlarmConditionType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

@@ -20,6 +20,7 @@ namespace OpcUaStackCore
     {
         eventVariables_.registerEventVariable("OldStateId", OpcUaBuildInType_OpcUaVariant);
         eventVariables_.registerEventVariable("NewStateId", OpcUaBuildInType_OpcUaVariant);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2315));
         eventVariables_.namespaceIndex(0);
@@ -47,6 +48,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditUpdateStateEventType::getAuditUpdateStateEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditUpdateStateEventType::oldStateId(OpcUaVariant::SPtr& oldStateId)
     {
@@ -57,6 +66,12 @@ namespace OpcUaStackCore
     AuditUpdateStateEventType::newStateId(OpcUaVariant::SPtr& newStateId)
     {
     	return eventVariables_.setValue("NewStateId", newStateId);
+    }
+    
+    bool 
+    AuditUpdateStateEventType::setAuditUpdateStateEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

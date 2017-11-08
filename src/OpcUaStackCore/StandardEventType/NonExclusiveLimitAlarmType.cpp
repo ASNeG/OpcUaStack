@@ -32,6 +32,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("LowLowState", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("LowLowState_Id", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("LowLowState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)9906));
         eventVariables_.namespaceIndex(0);
@@ -155,6 +156,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    NonExclusiveLimitAlarmType::getNonExclusiveLimitAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     NonExclusiveLimitAlarmType::activeState(OpcUaVariant::SPtr& activeState)
     {
@@ -237,6 +246,12 @@ namespace OpcUaStackCore
     NonExclusiveLimitAlarmType::lowLowState_TransitionTime(OpcUaVariant::SPtr& lowLowState_TransitionTime)
     {
     	return eventVariables_.setValue("LowLowState_TransitionTime", lowLowState_TransitionTime);
+    }
+    
+    bool 
+    NonExclusiveLimitAlarmType::setNonExclusiveLimitAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

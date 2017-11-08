@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         AuditCertificateExpiredEventType(void);
         virtual ~AuditCertificateExpiredEventType(void);
+        bool setAuditCertificateExpiredEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateExpiredEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

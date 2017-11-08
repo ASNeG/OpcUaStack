@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         BaseModelChangeEventType(void);
         virtual ~BaseModelChangeEventType(void);
+        bool setBaseModelChangeEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getBaseModelChangeEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

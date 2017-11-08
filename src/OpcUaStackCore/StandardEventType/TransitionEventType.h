@@ -46,6 +46,9 @@ namespace OpcUaStackCore
         bool toState_Id(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr toState_Id(void);
         
+        bool setTransitionEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getTransitionEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

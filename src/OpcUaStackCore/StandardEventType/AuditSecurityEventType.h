@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         AuditSecurityEventType(void);
         virtual ~AuditSecurityEventType(void);
+        bool setAuditSecurityEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditSecurityEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

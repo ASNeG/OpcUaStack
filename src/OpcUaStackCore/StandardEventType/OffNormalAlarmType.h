@@ -31,6 +31,9 @@ namespace OpcUaStackCore
         bool normalState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr normalState(void);
         
+        bool setOffNormalAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getOffNormalAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

@@ -31,6 +31,9 @@ namespace OpcUaStackCore
         bool certificate(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr certificate(void);
         
+        bool setAuditCertificateEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

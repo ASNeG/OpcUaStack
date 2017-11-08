@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool newStateId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr newStateId(void);
         
+        bool setAuditUpdateStateEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditUpdateStateEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

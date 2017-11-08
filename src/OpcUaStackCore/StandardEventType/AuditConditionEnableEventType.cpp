@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : AuditConditionEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2803));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     AuditConditionEnableEventType::~AuditConditionEnableEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditConditionEnableEventType::getAuditConditionEnableEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    AuditConditionEnableEventType::setAuditConditionEnableEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

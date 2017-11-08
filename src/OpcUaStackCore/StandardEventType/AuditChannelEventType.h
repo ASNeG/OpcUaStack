@@ -31,6 +31,9 @@ namespace OpcUaStackCore
         bool secureChannelId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr secureChannelId(void);
         
+        bool setAuditChannelEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditChannelEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

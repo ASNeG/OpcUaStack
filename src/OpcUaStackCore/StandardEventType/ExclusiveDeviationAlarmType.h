@@ -31,6 +31,9 @@ namespace OpcUaStackCore
         bool setpointNode(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr setpointNode(void);
         
+        bool setExclusiveDeviationAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getExclusiveDeviationAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

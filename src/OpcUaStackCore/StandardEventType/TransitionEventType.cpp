@@ -24,6 +24,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("FromState_Id", OpcUaBuildInType_OpcUaVariant);
         eventVariables_.registerEventVariable("ToState", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("ToState_Id", OpcUaBuildInType_OpcUaVariant);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2311));
         eventVariables_.namespaceIndex(0);
@@ -83,6 +84,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    TransitionEventType::getTransitionEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     TransitionEventType::transition(OpcUaVariant::SPtr& transition)
     {
@@ -117,6 +126,12 @@ namespace OpcUaStackCore
     TransitionEventType::toState_Id(OpcUaVariant::SPtr& toState_Id)
     {
     	return eventVariables_.setValue("ToState_Id", toState_Id);
+    }
+    
+    bool 
+    TransitionEventType::setTransitionEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

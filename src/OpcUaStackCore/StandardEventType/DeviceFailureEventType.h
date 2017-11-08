@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         DeviceFailureEventType(void);
         virtual ~DeviceFailureEventType(void);
+        bool setDeviceFailureEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getDeviceFailureEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

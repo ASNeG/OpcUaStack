@@ -29,6 +29,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("DialogState", OpcUaBuildInType_OpcUaLocalizedText);
         eventVariables_.registerEventVariable("DialogState_Id", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("DialogState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2830));
         eventVariables_.namespaceIndex(0);
@@ -128,6 +129,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    DialogConditionType::getDialogConditionType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     DialogConditionType::prompt(OpcUaVariant::SPtr& prompt)
     {
@@ -192,6 +201,12 @@ namespace OpcUaStackCore
     DialogConditionType::dialogState_TransitionTime(OpcUaVariant::SPtr& dialogState_TransitionTime)
     {
     	return eventVariables_.setValue("DialogState_TransitionTime", dialogState_TransitionTime);
+    }
+    
+    bool 
+    DialogConditionType::setDialogConditionType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

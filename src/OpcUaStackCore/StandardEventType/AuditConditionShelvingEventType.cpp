@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("ShelvingTime", OpcUaBuildInType_OpcUaDuration);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)11093));
         eventVariables_.namespaceIndex(0);
@@ -38,10 +39,24 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditConditionShelvingEventType::getAuditConditionShelvingEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditConditionShelvingEventType::shelvingTime(OpcUaVariant::SPtr& shelvingTime)
     {
     	return eventVariables_.setValue("ShelvingTime", shelvingTime);
+    }
+    
+    bool 
+    AuditConditionShelvingEventType::setAuditConditionShelvingEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

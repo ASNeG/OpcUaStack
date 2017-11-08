@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool comment(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr comment(void);
         
+        bool setAuditConditionCommentEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditConditionCommentEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

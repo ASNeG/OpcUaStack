@@ -22,6 +22,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("HighLimit", OpcUaBuildInType_OpcUaDouble);
         eventVariables_.registerEventVariable("LowLimit", OpcUaBuildInType_OpcUaDouble);
         eventVariables_.registerEventVariable("LowLowLimit", OpcUaBuildInType_OpcUaDouble);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2955));
         eventVariables_.namespaceIndex(0);
@@ -65,6 +66,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    LimitAlarmType::getLimitAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     LimitAlarmType::highHighLimit(OpcUaVariant::SPtr& highHighLimit)
     {
@@ -87,6 +96,12 @@ namespace OpcUaStackCore
     LimitAlarmType::lowLowLimit(OpcUaVariant::SPtr& lowLowLimit)
     {
     	return eventVariables_.setValue("LowLowLimit", lowLowLimit);
+    }
+    
+    bool 
+    LimitAlarmType::setLimitAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

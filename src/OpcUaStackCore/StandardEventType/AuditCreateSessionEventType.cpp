@@ -22,6 +22,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("ClientCertificate", OpcUaBuildInType_OpcUaByteString);
         eventVariables_.registerEventVariable("ClientCertificateThumbprint", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("RevisedSessionTimeout", OpcUaBuildInType_OpcUaDuration);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2071));
         eventVariables_.namespaceIndex(0);
@@ -65,6 +66,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditCreateSessionEventType::getAuditCreateSessionEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditCreateSessionEventType::secureChannelId(OpcUaVariant::SPtr& secureChannelId)
     {
@@ -87,6 +96,12 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::revisedSessionTimeout(OpcUaVariant::SPtr& revisedSessionTimeout)
     {
     	return eventVariables_.setValue("RevisedSessionTimeout", revisedSessionTimeout);
+    }
+    
+    bool 
+    AuditCreateSessionEventType::setAuditCreateSessionEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

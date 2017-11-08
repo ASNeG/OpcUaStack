@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : OffNormalAlarmType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)11753));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     SystemOffNormalAlarmType::~SystemOffNormalAlarmType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    SystemOffNormalAlarmType::getSystemOffNormalAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    SystemOffNormalAlarmType::setSystemOffNormalAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

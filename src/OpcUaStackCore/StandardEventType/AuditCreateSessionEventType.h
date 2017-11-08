@@ -40,6 +40,9 @@ namespace OpcUaStackCore
         bool revisedSessionTimeout(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr revisedSessionTimeout(void);
         
+        bool setAuditCreateSessionEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCreateSessionEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

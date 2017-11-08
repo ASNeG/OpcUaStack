@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         SystemOffNormalAlarmType(void);
         virtual ~SystemOffNormalAlarmType(void);
+        bool setSystemOffNormalAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getSystemOffNormalAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

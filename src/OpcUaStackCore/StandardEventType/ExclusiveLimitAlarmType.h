@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool activeState_Id(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr activeState_Id(void);
         
+        bool setExclusiveLimitAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getExclusiveLimitAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

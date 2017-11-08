@@ -31,6 +31,9 @@ namespace OpcUaStackCore
         bool requestHandle(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr requestHandle(void);
         
+        bool setAuditCancelEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCancelEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

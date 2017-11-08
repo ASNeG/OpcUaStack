@@ -79,6 +79,9 @@ namespace OpcUaStackCore
         bool comment_SourceTimestamp(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr comment_SourceTimestamp(void);
         
+        bool setConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getConditionType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

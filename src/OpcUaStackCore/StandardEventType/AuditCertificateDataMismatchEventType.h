@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool invalidUri(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr invalidUri(void);
         
+        bool setAuditCertificateDataMismatchEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateDataMismatchEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

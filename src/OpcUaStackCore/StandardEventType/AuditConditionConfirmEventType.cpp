@@ -20,6 +20,7 @@ namespace OpcUaStackCore
     {
         eventVariables_.registerEventVariable("EventId", OpcUaBuildInType_OpcUaByteString);
         eventVariables_.registerEventVariable("Comment", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)8961));
         eventVariables_.namespaceIndex(0);
@@ -47,6 +48,14 @@ namespace OpcUaStackCore
     	return value;
     }
     
+    OpcUaVariant::SPtr 
+    AuditConditionConfirmEventType::getAuditConditionConfirmEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
     bool 
     AuditConditionConfirmEventType::eventId(OpcUaVariant::SPtr& eventId)
     {
@@ -57,6 +66,12 @@ namespace OpcUaStackCore
     AuditConditionConfirmEventType::comment(OpcUaVariant::SPtr& comment)
     {
     	return eventVariables_.setValue("Comment", comment);
+    }
+    
+    bool 
+    AuditConditionConfirmEventType::setAuditConditionConfirmEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

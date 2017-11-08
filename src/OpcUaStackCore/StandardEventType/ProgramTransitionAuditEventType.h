@@ -34,6 +34,9 @@ namespace OpcUaStackCore
         bool transition_Id(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr transition_Id(void);
         
+        bool setProgramTransitionAuditEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getProgramTransitionAuditEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

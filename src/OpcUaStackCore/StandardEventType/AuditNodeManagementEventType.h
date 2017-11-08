@@ -28,6 +28,9 @@ namespace OpcUaStackCore
     
         AuditNodeManagementEventType(void);
         virtual ~AuditNodeManagementEventType(void);
+        bool setAuditNodeManagementEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditNodeManagementEventType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

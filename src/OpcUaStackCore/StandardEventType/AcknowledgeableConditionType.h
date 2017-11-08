@@ -52,6 +52,9 @@ namespace OpcUaStackCore
         bool confirmedState_TransitionTime(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr confirmedState_TransitionTime(void);
         
+        bool setAcknowledgeableConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAcknowledgeableConditionType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

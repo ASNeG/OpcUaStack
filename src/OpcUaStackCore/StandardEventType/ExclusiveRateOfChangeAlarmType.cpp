@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : ExclusiveLimitAlarmType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)9623));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     ExclusiveRateOfChangeAlarmType::~ExclusiveRateOfChangeAlarmType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    ExclusiveRateOfChangeAlarmType::getExclusiveRateOfChangeAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    ExclusiveRateOfChangeAlarmType::setExclusiveRateOfChangeAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

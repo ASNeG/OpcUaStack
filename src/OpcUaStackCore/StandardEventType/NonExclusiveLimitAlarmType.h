@@ -70,6 +70,9 @@ namespace OpcUaStackCore
         bool lowLowState_TransitionTime(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr lowLowState_TransitionTime(void);
         
+        bool setNonExclusiveLimitAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getNonExclusiveLimitAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);

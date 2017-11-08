@@ -40,6 +40,9 @@ namespace OpcUaStackCore
         bool lowLowLimit(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr lowLowLimit(void);
         
+        bool setLimitAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getLimitAlarmType(void);
+        
         
         //- EventBase interface
         virtual void mapNamespaceUri(void);
