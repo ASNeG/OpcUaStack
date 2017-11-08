@@ -48,6 +48,8 @@ namespace OpcUaStackServer
     	std::string& fullName(void);
     	void variableName(const std::string& variableName);
     	std::string& variableName(void);
+    	void functionName(const std::string& functionName);
+    	std::string& functionName(void);
 
 	  private:
     	std::string prefix_;
@@ -55,6 +57,7 @@ namespace OpcUaStackServer
     	OpcUaQualifiedName browseName_;
     	std::string fullName_;
     	std::string variableName_;
+    	std::string functionName_;
 	};
 
 	class DLLEXPORT EventTypeGenerator

@@ -36,6 +36,7 @@ namespace OpcUaStackServer
 	, browseName_()
 	, fullName_("")
 	, variableName_("")
+	, functionName_("")
 	{
 	}
 
@@ -51,7 +52,8 @@ namespace OpcUaStackServer
 			.parameter("Prefix", prefix_)
 			.parameter("BrowseName", browseName_)
 			.parameter("FullName", fullName_)
-			.parameter("VariableName", variableName_);
+			.parameter("VariableName", variableName_)
+			.parameter("FunctionName", functionName_);
 	}
 
 	void
@@ -113,6 +115,18 @@ namespace OpcUaStackServer
 	{
 		return variableName_;
 	}
+
+   	void
+	VariableElement::functionName(const std::string& functionName)
+   	{
+   		functionName_ = functionName;
+   	}
+
+   	std::string&
+	VariableElement::functionName(void)
+   	{
+   		return functionName_;
+   	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -356,10 +370,13 @@ namespace OpcUaStackServer
 			}
 			fullName.append(browseName.toString());
 
-			// create variable name
-			std::string variableName = fullName;
-			variableName[0] = boost::to_lower_copy(variableName.substr(0,1))[0];
+			// create function name
+			std::string functionName = fullName;
+			functionName[0] = boost::to_lower_copy(functionName.substr(0,1))[0];
 
+			// create variable name
+			std::string variableName = functionName;
+			variableName.append("_");
 
 			// create new variable element
 			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
@@ -368,6 +385,7 @@ namespace OpcUaStackServer
 			variableElement->browseName(browseName);
 			variableElement->fullName(fullName);
 			variableElement->variableName(variableName);
+			variableElement->functionName(functionName);
 			variableElement->log();
 			variableElementVec_.push_back(variableElement);
 
