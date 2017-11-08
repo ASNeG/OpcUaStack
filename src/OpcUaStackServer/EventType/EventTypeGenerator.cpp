@@ -527,61 +527,18 @@ namespace OpcUaStackServer
 	bool
 	EventTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
 	{
-		OpcUaQualifiedName browseName;
-		bool success;
 		std::stringstream ss;
 
-		InformationModelAccess ima;
-		std::vector<OpcUaNodeId> referenceTypeVec;
-		referenceTypeVec.push_back(OpcUaNodeId(46));
-		referenceTypeVec.push_back(OpcUaNodeId(47));
-		std::vector<OpcUaNodeId> childNodeIdVec;
-		std::vector<OpcUaNodeId>::iterator it;
-		ima.informationModel(informationModel_);
-		success = ima.getChildHierarchically(
-			eventTypeNode_,
-			referenceTypeVec,
-			childNodeIdVec
-		);
-		if (!success) {
-			Log(Error, "event properties error")
-				.parameter("EventType", eventTypeNodeId_);
-			return false;
-		}
+		VariableElement::Vec::iterator it;
+		for (it = variableElementVec_.begin(); it != variableElementVec_.end(); it++) {
+			VariableElement::SPtr variableElement = *it;
+			std::string functionName = variableElement->functionName();
 
-		ss << prefix << std::endl;
-		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-
-			// get property node class
-			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
-			if (!propertyNodeClass) {
-				Log(Error, "property node class not exist in information model")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-
-			// use only variable class
-			NodeClassType nodeClassType;
-			propertyNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClassType_Variable) {
-				continue;
-			}
-
-			// get property class name
-			if (!propertyNodeClass->getBrowseName(browseName)) {
-				Log(Error, "property name not found in node")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-			std::string propertyName = browseName.name().toStdString();
-			propertyName[0] = boost::to_lower_copy(propertyName.substr(0,1))[0];
-
-			ss << prefix << "bool " << propertyName << "(OpcUaVariant::SPtr& variable);" << std::endl;
-			ss << prefix << "OpcUaVariant::SPtr " << propertyName << "(void);" << std::endl;
+			ss << prefix << "bool " << functionName << "(OpcUaVariant::SPtr& variable);" << std::endl;
+			ss << prefix << "OpcUaVariant::SPtr " << functionName << "(void);" << std::endl;
 			ss << prefix << std::endl;
 		}
+
 		ss << prefix << std::endl;
 		ss << prefix << "//- EventBase interface" << std::endl;
 		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
