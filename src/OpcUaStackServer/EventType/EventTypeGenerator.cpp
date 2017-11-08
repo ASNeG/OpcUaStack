@@ -36,6 +36,7 @@ namespace OpcUaStackServer
 	, browseName_()
 	, fullName_("")
 	, globalVariableName_("")
+	, localVariableName_("")
 	, functionName_("")
 	{
 	}
@@ -53,6 +54,7 @@ namespace OpcUaStackServer
 			.parameter("BrowseName", browseName_)
 			.parameter("FullName", fullName_)
 			.parameter("GlobalVariableName", globalVariableName_)
+			.parameter("LocalVariableName", localVariableName_)
 			.parameter("FunctionName", functionName_);
 	}
 
@@ -114,6 +116,18 @@ namespace OpcUaStackServer
 	VariableElement::globalVariableName(void)
 	{
 		return globalVariableName_;
+	}
+
+	void
+	VariableElement::localVariableName(const std::string& localVariableName)
+	{
+		localVariableName_ = localVariableName;
+	}
+
+	std::string&
+	VariableElement::localVariableName(void)
+	{
+		return localVariableName_;
 	}
 
    	void
@@ -374,9 +388,12 @@ namespace OpcUaStackServer
 			std::string functionName = fullName;
 			functionName[0] = boost::to_lower_copy(functionName.substr(0,1))[0];
 
-			// create variable name
+			// create global variable name
 			std::string globalVariableName = functionName;
 			globalVariableName.append("_");
+
+			// create local variable name
+			std::string localVariableName = functionName;
 
 			// create new variable element
 			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
@@ -385,6 +402,7 @@ namespace OpcUaStackServer
 			variableElement->browseName(browseName);
 			variableElement->fullName(fullName);
 			variableElement->globalVariableName(globalVariableName);
+			variableElement->localVariableName(localVariableName);
 			variableElement->functionName(functionName);
 			variableElement->log();
 			variableElementVec_.push_back(variableElement);
@@ -796,7 +814,7 @@ namespace OpcUaStackServer
 		for (it = variableElementVec_.begin(); it != variableElementVec_.end(); it++) {
 			VariableElement::SPtr variableElement = *it;
 			std::string fullName = variableElement->fullName();
-			std::string localVariableName = variableElement->functionName();
+			std::string localVariableName = variableElement->localVariableName();
 			std::string functionName = variableElement->functionName();
 
 			ss << prefix << std::endl;

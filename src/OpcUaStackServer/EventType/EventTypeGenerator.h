@@ -48,6 +48,8 @@ namespace OpcUaStackServer
     	std::string& fullName(void);
     	void globalVariableName(const std::string& globalVariableName);
     	std::string& globalVariableName(void);
+    	void localVariableName(const std::string& localVariableName);
+    	std::string& localVariableName(void);
     	void functionName(const std::string& functionName);
     	std::string& functionName(void);
 
@@ -57,6 +59,7 @@ namespace OpcUaStackServer
     	OpcUaQualifiedName browseName_;
     	std::string fullName_;
     	std::string globalVariableName_;
+    	std::string localVariableName_;
     	std::string functionName_;
 	};
 
