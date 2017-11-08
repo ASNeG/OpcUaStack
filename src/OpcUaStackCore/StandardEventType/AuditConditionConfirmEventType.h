@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditConditionConfirmEventType(void);
         virtual ~AuditConditionConfirmEventType(void);
-        
         bool eventId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr eventId(void);
         

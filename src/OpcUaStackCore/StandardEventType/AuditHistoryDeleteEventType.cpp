@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditHistoryDeleteEventType::updatedNode(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("updatedNode", value);
+    	eventVariables_.getValue("UpdatedNode", value);
     	return value;
     }
     

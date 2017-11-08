@@ -35,7 +35,7 @@ namespace OpcUaStackCore
     AuditUpdateMethodEventType::methodId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("methodId", value);
+    	eventVariables_.getValue("MethodId", value);
     	return value;
     }
     
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
     AuditUpdateMethodEventType::inputArguments(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("inputArguments", value);
+    	eventVariables_.getValue("InputArguments", value);
     	return value;
     }
     

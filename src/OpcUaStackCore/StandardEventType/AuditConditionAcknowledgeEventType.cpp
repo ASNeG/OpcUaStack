@@ -35,7 +35,7 @@ namespace OpcUaStackCore
     AuditConditionAcknowledgeEventType::eventId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("eventId", value);
+    	eventVariables_.getValue("EventId", value);
     	return value;
     }
     
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
     AuditConditionAcknowledgeEventType::comment(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("comment", value);
+    	eventVariables_.getValue("Comment", value);
     	return value;
     }
     

@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditHistoryRawModifyDeleteEventType(void);
         virtual ~AuditHistoryRawModifyDeleteEventType(void);
-        
         bool isDeleteModified(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr isDeleteModified(void);
         

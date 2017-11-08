@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditHistoryAtTimeDeleteEventType(void);
         virtual ~AuditHistoryAtTimeDeleteEventType(void);
-        
         bool reqTimes(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr reqTimes(void);
         

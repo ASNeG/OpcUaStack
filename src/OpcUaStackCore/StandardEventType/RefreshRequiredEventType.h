@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         RefreshRequiredEventType(void);
         virtual ~RefreshRequiredEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

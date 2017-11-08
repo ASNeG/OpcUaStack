@@ -28,21 +28,47 @@ namespace OpcUaStackCore
     
         NonExclusiveLimitAlarmType(void);
         virtual ~NonExclusiveLimitAlarmType(void);
-        
         bool activeState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr activeState(void);
+        
+        bool activeState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState_Id(void);
         
         bool highHighState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr highHighState(void);
         
+        bool highHighState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr highHighState_Id(void);
+        
+        bool highHighState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr highHighState_TransitionTime(void);
+        
         bool highState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr highState(void);
+        
+        bool highState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr highState_Id(void);
+        
+        bool highState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr highState_TransitionTime(void);
         
         bool lowState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr lowState(void);
         
+        bool lowState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lowState_Id(void);
+        
+        bool lowState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lowState_TransitionTime(void);
+        
         bool lowLowState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr lowLowState(void);
+        
+        bool lowLowState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lowLowState_Id(void);
+        
+        bool lowLowState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lowLowState_TransitionTime(void);
         
         
         //- EventBase interface

@@ -35,7 +35,7 @@ namespace OpcUaStackCore
     AuditHistoryAtTimeDeleteEventType::reqTimes(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("reqTimes", value);
+    	eventVariables_.getValue("ReqTimes", value);
     	return value;
     }
     
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
     AuditHistoryAtTimeDeleteEventType::oldValues(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("oldValues", value);
+    	eventVariables_.getValue("OldValues", value);
     	return value;
     }
     

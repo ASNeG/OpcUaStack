@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditUpdateStateEventType(void);
         virtual ~AuditUpdateStateEventType(void);
-        
         bool oldStateId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr oldStateId(void);
         

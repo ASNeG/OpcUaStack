@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditConditionRespondEventType(void);
         virtual ~AuditConditionRespondEventType(void);
-        
         bool selectedResponse(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr selectedResponse(void);
         

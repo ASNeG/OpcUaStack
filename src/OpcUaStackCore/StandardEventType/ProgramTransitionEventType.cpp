@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     ProgramTransitionEventType::intermediateResult(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("intermediateResult", value);
+    	eventVariables_.getValue("IntermediateResult", value);
     	return value;
     }
     

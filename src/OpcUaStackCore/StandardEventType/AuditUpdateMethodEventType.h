@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditUpdateMethodEventType(void);
         virtual ~AuditUpdateMethodEventType(void);
-        
         bool methodId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr methodId(void);
         

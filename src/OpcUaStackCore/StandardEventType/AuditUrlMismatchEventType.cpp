@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditUrlMismatchEventType::endpointUrl(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("endpointUrl", value);
+    	eventVariables_.getValue("EndpointUrl", value);
     	return value;
     }
     

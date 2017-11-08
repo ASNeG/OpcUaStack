@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditCancelEventType::requestHandle(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("requestHandle", value);
+    	eventVariables_.getValue("RequestHandle", value);
     	return value;
     }
     

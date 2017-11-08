@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         ProgressEventType(void);
         virtual ~ProgressEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

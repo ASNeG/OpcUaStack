@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         AuditCertificateRevokedEventType(void);
         virtual ~AuditCertificateRevokedEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

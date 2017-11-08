@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     OffNormalAlarmType::normalState(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("normalState", value);
+    	eventVariables_.getValue("NormalState", value);
     	return value;
     }
     

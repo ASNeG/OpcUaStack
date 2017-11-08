@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditEventType(void);
         virtual ~AuditEventType(void);
-        
         bool actionTimeStamp(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr actionTimeStamp(void);
         

@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditSessionEventType(void);
         virtual ~AuditSessionEventType(void);
-        
         bool sessionId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr sessionId(void);
         

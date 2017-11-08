@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         NonExclusiveDeviationAlarmType(void);
         virtual ~NonExclusiveDeviationAlarmType(void);
-        
         bool setpointNode(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr setpointNode(void);
         

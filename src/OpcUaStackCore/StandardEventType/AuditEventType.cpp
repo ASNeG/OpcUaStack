@@ -38,7 +38,7 @@ namespace OpcUaStackCore
     AuditEventType::actionTimeStamp(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("actionTimeStamp", value);
+    	eventVariables_.getValue("ActionTimeStamp", value);
     	return value;
     }
     
@@ -46,7 +46,7 @@ namespace OpcUaStackCore
     AuditEventType::status(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("status", value);
+    	eventVariables_.getValue("Status", value);
     	return value;
     }
     
@@ -54,7 +54,7 @@ namespace OpcUaStackCore
     AuditEventType::serverId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("serverId", value);
+    	eventVariables_.getValue("ServerId", value);
     	return value;
     }
     
@@ -62,7 +62,7 @@ namespace OpcUaStackCore
     AuditEventType::clientAuditEntryId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientAuditEntryId", value);
+    	eventVariables_.getValue("ClientAuditEntryId", value);
     	return value;
     }
     
@@ -70,7 +70,7 @@ namespace OpcUaStackCore
     AuditEventType::clientUserId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientUserId", value);
+    	eventVariables_.getValue("ClientUserId", value);
     	return value;
     }
     

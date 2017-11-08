@@ -35,7 +35,7 @@ namespace OpcUaStackCore
     AuditUpdateStateEventType::oldStateId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("oldStateId", value);
+    	eventVariables_.getValue("OldStateId", value);
     	return value;
     }
     
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
     AuditUpdateStateEventType::newStateId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("newStateId", value);
+    	eventVariables_.getValue("NewStateId", value);
     	return value;
     }
     

@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditChannelEventType::secureChannelId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("secureChannelId", value);
+    	eventVariables_.getValue("SecureChannelId", value);
     	return value;
     }
     

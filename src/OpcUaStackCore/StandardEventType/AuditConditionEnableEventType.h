@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         AuditConditionEnableEventType(void);
         virtual ~AuditConditionEnableEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

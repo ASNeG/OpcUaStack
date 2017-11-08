@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         SystemOffNormalAlarmType(void);
         virtual ~SystemOffNormalAlarmType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

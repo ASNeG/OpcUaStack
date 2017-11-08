@@ -19,8 +19,13 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("EnabledState_Id", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("AckedState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("AckedState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("AckedState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("ConfirmedState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ConfirmedState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("ConfirmedState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2881));
         eventVariables_.namespaceIndex(0);
@@ -36,7 +41,15 @@ namespace OpcUaStackCore
     AcknowledgeableConditionType::enabledState(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("enabledState", value);
+    	eventVariables_.getValue("EnabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::enabledState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_Id", value);
     	return value;
     }
     
@@ -44,7 +57,23 @@ namespace OpcUaStackCore
     AcknowledgeableConditionType::ackedState(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("ackedState", value);
+    	eventVariables_.getValue("AckedState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::ackedState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("AckedState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::ackedState_TransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("AckedState_TransitionTime", value);
     	return value;
     }
     
@@ -52,7 +81,23 @@ namespace OpcUaStackCore
     AcknowledgeableConditionType::confirmedState(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("confirmedState", value);
+    	eventVariables_.getValue("ConfirmedState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::confirmedState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ConfirmedState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AcknowledgeableConditionType::confirmedState_TransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ConfirmedState_TransitionTime", value);
     	return value;
     }
     
@@ -63,15 +108,45 @@ namespace OpcUaStackCore
     }
     
     bool 
+    AcknowledgeableConditionType::enabledState_Id(OpcUaVariant::SPtr& enabledState_Id)
+    {
+    	return eventVariables_.setValue("EnabledState_Id", enabledState_Id);
+    }
+    
+    bool 
     AcknowledgeableConditionType::ackedState(OpcUaVariant::SPtr& ackedState)
     {
     	return eventVariables_.setValue("AckedState", ackedState);
     }
     
     bool 
+    AcknowledgeableConditionType::ackedState_Id(OpcUaVariant::SPtr& ackedState_Id)
+    {
+    	return eventVariables_.setValue("AckedState_Id", ackedState_Id);
+    }
+    
+    bool 
+    AcknowledgeableConditionType::ackedState_TransitionTime(OpcUaVariant::SPtr& ackedState_TransitionTime)
+    {
+    	return eventVariables_.setValue("AckedState_TransitionTime", ackedState_TransitionTime);
+    }
+    
+    bool 
     AcknowledgeableConditionType::confirmedState(OpcUaVariant::SPtr& confirmedState)
     {
     	return eventVariables_.setValue("ConfirmedState", confirmedState);
+    }
+    
+    bool 
+    AcknowledgeableConditionType::confirmedState_Id(OpcUaVariant::SPtr& confirmedState_Id)
+    {
+    	return eventVariables_.setValue("ConfirmedState_Id", confirmedState_Id);
+    }
+    
+    bool 
+    AcknowledgeableConditionType::confirmedState_TransitionTime(OpcUaVariant::SPtr& confirmedState_TransitionTime)
+    {
+    	return eventVariables_.setValue("ConfirmedState_TransitionTime", confirmedState_TransitionTime);
     }
     
     void

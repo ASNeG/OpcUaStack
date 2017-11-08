@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         OffNormalAlarmType(void);
         virtual ~OffNormalAlarmType(void);
-        
         bool normalState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr normalState(void);
         

@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditHistoryUpdateEventType::parameterDataTypeId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("parameterDataTypeId", value);
+    	eventVariables_.getValue("ParameterDataTypeId", value);
     	return value;
     }
     

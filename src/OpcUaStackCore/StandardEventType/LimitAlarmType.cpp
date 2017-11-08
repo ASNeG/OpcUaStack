@@ -37,7 +37,7 @@ namespace OpcUaStackCore
     LimitAlarmType::highHighLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("highHighLimit", value);
+    	eventVariables_.getValue("HighHighLimit", value);
     	return value;
     }
     
@@ -45,7 +45,7 @@ namespace OpcUaStackCore
     LimitAlarmType::highLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("highLimit", value);
+    	eventVariables_.getValue("HighLimit", value);
     	return value;
     }
     
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
     LimitAlarmType::lowLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("lowLimit", value);
+    	eventVariables_.getValue("LowLimit", value);
     	return value;
     }
     
@@ -61,7 +61,7 @@ namespace OpcUaStackCore
     LimitAlarmType::lowLowLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("lowLowLimit", value);
+    	eventVariables_.getValue("LowLowLimit", value);
     	return value;
     }
     

@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditConditionShelvingEventType::shelvingTime(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("shelvingTime", value);
+    	eventVariables_.getValue("ShelvingTime", value);
     	return value;
     }
     

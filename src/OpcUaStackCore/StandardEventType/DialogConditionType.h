@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         DialogConditionType(void);
         virtual ~DialogConditionType(void);
-        
         bool prompt(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr prompt(void);
         
@@ -50,8 +49,17 @@ namespace OpcUaStackCore
         bool enabledState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr enabledState(void);
         
+        bool enabledState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_Id(void);
+        
         bool dialogState(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr dialogState(void);
+        
+        bool dialogState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr dialogState_Id(void);
+        
+        bool dialogState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr dialogState_TransitionTime(void);
         
         
         //- EventBase interface

@@ -37,7 +37,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::secureChannelId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("secureChannelId", value);
+    	eventVariables_.getValue("SecureChannelId", value);
     	return value;
     }
     
@@ -45,7 +45,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::clientCertificate(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientCertificate", value);
+    	eventVariables_.getValue("ClientCertificate", value);
     	return value;
     }
     
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::clientCertificateThumbprint(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientCertificateThumbprint", value);
+    	eventVariables_.getValue("ClientCertificateThumbprint", value);
     	return value;
     }
     
@@ -61,7 +61,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::revisedSessionTimeout(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("revisedSessionTimeout", value);
+    	eventVariables_.getValue("RevisedSessionTimeout", value);
     	return value;
     }
     

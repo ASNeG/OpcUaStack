@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditCertificateEventType(void);
         virtual ~AuditCertificateEventType(void);
-        
         bool certificate(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr certificate(void);
         

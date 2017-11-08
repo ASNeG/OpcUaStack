@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditConditionShelvingEventType(void);
         virtual ~AuditConditionShelvingEventType(void);
-        
         bool shelvingTime(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr shelvingTime(void);
         

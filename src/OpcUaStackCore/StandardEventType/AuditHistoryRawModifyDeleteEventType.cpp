@@ -37,7 +37,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::isDeleteModified(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("isDeleteModified", value);
+    	eventVariables_.getValue("IsDeleteModified", value);
     	return value;
     }
     
@@ -45,7 +45,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::startTime(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("startTime", value);
+    	eventVariables_.getValue("StartTime", value);
     	return value;
     }
     
@@ -53,7 +53,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::endTime(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("endTime", value);
+    	eventVariables_.getValue("EndTime", value);
     	return value;
     }
     
@@ -61,7 +61,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::oldValues(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("oldValues", value);
+    	eventVariables_.getValue("OldValues", value);
     	return value;
     }
     

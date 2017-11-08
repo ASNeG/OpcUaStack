@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     ExclusiveDeviationAlarmType::setpointNode(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("setpointNode", value);
+    	eventVariables_.getValue("SetpointNode", value);
     	return value;
     }
     

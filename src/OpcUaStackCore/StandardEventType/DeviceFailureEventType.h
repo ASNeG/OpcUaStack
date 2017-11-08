@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         DeviceFailureEventType(void);
         virtual ~DeviceFailureEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

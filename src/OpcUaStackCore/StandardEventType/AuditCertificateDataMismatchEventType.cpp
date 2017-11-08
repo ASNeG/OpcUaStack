@@ -35,7 +35,7 @@ namespace OpcUaStackCore
     AuditCertificateDataMismatchEventType::invalidHostname(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("invalidHostname", value);
+    	eventVariables_.getValue("InvalidHostname", value);
     	return value;
     }
     
@@ -43,7 +43,7 @@ namespace OpcUaStackCore
     AuditCertificateDataMismatchEventType::invalidUri(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("invalidUri", value);
+    	eventVariables_.getValue("InvalidUri", value);
     	return value;
     }
     

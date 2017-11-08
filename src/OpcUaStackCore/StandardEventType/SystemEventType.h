@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         SystemEventType(void);
         virtual ~SystemEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

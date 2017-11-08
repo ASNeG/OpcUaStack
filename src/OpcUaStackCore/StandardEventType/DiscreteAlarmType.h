@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         DiscreteAlarmType(void);
         virtual ~DiscreteAlarmType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

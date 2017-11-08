@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditCertificateDataMismatchEventType(void);
         virtual ~AuditCertificateDataMismatchEventType(void);
-        
         bool invalidHostname(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr invalidHostname(void);
         

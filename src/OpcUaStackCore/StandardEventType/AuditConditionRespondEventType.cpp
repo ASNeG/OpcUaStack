@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditConditionRespondEventType::selectedResponse(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("selectedResponse", value);
+    	eventVariables_.getValue("SelectedResponse", value);
     	return value;
     }
     

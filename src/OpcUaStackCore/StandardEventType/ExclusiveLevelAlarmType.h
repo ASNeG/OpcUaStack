@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         ExclusiveLevelAlarmType(void);
         virtual ~ExclusiveLevelAlarmType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

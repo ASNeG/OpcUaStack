@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         EventQueueOverflowEventType(void);
         virtual ~EventQueueOverflowEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

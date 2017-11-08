@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         TripAlarmType(void);
         virtual ~TripAlarmType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

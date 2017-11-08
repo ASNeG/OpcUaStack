@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         AuditCertificateInvalidEventType(void);
         virtual ~AuditCertificateInvalidEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

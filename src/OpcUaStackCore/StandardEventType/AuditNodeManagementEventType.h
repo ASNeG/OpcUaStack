@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         AuditNodeManagementEventType(void);
         virtual ~AuditNodeManagementEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         NonExclusiveRateOfChangeAlarmType(void);
         virtual ~NonExclusiveRateOfChangeAlarmType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

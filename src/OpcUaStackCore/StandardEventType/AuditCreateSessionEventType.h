@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditCreateSessionEventType(void);
         virtual ~AuditCreateSessionEventType(void);
-        
         bool secureChannelId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr secureChannelId(void);
         

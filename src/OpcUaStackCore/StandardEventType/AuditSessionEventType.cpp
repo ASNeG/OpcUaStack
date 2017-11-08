@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditSessionEventType::sessionId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("sessionId", value);
+    	eventVariables_.getValue("SessionId", value);
     	return value;
     }
     

@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         LimitAlarmType(void);
         virtual ~LimitAlarmType(void);
-        
         bool highHighLimit(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr highHighLimit(void);
         

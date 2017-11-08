@@ -25,9 +25,16 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("Retain", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("EnabledState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("EnabledState_EffectiveDisplayName", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("EnabledState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EnabledState_EffectiveTransitionTime", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("Quality", OpcUaBuildInType_OpcUaStatusCode);
+        eventVariables_.registerEventVariable("Quality_SourceTimestamp", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("LastSeverity", OpcUaBuildInType_OpcUaUInt16);
+        eventVariables_.registerEventVariable("LastSeverity_SourceTimestamp", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("Comment", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("Comment_SourceTimestamp", OpcUaBuildInType_OpcUaUtcTime);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2782));
         eventVariables_.namespaceIndex(0);
@@ -43,7 +50,7 @@ namespace OpcUaStackCore
     ConditionType::conditionClassId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("conditionClassId", value);
+    	eventVariables_.getValue("ConditionClassId", value);
     	return value;
     }
     
@@ -51,7 +58,7 @@ namespace OpcUaStackCore
     ConditionType::conditionClassName(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("conditionClassName", value);
+    	eventVariables_.getValue("ConditionClassName", value);
     	return value;
     }
     
@@ -59,7 +66,7 @@ namespace OpcUaStackCore
     ConditionType::conditionName(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("conditionName", value);
+    	eventVariables_.getValue("ConditionName", value);
     	return value;
     }
     
@@ -67,7 +74,7 @@ namespace OpcUaStackCore
     ConditionType::branchId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("branchId", value);
+    	eventVariables_.getValue("BranchId", value);
     	return value;
     }
     
@@ -75,7 +82,7 @@ namespace OpcUaStackCore
     ConditionType::retain(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("retain", value);
+    	eventVariables_.getValue("Retain", value);
     	return value;
     }
     
@@ -83,7 +90,7 @@ namespace OpcUaStackCore
     ConditionType::clientUserId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientUserId", value);
+    	eventVariables_.getValue("ClientUserId", value);
     	return value;
     }
     
@@ -91,7 +98,39 @@ namespace OpcUaStackCore
     ConditionType::enabledState(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("enabledState", value);
+    	eventVariables_.getValue("EnabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::enabledState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::enabledState_EffectiveDisplayName(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_EffectiveDisplayName", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::enabledState_TransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_TransitionTime", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::enabledState_EffectiveTransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_EffectiveTransitionTime", value);
     	return value;
     }
     
@@ -99,7 +138,15 @@ namespace OpcUaStackCore
     ConditionType::quality(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("quality", value);
+    	eventVariables_.getValue("Quality", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::quality_SourceTimestamp(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("Quality_SourceTimestamp", value);
     	return value;
     }
     
@@ -107,7 +154,15 @@ namespace OpcUaStackCore
     ConditionType::lastSeverity(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("lastSeverity", value);
+    	eventVariables_.getValue("LastSeverity", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::lastSeverity_SourceTimestamp(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("LastSeverity_SourceTimestamp", value);
     	return value;
     }
     
@@ -115,7 +170,15 @@ namespace OpcUaStackCore
     ConditionType::comment(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("comment", value);
+    	eventVariables_.getValue("Comment", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ConditionType::comment_SourceTimestamp(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("Comment_SourceTimestamp", value);
     	return value;
     }
     
@@ -162,9 +225,39 @@ namespace OpcUaStackCore
     }
     
     bool 
+    ConditionType::enabledState_Id(OpcUaVariant::SPtr& enabledState_Id)
+    {
+    	return eventVariables_.setValue("EnabledState_Id", enabledState_Id);
+    }
+    
+    bool 
+    ConditionType::enabledState_EffectiveDisplayName(OpcUaVariant::SPtr& enabledState_EffectiveDisplayName)
+    {
+    	return eventVariables_.setValue("EnabledState_EffectiveDisplayName", enabledState_EffectiveDisplayName);
+    }
+    
+    bool 
+    ConditionType::enabledState_TransitionTime(OpcUaVariant::SPtr& enabledState_TransitionTime)
+    {
+    	return eventVariables_.setValue("EnabledState_TransitionTime", enabledState_TransitionTime);
+    }
+    
+    bool 
+    ConditionType::enabledState_EffectiveTransitionTime(OpcUaVariant::SPtr& enabledState_EffectiveTransitionTime)
+    {
+    	return eventVariables_.setValue("EnabledState_EffectiveTransitionTime", enabledState_EffectiveTransitionTime);
+    }
+    
+    bool 
     ConditionType::quality(OpcUaVariant::SPtr& quality)
     {
     	return eventVariables_.setValue("Quality", quality);
+    }
+    
+    bool 
+    ConditionType::quality_SourceTimestamp(OpcUaVariant::SPtr& quality_SourceTimestamp)
+    {
+    	return eventVariables_.setValue("Quality_SourceTimestamp", quality_SourceTimestamp);
     }
     
     bool 
@@ -174,9 +267,21 @@ namespace OpcUaStackCore
     }
     
     bool 
+    ConditionType::lastSeverity_SourceTimestamp(OpcUaVariant::SPtr& lastSeverity_SourceTimestamp)
+    {
+    	return eventVariables_.setValue("LastSeverity_SourceTimestamp", lastSeverity_SourceTimestamp);
+    }
+    
+    bool 
     ConditionType::comment(OpcUaVariant::SPtr& comment)
     {
     	return eventVariables_.setValue("Comment", comment);
+    }
+    
+    bool 
+    ConditionType::comment_SourceTimestamp(OpcUaVariant::SPtr& comment_SourceTimestamp)
+    {
+    	return eventVariables_.setValue("Comment_SourceTimestamp", comment_SourceTimestamp);
     }
     
     void

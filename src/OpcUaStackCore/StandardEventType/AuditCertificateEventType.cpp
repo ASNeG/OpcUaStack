@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditCertificateEventType::certificate(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("certificate", value);
+    	eventVariables_.getValue("Certificate", value);
     	return value;
     }
     

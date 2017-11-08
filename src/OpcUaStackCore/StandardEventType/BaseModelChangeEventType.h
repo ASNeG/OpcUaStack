@@ -29,7 +29,6 @@ namespace OpcUaStackCore
         BaseModelChangeEventType(void);
         virtual ~BaseModelChangeEventType(void);
         
-        
         //- EventBase interface
         virtual void mapNamespaceUri(void);
         

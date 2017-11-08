@@ -34,7 +34,7 @@ namespace OpcUaStackCore
     AuditProgramTransitionEventType::transitionNumber(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("transitionNumber", value);
+    	eventVariables_.getValue("TransitionNumber", value);
     	return value;
     }
     

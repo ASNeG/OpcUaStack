@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditProgramTransitionEventType(void);
         virtual ~AuditProgramTransitionEventType(void);
-        
         bool transitionNumber(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr transitionNumber(void);
         
