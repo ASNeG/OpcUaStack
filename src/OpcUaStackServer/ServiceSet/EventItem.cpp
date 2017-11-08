@@ -268,9 +268,7 @@ namespace OpcUaStackServer
 
 			}
 			else {
-				std::cout << "FOUND!!!!" << std::endl;
 			}
-			if (value.get() == nullptr) std::cout << "value is null" << std::endl;
 			eventField->variant(value);
 			eventFieldList->eventFields()->push_back(eventField);
 		}
