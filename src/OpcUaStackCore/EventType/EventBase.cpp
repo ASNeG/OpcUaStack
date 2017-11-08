@@ -109,7 +109,7 @@ namespace OpcUaStackCore
 
 		if (browseNameList.empty()) {
 
-			OpcUaQualifiedName::SPtr browseName = constructSPtr<OpcUaQualifiedName>("EMPTY");
+			OpcUaQualifiedName::SPtr browseName = constructSPtr<OpcUaQualifiedName>("EMPTY", eventType.namespaceIndex());
 			browseNameList.push_back(browseName);
 
 			//Log(Debug, "browse path not exist in event - browse path empty");
