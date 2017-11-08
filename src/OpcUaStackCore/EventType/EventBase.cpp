@@ -93,21 +93,37 @@ namespace OpcUaStackCore
 		OpcUaVariant::SPtr& variant
 	)
 	{
+		std::string browsePath = "";
+		std::list<OpcUaQualifiedName::SPtr>::iterator it;
+		for (it = browseNameList.begin(); it != browseNameList.end(); it++) {
+			OpcUaQualifiedName::SPtr browseName = *it;
+
+			if (browsePath != "") browsePath.append(",");
+			browsePath.append(browseName->toString());
+		}
+		Log(Debug, "get event browse path in event")
+		    .parameter("NodeId", eventType.toString())
+			.parameter("BrowsePath", browsePath);
+
 		EventResult::Code resultCode = EventResult::Success;
 
 		if (browseNameList.empty()) {
+			Log(Debug, "browse path not exist in event");
 			return EventResult::BadBrowseNameListEmpty;
 		}
 
 		variant = get(eventType, browseNameList, resultCode);
 		if (resultCode != EventResult::Success) {
+			Log(Debug, "browse path not exist in event");
 			return resultCode;
 		}
 
 	   	if (!browseNameList.empty()) {
+	   		Log(Debug, "browse path not exist in event");
 	    	return EventResult::BadValueNotExist;
 	    }
 
+	   	Log(Debug, "browse path exist in event");
 		return EventResult::Success;
 	}
 

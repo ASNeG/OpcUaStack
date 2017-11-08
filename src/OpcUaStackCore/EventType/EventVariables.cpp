@@ -196,6 +196,9 @@ namespace OpcUaStackCore
 	OpcUaVariant::SPtr
 	EventVariables::get(std::list<OpcUaQualifiedName::SPtr>& browseNameList, EventResult::Code& resultCode)
 	{
+		std::cout << this->eventType_ << std::endl;
+
+
 		OpcUaVariant::SPtr variant;
 
 		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
@@ -203,6 +206,7 @@ namespace OpcUaStackCore
 
 		if (resultCode == EventResult::Success) {
 			browseNameList.pop_front();
+			return variant;
 		}
 
 		resultCode = EventResult::Success;
