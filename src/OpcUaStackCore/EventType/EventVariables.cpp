@@ -150,7 +150,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		if (value->variantType() != it->second.buildInType_) {
+		if (it->second.buildInType_ != OpcUaBuildInType_OpcUaVariant && value->variantType() != it->second.buildInType_) {
 			return false;
 		}
 
