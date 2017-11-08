@@ -52,6 +52,8 @@ namespace OpcUaStackServer
     	std::string& localVariableName(void);
     	void functionName(const std::string& functionName);
     	std::string& functionName(void);
+    	void dataTypeName(const std::string& dataTypeName);
+    	std::string& dataTypeName(void);
 
 	  private:
     	std::string prefix_;
@@ -61,6 +63,7 @@ namespace OpcUaStackServer
     	std::string globalVariableName_;
     	std::string localVariableName_;
     	std::string functionName_;
+    	std::string dataTypeName_;
 	};
 
 	class DLLEXPORT EventTypeGenerator

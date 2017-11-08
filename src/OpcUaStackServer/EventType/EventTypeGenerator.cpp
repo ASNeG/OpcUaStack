@@ -38,6 +38,7 @@ namespace OpcUaStackServer
 	, globalVariableName_("")
 	, localVariableName_("")
 	, functionName_("")
+	, dataTypeName_("")
 	{
 	}
 
@@ -55,7 +56,8 @@ namespace OpcUaStackServer
 			.parameter("FullName", fullName_)
 			.parameter("GlobalVariableName", globalVariableName_)
 			.parameter("LocalVariableName", localVariableName_)
-			.parameter("FunctionName", functionName_);
+			.parameter("FunctionName", functionName_)
+			.parameter("DataTypeName", dataTypeName_);
 	}
 
 	void
@@ -141,6 +143,18 @@ namespace OpcUaStackServer
    	{
    		return functionName_;
    	}
+
+	void
+	VariableElement::dataTypeName(const std::string& dataTypeName)
+	{
+		dataTypeName_ = dataTypeName;
+	}
+
+	std::string&
+	VariableElement::dataTypeName(void)
+	{
+		return dataTypeName_;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -395,6 +409,24 @@ namespace OpcUaStackServer
 			// create local variable name
 			std::string localVariableName = functionName;
 
+			// create data type name
+			// get property type
+			OpcUaNodeId dataTypeNodeId;
+			if (!childNodeClass->getDataType(dataTypeNodeId)) {
+				Log(Error, "child data type not found in node")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it);
+				return false;
+			}
+			std::string dataTypeName = getTypeNameFromNodeId(dataTypeNodeId);
+			if (dataTypeName == "Unknown") {
+				Log(Error, "child data type is not a build in type")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it)
+					.parameter("DataTypeNodeId", dataTypeNodeId);
+				return false;
+			}
+
 			// create new variable element
 			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
 			variableElement->prefix(prefix);
@@ -404,6 +436,7 @@ namespace OpcUaStackServer
 			variableElement->globalVariableName(globalVariableName);
 			variableElement->localVariableName(localVariableName);
 			variableElement->functionName(functionName);
+			variableElement->dataTypeName(dataTypeName);
 			variableElement->log();
 			variableElementVec_.push_back(variableElement);
 
