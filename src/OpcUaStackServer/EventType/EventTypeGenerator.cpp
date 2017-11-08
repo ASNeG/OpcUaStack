@@ -719,74 +719,14 @@ namespace OpcUaStackServer
 		ss << prefix << ", eventVariables_()" << std::endl;
 		ss << prefix << "{" << std::endl;
 
-		OpcUaQualifiedName browseName;
-		bool success;
+		VariableElement::Vec::iterator it;
+		for (it = variableElementVec_.begin(); it != variableElementVec_.end(); it++) {
+			VariableElement::SPtr variableElement = *it;
+			std::string fullName = variableElement->fullName();
+			std::string dataTypeName = variableElement->dataTypeName();
 
-		InformationModelAccess ima;
-		std::vector<OpcUaNodeId> referenceTypeVec;
-		referenceTypeVec.push_back(OpcUaNodeId(46));
-		referenceTypeVec.push_back(OpcUaNodeId(47));
-		std::vector<OpcUaNodeId> childNodeIdVec;
-		std::vector<OpcUaNodeId>::iterator it;
-		ima.informationModel(informationModel_);
-		success = ima.getChildHierarchically(
-			eventTypeNode_,
-			referenceTypeVec,
-			childNodeIdVec
-		);
-		if (!success) {
-			Log(Error, "event properties error")
-				.parameter("EventType", eventTypeNodeId_);
-			return false;
+			ss << prefix << "    eventVariables_.registerEventVariable(\"" << fullName << "\", OpcUaBuildInType_OpcUa" << dataTypeName << ");" << std::endl;
 		}
-
-		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
-
-			// get property node class
-			BaseNodeClass::SPtr propertyNodeClass = informationModel_->find(*it);
-			if (!propertyNodeClass) {
-				Log(Error, "property node class not exist in information model")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-
-			// use only variable class
-			NodeClassType nodeClassType;
-			propertyNodeClass->getNodeClass(nodeClassType);
-			if (nodeClassType != NodeClassType_Variable) {
-				continue;
-			}
-
-			// get property type
-			OpcUaNodeId propertyTypeNodeId;
-			if (!propertyNodeClass->getDataType(propertyTypeNodeId)) {
-				Log(Error, "property data type not found in node")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-			std::string propertyTypeName = getTypeNameFromNodeId(propertyTypeNodeId);
-			if (propertyTypeName == "Unknown") {
-				Log(Error, "property data type is not a build in type")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it)
-					.parameter("PropertyTypeNodeId", propertyTypeNodeId);
-				return false;
-			}
-
-			// get property class name
-			if (!propertyNodeClass->getBrowseName(browseName)) {
-				Log(Error, "property name not found in node")
-					.parameter("EventType", eventTypeNodeId_)
-					.parameter("PropertyNodeId", *it);
-				return false;
-			}
-			std::string propertyName = browseName.name().toStdString();
-
-			ss << prefix << "    eventVariables_.registerEventVariable(\"" << propertyName << "\", OpcUaBuildInType_OpcUa" << propertyTypeName << ");" << std::endl;
-		}
-
 
 		ss << prefix << std::endl;
 		ss << prefix << "    eventVariables_.eventType(" << "OpcUaNodeId((OpcUaUInt32)" << eventTypeNumber_ << "));" << std::endl;
