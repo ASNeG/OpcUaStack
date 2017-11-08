@@ -590,6 +590,10 @@ namespace OpcUaStackServer
 			ss << prefix << std::endl;
 		}
 
+		ss << prefix << "bool set" << eventTypeName_ << "(OpcUaVariant::SPtr& variable);" << std::endl;
+		ss << prefix << "OpcUaVariant::SPtr get" << eventTypeName_ << "(void);" << std::endl;
+		ss << prefix << std::endl;
+
 		ss << prefix << std::endl;
 		ss << prefix << "//- EventBase interface" << std::endl;
 		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
@@ -728,6 +732,8 @@ namespace OpcUaStackServer
 			ss << prefix << "    eventVariables_.registerEventVariable(\"" << fullName << "\", OpcUaBuildInType_OpcUa" << dataTypeName << ");" << std::endl;
 		}
 
+		ss << prefix << "    eventVariables_.registerEventVariable(\"EMPTY\", OpcUaBuildInType_OpcUaVariant" << ");" << std::endl;
+
 		ss << prefix << std::endl;
 		ss << prefix << "    eventVariables_.eventType(" << "OpcUaNodeId((OpcUaUInt32)" << eventTypeNumber_ << "));" << std::endl;
 		ss << prefix << "    eventVariables_.namespaceIndex(0);" << std::endl;
@@ -774,6 +780,15 @@ namespace OpcUaStackServer
 			ss << prefix << "}" << std::endl;
 		}
 
+		ss << prefix << std::endl;
+		ss << prefix << "OpcUaVariant::SPtr " << std::endl;
+		ss << prefix << eventTypeName_ << "::get" << eventTypeName_ << "(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	OpcUaVariant::SPtr value;" << std::endl;
+		ss << prefix << "	eventVariables_.getValue(\"EMPTY\", value);" << std::endl;
+		ss << prefix << "	return value;" << std::endl;
+		ss << prefix << "}" << std::endl;
+
 		sourceContent_ += ss.str();
 		return true;
 	}
@@ -797,6 +812,13 @@ namespace OpcUaStackServer
 			ss << prefix << "	return eventVariables_.setValue(\"" << fullName << "\", " << localVariableName << ");" << std::endl;
 			ss << prefix << "}" << std::endl;
 		}
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool " << std::endl;
+		ss << prefix << eventTypeName_ << "::set" << eventTypeName_ << "(OpcUaVariant::SPtr& " << "value" << ")" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "	return eventVariables_.setValue(\"EMPTY\", " << "value" << ");" << std::endl;
+		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
 		return true;
