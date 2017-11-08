@@ -23,6 +23,104 @@
 namespace OpcUaStackServer
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// VariableElement
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	VariableElement::VariableElement(void)
+	: prefix_("")
+	, nodeId_()
+	, browseName_()
+	, fullName_("")
+	, variableName_("")
+	{
+	}
+
+	VariableElement::~VariableElement(void)
+	{
+	}
+
+	void
+	VariableElement::log(void)
+	{
+		Log(Debug, "Create new variable element")
+		    .parameter("NodeId", nodeId_)
+			.parameter("Prefix", prefix_)
+			.parameter("BrowseName", browseName_)
+			.parameter("FullName", fullName_)
+			.parameter("VariableName", variableName_);
+	}
+
+	void
+	VariableElement::prefix(const std::string& prefix)
+	{
+		prefix_ = prefix;
+	}
+
+	std::string
+	VariableElement::prefix(void)
+	{
+		return prefix_;
+	}
+
+	void
+	VariableElement::nodeId(const OpcUaNodeId& nodeId)
+	{
+		nodeId_ = nodeId;
+	}
+
+	OpcUaNodeId&
+	VariableElement::nodeId(void)
+	{
+		return nodeId_;
+	}
+
+	void
+	VariableElement::browseName(const OpcUaQualifiedName& browseName)
+	{
+		browseName_ = browseName;
+	}
+
+	OpcUaQualifiedName&
+	VariableElement::browseName(void)
+	{
+		return browseName_;
+	}
+
+	void
+	VariableElement::fullName(const std::string& fullName)
+	{
+		fullName_ = fullName;
+	}
+
+	std::string&
+	VariableElement::fullName(void)
+	{
+		return fullName_;
+	}
+
+	void
+	VariableElement::variableName(const std::string& variableName)
+	{
+		variableName_ = variableName;
+	}
+
+	std::string&
+	VariableElement::variableName(void)
+	{
+		return variableName_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// EventTypeGenerator
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	EventTypeGenerator::EventTypeGenerator(void)
 	: sourceContent_("")
 	, headerContent_("")
@@ -140,6 +238,11 @@ namespace OpcUaStackServer
 			parentProjectNamespace_ = "OpcUaStackCore";
 		}
 
+		// create variable element list
+		if (!createVariableElementVec("", eventTypeNodeId_)) {
+			return false;
+		}
+
 		// generate source file and header file
 		return generateSource() && generateHeader();
 	}
@@ -187,6 +290,95 @@ namespace OpcUaStackServer
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	bool
+	EventTypeGenerator::createVariableElementVec(
+		const std::string& prefix,
+		OpcUaNodeId& nodeId
+	)
+	{
+		bool success;
+
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(nodeId);
+		if (!nodeClass) {
+			Log(Error, "node not exist in information model")
+				.parameter("PropertyNodeId", nodeId);
+			return false;
+		}
+
+		InformationModelAccess ima;
+		std::vector<OpcUaNodeId> referenceTypeVec;
+		referenceTypeVec.push_back(OpcUaNodeId(46));
+		referenceTypeVec.push_back(OpcUaNodeId(47));
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			nodeClass,
+			referenceTypeVec,
+			childNodeIdVec
+		);
+		if (!success) {
+			Log(Error, "event properties error")
+				.parameter("EventType", eventTypeNodeId_);
+			return false;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+			// get child node class
+			BaseNodeClass::SPtr childNodeClass = informationModel_->find(*it);
+			if (!childNodeClass) {
+				Log(Error, "child node not exist in information model")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it);
+				return false;
+			}
+
+			// use only variable class
+			NodeClassType nodeClassType;
+			childNodeClass->getNodeClass(nodeClassType);
+			if (nodeClassType != NodeClassType_Variable) {
+				continue;
+			}
+
+			// get browse name
+			OpcUaQualifiedName browseName;
+			if (!childNodeClass->getBrowseName(browseName)) {
+				Log(Error, "browse name not found in node")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it);
+				return false;
+			}
+
+			// create full name
+			std::string fullName = prefix;
+			if (prefix.size() > 0) {
+				fullName.append("_");
+			}
+			fullName.append(browseName.toString());
+
+			// create variable name
+			std::string variableName = fullName;
+			variableName[0] = boost::to_lower_copy(variableName.substr(0,1))[0];
+
+
+			// create new variable element
+			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
+			variableElement->prefix(prefix);
+			variableElement->nodeId(*it);
+			variableElement->browseName(browseName);
+			variableElement->fullName(fullName);
+			variableElement->variableName(variableName);
+			variableElement->log();
+			variableElementVec_.push_back(variableElement);
+
+			if (!createVariableElementVec(fullName, *it)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	bool
 	EventTypeGenerator::generateHeader(void)
 	{
