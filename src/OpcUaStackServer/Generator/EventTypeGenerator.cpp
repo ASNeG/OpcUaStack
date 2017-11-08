@@ -15,9 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaStackServer/Generator/EventTypeGenerator.h>
 #include "BuildConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/EventType/EventTypeGenerator.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 namespace OpcUaStackServer
