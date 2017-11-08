@@ -108,7 +108,15 @@ namespace OpcUaStackCore
 		EventResult::Code resultCode = EventResult::Success;
 
 		if (browseNameList.empty()) {
-			Log(Debug, "browse path not exist in event");
+
+#if 0
+			// FIXME: workaround
+			variant = constructSPtr<OpcUaVariant>();
+			variant->setValue(OpcUaNodeId("AlarmObject",9));
+			return EventResult::Success;
+#endif
+
+			Log(Debug, "browse path not exist in event - browse path empty");
 			return EventResult::BadBrowseNameListEmpty;
 		}
 
