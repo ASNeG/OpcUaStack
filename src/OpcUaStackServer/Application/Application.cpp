@@ -173,6 +173,7 @@ namespace OpcUaStackServer
 			case OpcUaId_GetNodeReferenceRequest_Encoding_DefaultBinary:
 			case OpcUaId_NamespaceInfoRequest_Encoding_DefaultBinary:
 			case OpcUaId_FireEventRequest_Encoding_DefaultBinary:
+			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
 			{
 				serviceTransaction->componentSession(this);
 				break;

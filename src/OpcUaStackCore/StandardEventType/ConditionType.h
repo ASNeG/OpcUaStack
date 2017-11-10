@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         ConditionType(void);
         virtual ~ConditionType(void);
-        
         bool conditionClassId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr conditionClassId(void);
         
@@ -46,6 +45,42 @@ namespace OpcUaStackCore
         
         bool clientUserId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr clientUserId(void);
+        
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool enabledState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_Id(void);
+        
+        bool enabledState_EffectiveDisplayName(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_EffectiveDisplayName(void);
+        
+        bool enabledState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_TransitionTime(void);
+        
+        bool enabledState_EffectiveTransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_EffectiveTransitionTime(void);
+        
+        bool quality(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr quality(void);
+        
+        bool quality_SourceTimestamp(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr quality_SourceTimestamp(void);
+        
+        bool lastSeverity(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lastSeverity(void);
+        
+        bool lastSeverity_SourceTimestamp(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr lastSeverity_SourceTimestamp(void);
+        
+        bool comment(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr comment(void);
+        
+        bool comment_SourceTimestamp(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr comment_SourceTimestamp(void);
+        
+        bool setConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getConditionType(void);
         
         
         //- EventBase interface

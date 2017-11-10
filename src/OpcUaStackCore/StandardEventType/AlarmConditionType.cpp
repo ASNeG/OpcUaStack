@@ -21,6 +21,17 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("InputNode", OpcUaBuildInType_OpcUaNodeId);
         eventVariables_.registerEventVariable("SuppressedOrShelved", OpcUaBuildInType_OpcUaBoolean);
         eventVariables_.registerEventVariable("MaxTimeShelved", OpcUaBuildInType_OpcUaDuration);
+        eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("EnabledState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("ActiveState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ActiveState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("ActiveState_EffectiveDisplayName", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ActiveState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("ActiveState_EffectiveTransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("SuppressedState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("SuppressedState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("SuppressedState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2915));
         eventVariables_.namespaceIndex(0);
@@ -36,7 +47,7 @@ namespace OpcUaStackCore
     AlarmConditionType::inputNode(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("inputNode", value);
+    	eventVariables_.getValue("InputNode", value);
     	return value;
     }
     
@@ -44,7 +55,7 @@ namespace OpcUaStackCore
     AlarmConditionType::suppressedOrShelved(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("suppressedOrShelved", value);
+    	eventVariables_.getValue("SuppressedOrShelved", value);
     	return value;
     }
     
@@ -52,7 +63,95 @@ namespace OpcUaStackCore
     AlarmConditionType::maxTimeShelved(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("maxTimeShelved", value);
+    	eventVariables_.getValue("MaxTimeShelved", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::enabledState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::enabledState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::activeState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ActiveState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::activeState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ActiveState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::activeState_EffectiveDisplayName(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ActiveState_EffectiveDisplayName", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::activeState_TransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ActiveState_TransitionTime", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::activeState_EffectiveTransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ActiveState_EffectiveTransitionTime", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::suppressedState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("SuppressedState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::suppressedState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("SuppressedState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::suppressedState_TransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("SuppressedState_TransitionTime", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AlarmConditionType::getAlarmConditionType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -72,6 +171,72 @@ namespace OpcUaStackCore
     AlarmConditionType::maxTimeShelved(OpcUaVariant::SPtr& maxTimeShelved)
     {
     	return eventVariables_.setValue("MaxTimeShelved", maxTimeShelved);
+    }
+    
+    bool 
+    AlarmConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
+    {
+    	return eventVariables_.setValue("EnabledState", enabledState);
+    }
+    
+    bool 
+    AlarmConditionType::enabledState_Id(OpcUaVariant::SPtr& enabledState_Id)
+    {
+    	return eventVariables_.setValue("EnabledState_Id", enabledState_Id);
+    }
+    
+    bool 
+    AlarmConditionType::activeState(OpcUaVariant::SPtr& activeState)
+    {
+    	return eventVariables_.setValue("ActiveState", activeState);
+    }
+    
+    bool 
+    AlarmConditionType::activeState_Id(OpcUaVariant::SPtr& activeState_Id)
+    {
+    	return eventVariables_.setValue("ActiveState_Id", activeState_Id);
+    }
+    
+    bool 
+    AlarmConditionType::activeState_EffectiveDisplayName(OpcUaVariant::SPtr& activeState_EffectiveDisplayName)
+    {
+    	return eventVariables_.setValue("ActiveState_EffectiveDisplayName", activeState_EffectiveDisplayName);
+    }
+    
+    bool 
+    AlarmConditionType::activeState_TransitionTime(OpcUaVariant::SPtr& activeState_TransitionTime)
+    {
+    	return eventVariables_.setValue("ActiveState_TransitionTime", activeState_TransitionTime);
+    }
+    
+    bool 
+    AlarmConditionType::activeState_EffectiveTransitionTime(OpcUaVariant::SPtr& activeState_EffectiveTransitionTime)
+    {
+    	return eventVariables_.setValue("ActiveState_EffectiveTransitionTime", activeState_EffectiveTransitionTime);
+    }
+    
+    bool 
+    AlarmConditionType::suppressedState(OpcUaVariant::SPtr& suppressedState)
+    {
+    	return eventVariables_.setValue("SuppressedState", suppressedState);
+    }
+    
+    bool 
+    AlarmConditionType::suppressedState_Id(OpcUaVariant::SPtr& suppressedState_Id)
+    {
+    	return eventVariables_.setValue("SuppressedState_Id", suppressedState_Id);
+    }
+    
+    bool 
+    AlarmConditionType::suppressedState_TransitionTime(OpcUaVariant::SPtr& suppressedState_TransitionTime)
+    {
+    	return eventVariables_.setValue("SuppressedState_TransitionTime", suppressedState_TransitionTime);
+    }
+    
+    bool 
+    AlarmConditionType::setAlarmConditionType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

@@ -2066,6 +2066,8 @@
 #define OpcUaId_DelNodeInstanceResponse_Encoding_DefaultBinary 			1000013
 #define OpcUaId_FireEventRequest_Encoding_DefaultBinary 				1000014
 #define OpcUaId_FireEventResponse_Encoding_DefaultBinary 				1000015
+#define OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary 		1000016
+#define OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary 		1000017
 
 #include <map>
 #include <stdint.h>

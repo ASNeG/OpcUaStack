@@ -28,6 +28,44 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+    class DLLEXPORT VariableElement
+	{
+	  public:
+    	typedef boost::shared_ptr<VariableElement> SPtr;
+    	typedef std::vector<VariableElement::SPtr> Vec;
+
+    	VariableElement(void);
+    	~VariableElement(void);
+
+    	void log(void);
+    	void prefix(const std::string& prefix);
+    	std::string prefix(void);
+    	void nodeId(const OpcUaNodeId& nodeId);
+    	OpcUaNodeId& nodeId(void);
+    	void browseName(const OpcUaQualifiedName& browseName);
+    	OpcUaQualifiedName& browseName(void);
+    	void fullName(const std::string& fullName);
+    	std::string& fullName(void);
+    	void globalVariableName(const std::string& globalVariableName);
+    	std::string& globalVariableName(void);
+    	void localVariableName(const std::string& localVariableName);
+    	std::string& localVariableName(void);
+    	void functionName(const std::string& functionName);
+    	std::string& functionName(void);
+    	void dataTypeName(const std::string& dataTypeName);
+    	std::string& dataTypeName(void);
+
+	  private:
+    	std::string prefix_;
+    	OpcUaNodeId nodeId_;
+    	OpcUaQualifiedName browseName_;
+    	std::string fullName_;
+    	std::string globalVariableName_;
+    	std::string localVariableName_;
+    	std::string functionName_;
+    	std::string dataTypeName_;
+	};
+
 	class DLLEXPORT EventTypeGenerator
 	{
 	  public:
@@ -47,6 +85,7 @@ namespace OpcUaStackServer
 
 	  private:
 		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
+		bool createVariableElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
 
 		//
 		// header functions
@@ -91,6 +130,8 @@ namespace OpcUaStackServer
 		std::string parentProjectNamespace_;
 		std::string projectDirectory_;
 		std::string parentProjectDirectory_;
+
+		VariableElement::Vec variableElementVec_;
 	};
 
 

@@ -23,6 +23,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("ServerId", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("ClientAuditEntryId", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("ClientUserId", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2052));
         eventVariables_.namespaceIndex(0);
@@ -38,7 +39,7 @@ namespace OpcUaStackCore
     AuditEventType::actionTimeStamp(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("actionTimeStamp", value);
+    	eventVariables_.getValue("ActionTimeStamp", value);
     	return value;
     }
     
@@ -46,7 +47,7 @@ namespace OpcUaStackCore
     AuditEventType::status(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("status", value);
+    	eventVariables_.getValue("Status", value);
     	return value;
     }
     
@@ -54,7 +55,7 @@ namespace OpcUaStackCore
     AuditEventType::serverId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("serverId", value);
+    	eventVariables_.getValue("ServerId", value);
     	return value;
     }
     
@@ -62,7 +63,7 @@ namespace OpcUaStackCore
     AuditEventType::clientAuditEntryId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientAuditEntryId", value);
+    	eventVariables_.getValue("ClientAuditEntryId", value);
     	return value;
     }
     
@@ -70,7 +71,15 @@ namespace OpcUaStackCore
     AuditEventType::clientUserId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientUserId", value);
+    	eventVariables_.getValue("ClientUserId", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditEventType::getAuditEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -102,6 +111,12 @@ namespace OpcUaStackCore
     AuditEventType::clientUserId(OpcUaVariant::SPtr& clientUserId)
     {
     	return eventVariables_.setValue("ClientUserId", clientUserId);
+    }
+    
+    bool 
+    AuditEventType::setAuditEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

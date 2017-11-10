@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         ProgressEventType(void);
         virtual ~ProgressEventType(void);
+        bool setProgressEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getProgressEventType(void);
         
         
         //- EventBase interface

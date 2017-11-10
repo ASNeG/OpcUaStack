@@ -22,6 +22,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("StartTime", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("EndTime", OpcUaBuildInType_OpcUaUtcTime);
         eventVariables_.registerEventVariable("OldValues", OpcUaBuildInType_OpcUaDataValue);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)3014));
         eventVariables_.namespaceIndex(0);
@@ -37,7 +38,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::isDeleteModified(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("isDeleteModified", value);
+    	eventVariables_.getValue("IsDeleteModified", value);
     	return value;
     }
     
@@ -45,7 +46,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::startTime(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("startTime", value);
+    	eventVariables_.getValue("StartTime", value);
     	return value;
     }
     
@@ -53,7 +54,7 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::endTime(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("endTime", value);
+    	eventVariables_.getValue("EndTime", value);
     	return value;
     }
     
@@ -61,7 +62,15 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::oldValues(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("oldValues", value);
+    	eventVariables_.getValue("OldValues", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditHistoryRawModifyDeleteEventType::getAuditHistoryRawModifyDeleteEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -87,6 +96,12 @@ namespace OpcUaStackCore
     AuditHistoryRawModifyDeleteEventType::oldValues(OpcUaVariant::SPtr& oldValues)
     {
     	return eventVariables_.setValue("OldValues", oldValues);
+    }
+    
+    bool 
+    AuditHistoryRawModifyDeleteEventType::setAuditHistoryRawModifyDeleteEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

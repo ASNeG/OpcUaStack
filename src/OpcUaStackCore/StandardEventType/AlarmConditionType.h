@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AlarmConditionType(void);
         virtual ~AlarmConditionType(void);
-        
         bool inputNode(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr inputNode(void);
         
@@ -37,6 +36,39 @@ namespace OpcUaStackCore
         
         bool maxTimeShelved(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr maxTimeShelved(void);
+        
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool enabledState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_Id(void);
+        
+        bool activeState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState(void);
+        
+        bool activeState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState_Id(void);
+        
+        bool activeState_EffectiveDisplayName(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState_EffectiveDisplayName(void);
+        
+        bool activeState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState_TransitionTime(void);
+        
+        bool activeState_EffectiveTransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr activeState_EffectiveTransitionTime(void);
+        
+        bool suppressedState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr suppressedState(void);
+        
+        bool suppressedState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr suppressedState_Id(void);
+        
+        bool suppressedState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr suppressedState_TransitionTime(void);
+        
+        bool setAlarmConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAlarmConditionType(void);
         
         
         //- EventBase interface

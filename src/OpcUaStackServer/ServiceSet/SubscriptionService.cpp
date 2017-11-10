@@ -114,6 +114,7 @@ namespace OpcUaStackServer
 			subscriptionManager = constructSPtr<SubscriptionManager>();
 			subscriptionManager->ioThread(ioThread());
 			subscriptionManager->informationModel(informationModel_);
+			subscriptionManager->forwardGlobalSync(forwardGlobalSync_);
 			subscriptionManager->sessionId(trx->sessionId());
 			subscriptionManagerMap_.insert(std::make_pair(trx->sessionId(), subscriptionManager));
 		}

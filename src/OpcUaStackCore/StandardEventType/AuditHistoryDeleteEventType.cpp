@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("UpdatedNode", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)3012));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     AuditHistoryDeleteEventType::updatedNode(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("updatedNode", value);
+    	eventVariables_.getValue("UpdatedNode", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditHistoryDeleteEventType::getAuditHistoryDeleteEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     AuditHistoryDeleteEventType::updatedNode(OpcUaVariant::SPtr& updatedNode)
     {
     	return eventVariables_.setValue("UpdatedNode", updatedNode);
+    }
+    
+    bool 
+    AuditHistoryDeleteEventType::setAuditHistoryDeleteEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

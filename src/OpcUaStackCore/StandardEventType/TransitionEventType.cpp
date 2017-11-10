@@ -18,6 +18,13 @@ namespace OpcUaStackCore
     : BaseEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("Transition", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("Transition_Id", OpcUaBuildInType_OpcUaVariant);
+        eventVariables_.registerEventVariable("FromState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("FromState_Id", OpcUaBuildInType_OpcUaVariant);
+        eventVariables_.registerEventVariable("ToState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("ToState_Id", OpcUaBuildInType_OpcUaVariant);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2311));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +34,104 @@ namespace OpcUaStackCore
     
     TransitionEventType::~TransitionEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::transition(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("Transition", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::transition_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("Transition_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::fromState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("FromState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::fromState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("FromState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::toState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ToState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::toState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("ToState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    TransitionEventType::getTransitionEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    TransitionEventType::transition(OpcUaVariant::SPtr& transition)
+    {
+    	return eventVariables_.setValue("Transition", transition);
+    }
+    
+    bool 
+    TransitionEventType::transition_Id(OpcUaVariant::SPtr& transition_Id)
+    {
+    	return eventVariables_.setValue("Transition_Id", transition_Id);
+    }
+    
+    bool 
+    TransitionEventType::fromState(OpcUaVariant::SPtr& fromState)
+    {
+    	return eventVariables_.setValue("FromState", fromState);
+    }
+    
+    bool 
+    TransitionEventType::fromState_Id(OpcUaVariant::SPtr& fromState_Id)
+    {
+    	return eventVariables_.setValue("FromState_Id", fromState_Id);
+    }
+    
+    bool 
+    TransitionEventType::toState(OpcUaVariant::SPtr& toState)
+    {
+    	return eventVariables_.setValue("ToState", toState);
+    }
+    
+    bool 
+    TransitionEventType::toState_Id(OpcUaVariant::SPtr& toState_Id)
+    {
+    	return eventVariables_.setValue("ToState_Id", toState_Id);
+    }
+    
+    bool 
+    TransitionEventType::setTransitionEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

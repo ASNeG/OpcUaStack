@@ -150,7 +150,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		if (value->variantType() != it->second.buildInType_) {
+		if (it->second.buildInType_ != OpcUaBuildInType_OpcUaVariant && value->variantType() != it->second.buildInType_) {
 			return false;
 		}
 
@@ -198,11 +198,36 @@ namespace OpcUaStackCore
 	{
 		OpcUaVariant::SPtr variant;
 
+		// check if the variable exists with the browse name
+		// we concatenate all browse names
+		if (browseNameList.size() > 1) {
+			std::string browseNameString = "";
+			uint16_t namespaceIndex;
+
+			std::list<OpcUaQualifiedName::SPtr>::iterator it;
+			for (it = browseNameList.begin(); it != browseNameList.end(); it++) {
+				if (browseNameString != "") browseNameString.append("_");
+				else namespaceIndex = (*it)->namespaceIndex();
+				browseNameString.append((*it)->name().toStdString());
+			}
+
+			OpcUaQualifiedName::SPtr browseName = constructSPtr<OpcUaQualifiedName>(browseNameString, namespaceIndex);
+			variant = get(browseName, resultCode);
+
+			if (resultCode == EventResult::Success) {
+				browseNameList.clear();
+				return variant;
+			}
+		}
+
+
+		// check if the variable exists with the browse name
 		OpcUaQualifiedName::SPtr browseName = browseNameList.front();
 		variant = get(browseName, resultCode);
 
 		if (resultCode == EventResult::Success) {
 			browseNameList.pop_front();
+			return variant;
 		}
 
 		resultCode = EventResult::Success;

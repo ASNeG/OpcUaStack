@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         AuditCertificateInvalidEventType(void);
         virtual ~AuditCertificateInvalidEventType(void);
+        bool setAuditCertificateInvalidEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateInvalidEventType(void);
         
         
         //- EventBase interface

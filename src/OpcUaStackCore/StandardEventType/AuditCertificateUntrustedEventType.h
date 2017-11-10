@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         AuditCertificateUntrustedEventType(void);
         virtual ~AuditCertificateUntrustedEventType(void);
+        bool setAuditCertificateUntrustedEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateUntrustedEventType(void);
         
         
         //- EventBase interface

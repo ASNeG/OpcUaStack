@@ -22,6 +22,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("HighLimit", OpcUaBuildInType_OpcUaDouble);
         eventVariables_.registerEventVariable("LowLimit", OpcUaBuildInType_OpcUaDouble);
         eventVariables_.registerEventVariable("LowLowLimit", OpcUaBuildInType_OpcUaDouble);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2955));
         eventVariables_.namespaceIndex(0);
@@ -37,7 +38,7 @@ namespace OpcUaStackCore
     LimitAlarmType::highHighLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("highHighLimit", value);
+    	eventVariables_.getValue("HighHighLimit", value);
     	return value;
     }
     
@@ -45,7 +46,7 @@ namespace OpcUaStackCore
     LimitAlarmType::highLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("highLimit", value);
+    	eventVariables_.getValue("HighLimit", value);
     	return value;
     }
     
@@ -53,7 +54,7 @@ namespace OpcUaStackCore
     LimitAlarmType::lowLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("lowLimit", value);
+    	eventVariables_.getValue("LowLimit", value);
     	return value;
     }
     
@@ -61,7 +62,15 @@ namespace OpcUaStackCore
     LimitAlarmType::lowLowLimit(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("lowLowLimit", value);
+    	eventVariables_.getValue("LowLowLimit", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    LimitAlarmType::getLimitAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -87,6 +96,12 @@ namespace OpcUaStackCore
     LimitAlarmType::lowLowLimit(OpcUaVariant::SPtr& lowLowLimit)
     {
     	return eventVariables_.setValue("LowLowLimit", lowLowLimit);
+    }
+    
+    bool 
+    LimitAlarmType::setLimitAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

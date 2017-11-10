@@ -24,6 +24,12 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("OkResponse", OpcUaBuildInType_OpcUaInt32);
         eventVariables_.registerEventVariable("CancelResponse", OpcUaBuildInType_OpcUaInt32);
         eventVariables_.registerEventVariable("LastResponse", OpcUaBuildInType_OpcUaInt32);
+        eventVariables_.registerEventVariable("EnabledState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("EnabledState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("DialogState", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("DialogState_Id", OpcUaBuildInType_OpcUaBoolean);
+        eventVariables_.registerEventVariable("DialogState_TransitionTime", OpcUaBuildInType_OpcUaUtcTime);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2830));
         eventVariables_.namespaceIndex(0);
@@ -39,7 +45,7 @@ namespace OpcUaStackCore
     DialogConditionType::prompt(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("prompt", value);
+    	eventVariables_.getValue("Prompt", value);
     	return value;
     }
     
@@ -47,7 +53,7 @@ namespace OpcUaStackCore
     DialogConditionType::responseOptionSet(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("responseOptionSet", value);
+    	eventVariables_.getValue("ResponseOptionSet", value);
     	return value;
     }
     
@@ -55,7 +61,7 @@ namespace OpcUaStackCore
     DialogConditionType::defaultResponse(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("defaultResponse", value);
+    	eventVariables_.getValue("DefaultResponse", value);
     	return value;
     }
     
@@ -63,7 +69,7 @@ namespace OpcUaStackCore
     DialogConditionType::okResponse(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("okResponse", value);
+    	eventVariables_.getValue("OkResponse", value);
     	return value;
     }
     
@@ -71,7 +77,7 @@ namespace OpcUaStackCore
     DialogConditionType::cancelResponse(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("cancelResponse", value);
+    	eventVariables_.getValue("CancelResponse", value);
     	return value;
     }
     
@@ -79,7 +85,55 @@ namespace OpcUaStackCore
     DialogConditionType::lastResponse(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("lastResponse", value);
+    	eventVariables_.getValue("LastResponse", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::enabledState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::enabledState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EnabledState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::dialogState(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("DialogState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::dialogState_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("DialogState_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::dialogState_TransitionTime(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("DialogState_TransitionTime", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    DialogConditionType::getDialogConditionType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -117,6 +171,42 @@ namespace OpcUaStackCore
     DialogConditionType::lastResponse(OpcUaVariant::SPtr& lastResponse)
     {
     	return eventVariables_.setValue("LastResponse", lastResponse);
+    }
+    
+    bool 
+    DialogConditionType::enabledState(OpcUaVariant::SPtr& enabledState)
+    {
+    	return eventVariables_.setValue("EnabledState", enabledState);
+    }
+    
+    bool 
+    DialogConditionType::enabledState_Id(OpcUaVariant::SPtr& enabledState_Id)
+    {
+    	return eventVariables_.setValue("EnabledState_Id", enabledState_Id);
+    }
+    
+    bool 
+    DialogConditionType::dialogState(OpcUaVariant::SPtr& dialogState)
+    {
+    	return eventVariables_.setValue("DialogState", dialogState);
+    }
+    
+    bool 
+    DialogConditionType::dialogState_Id(OpcUaVariant::SPtr& dialogState_Id)
+    {
+    	return eventVariables_.setValue("DialogState_Id", dialogState_Id);
+    }
+    
+    bool 
+    DialogConditionType::dialogState_TransitionTime(OpcUaVariant::SPtr& dialogState_TransitionTime)
+    {
+    	return eventVariables_.setValue("DialogState_TransitionTime", dialogState_TransitionTime);
+    }
+    
+    bool 
+    DialogConditionType::setDialogConditionType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

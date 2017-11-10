@@ -18,6 +18,9 @@ namespace OpcUaStackCore
     : AuditUpdateStateEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("Transition", OpcUaBuildInType_OpcUaLocalizedText);
+        eventVariables_.registerEventVariable("Transition_Id", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)3806));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +30,48 @@ namespace OpcUaStackCore
     
     ProgramTransitionAuditEventType::~ProgramTransitionAuditEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    ProgramTransitionAuditEventType::transition(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("Transition", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ProgramTransitionAuditEventType::transition_Id(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("Transition_Id", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ProgramTransitionAuditEventType::getProgramTransitionAuditEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    ProgramTransitionAuditEventType::transition(OpcUaVariant::SPtr& transition)
+    {
+    	return eventVariables_.setValue("Transition", transition);
+    }
+    
+    bool 
+    ProgramTransitionAuditEventType::transition_Id(OpcUaVariant::SPtr& transition_Id)
+    {
+    	return eventVariables_.setValue("Transition_Id", transition_Id);
+    }
+    
+    bool 
+    ProgramTransitionAuditEventType::setProgramTransitionAuditEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

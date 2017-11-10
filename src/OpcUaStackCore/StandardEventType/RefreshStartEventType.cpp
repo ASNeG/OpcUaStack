@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : SystemEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2787));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     RefreshStartEventType::~RefreshStartEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    RefreshStartEventType::getRefreshStartEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    RefreshStartEventType::setRefreshStartEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

@@ -23,6 +23,8 @@ namespace OpcUaStackCore
 	ForwardGlobalSync::ForwardGlobalSync(void)
 	: registerServerService_()
 	, findServersService_()
+	, eventItemStartService_()
+	, eventItemStopService_()
 	{
 	}
 
@@ -42,11 +44,25 @@ namespace OpcUaStackCore
 		return findServersService_;
 	}
 
+	ForwardCallback&
+	ForwardGlobalSync::eventItemStartService(void)
+	{
+		return eventItemStartService_;
+	}
+
+	ForwardCallback&
+	ForwardGlobalSync::eventItemStopService(void)
+	{
+		return eventItemStopService_;
+	}
+
 	void
 	ForwardGlobalSync::updateFrom(ForwardGlobalSync& forwardGlobalSync)
 	{
 		registerServerService_.updateFrom(forwardGlobalSync.registerServerService());
 		findServersService_.updateFrom(forwardGlobalSync.findServersService());
+		eventItemStartService_.updateFrom(forwardGlobalSync.eventItemStartService());
+		eventItemStopService_.updateFrom(forwardGlobalSync.eventItemStopService());
 	}
 
 }

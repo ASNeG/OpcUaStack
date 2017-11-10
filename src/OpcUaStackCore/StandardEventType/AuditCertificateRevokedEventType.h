@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         AuditCertificateRevokedEventType(void);
         virtual ~AuditCertificateRevokedEventType(void);
+        bool setAuditCertificateRevokedEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditCertificateRevokedEventType(void);
         
         
         //- EventBase interface

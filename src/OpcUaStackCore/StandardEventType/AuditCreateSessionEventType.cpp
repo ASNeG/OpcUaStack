@@ -22,6 +22,7 @@ namespace OpcUaStackCore
         eventVariables_.registerEventVariable("ClientCertificate", OpcUaBuildInType_OpcUaByteString);
         eventVariables_.registerEventVariable("ClientCertificateThumbprint", OpcUaBuildInType_OpcUaString);
         eventVariables_.registerEventVariable("RevisedSessionTimeout", OpcUaBuildInType_OpcUaDuration);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2071));
         eventVariables_.namespaceIndex(0);
@@ -37,7 +38,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::secureChannelId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("secureChannelId", value);
+    	eventVariables_.getValue("SecureChannelId", value);
     	return value;
     }
     
@@ -45,7 +46,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::clientCertificate(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientCertificate", value);
+    	eventVariables_.getValue("ClientCertificate", value);
     	return value;
     }
     
@@ -53,7 +54,7 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::clientCertificateThumbprint(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("clientCertificateThumbprint", value);
+    	eventVariables_.getValue("ClientCertificateThumbprint", value);
     	return value;
     }
     
@@ -61,7 +62,15 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::revisedSessionTimeout(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("revisedSessionTimeout", value);
+    	eventVariables_.getValue("RevisedSessionTimeout", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditCreateSessionEventType::getAuditCreateSessionEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -87,6 +96,12 @@ namespace OpcUaStackCore
     AuditCreateSessionEventType::revisedSessionTimeout(OpcUaVariant::SPtr& revisedSessionTimeout)
     {
     	return eventVariables_.setValue("RevisedSessionTimeout", revisedSessionTimeout);
+    }
+    
+    bool 
+    AuditCreateSessionEventType::setAuditCreateSessionEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

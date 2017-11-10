@@ -28,12 +28,14 @@ namespace OpcUaStackCore
     
         AuditConditionCommentEventType(void);
         virtual ~AuditConditionCommentEventType(void);
-        
         bool eventId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr eventId(void);
         
         bool comment(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr comment(void);
+        
+        bool setAuditConditionCommentEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditConditionCommentEventType(void);
         
         
         //- EventBase interface

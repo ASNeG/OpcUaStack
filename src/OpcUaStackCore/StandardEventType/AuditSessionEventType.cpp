@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("SessionId", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2069));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     AuditSessionEventType::sessionId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("sessionId", value);
+    	eventVariables_.getValue("SessionId", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditSessionEventType::getAuditSessionEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     AuditSessionEventType::sessionId(OpcUaVariant::SPtr& sessionId)
     {
     	return eventVariables_.setValue("SessionId", sessionId);
+    }
+    
+    bool 
+    AuditSessionEventType::setAuditSessionEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

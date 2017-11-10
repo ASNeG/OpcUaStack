@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         EventQueueOverflowEventType(void);
         virtual ~EventQueueOverflowEventType(void);
+        bool setEventQueueOverflowEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getEventQueueOverflowEventType(void);
         
         
         //- EventBase interface

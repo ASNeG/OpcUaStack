@@ -28,9 +28,11 @@ namespace OpcUaStackCore
     
         ProgramTransitionEventType(void);
         virtual ~ProgramTransitionEventType(void);
-        
         bool intermediateResult(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr intermediateResult(void);
+        
+        bool setProgramTransitionEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getProgramTransitionEventType(void);
         
         
         //- EventBase interface

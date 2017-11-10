@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         ExclusiveLevelAlarmType(void);
         virtual ~ExclusiveLevelAlarmType(void);
+        bool setExclusiveLevelAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getExclusiveLevelAlarmType(void);
         
         
         //- EventBase interface

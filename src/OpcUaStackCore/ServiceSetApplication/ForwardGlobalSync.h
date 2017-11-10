@@ -38,6 +38,8 @@ namespace OpcUaStackCore
 
 		ForwardCallback& registerServerService(void);
 		ForwardCallback& findServersService(void);
+		ForwardCallback& eventItemStartService(void);
+		ForwardCallback& eventItemStopService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
@@ -45,6 +47,10 @@ namespace OpcUaStackCore
 		// discovery service
 		ForwardCallback registerServerService_;
 		ForwardCallback findServersService_;
+
+		// event service
+		ForwardCallback eventItemStartService_;
+		ForwardCallback eventItemStopService_;
 	};
 
 }

@@ -49,6 +49,12 @@ namespace OpcUaStackServer
 	}
 
 	void
+	SubscriptionManager::forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync)
+	{
+		forwardGlobalSync_ = forwardGlobalSync;
+	}
+
+	void
 	SubscriptionManager::sessionId(uint32_t sessionId) 
 	{
 		sessionId_ = sessionId;
