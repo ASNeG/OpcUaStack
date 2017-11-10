@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/DataSet/DataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {

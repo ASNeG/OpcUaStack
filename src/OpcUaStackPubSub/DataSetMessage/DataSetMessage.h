@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackPubSub_DataSetMessage_h__
 #define __OpcUaStackPubSub_DataSetMessage_h__
 
+#include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
@@ -27,7 +28,10 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		DataSetMessage(void);
-		~DataSetMessage(void);
+		virtual ~DataSetMessage(void);
+
+		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
+		virtual void opcUaBinaryDecode(std::istream& is) = 0;
 	};
 
 }
