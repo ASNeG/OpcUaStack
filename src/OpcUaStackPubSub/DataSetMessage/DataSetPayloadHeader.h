@@ -15,26 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_DataSetMessage_h__
-#define __OpcUaStackPubSub_DataSetMessage_h__
+#ifndef __OpcUaStackPubSub_DataSetPayloadHeader_h__
+#define __OpcUaStackPubSub_DataSetPayloadHeader_h__
 
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT DataSetMessage
+	class DLLEXPORT DataSetPayloadHeader
 	{
 	  public:
-		typedef boost::shared_ptr<DataSetMessage> SPtr;
+		typedef boost::shared_ptr<DataSetPayloadHeader> SPtr;
 
-		DataSetMessage(void);
-		virtual ~DataSetMessage(void);
+		DataSetPayloadHeader(void);
+		virtual ~DataSetPayloadHeader(void);
 
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
+		void dataSetWriterIds(const OpcUaUInt16Array::SPtr& dataSetWriterIds);
+		OpcUaUInt16Array::SPtr& dataSetWriterIds(void);
+
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+
+	  private:
+		OpcUaUInt16Array::SPtr dataSetWriterIds_;
 	};
 
 }
