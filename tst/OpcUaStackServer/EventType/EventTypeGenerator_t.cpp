@@ -1,6 +1,6 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
-#include "OpcUaStackServer/EventType/EventTypeGenerator.h"
+#include "OpcUaStackServer/Generator/EventTypeGenerator.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 
