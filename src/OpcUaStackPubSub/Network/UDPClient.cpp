@@ -48,6 +48,18 @@ namespace OpcUaStackPubSub
 		ioThread_ = ioThread;
 	}
 
+	void
+	UDPClient::endpoint(const boost::asio::ip::udp::endpoint& endpoint)
+	{
+		endpoint_ = endpoint;
+	}
+
+	boost::asio::ip::udp::endpoint&
+	UDPClient::endpoint(void)
+	{
+		return endpoint_;
+	}
+
 	bool
 	UDPClient::open(void)
 	{

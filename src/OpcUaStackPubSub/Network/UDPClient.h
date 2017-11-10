@@ -36,6 +36,8 @@ namespace OpcUaStackPubSub
 		~UDPClient(void);
 
 		void ioThread(IOThread::SPtr& ioThread);
+		void endpoint(const boost::asio::ip::udp::endpoint& endpoint);
+		boost::asio::ip::udp::endpoint& endpoint(void);
 		bool open(void);
 		bool close(void);
 		boost::asio::ip::udp::socket* socket(void);
@@ -88,9 +90,20 @@ namespace OpcUaStackPubSub
 			  );
 		  }
 
+		template<typename BUFFER, typename HANDLER>
+		  void asyncReceiveFrom(BUFFER& buffer, HANDLER handler)
+		  {
+			  socket_->async_receive_from(
+			      buffer,
+				  endpoint_,
+				  handler
+			  );
+		  }
+
 	  private:
 		IOThread::SPtr ioThread_;
 		boost::asio::ip::udp::socket* socket_;
+		boost::asio::ip::udp::endpoint endpoint_;
 	};
 
 }

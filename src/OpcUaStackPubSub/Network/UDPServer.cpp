@@ -50,9 +50,15 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	UDPServer::endpoint(boost::asio::ip::udp::endpoint endpoint)
+	UDPServer::endpoint(const boost::asio::ip::udp::endpoint& endpoint)
 	{
 		endpoint_ = endpoint;
+	}
+
+	boost::asio::ip::udp::endpoint&
+	UDPServer::endpoint(void)
+	{
+		return endpoint_;
 	}
 
 	bool

@@ -107,6 +107,10 @@ BOOST_AUTO_TEST_CASE(UDP_construct_send_and_receive)
 	isServer >> str;
 	std::cout << "Value=" << str << std::endl;
 
+	// servers send package to client
+
+	// client receive package
+
 	// close sockets
 	udpClient.close();
 	udpServer.close();
