@@ -94,7 +94,7 @@ namespace OpcUaStackPubSub
 		  void asyncReceiveFrom(BUFFER& buffer, HANDLER handler)
 		  {
 			  socket_->async_receive_from(
-			      buffer,
+				  boost::asio::buffer(buffer),
 				  endpoint_,
 				  handler
 			  );

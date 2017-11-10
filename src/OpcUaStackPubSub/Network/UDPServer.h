@@ -49,7 +49,7 @@ namespace OpcUaStackPubSub
 		  )
 		  {
 			  std::vector<boost::asio::const_buffer> buffer;
-			  buffer.push_back(boost::asio::buffer(buffer1));
+			  buffer.push_back(boost::asio::buffer(buffer1.data()));
 			  socket_->send_to(
 				  buffer,
 				  endpoint
@@ -97,7 +97,7 @@ namespace OpcUaStackPubSub
 		  void asyncReceiveFrom(BUFFER& buffer, HANDLER handler)
 		  {
 			  socket_->async_receive_from(
-			      buffer,
+				  boost::asio::buffer(buffer),
 				  endpoint_,
 				  handler
 			  );
