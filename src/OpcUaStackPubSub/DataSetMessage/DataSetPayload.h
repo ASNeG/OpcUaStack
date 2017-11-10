@@ -15,37 +15,33 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_DataSetMessage_h__
-#define __OpcUaStackPubSub_DataSetMessage_h__
+#ifndef __OpcUaStackPubSub_DataSetPayload_h__
+#define __OpcUaStackPubSub_DataSetPayload_h__
 
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-
-using namespace OpcUaStackCore;
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT DataSetMessage
+	class DLLEXPORT DataSetPayload
 	{
 	  public:
-		typedef boost::shared_ptr<DataSetMessage> SPtr;
+		typedef boost::shared_ptr<DataSetPayload> SPtr;
 
-		DataSetMessage(void);
-		virtual ~DataSetMessage(void);
+		DataSetPayload(void);
+		~DataSetPayload(void);
 
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
-	};
+		void dataSetMessages(const DataSetMessageArray::SPtr& dataSetMessages);
+		DataSetMessageArray::SPtr& dataSetMessages(void);
 
-	class DataSetMessageArray
-	: public OpcUaArray<DataSetMessage::SPtr, SPtrTypeCoder<DataSetMessage> >
-	, public Object
-	{
-	  public:
-		typedef boost::shared_ptr<DataSetMessageArray> SPtr;
+		void opcUaBinaryEncode(std::ostream& os);
+		void opcUaBinaryDecode(std::istream& is);
+
+	  private:
+		DataSetMessageArray::SPtr dataSetMessages_;
 	};
 
 }

@@ -15,39 +15,42 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_DataSetMessage_h__
-#define __OpcUaStackPubSub_DataSetMessage_h__
-
-#include <boost/shared_ptr.hpp>
-#include <iostream>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
-
-using namespace OpcUaStackCore;
+#include "OpcUaStackPubSub/DataSetMessage/DataSetPayload.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT DataSetMessage
+	DataSetPayload::DataSetPayload(void)
+	: dataSetMessages_(constructSPtr<DataSetMessageArray>())
 	{
-	  public:
-		typedef boost::shared_ptr<DataSetMessage> SPtr;
+	}
 
-		DataSetMessage(void);
-		virtual ~DataSetMessage(void);
-
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
-	};
-
-	class DataSetMessageArray
-	: public OpcUaArray<DataSetMessage::SPtr, SPtrTypeCoder<DataSetMessage> >
-	, public Object
+	DataSetPayload::~DataSetPayload(void)
 	{
-	  public:
-		typedef boost::shared_ptr<DataSetMessageArray> SPtr;
-	};
+	}
+
+	void
+	DataSetPayload::dataSetMessages(const DataSetMessageArray::SPtr& dataSetMessages)
+	{
+		dataSetMessages_ = dataSetMessages;
+	}
+
+	DataSetMessageArray::SPtr&
+	DataSetPayload::dataSetMessages(void)
+	{
+		return dataSetMessages_;
+	}
+
+	void
+	DataSetPayload::opcUaBinaryEncode(std::ostream& os)
+	{
+		// FIXME: todo
+	}
+
+	void
+	DataSetPayload::opcUaBinaryDecode(std::istream& is)
+	{
+		// FIXME: todo
+	}
 
 }
-
-#endif
