@@ -28,9 +28,11 @@ namespace OpcUaStackCore
     
         AuditHistoryDeleteEventType(void);
         virtual ~AuditHistoryDeleteEventType(void);
-        
         bool updatedNode(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr updatedNode(void);
+        
+        bool setAuditHistoryDeleteEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditHistoryDeleteEventType(void);
         
         
         //- EventBase interface

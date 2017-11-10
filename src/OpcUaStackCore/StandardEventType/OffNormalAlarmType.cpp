@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("NormalState", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)10637));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     OffNormalAlarmType::normalState(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("normalState", value);
+    	eventVariables_.getValue("NormalState", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    OffNormalAlarmType::getOffNormalAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     OffNormalAlarmType::normalState(OpcUaVariant::SPtr& normalState)
     {
     	return eventVariables_.setValue("NormalState", normalState);
+    }
+    
+    bool 
+    OffNormalAlarmType::setOffNormalAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

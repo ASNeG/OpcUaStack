@@ -36,6 +36,8 @@
 #include "OpcUaStackCore/ServiceSetApplication/DelNodeInstanceResponse.h"
 #include "OpcUaStackCore/ServiceSetApplication/FireEventRequest.h"
 #include "OpcUaStackCore/ServiceSetApplication/FireEventResponse.h"
+#include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdRequest.h"
+#include "OpcUaStackCore/ServiceSetApplication/BrowsePathToNodeIdResponse.h"
 
 namespace OpcUaStackCore
 {
@@ -95,6 +97,13 @@ namespace OpcUaStackCore
 		OpcUaId_FireEventRequest_Encoding_DefaultBinary,
 		OpcUaId_FireEventResponse_Encoding_DefaultBinary
 	> ServiceTransactionFireEvent;
+
+	typedef ServiceTransactionTemplate<
+		BrowsePathToNodeIdRequest,
+		BrowsePathToNodeIdResponse,
+		OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary,
+		OpcUaId_BrowsePathToNodeIdResponse_Encoding_DefaultBinary
+	> ServiceTransactionBrowsePathToNodeId;
 
 }
 

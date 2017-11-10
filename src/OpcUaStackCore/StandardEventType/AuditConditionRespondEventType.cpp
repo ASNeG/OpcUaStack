@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("SelectedResponse", OpcUaBuildInType_OpcUaInt32);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)8927));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     AuditConditionRespondEventType::selectedResponse(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("selectedResponse", value);
+    	eventVariables_.getValue("SelectedResponse", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditConditionRespondEventType::getAuditConditionRespondEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     AuditConditionRespondEventType::selectedResponse(OpcUaVariant::SPtr& selectedResponse)
     {
     	return eventVariables_.setValue("SelectedResponse", selectedResponse);
+    }
+    
+    bool 
+    AuditConditionRespondEventType::setAuditConditionRespondEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

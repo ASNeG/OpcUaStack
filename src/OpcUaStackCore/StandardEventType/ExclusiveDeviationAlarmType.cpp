@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("SetpointNode", OpcUaBuildInType_OpcUaNodeId);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)9764));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     ExclusiveDeviationAlarmType::setpointNode(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("setpointNode", value);
+    	eventVariables_.getValue("SetpointNode", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    ExclusiveDeviationAlarmType::getExclusiveDeviationAlarmType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     ExclusiveDeviationAlarmType::setpointNode(OpcUaVariant::SPtr& setpointNode)
     {
     	return eventVariables_.setValue("SetpointNode", setpointNode);
+    }
+    
+    bool 
+    ExclusiveDeviationAlarmType::setExclusiveDeviationAlarmType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

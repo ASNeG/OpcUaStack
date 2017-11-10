@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         DiscreteAlarmType(void);
         virtual ~DiscreteAlarmType(void);
+        bool setDiscreteAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getDiscreteAlarmType(void);
         
         
         //- EventBase interface

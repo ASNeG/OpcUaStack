@@ -28,6 +28,32 @@ namespace OpcUaStackCore
     
         AcknowledgeableConditionType(void);
         virtual ~AcknowledgeableConditionType(void);
+        bool enabledState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState(void);
+        
+        bool enabledState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr enabledState_Id(void);
+        
+        bool ackedState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr ackedState(void);
+        
+        bool ackedState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr ackedState_Id(void);
+        
+        bool ackedState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr ackedState_TransitionTime(void);
+        
+        bool confirmedState(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr confirmedState(void);
+        
+        bool confirmedState_Id(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr confirmedState_Id(void);
+        
+        bool confirmedState_TransitionTime(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr confirmedState_TransitionTime(void);
+        
+        bool setAcknowledgeableConditionType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAcknowledgeableConditionType(void);
         
         
         //- EventBase interface

@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         AuditConditionEventType(void);
         virtual ~AuditConditionEventType(void);
+        bool setAuditConditionEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditConditionEventType(void);
         
         
         //- EventBase interface

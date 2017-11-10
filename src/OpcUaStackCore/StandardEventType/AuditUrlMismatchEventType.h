@@ -28,9 +28,11 @@ namespace OpcUaStackCore
     
         AuditUrlMismatchEventType(void);
         virtual ~AuditUrlMismatchEventType(void);
-        
         bool endpointUrl(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr endpointUrl(void);
+        
+        bool setAuditUrlMismatchEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditUrlMismatchEventType(void);
         
         
         //- EventBase interface

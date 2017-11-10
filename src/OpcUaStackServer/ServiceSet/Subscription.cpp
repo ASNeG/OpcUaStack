@@ -94,6 +94,12 @@ namespace OpcUaStackServer
 		monitorManager_.informationModel(informationModel);
 	}
 
+	void
+	Subscription::forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync)
+	{
+		monitorManager_.forwardGlobalSync(forwardGlobalSync);
+	}
+
 	OpcUaStatusCode
 	Subscription::receiveAcknowledgement(uint32_t acknowledgmentNumber)
 	{

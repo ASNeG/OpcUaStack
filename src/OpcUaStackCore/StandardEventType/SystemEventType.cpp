@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : BaseEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2130));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     SystemEventType::~SystemEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    SystemEventType::getSystemEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    SystemEventType::setSystemEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

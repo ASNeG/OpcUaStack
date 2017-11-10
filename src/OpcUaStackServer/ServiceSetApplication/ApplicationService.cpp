@@ -66,6 +66,9 @@ namespace OpcUaStackServer
 			case OpcUaId_FireEventRequest_Encoding_DefaultBinary:
 				receiveFireEventRequest(serviceTransaction);
 				break;
+			case OpcUaId_BrowsePathToNodeIdRequest_Encoding_DefaultBinary:
+				receiveBrowsePathToNodeIdRequest(serviceTransaction);
+				break;
 			default:
 				Log(Error, "application service received unknown message type")
 					.parameter("TypeId", serviceTransaction->nodeTypeRequest());
@@ -414,6 +417,98 @@ namespace OpcUaStackServer
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::receiveBrowsePathToNodeIdRequest(ServiceTransaction::SPtr serviceTransaction)
+	{
+		ServiceTransactionBrowsePathToNodeId::SPtr trx = boost::static_pointer_cast<ServiceTransactionBrowsePathToNodeId>(serviceTransaction);
+
+		BrowsePathToNodeIdRequest::SPtr req = trx->request();
+		BrowsePathToNodeIdResponse::SPtr res = trx->response();
+
+		uint32_t size = req->browseNameArray()->size();
+		if (size == 0) {
+			trx->statusCode(BadInvalidArgument);
+			trx->componentSession()->send(serviceTransaction);
+		}
+
+		res->nodeIdResults()->resize(size);
+		for (uint32_t idx = 0; idx < size; idx++) {
+			BrowseName::SPtr browseName;
+			req->browseNameArray()->get(idx, browseName);
+			NodeIdResult::SPtr nodeIdResult = constructSPtr<NodeIdResult>();
+
+			getNodeIdFromBrowsePath(browseName, nodeIdResult);
+			res->nodeIdResults()->set(idx, nodeIdResult);
+		}
+
+		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	ApplicationService::getNodeIdFromBrowsePath(
+		BrowseName::SPtr& browseName,
+		NodeIdResult::SPtr& nodeIdResult
+	)
+	{
+		//
+		// check parameter
+		//
+		if (browseName->pathNames()->size() == 0) {
+			nodeIdResult->statusCode(BadInvalidArgument);
+			return;
+		}
+
+		//
+		// find object node
+		//
+		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(browseName->nodeId());
+		if (baseNodeClass.get() == nullptr) {
+			Log(Debug, "browse path from node id error, because node not exist in information model")
+				.parameter("Node", browseName->nodeId());
+
+			nodeIdResult->statusCode(BadNodeIdUnknown);
+			return;
+		}
+
+		//
+		// translate browse path to node id
+		//
+		for (uint32_t idx = 0; idx < browseName->pathNames()->size(); idx++) {
+			OpcUaQualifiedName::SPtr pathElement;
+			browseName->pathNames()->get(idx, pathElement);
+
+			ReferenceItemMap& referenceItemMap = baseNodeClass->referenceItemMap();
+			ReferenceItemMultiMap::iterator it;
+
+			bool found = false;
+			for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
+				OpcUaNodeId referenceTypeNodeId = it->first;
+				ReferenceItem::SPtr referenceItem = it->second;
+
+				BaseNodeClass::SPtr baseNodeClassTarget = informationModel_->find(referenceItem->nodeId_);
+				if (baseNodeClassTarget.get() == nullptr) {
+					continue;
+				}
+
+				if (baseNodeClassTarget->browseName().data() == *pathElement) {
+					nodeIdResult->nodeId(referenceItem->nodeId_);
+					baseNodeClass = baseNodeClassTarget;
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				nodeIdResult->statusCode(BadNodeIdUnknown);
+				return;
+			}
+		}
+
+		nodeIdResult->statusCode(Success);
+		return;
 	}
 
 }

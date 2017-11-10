@@ -28,9 +28,11 @@ namespace OpcUaStackCore
     
         AuditHistoryUpdateEventType(void);
         virtual ~AuditHistoryUpdateEventType(void);
-        
         bool parameterDataTypeId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr parameterDataTypeId(void);
+        
+        bool setAuditHistoryUpdateEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditHistoryUpdateEventType(void);
         
         
         //- EventBase interface

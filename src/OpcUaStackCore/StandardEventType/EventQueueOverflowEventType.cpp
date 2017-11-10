@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : BaseEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)3035));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     EventQueueOverflowEventType::~EventQueueOverflowEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    EventQueueOverflowEventType::getEventQueueOverflowEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    EventQueueOverflowEventType::setEventQueueOverflowEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

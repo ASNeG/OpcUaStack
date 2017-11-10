@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("SecureChannelId", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2059));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     AuditChannelEventType::secureChannelId(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("secureChannelId", value);
+    	eventVariables_.getValue("SecureChannelId", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditChannelEventType::getAuditChannelEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     AuditChannelEventType::secureChannelId(OpcUaVariant::SPtr& secureChannelId)
     {
     	return eventVariables_.setValue("SecureChannelId", secureChannelId);
+    }
+    
+    bool 
+    AuditChannelEventType::setAuditChannelEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

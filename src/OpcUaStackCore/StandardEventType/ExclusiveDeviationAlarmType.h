@@ -28,9 +28,11 @@ namespace OpcUaStackCore
     
         ExclusiveDeviationAlarmType(void);
         virtual ~ExclusiveDeviationAlarmType(void);
-        
         bool setpointNode(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr setpointNode(void);
+        
+        bool setExclusiveDeviationAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getExclusiveDeviationAlarmType(void);
         
         
         //- EventBase interface

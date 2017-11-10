@@ -19,6 +19,7 @@ namespace OpcUaStackCore
     , eventVariables_()
     {
         eventVariables_.registerEventVariable("EndpointUrl", OpcUaBuildInType_OpcUaString);
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2748));
         eventVariables_.namespaceIndex(0);
@@ -34,7 +35,15 @@ namespace OpcUaStackCore
     AuditUrlMismatchEventType::endpointUrl(void)
     {
     	OpcUaVariant::SPtr value;
-    	eventVariables_.getValue("endpointUrl", value);
+    	eventVariables_.getValue("EndpointUrl", value);
+    	return value;
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditUrlMismatchEventType::getAuditUrlMismatchEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
     	return value;
     }
     
@@ -42,6 +51,12 @@ namespace OpcUaStackCore
     AuditUrlMismatchEventType::endpointUrl(OpcUaVariant::SPtr& endpointUrl)
     {
     	return eventVariables_.setValue("EndpointUrl", endpointUrl);
+    }
+    
+    bool 
+    AuditUrlMismatchEventType::setAuditUrlMismatchEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/ServiceSet/SubscriptionServiceTransaction.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/MonitorManager.h"
@@ -60,6 +61,7 @@ namespace OpcUaStackServer
 		void maxKeepAliveCount(uint32_t maxKeepAliveCount);
 		void ioThread(IOThread* ioThread);
 		void informationModel(InformationModel::SPtr informationModel);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 		OpcUaStatusCode receiveAcknowledgement(uint32_t acknowledgmentNumber);
 
 		void retransmissionQueue(SubscriptionAcknowledgement::SPtr subscriptionAcknowledgement);

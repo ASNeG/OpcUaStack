@@ -154,7 +154,6 @@ namespace OpcUaStackServer
 	{
 		boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
 		BaseEventType::SPtr baseEventType = boost::static_pointer_cast<BaseEventType>(eventBase);
-		std::cout << "fireEvent" << std::endl;
 		// FIXME: lock
 
 		// check event
@@ -246,15 +245,11 @@ namespace OpcUaStackServer
 			SimpleAttributeOperand::SPtr simpleAttributeOperand;
 			selectClauses_->get(idx, simpleAttributeOperand);
 
-			std::cout << "NodeId=" << simpleAttributeOperand->typeId() << std::endl;
-
 			std::list<OpcUaQualifiedName::SPtr> browseNameList;
 			for (uint32_t j=0; j<simpleAttributeOperand->browsePath()->size(); j++) {
 				OpcUaQualifiedName::SPtr browseName;
 				simpleAttributeOperand->browsePath()->get(j, browseName);
 				browseNameList.push_back(browseName);
-
-				std::cout << " BrowseName=" <<  browseName->toString() << std::endl;
 			}
 
 			// get variant value from event
@@ -273,9 +268,7 @@ namespace OpcUaStackServer
 
 			}
 			else {
-				std::cout << "FOUND!!!!" << std::endl;
 			}
-			if (value.get() == nullptr) std::cout << "value is null" << std::endl;
 			eventField->variant(value);
 			eventFieldList->eventFields()->push_back(eventField);
 		}

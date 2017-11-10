@@ -181,8 +181,6 @@ namespace OpcUaStackCore
 	void
 	BaseEventType::mapNamespaceUri(void)
 	{
-		std::cout << "BaseEventType::mapNamespaceUri" << std::endl;
-
 		uint32_t namespaceIndex;
 		EventBase::mapNamespaceUri();
 
@@ -191,7 +189,6 @@ namespace OpcUaStackCore
 
 		setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), eventTypeVariable);
 
-		std::cout << "1 set event type: " << *eventTypeVariable << std::endl;
 		eventType(eventTypeVariable);
 		eventVariables_.eventType(eventTypeVariable);
 		eventVariables_.namespaceIndex(namespaceIndex);

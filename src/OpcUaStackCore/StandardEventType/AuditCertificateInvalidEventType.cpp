@@ -18,6 +18,7 @@ namespace OpcUaStackCore
     : AuditCertificateEventType()
     , eventVariables_()
     {
+        eventVariables_.registerEventVariable("EMPTY", OpcUaBuildInType_OpcUaVariant);
     
         eventVariables_.eventType(OpcUaNodeId((OpcUaUInt32)2086));
         eventVariables_.namespaceIndex(0);
@@ -27,6 +28,20 @@ namespace OpcUaStackCore
     
     AuditCertificateInvalidEventType::~AuditCertificateInvalidEventType(void)
     {
+    }
+    
+    OpcUaVariant::SPtr 
+    AuditCertificateInvalidEventType::getAuditCertificateInvalidEventType(void)
+    {
+    	OpcUaVariant::SPtr value;
+    	eventVariables_.getValue("EMPTY", value);
+    	return value;
+    }
+    
+    bool 
+    AuditCertificateInvalidEventType::setAuditCertificateInvalidEventType(OpcUaVariant::SPtr& value)
+    {
+    	return eventVariables_.setValue("EMPTY", value);
     }
     
     void

@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         LimitAlarmType(void);
         virtual ~LimitAlarmType(void);
-        
         bool highHighLimit(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr highHighLimit(void);
         
@@ -40,6 +39,9 @@ namespace OpcUaStackCore
         
         bool lowLowLimit(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr lowLowLimit(void);
+        
+        bool setLimitAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getLimitAlarmType(void);
         
         
         //- EventBase interface

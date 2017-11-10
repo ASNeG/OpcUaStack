@@ -28,7 +28,6 @@ namespace OpcUaStackCore
     
         AuditEventType(void);
         virtual ~AuditEventType(void);
-        
         bool actionTimeStamp(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr actionTimeStamp(void);
         
@@ -43,6 +42,9 @@ namespace OpcUaStackCore
         
         bool clientUserId(OpcUaVariant::SPtr& variable);
         OpcUaVariant::SPtr clientUserId(void);
+        
+        bool setAuditEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getAuditEventType(void);
         
         
         //- EventBase interface

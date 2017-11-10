@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         TripAlarmType(void);
         virtual ~TripAlarmType(void);
+        bool setTripAlarmType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getTripAlarmType(void);
         
         
         //- EventBase interface

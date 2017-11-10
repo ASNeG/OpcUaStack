@@ -18,12 +18,12 @@
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/program_options.hpp>
+#include <OpcUaStackServer/Generator/EventTypeGenerator.h>
 #include <iostream>
 #include <sstream>
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaEventTypeGenerator/OpcUaEventTypeGenerator.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
-#include "OpcUaStackServer/EventType/EventTypeGenerator.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"

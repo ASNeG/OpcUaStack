@@ -28,6 +28,8 @@ namespace OpcUaStackCore
     
         RefreshStartEventType(void);
         virtual ~RefreshStartEventType(void);
+        bool setRefreshStartEventType(OpcUaVariant::SPtr& variable);
+        OpcUaVariant::SPtr getRefreshStartEventType(void);
         
         
         //- EventBase interface
