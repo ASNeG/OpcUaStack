@@ -22,6 +22,7 @@ namespace OpcUaStackPubSub
 
 	DataDeltaFrameDataSetMessage::DataDeltaFrameDataSetMessage(void)
 	{
+		messageType(DataDeltaFrame);
 	}
 
 	DataDeltaFrameDataSetMessage::~DataDeltaFrameDataSetMessage(void)

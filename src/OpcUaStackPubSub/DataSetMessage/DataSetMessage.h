@@ -33,11 +33,25 @@ namespace OpcUaStackPubSub
 	  public:
 		typedef boost::shared_ptr<DataSetMessage> SPtr;
 
+		typedef enum
+		{
+			DataKeyFrame,
+			DataDeltaFrame,
+			EventData,
+			KeepAlive
+		} MessageType;
+
 		DataSetMessage(void);
 		virtual ~DataSetMessage(void);
 
+		void messageType(MessageType messageType);
+		MessageType messageType(void);
+
 		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
 		virtual void opcUaBinaryDecode(std::istream& is) = 0;
+
+	  private:
+		MessageType messageType_;
 	};
 
 	class DataSetMessageArray

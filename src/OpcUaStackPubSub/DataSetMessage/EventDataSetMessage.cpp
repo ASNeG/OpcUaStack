@@ -22,6 +22,7 @@ namespace OpcUaStackPubSub
 
 	EventDataSetMessage::EventDataSetMessage(void)
 	{
+		messageType(EventData);
 	}
 
 	EventDataSetMessage::~EventDataSetMessage(void)

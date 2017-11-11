@@ -22,6 +22,7 @@ namespace OpcUaStackPubSub
 
 	DataKeyFrameDataSetMessage::DataKeyFrameDataSetMessage(void)
 	{
+		messageType(DataKeyFrame);
 	}
 
 	DataKeyFrameDataSetMessage::~DataKeyFrameDataSetMessage(void)

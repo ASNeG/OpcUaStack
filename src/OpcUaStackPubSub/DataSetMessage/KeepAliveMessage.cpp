@@ -22,6 +22,7 @@ namespace OpcUaStackPubSub
 
 	KeepAliveMessage::KeepAliveMessage(void)
 	{
+		messageType(KeepAlive);
 	}
 
 	KeepAliveMessage::~KeepAliveMessage(void)
@@ -31,13 +32,11 @@ namespace OpcUaStackPubSub
 	void
 	KeepAliveMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
 	}
 
 	void
 	KeepAliveMessage::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
 	}
 
 }

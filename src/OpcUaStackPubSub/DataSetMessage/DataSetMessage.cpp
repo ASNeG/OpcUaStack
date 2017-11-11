@@ -21,11 +21,24 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetMessage::DataSetMessage(void)
+	: messageType_(KeepAlive)
 	{
 	}
 
 	DataSetMessage::~DataSetMessage(void)
 	{
+	}
+
+	void
+	DataSetMessage::messageType(MessageType messageType)
+	{
+		messageType_ = messageType;
+	}
+
+	DataSetMessage::MessageType
+	DataSetMessage::messageType(void)
+	{
+		return messageType_;
 	}
 
 }
