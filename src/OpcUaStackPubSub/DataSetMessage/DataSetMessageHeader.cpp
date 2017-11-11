@@ -157,6 +157,7 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::dataMessageSequenceNumber(OpcUaUInt16 dataMessageSequenceNumber)
 	{
 		dataMessageSequenceNumber_ = dataMessageSequenceNumber;
+		dataSetMessageSequenceNumberEnabled_ = true;
 	}
 
 	OpcUaUInt16
@@ -169,6 +170,7 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::timestamp(OpcUaDateTime timestamp)
 	{
 		timestamp_ = timestamp;
+		timestampEnabled_ = true;
 	}
 
 	OpcUaDateTime
@@ -181,6 +183,8 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::picoSeconds(OpcUaUInt16 picoSeconds)
 	{
 		picoSeconds_ = picoSeconds;
+		picoSecondsEnabled_ = true;
+		dataSetFlag2Enabled_ = true;
 	}
 
 	OpcUaUInt16
@@ -193,6 +197,7 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::statusCode(OpcUaUInt16 statusCode)
 	{
 		statusCode_ = statusCode;
+		statusEnabled_ = true;
 	}
 
 	OpcUaUInt16
@@ -205,6 +210,7 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::configurationVersionMajorVersion(OpcUaUInt32 configurationVersionMajorVersion)
 	{
 		configurationVersionMajorVersion_ = configurationVersionMajorVersion;
+		configurationVersionMajorVersionEnabled_ = true;
 	}
 
 	OpcUaUInt32
@@ -217,6 +223,7 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::configurationVersionMinorVersion(OpcUaUInt32 configurationVersionMinorVersion)
 	{
 		configurationVersionMinorVersion_ = configurationVersionMinorVersion;
+		configurationVersionMinorVersionEnabled_ = true;
 	}
 
 	OpcUaUInt32
@@ -304,6 +311,10 @@ namespace OpcUaStackPubSub
 			timestampEnabled_ = true;
 			dataSetFlag1 -= 8;
 		}
+		if (dataSetFlag1 >= 4) {
+			dataSetMessageSequenceNumberEnabled_ = true;
+			dataSetFlag1 -= 4;
+		}
 		fieldEncoding_ = (FieldEncoding)dataSetFlag1;
 
 		// DataSetFlag2
@@ -312,7 +323,7 @@ namespace OpcUaStackPubSub
 			OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag2);
 
 			if (dataSetFlag2 >= 16) {
-				timestampEnabled_ = true;
+				picoSecondsEnabled_ = true;
 				dataSetFlag2 -= 16;
 			}
 
