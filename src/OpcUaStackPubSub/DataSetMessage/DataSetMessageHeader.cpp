@@ -21,12 +21,19 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetMessageHeader::DataSetMessageHeader(void)
-	: fieldEncoding_(Variant)
+	: fieldEncoding_(VariantEncoding)
 	, dataSetMessageSequenceNumberEnabled_(true)
 	, timestampEnabled_(true)
 	, statusEnabled_(true)
 	, configurationVersionMajorVersionEnabled_(true)
 	, configurationVersionMinorVersionEnabled_(true)
+	, messageType_(KeepAlive)
+	, picoSecondsEnabled_(true)
+	, timestamp_()
+	, picoSeconds_(0)
+	, statusCode_(Success)
+	, configurationVersionMajorVersion_(0)
+	, configurationVersionMinorVersion_(0)
 	{
 	}
 
@@ -104,6 +111,90 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::configurationVersionMinorVersionEnabled(void)
 	{
 		return configurationVersionMinorVersionEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::messageType(DataSetMessageType messageType)
+	{
+		messageType_ = messageType;
+	}
+
+	DataSetMessageType
+	DataSetMessageHeader::messageType(void)
+	{
+		return messageType_;
+	}
+
+	void
+	DataSetMessageHeader::picoSecondsEnabled(bool enabled)
+	{
+		picoSecondsEnabled_ = enabled;
+	}
+
+	bool
+	DataSetMessageHeader::picoSecondsEnabled(void)
+	{
+		return picoSecondsEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::timestamp(OpcUaDateTime timestamp)
+	{
+		timestamp_ = timestamp;
+	}
+
+	OpcUaDateTime
+	DataSetMessageHeader::timestamp(void)
+	{
+		return timestamp_;
+	}
+
+	void
+	DataSetMessageHeader::picoSeconds(OpcUaUInt16 picoSeconds)
+	{
+		picoSeconds_ = picoSeconds;
+	}
+
+	OpcUaUInt16
+	DataSetMessageHeader::picoSeconds(void)
+	{
+		return picoSeconds_;
+	}
+
+	void
+	DataSetMessageHeader::statusCode(OpcUaUInt16 statusCode)
+	{
+		statusCode_ = statusCode;
+	}
+
+	OpcUaUInt16
+	DataSetMessageHeader::statusCode(void)
+	{
+		return statusCode_;
+	}
+
+	void
+	DataSetMessageHeader::configurationVersionMajorVersion(OpcUaUInt32 configurationVersionMajorVersion)
+	{
+		configurationVersionMajorVersion_ = configurationVersionMajorVersion;
+	}
+
+	OpcUaUInt32
+	DataSetMessageHeader::configurationVersionMajorVersion(void)
+	{
+		return configurationVersionMajorVersion_;
+	}
+
+	void
+	DataSetMessageHeader::configurationVersionMinorVersion(OpcUaUInt32 configurationVersionMinorVersion)
+	{
+		configurationVersionMinorVersion_ = configurationVersionMinorVersion;
+	}
+
+	OpcUaUInt32
+	DataSetMessageHeader::configurationVersionMinorVersion(void)
+	{
+		return configurationVersionMinorVersion_;
 	}
 
 	void

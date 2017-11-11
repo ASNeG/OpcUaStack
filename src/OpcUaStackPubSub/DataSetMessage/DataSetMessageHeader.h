@@ -21,6 +21,10 @@
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessageType.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
@@ -32,9 +36,9 @@ namespace OpcUaStackPubSub
 
 		typedef enum
 		{
-			Variant,
-			RawData,
-			DataValue
+			VariantEncoding,
+			RawDataEncoding,
+			DataValueEncoding
 		} FieldEncoding;
 
 		DataSetMessageHeader(void);
@@ -52,6 +56,20 @@ namespace OpcUaStackPubSub
 		void configurationVersionMajorVersionEnabled(bool enabled);
 		bool configurationVersionMinorVersionEnabled(void);
 		void configurationVersionMinorVersionEnabled(bool enabled);
+		void messageType(DataSetMessageType messageType);
+		DataSetMessageType messageType(void);
+		void picoSecondsEnabled(bool enabled);
+		bool picoSecondsEnabled(void);
+		void timestamp(OpcUaDateTime timestamp);
+		OpcUaDateTime timestamp(void);
+		void picoSeconds(OpcUaUInt16 picoSeconds);
+		OpcUaUInt16 picoSeconds(void);
+		void statusCode(OpcUaUInt16 statusCode);
+		OpcUaUInt16 statusCode(void);
+		void configurationVersionMajorVersion(OpcUaUInt32 configurationVersionMajorVersion);
+		OpcUaUInt32 configurationVersionMajorVersion(void);
+		void configurationVersionMinorVersion(OpcUaUInt32 configurationVersionMinorVersion);
+		OpcUaUInt32 configurationVersionMinorVersion(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -63,6 +81,15 @@ namespace OpcUaStackPubSub
 		bool statusEnabled_;
 		bool configurationVersionMajorVersionEnabled_;
 		bool configurationVersionMinorVersionEnabled_;
+		DataSetMessageType messageType_;
+		bool picoSecondsEnabled_;
+
+		OpcUaDateTime timestamp_;
+		OpcUaUInt16 picoSeconds_;
+		OpcUaUInt16 statusCode_;
+		OpcUaUInt32 configurationVersionMajorVersion_;
+		OpcUaUInt32 configurationVersionMinorVersion_;
+
 	};
 
 }

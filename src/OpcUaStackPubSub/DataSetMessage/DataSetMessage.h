@@ -22,6 +22,7 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessageType.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,25 +34,17 @@ namespace OpcUaStackPubSub
 	  public:
 		typedef boost::shared_ptr<DataSetMessage> SPtr;
 
-		typedef enum
-		{
-			DataKeyFrame,
-			DataDeltaFrame,
-			EventData,
-			KeepAlive
-		} MessageType;
-
 		DataSetMessage(void);
 		virtual ~DataSetMessage(void);
 
-		void messageType(MessageType messageType);
-		MessageType messageType(void);
+		void messageType(DataSetMessageType messageType);
+		DataSetMessageType messageType(void);
 
 		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
 		virtual void opcUaBinaryDecode(std::istream& is) = 0;
 
 	  private:
-		MessageType messageType_;
+		DataSetMessageType messageType_;
 	};
 
 	class DataSetMessageArray

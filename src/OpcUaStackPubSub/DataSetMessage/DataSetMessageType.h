@@ -15,30 +15,20 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
+#ifndef __OpcUaStackPubSub_DataSetMessageType_h__
+#define __OpcUaStackPubSub_DataSetMessageType_h__
 
 namespace OpcUaStackPubSub
 {
 
-	DataSetMessage::DataSetMessage(void)
-	: messageType_(KeepAlive)
+	typedef enum
 	{
-	}
-
-	DataSetMessage::~DataSetMessage(void)
-	{
-	}
-
-	void
-	DataSetMessage::messageType(DataSetMessageType messageType)
-	{
-		messageType_ = messageType;
-	}
-
-	DataSetMessageType
-	DataSetMessage::messageType(void)
-	{
-		return messageType_;
-	}
+		DataKeyFrame,
+		DataDeltaFrame,
+		EventData,
+		KeepAlive
+	} DataSetMessageType;
 
 }
+
+#endif
