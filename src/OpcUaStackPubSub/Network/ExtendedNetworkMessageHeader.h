@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkMessageHeader_h__
-#define __OpcUaStackPubSub_NetworkMessageHeader_h__
+#ifndef __OpcUaStackPubSub_ExtendedNetworkMessageHeader_h__
+#define __OpcUaStackPubSub_ExtendedNetworkMessageHeader_h__
 
 #include <boost/shared_ptr.hpp>
 #include <iostream>
@@ -25,13 +25,13 @@
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT NetworkMessageHeader
+	class DLLEXPORT ExtendedNetworkMessageHeader
 	{
 	  public:
-		typedef boost::shared_ptr<NetworkMessageHeader> SPtr;
+		typedef boost::shared_ptr<ExtendedNetworkMessageHeader> SPtr;
 
-		NetworkMessageHeader(void);
-		~NetworkMessageHeader(void);
+		ExtendedNetworkMessageHeader(void);
+		~ExtendedNetworkMessageHeader(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
