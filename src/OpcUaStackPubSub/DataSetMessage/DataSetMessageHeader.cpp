@@ -238,12 +238,12 @@ namespace OpcUaStackPubSub
 		// DataSetFlag 1
 		OpcUaByte dataSetFlag1 = 0;
 		dataSetFlag1 = (OpcUaByte)fieldEncoding_;
-		if (dataSetMessageSequenceNumberEnabled_) dataSetFlag1 += 4;
-		if (timestampEnabled_) dataSetFlag1 += 8;
-		if (statusEnabled_) dataSetFlag1 += 16;
-		if (configurationVersionMajorVersionEnabled_) dataSetFlag1 += 32;
-		if (configurationVersionMinorVersionEnabled_) dataSetFlag1 += 64;
-		if (dataSetFlag2Enabled_) dataSetFlag1 += 128;
+		if (dataSetMessageSequenceNumberEnabled_) dataSetFlag1 += 0x04;
+		if (timestampEnabled_) dataSetFlag1 += 0x08;
+		if (statusEnabled_) dataSetFlag1 += 0x10;
+		if (configurationVersionMajorVersionEnabled_) dataSetFlag1 += 0x20;
+		if (configurationVersionMinorVersionEnabled_) dataSetFlag1 += 0x40;
+		if (dataSetFlag2Enabled_) dataSetFlag1 += 0x80;
 		OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag1);
 
 		// DataSetFlag2
@@ -291,43 +291,35 @@ namespace OpcUaStackPubSub
 		// DataSetFlag 1
 		OpcUaByte dataSetFlag1 = 0;
 		OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag1);
-		if (dataSetFlag1 >= 128) {
-			dataSetFlag2Enabled_ = true;
-			dataSetFlag1 -= 128;
-		}
-		if (dataSetFlag1 >= 64) {
-			configurationVersionMinorVersionEnabled_ = true;
-			dataSetFlag1 -= 64;
-		}
-		if (dataSetFlag1 >= 32) {
-			configurationVersionMajorVersionEnabled_ = true;
-			dataSetFlag1 -= 32;
-		}
-		if (dataSetFlag1 >= 16) {
-			statusEnabled_ = true;
-			dataSetFlag1 -= 16;
-		}
-		if (dataSetFlag1 >= 8) {
-			timestampEnabled_ = true;
-			dataSetFlag1 -= 8;
-		}
-		if (dataSetFlag1 >= 4) {
+		fieldEncoding_ = (FieldEncoding)(dataSetFlag1 & 0x03);
+		if ((dataSetFlag1 & 0x04) == 0x04) {
 			dataSetMessageSequenceNumberEnabled_ = true;
-			dataSetFlag1 -= 4;
 		}
-		fieldEncoding_ = (FieldEncoding)dataSetFlag1;
+		if ((dataSetFlag1 & 0x08) == 0x08) {
+			timestampEnabled_ = true;
+		}
+		if ((dataSetFlag1 & 0x10) == 0x10) {
+			statusEnabled_ = true;
+		}
+		if ((dataSetFlag1 & 0x20) == 0x20) {
+			configurationVersionMajorVersionEnabled_ = true;
+		}
+		if ((dataSetFlag1 & 0x40) == 0x40) {
+			configurationVersionMinorVersionEnabled_ = true;
+		}
+		if ((dataSetFlag1 & 0x80) == 0x80) {
+			dataSetFlag2Enabled_ = true;
+		}
 
 		// DataSetFlag2
 		if (dataSetFlag2Enabled_) {
 			OpcUaByte dataSetFlag2 = 0;
 			OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag2);
 
-			if (dataSetFlag2 >= 16) {
+			messageType_ = (DataSetMessageType)(dataSetFlag2 & 0x0F);
+			if ((dataSetFlag2 & 0x10) == 0x10) {
 				picoSecondsEnabled_ = true;
-				dataSetFlag2 -= 16;
 			}
-
-			messageType_ = (DataSetMessageType)dataSetFlag2;
 		}
 
 		// sequence number
