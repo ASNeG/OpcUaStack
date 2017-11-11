@@ -44,7 +44,12 @@ namespace OpcUaStackPubSub
 	void
 	DataSetPayload::opcUaBinaryEncode(std::ostream& os)
 	{
-		// FIXME: todo
+		for (uint32_t idx = 0; idx < dataSetMessages_->size(); idx++) {
+			DataSetMessage::SPtr dataSetMessage;
+			dataSetMessages_->get(idx, dataSetMessage);
+
+			// FIXME: todo
+		}
 	}
 
 	void

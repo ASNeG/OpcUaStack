@@ -30,11 +30,39 @@ namespace OpcUaStackPubSub
 	  public:
 		typedef boost::shared_ptr<DataSetMessageHeader> SPtr;
 
+		typedef enum
+		{
+			Variant,
+			RawData,
+			DataValue
+		} FieldEncoding;
+
 		DataSetMessageHeader(void);
 		~DataSetMessageHeader(void);
 
+		void fieldEncoding(FieldEncoding fieldEncoding);
+		FieldEncoding fieldEncoding(void);
+		void dataSetMessageSequenceNumberEnabled(bool enabled);
+		bool dataSetMessageSequenceNumberEnabled(void);
+		void timestampEnabled(bool enabled);
+		bool timestampEnabled(void);
+		void statusEnabled(bool enabled);
+		bool statusEnabled(void);
+		bool configurationVersionMajorVersionEnabled(void);
+		void configurationVersionMajorVersionEnabled(bool enabled);
+		bool configurationVersionMinorVersionEnabled(void);
+		void configurationVersionMinorVersionEnabled(bool enabled);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+	  private:
+		FieldEncoding fieldEncoding_;
+		bool dataSetMessageSequenceNumberEnabled_;
+		bool timestampEnabled_;
+		bool statusEnabled_;
+		bool configurationVersionMajorVersionEnabled_;
+		bool configurationVersionMinorVersionEnabled_;
 	};
 
 }

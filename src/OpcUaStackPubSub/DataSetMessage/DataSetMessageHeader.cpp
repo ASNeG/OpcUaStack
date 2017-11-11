@@ -21,11 +21,89 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetMessageHeader::DataSetMessageHeader(void)
+	: fieldEncoding_(Variant)
+	, dataSetMessageSequenceNumberEnabled_(true)
+	, timestampEnabled_(true)
+	, statusEnabled_(true)
+	, configurationVersionMajorVersionEnabled_(true)
+	, configurationVersionMinorVersionEnabled_(true)
 	{
 	}
 
 	DataSetMessageHeader::~DataSetMessageHeader(void)
 	{
+	}
+
+	void
+	DataSetMessageHeader::fieldEncoding(FieldEncoding fieldEncoding)
+	{
+		fieldEncoding_ = fieldEncoding;
+	}
+
+	DataSetMessageHeader::FieldEncoding
+	DataSetMessageHeader::fieldEncoding(void)
+	{
+		return fieldEncoding_;
+	}
+
+	void
+	DataSetMessageHeader::dataSetMessageSequenceNumberEnabled(bool enabled)
+	{
+		dataSetMessageSequenceNumberEnabled_ = enabled;
+	}
+
+	bool
+	DataSetMessageHeader::dataSetMessageSequenceNumberEnabled(void)
+	{
+		return dataSetMessageSequenceNumberEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::timestampEnabled(bool enabled)
+	{
+		timestampEnabled_ = enabled;
+	}
+
+	bool
+	DataSetMessageHeader::timestampEnabled(void)
+	{
+		return timestampEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::statusEnabled(bool enabled)
+	{
+		statusEnabled_ = enabled;
+	}
+
+	bool
+	DataSetMessageHeader::statusEnabled(void)
+	{
+		return statusEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::configurationVersionMajorVersionEnabled(bool enabled)
+	{
+		configurationVersionMajorVersionEnabled_ = enabled;
+	}
+
+	bool
+	DataSetMessageHeader::configurationVersionMajorVersionEnabled(void)
+	{
+		return configurationVersionMajorVersionEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::configurationVersionMinorVersionEnabled(bool enabled)
+	{
+		configurationVersionMinorVersionEnabled_ = enabled;
+	}
+
+	bool
+	DataSetMessageHeader::configurationVersionMinorVersionEnabled(void)
+	{
+		return configurationVersionMinorVersionEnabled_;
 	}
 
 	void
