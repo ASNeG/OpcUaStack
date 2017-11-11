@@ -56,10 +56,14 @@ namespace OpcUaStackPubSub
 		void configurationVersionMajorVersionEnabled(bool enabled);
 		bool configurationVersionMinorVersionEnabled(void);
 		void configurationVersionMinorVersionEnabled(bool enabled);
+		void dataSetFlag2Enabled(bool dataSetFlag2Enabled);
+		bool dataSetFlag2Enabled(void);
 		void messageType(DataSetMessageType messageType);
 		DataSetMessageType messageType(void);
 		void picoSecondsEnabled(bool enabled);
 		bool picoSecondsEnabled(void);
+		void dataMessageSequenceNumber(OpcUaUInt16 dataMessageSequenceNumber);
+		OpcUaUInt16 dataMessageSequenceNumber(void);
 		void timestamp(OpcUaDateTime timestamp);
 		OpcUaDateTime timestamp(void);
 		void picoSeconds(OpcUaUInt16 picoSeconds);
@@ -81,9 +85,11 @@ namespace OpcUaStackPubSub
 		bool statusEnabled_;
 		bool configurationVersionMajorVersionEnabled_;
 		bool configurationVersionMinorVersionEnabled_;
+		bool dataSetFlag2Enabled_;
 		DataSetMessageType messageType_;
 		bool picoSecondsEnabled_;
 
+		OpcUaUInt16 dataMessageSequenceNumber_;
 		OpcUaDateTime timestamp_;
 		OpcUaUInt16 picoSeconds_;
 		OpcUaUInt16 statusCode_;

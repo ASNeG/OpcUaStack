@@ -22,13 +22,15 @@ namespace OpcUaStackPubSub
 
 	DataSetMessageHeader::DataSetMessageHeader(void)
 	: fieldEncoding_(VariantEncoding)
-	, dataSetMessageSequenceNumberEnabled_(true)
-	, timestampEnabled_(true)
-	, statusEnabled_(true)
-	, configurationVersionMajorVersionEnabled_(true)
-	, configurationVersionMinorVersionEnabled_(true)
-	, messageType_(KeepAlive)
-	, picoSecondsEnabled_(true)
+	, dataSetMessageSequenceNumberEnabled_(false)
+	, timestampEnabled_(false)
+	, statusEnabled_(false)
+	, configurationVersionMajorVersionEnabled_(false)
+	, configurationVersionMinorVersionEnabled_(false)
+	, dataSetFlag2Enabled_(false)
+	, messageType_(DataKeyFrame)
+	, picoSecondsEnabled_(false)
+	, dataMessageSequenceNumber_(0)
 	, timestamp_()
 	, picoSeconds_(0)
 	, statusCode_(Success)
@@ -114,9 +116,22 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	DataSetMessageHeader::dataSetFlag2Enabled(bool dataSetFlag2Enabled)
+	{
+		dataSetFlag2Enabled_ = dataSetFlag2Enabled;
+	}
+
+	bool
+	DataSetMessageHeader::dataSetFlag2Enabled(void)
+	{
+		return dataSetFlag2Enabled_;
+	}
+
+	void
 	DataSetMessageHeader::messageType(DataSetMessageType messageType)
 	{
 		messageType_ = messageType;
+		dataSetFlag2Enabled_ = true;
 	}
 
 	DataSetMessageType
@@ -129,12 +144,25 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::picoSecondsEnabled(bool enabled)
 	{
 		picoSecondsEnabled_ = enabled;
+		dataSetFlag2Enabled_ = true;
 	}
 
 	bool
 	DataSetMessageHeader::picoSecondsEnabled(void)
 	{
 		return picoSecondsEnabled_;
+	}
+
+	void
+	DataSetMessageHeader::dataMessageSequenceNumber(OpcUaUInt16 dataMessageSequenceNumber)
+	{
+		dataMessageSequenceNumber_ = dataMessageSequenceNumber;
+	}
+
+	OpcUaUInt16
+	DataSetMessageHeader::dataMessageSequenceNumber(void)
+	{
+		return dataMessageSequenceNumber_;
 	}
 
 	void
@@ -200,13 +228,126 @@ namespace OpcUaStackPubSub
 	void
 	DataSetMessageHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
+		// DataSetFlag 1
+		OpcUaByte dataSetFlag1 = 0;
+		dataSetFlag1 = (OpcUaByte)fieldEncoding_;
+		if (dataSetMessageSequenceNumberEnabled_) dataSetFlag1 += 4;
+		if (timestampEnabled_) dataSetFlag1 += 8;
+		if (statusEnabled_) dataSetFlag1 += 16;
+		if (configurationVersionMajorVersionEnabled_) dataSetFlag1 += 32;
+		if (configurationVersionMinorVersionEnabled_) dataSetFlag1 += 64;
+		if (dataSetFlag2Enabled_) dataSetFlag1 += 128;
+		OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag1);
+
+		// DataSetFlag2
+		if (dataSetFlag2Enabled_) {
+			OpcUaByte dataSetFlag2 = 0;
+			dataSetFlag2 = (OpcUaByte)messageType_;
+			if (picoSecondsEnabled_) dataSetFlag2 += 16;
+			OpcUaNumber::opcUaBinaryEncode(os, dataSetFlag2);
+		}
+
+		// sequence number
+		if (dataSetMessageSequenceNumberEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, dataMessageSequenceNumber_);
+		}
+
+		// timestamp
+		if (timestampEnabled_) {
+			timestamp_.opcUaBinaryEncode(os);
+		}
+
+		// picoseconds
+		if (picoSecondsEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, picoSeconds_);
+		}
+
+		// status
+		if (statusEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, statusCode_);
+		}
+
+		// major version
+		if (configurationVersionMajorVersionEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, configurationVersionMajorVersion_);
+		}
+
+		// minior version
+		if (configurationVersionMinorVersionEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, configurationVersionMinorVersion_);
+		}
 	}
 
 	void
 	DataSetMessageHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		// DataSetFlag 1
+		OpcUaByte dataSetFlag1 = 0;
+		OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag1);
+		if (dataSetFlag1 >= 128) {
+			dataSetFlag2Enabled_ = true;
+			dataSetFlag1 -= 128;
+		}
+		if (dataSetFlag1 >= 64) {
+			configurationVersionMinorVersionEnabled_ = true;
+			dataSetFlag1 -= 64;
+		}
+		if (dataSetFlag1 >= 32) {
+			configurationVersionMajorVersionEnabled_ = true;
+			dataSetFlag1 -= 32;
+		}
+		if (dataSetFlag1 >= 16) {
+			statusEnabled_ = true;
+			dataSetFlag1 -= 16;
+		}
+		if (dataSetFlag1 >= 8) {
+			timestampEnabled_ = true;
+			dataSetFlag1 -= 8;
+		}
+		fieldEncoding_ = (FieldEncoding)dataSetFlag1;
+
+		// DataSetFlag2
+		if (dataSetFlag2Enabled_) {
+			OpcUaByte dataSetFlag2 = 0;
+			OpcUaNumber::opcUaBinaryDecode(is, dataSetFlag2);
+
+			if (dataSetFlag2 >= 16) {
+				timestampEnabled_ = true;
+				dataSetFlag2 -= 16;
+			}
+
+			messageType_ = (DataSetMessageType)dataSetFlag2;
+		}
+
+		// sequence number
+		if (dataSetMessageSequenceNumberEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, dataMessageSequenceNumber_);
+		}
+
+		// timestamp
+		if (timestampEnabled_) {
+			timestamp_.opcUaBinaryDecode(is);
+		}
+
+		// picoseconds
+		if (picoSecondsEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, picoSeconds_);
+		}
+
+		// status
+		if (statusEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, statusCode_);
+		}
+
+		// major version
+		if (configurationVersionMajorVersionEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, configurationVersionMajorVersion_);
+		}
+
+		// minior version
+		if (configurationVersionMinorVersionEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, configurationVersionMinorVersion_);
+		}
 	}
 
 }
