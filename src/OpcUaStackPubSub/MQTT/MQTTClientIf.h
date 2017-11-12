@@ -18,18 +18,21 @@
 #ifndef __OpcUaStackPubSub_MQTTClientIf_h__
 #define __OpcUaStackPubSub_MQTTClientIf_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class MQTTClientInterface;
-
 	class DLLEXPORT MQTTClientIf
 	{
 	  public:
+		typedef boost::shared_ptr<MQTTClientIf> SPtr;
+
 		MQTTClientIf(void);
 		virtual ~MQTTClientIf(void);
+
+		virtual bool mqttClientIfEnabled(void);
 	};
 
 }

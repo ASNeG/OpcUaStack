@@ -15,18 +15,23 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackPubSub/MQTT/MQTTClientIf.h>
+#include "OpcUaStackPubSub/MQTT/MQTTClientIf.h"
 
 namespace OpcUaStackPubSub
 {
 
 	MQTTClientIf::MQTTClientIf(void)
-
 	{
 	}
 
 	MQTTClientIf::~MQTTClientIf(void)
 	{
+	}
+
+	bool
+	MQTTClientIf::mqttClientIfEnabled(void)
+	{
+		return false;
 	}
 
 }
