@@ -28,4 +28,11 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	bool
+	NetworkMessageProcessor::registerDataMessageWriter(uint16_t writerId, DataMessageReadIf* dataMessageReaderIf)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 }

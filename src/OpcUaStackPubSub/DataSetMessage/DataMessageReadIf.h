@@ -15,24 +15,22 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
-#define __OpcUaStackPubSub_NetworkMessageProcessor_h__
+#ifndef __OpcUaStackPubSub_DataMessageReadIf_h__
+#define __OpcUaStackPubSub_DataMessageReadIf_h__
 
-#include <OpcUaStackPubSub/DataSetMessage/DataMessageReadIf.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT NetworkMessageProcessor
+	class DLLEXPORT DataMessageReadIf
 	{
 	  public:
-		NetworkMessageProcessor(void);
-		~NetworkMessageProcessor(void);
+		DataMessageReadIf(void);
+		virtual ~DataMessageReadIf(void);
 
-		bool registerDataMessageWriter(uint16_t writerId, DataMessageReadIf* dataMessageReaderIf);
-
-	  private:
+		virtual bool read(uint16_t dataSetWriterId, DataSetMessage::SPtr& dataSetMessage) = 0;
 	};
 
 }
