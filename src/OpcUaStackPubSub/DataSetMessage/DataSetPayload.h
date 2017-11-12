@@ -22,6 +22,7 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessageHeader.h"
 
 namespace OpcUaStackPubSub
 {
@@ -36,12 +37,15 @@ namespace OpcUaStackPubSub
 
 		void dataSetMessages(const DataSetMessageArray::SPtr& dataSetMessages);
 		DataSetMessageArray::SPtr& dataSetMessages(void);
+		void dataSetMessageHeaders(const DataSetMessageHeaderArray::SPtr& dataSetMessageHeaders);
+		DataSetMessageHeaderArray::SPtr& dataSetMessageHeaders(void);
 
 		void opcUaBinaryEncode(std::ostream& os);
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		DataSetMessageArray::SPtr dataSetMessages_;
+		DataSetMessageHeaderArray::SPtr dataSetMessageHeaders_;
 	};
 
 }

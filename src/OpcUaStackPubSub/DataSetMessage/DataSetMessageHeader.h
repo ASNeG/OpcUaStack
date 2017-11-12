@@ -98,6 +98,14 @@ namespace OpcUaStackPubSub
 
 	};
 
+	class DataSetMessageHeaderArray
+	: public OpcUaArray<DataSetMessageHeader::SPtr, SPtrTypeCoder<DataSetMessageHeader> >
+	, public Object
+	{
+	  public:
+		typedef boost::shared_ptr<DataSetMessageHeaderArray> SPtr;
+	};
+
 }
 
 #endif
