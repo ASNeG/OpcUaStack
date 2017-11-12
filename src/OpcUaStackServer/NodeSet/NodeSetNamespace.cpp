@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/NodeSet/NodeSetNamespace.h"
 
 using namespace OpcUaStackCore;
 
@@ -45,15 +45,20 @@ namespace OpcUaStackServer
 	void
 	NodeSetNamespace::clearGlobal(void)
 	{
+		Log(Debug, "clear global namespaces");
+
 		startup_ = false;
 		globalNamespaceVec_.clear();
 		globalNamespaceMap_.clear();
 		clear();
+		startup();
 	}
 
 	void
 	NodeSetNamespace::clear(void)
 	{
+		Log(Debug, "clear namespaces");
+
 		inputNamespaceIndexVec_.clear();
 		outputNamespaceIndexMap_.clear();
 		localNamespaceVec_.clear();
@@ -64,8 +69,11 @@ namespace OpcUaStackServer
 	void
 	NodeSetNamespace::startup(void)
 	{
-		if (startup_) return;
-		startup_ = true;
+		if (startup_) {
+			return;
+		}
+
+		Log(Debug, "init namespaces");
 
 		// clear namespace vector an namespace map
 		globalNamespaceVec_.clear();
@@ -74,6 +82,9 @@ namespace OpcUaStackServer
 		// add opc ua standard namespace
 		globalNamespaceVec_.push_back("http://opcfoundation.org/UA/");
 		globalNamespaceMap_.insert(std::make_pair("http://opcfoundation.org/UA/", 0));
+
+		// init only once
+		startup_ = true;
 	}
 
 	uint16_t 
@@ -242,6 +253,40 @@ namespace OpcUaStackServer
 			return 999;
 		}
 		return inputNamespaceIndexVec_[localNamespaceIndex];
+	}
+
+	void
+	NodeSetNamespace::logGlobalNamespaceIndex(void)
+	{
+		std::stringstream namespaceList;
+
+		NamespaceVec::iterator it;
+		for (it = globalNamespaceVec_.begin(); it != globalNamespaceVec_.end(); it++) {
+			if (it != globalNamespaceVec_.begin()) {
+				namespaceList << ", ";
+			}
+			namespaceList << *it;
+		}
+
+		Log(Debug, "Global Namespaces")
+		    .parameter("Namespaces", namespaceList.str());
+	}
+
+	void
+	NodeSetNamespace::logLocalNamespaceIndex(void)
+	{
+		std::stringstream namespaceList;
+
+		NamespaceVec::iterator it;
+		for (it = localNamespaceVec_.begin(); it != localNamespaceVec_.end(); it++) {
+			if (it != localNamespaceVec_.begin()) {
+				namespaceList << ", ";
+			}
+			namespaceList << *it;
+		}
+
+		Log(Debug, "Local Namespaces")
+		    .parameter("Namespaces", namespaceList.str());
 	}
 
 	NamespaceVec& 

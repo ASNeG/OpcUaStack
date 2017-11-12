@@ -104,9 +104,6 @@ namespace OpcUaServer
 	void
 	ServerApplication::processReload(void)
 	{
-		// FIXME: todo
-		std::cout << "process reload..." << std::endl;
-
 		server_.stop();
 		server_.shutdown();
 		Config::destroy();

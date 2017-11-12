@@ -255,6 +255,8 @@ namespace OpcUaStackCore
 		uint32_t maxSize(void);
 		uint32_t freeSize();
 		void clear(void);
+		bool isNull(void);
+		void setNull(void);
 
 		bool set(uint32_t pos, const T& value);
 		bool set(const T& value);
@@ -286,6 +288,7 @@ namespace OpcUaStackCore
 		void initArray(void);
 		void clearArray(void);
 
+		bool isNull_;
 		uint32_t maxArrayLen_;
 		uint32_t actArrayLen_;
 
@@ -295,7 +298,8 @@ namespace OpcUaStackCore
 
 	template<typename T, typename CODER>
 	OpcUaArray<T, CODER>::OpcUaArray(uint32_t maxArrayLen)
-	: maxArrayLen_(maxArrayLen)
+	: isNull_(false)
+	, maxArrayLen_(maxArrayLen)
 	, actArrayLen_(0)
 	{
 		initArray();
@@ -337,6 +341,7 @@ namespace OpcUaStackCore
 	void
 	OpcUaArray<T, CODER>::resize(uint32_t maxArrayLen)
 	{
+		isNull_ = false;
 		clearArray();
 		maxArrayLen_ = maxArrayLen;
 		initArray();
@@ -370,6 +375,23 @@ namespace OpcUaStackCore
 		clearArray();
 		initArray();
 	}
+
+	template<typename T, typename CODER>
+	bool
+	OpcUaArray<T, CODER>::isNull(void)
+	{
+		return isNull_;
+	}
+
+	template<typename T, typename CODER>
+	void
+	OpcUaArray<T, CODER>::setNull(void)
+	{
+		clearArray();
+		initArray();
+		isNull_ = true;
+	}
+
 
 	template<typename T, typename CODER>
 	bool
@@ -423,6 +445,10 @@ namespace OpcUaStackCore
 	void 
 	OpcUaArray<T, CODER>::copyTo(OpcUaArray<T, CODER>& array)
 	{
+		if (isNull_) {
+			array.setNull();
+			return;
+		}
 		if (actArrayLen_ == 0) return;
 		array.resize(actArrayLen_);
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
@@ -444,6 +470,7 @@ namespace OpcUaStackCore
 	OpcUaArray<T, CODER>::operator==(OpcUaArray<T, CODER>& array)
 	{
 		if (size() != array.size()) return false;
+		if (isNull() != array.isNull()) return false;
 		for (uint32_t pos = 0; pos < size();  pos++) {
 			T value1, value2;
 			get(pos, value1);
@@ -531,6 +558,10 @@ namespace OpcUaStackCore
 	bool
 	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element, const std::string& listElement) const
 	{
+		if (isNull_) {
+			return true;
+		}
+
 		boost::property_tree::ptree tmpTree;
 		if (!xmlEncode(tmpTree, listElement)) {
 			Log(Error, "OpcUaArray xml encoder error")
@@ -547,6 +578,10 @@ namespace OpcUaStackCore
 	bool
 	OpcUaArray<T, CODER>::xmlEncode(boost::property_tree::ptree& pt, const std::string& element) const
 	{
+		if (isNull_) {
+			return true;
+		}
+
 		for (uint32_t idx=0; idx<actArrayLen_; idx++) {
 			if (!CODER::xmlEncode(pt, valueArray_[idx], element)) {
 				Log(Error, "OpcUaArray xml encoder error")

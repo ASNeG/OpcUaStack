@@ -800,4 +800,481 @@ BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_DataValue)
 	BOOST_REQUIRE(value2.sourceTimestamp().dateTime() == now);
 }
 
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_OpcUaBoolean)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaBoolean)true);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaBoolean>(idx) == true);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_SByte)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaSByte)-idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaSByte>(idx) == -idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Byte)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaByte)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaByte>(idx) == idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Int16)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaInt16)-idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaInt16	>(idx) == -idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_UInt16)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaUInt16)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaUInt16>(idx) == idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Int32)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaInt32)-idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaInt32>(idx) == -idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_UInt32)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaUInt32)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaUInt32>(idx) == idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Int64)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaInt64)-idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaInt64>(idx) == -idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_UInt64)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaUInt64)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaUInt64>(idx) == idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Float)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaFloat)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaFloat>(idx) == idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Double)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack((OpcUaDouble)idx);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaDouble>(idx) == idx);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_DateTime)
+{
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		value1.pushBack(OpcUaDateTime(now));
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.get<OpcUaDateTime>(idx) == now);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_String)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaString::SPtr string = constructSPtr<OpcUaString>();
+		string->value("Das ist ein ByteString");
+		value1.pushBack(string);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.getSPtr<OpcUaString>(idx)->value() == "Das ist ein ByteString");
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ByteString)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaByteString::SPtr byteString = constructSPtr<OpcUaByteString>();
+		byteString->value("Das ist ein ByteString");
+		value1.pushBack(byteString);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.getSPtr<OpcUaByteString>(idx)->toString() == "Das ist ein ByteString");
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_Guid)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaGuid::SPtr guid = constructSPtr<OpcUaGuid>();
+		*guid = "12345678-9ABC-DEF0-1234-56789ABCDEF0";
+		value1.pushBack(guid);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(value2.getSPtr<OpcUaGuid>(idx)->value() == "12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_NodeId)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaNodeId::SPtr nodeId = constructSPtr<OpcUaNodeId>();
+		nodeId->set(4711, 4712);
+		value1.pushBack(nodeId);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaNodeId>(idx) == OpcUaNodeId(4711, 4712));
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExpandedNodeId)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+		expandedNodeId->set(4711, 4712);
+		expandedNodeId->serverIndex(4713);
+		value1.pushBack(expandedNodeId);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaExpandedNodeId::SPtr expandedNodeId = constructSPtr<OpcUaExpandedNodeId>();
+		expandedNodeId->set(4711, 4712);
+		expandedNodeId->serverIndex(4713);
+
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaExpandedNodeId>(idx) == *expandedNodeId);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_QualifiedName)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaQualifiedName::SPtr qualifiedName = constructSPtr<OpcUaQualifiedName>();
+		qualifiedName->set("String", 4711);
+		value1.pushBack(qualifiedName);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaQualifiedName>(idx) == OpcUaQualifiedName("String", 4711));
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_LocalizedText)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		OpcUaLocalizedText::SPtr localizedText = constructSPtr<OpcUaLocalizedText>();
+		localizedText->set("de", "TextString");
+		value1.pushBack(localizedText);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		BOOST_REQUIRE(*value2.getSPtr<OpcUaLocalizedText>(idx) == OpcUaLocalizedText("de", "TextString"));
+	}
+}
+
+BOOST_AUTO_TEST_CASE(XmlEncoderDecoder_OpcUaVariant_Array_ExtensionObject)
+{
+	boost::property_tree::ptree pt;
+	Xmlns xmlns;
+	ConfigXml xml;
+	OpcUaVariant value1, value2;
+
+	for (uint32_t idx=0; idx<10; idx++) {
+		Argument::SPtr argument;
+		OpcUaExtensionObject::SPtr extentionObject = constructSPtr<OpcUaExtensionObject>();
+		argument = extentionObject->parameter<Argument>(OpcUaId_Argument_Encoding_DefaultBinary);
+		argument->name().value("ArgumentName");
+		argument->dataType().set("NodeName", 23);
+		argument->arrayDimensions()->resize(3);
+		argument->arrayDimensions()->set(0, 123);
+		argument->arrayDimensions()->set(1, 456);
+		argument->arrayDimensions()->set(2, 789);
+		argument->description().set("de", "Description");
+		value1.pushBack(extentionObject);
+	}
+	BOOST_REQUIRE(value1.xmlEncode(pt, xmlns) == true);
+
+	xml.ptree(pt);
+	xml.write(std::cout);
+	std::cout << std::endl;
+
+	BOOST_REQUIRE(value2.xmlDecode(pt, xmlns) == true);
+	for (uint32_t idx=0; idx<10; idx++) {
+		Argument::SPtr argument;
+		OpcUaExtensionObject::SPtr extentionObject2 = value2.getSPtr<OpcUaExtensionObject>(idx);
+		BOOST_REQUIRE(extentionObject2->typeId().nodeId<OpcUaUInt32>() == OpcUaId_Argument_Encoding_DefaultBinary);
+		argument = extentionObject2->parameter<Argument>();
+		BOOST_REQUIRE(argument->name().toStdString() == "ArgumentName");
+		BOOST_REQUIRE(argument->dataType() == OpcUaNodeId("NodeName", 23));
+		BOOST_REQUIRE(argument->description() == OpcUaLocalizedText("de", "Description"));
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()

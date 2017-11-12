@@ -302,6 +302,107 @@ namespace OpcUaStackCore
 		bool xmlDecode(boost::property_tree::ptree& pt, Xmlns& xmlns);
 
 	  private:
+		bool xmlEncodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeBooleanArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeBooleanScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeBooleanArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeSByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeSByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeSByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeSByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeByteScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeByteArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeUInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeUInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeUInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeUInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeInt16Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeInt16Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeUInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeUInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeUInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeInt32Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeInt32Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeUInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeUInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeUInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeUInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeInt64Scalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeInt64Array(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeFloatArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeFloatScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeFloatArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeDoubleArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeDoubleScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeDoubleArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeDateTimeScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeDateTimeArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeByteStringScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeByteStringArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeGuidScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeGuidArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeGuidScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeGuidArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeExpandedNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeExpandedNodeIdScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeExpandedNodeIdArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeQualifiedNameScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeQualifiedNameArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeQualifiedNameScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeQualifiedNameArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeLocalizedTextArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeLocalizedTextScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeLocalizedTextArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+		bool xmlEncodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlEncodeExtensionObjectArray(boost::property_tree::ptree& pt, Xmlns& xmlns);
+		bool xmlDecodeExtensionObjectScalar(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+		bool xmlDecodeExtensionObjectArray(boost::property_tree::ptree& pt, Xmlns& xmlns, const std::string& element);
+
+
 		OpcUaInt32 arrayLength_;
 		OpcUaArrayDimensionsVec arrayDimensionsVec_;
 		OpcUaVariantValue::Vec variantValueVec_;

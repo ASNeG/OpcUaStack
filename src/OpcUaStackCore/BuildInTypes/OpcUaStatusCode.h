@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -258,6 +258,7 @@ namespace OpcUaStackCore
 		static std::string shortString(OpcUaStatusCode statusCode);
 		static std::string longString(OpcUaStatusCode statusCode);
 		static OpcUaStatusCode statusCode(const std::string& statusCodeString);
+		static void getStatusCodeVec(std::vector<std::string>& statusCodeVec);
 
 	  private:
 		static void initial(void);

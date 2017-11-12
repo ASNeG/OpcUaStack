@@ -33,7 +33,6 @@ namespace OpcUaStackServer
 	: Core()
 	, ioThread_(constructSPtr<IOThread>())
 	, informationModel_(constructSPtr<InformationModel>())
-//	, sessionManagerOld_()
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()

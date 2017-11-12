@@ -163,6 +163,7 @@ namespace OpcUaStackCore
 	{
 		// get argument
 		boost::optional<boost::property_tree::ptree&> argument = pt.get_child_optional(xmlns.addxmlns("Argument"));
+		if (!argument) argument = pt.get_child_optional("Argument");
 		if (!argument) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Argument"));
@@ -171,6 +172,7 @@ namespace OpcUaStackCore
 
 		// get name
 		boost::optional<std::string> name = argument->get_optional<std::string>(xmlns.addxmlns("Name"));
+		if (!name) name = argument->get_optional<std::string>("Name");
 		if (!name) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Name"));
@@ -180,6 +182,7 @@ namespace OpcUaStackCore
 
 		// get data type
 		boost::optional<boost::property_tree::ptree&> dataType = argument->get_child_optional(xmlns.addxmlns("DataType"));
+		if (!dataType) dataType = argument->get_child_optional("DataType");
 		if (!dataType) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("DataType"));
@@ -188,6 +191,7 @@ namespace OpcUaStackCore
 
 		// get identifier
 		boost::optional<std::string> identifier = dataType->get_optional<std::string>(xmlns.addxmlns("Identifier"));
+		if (!identifier) identifier =  dataType->get_optional<std::string>("Identifier");
 		if (!identifier) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Identifier"));
@@ -206,6 +210,7 @@ namespace OpcUaStackCore
 
 		// get value rank
 		boost::optional<std::string> valueRank = argument->get_optional<std::string>(xmlns.addxmlns("ValueRank"));
+		if (!valueRank) valueRank = argument->get_optional<std::string>("ValueRank");
 		if (!valueRank) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("ValueRank"));
@@ -224,6 +229,7 @@ namespace OpcUaStackCore
 
 		// get array dimensions
 		boost::optional<std::string> arrayDimensions = argument->get_optional<std::string>(xmlns.addxmlns("ArrayDimensions"));
+		if (!arrayDimensions) arrayDimensions = argument->get_optional<std::string>("ArrayDimensions");
 		if (!arrayDimensions) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("ArrayDimensions"));
@@ -234,6 +240,7 @@ namespace OpcUaStackCore
 
 		// get description
 		boost::optional<std::string> description = argument->get_optional<std::string>(xmlns.addxmlns("Description"));
+		if (!description) description = argument->get_optional<std::string>("Description");
 		if (!description) {
 			Log(Error, "value empty")
 				.parameter("Tag", xmlns.addxmlns("Description"));

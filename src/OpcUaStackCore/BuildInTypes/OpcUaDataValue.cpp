@@ -44,6 +44,16 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	OpcUaDataValue::exist(void)
+	{
+		if (opcUaVariantSPtr_.get() != nullptr) return false;
+		if (opcUaStatusCode_ != Success) return false;
+		if (sourceTimestamp_.exist()) return false;
+		if (serverTimestamp_.exist()) return false;
+		return true;
+	}
+
+	bool
 	OpcUaDataValue::isNullVariant(void)
 	{
 		return opcUaVariantSPtr_.get() == nullptr;
@@ -223,6 +233,39 @@ namespace OpcUaStackCore
 		if (serverPicoseconds_ != 0) {
 			dataValue.serverPicoseconds(serverPicoseconds_);
 		}
+	}
+
+	bool
+	OpcUaDataValue::operator!=(const OpcUaDataValue& opcUaDataValue) const
+	{
+		return !operator==(opcUaDataValue);
+	}
+
+	bool
+	OpcUaDataValue::operator==(const OpcUaDataValue& opcUaDataValue) const
+	{
+		OpcUaDataValue* actValue = const_cast<OpcUaDataValue*>(this);
+		OpcUaDataValue* tmpValue = const_cast<OpcUaDataValue*>(&opcUaDataValue);
+
+		// variant
+		if (actValue->isNullVariant() && !tmpValue->isNullVariant()) return false;
+		if (!actValue->isNullVariant() && tmpValue->isNullVariant()) return false;
+		if (!actValue->isNullVariant() && !tmpValue->isNullVariant()) {
+			if (*actValue->variant() != *tmpValue->variant()) return false;
+		}
+
+		// status code
+		if (actValue->statusCode() != tmpValue->statusCode()) return false;
+
+		// source time
+		if (actValue->sourceTimestamp() != tmpValue->sourceTimestamp()) return false;
+		if (actValue->serverPicoseconds() != tmpValue->sourcePicoseconds()) return false;
+
+		// server time
+		if (actValue->serverTimestamp() != tmpValue->serverTimestamp()) return false;
+		if (actValue->serverPicoseconds() != tmpValue->serverPicoseconds()) return false;
+
+		return true;
 	}
 
 	void 
