@@ -87,6 +87,39 @@ namespace OpcUaStackPubSub
 			DataSetMessage::SPtr dataSetMessage;
 			dataSetMessages_->get(idx, dataSetMessage);
 
+			dataSetMessageHeader->messageType(dataSetMessage->messageType());
+
+			switch (dataSetMessageHeader->messageType())
+			{
+				case DataKeyFrame:
+				{
+					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
+					break;
+				}
+				case DataDeltaFrame:
+				{
+					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
+					dataSetMessageHeader->dataSetFlag2Enabled(true);
+					break;
+				}
+				case EventData:
+				{
+					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
+					dataSetMessageHeader->dataSetFlag2Enabled(true);
+					break;
+				}
+				case KeepAlive:
+				{
+					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
+					dataSetMessageHeader->dataSetFlag2Enabled(true);
+					break;
+				}
+				default:
+				{
+					return;
+				}
+			}
+
 			dataSetMessageHeader->opcUaBinaryEncode(ios);
 			dataSetMessage->opcUaBinaryEncode(ios);
 

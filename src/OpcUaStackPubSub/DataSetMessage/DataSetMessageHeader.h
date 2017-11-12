@@ -44,6 +44,7 @@ namespace OpcUaStackPubSub
 		DataSetMessageHeader(void);
 		~DataSetMessageHeader(void);
 
+		void disableAll(void);
 		void fieldEncoding(FieldEncoding fieldEncoding);
 		FieldEncoding fieldEncoding(void);
 		void dataSetMessageSequenceNumberEnabled(bool enabled);

@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode)
 
 	OpcUaStackCore::dumpHex(ios);
 	std::stringstream ss;
-	ss	<< "01 00 01 00 00 00";
+	ss	<< "04 00 04 00 84 03 00 00  84 03 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	value2.count(2);
@@ -42,6 +42,17 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode)
 
 	BOOST_REQUIRE(value1.dataSetMessageHeaders()->size() == 2);
 	BOOST_REQUIRE(value1.dataSetMessages()->size() == 2);
+
+	for (uint32_t idx=0; idx<value2.count(); idx++) {
+		DataSetMessageHeader::SPtr dataSetMessageHeader;
+		value2.dataSetMessageHeaders()->get(idx, dataSetMessageHeader);
+
+		DataSetMessage::SPtr dataSetMessage;
+		value2.dataSetMessages()->get(idx, dataSetMessage);
+
+		BOOST_REQUIRE(dataSetMessageHeader->messageType() == KeepAlive);
+		BOOST_REQUIRE(dataSetMessage->messageType() == KeepAlive);
+	}
 }
 
 BOOST_AUTO_TEST_SUITE_END()

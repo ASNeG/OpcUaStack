@@ -44,6 +44,18 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	DataSetMessageHeader::disableAll(void)
+	{
+		dataSetMessageSequenceNumberEnabled_ = false;
+		timestampEnabled_ = false;
+		statusEnabled_ = false;
+		configurationVersionMajorVersionEnabled_ = false;
+		configurationVersionMinorVersionEnabled_ = false;
+		dataSetFlag2Enabled_ = false;
+		picoSecondsEnabled_ = false;
+	}
+
+	void
 	DataSetMessageHeader::fieldEncoding(FieldEncoding fieldEncoding)
 	{
 		fieldEncoding_ = fieldEncoding;
@@ -131,7 +143,7 @@ namespace OpcUaStackPubSub
 	DataSetMessageHeader::messageType(DataSetMessageType messageType)
 	{
 		messageType_ = messageType;
-		dataSetFlag2Enabled_ = true;
+		if (messageType_ != DataKeyFrame) dataSetFlag2Enabled_ = true;
 	}
 
 	DataSetMessageType
