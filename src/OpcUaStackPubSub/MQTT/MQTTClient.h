@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackPubSub_MQTTClient_h__
 #define __OpcUaStackPubSub_MQTTClient_h__
 
+#include <iostream>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
@@ -45,19 +46,9 @@ namespace OpcUaStackPubSub
 		virtual bool mqttClientIfEnabled(void);
 	};
 
-	MQTTClientIf::SPtr constructMQTT(void)
-	{
-		return constructSPtr<MQTTClient>();
-	}
-
-#else
-
-	MQTTClientIf::SPtr constructMQTT(void)
-	{
-		return constructSPtr<MQTTClientIf>();
-	}
-
 #endif
+
+	MQTTClientIf::SPtr constructMQTT(void);
 
 }
 

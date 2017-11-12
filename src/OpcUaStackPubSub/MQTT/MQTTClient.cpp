@@ -37,6 +37,22 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
+
+	MQTTClientIf::SPtr constructMQTT(void)
+	{
+		return constructSPtr<MQTTClient>();
+	}
+
+}
+
+#else
+
+namespace OpcUaStackPubSub
+{
+	MQTTClientIf::SPtr constructMQTT(void)
+	{
+		return constructSPtr<MQTTClientIf>();
+	}
 }
 
 #endif
