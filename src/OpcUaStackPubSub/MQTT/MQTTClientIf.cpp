@@ -34,4 +34,40 @@ namespace OpcUaStackPubSub
 		return false;
 	}
 
+	bool
+	MQTTClientIf::startup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientIf::init(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientIf::cleanup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientIf::shutdown(void)
+	{
+		return false;
+	}
+
+	void
+	MQTTClientIf::clientName(const std::string& clientName)
+	{
+		clientName_ = clientName;
+	}
+
+	std::string&
+	MQTTClientIf::clientName(void)
+	{
+		return clientName_;
+	}
+
 }

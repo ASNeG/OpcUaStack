@@ -32,7 +32,23 @@ namespace OpcUaStackPubSub
 		MQTTClientIf(void);
 		virtual ~MQTTClientIf(void);
 
+		//
+		// virtual functions
+		//
+		virtual bool init(void);
+		virtual bool cleanup(void);
+		virtual bool startup(void);
+		virtual bool shutdown(void);
 		virtual bool mqttClientIfEnabled(void);
+
+		//
+		// class functions
+		//
+		void clientName(const std::string& clientName);
+		std::string& clientName(void);
+
+	  private:
+		std::string clientName_;
 	};
 
 }

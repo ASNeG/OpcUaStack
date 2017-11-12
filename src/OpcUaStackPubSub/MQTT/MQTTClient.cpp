@@ -24,6 +24,7 @@ namespace OpcUaStackPubSub
 
 	MQTTClient::MQTTClient(void)
 	: MQTTClientIf()
+	, mqttClient_(nullptr)
 	{
 	}
 
@@ -32,11 +33,40 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
+	MQTTClient::init(void)
+	{
+		// Initialize the Mosquitto library
+		mosquitto_lib_init();
+
+		return true;
+	}
+
+	bool
+	MQTTClient::cleanup(void)
+	{
+		 // Tidy up
+		  mosquitto_lib_cleanup();
+
+		return true;
+	}
+
+	bool
+	MQTTClient::startup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClient::shutdown(void)
+	{
+		return false;
+	}
+
+	bool
 	MQTTClient::mqttClientIfEnabled(void)
 	{
 		return true;
 	}
-
 
 	MQTTClientIf::SPtr constructMQTT(void)
 	{

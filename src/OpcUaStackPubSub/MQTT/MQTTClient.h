@@ -25,6 +25,7 @@
 #include "OpcUaStackPubSub/MQTT/MQTTClientIf.h"
 
 #ifdef USE_MOSQUITTO_CLIENT
+#include "mosquitto.h"
 #endif
 
 using namespace OpcUaStackCore;
@@ -43,7 +44,15 @@ namespace OpcUaStackPubSub
 		MQTTClient(void);
 		virtual ~MQTTClient(void);
 
+		virtual bool init(void);
+		virtual bool cleanup(void);
+		virtual bool startup(void);
+		virtual bool shutdown(void);
 		virtual bool mqttClientIfEnabled(void);
+
+	  private:
+		struct mosquitto *mqttClient_;
+
 	};
 
 #endif
