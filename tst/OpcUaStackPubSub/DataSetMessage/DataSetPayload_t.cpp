@@ -37,7 +37,11 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode)
 	ss	<< "01 00 01 00 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
+	value2.count(2);
 	value2.opcUaBinaryDecode(ios);
+
+	BOOST_REQUIRE(value1.dataSetMessageHeaders()->size() == 2);
+	BOOST_REQUIRE(value1.dataSetMessages()->size() == 2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

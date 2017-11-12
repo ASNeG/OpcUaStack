@@ -17,18 +17,35 @@
 
 #include <boost/asio.hpp>
 #include "OpcUaStackPubSub/DataSetMessage/DataSetPayload.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataKeyFrameDataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataDeltaFrameDataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/EventDataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/KeepAliveMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
 	DataSetPayload::DataSetPayload(void)
-	: dataSetMessages_(constructSPtr<DataSetMessageArray>())
+	: count_(0)
+	, dataSetMessages_(constructSPtr<DataSetMessageArray>())
 	, dataSetMessageHeaders_(constructSPtr<DataSetMessageHeaderArray>())
 	{
 	}
 
 	DataSetPayload::~DataSetPayload(void)
 	{
+	}
+
+	void
+	DataSetPayload::count(uint32_t count)
+	{
+		count_ = count;
+	}
+
+	uint32_t
+	DataSetPayload::count(void)
+	{
+		return count_;
 	}
 
 	void
@@ -90,7 +107,56 @@ namespace OpcUaStackPubSub
 	void
 	DataSetPayload::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		if (count_ == 0) return;
+		std::vector<uint16_t> sizeVec;
+		dataSetMessages_->resize(count_);
+		dataSetMessageHeaders_->resize(count_);
+
+		for (uint32_t idx=0; idx<count_; idx++) {
+			OpcUaUInt16 size;
+			OpcUaNumber::opcUaBinaryDecode(is, size);
+			sizeVec.push_back(size);
+		}
+
+		for (uint32_t idx=0; idx<count_; idx++) {
+			DataSetMessageHeader::SPtr dataSetMessageHeader;
+			dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
+
+			dataSetMessageHeader->opcUaBinaryDecode(is);
+			dataSetMessageHeaders_->push_back(dataSetMessageHeader);
+
+			DataSetMessage::SPtr dataSetMessage;
+			switch (dataSetMessageHeader->messageType())
+			{
+				case DataKeyFrame:
+				{
+					dataSetMessage = constructSPtr<DataKeyFrameDataSetMessage>();
+					break;
+				}
+				case DataDeltaFrame:
+				{
+					dataSetMessage = constructSPtr<DataDeltaFrameDataSetMessage>();
+					break;
+				}
+				case EventData:
+				{
+					dataSetMessage = constructSPtr<EventDataSetMessage>();
+					break;
+				}
+				case KeepAlive:
+				{
+					dataSetMessage = constructSPtr<KeepAliveMessage>();
+					break;
+				}
+				default:
+				{
+					return;
+				}
+			}
+
+			dataSetMessage->opcUaBinaryDecode(is);
+			dataSetMessages_->push_back(dataSetMessage);
+		}
 	}
 
 }

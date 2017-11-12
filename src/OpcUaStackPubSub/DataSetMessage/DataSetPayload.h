@@ -35,6 +35,8 @@ namespace OpcUaStackPubSub
 		DataSetPayload(void);
 		~DataSetPayload(void);
 
+		void count(uint32_t count);
+		uint32_t count(void);
 		void dataSetMessages(const DataSetMessageArray::SPtr& dataSetMessages);
 		DataSetMessageArray::SPtr& dataSetMessages(void);
 		void dataSetMessageHeaders(const DataSetMessageHeaderArray::SPtr& dataSetMessageHeaders);
@@ -44,6 +46,7 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+		uint32_t count_;
 		DataSetMessageArray::SPtr dataSetMessages_;
 		DataSetMessageHeaderArray::SPtr dataSetMessageHeaders_;
 	};
