@@ -15,12 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifdef USE_MOSQUITTO_CLIENT
-
 #include "OpcUaStackPubSub/MQTT/MQTTClient.h"
 
 namespace OpcUaStackPubSub
 {
+
+#ifdef USE_MOSQUITTO_CLIENT
 
 	MQTTClient::MQTTClient(void)
 	: MQTTClientIf()
@@ -73,16 +73,13 @@ namespace OpcUaStackPubSub
 		return constructSPtr<MQTTClient>();
 	}
 
-}
-
 #else
 
-namespace OpcUaStackPubSub
-{
 	MQTTClientIf::SPtr constructMQTT(void)
 	{
 		return constructSPtr<MQTTClientIf>();
 	}
-}
 
 #endif
+
+}
