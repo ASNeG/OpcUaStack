@@ -15,30 +15,25 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-/*
-   Parameters:
-   PublisherId
-   EncodingMimeType
-   PublishingInterval
-   KeepAliveTime
-   KeyFrameCount
-   Security Settings
-   NetworkMessageContentMask
-*/
-
 #ifndef __OpcUaStackPubSub_NetworkMessageCreator_h__
 #define __OpcUaStackPubSub_NetworkMessageCreator_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataMessageWriteIf.h"
 
 namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT NetworkMessageCreator
+	: public DataMessageWriteIf
 	{
 	  public:
 		NetworkMessageCreator(void);
 		~NetworkMessageCreator(void);
+
+		virtual bool write(uint16_t dataSetWriterId, DataSetMessage::SPtr& dataSetMessage);
+
+	  private:
 	};
 
 }

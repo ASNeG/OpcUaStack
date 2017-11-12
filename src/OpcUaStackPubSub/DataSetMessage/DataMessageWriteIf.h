@@ -15,25 +15,24 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/Network/NetworkMessageCreator.h"
+#ifndef __OpcUaStackPubSub_DataMessageWriteIf_h__
+#define __OpcUaStackPubSub_DataMessageWriteIf_h__
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	NetworkMessageCreator::NetworkMessageCreator(void)
+	class DLLEXPORT DataMessageWriteIf
 	{
-	}
+	  public:
+		DataMessageWriteIf(void);
+		virtual ~DataMessageWriteIf(void);
 
-	NetworkMessageCreator::~NetworkMessageCreator(void)
-	{
-	}
-
-	bool
-	NetworkMessageCreator::write(uint16_t dataSetWriterId, DataSetMessage::SPtr& dataSetMessage)
-	{
-		// FIXME: todo
-
-		return true;
-	}
+		virtual bool write(uint16_t dataSetWriterId, DataSetMessage::SPtr& dataSetMessage) = 0;
+	};
 
 }
+
+#endif
