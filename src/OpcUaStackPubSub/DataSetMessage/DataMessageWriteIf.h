@@ -27,8 +27,8 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT DataMessageWriteIf
 	{
 	  public:
-		DataMessageWriteIf(void);
-		virtual ~DataMessageWriteIf(void);
+		DataMessageWriteIf(void) {}
+		virtual ~DataMessageWriteIf(void) {}
 
 		virtual bool write(uint16_t dataSetWriterId, DataSetMessage::SPtr& dataSetMessage) = 0;
 	};
