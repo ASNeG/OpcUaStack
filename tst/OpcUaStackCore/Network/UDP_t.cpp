@@ -1,11 +1,11 @@
 #include "unittest.h"
 
 #include <iostream>
-#include "OpcUaStackPubSub/Network/UDPClient.h"
-#include "OpcUaStackPubSub/Network/UDPServer.h"
-#include "OpcUaStackPubSub/Network/UDPTestHandler.h"
+#include "OpcUaStackCore/Network/UDPClient.h"
+#include "OpcUaStackCore/Network/UDPServer.h"
+#include "OpcUaStackCore/Network/UDPTestHandler.h"
 
-using namespace OpcUaStackPubSub;
+using namespace OpcUaStackCore;
 
 #define UDP_PORT	1234
 #define UDP_IP		"127.0.0.1"
