@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
+#include <OpcUaStackCore/Network/TCPAcceptor.h>
 
 namespace OpcUaStackCore
 {

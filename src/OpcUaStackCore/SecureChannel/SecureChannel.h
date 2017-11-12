@@ -19,7 +19,7 @@
 #ifndef __OpcUaStackCore_SecureChannel_h__
 #define __OpcUaStackCore_SecureChannel_h__
 
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
+#include <OpcUaStackCore/Network/TCPConnection.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"

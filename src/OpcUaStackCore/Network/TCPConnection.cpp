@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
+#include <OpcUaStackCore/Network/TCPConnection.h>
 
 namespace OpcUaStackCore
 {
