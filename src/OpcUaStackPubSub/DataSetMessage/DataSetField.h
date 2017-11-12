@@ -40,6 +40,10 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
+
+		// OpcUaVariant
+		// OpcUaDataValue
+		// DataSetMetaData
 	};
 
 	class DataSetFieldArray
