@@ -22,9 +22,7 @@
 #include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackCore/Base/os.h"
 
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackPubSub
+namespace OpcUaStackCore
 {
 
 	class DLLEXPORT UDPTestHandler

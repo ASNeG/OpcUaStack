@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackPubSub_UDPClient_h__
-#define __OpcUaStackPubSub_UDPClient_h__
+#ifndef __OpcUaStackCore_UDPClient_h__
+#define __OpcUaStackCore_UDPClient_h__
 
 #include <iostream>
 #include <boost/asio.hpp>
@@ -24,9 +24,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 
-using namespace OpcUaStackCore;
 
-namespace OpcUaStackPubSub
+namespace OpcUaStackCore
 {
 
 	class DLLEXPORT UDPClient

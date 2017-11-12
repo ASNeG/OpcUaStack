@@ -15,9 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/Network/UDPClient.h"
+#include "OpcUaStackCore/Network/UDPClient.h"
 
-namespace OpcUaStackPubSub
+namespace OpcUaStackCore
 {
 
 	// ------------------------------------------------------------------------

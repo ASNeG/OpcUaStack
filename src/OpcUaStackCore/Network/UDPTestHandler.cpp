@@ -15,9 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/Network/UDPTestHandler.h"
+#include "OpcUaStackCore/Network/UDPTestHandler.h"
 
-namespace OpcUaStackPubSub
+namespace OpcUaStackCore
 {
 
 	UDPTestHandler::UDPTestHandler(void)

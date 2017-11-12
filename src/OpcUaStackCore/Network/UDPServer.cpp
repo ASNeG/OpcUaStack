@@ -15,9 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/Network/UDPServer.h"
+#include "OpcUaStackCore/Network/UDPServer.h"
 
-namespace OpcUaStackPubSub
+namespace OpcUaStackCore
 {
 
 	// ------------------------------------------------------------------------
