@@ -53,12 +53,10 @@ namespace OpcUaObjectTypeGenerator
 //
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
-#if 0
 int main(int argc, char** argv)
 {
 	OpcUaObjectTypeGenerator::OpcUaObjectTypeGenerator projectBuilder;
 	return projectBuilder.start(argc, argv);
 }
-#endif
 
 
