@@ -612,14 +612,60 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateSourceClassNamespaceUri(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "void" << std::endl;
+		ss << prefix << variableTypeName_ << "::" << "mapNamespaceUri(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    uint32_t namespaceIndex;" << std::endl;
+		ss << prefix << "    " << parentVariableTypeName_ << "::mapNamespaceUri();" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr variableTypeVariable = constructSPtr<OpcUaVariant>();" << std::endl;
+		ss << prefix << "    variableTypeVariable->setValue(eventVariables_.variableType());" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), variableTypeVariable);" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    variableType(variableTypeVariable);" << std::endl;
+		ss << prefix << "    eventVariables_.variableType(variableTypeVariable);" << std::endl;
+		ss << prefix << "    eventVariables_.namespaceIndex(namespaceIndex);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
 	bool
 	VariableTypeGenerator::generateSourceClassGet(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << prefix << "OpcUaVariant::SPtr" << std::endl;
+		ss << prefix << variableTypeName_ << "::" << "get(" << std::endl;
+		ss << prefix << "	OpcUaNodeId& variableType," << std::endl;
+		ss << prefix << "	std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
+		ss << prefix << "	EventResult::Code& resultCode" << std::endl;
+		ss << prefix << ")" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    resultCode = EventResult::Success;" << std::endl;
+		ss << std::endl;
+		ss << prefix << "    // check whether variableType and typeNodeId are identical" << std::endl;
+		ss << prefix << "    if (variableType == eventVariables_.variableType()) {" << std::endl;
+		ss << prefix << "	    return eventVariables_.get(browseNameList, resultCode);" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << std::endl;
+		ss << prefix << "    // the start item was not found. We delegate the search to the base class" << std::endl;
+		ss << prefix << "    OpcUaVariant::SPtr variant;" << std::endl;
+		ss << prefix << "    variant = " << parentVariableTypeName_ << "::get(variableType, browseNameList, resultCode);" << std::endl;
+		ss << prefix << "    if (resultCode != EventResult::Success || browseNameList.empty()) {" << std::endl;
+		ss << prefix << "	    return variant;" << std::endl;
+		ss << prefix << "    }" << std::endl;
+		ss << std::endl;
+		ss << prefix << "    return eventVariables_.get(browseNameList, resultCode);" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
