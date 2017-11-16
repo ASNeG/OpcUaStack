@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(VariableTypeGenerator_xx)
 
 
 	// gernerate event type source
-	OpcUaNodeId variableTypeNodeId(2052);
+	OpcUaNodeId variableTypeNodeId(8995);
 	VariableTypeGenerator variableTypeGenerator;
 	variableTypeGenerator.informationModel(informationModel);
 	variableTypeGenerator.variableType(variableTypeNodeId);

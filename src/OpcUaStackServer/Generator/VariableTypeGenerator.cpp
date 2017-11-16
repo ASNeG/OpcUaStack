@@ -323,9 +323,9 @@ namespace OpcUaStackServer
 			nodeElement->log();
 			nodeElementVec_.push_back(nodeElement);
 
-			//if (!createNodeElementVec(fullName, *it)) {
-			//	return false;
-			//}
+			if (!createNodeElementVec(fullName, *it)) {
+				return false;
+			}
 		}
 
 		return true;
@@ -342,7 +342,11 @@ namespace OpcUaStackServer
 	VariableTypeGenerator::generateHeader(void)
 	{
 		return
-			generateHeaderComments();
+			generateHeaderComments() &&
+			generateHeaderBegin() &&
+			generateHeaderClassBegin("    ") &&
+		    generateHeaderClassEnd("    ") &&
+			generateHeaderEnd();
 	}
 
 	bool
@@ -364,6 +368,101 @@ namespace OpcUaStackServer
 		headerContent_ += ss.str();
 		return true;
 	}
+
+	bool
+	VariableTypeGenerator::generateHeaderBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#ifndef __" << projectNamespace_ << "_" << variableTypeName_ << "_h__" << std::endl;
+		ss << "#define __" << projectNamespace_ << "_" << variableTypeName_ << "_h__" << std::endl;
+
+		//
+		// added includes
+		//
+		ss << std::endl;
+		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
+		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
+		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"" << parentProjectNamespace_ << "/" << parentProjectDirectory_ << "/" << parentVariableTypeName_ << ".h\"" << std::endl;
+
+		//
+		// added namespace
+		//
+		if (projectNamespace_ != parentProjectNamespace_) {
+			ss << "using namespace " << parentProjectNamespace_ << ";";
+			ss << std::endl;
+		}
+		ss << std::endl;
+		ss << "namespace " << projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// added namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		//
+		// added defines
+		//
+		ss << std::endl;
+		ss << "#endif" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderClassBegin(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "class DLLEXPORT " << variableTypeName_ << std::endl;
+		ss << prefix << ": public " << parentVariableTypeName_ << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "  public:" << std::endl;
+		ss << prefix << "    typedef boost::shared_ptr<" << variableTypeName_  << "> SPtr;" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "    " << variableTypeName_ << "(void);" << std::endl;
+		ss << prefix << "    virtual ~" << variableTypeName_ << "(void);" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderClassEnd(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		//
+		// added class
+		//
+		ss << prefix << std::endl;
+		ss << prefix << "};" << std::endl;
+
+		headerContent_ += ss.str();
+		return true;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
