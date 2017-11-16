@@ -46,10 +46,35 @@ namespace OpcUaStackServer
 		bool generate(void);
 
 	  private:
+		bool createVariableElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
+
+		//
+		// header functions
+		//
+		bool generateHeader(void);
+
+		//
+		// source functions
+		//
+		bool generateSource(void);
+
 		InformationModel::SPtr informationModel_;
+		BaseNodeClass::SPtr variableTypeNode_;
+		BaseNodeClass::SPtr parentVariableTypeNode_;
 		OpcUaNodeId variableTypeNodeId_;
+		OpcUaNodeId parentVariableTypeNodeId_;
+		uint32_t variableTypeNumber_;
+		std::string variableTypeName_;
+		std::string parentVariableTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
+
+		std::string namespaceUri_;
+		std::string projectNamespace_;
+		std::string parentProjectNamespace_;
+		std::string projectDirectory_;
+		std::string parentProjectDirectory_;
+
 	};
 
 
