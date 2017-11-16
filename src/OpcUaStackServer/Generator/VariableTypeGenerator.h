@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/Generator/NodeElement.h"
 
 using namespace OpcUaStackCore;
 
@@ -47,7 +48,7 @@ namespace OpcUaStackServer
 
 	  private:
 		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
-		bool createVariableElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
+		bool createNodeElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
 
 		//
 		// header functions
@@ -78,6 +79,8 @@ namespace OpcUaStackServer
 		std::string parentProjectNamespace_;
 		std::string projectDirectory_;
 		std::string parentProjectDirectory_;
+
+		NodeElement::Vec nodeElementVec_;
 
 	};
 

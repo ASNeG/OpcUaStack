@@ -15,9 +15,9 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackServer/Generator/VariableTypeGenerator.h>
 #include "BuildConfig.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/Generator/VariableTypeGenerator.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 
 namespace OpcUaStackServer
@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 	, projectDirectory_("")
 	, parentProjectDirectory_("")
 	, namespaceUri_("")
+	, nodeElementVec_()
 	{
 	}
 
@@ -148,7 +149,7 @@ namespace OpcUaStackServer
 		}
 
 		// create variable element list
-		if (!createVariableElementVec("", variableTypeNodeId_)) {
+		if (!createNodeElementVec("", variableTypeNodeId_)) {
 			return false;
 		}
 
@@ -215,7 +216,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableTypeGenerator::createVariableElementVec(
+	VariableTypeGenerator::createNodeElementVec(
 		const std::string& prefix,
 		OpcUaNodeId& nodeId
 	)
@@ -309,24 +310,22 @@ namespace OpcUaStackServer
 				return false;
 			}
 
-#if 0
 			// create new variable element
-			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
-			variableElement->prefix(prefix);
-			variableElement->nodeId(*it);
-			variableElement->browseName(browseName);
-			variableElement->fullName(fullName);
-			variableElement->globalVariableName(globalVariableName);
-			variableElement->localVariableName(localVariableName);
-			variableElement->functionName(functionName);
-			variableElement->dataTypeName(dataTypeName);
-			variableElement->log();
-			variableElementVec_.push_back(variableElement);
+			NodeElement::SPtr nodeElement = constructSPtr<NodeElement>();
+			nodeElement->prefix(prefix);
+			nodeElement->nodeId(*it);
+			nodeElement->browseName(browseName);
+			nodeElement->fullName(fullName);
+			nodeElement->globalVariableName(globalVariableName);
+			nodeElement->localVariableName(localVariableName);
+			nodeElement->functionName(functionName);
+			nodeElement->dataTypeName(dataTypeName);
+			nodeElement->log();
+			nodeElementVec_.push_back(nodeElement);
 
-			if (!createVariableElementVec(fullName, *it)) {
-				return false;
-			}
-#endif
+			//if (!createNodeElementVec(fullName, *it)) {
+			//	return false;
+			//}
 		}
 
 		return true;
