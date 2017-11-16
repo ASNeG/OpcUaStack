@@ -187,13 +187,148 @@ namespace OpcUaStackServer
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	std::string
+	VariableTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
+	{
+		// build in type possible
+		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+			uint32_t type;
+			uint16_t namespaceIndex;
+			typeNodeId.get(type, namespaceIndex);
+			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+			if (buildInType != "Unknown") return buildInType;
+		}
+
+		// get property node class
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
+		if (!nodeClass) {
+			return "Unknown";
+		}
+
+		// get property class name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			return "Unknown";
+		}
+
+		return browseName.name().toStdString();
+	}
+
 	bool
 	VariableTypeGenerator::createVariableElementVec(
 		const std::string& prefix,
 		OpcUaNodeId& nodeId
 	)
 	{
-		// FIXME: todo
+		bool success;
+
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(nodeId);
+		if (!nodeClass) {
+			Log(Error, "node not exist in information model")
+				.parameter("PropertyNodeId", nodeId);
+			return false;
+		}
+
+		InformationModelAccess ima;
+		std::vector<OpcUaNodeId> referenceTypeVec;
+		referenceTypeVec.push_back(OpcUaNodeId(46));
+		referenceTypeVec.push_back(OpcUaNodeId(47));
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			nodeClass,
+			referenceTypeVec,
+			childNodeIdVec
+		);
+		if (!success) {
+			Log(Error, "variable properties error")
+				.parameter("VariableType", variableTypeNodeId_);
+			return false;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+			// get child node class
+			BaseNodeClass::SPtr childNodeClass = informationModel_->find(*it);
+			if (!childNodeClass) {
+				Log(Error, "child node not exist in information model")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it);
+				return false;
+			}
+
+			// use only variable class
+			NodeClassType nodeClassType;
+			childNodeClass->getNodeClass(nodeClassType);
+			if (nodeClassType != NodeClassType_Variable) {
+				continue;
+			}
+
+			// get browse name
+			OpcUaQualifiedName browseName;
+			if (!childNodeClass->getBrowseName(browseName)) {
+				Log(Error, "browse name not found in node")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it);
+				return false;
+			}
+
+			// create full name
+			std::string fullName = prefix;
+			if (prefix.size() > 0) {
+				fullName.append("_");
+			}
+			fullName.append(browseName.toString());
+
+			// create function name
+			std::string functionName = fullName;
+			functionName[0] = boost::to_lower_copy(functionName.substr(0,1))[0];
+
+			// create global variable name
+			std::string globalVariableName = functionName;
+			globalVariableName.append("_");
+
+			// create local variable name
+			std::string localVariableName = functionName;
+
+			// create data type name
+			// get property type
+			OpcUaNodeId dataTypeNodeId;
+			if (!childNodeClass->getDataType(dataTypeNodeId)) {
+				Log(Error, "child data type not found in node")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it);
+				return false;
+			}
+			std::string dataTypeName = getTypeNameFromNodeId(dataTypeNodeId);
+			if (dataTypeName == "Unknown") {
+				Log(Error, "child data type is not a build in type")
+					.parameter("ParentNodeId", nodeId)
+					.parameter("ChildNodeId", *it)
+					.parameter("DataTypeNodeId", dataTypeNodeId);
+				return false;
+			}
+
+#if 0
+			// create new variable element
+			VariableElement::SPtr variableElement = constructSPtr<VariableElement>();
+			variableElement->prefix(prefix);
+			variableElement->nodeId(*it);
+			variableElement->browseName(browseName);
+			variableElement->fullName(fullName);
+			variableElement->globalVariableName(globalVariableName);
+			variableElement->localVariableName(localVariableName);
+			variableElement->functionName(functionName);
+			variableElement->dataTypeName(dataTypeName);
+			variableElement->log();
+			variableElementVec_.push_back(variableElement);
+
+			if (!createVariableElementVec(fullName, *it)) {
+				return false;
+			}
+#endif
+		}
+
 		return true;
 	}
 

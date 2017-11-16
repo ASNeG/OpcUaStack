@@ -46,6 +46,7 @@ namespace OpcUaStackServer
 		bool generate(void);
 
 	  private:
+		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
 		bool createVariableElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
 
 		//

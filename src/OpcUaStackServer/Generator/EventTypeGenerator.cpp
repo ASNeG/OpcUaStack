@@ -332,6 +332,33 @@ namespace OpcUaStackServer
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	std::string
+	EventTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
+	{
+		// build in type possible
+		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
+			uint32_t type;
+			uint16_t namespaceIndex;
+			typeNodeId.get(type, namespaceIndex);
+			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
+			if (buildInType != "Unknown") return buildInType;
+		}
+
+		// get property node class
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
+		if (!nodeClass) {
+			return "Unknown";
+		}
+
+		// get property class name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			return "Unknown";
+		}
+
+		return browseName.name().toStdString();
+	}
+
 	bool
 	EventTypeGenerator::createVariableElementVec(
 		const std::string& prefix,
@@ -889,33 +916,6 @@ namespace OpcUaStackServer
 
 		sourceContent_ += ss.str();
 		return true;
-	}
-
-	std::string
-	EventTypeGenerator::getTypeNameFromNodeId(OpcUaNodeId& typeNodeId)
-	{
-		// build in type possible
-		if (typeNodeId.namespaceIndex() == 0 && typeNodeId.nodeIdType() == OpcUaBuildInType_OpcUaUInt32) {
-			uint32_t type;
-			uint16_t namespaceIndex;
-			typeNodeId.get(type, namespaceIndex);
-			std::string buildInType = OpcUaBuildInTypeMap::buildInType2String((OpcUaBuildInType)type);
-			if (buildInType != "Unknown") return buildInType;
-		}
-
-		// get property node class
-		BaseNodeClass::SPtr nodeClass = informationModel_->find(typeNodeId);
-		if (!nodeClass) {
-			return "Unknown";
-		}
-
-		// get property class name
-		OpcUaQualifiedName browseName;
-		if (!nodeClass->getBrowseName(browseName)) {
-			return "Unknown";
-		}
-
-		return browseName.name().toStdString();
 	}
 
 }
