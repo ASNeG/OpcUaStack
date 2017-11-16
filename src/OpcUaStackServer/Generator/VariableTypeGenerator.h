@@ -52,11 +52,14 @@ namespace OpcUaStackServer
 		// header functions
 		//
 		bool generateHeader(void);
+		bool generateHeaderComments(void);
 
 		//
 		// source functions
 		//
 		bool generateSource(void);
+		bool generateSourceComments(void);
+
 
 		InformationModel::SPtr informationModel_;
 		BaseNodeClass::SPtr variableTypeNode_;
