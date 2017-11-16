@@ -345,6 +345,8 @@ namespace OpcUaStackServer
 			generateHeaderComments() &&
 			generateHeaderBegin() &&
 			generateHeaderClassBegin("    ") &&
+				generateHeaderClassPublic("        ") &&
+				generateHeaderClassPrivate("    ") &&
 		    generateHeaderClassEnd("    ") &&
 			generateHeaderEnd();
 	}
@@ -463,6 +465,20 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	VariableTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -475,7 +491,16 @@ namespace OpcUaStackServer
 	VariableTypeGenerator::generateSource(void)
 	{
 		return
-			generateSourceComments();
+			generateSourceComments() &&
+			generateSourceIncludes() &&
+			generateSourceClassBegin() &&
+				generateSourceClassConstructor("    ") &&
+				generateSourceClassDestructor("    ") &&
+				generateSourceClassGetter("    ") &&
+				generateSourceClassSetter("    ") &&
+				generateSourceClassNamespaceUri("    ") &&
+				generateSourceClassGet("    ") &&
+			generateSourceClassEnd();
 	}
 
 	bool
@@ -495,6 +520,106 @@ namespace OpcUaStackServer
 		ss << "*/" << std::endl;
 
 		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceIncludes(void)
+	{
+		std::stringstream ss;
+
+		ss << std::endl;
+		ss << "#include \"" << projectNamespace_ << "/" << projectDirectory_ << "/" << variableTypeName_ << ".h\"" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassBegin(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "namespace " <<  projectNamespace_ << std::endl;
+		ss << "{" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassEnd(void)
+	{
+		std::stringstream ss;
+
+		//
+		// namespace
+		//
+		ss << std::endl;
+		ss << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassConstructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << variableTypeName_ << "::" << variableTypeName_ << "(void)" << std::endl;
+		ss << prefix << ": " << parentVariableTypeName_ << "()" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassDestructor(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << variableTypeName_ << "::~" << variableTypeName_ << "(void)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassGetter(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassSetter(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassNamespaceUri(const std::string& prefix)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceClassGet(const std::string& prefix)
+	{
+		// FIXME: todo
 		return true;
 	}
 
