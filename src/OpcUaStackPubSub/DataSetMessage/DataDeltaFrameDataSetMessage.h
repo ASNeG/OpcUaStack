@@ -22,6 +22,8 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/DeltaFrameField.h"
+#include "OpcUaStackPubSub/DataSetMessage/FieldEncoding.h"
 
 namespace OpcUaStackPubSub
 {
@@ -35,8 +37,15 @@ namespace OpcUaStackPubSub
 		DataDeltaFrameDataSetMessage(void);
 		~DataDeltaFrameDataSetMessage(void);
 
+		DeltaFrameFieldArray::SPtr& deltaFrameFields(void);
+		void fieldEncoding(FieldEncoding fieldEncoding);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+	  private:
+		FieldEncoding fieldEncoding_;
+		DeltaFrameFieldArray::SPtr deltaFrameFields_;
 	};
 
 }
