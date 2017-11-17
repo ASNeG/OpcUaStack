@@ -15,37 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/DataSetMessage/DataKeyFrameDataSetMessage.h"
+#ifndef __OpcUaStackPubSub_FieldEncoding_h__
+#define __OpcUaStackPubSub_FieldEncoding_h__
 
 namespace OpcUaStackPubSub
 {
 
-	DataKeyFrameDataSetMessage::DataKeyFrameDataSetMessage(void)
-	: dataSetFields_(constructSPtr<DataSetFieldArray>())
+	typedef enum
 	{
-		messageType(DataKeyFrame);
-	}
-
-	DataKeyFrameDataSetMessage::~DataKeyFrameDataSetMessage(void)
-	{
-	}
-
-	DataSetFieldArray::SPtr&
-	DataKeyFrameDataSetMessage::dataSetFields(void)
-	{
-		return dataSetFields_;
-	}
-
-	void
-	DataKeyFrameDataSetMessage::opcUaBinaryEncode(std::ostream& os) const
-	{
-		// FIXME: todo
-	}
-
-	void
-	DataKeyFrameDataSetMessage::opcUaBinaryDecode(std::istream& is)
-	{
-		// FIXME: todo
-	}
+		VariantEncoding,
+		RawDataEncoding,
+		DataValueEncoding
+	} FieldEncoding;
 
 }
+
+#endif
