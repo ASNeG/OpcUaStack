@@ -22,6 +22,8 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetField.h"
+#include "OpcUaStackPubSub/DataSetMessage/FieldEncoding.h"
 
 namespace OpcUaStackPubSub
 {
@@ -35,8 +37,14 @@ namespace OpcUaStackPubSub
 		EventDataSetMessage(void);
 		~EventDataSetMessage(void);
 
+		DataSetFieldArray::SPtr& dataSetFields(void);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+	  private:
+		FieldEncoding fieldEncoding_;
+		DataSetFieldArray::SPtr dataSetFields_;
 	};
 
 }
