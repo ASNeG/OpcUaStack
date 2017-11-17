@@ -15,37 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/VariableType/VariableBase.h"
+#include "OpcUaStackCore/StandardVariableType/BaseVariableType.h"
 #include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// class VariableBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	VariableBase::VariableBase(void)
+	BaseVariableType::BaseVariableType(void)
+	: VariableBase()
 	{
 	}
 
-	VariableBase::~VariableBase(void)
+	BaseVariableType::~BaseVariableType(void)
 	{
-	}
-
-	void
-	VariableBase::variableType(const OpcUaNodeId& variableType)
-	{
-		variableType_ = variableType;
-	}
-
-	OpcUaNodeId&
-	VariableBase::variableType(void)
-	{
-		return variableType_;
 	}
 
 }

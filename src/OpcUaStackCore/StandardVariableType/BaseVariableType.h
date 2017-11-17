@@ -15,37 +15,27 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#ifndef __OpcUaStackCore_BaseVariableType_h__
+#define __OpcUaStackCore_BaseVariableType_h__
+
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/VariableType/VariableBase.h"
-#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// class VariableBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	VariableBase::VariableBase(void)
+	class DLLEXPORT BaseVariableType
+	: public VariableBase
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<BaseVariableType> SPtr;
 
-	VariableBase::~VariableBase(void)
-	{
-	}
+		BaseVariableType(void);
+		virtual ~BaseVariableType(void);
 
-	void
-	VariableBase::variableType(const OpcUaNodeId& variableType)
-	{
-		variableType_ = variableType;
-	}
-
-	OpcUaNodeId&
-	VariableBase::variableType(void)
-	{
-		return variableType_;
-	}
+	};
 
 }
+
+#endif

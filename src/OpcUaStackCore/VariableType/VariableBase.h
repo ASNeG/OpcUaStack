@@ -34,7 +34,11 @@ namespace OpcUaStackCore
 		VariableBase(void);
 		virtual ~VariableBase(void);
 
+		void variableType(const OpcUaNodeId& variableType);
+		OpcUaNodeId& variableType(void);
+
 	  private:
+		OpcUaNodeId variableType_;
 	};
 
 

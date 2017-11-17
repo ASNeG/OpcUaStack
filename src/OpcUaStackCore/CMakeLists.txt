@@ -82,6 +82,8 @@ file(GLOB INC_OpcUaStackCore_Filter OpcUaStackCore/Filter/*.h)
 file(GLOB INC_OpcUaStackCore_EventType OpcUaStackCore/EventType/*.h)
 file(GLOB INC_OpcUaStackCore_VariableType OpcUaStackCore/VariableType/*.h)
 file(GLOB INC_OpcUaStackCore_StandardEventType OpcUaStackCore/StandardEventType/*.h)
+file(GLOB INC_OpcUaStackCore_StandardVariableType OpcUaStackCore/StandardVariableType/*.h)
+
 
 install(
     TARGETS OpcUaStackCore 
@@ -200,5 +202,11 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_StandardEventType} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardEventType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_StandardVariableType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardVariableType
     COMPONENT headers
 )
