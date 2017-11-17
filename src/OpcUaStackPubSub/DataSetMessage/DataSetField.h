@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,17 +33,36 @@ namespace OpcUaStackPubSub
 	  public:
 		typedef boost::shared_ptr<DataSetField> SPtr;
 
+		typedef enum
+		{
+			DT_None,
+			DT_Variant,
+			DT_DataValue,
+			DT_MetaDataValue
+		} DataType;
+
 		DataSetField(void);
+		DataSetField(DataType dataType);
 		virtual ~DataSetField(void);
+
+		DataType dataType(void);
+		void clear(void);
+		bool exist(void);
+		void createObject(DataType dataType);
+
+		void variant(OpcUaVariant::SPtr& variant);
+		OpcUaVariant::SPtr variant(void);
+		void dataValue(OpcUaDataValue::SPtr& dataValue);
+		OpcUaDataValue::SPtr dataValue(void);
+		// FIXME: meta data ....
+		Object::SPtr& object(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-
-		// OpcUaVariant
-		// OpcUaDataValue
-		// DataSetMetaData
+		DataType dataType_;
+		Object::SPtr object_;
 	};
 
 	class DataSetFieldArray
