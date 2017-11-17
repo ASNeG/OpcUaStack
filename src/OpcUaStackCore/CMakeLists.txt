@@ -80,6 +80,7 @@ file(GLOB INC_OpcUaStackCore_ComplexDataTypes OpcUaStackCore/ComplexDataTypes/*.
 file(GLOB INC_OpcUaStackCore_DataType OpcUaStackCore/DataType/*.h)
 file(GLOB INC_OpcUaStackCore_Filter OpcUaStackCore/Filter/*.h)
 file(GLOB INC_OpcUaStackCore_EventType OpcUaStackCore/EventType/*.h)
+file(GLOB INC_OpcUaStackCore_VariableType OpcUaStackCore/VariableType/*.h)
 file(GLOB INC_OpcUaStackCore_StandardEventType OpcUaStackCore/StandardEventType/*.h)
 
 install(
@@ -187,6 +188,12 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_EventType} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/EventType
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_VariableType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/VariableType
     COMPONENT headers
 )
 

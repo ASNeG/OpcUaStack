@@ -468,7 +468,23 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateHeaderClassPublic(const std::string& prefix)
 	{
+		std::stringstream ss;
+
 		// FIXME: todo
+
+		ss << prefix << std::endl;
+		ss << prefix << "//- VariableBase interface" << std::endl;
+		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
+		ss << prefix << std::endl;
+		ss << prefix << "virtual OpcUaVariant::SPtr get(" << std::endl;
+		ss << prefix << "    OpcUaNodeId& eventType," << std::endl;
+		ss << prefix << "    std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
+		ss << prefix << "    EventResult::Code& resultCode" << std::endl;
+		ss << prefix << ");" << std::endl;
+		ss << prefix << "//- VariableBase interface" << std::endl;
+		ss << prefix << std::endl;
+
+		headerContent_ += ss.str();
 		return true;
 	}
 
