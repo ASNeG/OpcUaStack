@@ -36,6 +36,7 @@ BOOST_AUTO_TEST_CASE(DataKeyFrameDataSetMessage_encode_decode_variant)
 
 	value2.fieldEncoding(VariantEncoding);
 	value2.opcUaBinaryDecode(ios);
+
 	BOOST_REQUIRE(value2.dataSetFields()->size() == 10);
 	for (uint32_t idx=0; idx<10; idx++) {
 		DataSetField::SPtr dataSetField;
