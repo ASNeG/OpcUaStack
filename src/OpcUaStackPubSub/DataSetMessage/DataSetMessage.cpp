@@ -21,8 +21,9 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetMessage::DataSetMessage(void)
-	: messageType_(KeepAlive)
+	: dataSetMessageHeader_()
 	{
+		dataSetMessageHeader_.messageType(KeepAlive);
 	}
 
 	DataSetMessage::~DataSetMessage(void)
@@ -32,13 +33,19 @@ namespace OpcUaStackPubSub
 	void
 	DataSetMessage::messageType(DataSetMessageType messageType)
 	{
-		messageType_ = messageType;
+		dataSetMessageHeader_.messageType(messageType);
 	}
 
 	DataSetMessageType
 	DataSetMessage::messageType(void)
 	{
-		return messageType_;
+		return dataSetMessageHeader_.messageType();
+	}
+
+	DataSetMessageHeader&
+	DataSetMessage::dataSetMessageHeader(void)
+	{
+		return dataSetMessageHeader_;
 	}
 
 }

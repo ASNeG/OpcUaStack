@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessageType.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessageHeader.h"
 
 using namespace OpcUaStackCore;
 
@@ -39,12 +40,13 @@ namespace OpcUaStackPubSub
 
 		void messageType(DataSetMessageType messageType);
 		DataSetMessageType messageType(void);
+		DataSetMessageHeader& dataSetMessageHeader(void);
 
 		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
 		virtual void opcUaBinaryDecode(std::istream& is) = 0;
 
 	  private:
-		DataSetMessageType messageType_;
+		DataSetMessageHeader dataSetMessageHeader_;
 	};
 
 	class DataSetMessageArray
