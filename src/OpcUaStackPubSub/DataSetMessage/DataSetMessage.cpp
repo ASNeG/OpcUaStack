@@ -48,4 +48,16 @@ namespace OpcUaStackPubSub
 		return dataSetMessageHeader_;
 	}
 
+	void
+	DataSetMessage::sequenceNumber(uint16_t sequenceNumber)
+	{
+		dataSetMessageHeader_.dataMessageSequenceNumber(sequenceNumber);
+	}
+
+	uint16_t
+	DataSetMessage::sequenceNumber(void)
+	{
+		return dataSetMessageHeader_.dataMessageSequenceNumber();
+	}
+
 }
