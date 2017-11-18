@@ -22,6 +22,7 @@
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackPubSub/DataSetMessage/FieldEncoding.h"
 
 using namespace OpcUaStackCore;
 
@@ -33,22 +34,14 @@ namespace OpcUaStackPubSub
 	  public:
 		typedef boost::shared_ptr<DataSetField> SPtr;
 
-		typedef enum
-		{
-			DT_None,
-			DT_Variant,
-			DT_DataValue,
-			DT_MetaDataValue
-		} DataType;
-
 		DataSetField(void);
-		DataSetField(DataType dataType);
+		DataSetField(FieldEncoding dataType);
 		virtual ~DataSetField(void);
 
-		DataType dataType(void);
+		FieldEncoding dataType(void);
 		void clear(void);
 		bool exist(void);
-		void createObject(DataType dataType);
+		void createObject(FieldEncoding dataType);
 
 		void variant(OpcUaVariant::SPtr& variant);
 		OpcUaVariant::SPtr variant(void);
@@ -61,7 +54,7 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		DataType dataType_;
+		FieldEncoding dataType_;
 		Object::SPtr object_;
 	};
 

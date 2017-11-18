@@ -69,10 +69,7 @@ namespace OpcUaStackPubSub
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DeltaFrameField::SPtr deltaFrameField = constructSPtr<DeltaFrameField>();
 
-			if (fieldEncoding_ == VariantEncoding) deltaFrameField->createObject(DataSetField::DT_Variant);
-			else if (fieldEncoding_ == DataValueEncoding) deltaFrameField->createObject(DataSetField::DT_DataValue);
-			else deltaFrameField->createObject(DataSetField::DT_MetaDataValue);
-
+			deltaFrameField->createObject(fieldEncoding_);
 			deltaFrameField->opcUaBinaryDecode(is);
 			deltaFrameFields_->push_back(deltaFrameField);
 		}

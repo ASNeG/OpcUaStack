@@ -36,7 +36,7 @@ namespace OpcUaStackPubSub
 		typedef boost::shared_ptr<DeltaFrameField> SPtr;
 
 		DeltaFrameField(void);
-		DeltaFrameField(DataType dataType);
+		DeltaFrameField(FieldEncoding dataType);
 		virtual ~DeltaFrameField(void);
 
 		void fieldIndex(uint16_t fieldIndex);

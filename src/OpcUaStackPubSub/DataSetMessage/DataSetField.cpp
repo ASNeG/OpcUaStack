@@ -22,11 +22,11 @@ namespace OpcUaStackPubSub
 
 	DataSetField::DataSetField(void)
 	: object_()
-	, dataType_(DT_None)
+	, dataType_(None)
 	{
 	}
 
-	DataSetField::DataSetField(DataType dataType)
+	DataSetField::DataSetField(FieldEncoding dataType)
 	{
 		createObject(dataType);
 	}
@@ -35,7 +35,7 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	DataSetField::DataType
+	FieldEncoding
 	DataSetField::dataType(void)
 	{
 		return dataType_;
@@ -45,7 +45,7 @@ namespace OpcUaStackPubSub
 	DataSetField::clear(void)
 	{
 		object_.reset();
-		dataType_ = DT_None;
+		dataType_ = None;
 	}
 
 	bool
@@ -55,27 +55,27 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	DataSetField::createObject(DataType dataType)
+	DataSetField::createObject(FieldEncoding dataType)
 	{
 		switch (dataType)
 		{
-			case DT_Variant:
+			case VariantEncoding:
 			{
 				object_ = constructSPtr<OpcUaVariant>();
 				dataType_ = dataType;
 				break;
 			}
-			case DT_DataValue:
+			case DataValueEncoding:
 			{
 				object_ = constructSPtr<OpcUaDataValue>();
 				dataType_ = dataType;
 				break;
 			}
-			case DT_MetaDataValue: // FIXME: todo
+			case RawDataEncoding: // FIXME: todo
 			default:
 			{
 				object_.reset();
-				dataType_ = DT_None;
+				dataType_ = None;
 			}
 		}
 	}
@@ -87,7 +87,7 @@ namespace OpcUaStackPubSub
 			clear();
 			return;
 		}
-		dataType_ = DT_Variant;
+		dataType_ = VariantEncoding;
 		object_ = variant;
 	}
 
@@ -95,7 +95,7 @@ namespace OpcUaStackPubSub
 	DataSetField::variant(void)
 	{
 		OpcUaVariant::SPtr variant;
-		if (dataType_ != DT_Variant) {
+		if (dataType_ != VariantEncoding) {
 			return variant;
 		}
 		return boost::static_pointer_cast<OpcUaVariant>(object_);
@@ -108,7 +108,7 @@ namespace OpcUaStackPubSub
 			clear();
 			return;
 		}
-		dataType_ = DT_DataValue;
+		dataType_ = DataValueEncoding;
 		object_ = dataValue;
 	}
 
@@ -116,7 +116,7 @@ namespace OpcUaStackPubSub
 	DataSetField::dataValue(void)
 	{
 		OpcUaDataValue::SPtr dataValue;
-		if (dataType_ != DT_DataValue) {
+		if (dataType_ != DataValueEncoding) {
 			return dataValue;
 		}
 		return boost::static_pointer_cast<OpcUaDataValue>(object_);
@@ -133,19 +133,19 @@ namespace OpcUaStackPubSub
 	{
 		switch (dataType_)
 		{
-			case DT_Variant:
+			case VariantEncoding:
 			{
 				OpcUaVariant::SPtr variant = boost::static_pointer_cast<OpcUaVariant>(object_);
 				variant->opcUaBinaryEncode(os);
 				break;
 			}
-			case DT_DataValue:
+			case DataValueEncoding:
 			{
 				OpcUaDataValue::SPtr dataValue = boost::static_pointer_cast<OpcUaDataValue>(object_);
 				dataValue->opcUaBinaryEncode(os);
 				break;
 			}
-			case DT_MetaDataValue: // FIXME: todo
+			case RawDataEncoding: // FIXME: todo
 			default:
 			{
 				return;
@@ -158,19 +158,19 @@ namespace OpcUaStackPubSub
 	{
 		switch (dataType_)
 		{
-			case DT_Variant:
+			case VariantEncoding:
 			{
 				OpcUaVariant::SPtr variant = boost::static_pointer_cast<OpcUaVariant>(object_);
 				variant->opcUaBinaryDecode(is);
 				break;
 			}
-			case DT_DataValue:
+			case DataValueEncoding:
 			{
 				OpcUaDataValue::SPtr dataValue = boost::static_pointer_cast<OpcUaDataValue>(object_);
 				dataValue->opcUaBinaryDecode(is);
 				break;
 			}
-			case DT_MetaDataValue: // FIXME: todo
+			case RawDataEncoding: // FIXME: todo
 			default:
 			{
 				return;

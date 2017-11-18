@@ -26,7 +26,7 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	DeltaFrameField::DeltaFrameField(DataType dataType)
+	DeltaFrameField::DeltaFrameField(FieldEncoding dataType)
 	: DataSetField(dataType)
 	, fieldIndex_(0)
 	{

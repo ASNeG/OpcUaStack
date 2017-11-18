@@ -63,8 +63,7 @@ namespace OpcUaStackPubSub
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DataSetField::SPtr dataSetField = constructSPtr<DataSetField>();
 
-			dataSetField->createObject(DataSetField::DT_Variant);
-
+			dataSetField->createObject(VariantEncoding);
 			dataSetField->opcUaBinaryDecode(is);
 			dataSetFields_->push_back(dataSetField);
 		}

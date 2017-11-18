@@ -29,10 +29,10 @@ BOOST_AUTO_TEST_CASE(DeltaFrameField_encode_decode_variant)
 
 	value1.opcUaBinaryEncode(ios);
 
-	value2.createObject(DeltaFrameField::DT_Variant);
+	value2.createObject(VariantEncoding);
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.dataType() == DeltaFrameField::DT_Variant);
+	BOOST_REQUIRE(value2.dataType() == VariantEncoding);
 	BOOST_REQUIRE(value2.fieldIndex() == 123);
 	variant2 = value2.variant();
 	OpcUaNodeId nodeId;
@@ -55,10 +55,10 @@ BOOST_AUTO_TEST_CASE(DeltaFrameField_encode_decode_dataValue)
 
 	value1.opcUaBinaryEncode(ios);
 
-	value2.createObject(DeltaFrameField::DT_DataValue);
+	value2.createObject(DataValueEncoding);
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.dataType() == DeltaFrameField::DT_DataValue);
+	BOOST_REQUIRE(value2.dataType() == DataValueEncoding);
 	BOOST_REQUIRE(value2.fieldIndex() == 123);
 	dataValue2  = value2.dataValue();
 	OpcUaNodeId nodeId;

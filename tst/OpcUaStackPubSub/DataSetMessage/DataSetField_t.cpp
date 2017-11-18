@@ -28,10 +28,10 @@ BOOST_AUTO_TEST_CASE(DataSetField_encode_decode_variant)
 
 	value1.opcUaBinaryEncode(ios);
 
-	value2.createObject(DataSetField::DT_Variant);
+	value2.createObject(VariantEncoding);
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.dataType() == DataSetField::DT_Variant);
+	BOOST_REQUIRE(value2.dataType() == VariantEncoding);
 	variant2 = value2.variant();
 	OpcUaNodeId nodeId;
 	variant2->getValue(nodeId);
@@ -52,10 +52,10 @@ BOOST_AUTO_TEST_CASE(DataSetField_encode_decode_dataValue)
 	value1.dataValue(dataValue1);
 	value1.opcUaBinaryEncode(ios);
 
-	value2.createObject(DataSetField::DT_DataValue);
+	value2.createObject(DataValueEncoding);
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.dataType() == DataSetField::DT_DataValue);
+	BOOST_REQUIRE(value2.dataType() == DataValueEncoding);
 	dataValue2  = value2.dataValue();
 	OpcUaNodeId nodeId;
 	dataValue2->variant()->getValue(nodeId);

@@ -25,7 +25,8 @@ namespace OpcUaStackPubSub
 	{
 		VariantEncoding,
 		RawDataEncoding,
-		DataValueEncoding
+		DataValueEncoding,
+		None
 	} FieldEncoding;
 
 }
