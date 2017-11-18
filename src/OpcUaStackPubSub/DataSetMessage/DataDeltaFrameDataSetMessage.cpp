@@ -49,6 +49,16 @@ namespace OpcUaStackPubSub
 		uint16_t fieldCount = deltaFrameFields_->size();
 		if (fieldCount == 0) return;
 
+		DeltaFrameField::SPtr deltaframeField;
+		deltaFrameFields_->get(0, deltaframeField);
+		if (deltaframeField->dataType() == None) return;
+
+		DataSetMessageHeader& hdr = const_cast<DataDeltaFrameDataSetMessage*>(this)->dataSetMessageHeader();
+		hdr.fieldEncoding(deltaframeField->dataType());
+		hdr.dataSetMessageSequenceNumberEnabled(true);
+		hdr.dataSetFlag2Enabled(true);
+		hdr.opcUaBinaryEncode(os);
+
 		OpcUaNumber::opcUaBinaryEncode(os, fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DeltaFrameField::SPtr deltaframeField;
@@ -61,6 +71,11 @@ namespace OpcUaStackPubSub
 	void
 	DataDeltaFrameDataSetMessage::opcUaBinaryDecode(std::istream& is)
 	{
+		DataSetMessageHeader& hdr = const_cast<DataDeltaFrameDataSetMessage*>(this)->dataSetMessageHeader();
+		hdr.opcUaBinaryDecode(is);
+		fieldEncoding_ = hdr.fieldEncoding();
+		if (fieldEncoding_ == None) return;
+
 		uint16_t fieldCount;
 		OpcUaNumber::opcUaBinaryDecode(is, fieldCount);
 		if (fieldCount == 0) return;
