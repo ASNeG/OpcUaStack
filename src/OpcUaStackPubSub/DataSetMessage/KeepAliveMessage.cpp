@@ -22,10 +22,11 @@ namespace OpcUaStackPubSub
 
 	KeepAliveMessage::KeepAliveMessage(void)
 	{
+		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
+		dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
+		dataSetMessageHeader->dataSetFlag2Enabled(true);
+		this->dataSetMessageHeader(dataSetMessageHeader);
 		messageType(KeepAlive);
-		DataSetMessageHeader& hdr = dataSetMessageHeader();
-		hdr.dataSetMessageSequenceNumberEnabled(true);
-		hdr.dataSetFlag2Enabled(true);
 	}
 
 	KeepAliveMessage::~KeepAliveMessage(void)
