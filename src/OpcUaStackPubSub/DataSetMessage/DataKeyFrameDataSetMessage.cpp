@@ -23,7 +23,6 @@ namespace OpcUaStackPubSub
 	DataKeyFrameDataSetMessage::DataKeyFrameDataSetMessage(void)
 	: DataSetMessage()
 	, dataSetFields_(constructSPtr<DataSetFieldArray>())
-	, fieldEncoding_(VariantEncoding)
 	{
 		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
 		dataSetMessageHeader->fieldEncoding(VariantEncoding);
@@ -55,12 +54,6 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	DataKeyFrameDataSetMessage::fieldEncoding(FieldEncoding fieldEncoding)
-	{
-		fieldEncoding_ = fieldEncoding;
-	}
-
-	void
 	DataKeyFrameDataSetMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
 		uint16_t fieldCount = dataSetFields_->size();
@@ -86,7 +79,7 @@ namespace OpcUaStackPubSub
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DataSetField::SPtr dataSetField = constructSPtr<DataSetField>();
 
-			dataSetField->createObject(fieldEncoding_);
+			dataSetField->createObject(dataSetMessageHeader().fieldEncoding());
 			dataSetField->opcUaBinaryDecode(is);
 			dataSetFields_->push_back(dataSetField);
 		}

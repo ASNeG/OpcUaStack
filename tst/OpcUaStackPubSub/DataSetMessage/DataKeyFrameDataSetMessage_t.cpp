@@ -34,7 +34,6 @@ BOOST_AUTO_TEST_CASE(DataKeyFrameDataSetMessage_encode_decode_variant)
 
 	value1.opcUaBinaryEncode(ios);
 
-	value2.fieldEncoding(VariantEncoding);
 	value2.opcUaBinaryDecode(ios);
 
 	BOOST_REQUIRE(value2.dataSetFields()->size() == 10);

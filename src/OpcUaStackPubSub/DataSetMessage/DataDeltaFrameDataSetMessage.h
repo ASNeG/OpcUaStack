@@ -45,7 +45,6 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		FieldEncoding fieldEncoding_;
 		DeltaFrameFieldArray::SPtr deltaFrameFields_;
 	};
 

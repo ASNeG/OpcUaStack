@@ -22,7 +22,6 @@ namespace OpcUaStackPubSub
 
 	DataDeltaFrameDataSetMessage::DataDeltaFrameDataSetMessage(void)
 	: deltaFrameFields_(constructSPtr<DeltaFrameFieldArray>())
-	, fieldEncoding_(VariantEncoding)
 	{
 		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
 		dataSetMessageHeader->fieldEncoding(VariantEncoding);
@@ -40,12 +39,6 @@ namespace OpcUaStackPubSub
 	DataDeltaFrameDataSetMessage::deltaFrameFields(void)
 	{
 		return deltaFrameFields_;
-	}
-
-	void
-	DataDeltaFrameDataSetMessage::fieldEncoding(FieldEncoding fieldEncoding)
-	{
-		fieldEncoding_ = fieldEncoding;
 	}
 
 	void
@@ -86,7 +79,7 @@ namespace OpcUaStackPubSub
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DeltaFrameField::SPtr deltaFrameField = constructSPtr<DeltaFrameField>();
 
-			deltaFrameField->createObject(fieldEncoding_);
+			deltaFrameField->createObject(dataSetMessageHeader().fieldEncoding());
 			deltaFrameField->opcUaBinaryDecode(is);
 			deltaFrameFields_->push_back(deltaFrameField);
 		}
