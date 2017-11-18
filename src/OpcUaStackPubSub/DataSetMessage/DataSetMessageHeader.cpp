@@ -61,7 +61,7 @@ namespace OpcUaStackPubSub
 		fieldEncoding_ = fieldEncoding;
 	}
 
-	DataSetMessageHeader::FieldEncoding
+	FieldEncoding
 	DataSetMessageHeader::fieldEncoding(void)
 	{
 		return fieldEncoding_;

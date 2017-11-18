@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(DataSetMessageHeader_empty)
 
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.fieldEncoding() == DataSetMessageHeader::VariantEncoding);
+	BOOST_REQUIRE(value2.fieldEncoding() == VariantEncoding);
 	BOOST_REQUIRE(value2.dataSetMessageSequenceNumberEnabled() == false);
 	BOOST_REQUIRE(value2.timestampEnabled() == false);
 	BOOST_REQUIRE(value2.statusEnabled() == false);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(DataSetMessageHeader_flag1)
 
 	DataSetMessageHeader value1, value2;
 
-	value1.fieldEncoding(DataSetMessageHeader::VariantEncoding);
+	value1.fieldEncoding(VariantEncoding);
 	value1.dataMessageSequenceNumber(123);
 	value1.timestamp(OpcUaDateTime(ptime));
 	value1.statusCode(0x1111);
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(DataSetMessageHeader_flag1)
 
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.fieldEncoding() == DataSetMessageHeader::VariantEncoding);
+	BOOST_REQUIRE(value2.fieldEncoding() == VariantEncoding);
 	BOOST_REQUIRE(value2.dataSetMessageSequenceNumberEnabled() == true);
 	BOOST_REQUIRE(value2.timestampEnabled() == true);
 	BOOST_REQUIRE(value2.statusEnabled() == true);
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(DataSetMessageHeader_flag2)
 
 	DataSetMessageHeader value1, value2;
 
-	value1.fieldEncoding(DataSetMessageHeader::VariantEncoding);
+	value1.fieldEncoding(VariantEncoding);
 	value1.dataMessageSequenceNumber(123);
 	value1.timestamp(OpcUaDateTime(ptime));
 	value1.statusCode(0x1111);
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(DataSetMessageHeader_flag2)
 
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value2.fieldEncoding() == DataSetMessageHeader::VariantEncoding);
+	BOOST_REQUIRE(value2.fieldEncoding() == VariantEncoding);
 	BOOST_REQUIRE(value2.dataSetMessageSequenceNumberEnabled() == true);
 	BOOST_REQUIRE(value2.timestampEnabled() == true);
 	BOOST_REQUIRE(value2.statusEnabled() == true);
