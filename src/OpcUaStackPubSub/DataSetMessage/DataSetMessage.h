@@ -41,6 +41,7 @@ namespace OpcUaStackPubSub
 		void messageType(DataSetMessageType messageType);
 		DataSetMessageType messageType(void);
 		DataSetMessageHeader& dataSetMessageHeader(void);
+		void dataSetMessageHeader(DataSetMessageHeader::SPtr& dataSetMessageHeader);
 		void sequenceNumber(uint16_t sequenceNumber);
 		uint16_t sequenceNumber(void);
 
@@ -48,7 +49,7 @@ namespace OpcUaStackPubSub
 		virtual void opcUaBinaryDecode(std::istream& is) = 0;
 
 	  private:
-		DataSetMessageHeader dataSetMessageHeader_;
+		DataSetMessageHeader::SPtr dataSetMessageHeader_;
 	};
 
 	class DataSetMessageArray

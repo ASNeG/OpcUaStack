@@ -21,9 +21,9 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetMessage::DataSetMessage(void)
-	: dataSetMessageHeader_()
+	: dataSetMessageHeader_(constructSPtr<DataSetMessageHeader>())
 	{
-		dataSetMessageHeader_.messageType(KeepAlive);
+		dataSetMessageHeader_->messageType(KeepAlive);
 	}
 
 	DataSetMessage::~DataSetMessage(void)
@@ -33,31 +33,37 @@ namespace OpcUaStackPubSub
 	void
 	DataSetMessage::messageType(DataSetMessageType messageType)
 	{
-		dataSetMessageHeader_.messageType(messageType);
+		dataSetMessageHeader_->messageType(messageType);
 	}
 
 	DataSetMessageType
 	DataSetMessage::messageType(void)
 	{
-		return dataSetMessageHeader_.messageType();
+		return dataSetMessageHeader_->messageType();
 	}
 
 	DataSetMessageHeader&
 	DataSetMessage::dataSetMessageHeader(void)
 	{
-		return dataSetMessageHeader_;
+		return *dataSetMessageHeader_;
+	}
+
+	void
+	DataSetMessage::dataSetMessageHeader(DataSetMessageHeader::SPtr& dataSetMessageHeader)
+	{
+		dataSetMessageHeader_ = dataSetMessageHeader;
 	}
 
 	void
 	DataSetMessage::sequenceNumber(uint16_t sequenceNumber)
 	{
-		dataSetMessageHeader_.dataMessageSequenceNumber(sequenceNumber);
+		dataSetMessageHeader_->dataMessageSequenceNumber(sequenceNumber);
 	}
 
 	uint16_t
 	DataSetMessage::sequenceNumber(void)
 	{
-		return dataSetMessageHeader_.dataMessageSequenceNumber();
+		return dataSetMessageHeader_->dataMessageSequenceNumber();
 	}
 
 }

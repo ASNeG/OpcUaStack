@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_)
 	std::cout << "DataSetPayload_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode)
+BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode_keepalive)
 {
 	uint32_t pos;
 	DataSetPayload value1, value2;
@@ -24,34 +24,29 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode)
 	std::iostream ios(&sb);
 
 	value1.dataSetMessages()->resize(2);
-	value1.dataSetMessages()->push_back(constructSPtr<KeepAliveMessage>());
-	value1.dataSetMessages()->push_back(constructSPtr<KeepAliveMessage>());
-	value1.dataSetMessageHeaders()->resize(2);
-	value1.dataSetMessageHeaders()->push_back(constructSPtr<DataSetMessageHeader>());
-	value1.dataSetMessageHeaders()->push_back(constructSPtr<DataSetMessageHeader>());
+	for (uint32_t idx=0; idx<2; idx++) {
+		KeepAliveMessage::SPtr dataSetMessage = constructSPtr<KeepAliveMessage>();
+		dataSetMessage->sequenceNumber(idx);
+		value1.dataSetMessages()->push_back(dataSetMessage);
+	}
 
 	value1.opcUaBinaryEncode(ios);
 
 	OpcUaStackCore::dumpHex(ios);
 	std::stringstream ss;
-	ss	<< "08 00 08 00 84 03 00 00  84 03 00 00 84 03 00 00"
-		<< "84 03 00 00";
+	ss	<< "04 00 04 00 84 03 00 00  84 03 01 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	value2.count(2);
 	value2.opcUaBinaryDecode(ios);
 
-	BOOST_REQUIRE(value1.dataSetMessageHeaders()->size() == 2);
 	BOOST_REQUIRE(value1.dataSetMessages()->size() == 2);
-
 	for (uint32_t idx=0; idx<value2.count(); idx++) {
-		DataSetMessageHeader::SPtr dataSetMessageHeader;
-		value2.dataSetMessageHeaders()->get(idx, dataSetMessageHeader);
-
 		DataSetMessage::SPtr dataSetMessage;
 		value2.dataSetMessages()->get(idx, dataSetMessage);
 
-		BOOST_REQUIRE(dataSetMessageHeader->messageType() == KeepAlive);
+		std::cout << dataSetMessage->sequenceNumber() << std::endl;
+		BOOST_REQUIRE(dataSetMessage->sequenceNumber() == idx);
 		BOOST_REQUIRE(dataSetMessage->messageType() == KeepAlive);
 	}
 }

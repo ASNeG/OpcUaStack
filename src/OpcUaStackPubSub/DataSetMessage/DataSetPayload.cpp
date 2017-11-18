@@ -28,7 +28,6 @@ namespace OpcUaStackPubSub
 	DataSetPayload::DataSetPayload(void)
 	: count_(0)
 	, dataSetMessages_(constructSPtr<DataSetMessageArray>())
-	, dataSetMessageHeaders_(constructSPtr<DataSetMessageHeaderArray>())
 	{
 	}
 
@@ -54,18 +53,6 @@ namespace OpcUaStackPubSub
 		dataSetMessages_ = dataSetMessages;
 	}
 
-	void
-	DataSetPayload::dataSetMessageHeaders(const DataSetMessageHeaderArray::SPtr& dataSetMessageHeaders)
-	{
-		dataSetMessageHeaders_ = dataSetMessageHeaders;
-	}
-
-	DataSetMessageHeaderArray::SPtr&
-	DataSetPayload::dataSetMessageHeaders(void)
-	{
-		return dataSetMessageHeaders_;
-	}
-
 	DataSetMessageArray::SPtr&
 	DataSetPayload::dataSetMessages(void)
 	{
@@ -81,46 +68,11 @@ namespace OpcUaStackPubSub
 		std::iostream ios(&sb);
 
 		for (uint32_t idx = 0; idx < dataSetMessages_->size(); idx++) {
-			DataSetMessageHeader::SPtr dataSetMessageHeader;
-			dataSetMessageHeaders_->get(idx, dataSetMessageHeader);
-
 			DataSetMessage::SPtr dataSetMessage;
 			dataSetMessages_->get(idx, dataSetMessage);
 
-			dataSetMessageHeader->messageType(dataSetMessage->messageType());
-
-			switch (dataSetMessageHeader->messageType())
-			{
-				case DataKeyFrame:
-				{
-					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
-					break;
-				}
-				case DataDeltaFrame:
-				{
-					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
-					dataSetMessageHeader->dataSetFlag2Enabled(true);
-					break;
-				}
-				case EventData:
-				{
-					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
-					dataSetMessageHeader->dataSetFlag2Enabled(true);
-					break;
-				}
-				case KeepAlive:
-				{
-					dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
-					dataSetMessageHeader->dataSetFlag2Enabled(true);
-					break;
-				}
-				default:
-				{
-					return;
-				}
-			}
-
-			dataSetMessageHeader->opcUaBinaryEncode(ios);
+			DataSetMessageHeader& hdr = dataSetMessage->dataSetMessageHeader();
+			hdr.opcUaBinaryEncode(ios);
 			dataSetMessage->opcUaBinaryEncode(ios);
 
 			uint16_t size = sb.size() - actSize;
@@ -143,7 +95,6 @@ namespace OpcUaStackPubSub
 		if (count_ == 0) return;
 		std::vector<uint16_t> sizeVec;
 		dataSetMessages_->resize(count_);
-		dataSetMessageHeaders_->resize(count_);
 
 		for (uint32_t idx=0; idx<count_; idx++) {
 			OpcUaUInt16 size;
@@ -152,11 +103,8 @@ namespace OpcUaStackPubSub
 		}
 
 		for (uint32_t idx=0; idx<count_; idx++) {
-			DataSetMessageHeader::SPtr dataSetMessageHeader;
-			dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
-
+			DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
 			dataSetMessageHeader->opcUaBinaryDecode(is);
-			dataSetMessageHeaders_->push_back(dataSetMessageHeader);
 
 			DataSetMessage::SPtr dataSetMessage;
 			switch (dataSetMessageHeader->messageType())
@@ -187,6 +135,7 @@ namespace OpcUaStackPubSub
 				}
 			}
 
+			dataSetMessage->dataSetMessageHeader(dataSetMessageHeader);
 			dataSetMessage->opcUaBinaryDecode(is);
 			dataSetMessages_->push_back(dataSetMessage);
 		}
