@@ -45,7 +45,6 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode_keepalive)
 		DataSetMessage::SPtr dataSetMessage;
 		value2.dataSetMessages()->get(idx, dataSetMessage);
 
-		std::cout << dataSetMessage->sequenceNumber() << std::endl;
 		BOOST_REQUIRE(dataSetMessage->sequenceNumber() == idx);
 		BOOST_REQUIRE(dataSetMessage->messageType() == KeepAlive);
 	}

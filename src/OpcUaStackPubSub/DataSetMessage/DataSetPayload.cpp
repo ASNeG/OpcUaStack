@@ -70,6 +70,7 @@ namespace OpcUaStackPubSub
 		for (uint32_t idx = 0; idx < dataSetMessages_->size(); idx++) {
 			DataSetMessage::SPtr dataSetMessage;
 			dataSetMessages_->get(idx, dataSetMessage);
+			dataSetMessage->setFieldEncoding();
 
 			DataSetMessageHeader& hdr = dataSetMessage->dataSetMessageHeader();
 			hdr.opcUaBinaryEncode(ios);

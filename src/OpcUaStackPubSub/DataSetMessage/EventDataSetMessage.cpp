@@ -24,6 +24,12 @@ namespace OpcUaStackPubSub
 	: dataSetFields_(constructSPtr<DataSetFieldArray>())
 	, fieldEncoding_(VariantEncoding)
 	{
+		DataSetMessageHeader::SPtr dataSetMessageHeader = constructSPtr<DataSetMessageHeader>();
+		dataSetMessageHeader->fieldEncoding(VariantEncoding);
+		dataSetMessageHeader->dataSetMessageSequenceNumberEnabled(true);
+		dataSetMessageHeader->dataSetFlag2Enabled(true);
+		this->dataSetMessageHeader(dataSetMessageHeader);
+
 		messageType(EventData);
 	}
 
@@ -43,16 +49,6 @@ namespace OpcUaStackPubSub
 		uint16_t fieldCount = dataSetFields_->size();
 		if (fieldCount == 0) return;
 
-		DataSetField::SPtr dataSetField;
-		dataSetFields_->get(0, dataSetField);
-		if (dataSetField->dataType() == None) return;
-
-		DataSetMessageHeader& hdr = const_cast<EventDataSetMessage*>(this)->dataSetMessageHeader();
-		hdr.fieldEncoding(dataSetField->dataType());
-		hdr.dataSetMessageSequenceNumberEnabled(true);
-		hdr.dataSetFlag2Enabled(true);
-		hdr.opcUaBinaryEncode(os);
-
 		OpcUaNumber::opcUaBinaryEncode(os, fieldCount);
 		for (uint32_t idx=0; idx<fieldCount; idx++) {
 			DataSetField::SPtr dataSetField;
@@ -65,11 +61,6 @@ namespace OpcUaStackPubSub
 	void
 	EventDataSetMessage::opcUaBinaryDecode(std::istream& is)
 	{
-		DataSetMessageHeader& hdr = const_cast<EventDataSetMessage*>(this)->dataSetMessageHeader();
-		hdr.opcUaBinaryDecode(is);
-		fieldEncoding_ = hdr.fieldEncoding();
-		if (fieldEncoding_ == None) return;
-
 		uint16_t fieldCount;
 		OpcUaNumber::opcUaBinaryDecode(is, fieldCount);
 		if (fieldCount == 0) return;

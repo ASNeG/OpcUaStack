@@ -40,6 +40,7 @@ namespace OpcUaStackPubSub
 		DataSetFieldArray::SPtr& dataSetFields(void);
 		void fieldEncoding(FieldEncoding fieldEncoding);
 
+		virtual void setFieldEncoding(void);
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
