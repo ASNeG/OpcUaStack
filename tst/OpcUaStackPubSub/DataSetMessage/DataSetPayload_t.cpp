@@ -34,7 +34,8 @@ BOOST_AUTO_TEST_CASE(DataSetPayload_encode_decode)
 
 	OpcUaStackCore::dumpHex(ios);
 	std::stringstream ss;
-	ss	<< "04 00 04 00 84 03 00 00  84 03 00 00";
+	ss	<< "08 00 08 00 84 03 00 00  84 03 00 00 84 03 00 00"
+		<< "84 03 00 00";
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos) == true);
 
 	value2.count(2);

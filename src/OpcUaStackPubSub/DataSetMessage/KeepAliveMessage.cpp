@@ -32,11 +32,17 @@ namespace OpcUaStackPubSub
 	void
 	KeepAliveMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
+		DataSetMessageHeader& hdr = const_cast<KeepAliveMessage*>(this)->dataSetMessageHeader();
+		hdr.dataSetMessageSequenceNumberEnabled(true);
+		hdr.dataSetFlag2Enabled(true);
+		hdr.opcUaBinaryEncode(os);
 	}
 
 	void
 	KeepAliveMessage::opcUaBinaryDecode(std::istream& is)
 	{
+		DataSetMessageHeader& hdr = const_cast<KeepAliveMessage*>(this)->dataSetMessageHeader();
+		hdr.opcUaBinaryDecode(is);
 	}
 
 }
