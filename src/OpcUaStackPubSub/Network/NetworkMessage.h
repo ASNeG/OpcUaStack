@@ -19,6 +19,9 @@
 #define __OpcUaStackPubSub_NetworkMessage_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/Network/NetworkMessageHeader.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetPayloadHeader.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetPayload.h"
 
 namespace OpcUaStackPubSub
 {
@@ -29,7 +32,22 @@ namespace OpcUaStackPubSub
 		NetworkMessage(void);
 		virtual ~NetworkMessage(void);
 
+		void networkMessageHeader(NetworkMessageHeader::SPtr networkMessageHeader);
+		NetworkMessageHeader::SPtr networkMessageHeader();
+
+		void dataSetPayloadHeader(DataSetPayloadHeader::SPtr dataSetPayloadHeader);
+		DataSetPayloadHeader::SPtr dataSetPayloadHeader();
+
+		void dataSetPayload(DataSetPayload::SPtr dataSetPayload);
+		DataSetPayload::SPtr dataSetPayload();
+
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+
 	  private:
+		NetworkMessageHeader::SPtr networkMessageHeader_;
+		DataSetPayloadHeader::SPtr dataSetPayloadHeader_;
+		DataSetPayload::SPtr dataSetPayload_;
 	};
 
 }

@@ -21,11 +21,60 @@ namespace OpcUaStackPubSub
 {
 
 	NetworkMessage::NetworkMessage(void)
+	: networkMessageHeader_(constructSPtr<NetworkMessageHeader>())
+	, dataSetPayloadHeader_(constructSPtr<DataSetPayloadHeader>())
+	, dataSetPayload_(constructSPtr<DataSetPayload>())
 	{
 	}
 
 	NetworkMessage::~NetworkMessage(void)
 	{
+	}
+
+	void
+	NetworkMessage::networkMessageHeader(NetworkMessageHeader::SPtr networkMessageHeader)
+	{
+		networkMessageHeader_ = networkMessageHeader;
+	}
+
+	NetworkMessageHeader::SPtr
+	NetworkMessage::networkMessageHeader()
+	{
+		return networkMessageHeader_;
+	}
+
+	void
+	NetworkMessage::dataSetPayloadHeader(DataSetPayloadHeader::SPtr dataSetPayloadHeader)
+	{
+		dataSetPayloadHeader_ = dataSetPayloadHeader;
+	}
+
+	DataSetPayloadHeader::SPtr
+	NetworkMessage::dataSetPayloadHeader()
+	{
+		return dataSetPayloadHeader_;
+	}
+
+	void
+	NetworkMessage::dataSetPayload(DataSetPayload::SPtr dataSetPayload)
+	{
+		dataSetPayload_ = dataSetPayload;
+	}
+
+	DataSetPayload::SPtr
+	NetworkMessage::dataSetPayload()
+	{
+		return dataSetPayload_;
+	}
+
+	void NetworkMessage::opcUaBinaryEncode(std::ostream& os) const
+	{
+		//FIXME:
+	}
+
+	void NetworkMessage::opcUaBinaryDecode(std::istream& is)
+	{
+		//FIXME:
 	}
 
 }
