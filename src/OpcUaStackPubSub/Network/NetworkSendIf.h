@@ -15,17 +15,29 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/Network/MessageTransportIf.h"
+#ifndef __OpcUaStackPubSub_NetworkSendIf_h__
+#define __OpcUaStackPubSub_NetworkSendIf_h__
+
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/Network/NetworkMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	MessageTransportIf::MessageTransportIf(void)
+	class DLLEXPORT NetworkSendIf
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<NetworkSendIf> SPtr;
 
-	MessageTransportIf::~MessageTransportIf(void)
-	{
-	}
+		NetworkSendIf(void);
+		virtual ~NetworkSendIf(void);
+
+		virtual bool send(const NetworkMessage& message) = 0;
+
+	  private:
+	};
 
 }
+
+#endif

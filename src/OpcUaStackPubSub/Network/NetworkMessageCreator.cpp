@@ -28,12 +28,17 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-
 	bool
 	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf)
 	{
 		// FIXME: todo
 
+		return false;
+	}
+
+	bool
+	NetworkMessageCreator::registerNetworkSendIf(const NetworkSendIf::SPtr senderIf)
+	{
 		return false;
 	}
 
