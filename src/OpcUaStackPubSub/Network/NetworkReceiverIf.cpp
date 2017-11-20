@@ -12,35 +12,20 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/Network/NetworkMessageProcessor.h"
+#include <OpcUaStackPubSub/Network/NetworkReceiverIf.h>
 
 namespace OpcUaStackPubSub
 {
 
-	NetworkMessageProcessor::NetworkMessageProcessor(void)
+	NetworkReceiverIf::NetworkReceiverIf(void)
 	{
 	}
 
-	NetworkMessageProcessor::~NetworkMessageProcessor(void)
+	NetworkReceiverIf::~NetworkReceiverIf(void)
 	{
-	}
-
-
-	bool NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr reader)
-	{
-
-		//FIXME todo
-
-		return false;
-	}
-
-	bool
-	NetworkMessageProcessor::receive(const NetworkMessage& message)
-	{
-		return false;
 	}
 
 }

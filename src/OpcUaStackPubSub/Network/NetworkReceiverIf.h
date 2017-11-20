@@ -12,35 +12,32 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/Network/NetworkMessageProcessor.h"
+#ifndef __OpcUaStackPubSub_NetworkReceiverIf_h__
+#define __OpcUaStackPubSub_NetworkReceiverIf_h__
+
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/Network/NetworkMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	NetworkMessageProcessor::NetworkMessageProcessor(void)
+	class DLLEXPORT NetworkReceiverIf
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<NetworkReceiverIf> SPtr;
 
-	NetworkMessageProcessor::~NetworkMessageProcessor(void)
-	{
-	}
+		NetworkReceiverIf(void);
+		virtual ~NetworkReceiverIf(void);
 
+		virtual bool receive(const NetworkMessage& message) = 0;
 
-	bool NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr reader)
-	{
-
-		//FIXME todo
-
-		return false;
-	}
-
-	bool
-	NetworkMessageProcessor::receive(const NetworkMessage& message)
-	{
-		return false;
-	}
+	  private:
+	};
 
 }
+
+#endif
