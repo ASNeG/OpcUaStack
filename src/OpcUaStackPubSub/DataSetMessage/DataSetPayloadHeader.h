@@ -42,6 +42,8 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
+		bool operator==(const DataSetPayloadHeader& other) const;
+
 	  private:
 		OpcUaUInt16Array::SPtr dataSetWriterIds_;
 	};

@@ -365,4 +365,24 @@ namespace OpcUaStackPubSub
 		}
 	}
 
+	bool
+	DataSetMessageHeader::operator ==(const DataSetMessageHeader& other) const
+	{
+		return fieldEncoding_ == other.fieldEncoding_
+				&& dataSetMessageSequenceNumberEnabled_ == other.dataSetMessageSequenceNumberEnabled_
+				&& timestampEnabled_ == other.timestampEnabled_
+				&& statusEnabled_ == other.statusEnabled_
+				&& configurationVersionMajorVersionEnabled_ == other.configurationVersionMajorVersionEnabled_
+				&& configurationVersionMinorVersionEnabled_ == other.configurationVersionMinorVersionEnabled_
+				&& dataSetFlag2Enabled_ == other.dataSetFlag2Enabled_
+				&& messageType_ == other.messageType_
+				&& picoSecondsEnabled_ == other.picoSecondsEnabled_
+				&& dataMessageSequenceNumber_ == other.dataMessageSequenceNumber_
+				&& timestamp_ == other.timestamp_
+				&& picoSeconds_ == other.picoSeconds_
+				&& statusCode_ == other.statusCode_
+				&& configurationVersionMajorVersion_ == other.configurationVersionMajorVersion_
+				&& configurationVersionMinorVersion_ == other.configurationVersionMinorVersion_;
+	}
+
 }

@@ -40,4 +40,11 @@ namespace OpcUaStackPubSub
 		// FIXME: todo
 	}
 
+	bool NetworkMessageHeader::operator==(const NetworkMessageHeader& other) const
+	{
+		return true;
+	}
+
+
 }
+

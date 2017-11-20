@@ -66,4 +66,24 @@ namespace OpcUaStackPubSub
 		return dataSetMessageHeader_->dataMessageSequenceNumber();
 	}
 
+	void
+	DataSetMessage::opcUaBinaryEncode(std::ostream& os) const
+	{
+		//FIXME todo
+	}
+
+	void
+	DataSetMessage::opcUaBinaryDecode(std::istream& is)
+	{
+		//FIXME todo
+	}
+
+	bool
+	DataSetMessage::operator==(const DataSetMessage& other) const
+	{
+		return *dataSetMessageHeader_ == *other.dataSetMessageHeader_;
+	}
+
+
 }
+

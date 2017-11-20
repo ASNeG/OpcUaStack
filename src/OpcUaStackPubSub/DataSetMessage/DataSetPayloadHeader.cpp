@@ -68,4 +68,11 @@ namespace OpcUaStackPubSub
 		}
 	}
 
+	bool
+	DataSetPayloadHeader::operator==(const DataSetPayloadHeader& other) const
+	{
+		return dataSetWriterIds_ == other.dataSetWriterIds_;
+	}
 }
+
+

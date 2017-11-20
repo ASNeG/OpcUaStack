@@ -33,7 +33,12 @@ namespace OpcUaStackPubSub
 		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
 		virtual bool registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf);
 
+	  protected:
+		virtual bool publish();
+
 	  private:
+		std::list<DataSetWriterIf::SPtr> dataSetWriters;
+		std::list<NetworkSenderIf::SPtr> networkSenders;
 	};
 }
 
