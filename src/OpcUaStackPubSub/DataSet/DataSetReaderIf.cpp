@@ -12,26 +12,20 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/DataSet/DataSetReader.h"
+#include "OpcUaStackPubSub/DataSet/DataSetReaderIf.h"
 
 namespace OpcUaStackPubSub
 {
 
-	DataSetReader::DataSetReader(void)
+	DataSetReaderIf::DataSetReaderIf(void)
 	{
 	}
 
-	DataSetReader::~DataSetReader(void)
+	DataSetReaderIf::~DataSetReaderIf(void)
 	{
-	}
-
-	bool
-	DataSetReader::receiveDataSetMessage(const DataSetMessage::SPtr dataSetMessage)
-	{
-		return false;
 	}
 
 }
