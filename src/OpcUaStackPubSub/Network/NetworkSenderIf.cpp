@@ -15,16 +15,16 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#include <OpcUaStackPubSub/Network/NetworkSendIf.h>
+#include "OpcUaStackPubSub/Network/NetworkSenderIf.h"
 
 namespace OpcUaStackPubSub
 {
 
-	NetworkSendIf::NetworkSendIf(void)
+	NetworkSenderIf::NetworkSenderIf(void)
 	{
 	}
 
-	NetworkSendIf::~NetworkSendIf(void)
+	NetworkSenderIf::~NetworkSenderIf(void)
 	{
 	}
 

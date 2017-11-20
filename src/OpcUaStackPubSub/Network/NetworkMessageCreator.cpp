@@ -37,7 +37,7 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	NetworkMessageCreator::registerNetworkSendIf(const NetworkSendIf::SPtr senderIf)
+	NetworkMessageCreator::registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf)
 	{
 		return false;
 	}

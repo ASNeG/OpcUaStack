@@ -20,8 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/DataSet/DataSetWriterIf.h"
-#include "OpcUaStackPubSub/Network/NetworkSendIf.h"
-
+#include "OpcUaStackPubSub/Network/NetworkSenderIf.h"
 
 namespace OpcUaStackPubSub
 {
@@ -32,7 +31,7 @@ namespace OpcUaStackPubSub
 		virtual ~NetworkMessageCreator(void);
 
 		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
-		virtual bool registerNetworkSendIf(const NetworkSendIf::SPtr senderIf);
+		virtual bool registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf);
 
 	  private:
 	};

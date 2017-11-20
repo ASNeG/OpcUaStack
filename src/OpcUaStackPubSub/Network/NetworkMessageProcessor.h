@@ -18,8 +18,8 @@
 #ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
 #define __OpcUaStackPubSub_NetworkMessageProcessor_h__
 
-#include <OpcUaStackPubSub/DataSet/DataSetReaderIf.h>
-#include <OpcUaStackPubSub/Network/NetworkReceiverIf.h>
+#include "OpcUaStackPubSub/DataSet/DataSetReaderIf.h"
+#include "OpcUaStackPubSub/Network/NetworkReceiverIf.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
