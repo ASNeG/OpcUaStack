@@ -19,8 +19,11 @@
 #define __OpcUaStackPubSub_NetworkMessageCreator_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackPubSub/DataSet/DataSetWriterIf.h"
 #include "OpcUaStackPubSub/Network/NetworkSenderIf.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
@@ -30,6 +33,12 @@ namespace OpcUaStackPubSub
 		NetworkMessageCreator(void);
 		virtual ~NetworkMessageCreator(void);
 
+		void ioThread(IOThread::SPtr& ioThread);
+		void publishInterval(uint32_t publishInterval);
+
+		bool startup(void);
+		bool shutdown(void);
+
 		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
 		virtual bool registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf);
 
@@ -37,8 +46,12 @@ namespace OpcUaStackPubSub
 		virtual bool publish();
 
 	  private:
+		IOThread::SPtr ioThread_;
+		uint32_t publishInterval_;
+		SlotTimerElement::SPtr slotTimerElement_;
+
 		std::list<DataSetWriterIf::SPtr> dataSetWriters;
-		std::list<NetworkSenderIf::SPtr> networkSenders;
+		std::list<NetworkSenderIf::SPtr> networkSenders; // only one instance allowed
 	};
 }
 

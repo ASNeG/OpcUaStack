@@ -21,13 +21,54 @@ namespace OpcUaStackPubSub
 {
 
 	NetworkMessageCreator::NetworkMessageCreator(void)
-	: dataSetWriters()
+	: ioThread_()
+	, slotTimerElement_()
+	, dataSetWriters()
 	, networkSenders()
+	, publishInterval_(1000)
 	{
 	}
 
 	NetworkMessageCreator::~NetworkMessageCreator(void)
 	{
+	}
+
+	void
+	NetworkMessageCreator::publishInterval(uint32_t publishInterval)
+	{
+		publishInterval_ = publishInterval;
+	}
+
+	void
+	NetworkMessageCreator::ioThread(IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	bool
+	NetworkMessageCreator::startup(void)
+	{
+		if (ioThread_.get() == nullptr) {
+			return false;
+		}
+
+		// start publish timer loop
+		slotTimerElement_ = constructSPtr<SlotTimerElement>();
+		slotTimerElement_->callback().reset(boost::bind(&NetworkMessageCreator::publish, this));
+		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), publishInterval_);
+		ioThread_->slotTimer()->start(slotTimerElement_);
+
+		return true;
+	}
+
+	bool
+	NetworkMessageCreator::shutdown(void)
+	{
+		// stop publish timer loop
+		ioThread_->slotTimer()->stop(slotTimerElement_);
+		slotTimerElement_.reset();
+
+		return true;
 	}
 
 	bool
@@ -47,6 +88,10 @@ namespace OpcUaStackPubSub
 	bool
 	NetworkMessageCreator::publish()
 	{
+
+		// handle keyFrameCount
+		// handle keepAliveTime
+
 		return false;
 	}
 

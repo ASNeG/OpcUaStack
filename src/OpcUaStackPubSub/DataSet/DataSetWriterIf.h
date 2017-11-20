@@ -36,12 +36,15 @@ namespace OpcUaStackPubSub
 		uint32_t writerId(void);
 		void keyFrameCount(uint32_t keyFrameCount);
 		uint32_t keyFrameCount(void);
+		void keepAliveTime(boost::posix_time::ptime keepAliveTime);
+		boost::posix_time::ptime keepAliveTime(void);
 
 		virtual bool publishTimeout(DataSetMessage::SPtr dataSetMessage) = 0;
 
 	  private:
 		uint32_t writerId_;
 		uint32_t keyFrameCount_;
+		boost::posix_time::ptime keepAliveTime_;
 	};
 
 }

@@ -23,6 +23,7 @@ namespace OpcUaStackPubSub
 	DataSetWriterIf::DataSetWriterIf(void)
 	: writerId_(0)
 	, keyFrameCount_(0)
+	, keepAliveTime_()
 	{
 	}
 
@@ -52,6 +53,18 @@ namespace OpcUaStackPubSub
 	DataSetWriterIf::keyFrameCount(void)
 	{
 		return keyFrameCount_;
+	}
+
+	void
+	DataSetWriterIf::keepAliveTime(boost::posix_time::ptime keepAliveTime)
+	{
+		keepAliveTime_ = keepAliveTime;
+	}
+
+	boost::posix_time::ptime
+	DataSetWriterIf::keepAliveTime(void)
+	{
+		return keepAliveTime_;
 	}
 
 }
