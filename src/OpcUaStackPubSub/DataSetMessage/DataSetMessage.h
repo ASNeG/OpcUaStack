@@ -46,8 +46,10 @@ namespace OpcUaStackPubSub
 		uint16_t sequenceNumber(void);
 
 		virtual void setFieldEncoding(void) {};
-		virtual void opcUaBinaryEncode(std::ostream& os) const = 0;
-		virtual void opcUaBinaryDecode(std::istream& is) = 0;
+		virtual void opcUaBinaryEncode(std::ostream& os) const;
+		virtual void opcUaBinaryDecode(std::istream& is);
+
+		bool operator==(const DataSetMessage& other) const;
 
 	  private:
 		DataSetMessageHeader::SPtr dataSetMessageHeader_;

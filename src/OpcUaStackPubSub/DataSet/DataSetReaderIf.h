@@ -12,39 +12,29 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/Network/NetworkMessageHeader.h"
+#ifndef __OpcUaStackPubSub_DataSetReaderIf_h__
+#define __OpcUaStackPubSub_DataSetReaderIf_h__
+
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	NetworkMessageHeader::NetworkMessageHeader(void)
+	class DLLEXPORT DataSetReaderIf
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<DataSetReaderIf> SPtr;
 
-	NetworkMessageHeader::~NetworkMessageHeader(void)
-	{
-	}
+		DataSetReaderIf(void);
+		virtual ~DataSetReaderIf(void);
 
-	void
-	NetworkMessageHeader::opcUaBinaryEncode(std::ostream& os) const
-	{
-		// FIXME: todo
-	}
-
-	void
-	NetworkMessageHeader::opcUaBinaryDecode(std::istream& is)
-	{
-		// FIXME: todo
-	}
-
-	bool NetworkMessageHeader::operator==(const NetworkMessageHeader& other) const
-	{
-		return true;
-	}
-
+		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr dataSetMessage) = 0;
+	};
 
 }
 
+#endif

@@ -142,4 +142,12 @@ namespace OpcUaStackPubSub
 		}
 	}
 
+	bool
+	DataSetPayload::operator==(const DataSetPayload& other) const
+	{
+		return count_ == other.count_
+				&& dataSetMessages_ == other.dataSetMessages_;
+	}
 }
+
+

@@ -28,4 +28,10 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	bool
+	DataSetReader::receiveDataSetMessage(const DataSetMessage::SPtr dataSetMessage)
+	{
+		return false;
+	}
+
 }

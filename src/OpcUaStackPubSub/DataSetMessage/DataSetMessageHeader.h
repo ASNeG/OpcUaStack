@@ -73,6 +73,8 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
+		bool operator==(const DataSetMessageHeader& other) const;
+
 	  private:
 		FieldEncoding fieldEncoding_;
 		bool dataSetMessageSequenceNumberEnabled_;

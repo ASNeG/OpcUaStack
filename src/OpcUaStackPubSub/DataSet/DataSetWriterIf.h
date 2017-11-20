@@ -12,30 +12,27 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Aleksey Timin (atimin@gmail.com)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_MessageTransportIf_h__
-#define __OpcUaStackPubSub_MessageTransportIf_h__
+#ifndef __OpcUaStackPubSub_DataSetWriterIf_h__
+#define __OpcUaStackPubSub_DataSetWriterIf_h__
 
-#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/Network/NetworkMessage.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT MessageTransportIf
+	class DLLEXPORT DataSetWriterIf
 	{
 	  public:
-		typedef boost::shared_ptr<MessageTransportIf> SPtr;
+		typedef boost::shared_ptr<DataSetWriterIf> SPtr;
 
-		MessageTransportIf(void);
-		virtual ~MessageTransportIf(void);
+		DataSetWriterIf(void);
+		virtual ~DataSetWriterIf(void);
 
-		virtual bool send(const NetworkMessage& message) = 0;
-
-	  private:
+		virtual bool publishTimeout(DataSetMessage::SPtr dataSetMessage) = 0;
 	};
 
 }

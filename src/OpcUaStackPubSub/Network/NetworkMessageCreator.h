@@ -19,8 +19,8 @@
 #define __OpcUaStackPubSub_NetworkMessageCreator_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/DataSetMessage/DataMessageWriteIf.h"
-#include "OpcUaStackPubSub/Network/MessageTransportIf.h"
+#include "OpcUaStackPubSub/DataSet/DataSetWriterIf.h"
+#include "OpcUaStackPubSub/Network/NetworkSenderIf.h"
 
 namespace OpcUaStackPubSub
 {
@@ -30,11 +30,15 @@ namespace OpcUaStackPubSub
 		NetworkMessageCreator(void);
 		virtual ~NetworkMessageCreator(void);
 
-		virtual bool clean();
-		virtual bool add(uint16_t dataSetWriterId, const DataSetMessage::SPtr dataSetMessage);
-		virtual bool write(const MessageTransportIf::SPtr transport);
+		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
+		virtual bool registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf);
+
+	  protected:
+		virtual bool publish();
 
 	  private:
+		std::list<DataSetWriterIf::SPtr> dataSetWriters;
+		std::list<NetworkSenderIf::SPtr> networkSenders;
 	};
 }
 

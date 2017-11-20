@@ -18,23 +18,26 @@
 #ifndef __OpcUaStackPubSub_NetworkMessageProcessor_h__
 #define __OpcUaStackPubSub_NetworkMessageProcessor_h__
 
-#include <OpcUaStackPubSub/DataSetMessage/DataMessageReadIf.h>
+#include "OpcUaStackPubSub/DataSet/DataSetReaderIf.h"
+#include "OpcUaStackPubSub/Network/NetworkReceiverIf.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT NetworkMessageProcessor
+	: public NetworkReceiverIf
 	{
 	  public:
 		NetworkMessageProcessor(void);
 		~NetworkMessageProcessor(void);
 
-		bool registerDataMessageWriter(uint16_t writerId, DataMessageReadIf* dataMessageReaderIf);
-
+		virtual bool registerDataSetReaderIf(const DataSetReaderIf::SPtr reader);
+		virtual bool receive(const NetworkMessage& message);
 	  private:
 	};
 
 }
 
 #endif
+

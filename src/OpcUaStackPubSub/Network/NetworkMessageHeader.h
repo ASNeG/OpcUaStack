@@ -35,6 +35,8 @@ namespace OpcUaStackPubSub
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
+
+		bool operator==(const NetworkMessageHeader& other) const;
 	};
 
 }

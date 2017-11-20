@@ -77,4 +77,11 @@ namespace OpcUaStackPubSub
 		//FIXME:
 	}
 
+	bool OpcUaStackPubSub::NetworkMessage::operator ==(const NetworkMessage& other) const
+	{
+		return *networkMessageHeader_ == *other.networkMessageHeader_
+				&& *dataSetPayloadHeader_ == *other.dataSetPayloadHeader_
+				&& *dataSetPayload_ == *other.dataSetPayload_;
+	}
 }
+

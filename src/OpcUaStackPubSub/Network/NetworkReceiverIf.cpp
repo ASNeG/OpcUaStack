@@ -15,16 +15,16 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/Network/MessageTransportIf.h"
+#include <OpcUaStackPubSub/Network/NetworkReceiverIf.h>
 
 namespace OpcUaStackPubSub
 {
 
-	MessageTransportIf::MessageTransportIf(void)
+	NetworkReceiverIf::NetworkReceiverIf(void)
 	{
 	}
 
-	MessageTransportIf::~MessageTransportIf(void)
+	NetworkReceiverIf::~NetworkReceiverIf(void)
 	{
 	}
 

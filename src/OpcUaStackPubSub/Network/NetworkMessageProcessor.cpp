@@ -28,11 +28,19 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-	bool
-	NetworkMessageProcessor::registerDataMessageWriter(uint16_t writerId, DataMessageReadIf* dataMessageReaderIf)
+
+	bool NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr reader)
 	{
-		// FIXME: todo
-		return true;
+
+		//FIXME todo
+
+		return false;
+	}
+
+	bool
+	NetworkMessageProcessor::receive(const NetworkMessage& message)
+	{
+		return false;
 	}
 
 }

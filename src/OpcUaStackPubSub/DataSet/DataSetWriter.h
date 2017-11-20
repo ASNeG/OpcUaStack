@@ -19,15 +19,19 @@
 #define __OpcUaStackPubSub_DataSetWriter_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/DataSet/DataSetWriterIf.h"
 
 namespace OpcUaStackPubSub
 {
 
 	class DLLEXPORT DataSetWriter
+	: public DataSetWriterIf
 	{
 	  public:
 		DataSetWriter(void);
 		~DataSetWriter(void);
+
+		virtual bool publishTimeout(DataSetMessage::SPtr& dataSetMessage);
 	};
 
 }

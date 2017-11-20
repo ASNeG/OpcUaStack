@@ -12,39 +12,20 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#include "OpcUaStackPubSub/Network/NetworkMessageHeader.h"
+#include "OpcUaStackPubSub/Network/NetworkSenderIf.h"
 
 namespace OpcUaStackPubSub
 {
 
-	NetworkMessageHeader::NetworkMessageHeader(void)
+	NetworkSenderIf::NetworkSenderIf(void)
 	{
 	}
 
-	NetworkMessageHeader::~NetworkMessageHeader(void)
+	NetworkSenderIf::~NetworkSenderIf(void)
 	{
 	}
-
-	void
-	NetworkMessageHeader::opcUaBinaryEncode(std::ostream& os) const
-	{
-		// FIXME: todo
-	}
-
-	void
-	NetworkMessageHeader::opcUaBinaryDecode(std::istream& is)
-	{
-		// FIXME: todo
-	}
-
-	bool NetworkMessageHeader::operator==(const NetworkMessageHeader& other) const
-	{
-		return true;
-	}
-
 
 }
-

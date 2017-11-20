@@ -44,6 +44,8 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
+		bool operator==(const NetworkMessage& other) const;
+
 	  private:
 		NetworkMessageHeader::SPtr networkMessageHeader_;
 		DataSetPayloadHeader::SPtr dataSetPayloadHeader_;

@@ -21,6 +21,8 @@ namespace OpcUaStackPubSub
 {
 
 	NetworkMessageCreator::NetworkMessageCreator(void)
+	: dataSetWriters()
+	, networkSenders()
 	{
 	}
 
@@ -29,21 +31,21 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	NetworkMessageCreator::add(uint16_t dataSetWriterId, const DataSetMessage::SPtr dataSetMessage)
+	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf)
 	{
-		// FIXME: todo
-
-		return false;
+		dataSetWriters.push_back(writerIf);
+		return true;
 	}
 
 	bool
-	NetworkMessageCreator::clean()
+	NetworkMessageCreator::registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf)
 	{
-		return false;
+		networkSenders.push_back(senderIf);
+		return true;
 	}
 
 	bool
-	NetworkMessageCreator:: write(const MessageTransportIf::SPtr transport)
+	NetworkMessageCreator::publish()
 	{
 		return false;
 	}

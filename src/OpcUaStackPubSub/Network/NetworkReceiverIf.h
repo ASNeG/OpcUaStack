@@ -12,40 +12,30 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_DataSetPayloadHeader_h__
-#define __OpcUaStackPubSub_DataSetPayloadHeader_h__
+#ifndef __OpcUaStackPubSub_NetworkReceiverIf_h__
+#define __OpcUaStackPubSub_NetworkReceiverIf_h__
 
 #include <boost/shared_ptr.hpp>
-#include <iostream>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaNumber.h"
-
-using namespace OpcUaStackCore;
+#include "OpcUaStackPubSub/Network/NetworkMessage.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT DataSetPayloadHeader
+	class DLLEXPORT NetworkReceiverIf
 	{
 	  public:
-		typedef boost::shared_ptr<DataSetPayloadHeader> SPtr;
+		typedef boost::shared_ptr<NetworkReceiverIf> SPtr;
 
-		DataSetPayloadHeader(void);
-		virtual ~DataSetPayloadHeader(void);
+		NetworkReceiverIf(void);
+		virtual ~NetworkReceiverIf(void);
 
-		void dataSetWriterIds(const OpcUaUInt16Array::SPtr& dataSetWriterIds);
-		OpcUaUInt16Array::SPtr& dataSetWriterIds(void);
-
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
-
-		bool operator==(const DataSetPayloadHeader& other) const;
+		virtual bool receive(const NetworkMessage& message) = 0;
 
 	  private:
-		OpcUaUInt16Array::SPtr dataSetWriterIds_;
 	};
 
 }

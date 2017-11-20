@@ -43,6 +43,8 @@ namespace OpcUaStackPubSub
 		void opcUaBinaryEncode(std::ostream& os);
 		void opcUaBinaryDecode(std::istream& is);
 
+		bool operator==(const DataSetPayload& other) const;
+
 	  private:
 		uint32_t count_;
 		DataSetMessageArray::SPtr dataSetMessages_;
