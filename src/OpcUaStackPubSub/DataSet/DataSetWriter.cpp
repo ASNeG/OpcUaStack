@@ -29,12 +29,10 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	DataSetWriter::publishTimeout(
-		uint32_t keyFrameCount,
-		DataSetMessage::SPtr& dataSetMessage
-	)
+	DataSetWriter::publishTimeout(DataSetMessage::SPtr& dataSetMessage)
 	{
-		//FIXME: Passes dataSetMessage and return true if there is new data
+		// FIXME: Passes dataSetMessage and return true if there is new data
+		// FIXME: check KeyFrameCount
 
 		return false;
 	}

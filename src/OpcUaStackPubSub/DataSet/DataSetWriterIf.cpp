@@ -21,11 +21,37 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetWriterIf::DataSetWriterIf(void)
+	: writerId_(0)
+	, keyFrameCount_(0)
 	{
 	}
 
 	DataSetWriterIf::~DataSetWriterIf(void)
 	{
+	}
+
+	void
+	DataSetWriterIf::writerId(uint32_t writerId)
+	{
+		writerId_ = writerId;
+	}
+
+	uint32_t
+	DataSetWriterIf::writerId(void)
+	{
+		return writerId_;
+	}
+
+	void
+	DataSetWriterIf::keyFrameCount(uint32_t keyFrameCount)
+	{
+		keyFrameCount_ = keyFrameCount;
+	}
+
+	uint32_t
+	DataSetWriterIf::keyFrameCount(void)
+	{
+		return keyFrameCount_;
 	}
 
 }
