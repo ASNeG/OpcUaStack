@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackPubSub_DataSetWriterIf_h__
 #define __OpcUaStackPubSub_DataSetWriterIf_h__
 
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
@@ -28,6 +29,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetWriterIf> SPtr;
+		typedef std::map<uint32_t, DataSetWriterIf::SPtr> Map;
 
 		DataSetWriterIf(void);
 		virtual ~DataSetWriterIf(void);

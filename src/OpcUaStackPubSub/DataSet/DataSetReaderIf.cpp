@@ -21,11 +21,24 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetReaderIf::DataSetReaderIf(void)
+	: readerId_(0)
 	{
 	}
 
 	DataSetReaderIf::~DataSetReaderIf(void)
 	{
+	}
+
+	void
+	DataSetReaderIf::readerId(uint32_t readerId)
+	{
+		readerId_ = readerId;
+	}
+
+	uint32_t
+	DataSetReaderIf::readerId(void)
+	{
+		return readerId_;
 	}
 
 }

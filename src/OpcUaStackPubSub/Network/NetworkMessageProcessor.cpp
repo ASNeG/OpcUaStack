@@ -21,6 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	NetworkMessageProcessor::NetworkMessageProcessor(void)
+	: dataSetReaderIfMap_()
 	{
 	}
 
@@ -28,12 +29,22 @@ namespace OpcUaStackPubSub
 	{
 	}
 
-
-	bool NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr reader)
+	bool
+	NetworkMessageProcessor::deregisterDataSetReaderIf(uint32_t readerId)
 	{
+		DataSetReaderIf::Map::iterator it;
+		it = dataSetReaderIfMap_.find(readerId);
+		if (it == dataSetReaderIfMap_.end()) return false;
+		dataSetReaderIfMap_.erase(it);
+		return true;
+	}
 
-		//FIXME todo
-
+	bool NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr& reader)
+	{
+		DataSetReaderIf::Map::iterator it;
+		it = dataSetReaderIfMap_.find(reader->readerId());
+		if (it != dataSetReaderIfMap_.end()) return false;
+		dataSetReaderIfMap_.insert(std::make_pair(reader->readerId(), reader));
 		return false;
 	}
 

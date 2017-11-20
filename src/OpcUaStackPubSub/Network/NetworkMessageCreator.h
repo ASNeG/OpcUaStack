@@ -39,6 +39,7 @@ namespace OpcUaStackPubSub
 		bool startup(void);
 		bool shutdown(void);
 
+		bool deregisterDataSetWriterIf(uint32_t writerId);
 		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
 		virtual bool registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf);
 

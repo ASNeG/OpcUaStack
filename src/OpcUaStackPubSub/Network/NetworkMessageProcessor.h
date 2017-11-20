@@ -32,9 +32,12 @@ namespace OpcUaStackPubSub
 		NetworkMessageProcessor(void);
 		~NetworkMessageProcessor(void);
 
-		virtual bool registerDataSetReaderIf(const DataSetReaderIf::SPtr reader);
+		bool deregisterDataSetReaderIf(uint32_t readerId);
+		virtual bool registerDataSetReaderIf(const DataSetReaderIf::SPtr& reader);
 		virtual bool receive(const NetworkMessage& message);
+
 	  private:
+		DataSetReaderIf::Map dataSetReaderIfMap_;
 	};
 
 }

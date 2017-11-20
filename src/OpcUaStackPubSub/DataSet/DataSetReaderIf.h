@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackPubSub_DataSetReaderIf_h__
 #define __OpcUaStackPubSub_DataSetReaderIf_h__
 
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
@@ -28,11 +29,18 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<DataSetReaderIf> SPtr;
+		typedef std::map<uint32_t, DataSetReaderIf::SPtr> Map;
 
 		DataSetReaderIf(void);
 		virtual ~DataSetReaderIf(void);
 
+		void readerId(uint32_t readerId);
+		uint32_t readerId(void);
+
 		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage) = 0;
+
+	  private:
+		uint32_t readerId_;
 	};
 
 }

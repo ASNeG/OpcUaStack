@@ -72,6 +72,13 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
+	NetworkMessageCreator::deregisterDataSetWriterIf(uint32_t writerId)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
 	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf)
 	{
 		dataSetWriters.push_back(writerIf);
