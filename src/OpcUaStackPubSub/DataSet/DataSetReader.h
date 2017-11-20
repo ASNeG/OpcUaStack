@@ -31,7 +31,7 @@ namespace OpcUaStackPubSub
 		DataSetReader(void);
 		~DataSetReader(void);
 
-		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr dataSetMessage);
+		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage);
 	};
 
 }

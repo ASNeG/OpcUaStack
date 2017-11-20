@@ -31,7 +31,10 @@ namespace OpcUaStackPubSub
 		DataSetWriter(void);
 		~DataSetWriter(void);
 
-		virtual bool publishTimeout(DataSetMessage::SPtr& dataSetMessage);
+		virtual bool publishTimeout(
+			uint32_t keyFrameCount,
+			DataSetMessage::SPtr& dataSetMessage
+		);
 	};
 
 }
