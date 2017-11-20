@@ -28,23 +28,12 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+
 	bool
-	NetworkMessageCreator::add(uint16_t dataSetWriterId, const DataSetMessage::SPtr dataSetMessage)
+	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf)
 	{
 		// FIXME: todo
 
-		return false;
-	}
-
-	bool
-	NetworkMessageCreator::clean()
-	{
-		return false;
-	}
-
-	bool
-	NetworkMessageCreator:: write(const MessageTransportIf::SPtr transport)
-	{
 		return false;
 	}
 

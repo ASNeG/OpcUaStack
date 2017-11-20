@@ -12,28 +12,29 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkMessageCreator_h__
-#define __OpcUaStackPubSub_NetworkMessageCreator_h__
+#ifndef __OpcUaStackPubSub_DataSetWriterIf_h__
+#define __OpcUaStackPubSub_DataSetWriterIf_h__
 
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/DataSet/DataSetWriterIf.h"
-
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
 
 namespace OpcUaStackPubSub
 {
-	class DLLEXPORT NetworkMessageCreator
+
+	class DLLEXPORT DataSetWriterIf
 	{
 	  public:
-		NetworkMessageCreator(void);
-		virtual ~NetworkMessageCreator(void);
+		typedef boost::shared_ptr<DataSetWriterIf> SPtr;
 
-		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
+		DataSetWriterIf(void);
+		virtual ~DataSetWriterIf(void);
 
-	  private:
+		virtual bool publishTimeout(DataSetMessage::SPtr dataSetMessage) = 0;
 	};
+
 }
 
 #endif
