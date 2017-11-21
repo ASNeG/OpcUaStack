@@ -41,7 +41,7 @@ namespace OpcUaStackPubSub
 		void keepAliveTime(boost::posix_time::ptime keepAliveTime);
 		boost::posix_time::ptime keepAliveTime(void);
 
-		virtual bool publishTimeout(DataSetMessage::SPtr dataSetMessage) = 0;
+		virtual bool publishTimeout(DataSetMessage::SPtr& dataSetMessage) = 0;
 
 	  private:
 		uint32_t writerId_;

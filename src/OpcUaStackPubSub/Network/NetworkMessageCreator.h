@@ -30,6 +30,8 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT NetworkMessageCreator
 	{
 	  public:
+		typedef std::list<DataSetWriterIf::SPtr> WriterCollection;
+
 		NetworkMessageCreator(void);
 		virtual ~NetworkMessageCreator(void);
 
@@ -53,7 +55,7 @@ namespace OpcUaStackPubSub
 		uint32_t publishInterval_;
 		SlotTimerElement::SPtr slotTimerElement_;
 
-		std::list<DataSetWriterIf::SPtr> dataSetWriters_;
+		WriterCollection dataSetWriters_;
 		NetworkSenderIf::SPtr networkSender_;
 	};
 }

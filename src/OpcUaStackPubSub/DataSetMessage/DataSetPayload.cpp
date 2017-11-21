@@ -145,8 +145,18 @@ namespace OpcUaStackPubSub
 	bool
 	DataSetPayload::operator==(const DataSetPayload& other) const
 	{
-		return count_ == other.count_
-				&& dataSetMessages_ == other.dataSetMessages_;
+		if (count_ != other.count_) return false;
+		if (dataSetMessages_->isNull() != other.dataSetMessages_->isNull()) return false;
+		for (uint32_t pos = 0; pos < dataSetMessages_->size();  pos++) {
+			DataSetMessage::SPtr value1, value2;
+			dataSetMessages_->get(pos, value1);
+			other.dataSetMessages_->get(pos, value2);
+			if (!value1 && !value2) continue;
+			if ((value1 && !value2) || (!value1 && value2)) return false;
+			if (*value1 != *value2) return false;
+		}
+
+		return true;
 	}
 }
 

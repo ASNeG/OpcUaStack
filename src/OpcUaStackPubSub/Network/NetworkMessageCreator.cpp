@@ -101,10 +101,30 @@ namespace OpcUaStackPubSub
 	NetworkMessageCreator::publish()
 	{
 
-		// handle keyFrameCount
-		// handle keepAliveTime
+		//FIXME handle keyFrameCount
+		//FIXME handle keepAliveTime
 
-		return false;
+		NetworkMessage networkMessage;
+
+
+		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
+		messages->resize(dataSetWriters_.size());
+
+		for(WriterCollection::iterator it = dataSetWriters_.begin();
+				it != dataSetWriters_.end(); it++) {
+			DataSetMessage::SPtr msg;
+
+			if ((*it)->publishTimeout(msg)) {
+				messages->push_back(msg);
+			}
+		}
+
+		networkMessage.dataSetPayload()->count(messages->size());
+		networkMessage.dataSetPayload()->dataSetMessages(messages);
+
+		networkSender_->send(networkMessage);
+
+		return true;
 	}
 
 }

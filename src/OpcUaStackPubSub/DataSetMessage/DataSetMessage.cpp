@@ -84,6 +84,12 @@ namespace OpcUaStackPubSub
 		return *dataSetMessageHeader_ == *other.dataSetMessageHeader_;
 	}
 
+	bool
+	DataSetMessage::operator!=(const DataSetMessage& other) const
+	{
+		return !(*this == other);
+	}
+
 
 }
 

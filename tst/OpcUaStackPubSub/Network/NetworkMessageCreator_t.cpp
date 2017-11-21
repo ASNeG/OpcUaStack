@@ -19,7 +19,7 @@ public:
 	}
 
 	bool
-	publishTimeout(DataSetMessage::SPtr dataSetMessage)
+	publishTimeout(DataSetMessage::SPtr& dataSetMessage)
 	{
 		dataSetMessage = dataSetMessageToPublish_;
 		return publishResult_;
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers)
 	payload->dataSetMessages()->push_back(dataSetMessage2);
 	payload->count(2);
 
-	creator.mockPublish();
+	BOOST_REQUIRE(creator.mockPublish());
 
 	BOOST_REQUIRE(sender->sentMessage_ == netMessage);
 }
