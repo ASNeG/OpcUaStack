@@ -1,6 +1,7 @@
 #include "unittest.h"
 
 #include "OpcUaStackPubSub/Network/NetworkMessageCreator.h"
+#include "OpcUaStackPubSub/DataSetMessage/KeepAliveMessage.h"
 
 
 using namespace OpcUaStackCore;
@@ -71,10 +72,10 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
 
 BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers)
 {
-	DataSetMessage::SPtr dataSetMessage1 = constructSPtr<DataSetMessage>();
+	KeepAliveMessage::SPtr dataSetMessage1 = constructSPtr<KeepAliveMessage>();
 	DataSetWriterIf::SPtr writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
 
-	DataSetMessage::SPtr dataSetMessage2 = constructSPtr<DataSetMessage>();
+	KeepAliveMessage::SPtr dataSetMessage2 = constructSPtr<KeepAliveMessage>();
 	DataSetWriterIf::SPtr writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
 
 	MockNetworkSender::SPtr sender = constructSPtr<MockNetworkSender>(true);
