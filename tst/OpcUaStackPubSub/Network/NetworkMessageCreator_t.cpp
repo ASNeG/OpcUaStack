@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
 	std::cout << "NetworkMessageCreator_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers_to_2_senders)
+BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers)
 {
 	DataSetMessage::SPtr dataSetMessage1 = constructSPtr<DataSetMessage>();
 	DataSetWriterIf::SPtr writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
@@ -77,16 +77,14 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers_to_2_
 	DataSetMessage::SPtr dataSetMessage2 = constructSPtr<DataSetMessage>();
 	DataSetWriterIf::SPtr writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
 
-	MockNetworkSender::SPtr sender1 = constructSPtr<MockNetworkSender>(true);
-	MockNetworkSender::SPtr sender2 = constructSPtr<MockNetworkSender>(true);
+	MockNetworkSender::SPtr sender = constructSPtr<MockNetworkSender>(true);
 
 	TestedNetworkMessageCreator creator;
 
 	creator.registerDataSetWriterIf(writer1);
 	creator.registerDataSetWriterIf(writer2);
 
-	creator.registerNetworkSendIf(sender1);
-	creator.registerNetworkSendIf(sender2);
+	creator.networkSenderIf(sender);
 
 	NetworkMessage netMessage;
 	DataSetPayload::SPtr payload = netMessage.dataSetPayload();
@@ -97,9 +95,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers_to_2_
 
 	creator.mockPublish();
 
-	BOOST_REQUIRE(sender1->sentMessage_ == sender2->sentMessage_);
-
-
+	BOOST_REQUIRE(sender->sentMessage_ == netMessage);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -23,8 +23,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageCreator::NetworkMessageCreator(void)
 	: ioThread_()
 	, slotTimerElement_()
-	, dataSetWriters()
-	, networkSenders()
+	, dataSetWriters_()
+	, networkSender_()
 	, publishInterval_(1000)
 	{
 	}
@@ -79,17 +79,22 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf)
+	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf)
 	{
-		dataSetWriters.push_back(writerIf);
+		dataSetWriters_.push_back(writerIf);
 		return true;
 	}
 
-	bool
-	NetworkMessageCreator::registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf)
+	void
+	NetworkMessageCreator::networkSenderIf(const NetworkSenderIf::SPtr& senderIf)
 	{
-		networkSenders.push_back(senderIf);
-		return true;
+		networkSender_ =  senderIf;
+	}
+
+	NetworkSenderIf::SPtr
+	NetworkMessageCreator::networkSenderIf()
+	{
+		return networkSender_;
 	}
 
 	bool
@@ -103,3 +108,5 @@ namespace OpcUaStackPubSub
 	}
 
 }
+
+

@@ -40,8 +40,10 @@ namespace OpcUaStackPubSub
 		bool shutdown(void);
 
 		bool deregisterDataSetWriterIf(uint32_t writerId);
-		virtual bool registerDataSetWriterIf(const DataSetWriterIf::SPtr writerIf);
-		virtual bool registerNetworkSendIf(const NetworkSenderIf::SPtr senderIf);
+		bool registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf);
+
+		void networkSenderIf(const NetworkSenderIf::SPtr& senderIf);
+		NetworkSenderIf::SPtr networkSenderIf();
 
 	  protected:
 		virtual bool publish();
@@ -51,8 +53,8 @@ namespace OpcUaStackPubSub
 		uint32_t publishInterval_;
 		SlotTimerElement::SPtr slotTimerElement_;
 
-		std::list<DataSetWriterIf::SPtr> dataSetWriters;
-		std::list<NetworkSenderIf::SPtr> networkSenders; // only one instance allowed
+		std::list<DataSetWriterIf::SPtr> dataSetWriters_;
+		NetworkSenderIf::SPtr networkSender_;
 	};
 }
 
