@@ -21,9 +21,31 @@
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaVariant.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetPayloadHeader.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
+	enum PublisherIdType
+	{
+		PublisherIdType_Byte = 0,
+		PublisherIdType_UInt16 = 1,
+		PublisherIdType_UInt32 = 2,
+		PublisherIdType_UInt64 = 3,
+		PublisherIdType_Guid = 4,
+		PublisherIdType_String = 5,
+	};
+
+	enum NetworkMessageType
+	{
+		NetworkMessageType_DataSetMessage = 0,
+		NetworkMessageType_Chunk = 1,
+		NetworkMessageType_DiscoveryRequest = 2,
+		NetworkMessageType_DiscoveryResponse = 3,
+		NetworkMessageType_MimeType = 4,
+	};
 
 	class DLLEXPORT NetworkMessageHeader
 	{
@@ -33,10 +55,86 @@ namespace OpcUaStackPubSub
 		NetworkMessageHeader(void);
 		~NetworkMessageHeader(void);
 
+		void UADPVersion(OpcUaByte UADPVersion);
+		OpcUaByte UADPVersion() const;
+
+		void publisherIdEnabled(bool publisherIdEnabled);
+		bool publisherIdEnabled() const;
+
+		void dataSetArrayEnabled(bool dataSetArrayEnabled);
+		bool dataSetArrayEnabled() const;
+
+		void dataSetWriterIdEnabled(bool dataSetWriterIdEnabled);
+		bool dataSetWriterIdEnabled() const;
+
+		void publisherIdType(PublisherIdType type);
+		PublisherIdType publisherIdType() const;
+
+		void dataSetClassIdEnabled(bool dataSetClassIdEnabled);
+		bool dataSetClassIdEnabled() const;
+
+		void securityEnabled(bool securityEnabled);
+		bool securityEnabled() const;
+
+		void timestampEnabled(bool timestampEnabled);
+		bool timestampEnabled() const;
+
+		void picosecondsEnabled(bool picosecondsEnabled);
+		bool picosecondsEnabled() const;
+
+		void extendedFlags2Enabled(bool extendedFlags2Enabled);
+		bool extendedFlags2Enabled() const;
+
+		void networkMessageType(NetworkMessageType type);
+		NetworkMessageType networkMessageType() const;
+
+		void promotedFieldsEnabled(bool promotedFieldsEnabled);
+		bool promotedFieldsEnabled() const;
+
+		void dataSetClassId(OpcUaGuid::SPtr dataSetClassId);
+		OpcUaGuid::SPtr dataSetClassId() const;
+
+		void publisherId(OpcUaVariant::SPtr publisherId);
+		OpcUaVariant::SPtr publisherId() const;
+
+		void dataSetPayloadHeader(DataSetPayloadHeader::SPtr header);
+		DataSetPayloadHeader::SPtr dataSetPayloadHeader() const;
+
+		void timestamp(OpcUaDateTime timestamp);
+		OpcUaDateTime timestamp() const;
+
+		void picoSeconds(OpcUaInt16 picoSeconds);
+		OpcUaInt16 picoSeconds() const;
+
+		void promotedFields(OpcUaVariantArray::SPtr promotedFields);
+		OpcUaVariantArray::SPtr promotedFields() const;
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 		bool operator==(const NetworkMessageHeader& other) const;
+
+	  private:
+		OpcUaByte UADPVersion_;
+		bool publisherIdEnabled_;
+		bool dataSetArrayEnabled_;
+		bool dataSetWriterIdEnabled_;
+		PublisherIdType publisherIdType_;
+		bool dataSetClassIdEnabled_;
+		bool securityEnabled_;
+		bool timestampEnabled_;
+		bool picosecondsEnabled_;
+		bool extendedFlags2Enabled_;
+		NetworkMessageType networkMessageType_;
+		bool promotedFieldsEnabled_;
+
+		OpcUaVariant::SPtr publisherId_;
+		OpcUaGuid::SPtr dataSetClassId_;
+		DataSetPayloadHeader::SPtr dataSetPayloadHeader_;
+		OpcUaDateTime timestamp_;
+		OpcUaInt16 picoSeconds_;
+
+		OpcUaVariantArray::SPtr promotedFields_;
 	};
 
 }
