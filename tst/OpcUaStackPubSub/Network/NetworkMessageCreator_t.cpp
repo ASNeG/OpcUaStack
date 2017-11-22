@@ -99,5 +99,32 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers)
 	BOOST_REQUIRE(sender->sentMessage_ == netMessage);
 }
 
+BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_1_writer)
+{
+	KeepAliveMessage::SPtr dataSetMessage1 = constructSPtr<KeepAliveMessage>();
+	DataSetWriterIf::SPtr writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
+
+	KeepAliveMessage::SPtr dataSetMessage2;
+	DataSetWriterIf::SPtr writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, false);
+
+	MockNetworkSender::SPtr sender = constructSPtr<MockNetworkSender>(true);
+
+	TestedNetworkMessageCreator creator;
+
+	creator.registerDataSetWriterIf(writer1);
+	creator.registerDataSetWriterIf(writer2);
+
+	creator.networkSenderIf(sender);
+
+	NetworkMessage netMessage;
+	DataSetPayload::SPtr payload = netMessage.dataSetPayload();
+	payload->dataSetMessages()->resize(1);
+	payload->dataSetMessages()->push_back(dataSetMessage1);
+	payload->count(1);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_ == netMessage);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
