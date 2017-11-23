@@ -43,10 +43,17 @@ namespace OpcUaStackPubSub
 
 		bool deregisterDataSetWriterIf(uint32_t writerId);
 		bool registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf);
+		NetworkMessageCreator::WriterCollection dataSetWriterIfs() const;
+
 
 		void networkSenderIf(const NetworkSenderIf::SPtr& senderIf);
 		NetworkSenderIf::SPtr networkSenderIf();
 
+		void publisherIdEnabled(bool publisherIdEnabled);
+		bool publisherIdEnabled() const;
+
+		void publisherId(OpcUaVariant::SPtr publisherId);
+		OpcUaVariant::SPtr publisherId() const;
 	  protected:
 		virtual bool publish();
 
@@ -54,6 +61,10 @@ namespace OpcUaStackPubSub
 		IOThread::SPtr ioThread_;
 		uint32_t publishInterval_;
 		SlotTimerElement::SPtr slotTimerElement_;
+
+		// Content Flags
+		bool publisherIdEnabled_;
+		OpcUaVariant::SPtr publisherId_;
 
 		WriterCollection dataSetWriters_;
 		NetworkSenderIf::SPtr networkSender_;

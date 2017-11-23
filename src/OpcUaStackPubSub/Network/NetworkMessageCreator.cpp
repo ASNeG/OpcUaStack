@@ -26,6 +26,8 @@ namespace OpcUaStackPubSub
 	, dataSetWriters_()
 	, networkSender_()
 	, publishInterval_(1000)
+	, publisherIdEnabled_(false)
+	, publisherId_()
 	{
 	}
 
@@ -105,8 +107,12 @@ namespace OpcUaStackPubSub
 		//FIXME handle keepAliveTime
 
 		NetworkMessage networkMessage;
+		// Build header
+		NetworkMessageHeader::SPtr header = networkMessage.networkMessageHeader();
+		header->publisherIdEnabled(publisherIdEnabled_);
+		header->publisherId(publisherId_);
 
-
+		// Build payload
 		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
 		messages->resize(dataSetWriters_.size());
 
@@ -127,6 +133,35 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
-}
+	void
+	NetworkMessageCreator::publisherIdEnabled(bool publisherIdEnabled)
+	{
+		publisherIdEnabled_ = publisherIdEnabled;
+	}
 
+	bool
+	NetworkMessageCreator::publisherIdEnabled() const
+	{
+		return publisherIdEnabled_;
+	}
+
+
+	void
+	NetworkMessageCreator::publisherId(OpcUaVariant::SPtr publisherId)
+	{
+		publisherId_ = publisherId;
+	}
+
+	OpcUaVariant::SPtr
+	NetworkMessageCreator::publisherId() const
+	{
+		return publisherId_;
+	}
+
+	NetworkMessageCreator::WriterCollection
+	NetworkMessageCreator::dataSetWriterIfs() const
+	{
+		return dataSetWriters_;
+	}
+}
 

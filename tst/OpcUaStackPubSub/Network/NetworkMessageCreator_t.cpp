@@ -63,6 +63,38 @@ public:
 	}
 };
 
+struct Fixtures
+{
+	Fixtures()
+	{
+		dataSetMessage1 = constructSPtr<KeepAliveMessage>();
+		writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
+
+		dataSetMessage2 = constructSPtr<KeepAliveMessage>();
+		writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
+
+		creator.registerDataSetWriterIf(writer1);
+		creator.registerDataSetWriterIf(writer2);
+
+		sender = constructSPtr<MockNetworkSender>(true);
+		creator.networkSenderIf(sender);
+
+		OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+		publisherId->variant(OpcUaByte(1000));
+		creator.publisherId(publisherId);
+	}
+
+	KeepAliveMessage::SPtr dataSetMessage1;
+	DataSetWriterIf::SPtr writer1;
+
+	KeepAliveMessage::SPtr dataSetMessage2;
+	DataSetWriterIf::SPtr writer2;
+
+	MockNetworkSender::SPtr sender;
+
+	TestedNetworkMessageCreator creator;
+};
+
 BOOST_AUTO_TEST_SUITE(NetworkMessageCreator_)
 
 BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
@@ -70,60 +102,40 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
 	std::cout << "NetworkMessageCreator_t" << std::endl;
 }
 
-BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers)
+
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers, Fixtures)
 {
-	KeepAliveMessage::SPtr dataSetMessage1 = constructSPtr<KeepAliveMessage>();
-	DataSetWriterIf::SPtr writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
-
-	KeepAliveMessage::SPtr dataSetMessage2 = constructSPtr<KeepAliveMessage>();
-	DataSetWriterIf::SPtr writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
-
-	MockNetworkSender::SPtr sender = constructSPtr<MockNetworkSender>(true);
-
-	TestedNetworkMessageCreator creator;
-
-	creator.registerDataSetWriterIf(writer1);
-	creator.registerDataSetWriterIf(writer2);
-
-	creator.networkSenderIf(sender);
-
-	NetworkMessage netMessage;
-	DataSetPayload::SPtr payload = netMessage.dataSetPayload();
+	DataSetPayload::SPtr payload = constructSPtr<DataSetPayload>();
 	payload->dataSetMessages()->resize(2);
 	payload->dataSetMessages()->push_back(dataSetMessage1);
 	payload->dataSetMessages()->push_back(dataSetMessage2);
 	payload->count(2);
 
 	BOOST_REQUIRE(creator.mockPublish());
-
-	BOOST_REQUIRE(sender->sentMessage_ == netMessage);
+	BOOST_REQUIRE(*sender->sentMessage_.dataSetPayload() == *payload);
 }
 
-BOOST_AUTO_TEST_CASE(NetworkMessageCreator_publish_datasets_from_1_writer)
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_1_writer, Fixtures)
 {
-	KeepAliveMessage::SPtr dataSetMessage1 = constructSPtr<KeepAliveMessage>();
-	DataSetWriterIf::SPtr writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
+	boost::dynamic_pointer_cast<MockDataSetWriter>(creator.dataSetWriterIfs().back())->publishResult_ = false;
 
-	KeepAliveMessage::SPtr dataSetMessage2;
-	DataSetWriterIf::SPtr writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, false);
-
-	MockNetworkSender::SPtr sender = constructSPtr<MockNetworkSender>(true);
-
-	TestedNetworkMessageCreator creator;
-
-	creator.registerDataSetWriterIf(writer1);
-	creator.registerDataSetWriterIf(writer2);
-
-	creator.networkSenderIf(sender);
-
-	NetworkMessage netMessage;
-	DataSetPayload::SPtr payload = netMessage.dataSetPayload();
+	DataSetPayload::SPtr payload = constructSPtr<DataSetPayload>();
 	payload->dataSetMessages()->resize(1);
 	payload->dataSetMessages()->push_back(dataSetMessage1);
 	payload->count(1);
 
 	BOOST_REQUIRE(creator.mockPublish());
-	BOOST_REQUIRE(sender->sentMessage_ == netMessage);
+	BOOST_REQUIRE(*sender->sentMessage_.dataSetPayload() == *payload);
+}
+
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publisherIdEnable, Fixtures)
+{
+	creator.publisherIdEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->publisherIdEnabled());
+	BOOST_REQUIRE_EQUAL(sender->sentMessage_.networkMessageHeader()->publisherId()->get<OpcUaByte>(),
+			creator.publisherId()->get<OpcUaByte>());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
