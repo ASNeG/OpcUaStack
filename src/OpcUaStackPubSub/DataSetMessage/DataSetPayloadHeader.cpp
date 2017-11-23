@@ -22,6 +22,7 @@ namespace OpcUaStackPubSub
 
 	DataSetPayloadHeader::DataSetPayloadHeader(void)
 	: dataSetWriterIds_(constructSPtr<OpcUaUInt16Array>())
+	, dataSetWriterIdEnabled_(false)
 	{
 	}
 
@@ -73,6 +74,16 @@ namespace OpcUaStackPubSub
 	{
 		return *dataSetWriterIds_ == *other.dataSetWriterIds_;
 	}
+
+	void
+	DataSetPayloadHeader::dataSetWriterIdEnabled(bool dataSetWriterIdEnabled)
+	{
+		dataSetWriterIdEnabled_ = dataSetWriterIdEnabled;
+	}
+
+	bool
+	DataSetPayloadHeader::dataSetWriterIdEnabled() const
+	{
+		return dataSetWriterIdEnabled_;
+	}
 }
-
-

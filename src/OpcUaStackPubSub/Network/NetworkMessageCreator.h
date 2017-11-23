@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #ifndef __OpcUaStackPubSub_NetworkMessageCreator_h__
@@ -52,6 +52,9 @@ namespace OpcUaStackPubSub
 		void publisherIdEnabled(bool publisherIdEnabled);
 		bool publisherIdEnabled() const;
 
+		void dataSetWriterIdEnabled(bool dataSetWriterIdEnabled);
+		bool dataSetWriterIdEnabled() const;
+
 		void publisherId(OpcUaVariant::SPtr publisherId);
 		OpcUaVariant::SPtr publisherId() const;
 	  protected:
@@ -64,8 +67,9 @@ namespace OpcUaStackPubSub
 
 		// Content Flags
 		bool publisherIdEnabled_;
-		OpcUaVariant::SPtr publisherId_;
+		bool dataSetWriterIdEnabled_;
 
+		OpcUaVariant::SPtr publisherId_;
 		WriterCollection dataSetWriters_;
 		NetworkSenderIf::SPtr networkSender_;
 	};

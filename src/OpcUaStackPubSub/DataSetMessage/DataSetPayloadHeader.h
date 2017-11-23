@@ -44,8 +44,12 @@ namespace OpcUaStackPubSub
 
 		bool operator==(const DataSetPayloadHeader& other) const;
 
+		void dataSetWriterIdEnabled(bool dataSetWriterIdEnabled);
+		bool dataSetWriterIdEnabled() const;
+
 	  private:
 		OpcUaUInt16Array::SPtr dataSetWriterIds_;
+		bool dataSetWriterIdEnabled_;
 	};
 
 }

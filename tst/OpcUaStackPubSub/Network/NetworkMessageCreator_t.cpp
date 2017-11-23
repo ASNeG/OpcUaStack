@@ -138,5 +138,14 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publisherIdEnable, Fixtures)
 			creator.publisherId()->get<OpcUaByte>());
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_dataSetWriterIdEnabled, Fixtures)
+{
+	creator.dataSetWriterIdEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.dataSetPayloadHeader()->dataSetWriterIdEnabled());
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 

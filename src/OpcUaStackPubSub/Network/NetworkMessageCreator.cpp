@@ -12,7 +12,7 @@
    Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
-   Autor: Kai Huebl (kai@huebl-sgh.de)
+   Autor: Kai Huebl (kai@huebl-sgh.de), Aleksey Timin (atimin@gmail.com)
  */
 
 #include "OpcUaStackPubSub/Network/NetworkMessageCreator.h"
@@ -27,6 +27,7 @@ namespace OpcUaStackPubSub
 	, networkSender_()
 	, publishInterval_(1000)
 	, publisherIdEnabled_(false)
+	, dataSetWriterIdEnabled_(false)
 	, publisherId_()
 	{
 	}
@@ -107,10 +108,13 @@ namespace OpcUaStackPubSub
 		//FIXME handle keepAliveTime
 
 		NetworkMessage networkMessage;
-		// Build header
+		// Build network header
 		NetworkMessageHeader::SPtr header = networkMessage.networkMessageHeader();
 		header->publisherIdEnabled(publisherIdEnabled_);
 		header->publisherId(publisherId_);
+
+		// Build payload header
+		networkMessage.dataSetPayloadHeader()->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
 
 		// Build payload
 		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
@@ -145,7 +149,6 @@ namespace OpcUaStackPubSub
 		return publisherIdEnabled_;
 	}
 
-
 	void
 	NetworkMessageCreator::publisherId(OpcUaVariant::SPtr publisherId)
 	{
@@ -163,5 +166,16 @@ namespace OpcUaStackPubSub
 	{
 		return dataSetWriters_;
 	}
-}
 
+	void
+	NetworkMessageCreator::dataSetWriterIdEnabled(bool dataSetWriterIdEnabled)
+	{
+		dataSetWriterIdEnabled_ = dataSetWriterIdEnabled;
+	}
+
+	bool
+	NetworkMessageCreator::dataSetWriterIdEnabled() const
+	{
+		return dataSetWriterIdEnabled_;
+	}
+}
