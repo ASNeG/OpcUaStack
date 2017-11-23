@@ -143,9 +143,19 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_dataSetWriterIdEnabled, Fixtures)
 	creator.dataSetWriterIdEnabled(true);
 
 	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->dataSetWriterIdEnabled());
 	BOOST_REQUIRE(sender->sentMessage_.dataSetPayloadHeader()->dataSetWriterIdEnabled());
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_dataSetArrayEnabled, Fixtures)
+{
+	creator.dataSetArrayEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->dataSetArrayEnabled());
+	BOOST_REQUIRE(sender->sentMessage_.dataSetPayloadHeader()->dataSetArrayEnabled());
+	BOOST_REQUIRE(sender->sentMessage_.dataSetPayload()->dataSetArrayEnabled());
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 

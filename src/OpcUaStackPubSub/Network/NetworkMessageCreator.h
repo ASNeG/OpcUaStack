@@ -55,6 +55,9 @@ namespace OpcUaStackPubSub
 		void dataSetWriterIdEnabled(bool dataSetWriterIdEnabled);
 		bool dataSetWriterIdEnabled() const;
 
+		void dataSetArrayEnabled(bool dataSetArrayEnabled);
+		bool dataSetArrayEnabled() const;
+
 		void publisherId(OpcUaVariant::SPtr publisherId);
 		OpcUaVariant::SPtr publisherId() const;
 	  protected:
@@ -68,6 +71,7 @@ namespace OpcUaStackPubSub
 		// Content Flags
 		bool publisherIdEnabled_;
 		bool dataSetWriterIdEnabled_;
+		bool dataSetArrayEnabled_;
 
 		OpcUaVariant::SPtr publisherId_;
 		WriterCollection dataSetWriters_;

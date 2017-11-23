@@ -47,9 +47,13 @@ namespace OpcUaStackPubSub
 		void dataSetWriterIdEnabled(bool dataSetWriterIdEnabled);
 		bool dataSetWriterIdEnabled() const;
 
+		void dataSetArrayEnabled(bool dataSetArrayEnabled);
+		bool dataSetArrayEnabled() const;
+
 	  private:
 		OpcUaUInt16Array::SPtr dataSetWriterIds_;
 		bool dataSetWriterIdEnabled_;
+		bool dataSetArrayEnabled_;
 	};
 
 }

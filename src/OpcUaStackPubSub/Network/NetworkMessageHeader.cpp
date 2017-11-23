@@ -104,7 +104,7 @@ namespace OpcUaStackPubSub
 	void
 	NetworkMessageHeader::dataSetWriterIdEnabled(bool dataSetWriterIdEnabled)
 	{
-		dataSetArrayEnabled_ = dataSetWriterIdEnabled;
+		dataSetWriterIdEnabled_ = dataSetWriterIdEnabled;
 	}
 
 	bool

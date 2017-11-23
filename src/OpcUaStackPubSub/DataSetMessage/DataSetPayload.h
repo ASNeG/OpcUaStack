@@ -40,6 +40,9 @@ namespace OpcUaStackPubSub
 		void dataSetMessages(const DataSetMessageArray::SPtr& dataSetMessages);
 		DataSetMessageArray::SPtr& dataSetMessages(void);
 
+		void dataSetArrayEnabled(bool dataSetArrayEnabled);
+		bool dataSetArrayEnabled() const;
+
 		void opcUaBinaryEncode(std::ostream& os);
 		void opcUaBinaryDecode(std::istream& is);
 
@@ -48,6 +51,9 @@ namespace OpcUaStackPubSub
 	  private:
 		uint32_t count_;
 		DataSetMessageArray::SPtr dataSetMessages_;
+
+		bool dataSetArrayEnabled_;
+
 	};
 
 }

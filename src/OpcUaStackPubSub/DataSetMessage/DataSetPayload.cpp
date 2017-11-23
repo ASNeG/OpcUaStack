@@ -158,6 +158,17 @@ namespace OpcUaStackPubSub
 
 		return true;
 	}
-}
 
+	void
+	DataSetPayload::dataSetArrayEnabled(bool dataSetArrayEnabled)
+	{
+		dataSetArrayEnabled_ = dataSetArrayEnabled;
+	}
+
+	bool
+	DataSetPayload::dataSetArrayEnabled() const
+	{
+		return dataSetArrayEnabled_;
+	}
+}
 

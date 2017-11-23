@@ -28,6 +28,7 @@ namespace OpcUaStackPubSub
 	, publishInterval_(1000)
 	, publisherIdEnabled_(false)
 	, dataSetWriterIdEnabled_(false)
+	, dataSetArrayEnabled_(false)
 	, publisherId_()
 	{
 	}
@@ -112,9 +113,12 @@ namespace OpcUaStackPubSub
 		NetworkMessageHeader::SPtr header = networkMessage.networkMessageHeader();
 		header->publisherIdEnabled(publisherIdEnabled_);
 		header->publisherId(publisherId_);
+		header->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
+		header->dataSetArrayEnabled(dataSetArrayEnabled_);
 
 		// Build payload header
 		networkMessage.dataSetPayloadHeader()->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
+		networkMessage.dataSetPayloadHeader()->dataSetArrayEnabled(dataSetArrayEnabled_);
 
 		// Build payload
 		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
@@ -131,6 +135,7 @@ namespace OpcUaStackPubSub
 
 		networkMessage.dataSetPayload()->count(messages->size());
 		networkMessage.dataSetPayload()->dataSetMessages(messages);
+		networkMessage.dataSetPayload()->dataSetArrayEnabled(dataSetArrayEnabled_);
 
 		networkSender_->send(networkMessage);
 
@@ -177,5 +182,17 @@ namespace OpcUaStackPubSub
 	NetworkMessageCreator::dataSetWriterIdEnabled() const
 	{
 		return dataSetWriterIdEnabled_;
+	}
+
+	void
+	NetworkMessageCreator::dataSetArrayEnabled(bool dataSetArrayEnabled)
+	{
+		dataSetArrayEnabled_ = dataSetArrayEnabled;
+	}
+
+	bool
+	NetworkMessageCreator::dataSetArrayEnabled() const
+	{
+		return dataSetArrayEnabled_;
 	}
 }
