@@ -165,5 +165,13 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_timestampEnabled, Fixtures)
 	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->timestampEnabled());
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_picosecondsEnabled, Fixtures)
+{
+	creator.picosecondsEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->picosecondsEnabled());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
