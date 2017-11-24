@@ -173,5 +173,13 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_picosecondsEnabled, Fixtures)
 	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->picosecondsEnabled());
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_dataSetClassIdEnabled, Fixtures)
+{
+	creator.dataSetClassIdEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->dataSetClassIdEnabled());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 

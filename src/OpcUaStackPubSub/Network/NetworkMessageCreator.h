@@ -64,6 +64,9 @@ namespace OpcUaStackPubSub
 		void picosecondsEnabled(bool picosecondsEnabled);
 		bool picosecondsEnabled() const;
 
+		void dataSetClassIdEnabled(bool dataSetClassIdEnabled);
+		bool dataSetClassIdEnabled() const;
+
 		void publisherId(OpcUaVariant::SPtr publisherId);
 		OpcUaVariant::SPtr publisherId() const;
 	  protected:
@@ -80,6 +83,7 @@ namespace OpcUaStackPubSub
 		bool dataSetArrayEnabled_;
 		bool timestampEnabled_;
 		bool picosecondsEnabled_;
+		bool dataSetClassIdEnabled_;
 
 		OpcUaVariant::SPtr publisherId_;
 		WriterCollection dataSetWriters_;

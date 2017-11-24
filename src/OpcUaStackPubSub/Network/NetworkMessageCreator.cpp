@@ -31,6 +31,7 @@ namespace OpcUaStackPubSub
 	, dataSetArrayEnabled_(false)
 	, timestampEnabled_(false)
 	, picosecondsEnabled_(false)
+	, dataSetClassIdEnabled_(false)
 	, publisherId_()
 	{
 	}
@@ -119,6 +120,7 @@ namespace OpcUaStackPubSub
 		header->dataSetArrayEnabled(dataSetArrayEnabled_);
 		header->timestampEnabled(timestampEnabled_);
 		header->picosecondsEnabled(picosecondsEnabled_);
+		header->dataSetClassIdEnabled(dataSetClassIdEnabled_);
 
 		// Build payload header
 		networkMessage.dataSetPayloadHeader()->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
@@ -223,5 +225,16 @@ namespace OpcUaStackPubSub
 	{
 		return picosecondsEnabled_;
 	}
-}
 
+	void
+	NetworkMessageCreator::dataSetClassIdEnabled(bool dataSetClassIdEnabled)
+	{
+		dataSetClassIdEnabled_ = dataSetClassIdEnabled;
+	}
+
+	bool
+	NetworkMessageCreator::dataSetClassIdEnabled() const
+	{
+		return dataSetClassIdEnabled_;
+	}
+}
