@@ -181,5 +181,13 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_dataSetClassIdEnabled, Fixtures)
 	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->dataSetClassIdEnabled());
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_promotedFieldsEnabled, Fixtures)
+{
+	creator.promotedFieldsEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->promotedFieldsEnabled());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
