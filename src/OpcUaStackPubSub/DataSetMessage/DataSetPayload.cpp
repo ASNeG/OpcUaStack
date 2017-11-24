@@ -28,6 +28,7 @@ namespace OpcUaStackPubSub
 	DataSetPayload::DataSetPayload(void)
 	: count_(0)
 	, dataSetMessages_(constructSPtr<DataSetMessageArray>())
+	, dataSetArrayEnabled_(false)
 	{
 	}
 

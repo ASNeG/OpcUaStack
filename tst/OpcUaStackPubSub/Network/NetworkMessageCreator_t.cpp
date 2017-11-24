@@ -157,5 +157,13 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_dataSetArrayEnabled, Fixtures)
 	BOOST_REQUIRE(sender->sentMessage_.dataSetPayload()->dataSetArrayEnabled());
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_timestampEnabled, Fixtures)
+{
+	creator.timestampEnabled(true);
+
+	BOOST_REQUIRE(creator.mockPublish());
+	BOOST_REQUIRE(sender->sentMessage_.networkMessageHeader()->timestampEnabled());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
