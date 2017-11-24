@@ -33,12 +33,12 @@ namespace OpcUaStackPubSub
 	, extendedFlags2Enabled_(false)
 	, networkMessageType_(NetworkMessageType_DataSetMessage)
 	, promotedFieldsEnabled_(false)
-	, publisherId_()
-	, dataSetClassId_()
-	, dataSetPayloadHeader_()
+	, publisherId_(constructSPtr<OpcUaVariant>())
+	, dataSetClassId_(constructSPtr<OpcUaGuid>())
+	, dataSetPayloadHeader_(constructSPtr<DataSetPayloadHeader>())
 	, timestamp_()
 	, picoSeconds_(0)
-	, promotedFields_()
+	, promotedFields_(constructSPtr<OpcUaVariantArray>())
 	{
 	}
 
@@ -49,19 +49,57 @@ namespace OpcUaStackPubSub
 	void
 	NetworkMessageHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
-		// FIXME: todo
+		OpcUaByte UADPFlags = UADPVersion_;
+		if (publisherIdEnabled_) {
+			UADPFlags |= 0x10;
+		}
+
+		OpcUaNumber::opcUaBinaryEncode(os, UADPFlags);
+
+		if (publisherIdEnabled_) {
+			OpcUaByte id;
+			publisherId_->getValue(id);
+			OpcUaNumber::opcUaBinaryEncode(os, id);
+		}
 	}
 
 	void
 	NetworkMessageHeader::opcUaBinaryDecode(std::istream& is)
 	{
-		// FIXME: todo
+		OpcUaByte UADPFlags;
+		OpcUaNumber::opcUaBinaryDecode(is, UADPFlags);
+
+		UADPVersion_ = UADPFlags & 0xF;
+
+		publisherIdEnabled_ = UADPFlags & 0x10;
+		if (publisherIdEnabled_) {
+			OpcUaByte id;
+			OpcUaNumber::opcUaBinaryDecode(is, id);
+			publisherId_->setValue(id);
+		}
 	}
 
 	bool
 	NetworkMessageHeader::operator==(const NetworkMessageHeader& other) const
 	{
-		return true;
+		return 	UADPVersion_ == other.UADPVersion_
+				&& publisherIdEnabled_ == other.publisherIdEnabled_
+				&& dataSetArrayEnabled_ == other.dataSetArrayEnabled_
+				&& dataSetWriterIdEnabled_ == other.dataSetWriterIdEnabled_
+				&& publisherIdType_ == other.publisherIdType_
+				&& dataSetClassIdEnabled_ == other.dataSetClassIdEnabled_
+				&& securityEnabled_ == other.securityEnabled_
+				&& timestampEnabled_ == other.timestampEnabled_
+				&& picosecondsEnabled_ == other.picosecondsEnabled_
+				&& extendedFlags2Enabled_ == other.extendedFlags2Enabled_
+				&& networkMessageType_ == other.networkMessageType_
+				&& promotedFieldsEnabled_ == other.promotedFieldsEnabled_
+				&& *publisherId_ == *other.publisherId_
+				&& *dataSetClassId_ == *other.dataSetClassId_
+				&& *dataSetPayloadHeader_ == *other.dataSetPayloadHeader_
+				&& timestamp_ == other.timestamp_
+				&& picoSeconds_ == other.picoSeconds_
+				&& *promotedFields_ == *promotedFields_;
 	}
 
 
