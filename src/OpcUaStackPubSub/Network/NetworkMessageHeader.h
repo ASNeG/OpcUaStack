@@ -67,6 +67,9 @@ namespace OpcUaStackPubSub
 		void dataSetWriterIdEnabled(bool dataSetWriterIdEnabled);
 		bool dataSetWriterIdEnabled() const;
 
+		void extendedFlags1Enabled(bool extendedFlags1Enabled);
+		bool extendedFlags1Enabled() const;
+
 		void publisherIdType(PublisherIdType type);
 		PublisherIdType publisherIdType() const;
 
@@ -119,6 +122,7 @@ namespace OpcUaStackPubSub
 		bool publisherIdEnabled_;
 		bool dataSetArrayEnabled_;
 		bool dataSetWriterIdEnabled_;
+		bool extendedFlags1Enabled_;
 		PublisherIdType publisherIdType_;
 		bool dataSetClassIdEnabled_;
 		bool securityEnabled_;

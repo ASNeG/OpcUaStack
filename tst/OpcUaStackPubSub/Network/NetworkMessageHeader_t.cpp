@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_)
 	std::cout << "NetworkMessageHeader_t" << std::endl;
 }
 
-#define SHOULD_DECODE_ENCODE(header, hexString) { 										\
+#define DECODE_ENCODE(header, hexString, restoredHeader) {								\
 	boost::asio::streambuf sb;															\
 	std::iostream ios(&sb);                                                             \
 	uint32_t pos;                                                                       \
@@ -31,13 +31,20 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_)
                                                                                         \
 	BOOST_REQUIRE(OpcUaStackCore::compare(ios, ss.str(), pos));                         \
                                                                                         \
-	NetworkMessageHeader restoredHeader;                                                \
 	restoredHeader.opcUaBinaryDecode(ios);                                              \
+} while(0)
+
+
+#define SHOULD_DECODE_ENCODE(header, hexString) { 										\
+	NetworkMessageHeader restoredHeader;                                                \
+	DECODE_ENCODE(header, hexString, restoredHeader);                                   \
                                                                                         \
 	BOOST_REQUIRE(restoredHeader == header);                                            \
 } while(0)
 
-BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode)
+
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_UADPVersion)
 {
 	NetworkMessageHeader header;
 
@@ -77,6 +84,36 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetWriterIdEnabled)
 
 	SHOULD_DECODE_ENCODE(header, "44 00 01");
 }
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetWriterIdDisabled_but_Array)
+{
+	NetworkMessageHeader header;
+	header.dataSetWriterIdEnabled(true);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->resize(3);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x120);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x90);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x50);
+
+	NetworkMessageHeader restoredHeader;
+	DECODE_ENCODE(header, "44 20 01", restoredHeader);
+
+	BOOST_REQUIRE(restoredHeader.dataSetArrayEnabled() == false);
+	BOOST_REQUIRE(restoredHeader.dataSetWriterIdEnabled() == true);
+	BOOST_REQUIRE_EQUAL(1, restoredHeader.dataSetPayloadHeader()->dataSetWriterIds()->size());
+
+	OpcUaUInt16 id;
+	restoredHeader.dataSetPayloadHeader()->dataSetWriterIds()->get(0, id);
+	BOOST_REQUIRE_EQUAL(0x120, id);
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_extendedFlags1Enabled)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+
+	SHOULD_DECODE_ENCODE(header, "84 00");
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 

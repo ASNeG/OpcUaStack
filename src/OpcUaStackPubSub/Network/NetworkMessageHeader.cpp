@@ -25,6 +25,7 @@ namespace OpcUaStackPubSub
 	, publisherIdEnabled_(false)
 	, dataSetArrayEnabled_(false)
 	, dataSetWriterIdEnabled_(false)
+	, extendedFlags1Enabled_(false)
 	, publisherIdType_(PublisherIdType::PublisherIdType_Byte)
 	, dataSetClassIdEnabled_(false)
 	, securityEnabled_(false)
@@ -50,6 +51,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte UADPFlags = UADPVersion_;
+
 		if (publisherIdEnabled_) {
 			UADPFlags |= 0x10;
 		}
@@ -60,6 +62,10 @@ namespace OpcUaStackPubSub
 
 		if (dataSetWriterIdEnabled_) {
 			UADPFlags |= 0x40;
+		}
+
+		if (extendedFlags1Enabled_) {
+			UADPFlags |= 0x80;
 		}
 
 		OpcUaNumber::opcUaBinaryEncode(os, UADPFlags);
@@ -74,6 +80,11 @@ namespace OpcUaStackPubSub
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryEncode(os);
 		}
+
+		if (extendedFlags1Enabled_) {
+			OpcUaByte extendedFlags1 = 0;
+			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
+		}
 	}
 
 	void
@@ -87,6 +98,7 @@ namespace OpcUaStackPubSub
 		publisherIdEnabled_ = UADPFlags & 0x10;
 		dataSetArrayEnabled_ = UADPFlags & 0x20;
 		dataSetWriterIdEnabled_ = UADPFlags & 0x40;
+		extendedFlags1Enabled_ = UADPFlags & 0x80;
 
 		if (publisherIdEnabled_) {
 			OpcUaByte id;
@@ -98,6 +110,11 @@ namespace OpcUaStackPubSub
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryDecode(is);
 		}
+
+		if (extendedFlags1Enabled_) {
+			OpcUaByte extendedFlags1 = 0;
+			OpcUaNumber::opcUaBinaryDecode(is, extendedFlags1);
+		}
 	}
 
 	bool
@@ -107,6 +124,7 @@ namespace OpcUaStackPubSub
 				&& publisherIdEnabled_ == other.publisherIdEnabled_
 				&& dataSetArrayEnabled_ == other.dataSetArrayEnabled_
 				&& dataSetWriterIdEnabled_ == other.dataSetWriterIdEnabled_
+				&& extendedFlags1Enabled_ == other.extendedFlags1Enabled_
 				&& publisherIdType_ == other.publisherIdType_
 				&& dataSetClassIdEnabled_ == other.dataSetClassIdEnabled_
 				&& securityEnabled_ == other.securityEnabled_
@@ -170,6 +188,18 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::dataSetWriterIdEnabled() const
 	{
 		return dataSetWriterIdEnabled_;
+	}
+
+	void
+	NetworkMessageHeader::extendedFlags1Enabled(bool extendedFlags1Enabled)
+	{
+		extendedFlags1Enabled_ = extendedFlags1Enabled;
+	}
+
+	bool
+	NetworkMessageHeader::extendedFlags1Enabled() const
+	{
+		return extendedFlags1Enabled_;
 	}
 
 	void
