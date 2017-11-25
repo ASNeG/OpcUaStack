@@ -54,6 +54,10 @@ namespace OpcUaStackPubSub
 			UADPFlags |= 0x10;
 		}
 
+		if (dataSetArrayEnabled_) {
+			UADPFlags |= 0x20;
+		}
+
 		OpcUaNumber::opcUaBinaryEncode(os, UADPFlags);
 
 		if (publisherIdEnabled_) {
@@ -77,6 +81,8 @@ namespace OpcUaStackPubSub
 			OpcUaNumber::opcUaBinaryDecode(is, id);
 			publisherId_->setValue(id);
 		}
+
+		dataSetArrayEnabled_ = UADPFlags & 0x20;
 	}
 
 	bool

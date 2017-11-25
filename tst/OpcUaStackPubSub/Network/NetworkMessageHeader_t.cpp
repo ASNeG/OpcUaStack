@@ -56,6 +56,13 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherId)
 	SHOULD_DECODE_ENCODE(header, "14 23");
 }
 
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetArrayEnabled)
+{
+	NetworkMessageHeader header;
+	header.dataSetArrayEnabled(true);
+
+	SHOULD_DECODE_ENCODE(header, "24");
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
