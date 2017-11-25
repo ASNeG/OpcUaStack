@@ -1,11 +1,10 @@
 #include "unittest.h"
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
-#include "OpcUaStackCore/TCPChannel/TCPConnector.h"
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
-#include "OpcUaStackCore/TCPChannel/TCPTestHandler.h"
-
 #include <boost/asio/error.hpp>
+#include <OpcUaStackCore/Network/TCPAcceptor.h>
+#include <OpcUaStackCore/Network/TCPConnection.h>
+#include <OpcUaStackCore/Network/TCPConnector.h>
+#include <OpcUaStackCore/Network/TCPTestHandler.h>
 
 #define SOCKET_ADDRESS	"127.0.0.1"
 #define SOCKET_PORT		3456

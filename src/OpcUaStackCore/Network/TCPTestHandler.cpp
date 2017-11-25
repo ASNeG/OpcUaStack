@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/TCPChannel/TCPTestHandler.h"
+#include <OpcUaStackCore/Network/TCPTestHandler.h>
 
 namespace OpcUaStackCore
 {

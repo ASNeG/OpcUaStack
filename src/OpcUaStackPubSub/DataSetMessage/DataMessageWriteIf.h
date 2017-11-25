@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,40 +15,24 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
+#ifndef __OpcUaStackPubSub_DataMessageWriteIf_h__
+#define __OpcUaStackPubSub_DataMessageWriteIf_h__
 
-namespace OpcUaStackCore
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackPubSub/DataSetMessage/DataSetMessage.h"
+
+namespace OpcUaStackPubSub
 {
-	TCPConnection::TCPConnection(boost::asio::io_service& io_service)
-	: socket_(io_service)
-	, io_service_(io_service)
-	{
-	}
 
-	TCPConnection::~TCPConnection(void)
+	class DLLEXPORT DataMessageWriteIf
 	{
-	}
+	  public:
+		DataMessageWriteIf(void) {}
+		virtual ~DataMessageWriteIf(void) {}
 
-	boost::asio::ip::tcp::socket& 
-	TCPConnection::socket(void)
-	{
-		return socket_;
-	}
-
-	void
-	TCPConnection::cancel(void)
-	{
-		if (socket_.is_open()) {
-			socket_.close();
-		}
-	}
-
-	void
-	TCPConnection::close(void)
-	{
-		if (socket_.is_open()) {
-			socket_.close();
-		}
-	}
+		virtual bool write(uint16_t dataSetWriterId, DataSetMessage::SPtr& dataSetMessage) = 0;
+	};
 
 }
+
+#endif

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,17 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/TCPChannel/TCPConnector.h"
+#ifndef __OpcUaStackPubSub_SecurityHeader_h__
+#define __OpcUaStackPubSub_SecurityHeader_h__
 
-namespace OpcUaStackCore
+#include <boost/shared_ptr.hpp>
+#include <iostream>
+#include "OpcUaStackCore/Base/os.h"
+
+namespace OpcUaStackPubSub
 {
 
-	TCPConnector::TCPConnector(void)
+	class DLLEXPORT SecurityHeader
 	{
-	}
-		
-	TCPConnector::~TCPConnector(void)
-	{
-	}
+	  public:
+		typedef boost::shared_ptr<SecurityHeader> SPtr;
+
+		SecurityHeader(void);
+		~SecurityHeader(void);
+
+		void opcUaBinaryEncode(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is);
+	};
 
 }
+
+#endif
