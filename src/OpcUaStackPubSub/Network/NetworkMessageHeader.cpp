@@ -77,8 +77,10 @@ namespace OpcUaStackPubSub
 				extendedFlags1 |= 0x08;
 			}
 
+			// FIXME Security flag is ignored
+
 			if (timestampEnabled_) {
-				extendedFlags1 |= 0x10;
+				extendedFlags1 |= 0x20;
 			}
 
 			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
@@ -146,7 +148,8 @@ namespace OpcUaStackPubSub
 			publisherIdType_ = ((PublisherIdType)(extendedFlags1 & 0x07));
 
 			dataSetClassIdEnabled_ = extendedFlags1 & 0x08;
-			timestampEnabled_ = extendedFlags1 & 0x10;
+			// FIXME Security flag is ignored
+			timestampEnabled_ = extendedFlags1 & 0x20;
 		}
 
 		if (publisherIdEnabled_) {

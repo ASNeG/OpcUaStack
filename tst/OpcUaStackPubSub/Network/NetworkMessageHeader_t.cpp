@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.timestamp(time);
 
 	SHOULD_DECODE_ENCODE(header,
-			"f4 19 "											// flags
+			"f4 29 "											// flags
 			"23 00 "											// publisherId
 			"12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0 "  // dataSetClassId
 			"02 00 01 90 00 "									// dataSetPayloadHeader
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_timestampEnabled)
 	time.fromISOString("20171125T203617.900");
 	header.timestamp(time);
 
-	SHOULD_DECODE_ENCODE(header, "84 10 c0 0a a8 0b 2d 66 d3 01");
+	SHOULD_DECODE_ENCODE(header, "84 20 c0 0a a8 0b 2d 66 d3 01");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
