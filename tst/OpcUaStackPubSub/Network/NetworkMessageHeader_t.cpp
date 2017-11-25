@@ -50,6 +50,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.dataSetArrayEnabled(true);
 	header.dataSetWriterIdEnabled(true);
 	header.extendedFlags1Enabled(true);
+	header.dataSetClassIdEnabled(true);
 
 	header.publisherIdType(PublisherIdType_UInt16);
 
@@ -61,7 +62,15 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x100);
 	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x090);
 
-	SHOULD_DECODE_ENCODE(header, "f4 01 23 00 02 00 01 90 00");
+	OpcUaGuid::SPtr classId = constructSPtr<OpcUaGuid>();
+	classId->value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	header.dataSetClassId(classId);
+
+	SHOULD_DECODE_ENCODE(header,
+			"f4 09 "											// flags
+			"23 00 "											// publisherId
+			"12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0 "  // dataSetClassId
+			"02 00 01 90 00");                                  // dataSetPayloadHeader
 }
 
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_UADPVersion)
@@ -204,6 +213,19 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_String)
 	header.publisherId(publisherId);
 
 	SHOULD_DECODE_ENCODE(header, "94 05 08 00 00 00 53 74 72 69 6e 67 49 44");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetClassIdEnabled)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.dataSetClassIdEnabled(true);
+
+	OpcUaGuid::SPtr classId = constructSPtr<OpcUaGuid>();
+	classId->value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	header.dataSetClassId(classId);
+
+	SHOULD_DECODE_ENCODE(header, "84 08 12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -72,6 +72,11 @@ namespace OpcUaStackPubSub
 
 		if (extendedFlags1Enabled_) {
 			OpcUaByte extendedFlags1 = publisherIdType_;
+
+			if (dataSetClassIdEnabled_) {
+				extendedFlags1 |= 0x08;
+			}
+
 			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
 		}
 
@@ -101,6 +106,10 @@ namespace OpcUaStackPubSub
 
 		}
 
+		if (dataSetClassIdEnabled_) {
+			dataSetClassId_->opcUaBinaryEncode(os);
+		}
+
 		if (dataSetWriterIdEnabled_) {
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryEncode(os);
@@ -127,6 +136,8 @@ namespace OpcUaStackPubSub
 			OpcUaNumber::opcUaBinaryDecode(is, extendedFlags1);
 
 			publisherIdType_ = ((PublisherIdType)(extendedFlags1 & 0x07));
+
+			dataSetClassIdEnabled_ = extendedFlags1 & 0x08;
 		}
 
 		if (publisherIdEnabled_) {
@@ -176,6 +187,10 @@ namespace OpcUaStackPubSub
 				publisherId_->setValue(id);
 			}
 			}
+		}
+
+		if (dataSetClassIdEnabled_) {
+			dataSetClassId_->opcUaBinaryDecode(is);
 		}
 
 		if (dataSetWriterIdEnabled_) {
