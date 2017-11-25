@@ -70,20 +70,40 @@ namespace OpcUaStackPubSub
 
 		OpcUaNumber::opcUaBinaryEncode(os, UADPFlags);
 
+		if (extendedFlags1Enabled_) {
+			OpcUaByte extendedFlags1 = publisherIdType_;
+			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
+		}
+
 		if (publisherIdEnabled_) {
-			OpcUaByte id;
-			publisherId_->getValue(id);
-			OpcUaNumber::opcUaBinaryEncode(os, id);
+			switch (publisherIdType_)
+			{
+			case PublisherIdType_UInt16:
+				OpcUaNumber::opcUaBinaryEncode(os, publisherId_->get<OpcUaUInt16>());
+				break;
+			case PublisherIdType_UInt32:
+				OpcUaNumber::opcUaBinaryEncode(os, publisherId_->get<OpcUaUInt32>());
+				break;
+			case PublisherIdType_UInt64:
+				OpcUaNumber::opcUaBinaryEncode(os, publisherId_->get<OpcUaUInt64>());
+				break;
+			case PublisherIdType_Guid:
+				publisherId_->getSPtr<OpcUaGuid>()->opcUaBinaryEncode(os);
+				break;
+			case PublisherIdType_String:
+				publisherId_->getSPtr<OpcUaString>()->opcUaBinaryEncode(os);
+				break;
+			case PublisherIdType_Byte:
+			default:
+				// FIXME: We should stop where because we can't continue encoding without type.
+				OpcUaNumber::opcUaBinaryEncode(os, publisherId_->get<OpcUaByte>());
+			}
+
 		}
 
 		if (dataSetWriterIdEnabled_) {
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryEncode(os);
-		}
-
-		if (extendedFlags1Enabled_) {
-			OpcUaByte extendedFlags1 = 0;
-			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
 		}
 	}
 
@@ -100,20 +120,67 @@ namespace OpcUaStackPubSub
 		dataSetWriterIdEnabled_ = UADPFlags & 0x40;
 		extendedFlags1Enabled_ = UADPFlags & 0x80;
 
+		publisherIdType_ = PublisherIdType_Byte;
+
+		if (extendedFlags1Enabled_) {
+			OpcUaByte extendedFlags1 = 0;
+			OpcUaNumber::opcUaBinaryDecode(is, extendedFlags1);
+
+			publisherIdType_ = ((PublisherIdType)(extendedFlags1 & 0x07));
+		}
+
 		if (publisherIdEnabled_) {
-			OpcUaByte id;
-			OpcUaNumber::opcUaBinaryDecode(is, id);
-			publisherId_->setValue(id);
+			switch (publisherIdType_)
+			{
+			case PublisherIdType_UInt16:
+			{
+				OpcUaUInt16 id;
+				OpcUaNumber::opcUaBinaryDecode(is, id);
+				publisherId_->setValue(id);
+				break;
+			}
+			case PublisherIdType_UInt32:
+			{
+				OpcUaUInt32 id;
+				OpcUaNumber::opcUaBinaryDecode(is, id);
+				publisherId_->setValue(id);
+				break;
+			}
+			case PublisherIdType_UInt64:
+			{
+				OpcUaUInt64 id;
+				OpcUaNumber::opcUaBinaryDecode(is, id);
+				publisherId_->setValue(id);
+				break;
+			}
+			case PublisherIdType_Guid:
+			{
+				OpcUaGuid id;
+				id.opcUaBinaryDecode(is);
+				publisherId_->setValue(id);
+				break;
+			}
+			case PublisherIdType_String:
+			{
+				OpcUaString id;
+				id.opcUaBinaryDecode(is);
+				publisherId_->setValue(id);
+				break;
+			}
+			case PublisherIdType_Byte:
+			default:
+			{
+				// FIXME: We should stop where because we can't continue dencoding without type.
+				OpcUaByte id;
+				OpcUaNumber::opcUaBinaryDecode(is, id);
+				publisherId_->setValue(id);
+			}
+			}
 		}
 
 		if (dataSetWriterIdEnabled_) {
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryDecode(is);
-		}
-
-		if (extendedFlags1Enabled_) {
-			OpcUaByte extendedFlags1 = 0;
-			OpcUaNumber::opcUaBinaryDecode(is, extendedFlags1);
 		}
 	}
 

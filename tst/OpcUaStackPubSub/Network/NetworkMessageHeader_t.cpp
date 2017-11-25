@@ -114,6 +114,77 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_extendedFlags1Enabled)
 	SHOULD_DECODE_ENCODE(header, "84 00");
 }
 
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint16)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.publisherIdEnabled(true);
+	header.publisherIdType(PublisherIdType_UInt16);
+
+	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	publisherId->set<OpcUaUInt16>(0x1234);
+	header.publisherId(publisherId);
+
+	SHOULD_DECODE_ENCODE(header, "94 01 34 12");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint32)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.publisherIdEnabled(true);
+	header.publisherIdType(PublisherIdType_UInt32);
+
+	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	publisherId->set<OpcUaUInt32>(0x12345678);
+	header.publisherId(publisherId);
+
+	SHOULD_DECODE_ENCODE(header, "94 02 78 56 34 12");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint64)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.publisherIdEnabled(true);
+	header.publisherIdType(PublisherIdType_UInt64);
+
+	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	publisherId->set<OpcUaUInt64>(0x123456780a0b0c0d);
+	header.publisherId(publisherId);
+
+	SHOULD_DECODE_ENCODE(header, "94 03 0D 0C 0B 0A 78 56 34 12");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_GUID)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.publisherIdEnabled(true);
+	header.publisherIdType(PublisherIdType_Guid);
+
+	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	OpcUaGuid guid;
+	guid.value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
+	publisherId->setValue(guid);
+	header.publisherId(publisherId);
+
+	SHOULD_DECODE_ENCODE(header, "94 04 12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_String)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.publisherIdEnabled(true);
+	header.publisherIdType(PublisherIdType_String);
+
+	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	publisherId->setValue(OpcUaString("StringID"));
+	header.publisherId(publisherId);
+
+	SHOULD_DECODE_ENCODE(header, "94 05 08 00 00 00 53 74 72 69 6e 67 49 44");
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
