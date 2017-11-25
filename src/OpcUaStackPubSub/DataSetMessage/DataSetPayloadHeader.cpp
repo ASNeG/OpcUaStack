@@ -47,11 +47,18 @@ namespace OpcUaStackPubSub
 	DataSetPayloadHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaByte count = dataSetWriterIds_->size();
-		OpcUaNumber::opcUaBinaryEncode(os, count);
+		OpcUaUInt16 dataSetWriterId;
 
-		for (uint32_t idx=0; idx<count; idx++) {
-			OpcUaUInt16 dataSetWriterId;
-			dataSetWriterIds_->get(idx, dataSetWriterId);
+		if (dataSetArrayEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, count);
+
+
+			for (uint32_t idx=0; idx<count; idx++) {
+				dataSetWriterIds_->get(idx, dataSetWriterId);
+				OpcUaNumber::opcUaBinaryEncode(os, dataSetWriterId);
+			}
+		} else {
+			dataSetWriterIds_->get(0, dataSetWriterId);
 			OpcUaNumber::opcUaBinaryEncode(os, dataSetWriterId);
 		}
 	}
@@ -60,11 +67,18 @@ namespace OpcUaStackPubSub
 	DataSetPayloadHeader::opcUaBinaryDecode(std::istream& is)
 	{
 		OpcUaByte count;
-		OpcUaNumber::opcUaBinaryDecode(is, count);
-		dataSetWriterIds_->resize(count);
+		OpcUaUInt16 dataSetWriterId;
 
-		for (uint32_t idx=0; idx<count; idx++) {
-			OpcUaUInt16 dataSetWriterId;
+		if (dataSetArrayEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, count);
+			dataSetWriterIds_->resize(count);
+
+			for (uint32_t idx=0; idx<count; idx++) {
+				OpcUaNumber::opcUaBinaryDecode(is, dataSetWriterId);
+				dataSetWriterIds_->push_back(dataSetWriterId);
+			}
+		} else {
+			dataSetWriterIds_->resize(1);
 			OpcUaNumber::opcUaBinaryDecode(is, dataSetWriterId);
 			dataSetWriterIds_->push_back(dataSetWriterId);
 		}

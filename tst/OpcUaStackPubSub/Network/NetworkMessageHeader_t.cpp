@@ -60,8 +60,22 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetArrayEnabled)
 {
 	NetworkMessageHeader header;
 	header.dataSetArrayEnabled(true);
+	header.dataSetWriterIdEnabled(true);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->resize(2);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x100);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x090);
 
-	SHOULD_DECODE_ENCODE(header, "24");
+	SHOULD_DECODE_ENCODE(header, "64 02 00 01 90 00");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetWriterIdEnabled)
+{
+	NetworkMessageHeader header;
+	header.dataSetWriterIdEnabled(true);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->resize(1);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x100);
+
+	SHOULD_DECODE_ENCODE(header, "44 00 01");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

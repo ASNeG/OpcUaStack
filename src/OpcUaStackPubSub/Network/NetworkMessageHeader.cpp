@@ -58,12 +58,21 @@ namespace OpcUaStackPubSub
 			UADPFlags |= 0x20;
 		}
 
+		if (dataSetWriterIdEnabled_) {
+			UADPFlags |= 0x40;
+		}
+
 		OpcUaNumber::opcUaBinaryEncode(os, UADPFlags);
 
 		if (publisherIdEnabled_) {
 			OpcUaByte id;
 			publisherId_->getValue(id);
 			OpcUaNumber::opcUaBinaryEncode(os, id);
+		}
+
+		if (dataSetWriterIdEnabled_) {
+			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
+			dataSetPayloadHeader_->opcUaBinaryEncode(os);
 		}
 	}
 
@@ -76,13 +85,19 @@ namespace OpcUaStackPubSub
 		UADPVersion_ = UADPFlags & 0xF;
 
 		publisherIdEnabled_ = UADPFlags & 0x10;
+		dataSetArrayEnabled_ = UADPFlags & 0x20;
+		dataSetWriterIdEnabled_ = UADPFlags & 0x40;
+
 		if (publisherIdEnabled_) {
 			OpcUaByte id;
 			OpcUaNumber::opcUaBinaryDecode(is, id);
 			publisherId_->setValue(id);
 		}
 
-		dataSetArrayEnabled_ = UADPFlags & 0x20;
+		if (dataSetWriterIdEnabled_) {
+			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
+			dataSetPayloadHeader_->opcUaBinaryDecode(is);
+		}
 	}
 
 	bool
