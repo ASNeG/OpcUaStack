@@ -43,6 +43,26 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_)
 } while(0)
 
 
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
+{
+	NetworkMessageHeader header;
+	header.publisherIdEnabled(true);
+	header.dataSetArrayEnabled(true);
+	header.dataSetWriterIdEnabled(true);
+	header.extendedFlags1Enabled(true);
+
+	header.publisherIdType(PublisherIdType_UInt16);
+
+	OpcUaVariant::SPtr publisherId = constructSPtr<OpcUaVariant>();
+	publisherId->set<OpcUaUInt16>(0x23);
+	header.publisherId(publisherId);
+
+	header.dataSetPayloadHeader()->dataSetWriterIds()->resize(2);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x100);
+	header.dataSetPayloadHeader()->dataSetWriterIds()->push_back(0x090);
+
+	SHOULD_DECODE_ENCODE(header, "f4 01 23 00 02 00 01 90 00");
+}
 
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_UADPVersion)
 {
