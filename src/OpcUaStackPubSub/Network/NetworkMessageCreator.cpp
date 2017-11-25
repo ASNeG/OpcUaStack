@@ -120,7 +120,7 @@ namespace OpcUaStackPubSub
 		header->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
 		header->dataSetArrayEnabled(dataSetArrayEnabled_);
 		header->timestampEnabled(timestampEnabled_);
-		header->picosecondsEnabled(picosecondsEnabled_);
+		header->picoSecondsEnabled(picosecondsEnabled_);
 		header->dataSetClassIdEnabled(dataSetClassIdEnabled_);
 		header->promotedFieldsEnabled(promotedFieldsEnabled_);
 

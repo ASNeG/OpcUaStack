@@ -30,7 +30,7 @@ namespace OpcUaStackPubSub
 	, dataSetClassIdEnabled_(false)
 	, securityEnabled_(false)
 	, timestampEnabled_(false)
-	, picosecondsEnabled_(false)
+	, picoSecondsEnabled_(false)
 	, extendedFlags2Enabled_(false)
 	, networkMessageType_(NetworkMessageType_DataSetMessage)
 	, promotedFieldsEnabled_(false)
@@ -83,6 +83,10 @@ namespace OpcUaStackPubSub
 				extendedFlags1 |= 0x20;
 			}
 
+			if (picoSecondsEnabled_) {
+				extendedFlags1 |= 0x40;
+			}
+
 			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
 		}
 
@@ -124,6 +128,10 @@ namespace OpcUaStackPubSub
 		if (timestampEnabled_) {
 			timestamp_.opcUaBinaryEncode(os);
 		}
+
+		if (picoSecondsEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, picoSeconds_);
+		}
 	}
 
 	void
@@ -150,6 +158,7 @@ namespace OpcUaStackPubSub
 			dataSetClassIdEnabled_ = extendedFlags1 & 0x08;
 			// FIXME Security flag is ignored
 			timestampEnabled_ = extendedFlags1 & 0x20;
+			picoSecondsEnabled_ = extendedFlags1 & 0x40;
 		}
 
 		if (publisherIdEnabled_) {
@@ -214,6 +223,9 @@ namespace OpcUaStackPubSub
 			timestamp_.opcUaBinaryDecode(is);
 		}
 
+		if (picoSecondsEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, picoSeconds_);
+		}
 	}
 
 	bool
@@ -228,7 +240,7 @@ namespace OpcUaStackPubSub
 				&& dataSetClassIdEnabled_ == other.dataSetClassIdEnabled_
 				&& securityEnabled_ == other.securityEnabled_
 				&& timestampEnabled_ == other.timestampEnabled_
-				&& picosecondsEnabled_ == other.picosecondsEnabled_
+				&& picoSecondsEnabled_ == other.picoSecondsEnabled_
 				&& extendedFlags2Enabled_ == other.extendedFlags2Enabled_
 				&& networkMessageType_ == other.networkMessageType_
 				&& promotedFieldsEnabled_ == other.promotedFieldsEnabled_
@@ -350,15 +362,15 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	NetworkMessageHeader::picosecondsEnabled(bool picosecondsEnabled)
+	NetworkMessageHeader::picoSecondsEnabled(bool picosecondsEnabled)
 	{
-		picosecondsEnabled_ = picosecondsEnabled;
+		picoSecondsEnabled_ = picosecondsEnabled;
 	}
 
 	bool
-	NetworkMessageHeader::picosecondsEnabled() const
+	NetworkMessageHeader::picoSecondsEnabled() const
 	{
-		return picosecondsEnabled_;
+		return picoSecondsEnabled_;
 	}
 
 	void

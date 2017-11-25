@@ -52,6 +52,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.extendedFlags1Enabled(true);
 	header.dataSetClassIdEnabled(true);
 	header.timestampEnabled(true);
+	header.picoSecondsEnabled(true);
 
 	header.publisherIdType(PublisherIdType_UInt16);
 
@@ -71,12 +72,15 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	time.fromISOString("20171125T203617.900");
 	header.timestamp(time);
 
+	header.picoSeconds(0x100);
+
 	SHOULD_DECODE_ENCODE(header,
-			"f4 29 "											// flags
+			"f4 69 "											// flags
 			"23 00 "											// publisherId
 			"12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0 "  // dataSetClassId
 			"02 00 01 90 00 "									// dataSetPayloadHeader
-			"c0 0a a8 0b 2d 66 d3 01"	                        // timestamp
+			"c0 0a a8 0b 2d 66 d3 01 "	                        // timestamp
+			"00 01"
 	);
 }
 
@@ -246,6 +250,17 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_timestampEnabled)
 	header.timestamp(time);
 
 	SHOULD_DECODE_ENCODE(header, "84 20 c0 0a a8 0b 2d 66 d3 01");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_picosecondsEnabled)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.picoSecondsEnabled(true);
+
+	header.picoSeconds(0x100);
+
+	SHOULD_DECODE_ENCODE(header, "84 40 00 01");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
