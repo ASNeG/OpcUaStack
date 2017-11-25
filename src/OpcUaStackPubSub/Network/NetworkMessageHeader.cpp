@@ -77,6 +77,10 @@ namespace OpcUaStackPubSub
 				extendedFlags1 |= 0x08;
 			}
 
+			if (timestampEnabled_) {
+				extendedFlags1 |= 0x10;
+			}
+
 			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
 		}
 
@@ -114,6 +118,10 @@ namespace OpcUaStackPubSub
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryEncode(os);
 		}
+
+		if (timestampEnabled_) {
+			timestamp_.opcUaBinaryEncode(os);
+		}
 	}
 
 	void
@@ -138,6 +146,7 @@ namespace OpcUaStackPubSub
 			publisherIdType_ = ((PublisherIdType)(extendedFlags1 & 0x07));
 
 			dataSetClassIdEnabled_ = extendedFlags1 & 0x08;
+			timestampEnabled_ = extendedFlags1 & 0x10;
 		}
 
 		if (publisherIdEnabled_) {
@@ -197,6 +206,11 @@ namespace OpcUaStackPubSub
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryDecode(is);
 		}
+
+		if (timestampEnabled_) {
+			timestamp_.opcUaBinaryDecode(is);
+		}
+
 	}
 
 	bool

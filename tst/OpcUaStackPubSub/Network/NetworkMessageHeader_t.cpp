@@ -51,6 +51,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.dataSetWriterIdEnabled(true);
 	header.extendedFlags1Enabled(true);
 	header.dataSetClassIdEnabled(true);
+	header.timestampEnabled(true);
 
 	header.publisherIdType(PublisherIdType_UInt16);
 
@@ -66,11 +67,17 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	classId->value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
 	header.dataSetClassId(classId);
 
+	OpcUaDateTime time;
+	time.fromISOString("20171125T203617.900");
+	header.timestamp(time);
+
 	SHOULD_DECODE_ENCODE(header,
-			"f4 09 "											// flags
+			"f4 19 "											// flags
 			"23 00 "											// publisherId
 			"12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0 "  // dataSetClassId
-			"02 00 01 90 00");                                  // dataSetPayloadHeader
+			"02 00 01 90 00 "									// dataSetPayloadHeader
+			"c0 0a a8 0b 2d 66 d3 01"	                        // timestamp
+	);
 }
 
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_UADPVersion)
@@ -226,6 +233,19 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetClassIdEnabled)
 	header.dataSetClassId(classId);
 
 	SHOULD_DECODE_ENCODE(header, "84 08 12 34 56 78 9a bc de f0 12 34 56 78 9a bc de f0");
+}
+
+BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_timestampEnabled)
+{
+	NetworkMessageHeader header;
+	header.extendedFlags1Enabled(true);
+	header.timestampEnabled(true);
+
+	OpcUaDateTime time;
+	time.fromISOString("20171125T203617.900");
+	header.timestamp(time);
+
+	SHOULD_DECODE_ENCODE(header, "84 10 c0 0a a8 0b 2d 66 d3 01");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
