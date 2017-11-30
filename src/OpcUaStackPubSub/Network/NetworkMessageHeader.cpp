@@ -317,6 +317,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::publisherIdType(PublisherIdType type)
 	{
 		publisherIdType_ = type;
+		if (type != PublisherIdType_Byte) extendedFlags1Enabled_ = true;
 	}
 
 	PublisherIdType
@@ -329,6 +330,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::dataSetClassIdEnabled(bool dataSetClassIdEnabled)
 	{
 		dataSetClassIdEnabled_ = dataSetClassIdEnabled;
+		if (dataSetClassIdEnabled) extendedFlags1Enabled_ = true;
 	}
 
 	bool
@@ -353,6 +355,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::timestampEnabled(bool timestampEnabled)
 	{
 		timestampEnabled_ = timestampEnabled;
+		if (timestampEnabled) extendedFlags1Enabled_ = true;
 	}
 
 	bool
@@ -365,6 +368,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::picoSecondsEnabled(bool picosecondsEnabled)
 	{
 		picoSecondsEnabled_ = picosecondsEnabled;
+		if (picosecondsEnabled) extendedFlags1Enabled_ = true;
 	}
 
 	bool
@@ -413,6 +417,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::dataSetClassId(OpcUaGuid::SPtr dataSetClassId)
 	{
 		dataSetClassId_ = dataSetClassId;
+		dataSetClassIdEnabled_ = true;
+		extendedFlags1Enabled_ = true;
 	}
 
 	OpcUaGuid::SPtr
@@ -448,6 +454,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::timestamp(OpcUaDateTime timestamp)
 	{
 		timestamp_ = timestamp;
+		timestampEnabled_ = true;
+		extendedFlags1Enabled_ = true;
 	}
 
 	OpcUaDateTime
@@ -460,6 +468,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::picoSeconds(OpcUaInt16 picoSeconds)
 	{
 		picoSeconds_ = picoSeconds;
+		picoSecondsEnabled_ = true;
+		extendedFlags1Enabled_ = true;
 	}
 
 	OpcUaInt16

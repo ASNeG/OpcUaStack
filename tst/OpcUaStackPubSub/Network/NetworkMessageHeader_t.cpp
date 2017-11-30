@@ -49,7 +49,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_all_flags_set)
 	header.publisherIdEnabled(true);
 	header.dataSetArrayEnabled(true);
 	header.dataSetWriterIdEnabled(true);
-	header.extendedFlags1Enabled(true);
 	header.dataSetClassIdEnabled(true);
 	header.timestampEnabled(true);
 	header.picoSecondsEnabled(true);
@@ -157,7 +156,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_extendedFlags1Enabled)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint16)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_UInt16);
 
@@ -171,7 +169,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint16)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint32)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_UInt32);
 
@@ -199,7 +196,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_Uint64)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_GUID)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_Guid);
 
@@ -215,7 +211,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_GUID)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_String)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
 	header.publisherIdEnabled(true);
 	header.publisherIdType(PublisherIdType_String);
 
@@ -229,8 +224,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_publisherIdType_String)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetClassIdEnabled)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
-	header.dataSetClassIdEnabled(true);
 
 	OpcUaGuid::SPtr classId = constructSPtr<OpcUaGuid>();
 	classId->value("12345678-9ABC-DEF0-1234-56789ABCDEF0");
@@ -242,8 +235,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_dataSetClassIdEnabled)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_timestampEnabled)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
-	header.timestampEnabled(true);
 
 	OpcUaDateTime time;
 	time.fromISOString("20171125T203617.900");
@@ -255,9 +246,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_timestampEnabled)
 BOOST_AUTO_TEST_CASE(NetworkMessageHeader_encode_decode_picosecondsEnabled)
 {
 	NetworkMessageHeader header;
-	header.extendedFlags1Enabled(true);
-	header.picoSecondsEnabled(true);
-
 	header.picoSeconds(0x100);
 
 	SHOULD_DECODE_ENCODE(header, "84 40 00 01");
