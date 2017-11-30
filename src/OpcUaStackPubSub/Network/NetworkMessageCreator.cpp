@@ -125,7 +125,6 @@ namespace OpcUaStackPubSub
 		header->promotedFieldsEnabled(promotedFieldsEnabled_);
 
 		// Build payload header
-		networkMessage.dataSetPayloadHeader()->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
 		networkMessage.dataSetPayloadHeader()->dataSetArrayEnabled(dataSetArrayEnabled_);
 
 		// Build payload

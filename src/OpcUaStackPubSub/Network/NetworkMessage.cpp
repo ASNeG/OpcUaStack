@@ -69,12 +69,20 @@ namespace OpcUaStackPubSub
 
 	void NetworkMessage::opcUaBinaryEncode(std::ostream& os) const
 	{
-		//FIXME:
+		networkMessageHeader_->opcUaBinaryEncode(os);
+		dataSetPayloadHeader_->opcUaBinaryEncode(os);
+		dataSetPayload_->opcUaBinaryEncode(os);
 	}
 
 	void NetworkMessage::opcUaBinaryDecode(std::istream& is)
 	{
-		//FIXME:
+		networkMessageHeader_->opcUaBinaryDecode(is);
+
+		dataSetPayloadHeader_->dataSetArrayEnabled(networkMessageHeader_->dataSetArrayEnabled());
+		dataSetPayloadHeader_->opcUaBinaryDecode(is);
+
+		dataSetPayload_->count(dataSetPayloadHeader()->dataSetWriterIds()->size());
+		dataSetPayload_->opcUaBinaryDecode(is);
 	}
 
 	bool OpcUaStackPubSub::NetworkMessage::operator ==(const NetworkMessage& other) const
