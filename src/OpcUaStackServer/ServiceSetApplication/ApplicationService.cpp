@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
+#include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -396,9 +397,51 @@ namespace OpcUaStackServer
 		}
 
 		//
-		// FIXME: todo
-		// we do not handle the event hirachy at the moment
+		// get nodes from event hierarchy
 		//
+		std::vector<OpcUaNodeId> nodeIdVec;
+		std::vector<OpcUaNodeId>::iterator nodeIt;;
+
+		std::set<OpcUaNodeId> duplicateNodeIdSet;
+		std::set<OpcUaNodeId> workNodeIdSet;
+
+		workNodeIdSet.insert(fireEventRequest->nodeId());
+
+		while (workNodeIdSet.size() != 0)
+		{
+			// get first node from node id set
+			OpcUaNodeId nodeId = *workNodeIdSet.begin();
+			workNodeIdSet.erase(workNodeIdSet.begin());
+
+			nodeIdVec.push_back(nodeId);
+			duplicateNodeIdSet.insert(nodeId);
+
+			// get base class
+			BaseNodeClass::SPtr node = informationModel_->find(nodeId);
+			if (node.get() == nullptr) continue;
+
+			// get all parent nodes of event notifier reference (backward)
+			InformationModelAccess ima(informationModel_);
+			OpcUaNodeId referenceTypeNodeId(OpcUaId_HasNotifier);
+			std::vector<OpcUaNodeId> parentNodeIdVec;
+			bool success = ima.getParentHierarchically(
+				baseNodeClass,
+				referenceTypeNodeId,
+				parentNodeIdVec
+			);
+			if (!success) {
+				continue;
+			}
+
+			std::vector<OpcUaNodeId>::iterator itpn;
+			for (itpn = parentNodeIdVec.begin(); itpn != parentNodeIdVec.end(); itpn++) {
+				// check duplicate
+				if (duplicateNodeIdSet.find(*itpn) != duplicateNodeIdSet.end()) {
+					continue;
+				}
+				workNodeIdSet.insert(*itpn);
+			}
+		};
 
 		//
 		// find event filter
@@ -408,11 +451,13 @@ namespace OpcUaStackServer
 		EventHandlerBase::Vec eventHandlerBaseVec;
 		EventHandlerBase::Vec::iterator it;
 
-		boost::mutex::scoped_lock g(eventHandlerMap.mutex());
-		eventHandlerMap.getEvent(fireEventRequest->nodeId(), eventHandlerBaseVec);
-		for (it = eventHandlerBaseVec.begin(); it != eventHandlerBaseVec.end(); it++) {
-			EventHandlerBase::SPtr eventHandlerBase = *it;
-			eventHandlerBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
+		for (nodeIt = nodeIdVec.begin(); nodeIt != nodeIdVec.end(); nodeIt++) {
+			boost::mutex::scoped_lock g(eventHandlerMap.mutex());
+			eventHandlerMap.getEvent(*nodeIt, eventHandlerBaseVec);
+			for (it = eventHandlerBaseVec.begin(); it != eventHandlerBaseVec.end(); it++) {
+				EventHandlerBase::SPtr eventHandlerBase = *it;
+				eventHandlerBase->fireEvent(fireEventRequest->nodeId(), fireEventRequest->eventBase());
+			}
 		}
 
 		trx->statusCode(Success);

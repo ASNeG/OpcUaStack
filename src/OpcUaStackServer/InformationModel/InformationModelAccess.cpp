@@ -442,6 +442,33 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	InformationModelAccess::getParentHierarchically(
+		BaseNodeClass::SPtr baseNodeClass,
+		OpcUaNodeId& referenceTypeNodeId,
+		std::vector<OpcUaNodeId>& parentNodeIdVec
+	)
+	{
+		parentNodeIdVec.clear();
+
+		ReferenceItemMultiMap::iterator it;
+		for (
+			it = baseNodeClass->referenceItemMap().referenceItemMultiMap().begin();
+			it != baseNodeClass->referenceItemMap().referenceItemMultiMap().end();
+			it++
+		)
+		{
+			if (it->first != referenceTypeNodeId) continue;
+
+			ReferenceItem::SPtr referenceItem = it->second;
+			if (referenceItem->isForward_) continue;
+
+			parentNodeIdVec.push_back(referenceItem->nodeId_);
+		}
+
+		return true;
+	}
+
+	bool
 	InformationModelAccess::getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec)
 	{
 		childBaseNodeClassVec.clear();
