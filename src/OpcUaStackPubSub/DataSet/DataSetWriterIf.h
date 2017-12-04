@@ -35,18 +35,20 @@ namespace OpcUaStackPubSub
 		virtual ~DataSetWriterIf(void);
 
 		void writerId(uint32_t writerId);
-		uint32_t writerId(void);
-		void keyFrameCount(uint32_t keyFrameCount);
-		uint32_t keyFrameCount(void);
-		void keepAliveTime(boost::posix_time::ptime keepAliveTime);
-		boost::posix_time::ptime keepAliveTime(void);
+		uint32_t writerId(void) const;
 
-		virtual bool publishTimeout(DataSetMessage::SPtr& dataSetMessage) = 0;
+		void keyFrameCount(uint32_t keyFrameCount);
+		uint32_t keyFrameCount(void) const;
+
+		void keepAliveTime(uint32_t keepAliveTime);
+		uint32_t keepAliveTime(void) const;
+
+		virtual bool publishTimeout(DataSetMessage::SPtr& dataSetMessage, uint32_t publishInterval) = 0;
 
 	  private:
 		uint32_t writerId_;
 		uint32_t keyFrameCount_;
-		boost::posix_time::ptime keepAliveTime_;
+		uint32_t keepAliveTime_;
 	};
 
 }

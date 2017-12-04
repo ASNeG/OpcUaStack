@@ -20,7 +20,7 @@ public:
 	}
 
 	bool
-	publishTimeout(DataSetMessage::SPtr& dataSetMessage)
+	publishTimeout(DataSetMessage::SPtr& dataSetMessage, uint32_t publishInterval)
 	{
 		dataSetMessage = dataSetMessageToPublish_;
 		return publishResult_;
@@ -69,9 +69,11 @@ struct Fixtures
 	{
 		dataSetMessage1 = constructSPtr<KeepAliveMessage>();
 		writer1 = constructSPtr<MockDataSetWriter>(dataSetMessage1, true);
+		writer1->writerId(1);
 
 		dataSetMessage2 = constructSPtr<KeepAliveMessage>();
 		writer2 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
+		writer2->writerId(2);
 
 		creator.registerDataSetWriterIf(writer1);
 		creator.registerDataSetWriterIf(writer2);
@@ -85,10 +87,10 @@ struct Fixtures
 	}
 
 	KeepAliveMessage::SPtr dataSetMessage1;
-	DataSetWriterIf::SPtr writer1;
+	MockDataSetWriter::SPtr writer1;
 
 	KeepAliveMessage::SPtr dataSetMessage2;
-	DataSetWriterIf::SPtr writer2;
+	MockDataSetWriter::SPtr writer2;
 
 	MockNetworkSender::SPtr sender;
 
@@ -117,7 +119,7 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers, F
 
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_1_writer, Fixtures)
 {
-	boost::dynamic_pointer_cast<MockDataSetWriter>(creator.dataSetWriterIfs().back())->publishResult_ = false;
+	writer2->publishResult_ = false;
 
 	DataSetPayload::SPtr payload = constructSPtr<DataSetPayload>();
 	payload->dataSetMessages()->resize(1);
@@ -126,6 +128,24 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_1_writer, Fi
 
 	BOOST_REQUIRE(creator.mockPublish());
 	BOOST_REQUIRE(*sender->sentMessage_.dataSetPayload() == *payload);
+}
+
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_pass_keepAlive1, Fixtures)
+{
+	creator.keepAliveTime(2000);
+
+	BOOST_REQUIRE_EQUAL(2000, writer1->keepAliveTime());
+	BOOST_REQUIRE_EQUAL(2000, writer2->keepAliveTime());
+}
+
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_pass_keepAlive2, Fixtures)
+{
+	creator.keepAliveTime(2000);
+
+	DataSetWriterIf::SPtr writer = constructSPtr<MockDataSetWriter>(nullptr, false);
+	creator.registerDataSetWriterIf(writer);
+
+	BOOST_REQUIRE_EQUAL(2000, writer->keepAliveTime());
 }
 
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publisherIdEnable, Fixtures)

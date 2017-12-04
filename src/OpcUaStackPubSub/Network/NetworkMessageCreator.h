@@ -30,20 +30,24 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT NetworkMessageCreator
 	{
 	  public:
-		typedef std::list<DataSetWriterIf::SPtr> WriterCollection;
 
 		NetworkMessageCreator(void);
 		virtual ~NetworkMessageCreator(void);
 
 		void ioThread(IOThread::SPtr& ioThread);
-		void publishInterval(uint32_t publishInterval);
+
+		void publishInterval(OpcUaUInt32 publishInterval);
+		OpcUaUInt32 publishInterval() const;
+
+		void keepAliveTime(OpcUaUInt32 keepAliveTime);
+		OpcUaUInt32 keepAliveTime() const;
 
 		bool startup(void);
 		bool shutdown(void);
 
 		bool deregisterDataSetWriterIf(uint32_t writerId);
 		bool registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf);
-		NetworkMessageCreator::WriterCollection dataSetWriterIfs() const;
+		DataSetWriterIf::Map dataSetWriterIfs() const;
 
 
 		void networkSenderIf(const NetworkSenderIf::SPtr& senderIf);
@@ -77,8 +81,11 @@ namespace OpcUaStackPubSub
 
 	  private:
 		IOThread::SPtr ioThread_;
-		uint32_t publishInterval_;
+		OpcUaUInt32 publishInterval_;
+		OpcUaUInt32 keepAliveTime_;
 		SlotTimerElement::SPtr slotTimerElement_;
+
+
 
 		// Content Flags
 		bool publisherIdEnabled_;
@@ -90,7 +97,7 @@ namespace OpcUaStackPubSub
 		bool promotedFieldsEnabled_;
 
 		OpcUaVariant::SPtr publisherId_;
-		WriterCollection dataSetWriters_;
+		DataSetWriterIf::Map dataSetWriters_;
 		NetworkSenderIf::SPtr networkSender_;
 	};
 }
