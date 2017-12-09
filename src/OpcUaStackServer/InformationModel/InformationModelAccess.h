@@ -100,6 +100,11 @@ namespace OpcUaStackServer
 		bool getParent(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec);
 		bool getParent(BaseNodeClass::SPtr baseNodeClass, ReferenceItem::Vec& referenceItemVec);
 		bool getParent(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec);
+		bool getParentHierarchically(
+			BaseNodeClass::SPtr baseNodeClass,
+			OpcUaNodeId& referenceTypeNodeId,
+			std::vector<OpcUaNodeId>& parentNodeIdVec
+		);
 		bool getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec);
 		bool getParentHierarchically(BaseNodeClass::SPtr baseNodeClass, std::vector<OpcUaNodeId>& nodeIdVec);
 		bool getParentNonHierarchically(BaseNodeClass::SPtr baseNodeClass, BaseNodeClass::Vec& childBaseNodeClassVec);
