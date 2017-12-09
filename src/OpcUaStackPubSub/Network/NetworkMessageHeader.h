@@ -82,8 +82,8 @@ namespace OpcUaStackPubSub
 		void timestampEnabled(bool timestampEnabled);
 		bool timestampEnabled() const;
 
-		void picosecondsEnabled(bool picosecondsEnabled);
-		bool picosecondsEnabled() const;
+		void picoSecondsEnabled(bool picosecondsEnabled);
+		bool picoSecondsEnabled() const;
 
 		void extendedFlags2Enabled(bool extendedFlags2Enabled);
 		bool extendedFlags2Enabled() const;
@@ -127,7 +127,7 @@ namespace OpcUaStackPubSub
 		bool dataSetClassIdEnabled_;
 		bool securityEnabled_;
 		bool timestampEnabled_;
-		bool picosecondsEnabled_;
+		bool picoSecondsEnabled_;
 		bool extendedFlags2Enabled_;
 		NetworkMessageType networkMessageType_;
 		bool promotedFieldsEnabled_;

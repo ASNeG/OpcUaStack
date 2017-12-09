@@ -30,7 +30,7 @@ namespace OpcUaStackPubSub
 	, dataSetClassIdEnabled_(false)
 	, securityEnabled_(false)
 	, timestampEnabled_(false)
-	, picosecondsEnabled_(false)
+	, picoSecondsEnabled_(false)
 	, extendedFlags2Enabled_(false)
 	, networkMessageType_(NetworkMessageType_DataSetMessage)
 	, promotedFieldsEnabled_(false)
@@ -77,6 +77,16 @@ namespace OpcUaStackPubSub
 				extendedFlags1 |= 0x08;
 			}
 
+			// FIXME Security flag is ignored
+
+			if (timestampEnabled_) {
+				extendedFlags1 |= 0x20;
+			}
+
+			if (picoSecondsEnabled_) {
+				extendedFlags1 |= 0x40;
+			}
+
 			OpcUaNumber::opcUaBinaryEncode(os, extendedFlags1);
 		}
 
@@ -114,6 +124,14 @@ namespace OpcUaStackPubSub
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryEncode(os);
 		}
+
+		if (timestampEnabled_) {
+			timestamp_.opcUaBinaryEncode(os);
+		}
+
+		if (picoSecondsEnabled_) {
+			OpcUaNumber::opcUaBinaryEncode(os, picoSeconds_);
+		}
 	}
 
 	void
@@ -138,6 +156,9 @@ namespace OpcUaStackPubSub
 			publisherIdType_ = ((PublisherIdType)(extendedFlags1 & 0x07));
 
 			dataSetClassIdEnabled_ = extendedFlags1 & 0x08;
+			// FIXME Security flag is ignored
+			timestampEnabled_ = extendedFlags1 & 0x20;
+			picoSecondsEnabled_ = extendedFlags1 & 0x40;
 		}
 
 		if (publisherIdEnabled_) {
@@ -197,6 +218,14 @@ namespace OpcUaStackPubSub
 			dataSetPayloadHeader_->dataSetArrayEnabled(dataSetArrayEnabled_);
 			dataSetPayloadHeader_->opcUaBinaryDecode(is);
 		}
+
+		if (timestampEnabled_) {
+			timestamp_.opcUaBinaryDecode(is);
+		}
+
+		if (picoSecondsEnabled_) {
+			OpcUaNumber::opcUaBinaryDecode(is, picoSeconds_);
+		}
 	}
 
 	bool
@@ -211,7 +240,7 @@ namespace OpcUaStackPubSub
 				&& dataSetClassIdEnabled_ == other.dataSetClassIdEnabled_
 				&& securityEnabled_ == other.securityEnabled_
 				&& timestampEnabled_ == other.timestampEnabled_
-				&& picosecondsEnabled_ == other.picosecondsEnabled_
+				&& picoSecondsEnabled_ == other.picoSecondsEnabled_
 				&& extendedFlags2Enabled_ == other.extendedFlags2Enabled_
 				&& networkMessageType_ == other.networkMessageType_
 				&& promotedFieldsEnabled_ == other.promotedFieldsEnabled_
@@ -288,6 +317,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::publisherIdType(PublisherIdType type)
 	{
 		publisherIdType_ = type;
+		if (type != PublisherIdType_Byte) extendedFlags1Enabled_ = true;
 	}
 
 	PublisherIdType
@@ -300,6 +330,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::dataSetClassIdEnabled(bool dataSetClassIdEnabled)
 	{
 		dataSetClassIdEnabled_ = dataSetClassIdEnabled;
+		if (dataSetClassIdEnabled) extendedFlags1Enabled_ = true;
 	}
 
 	bool
@@ -324,6 +355,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::timestampEnabled(bool timestampEnabled)
 	{
 		timestampEnabled_ = timestampEnabled;
+		if (timestampEnabled) extendedFlags1Enabled_ = true;
 	}
 
 	bool
@@ -333,15 +365,16 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	NetworkMessageHeader::picosecondsEnabled(bool picosecondsEnabled)
+	NetworkMessageHeader::picoSecondsEnabled(bool picosecondsEnabled)
 	{
-		picosecondsEnabled_ = picosecondsEnabled;
+		picoSecondsEnabled_ = picosecondsEnabled;
+		if (picosecondsEnabled) extendedFlags1Enabled_ = true;
 	}
 
 	bool
-	NetworkMessageHeader::picosecondsEnabled() const
+	NetworkMessageHeader::picoSecondsEnabled() const
 	{
-		return picosecondsEnabled_;
+		return picoSecondsEnabled_;
 	}
 
 	void
@@ -384,6 +417,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::dataSetClassId(OpcUaGuid::SPtr dataSetClassId)
 	{
 		dataSetClassId_ = dataSetClassId;
+		dataSetClassIdEnabled_ = true;
+		extendedFlags1Enabled_ = true;
 	}
 
 	OpcUaGuid::SPtr
@@ -419,6 +454,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::timestamp(OpcUaDateTime timestamp)
 	{
 		timestamp_ = timestamp;
+		timestampEnabled_ = true;
+		extendedFlags1Enabled_ = true;
 	}
 
 	OpcUaDateTime
@@ -431,6 +468,8 @@ namespace OpcUaStackPubSub
 	NetworkMessageHeader::picoSeconds(OpcUaInt16 picoSeconds)
 	{
 		picoSeconds_ = picoSeconds;
+		picoSecondsEnabled_ = true;
+		extendedFlags1Enabled_ = true;
 	}
 
 	OpcUaInt16

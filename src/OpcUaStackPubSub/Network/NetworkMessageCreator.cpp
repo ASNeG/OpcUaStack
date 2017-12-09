@@ -120,12 +120,11 @@ namespace OpcUaStackPubSub
 		header->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
 		header->dataSetArrayEnabled(dataSetArrayEnabled_);
 		header->timestampEnabled(timestampEnabled_);
-		header->picosecondsEnabled(picosecondsEnabled_);
+		header->picoSecondsEnabled(picosecondsEnabled_);
 		header->dataSetClassIdEnabled(dataSetClassIdEnabled_);
 		header->promotedFieldsEnabled(promotedFieldsEnabled_);
 
 		// Build payload header
-		networkMessage.dataSetPayloadHeader()->dataSetWriterIdEnabled(dataSetWriterIdEnabled_);
 		networkMessage.dataSetPayloadHeader()->dataSetArrayEnabled(dataSetArrayEnabled_);
 
 		// Build payload
