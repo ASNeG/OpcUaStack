@@ -104,6 +104,16 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
 	std::cout << "NetworkMessageCreator_t" << std::endl;
 }
 
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_registation, Fixtures)
+{
+	BOOST_REQUIRE(creator.registerDataSetWriterIf(writer1) == false);
+	BOOST_REQUIRE_EQUAL(2, creator.dataSetWriterIfMap().size());
+
+	BOOST_REQUIRE(creator.deregisterDataSetWriterIf(writer1->writerId()));
+	BOOST_REQUIRE_EQUAL(1, creator.dataSetWriterIfMap().size());
+
+	BOOST_REQUIRE(creator.deregisterDataSetWriterIf(writer1->writerId()) == false);
+}
 
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers, Fixtures)
 {

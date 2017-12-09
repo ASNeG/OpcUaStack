@@ -47,7 +47,7 @@ namespace OpcUaStackPubSub
 
 		bool deregisterDataSetWriterIf(uint32_t writerId);
 		bool registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf);
-		DataSetWriterIf::Map dataSetWriterIfs() const;
+		DataSetWriterIf::Map dataSetWriterIfMap() const;
 
 
 		void networkSenderIf(const NetworkSenderIf::SPtr& senderIf);
@@ -97,7 +97,7 @@ namespace OpcUaStackPubSub
 		bool promotedFieldsEnabled_;
 
 		OpcUaVariant::SPtr publisherId_;
-		DataSetWriterIf::Map dataSetWriters_;
+		DataSetWriterIf::Map dataSetWriterIfMap_;
 		NetworkSenderIf::SPtr networkSender_;
 	};
 }

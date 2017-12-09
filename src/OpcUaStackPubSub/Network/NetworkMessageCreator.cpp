@@ -23,7 +23,7 @@ namespace OpcUaStackPubSub
 	NetworkMessageCreator::NetworkMessageCreator(void)
 	: ioThread_()
 	, slotTimerElement_()
-	, dataSetWriters_()
+	, dataSetWriterIfMap_()
 	, networkSender_()
 	, publishInterval_(1000)
 	, keepAliveTime_(1000)
@@ -65,8 +65,8 @@ namespace OpcUaStackPubSub
 	{
 		keepAliveTime_ = keepAliveTime;
 
-		for(DataSetWriterIf::Map::iterator it = dataSetWriters_.begin();
-				it != dataSetWriters_.end(); it++) {
+		for(DataSetWriterIf::Map::iterator it = dataSetWriterIfMap_.begin();
+				it != dataSetWriterIfMap_.end(); it++) {
 			it->second->keepAliveTime(keepAliveTime);
 		}
 	}
@@ -106,17 +106,23 @@ namespace OpcUaStackPubSub
 	bool
 	NetworkMessageCreator::deregisterDataSetWriterIf(uint32_t writerId)
 	{
-		// FIXME: todo
+		DataSetWriterIf::Map::iterator it;
+		it = dataSetWriterIfMap_.find(writerId);
+		if (it == dataSetWriterIfMap_.end()) return false;
+		dataSetWriterIfMap_.erase(it);
 		return true;
 	}
 
 	bool
 	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf)
 	{
-		writerIf->keepAliveTime(keepAliveTime_);
-		dataSetWriters_[writerIf->writerId()] = writerIf;
+		DataSetWriterIf::Map::iterator it;
+		it = dataSetWriterIfMap_.find(writerIf->writerId());
+		if (it != dataSetWriterIfMap_.end()) return false;
 
-		return true;
+		writerIf->keepAliveTime(keepAliveTime_);
+		dataSetWriterIfMap_.insert(std::make_pair(writerIf->writerId(), writerIf));
+		return false;
 	}
 
 	void
@@ -155,10 +161,10 @@ namespace OpcUaStackPubSub
 
 		// Build payload
 		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
-		messages->resize(dataSetWriters_.size());
+		messages->resize(dataSetWriterIfMap_.size());
 
-		for(DataSetWriterIf::Map::iterator it = dataSetWriters_.begin();
-				it != dataSetWriters_.end(); it++) {
+		for(DataSetWriterIf::Map::iterator it = dataSetWriterIfMap_.begin();
+				it != dataSetWriterIfMap_.end(); it++) {
 			DataSetMessage::SPtr msg;
 
 			if (it->second->publishTimeout(msg, publishInterval_)) {
@@ -201,9 +207,9 @@ namespace OpcUaStackPubSub
 	}
 
 	DataSetWriterIf::Map
-	NetworkMessageCreator::dataSetWriterIfs() const
+	NetworkMessageCreator::dataSetWriterIfMap() const
 	{
-		return dataSetWriters_;
+		return dataSetWriterIfMap_;
 	}
 
 	void
