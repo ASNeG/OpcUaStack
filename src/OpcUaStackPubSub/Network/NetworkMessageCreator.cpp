@@ -122,7 +122,7 @@ namespace OpcUaStackPubSub
 
 		writerIf->keepAliveTime(keepAliveTime_);
 		dataSetWriterIfMap_.insert(std::make_pair(writerIf->writerId(), writerIf));
-		return false;
+		return true;
 	}
 
 	void

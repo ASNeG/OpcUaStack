@@ -106,14 +106,26 @@ BOOST_AUTO_TEST_CASE(NetworkMessageCreator_)
 
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_registation, Fixtures)
 {
-	BOOST_REQUIRE(creator.registerDataSetWriterIf(writer1) == false);
-	BOOST_REQUIRE_EQUAL(2, creator.dataSetWriterIfMap().size());
+	MockDataSetWriter::SPtr writer3;
+	writer3 = constructSPtr<MockDataSetWriter>(dataSetMessage2, true);
+	writer3->writerId(3);
 
+	BOOST_REQUIRE(creator.registerDataSetWriterIf(writer3) == true);
+	BOOST_REQUIRE_EQUAL(3, creator.dataSetWriterIfMap().size());
+
+	BOOST_REQUIRE(creator.registerDataSetWriterIf(writer3) == false);
+	BOOST_REQUIRE_EQUAL(3, creator.dataSetWriterIfMap().size());
+}
+
+BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_deregistation, Fixtures)
+{
 	BOOST_REQUIRE(creator.deregisterDataSetWriterIf(writer1->writerId()));
 	BOOST_REQUIRE_EQUAL(1, creator.dataSetWriterIfMap().size());
 
 	BOOST_REQUIRE(creator.deregisterDataSetWriterIf(writer1->writerId()) == false);
+	BOOST_REQUIRE_EQUAL(1, creator.dataSetWriterIfMap().size());
 }
+
 
 BOOST_FIXTURE_TEST_CASE(NetworkMessageCreator_publish_datasets_from_2_writers, Fixtures)
 {
