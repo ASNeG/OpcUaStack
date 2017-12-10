@@ -21,7 +21,8 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetReaderIf::DataSetReaderIf(void)
-	: readerId_(0)
+	: writerId_(0)
+	, publisherId_(constructSPtr<OpcUaVariant>())
 	{
 	}
 
@@ -30,15 +31,27 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	DataSetReaderIf::readerId(uint32_t readerId)
+	DataSetReaderIf::writerId(uint32_t writerId)
 	{
-		readerId_ = readerId;
+		writerId_ = writerId;
 	}
 
 	uint32_t
-	DataSetReaderIf::readerId(void)
+	DataSetReaderIf::writerId(void) const
 	{
-		return readerId_;
+		return writerId_;
+	}
+
+	void
+	DataSetReaderIf::publisherId(OpcUaVariant::SPtr publisherId)
+	{
+		publisherId_ = publisherId;
+	}
+
+	OpcUaVariant::SPtr
+	DataSetReaderIf::publisherId() const
+	{
+		return publisherId_;
 	}
 
 }

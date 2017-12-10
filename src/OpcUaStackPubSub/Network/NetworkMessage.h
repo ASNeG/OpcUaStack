@@ -33,13 +33,13 @@ namespace OpcUaStackPubSub
 		virtual ~NetworkMessage(void);
 
 		void networkMessageHeader(NetworkMessageHeader::SPtr networkMessageHeader);
-		NetworkMessageHeader::SPtr networkMessageHeader();
+		NetworkMessageHeader::SPtr networkMessageHeader() const;
 
 		void dataSetPayloadHeader(DataSetPayloadHeader::SPtr dataSetPayloadHeader);
-		DataSetPayloadHeader::SPtr dataSetPayloadHeader();
+		DataSetPayloadHeader::SPtr dataSetPayloadHeader() const;
 
 		void dataSetPayload(DataSetPayload::SPtr dataSetPayload);
-		DataSetPayload::SPtr dataSetPayload();
+		DataSetPayload::SPtr dataSetPayload() const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);

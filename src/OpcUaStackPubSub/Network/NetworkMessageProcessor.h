@@ -29,15 +29,31 @@ namespace OpcUaStackPubSub
 	: public NetworkReceiverIf
 	{
 	  public:
+
 		NetworkMessageProcessor(void);
 		~NetworkMessageProcessor(void);
 
-		bool deregisterDataSetReaderIf(uint32_t readerId);
+		bool deregisterDataSetReaderIf(const DataSetReaderIf::SPtr& reader);
 		virtual bool registerDataSetReaderIf(const DataSetReaderIf::SPtr& reader);
 		virtual bool receive(const NetworkMessage& message);
 
 	  private:
-		DataSetReaderIf::Map dataSetReaderIfMap_;
+		struct DataSetReaderKey
+		{
+			DataSetReaderKey();
+			DataSetReaderKey(const DataSetReaderIf& readerIf);
+
+			bool operator< (const DataSetReaderKey& other) const;
+
+			uint16_t writerId_;
+			OpcUaVariant publisherId_;
+
+		};
+
+		typedef std::map<DataSetReaderKey, DataSetReaderIf::Set> DataSetReaderIfTree;
+
+		DataSetReaderIfTree dataSetReaderIfTree_;
+
 	};
 
 }
