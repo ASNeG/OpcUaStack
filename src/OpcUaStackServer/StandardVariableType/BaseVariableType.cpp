@@ -32,4 +32,35 @@ namespace OpcUaStackServer
 	{
 	}
 
+	BaseNodeClass::SPtr
+	BaseVariableType::value(void)
+	{
+		return value_.lock();
+	}
+
+	bool
+	BaseVariableType::setValue(const OpcUaDataValue& dataValue)
+	{
+		OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+		BaseNodeClass::SPtr baseNodeClass;
+
+		baseNodeClass = value_.lock();
+		if (baseNodeClass.get() == nullptr) return false;
+		baseNodeClass->setValueSync(*(const_cast<OpcUaDataValue*>(&dataValue)));
+		return true;
+	}
+
+	bool
+	BaseVariableType::getValue(OpcUaDataValue& dataValue)
+	{
+		OpcUaLocalizedText ackedState;
+		BaseNodeClass::SPtr baseNodeClass;
+
+		baseNodeClass = value_.lock();
+		if (baseNodeClass.get() == nullptr) return false;
+
+		baseNodeClass->getValueSync(dataValue);
+		return true;
+	}
+
 }
