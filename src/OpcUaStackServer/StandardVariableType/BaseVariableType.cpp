@@ -15,10 +15,12 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/StandardVariableType/BaseVariableType.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/StandardVariableType/BaseVariableType.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	BaseVariableType::BaseVariableType(void)

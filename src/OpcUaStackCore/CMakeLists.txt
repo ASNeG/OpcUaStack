@@ -83,7 +83,7 @@ file(GLOB INC_OpcUaStackCore_Network OpcUaStackCore/Network/*.h)
 file(GLOB INC_OpcUaStackCore_EventType OpcUaStackCore/EventType/*.h)
 file(GLOB INC_OpcUaStackCore_VariableType OpcUaStackCore/VariableType/*.h)
 file(GLOB INC_OpcUaStackCore_StandardEventType OpcUaStackCore/StandardEventType/*.h)
-file(GLOB INC_OpcUaStackCore_StandardVariableType OpcUaStackCore/StandardVariableType/*.h)
+
 
 
 install(
@@ -212,8 +212,4 @@ install(
     COMPONENT headers
 )
 
-install(
-    FILES ${INC_OpcUaStackCore_StandardVariableType} 
-    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/StandardVariableType
-    COMPONENT headers
-)
+

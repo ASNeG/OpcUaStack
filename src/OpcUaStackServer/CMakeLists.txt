@@ -66,6 +66,7 @@ file(GLOB INC_OpcUaStackServer_ServiceManager OpcUaStackServer/ServiceManager/*.
 file(GLOB INC_OpcUaStackServer_ServiceSet OpcUaStackServer/ServiceSet/*.h)
 file(GLOB INC_OpcUaStackServer_ServiceSetApplication OpcUaStackServer/ServiceSetApplication/*.h)
 file(GLOB INC_OpcUaStackServer_ApplicationUtility OpcUaStackServer/ApplicationUtility/*.h)
+file(GLOB INC_OpcUaStackServer_StandardVariableType OpcUaStackServer/StandardVariableType/*.h)
 
 
 install(
@@ -131,5 +132,11 @@ install(
 install(
     FILES ${INC_OpcUaStackServer_ApplicationUtility} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/ApplicationUtility
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackServer_StandardVariableType} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackServer/StandardVariableType
     COMPONENT headers
 )
