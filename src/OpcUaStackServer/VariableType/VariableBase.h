@@ -15,15 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_VariableBase_h__
-#define __OpcUaStackCore_VariableBase_h__
+#ifndef __OpcUaStackServer_VariableBase_h__
+#define __OpcUaStackServer_VariableBase_h__
 
 #include <boost/shared_ptr.hpp>
-#include <OpcUaStackCore/VariableType/VariableResult.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackServer/VariableType/VariableResult.h"
 
-namespace OpcUaStackCore
+using namespace OpcUaStackCore;
+
+namespace OpcUaStackServer
 {
 
 	class DLLEXPORT VariableBase

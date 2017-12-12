@@ -20,7 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/VariableType/VariableBase.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
 using namespace OpcUaStackCore;
 

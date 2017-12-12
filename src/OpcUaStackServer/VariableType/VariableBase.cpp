@@ -15,10 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/VariableType/VariableBase.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackServer/VariableType/VariableBase.h"
 
-namespace OpcUaStackCore
+namespace OpcUaStackServer
 {
 
 	// ------------------------------------------------------------------------
