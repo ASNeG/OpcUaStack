@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	ServerVariable::ServerVariable(const std::string& name)
 	: baseNode_()
 	, name_(name)
+	, browseName_()
 	{
 	}
 
@@ -87,6 +88,66 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	void
+	ServerVariable::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement);
+	}
+
+	void
+	ServerVariable::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2);
+	}
+
+	void
+	ServerVariable::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2, pathElement3);
+	}
+
+	void
+	ServerVariable::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
+	}
+
+	void
+	ServerVariable::addBrowsePath(
+		const OpcUaNodeId& nodeId,
+		const OpcUaQualifiedName& pathElement1,
+		const OpcUaQualifiedName& pathElement2,
+		const OpcUaQualifiedName& pathElement3,
+		const OpcUaQualifiedName& pathElement4,
+		const OpcUaQualifiedName& pathElement5
+	)
+	{
+		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
+		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -114,9 +175,6 @@ namespace OpcUaStackServer
 
 		serverVariableMap_.insert(std::make_pair(serverVariable->name(), serverVariable));
 		return true;
-
-
-		//ServerVariable::Map serverVariableMap_;
 	}
 
 }

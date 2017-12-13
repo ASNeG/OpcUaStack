@@ -22,6 +22,7 @@
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 using namespace OpcUaStackCore;
 
@@ -44,9 +45,41 @@ namespace OpcUaStackServer
 		bool setDataValue(const OpcUaDataValue& dataValue);
 		bool getDataValue(OpcUaDataValue& dataValue);
 
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4
+		);
+		void addBrowsePath(
+			const OpcUaNodeId& nodeId,
+			const OpcUaQualifiedName& pathElement1,
+			const OpcUaQualifiedName& pathElement2,
+			const OpcUaQualifiedName& pathElement3,
+			const OpcUaQualifiedName& pathElement4,
+			const OpcUaQualifiedName& pathElement5
+		);
+
 	  private:
 		std::string name_;
 		BaseNodeClass::WPtr baseNode_;
+		BrowseName::SPtr browseName_;
 	};
 
 

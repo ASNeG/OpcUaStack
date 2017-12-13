@@ -25,30 +25,12 @@ namespace OpcUaStackServer
 
 	BaseVariableType::BaseVariableType(void)
 	: VariableBase()
-	, value_("Value")
 	{
+
 	}
 
 	BaseVariableType::~BaseVariableType(void)
 	{
-	}
-
-	BaseNodeClass::SPtr
-	BaseVariableType::value(void)
-	{
-		return value_.baseNode().lock();
-	}
-
-	bool
-	BaseVariableType::setValue(const OpcUaDataValue& dataValue)
-	{
-		return value_.setDataValue(dataValue);
-	}
-
-	bool
-	BaseVariableType::getValue(OpcUaDataValue& dataValue)
-	{
-		return value_.getDataValue(dataValue);
 	}
 
 }

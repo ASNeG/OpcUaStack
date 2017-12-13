@@ -37,13 +37,6 @@ namespace OpcUaStackServer
 		BaseVariableType(void);
 		virtual ~BaseVariableType(void);
 
-		BaseNodeClass::SPtr value(void);
-		bool setValue(const OpcUaDataValue& dataValue);
-		bool getValue(OpcUaDataValue& dataValue);
-
-	  private:
-		ServerVariable value_;
-
 	};
 
 }
