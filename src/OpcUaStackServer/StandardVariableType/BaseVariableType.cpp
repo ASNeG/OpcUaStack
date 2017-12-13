@@ -25,6 +25,7 @@ namespace OpcUaStackServer
 
 	BaseVariableType::BaseVariableType(void)
 	: VariableBase()
+	, value_("Value")
 	{
 	}
 

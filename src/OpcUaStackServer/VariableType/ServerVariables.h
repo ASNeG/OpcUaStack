@@ -34,15 +34,18 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<ServerVariable> SPtr;
 		typedef std::map<std::string, ServerVariable*> Map;
 
-		ServerVariable(void);
+		ServerVariable(const std::string& name);
 		~ServerVariable(void);
 
+		void name(const std::string& name);
+		std::string& name(void);
 		void baseNode(const BaseNodeClass::WPtr& baseNode);
 		BaseNodeClass::WPtr& baseNode(void);
 		bool setDataValue(const OpcUaDataValue& dataValue);
 		bool getDataValue(OpcUaDataValue& dataValue);
 
 	  private:
+		std::string name_;
 		BaseNodeClass::WPtr baseNode_;
 	};
 

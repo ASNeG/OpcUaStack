@@ -28,13 +28,26 @@ namespace OpcUaStackServer
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ServerVariable::ServerVariable(void)
+	ServerVariable::ServerVariable(const std::string& name)
 	: baseNode_()
+	, name_(name)
 	{
 	}
 
 	ServerVariable::~ServerVariable(void)
 	{
+	}
+
+	void
+	ServerVariable::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	ServerVariable::name(void)
+	{
+		return name_;
 	}
 
 	void
@@ -93,8 +106,17 @@ namespace OpcUaStackServer
 	bool
 	ServerVariables::registerServerVariable(ServerVariable* serverVariable)
 	{
-		// FIXME: todo
+		ServerVariable::Map::iterator it;
+		it = serverVariableMap_.find(serverVariable->name());
+		if (it != serverVariableMap_.end()) {
+			serverVariableMap_.erase(it);
+		}
+
+		serverVariableMap_.insert(std::make_pair(serverVariable->name(), serverVariable));
 		return true;
+
+
+		//ServerVariable::Map serverVariableMap_;
 	}
 
 }
