@@ -21,6 +21,66 @@
 namespace OpcUaStackServer
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ServerVariable
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ServerVariable::ServerVariable(void)
+	: baseNode_()
+	{
+	}
+
+	ServerVariable::~ServerVariable(void)
+	{
+	}
+
+	void
+	ServerVariable::baseNode(const BaseNodeClass::WPtr& baseNode)
+	{
+		baseNode_ = baseNode;
+	}
+
+	BaseNodeClass::WPtr&
+	ServerVariable::baseNode(void)
+	{
+		return baseNode_;
+	}
+
+	bool
+	ServerVariable::setDataValue(const OpcUaDataValue& dataValue)
+	{
+		OpcUaDateTime dateTime(boost::posix_time::microsec_clock::universal_time());
+		BaseNodeClass::SPtr baseNodeClass;
+
+		baseNodeClass = baseNode_.lock();
+		if (baseNodeClass.get() == nullptr) return false;
+		baseNodeClass->setValueSync(*(const_cast<OpcUaDataValue*>(&dataValue)));
+		return true;
+	}
+
+	bool
+	ServerVariable::getDataValue(OpcUaDataValue& dataValue)
+	{
+		OpcUaLocalizedText ackedState;
+		BaseNodeClass::SPtr baseNodeClass;
+
+		baseNodeClass = baseNode_.lock();
+		if (baseNodeClass.get() == nullptr) return false;
+
+		baseNodeClass->getValueSync(dataValue);
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ServerVariables
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	ServerVariables::ServerVariables(void)
 	{
 	}

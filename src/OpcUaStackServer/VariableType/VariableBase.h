@@ -36,6 +36,8 @@ namespace OpcUaStackServer
 		VariableBase(void);
 		virtual ~VariableBase(void);
 
+		bool connectInstanceWithModel(const OpcUaNodeId& nodeId);
+
 		void variableType(const OpcUaNodeId& variableType);
 		OpcUaNodeId& variableType(void);
 

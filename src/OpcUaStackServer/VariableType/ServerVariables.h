@@ -20,11 +20,30 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
+
+	class DLLEXPORT ServerVariable
+	{
+	  public:
+		typedef boost::shared_ptr<ServerVariable> SPtr;
+
+		ServerVariable(void);
+		~ServerVariable(void);
+
+		void baseNode(const BaseNodeClass::WPtr& baseNode);
+		BaseNodeClass::WPtr& baseNode(void);
+		bool setDataValue(const OpcUaDataValue& dataValue);
+		bool getDataValue(OpcUaDataValue& dataValue);
+
+	  private:
+		BaseNodeClass::WPtr baseNode_;
+	};
+
 
 	class DLLEXPORT ServerVariables
 	{
@@ -32,7 +51,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<ServerVariables> SPtr;
 
 		ServerVariables(void);
-		virtual ~ServerVariables(void);
+		~ServerVariables(void);
 
 	  private:
 	};

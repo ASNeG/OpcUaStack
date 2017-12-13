@@ -36,6 +36,14 @@ namespace OpcUaStackServer
 	{
 	}
 
+
+	bool
+	VariableBase::connectInstanceWithModel(const OpcUaNodeId& nodeId)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	void
 	VariableBase::variableType(const OpcUaNodeId& variableType)
 	{
