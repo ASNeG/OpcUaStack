@@ -29,6 +29,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	VariableBase::VariableBase(void)
+	: serverVariables_()
 	{
 	}
 
@@ -36,6 +37,11 @@ namespace OpcUaStackServer
 	{
 	}
 
+	ServerVariables&
+	VariableBase::serverVariables(void)
+	{
+		return serverVariables_;
+	}
 
 	bool
 	VariableBase::connectInstanceWithModel(const OpcUaNodeId& nodeId)

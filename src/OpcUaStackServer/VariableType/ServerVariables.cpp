@@ -82,11 +82,19 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ServerVariables::ServerVariables(void)
+	: serverVariableMap_()
 	{
 	}
 
 	ServerVariables::~ServerVariables(void)
 	{
+	}
+
+	bool
+	ServerVariables::registerServerVariable(ServerVariable* serverVariable)
+	{
+		// FIXME: todo
+		return true;
 	}
 
 }

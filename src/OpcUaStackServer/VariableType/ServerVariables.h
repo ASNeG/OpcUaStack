@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_ServerVariables_h__
 
 #include <boost/shared_ptr.hpp>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
 
@@ -31,6 +32,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef boost::shared_ptr<ServerVariable> SPtr;
+		typedef std::map<std::string, ServerVariable*> Map;
 
 		ServerVariable(void);
 		~ServerVariable(void);
@@ -53,7 +55,10 @@ namespace OpcUaStackServer
 		ServerVariables(void);
 		~ServerVariables(void);
 
+		bool registerServerVariable(ServerVariable* serverVariable);
+
 	  private:
+		ServerVariable::Map serverVariableMap_;
 	};
 
 

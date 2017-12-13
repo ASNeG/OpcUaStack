@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/VariableType/VariableResult.h"
+#include "OpcUaStackServer/VariableType/ServerVariables.h"
 
 using namespace OpcUaStackCore;
 
@@ -36,6 +37,7 @@ namespace OpcUaStackServer
 		VariableBase(void);
 		virtual ~VariableBase(void);
 
+		ServerVariables& serverVariables(void);
 		bool connectInstanceWithModel(const OpcUaNodeId& nodeId);
 
 		void variableType(const OpcUaNodeId& variableType);
@@ -43,6 +45,8 @@ namespace OpcUaStackServer
 
 	  private:
 		OpcUaNodeId variableType_;
+
+		ServerVariables serverVariables_;
 	};
 
 
