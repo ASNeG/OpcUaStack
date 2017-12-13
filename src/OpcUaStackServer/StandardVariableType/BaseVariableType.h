@@ -21,7 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/VariableType/VariableBase.h"
-#include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackServer/VariableType/ServerVariables.h"
 
 using namespace OpcUaStackCore;
 
@@ -42,7 +42,7 @@ namespace OpcUaStackServer
 		bool getValue(OpcUaDataValue& dataValue);
 
 	  private:
-		BaseNodeClass::WPtr value_;
+		ServerVariable value_;
 
 	};
 
