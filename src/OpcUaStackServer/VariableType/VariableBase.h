@@ -39,6 +39,7 @@ namespace OpcUaStackServer
 
 		ServerVariables& serverVariables(void);
 		bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
+		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex);
 
 		void variableType(const OpcUaNodeId& variableType);
 		OpcUaNodeId& variableType(void);

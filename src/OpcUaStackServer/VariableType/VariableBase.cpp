@@ -50,6 +50,14 @@ namespace OpcUaStackServer
 		return true;
 	}
 
+	bool
+	VariableBase::getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex)
+	{
+		// FIXME: todo
+		namespaceIndex = 0;
+		return true;
+	}
+
 	void
 	VariableBase::variableType(const OpcUaNodeId& variableType)
 	{

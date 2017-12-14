@@ -37,6 +37,9 @@ namespace OpcUaStackServer
 		BaseVariableType(void);
 		virtual ~BaseVariableType(void);
 
+		bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
+
+
 	};
 
 }
