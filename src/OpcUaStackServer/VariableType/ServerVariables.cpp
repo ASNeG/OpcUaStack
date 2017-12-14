@@ -100,8 +100,8 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
-		browseName->set(nodeId, pathElement);
+		browseName_ = constructSPtr<BrowseName>();
+		browseName_->set(nodeId, pathElement);
 	}
 
 	void
@@ -111,8 +111,8 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement2
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
-		browseName->set(nodeId, pathElement1, pathElement2);
+		browseName_ = constructSPtr<BrowseName>();
+		browseName_->set(nodeId, pathElement1, pathElement2);
 	}
 
 	void
@@ -123,8 +123,8 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement3
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
-		browseName->set(nodeId, pathElement1, pathElement2, pathElement3);
+		browseName_ = constructSPtr<BrowseName>();
+		browseName_->set(nodeId, pathElement1, pathElement2, pathElement3);
 	}
 
 	void
@@ -136,8 +136,8 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement4
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
-		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
+		browseName_ = constructSPtr<BrowseName>();
+		browseName_->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4);
 	}
 
 	void
@@ -150,8 +150,8 @@ namespace OpcUaStackServer
 		const OpcUaQualifiedName& pathElement5
 	)
 	{
-		BrowseName::SPtr browseName = constructSPtr<BrowseName>();
-		browseName->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
+		browseName_ = constructSPtr<BrowseName>();
+		browseName_->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
 	}
 
 	// ------------------------------------------------------------------------
