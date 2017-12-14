@@ -49,6 +49,7 @@ namespace OpcUaStackServer
 
 	  private:
 		bool getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId);
+		bool getRefFromResponse(GetNodeReferenceResponse::SPtr& res, uint32_t idx, BaseNodeClass::WPtr& ref);
 
 		ApplicationServiceIf* applicationServiceIf_;
 

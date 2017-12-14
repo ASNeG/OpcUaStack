@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackServer/VariableType/VariableBase.h"
+#include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 
 namespace OpcUaStackServer
 {
@@ -137,9 +138,16 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-#if 0
-		if (!getRefFromResponse(res, 0, ref)) return false;
-#endif
+		uint32_t idx = 0;
+		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
+			BaseNodeClass::WPtr ref;
+			ServerVariable* serverVariable = it->second;
+
+			if (!getRefFromResponse(res2, idx, ref)) return false;
+			serverVariable->baseNode(ref);
+
+			idx++;
+		}
 
 		return true;
 	}
@@ -220,6 +228,30 @@ namespace OpcUaStackServer
 
 		nodeId = constructSPtr<OpcUaNodeId>();
 		*nodeId = nodeIdResult->nodeId();
+		return true;
+	}
+
+	bool
+	VariableBase::getRefFromResponse(GetNodeReferenceResponse::SPtr& res, uint32_t idx, BaseNodeClass::WPtr& ref)
+	{
+		NodeReference::SPtr nodeReference;
+		if (!res->nodeReferenceArray()->get(idx, nodeReference)) {
+			Log(Error, "reference result not exist in response")
+				.parameter("Idx", idx);
+			return false;
+		}
+
+		if (nodeReference->statusCode() != Success) {
+			Log(Error, "reference error in response")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(nodeReference->statusCode()))
+				.parameter("Idx", idx);
+			return false;
+		}
+
+  		NodeReferenceApplication::SPtr nodeReferenceApplication;
+  		nodeReferenceApplication = boost::static_pointer_cast<NodeReferenceApplication>(nodeReference);
+  		ref = nodeReferenceApplication->baseNodeClass();
+
 		return true;
 	}
 
