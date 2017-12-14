@@ -502,7 +502,8 @@ namespace OpcUaStackServer
 		// check parameter
 		//
 		if (browseName->pathNames()->size() == 0) {
-			nodeIdResult->statusCode(BadInvalidArgument);
+			nodeIdResult->nodeId(browseName->nodeId());
+			nodeIdResult->statusCode(Success);
 			return;
 		}
 
