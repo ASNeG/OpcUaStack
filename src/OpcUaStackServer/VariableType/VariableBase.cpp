@@ -54,23 +54,65 @@ namespace OpcUaStackServer
 	bool
 	VariableBase::linkInstanceWithModel(const OpcUaNodeId& nodeId)
 	{
+		if (applicationServiceIf_ == nullptr) {
+			Log(Error, "application service interface error in class VariableBase");
+			return false;
+		}
+
 		// FIXME: todo
+		return true;
+
+		Log(Debug, "get node ids");
+
+		ServerVariable::Map::iterator it;
+		ServiceTransactionBrowsePathToNodeId::SPtr trx = constructSPtr<ServiceTransactionBrowsePathToNodeId>();
+		BrowsePathToNodeIdRequest::SPtr req1 = trx->request();
+		BrowsePathToNodeIdResponse::SPtr res1 = trx->response();
+
+		req1->browseNameArray()->resize(serverVariables_.serverVariableMap().size());
+		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
+			ServerVariable* serverVariable = it->second;
+			BrowseName::SPtr browseName = serverVariable->browseName();
+			if (browseName.get() == nullptr) {
+				browseName = constructSPtr<BrowseName>();
+			}
+			browseName->nodeId(nodeId);
+			req1->addBrowsePath(browseName);
+		}
+
+
+		applicationServiceIf_->sendSync(trx);
+		if (trx->statusCode() != Success) {
+			Log(Error, "BrowsePathToNodeIdResponse error")
+			    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
+			return false;
+		}
+		if (res1->nodeIdResults().get() == nullptr) {
+			Log(Error, "BrowsePathToNodeIdResponse error");
+			return false;
+		}
+		if (res1->nodeIdResults()->size() != req1->browseNameArray()->size()) {
+			Log(Error, "BrowsePathToNodeIdResponse size error");
+			return false;
+		}
+
+		for (uint32_t idx = 0; idx < serverVariables_.serverVariableMap().size(); idx++) {
+			;
+		}
+#if 0
+		if (!getNodeIdFromResponse(res, 0, xx)) return false;
+#endif
+
 		return true;
 	}
 
 	bool
 	VariableBase::getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex)
 	{
-		// FIXME: todo
-		namespaceIndex = 0;
-		return true;
-
 		if (applicationServiceIf_ == nullptr) {
 			Log(Error, "application service interface error in class VariableBase");
 			return false;
 		}
-
-		Log(Debug, "get namespace info");
 
 		ServiceTransactionNamespaceInfo::SPtr trx = constructSPtr<ServiceTransactionNamespaceInfo>();
 		NamespaceInfoRequest::SPtr req = trx->request();

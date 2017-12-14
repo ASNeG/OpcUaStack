@@ -42,6 +42,8 @@ namespace OpcUaStackServer
 		std::string& name(void);
 		void baseNode(const BaseNodeClass::WPtr& baseNode);
 		BaseNodeClass::WPtr& baseNode(void);
+		BrowseName::SPtr& browseName(void);
+
 		bool setDataValue(const OpcUaDataValue& dataValue);
 		bool getDataValue(OpcUaDataValue& dataValue);
 
@@ -92,6 +94,7 @@ namespace OpcUaStackServer
 		~ServerVariables(void);
 
 		bool registerServerVariable(ServerVariable* serverVariable);
+		ServerVariable::Map& serverVariableMap(void);
 
 	  private:
 		ServerVariable::Map serverVariableMap_;

@@ -63,6 +63,12 @@ namespace OpcUaStackServer
 		return baseNode_;
 	}
 
+	BrowseName::SPtr&
+	ServerVariable::browseName(void)
+	{
+		return browseName_;
+	}
+
 	bool
 	ServerVariable::setDataValue(const OpcUaDataValue& dataValue)
 	{
@@ -175,6 +181,12 @@ namespace OpcUaStackServer
 
 		serverVariableMap_.insert(std::make_pair(serverVariable->name(), serverVariable));
 		return true;
+	}
+
+	ServerVariable::Map&
+	ServerVariables::serverVariableMap(void)
+	{
+		return serverVariableMap_;
 	}
 
 }

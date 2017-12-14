@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		BrowseName(void);
 		~BrowseName(void);
 
-		void nodeId(OpcUaNodeId& nodeId);
+		void nodeId(const OpcUaNodeId& nodeId);
 		OpcUaNodeId& nodeId(void);
 		void pathNames(OpcUaQualifiedNameArray::SPtr& pathNames);
 		OpcUaQualifiedNameArray::SPtr pathNames(void);

@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	BrowseName::nodeId(OpcUaNodeId& nodeId)
+	BrowseName::nodeId(const OpcUaNodeId& nodeId)
 	{
 		nodeId_ = nodeId;
 	}
