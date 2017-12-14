@@ -42,6 +42,9 @@ namespace OpcUaStackCore
 		BrowseNameArray::SPtr browseNameArray(void);
 
 		void addBrowsePath(
+			const BrowseName::SPtr& browseName
+		);
+		void addBrowsePath(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement
 		);
