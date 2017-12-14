@@ -16,7 +16,6 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
@@ -62,12 +61,19 @@ namespace OpcUaStackServer
 		// FIXME: todo
 		return true;
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// get node ids from opc ua information model
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		Log(Debug, "get node ids");
 
 		ServerVariable::Map::iterator it;
-		ServiceTransactionBrowsePathToNodeId::SPtr trx = constructSPtr<ServiceTransactionBrowsePathToNodeId>();
-		BrowsePathToNodeIdRequest::SPtr req1 = trx->request();
-		BrowsePathToNodeIdResponse::SPtr res1 = trx->response();
+		ServiceTransactionBrowsePathToNodeId::SPtr trx1 = constructSPtr<ServiceTransactionBrowsePathToNodeId>();
+		BrowsePathToNodeIdRequest::SPtr req1 = trx1->request();
+		BrowsePathToNodeIdResponse::SPtr res1 = trx1->response();
 
 		req1->browseNameArray()->resize(serverVariables_.serverVariableMap().size());
 		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
@@ -81,10 +87,10 @@ namespace OpcUaStackServer
 		}
 
 
-		applicationServiceIf_->sendSync(trx);
-		if (trx->statusCode() != Success) {
+		applicationServiceIf_->sendSync(trx1);
+		if (trx1->statusCode() != Success) {
 			Log(Error, "BrowsePathToNodeIdResponse error")
-			    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
+			    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx1->statusCode()));
 			return false;
 		}
 		if (res1->nodeIdResults().get() == nullptr) {
@@ -96,11 +102,43 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// get node references from opc ua information model
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		Log(Debug, "get references");
+
+		ServiceTransactionGetNodeReference::SPtr trx2 = constructSPtr<ServiceTransactionGetNodeReference>();
+		GetNodeReferenceRequest::SPtr req2 = trx2->request();
+		GetNodeReferenceResponse::SPtr res2 = trx2->response();
+
+		req2->nodes()->resize(serverVariables_.serverVariableMap().size());
 		for (uint32_t idx = 0; idx < serverVariables_.serverVariableMap().size(); idx++) {
-			;
+			OpcUaNodeId::SPtr resNodeId = constructSPtr<OpcUaNodeId>();
+			if (!getNodeIdFromResponse(res1, idx, resNodeId)) return false;
+			req2->nodes()->push_back(resNodeId);
 		}
+
+	  	applicationServiceIf_->sendSync(trx2);
+	  	if (trx2->statusCode() != Success) {
+	  		Log(Error, "GetNodeReference error")
+	  		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx2->statusCode()));
+	  		return false;
+	  	}
+		if (res2->nodeReferenceArray().get() == nullptr) {
+			Log(Error, "GetNodeReference error");
+			return false;
+		}
+		if (res2->nodeReferenceArray()->size() != req2->nodes()->size()) {
+			Log(Error, "GetNodeReference size error");
+			return false;
+		}
+
 #if 0
-		if (!getNodeIdFromResponse(res, 0, xx)) return false;
+		if (!getRefFromResponse(res, 0, ref)) return false;
 #endif
 
 		return true;
@@ -154,6 +192,35 @@ namespace OpcUaStackServer
 	VariableBase::variableType(void)
 	{
 		return variableType_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// private functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	VariableBase::getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId)
+	{
+		NodeIdResult::SPtr nodeIdResult;
+		if (!res->nodeIdResults()->get(idx, nodeIdResult)) {
+			Log(Error, "node id result not exist in response")
+				.parameter("Idx", idx);
+			return false;
+		}
+
+		if (nodeIdResult->statusCode() != Success) {
+			Log(Error, "node id result error in response")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(nodeIdResult->statusCode()))
+				.parameter("Idx", idx);
+			return false;
+		}
+
+		nodeId = constructSPtr<OpcUaNodeId>();
+		*nodeId = nodeIdResult->nodeId();
+		return true;
 	}
 
 }

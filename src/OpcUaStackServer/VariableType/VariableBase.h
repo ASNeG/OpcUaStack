@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/VariableType/VariableResult.h"
 #include "OpcUaStackServer/VariableType/ServerVariables.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
@@ -47,6 +48,8 @@ namespace OpcUaStackServer
 		OpcUaNodeId& variableType(void);
 
 	  private:
+		bool getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId);
+
 		ApplicationServiceIf* applicationServiceIf_;
 
 		OpcUaNodeId variableType_;
