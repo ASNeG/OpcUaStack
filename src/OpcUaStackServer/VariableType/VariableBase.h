@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/VariableType/VariableResult.h"
 #include "OpcUaStackServer/VariableType/ServerVariables.h"
+#include "OpcUaStackServer/Application/ApplicationIf.h"
 
 using namespace OpcUaStackCore;
 
@@ -37,6 +38,7 @@ namespace OpcUaStackServer
 		VariableBase(void);
 		virtual ~VariableBase(void);
 
+		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
 		bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
 		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex);
@@ -45,6 +47,8 @@ namespace OpcUaStackServer
 		OpcUaNodeId& variableType(void);
 
 	  private:
+		ApplicationServiceIf* applicationServiceIf_;
+
 		OpcUaNodeId variableType_;
 
 		ServerVariables serverVariables_;

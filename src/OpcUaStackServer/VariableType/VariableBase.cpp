@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
 #include "OpcUaStackServer/VariableType/VariableBase.h"
 
 namespace OpcUaStackServer
@@ -30,11 +31,18 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	VariableBase::VariableBase(void)
 	: serverVariables_()
+	, applicationServiceIf_(nullptr)
 	{
 	}
 
 	VariableBase::~VariableBase(void)
 	{
+	}
+
+	void
+	VariableBase::applicationServiceIf(ApplicationServiceIf* applicationServiceIf)
+	{
+		applicationServiceIf_ = applicationServiceIf;
 	}
 
 	ServerVariables&
@@ -56,6 +64,42 @@ namespace OpcUaStackServer
 		// FIXME: todo
 		namespaceIndex = 0;
 		return true;
+
+		if (applicationServiceIf_ == nullptr) {
+			Log(Error, "application service interface error in class VariableBase");
+			return false;
+		}
+
+		Log(Debug, "get namespace info");
+
+		ServiceTransactionNamespaceInfo::SPtr trx = constructSPtr<ServiceTransactionNamespaceInfo>();
+		NamespaceInfoRequest::SPtr req = trx->request();
+		NamespaceInfoResponse::SPtr res = trx->response();
+
+		applicationServiceIf_->sendSync(trx);
+		if (trx->statusCode() != Success) {
+			Log(Error, "NamespaceInfoResponse error")
+			    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
+			return false;
+		}
+
+		NamespaceInfoResponse::Index2NamespaceMap::iterator it;
+		for (
+		    it = res->index2NamespaceMap().begin();
+			it != res->index2NamespaceMap().end();
+			it++
+		)
+		{
+			if (it->second == namespaceName) {
+				namespaceIndex = it->first;
+				return true;
+			}
+ 		}
+
+		Log(Error, "namespace not found in opc ua information model")
+	        .parameter("NamespaceUri", namespaceName);
+
+		return false;
 	}
 
 	void
