@@ -150,6 +150,42 @@ namespace OpcUaStackServer
 	}
 
 	bool
+	VariableBase::createAndLinkInstanceWithModel(
+		const std::string& name,
+		const OpcUaNodeId& parentNodeId,
+		const OpcUaNodeId& nodeId,
+		const OpcUaLocalizedText& displayName,
+		const OpcUaQualifiedName& browseName,
+		const OpcUaNodeId& referenceNodeId
+	)
+	{
+		Log(Debug, "create new node")
+			.parameter("TypeNodeId", variableType_);
+
+		ServiceTransactionCreateNodeInstance::SPtr trx = constructSPtr<ServiceTransactionCreateNodeInstance>();
+		CreateNodeInstanceRequest::SPtr req = trx->request();
+		CreateNodeInstanceResponse::SPtr res = trx->response();
+
+		req->name() = name;
+		req->nodeClassType() = NodeClassType_Object;
+		req->parentNodeId() = parentNodeId;
+		req->nodeId() = nodeId;
+		req->displayName() = displayName;
+		req->browseName() = browseName;
+		req->referenceNodeId() = referenceNodeId;
+		req->typeNodeId() = variableType_; // FIXME: get namespace index from opc ua information model
+
+	  	applicationServiceIf_->sendSync(trx);
+	  	if (trx->statusCode() != Success) {
+	  		Log(Error, "GetNodeReference error")
+	  		    .parameter("StatusCode", OpcUaStatusCodeMap::shortString(trx->statusCode()));
+	  		return false;
+	  	}
+
+		return linkInstanceWithModel(nodeId);
+	}
+
+	bool
 	VariableBase::getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex)
 	{
 		if (applicationServiceIf_ == nullptr) {

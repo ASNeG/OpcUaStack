@@ -41,7 +41,15 @@ namespace OpcUaStackServer
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
-		bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
+		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
+		bool createAndLinkInstanceWithModel(
+			const std::string& name,
+			const OpcUaNodeId& parentNodeId,
+			const OpcUaNodeId& nodeId,
+			const OpcUaLocalizedText& displayName,
+			const OpcUaQualifiedName& browseName,
+			const OpcUaNodeId& referenceNodeId
+		);
 		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex);
 
 		void variableType(const OpcUaNodeId& variableType);
