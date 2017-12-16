@@ -44,6 +44,7 @@ namespace OpcUaStackCore
 
 		//- LogIf -------------------------------------------------------------
 		bool logout(LogLevel logLevel, const std::string& message);
+		LogLevel getLogLevel(void);
 		//- LogIf -------------------------------------------------------------
 
 	  private:
