@@ -202,4 +202,10 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	LogLevel
+	FileLogger::getLogLevel(void)
+	{
+		return logLevel();
+	}
+
 }

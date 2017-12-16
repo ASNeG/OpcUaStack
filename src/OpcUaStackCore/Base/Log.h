@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -54,7 +54,11 @@ namespace OpcUaStackCore
 	class LogIf
 	{
 	  public:
+		LogIf(void) {}
+		virtual ~LogIf(void) {}
+
 		virtual bool logout(LogLevel logLevel, const std::string& message) = 0;
+		virtual LogLevel getLogLevel(void) = 0;
 	};
 
 
@@ -71,6 +75,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  Log& parameter(const std::string& parameterName, const T& parameterValue) {
+			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  ss << parameterValue;
 			  format(parameterName, ss.str());
@@ -79,6 +84,7 @@ namespace OpcUaStackCore
 
 		template<typename T1, typename T2>
 		  Log& parameter(const std::string& parameterName, const T1& parameterValue1, const T2& parameterValue2) {
+			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  ss << parameterValue1 << parameterValue2;
 			  format(parameterName, ss.str());
@@ -92,6 +98,7 @@ namespace OpcUaStackCore
 		    const T2& parameterValue2,
 		    const T3& parameterValue3
 		  ) {
+			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  ss << parameterValue1 << parameterValue2 << parameterValue3;
 			  format(parameterName, ss.str());
@@ -100,6 +107,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  Log& parameter(const std::string& parameterName, boost::shared_ptr<T> parameterValueSPtr) {
+			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  if (parameterValueSPtr.get() != nullptr) ss << *parameterValueSPtr;
 			  format(parameterName, ss.str());
@@ -108,6 +116,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  Log& parameter(const std::string& parameterName, std::vector<T>& parameterValue) {
+			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  bool first = true;
 			  typename std::vector<T>::iterator it;
@@ -123,6 +132,7 @@ namespace OpcUaStackCore
 
 		template<typename T>
 		  Log& parameter(const std::string& parameterName, std::vector<boost::shared_ptr<T> >& parameterValue) {
+			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  bool first = true;
 			  typename std::vector<T>::iterator it;
@@ -141,6 +151,7 @@ namespace OpcUaStackCore
 	  private:
 		void format(const std::string& parameterName, const std::string& parameterValue);
 
+		bool activate_;
 		LogLevel logLevel_;
 		std::string message_;
 		std::string parameter_;

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -85,15 +85,19 @@ namespace OpcUaStackCore
 	}
 
 	Log::Log(LogLevel logLevel, const std::string& message)
-	: logLevel_(logLevel)
+	: activate_(true)
+	, logLevel_(logLevel)
 	, message_(message)
 	, parameter_("")
 	, logHandle_(nullptr)
 	{
+		if (logIf_ == nullptr) return;
+		if (logLevel_ > logIf_->getLogLevel()) activate_ = false;
 	}
 
 	Log::~Log(void)
 	{
+		if (!activate_) return;
 		std::string threadId = boost::lexical_cast<std::string>(boost::this_thread::get_id());
 
 		if (logIf() != nullptr) {
