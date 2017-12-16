@@ -34,4 +34,10 @@ namespace OpcUaStackPubSub
 		return false;
 	}
 
+	bool
+	DataSetReader::checkTimeout(uint32_t timeoutInterval)
+	{
+		return false;
+	}
+
 }

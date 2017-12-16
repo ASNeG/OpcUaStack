@@ -14,9 +14,13 @@ class MockDataSetReader : public DataSetReaderIf
 public:
 	typedef boost::shared_ptr<MockDataSetReader> SPtr;
 
-	MockDataSetReader(DataSetMessage::SPtr receivedDataSetMessage, bool receiveResult)
-	: receivedDataSetMessage_(receivedDataSetMessage)
-    , receiveResult_(receiveResult) {};
+	MockDataSetReader()
+	: receivedDataSetMessage_(nullptr)
+	, receiveResult_(false)
+	, receiveTimeoutInterval_(0)
+	{
+
+	};
 
 	bool
 	receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage)
@@ -25,18 +29,35 @@ public:
 		return receiveResult_;
 	}
 
+	bool
+	checkTimeout(uint32_t timeoutInterval)
+	{
+		receiveTimeoutInterval_ = timeoutInterval;
+		return true;
+	}
+
 	bool receiveResult_;
 	DataSetMessage::SPtr receivedDataSetMessage_;
+	uint32_t receiveTimeoutInterval_;
+};
+
+class MockNetworkMessageProcessor : public NetworkMessageProcessor {
+public:
+	bool timeoutHandle()
+	{
+		return NetworkMessageProcessor::timeoutHandle();
+	}
+
 };
 
 struct NetworkMessageProcessorFixtures
 {
 	NetworkMessageProcessorFixtures()
 	{
-		readerPub1Id1N1 = constructSPtr<MockDataSetReader>(nullptr, false);
-		readerPub1Id1N2 = constructSPtr<MockDataSetReader>(nullptr, false);
-		readerPub1Id2N1 = constructSPtr<MockDataSetReader>(nullptr, false);
-		readerPub2Id1N1 = constructSPtr<MockDataSetReader>(nullptr, false);
+		readerPub1Id1N1 = constructSPtr<MockDataSetReader>();
+		readerPub1Id1N2 = constructSPtr<MockDataSetReader>();
+		readerPub1Id2N1 = constructSPtr<MockDataSetReader>();
+		readerPub2Id1N1 = constructSPtr<MockDataSetReader>();
 
 		readerPub1Id1N1->publisherId()->setValue(OpcUaUInt16(1));
 		readerPub1Id1N2->publisherId()->setValue(OpcUaUInt16(1));
@@ -54,7 +75,7 @@ struct NetworkMessageProcessorFixtures
 		processor.registerDataSetReaderIf(readerPub2Id1N1);
 	}
 
-	NetworkMessageProcessor processor;
+	MockNetworkMessageProcessor processor;
 
 	MockDataSetReader::SPtr readerPub1Id1N1;
 	MockDataSetReader::SPtr readerPub1Id1N2;
@@ -74,7 +95,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageProcessor_registration)
 {
 	NetworkMessageProcessor processor;
 
-	MockDataSetReader::SPtr reader1 = constructSPtr<MockDataSetReader>(nullptr, false);
+	MockDataSetReader::SPtr reader1 = constructSPtr<MockDataSetReader>();
 	reader1->publisherId()->setValue(OpcUaUInt32(1));
 	reader1->writerId(1);
 
@@ -86,7 +107,7 @@ BOOST_AUTO_TEST_CASE(NetworkMessageProcessor_deregistration)
 {
 	NetworkMessageProcessor processor;
 
-	MockDataSetReader::SPtr reader1 = constructSPtr<MockDataSetReader>(nullptr, false);
+	MockDataSetReader::SPtr reader1 = constructSPtr<MockDataSetReader>();
 	reader1->publisherId()->setValue(OpcUaUInt32(1));
 	reader1->writerId(1);
 	processor.registerDataSetReaderIf(reader1);
@@ -119,6 +140,17 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageProcessor_filter1, NetworkMessageProcessor
 	BOOST_REQUIRE(readerPub1Id1N2->receivedDataSetMessage_ == dataSetMessage);
 	BOOST_REQUIRE(readerPub1Id2N1->receivedDataSetMessage_ == nullptr);
 	BOOST_REQUIRE(readerPub2Id1N1->receivedDataSetMessage_ == nullptr);
+
+}
+
+BOOST_FIXTURE_TEST_CASE(NetworkMessageProcessor_timeoutHandle, NetworkMessageProcessorFixtures)
+{
+	processor.timeoutHandle();
+
+	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub1Id1N1->receiveTimeoutInterval_);
+	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub1Id1N2->receiveTimeoutInterval_);
+	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub1Id2N1->receiveTimeoutInterval_);
+	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub2Id1N1->receiveTimeoutInterval_);
 
 }
 

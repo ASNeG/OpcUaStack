@@ -32,6 +32,7 @@ namespace OpcUaStackPubSub
 		~DataSetReader(void);
 
 		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage);
+		virtual bool checkTimeout(uint32_t timeoutInterval);
 	};
 
 }

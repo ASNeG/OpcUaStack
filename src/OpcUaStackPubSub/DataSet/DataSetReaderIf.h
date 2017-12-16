@@ -42,11 +42,16 @@ namespace OpcUaStackPubSub
 		void publisherId(OpcUaVariant::SPtr publisherId);
 		OpcUaVariant::SPtr publisherId() const;
 
+		void messageReceiveTimeout(uint32_t messageReceiveTimeout);
+		uint32_t messageReceiveTimeout() const;
+
 		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage) = 0;
+		virtual bool checkTimeout(uint32_t timeoutInterval) = 0;
 
 	  private:
 		uint32_t writerId_;
 		OpcUaVariant::SPtr publisherId_;
+		uint32_t messageReceiveTimeout_;
 	};
 
 }

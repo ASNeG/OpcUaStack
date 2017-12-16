@@ -20,6 +20,7 @@
 
 #include "OpcUaStackPubSub/DataSet/DataSetReaderIf.h"
 #include "OpcUaStackPubSub/Network/NetworkReceiverIf.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
@@ -29,13 +30,20 @@ namespace OpcUaStackPubSub
 	: public NetworkReceiverIf
 	{
 	  public:
+		static const uint32_t TimeoutHandleInterval;
 
 		NetworkMessageProcessor(void);
 		~NetworkMessageProcessor(void);
 
+		bool startup(void);
+		bool shutdown(void);
+
 		bool deregisterDataSetReaderIf(const DataSetReaderIf::SPtr& reader);
 		virtual bool registerDataSetReaderIf(const DataSetReaderIf::SPtr& reader);
 		virtual bool receive(const NetworkMessage& message);
+
+	  protected:
+		virtual bool timeoutHandle();
 
 	  private:
 		struct DataSetReaderKey
@@ -54,6 +62,8 @@ namespace OpcUaStackPubSub
 
 		DataSetReaderIfTree dataSetReaderIfTree_;
 
+		IOThread::SPtr ioThread_;
+		SlotTimerElement::SPtr slotTimerElement_;
 	};
 
 }
