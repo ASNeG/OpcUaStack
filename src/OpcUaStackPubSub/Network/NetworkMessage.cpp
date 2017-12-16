@@ -38,7 +38,7 @@ namespace OpcUaStackPubSub
 	}
 
 	NetworkMessageHeader::SPtr
-	NetworkMessage::networkMessageHeader()
+	NetworkMessage::networkMessageHeader() const
 	{
 		return networkMessageHeader_;
 	}
@@ -50,7 +50,7 @@ namespace OpcUaStackPubSub
 	}
 
 	DataSetPayloadHeader::SPtr
-	NetworkMessage::dataSetPayloadHeader()
+	NetworkMessage::dataSetPayloadHeader() const
 	{
 		return dataSetPayloadHeader_;
 	}
@@ -62,7 +62,7 @@ namespace OpcUaStackPubSub
 	}
 
 	DataSetPayload::SPtr
-	NetworkMessage::dataSetPayload()
+	NetworkMessage::dataSetPayload() const
 	{
 		return dataSetPayload_;
 	}

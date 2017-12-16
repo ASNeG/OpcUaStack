@@ -23,7 +23,7 @@ namespace OpcUaStackPubSub
 	DataSetWriterIf::DataSetWriterIf(void)
 	: writerId_(0)
 	, keyFrameCount_(0)
-	, keepAliveTime_()
+	, keepAliveTime_(0)
 	{
 	}
 
@@ -38,7 +38,7 @@ namespace OpcUaStackPubSub
 	}
 
 	uint32_t
-	DataSetWriterIf::writerId(void)
+	DataSetWriterIf::writerId(void) const
 	{
 		return writerId_;
 	}
@@ -50,19 +50,19 @@ namespace OpcUaStackPubSub
 	}
 
 	uint32_t
-	DataSetWriterIf::keyFrameCount(void)
+	DataSetWriterIf::keyFrameCount(void) const
 	{
 		return keyFrameCount_;
 	}
 
 	void
-	DataSetWriterIf::keepAliveTime(boost::posix_time::ptime keepAliveTime)
+	DataSetWriterIf::keepAliveTime(uint32_t keepAliveTime)
 	{
 		keepAliveTime_ = keepAliveTime;
 	}
 
-	boost::posix_time::ptime
-	DataSetWriterIf::keepAliveTime(void)
+	uint32_t
+	DataSetWriterIf::keepAliveTime(void) const
 	{
 		return keepAliveTime_;
 	}
