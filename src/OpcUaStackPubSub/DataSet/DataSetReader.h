@@ -33,6 +33,9 @@ namespace OpcUaStackPubSub
 
 		virtual bool receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage);
 		virtual bool checkTimeout(uint32_t timeoutInterval);
+
+	  private:
+		uint32_t receiveTimeoutCount_;
 	};
 
 }

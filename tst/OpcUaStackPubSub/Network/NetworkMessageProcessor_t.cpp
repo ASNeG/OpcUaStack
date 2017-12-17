@@ -151,7 +151,6 @@ BOOST_FIXTURE_TEST_CASE(NetworkMessageProcessor_timeoutHandle, NetworkMessagePro
 	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub1Id1N2->receiveTimeoutInterval_);
 	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub1Id2N1->receiveTimeoutInterval_);
 	BOOST_REQUIRE_EQUAL(NetworkMessageProcessor::TimeoutHandleInterval, readerPub2Id1N1->receiveTimeoutInterval_);
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()
