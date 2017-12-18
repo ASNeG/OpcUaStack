@@ -23,6 +23,7 @@ namespace OpcUaStackPubSub
 	DataSetReaderIf::DataSetReaderIf(void)
 	: writerId_(0)
 	, publisherId_(constructSPtr<OpcUaVariant>())
+	, messageReceiveTimeout_(0)
 	{
 	}
 
@@ -54,4 +55,15 @@ namespace OpcUaStackPubSub
 		return publisherId_;
 	}
 
+	void
+	DataSetReaderIf::messageReceiveTimeout(uint32_t messageReceiveTimeout)
+	{
+		messageReceiveTimeout_ = messageReceiveTimeout;
+	}
+
+	uint32_t
+	DataSetReaderIf::messageReceiveTimeout() const
+	{
+		return messageReceiveTimeout_;
+	}
 }

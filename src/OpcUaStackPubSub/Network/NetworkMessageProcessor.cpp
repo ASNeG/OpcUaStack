@@ -21,13 +21,43 @@
 namespace OpcUaStackPubSub
 {
 
+	const uint32_t NetworkMessageProcessor::TimeoutHandleInterval = 10;
+
 	NetworkMessageProcessor::NetworkMessageProcessor(void)
 	: dataSetReaderIfTree_()
+	, ioThread_()
+	, slotTimerElement_()
 	{
 	}
 
 	NetworkMessageProcessor::~NetworkMessageProcessor(void)
 	{
+	}
+
+	bool
+	NetworkMessageProcessor::startup(void)
+	{
+		if (ioThread_.get() == nullptr) {
+			return false;
+		}
+
+		// start publish timer loop
+		slotTimerElement_ = constructSPtr<SlotTimerElement>();
+		slotTimerElement_->callback().reset(boost::bind(&NetworkMessageProcessor::timeoutHandle, this));
+		slotTimerElement_->expireTime(boost::posix_time::microsec_clock::local_time(), TimeoutHandleInterval);
+		ioThread_->slotTimer()->start(slotTimerElement_);
+
+		return true;
+	}
+
+	bool
+	NetworkMessageProcessor::shutdown(void)
+	{
+		// stop publish timer loop
+		ioThread_->slotTimer()->stop(slotTimerElement_);
+		slotTimerElement_.reset();
+
+		return true;
 	}
 
 	bool
@@ -47,7 +77,8 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
-	bool NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr& reader)
+	bool
+	NetworkMessageProcessor::registerDataSetReaderIf(const DataSetReaderIf::SPtr& reader)
 	{
 		DataSetReaderKey key(*reader);
 		DataSetReaderIf::Set& dataSetReaderIfSetIt = dataSetReaderIfTree_[key];
@@ -78,6 +109,21 @@ namespace OpcUaStackPubSub
 			DataSetReaderIf::Set& readers = dataSetReaderIfTreeIt->second;
 			for (DataSetReaderIf::Set::iterator it = readers.begin(); it != readers.end(); it++) {
 				(*it)->receiveDataSetMessage(dataSetMessage);
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	NetworkMessageProcessor::timeoutHandle()
+	{
+		for (DataSetReaderIfTree::iterator readerSetIt = dataSetReaderIfTree_.begin();
+				readerSetIt != dataSetReaderIfTree_.end(); readerSetIt++) {
+
+			DataSetReaderIf::Set& readers = readerSetIt->second;
+			for (DataSetReaderIf::Set::iterator it = readers.begin(); it != readers.end(); it++) {
+				(*it)->checkTimeout(TimeoutHandleInterval);
 			}
 		}
 
