@@ -22,7 +22,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
-#include "OpcUaStackPubSub/MQTT/MQTTClientIf.h"
+#include "OpcUaStackPubSub/MQTT/MQTTClientBase.h"
 
 #ifdef USE_MOSQUITTO_CLIENT
 #include "mosquitto.h"
@@ -36,7 +36,7 @@ namespace OpcUaStackPubSub
 #ifdef USE_MOSQUITTO_CLIENT
 
 	class DLLEXPORT MQTTClient
-	: public MQTTClientIf
+	: public MQTTClientBase
 	{
 	  public:
 		typedef boost::shared_ptr<MQTTClient> SPtr;
@@ -50,6 +50,8 @@ namespace OpcUaStackPubSub
 		virtual bool shutdown(void);
 		virtual bool mqttClientIfEnabled(void);
 
+		virtual bool send(const NetworkMessage& message);
+
 	  private:
 		struct mosquitto *mqttClient_;
 
@@ -57,7 +59,7 @@ namespace OpcUaStackPubSub
 
 #endif
 
-	MQTTClientIf::SPtr constructMQTT(void);
+	MQTTClientBase::SPtr constructMQTT(void);
 
 }
 

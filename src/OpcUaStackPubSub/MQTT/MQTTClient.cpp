@@ -23,7 +23,7 @@ namespace OpcUaStackPubSub
 #ifdef USE_MOSQUITTO_CLIENT
 
 	MQTTClient::MQTTClient(void)
-	: MQTTClientIf()
+	: MQTTClientBase()
 	, mqttClient_(nullptr)
 	{
 	}
@@ -68,16 +68,22 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
-	MQTTClientIf::SPtr constructMQTT(void)
+	bool
+	MQTTClient::send(const NetworkMessage& message)
+	{
+		return false;
+	}
+
+	MQTTClientBase::SPtr constructMQTT(void)
 	{
 		return constructSPtr<MQTTClient>();
 	}
 
 #else
 
-	MQTTClientIf::SPtr constructMQTT(void)
+	MQTTClientBase::SPtr constructMQTT(void)
 	{
-		return constructSPtr<MQTTClientIf>();
+		return constructSPtr<MQTTClientBase>();
 	}
 
 #endif

@@ -15,59 +15,73 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/MQTT/MQTTClientIf.h"
+#include "OpcUaStackPubSub/MQTT/MQTTClientBase.h"
 
 namespace OpcUaStackPubSub
 {
 
-	MQTTClientIf::MQTTClientIf(void)
+	MQTTClientBase::MQTTClientBase(void)
+	: clientName_("")
+	, networkReceiverIf_(nullptr)
 	{
 	}
 
-	MQTTClientIf::~MQTTClientIf(void)
+	MQTTClientBase::~MQTTClientBase(void)
 	{
 	}
 
 	bool
-	MQTTClientIf::mqttClientIfEnabled(void)
+	MQTTClientBase::mqttClientIfEnabled(void)
 	{
 		return false;
 	}
 
 	bool
-	MQTTClientIf::startup(void)
+	MQTTClientBase::startup(void)
 	{
 		return false;
 	}
 
 	bool
-	MQTTClientIf::init(void)
+	MQTTClientBase::init(void)
 	{
 		return false;
 	}
 
 	bool
-	MQTTClientIf::cleanup(void)
+	MQTTClientBase::cleanup(void)
 	{
 		return false;
 	}
 
 	bool
-	MQTTClientIf::shutdown(void)
+	MQTTClientBase::shutdown(void)
 	{
 		return false;
 	}
 
 	void
-	MQTTClientIf::clientName(const std::string& clientName)
+	MQTTClientBase::clientName(const std::string& clientName)
 	{
 		clientName_ = clientName;
 	}
 
 	std::string&
-	MQTTClientIf::clientName(void)
+	MQTTClientBase::clientName(void)
 	{
 		return clientName_;
+	}
+
+	bool
+	MQTTClientBase::registerReceiverIf(NetworkReceiverIf* networkReceiverIf)
+	{
+		networkReceiverIf_ = networkReceiverIf;
+	}
+
+	bool
+	MQTTClientBase::send(const NetworkMessage& message)
+	{
+		return false;
 	}
 
 }
