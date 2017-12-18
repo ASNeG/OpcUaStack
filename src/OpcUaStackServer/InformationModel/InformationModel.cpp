@@ -69,20 +69,17 @@ namespace OpcUaStackServer
 	InformationModel::insert(BaseNodeClass::SPtr baseNodeClass)
 	{
 		boost::mutex::scoped_lock lock(mutex_);
-		InformationModelMap::iterator it;
-		it = informationModelMap_.find(baseNodeClass->nodeId().data());
-		if (it != informationModelMap_.end()) {
-			return false;
-		}
 
-		informationModelMap_.insert(std::make_pair(baseNodeClass->nodeId().data(), baseNodeClass));
-		return true;
+		std::pair<InformationModelMap::iterator, bool> insertResult;
+		insertResult = informationModelMap_.insert(std::make_pair(baseNodeClass->nodeId().data(), baseNodeClass));
+		return insertResult.second;
 	}
 
 	BaseNodeClass::SPtr 
 	InformationModel::find(const OpcUaNodeId& opcUaNodeId)
 	{
 		boost::mutex::scoped_lock lock(mutex_);
+
 		InformationModelMap::iterator it;
 		it = informationModelMap_.find(opcUaNodeId);
 		if (it == informationModelMap_.end()) {
@@ -101,11 +98,9 @@ namespace OpcUaStackServer
 	bool
 	InformationModel::remove(const OpcUaNodeId& opcUaNodeId)
 	{
-		InformationModelMap::iterator it;
-		it = informationModelMap_.find(opcUaNodeId);
-		if (it == informationModelMap_.end()) return false;
-		informationModelMap_.erase(it);
-		return true;
+	    boost::mutex::scoped_lock lock(mutex_);
+
+		return informationModelMap_.erase(opcUaNodeId) > 0;
 	}
 
 	bool
