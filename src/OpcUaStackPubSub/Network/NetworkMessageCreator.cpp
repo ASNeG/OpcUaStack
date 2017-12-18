@@ -23,9 +23,10 @@ namespace OpcUaStackPubSub
 	NetworkMessageCreator::NetworkMessageCreator(void)
 	: ioThread_()
 	, slotTimerElement_()
-	, dataSetWriters_()
+	, dataSetWriterIfMap_()
 	, networkSender_()
 	, publishInterval_(1000)
+	, keepAliveTime_(1000)
 	, publisherIdEnabled_(false)
 	, dataSetWriterIdEnabled_(false)
 	, dataSetArrayEnabled_(false)
@@ -42,15 +43,38 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	NetworkMessageCreator::publishInterval(uint32_t publishInterval)
+	NetworkMessageCreator::publishInterval(OpcUaUInt32 publishInterval)
 	{
 		publishInterval_ = publishInterval;
+	}
+
+	OpcUaUInt32
+	NetworkMessageCreator::publishInterval() const
+	{
+		return publishInterval_;
 	}
 
 	void
 	NetworkMessageCreator::ioThread(IOThread::SPtr& ioThread)
 	{
 		ioThread_ = ioThread;
+	}
+
+	void
+	NetworkMessageCreator::keepAliveTime(OpcUaUInt32 keepAliveTime)
+	{
+		keepAliveTime_ = keepAliveTime;
+
+		for(DataSetWriterIf::Map::iterator it = dataSetWriterIfMap_.begin();
+				it != dataSetWriterIfMap_.end(); it++) {
+			it->second->keepAliveTime(keepAliveTime);
+		}
+	}
+
+	OpcUaUInt32
+	NetworkMessageCreator::keepAliveTime() const
+	{
+		return keepAliveTime_;
 	}
 
 	bool
@@ -82,14 +106,22 @@ namespace OpcUaStackPubSub
 	bool
 	NetworkMessageCreator::deregisterDataSetWriterIf(uint32_t writerId)
 	{
-		// FIXME: todo
+		DataSetWriterIf::Map::iterator it;
+		it = dataSetWriterIfMap_.find(writerId);
+		if (it == dataSetWriterIfMap_.end()) return false;
+		dataSetWriterIfMap_.erase(it);
 		return true;
 	}
 
 	bool
 	NetworkMessageCreator::registerDataSetWriterIf(const DataSetWriterIf::SPtr& writerIf)
 	{
-		dataSetWriters_.push_back(writerIf);
+		DataSetWriterIf::Map::iterator it;
+		it = dataSetWriterIfMap_.find(writerIf->writerId());
+		if (it != dataSetWriterIfMap_.end()) return false;
+
+		writerIf->keepAliveTime(keepAliveTime_);
+		dataSetWriterIfMap_.insert(std::make_pair(writerIf->writerId(), writerIf));
 		return true;
 	}
 
@@ -129,16 +161,17 @@ namespace OpcUaStackPubSub
 
 		// Build payload
 		DataSetMessageArray::SPtr messages = constructSPtr<DataSetMessageArray>();
-		messages->resize(dataSetWriters_.size());
+		messages->resize(dataSetWriterIfMap_.size());
 
-		for(WriterCollection::iterator it = dataSetWriters_.begin();
-				it != dataSetWriters_.end(); it++) {
+		for(DataSetWriterIf::Map::iterator it = dataSetWriterIfMap_.begin();
+				it != dataSetWriterIfMap_.end(); it++) {
 			DataSetMessage::SPtr msg;
 
-			if ((*it)->publishTimeout(msg)) {
+			if (it->second->publishTimeout(msg, publishInterval_)) {
 				messages->push_back(msg);
 			}
 		}
+
 
 		networkMessage.dataSetPayload()->count(messages->size());
 		networkMessage.dataSetPayload()->dataSetMessages(messages);
@@ -173,10 +206,10 @@ namespace OpcUaStackPubSub
 		return publisherId_;
 	}
 
-	NetworkMessageCreator::WriterCollection
-	NetworkMessageCreator::dataSetWriterIfs() const
+	DataSetWriterIf::Map
+	NetworkMessageCreator::dataSetWriterIfMap() const
 	{
-		return dataSetWriters_;
+		return dataSetWriterIfMap_;
 	}
 
 	void

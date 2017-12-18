@@ -21,6 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	DataSetReader::DataSetReader(void)
+	: receiveTimeoutCount_(0)
 	{
 	}
 
@@ -31,7 +32,22 @@ namespace OpcUaStackPubSub
 	bool
 	DataSetReader::receiveDataSetMessage(const DataSetMessage::SPtr& dataSetMessage)
 	{
+		receiveTimeoutCount_ = 0;
 		return false;
+	}
+
+	bool
+	DataSetReader::checkTimeout(uint32_t timeoutInterval)
+	{
+		receiveTimeoutCount_ += timeoutInterval;
+		if (receiveTimeoutCount_ > messageReceiveTimeout()) {
+			// TODO: We should change DataSetReader State to Error_3.
+
+			receiveTimeoutCount_ = 0;
+			return false;
+		}
+
+		return true;
 	}
 
 }

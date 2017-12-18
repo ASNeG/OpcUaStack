@@ -81,8 +81,6 @@ BOOST_AUTO_TEST_CASE(NetworkMessage_encode_decode_2dataSetMessage)
 	SHOULD_ENCODE_DECODE(message, "24 02 00 01 02 01 04 00 04 00 84 03 00 00 84 03 00 00");
 }
 
-
-
 BOOST_AUTO_TEST_SUITE_END()
 
 
