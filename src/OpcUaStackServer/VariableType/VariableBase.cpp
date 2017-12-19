@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 	VariableBase::VariableBase(void)
 	: serverVariables_()
 	, applicationServiceIf_(nullptr)
+	, namespaceName_("")
 	{
 	}
 
@@ -162,6 +163,11 @@ namespace OpcUaStackServer
 		Log(Debug, "create new node")
 			.parameter("TypeNodeId", variableType_);
 
+		// get namespace index
+		uint16_t namespaceIndex;
+		getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex);
+		variableType_.namespaceIndex(namespaceIndex);
+
 		ServiceTransactionCreateNodeInstance::SPtr trx = constructSPtr<ServiceTransactionCreateNodeInstance>();
 		CreateNodeInstanceRequest::SPtr req = trx->request();
 		CreateNodeInstanceResponse::SPtr res = trx->response();
@@ -186,7 +192,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableBase::getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex)
+	VariableBase::getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint16_t& namespaceIndex)
 	{
 		if (applicationServiceIf_ == nullptr) {
 			Log(Error, "application service interface error in class VariableBase");
@@ -221,6 +227,12 @@ namespace OpcUaStackServer
 	        .parameter("NamespaceUri", namespaceName);
 
 		return false;
+	}
+
+	void
+	VariableBase::variableTypeNamespace(const std::string& namespaceName)
+	{
+		namespaceName_ = namespaceName;
 	}
 
 	void

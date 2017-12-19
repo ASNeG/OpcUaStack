@@ -50,8 +50,9 @@ namespace OpcUaStackServer
 			const OpcUaQualifiedName& browseName,
 			const OpcUaNodeId& referenceNodeId
 		);
-		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint32_t& namespaceIndex);
+		bool getNamespaceIndexFromNamespaceName(const std::string& namespaceName, uint16_t& namespaceIndex);
 
+		void variableTypeNamespace(const std::string& namespaceName);
 		void variableType(const OpcUaNodeId& variableType);
 		OpcUaNodeId& variableType(void);
 
@@ -61,6 +62,7 @@ namespace OpcUaStackServer
 
 		ApplicationServiceIf* applicationServiceIf_;
 
+		std::string namespaceName_;
 		OpcUaNodeId variableType_;
 
 		ServerVariables serverVariables_;
