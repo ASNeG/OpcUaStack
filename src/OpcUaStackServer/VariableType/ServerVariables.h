@@ -78,10 +78,14 @@ namespace OpcUaStackServer
 			const OpcUaQualifiedName& pathElement5
 		);
 
+		Callback::SPtr& callback(void);
+		Callback::SPtr& createCallback(void);
+
 	  private:
 		std::string name_;
 		BaseNodeClass::WPtr baseNode_;
 		BrowseName::SPtr browseName_;
+		Callback::SPtr callback_;
 	};
 
 

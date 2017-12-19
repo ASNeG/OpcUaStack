@@ -154,6 +154,19 @@ namespace OpcUaStackServer
 		browseName_->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
 	}
 
+	Callback::SPtr&
+	ServerVariable::callback(void)
+	{
+		return callback_;
+	}
+
+	Callback::SPtr&
+	ServerVariable::createCallback(void)
+	{
+		callback_ = constructSPtr<Callback>();
+		return callback_;
+	}
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
