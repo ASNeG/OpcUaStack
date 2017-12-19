@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_VariableBase_h__
-#define __OpcUaStackServer_VariableBase_h__
+#ifndef __OpcUaStackServer_ObjectBase_h__
+#define __OpcUaStackServer_ObjectBase_h__
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
@@ -30,13 +30,13 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT VariableBase
+	class DLLEXPORT ObjectBase
 	{
 	  public:
-		typedef boost::shared_ptr<VariableBase> SPtr;
+		typedef boost::shared_ptr<ObjectBase> SPtr;
 
-		VariableBase(void);
-		virtual ~VariableBase(void);
+		ObjectBase(void);
+		virtual ~ObjectBase(void);
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
 		ServerVariables& serverVariables(void);
