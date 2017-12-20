@@ -218,7 +218,7 @@ namespace OpcUaStackServer
 		req->displayName() = displayName;
 		req->browseName() = browseName;
 		req->referenceNodeId() = referenceNodeId;
-		req->typeNodeId() = variableType_; // FIXME: get namespace index from opc ua information model
+		req->typeNodeId() = variableType_;
 
 	  	applicationServiceIf_->sendSync(trx);
 	  	if (trx->statusCode() != Success) {
