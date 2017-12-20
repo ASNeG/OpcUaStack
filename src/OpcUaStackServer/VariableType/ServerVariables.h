@@ -22,6 +22,7 @@
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
+#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 using namespace OpcUaStackCore;
@@ -79,8 +80,10 @@ namespace OpcUaStackServer
 			const OpcUaQualifiedName& pathElement5
 		);
 
+		void callback(Callback::SPtr& callback);
 		Callback::SPtr& callback(void);
 		Callback::SPtr& createCallback(void);
+		void writeValue(ApplicationWriteContext* applicationWriteContext);
 
 	  private:
 		std::string name_;

@@ -347,8 +347,13 @@ namespace OpcUaStackServer
 	void
 	VariableBase::writeValue(ApplicationWriteContext* applicationWriteContext)
 	{
-		// FIXME: todo
-		std::cout << "write value..." << std::endl;
+		applicationWriteContext->statusCode_ = Success;
+
+		BaseClass::SPtr baseClass = applicationWriteContext->applicationContext_;
+		if (baseClass.get() == nullptr) return;
+
+		ServerVariable::SPtr serverVariable = boost::static_pointer_cast<ServerVariable>(baseClass);
+		serverVariable->writeValue(applicationWriteContext);
 	}
 
 }

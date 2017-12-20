@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 	: baseNode_()
 	, name_(name)
 	, browseName_()
+	, callback_()
 	{
 	}
 
@@ -154,6 +155,12 @@ namespace OpcUaStackServer
 		browseName_->set(nodeId, pathElement1, pathElement2, pathElement3, pathElement4, pathElement5);
 	}
 
+	void
+	ServerVariable::callback(Callback::SPtr& callback)
+	{
+		callback_ = callback;
+	}
+
 	Callback::SPtr&
 	ServerVariable::callback(void)
 	{
@@ -165,6 +172,18 @@ namespace OpcUaStackServer
 	{
 		callback_ = constructSPtr<Callback>();
 		return callback_;
+	}
+
+	void
+	ServerVariable::writeValue(ApplicationWriteContext* applicationWriteContext)
+	{
+		if (callback_.get() == nullptr) return;
+		if (!callback_->exist()) return;
+
+		(*callback_.get())(
+			applicationWriteContext->attributeId_,
+			&applicationWriteContext->dataValue_
+		);
 	}
 
 	// ------------------------------------------------------------------------
