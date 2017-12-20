@@ -33,6 +33,7 @@ namespace OpcUaStackServer
 	: serverVariables_()
 	, applicationServiceIf_(nullptr)
 	, namespaceName_("")
+	, writeCallback_(boost::bind(&VariableBase::writeValue, this, _1))
 	{
 	}
 
@@ -104,7 +105,7 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
 		//
-		// get node references from opc ua information model
+		// get node references from opc ua information model a
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
@@ -147,6 +148,37 @@ namespace OpcUaStackServer
 			idx++;
 		}
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// register write callbacks
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		Log(Debug, "register write callbacks");
+
+	  	ServiceTransactionRegisterForwardNode::SPtr trx3 = constructSPtr<ServiceTransactionRegisterForwardNode>();
+	  	RegisterForwardNodeRequest::SPtr req3 = trx3->request();
+	  	RegisterForwardNodeResponse::SPtr res3 = trx3->response();
+
+	  	req3->forwardNodeSync()->writeService().setCallback(writeCallback_);
+	  	req3->nodesToRegister(req2->nodes());
+
+	  	applicationServiceIf_->sendSync(trx3);
+	  	if (trx3->statusCode() != Success) {
+	  		std::cout << "response error" << std::endl;
+	  		return false;
+	  	}
+
+	  	for (uint32_t pos = 0; pos < res3->statusCodeArray()->size(); pos++) {
+	  		OpcUaStatusCode statusCode;
+	  		res3->statusCodeArray()->get(pos, statusCode);
+	  		if (statusCode != Success) {
+	  			std::cout << "register value error" << std::endl;
+	  			return false;
+	  		}
+	  	}
+
 		return true;
 	}
 
@@ -168,6 +200,13 @@ namespace OpcUaStackServer
 		getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex);
 		variableType_.namespaceIndex(namespaceIndex);
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// create node instance
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
 		ServiceTransactionCreateNodeInstance::SPtr trx = constructSPtr<ServiceTransactionCreateNodeInstance>();
 		CreateNodeInstanceRequest::SPtr req = trx->request();
 		CreateNodeInstanceResponse::SPtr res = trx->response();
@@ -298,6 +337,13 @@ namespace OpcUaStackServer
   		ref = nodeReferenceApplication->baseNodeClass();
 
 		return true;
+	}
+
+	void
+	VariableBase::writeValue(ApplicationWriteContext* applicationWriteContext)
+	{
+		// FIXME: todo
+		std::cout << "write value..." << std::endl;
 	}
 
 }

@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSetApplication/ApplicationServiceTransaction.h"
+#include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackServer/VariableType/ServerVariables.h"
 #include "OpcUaStackServer/Application/ApplicationIf.h"
 
@@ -58,6 +59,7 @@ namespace OpcUaStackServer
 	  private:
 		bool getNodeIdFromResponse(BrowsePathToNodeIdResponse::SPtr& res, uint32_t idx, OpcUaNodeId::SPtr& nodeId);
 		bool getRefFromResponse(GetNodeReferenceResponse::SPtr& res, uint32_t idx, BaseNodeClass::WPtr& ref);
+		void writeValue(ApplicationWriteContext* applicationWriteContext);
 
 		ApplicationServiceIf* applicationServiceIf_;
 
@@ -65,6 +67,7 @@ namespace OpcUaStackServer
 		OpcUaNodeId variableType_;
 
 		ServerVariables serverVariables_;
+		Callback writeCallback_;
 	};
 
 
