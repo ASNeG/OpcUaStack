@@ -165,8 +165,8 @@ namespace OpcUaStackServer
 	  	req3->nodesToRegister(req2->nodes());
 		req3->applicationContextArray()->resize(serverVariables_.serverVariableMap().size());
 		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
-			//BaseClass::SPtr serverVariable = it->second;
-			//req3->applicationContextArray()->push_back(serverVariable);
+			BaseClass::SPtr serverVariable = it->second;
+			req3->applicationContextArray()->push_back(serverVariable);
 		}
 
 	  	applicationServiceIf_->sendSync(trx3);

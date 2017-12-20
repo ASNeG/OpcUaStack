@@ -101,6 +101,10 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
+		bool applicationContextArray = false;
+		if (registerForwardNodeRequest->applicationContextArray()->size() == registerForwardNodeRequest->nodesToRegister()->size()) {
+			applicationContextArray = true;
+		}
 
 		// register forward
 		registerForwardNodeResponse->statusCodeArray()->resize(registerForwardNodeRequest->nodesToRegister()->size());
@@ -135,6 +139,19 @@ namespace OpcUaStackServer
 			}
 			else {
 				forwardNodeSync->updateFrom(*registerForwardNodeRequest->forwardNodeSync());
+			}
+			if (applicationContextArray) {
+				BaseClass::SPtr baseClass;
+				registerForwardNodeRequest->applicationContextArray()->get(idx, baseClass);
+				if (baseClass.get() != nullptr) {
+					forwardNodeSync->writeService().applicationContext(baseClass);
+					forwardNodeSync->readService().applicationContext(baseClass);
+					forwardNodeSync->writeService().applicationContext(baseClass);
+					forwardNodeSync->readHService().applicationContext(baseClass);
+					forwardNodeSync->methodService().applicationContext(baseClass);
+					forwardNodeSync->monitoredItemStartService().applicationContext(baseClass);
+					forwardNodeSync->monitoredItemStopService().applicationContext(baseClass);
+				}
 			}
 			baseNodeClass->forwardNodeSync(forwardNodeSync);
 

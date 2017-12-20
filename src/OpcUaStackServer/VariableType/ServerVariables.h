@@ -30,6 +30,7 @@ namespace OpcUaStackServer
 {
 
 	class DLLEXPORT ServerVariable
+	: public BaseClass
 	{
 	  public:
 		typedef boost::shared_ptr<ServerVariable> SPtr;
@@ -90,13 +91,12 @@ namespace OpcUaStackServer
 
 
 	class DLLEXPORT ServerVariables
-	: public BaseClass
 	{
 	  public:
 		typedef boost::shared_ptr<ServerVariables> SPtr;
 
 		ServerVariables(void);
-		~ServerVariables(void);
+		virtual ~ServerVariables(void);
 
 		bool registerServerVariable(ServerVariable::SPtr& serverVariable);
 		ServerVariable::Map& serverVariableMap(void);
