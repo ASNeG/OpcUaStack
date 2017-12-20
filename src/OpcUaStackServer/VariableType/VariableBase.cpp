@@ -77,7 +77,7 @@ namespace OpcUaStackServer
 
 		req1->browseNameArray()->resize(serverVariables_.serverVariableMap().size());
 		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
-			ServerVariable* serverVariable = it->second;
+			ServerVariable::SPtr serverVariable = it->second;
 			BrowseName::SPtr browseName = serverVariable->browseName();
 			if (browseName.get() == nullptr) {
 				browseName = constructSPtr<BrowseName>();
@@ -140,7 +140,7 @@ namespace OpcUaStackServer
 		uint32_t idx = 0;
 		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
 			BaseNodeClass::WPtr ref;
-			ServerVariable* serverVariable = it->second;
+			ServerVariable::SPtr serverVariable = it->second;
 
 			if (!getRefFromResponse(res2, idx, ref)) return false;
 			serverVariable->baseNode(ref);
@@ -163,6 +163,11 @@ namespace OpcUaStackServer
 
 	  	req3->forwardNodeSync()->writeService().setCallback(writeCallback_);
 	  	req3->nodesToRegister(req2->nodes());
+		req3->applicationContextArray()->resize(serverVariables_.serverVariableMap().size());
+		for (it=serverVariables_.serverVariableMap().begin(); it != serverVariables_.serverVariableMap().end(); it++) {
+			//BaseClass::SPtr serverVariable = it->second;
+			//req3->applicationContextArray()->push_back(serverVariable);
+		}
 
 	  	applicationServiceIf_->sendSync(trx3);
 	  	if (trx3->statusCode() != Success) {

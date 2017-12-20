@@ -184,7 +184,7 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	ServerVariables::registerServerVariable(ServerVariable* serverVariable)
+	ServerVariables::registerServerVariable(ServerVariable::SPtr& serverVariable)
 	{
 		ServerVariable::Map::iterator it;
 		it = serverVariableMap_.find(serverVariable->name());

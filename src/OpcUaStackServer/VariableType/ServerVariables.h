@@ -33,7 +33,7 @@ namespace OpcUaStackServer
 	{
 	  public:
 		typedef boost::shared_ptr<ServerVariable> SPtr;
-		typedef std::map<std::string, ServerVariable*> Map;
+		typedef std::map<std::string, ServerVariable::SPtr> Map;
 
 		ServerVariable(const std::string& name);
 		~ServerVariable(void);
@@ -90,6 +90,7 @@ namespace OpcUaStackServer
 
 
 	class DLLEXPORT ServerVariables
+	: public BaseClass
 	{
 	  public:
 		typedef boost::shared_ptr<ServerVariables> SPtr;
@@ -97,7 +98,7 @@ namespace OpcUaStackServer
 		ServerVariables(void);
 		~ServerVariables(void);
 
-		bool registerServerVariable(ServerVariable* serverVariable);
+		bool registerServerVariable(ServerVariable::SPtr& serverVariable);
 		ServerVariable::Map& serverVariableMap(void);
 
 	  private:
