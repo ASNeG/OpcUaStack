@@ -140,12 +140,12 @@ namespace OpcUaStackServer
 
 		// set project namespace
 		if (projectNamespace_ == "") {
-			projectNamespace_ = "OpcUaStackCore";
+			projectNamespace_ = "OpcUaStackServer";
 		}
 
 		// set parent project namespace
 		if (parentProjectNamespace_ == "") {
-			parentProjectNamespace_ = "OpcUaStackCore";
+			parentProjectNamespace_ = "OpcUaStackServer";
 		}
 
 		// create variable element list
@@ -389,7 +389,7 @@ namespace OpcUaStackServer
 		ss << std::endl;
 		ss << "#include <boost/shared_ptr.hpp>" << std::endl;
 		ss << "#include \"OpcUaStackCore/Base/os.h\"" << std::endl;
-		ss << "#include \"OpcUaStackCore/BuildInTypes/BuildInTypes.h\"" << std::endl;
+		ss << "#include \"OpcUaStackServer/VariableType/ServerVariables.h\"" << std::endl;
 		ss << "#include \"" << parentProjectNamespace_ << "/" << parentProjectDirectory_ << "/" << parentVariableTypeName_ << ".h\"" << std::endl;
 
 		//
@@ -475,9 +475,9 @@ namespace OpcUaStackServer
 
 		NodeElement::Vec::iterator it;
 		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
-			NodeElement::SPtr variableElement = *it;
-			std::string functionName = variableElement->functionName();
-			std::string browseName = variableElement->browseName();
+			NodeElement::SPtr nodeElement = *it;
+			std::string functionName = nodeElement->functionName();
+			std::string browseName = nodeElement->browseName();
 
 			ss << prefix << "BaseNodeClass::SPtr " << functionName << "(void);" << std::endl;
 			ss << prefix << "bool set" << browseName << "(const OpcUaDataValue& dataValue);" << std::endl;
@@ -493,7 +493,20 @@ namespace OpcUaStackServer
 	bool
 	VariableTypeGenerator::generateHeaderClassPrivate(const std::string& prefix)
 	{
-		// FIXME: todo
+		std::stringstream ss;
+
+		ss << "      private:" << std::endl;
+		ss << prefix << "    std::string namespaceName_;" << std::endl;
+		ss << prefix << "    uint16_t namespaceIndex_;" << std::endl;
+
+		NodeElement::Vec::iterator it;
+		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
+			NodeElement::SPtr nodeElement = *it;
+			std::string variableName = nodeElement->globalVariableName();
+			ss << prefix << "    ServerVariable::SPtr " << variableName << ";" << std::endl;
+		}
+
+		headerContent_ += ss.str();
 		return true;
 	}
 
@@ -516,8 +529,6 @@ namespace OpcUaStackServer
 				generateSourceClassDestructor("    ") &&
 				generateSourceClassGetter("    ") &&
 				generateSourceClassSetter("    ") &&
-				generateSourceClassNamespaceUri("    ") &&
-				generateSourceClassGet("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -624,66 +635,6 @@ namespace OpcUaStackServer
 	VariableTypeGenerator::generateSourceClassSetter(const std::string& prefix)
 	{
 		// FIXME: todo
-		return true;
-	}
-
-	bool
-	VariableTypeGenerator::generateSourceClassNamespaceUri(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		ss << prefix << std::endl;
-		ss << prefix << "void" << std::endl;
-		ss << prefix << variableTypeName_ << "::" << "mapNamespaceUri(void)" << std::endl;
-		ss << prefix << "{" << std::endl;
-		ss << prefix << "    uint32_t namespaceIndex;" << std::endl;
-		ss << prefix << "    " << parentVariableTypeName_ << "::mapNamespaceUri();" << std::endl;
-		ss << prefix << std::endl;
-		ss << prefix << "    OpcUaVariant::SPtr variableTypeVariable = constructSPtr<OpcUaVariant>();" << std::endl;
-		ss << prefix << "    variableTypeVariable->setValue(eventVariables_.variableType());" << std::endl;
-		ss << prefix << std::endl;
-		ss << prefix << "    setNamespaceIndex(eventVariables_.namespaceUri(), namespaceIndex, eventVariables_.browseName(), variableTypeVariable);" << std::endl;
-		ss << prefix << std::endl;
-		ss << prefix << "    variableType(variableTypeVariable);" << std::endl;
-		ss << prefix << "    eventVariables_.variableType(variableTypeVariable);" << std::endl;
-		ss << prefix << "    eventVariables_.namespaceIndex(namespaceIndex);" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-		sourceContent_ += ss.str();
-		return true;
-	}
-
-	bool
-	VariableTypeGenerator::generateSourceClassGet(const std::string& prefix)
-	{
-		std::stringstream ss;
-
-		ss << std::endl;
-		ss << prefix << "OpcUaVariant::SPtr" << std::endl;
-		ss << prefix << variableTypeName_ << "::" << "get(" << std::endl;
-		ss << prefix << "	OpcUaNodeId& variableType," << std::endl;
-		ss << prefix << "	std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
-		ss << prefix << "	EventResult::Code& resultCode" << std::endl;
-		ss << prefix << ")" << std::endl;
-		ss << prefix << "{" << std::endl;
-		ss << prefix << "    resultCode = EventResult::Success;" << std::endl;
-		ss << std::endl;
-		ss << prefix << "    // check whether variableType and typeNodeId are identical" << std::endl;
-		ss << prefix << "    if (variableType == eventVariables_.variableType()) {" << std::endl;
-		ss << prefix << "	    return eventVariables_.get(browseNameList, resultCode);" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << std::endl;
-		ss << prefix << "    // the start item was not found. We delegate the search to the base class" << std::endl;
-		ss << prefix << "    OpcUaVariant::SPtr variant;" << std::endl;
-		ss << prefix << "    variant = " << parentVariableTypeName_ << "::get(variableType, browseNameList, resultCode);" << std::endl;
-		ss << prefix << "    if (resultCode != EventResult::Success || browseNameList.empty()) {" << std::endl;
-		ss << prefix << "	    return variant;" << std::endl;
-		ss << prefix << "    }" << std::endl;
-		ss << std::endl;
-		ss << prefix << "    return eventVariables_.get(browseNameList, resultCode);" << std::endl;
-		ss << prefix << "}" << std::endl;
-
-		sourceContent_ += ss.str();
 		return true;
 	}
 
