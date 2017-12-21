@@ -470,19 +470,21 @@ namespace OpcUaStackServer
 	{
 		std::stringstream ss;
 
-		// FIXME: todo
+		ss << prefix << "virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);" << std::endl;
+		ss << prefix << std::endl;
 
-		ss << prefix << std::endl;
-		ss << prefix << "//- VariableBase interface" << std::endl;
-		ss << prefix << "virtual void mapNamespaceUri(void);" << std::endl;
-		ss << prefix << std::endl;
-		ss << prefix << "virtual OpcUaVariant::SPtr get(" << std::endl;
-		ss << prefix << "    OpcUaNodeId& eventType," << std::endl;
-		ss << prefix << "    std::list<OpcUaQualifiedName::SPtr>& browseNameList," << std::endl;
-		ss << prefix << "    EventResult::Code& resultCode" << std::endl;
-		ss << prefix << ");" << std::endl;
-		ss << prefix << "//- VariableBase interface" << std::endl;
-		ss << prefix << std::endl;
+		NodeElement::Vec::iterator it;
+		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
+			NodeElement::SPtr variableElement = *it;
+			std::string functionName = variableElement->functionName();
+			std::string browseName = variableElement->browseName();
+
+			ss << prefix << "BaseNodeClass::SPtr " << functionName << "(void);" << std::endl;
+			ss << prefix << "bool set" << browseName << "(const OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "bool get" << browseName << "(OpcUaDataValue& dataValue);" << std::endl;
+			ss << prefix << "void setUpdateCallback" << browseName << "(Callback::SPtr& callback);" << std::endl;
+			ss << prefix << std::endl;
+		}
 
 		headerContent_ += ss.str();
 		return true;
