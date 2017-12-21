@@ -36,6 +36,18 @@ namespace OpcUaVariableTypeGenerator
 		uint32_t start(int argc, char** argv);
 
 	  private:
+		std::string fileName_;
+		std::string variableTypeName_;
+		std::string projectNamespace_;
+		std::string parentProjectNamespace_;
+		bool buildSubTypes_;
+		std::vector<std::string> ignoreVariableTypeNameVec_;
+
+		std::vector<std::string> variableTypeNameVec_;
+		InformationModel::SPtr informationModel_;
+		OpcUaNodeId variableTypeNodeId_;
+
+		int32_t loadInformationModel(void);
 	};
 
 }
