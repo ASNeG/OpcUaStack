@@ -108,6 +108,9 @@ namespace OpcUaStackServer
 		if (variableTypeNodeId_.namespaceIndex() != 0) {
 			// FIXME: todo
 		}
+		else {
+			namespaceUri_ = "http://opcfoundation.org/UA/";
+		}
 
 		// get parent variable type name
 		if (!parentVariableTypeNode_->getBrowseName(browseName)) {
@@ -603,7 +606,25 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << variableTypeName_ << "::" << variableTypeName_ << "(void)" << std::endl;
 		ss << prefix << ": " << parentVariableTypeName_ << "()" << std::endl;
+		ss << prefix << ", namespaceName_(\"" << namespaceUri_ << "\")" << std::endl;
+		ss << prefix << ", namespaceIndex_(0)" << std::endl;
+
+		NodeElement::Vec::iterator it;
+		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
+			NodeElement::SPtr nodeElement = *it;
+			std::string variableName = nodeElement->globalVariableName();
+			std::string browseName = nodeElement->browseName();
+			ss << prefix << ", " << variableName << "(constructSPtr<ServerVariable>(\"" << browseName << "\"))" << std::endl;
+		}
+
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "    variableTypeNamespace(namespaceName_);" << std::endl;
+		ss << prefix << "    variableType(OpcUaNodeId(" << variableTypeNumber_ << "));" << std::endl;
+		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
+			NodeElement::SPtr nodeElement = *it;
+			std::string variableName = nodeElement->globalVariableName();
+			ss << prefix << "    serverVariables().registerServerVariable(" << variableName << ");" << std::endl;
+		}
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
