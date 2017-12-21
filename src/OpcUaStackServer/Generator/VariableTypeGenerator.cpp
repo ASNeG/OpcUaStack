@@ -531,8 +531,7 @@ namespace OpcUaStackServer
 				generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
 				generateSourceLinkInstanceWithModel("    ") &&
-				generateSourceClassGetter("    ") &&
-				generateSourceClassSetter("    ") &&
+				generateSourceClassGetterSetter("    ") &&
 			generateSourceClassEnd();
 	}
 
@@ -674,16 +673,48 @@ namespace OpcUaStackServer
 	}
 
 	bool
-	VariableTypeGenerator::generateSourceClassGetter(const std::string& prefix)
+	VariableTypeGenerator::generateSourceClassGetterSetter(const std::string& prefix)
 	{
-		// FIXME: todo
-		return true;
-	}
+		std::stringstream ss;
 
-	bool
-	VariableTypeGenerator::generateSourceClassSetter(const std::string& prefix)
-	{
-		// FIXME: todo
+		NodeElement::Vec::iterator it;
+		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
+			NodeElement::SPtr nodeElement = *it;
+			std::string variableName = nodeElement->globalVariableName();
+			std::string browseName = nodeElement->browseName();
+			std::string functionName = nodeElement->functionName();
+
+			ss << prefix << std::endl;
+			ss << prefix << "BaseNodeClass::SPtr" << std::endl;
+			ss << prefix << variableTypeName_ << "::" << functionName << "(void)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << variableName << "->baseNode().lock();" << std::endl;
+			ss << prefix << "}" << std::endl;
+
+			ss << prefix << std::endl;
+			ss << prefix << "bool" << std::endl;
+			ss << prefix << variableTypeName_ << "::set" << browseName << "(const OpcUaDataValue& dataValue)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << variableName << "->setDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
+
+			ss << prefix << std::endl;
+			ss << prefix << "bool" << std::endl;
+			ss << prefix << variableTypeName_ << "::get" << browseName << "(OpcUaDataValue& dataValue)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    return " << variableName << "->getDataValue(dataValue);" << std::endl;
+			ss << prefix << "}" << std::endl;
+
+			ss << prefix << std::endl;
+			ss << prefix << "void" << std::endl;
+			ss << prefix << variableTypeName_ << "::setUpdateCallback" << browseName << "(Callback::SPtr& callback)" << std::endl;
+			ss << prefix << "{" << std::endl;
+			ss << prefix << "    " << variableName << "->callback(callback);" << std::endl;
+			ss << prefix << "}" << std::endl;
+
+		}
+
+		sourceContent_ += ss.str();
 		return true;
 	}
 
