@@ -38,6 +38,15 @@ namespace OpcUaStackServer
 		virtual ~BaseVariableType(void);
 
 		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
+
+		BaseNodeClass::SPtr value(void);
+		bool setValue(const OpcUaDataValue& dataValue);
+		bool getValue(OpcUaDataValue& dataValue);
+		void setUpdateCallbackValue(Callback::SPtr& callback);
+
+
+	  private:
+		ServerVariable::SPtr value_;
 	};
 
 }

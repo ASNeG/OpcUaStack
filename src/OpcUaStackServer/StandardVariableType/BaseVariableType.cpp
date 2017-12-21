@@ -25,8 +25,9 @@ namespace OpcUaStackServer
 
 	BaseVariableType::BaseVariableType(void)
 	: VariableBase()
+	, value_(constructSPtr<ServerVariable>("Value"))
 	{
-
+		serverVariables().registerServerVariable(value_);
 	}
 
 	BaseVariableType::~BaseVariableType(void)
@@ -36,8 +37,31 @@ namespace OpcUaStackServer
 	bool
 	BaseVariableType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
 	{
-		// FIXME: todo
 		return VariableBase::linkInstanceWithModel(nodeId);
+	}
+
+	BaseNodeClass::SPtr
+	BaseVariableType::value(void)
+	{
+		return value_->baseNode().lock();
+	}
+
+	bool
+	BaseVariableType::setValue(const OpcUaDataValue& dataValue)
+	{
+		return value_->setDataValue(dataValue);
+	}
+
+	bool
+	BaseVariableType::getValue(OpcUaDataValue& dataValue)
+	{
+		return value_->getDataValue(dataValue);
+	}
+
+	void
+	BaseVariableType::setUpdateCallbackValue(Callback::SPtr& callback)
+	{
+		value_->callback(callback);
 	}
 
 }
