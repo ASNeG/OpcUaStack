@@ -665,7 +665,7 @@ namespace OpcUaStackServer
 			ss << prefix << "    " << variableName << "->addBrowsePath(nodeId, OpcUaQualifiedName(\"" << browseName << "\", namespaceIndex_));" << std::endl;
 		}
 
-		ss << prefix << "    return BaseDataVariableType::linkInstanceWithModel(nodeId);" << std::endl;
+		ss << prefix << "    " << parentVariableTypeName_ << "::linkInstanceWithModel(nodeId);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
