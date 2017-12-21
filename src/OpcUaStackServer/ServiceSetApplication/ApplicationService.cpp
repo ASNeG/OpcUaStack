@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackServer/InformationModel/InformationModelManager.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/InformationModel/NamespaceArray.h"
 #include "OpcUaStackServer/ServiceSetApplication/ApplicationService.h"
 #include "OpcUaStackServer/ServiceSetApplication/NodeReferenceApplication.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -311,8 +312,17 @@ namespace OpcUaStackServer
 		Log(Debug, "application service namespace info request")
 			.parameter("Trx", serviceTransaction->transactionId());
 
-		// read global namespaces
+		// register new namespace
 		NodeSetNamespace nodeSetNamespace;
+		if (namespaceInfoRequest->newNamespaceUri() != "") {
+			nodeSetNamespace.addNewGlobalNamespace(namespaceInfoRequest->newNamespaceUri());
+
+			NamespaceArray nsa;
+			nsa.informationModel(informationModel_);
+			nsa.addNamespaceName(namespaceInfoRequest->newNamespaceUri());
+		}
+
+		// read global namespaces
 		for (uint32_t idx = 0; idx < nodeSetNamespace.globalNamespaceVec().size(); idx++) {
 			std::string namespaceName = nodeSetNamespace.globalNamespaceVec()[idx];
 			namespaceInfoResponse->index2NamespaceMap().insert(std::make_pair(idx, namespaceName));
