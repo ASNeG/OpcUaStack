@@ -530,6 +530,7 @@ namespace OpcUaStackServer
 			generateSourceClassBegin() &&
 				generateSourceClassConstructor("    ") &&
 				generateSourceClassDestructor("    ") &&
+				generateSourceLinkInstanceWithModel("    ") &&
 				generateSourceClassGetter("    ") &&
 				generateSourceClassSetter("    ") &&
 			generateSourceClassEnd();
@@ -639,6 +640,33 @@ namespace OpcUaStackServer
 		ss << prefix << std::endl;
 		ss << prefix << variableTypeName_ << "::~" << variableTypeName_ << "(void)" << std::endl;
 		ss << prefix << "{" << std::endl;
+		ss << prefix << "}" << std::endl;
+
+		sourceContent_ += ss.str();
+		return true;
+	}
+
+	bool
+	VariableTypeGenerator::generateSourceLinkInstanceWithModel(const std::string& prefix)
+	{
+		std::stringstream ss;
+
+		ss << prefix << std::endl;
+		ss << prefix << "bool" << std::endl;
+		ss << prefix << variableTypeName_ << "::linkInstanceWithModel(const OpcUaNodeId& nodeId)" << std::endl;
+		ss << prefix << "{" << std::endl;
+		ss << prefix << "    if (!getNamespaceIndexFromNamespaceName(namespaceName_, namespaceIndex_)) return false;" << std::endl;
+
+		NodeElement::Vec::iterator it;
+		for (it = nodeElementVec_.begin(); it != nodeElementVec_.end(); it++) {
+			NodeElement::SPtr nodeElement = *it;
+			std::string variableName = nodeElement->globalVariableName();
+			std::string browseName = nodeElement->browseName();
+
+			ss << prefix << "    " << variableName << "->addBrowsePath(nodeId, OpcUaQualifiedName(\"" << browseName << "\", namespaceIndex_));" << std::endl;
+		}
+
+		ss << prefix << "    return BaseDataVariableType::linkInstanceWithModel(nodeId);" << std::endl;
 		ss << prefix << "}" << std::endl;
 
 		sourceContent_ += ss.str();
