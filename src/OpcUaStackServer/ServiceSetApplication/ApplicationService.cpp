@@ -135,11 +135,9 @@ namespace OpcUaStackServer
 			// create or update forward info
 			ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
 			if (forwardNodeSync.get() == nullptr) {
-				forwardNodeSync = registerForwardNodeRequest->forwardNodeSync();
+				forwardNodeSync = constructSPtr<ForwardNodeSync>();
 			}
-			else {
-				forwardNodeSync->updateFrom(*registerForwardNodeRequest->forwardNodeSync());
-			}
+			forwardNodeSync->updateFrom(*registerForwardNodeRequest->forwardNodeSync());
 			if (applicationContextArray) {
 				BaseClass::SPtr baseClass;
 				registerForwardNodeRequest->applicationContextArray()->get(idx, baseClass);
