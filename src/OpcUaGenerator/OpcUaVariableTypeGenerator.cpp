@@ -135,11 +135,9 @@ namespace OpcUaVariableTypeGenerator
 			ignoreVariableTypeNameVec_ = vm["ignoreVariableTypeName"].as< std::vector<std::string> >();
 		}
 
-#if 0
 		if (buildSubTypes_) {
 			return buildAllSubTypes();
 		}
-#endif
 
 		// ignore BaseEventType
 		if (variableTypeName_ == "BaseVariableType") {
@@ -279,6 +277,85 @@ namespace OpcUaVariableTypeGenerator
 		ofStream.open(sourceFileName, std::ios::out);
 		ofStream << sourceContent;
 		ofStream.close();
+
+		return 0;
+	}
+
+	int32_t
+	OpcUaVariableTypeGenerator::buildAllSubTypes(void)
+	{
+		// load inforomation model
+		int32_t rc = loadInformationModel();
+		if (rc < 0) {
+			return rc;
+		}
+
+		// find node id for variable type name
+		variableTypeNodeId_.set(0,0);
+		if (!findNodeId(variableTypeName_, OpcUaNodeId(62))) {
+			std::cout << "node id not found for variable type " << variableTypeName_ << std::endl;
+			return -3;
+		}
+
+		// find all sub types
+		if (findAllSubTypes(variableTypeNodeId_) < 0) {
+			return -4;
+		}
+
+		// create source
+		std::vector<std::string>::iterator it;
+		for (it = variableTypeNameVec_.begin(); it != variableTypeNameVec_.end(); it++) {
+			variableTypeName_ = *it;
+			int32_t rc = generateVariableTypeSource();
+			if (rc < 0) return rc;
+		}
+
+		return 0;
+	}
+
+	int32_t
+	OpcUaVariableTypeGenerator::findAllSubTypes(const OpcUaNodeId& variableTypeNodeId)
+	{
+		// find node id in information model
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(variableTypeNodeId);
+		if (!nodeClass) {
+			std::cout << "node " << variableTypeNodeId << " not found in information model" << std::endl;
+			return false;
+		}
+
+		// get browse name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			std::cout << "browsename of node " << variableTypeNodeId << " error" << std::endl;
+			return false;
+		}
+
+		if (browseName.name().toStdString() != "BaseVariableType") {
+			variableTypeNameVec_.push_back(browseName.name().toStdString());
+		}
+
+		// find subtype childs
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(45);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		bool success = ima.getChildHierarchically(
+			nodeClass,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			std::cout << "node " << variableTypeNodeId << " subtype error" << std::endl;
+			return -1;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+			success = findAllSubTypes(*it);
+			if (success) {
+				return 0;
+			}
+		}
 
 		return 0;
 	}

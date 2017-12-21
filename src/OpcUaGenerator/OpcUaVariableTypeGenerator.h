@@ -50,6 +50,8 @@ namespace OpcUaVariableTypeGenerator
 		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
 		int32_t generateVariableTypeSource(void);
+		int32_t buildAllSubTypes(void);
+		int32_t findAllSubTypes(const OpcUaNodeId& eventTypeNodeId);
 	};
 
 }
