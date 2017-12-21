@@ -15,12 +15,15 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <boost/program_options.hpp>
 #include "OpcUaStackCore/Utility/Environment.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/InformationModel/InformationModelAccess.h"
+#include "OpcUaStackServer/Generator/VariableTypeGenerator.h"
 #include "OpcUaGenerator/OpcUaVariableTypeGenerator.h"
 #include "BuildConfig.h"
 
@@ -149,11 +152,58 @@ namespace OpcUaVariableTypeGenerator
 			return rc;
 		}
 
-#if 0
 		return generateVariableTypeSource();
-#endif
-		//FIXME: todo
-		return 1;
+	}
+
+	bool
+	OpcUaVariableTypeGenerator::findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId)
+	{
+		bool success;
+
+		// find node id in information model
+		BaseNodeClass::SPtr nodeClass = informationModel_->find(nodeId);
+		if (!nodeClass) {
+			std::cout << "node " << nodeId << " not found in information model" << std::endl;
+			return false;
+		}
+
+		// get browse name
+		OpcUaQualifiedName browseName;
+		if (!nodeClass->getBrowseName(browseName)) {
+			std::cout << "browsename of node " << nodeId << " error" << std::endl;
+			return false;
+		}
+
+		// check browse name
+		if (browseName.name().toStdString() == eventTypeName) {
+			variableTypeNodeId_ = nodeId;
+			return true;
+		}
+
+		// find subtype childs
+		InformationModelAccess ima;
+		OpcUaNodeId referenceType(45);
+		std::vector<OpcUaNodeId> childNodeIdVec;
+		std::vector<OpcUaNodeId>::iterator it;
+		ima.informationModel(informationModel_);
+		success = ima.getChildHierarchically(
+			nodeClass,
+			referenceType,
+			childNodeIdVec
+		);
+		if (!success) {
+			std::cout << "node " << nodeId << " subtype error" << std::endl;
+			return false;
+		}
+
+		for (it = childNodeIdVec.begin(); it != childNodeIdVec.end(); it++) {
+			success = findNodeId(eventTypeName, *it);
+			if (success) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	int32_t
@@ -184,6 +234,54 @@ namespace OpcUaVariableTypeGenerator
 		return 0;
 	}
 
+	int32_t
+	OpcUaVariableTypeGenerator::generateVariableTypeSource(void)
+	{
+		// check event type name
+		std::vector<std::string>::iterator it;
+		for (it=ignoreVariableTypeNameVec_.begin(); it!=ignoreVariableTypeNameVec_.end(); it++) {
+			if (*it == variableTypeName_) {
+				return 0;
+			}
+		}
+
+		// find node id for variable type name
+		variableTypeNodeId_.set(0,0);
+		if (!findNodeId(variableTypeName_, OpcUaNodeId(62))) {
+			std::cout << "node id not found for variable type " << variableTypeName_ << std::endl;
+			return -3;
+		}
+
+		// generate variable type source code
+		VariableTypeGenerator variableTypeGenerator;
+		//variableTypeGenerator.projectNamespace(projectNamespace_);
+		//variableTypeGenerator.parentProjectNamespace(parentProjectNamespace_);
+		variableTypeGenerator.informationModel(informationModel_);
+		variableTypeGenerator.variableType(variableTypeNodeId_);
+		if (!variableTypeGenerator.generate()) {
+			std::cout << "source code generator error - " << variableTypeName_ << std::endl;
+			return -4;
+		}
+
+		// save header and source file
+		boost::filesystem::ofstream ofStream;
+		std::string sourceContent = variableTypeGenerator.sourceContent();
+		std::string headerContent = variableTypeGenerator.headerContent();
+
+		std::string headerFileName = variableTypeName_ + ".h";
+		boost::filesystem::remove(headerFileName);
+		ofStream.open(headerFileName, std::ios::out);
+		ofStream << headerContent;
+		ofStream.close();
+
+		std::string sourceFileName = variableTypeName_ + ".cpp";
+		boost::filesystem::remove(sourceFileName);
+		ofStream.open(sourceFileName, std::ios::out);
+		ofStream << sourceContent;
+		ofStream.close();
+
+		return 0;
+	}
 
 }
 

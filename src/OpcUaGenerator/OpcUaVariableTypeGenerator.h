@@ -47,7 +47,9 @@ namespace OpcUaVariableTypeGenerator
 		InformationModel::SPtr informationModel_;
 		OpcUaNodeId variableTypeNodeId_;
 
+		bool findNodeId(const std::string& eventTypeName, const OpcUaNodeId& nodeId);
 		int32_t loadInformationModel(void);
+		int32_t generateVariableTypeSource(void);
 	};
 
 }
