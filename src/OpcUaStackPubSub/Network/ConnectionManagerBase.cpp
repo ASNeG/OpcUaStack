@@ -21,6 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	ConnectionManagerBase::ConnectionManagerBase(void)
+	: receiverSet_()
 	{
 	}
 
@@ -29,15 +30,16 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	ConnectionManagerBase::registerReceiverIf(NetworkReceiverIf::SPtr)
+	ConnectionManagerBase::registerReceiverIf(const NetworkReceiverIf::SPtr& receiver)
 	{
-		return false;
+		std::pair<NetworkReceiverIf::Set::iterator, bool> result = receiverSet_.insert(receiver);
+		return result.second;
 	}
 
 	bool
-	ConnectionManagerBase::deregisterReceiverIf(NetworkReceiverIf::SPtr)
+	ConnectionManagerBase::deregisterReceiverIf(const NetworkReceiverIf::SPtr& receiver)
 	{
-		return false;
+		return receiverSet_.erase(receiver) > 0;
 	}
 
 }

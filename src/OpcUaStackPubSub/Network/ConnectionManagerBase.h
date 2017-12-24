@@ -33,13 +33,14 @@ namespace OpcUaStackPubSub
 		ConnectionManagerBase(void);
 		virtual ~ConnectionManagerBase(void);
 
-		bool registerReceiverIf(NetworkReceiverIf::SPtr);
-		bool deregisterReceiverIf(NetworkReceiverIf::SPtr);
+		bool registerReceiverIf(const NetworkReceiverIf::SPtr& receiver);
+		bool deregisterReceiverIf(const NetworkReceiverIf::SPtr& receiver);
 
 		virtual bool startup() = 0;
 		virtual bool shutdown() = 0;
 
 	  private:
+		NetworkReceiverIf::Set receiverSet_;
 
 	};
 

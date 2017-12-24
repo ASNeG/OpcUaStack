@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackPubSub_NetworkReceiverIf_h__
 #define __OpcUaStackPubSub_NetworkReceiverIf_h__
 
+#include <set>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackPubSub/Network/NetworkMessage.h"
@@ -29,6 +30,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<NetworkReceiverIf> SPtr;
+		typedef std::set<NetworkReceiverIf::SPtr> Set;
 
 		NetworkReceiverIf(void);
 		virtual ~NetworkReceiverIf(void);
