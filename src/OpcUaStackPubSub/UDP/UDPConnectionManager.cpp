@@ -15,35 +15,29 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_ConnectionManagerBase_h__
-#define __OpcUaStackPubSub_ConnectionManagerBase_h__
-
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/Network/NetworkReceiverIf.h"
+#include <OpcUaStackPubSub/UDP/UDPConnectionManager.h>
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT ConnectionManagerBase
+	UDPConnectionManager::UDPConnectionManager(void)
 	{
-	  public:
-		typedef boost::shared_ptr<ConnectionManagerBase> SPtr;
+	}
 
-		ConnectionManagerBase(void);
-		virtual ~ConnectionManagerBase(void);
+	UDPConnectionManager::~UDPConnectionManager(void)
+	{
+	}
 
-		bool registerReceiverIf(const NetworkReceiverIf::SPtr& receiver);
-		bool deregisterReceiverIf(const NetworkReceiverIf::SPtr& receiver);
+	bool
+	UDPConnectionManager::startup()
+	{
+		return false;
+	}
 
-		virtual bool startup() = 0;
-		virtual bool shutdown() = 0;
-
-	  private:
-		NetworkReceiverIf::Set receiverSet_;
-
-	};
+	bool
+	UDPConnectionManager::shutdown()
+	{
+		return false;
+	}
 
 }
-
-#endif
