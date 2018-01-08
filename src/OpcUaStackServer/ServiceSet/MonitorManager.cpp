@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -256,7 +256,7 @@ namespace OpcUaStackServer
 		OpcUaQualifiedName browseName;
 		baseNodeClass->getBrowseName(browseName);
 
-		// create new monitor item
+		// create new event item
 		EventItem::SPtr eventItem = constructSPtr<EventItem>();
 		eventItem->informationModel(informationModel_);
 		eventItem->browseName(browseName);
@@ -289,7 +289,7 @@ namespace OpcUaStackServer
 		}
 
 		Log(Debug, "event item create")
-			.parameter("MonitorId", eventItem->eventItemId())
+			.parameter("EventId", eventItem->eventItemId())
 			.parameter("Trx", trx->transactionId())
 			.parameter("SessionId", trx->sessionId())
 			.parameter("NodeId", monitoredItemCreateRequest->itemToMonitor().nodeId())
