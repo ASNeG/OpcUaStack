@@ -168,7 +168,7 @@ namespace OpcUaStackServer
 			return NodeNoLongerExist;
 		}
 
-		 boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
+		boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
 		// check wheater an event schould be generated
 		if (!AttributeAccess::trigger(dataValue_, *attribute_)) return Ok; 
@@ -186,7 +186,6 @@ namespace OpcUaStackServer
 
 		// insert notification
 		AttributeAccess::copy(*attribute_, dataValue_);
-		//monitoredItemNotification->dataValue().statusCode(Success);
 		monitorItemListPushBack(monitoredItemNotification);
 		return Ok;
 	}
