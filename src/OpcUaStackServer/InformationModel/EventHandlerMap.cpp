@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -54,10 +54,6 @@ namespace OpcUaStackServer
 	bool
 	EventHandlerMap::registerEvent(OpcUaNodeId& nodeId, EventHandlerBase::SPtr& eventHandlerBase)
 	{
-		if (existEvent(nodeId)) {
-			return false;
-		}
-
 		eventHandlerBaseMap_.insert(std::make_pair(nodeId, eventHandlerBase));
 		return true;
 	}
@@ -73,6 +69,7 @@ namespace OpcUaStackServer
 			EventHandlerBase::SPtr eventHandlerBase = it->second;
 			if (eventHandlerBase->eventId() == eventId) {
 				eventHandlerBaseMap_.erase(it);
+				return true;
 			}
 		}
 
