@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -64,7 +64,10 @@ namespace OpcUaStackServer
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
-		componentName("Session");
+
+		std::stringstream sessionName;
+		sessionName << "Session_" << sessionId_;
+		componentName(sessionName.str());
 	}
 
 	Session::~Session(void)
@@ -125,6 +128,8 @@ namespace OpcUaStackServer
 	{
 		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
+
+		logComponent();
 
 		if (sessionState_ != SessionState_Close) {
 			Log(Error, "receive create session request in invalid state")

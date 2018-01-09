@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,6 +43,16 @@ namespace OpcUaStackCore
 		removeComponent(component.componentName());
 	}
 
+	void
+	Component::getComponentNames(std::vector<std::string>& componentNameVec)
+	{
+		boost::mutex::scoped_lock g(globalMutex_);
+		ComponentMap::iterator it;
+		for (it = componentMap_.begin(); it != componentMap_.end(); it++) {
+			componentNameVec.push_back(it->second->componentName());
+		}
+	}
+
 	Component* 
 	Component::getComponent(const std::string& componentName)
 	{
@@ -57,6 +67,7 @@ namespace OpcUaStackCore
 	Component::Component(void)
 	: ioThread_(nullptr)
 	, mutex_()
+	, componentName_("")
 	{
 	}
 
@@ -88,6 +99,30 @@ namespace OpcUaStackCore
 	Component::componentName(void)
 	{
 		return componentName_;
+	}
+
+	void
+	Component::logComponent(void)
+	{
+		if (ioThread_ == nullptr) {
+			Log(Debug, "Component")
+				.parameter("Name", componentName_)
+				.parameter("NumberThreads", "null");
+		}
+		else
+		{
+			Log log(Debug, "Component");
+			log.parameter("Name", componentName_);
+			log.parameter("NumberThreads", ioThread_->numberThreads());
+
+			std::vector<std::string> threadIdVec;
+			std::vector<std::string>::iterator it;
+			ioThread_->threadIdVec(threadIdVec);
+
+			for (it = threadIdVec.begin(); it != threadIdVec.end(); it++) {
+				log.parameter("ThreadId", *it);
+			}
+		}
 	}
 
 	Component* 
