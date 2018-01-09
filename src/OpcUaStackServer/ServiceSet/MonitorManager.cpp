@@ -72,9 +72,6 @@ namespace OpcUaStackServer
 					forwardGlobalSync_->eventItemStopService().callback()(&context);
 				}
 			}
-
-			//ioThread_->slotTimer()->stop(eventItem->slotTimerElement());
-			//eventItem->slotTimerElement().reset();
 		}
 
 		eventItemMap_.clear();
@@ -346,7 +343,7 @@ namespace OpcUaStackServer
 					.parameter("SessionId", trx->sessionId())
 					.parameter("SubscriptionId", deleteMonitorItemRequest->subscriptionId());
 
-				// stop sample timer an remove monitor item#
+				// stop sample timer an remove monitor item
 				ioThread_->slotTimer()->stop(it1->second->slotTimerElement());
 				monitorItemMap_.erase(it1);
 				deleteMonitorItemResponse->results()->set(idx, Success);
