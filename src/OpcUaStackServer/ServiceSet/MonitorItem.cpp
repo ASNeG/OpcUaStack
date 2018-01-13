@@ -89,10 +89,16 @@ namespace OpcUaStackServer
 	{
 		baseNodeClass_ = baseNodeClass;
 		monitoredItemCreateRequest_ = monitoredItemCreateRequest;
-		samplingInterval_ = (uint32_t)monitoredItemCreateRequest->requestedParameters().samplingInterval();
 		queSize_ = monitoredItemCreateRequest->requestedParameters().queueSize();
 		discardOldest_ = monitoredItemCreateRequest->requestedParameters().discardOldest();
 		clientHandle_ = monitoredItemCreateRequest->requestedParameters().clientHandle();
+
+		// check sampling
+		samplingInterval_ = (uint32_t)monitoredItemCreateRequest->requestedParameters().samplingInterval();
+		OpcUaDouble nodeSamplingInterval;
+		if (baseNodeClass->getMinimumSamplingInterval(nodeSamplingInterval) && samplingInterval_ < nodeSamplingInterval) {
+		    samplingInterval_ = nodeSamplingInterval;
+		}
 
 		// check attribute
 		boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());

@@ -15,6 +15,10 @@ class MyLogger
 		std::cout << "MyLogger - " << logLevel << " - " << message << std::endl;
 		return true;
 	}
+
+	LogLevel getLogLevel(void) {
+	    return LogLevel::Error;
+	}
 };
 
 
