@@ -95,9 +95,9 @@ namespace OpcUaStackServer
 
 		// check sampling
 		samplingInterval_ = (uint32_t)monitoredItemCreateRequest->requestedParameters().samplingInterval();
-		boost::optional<OpcUaDouble&> nodeSamplingInterval = baseNodeClass->getMinimumSamplingInterval();
-		if (nodeSamplingInterval.is_initialized() && samplingInterval_ < nodeSamplingInterval.get()) {
-		    samplingInterval_ = nodeSamplingInterval.get();
+		OpcUaDouble nodeSamplingInterval;
+		if (baseNodeClass->getMinimumSamplingInterval(nodeSamplingInterval) && samplingInterval_ < nodeSamplingInterval) {
+		    samplingInterval_ = nodeSamplingInterval;
 		}
 
 		// check attribute

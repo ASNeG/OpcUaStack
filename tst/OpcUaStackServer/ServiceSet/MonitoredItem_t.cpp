@@ -2,6 +2,7 @@
 
 #include "OpcUaStackServer/ServiceSet/MonitorItem.h"
 #include "OpcUaStackServer/AddressSpaceModel/VariableNodeClass.h"
+#include "OpcUaStackServer/AddressSpaceModel/ObjectNodeClass.h"
 
 using namespace OpcUaStackServer;
 
@@ -34,6 +35,19 @@ BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingIntervalNull)
     monitoredItemCreateRequest->requestedParameters().samplingInterval(100);
 
     BaseNodeClass::SPtr valueNode = constructSPtr<VariableNodeClass>();
+
+    MonitorItem item;
+    item.receive(valueNode, monitoredItemCreateRequest);
+
+    BOOST_REQUIRE_EQUAL(100, item.samplingInterval());
+}
+
+BOOST_AUTO_TEST_CASE(MonitoredItem_minimalSamplingIntervalNotExist)
+{
+    MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest = constructSPtr<MonitoredItemCreateRequest>();
+    monitoredItemCreateRequest->requestedParameters().samplingInterval(100);
+
+    BaseNodeClass::SPtr valueNode = constructSPtr<ObjectNodeClass>();
 
     MonitorItem item;
     item.receive(valueNode, monitoredItemCreateRequest);
