@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,20 +15,30 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SessionConfig_h__
-#define __OpcUaStackServer_SessionConfig_h__
+#ifndef __OpcUaStackServer_BaseObjectType_h__
+#define __OpcUaStackServer_BaseObjectType_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackServer/ServiceSet/SessionOld.h"
+#include "OpcUaStackServer/ObjectType/ObjectBase.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SessionConfig
+	class DLLEXPORT BaseObjectType
+	: public ObjectBase
 	{
 	  public:
-		static bool initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
+		typedef boost::shared_ptr<BaseObjectType> SPtr;
+
+		BaseObjectType(void);
+		virtual ~BaseObjectType(void);
+
+		virtual bool linkInstanceWithModel(const OpcUaNodeId& nodeId);
+
+	  private:
 	};
 
 }

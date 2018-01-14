@@ -16,31 +16,26 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
-#include "OpcUaStackServer/ObjectType/ObjectBase.h"
+#include "OpcUaStackServer/StandardObjectType/BaseObjectType.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// class ObjectBase
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	ObjectBase::ObjectBase(void)
+	BaseObjectType::BaseObjectType(void)
+	: ObjectBase()
 	{
 	}
 
-	ObjectBase::~ObjectBase(void)
+	BaseObjectType::~BaseObjectType(void)
 	{
 	}
 
 	bool
-	ObjectBase::linkInstanceWithModel(const OpcUaNodeId& nodeId)
+	BaseObjectType::linkInstanceWithModel(const OpcUaNodeId& nodeId)
 	{
-		// FIXME: todo
-		return true;
+		return ObjectBase::linkInstanceWithModel(nodeId);
 	}
 
 }

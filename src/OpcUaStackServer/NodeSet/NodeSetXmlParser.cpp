@@ -114,6 +114,9 @@ namespace OpcUaStackServer
 			else if (it->first == "UAMethod") {
 				if (!decodeUAMethod(it->second)) return false;
 			}
+			else if (it->first == "Models") {
+				// ignore
+			}
 			else {
 				Log(Error, "unknown element found in node set")
 					.parameter("ElementName", it->first);
