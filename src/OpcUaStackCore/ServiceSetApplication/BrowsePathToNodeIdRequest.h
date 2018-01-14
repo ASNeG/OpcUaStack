@@ -24,68 +24,10 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaQualifiedName.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/ServiceSetApplication/BrowseName.h"
 
 namespace OpcUaStackCore
 {
-
-	class DLLEXPORT BrowseName
-	{
-	  public:
-		typedef boost::shared_ptr<BrowseName> SPtr;
-
-		BrowseName(void);
-		~BrowseName(void);
-
-		void nodeId(OpcUaNodeId& nodeId);
-		OpcUaNodeId& nodeId(void);
-		void pathNames(OpcUaQualifiedNameArray::SPtr& pathNames);
-		OpcUaQualifiedNameArray::SPtr pathNames(void);
-
-		void set(
-			const OpcUaNodeId& nodeId,
-			const OpcUaQualifiedName& pathElement
-		);
-		void set(
-			const OpcUaNodeId& nodeId,
-			const OpcUaQualifiedName& pathElement1,
-			const OpcUaQualifiedName& pathElement2
-		);
-		void set(
-			const OpcUaNodeId& nodeId,
-			const OpcUaQualifiedName& pathElement1,
-			const OpcUaQualifiedName& pathElement2,
-			const OpcUaQualifiedName& pathElement3
-		);
-		void set(
-			const OpcUaNodeId& nodeId,
-			const OpcUaQualifiedName& pathElement1,
-			const OpcUaQualifiedName& pathElement2,
-			const OpcUaQualifiedName& pathElement3,
-			const OpcUaQualifiedName& pathElement4
-		);
-		void set(
-			const OpcUaNodeId& nodeId,
-			const OpcUaQualifiedName& pathElement1,
-			const OpcUaQualifiedName& pathElement2,
-			const OpcUaQualifiedName& pathElement3,
-			const OpcUaQualifiedName& pathElement4,
-			const OpcUaQualifiedName& pathElement5
-		);
-
-	  private:
-		OpcUaNodeId nodeId_;
-		OpcUaQualifiedNameArray::SPtr pathNames_;
-	};
-
-
-	class BrowseNameArray
-	: public OpcUaArray<BrowseName::SPtr, SPtrTypeCoder<BrowseName> >
-	, public Object
-	{
-	  public:
-		typedef boost::shared_ptr<BrowseNameArray> SPtr;
-	};
-
 
 	class DLLEXPORT BrowsePathToNodeIdRequest
 	: public  Object
@@ -99,6 +41,9 @@ namespace OpcUaStackCore
 		void browseNameArray(BrowseNameArray::SPtr& browseNameArray);
 		BrowseNameArray::SPtr browseNameArray(void);
 
+		void addBrowsePath(
+			const BrowseName::SPtr& browseName
+		);
 		void addBrowsePath(
 			const OpcUaNodeId& nodeId,
 			const OpcUaQualifiedName& pathElement

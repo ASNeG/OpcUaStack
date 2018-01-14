@@ -17,8 +17,8 @@
 
 #ifndef __OpcUaStackCore_SecureChannelOld_h__
 #define __OpcUaStackCore_SecureChannelOld_h__
+#include <OpcUaStackCore/Network/TCPConnection.h>
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SequenceHeader.h"

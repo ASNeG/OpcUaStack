@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,7 @@
 
 #include "boost/shared_ptr.hpp"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
 
 namespace OpcUaStackCore
 {
@@ -32,6 +33,15 @@ namespace OpcUaStackCore
 		BaseClass(void) {}
 		virtual ~BaseClass(void) {}
 	};
+
+	class DLLEXPORT BaseClassArray
+	: public OpcUaArray<BaseClass::SPtr, SPtrTypeCoder<BaseClass> >
+	, public Object
+	{
+	  public:
+		typedef boost::shared_ptr<BaseClassArray> SPtr;
+	};
+
 
 
 }

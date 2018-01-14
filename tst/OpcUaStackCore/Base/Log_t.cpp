@@ -4,8 +4,13 @@
 
 using namespace OpcUaStackCore;
 
-class MyLogger : public LogIf
+class MyLogger
+: public LogIf
 {
+	LogLevel getLogLevel(void) {
+		return Debug;
+	}
+
 	bool logout(LogLevel logLevel, const std::string& message) {
 		std::cout << "MyLogger - " << logLevel << " - " << message << std::endl;
 		return true;

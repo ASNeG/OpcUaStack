@@ -183,6 +183,20 @@ message(STATUS "  libraries: ${OPENSSL_LIBRARIES}")
 # -----------------------------------------------------------------------------
 # -----------------------------------------------------------------------------
 #
+# Mosquitto
+#
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+if (DEFINED ENV{USE_MOSQUITTO_CLIENT})
+	message(STATUS "Mosquitto enabled")
+	set(USE_MOSQUITTO_CLIENT $ENV{USE_MOSQUITTO_CLIENT})
+	set(MOSQUITTO_LIBRARIES "mosquitto")
+	add_definitions(-DUSE_MOSQUITTO_CLIENT)
+endif()
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+#
 # build subdirectories
 #
 # -----------------------------------------------------------------------------
@@ -197,7 +211,7 @@ include(OpcUaStackServer/CMakeLists.txt)
 include(OpcUaServer/CMakeLists.txt)
 include(OpcUaClient/CMakeLists.txt) 
 include(OpcUaProjectBuilder/CMakeLists.txt)
-include(OpcUaEventTypeGenerator/CMakeLists.txt)
+include(OpcUaGenerator/CMakeLists.txt)
 include(cmake/CMakeLists.txt)
 
 

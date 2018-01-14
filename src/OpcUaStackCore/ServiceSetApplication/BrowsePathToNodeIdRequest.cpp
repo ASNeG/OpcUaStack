@@ -23,176 +23,6 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// BrowseNameArray
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	BrowseName::BrowseName(void)
-	: nodeId_()
-	, pathNames_(constructSPtr<OpcUaQualifiedNameArray>())
-	{
-	}
-
-	BrowseName::~BrowseName(void)
-	{
-	}
-
-	void
-	BrowseName::nodeId(OpcUaNodeId& nodeId)
-	{
-		nodeId_ = nodeId;
-	}
-
-	OpcUaNodeId&
-	BrowseName::nodeId(void)
-	{
-		return nodeId_;
-	}
-
-	void
-	BrowseName::pathNames(OpcUaQualifiedNameArray::SPtr& pathNames)
-	{
-		pathNames_ = pathNames;
-	}
-
-	OpcUaQualifiedNameArray::SPtr
-	BrowseName::pathNames(void)
-	{
-		return pathNames_;
-	}
-
-	void
-	BrowseName::set(
-		const OpcUaNodeId& nodeId,
-		const OpcUaQualifiedName& pathElement
-	)
-	{
-		pathNames_->resize(1);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement)->copyTo(*element);
-		pathNames_->push_back(element);
-	}
-
-	void
-	BrowseName::set(
-		const OpcUaNodeId& nodeId,
-		const OpcUaQualifiedName& pathElement1,
-		const OpcUaQualifiedName& pathElement2
-	)
-	{
-		pathNames_->resize(2);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-	}
-
-	void
-	BrowseName::set(
-		const OpcUaNodeId& nodeId,
-		const OpcUaQualifiedName& pathElement1,
-		const OpcUaQualifiedName& pathElement2,
-		const OpcUaQualifiedName& pathElement3
-	)
-	{
-		pathNames_->resize(3);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
-		pathNames_->push_back(element);
-	}
-
-	void
-	BrowseName::set(
-		const OpcUaNodeId& nodeId,
-		const OpcUaQualifiedName& pathElement1,
-		const OpcUaQualifiedName& pathElement2,
-		const OpcUaQualifiedName& pathElement3,
-		const OpcUaQualifiedName& pathElement4
-	)
-	{
-		pathNames_->resize(4);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement4)->copyTo(*element);
-		pathNames_->push_back(element);
-	}
-
-	void
-	BrowseName::set(
-		const OpcUaNodeId& nodeId,
-		const OpcUaQualifiedName& pathElement1,
-		const OpcUaQualifiedName& pathElement2,
-		const OpcUaQualifiedName& pathElement3,
-		const OpcUaQualifiedName& pathElement4,
-		const OpcUaQualifiedName& pathElement5
-	)
-	{
-		pathNames_->resize(5);
-		nodeId_ = nodeId;
-
-		OpcUaQualifiedName::SPtr element;
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement1)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement2)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement3)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement4)->copyTo(*element);
-		pathNames_->push_back(element);
-
-		element = constructSPtr<OpcUaQualifiedName>();
-		const_cast<OpcUaQualifiedName*>(&pathElement5)->copyTo(*element);
-		pathNames_->push_back(element);
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
 	// OpcUa BrowsePathToNodeIdRequest
 	//
 	// ------------------------------------------------------------------------
@@ -217,6 +47,14 @@ namespace OpcUaStackCore
 	BrowsePathToNodeIdRequest::browseNameArray(void)
 	{
 		return browseNameArray_;
+	}
+
+	void
+	BrowsePathToNodeIdRequest::addBrowsePath(
+		const BrowseName::SPtr& browseName
+	)
+	{
+		browseNameArray_->push_back(browseName);
 	}
 
 	void

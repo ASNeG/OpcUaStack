@@ -370,6 +370,7 @@ namespace OpcUaStackCore
 	class DLLEXPORT Callback
 	{
       public:
+		typedef boost::shared_ptr<Callback> SPtr;
 
 		Callback();
 		template<typename R, typename F>

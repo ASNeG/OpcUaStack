@@ -21,11 +21,11 @@
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <OpcUaStackCore/Network/TCPAcceptor.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerConfig.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServerIf.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelBase.h"
-#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 
 namespace OpcUaStackCore
 {

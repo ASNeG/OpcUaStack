@@ -19,10 +19,10 @@
 #define __OpcUaStackServer_SessionManager_h__
 
 #include <boost/thread/mutex.hpp>
+#include <OpcUaStackCore/Network/TCPAcceptor.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/IOService.h"
-#include "OpcUaStackCore/TCPChannel/TCPAcceptor.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/Base/ConditionProcess.h"
 #include "OpcUaStackServer/SecureChannel/SecureChannelServerConfig.h"

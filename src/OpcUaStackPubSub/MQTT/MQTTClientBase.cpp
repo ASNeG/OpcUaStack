@@ -1,0 +1,87 @@
+/*
+   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+
+   Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
+   Datei nur in Übereinstimmung mit der Lizenz erlaubt.
+   Eine Kopie der Lizenz erhalten Sie auf http://www.apache.org/licenses/LICENSE-2.0.
+
+   Sofern nicht gemäß geltendem Recht vorgeschrieben oder schriftlich vereinbart,
+   erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
+   GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
+
+   Informationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   im Rahmen der Lizenz finden Sie in der Lizenz.
+
+   Autor: Kai Huebl (kai@huebl-sgh.de)
+ */
+
+#include "OpcUaStackPubSub/MQTT/MQTTClientBase.h"
+
+namespace OpcUaStackPubSub
+{
+
+	MQTTClientBase::MQTTClientBase(void)
+	: clientName_("")
+	, networkReceiverIf_(nullptr)
+	{
+	}
+
+	MQTTClientBase::~MQTTClientBase(void)
+	{
+	}
+
+	bool
+	MQTTClientBase::mqttClientIfEnabled(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientBase::startup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientBase::init(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientBase::cleanup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientBase::shutdown(void)
+	{
+		return false;
+	}
+
+	void
+	MQTTClientBase::clientName(const std::string& clientName)
+	{
+		clientName_ = clientName;
+	}
+
+	std::string&
+	MQTTClientBase::clientName(void)
+	{
+		return clientName_;
+	}
+
+	bool
+	MQTTClientBase::registerReceiverIf(NetworkReceiverIf* networkReceiverIf)
+	{
+		networkReceiverIf_ = networkReceiverIf;
+	}
+
+	bool
+	MQTTClientBase::send(const NetworkMessage& message)
+	{
+		return false;
+	}
+
+}

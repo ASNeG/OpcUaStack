@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
+#include "OpcUaStackServer/Generator/NodeElement.h"
 
 using namespace OpcUaStackCore;
 
@@ -46,10 +47,54 @@ namespace OpcUaStackServer
 		bool generate(void);
 
 	  private:
+		std::string getTypeNameFromNodeId(OpcUaNodeId& typeNodeId);
+		bool createNodeElementVec(const std::string& prefix, OpcUaNodeId& nodeId);
+
+		//
+		// header functions
+		//
+		bool generateHeader(void);
+		bool generateHeaderComments(void);
+		bool generateHeaderBegin(void);
+		bool generateHeaderEnd(void);
+		bool generateHeaderClassBegin(const std::string& prefix);
+		bool generateHeaderClassEnd(const std::string& prefix);
+		bool generateHeaderClassPublic(const std::string& prefix);
+		bool generateHeaderClassPrivate(const std::string& prefix);
+
+		//
+		// source functions
+		//
+		bool generateSource(void);
+		bool generateSourceComments(void);
+		bool generateSourceIncludes(void);
+		bool generateSourceClassBegin(void);
+		bool generateSourceClassEnd(void);
+		bool generateSourceClassConstructor(const std::string& prefix);
+		bool generateSourceClassDestructor(const std::string& prefix);
+		bool generateSourceLinkInstanceWithModel(const std::string& prefix);
+		bool generateSourceClassGetterSetter(const std::string& prefix);
+
+
 		InformationModel::SPtr informationModel_;
+		BaseNodeClass::SPtr variableTypeNode_;
+		BaseNodeClass::SPtr parentVariableTypeNode_;
 		OpcUaNodeId variableTypeNodeId_;
+		OpcUaNodeId parentVariableTypeNodeId_;
+		uint32_t variableTypeNumber_;
+		std::string variableTypeName_;
+		std::string parentVariableTypeName_;
 		std::string sourceContent_;
 		std::string headerContent_;
+
+		std::string namespaceUri_;
+		std::string projectNamespace_;
+		std::string parentProjectNamespace_;
+		std::string projectDirectory_;
+		std::string parentProjectDirectory_;
+
+		NodeElement::Vec nodeElementVec_;
+
 	};
 
 
