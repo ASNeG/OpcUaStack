@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Network/UDPServer.h"
 #include "OpcUaStackPubSub/Network/ConnectionManagerBase.h"
 
 namespace OpcUaStackPubSub
@@ -28,6 +29,7 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT UDPConnectionManager : public ConnectionManagerBase	{
 	  public:
 		typedef boost::shared_ptr<UDPConnectionManager> SPtr;
+		static const size_t RECV_BUFFER_SIZE;
 
 		UDPConnectionManager(void);
 		virtual ~UDPConnectionManager(void);
@@ -35,8 +37,17 @@ namespace OpcUaStackPubSub
 		bool startup();
 		bool shutdown();
 
+	  protected:
+
+		void handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered);
+
+		IOThread::SPtr ioThread_;
+		UDPServer server_;
+		boost::asio::streambuf is_;
+
 	};
 
 }
 
 #endif
+
