@@ -20,17 +20,41 @@
 namespace OpcUaStackPubSub
 {
 
-	size_t UDPConnectionManager::RECV_BUFFER_SIZE = 512;
-
 	UDPConnectionManager::UDPConnectionManager(void)
 	: server_()
 	, ioThread_(constructSPtr<IOThread>())
 	, is_()
+	, address_("127.0.0.1")
+	, port_(4840)
 	{
 	}
 
 	UDPConnectionManager::~UDPConnectionManager(void)
 	{
+	}
+
+	void
+	UDPConnectionManager::address(const std::string& address)
+	{
+		address_ = address;
+	}
+
+	std::string
+	UDPConnectionManager::address() const
+	{
+		return address_;
+	}
+
+	void
+	UDPConnectionManager::port(uint16_t port)
+	{
+		port_ = port;
+	}
+
+	uint16_t
+	UDPConnectionManager::port() const
+	{
+		return port_;
 	}
 
 	bool
@@ -40,8 +64,8 @@ namespace OpcUaStackPubSub
 
 		server_.ioThread_(ioThread_);
 		server_.endpoint({
-				boost::asio::ip::address::from_string("127.0.0.1"),
-				(unsigned short)4444
+				boost::asio::ip::address::from_string(address_),
+				port_
 		});
 
 		if (server_.open()) {
@@ -59,7 +83,7 @@ namespace OpcUaStackPubSub
 		server_.close();
 		ioThread_->shutdown();
 
-		return false;
+		return true;
 	}
 
 	void
@@ -85,6 +109,5 @@ namespace OpcUaStackPubSub
 			(*it)->receive(networkMessage);
 		}
 	}
+
 }
-
-

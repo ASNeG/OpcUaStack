@@ -29,10 +29,15 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT UDPConnectionManager : public ConnectionManagerBase	{
 	  public:
 		typedef boost::shared_ptr<UDPConnectionManager> SPtr;
-		static const size_t RECV_BUFFER_SIZE;
 
 		UDPConnectionManager(void);
 		virtual ~UDPConnectionManager(void);
+
+		void address(const std::string& address);
+		std::string address() const;
+
+		void port(uint16_t port);
+		uint16_t port() const;
 
 		bool startup();
 		bool shutdown();
@@ -40,6 +45,9 @@ namespace OpcUaStackPubSub
 	  protected:
 
 		void handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered);
+
+		std::string address_;
+		uint16_t port_;
 
 		IOThread::SPtr ioThread_;
 		UDPServer server_;
