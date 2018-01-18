@@ -631,7 +631,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(
 		SecureChannel* secureChannel,
-		OpenSecureChannelResponse& openSecureChannelResponse
+		OpenSecureChannelResponse::SPtr& openSecureChannelResponse
 	)
 	{
 		boost::asio::streambuf sb1;
@@ -666,7 +666,7 @@ namespace OpcUaStackCore
 		typeIdResponse.nodeId(OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
 		typeIdResponse.opcUaBinaryEncode(ios1);
 
-		openSecureChannelResponse.opcUaBinaryEncode(ios1);
+		openSecureChannelResponse->opcUaBinaryEncode(ios1);
 
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
@@ -674,7 +674,7 @@ namespace OpcUaStackCore
 
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
-		secureChannel->debugSendOpenSecureChannelResponse(openSecureChannelResponse);
+		secureChannel->debugSendOpenSecureChannelResponse(*openSecureChannelResponse);
 
 		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
@@ -1259,6 +1259,12 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		handleWriteComplete(secureChannel);
+	}
+
+	void
+	SecureChannelBase::handleWriteComplete(SecureChannel* secureChannel)
+	{
 		asyncWriteMessageResponse(secureChannel);
 	}
 
