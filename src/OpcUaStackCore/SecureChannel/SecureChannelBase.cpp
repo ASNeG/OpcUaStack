@@ -33,8 +33,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SecureChannelBase::SecureChannelBase(SecureChannelType secureChannelType)
-	: actSegmentFlag_('F')
-	, secureChannelType_(secureChannelType)
+	: secureChannelType_(secureChannelType)
 	{
 	}
 
@@ -628,12 +627,28 @@ namespace OpcUaStackCore
 			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}
 
+
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(
 		SecureChannel* secureChannel,
 		OpenSecureChannelResponse::SPtr& openSecureChannelResponse
 	)
 	{
+		secureChannel->openSecureChannelResponseList_.push_back(openSecureChannelResponse);
+		asyncWriteOpenSecureChannelResponse(secureChannel);
+	}
+
+
+	void
+	SecureChannelBase::asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel)
+	{
+		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
+		if (secureChannel->asyncSend_) return;
+
+		OpenSecureChannelResponse::SPtr openSecureChannelResponse;
+		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
+		secureChannel->openSecureChannelResponseList_.pop_front();
+
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
 		boost::asio::streambuf sb2;
@@ -693,6 +708,25 @@ namespace OpcUaStackCore
 	SecureChannelBase::handleWriteOpenSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
 		secureChannel->asyncSend_ = false;
+
+		// the secure channel is closed
+		if (secureChannel->asyncSendStop_) {
+			closeChannel(secureChannel);
+			return;
+		}
+
+		// error occurred
+		if (error) {
+			Log(Error, "opc ua secure channel error - handleWriteOpenSecureChannelResponseComplete; close channel")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string())
+				.parameter("Message", error.message());
+
+			closeChannel(secureChannel);
+			return;
+		}
+
+		handleWriteComplete(secureChannel);
 	}
 
 	// ------------------------------------------------------------------------
@@ -1177,12 +1211,12 @@ namespace OpcUaStackCore
 		}
 
 		// calculate packet size
-		actSegmentFlag_ = 'F';
+		secureChannel->actSegmentFlag_ = 'F';
 		uint32_t headerSize = OpcUaStackCore::count(sb1) + 8;
 		uint32_t bodySize = OpcUaStackCore::count(secureChannelTransaction->os_);
 		uint32_t packetSize = headerSize + bodySize;
 		if (packetSize > secureChannel->sendBufferSize_) {
-			actSegmentFlag_ = 'C';
+			secureChannel->actSegmentFlag_ = 'C';
 			bodySize = secureChannel->sendBufferSize_ - headerSize;
 			packetSize = secureChannel->sendBufferSize_;
 		}
@@ -1190,7 +1224,7 @@ namespace OpcUaStackCore
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = constructSPtr<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Message);
-		messageHeaderSPtr->segmentFlag(actSegmentFlag_);
+		messageHeaderSPtr->segmentFlag(secureChannel->actSegmentFlag_);
 		messageHeaderSPtr->messageSize(packetSize);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
@@ -1200,7 +1234,7 @@ namespace OpcUaStackCore
 
 		secureChannel->asyncSend_ = true;
 
-		if (actSegmentFlag_ == 'C') {
+		if (secureChannel->actSegmentFlag_ == 'C') {
 			boost::asio::streambuf sb;
 			std::iostream ios(&sb);
 			boost::asio::const_buffer buffer(secureChannelTransaction->os_.data());
@@ -1250,7 +1284,7 @@ namespace OpcUaStackCore
 
 		// error occurred
 		if (error) {
-			Log(Error, "opc ua secure channel read close secure channel message error; close channel")
+			Log(Error, "opc ua secure channel error - handleWriteMessageResponseComplete; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
@@ -1265,6 +1299,10 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteComplete(SecureChannel* secureChannel)
 	{
+		if (secureChannel->actSegmentFlag_ == 'F') {
+			asyncWriteOpenSecureChannelResponse(secureChannel);
+			if (secureChannel->asyncSend_) return;
+		}
 		asyncWriteMessageResponse(secureChannel);
 	}
 

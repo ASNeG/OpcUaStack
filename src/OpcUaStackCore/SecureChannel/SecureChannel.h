@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -77,6 +77,8 @@ namespace OpcUaStackCore
 		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
 
+		char actSegmentFlag_;
+
 		State state_;
 		Object::SPtr config_;
 		bool closeFlag_;
@@ -98,6 +100,7 @@ namespace OpcUaStackCore
 		MessageHeader messageHeader_;
 		SecureChannelTransaction::SPtr secureChannelTransaction_;
 		SecureChannelTransaction::List secureChannelTransactionList_;
+		OpenSecureChannelResponse::List openSecureChannelResponseList_;
 		bool sendFirstSegment_;
 		bool recvFirstSegment_;
 		bool asyncSend_;
