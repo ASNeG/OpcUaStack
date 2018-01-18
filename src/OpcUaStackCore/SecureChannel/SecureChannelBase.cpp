@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	SecureChannelBase::SecureChannelBase(SecureChannelType secureChannelType)
-	: asyncWriteCount_(0)
+	: actSegmentFlag_('F')
 	, secureChannelType_(secureChannelType)
 	{
 	}
@@ -249,7 +249,6 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendHello(hello);
 
-		asyncWriteCount_++;
 		secureChannel->async_write(
 			sb2,
 			sb1,
@@ -265,7 +264,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteHelloComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
-		asyncWriteCount_--;
 	}
 
 	// ------------------------------------------------------------------------
@@ -356,7 +354,6 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendAcknowledge(acknowledge);
 
-		asyncWriteCount_++;
 		secureChannel->async_write(
 			sb2,
 			sb1,
@@ -372,7 +369,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteAcknowledgeComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
-		asyncWriteCount_--;
 	}
 
 	// ------------------------------------------------------------------------
@@ -521,7 +517,6 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendOpenSecureChannelRequest(openSecureChannelRequest);
 
-		asyncWriteCount_++;
 		secureChannel->async_write(
 			sb2,
 			sb1,
@@ -537,7 +532,6 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteOpenSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
-		asyncWriteCount_--;
 	}
 
 	// ------------------------------------------------------------------------
@@ -682,7 +676,7 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendOpenSecureChannelResponse(openSecureChannelResponse);
 
-		asyncWriteCount_++;
+		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
 			sb2,
 			sb1,
@@ -698,7 +692,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteOpenSecureChannelResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
-		asyncWriteCount_--;
+		secureChannel->asyncSend_ = false;
 	}
 
 	// ------------------------------------------------------------------------
@@ -1183,12 +1177,12 @@ namespace OpcUaStackCore
 		}
 
 		// calculate packet size
-		char segmentFlag = 'F';
+		actSegmentFlag_ = 'F';
 		uint32_t headerSize = OpcUaStackCore::count(sb1) + 8;
 		uint32_t bodySize = OpcUaStackCore::count(secureChannelTransaction->os_);
 		uint32_t packetSize = headerSize + bodySize;
 		if (packetSize > secureChannel->sendBufferSize_) {
-			segmentFlag = 'C';
+			actSegmentFlag_ = 'C';
 			bodySize = secureChannel->sendBufferSize_ - headerSize;
 			packetSize = secureChannel->sendBufferSize_;
 		}
@@ -1196,7 +1190,7 @@ namespace OpcUaStackCore
 		// encode MessageHeader
 		MessageHeader::SPtr messageHeaderSPtr = constructSPtr<MessageHeader>();
 		messageHeaderSPtr->messageType(MessageType_Message);
-		messageHeaderSPtr->segmentFlag(segmentFlag);
+		messageHeaderSPtr->segmentFlag(actSegmentFlag_);
 		messageHeaderSPtr->messageSize(packetSize);
 		messageHeaderSPtr->opcUaBinaryEncode(ios2);
 
@@ -1206,7 +1200,7 @@ namespace OpcUaStackCore
 
 		secureChannel->asyncSend_ = true;
 
-		if (segmentFlag == 'C') {
+		if (actSegmentFlag_ == 'C') {
 			boost::asio::streambuf sb;
 			std::iostream ios(&sb);
 			boost::asio::const_buffer buffer(secureChannelTransaction->os_.data());
