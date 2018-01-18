@@ -60,6 +60,7 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel,
 			OpenSecureChannelRequest& openSecureChannelRequest
 		);
+		void asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel);
 		void asyncWriteOpenSecureChannelResponse(
 			SecureChannel* secureChannel,
 			OpenSecureChannelResponse::SPtr& openSecureChannelResponse
@@ -146,7 +147,6 @@ namespace OpcUaStackCore
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
 		void consumeAll(boost::asio::streambuf& streambuf);
 
-		char actSegmentFlag_;
 		SecureChannelType secureChannelType_;
 	};
 
