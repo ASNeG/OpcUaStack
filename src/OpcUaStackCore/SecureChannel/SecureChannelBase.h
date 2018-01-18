@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 		);
 		void asyncWriteOpenSecureChannelResponse(
 			SecureChannel* secureChannel,
-			OpenSecureChannelResponse& openSecureChannelResponse
+			OpenSecureChannelResponse::SPtr& openSecureChannelResponse
 		);
 		void asyncWriteCloseSecureChannelRequest(
 			SecureChannel* secureChannel
@@ -140,6 +140,7 @@ namespace OpcUaStackCore
 		void handleWriteCloseSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteMessageRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
 		void handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel);
+		void handleWriteComplete(SecureChannel* secureChannel);
 
 
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
