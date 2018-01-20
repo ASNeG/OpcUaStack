@@ -44,6 +44,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncRead(SecureChannel* secureChannel)
 	{
+		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
 			boost::bind(
@@ -64,6 +65,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		secureChannel->asyncRecv_ = false;
+
 		// error accurred
 		if (error) {
 			LogLevel logLevel = Error;
