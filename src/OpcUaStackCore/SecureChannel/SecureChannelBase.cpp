@@ -721,7 +721,6 @@ namespace OpcUaStackCore
 
 		// error occurred
 		if (error) {
-			std::cout << "XXXXXXXXXXXXXXXXXX" << std::endl;
 			Log(Error, "opc ua secure channel error - handleWriteOpenSecureChannelResponseComplete; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string())
