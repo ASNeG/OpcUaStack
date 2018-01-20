@@ -73,7 +73,9 @@ namespace OpcUaStackCore
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
 
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 
@@ -83,7 +85,9 @@ namespace OpcUaStackCore
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 
-			closeChannel(secureChannel, true);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel, true);
+			}
 			return;
 		}
 
@@ -717,12 +721,15 @@ namespace OpcUaStackCore
 
 		// error occurred
 		if (error) {
+			std::cout << "XXXXXXXXXXXXXXXXXX" << std::endl;
 			Log(Error, "opc ua secure channel error - handleWriteOpenSecureChannelResponseComplete; close channel")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
 
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncRecv_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 
@@ -865,6 +872,7 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransaction_ = constructSPtr<SecureChannelTransaction>();
 		}
 
+		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
 			boost::bind(
@@ -881,6 +889,8 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncReadMessageRequestComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel)
 	{
+		secureChannel->asyncRecv_ = false;
+
 		// error occurred
 		if (error) {
 			Log(Error, "opc ua secure channel read service message error; close channel")
@@ -888,7 +898,9 @@ namespace OpcUaStackCore
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
 
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 
@@ -898,7 +910,9 @@ namespace OpcUaStackCore
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 
-			closeChannel(secureChannel, true);
+			if (!secureChannel->asyncSend_) {
+				closeChannel(secureChannel, true);
+			}
 			return;
 		}
 
@@ -1278,7 +1292,9 @@ namespace OpcUaStackCore
 
 		// the secure channel is closed
 		if (secureChannel->asyncSendStop_) {
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncRecv_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 
@@ -1289,7 +1305,9 @@ namespace OpcUaStackCore
 				.parameter("Partner", secureChannel->partner_.address().to_string())
 				.parameter("Message", error.message());
 
-			closeChannel(secureChannel);
+			if (!secureChannel->asyncRecv_) {
+				closeChannel(secureChannel);
+			}
 			return;
 		}
 

@@ -103,6 +103,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelResponse::List openSecureChannelResponseList_;
 		bool sendFirstSegment_;
 		bool recvFirstSegment_;
+		bool asyncRecv_;
 		bool asyncSend_;
 		bool asyncSendStop_;
 		OpcUaUInt32 sendRequestId_;
