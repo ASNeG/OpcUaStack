@@ -14,7 +14,6 @@ BOOST_AUTO_TEST_CASE(MQTTClient_)
 
 BOOST_AUTO_TEST_CASE(MQTTClient_construct)
 {
-	if (mqttClientBase->mqttClientIfEnabled()) {
 	MQTTClientBase::SPtr mqttClient = constructMQTT();
 
 	if (mqttClient->mqttClientIfEnabled()) {
