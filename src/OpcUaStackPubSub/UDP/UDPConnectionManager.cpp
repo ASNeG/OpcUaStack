@@ -100,10 +100,14 @@ namespace OpcUaStackPubSub
 	UDPConnectionManager::handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered)
 	{
 		Log(Debug, "receive UDP network message")
+				    .parameter("Address", server_.endpoint().address().to_string())
+					.parameter("Port", server_.endpoint().port())
 					.parameter("Size", bytes_transfered);
 
 		if (error) {
 			Log(Error, "cannot read UDP network message")
+				.parameter("Address", server_.endpoint().address().to_string())
+				.parameter("Port", server_.endpoint().port())
 				.parameter("ErrorMessage", error.message());
 			return;
 		}
