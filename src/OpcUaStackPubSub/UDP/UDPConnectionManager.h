@@ -15,31 +15,47 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkReceiverIf_h__
-#define __OpcUaStackPubSub_NetworkReceiverIf_h__
+#ifndef __OpcUaStackPubSub_UDPConnectionManager_h__
+#define __OpcUaStackPubSub_UDPConnectionManager_h__
 
-#include <set>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/Network/NetworkMessage.h"
+#include "OpcUaStackCore/Network/UDPServer.h"
+#include "OpcUaStackPubSub/Network/ConnectionManagerBase.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT NetworkReceiverIf
-	{
+	class DLLEXPORT UDPConnectionManager : public ConnectionManagerBase	{
 	  public:
-		typedef boost::shared_ptr<NetworkReceiverIf> SPtr;
-		typedef std::set<NetworkReceiverIf::SPtr> Set;
+		typedef boost::shared_ptr<UDPConnectionManager> SPtr;
 
-		NetworkReceiverIf(void);
-		virtual ~NetworkReceiverIf(void);
+		UDPConnectionManager(void);
+		virtual ~UDPConnectionManager(void);
 
-		virtual bool receive(const NetworkMessage& message) = 0;
+		void address(const std::string& address);
+		std::string address() const;
 
-	  private:
+		void port(uint16_t port);
+		uint16_t port() const;
+
+		bool startup();
+		bool shutdown();
+
+	  protected:
+
+		void handleReadMessage(const boost::system::error_code& error, std::size_t bytes_transfered);
+
+		std::string address_;
+		uint16_t port_;
+
+		IOThread::SPtr ioThread_;
+		UDPServer server_;
+		boost::asio::streambuf is_;
+
 	};
 
 }
 
 #endif
+

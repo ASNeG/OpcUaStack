@@ -15,31 +15,31 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkReceiverIf_h__
-#define __OpcUaStackPubSub_NetworkReceiverIf_h__
-
-#include <set>
-#include <boost/shared_ptr.hpp>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/Network/NetworkMessage.h"
+#include <OpcUaStackPubSub/Network/ConnectionManagerBase.h>
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT NetworkReceiverIf
+	ConnectionManagerBase::ConnectionManagerBase(void)
+	: receiverSet_()
 	{
-	  public:
-		typedef boost::shared_ptr<NetworkReceiverIf> SPtr;
-		typedef std::set<NetworkReceiverIf::SPtr> Set;
+	}
 
-		NetworkReceiverIf(void);
-		virtual ~NetworkReceiverIf(void);
+	ConnectionManagerBase::~ConnectionManagerBase(void)
+	{
+	}
 
-		virtual bool receive(const NetworkMessage& message) = 0;
+	bool
+	ConnectionManagerBase::registerReceiverIf(const NetworkReceiverIf::SPtr& receiver)
+	{
+		std::pair<NetworkReceiverIf::Set::iterator, bool> result = receiverSet_.insert(receiver);
+		return result.second;
+	}
 
-	  private:
-	};
+	bool
+	ConnectionManagerBase::deregisterReceiverIf(const NetworkReceiverIf::SPtr& receiver)
+	{
+		return receiverSet_.erase(receiver) > 0;
+	}
 
 }
-
-#endif

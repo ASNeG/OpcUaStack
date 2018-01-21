@@ -14,21 +14,19 @@ BOOST_AUTO_TEST_CASE(MQTTClient_)
 
 BOOST_AUTO_TEST_CASE(MQTTClient_construct)
 {
-	MQTTClientBase::SPtr mqttClientBase = constructMQTT();
-
 	if (mqttClientBase->mqttClientIfEnabled()) {
-		std::cout << "MQTTCLIENT ENABLED" << std::endl;
-	}
-	else {
+	MQTTClientBase::SPtr mqttClient = constructMQTT();
+
+	if (mqttClient->mqttClientIfEnabled()) {
 		std::cout << "MQTTCLIENT DISABLED" << std::endl;
 	}
 }
 
 BOOST_AUTO_TEST_CASE(MQTTClient_construct_connect)
 {
-	MQTTClientBase::SPtr mqttClientBase = constructMQTT();
+	MQTTClientBase::SPtr mqttClient = constructMQTT();
 
-	if (mqttClientBase->mqttClientIfEnabled()) {
+	if (mqttClient->mqttClientIfEnabled()) {
 
 		// FIXME: unittest ...
 

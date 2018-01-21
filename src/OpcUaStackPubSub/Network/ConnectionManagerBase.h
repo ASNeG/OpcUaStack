@@ -15,29 +15,33 @@
    Autor: Aleksey Timin (atimin@gmail.com)
  */
 
-#ifndef __OpcUaStackPubSub_NetworkReceiverIf_h__
-#define __OpcUaStackPubSub_NetworkReceiverIf_h__
+#ifndef __OpcUaStackPubSub_ConnectionManagerBase_h__
+#define __OpcUaStackPubSub_ConnectionManagerBase_h__
 
-#include <set>
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackPubSub/Network/NetworkMessage.h"
+#include "OpcUaStackPubSub/Network/NetworkReceiverIf.h"
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT NetworkReceiverIf
+	class DLLEXPORT ConnectionManagerBase
 	{
 	  public:
-		typedef boost::shared_ptr<NetworkReceiverIf> SPtr;
-		typedef std::set<NetworkReceiverIf::SPtr> Set;
+		typedef boost::shared_ptr<ConnectionManagerBase> SPtr;
 
-		NetworkReceiverIf(void);
-		virtual ~NetworkReceiverIf(void);
+		ConnectionManagerBase(void);
+		virtual ~ConnectionManagerBase(void);
 
-		virtual bool receive(const NetworkMessage& message) = 0;
+		bool registerReceiverIf(const NetworkReceiverIf::SPtr& receiver);
+		bool deregisterReceiverIf(const NetworkReceiverIf::SPtr& receiver);
 
-	  private:
+		virtual bool startup() = 0;
+		virtual bool shutdown() = 0;
+
+	  protected:
+		NetworkReceiverIf::Set receiverSet_;
+
 	};
 
 }
