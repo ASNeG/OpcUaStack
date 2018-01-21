@@ -26,9 +26,11 @@ public:
 	{
 		std::cout << "Ujdfkjshdkjf";
 		receivedMessage_ = message;
+		receiveCondition_.conditionValueInc();
 		return true;
 	}
 
+	Condition receiveCondition_;
 	NetworkMessage receivedMessage_;
 };
 
@@ -41,20 +43,21 @@ BOOST_AUTO_TEST_CASE(UDPConnectionManager_)
 
 BOOST_AUTO_TEST_CASE(UDPConnectionManager_HandleUDPMessage)
 {
+	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	ioThread->startup();
+
 	UDPConnectionManager connManager;
 	MockNetworkReceiver::SPtr receiver = constructSPtr<MockNetworkReceiver>();
 
 	connManager.registerReceiverIf(receiver);
-	connManager.startup();
+	connManager.ioThread(ioThread);
+	BOOST_REQUIRE(connManager.startup() == true);
 
 	boost::asio::ip::udp::endpoint connManagerEndpoint(
 				boost::asio::ip::address::from_string(connManager.address()),
 				connManager.port());
 
 	// create UDP client
-	IOThread::SPtr ioThread = constructSPtr<IOThread>();
-	ioThread->startup();
-
 	UDPClient udpClient;
 	udpClient.ioThread(ioThread);
 	udpClient.endpoint(connManagerEndpoint);
@@ -75,17 +78,15 @@ BOOST_AUTO_TEST_CASE(UDPConnectionManager_HandleUDPMessage)
 	std::ostream os(&buffer);
 	message.opcUaBinaryEncode(os);
 
-	udpClient.open();
+	BOOST_REQUIRE(udpClient.open() == true);
+	receiver->receiveCondition_.condition(0, 1);
 	udpClient.sendTo(
 		buffer,
 		connManagerEndpoint
 	);
 
-	boost::this_thread::sleep_for(boost::chrono::seconds(1));
-
-
+	BOOST_REQUIRE(receiver->receiveCondition_.waitForCondition(10000) == true);
 	BOOST_REQUIRE(receiver->receivedMessage_ == message);
-
 
 	ioThread->shutdown();
 	connManager.shutdown();

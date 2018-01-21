@@ -22,11 +22,17 @@ namespace OpcUaStackPubSub
 
 	UDPConnectionManager::UDPConnectionManager(void)
 	: server_()
-	, ioThread_(constructSPtr<IOThread>())
+	, ioThread_()
 	, is_()
 	, address_("127.0.0.1")
 	, port_(4840)
 	{
+	}
+
+	void
+	UDPConnectionManager::ioThread(IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
 	}
 
 	UDPConnectionManager::~UDPConnectionManager(void)
@@ -60,8 +66,6 @@ namespace OpcUaStackPubSub
 	bool
 	UDPConnectionManager::startup()
 	{
-		ioThread_->startup();
-
 		server_.ioThread(ioThread_);
 		server_.endpoint(boost::asio::ip::udp::endpoint(
 				boost::asio::ip::address::from_string(address_),
@@ -69,12 +73,15 @@ namespace OpcUaStackPubSub
 		));
 
 		if (server_.open()) {
-			boost::asio::mutable_buffers_1 buf = is_.prepare(512);
-			server_.asyncReceive(buf, boost::bind(
-							&UDPConnectionManager::handleReadMessage,
-							this,
-							boost::asio::placeholders::error,
-							boost::asio::placeholders::bytes_transferred));
+			server_.asyncReceiveFrom(
+				serverRecvBuf_,
+				boost::bind(
+				    &UDPConnectionManager::handleReadMessage,
+				    this,
+				    boost::asio::placeholders::error,
+				    boost::asio::placeholders::bytes_transferred
+			    )
+			);
 
 			return true;
 		}
@@ -86,8 +93,6 @@ namespace OpcUaStackPubSub
 	UDPConnectionManager::shutdown()
 	{
 		server_.close();
-		ioThread_->shutdown();
-
 		return true;
 	}
 
@@ -103,17 +108,29 @@ namespace OpcUaStackPubSub
 			return;
 		}
 
-		std::iostream is(&is_);
-
+		boost::asio::streambuf sb;
+		std::iostream ios(&sb);
+		ios.write(serverRecvBuf_.data(), bytes_transfered);
 
 		NetworkMessage networkMessage;
-		networkMessage.opcUaBinaryDecode(is);
+		networkMessage.opcUaBinaryDecode(ios);
 
 		for (NetworkReceiverIf::Set::const_iterator it = receiverSet_.begin();
 				it != receiverSet_.end(); ++it) {
 
 			assert((*it)->receive(networkMessage));
 		}
+
+		// read next packet from udp server socket
+		server_.asyncReceiveFrom(
+			serverRecvBuf_,
+			boost::bind(
+		        &UDPConnectionManager::handleReadMessage,
+			    this,
+			    boost::asio::placeholders::error,
+			    boost::asio::placeholders::bytes_transferred
+			)
+		);
 	}
 
 }

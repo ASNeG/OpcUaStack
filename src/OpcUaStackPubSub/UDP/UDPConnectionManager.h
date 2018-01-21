@@ -33,6 +33,7 @@ namespace OpcUaStackPubSub
 		UDPConnectionManager(void);
 		virtual ~UDPConnectionManager(void);
 
+		void ioThread(IOThread::SPtr& ioThread);
 		void address(const std::string& address);
 		std::string address() const;
 
@@ -53,6 +54,7 @@ namespace OpcUaStackPubSub
 		UDPServer server_;
 		boost::asio::streambuf is_;
 
+		boost::array<char, 256> serverRecvBuf_;
 	};
 
 }
