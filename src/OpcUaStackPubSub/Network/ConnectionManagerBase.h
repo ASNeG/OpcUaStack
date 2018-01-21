@@ -39,7 +39,7 @@ namespace OpcUaStackPubSub
 		virtual bool startup() = 0;
 		virtual bool shutdown() = 0;
 
-	  private:
+	  protected:
 		NetworkReceiverIf::Set receiverSet_;
 
 	};

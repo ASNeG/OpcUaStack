@@ -62,14 +62,19 @@ namespace OpcUaStackPubSub
 	{
 		ioThread_->startup();
 
-		server_.ioThread_(ioThread_);
-		server_.endpoint({
+		server_.ioThread(ioThread_);
+		server_.endpoint(boost::asio::ip::udp::endpoint(
 				boost::asio::ip::address::from_string(address_),
 				port_
-		});
+		));
 
 		if (server_.open()) {
-			server_.asyncReceive(is_, handleReadMessage);
+			boost::asio::mutable_buffers_1 buf = is_.prepare(512);
+			server_.asyncReceive(buf, boost::bind(
+							&UDPConnectionManager::handleReadMessage,
+							this,
+							boost::asio::placeholders::error,
+							boost::asio::placeholders::bytes_transferred));
 
 			return true;
 		}
@@ -100,13 +105,14 @@ namespace OpcUaStackPubSub
 
 		std::iostream is(&is_);
 
+
 		NetworkMessage networkMessage;
 		networkMessage.opcUaBinaryDecode(is);
 
 		for (NetworkReceiverIf::Set::const_iterator it = receiverSet_.begin();
 				it != receiverSet_.end(); ++it) {
 
-			(*it)->receive(networkMessage);
+			assert((*it)->receive(networkMessage));
 		}
 	}
 
