@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12.2)
-project	(OpcUaStackTest)
+project	(OpcUaStackTest4)
 set (CMAKE_CXX_STANDARD 11)
 
 # -----------------------------------------------------------------------------
