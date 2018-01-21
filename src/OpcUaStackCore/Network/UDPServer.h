@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -37,6 +37,7 @@ namespace OpcUaStackCore
 		void ioThread(IOThread::SPtr& ioThread);
 		void endpoint(const boost::asio::ip::udp::endpoint& endpoint);
 		boost::asio::ip::udp::endpoint& endpoint(void);
+		boost::asio::ip::udp::endpoint& remoteEndpoint(void);
 		bool open(void);
 		bool close(void);
 		boost::asio::ip::udp::socket* socket(void);
@@ -97,13 +98,14 @@ namespace OpcUaStackCore
 		  {
 			  socket_->async_receive_from(
 				  boost::asio::buffer(buffer),
-				  endpoint_,
+				  remoteEndpoint_,
 				  handler
 			  );
 		  }
 
 	  private:
 		IOThread::SPtr ioThread_;
+		boost::asio::ip::udp::endpoint remoteEndpoint_;
 		boost::asio::ip::udp::endpoint endpoint_;
 		boost::asio::ip::udp::socket* socket_;
 	};

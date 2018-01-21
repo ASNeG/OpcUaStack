@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 	UDPServer::UDPServer(void)
 	: ioThread_()
 	, endpoint_()
+	, remoteEndpoint_()
 	, socket_(nullptr)
 	{
 	}
@@ -59,6 +60,12 @@ namespace OpcUaStackCore
 	UDPServer::endpoint(void)
 	{
 		return endpoint_;
+	}
+
+	boost::asio::ip::udp::endpoint&
+	UDPServer::remoteEndpoint(void)
+	{
+		return remoteEndpoint_;
 	}
 
 	bool
