@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -222,7 +222,7 @@ namespace OpcUaStackServer
 
 	
 	OpcUaStatusCode
-	ViewService::browseNode(BrowseDescription::SPtr browseDescription, ReferenceDescriptionVec& referenceDescriptionVec)
+	ViewService::browseNode(BrowseDescription::SPtr& browseDescription, ReferenceDescriptionVec& referenceDescriptionVec)
 	{
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(*browseDescription->nodeId());
 		if (baseNodeClass.get() == nullptr) {
@@ -237,7 +237,7 @@ namespace OpcUaStackServer
 		ReferenceItemMultiMap::iterator it;
 		for (it = referenceItemMap.referenceItemMultiMap().begin(); it != referenceItemMap.referenceItemMultiMap().end(); it++) {
 			OpcUaNodeId referenceTypeNodeId = it->first;
-			ReferenceItem::SPtr referenceItem = it->second;
+			ReferenceItem::SPtr& referenceItem = it->second;
 
 			if (browseDescription->browseDirection() == BrowseDirection_Forward) {
 				if (!referenceItem->isForward_) continue;
@@ -274,7 +274,7 @@ namespace OpcUaStackServer
 			std::pair<ReferenceItemMultiMap::iterator,ReferenceItemMultiMap::iterator> itp;
 			itp = baseNodeClassTarget->referenceItemMap().referenceItemMultiMap().equal_range(*ReferenceTypeMap::hasTypeDefinitionTypeNodeId());
 			if (itp.first != itp.second) {
-				ReferenceItem::SPtr referenceItem = itp.first->second;
+				ReferenceItem::SPtr& referenceItem = itp.first->second;
 				referenceItem->nodeId_.copyTo(*referenceDescription->typeDefinition());
 			}
 		}
@@ -283,11 +283,15 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode 
-	ViewService::checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr browseDescription)
+	ViewService::checkReferenceType(OpcUaNodeId& referenceTypeNodeId, BrowseDescription::SPtr& browseDescription)
 	{
 		OpcUaNodeId nullNodeId;
 		nullNodeId.set(0);
 		if (*browseDescription->referenceTypeId() == nullNodeId) return Success;
+
+		OpcUaNodeId allNodeId;
+		allNodeId.set(31);
+		if (*browseDescription->referenceTypeId() == allNodeId) return Success;
 
 		BaseNodeClass::SPtr baseNodeClass = informationModel_->find(referenceTypeNodeId);
 		if (baseNodeClass.get() == nullptr) {
