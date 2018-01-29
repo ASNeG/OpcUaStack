@@ -192,6 +192,8 @@ if (DEFINED ENV{USE_MOSQUITTO_CLIENT})
 	set(USE_MOSQUITTO_CLIENT $ENV{USE_MOSQUITTO_CLIENT})
 	set(MOSQUITTO_LIBRARIES "mosquitto")
 	add_definitions(-DUSE_MOSQUITTO_CLIENT)
+else()
+        message(STATUS "Mosquitto disabled")
 endif()
 
 # -----------------------------------------------------------------------------
