@@ -17,6 +17,8 @@
 
 #include "OpcUaStackPubSub/MQTT/MQTTClient.h"
 
+// https://gist.github.com/evgeny-boger/8cefa502779f98efaf24
+
 namespace OpcUaStackPubSub
 {
 
@@ -25,11 +27,50 @@ namespace OpcUaStackPubSub
 	MQTTClient::MQTTClient(void)
 	: MQTTClientBase()
 	, mqttClient_(nullptr)
+	, clientId_("OpcUaPubSubClient")
+	, host_("http://mqtt.org/")
+	, port_(1883)
 	{
 	}
 
 	MQTTClient::~MQTTClient(void)
 	{
+	}
+
+	void
+	MQTTClient::clientId(const std::string& clientId)
+	{
+		clientId_ = clientId;
+	}
+
+	std::string&
+	MQTTClient::clientId(void)
+	{
+		return clientId_;
+	}
+
+	void
+	MQTTClient::host(const std::string& host)
+	{
+		host_ = host;
+	}
+
+	std::string&
+	MQTTClient::host(void)
+	{
+		return host_;
+	}
+
+	void
+	MQTTClient::port(uint32_t port)
+	{
+		port_ = port;
+	}
+
+	uint32_t
+	MQTTClient::port(void)
+	{
+		return port_;
 	}
 
 	bool
