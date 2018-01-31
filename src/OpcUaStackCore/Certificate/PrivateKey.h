@@ -22,16 +22,27 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
+#include "OpcUaStackCore/Certificate/KeyType.h"
 
 namespace OpcUaStackCore
 {
+
+    typedef int PasswordCallback(char *buf, int size, int rwflag, void *u);
 
 	class DLLEXPORT PrivateKey
 	: public OpenSSLError
 	{
 	  public:
 		PrivateKey(void);
+		PrivateKey(EVP_PKEY *pKey);
+		PrivateKey(const PrivateKey& copy);
 		~PrivateKey(void);
+
+		PrivateKey& operator=(const PrivateKey& copy);
+		operator const EVP_PKEY*() const;
+		bool toDER(char* buf, uint32_t& bufLen) const;
+		bool fromDER (char* buf, uint32_t bufLen, KeyType keyType);
+		bool fromPEM (char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
 
 	  private:
 		EVP_PKEY *privateKey_;
