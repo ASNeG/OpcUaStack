@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <openssl/err.h>
+
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
@@ -28,10 +30,36 @@ namespace OpcUaStackCore
 	{
 	}
 
+	bool
+	OpenSSLError::isError(void)
+	{
+		return errorList_.size() > 0;
+	}
+
 	void
 	OpenSSLError::addOpenSSLError(void)
 	{
-		//FIXME:todo
+	    unsigned long err = ERR_get_error();
+	    while (err != 0)
+	    {
+	        errorList_.push_back(ERR_error_string(err, NULL));
+	        err = ERR_get_error();
+	    }
+	    ERR_remove_state(0);
+	}
+
+	void
+	OpenSSLError::addError(const std::string& message)
+	{
+		errorList_.push_back(message);
+	}
+
+	std::list<std::string>
+	OpenSSLError::errorList(void)
+	{
+		std::list<std::string> errorList = errorList_;
+		errorList_.clear();
+		return errorList;
 	}
 
 }

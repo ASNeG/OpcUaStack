@@ -18,6 +18,9 @@
 #ifndef __OpcUaStackCore_OpenSSLError_h__
 #define __OpcUaStackCore_OpenSSLError_h__
 
+#include <list>
+#include <string>
+
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -29,9 +32,13 @@ namespace OpcUaStackCore
 		OpenSSLError(void);
 		~OpenSSLError(void);
 
+		bool isError(void);
 		void addOpenSSLError(void);
+		void addError(const std::string& message);
+		std::list<std::string> errorList(void);
 
 	  private:
+		std::list<std::string> errorList_;
 	};
 
 }
