@@ -22,16 +22,10 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
+#include "OpcUaStackCore/Certificate/KeyType.h"
 
 namespace OpcUaStackCore
 {
-
-    typedef enum
-    {
-        KeyType_RSA        = EVP_PKEY_RSA,
-        KeyType_DSA        = EVP_PKEY_DSA,
-        KeyType_Unknown    = EVP_PKEY_NONE
-    } KeyType;
 
 	class DLLEXPORT PublicKey
 	: public OpenSSLError

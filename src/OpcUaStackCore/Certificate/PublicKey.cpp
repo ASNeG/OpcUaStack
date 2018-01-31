@@ -28,7 +28,8 @@ namespace OpcUaStackCore
 	}
 
 	PublicKey::PublicKey(EVP_PKEY *pKey)
-	: publicKey_(nullptr)
+	: OpenSSLError()
+	, publicKey_(nullptr)
 	{
 		int result = X509_PUBKEY_set(&publicKey_, pKey);
 		if (!result) {
@@ -37,7 +38,8 @@ namespace OpcUaStackCore
 	}
 
 	PublicKey::PublicKey(const PublicKey& copy)
-	: publicKey_(nullptr)
+	: OpenSSLError()
+	, publicKey_(nullptr)
 	{
 		publicKey_ = X509_PUBKEY_new();
 
