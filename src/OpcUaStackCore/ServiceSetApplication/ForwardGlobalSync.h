@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -40,6 +40,8 @@ namespace OpcUaStackCore
 		ForwardCallback& findServersService(void);
 		ForwardCallback& eventItemStartService(void);
 		ForwardCallback& eventItemStopService(void);
+		ForwardCallback& authenticationService(void);
+		ForwardCallback& authorizationService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
@@ -51,6 +53,10 @@ namespace OpcUaStackCore
 		// event service
 		ForwardCallback eventItemStartService_;
 		ForwardCallback eventItemStopService_;
+
+		// authentication and authorization
+		ForwardCallback authenticationService_;
+		ForwardCallback authorizationService_;
 	};
 
 }
