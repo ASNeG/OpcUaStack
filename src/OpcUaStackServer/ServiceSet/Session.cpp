@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -56,6 +56,7 @@ namespace OpcUaStackServer
 
 	Session::Session(void)
 	: Component()
+	, forwardGlobalSync_()
 	, sessionIf_(nullptr)
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
@@ -78,6 +79,12 @@ namespace OpcUaStackServer
 	Session::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
 	{
 		transactionManagerSPtr_ = transactionManagerSPtr;
+	}
+
+	void
+	Session::forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync)
+	{
+		forwardGlobalSync_ = forwardGlobalSync;
 	}
 
 	void 

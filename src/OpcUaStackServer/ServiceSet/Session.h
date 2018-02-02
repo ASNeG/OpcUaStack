@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
@@ -56,6 +57,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<Session> SPtr;
 
 		void transactionManager(TransactionManager::SPtr transactionManager);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		void sessionIf(SessionIf* sessionIf);
@@ -130,6 +132,7 @@ namespace OpcUaStackServer
 		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
 	};
 

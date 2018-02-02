@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -53,6 +53,7 @@ namespace OpcUaStackServer
 		void ioThread(IOThread* ioThread);
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 		void config(Config* config);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		bool startup(void);
 		bool shutdown(void);
@@ -161,6 +162,7 @@ namespace OpcUaStackServer
 		ConditionProcess secureChannelServerShutdown_;
 		SecureChannelServerConfig::SPtr secureChannelServerConfig_;
 		SecureChannelServer::SPtr secureChannelServer_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 
 		DiscoveryService::SPtr discoveryService_;
 		TransactionManager::SPtr transactionManagerSPtr_;

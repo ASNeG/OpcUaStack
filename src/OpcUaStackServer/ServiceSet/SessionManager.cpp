@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,6 +35,7 @@ namespace OpcUaStackServer
 	, discoveryService_()
 	, transactionManagerSPtr_()
 	, channelSessionHandleMap_()
+	, forwardGlobalSync_()
 	{
 	}
 
@@ -71,6 +72,12 @@ namespace OpcUaStackServer
 	SessionManager::config(Config* config)
 	{
 		config_ = config;
+	}
+
+	void
+	SessionManager::forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync)
+	{
+		forwardGlobalSync_ = forwardGlobalSync;
 	}
 
 	bool
@@ -238,6 +245,7 @@ namespace OpcUaStackServer
 		session->sessionIf(this);
 		session->endpointDescriptionArray(endpointDescriptionArray_);
 		session->transactionManager(transactionManagerSPtr_);
+		session->forwardGlobalSync(forwardGlobalSync_);
 
 		Object::SPtr handle = channelSessionHandleMap_.createSession(session, secureChannel);
 		secureChannel->secureChannelTransaction_->handle_ = handle;

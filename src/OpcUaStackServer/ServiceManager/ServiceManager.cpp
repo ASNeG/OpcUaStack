@@ -251,6 +251,7 @@ namespace OpcUaStackServer
 	
 		sessionManager.discoveryService(discoveryService_);
 		sessionManager.transactionManager(transactionManager_);
+		sessionManager.forwardGlobalSync(forwardGlobalSync_);
 		return true;
 	}
 
