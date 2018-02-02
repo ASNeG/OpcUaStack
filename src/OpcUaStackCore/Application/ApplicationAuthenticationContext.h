@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 		std::string userName_;					// IN - user name
 		std::string password_;					// IN - password
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
+		Object::SPtr userContext_;				// OUT - user context
 	};
 
 }

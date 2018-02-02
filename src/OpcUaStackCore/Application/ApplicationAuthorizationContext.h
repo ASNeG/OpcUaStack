@@ -18,12 +18,27 @@
 #ifndef __OpcUaStackCore_ApplicationAuthorizationContext_h__
 #define __OpcUaStackCore_ApplicationAuthorizationContext_h__
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
+
 namespace OpcUaStackCore
 {
+
+	typedef enum
+	{
+		Read,
+		Write,
+		HRead,
+		HWrite,
+		MonitoredItem,
+		EventItem
+	} ServiceOperation;
 
 	class ApplicationAuthorizationContext
 	{
 	  public:
+		Object::SPtr userContext_;				// IN - user context
+		ServiceOperation serviceOperation_;		// IN - service operation
+		OpcUaNodeId nodeId_;					// IN - node id
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
 	};
 
