@@ -96,6 +96,8 @@ namespace OpcUaStackServer
 		// - Component -------------------------------------------------------
 
 	  private:
+		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
+
 		void activateSessionRequestError(
 			RequestHeader::SPtr& requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction,

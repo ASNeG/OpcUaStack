@@ -120,6 +120,23 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// authentication
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	Session::authentication(ActivateSessionRequest& activateSessionRequest)
+	{
+		// FIXME: todo
+		if (forwardGlobalSync_.get() != nullptr && forwardGlobalSync_->authenticationService().isCallback()) {
+		    // authentication callback method exist
+		}
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// create session request
 	//
 	// ------------------------------------------------------------------------
@@ -201,13 +218,15 @@ namespace OpcUaStackServer
 			return;
 		}
 
-		// FIXME: analyse request data
+		// check username and password
+		OpcUaStatusCode statusCode;
+		statusCode = authentication(activateSessionRequest);
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
-		activateSessionResponse.responseHeader()->serviceResult(Success);
+		activateSessionResponse.responseHeader()->serviceResult(statusCode);
 
 		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		activateSessionResponse.opcUaBinaryEncode(iosres);
