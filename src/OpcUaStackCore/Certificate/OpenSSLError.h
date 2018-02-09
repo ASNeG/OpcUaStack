@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,28 +15,30 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_PkiPrivateKey_h__
-#define __OpcUaStackCore_PkiPrivateKey_h__
+#ifndef __OpcUaStackCore_OpenSSLError_h__
+#define __OpcUaStackCore_OpenSSLError_h__
 
-#include <openssl/x509.h>
+#include <list>
+#include <string>
+
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Certificate/PkiError.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT PkiPrivateKey
-	: public PkiError
+	class DLLEXPORT OpenSSLError
 	{
 	  public:
-		PkiPrivateKey(void);
-		~PkiPrivateKey(void);
+		OpenSSLError(void);
+		~OpenSSLError(void);
 
-		void privateKey(EVP_PKEY* privateKey);
-		EVP_PKEY* privateKey(void);
+		bool isError(void);
+		void addOpenSSLError(void);
+		void addError(const std::string& message);
+		std::list<std::string> errorList(void);
 
 	  private:
-		EVP_PKEY* privateKey_;
+		std::list<std::string> errorList_;
 	};
 
 }

@@ -44,6 +44,13 @@ namespace OpcUaStackPubSub
 		MQTTClient(void);
 		virtual ~MQTTClient(void);
 
+		void clientId(const std::string& clientId);
+		std::string& clientId(void);
+		void host(const std::string& host);
+		std::string& host(void);
+		void port(uint32_t port);
+		uint32_t port(void);
+
 		virtual bool init(void);
 		virtual bool cleanup(void);
 		virtual bool startup(void);
@@ -54,6 +61,10 @@ namespace OpcUaStackPubSub
 
 	  private:
 		struct mosquitto *mqttClient_;
+
+		std::string clientId_;
+		std::string host_;
+		uint32_t port_;
 
 	};
 

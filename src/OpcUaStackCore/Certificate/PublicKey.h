@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,42 +15,37 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_PkiPublicKey_h__
-#define __OpcUaStackCore_PkiPublicKey_h__
+#ifndef __OpcUaStackCore_PublicKey_h__
+#define __OpcUaStackCore_PublicKey_h__
 
 #include <openssl/x509.h>
-#include <stdint.h>
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Certificate/PkiError.h"
 
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/OpenSSLError.h"
+#include "OpcUaStackCore/Certificate/KeyType.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT PkiPublicKey
-	: public PkiError
+	class DLLEXPORT PublicKey
+	: public OpenSSLError
 	{
 	  public:
-		typedef enum {
-			KT_None,
-			KT_RSA,
-			KT_DSA
-		} KeyType;
+		PublicKey(void);
+		PublicKey(EVP_PKEY *pKey);
+		PublicKey(const PublicKey& copy);
+		~PublicKey(void);
 
-		PkiPublicKey(void);
-		~PkiPublicKey(void);
+		PublicKey& operator=(const PublicKey& copy);
+		operator EVP_PKEY*(void) const;
+		uint32_t keySize(void) const;
+		KeyType keyType(void) const;
 
-		KeyType keyType(void);
-		EVP_PKEY* publicKey(void);
-		bool publicKey(EVP_PKEY* publicKey);
-		bool toDER(char* bufDER, uint32_t* lengthDER);
-		bool fromDER(char* bufDER, uint32_t lengthDER);
-		bool getPublicKeyAlgorithm(std::string& publicKeyAlgorithm);
-
-		bool toHexStringPublicKey(std::string& hexString);
+		bool fromDER(const char* buf, uint32_t bufLen);
+		bool toDER(char* buf, uint32_t& bufLen);
 
 	  private:
-		X509_PUBKEY* publicKey_;
+		X509_PUBKEY *publicKey_;
 	};
 
 }

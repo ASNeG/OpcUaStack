@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,32 +15,22 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_PkiError_h__
-#define __OpcUaStackCore_PkiError_h__
+#ifndef __OpcUaStackCore_KeyType_h__
+#define __OpcUaStackCore_KeyType_h__
 
-#include <list>
+#include <openssl/x509.h>
+
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Log.h"
-
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT PkiError
-	{
-	  public:
-		PkiError(void);
-		~PkiError(void);
-
-		void clear(void);
-		void openSSLError(void);
-		void openSSLError(const std::string& message);
-		void getError(std::list<std::string>& errorList);
-		void logError(LogLevel logLevel, const std::string& logMessage);
-
-	  private:
-		std::list<std::string> errorList_;
-	};
+    typedef enum
+    {
+        KeyType_RSA        = EVP_PKEY_RSA,
+        KeyType_DSA        = EVP_PKEY_DSA,
+        KeyType_Unknown    = EVP_PKEY_NONE
+    } KeyType;
 
 }
 
