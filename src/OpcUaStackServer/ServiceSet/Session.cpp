@@ -127,10 +127,19 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authentication(ActivateSessionRequest& activateSessionRequest)
 	{
-		// FIXME: todo
 		if (forwardGlobalSync_.get() != nullptr && forwardGlobalSync_->authenticationService().isCallback()) {
 		    // authentication callback method exist
+
+			if (activateSessionRequest.userIdentityToken().get() == nullptr) {
+				std::cout << "user identity token is null..." << std::endl;
+			}
+
+			else {
+				// FIXME: todo
+			}
+
 		}
+
 		return Success;
 	}
 

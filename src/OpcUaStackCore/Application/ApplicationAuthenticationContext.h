@@ -18,6 +18,8 @@
 #ifndef __OpcUaStackCore_ApplicationAuthenticationContext_h__
 #define __OpcUaStackCore_ApplicationAuthenticationContext_h__
 
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+
 namespace OpcUaStackCore
 {
 
