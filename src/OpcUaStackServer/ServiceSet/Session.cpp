@@ -128,28 +128,27 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authentication(ActivateSessionRequest& activateSessionRequest)
 	{
-		std::cout << "authentication..." << std::endl;
-		if (forwardGlobalSync_.get() == nullptr) std::cout << "null..." << std::endl;
-		if (!forwardGlobalSync_->authenticationService().isCallback()) std::cout << "no function..." << std::endl;
-
 		if (forwardGlobalSync_.get() == nullptr) {
+			// no authentication is activated
 			return Success;
 		}
 		if (!forwardGlobalSync_->authenticationService().isCallback()) {
+			// no authentication is activated
 			return Success;
 		}
 
 		if (activateSessionRequest.userIdentityToken().get() == nullptr) {
-			std::cout << "user identity token is null..." << std::endl;
-			// FIXME: todo
+			// user identity token is invalid
+			Log(Error, "authentication error, because user identity token is invalid");
+			return BadIdentityTokenInvalid;
 		}
 
 		else {
-			std::cout << "user identity token is not null..." << std::endl;
 			ExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
 			if (!parameter->exist()) {
-				std::cout << "parameter not exist..." << std::endl;
-				// FIXME: todo
+				// user identity token is invalid
+				Log(Error, "authentication error, because user identity token not exist");
+				return BadIdentityTokenInvalid;
 			}
 			else {
 				OpcUaNodeId typeId = parameter->parameterTypeId();
@@ -170,8 +169,10 @@ namespace OpcUaStackServer
 					// FIXME: todo
 				}
 				else {
-					std::cout << "invalid authentication type" << std::endl;
-					// FIXME: todo
+					// user identity token is invalid
+					Log(Error, "authentication error, because unknown authentication type")
+					    .parameter("AuthenticationType", typeId);
+					return BadIdentityTokenInvalid;
 				}
 			}
 		}
