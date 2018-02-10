@@ -27,6 +27,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
+#include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 
 using namespace OpcUaStackCore;
 
@@ -127,21 +128,57 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authentication(ActivateSessionRequest& activateSessionRequest)
 	{
-		if (forwardGlobalSync_.get() != nullptr && forwardGlobalSync_->authenticationService().isCallback()) {
-		    // authentication callback method exist
+		std::cout << "authentication..." << std::endl;
+		if (forwardGlobalSync_.get() == nullptr) std::cout << "null..." << std::endl;
+		if (!forwardGlobalSync_->authenticationService().isCallback()) std::cout << "no function..." << std::endl;
 
-			if (activateSessionRequest.userIdentityToken().get() == nullptr) {
-				std::cout << "user identity token is null..." << std::endl;
-			}
+		if (forwardGlobalSync_.get() == nullptr) {
+			return Success;
+		}
+		if (!forwardGlobalSync_->authenticationService().isCallback()) {
+			return Success;
+		}
 
-			else {
+		if (activateSessionRequest.userIdentityToken().get() == nullptr) {
+			std::cout << "user identity token is null..." << std::endl;
+			// FIXME: todo
+		}
+
+		else {
+			std::cout << "user identity token is not null..." << std::endl;
+			ExtensibleParameter::SPtr parameter = activateSessionRequest.userIdentityToken();
+			if (!parameter->exist()) {
+				std::cout << "parameter not exist..." << std::endl;
 				// FIXME: todo
 			}
-
+			else {
+				OpcUaNodeId typeId = parameter->parameterTypeId();
+				if (typeId == OpcUaNodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary)) {
+					std::cout << "AnonymousIdentityToken" << std::endl;
+					// FIXME: todo
+				}
+				else if (typeId == OpcUaNodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary)) {
+					std::cout << "UserNameIdentityToken" << std::endl;
+					// FIXME: todo
+				}
+				else if (typeId == OpcUaId_X509IdentityToken_Encoding_DefaultBinary) {
+					std::cout << "X509IdentityToken" << std::endl;
+					// FIXME: todo
+				}
+				else if (typeId == OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary) {
+					std::cout << "IssuedIdentityToken" << std::endl;
+					// FIXME: todo
+				}
+				else {
+					std::cout << "invalid authentication type" << std::endl;
+					// FIXME: todo
+				}
+			}
 		}
 
 		return Success;
 	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -213,7 +250,7 @@ namespace OpcUaStackServer
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
 
 		// FIXME: if authenticationToken in the secureChannelTransaction contains 0 then
-		//        the session has a new sechure channel
+		//        the session has a new secure channel
 
 
 		std::iostream ios(&secureChannelTransaction->is_);
