@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_ApplicationAuthenticationContext_h__
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 
 namespace OpcUaStackCore
 {
@@ -26,8 +27,8 @@ namespace OpcUaStackCore
 	class ApplicationAuthenticationContext
 	{
 	  public:
-		std::string userName_;					// IN - user name
-		std::string password_;					// IN - password
+		uint32_t authenticationType_;			// IN - authentication type
+		ExtensibleParameter::SPtr parameter_;	// IN - authentication parameter
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
 		Object::SPtr userContext_;				// OUT - user context
 	};

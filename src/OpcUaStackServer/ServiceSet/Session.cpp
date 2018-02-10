@@ -153,20 +153,16 @@ namespace OpcUaStackServer
 			else {
 				OpcUaNodeId typeId = parameter->parameterTypeId();
 				if (typeId == OpcUaNodeId(OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary)) {
-					std::cout << "AnonymousIdentityToken" << std::endl;
-					// FIXME: todo
+					return authenticationAnonymous(activateSessionRequest, parameter);
 				}
 				else if (typeId == OpcUaNodeId(OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary)) {
-					std::cout << "UserNameIdentityToken" << std::endl;
-					// FIXME: todo
+					return authenticationUserName(activateSessionRequest, parameter);
 				}
 				else if (typeId == OpcUaId_X509IdentityToken_Encoding_DefaultBinary) {
-					std::cout << "X509IdentityToken" << std::endl;
-					// FIXME: todo
+					return authenticationX509(activateSessionRequest, parameter);
 				}
 				else if (typeId == OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary) {
-					std::cout << "IssuedIdentityToken" << std::endl;
-					// FIXME: todo
+					return authenticationIssued(activateSessionRequest, parameter);
 				}
 				else {
 					// user identity token is invalid
@@ -178,6 +174,50 @@ namespace OpcUaStackServer
 		}
 
 		return Success;
+	}
+
+	OpcUaStatusCode
+	Session::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	{
+		ApplicationAuthenticationContext context;
+		context.authenticationType_ = OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary;
+		context.parameter_ = parameter;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		return context.statusCode_;
+	}
+
+	OpcUaStatusCode
+	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	{
+		ApplicationAuthenticationContext context;
+		context.authenticationType_ = OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary;
+		context.parameter_ = parameter;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		// FIXME: todo
+		// decrypt password
+
+		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		return context.statusCode_;
+	}
+
+	OpcUaStatusCode
+	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	{
+		Log(Error, "authentication error, because x509 authentication not implemented");
+		return BadIdentityTokenInvalid;
+	}
+	OpcUaStatusCode
+	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
+	{
+		Log(Error, "authentication error, because issued authentication not implemented");
+		return BadIdentityTokenInvalid;
 	}
 
 

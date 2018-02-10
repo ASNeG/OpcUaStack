@@ -97,6 +97,10 @@ namespace OpcUaStackServer
 
 	  private:
 		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
+		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 
 		void activateSessionRequestError(
 			RequestHeader::SPtr& requestHeader,
