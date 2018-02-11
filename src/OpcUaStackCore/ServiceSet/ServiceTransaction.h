@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -21,6 +21,7 @@
 #include <boost/thread/mutex.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ConditionBool.h"
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/SecureChannel/ResponseHeader.h"
@@ -66,6 +67,9 @@ namespace OpcUaStackCore
 		Component* componentSession(void);
 		void componentSession(Component* componentSession);
 
+		void userContext(UserContext::SPtr& userContext);
+		UserContext::SPtr& userContext(void);
+
 		virtual void opcUaBinaryEncodeRequest(std::ostream& os) const = 0;
 		virtual void opcUaBinaryEncodeResponse(std::ostream& os) const = 0;
 		virtual void opcUaBinaryDecodeRequest(std::istream& is) = 0;
@@ -105,6 +109,7 @@ namespace OpcUaStackCore
 		Component* componentService_;
 		Component* componentSession_;
 
+		UserContext::SPtr userContext_;
 		OpcUaStatusCode statusCode_;
 	};
 

@@ -488,6 +488,7 @@ namespace OpcUaStackServer
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaNodeId(serviceTransactionSPtr->nodeTypeResponse().nodeId<uint32_t>());
 		serviceTransactionSPtr->componentSession(this);
 		serviceTransactionSPtr->sessionId(sessionId_);
+		serviceTransactionSPtr->userContext(userContext_);
 		Object::SPtr handle = secureChannelTransaction;
 		serviceTransactionSPtr->handle(handle);
 		// FIXME: serviceTransactionSPtr->channelId(secureChannelTransaction->channelId_);
