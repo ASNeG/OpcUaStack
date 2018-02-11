@@ -397,6 +397,8 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		OpcUaStatusCode statusCode;
+
 		ServiceTransactionHistoryRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionHistoryRead>(serviceTransaction);
 		HistoryReadRequest::SPtr readRequest = trx->request();
 		HistoryReadResponse::SPtr readResponse = trx->response();
@@ -449,6 +451,13 @@ namespace OpcUaStackServer
 				Log(Debug, "history read value error, because node request parameter invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx);
+				continue;
+			}
+
+			// autorization
+			statusCode = forwardAuthorizationHistoricalRead(serviceTransaction->userContext(), readValueId);
+			if (statusCode != Success) {
+				readResult->statusCode(statusCode);
 				continue;
 			}
 
@@ -527,6 +536,23 @@ namespace OpcUaStackServer
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
+	}
+
+	OpcUaStatusCode
+	AttributeService::forwardAuthorizationHistoricalRead(UserContext::SPtr& userContext, HistoryReadValueId::SPtr& readValueId)
+	{
+		if (forwardGlobalSync().get() == nullptr) return Success;
+		if (!forwardGlobalSync()->autorizationService().isCallback()) return Success;
+
+		ApplicationAutorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::HRead;
+		context.nodeId_ = *readValueId->nodeId();
+		context.attributeId_ = AttributeId_Value;
+
+		forwardGlobalSync()->autorizationService().callback()(&context);
+
+		return context.statusCode_;
 	}
 
 	// ------------------------------------------------------------------------
