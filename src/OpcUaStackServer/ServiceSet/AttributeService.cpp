@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,8 +23,6 @@
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
-#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
-#include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -565,6 +563,8 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		OpcUaStatusCode statusCode;
+
 		ServiceTransactionHistoryUpdate::SPtr trx = boost::static_pointer_cast<ServiceTransactionHistoryUpdate>(serviceTransaction);
 		HistoryUpdateRequest::SPtr updateRequest = trx->request();
 		HistoryUpdateResponse::SPtr updateResponse = trx->response();
@@ -608,6 +608,13 @@ namespace OpcUaStackServer
 			}
 			UpdateStructureDataDetails::SPtr dataDetails;
 			dataDetails = extensibleParameter->parameter<UpdateStructureDataDetails>();
+
+			// autorization
+			statusCode = forwardAuthorizationHistoricalWrite(serviceTransaction->userContext(), dataDetails);
+			if (statusCode != Success) {
+				writeResult->statusCode(statusCode);
+				continue;
+			}
 
 			// check operation type
 			if (dataDetails->performInsertReplace() != PerformUpdateEnumeration_Insert) {
@@ -669,6 +676,23 @@ namespace OpcUaStackServer
 
 		serviceTransaction->statusCode(Success);
 		serviceTransaction->componentSession()->send(serviceTransaction);
+	}
+
+	OpcUaStatusCode
+	AttributeService::forwardAuthorizationHistoricalWrite(UserContext::SPtr& userContext, UpdateStructureDataDetails::SPtr& updateStructureDataDetails)
+	{
+		if (forwardGlobalSync().get() == nullptr) return Success;
+		if (!forwardGlobalSync()->autorizationService().isCallback()) return Success;
+
+		ApplicationAutorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::HWrite;
+		context.nodeId_ = updateStructureDataDetails->nodeId();
+		context.attributeId_ = AttributeId_Value;
+
+		forwardGlobalSync()->autorizationService().callback()(&context);
+
+		return context.statusCode_;
 	}
 
 }
