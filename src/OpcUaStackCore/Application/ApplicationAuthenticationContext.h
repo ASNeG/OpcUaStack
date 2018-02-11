@@ -18,9 +18,9 @@
 #ifndef __OpcUaStackCore_ApplicationAuthenticationContext_h__
 #define __OpcUaStackCore_ApplicationAuthenticationContext_h__
 
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
-#include "OpcUaStackCore/Application/UserContext.h"
 
 namespace OpcUaStackCore
 {
