@@ -15,13 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <OpcUaStackCore/Application/ApplicationAutorizationContext.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
-#include "OpcUaStackCore/Application/ApplicationAuthorizationContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
@@ -200,15 +200,15 @@ namespace OpcUaStackServer
 	AttributeService::forwardAuthorizationRead(UserContext::SPtr& userContext, ReadValueId::SPtr& readValueId)
 	{
 		if (forwardGlobalSync().get() == nullptr) return Success;
-		if (!forwardGlobalSync()->authorizationService().isCallback()) return Success;
+		if (!forwardGlobalSync()->autorizationService().isCallback()) return Success;
 
-		ApplicationAuthorizationContext context;
+		ApplicationAutorizationContext context;
 		context.userContext_ = userContext;
 		context.serviceOperation_ = ServiceOperation::Read;
 		context.nodeId_ = *readValueId->nodeId();
 		context.attributeId_ = readValueId->attributeId();
 
-		forwardGlobalSync()->authorizationService().callback()(&context);
+		forwardGlobalSync()->autorizationService().callback()(&context);
 
 		return context.statusCode_;
 	}
