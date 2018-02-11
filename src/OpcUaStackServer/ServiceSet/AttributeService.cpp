@@ -122,7 +122,7 @@ namespace OpcUaStackServer
 				continue;
 			}
 
-			// authorization
+			// autorization
 			statusCode = forwardAuthorizationRead(serviceTransaction->userContext(), readValueId);
 			if (statusCode != Success) {
 				dataValue->statusCode(statusCode);
@@ -244,6 +244,8 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveWriteRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		OpcUaStatusCode statusCode;
+
 		ServiceTransactionWrite::SPtr trx = boost::static_pointer_cast<ServiceTransactionWrite>(serviceTransaction);
 		WriteRequest::SPtr writeRequest = trx->request();
 		WriteResponse::SPtr writeResponse = trx->response();
@@ -275,6 +277,13 @@ namespace OpcUaStackServer
 				Log(Debug, "write value error, because node request parameter invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx);
+				continue;
+			}
+
+			// autorization
+			statusCode = forwardAuthorizationWrite(serviceTransaction->userContext(), writeValue);
+			if (statusCode != Success) {
+				writeResponse->results()->set(idx, statusCode);
 				continue;
 			}
 
@@ -338,6 +347,23 @@ namespace OpcUaStackServer
 
 		serviceTransaction->statusCode(Success);
 		serviceTransaction->componentSession()->send(serviceTransaction);
+	}
+
+	OpcUaStatusCode
+	AttributeService::forwardAuthorizationWrite(UserContext::SPtr& userContext, WriteValue::SPtr& writeValue)
+	{
+		if (forwardGlobalSync().get() == nullptr) return Success;
+		if (!forwardGlobalSync()->autorizationService().isCallback()) return Success;
+
+		ApplicationAutorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::Write;
+		context.nodeId_ = *writeValue->nodeId();
+		context.attributeId_ = writeValue->attributeId();
+
+		forwardGlobalSync()->autorizationService().callback()(&context);
+
+		return context.statusCode_;
 	}
 
 	OpcUaStatusCode
