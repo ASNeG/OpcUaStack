@@ -62,6 +62,7 @@ namespace OpcUaStackServer
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
+	, userContext_()
 	{
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
@@ -128,6 +129,8 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authentication(ActivateSessionRequest& activateSessionRequest)
 	{
+		userContext_.reset();
+
 		if (forwardGlobalSync_.get() == nullptr) {
 			// no authentication is activated
 			return Success;
@@ -187,6 +190,10 @@ namespace OpcUaStackServer
 
 		forwardGlobalSync_->authenticationService().callback()(&context);
 
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
 		return context.statusCode_;
 	}
 
@@ -203,6 +210,10 @@ namespace OpcUaStackServer
 		// decrypt password
 
 		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
 
 		return context.statusCode_;
 	}

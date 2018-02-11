@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
+#include "OpcUaStackCore/Application/UserContext.h"
 
 namespace OpcUaStackCore
 {
@@ -30,7 +31,7 @@ namespace OpcUaStackCore
 		uint32_t authenticationType_;			// IN - authentication type
 		ExtensibleParameter::SPtr parameter_;	// IN - authentication parameter
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
-		Object::SPtr userContext_;				// OUT - user context
+		UserContext::SPtr userContext_;		    // OUT - user context
 	};
 
 }

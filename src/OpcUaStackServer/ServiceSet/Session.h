@@ -27,6 +27,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
+#include "OpcUaStackCore/Application/UserContext.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
@@ -140,6 +141,8 @@ namespace OpcUaStackServer
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
+
+		UserContext::SPtr userContext_;
 	};
 
 }
