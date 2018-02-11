@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationAuthorizationContext_h__
 #define __OpcUaStackCore_ApplicationAuthorizationContext_h__
 
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 
 namespace OpcUaStackCore
@@ -36,7 +37,7 @@ namespace OpcUaStackCore
 	class ApplicationAuthorizationContext
 	{
 	  public:
-		Object::SPtr userContext_;				// IN - user context
+		UserContext::SPtr userContext_;			// IN - user context
 		ServiceOperation serviceOperation_;		// IN - service operation
 		OpcUaNodeId nodeId_;					// IN - node id
 		uint32_t attributeId_;					// IN - attribute id

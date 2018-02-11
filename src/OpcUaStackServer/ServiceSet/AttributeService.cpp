@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
+#include "OpcUaStackCore/Application/ApplicationAuthorizationContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
@@ -76,6 +77,8 @@ namespace OpcUaStackServer
 	void 
 	AttributeService::receiveReadRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		OpcUaStatusCode statusCode;
+
 		ServiceTransactionRead::SPtr trx = boost::static_pointer_cast<ServiceTransactionRead>(serviceTransaction);
 
 		ReadRequest::SPtr readRequest = trx->request();
@@ -116,6 +119,13 @@ namespace OpcUaStackServer
 				Log(Debug, "read value error, because node request parameter invalid")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx);
+				continue;
+			}
+
+			// authorization
+			statusCode = forwardAuthorizationRead(serviceTransaction->userContext(), readValueId);
+			if (statusCode != Success) {
+				dataValue->statusCode(statusCode);
 				continue;
 			}
 
@@ -184,6 +194,23 @@ namespace OpcUaStackServer
 
 		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
+	}
+
+	OpcUaStatusCode
+	AttributeService::forwardAuthorizationRead(UserContext::SPtr& userContext, ReadValueId::SPtr& readValueId)
+	{
+		if (forwardGlobalSync().get() == nullptr) return Success;
+		if (!forwardGlobalSync()->authorizationService().isCallback()) return Success;
+
+		ApplicationAuthorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::Read;
+		context.nodeId_ = *readValueId->nodeId();
+		context.attributeId_ = readValueId->attributeId();
+
+		forwardGlobalSync()->authorizationService().callback()(&context);
+
+		return context.statusCode_;
 	}
 
 	void
