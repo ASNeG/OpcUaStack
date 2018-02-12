@@ -15,7 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackCore/Application/ApplicationAutorizationContext.h>
+#include "OpcUaStackCore/Application/ApplicationAutorizationContext.h"
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"

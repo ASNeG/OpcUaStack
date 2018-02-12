@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Application/ApplicationAutorizationContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStartContext.h"
 #include "OpcUaStackCore/Application/ApplicationMonitoredItemStopContext.h"
 #include "OpcUaStackCore/Application/ApplicationEventItemStartContext.h"
@@ -164,6 +165,8 @@ namespace OpcUaStackServer
 		CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
 		monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
 		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
@@ -172,6 +175,15 @@ namespace OpcUaStackServer
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
 		if (!createMonitorItemRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest)) {
 			monitoredItemCreateResult->statusCode(BadInvalidArgument);
+			return;
+		}
+
+		// autorization create monitored item request
+		ServiceTransactionCreateMonitoredItems::SPtr serviceTransaction = trx;
+		ReadValueId& readValueId = monitoredItemCreateRequest->itemToMonitor();
+		statusCode = forwardAutorizationCreateMonitoredItem(serviceTransaction->userContext(), readValueId);
+		if (statusCode != Success) {
+			monitoredItemCreateResult->statusCode(statusCode);
 			return;
 		}
 
@@ -193,7 +205,7 @@ namespace OpcUaStackServer
 
 		// create new monitor item
 		MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
-		OpcUaStatusCode statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
+		statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
 
 		if (statusCode != Success) {
 			monitoredItemCreateResult->statusCode(statusCode);
@@ -551,6 +563,30 @@ namespace OpcUaStackServer
 		context.nodeReference_ = nodeReference;
 
 		forwardNodeSync->monitoredItemStopService().callback()(&context);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// autorization
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	MonitorManager::forwardAutorizationCreateMonitoredItem(UserContext::SPtr& userContext, ReadValueId& readValueId)
+	{
+		if (forwardGlobalSync_.get() == nullptr) return Success;
+		if (!forwardGlobalSync_->autorizationService().isCallback()) return Success;
+
+		ApplicationAutorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::MonitoredItem;
+		context.nodeId_ = *readValueId.nodeId();
+		context.attributeId_ = AttributeId::AttributeId_Value;
+
+		forwardGlobalSync_->autorizationService().callback()(&context);
+
+		return context.statusCode_;
 	}
 
 }
