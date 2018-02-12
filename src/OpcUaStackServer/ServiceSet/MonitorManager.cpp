@@ -244,6 +244,8 @@ namespace OpcUaStackServer
 		CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		MonitoredItemCreateResult::SPtr monitoredItemCreateResult;
 		monitoredItemCreateResult = constructSPtr<MonitoredItemCreateResult>();
 		createMonitorItemResponse->results()->set(idx, monitoredItemCreateResult);
@@ -252,6 +254,15 @@ namespace OpcUaStackServer
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest;
 		if (!createMonitorItemRequest->itemsToCreate()->get(idx, monitoredItemCreateRequest)) {
 			monitoredItemCreateResult->statusCode(BadInvalidArgument);
+			return;
+		}
+
+		// autorization create event item request
+		ServiceTransactionCreateMonitoredItems::SPtr serviceTransaction = trx;
+		ReadValueId& readValueId = monitoredItemCreateRequest->itemToMonitor();
+		statusCode = forwardAutorizationCreateEventItem(serviceTransaction->userContext(), readValueId);
+		if (statusCode != Success) {
+			monitoredItemCreateResult->statusCode(statusCode);
 			return;
 		}
 
@@ -269,7 +280,7 @@ namespace OpcUaStackServer
 		EventItem::SPtr eventItem = constructSPtr<EventItem>();
 		eventItem->informationModel(informationModel_);
 		eventItem->browseName(browseName);
-		OpcUaStatusCode statusCode = eventItem->receive(
+		statusCode = eventItem->receive(
 			monitoredItemCreateRequest,
 			monitoredItemCreateResult
 		);
@@ -581,6 +592,23 @@ namespace OpcUaStackServer
 		ApplicationAutorizationContext context;
 		context.userContext_ = userContext;
 		context.serviceOperation_ = ServiceOperation::MonitoredItem;
+		context.nodeId_ = *readValueId.nodeId();
+		context.attributeId_ = AttributeId::AttributeId_Value;
+
+		forwardGlobalSync_->autorizationService().callback()(&context);
+
+		return context.statusCode_;
+	}
+
+	OpcUaStatusCode
+	MonitorManager::forwardAutorizationCreateEventItem(UserContext::SPtr& userContext, ReadValueId& readValueId)
+	{
+		if (forwardGlobalSync_.get() == nullptr) return Success;
+		if (!forwardGlobalSync_->autorizationService().isCallback()) return Success;
+
+		ApplicationAutorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::EventItem;
 		context.nodeId_ = *readValueId.nodeId();
 		context.attributeId_ = AttributeId::AttributeId_Value;
 
