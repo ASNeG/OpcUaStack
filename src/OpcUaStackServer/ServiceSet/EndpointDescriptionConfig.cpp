@@ -246,6 +246,15 @@ namespace OpcUaStackServer
 			if (stringValue == "Anonymous") {
 				userTokenPolicy->tokenType(UserIdentityTokenType_Anonymous);
 			}
+			else if (stringValue == "Username") {
+				userTokenPolicy->tokenType(UserIdentityTokenType_Username);
+			}
+			else if (stringValue == "Certificate") {
+				userTokenPolicy->tokenType(UserIdentityTokenType_Certificate);
+			}
+			else if (stringValue == "IssuedToken") {
+				userTokenPolicy->tokenType(UserIdentityTokenType_IssuedToken);
+			}
 			else {
 				Log(Error, "invalid parameter in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
