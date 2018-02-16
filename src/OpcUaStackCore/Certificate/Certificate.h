@@ -22,6 +22,10 @@
 #include <string>
 #include <openssl/x509.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/CertificateEnums.h"
+#include "OpcUaStackCore/Certificate/Info.h"
+#include "OpcUaStackCore/Certificate/Identity.h"
+#include "OpcUaStackCore/Certificate/RSAKey.h"
 
 namespace OpcUaStackCore
 {
@@ -30,6 +34,13 @@ namespace OpcUaStackCore
 	{
 	  public:
 		Certificate(void);
+		Certificate(
+			const Info& info,
+			const Identity& subject,
+		    const RSAKey& rsaKey,
+		    bool bCACert = false,
+		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
 		~Certificate(void);
 
 	  private:

@@ -25,8 +25,22 @@ namespace OpcUaStackCore
 	{
 	}
 
+	Certificate::Certificate(
+		const Info& info,
+		const Identity& subject,
+	    const RSAKey&rsaKey,
+	    bool bCACert,
+	    SignatureAlgorithm signatureAlgorithm
+	)
+	: cert_(nullptr)
+	{
+		// FIXME: todo
+	}
+
 	Certificate::~Certificate(void)
 	{
 	}
+
+
 
 }
