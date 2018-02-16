@@ -28,6 +28,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
+#include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
 
 using namespace OpcUaStackCore;
 
