@@ -17,8 +17,8 @@ BOOST_AUTO_TEST_CASE(Identity__init)
 	Identity identity;
 
 	identity.organization("ASNeG");
-	identity.organizationUnit("OPC UA Service Deparment");
-	identity.commonName("OPC UA Service Application");
+	identity.organizationUnit("OPC UA Service Department");
+	identity.commonName("MyServiceApplication");
 	identity.locality("Neukirchen");
 	identity.state("Hessen");
 	identity.country("DE");
