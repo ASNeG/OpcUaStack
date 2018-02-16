@@ -20,18 +20,20 @@
 
 #include <vector>
 #include <string>
+#include <openssl/x509.h>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
-	class Certificate
+	class DLLEXPORT Certificate
 	{
 	  public:
 		Certificate(void);
 		~Certificate(void);
 
 	  private:
+		X509 *cert_;
 	};
 
 }

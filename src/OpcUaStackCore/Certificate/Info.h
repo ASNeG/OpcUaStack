@@ -25,7 +25,7 @@
 namespace OpcUaStackCore
 {
 
-	class Info
+	class DLLEXPORT Info
 	{
 	  public:
 		Info(void);

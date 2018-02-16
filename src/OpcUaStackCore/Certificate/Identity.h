@@ -24,7 +24,7 @@
 namespace OpcUaStackCore
 {
 
-	class Identity
+	class DLLEXPORT Identity
 	{
 	  public:
 		Identity(void);
