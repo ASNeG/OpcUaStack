@@ -18,8 +18,7 @@
 #ifndef __OpcUaStackCore_Identity_h__
 #define __OpcUaStackCore_Identity_h__
 
-#include <openssl/x509.h>
-
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -31,7 +30,33 @@ namespace OpcUaStackCore
 		Identity(void);
 		~Identity(void);
 
+		void organization(const std::string& organization);
+		std::string& organization(void);
+		void organizationUnit(const std::string& organizationUnit);
+		std::string& organizationUnit(void);
+		void locality(const std::string& locality);
+		std::string& locality(void);
+		void state(const std::string& state);
+		std::string& state(void);
+		void country(const std::string& country);
+		std::string& country(void);
+		void commonName(const std::string& commonName);
+		std::string& commonName(void);
+		void domainComponent(const std::string& domainComponent);
+		std::string& domainComponent(void);
+
+	    bool operator==(const Identity &identity) const;
+	    bool operator!=(const Identity &identity) const;
+	    bool isEmpty(void) const;
+
 	  private:
+	    std::string organization_;
+	    std::string organizationUnit_;
+	    std::string locality_;
+	    std::string state_;
+	    std::string country_;
+	    std::string commonName_;
+	    std::string domainComponent_;
 	};
 
 }
