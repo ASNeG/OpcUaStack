@@ -21,11 +21,101 @@ namespace OpcUaStackCore
 {
 
 	Info::Info(void)
+	: uri_("")
+	, ipAddresses_()
+	, dnsNames_()
+	, eMail_("")
+	, validTime_(0)
+	, serialNumber_(0)
+	, validFrom_(0)
 	{
 	}
 
 	Info::~Info(void)
 	{
+	}
+
+	void
+	Info::uri(const std::string& uri)
+	{
+		uri_ = uri;
+	}
+	std::string&
+	Info::uri(void)
+	{
+		return uri_;
+	}
+
+	void
+	Info::ipAddresses(const std::vector<std::string>& ipAddresses)
+	{
+		ipAddresses_ = ipAddresses;
+	}
+
+	std::vector<std::string>&
+	Info::ipAddresses(void)
+	{
+		return ipAddresses_;
+	}
+
+	void
+	Info::dnsNames(const std::vector<std::string>& dnsNames)
+	{
+		dnsNames_ = dnsNames;
+	}
+
+	std::vector<std::string>&
+	Info::dnsNames(void)
+	{
+		return dnsNames_;
+	}
+
+	void
+	Info::eMail(const std::string& eMail)
+	{
+		eMail_ = eMail;
+	}
+
+	std::string&
+	Info::eMail(void)
+	{
+		return eMail_;
+	}
+
+	void
+	Info::validTime(uint32_t validTime)
+	{
+		validTime_ = validTime;
+	}
+
+	uint32_t
+	Info::validTime(void)
+	{
+		return validTime_;
+	}
+
+	void
+	Info::serialNumber(uint32_t serialNumber)
+	{
+		serialNumber_ = serialNumber;
+	}
+
+	uint32_t
+	Info::serialNumber(void)
+	{
+		return serialNumber_;
+	}
+
+	void
+	Info::validFrom(uint32_t validFrom)
+	{
+		validFrom_ = validFrom;
+	}
+
+	uint32_t
+	Info::validFrom(void)
+	{
+		return validFrom_;
 	}
 
 }

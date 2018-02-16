@@ -21,6 +21,13 @@ namespace OpcUaStackCore
 {
 
 	Identity::Identity(void)
+	: organization_("")
+	, organizationUnit_("")
+	, locality_("")
+	, state_("")
+	, country_("")
+	, commonName_("")
+	, domainComponent_("")
 	{
 	}
 

@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_Info_h__
 #define __OpcUaStackCore_Info_h__
 
+#include <vector>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
 
@@ -30,7 +31,29 @@ namespace OpcUaStackCore
 		Info(void);
 		~Info(void);
 
+		void uri(const std::string& uri);
+		std::string& uri(void);
+		void ipAddresses(const std::vector<std::string>& ipAddresses);
+		std::vector<std::string>& ipAddresses(void);
+		void dnsNames(const std::vector<std::string>& dnsNames);
+		std::vector<std::string>& dnsNames(void);
+		void eMail(const std::string& eMail);
+		std::string& eMail(void);
+		void validTime(uint32_t validTime);
+		uint32_t validTime(void);
+		void serialNumber(uint32_t serialNumber);
+		uint32_t serialNumber(void);
+		void validFrom(uint32_t validFrom);
+		uint32_t validFrom(void);
+
 	  private:
+		std::string uri_;
+		std::vector<std::string> ipAddresses_;
+		std::vector<std::string> dnsNames_;
+		std::string eMail_;
+		uint32_t validTime_;
+		uint32_t serialNumber_;
+		uint32_t validFrom_;
 	};
 
 }
