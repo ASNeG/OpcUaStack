@@ -43,7 +43,19 @@ namespace OpcUaStackCore
 		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
+		Certificate(
+			Info& info,
+			Identity& subject,
+			PublicKey& subjectPublicKey,
+			Certificate&  issuerCertificate,
+			PrivateKey& issuerPrivateKey,
+		    bool useCACert = false,
+		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
+		);
 		~Certificate(void);
+
+		bool getSubject(Identity& subject);
+		bool getIssuer(Identity& issuer);
 
 		bool toDERFile(const std::string& fileName);
 		bool fromDERFile(const std::string& fileName);

@@ -138,12 +138,91 @@ namespace OpcUaStackCore
 	    }
 	}
 
+	Certificate::Certificate(
+		Info& info,
+		Identity& subject,
+		PublicKey& subjectPublicKey,
+		Certificate&  issuerCertificate,
+		PrivateKey& issuerPrivateKey,
+	    bool useCACert,
+	    SignatureAlgorithm signatureAlgorithm
+	)
+	: OpenSSLError()
+	, cert_(nullptr)
+	{
+		cert_ = X509_new();
+		if (cert_ == nullptr) {
+			return;
+		}
+
+		bool error = false;
+		int32_t result = 0;
+
+		// set version
+		if (!error) {
+			result = X509_set_version(cert_, 2);
+			if (!result) {
+				error = true;
+				addOpenSSLError();
+			}
+		}
+
+		// set serial number
+        if (!error) {
+            uint32_t serialNumber = info.serialNumber();
+            if (serialNumber == 0) {
+                serialNumber = (long)time(NULL);
+            }
+            result = ASN1_INTEGER_set(X509_get_serialNumber(cert_), serialNumber);
+            if (!result) {
+            	error = true;
+            	addOpenSSLError();
+            }
+        }
+
+        // FIXME: todo
+	}
+
 	Certificate::~Certificate(void)
 	{
 		if (cert_) {
 		    X509_free(cert_);
 		    cert_ = nullptr;
 		}
+	}
+
+	bool
+	Certificate::getSubject(Identity& subject)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		X509_NAME* name = X509_get_subject_name(cert_);
+		if (name == nullptr) {
+			addOpenSSLError();
+			return false;
+		}
+
+		return subject.decodeX509(name);
+	}
+
+	bool
+	Certificate::getIssuer(Identity& issuer)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		X509_NAME* name = X509_get_subject_name(cert_);
+		if (name == nullptr) {
+			addOpenSSLError();
+			return false;
+		}
+
+		return issuer.decodeX509(name);
 	}
 
 	bool
