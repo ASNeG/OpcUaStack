@@ -22,6 +22,7 @@
 #include <string>
 #include <openssl/x509.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
 #include "OpcUaStackCore/Certificate/Info.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
@@ -31,6 +32,7 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Certificate
+	: public OpenSSLError
 	{
 	  public:
 		Certificate(void);

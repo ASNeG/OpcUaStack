@@ -22,7 +22,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
-#include "OpcUaStackCore/Certificate/KeyType.h"
+#include "OpcUaStackCore/Certificate/CertificateEnums.h"
 
 namespace OpcUaStackCore
 {
