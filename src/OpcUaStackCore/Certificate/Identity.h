@@ -18,13 +18,16 @@
 #ifndef __OpcUaStackCore_Identity_h__
 #define __OpcUaStackCore_Identity_h__
 
+#include <openssl/x509.h>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT Identity
+	: public OpenSSLError
 	{
 	  public:
 		Identity(void);
@@ -48,6 +51,8 @@ namespace OpcUaStackCore
 	    bool operator==(const Identity &identity) const;
 	    bool operator!=(const Identity &identity) const;
 	    bool isEmpty(void) const;
+
+	    X509_NAME* encodeX509(void);
 
 	  private:
 	    std::string organization_;

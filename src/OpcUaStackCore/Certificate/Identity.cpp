@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	Identity::Identity(void)
-	: organization_("")
+	: OpenSSLError()
+	, organization_("")
 	, organizationUnit_("")
 	, locality_("")
 	, state_("")
@@ -150,6 +151,80 @@ namespace OpcUaStackCore
 			commonName_.size() == 0							&&
 			domainComponent_.size() == 0
 		);
+    }
+
+    X509_NAME*
+	Identity::encodeX509(void)
+    {
+        X509_NAME *name = X509_NAME_new();
+        if (name == nullptr) {
+        	return nullptr;
+        }
+
+        int result = 1;
+
+        // set domain component
+        if (result && domainComponent_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "DC", MBSTRING_UTF8, (const unsigned char*)domainComponent_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        // set country
+        if (result && country_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "C", MBSTRING_UTF8, (const unsigned char*)country_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        // set state
+        if (result && state_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "ST", MBSTRING_UTF8, (const unsigned char*)state_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        // set locality
+        if (result && locality_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "L", MBSTRING_UTF8, (const unsigned char*)locality_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        // set organization
+        if (result && organization_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "O", MBSTRING_UTF8, (const unsigned char*)organization_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        // set organization unit
+        if (result && organizationUnit_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "OU", MBSTRING_UTF8, (const unsigned char*)organizationUnit_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        // set common name
+        if (result && commonName_.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_UTF8, (const unsigned char*)commonName_.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+
+        if (!result) {
+            X509_NAME_free(name);
+            return nullptr;
+        }
+
+        return name;
     }
 
 }
