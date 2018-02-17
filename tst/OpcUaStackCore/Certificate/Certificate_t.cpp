@@ -94,8 +94,28 @@ BOOST_AUTO_TEST_CASE(Certificate__readFile)
 	BOOST_REQUIRE(certificate1.isSelfSigned() == true);
 	BOOST_REQUIRE(certificate1.toDERFile("selfSignedCertificate.DER") == true);
 
+	Identity issuer;
+	Identity subject;
 	Certificate certificate2;
 	BOOST_REQUIRE(certificate2.fromDERFile("selfSignedCertificate.DER") == true);
+	BOOST_REQUIRE(certificate2.getIssuer(issuer) == true);
+	BOOST_REQUIRE(certificate2.getSubject(subject) == true);
+
+	BOOST_REQUIRE(issuer.organization() == identity.organization());
+	BOOST_REQUIRE(issuer.organizationUnit() == identity.organizationUnit());
+	BOOST_REQUIRE(issuer.commonName() == identity.commonName());
+	BOOST_REQUIRE(issuer.locality() == identity.locality());
+	BOOST_REQUIRE(issuer.state() == identity.state());
+	BOOST_REQUIRE(issuer.country() == identity.country());
+	BOOST_REQUIRE(issuer.domainComponent() == identity.domainComponent());
+
+	BOOST_REQUIRE(subject.organization() == identity.organization());
+	BOOST_REQUIRE(subject.organizationUnit() == identity.organizationUnit());
+	BOOST_REQUIRE(subject.commonName() == identity.commonName());
+	BOOST_REQUIRE(subject.locality() == identity.locality());
+	BOOST_REQUIRE(subject.state() == identity.state());
+	BOOST_REQUIRE(subject.country() == identity.country());
+	BOOST_REQUIRE(subject.domainComponent() == identity.domainComponent());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
