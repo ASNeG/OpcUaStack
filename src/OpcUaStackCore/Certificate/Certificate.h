@@ -45,6 +45,8 @@ namespace OpcUaStackCore
 		);
 		~Certificate(void);
 
+		bool toDERFile(const std::string& fileName);
+
 	  private:
 		X509 *cert_;
 	};
