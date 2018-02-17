@@ -36,6 +36,7 @@ BOOST_AUTO_TEST_CASE(Certificate__createSelfSignedCertificate)
 
 	Certificate certificate(info, identity, key);
 	BOOST_REQUIRE(certificate.isError() == false);
+	BOOST_REQUIRE(certificate.toDERFile("selfSignedCertificate.DER") == true);
 
 }
 
