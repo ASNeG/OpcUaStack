@@ -40,7 +40,7 @@ namespace OpcUaStackCore
 		Extension_AuthorityKeyIdentifier    = NID_authority_key_identifier,
 		Extension_KeyUsage                  = NID_key_usage,
 		Extension_ExtendedKeyUsage          = NID_ext_key_usage
-	} CertificateExtension;
+	} CertificateExtensionId;
 
 	typedef enum
 	{

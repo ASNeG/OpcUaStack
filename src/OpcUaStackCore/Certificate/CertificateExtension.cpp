@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 	, authorityKeyIdentifier_("")
 	, keyUsage_("")
 	, extendedKeyUsage_("")
+	, subjectAltName_("")
 	{
 		if (useCACert_) {
 		    basicConstraints_ = "critical, CA:TRUE";
@@ -123,6 +124,18 @@ namespace OpcUaStackCore
 		return extendedKeyUsage_;
 	}
 
+	void
+	CertificateExtension::subjectAltName(const std::string& subjectAltName)
+	{
+		subjectAltName_ = subjectAltName;
+	}
+
+	std::string&
+	CertificateExtension::subjectAltName(void)
+	{
+		return subjectAltName_;
+	}
+
 	bool
 	CertificateExtension::encodeX509(X509 *cert, X509V3_CTX& ctx)
 	{
@@ -140,6 +153,7 @@ namespace OpcUaStackCore
 			if (!encodeX509Extension(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) return false;
 			if (!encodeX509Extension(cert, ctx, "keyUsage", keyUsage_)) return false;
 			if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) return false;
+			if (!encodeX509Extension(cert, ctx, "subjectAltName", subjectAltName_)) return false;
 		}
 
 		return true;

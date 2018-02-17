@@ -45,6 +45,8 @@ namespace OpcUaStackCore
 		std::string& keyUsage(void);
 		void extendedKeyUsage(const std::string& extendedKeyUsage);
 		std::string& extendedKeyUsage(void);
+		void subjectAltName(const std::string& subjectAltName);
+		std::string& subjectAltName(void);
 
 		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
 
@@ -58,6 +60,7 @@ namespace OpcUaStackCore
 		std::string authorityKeyIdentifier_;
 		std::string keyUsage_;
 		std::string extendedKeyUsage_;
+		std::string subjectAltName_;
 	};
 
 }
