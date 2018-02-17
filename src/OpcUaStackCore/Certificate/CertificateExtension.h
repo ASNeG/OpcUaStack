@@ -9,14 +9,14 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   CertificateExtensionBasicrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   CertificateExtensionrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CertificateExtensionBasic_h__
-#define __OpcUaStackCore_CertificateExtensionBasic_h__
+#ifndef __OpcUaStackCore_CertificateExtension_h__
+#define __OpcUaStackCore_CertificateExtension_h__
 
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
@@ -26,12 +26,12 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CertificateExtensionBasic
+	class DLLEXPORT CertificateExtension
 	: public OpenSSLError
 	{
 	  public:
-		CertificateExtensionBasic(void);
-		~CertificateExtensionBasic(void);
+		CertificateExtension(void);
+		~CertificateExtension(void);
 
 		void basicConstraints(const std::string& basicConstraints);
 		std::string& basicConstraints(void);

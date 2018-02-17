@@ -9,18 +9,18 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   CertificateExtensionBasicrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   CertificateExtensionrmationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Certificate/CertificateExtensionBasic.h"
+#include <OpcUaStackCore/Certificate/CertificateExtension.h>
 
 namespace OpcUaStackCore
 {
 
-	CertificateExtensionBasic::CertificateExtensionBasic(void)
+	CertificateExtension::CertificateExtension(void)
 	: OpenSSLError()
 	, basicConstraints_("critical, CA:FALSE")
 	, nsComment_("\"Generated with ASNeG OpcUaStack using OpenSSL\"")
@@ -31,84 +31,84 @@ namespace OpcUaStackCore
 	{
 	}
 
-	CertificateExtensionBasic::~CertificateExtensionBasic(void)
+	CertificateExtension::~CertificateExtension(void)
 	{
 	}
 
 	void
-	CertificateExtensionBasic::basicConstraints(const std::string& basicConstraints)
+	CertificateExtension::basicConstraints(const std::string& basicConstraints)
 	{
 		basicConstraints_ = basicConstraints;
 	}
 
 	std::string&
-	CertificateExtensionBasic::basicConstraints(void)
+	CertificateExtension::basicConstraints(void)
 	{
 		return basicConstraints_;
 	}
 
 	void
-	CertificateExtensionBasic::nsComment(const std::string& nsComment)
+	CertificateExtension::nsComment(const std::string& nsComment)
 	{
 		nsComment_ = nsComment;
 	}
 
 	std::string&
-	CertificateExtensionBasic::nsComment(void)
+	CertificateExtension::nsComment(void)
 	{
 		return nsComment_;
 	}
 
 	void
-	CertificateExtensionBasic::subjectKeyIdentifier(const std::string& subjectKeyIdentifier)
+	CertificateExtension::subjectKeyIdentifier(const std::string& subjectKeyIdentifier)
 	{
 		subjectKeyIdentifier_ = subjectKeyIdentifier;
 	}
 
 	std::string&
-	CertificateExtensionBasic::subjectKeyIdentifier(void)
+	CertificateExtension::subjectKeyIdentifier(void)
 	{
 		return subjectKeyIdentifier_;
 	}
 
 	void
-	CertificateExtensionBasic::authorityKeyIdentifier(const std::string& authorityKeyIdentifier)
+	CertificateExtension::authorityKeyIdentifier(const std::string& authorityKeyIdentifier)
 	{
 		authorityKeyIdentifier_ = authorityKeyIdentifier;
 	}
 
 	std::string&
-	CertificateExtensionBasic::authorityKeyIdentifier(void)
+	CertificateExtension::authorityKeyIdentifier(void)
 	{
 		return authorityKeyIdentifier_;
 	}
 
 	void
-	CertificateExtensionBasic::keyUsage(const std::string& keyUsage)
+	CertificateExtension::keyUsage(const std::string& keyUsage)
 	{
 		keyUsage_ = keyUsage;
 	}
 
 	std::string&
-	CertificateExtensionBasic::keyUsage(void)
+	CertificateExtension::keyUsage(void)
 	{
 		return keyUsage_;
 	}
 
 	void
-	CertificateExtensionBasic::extendedKeyUsage(const std::string& extendedKeyUsage)
+	CertificateExtension::extendedKeyUsage(const std::string& extendedKeyUsage)
 	{
 		extendedKeyUsage_ = extendedKeyUsage;
 	}
 
 	std::string&
-	CertificateExtensionBasic::extendedKeyUsage(void)
+	CertificateExtension::extendedKeyUsage(void)
 	{
 		return extendedKeyUsage_;
 	}
 
 	bool
-	CertificateExtensionBasic::encodeX509(X509 *cert, X509V3_CTX& ctx)
+	CertificateExtension::encodeX509(X509 *cert, X509V3_CTX& ctx)
 	{
 		if (!encodeX509Extension(cert, ctx, "basicConstraints", basicConstraints_)) return false;
 		if (!encodeX509Extension(cert, ctx, "nsComment", nsComment_)) return false;
@@ -120,7 +120,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	CertificateExtensionBasic::encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value)
+	CertificateExtension::encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value)
 	{
 		int32_t result;
 		X509_EXTENSION* ext = nullptr;
