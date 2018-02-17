@@ -20,15 +20,31 @@
 namespace OpcUaStackCore
 {
 
-	CertificateExtension::CertificateExtension(void)
+	CertificateExtension::CertificateExtension(bool useCACert)
 	: OpenSSLError()
-	, basicConstraints_("critical, CA:FALSE")
-	, nsComment_("\"Generated with ASNeG OpcUaStack using OpenSSL\"")
-	, subjectKeyIdentifier_("hash")
-	, authorityKeyIdentifier_("keyid, issuer:always")
-	, keyUsage_("critical, nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment, keyCertSign")
-	, extendedKeyUsage_("critical, serverAuth,clientAuth")
+	, useCACert_(useCACert)
+	, basicConstraints_("")
+	, nsComment_("")
+	, subjectKeyIdentifier_("")
+	, authorityKeyIdentifier_("")
+	, keyUsage_("")
+	, extendedKeyUsage_("")
 	{
+		if (useCACert_) {
+		    basicConstraints_ = "critical, CA:TRUE";
+		    nsComment_ = "\"CA certificate generated with ASNeG OpcUaStack using OpenSSL\"";
+		    keyUsage_ = "critical, nonRepudiation, digitalSignature, keyEncipherment, keyCertSign, cRLSign";
+		    extendedKeyUsage_ = "critical, serverAuth,clientAuth";
+		    subjectKeyIdentifier_ = "hash";
+		}
+		else {
+			basicConstraints_ = "critical, CA:FALSE";
+			nsComment_ = "\"Generated with ASNeG OpcUaStack using OpenSSL\"";
+			subjectKeyIdentifier_ = "hash";
+			authorityKeyIdentifier_ = "keyid, issuer:always";
+			keyUsage_ = "critical, nonRepudiation, digitalSignature, keyEncipherment, dataEncipherment, keyCertSign";
+			extendedKeyUsage_ = "critical, serverAuth,clientAuth";
+		}
 	}
 
 	CertificateExtension::~CertificateExtension(void)
@@ -110,12 +126,22 @@ namespace OpcUaStackCore
 	bool
 	CertificateExtension::encodeX509(X509 *cert, X509V3_CTX& ctx)
 	{
-		if (!encodeX509Extension(cert, ctx, "basicConstraints", basicConstraints_)) return false;
-		if (!encodeX509Extension(cert, ctx, "nsComment", nsComment_)) return false;
-		if (!encodeX509Extension(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) return false;
-		if (!encodeX509Extension(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) return false;
-		if (!encodeX509Extension(cert, ctx, "keyUsage", keyUsage_)) return false;
-		if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) return false;
+		if (useCACert_) {
+			if (!encodeX509Extension(cert, ctx, "basicConstraints", basicConstraints_)) return false;
+			if (!encodeX509Extension(cert, ctx, "nsComment", nsComment_)) return false;
+			if (!encodeX509Extension(cert, ctx, "keyUsage", keyUsage_)) return false;
+			if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) return false;
+			if (!encodeX509Extension(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) return false;
+		}
+		else {
+			if (!encodeX509Extension(cert, ctx, "basicConstraints", basicConstraints_)) return false;
+			if (!encodeX509Extension(cert, ctx, "nsComment", nsComment_)) return false;
+			if (!encodeX509Extension(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) return false;
+			if (!encodeX509Extension(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) return false;
+			if (!encodeX509Extension(cert, ctx, "keyUsage", keyUsage_)) return false;
+			if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) return false;
+		}
+
 		return true;
 	}
 

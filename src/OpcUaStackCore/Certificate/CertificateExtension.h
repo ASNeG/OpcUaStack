@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 	: public OpenSSLError
 	{
 	  public:
-		CertificateExtension(void);
+		CertificateExtension(bool useCACert = false);
 		~CertificateExtension(void);
 
 		void basicConstraints(const std::string& basicConstraints);
@@ -51,6 +51,7 @@ namespace OpcUaStackCore
 	  private:
 		bool encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value);
 
+		bool useCACert_;
 		std::string basicConstraints_;
 		std::string nsComment_;
 		std::string subjectKeyIdentifier_;
