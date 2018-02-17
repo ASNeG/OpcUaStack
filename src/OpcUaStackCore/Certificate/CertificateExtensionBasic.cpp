@@ -110,11 +110,23 @@ namespace OpcUaStackCore
 	bool
 	CertificateExtensionBasic::encodeX509(X509 *cert, X509V3_CTX& ctx)
 	{
+		if (!encodeX509Extension(cert, ctx, "basicConstraints", basicConstraints_)) return false;
+		if (!encodeX509Extension(cert, ctx, "nsComment", nsComment_)) return false;
+		if (!encodeX509Extension(cert, ctx, "subjectKeyIdentifier", subjectKeyIdentifier_)) return false;
+		if (!encodeX509Extension(cert, ctx, "authorityKeyIdentifier", authorityKeyIdentifier_)) return false;
+		if (!encodeX509Extension(cert, ctx, "keyUsage", keyUsage_)) return false;
+		if (!encodeX509Extension(cert, ctx, "extendedKeyUsage", extendedKeyUsage_)) return false;
+		return true;
+	}
+
+	bool
+	CertificateExtensionBasic::encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value)
+	{
 		int32_t result;
 		X509_EXTENSION* ext = nullptr;
 
-		// set basic constrains
-		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)"basicConstraints", (char*)basicConstraints_.c_str());
+		// set key value
+		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)key.c_str(), (char*)value.c_str());
 		if (!ext) {
 			addOpenSSLError();
 			return false;
@@ -122,70 +134,13 @@ namespace OpcUaStackCore
 		result = X509_add_ext(cert, ext, -1);
 		if (!result) {
 			addOpenSSLError();
-		}
-		X509_EXTENSION_free(ext);
-
-		// set basic nsComment
-		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)"nsComment", (char*)nsComment_.c_str());
-		if (!ext) {
-			addOpenSSLError();
+			X509_EXTENSION_free(ext);
 			return false;
 		}
-		result = X509_add_ext(cert, ext, -1);
-		if (!result) {
-			addOpenSSLError();
-		}
-		X509_EXTENSION_free(ext);
 
-		// set basic subjectKeyIdentifier
-		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)"subjectKeyIdentifier", (char*)subjectKeyIdentifier_.c_str());
-		if (!ext) {
-			addOpenSSLError();
-			return false;
-		}
-		result = X509_add_ext(cert, ext, -1);
-		if (!result) {
-			addOpenSSLError();
-		}
 		X509_EXTENSION_free(ext);
-
-		// set basic authorityKeyIdentifier
-		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)"authorityKeyIdentifier", (char*)authorityKeyIdentifier_.c_str());
-		if (!ext) {
-			addOpenSSLError();
-			return false;
-		}
-		result = X509_add_ext(cert, ext, -1);
-		if (!result) {
-			addOpenSSLError();
-		}
-		X509_EXTENSION_free(ext);
-
-		// set basic keyUsage
-		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)"keyUsage", (char*)keyUsage_.c_str());
-		if (!ext) {
-			addOpenSSLError();
-			return false;
-		}
-		result = X509_add_ext(cert, ext, -1);
-		if (!result) {
-			addOpenSSLError();
-		}
-		X509_EXTENSION_free(ext);
-
-		// set basic extendedKeyUsage
-		ext = X509V3_EXT_conf(nullptr, &ctx, (char*)"extendedKeyUsage", (char*)extendedKeyUsage_.c_str());
-		if (!ext) {
-			addOpenSSLError();
-			return false;
-		}
-		result = X509_add_ext(cert, ext, -1);
-		if (!result) {
-			addOpenSSLError();
-		}
-		X509_EXTENSION_free(ext);
-
 		return true;
+
 	}
 
 }

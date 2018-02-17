@@ -49,6 +49,8 @@ namespace OpcUaStackCore
 		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
 
 	  private:
+		bool encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value);
+
 		std::string basicConstraints_;
 		std::string nsComment_;
 		std::string subjectKeyIdentifier_;
