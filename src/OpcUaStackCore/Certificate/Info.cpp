@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <sstream>
 #include "OpcUaStackCore/Certificate/Info.h"
 
 namespace OpcUaStackCore
@@ -116,6 +117,28 @@ namespace OpcUaStackCore
 	Info::validFrom(void)
 	{
 		return validFrom_;
+	}
+
+	std::string
+	Info::subjectAltName(void)
+	{
+		std::vector<std::string>::iterator it;
+		std::stringstream ss;
+
+		if (uri_.length() > 0) {
+			ss << "URI:" << uri_;
+		}
+		for (it = dnsNames_.begin(); it != dnsNames_.end(); it++) {
+			ss << ",DNS:" << *it;
+		}
+		for (it = ipAddresses_.begin(); it != ipAddresses_.end(); it++) {
+			ss << ",IP:" << *it;
+		}
+		if (eMail_.length() > 0) {
+			ss << ",email:" << eMail_;
+		}
+
+		return ss.str();
 	}
 
 }

@@ -46,6 +46,8 @@ namespace OpcUaStackCore
 		void validFrom(uint32_t validFrom);
 		uint32_t validFrom(void);
 
+		std::string subjectAltName(void);
+
 	  private:
 		std::string uri_;
 		std::vector<std::string> ipAddresses_;
