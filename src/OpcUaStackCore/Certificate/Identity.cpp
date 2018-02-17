@@ -161,62 +161,41 @@ namespace OpcUaStackCore
         	return nullptr;
         }
 
-        int result = 1;
+        int32_t result = 1;
 
         // set domain component
-        if (result && domainComponent_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "DC", MBSTRING_UTF8, (const unsigned char*)domainComponent_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "DC", domainComponent_);
         }
 
         // set country
-        if (result && country_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "C", MBSTRING_UTF8, (const unsigned char*)country_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "C", country_);
         }
 
         // set state
-        if (result && state_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "ST", MBSTRING_UTF8, (const unsigned char*)state_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "ST", state_);
         }
 
         // set locality
-        if (result && locality_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "L", MBSTRING_UTF8, (const unsigned char*)locality_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "L", locality_);
         }
 
         // set organization
-        if (result && organization_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "O", MBSTRING_UTF8, (const unsigned char*)organization_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "O", organization_);
         }
 
         // set organization unit
-        if (result && organizationUnit_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "OU", MBSTRING_UTF8, (const unsigned char*)organizationUnit_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "OU", organizationUnit_);
         }
 
         // set common name
-        if (result && commonName_.length() > 0) {
-            result = X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_UTF8, (const unsigned char*)commonName_.c_str(), -1, -1, 0);
-			if (!result) {
-				addOpenSSLError();
-			}
+        if (result) {
+        	result = encodeX509(name, "CN", commonName_);
         }
 
         if (!result) {
@@ -225,6 +204,67 @@ namespace OpcUaStackCore
         }
 
         return name;
+    }
+
+    bool
+	Identity::decodeX509(X509_NAME* name)
+    {
+    	if (!decodeX509(name, NID_domainComponent, domainComponent_)) return false;
+    	if (!decodeX509(name, NID_countryName, country_)) return false;
+    	if (!decodeX509(name, NID_stateOrProvinceName, state_)) return false;
+    	if (!decodeX509(name, NID_localityName, locality_)) return false;
+    	if (!decodeX509(name, NID_organizationName, organization_)) return false;
+    	if (!decodeX509(name, NID_organizationalUnitName, organizationUnit_)) return false;
+    	if (!decodeX509(name, NID_commonName, commonName_)) return false;
+    	return true;
+    }
+
+    int32_t
+	Identity::encodeX509(X509_NAME* name, const std::string& key, const std::string& value)
+    {
+    	int32_t result = 1;
+        if (key.length() > 0) {
+            result = X509_NAME_add_entry_by_txt(name, key.c_str(), MBSTRING_UTF8, (const unsigned char*)value.c_str(), -1, -1, 0);
+			if (!result) {
+				addOpenSSLError();
+			}
+        }
+        return result;
+    }
+
+    bool
+	Identity::decodeX509(X509_NAME* name, int32_t id, std::string& value)
+    {
+    	int32_t entryId = X509_NAME_get_index_by_NID(name, id, -1);
+    	if (entryId == -1) {
+    		addOpenSSLError();
+    		return false;
+    	}
+
+    	 X509_NAME_ENTRY* entry = X509_NAME_get_entry(name, entryId);
+    	 if (!entry) {
+    		 addOpenSSLError();
+    		 return false;
+    	 }
+
+    	 ASN1_STRING* asn1String = X509_NAME_ENTRY_get_data(entry);
+    	 if (!asn1String) {
+    		 addOpenSSLError();
+    		 return false;
+    	 }
+
+    	 unsigned char* buf;
+    	 int32_t bufLen;
+
+    	 bufLen = ASN1_STRING_to_UTF8(( unsigned char**)&buf, asn1String);
+    	 if (bufLen < 0) {
+    		 addOpenSSLError();
+    		 return false;
+    	 }
+
+    	 std::string str((char*)buf, bufLen);
+    	 value = str;
+    	 return true;
     }
 
 }

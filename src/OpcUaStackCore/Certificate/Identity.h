@@ -53,8 +53,12 @@ namespace OpcUaStackCore
 	    bool isEmpty(void) const;
 
 	    X509_NAME* encodeX509(void);
+	    bool decodeX509(X509_NAME* name);
 
 	  private:
+	    int32_t encodeX509(X509_NAME* name, const std::string& key, const std::string& value);
+	    bool decodeX509(X509_NAME* name, int32_t id, std::string& value);
+
 	    std::string organization_;
 	    std::string organizationUnit_;
 	    std::string locality_;
