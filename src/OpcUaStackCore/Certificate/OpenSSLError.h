@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		bool isError(void);
 		void addOpenSSLError(void);
 		void addError(const std::string& message);
+		void addError(const std::list<std::string>& errorList);
 		std::list<std::string> errorList(void);
 
 	  private:

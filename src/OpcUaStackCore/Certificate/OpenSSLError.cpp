@@ -54,6 +54,15 @@ namespace OpcUaStackCore
 		errorList_.push_back(message);
 	}
 
+	void
+	OpenSSLError::addError(const std::list<std::string>& errorList)
+	{
+		std::list<std::string>::const_iterator it;
+		for (it = errorList.begin(); it != errorList.end(); it++) {
+			errorList_.push_back(*it);
+		}
+	}
+
 	std::list<std::string>
 	OpenSSLError::errorList(void)
 	{
