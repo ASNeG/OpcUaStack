@@ -60,6 +60,8 @@ namespace OpcUaStackCore
 		bool toDERFile(const std::string& fileName);
 		bool fromDERFile(const std::string& fileName);
 
+		bool isSelfSigned(void) const;
+
 	  private:
 		X509 *cert_;
 	};

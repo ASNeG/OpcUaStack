@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include "OpcUaStackCore/Certificate/Certificate.h"
 #include "OpcUaStackCore/Certificate/CertificateExtension.h"
 
@@ -25,6 +26,7 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, cert_(nullptr)
 	{
+		OpenSSL_add_all_algorithms();
 	}
 
 	Certificate::Certificate(
@@ -36,6 +38,8 @@ namespace OpcUaStackCore
 	)
 	: cert_(nullptr)
 	{
+		OpenSSL_add_all_algorithms();
+
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
 			return;
@@ -150,6 +154,8 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, cert_(nullptr)
 	{
+		OpenSSL_add_all_algorithms();
+
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
 			return;
@@ -362,6 +368,31 @@ namespace OpcUaStackCore
 
 		BIO_free(bio);
 		return true;
+	}
+
+	bool
+	Certificate::isSelfSigned(void) const
+	{
+	    if (X509_check_issued(cert_, cert_) != 0) {
+	        return false;
+	    }
+
+	    EVP_PKEY* issuerPublicKey = X509_get_pubkey(cert_);
+	    if (issuerPublicKey == nullptr)  {
+	        return false;
+	    }
+
+	    int32_t result = X509_verify(cert_, issuerPublicKey);
+	    if (result <= 0) {
+	    	const_cast<Certificate*>(this)->addOpenSSLError();
+	    }
+	    EVP_PKEY_free(issuerPublicKey);
+
+	    if (result <= 0) {
+	    	std::cout << "A3" << std::endl;
+	        return false;
+	    }
+	    return true;
 	}
 
 }
