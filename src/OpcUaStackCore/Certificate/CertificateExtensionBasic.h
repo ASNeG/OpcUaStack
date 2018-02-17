@@ -18,17 +18,43 @@
 #ifndef __OpcUaStackCore_CertificateExtensionBasic_h__
 #define __OpcUaStackCore_CertificateExtensionBasic_h__
 
+#include <openssl/x509.h>
+#include <openssl/x509v3.h>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT CertificateExtensionBasic
+	: public OpenSSLError
 	{
 	  public:
 		CertificateExtensionBasic(void);
 		~CertificateExtensionBasic(void);
 
+		void basicConstraints(const std::string& basicConstraints);
+		std::string& basicConstraints(void);
+		void nsComment(const std::string& nsComment);
+		std::string& nsComment(void);
+		void subjectKeyIdentifier(const std::string& subjectKeyIdentifier);
+		std::string& subjectKeyIdentifier(void);
+		void authorityKeyIdentifier(const std::string& authorityKeyIdentifier);
+		std::string& authorityKeyIdentifier(void);
+		void keyUsage(const std::string& keyUsage);
+		std::string& keyUsage(void);
+		void extendedKeyUsage(const std::string& extendedKeyUsage);
+		std::string& extendedKeyUsage(void);
+
+		bool encodeX509(X509 *cert, X509V3_CTX& ctx);
+
+	  private:
+		std::string basicConstraints_;
+		std::string nsComment_;
+		std::string subjectKeyIdentifier_;
+		std::string authorityKeyIdentifier_;
+		std::string keyUsage_;
+		std::string extendedKeyUsage_;
 	};
 
 }
