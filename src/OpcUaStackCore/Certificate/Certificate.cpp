@@ -15,10 +15,6 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <boost/filesystem.hpp>
-#include <boost/filesystem/fstream.hpp>
-#include <iostream>
-#include <sstream>
 #include "OpcUaStackCore/Certificate/Certificate.h"
 #include "OpcUaStackCore/Certificate/CertificateExtension.h"
 
@@ -153,35 +149,52 @@ namespace OpcUaStackCore
 	bool
 	Certificate::toDERFile(const std::string& fileName)
 	{
+		int32_t result;
+
 		if (cert_ == nullptr) {
 			addError("certificate is empty");
 			return false;
 		}
 
-		// write certificate to buffer
-		unsigned char *buf = NULL;
-		int32_t bufLen;
-        bufLen = i2d_X509(cert_, &buf);
-	    if (bufLen < 0) {
-	        addOpenSSLError();
-	        return false;
-	    }
-	    std::string str((const char*)buf, bufLen);
-	    OPENSSL_free(buf);
+        BIO* bio = BIO_new_file(fileName.c_str(), "wb");
+        if (bio == nullptr) {
+        	addOpenSSLError();
+        	return false;
+        }
 
-	    // write certificate to file
-	    try {
-	    	boost::filesystem::path filePath(fileName);
-	    	boost::filesystem::ofstream ofs(filePath);
-	    	ofs << str;
-	    }
-	    catch (const boost::filesystem::filesystem_error& e) {
-	    	std::stringstream err;
-	    	err << "write DER file " << fileName << " error: " << e.code().message();
-	    	addError(err.str());
-	    	return false;
-	    }
+        result = i2d_X509_bio(bio, cert_);
+        if (!result) {
+        	addOpenSSLError();
+        	BIO_free(bio);
+        	return false;
+        }
 
+        BIO_free(bio);
+		return true;
+	}
+
+	bool
+	Certificate::fromDERFile(const std::string& fileName)
+	{
+		if (cert_ != nullptr) {
+			addError("certificate is not empty");
+			return false;
+		}
+
+		BIO* bio = BIO_new_file(fileName.c_str(), "rb");
+		if (bio == nullptr) {
+			addOpenSSLError();
+			return false;
+		}
+
+		cert_ = d2i_X509_bio(bio, 0);
+		if (cert_ == nullptr) {
+			addOpenSSLError();
+			BIO_free(bio);
+			return false;
+		}
+
+		BIO_free(bio);
 		return true;
 	}
 
