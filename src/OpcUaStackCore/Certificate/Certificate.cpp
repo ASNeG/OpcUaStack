@@ -180,7 +180,94 @@ namespace OpcUaStackCore
             }
         }
 
-        // FIXME: todo
+        // set subject
+        if (!error) {
+            X509_NAME* name = subject.encodeX509();
+            if (!name) {
+            	error = true;
+            	addError(subject.errorList());
+            }
+            else {
+                result = X509_set_subject_name(cert_, name);
+                if (!result) {
+                	error = true;
+                	addOpenSSLError();
+                }
+                X509_NAME_free(name);
+            }
+        }
+
+        // set issuer
+       	Identity issuer;
+        if (!issuerCertificate.getSubject(issuer)) {
+        	error = true;
+        	addError(subject.errorList());
+        }
+        if (!error) {
+            X509_NAME* name = issuer.encodeX509();
+            if (!name) {
+            	error = true;
+            	addError(subject.errorList());
+            }
+            else {
+                result = X509_set_issuer_name(cert_, name);
+                if (!result) {
+                	error = true;
+                	addOpenSSLError();
+                }
+                X509_NAME_free(name);
+            }
+        }
+
+        // set certificate valid times
+        if (!error) {
+            X509_gmtime_adj(X509_get_notBefore(cert_), info.validFrom());
+            X509_gmtime_adj(X509_get_notAfter(cert_), info.validTime());
+        }
+
+        // set public key
+         if (!error) {
+ 	        EVP_PKEY* publicKey = (EVP_PKEY*)subjectPublicKey;
+ 	        result = X509_set_pubkey(cert_, publicKey);
+ 	        if (!result) {
+ 	        	error = true;
+ 	        	addOpenSSLError();
+ 	        }
+ 	        EVP_PKEY_free(publicKey);
+         }
+
+         // set extensions
+          X509V3_CTX ctx;
+          X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
+          if (!error) {
+              CertificateExtension certificateExtension(useCACert);
+              certificateExtension.subjectAltName(info.subjectAltName());
+              if (!certificateExtension.encodeX509(cert_, ctx)) {
+              	error = true;
+              	addError(certificateExtension.errorList());
+              }
+          }
+
+          // sign the certificate
+  	    if (!error) {
+  	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)issuerPrivateKey;
+  	        if (signatureAlgorithm == SignatureAlgorithm_Sha1) {
+  	            result = X509_sign(cert_, key, EVP_sha1());
+  	        }
+  	        else {
+  	            result = X509_sign(cert_, key, EVP_sha256());
+  	        }
+  	        if (!result) {
+  	        	error = true;
+  	        	addOpenSSLError();
+  	        }
+  	    }
+
+  	    if (error) {
+  	       X509_free(cert_);
+  	       cert_ = nullptr;
+  	    }
+
 	}
 
 	Certificate::~Certificate(void)
