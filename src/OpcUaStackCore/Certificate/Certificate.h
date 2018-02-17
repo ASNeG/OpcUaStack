@@ -37,10 +37,10 @@ namespace OpcUaStackCore
 	  public:
 		Certificate(void);
 		Certificate(
-			const Info& info,
-			const Identity& subject,
-		    const RSAKey& rsaKey,
-		    bool bCACert = false,
+			Info& info,
+			Identity& subject,
+		    RSAKey& rsaKey,
+		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
 		~Certificate(void);
