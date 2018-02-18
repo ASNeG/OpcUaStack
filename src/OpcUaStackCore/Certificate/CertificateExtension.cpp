@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include <OpcUaStackCore/Certificate/CertificateExtension.h>
 
 namespace OpcUaStackCore
@@ -50,6 +51,18 @@ namespace OpcUaStackCore
 
 	CertificateExtension::~CertificateExtension(void)
 	{
+	}
+
+	void
+	CertificateExtension::clear(void)
+	{
+		basicConstraints_ = "";
+		nsComment_ = "";
+		subjectKeyIdentifier_ = "";
+		authorityKeyIdentifier_ = "";
+		keyUsage_ = "";
+		extendedKeyUsage_ = "";
+		subjectAltName_ = "";
 	}
 
 	void
@@ -160,6 +173,29 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	CertificateExtension::decodeX509(X509 *cert)
+	{
+		clear();
+		if (useCACert_) {
+			if (!decodeX509Extension(cert, NID_basic_constraints, basicConstraints_)) return false;
+			if (!decodeX509Extension(cert, NID_netscape_comment, nsComment_)) return false;
+			if (!decodeX509Extension(cert, NID_key_usage, keyUsage_)) return false;
+			if (!decodeX509Extension(cert, NID_ext_key_usage, extendedKeyUsage_)) return false;
+			if (!decodeX509Extension(cert, NID_subject_key_identifier, subjectKeyIdentifier_)) return false;
+		}
+		else {
+			if (!decodeX509Extension(cert, NID_basic_constraints, basicConstraints_)) return false;
+			if (!decodeX509Extension(cert, NID_netscape_comment, nsComment_)) return false;
+			if (!decodeX509Extension(cert, NID_subject_key_identifier, subjectKeyIdentifier_)) return false;
+			if (!decodeX509Extension(cert, NID_authority_key_identifier, authorityKeyIdentifier_)) return false;
+			if (!decodeX509Extension(cert, NID_key_usage, keyUsage_)) return false;
+			if (!decodeX509Extension(cert, NID_ext_key_usage, extendedKeyUsage_)) return false;
+			if (!decodeX509Extension(cert, NID_subject_alt_name, subjectAltName_)) return false;
+		}
+		return true;
+	}
+
+	bool
 	CertificateExtension::encodeX509Extension(X509 *cert, X509V3_CTX& ctx, const std::string& key, const std::string& value)
 	{
 		int32_t result;
@@ -180,7 +216,34 @@ namespace OpcUaStackCore
 
 		X509_EXTENSION_free(ext);
 		return true;
+	}
 
+	bool
+	CertificateExtension::decodeX509Extension(X509 *cert, int32_t key, std::string& value)
+	{
+	    int32_t pos = X509_get_ext_by_NID(cert, key, -1);
+		if (pos < 0) {
+			addOpenSSLError();
+			return false;
+		}
+
+		X509_EXTENSION* ext = X509_get_ext(cert, pos);
+		BIO* bio = BIO_new (BIO_s_mem());
+		int32_t result = X509V3_EXT_print(bio, ext, 0, 0);
+		if (!result) {
+			addOpenSSLError();
+			BIO_free(bio);
+			return false;
+		}
+
+		BUF_MEM* buf = nullptr;
+		BIO_get_mem_ptr(bio, &buf);
+
+		std::string str(buf->data, buf->length);
+		value = str;
+
+		BIO_free(bio);
+		return true;
 	}
 
 }
