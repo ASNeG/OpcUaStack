@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_Info_h__
 #define __OpcUaStackCore_Info_h__
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <vector>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
@@ -39,13 +40,14 @@ namespace OpcUaStackCore
 		std::vector<std::string>& dnsNames(void);
 		void eMail(const std::string& eMail);
 		std::string& eMail(void);
-		void validTime(uint32_t validTime);
-		uint32_t validTime(void);
+		void validTime(boost::posix_time::ptime validTime);
+		boost::posix_time::ptime validTime(void);
 		void serialNumber(uint32_t serialNumber);
 		uint32_t serialNumber(void);
-		void validFrom(uint32_t validFrom);
-		uint32_t validFrom(void);
+		void validFrom(boost::posix_time::ptime validFrom);
+		boost::posix_time::ptime validFrom(void);
 
+		void subjectAltName(const std::string& subjectAltName);
 		std::string subjectAltName(void);
 
 	  private:
@@ -53,9 +55,9 @@ namespace OpcUaStackCore
 		std::vector<std::string> ipAddresses_;
 		std::vector<std::string> dnsNames_;
 		std::string eMail_;
-		uint32_t validTime_;
+		boost::posix_time::ptime validTime_;
 		uint32_t serialNumber_;
-		uint32_t validFrom_;
+		boost::posix_time::ptime validFrom_;
 	};
 
 }

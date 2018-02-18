@@ -26,9 +26,9 @@ namespace OpcUaStackCore
 	, ipAddresses_()
 	, dnsNames_()
 	, eMail_("")
-	, validTime_(0)
+	, validTime_(boost::posix_time::microsec_clock::local_time())
 	, serialNumber_(0)
-	, validFrom_(0)
+	, validFrom_(boost::posix_time::microsec_clock::local_time())
 	{
 	}
 
@@ -84,12 +84,12 @@ namespace OpcUaStackCore
 	}
 
 	void
-	Info::validTime(uint32_t validTime)
+	Info::validTime(boost::posix_time::ptime validTime)
 	{
 		validTime_ = validTime;
 	}
 
-	uint32_t
+	boost::posix_time::ptime
 	Info::validTime(void)
 	{
 		return validTime_;
@@ -108,15 +108,21 @@ namespace OpcUaStackCore
 	}
 
 	void
-	Info::validFrom(uint32_t validFrom)
+	Info::validFrom(boost::posix_time::ptime validFrom)
 	{
 		validFrom_ = validFrom;
 	}
 
-	uint32_t
+	boost::posix_time::ptime
 	Info::validFrom(void)
 	{
 		return validFrom_;
+	}
+
+	void
+	Info::subjectAltName(const std::string& subjectAltName)
+	{
+		// FIXME: todo
 	}
 
 	std::string
