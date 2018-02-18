@@ -56,6 +56,7 @@ namespace OpcUaStackCore
 
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
+		bool getInfo(Info& info);
 
 		bool toDERFile(const std::string& fileName);
 		bool fromDERFile(const std::string& fileName);

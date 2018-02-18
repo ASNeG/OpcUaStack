@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string.hpp>
 #include <sstream>
 #include "OpcUaStackCore/Certificate/Info.h"
 
@@ -122,7 +123,38 @@ namespace OpcUaStackCore
 	void
 	Info::subjectAltName(const std::string& subjectAltName)
 	{
-		// FIXME: todo
+		// split subject alt name
+		std::vector<std::string> strVec;
+		boost::split(strVec, subjectAltName, boost::is_any_of(","));
+
+		// read parameter
+		std::vector<std::string>::iterator it;
+		for (it = strVec.begin(); it != strVec.end(); it++) {
+			std::string str = *it;
+			boost::algorithm::trim(str);
+
+			size_t pos;
+			pos = str.find_first_of(':');
+			if (pos == std::string::npos) {
+				continue;
+			}
+
+			std::string key = str.substr(0, pos);
+			std::string value = str.substr(pos+1);
+
+			if (key == "URI") {
+				uri_ = value;
+			}
+			else if (key == "DNS") {
+				dnsNames_.push_back(value);
+			}
+			else if (key == "IP Address") {
+				ipAddresses_.push_back(value);
+			}
+			else if (key == "email") {
+				eMail_= value;
+			}
+		}
 	}
 
 	std::string

@@ -16,6 +16,10 @@
  */
 
 #include <iostream>
+#include <time.h>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/local_time_adjustor.hpp>
+#include <boost/date_time/c_local_time_adjustor.hpp>
 #include "OpcUaStackCore/Certificate/Certificate.h"
 #include "OpcUaStackCore/Certificate/CertificateExtension.h"
 
@@ -94,8 +98,28 @@ namespace OpcUaStackCore
 
         // set certificate valid times
         if (!error) {
-            X509_gmtime_adj(X509_get_notBefore(cert_), info.validFrom());
-            X509_gmtime_adj(X509_get_notAfter(cert_), info.validTime());
+        	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+
+           	uint32_t validFrom;
+        	if (info.validFrom() < now) {
+        		validFrom = 0;
+        	}
+        	else {
+        		 boost::posix_time::time_duration dt = info.validFrom() - now;
+        		 validFrom = dt.total_seconds();
+        	}
+
+        	uint32_t validTime;
+           	if (info.validTime() < now) {
+           		validTime = 0;
+            }
+            else {
+            	boost::posix_time::time_duration dt = info.validTime() - now;
+            	validTime = dt.total_seconds();
+            }
+
+            X509_gmtime_adj(X509_get_notBefore(cert_), validFrom);
+            X509_gmtime_adj(X509_get_notAfter(cert_), validTime);
         }
 
         // set public key
@@ -227,8 +251,28 @@ namespace OpcUaStackCore
 
         // set certificate valid times
         if (!error) {
-            X509_gmtime_adj(X509_get_notBefore(cert_), info.validFrom());
-            X509_gmtime_adj(X509_get_notAfter(cert_), info.validTime());
+           	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+
+            uint32_t validFrom;
+            if (info.validFrom() < now) {
+            	validFrom = 0;
+            }
+            else {
+            	boost::posix_time::time_duration dt = info.validFrom() - now;
+            	validFrom = dt.seconds();
+            }
+
+            uint32_t validTime;
+            if (info.validTime() < now) {
+               	validTime = 0;
+            }
+            else {
+                boost::posix_time::time_duration dt = info.validTime() - now;
+                validTime = dt.seconds();
+            }
+
+            X509_gmtime_adj(X509_get_notBefore(cert_), validFrom);
+            X509_gmtime_adj(X509_get_notAfter(cert_), validTime);
         }
 
         // set public key
@@ -316,6 +360,81 @@ namespace OpcUaStackCore
 		}
 
 		return issuer.decodeX509(name);
+	}
+
+	bool
+	Certificate::getInfo(Info& info)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		// get extensions
+		bool selfSigned = isSelfSigned();
+		CertificateExtension ext(!selfSigned);
+		if (!ext.decodeX509(cert_)) {
+			return false;
+		}
+		if (selfSigned) {
+			info.subjectAltName(ext.subjectAltName());
+		}
+
+		// get serial number
+		info.serialNumber(ASN1_INTEGER_get(X509_get_serialNumber(cert_)));
+
+		// get valid time
+		size_t i = 0;
+		struct tm notBeforTime;
+		const char* notBefor = (const char*)X509_get_notBefore(cert_)->data;
+		if (X509_get_notBefore(cert_)->type == V_ASN1_UTCTIME) {
+
+			notBeforTime.tm_year = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+			if (notBeforTime.tm_year < 70) {
+				notBeforTime.tm_year += 100;
+			}
+		}
+		else if (X509_get_notBefore(cert_)->type == V_ASN1_GENERALIZEDTIME) {
+			notBeforTime.tm_year = (notBefor[i++] - '0') * 1000 + (notBefor[i++] - '0') * 100 + (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+			notBeforTime.tm_year -= 1900;
+		}
+		else {
+			addError("not befor time format invalid");
+			return false;
+		}
+		notBeforTime.tm_mon = ((notBefor[i++] - '0') * 10 + (notBefor[i++] - '0')) - 1; // -1 since January is 0 not 1.
+		notBeforTime.tm_mday = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+		notBeforTime.tm_hour = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+		notBeforTime.tm_min  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+		notBeforTime.tm_sec  = (notBefor[i++] - '0') * 10 + (notBefor[i++] - '0');
+		info.validFrom(boost::posix_time::from_time_t(mktime(&notBeforTime)));
+
+		// get valid from
+	    i = 0;
+		struct tm notAfterTime;
+		const char* notAfter = (const char*)X509_get_notAfter(cert_)->data;
+		if (X509_get_notAfter(cert_)->type == V_ASN1_UTCTIME) {
+
+			notAfterTime.tm_year = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+			if (notAfterTime.tm_year < 70)
+				notAfterTime.tm_year += 100;
+		}
+		else if (X509_get_notAfter(cert_)->type == V_ASN1_GENERALIZEDTIME) {
+			notAfterTime.tm_year = (notAfter[i++] - '0') * 1000 + (notAfter[i++] - '0') * 100 + (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+			notAfterTime.tm_year -= 1900;
+		}
+		else {
+			addError("not after time format invalid");
+			return false;
+		}
+		notAfterTime.tm_mon = ((notAfter[i++] - '0') * 10 + (notAfter[i++] - '0')) - 1; // -1 since January is 0 not 1.
+		notAfterTime.tm_mday = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+		notAfterTime.tm_hour = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+		notAfterTime.tm_min  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+		notAfterTime.tm_sec  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
+		info.validTime(boost::posix_time::from_time_t(mktime(&notAfterTime)));
+
+		return true;
 	}
 
 	bool
