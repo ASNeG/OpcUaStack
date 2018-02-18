@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_CertificateStore_h__
 #define __OpcUaStackCore_CertificateStore_h__
 
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -28,6 +29,32 @@ namespace OpcUaStackCore
 	  public:
 		CertificateStore(void);
 		~CertificateStore(void);
+
+		void certificateTrustListLocation(const std::string& certificateTrustListLocation);
+		std::string& certificateTrustListLocation(void);
+		void certificateRejectListLocation(const std::string& certificateRejectListLocation);
+		std::string& certificateRejectListLocation(void);
+		void certificateRevocationListLocation(const std::string& certificateRevocationListLocation);
+		std::string& certificateRevocationListLocation(void);
+		void issuersCertificatesLocation(const std::string& issuersCertificatesLocation);
+		std::string& issuersCertificatesLocation(void);
+		void issuersRevocationListLocation(const std::string& issuersRevocationListLocation);
+		std::string& issuersRevocationListLocation(void);
+
+	  private:
+
+		// The folder where certificates of trusted applications and trusted CAs should be stored
+		std::string certificateTrustListLocation_;
+		// The folder where certificates of refected applications should be stored
+		std::string certificateRejectListLocation_;
+		// The folder where revocation lists for trusted CAs should be stored
+		std::string certificateRevocationListLocation_;
+		// The folder where issuer certificates are stored. Issuer certificates are CA certificates
+		// necessary for the verification of the full trust chain of CA certificates in the trust list
+		std::string issuersCertificatesLocation_;
+		// The folder where revocation lists for issuer CAs should be stored
+		std::string issuersRevocationListLocation_;
+
 	};
 
 }

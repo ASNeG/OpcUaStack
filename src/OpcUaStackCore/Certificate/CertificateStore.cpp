@@ -21,11 +21,76 @@ namespace OpcUaStackCore
 {
 
 	CertificateStore::CertificateStore(void)
+	: certificateTrustListLocation_("")
+	, certificateRejectListLocation_("")
+	, certificateRevocationListLocation_("")
+	, issuersCertificatesLocation_("")
+	, issuersRevocationListLocation_("")
 	{
 	}
 
 	CertificateStore::~CertificateStore(void)
 	{
+	}
+
+	void
+	CertificateStore::certificateTrustListLocation(const std::string& certificateTrustListLocation)
+	{
+		certificateTrustListLocation_ = certificateTrustListLocation;
+	}
+
+	std::string&
+	CertificateStore::certificateTrustListLocation(void)
+	{
+		return certificateTrustListLocation_;
+	}
+
+	void
+	CertificateStore::certificateRejectListLocation(const std::string& certificateRejectListLocation)
+	{
+		certificateRejectListLocation_ = certificateRejectListLocation;
+	}
+
+	std::string&
+	CertificateStore::certificateRejectListLocation(void)
+	{
+		return certificateRejectListLocation_;
+	}
+
+	void
+	CertificateStore::certificateRevocationListLocation(const std::string& certificateRevocationListLocation)
+	{
+		certificateRevocationListLocation_ = certificateRevocationListLocation;
+	}
+
+	std::string&
+	CertificateStore::certificateRevocationListLocation(void)
+	{
+		return certificateRevocationListLocation_;
+	}
+
+	void
+	CertificateStore::issuersCertificatesLocation(const std::string& issuersCertificatesLocation)
+	{
+		issuersCertificatesLocation_ = issuersCertificatesLocation;
+	}
+
+	std::string&
+	CertificateStore::issuersCertificatesLocation(void)
+	{
+		return issuersCertificatesLocation_;
+	}
+
+	void
+	CertificateStore::issuersRevocationListLocation(const std::string& issuersRevocationListLocation)
+	{
+		issuersRevocationListLocation_ = issuersRevocationListLocation;
+	}
+
+	std::string&
+	CertificateStore::issuersRevocationListLocation(void)
+	{
+		return issuersRevocationListLocation_;
 	}
 
 }
