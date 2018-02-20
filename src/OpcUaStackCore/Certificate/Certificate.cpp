@@ -21,7 +21,6 @@
 #include <boost/date_time/local_time_adjustor.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
 #include "OpcUaStackCore/Certificate/Certificate.h"
-#include "OpcUaStackCore/Certificate/CertificateExtension.h"
 
 namespace OpcUaStackCore
 {
@@ -433,6 +432,21 @@ namespace OpcUaStackCore
 		notAfterTime.tm_min  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
 		notAfterTime.tm_sec  = (notAfter[i++] - '0') * 10 + (notAfter[i++] - '0');
 		info.validTime(boost::posix_time::from_time_t(mktime(&notAfterTime)));
+
+		return true;
+	}
+
+	bool
+	Certificate::getExtension(CertificateExtension& certificateExtension)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		if (!certificateExtension.decodeX509(cert_)) {
+			return false;
+		}
 
 		return true;
 	}

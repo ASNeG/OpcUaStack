@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 
 		// The folder where certificates of trusted applications and trusted CAs should be stored
 		std::string certificateTrustListLocation_;
-		// The folder where certificates of refected applications should be stored
+		// The folder where certificates of rejected applications should be stored
 		std::string certificateRejectListLocation_;
 		// The folder where revocation lists for trusted CAs should be stored
 		std::string certificateRevocationListLocation_;
@@ -59,7 +59,7 @@ namespace OpcUaStackCore
 		std::string issuersCertificatesLocation_;
 		// The folder where revocation lists for issuer CAs should be stored
 		std::string issuersRevocationListLocation_;
-		// The folder ehere the private key should be stored
+		// The folder where the private key should be stored
 		std::string privateKeyLocation_;
 
 	};

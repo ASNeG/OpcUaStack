@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
+#include "OpcUaStackCore/Certificate/CertificateExtension.h"
 #include "OpcUaStackCore/Certificate/Info.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
@@ -57,6 +58,7 @@ namespace OpcUaStackCore
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
 		bool getInfo(Info& info);
+		bool getExtension(CertificateExtension& certificateExtension);
 
 		bool toDERFile(const std::string& fileName);
 		bool fromDERFile(const std::string& fileName);
