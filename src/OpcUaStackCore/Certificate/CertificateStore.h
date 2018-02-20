@@ -30,6 +30,9 @@ namespace OpcUaStackCore
 		CertificateStore(void);
 		~CertificateStore(void);
 
+		bool init(void);
+		bool cleanup(void);
+
 		void certificateTrustListLocation(const std::string& certificateTrustListLocation);
 		std::string& certificateTrustListLocation(void);
 		void certificateRejectListLocation(const std::string& certificateRejectListLocation);
@@ -40,6 +43,8 @@ namespace OpcUaStackCore
 		std::string& issuersCertificatesLocation(void);
 		void issuersRevocationListLocation(const std::string& issuersRevocationListLocation);
 		std::string& issuersRevocationListLocation(void);
+		void privateKeyLocation(const std::string& privateKeyLocation);
+		std::string& privateKeyLocation(void);
 
 	  private:
 
@@ -54,6 +59,8 @@ namespace OpcUaStackCore
 		std::string issuersCertificatesLocation_;
 		// The folder where revocation lists for issuer CAs should be stored
 		std::string issuersRevocationListLocation_;
+		// The folder ehere the private key should be stored
+		std::string privateKeyLocation_;
 
 	};
 

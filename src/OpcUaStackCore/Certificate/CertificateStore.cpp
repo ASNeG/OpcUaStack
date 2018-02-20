@@ -26,11 +26,26 @@ namespace OpcUaStackCore
 	, certificateRevocationListLocation_("")
 	, issuersCertificatesLocation_("")
 	, issuersRevocationListLocation_("")
+	, privateKeyLocation_("")
 	{
 	}
 
 	CertificateStore::~CertificateStore(void)
 	{
+	}
+
+	bool
+	CertificateStore::init(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	bool
+	CertificateStore::cleanup(void)
+	{
+		// FIXME: todo
+		return true;
 	}
 
 	void
@@ -91,6 +106,18 @@ namespace OpcUaStackCore
 	CertificateStore::issuersRevocationListLocation(void)
 	{
 		return issuersRevocationListLocation_;
+	}
+
+	void
+	CertificateStore::privateKeyLocation(const std::string& privateKeyLocation)
+	{
+		privateKeyLocation_ = privateKeyLocation;
+	}
+
+	std::string&
+	CertificateStore::privateKeyLocation(void)
+	{
+		return privateKeyLocation_;
 	}
 
 }
