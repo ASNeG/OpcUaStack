@@ -9,18 +9,18 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   CertificateStorermationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   ServerCertificatermationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackCore/Certificate/CertificateStore.h"
+#include <OpcUaStackCore/Certificate/ServerCertificate.h>
 
 namespace OpcUaStackCore
 {
 
-	CertificateStore::CertificateStore(void)
+	ServerCertificate::ServerCertificate(void)
 	: certificateTrustListLocation_("")
 	, certificateRejectListLocation_("")
 	, certificateRevocationListLocation_("")
@@ -30,92 +30,92 @@ namespace OpcUaStackCore
 	{
 	}
 
-	CertificateStore::~CertificateStore(void)
+	ServerCertificate::~ServerCertificate(void)
 	{
 	}
 
 	bool
-	CertificateStore::init(void)
+	ServerCertificate::init(void)
 	{
 		// FIXME: todo
 		return true;
 	}
 
 	bool
-	CertificateStore::cleanup(void)
+	ServerCertificate::cleanup(void)
 	{
 		// FIXME: todo
 		return true;
 	}
 
 	void
-	CertificateStore::certificateTrustListLocation(const std::string& certificateTrustListLocation)
+	ServerCertificate::certificateTrustListLocation(const std::string& certificateTrustListLocation)
 	{
 		certificateTrustListLocation_ = certificateTrustListLocation;
 	}
 
 	std::string&
-	CertificateStore::certificateTrustListLocation(void)
+	ServerCertificate::certificateTrustListLocation(void)
 	{
 		return certificateTrustListLocation_;
 	}
 
 	void
-	CertificateStore::certificateRejectListLocation(const std::string& certificateRejectListLocation)
+	ServerCertificate::certificateRejectListLocation(const std::string& certificateRejectListLocation)
 	{
 		certificateRejectListLocation_ = certificateRejectListLocation;
 	}
 
 	std::string&
-	CertificateStore::certificateRejectListLocation(void)
+	ServerCertificate::certificateRejectListLocation(void)
 	{
 		return certificateRejectListLocation_;
 	}
 
 	void
-	CertificateStore::certificateRevocationListLocation(const std::string& certificateRevocationListLocation)
+	ServerCertificate::certificateRevocationListLocation(const std::string& certificateRevocationListLocation)
 	{
 		certificateRevocationListLocation_ = certificateRevocationListLocation;
 	}
 
 	std::string&
-	CertificateStore::certificateRevocationListLocation(void)
+	ServerCertificate::certificateRevocationListLocation(void)
 	{
 		return certificateRevocationListLocation_;
 	}
 
 	void
-	CertificateStore::issuersCertificatesLocation(const std::string& issuersCertificatesLocation)
+	ServerCertificate::issuersCertificatesLocation(const std::string& issuersCertificatesLocation)
 	{
 		issuersCertificatesLocation_ = issuersCertificatesLocation;
 	}
 
 	std::string&
-	CertificateStore::issuersCertificatesLocation(void)
+	ServerCertificate::issuersCertificatesLocation(void)
 	{
 		return issuersCertificatesLocation_;
 	}
 
 	void
-	CertificateStore::issuersRevocationListLocation(const std::string& issuersRevocationListLocation)
+	ServerCertificate::issuersRevocationListLocation(const std::string& issuersRevocationListLocation)
 	{
 		issuersRevocationListLocation_ = issuersRevocationListLocation;
 	}
 
 	std::string&
-	CertificateStore::issuersRevocationListLocation(void)
+	ServerCertificate::issuersRevocationListLocation(void)
 	{
 		return issuersRevocationListLocation_;
 	}
 
 	void
-	CertificateStore::privateKeyLocation(const std::string& privateKeyLocation)
+	ServerCertificate::privateKeyLocation(const std::string& privateKeyLocation)
 	{
 		privateKeyLocation_ = privateKeyLocation;
 	}
 
 	std::string&
-	CertificateStore::privateKeyLocation(void)
+	ServerCertificate::privateKeyLocation(void)
 	{
 		return privateKeyLocation_;
 	}

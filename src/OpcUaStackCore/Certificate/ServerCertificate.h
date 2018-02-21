@@ -9,14 +9,14 @@
    erfolgt die Bereitstellung der im Rahmen der Lizenz verbreiteten Software OHNE
    GEWÄHR ODER VORBEHALTE – ganz gleich, ob ausdrücklich oder stillschweigend.
 
-   CertificateStorermationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
+   ServerCertificatermationen über die jeweiligen Bedingungen für Genehmigungen und Einschränkungen
    im Rahmen der Lizenz finden Sie in der Lizenz.
 
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CertificateStore_h__
-#define __OpcUaStackCore_CertificateStore_h__
+#ifndef __OpcUaStackCore_ServerCertificate_h__
+#define __OpcUaStackCore_ServerCertificate_h__
 
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
@@ -24,11 +24,11 @@
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CertificateStore
+	class DLLEXPORT ServerCertificate
 	{
 	  public:
-		CertificateStore(void);
-		~CertificateStore(void);
+		ServerCertificate(void);
+		~ServerCertificate(void);
 
 		bool init(void);
 		bool cleanup(void);

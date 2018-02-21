@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -334,6 +334,7 @@ namespace OpcUaStackServer
 	bool
 	Server::initSession(void)
 	{
+		// decode endpoint configuration
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
 		bool rc = EndpointDescriptionConfig::endpointDescriptions(
 			endpointDescriptionArray, 
@@ -346,8 +347,14 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		// decode certificate configuration
+		// FIXME: todo
+
+		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
 		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
+
+		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
 		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
 
