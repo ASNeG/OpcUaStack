@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ServerCertificate_h__
 #define __OpcUaStackCore_ServerCertificate_h__
 
+#include <boost/shared_ptr.hpp>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
 
@@ -27,6 +28,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT ServerCertificate
 	{
 	  public:
+		typedef boost::shared_ptr<ServerCertificate> SPtr;
+
 		ServerCertificate(void);
 		~ServerCertificate(void);
 

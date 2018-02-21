@@ -28,4 +28,16 @@ namespace OpcUaStackCore
 	{
 	}
 
+	bool
+	ServerCertificateConfig::parse(
+		ServerCertificate::SPtr& serverCertificateconst,
+		const std::string& configPrefix,
+		Config* childConfig,
+		const std::string& configurationFileName
+	)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 }

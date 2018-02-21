@@ -18,6 +18,7 @@
 #include <boost/asio/ip/host_name.hpp>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
+#include "OpcUaStackCore/Certificate/ServerCertificateConfig.h"
 #include "OpcUaStackServer/Server/Server.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
@@ -334,9 +335,11 @@ namespace OpcUaStackServer
 	bool
 	Server::initSession(void)
 	{
+		bool rc;
+
 		// decode endpoint configuration
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
-		bool rc = EndpointDescriptionConfig::endpointDescriptions(
+		rc = EndpointDescriptionConfig::endpointDescriptions(
 			endpointDescriptionArray, 
 			"OpcUaServer.Endpoints", 
 			&config(),
@@ -348,7 +351,17 @@ namespace OpcUaStackServer
 		}
 
 		// decode certificate configuration
-		// FIXME: todo
+		ServerCertificate::SPtr serverCertificate = constructSPtr<ServerCertificate>();
+		rc = ServerCertificateConfig::parse(
+			serverCertificate,
+			"OpcUaServer.ServerCertificate",
+			&config(),
+			config().configFileName()
+		);
+		if (!rc) {
+			Log(Error, "server certificate error");
+			return false;
+		}
 
 		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();

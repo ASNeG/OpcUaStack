@@ -20,6 +20,8 @@
 
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Certificate/ServerCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -29,6 +31,13 @@ namespace OpcUaStackCore
 	  public:
 		ServerCertificateConfig(void);
 		~ServerCertificateConfig(void);
+
+		static bool parse(
+			ServerCertificate::SPtr& serverCertificateconst,
+			const std::string& configPrefix,
+			Config* childConfig,
+			const std::string& configurationFileName
+		);
 	};
 
 }
