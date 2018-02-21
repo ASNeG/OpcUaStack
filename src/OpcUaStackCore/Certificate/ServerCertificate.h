@@ -36,6 +36,8 @@ namespace OpcUaStackCore
 		bool init(void);
 		bool cleanup(void);
 
+		void active(bool active);
+		bool active(void);
 		void certificateTrustListLocation(const std::string& certificateTrustListLocation);
 		std::string& certificateTrustListLocation(void);
 		void certificateRejectListLocation(const std::string& certificateRejectListLocation);
@@ -51,6 +53,7 @@ namespace OpcUaStackCore
 
 	  private:
 
+		bool active_;
 		// The folder where certificates of trusted applications and trusted CAs should be stored
 		std::string certificateTrustListLocation_;
 		// The folder where certificates of rejected applications should be stored

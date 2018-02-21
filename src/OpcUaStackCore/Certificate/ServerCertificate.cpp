@@ -21,7 +21,8 @@ namespace OpcUaStackCore
 {
 
 	ServerCertificate::ServerCertificate(void)
-	: certificateTrustListLocation_("")
+	: active_(false)
+	, certificateTrustListLocation_("")
 	, certificateRejectListLocation_("")
 	, certificateRevocationListLocation_("")
 	, issuersCertificatesLocation_("")
@@ -46,6 +47,18 @@ namespace OpcUaStackCore
 	{
 		// FIXME: todo
 		return true;
+	}
+
+	void
+	ServerCertificate::active(bool active)
+	{
+		active_ = active;
+	}
+
+	bool
+	ServerCertificate::active(void)
+	{
+		return active_;
 	}
 
 	void
