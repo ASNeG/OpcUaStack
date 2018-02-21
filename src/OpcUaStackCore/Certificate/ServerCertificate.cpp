@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	ServerCertificate::ServerCertificate(void)
-	: active_(false)
+	: enable_(false)
 	, certificateTrustListLocation_("")
 	, certificateRejectListLocation_("")
 	, certificateRevocationListLocation_("")
@@ -50,15 +50,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ServerCertificate::active(bool active)
+	ServerCertificate::enable(bool enable)
 	{
-		active_ = active;
+		enable_ = enable;
 	}
 
 	bool
-	ServerCertificate::active(void)
+	ServerCertificate::enable(void)
 	{
-		return active_;
+		return enable_;
 	}
 
 	void
