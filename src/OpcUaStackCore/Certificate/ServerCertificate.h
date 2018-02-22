@@ -50,6 +50,8 @@ namespace OpcUaStackCore
 		std::string& issuersRevocationListLocation(void);
 		void privateKeyLocation(const std::string& privateKeyLocation);
 		std::string& privateKeyLocation(void);
+		void rejectListLocation(const std::string& rejectListLocation);
+		std::string& rejectListLocation(void);
 
 	  private:
 
@@ -67,6 +69,8 @@ namespace OpcUaStackCore
 		std::string issuersRevocationListLocation_;
 		// The folder where the private key should be stored
 		std::string privateKeyLocation_;
+		// The folder where the rejected certificates should be stored
+		std::string rejectListLocation_;
 
 	};
 
