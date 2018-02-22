@@ -56,6 +56,29 @@ namespace OpcUaStackCore
 		void privateKeyFile(const std::string& privateKeyFile);
 		std::string& privateKeyFile(void);
 
+		void commonName(const std::string& commonName);
+		std::string& commonName(void);
+		void domainComponent(const std::string& domainComponent);
+		std::string& domainComponent(void);
+		void organization(const std::string& organization);
+		std::string& organization(void);
+		void organizationUinit(const std::string& organizationUnit);
+		std::string& organizationUnit(void);
+		void locality(const std::string& locality);
+		std::string& locality(void);
+		void state(const std::string& state);
+		std::string& state(void);
+		void country(const std::string& country);
+		std::string& country(void);
+		void yearsValidFor(uint32_t yearsValidFor);
+		uint32_t yearsValidFor(void);
+		void keyLength(uint32_t keyLength);
+		uint32_t keyLength(void);
+		void certificateType(const std::string& certificateType);
+		std::string& certificateType(void);
+		std::vector<std::string>& ipAddress(void);
+		std::vector<std::string>& dnsName(void);
+
 	  private:
 
 		bool enable_;
@@ -75,6 +98,35 @@ namespace OpcUaStackCore
 
 		std::string serverCertificateFile_;
 		std::string privateKeyFile_;
+
+		// name of the application
+		std::string commonName_;
+		// hostname of the machine
+		std::string domainComponent_;
+		// organization using the opc ua server
+		std::string organization_;
+		// organization unit unsing the opc ua server
+		std::string organizationUnit_;
+		// name of the location where the opc ua server is running
+		std::string locality_;
+		// name of the state where the opc ua server is running
+		std::string state_;
+		// name of the country where the opc ua server is running
+		std::string country_;
+		// number of years the certificate is valid
+		uint32_t yearsValidFor_;
+		// Key length in bits of the certificate to create; valid values
+        // are 1024 and 2048 for RsaMin, and 2048, 3072 and 4096 for RsaSha256
+		uint32_t keyLength_;
+		// Defines the algorithm used to sign the certificate. Valid values are
+		// RsaMin and RsaSha256. Applications that support the Basic128Rsa15 and
+		// Basic256 profiles need a Certificate of type RsaMin. Applications that
+		// support the Basic256Sha256 profile need a Certificate of type RsaSha256.
+		std::string certificateType_;
+		// ip address where the opc ua server is running
+		std::vector<std::string> ipAddress_;
+		// dns name where the opc ua server is running
+		std::vector<std::string> dnsName_;
 	};
 
 }

@@ -31,6 +31,19 @@ namespace OpcUaStackCore
 
 	, serverCertificateFile_("")
 	, privateKeyFile_("")
+
+	, commonName_("")
+	, domainComponent_("")
+	, organization_("")
+	, organizationUnit_("")
+	, locality_("")
+	, state_("")
+	, country_("")
+	, yearsValidFor_(5)
+	, keyLength_(2048)
+	, certificateType_("RsaSha256")
+	, ipAddress_()
+	, dnsName_()
 	{
 	}
 
@@ -158,6 +171,138 @@ namespace OpcUaStackCore
 	ServerCertificate::privateKeyFile(void)
 	{
 		return privateKeyFile_;
+	}
+
+	void
+	ServerCertificate::commonName(const std::string& commonName)
+	{
+		commonName_ = commonName;
+	}
+
+	std::string&
+	ServerCertificate::commonName(void)
+	{
+		return commonName_;
+	}
+
+	void
+	ServerCertificate::domainComponent(const std::string& domainComponent)
+	{
+		domainComponent_ = domainComponent;
+	}
+
+	std::string&
+	ServerCertificate::domainComponent(void)
+	{
+		return domainComponent_;
+	}
+
+	void
+	ServerCertificate::organization(const std::string& organization)
+	{
+		organization_ = organization;
+	}
+
+	std::string&
+	ServerCertificate::organization(void)
+	{
+		return organization_;
+	}
+
+	void
+	ServerCertificate::organizationUinit(const std::string& organizationUnit)
+	{
+		organizationUnit_ = organizationUnit;
+	}
+
+	std::string&
+	ServerCertificate::organizationUnit(void)
+	{
+		return organizationUnit_;
+	}
+
+	void
+	ServerCertificate::locality(const std::string& locality)
+	{
+		locality_ = locality;
+	}
+
+	std::string&
+	ServerCertificate::locality(void)
+	{
+		return locality_;
+	}
+
+	void
+	ServerCertificate::state(const std::string& state)
+	{
+		state_ = state;
+	}
+
+	std::string&
+	ServerCertificate::state(void)
+	{
+		return state_;
+	}
+
+	void
+	ServerCertificate::country(const std::string& country)
+	{
+		country_ = country;
+	}
+
+	std::string&
+	ServerCertificate::country(void)
+	{
+		return country_;
+	}
+
+	void
+	ServerCertificate::yearsValidFor(uint32_t yearsValidFor)
+	{
+		yearsValidFor_ = yearsValidFor;
+	}
+
+	uint32_t
+	ServerCertificate::yearsValidFor(void)
+	{
+		return yearsValidFor_;
+	}
+
+	void
+	ServerCertificate::keyLength(uint32_t keyLength)
+	{
+		keyLength_ = keyLength;
+	}
+
+	uint32_t
+	ServerCertificate::keyLength(void)
+	{
+		return keyLength_;
+	}
+
+	void
+	ServerCertificate::certificateType(const std::string& certificateType)
+	{
+		certificateType_ = certificateType;
+	}
+
+	std::string&
+	ServerCertificate::certificateType(void)
+	{
+		return certificateType_;
+	}
+
+	std::vector<std::string>&
+	ServerCertificate::ipAddress(void)
+	{
+		return ipAddress_;
+	}
+
+	std::vector<std::string>&
+	ServerCertificate::dnsName(void)
+	{
+		return dnsName_;
 	}
 
 }
