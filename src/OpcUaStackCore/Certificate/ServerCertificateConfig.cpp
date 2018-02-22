@@ -46,60 +46,60 @@ namespace OpcUaStackCore
 
 		// get certificate trust list location
 		std::string certificateTrustListLocation;
-		if (!child->getConfigParameter("CertificateTrustListLocation", certificateTrustListLocation) == true) {
+		if (!child->getConfigParameter("Folder.CertificateTrustListLocation", certificateTrustListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateTrustListLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateTrustListLocation"));
 			return false;
 		}
 		serverCertificate->certificateTrustListLocation(certificateTrustListLocation);
 
 		// get certificate revocation list location
 		std::string certificateRevocationListLocation;
-		if (!child->getConfigParameter("CertificateRevocationListLocation", certificateRevocationListLocation) == true) {
+		if (!child->getConfigParameter("Folder.CertificateRevocationListLocation", certificateRevocationListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".CertificateRevocationListLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateRevocationListLocation"));
 			return false;
 		}
 		serverCertificate->certificateRevocationListLocation(certificateRevocationListLocation);
 
 		// get issuer certificates location
 		std::string issuersCertificatesLocation;
-		if (!child->getConfigParameter("IssuersCertificatesLocation", issuersCertificatesLocation) == true) {
+		if (!child->getConfigParameter("Folder.IssuersCertificatesLocation", issuersCertificatesLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".IssuersCertificatesLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.IssuersCertificatesLocation"));
 			return false;
 		}
 		serverCertificate->issuersCertificatesLocation(issuersCertificatesLocation);
 
 		// get issuer revocation list location
 		std::string issuersRevocationListLocation;
-		if (!child->getConfigParameter("IssuersRevocationListLocation", issuersRevocationListLocation) == true) {
+		if (!child->getConfigParameter("Folder.IssuersRevocationListLocation", issuersRevocationListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".IssuersRevocationListLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.IssuersRevocationListLocation"));
 			return false;
 		}
 		serverCertificate->issuersRevocationListLocation(issuersRevocationListLocation);
 
 		// get reject list location
 		std::string rejectListLocation;
-		if (!child->getConfigParameter("RejectListLocation", rejectListLocation) == true) {
+		if (!child->getConfigParameter("Folder.RejectListLocation", rejectListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".RejectListLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.RejectListLocation"));
 			return false;
 		}
 		serverCertificate->rejectListLocation(rejectListLocation);
 
 		// get private key location
 		std::string privateKeyLocation;
-		if (!child->getConfigParameter("PrivateKeyLocation", privateKeyLocation) == true) {
+		if (!child->getConfigParameter("Folder.PrivateKeyLocation", privateKeyLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".PrivateKeyLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.PrivateKeyLocation"));
 			return false;
 		}
 		serverCertificate->privateKeyLocation(privateKeyLocation);
