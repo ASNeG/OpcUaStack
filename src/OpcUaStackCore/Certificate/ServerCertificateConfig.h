@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 		~ServerCertificateConfig(void);
 
 		static bool parse(
-			ServerCertificate::SPtr& serverCertificateconst,
+			ServerCertificate::SPtr& serverCertificate,
 			const std::string& configPrefix,
 			Config* childConfig,
 			const std::string& configurationFileName
