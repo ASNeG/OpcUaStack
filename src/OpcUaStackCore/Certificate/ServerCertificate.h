@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 		std::string& domainComponent(void);
 		void organization(const std::string& organization);
 		std::string& organization(void);
-		void organizationUinit(const std::string& organizationUnit);
+		void organizationUnit(const std::string& organizationUnit);
 		std::string& organizationUnit(void);
 		void locality(const std::string& locality);
 		std::string& locality(void);

@@ -210,7 +210,7 @@ namespace OpcUaStackCore
 	}
 
 	void
-	ServerCertificate::organizationUinit(const std::string& organizationUnit)
+	ServerCertificate::organizationUnit(const std::string& organizationUnit)
 	{
 		organizationUnit_ = organizationUnit;
 	}
