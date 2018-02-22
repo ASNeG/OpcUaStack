@@ -51,6 +51,11 @@ namespace OpcUaStackCore
 		void rejectListLocation(const std::string& rejectListLocation);
 		std::string& rejectListLocation(void);
 
+		void serverCertificateFile(const std::string& serverCertificateFile);
+		std::string& serverCertificateFile(void);
+		void privateKeyFile(const std::string& privateKeyFile);
+		std::string& privateKeyFile(void);
+
 	  private:
 
 		bool enable_;
@@ -68,6 +73,8 @@ namespace OpcUaStackCore
 		// The folder where the rejected certificates should be stored
 		std::string rejectListLocation_;
 
+		std::string serverCertificateFile_;
+		std::string privateKeyFile_;
 	};
 
 }

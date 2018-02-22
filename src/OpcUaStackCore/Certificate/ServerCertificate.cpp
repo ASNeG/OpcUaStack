@@ -28,6 +28,9 @@ namespace OpcUaStackCore
 	, issuersCertificatesLocation_("")
 	, issuersRevocationListLocation_("")
 	, rejectListLocation_("")
+
+	, serverCertificateFile_("")
+	, privateKeyFile_("")
 	{
 	}
 
@@ -131,6 +134,30 @@ namespace OpcUaStackCore
 	ServerCertificate::rejectListLocation(void)
 	{
 		return rejectListLocation_;
+	}
+
+	void
+	ServerCertificate::serverCertificateFile(const std::string& serverCertificateFile)
+	{
+		serverCertificateFile_ = serverCertificateFile;
+	}
+
+	std::string&
+	ServerCertificate::serverCertificateFile(void)
+	{
+		return serverCertificateFile_;
+	}
+
+	void
+	ServerCertificate::privateKeyFile(const std::string& privateKeyFile)
+	{
+		privateKeyFile_ = privateKeyFile;
+	}
+
+	std::string&
+	ServerCertificate::privateKeyFile(void)
+	{
+		return privateKeyFile_;
 	}
 
 }

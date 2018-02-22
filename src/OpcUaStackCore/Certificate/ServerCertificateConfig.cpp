@@ -44,6 +44,14 @@ namespace OpcUaStackCore
 			return true;
 		}
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// Folder
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
 		// get certificate trust list location
 		std::string certificateTrustListLocation;
 		if (!child->getConfigParameter("Folder.CertificateTrustListLocation", certificateTrustListLocation) == true) {
@@ -93,6 +101,35 @@ namespace OpcUaStackCore
 			return false;
 		}
 		serverCertificate->rejectListLocation(rejectListLocation);
+
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// Files
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+
+		// get server certificate file
+		std::string serverCertificateFile;
+		if (!child->getConfigParameter("Files.ServerCertificateFile", serverCertificateFile) == true) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix + std::string(".Files.ServerCertificateFile"));
+			return false;
+		}
+		serverCertificate->serverCertificateFile(serverCertificateFile);
+
+		// get private key file
+		std::string privateKeyFile;
+		if (!child->getConfigParameter("Files.PrivateKeyFile", privateKeyFile) == true) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix + std::string(".Files.PrivateKeyFile"));
+			return false;
+		}
+		serverCertificate->privateKeyFile(privateKeyFile);
 
 		return true;
 	}
