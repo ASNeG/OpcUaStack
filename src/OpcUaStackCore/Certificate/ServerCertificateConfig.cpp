@@ -94,16 +94,6 @@ namespace OpcUaStackCore
 		}
 		serverCertificate->rejectListLocation(rejectListLocation);
 
-		// get private key location
-		std::string privateKeyLocation;
-		if (!child->getConfigParameter("Folder.PrivateKeyLocation", privateKeyLocation) == true) {
-			Log(Error, "mandatory parameter not found in configuration")
-				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.PrivateKeyLocation"));
-			return false;
-		}
-		serverCertificate->privateKeyLocation(privateKeyLocation);
-
 		return true;
 	}
 
