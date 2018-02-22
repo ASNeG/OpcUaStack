@@ -96,8 +96,10 @@ namespace OpcUaStackCore
 		// The folder where the rejected certificates should be stored
 		std::string rejectListLocation_;
 
+
 		std::string serverCertificateFile_;
 		std::string privateKeyFile_;
+
 
 		// name of the application
 		std::string commonName_;
