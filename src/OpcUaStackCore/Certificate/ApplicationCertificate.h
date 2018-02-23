@@ -54,6 +54,8 @@ namespace OpcUaStackCore
 		void privateKeyFile(const std::string& privateKeyFile);
 		std::string& privateKeyFile(void);
 
+		void generateCertificate(bool generateCertificate);
+		bool generateCertificate(void);
 		void commonName(const std::string& commonName);
 		std::string& commonName(void);
 		void domainComponent(const std::string& domainComponent);
@@ -80,6 +82,7 @@ namespace OpcUaStackCore
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);
 		bool setReadOnly(const std::string& directory);
+		bool createSelfSignedCertificate(void);
 
 		bool enable_;
 		// The folder where certificates of trusted applications and trusted CAs should be stored
@@ -99,6 +102,7 @@ namespace OpcUaStackCore
 		std::string privateKeyFile_;
 
 
+		bool generateCertificate_;
 		// name of the application
 		std::string commonName_;
 		// hostname of the machine

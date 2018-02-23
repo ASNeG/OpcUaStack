@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string.hpp>
 #include <OpcUaStackCore/Certificate/ApplicationCertificateConfig.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
@@ -141,6 +142,22 @@ namespace OpcUaStackCore
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
+
+		// get generate certificate flag
+		std::string generateCertificate;
+		if (!child->getConfigParameter("CertificateSettings.GenerateCertificate", generateCertificate) == true) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.GenerateCertificate"));
+			return false;
+		}
+		boost::to_upper(generateCertificate);
+		if (generateCertificate == "TRUE") {
+		    serverCertificate->generateCertificate(true);
+		}
+		else {
+			serverCertificate->generateCertificate(false);
+		}
 
 		// get common name
 		std::string commonName;

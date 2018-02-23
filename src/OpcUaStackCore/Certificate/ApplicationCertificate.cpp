@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 	, serverCertificateFile_("")
 	, privateKeyFile_("")
 
+	, generateCertificate_(true)
 	, commonName_("")
 	, domainComponent_("")
 	, organization_("")
@@ -95,6 +96,11 @@ namespace OpcUaStackCore
 			return false;
 		}
 		if (!setReadOnly(privateKeyFile.parent_path().string())) {
+			return false;
+		}
+
+		// create self signed certificate
+		if (!createSelfSignedCertificate()) {
 			return false;
 		}
 
@@ -202,6 +208,18 @@ namespace OpcUaStackCore
 	ApplicationCertificate::privateKeyFile(void)
 	{
 		return privateKeyFile_;
+	}
+
+	void
+	ApplicationCertificate::generateCertificate(bool generateCertificate)
+	{
+		generateCertificate_ = generateCertificate;
+	}
+
+	bool
+	ApplicationCertificate::generateCertificate(void)
+	{
+		return generateCertificate_;
 	}
 
 	void
@@ -391,6 +409,24 @@ namespace OpcUaStackCore
 				.parameter("ErrorCode", strerror(errno));
 			return false;
 		}
+
+		return true;
+	}
+
+	bool
+	ApplicationCertificate::createSelfSignedCertificate(void)
+	{
+		// check if certificate is enabled
+		if (!enable_) {
+			return true;
+		}
+
+		// check if self signed certificate is enables
+		if (!generateCertificate()) {
+			return true;
+		}
+
+		// check if private key and certificate exist
 
 		return true;
 	}
