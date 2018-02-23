@@ -1,7 +1,7 @@
+#include <OpcUaStackCore/Certificate/CertificateInfo.h>
 #include <iostream>
 
 #include "unittest.h"
-#include "OpcUaStackCore/Certificate/Info.h"
 
 using namespace OpcUaStackCore;
 
@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(Info_)
 
 BOOST_AUTO_TEST_CASE(Info__init)
 {
-	Info info;
+	CertificateInfo info;
 
 	info.uri("urn:localhost:ASNeG:MyServiceApplication");
 	info.ipAddresses().push_back("127.0.0.1");

@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(Certificate_)
 BOOST_AUTO_TEST_CASE(Certificate__createSelfSignedCertificate)
 {
 	RSAKey key(2048);
-	Info info;
+	CertificateInfo info;
 	Identity identity;
 
 	info.uri("urn:localhost:ASNeG:MyServiceApplication");
@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(Certificate__createSelfSignedCertificate)
 BOOST_AUTO_TEST_CASE(Certificate__writeFile)
 {
 	RSAKey key(2048);
-	Info info;
+	CertificateInfo info;
 	Identity identity;
 
 	info.uri("urn:localhost:ASNeG:MyServiceApplication");
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(Certificate__readFile)
 	boost::posix_time::ptime to = boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*5);
 
 	RSAKey key(2048);
-	Info info1, info2;
+	CertificateInfo info1, info2;
 	Identity identity;
 
 	info1.uri("urn:localhost:ASNeG:MyServiceApplication");
