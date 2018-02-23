@@ -15,7 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
+#include <boost/filesystem.hpp>
+#include <boost/system/error_code.hpp>
+#include <iostream>
+#include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -53,7 +57,31 @@ namespace OpcUaStackCore
 	bool
 	ApplicationCertificate::init(void)
 	{
-		// FIXME: todo
+		Log(Info, "init certificate")
+			.parameter("Enable", enable_);
+
+		if (!enable_) {
+			// do nothing
+			return true;
+		}
+
+		// check directories. If they not exist create them
+		if (!checkAndCreateDirectory(certificateTrustListLocation_)) {
+			return false;
+		}
+		if (!checkAndCreateDirectory(certificateRejectListLocation_)) {
+			return false;
+		}
+		if (!checkAndCreateDirectory(certificateRevocationListLocation_)) {
+			return false;
+		}
+		if (!checkAndCreateDirectory(issuersCertificatesLocation_)) {
+			return false;
+		}
+		if (!checkAndCreateDirectory(issuersRevocationListLocation_)) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -290,6 +318,42 @@ namespace OpcUaStackCore
 	ApplicationCertificate::dnsName(void)
 	{
 		return dnsName_;
+	}
+
+	bool
+	ApplicationCertificate::checkAndCreateDirectory(const std::string& directory)
+	{
+		boost::filesystem::path path(directory);
+
+		// check if directory exist
+		if (boost::filesystem::exists(path)) {
+			return true;
+		}
+
+		// create directory
+		Log(Info, "create certificate directory")
+			.parameter("Directory", directory);
+
+		boost::filesystem::path createPath;
+		boost::filesystem::path::iterator it;
+		for (it = path.begin(); it != path.end(); it++) {
+			std::string str = it->string();
+			createPath.append(str);
+
+			if (boost::filesystem::exists(createPath)) {
+				continue;
+			}
+
+			boost::system::error_code ec;
+			if (!boost::filesystem::create_directory(createPath, ec)) {
+				Log(Error, "create certificate directory error")
+					.parameter("Directory", createPath.string())
+					.parameter("ErrorCode", ec.message());
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

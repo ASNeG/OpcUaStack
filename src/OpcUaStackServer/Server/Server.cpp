@@ -355,7 +355,7 @@ namespace OpcUaStackServer
 		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
 		rc = ApplicationCertificateConfig::parse(
 			applicationCertificate_,
-			"OpcUaServer.ServerCertificate",
+			"OpcUaServer.ApplicationCertificate",
 			&config(),
 			config().configFileName()
 		);

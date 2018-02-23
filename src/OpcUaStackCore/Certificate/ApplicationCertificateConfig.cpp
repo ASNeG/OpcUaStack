@@ -38,10 +38,12 @@ namespace OpcUaStackCore
 		const std::string& configurationFileName
 	)
 	{
+		serverCertificate->enable(false);
+
 		// checks if server certificate configuration exists
 		boost::optional<Config> child = childConfig->getChild(configPrefix);
 		if (!child) {
-			Log(Info, "server certificate is disabled");
+			Log(Info, "application certificate is disabled");
 			return true;
 		}
 
@@ -297,6 +299,7 @@ namespace OpcUaStackCore
 			serverCertificate->dnsName().push_back(*itDnsName);
 		}
 
+		serverCertificate->enable(true);
 		return true;
 	}
 

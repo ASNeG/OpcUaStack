@@ -78,6 +78,7 @@ namespace OpcUaStackCore
 		std::vector<std::string>& dnsName(void);
 
 	  private:
+		bool checkAndCreateDirectory(const std::string& directory);
 
 		bool enable_;
 		// The folder where certificates of trusted applications and trusted CAs should be stored
