@@ -66,6 +66,7 @@ message(STATUS "  library name: ${OPCUASTACK_CORE_LIB_NAME}")
 file(GLOB INC_OpcUaStackCore_Base OpcUaStackCore/Base/*.h OpcUaStackCore/Base/*.txx)
 file(GLOB INC_OpcUaStackCore_BuildInTypes OpcUaStackCore/BuildInTypes/*.h)
 file(GLOB INC_OpcUaStackCore_Component OpcUaStackCore/Component/*.h)
+file(GLOB INC_OpcUaStackCore_Certificate OpcUaStackCore/Certificate/*.h)
 file(GLOB INC_OpcUaStackCore_Core OpcUaStackCore/Core/*.h)
 file(GLOB INC_OpcUaStackCore_SecureChannel OpcUaStackCore/SecureChannel/*.h)
 file(GLOB INC_OpcUaStackCore_ServiceSet OpcUaStackCore/ServiceSet/*.h OpcUaStackCore/ServiceSet/*.txx)
@@ -103,6 +104,12 @@ install(
 install(
     FILES ${INC_OpcUaStackCore_Component} 
     DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Component
+    COMPONENT headers
+)
+
+install(
+    FILES ${INC_OpcUaStackCore_Certificate} 
+    DESTINATION /usr/include/OpcUaStack${VERSION_MAJOR}/OpcUaStackCore/Certificate
     COMPONENT headers
 )
 
