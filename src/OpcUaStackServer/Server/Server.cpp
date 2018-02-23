@@ -16,9 +16,9 @@
  */
 
 #include <boost/asio/ip/host_name.hpp>
+#include <OpcUaStackCore/Certificate/ApplicationCertificateConfig.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
-#include "OpcUaStackCore/Certificate/ServerCertificateConfig.h"
 #include "OpcUaStackServer/Server/Server.h"
 #include "OpcUaStackServer/InformationModel/InformationModelNodeSet.h"
 #include "OpcUaStackServer/NodeSet/NodeSetXmlParser.h"
@@ -38,7 +38,7 @@ namespace OpcUaStackServer
 	, serviceManager_()
 	, applicationManager_()
 	, serverStatusDataType_()
-	, serverCertificate_()
+	, applicationCertificate_()
 	{
 	}
 
@@ -352,19 +352,19 @@ namespace OpcUaStackServer
 		}
 
 		// decode certificate configuration
-		serverCertificate_ = constructSPtr<ServerCertificate>();
-		rc = ServerCertificateConfig::parse(
-			serverCertificate_,
+		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
+		rc = ApplicationCertificateConfig::parse(
+			applicationCertificate_,
 			"OpcUaServer.ServerCertificate",
 			&config(),
 			config().configFileName()
 		);
 		if (!rc) {
-			Log(Error, "parse server certificate error");
+			Log(Error, "parse application certificate error");
 			return false;
 		}
-		if (!serverCertificate_->init()) {
-			Log(Error, "init server certificate error");
+		if (!applicationCertificate_->init()) {
+			Log(Error, "init application certificate error");
 			return false;
 		}
 
@@ -382,7 +382,7 @@ namespace OpcUaStackServer
 	bool
 	Server::shutdownSession(void)
 	{
-		serverCertificate_->cleanup();
+		applicationCertificate_->cleanup();
 		return true;
 	}
 

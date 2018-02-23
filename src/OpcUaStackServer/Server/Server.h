@@ -18,10 +18,10 @@
 #ifndef __OpcUaStackServer_Server_h__
 #define __OpcUaStackServer_Server_h__
 
+#include <OpcUaStackCore/Certificate/ApplicationCertificate.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Core/Core.h"
-#include "OpcUaStackCore/Certificate/ServerCertificate.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
@@ -58,7 +58,7 @@ namespace OpcUaStackServer
 		bool initSession(void);
 		bool shutdownSession(void);
 
-		ServerCertificate::SPtr serverCertificate_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 
 		IOThread::SPtr ioThread_;
 		InformationModel::SPtr informationModel_;
