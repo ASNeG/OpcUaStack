@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	}
 
 	Certificate::Certificate(
-		Info& info,
+		CertificateInfo& info,
 		Identity& subject,
 	    RSAKey&rsaKey,
 	    bool useCACert,
@@ -166,7 +166,7 @@ namespace OpcUaStackCore
 	}
 
 	Certificate::Certificate(
-		Info& info,
+		CertificateInfo& info,
 		Identity& subject,
 		PublicKey& subjectPublicKey,
 		Certificate&  issuerCertificate,
@@ -362,7 +362,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	Certificate::getInfo(Info& info)
+	Certificate::getInfo(CertificateInfo& info)
 	{
 		if (cert_ == nullptr) {
 			addError("certificate is empty");

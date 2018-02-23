@@ -21,13 +21,14 @@
 #include <vector>
 #include <string>
 #include <openssl/x509.h>
+#include <OpcUaStackCore/Certificate/CertificateInfo.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
 #include "OpcUaStackCore/Certificate/CertificateExtension.h"
-#include "OpcUaStackCore/Certificate/Info.h"
 #include "OpcUaStackCore/Certificate/Identity.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
+#include "OpcUaStackCore/Certificate/CertificateInfo.h"
 
 namespace OpcUaStackCore
 {
@@ -38,14 +39,14 @@ namespace OpcUaStackCore
 	  public:
 		Certificate(void);
 		Certificate(
-			Info& info,
+			CertificateInfo& info,
 			Identity& subject,
 		    RSAKey& rsaKey,
 		    bool useCACert = false,
 		    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm_Sha1
 		);
 		Certificate(
-			Info& info,
+			CertificateInfo& info,
 			Identity& subject,
 			PublicKey& subjectPublicKey,
 			Certificate&  issuerCertificate,
@@ -57,7 +58,7 @@ namespace OpcUaStackCore
 
 		bool getSubject(Identity& subject);
 		bool getIssuer(Identity& issuer);
-		bool getInfo(Info& info);
+		bool getInfo(CertificateInfo& info);
 		bool getExtension(CertificateExtension& certificateExtension);
 
 		bool toDERFile(const std::string& fileName);

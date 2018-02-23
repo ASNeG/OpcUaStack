@@ -351,8 +351,12 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		EndpointDescription::SPtr endpointDescription;
+		endpointDescriptionArray->get(0, endpointDescription);
+
 		// decode certificate configuration
 		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
+		applicationCertificate_->uri(endpointDescription->endpointUrl());
 		rc = ApplicationCertificateConfig::parse(
 			applicationCertificate_,
 			"OpcUaServer.ApplicationCertificate",
