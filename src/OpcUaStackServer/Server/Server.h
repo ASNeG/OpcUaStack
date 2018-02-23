@@ -21,8 +21,8 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Core/Core.h"
+#include "OpcUaStackCore/Certificate/ServerCertificate.h"
 #include "OpcUaStackServer/InformationModel/InformationModel.h"
-//#include "OpcUaStackServer/ServiceSet/SessionManagerOld.h"
 #include "OpcUaStackServer/ServiceSet/SessionManager.h"
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
 #include "OpcUaStackServer/Application/ApplicationManager.h"
@@ -57,6 +57,8 @@ namespace OpcUaStackServer
 		bool shutdownService(void);
 		bool initSession(void);
 		bool shutdownSession(void);
+
+		ServerCertificate::SPtr serverCertificate_;
 
 		IOThread::SPtr ioThread_;
 		InformationModel::SPtr informationModel_;

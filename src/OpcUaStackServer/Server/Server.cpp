@@ -38,6 +38,7 @@ namespace OpcUaStackServer
 	, serviceManager_()
 	, applicationManager_()
 	, serverStatusDataType_()
+	, serverCertificate_()
 	{
 	}
 
@@ -351,15 +352,19 @@ namespace OpcUaStackServer
 		}
 
 		// decode certificate configuration
-		ServerCertificate::SPtr serverCertificate = constructSPtr<ServerCertificate>();
+		serverCertificate_ = constructSPtr<ServerCertificate>();
 		rc = ServerCertificateConfig::parse(
-			serverCertificate,
+			serverCertificate_,
 			"OpcUaServer.ServerCertificate",
 			&config(),
 			config().configFileName()
 		);
 		if (!rc) {
-			Log(Error, "server certificate error");
+			Log(Error, "parse server certificate error");
+			return false;
+		}
+		if (!serverCertificate_->init()) {
+			Log(Error, "init server certificate error");
 			return false;
 		}
 
@@ -377,6 +382,7 @@ namespace OpcUaStackServer
 	bool
 	Server::shutdownSession(void)
 	{
+		serverCertificate_->cleanup();
 		return true;
 	}
 
