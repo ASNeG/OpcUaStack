@@ -15,8 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+
 #include <boost/filesystem.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <boost/system/error_code.hpp>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
@@ -79,6 +84,17 @@ namespace OpcUaStackCore
 			return false;
 		}
 		if (!checkAndCreateDirectory(issuersRevocationListLocation_)) {
+			return false;
+		}
+		boost::filesystem::path serverCertificateFile(serverCertificateFile_);
+		if (!checkAndCreateDirectory(serverCertificateFile.parent_path().string())) {
+			return false;
+		}
+		boost::filesystem::path privateKeyFile(privateKeyFile_);
+		if (!checkAndCreateDirectory(privateKeyFile.parent_path().string())) {
+			return false;
+		}
+		if (!setReadOnly(privateKeyFile.parent_path().string())) {
 			return false;
 		}
 
@@ -351,6 +367,29 @@ namespace OpcUaStackCore
 					.parameter("ErrorCode", ec.message());
 				return false;
 			}
+		}
+
+		return true;
+	}
+
+	bool
+	ApplicationCertificate::setReadOnly(const std::string& directory)
+	{
+		boost::filesystem::path path(directory);
+
+		// check if directory exist
+		if (!boost::filesystem::exists(path)) {
+			Log(Error, "directory not exist")
+				.parameter("Directory", directory);
+			return false;
+		}
+
+		// set permissions
+		if (chmod(directory.c_str(), S_IRUSR|S_IWUSR|S_IXUSR) != 0) {
+			Log(Error, "change permission directory error")
+				.parameter("Directory", directory)
+				.parameter("ErrorCode", strerror(errno));
+			return false;
 		}
 
 		return true;

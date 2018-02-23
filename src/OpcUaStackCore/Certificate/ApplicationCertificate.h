@@ -79,6 +79,7 @@ namespace OpcUaStackCore
 
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);
+		bool setReadOnly(const std::string& directory);
 
 		bool enable_;
 		// The folder where certificates of trusted applications and trusted CAs should be stored
