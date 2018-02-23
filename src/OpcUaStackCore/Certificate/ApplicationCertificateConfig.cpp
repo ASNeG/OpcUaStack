@@ -93,15 +93,15 @@ namespace OpcUaStackCore
 		}
 		serverCertificate->issuersRevocationListLocation(issuersRevocationListLocation);
 
-		// get reject list location
-		std::string rejectListLocation;
-		if (!child->getConfigParameter("Folder.RejectListLocation", rejectListLocation) == true) {
+		// get certificate reject list location
+		std::string certificateRejectListLocation;
+		if (!child->getConfigParameter("Folder.CertificateRejectListLocation", certificateRejectListLocation) == true) {
 			Log(Error, "mandatory parameter not found in configuration")
 				.parameter("ConfigurationFileName", configurationFileName)
-				.parameter("ParameterPath", configPrefix + std::string(".Folder.RejectListLocation"));
+				.parameter("ParameterPath", configPrefix + std::string(".Folder.CertificateRejectListLocation"));
 			return false;
 		}
-		serverCertificate->rejectListLocation(rejectListLocation);
+		serverCertificate->certificateRejectListLocation(certificateRejectListLocation);
 
 
 		// --------------------------------------------------------------------
