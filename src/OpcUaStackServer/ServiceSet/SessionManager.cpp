@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	, secureChannelServer_()
 	, config_(nullptr)
 	, endpointDescriptionArray_()
+	, applicationCertificate_()
 	, secureChannelServerShutdown_()
 	, discoveryService_()
 	, transactionManagerSPtr_()
@@ -48,6 +49,12 @@ namespace OpcUaStackServer
 	{
 		discoveryService_ = discoveryService;
 		discoveryService_->discoveryIf(this);
+	}
+
+	void
+	SessionManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
 	}
 
 	void

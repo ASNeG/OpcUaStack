@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/Base/ConditionProcess.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -49,6 +50,7 @@ namespace OpcUaStackServer
 		virtual ~SessionManager(void);
 
 		void discoveryService(DiscoveryService::SPtr& discoveryService);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(IOThread* ioThread);
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
@@ -158,6 +160,7 @@ namespace OpcUaStackServer
 		IOThread* ioThread_;
 		Config* config_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 
 		ConditionProcess secureChannelServerShutdown_;
 		SecureChannelServerConfig::SPtr secureChannelServerConfig_;
