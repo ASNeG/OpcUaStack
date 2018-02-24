@@ -390,6 +390,18 @@ namespace OpcUaStackCore
 		return email_;
 	}
 
+	Certificate::SPtr&
+	ApplicationCertificate::certificate(void)
+	{
+		return certificate_;
+	}
+
+	PrivateKey::SPtr&
+	ApplicationCertificate::privateKey(void)
+	{
+		return privateKey_;
+	}
+
 	bool
 	ApplicationCertificate::checkAndCreateDirectory(const std::string& directory)
 	{

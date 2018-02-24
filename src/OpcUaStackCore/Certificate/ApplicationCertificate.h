@@ -85,6 +85,9 @@ namespace OpcUaStackCore
 		void email(const std::string& email);
 		std::string& email(void);
 
+		Certificate::SPtr& certificate(void);
+		PrivateKey::SPtr& privateKey(void);
+
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);
 		bool setReadOnly(const std::string& directory);
