@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSet/DiscoveryServiceTransaction.h"
@@ -43,7 +44,8 @@ namespace OpcUaStackServer
 		~DiscoveryService(void);
 
 		void discoveryIf(DiscoveryIf* discoveryIf);
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
+		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 
 		void getEndpointRequest(
 			RequestHeader::SPtr requestHeader,
@@ -66,6 +68,7 @@ namespace OpcUaStackServer
 
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 		DiscoveryIf* discoveryIf_;
 
 		//bool receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
