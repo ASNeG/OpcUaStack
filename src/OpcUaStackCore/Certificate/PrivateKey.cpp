@@ -134,7 +134,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	PrivateKey::toPEMFile(const std::string& fileName, const std::string& password)
+	PrivateKey::toPEMFile(const std::string& fileName, const char* password)
 	{
 		if (!privateKey_) {
 			addError("private key is empty");
@@ -154,9 +154,9 @@ namespace OpcUaStackCore
 	    	return false;
 	    }
 
-	    if (password.empty()) {
+	    if (password == nullptr) {
             // encrypt private key
-            int32_t result = PEM_write_bio_RSAPrivateKey(bio, rsa, EVP_aes_256_cbc(), 0, 0, 0, (void*)password.c_str());
+            int32_t result = PEM_write_bio_RSAPrivateKey(bio, rsa, EVP_aes_256_cbc(), 0, 0, 0, (void*)password);
             if (!result) {
              	addOpenSSLError();
          	    RSA_free(rsa);
@@ -179,6 +179,27 @@ namespace OpcUaStackCore
 	    BIO_free(bio);
 
         return true;
+	}
+
+	bool
+	PrivateKey::fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback, void *data)
+	{
+	    BIO* bio = BIO_new_file(fileName.c_str(), "r");
+
+		if (passwordCallback != nullptr) {
+		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, passwordCallback, data);
+		}
+		else {
+		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, 0, (void*)password);
+		}
+
+		if (!privateKey_) {
+			addOpenSSLError();
+			BIO_free(bio);
+			return false;
+		}
+
+		BIO_free(bio);
 	}
 
 }

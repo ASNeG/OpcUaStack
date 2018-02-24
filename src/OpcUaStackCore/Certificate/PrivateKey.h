@@ -41,10 +41,11 @@ namespace OpcUaStackCore
 		PrivateKey& operator=(const PrivateKey& copy);
 		operator const EVP_PKEY*() const;
 		bool toDER(char* buf, uint32_t& bufLen) const;
-		bool fromDER (char* buf, uint32_t bufLen, KeyType keyType);
-		bool fromPEM (char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
+		bool fromDER(char* buf, uint32_t bufLen, KeyType keyType);
+		bool fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
 
-		bool toPEMFile(const std::string& fileName, const std::string& password);
+		bool toPEMFile(const std::string& fileName, const char* passwordd);
+		bool fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
 
 	  private:
 		EVP_PKEY *privateKey_;
