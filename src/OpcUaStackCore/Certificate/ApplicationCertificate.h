@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaStackCore
 {
@@ -56,6 +57,8 @@ namespace OpcUaStackCore
 
 		void generateCertificate(bool generateCertificate);
 		bool generateCertificate(void);
+		void uri(const std::string& uri);
+		std::string& uri(void);
 		void commonName(const std::string& commonName);
 		std::string& commonName(void);
 		void domainComponent(const std::string& domainComponent);
@@ -78,6 +81,8 @@ namespace OpcUaStackCore
 		std::string& certificateType(void);
 		std::vector<std::string>& ipAddress(void);
 		std::vector<std::string>& dnsName(void);
+		void email(const std::string& email);
+		std::string& email(void);
 
 	  private:
 		bool checkAndCreateDirectory(const std::string& directory);
@@ -103,6 +108,7 @@ namespace OpcUaStackCore
 
 
 		bool generateCertificate_;
+		std::string uri_;
 		// name of the application
 		std::string commonName_;
 		// hostname of the machine
@@ -131,6 +137,8 @@ namespace OpcUaStackCore
 		std::vector<std::string> ipAddress_;
 		// dns name where the opc ua server is running
 		std::vector<std::string> dnsName_;
+		// email of the application owner
+		std::string email_;
 	};
 
 }

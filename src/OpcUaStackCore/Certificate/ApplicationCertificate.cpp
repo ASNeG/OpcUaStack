@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 	, privateKeyFile_("")
 
 	, generateCertificate_(true)
+	, uri_("")
 	, commonName_("")
 	, domainComponent_("")
 	, organization_("")
@@ -53,6 +54,7 @@ namespace OpcUaStackCore
 	, certificateType_("RsaSha256")
 	, ipAddress_()
 	, dnsName_()
+	, email_("")
 	{
 	}
 
@@ -223,6 +225,18 @@ namespace OpcUaStackCore
 	}
 
 	void
+	ApplicationCertificate::uri(const std::string& uri)
+	{
+		uri_ = uri;
+	}
+
+	std::string&
+	ApplicationCertificate::uri(void)
+	{
+		return uri_;
+	}
+
+	void
 	ApplicationCertificate::commonName(const std::string& commonName)
 	{
 		commonName_ = commonName;
@@ -354,6 +368,18 @@ namespace OpcUaStackCore
 		return dnsName_;
 	}
 
+	void
+	ApplicationCertificate::email(const std::string& email)
+	{
+		email_ = email;
+	}
+
+	std::string&
+	ApplicationCertificate::email(void)
+	{
+		return email_;
+	}
+
 	bool
 	ApplicationCertificate::checkAndCreateDirectory(const std::string& directory)
 	{
@@ -427,6 +453,64 @@ namespace OpcUaStackCore
 		}
 
 		// check if private key and certificate exist
+		if (boost::filesystem::exists(serverCertificateFile_) && boost::filesystem::exists(privateKeyFile_)) {
+			return true;
+		}
+
+		// remove certificate file and private key file
+		boost::filesystem::remove(serverCertificateFile_);
+		boost::filesystem::remove(privateKeyFile_);
+
+		// --------------------------------------------------------------------
+		// create self signed certificate
+		// --------------------------------------------------------------------
+		RSAKey key(keyLength_);
+		if (key.isError()) {
+			key.log(Error, "create RSA key error");
+			return false;
+		}
+
+		Identity identity;
+		identity.organization(organization_);
+		identity.organizationUnit(organizationUnit_);
+		identity.commonName(commonName_);
+		identity.locality(locality_);
+		identity.state(state_);
+		identity.country(country_);
+		identity.domainComponent(domainComponent_);
+
+		CertificateInfo info;
+		info.uri(uri_);
+		info.ipAddresses() = ipAddress_;
+		info.dnsNames() = dnsName_;
+		info.eMail(email_);
+		info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*yearsValidFor_));
+		info.serialNumber(time(0));
+		info.validFrom(boost::posix_time::microsec_clock::local_time());
+
+		SignatureAlgorithm signatureAlgorithm;
+		if (certificateType_ == "RsaMin") {
+			signatureAlgorithm = SignatureAlgorithm_Sha1;
+		}
+		else {
+			signatureAlgorithm = SignatureAlgorithm_Sha256;
+		}
+
+		// create self signed certificate
+		Certificate certificate(info, identity, key, false, signatureAlgorithm);
+		if (certificate.isError()) {
+			certificate.log(Error, "create self signed certificate error");
+			return false;
+		}
+
+		// save self signed cerificate
+		certificate.toDERFile(serverCertificateFile_);
+		if (certificate.isError()) {
+			certificate.log(Error, "save self signed certificate error");
+			return false;
+		}
+
+		// create private key
 
 		return true;
 	}
