@@ -316,6 +316,16 @@ namespace OpcUaStackCore
 			serverCertificate->dnsName().push_back(*itDnsName);
 		}
 
+		// get email
+		std::string email;
+		if (!child->getConfigParameter("CertificateSettings.EMail", email) == true) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix + std::string(".CertificateSettings.EMail"));
+			return false;
+		}
+		serverCertificate->email(email);
+
 		serverCertificate->enable(true);
 		return true;
 	}
