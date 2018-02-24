@@ -375,10 +375,12 @@ namespace OpcUaStackServer
 		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
 		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
+		discoveryService->applicationCertificate(applicationCertificate_);
 
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
 		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
+		sessionManager_.applicationCertificate(applicationCertificate_);
 
 		return true;
 	}
