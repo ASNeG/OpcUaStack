@@ -79,6 +79,7 @@ namespace OpcUaStackCore
 	PrivateKey::toDER(char* buf, uint32_t& bufLen) const
 	{
 		if (!privateKey_) {
+			const_cast<PrivateKey*>(this)->addError("private key is empty");
 			return false;
 		}
 
@@ -130,6 +131,54 @@ namespace OpcUaStackCore
 
 		BIO_free(bio);
 		return true;
+	}
+
+	bool
+	PrivateKey::toPEMFile(const std::string& fileName, const std::string& password)
+	{
+		if (!privateKey_) {
+			addError("private key is empty");
+			return false;
+		}
+
+		BIO* bio = BIO_new_file(fileName.c_str(), "w");
+	    if (!bio) {
+	    	addOpenSSLError();
+	    	return false;
+	    }
+
+	    RSA* rsa = EVP_PKEY_get1_RSA(privateKey_);
+	    if (!rsa) {
+	    	addOpenSSLError();
+	    	BIO_free(bio);
+	    	return false;
+	    }
+
+	    if (password.empty()) {
+            // encrypt private key
+            int32_t result = PEM_write_bio_RSAPrivateKey(bio, rsa, EVP_aes_256_cbc(), 0, 0, 0, (void*)password.c_str());
+            if (!result) {
+             	addOpenSSLError();
+         	    RSA_free(rsa);
+         	    BIO_free(bio);
+             	return false;
+             }
+	    }
+	    else {
+            // store private key unencrypted
+            int32_t result = PEM_write_bio_RSAPrivateKey(bio, rsa, 0, 0, 0, 0, 0);
+            if (!result) {
+            	addOpenSSLError();
+        	    RSA_free(rsa);
+        	    BIO_free(bio);
+            	return false;
+            }
+	    }
+
+	    RSA_free(rsa);
+	    BIO_free(bio);
+
+        return true;
 	}
 
 }

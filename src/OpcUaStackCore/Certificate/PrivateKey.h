@@ -44,6 +44,8 @@ namespace OpcUaStackCore
 		bool fromDER (char* buf, uint32_t bufLen, KeyType keyType);
 		bool fromPEM (char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
 
+		bool toPEMFile(const std::string& fileName, const std::string& password);
+
 	  private:
 		EVP_PKEY *privateKey_;
 	};
