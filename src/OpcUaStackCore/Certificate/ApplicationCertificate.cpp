@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
@@ -55,6 +56,9 @@ namespace OpcUaStackCore
 	, ipAddress_()
 	, dnsName_()
 	, email_("")
+
+	, certificate_()
+	, privateKey_()
 	{
 	}
 
@@ -106,13 +110,19 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+		// read own certificate and private key
+		if (!readCertificateAndPrivateKey()) {
+			return false;
+		}
+
 		return true;
 	}
 
 	bool
 	ApplicationCertificate::cleanup(void)
 	{
-		// FIXME: todo
+		certificate_.reset();
+		privateKey_.reset();
 		return true;
 	}
 
@@ -513,6 +523,29 @@ namespace OpcUaStackCore
 		// create private key
 		if (!key.privateKey().toPEMFile(privateKeyFile_, nullptr)) {
 			certificate.log(Error, "save private key error");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	ApplicationCertificate::readCertificateAndPrivateKey(void)
+	{
+		// read certificate from file
+		certificate_ = constructSPtr<Certificate>();
+		if (!certificate_->fromDERFile(serverCertificateFile_)) {
+			certificate_->log(Error, "read certificate error");
+			certificate_.reset();
+			return false;
+		}
+
+		// read private key from file
+		privateKey_ = constructSPtr<PrivateKey>();
+		if (!privateKey_->fromPEMFile(privateKeyFile_, nullptr)) {
+			privateKey_->log(Error, "read private key error");
+			privateKey_.reset();
+			certificate_.reset();
 			return false;
 		}
 

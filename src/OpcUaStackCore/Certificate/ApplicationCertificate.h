@@ -22,6 +22,7 @@
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
+#include "OpcUaStackCore/Certificate/PrivateKey.h"
 
 namespace OpcUaStackCore
 {
@@ -88,6 +89,7 @@ namespace OpcUaStackCore
 		bool checkAndCreateDirectory(const std::string& directory);
 		bool setReadOnly(const std::string& directory);
 		bool createSelfSignedCertificate(void);
+		bool readCertificateAndPrivateKey(void);
 
 		bool enable_;
 		// The folder where certificates of trusted applications and trusted CAs should be stored
@@ -139,6 +141,9 @@ namespace OpcUaStackCore
 		std::vector<std::string> dnsName_;
 		// email of the application owner
 		std::string email_;
+
+		Certificate::SPtr certificate_;
+		PrivateKey::SPtr privateKey_;
 	};
 
 }

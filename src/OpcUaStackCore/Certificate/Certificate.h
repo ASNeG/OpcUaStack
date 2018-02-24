@@ -18,9 +18,13 @@
 #ifndef __OpcUaStackCore_Certificate_h__
 #define __OpcUaStackCore_Certificate_h__
 
+#include <boost/shared_ptr.hpp>
+
 #include <vector>
 #include <string>
+
 #include <openssl/x509.h>
+
 #include <OpcUaStackCore/Certificate/CertificateInfo.h>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
@@ -37,6 +41,8 @@ namespace OpcUaStackCore
 	: public OpenSSLError
 	{
 	  public:
+		typedef boost::shared_ptr<Certificate> SPtr;
+
 		Certificate(void);
 		Certificate(
 			CertificateInfo& info,
