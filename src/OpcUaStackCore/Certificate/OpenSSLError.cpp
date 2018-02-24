@@ -71,4 +71,16 @@ namespace OpcUaStackCore
 		return errorList;
 	}
 
+	void
+	OpenSSLError::log(LogLevel logLevel, const std::string& message)
+	{
+		std::list<std::string>::iterator it;
+
+		Log log(logLevel, message);
+		for (it = errorList_.begin(); it != errorList_.end(); it++) {
+			log.parameter("SSLError", *it);
+		}
+		errorList_.clear();
+	}
+
 }
