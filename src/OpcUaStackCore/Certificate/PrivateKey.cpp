@@ -154,7 +154,7 @@ namespace OpcUaStackCore
 	    	return false;
 	    }
 
-	    if (password == nullptr) {
+	    if (password != nullptr) {
             // encrypt private key
             int32_t result = PEM_write_bio_RSAPrivateKey(bio, rsa, EVP_aes_256_cbc(), 0, 0, 0, (void*)password);
             if (!result) {

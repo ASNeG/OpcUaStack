@@ -511,6 +511,10 @@ namespace OpcUaStackCore
 		}
 
 		// create private key
+		if (!key.privateKey().toPEMFile(privateKeyFile_, nullptr)) {
+			certificate.log(Error, "save private key error");
+			return false;
+		}
 
 		return true;
 	}
