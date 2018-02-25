@@ -69,6 +69,11 @@ namespace OpcUaStackServer
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
 		componentName("Session");
+
+		// create new server nonce
+		for (uint32_t idx=0; idx<32; idx++) {
+			serverNonce_[idx] = (rand() / 256);
+		}
 	}
 
 	Session::~Session(void)
@@ -274,6 +279,7 @@ namespace OpcUaStackServer
 		createSessionResponse.receivedSessionTimeout(120000);
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
+		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		createSessionResponse.opcUaBinaryEncode(iosres);

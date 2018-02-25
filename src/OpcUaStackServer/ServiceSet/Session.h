@@ -143,6 +143,7 @@ namespace OpcUaStackServer
 		TransactionManager::SPtr transactionManagerSPtr_;
 
 		UserContext::SPtr userContext_;
+		char serverNonce_[32];
 	};
 
 }
