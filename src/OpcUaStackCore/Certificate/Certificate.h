@@ -67,8 +67,12 @@ namespace OpcUaStackCore
 		bool getInfo(CertificateInfo& info);
 		bool getExtension(CertificateExtension& certificateExtension);
 
+		bool thumbPrint(char* buf, uint32_t* bufLen);
 		bool toDERFile(const std::string& fileName);
 		bool fromDERFile(const std::string& fileName);
+		bool toDERBufLen(uint32_t* bufLen);
+		bool toDERBuf(char* buf, uint32_t* bufLen);
+		bool fromDERBuf(char* buf, uint32_t bufLen);
 
 		bool isSelfSigned(void) const;
 

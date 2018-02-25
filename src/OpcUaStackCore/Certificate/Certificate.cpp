@@ -452,6 +452,24 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	Certificate::thumbPrint(char* buf, uint32_t* bufLen)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		if (*bufLen != 20) {
+			addError("length of thumbPrint must be 20 bytes");
+			return false;
+		}
+
+		//SHA1((const unsigned char*)DERData.data(), bufLen, (unsigned char* )buf);
+
+		return true;
+	}
+
+	bool
 	Certificate::toDERFile(const std::string& fileName)
 	{
 		int32_t result;
@@ -500,6 +518,64 @@ namespace OpcUaStackCore
 		}
 
 		BIO_free(bio);
+		return true;
+	}
+
+	bool
+	Certificate::toDERBufLen(uint32_t* bufLen)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		int32_t length = i2d_X509(cert_, 0);
+	    if (length < 0) {
+	         addOpenSSLError();
+	         return false;
+	    }
+
+	    *bufLen = length;
+		return true;
+	}
+
+	bool
+	Certificate::toDERBuf(char* buf, uint32_t* bufLen)
+	{
+		if (cert_ == nullptr) {
+			addError("certificate is empty");
+			return false;
+		}
+
+		// check buffer length
+		int32_t length = i2d_X509(cert_, 0);
+	    if (length < 0) {
+	         addOpenSSLError();
+	         return false;
+	    }
+		if (length > *bufLen) {
+			addError("buffer too short");
+			return false;
+		}
+
+		*bufLen = length;
+		i2d_X509(cert_, (unsigned char**)&buf);
+		return true;
+	}
+
+	bool
+	Certificate::fromDERBuf(char* buf, uint32_t bufLen)
+	{
+		if (cert_ != nullptr) {
+			addError("certificate is not empty");
+			return false;
+		}
+        cert_= d2i_X509 (0, (const unsigned char**)&buf, bufLen);
+        if (cert_ == nullptr) {
+        	addOpenSSLError();
+        	return false;
+        }
+
 		return true;
 	}
 
