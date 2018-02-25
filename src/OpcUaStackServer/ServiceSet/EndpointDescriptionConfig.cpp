@@ -198,13 +198,6 @@ namespace OpcUaStackServer
 		// UserTokenPolicy
 		//
 		// --------------------------------------------------------------------------
-		// TokenType - mandatory
-		// PolicyId - mandatory
-		//		[
-		//			Anonymous
-		//		]
-		// --------------------------------------------------------------------------
-		// --------------------------------------------------------------------------
 		std::string stringValue;
 
 		std::vector<Config>::iterator it;
@@ -227,6 +220,11 @@ namespace OpcUaStackServer
 			userTokenPolicyArray->set(idx, userTokenPolicy);
 			idx++;
 
+			// get security policy uri
+			it->getConfigParameter("SecurityPolicyUri", stringValue);
+			userTokenPolicy->securityPolicyUri(stringValue);
+
+			// get policy id
 			if (it->getConfigParameter("PolicyId", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -236,6 +234,7 @@ namespace OpcUaStackServer
 			}
 			userTokenPolicy->policyId(stringValue);
 
+			// get token type
 			if (it->getConfigParameter("TokenType", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
