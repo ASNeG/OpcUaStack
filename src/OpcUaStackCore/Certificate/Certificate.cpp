@@ -464,7 +464,13 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		//SHA1((const unsigned char*)DERData.data(), bufLen, (unsigned char* )buf);
+		uint32_t derBufLen;
+		if (!toDERBufLen(&derBufLen)) {
+			return false;
+		}
+		char* data = new char[derBufLen];
+		SHA1((const unsigned char*)data, *bufLen, (unsigned char* )buf);
+		delete [] data;
 
 		return true;
 	}

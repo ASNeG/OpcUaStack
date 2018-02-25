@@ -56,6 +56,17 @@ namespace OpcUaStackServer
 	DiscoveryService::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
 	{
 		applicationCertificate_ = applicationCertificate;
+
+		if (!applicationCertificate_->enable()) {
+			return;
+		}
+
+		for (uint32_t idx = 0; idx < endpointDescriptionArray_->size(); idx++) {
+			EndpointDescription::SPtr endpointDescription;
+			endpointDescriptionArray_->get(idx, endpointDescription);
+
+			//applicationCertificate_->certificate()->
+		}
 	}
 
 	void
