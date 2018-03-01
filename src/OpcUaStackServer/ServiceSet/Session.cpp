@@ -206,14 +206,21 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
+		UserNameIdentityToken::SPtr token = parameter->parameter<UserNameIdentityToken>();
+
+		// check parameter and password
+		if (token->userName().size() == 0 || token->passwordLen() == 0) {
+			return BadIdentityTokenInvalid;
+		}
+
+		// ..
+
+		// create application context
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
-
-		// FIXME: todo
-		// decrypt password
 
 		forwardGlobalSync_->authenticationService().callback()(&context);
 
