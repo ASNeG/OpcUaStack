@@ -57,6 +57,9 @@ namespace OpcUaStackCore
 		if (key == nullptr) {
 			return BadUnexpectedError;
 		}
+		if (key->pkey.rsa == nullptr) {
+			return BadUnexpectedError;
+		}
 		uint32_t keySize = publicKey->keySize();
 
 	    // check padding type
@@ -100,6 +103,12 @@ namespace OpcUaStackCore
 	    while(plainTextPosition < plainTextLen) {
 	    	int32_t encryptedBytes;
 
+	    	std::cout << "plainTextPosition " << plainTextPosition << std::endl;
+	    	std::cout << "plainTextLen " << plainTextLen << std::endl;
+	    	std::cout << "bytesToEncrypt" << bytesToEncrypt << std::endl;
+	    	std::cout << "keySize " << keySize << std::endl;
+	    	std::cout << "encryptedTextPosition " << encryptedTextPosition << std::endl;
+
 	    	// the last part could be smaller
 	    	if((plainTextLen >= encryptedDataSize) && ((plainTextLen - plainTextPosition) < encryptedDataSize)) {
 	            bytesToEncrypt = plainTextLen - plainTextPosition;
@@ -109,8 +118,8 @@ namespace OpcUaStackCore
 	    		// encrypt buffer
 	    		encryptedBytes = RSA_public_encrypt(
 	    		    bytesToEncrypt,      	   										// number bytes to encrypt
-	    			(const unsigned char*)plainTextBuf + plainTextPosition,       	// buffer to encrypt
-	    			(unsigned char*)encryptedTextBuf + encryptedTextPosition,  		// where to encrypt
+	    			(const unsigned char*)(plainTextBuf + plainTextPosition),       // buffer to encrypt
+	    			(unsigned char*)(encryptedTextBuf + encryptedTextPosition),  	// where to encrypt
 	    			key->pkey.rsa,                              					// public key
 	    			padding															// padding mode
 			    );
@@ -156,6 +165,9 @@ namespace OpcUaStackCore
 	    if (key == nullptr) {
 	        return BadUnexpectedError;
 	    }
+		if (key->pkey.rsa == nullptr) {
+			return BadUnexpectedError;
+		}
 
 		// get key information
 		uint32_t keySize = RSA_size(key->pkey.rsa);
