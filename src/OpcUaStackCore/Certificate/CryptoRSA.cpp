@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <openssl/rsa.h>
 #include "OpcUaStackCore/Certificate/CryptoRSA.h"
 
 namespace OpcUaStackCore
@@ -27,6 +28,106 @@ namespace OpcUaStackCore
 
 	CryptoRSA::~CryptoRSA(void)
 	{
+	}
+
+	OpcUaStatusCode publicEncrypt(
+	    char*      plainTextBuf,
+	    uint32_t   plainTextLen,
+	    PublicKey* publicKey,
+	    int16_t    padding,
+	    char*      encryptedTextBuf,
+	    int32_t*   encryptedTextLen
+	)
+	{
+		*encryptedTextLen = 0;
+
+		// check plain text
+		if (plainTextBuf == nullptr || plainTextLen == 0) {
+			return BadInvalidArgument;
+		}
+
+		// check public key
+		if (publicKey->keyType() != KeyType_RSA) {
+			return BadInvalidArgument;
+		}
+
+		// get key information
+		EVP_PKEY* key = (EVP_PKEY*)publicKey;
+		if (key == nullptr) {
+			return BadUnexpectedError;
+		}
+		uint32_t keySize = publicKey->keySize();
+
+	    // check padding type
+		uint32_t encryptedDataSize  = 0;
+	    switch(padding)
+	    {
+	    	case RSA_PKCS1_PADDING:
+	        {
+	        	encryptedDataSize = keySize - 11;
+	            break;
+	        }
+	    	case RSA_PKCS1_OAEP_PADDING:
+	        {
+	        	encryptedDataSize = keySize - 42;
+	            break;
+	        }
+	    	case RSA_NO_PADDING:
+	        {
+	        	encryptedDataSize = keySize;
+	            break;
+	        }
+	    	default:
+	        {
+	        	EVP_PKEY_free(key);
+	            return BadNotSupported;
+	        }
+	    }
+
+	    // check bytes to encrypt in one step
+	    uint32_t bytesToEncrypt = 0;
+	    if(plainTextLen < encryptedDataSize) {
+	    	bytesToEncrypt = plainTextLen;
+	    }
+	    else {
+	    	bytesToEncrypt = encryptedDataSize;
+	    }
+
+	    // encrypt
+	    uint32_t plainTextPosition = 0;
+	    uint32_t encryptedTextPosition = 0;
+	    while(plainTextPosition < plainTextLen) {
+	    	int32_t encryptedBytes;
+
+	    	// the last part could be smaller
+	    	if((plainTextLen >= encryptedDataSize) && ((plainTextLen - plainTextPosition) < encryptedDataSize)) {
+	            bytesToEncrypt = plainTextLen - plainTextPosition;
+	        }
+
+	    	if((encryptedTextBuf != nullptr) && (plainTextBuf != nullptr)) {
+	    		// encrypt buffer
+	    		encryptedBytes = RSA_public_encrypt(
+	    		    bytesToEncrypt,      	   										// number bytes to encrypt
+	    			(const unsigned char*)plainTextBuf + plainTextPosition,       	// buffer to encrypt
+	    			(unsigned char*)encryptedTextBuf + encryptedTextPosition,  		// where to encrypt
+	    			key->pkey.rsa,                              					// public key
+	    			padding															// padding mode
+			    );
+	    		if(encryptedBytes < 0) {
+	    			EVP_PKEY_free(key);
+	    			return BadUnexpectedError;
+	    		}
+	    	}
+	    	else {
+	    		encryptedBytes = keySize;
+	    	}
+
+	    	*encryptedTextLen = *encryptedTextLen + encryptedBytes;
+	    	encryptedTextPosition += keySize;
+	    	plainTextPosition  += bytesToEncrypt;
+	    }
+
+		return Success;
 	}
 
 }
