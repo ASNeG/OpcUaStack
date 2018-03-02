@@ -112,7 +112,6 @@ namespace OpcUaStackCore
 				if (isLogging_) {
 					Log(Error, "publicEntrypt error - pinvalid padding type");
 				}
-	        	EVP_PKEY_free(key);
 	            return BadNotSupported;
 	        }
 	    }
@@ -149,7 +148,6 @@ namespace OpcUaStackCore
 	    		if(encryptedBytes < 0) {
 	    			addOpenSSLError();
 
-	    			EVP_PKEY_free(key);
 	    			if (isLogging_) {
 	    				log(Error, "publicEntrypt error - RSA_public_encrypt");
 	    			}
@@ -165,7 +163,6 @@ namespace OpcUaStackCore
 	    	plainTextPosition  += bytesToEncrypt;
 	    }
 
-	    EVP_PKEY_free(key);
 		return Success;
 	}
 
@@ -261,7 +258,6 @@ namespace OpcUaStackCore
 					if (isLogging_) {
 						log(Error, "privateDecrypt error - RSA_private_decrypt");
 					}
-					EVP_PKEY_free(key);
 					return BadUnexpectedError;
 				}
 
@@ -273,8 +269,6 @@ namespace OpcUaStackCore
 			*plainTextLen = *plainTextLen + decryptedBytes;
 			encryptedTextPosition = encryptedTextPosition + keySize;
 		}
-
-		EVP_PKEY_free(key);
 
 		return Success;
 	}

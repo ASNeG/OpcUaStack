@@ -13,7 +13,6 @@ BOOST_AUTO_TEST_CASE(CryptoRSA_)
 	std::cout << "CryptoRSA_t" << std::endl;
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 {
 	RSAKey key(2048);
@@ -61,7 +60,6 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 	BOOST_REQUIRE(plainTextLen1 == plainTextLen2);
 	BOOST_REQUIRE(memcmp(plainTextBuf1, plainTextBuf2, plainTextLen1) == 0);
 }
-#endif
 
 BOOST_AUTO_TEST_CASE(CryptoRSA__sign_verify)
 {
@@ -70,7 +68,7 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__sign_verify)
 
 	OpcUaStatusCode statusCode;
 	CryptoRSA cryptoRSA;
-	//cryptoRSA.isLogging(true);
+	cryptoRSA.isLogging(true);
 
 	char plainTextBuf[20];
 	uint32_t plainTextLen = 20;
