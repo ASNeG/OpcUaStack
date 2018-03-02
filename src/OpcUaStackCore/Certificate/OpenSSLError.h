@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		OpenSSLError(void);
-		~OpenSSLError(void);
+		virtual ~OpenSSLError(void);
 
 		bool isError(void);
 		void addOpenSSLError(void);

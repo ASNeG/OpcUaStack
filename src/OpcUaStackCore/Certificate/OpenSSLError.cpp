@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 
 	OpenSSLError::~OpenSSLError(void)
 	{
+		errorList_.clear();
 	}
 
 	bool
