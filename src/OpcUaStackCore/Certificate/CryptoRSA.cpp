@@ -227,12 +227,11 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	CryptoRSA::PrivateSign(
+	CryptoRSA::privateSign(
 		char*       plainTextBuf,
 		uint32_t    plainTextLen,
 		PrivateKey* privateKey,
 	    int32_t     digest,
-		int16_t     padding,
 	    char*       signTextBuf,
 	    uint32_t*   signTextLen
 	)
@@ -273,12 +272,11 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	CryptoRSA::PublicVerify(
+	CryptoRSA::publicVerify(
 		char*       plainTextBuf,
 		uint32_t    plainTextLen,
 		PublicKey*  publicKey,
 	    int32_t     digest,
-		int16_t     padding,
 	    char*       signTextBuf,
 	    uint32_t    signTextLen
 	)
