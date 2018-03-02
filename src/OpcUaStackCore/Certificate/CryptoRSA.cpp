@@ -154,9 +154,8 @@ namespace OpcUaStackCore
 		//}
 
 		// get private key
-		EVP_PKEY* key;
 		const unsigned char* data = 0;
-	    key = (EVP_PKEY*)privateKey;
+		EVP_PKEY* key = *privateKey;
 	    if (key == nullptr) {
 	        return BadUnexpectedError;
 	    }

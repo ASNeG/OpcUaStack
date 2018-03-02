@@ -56,6 +56,9 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 		&plainTextLen2
 	);
 	BOOST_REQUIRE(statusCode == Success);
+
+	BOOST_REQUIRE(plainTextLen1 == plainTextLen2);
+	BOOST_REQUIRE(memcmp(plainTextBuf1, plainTextBuf2, plainTextLen1) == 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
