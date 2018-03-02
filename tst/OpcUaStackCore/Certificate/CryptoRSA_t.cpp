@@ -13,6 +13,7 @@ BOOST_AUTO_TEST_CASE(CryptoRSA_)
 	std::cout << "CryptoRSA_t" << std::endl;
 }
 
+#if 0
 BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 {
 	RSAKey key(2048);
@@ -60,14 +61,16 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 	BOOST_REQUIRE(plainTextLen1 == plainTextLen2);
 	BOOST_REQUIRE(memcmp(plainTextBuf1, plainTextBuf2, plainTextLen1) == 0);
 }
+#endif
 
 BOOST_AUTO_TEST_CASE(CryptoRSA__sign_verify)
 {
-	RSAKey key(2048);
-	BOOST_REQUIRE(key.isError() == false);
+	RSAKey rsaKey(2048);
+	BOOST_REQUIRE(rsaKey.isError() == false);
 
 	OpcUaStatusCode statusCode;
 	CryptoRSA cryptoRSA;
+	//cryptoRSA.isLogging(true);
 
 	char plainTextBuf[20];
 	uint32_t plainTextLen = 20;
@@ -77,29 +80,29 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__sign_verify)
 	memcpy(plainTextBuf, "01234567890123456789", 20);
 
 	// create sign text
-	PrivateKey privateKey = key.privateKey();
-	BOOST_REQUIRE(key.isError() == false);
+	PrivateKey privateKey = rsaKey.privateKey();
+	BOOST_REQUIRE(rsaKey.isError() == false);
 	BOOST_REQUIRE(privateKey.isError() == false);
 
 	statusCode = cryptoRSA.privateSign(
 		plainTextBuf,
 		plainTextLen,
 		&privateKey,
-		0,
+		NID_sha1,
 		signTextBuf,
 		&signTextLen
 	);
 	BOOST_REQUIRE(statusCode == Success);
 
 	// verify sign text
-	PublicKey publicKey = key.publicKey();
-	BOOST_REQUIRE(key.isError() == false);
+	PublicKey publicKey = rsaKey.publicKey();
+	BOOST_REQUIRE(rsaKey.isError() == false);
 	BOOST_REQUIRE(privateKey.isError() == false);
 	statusCode = cryptoRSA.publicVerify(
 		plainTextBuf,
 		plainTextLen,
 		&publicKey,
-		0,
+		NID_sha1,
 		signTextBuf,
 		signTextLen
 	);

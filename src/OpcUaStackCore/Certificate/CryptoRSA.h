@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_CryptoRSA_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
@@ -27,10 +28,11 @@ namespace OpcUaStackCore
 {
 
 	class DLLEXPORT CryptoRSA
+	: public OpenSSLError
 	{
 	  public:
 		CryptoRSA(void);
-		~CryptoRSA(void);
+		virtual ~CryptoRSA(void);
 
 		void isLogging(bool isLogging);
 		bool isLogging(void);

@@ -22,7 +22,8 @@ namespace OpcUaStackCore
 {
 
 	CryptoRSA::CryptoRSA(void)
-	: isLogging_(false)
+	: OpenSSLError()
+	, isLogging_(false)
 	{
 	}
 
@@ -146,9 +147,11 @@ namespace OpcUaStackCore
 	    			padding															// padding mode
 			    );
 	    		if(encryptedBytes < 0) {
+	    			addOpenSSLError();
+
 	    			EVP_PKEY_free(key);
 	    			if (isLogging_) {
-	    				Log(Error, "publicEntrypt error - RSA_public_encrypt");
+	    				log(Error, "publicEntrypt error - RSA_public_encrypt");
 	    			}
 	    			return BadUnexpectedError;
 	    		}
@@ -253,8 +256,10 @@ namespace OpcUaStackCore
 					padding															// padding mode
 				);
 				if(decryptedBytes == -1) {
+					addOpenSSLError();
+
 					if (isLogging_) {
-						Log(Error, "privateDecrypt error - RSA_private_decrypt");
+						log(Error, "privateDecrypt error - RSA_private_decrypt");
 					}
 					EVP_PKEY_free(key);
 					return BadUnexpectedError;
@@ -293,7 +298,7 @@ namespace OpcUaStackCore
 		}
 
 		// get private key
-		EVP_PKEY* key = *privateKey;
+		EVP_PKEY* key = (*privateKey);
 	    if (key == nullptr) {
 			if (isLogging_) {
 				Log(Error, "sign error - private key empty");
@@ -309,7 +314,7 @@ namespace OpcUaStackCore
 
 		// check sign text length
 		uint32_t size =  RSA_size(key->pkey.rsa);
-		if (size > *signTextLen) {
+		if (size != *signTextLen) {
 			if (isLogging_) {
 				Log(Error, "sign error - sign text length");
 			}
@@ -317,16 +322,20 @@ namespace OpcUaStackCore
 		}
 
 		// sign plain text
+		*signTextLen = 0;
 		int32_t result = RSA_sign(
 			digest,
 			(const unsigned char*)plainTextBuf,
-			plainTextLen, (unsigned char *)signTextBuf,
-			(unsigned int*)&signTextLen,
+			plainTextLen,
+			(unsigned char*)signTextBuf,
+			signTextLen,
 			key->pkey.rsa
 		);
 		if (result != 1) {
+			addOpenSSLError();
+
 			if (isLogging_) {
-				Log(Error, "sign error - RSA_sign");
+				log(Error, "sign error - RSA_sign");
 			}
 			return BadUnexpectedError;
 		}
@@ -371,6 +380,9 @@ namespace OpcUaStackCore
 		// check sign text length
 		uint32_t size =  RSA_size(key->pkey.rsa);
 		if (signTextLen % size != 0) {
+			if (isLogging_) {
+				Log(Error, "sign error - sign text length error");
+			}
 			return BadInvalidArgument;
 		}
 
@@ -382,8 +394,10 @@ namespace OpcUaStackCore
 			key->pkey.rsa
 		);
 		if (result != 1) {
+			addOpenSSLError();
+
 			if (isLogging_) {
-				Log(Error, "sign error - RSA_verify");
+				log(Error, "sign error - RSA_verify");
 			}
 		    return BadSignatureInvalid;
 		}
