@@ -226,7 +226,7 @@ namespace OpcUaStackCore
     bool
 	RSAKey::checkKeyPair(const PublicKey& publicKey, const PrivateKey& privateKey)
     {
-        EVP_PKEY* pPublicKey = (EVP_PKEY*)publicKey;
+        EVP_PKEY* pPublicKey = *const_cast<PublicKey*>(&publicKey);
         const EVP_PKEY* pPrivateKey = (const EVP_PKEY*)privateKey;
         if (pPublicKey && pPrivateKey)
         {

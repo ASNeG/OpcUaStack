@@ -16,6 +16,7 @@ BOOST_AUTO_TEST_CASE(CryptoRSA_)
 BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 {
 	RSAKey key(2048);
+	BOOST_REQUIRE(key.isError() == false);
 
 	OpcUaStatusCode statusCode;
 	CryptoRSA cryptoRSA;
@@ -31,6 +32,9 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 
 	// encrypt
 	PublicKey publicKey = key.publicKey();
+	BOOST_REQUIRE(key.isError() == false);
+	BOOST_REQUIRE(publicKey.isError() == false);
+
 	statusCode = cryptoRSA.publicEncrypt(
 		plainTextBuf1,
 		plainTextLen1,

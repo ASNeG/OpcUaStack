@@ -37,7 +37,7 @@ namespace OpcUaStackCore
 		virtual ~PublicKey(void);
 
 		PublicKey& operator=(const PublicKey& copy);
-		operator EVP_PKEY*(void) const;
+		operator EVP_PKEY*(void);
 		uint32_t keySize(void) const;
 		KeyType keyType(void) const;
 

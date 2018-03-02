@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 
 namespace OpcUaStackCore
@@ -102,14 +103,14 @@ namespace OpcUaStackCore
 		return *this;
 	}
 
-	PublicKey::operator EVP_PKEY*(void) const
+	PublicKey::operator EVP_PKEY*(void)
 	{
-	    EVP_PKEY* pKey = nullptr;
-	    pKey = X509_PUBKEY_get(publicKey_);
-	    if (!pKey) {
+	    EVP_PKEY* key = nullptr;
+	    key = X509_PUBKEY_get(publicKey_);
+	    if (!key) {
 	    	const_cast<PublicKey*>(this)->addOpenSSLError();
 	    }
-	    return pKey;
+	    return key;
 	}
 
 	uint32_t

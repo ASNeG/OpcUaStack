@@ -53,10 +53,11 @@ namespace OpcUaStackCore
 		}
 
 		// get key information
-		EVP_PKEY* key = (EVP_PKEY*)publicKey;
+		EVP_PKEY* key = *publicKey;
 		if (key == nullptr) {
 			return BadUnexpectedError;
 		}
+
 		if (key->pkey.rsa == nullptr) {
 			return BadUnexpectedError;
 		}
@@ -102,12 +103,6 @@ namespace OpcUaStackCore
 	    uint32_t encryptedTextPosition = 0;
 	    while(plainTextPosition < plainTextLen) {
 	    	int32_t encryptedBytes;
-
-	    	std::cout << "plainTextPosition " << plainTextPosition << std::endl;
-	    	std::cout << "plainTextLen " << plainTextLen << std::endl;
-	    	std::cout << "bytesToEncrypt" << bytesToEncrypt << std::endl;
-	    	std::cout << "keySize " << keySize << std::endl;
-	    	std::cout << "encryptedTextPosition " << encryptedTextPosition << std::endl;
 
 	    	// the last part could be smaller
 	    	if((plainTextLen >= encryptedDataSize) && ((plainTextLen - plainTextPosition) < encryptedDataSize)) {
