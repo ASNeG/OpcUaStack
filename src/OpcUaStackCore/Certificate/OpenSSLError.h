@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 	{
 	  public:
 		OpenSSLError(void);
+		OpenSSLError(const std::list<std::string>& errorList);
 		virtual ~OpenSSLError(void);
 
 		bool isError(void);

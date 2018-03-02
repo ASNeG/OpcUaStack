@@ -26,6 +26,11 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpenSSLError::OpenSSLError(const std::list<std::string>& errorList)
+	{
+		addError(errorList);
+	}
+
 	OpenSSLError::~OpenSSLError(void)
 	{
 		errorList_.clear();
