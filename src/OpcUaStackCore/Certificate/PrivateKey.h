@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		~PrivateKey(void);
 
 		PrivateKey& operator=(const PrivateKey& copy);
-		operator const EVP_PKEY*() const;
+		operator EVP_PKEY*(void);
 		bool toDER(char* buf, uint32_t& bufLen) const;
 		bool fromDER(char* buf, uint32_t bufLen, KeyType keyType);
 		bool fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);

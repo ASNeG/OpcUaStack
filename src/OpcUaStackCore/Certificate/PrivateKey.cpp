@@ -80,7 +80,7 @@ namespace OpcUaStackCore
 	    return *this;
 	}
 
-	PrivateKey::operator const EVP_PKEY*() const
+	PrivateKey::operator EVP_PKEY*(void)
 	{
 		return privateKey_;
 	}
