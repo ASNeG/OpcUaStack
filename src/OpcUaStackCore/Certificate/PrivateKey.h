@@ -42,6 +42,8 @@ namespace OpcUaStackCore
 		PrivateKey(const PrivateKey& copy);
 		~PrivateKey(void);
 
+		KeyType keyType(void) const;
+
 		PrivateKey& operator=(const PrivateKey& copy);
 		operator EVP_PKEY*(void);
 		bool toDER(char* buf, uint32_t& bufLen) const;

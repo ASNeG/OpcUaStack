@@ -61,6 +61,19 @@ namespace OpcUaStackCore
 		EVP_PKEY_free (privateKey_);
 	}
 
+	KeyType
+	PrivateKey::keyType(void) const
+	{
+		KeyType keyType = KeyType_Unknown;
+        switch(privateKey_->type)
+        {
+            case EVP_PKEY_RSA: keyType = KeyType_RSA; break;
+            case EVP_PKEY_DSA: keyType = KeyType_DSA; break;
+            default: break;
+        }
+        return keyType;
+	}
+
 	PrivateKey&
 	PrivateKey::operator=(const PrivateKey& copy)
 	{
