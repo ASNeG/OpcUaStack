@@ -41,6 +41,11 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, privateKey_(nullptr)
 	{
+		if (const_cast<PrivateKey*>(&copy)->isError()) {
+			addError("create ptivate key error in copy constructor - source key error");
+			return;
+		}
+
 	    if (copy.privateKey_) {
 	        CRYPTO_add(&copy.privateKey_->references, 1, CRYPTO_LOCK_EVP_PKEY);
 	        privateKey_ = copy.privateKey_;
@@ -59,6 +64,11 @@ namespace OpcUaStackCore
 	PrivateKey&
 	PrivateKey::operator=(const PrivateKey& copy)
 	{
+		if (const_cast<PrivateKey*>(&copy)->isError()) {
+			addError("private key error in assign operator - source key error");
+			return *this;
+		}
+
 	    EVP_PKEY_free (privateKey_);
 	    if (copy.privateKey_) {
 	        CRYPTO_add(&copy.privateKey_->references, 1, CRYPTO_LOCK_EVP_PKEY);
