@@ -227,4 +227,34 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	CryptoRSA::PrivateSign(
+		char*       plainTextBuf,
+		uint32_t    plainTextLen,
+		PrivateKey* privateKey,
+	    int32_t     digest,
+		int16_t     padding,
+	    char*       signTextBuf,
+	    int32_t*    signTextLen
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoRSA::PublicVerify(
+		char*       plainTextBuf,
+		uint32_t    plainTextLen,
+		PublicKey*  publicKey,
+	    int32_t     digest,
+		int16_t     padding,
+	    char*       signTextBuf,
+	    int32_t*    signTextLen
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

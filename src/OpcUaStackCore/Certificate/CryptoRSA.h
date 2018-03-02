@@ -52,6 +52,26 @@ namespace OpcUaStackCore
 		    int32_t*    plainTextLen   	 	// [out] length of plain text
 		);
 
+		OpcUaStatusCode PrivateSign(
+			char*       plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    plainTextLen,  	 	// [in]  length of plain text to sign
+			PrivateKey* privateKey,		 	// [in]  private key used to sign the plain text
+		    int32_t     digest,				// [in]  ...
+			int16_t     padding,          	// [in]  padding scheme used for filling empty bytes after signing
+		    char*       signTextBuf,	 	// [out] sign text
+		    int32_t*    signTextLen   	 	// [out] length of sign text
+		);
+
+		OpcUaStatusCode PublicVerify(
+			char*       plainTextBuf,	 	// [in]  plain text to verify
+			uint32_t    plainTextLen,  	 	// [in]  length of plain text to verify
+			PublicKey*  publicKey,		 	// [in]  public key used to verify the plain text
+		    int32_t     digest,				// [in]  ...
+			int16_t     padding,          	// [in]  padding scheme used for filling empty bytes after signing
+		    char*       signTextBuf,	 	// [out] verify text
+		    int32_t*    signTextLen   	 	// [out] length of verify text
+		);
+
 	};
 }
 
