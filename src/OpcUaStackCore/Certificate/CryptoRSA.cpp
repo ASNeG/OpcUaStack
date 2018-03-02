@@ -234,7 +234,7 @@ namespace OpcUaStackCore
 	    int32_t     digest,
 		int16_t     padding,
 	    char*       signTextBuf,
-	    int32_t*    signTextLen
+	    uint32_t*   signTextLen
 	)
 	{
 		// check public key
@@ -251,64 +251,26 @@ namespace OpcUaStackCore
 			return BadUnexpectedError;
 		}
 
+		// check sign text length
+		uint32_t size =  RSA_size(key->pkey.rsa);
+		if (size > *signTextLen) {
+			return BadInvalidArgument;
+		}
+
+		// sign plain text
+		int32_t result = RSA_sign(
+			digest,
+			(const unsigned char*)plainTextBuf,
+			plainTextLen, (unsigned char *)signTextBuf,
+			(unsigned int*)&signTextLen,
+			key->pkey.rsa
+		);
+		if (result != 1) {
+			return BadUnexpectedError;
+		}
+
 		return Success;
 	}
-
-#if 0
-    EVP_PKEY*               pSSLPrivateKey  = OpcUa_Null;
-    const unsigned char*    pData           = OpcUa_Null;
-    int                     iErr            = 0;
-
-OpcUa_InitializeStatus(OpcUa_Module_P_OpenSSL, "RSA_Private_Sign");
-
-    /* unused parameters */
-    OpcUa_ReferenceParameter(a_padding);
-
-    /* check parameters */
-    OpcUa_ReturnErrorIfArgumentNull(a_pProvider);
-    OpcUa_ReturnErrorIfArgumentNull(a_privateKey);
-    OpcUa_ReturnErrorIfArgumentNull(a_pSignature);
-    OpcUa_ReturnErrorIfArgumentNull(a_data.Data);
-    pData = a_privateKey->Key.Data;
-    OpcUa_ReturnErrorIfArgumentNull(pData);
-    OpcUa_ReturnErrorIfTrue((a_privateKey->Type != OpcUa_Crypto_KeyType_Rsa_Private), OpcUa_BadInvalidArgument);
-    OpcUa_ReturnErrorIfTrue((a_data.Length <= 0), OpcUa_BadInvalidArgument);
-
-    /* convert private key and check key length against buffer length */
-    pSSLPrivateKey = d2i_PrivateKey(EVP_PKEY_RSA, OpcUa_Null, &pData, a_privateKey->Key.Length);
-    OpcUa_GotoErrorIfTrue(pSSLPrivateKey == OpcUa_Null, OpcUa_BadUnexpectedError);
-    OpcUa_GotoErrorIfTrue((a_pSignature->Length < RSA_size(pSSLPrivateKey->pkey.rsa)), OpcUa_BadInvalidArgument);
-
-    /* sign data */
-    iErr = RSA_sign(a_iDigest, a_data.Data, a_data.Length, a_pSignature->Data, (unsigned int*)&a_pSignature->Length, pSSLPrivateKey->pkey.rsa);
-    OpcUa_GotoErrorIfTrue((iErr != 1), OpcUa_BadUnexpectedError);
-
-    /* free internal key representation */
-    EVP_PKEY_free(pSSLPrivateKey);
-
-OpcUa_ReturnStatusCode;
-OpcUa_BeginErrorHandling;
-
-    if(OpcUa_IsEqual(OpcUa_BadUnexpectedError))
-    {
-        long    lErr    = ERR_get_error();
-        char*   szErr   = ERR_error_string(lErr, 0);
-
-        if(szErr != OpcUa_Null)
-        {
-            OpcUa_P_Trace("*** RSA_Private_Sign: ");
-            OpcUa_P_Trace(szErr);
-            OpcUa_P_Trace(" ***\n");
-        }
-    }
-
-    if(pSSLPrivateKey != OpcUa_Null)
-    {
-        EVP_PKEY_free(pSSLPrivateKey);
-    }
-
-OpcUa_FinishErrorHandling;
-#endif
 
 	OpcUaStatusCode
 	CryptoRSA::PublicVerify(
@@ -318,7 +280,7 @@ OpcUa_FinishErrorHandling;
 	    int32_t     digest,
 		int16_t     padding,
 	    char*       signTextBuf,
-	    int32_t*    signTextLen
+	    uint32_t*   signTextLen
 	)
 	{
 		// FIXME: todo
