@@ -61,4 +61,49 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 	BOOST_REQUIRE(memcmp(plainTextBuf1, plainTextBuf2, plainTextLen1) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(CryptoRSA__sign_verify)
+{
+	RSAKey key(2048);
+	BOOST_REQUIRE(key.isError() == false);
+
+	OpcUaStatusCode statusCode;
+	CryptoRSA cryptoRSA;
+
+	char plainTextBuf[20];
+	uint32_t plainTextLen = 20;
+	char signTextBuf[256];
+	uint32_t signTextLen = 256;
+
+	memcpy(plainTextBuf, "01234567890123456789", 20);
+
+	// create sign text
+	PrivateKey privateKey = key.privateKey();
+	BOOST_REQUIRE(key.isError() == false);
+	BOOST_REQUIRE(privateKey.isError() == false);
+
+	statusCode = cryptoRSA.privateSign(
+		plainTextBuf,
+		plainTextLen,
+		&privateKey,
+		0,
+		signTextBuf,
+		&signTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+
+	// verify sign text
+	PublicKey publicKey = key.publicKey();
+	BOOST_REQUIRE(key.isError() == false);
+	BOOST_REQUIRE(privateKey.isError() == false);
+	statusCode = cryptoRSA.publicVerify(
+		plainTextBuf,
+		plainTextLen,
+		&publicKey,
+		0,
+		signTextBuf,
+		signTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

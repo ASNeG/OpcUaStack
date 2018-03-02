@@ -22,12 +22,24 @@ namespace OpcUaStackCore
 {
 
 	CryptoRSA::CryptoRSA(void)
-	: OpenSSLError()
+	: isLogging_(false)
 	{
 	}
 
 	CryptoRSA::~CryptoRSA(void)
 	{
+	}
+
+	void
+	CryptoRSA::isLogging(bool isLogging)
+	{
+		isLogging_ = isLogging;
+	}
+
+	bool
+	CryptoRSA::isLogging(void)
+	{
+		return isLogging_;
 	}
 
 	OpcUaStatusCode
@@ -44,21 +56,33 @@ namespace OpcUaStackCore
 
 		// check plain text
 		if (plainTextBuf == nullptr || plainTextLen == 0) {
+			if (isLogging_) {
+				Log(Error, "publicEntrypt error - plainTextBuf is empty");
+			}
 			return BadInvalidArgument;
 		}
 
 		// check public key
 		if (publicKey->keyType() != KeyType_RSA) {
+			if (isLogging_) {
+				Log(Error, "publicEntrypt error - invalid public key type");
+			}
 			return BadInvalidArgument;
 		}
 
 		// get key information
 		EVP_PKEY* key = *publicKey;
 		if (key == nullptr) {
+			if (isLogging_) {
+				Log(Error, "publicEntrypt error - key is empty");
+			}
 			return BadUnexpectedError;
 		}
 
 		if (key->pkey.rsa == nullptr) {
+			if (isLogging_) {
+				Log(Error, "publicEntrypt error - invalid rsa key type");
+			}
 			return BadUnexpectedError;
 		}
 		uint32_t keySize = publicKey->keySize();
@@ -84,6 +108,9 @@ namespace OpcUaStackCore
 	        }
 	    	default:
 	        {
+				if (isLogging_) {
+					Log(Error, "publicEntrypt error - pinvalid padding type");
+				}
 	        	EVP_PKEY_free(key);
 	            return BadNotSupported;
 	        }
@@ -120,6 +147,9 @@ namespace OpcUaStackCore
 			    );
 	    		if(encryptedBytes < 0) {
 	    			EVP_PKEY_free(key);
+	    			if (isLogging_) {
+	    				Log(Error, "publicEntrypt error - RSA_public_encrypt");
+	    			}
 	    			return BadUnexpectedError;
 	    		}
 	    	}
@@ -150,15 +180,24 @@ namespace OpcUaStackCore
 
 		// check public key
 		if (privateKey->keyType() != KeyType_RSA) {
+			if (isLogging_) {
+				Log(Error, "privateDecrypt error - invalid private key type");
+			}
 			return BadInvalidArgument;
 		}
 
 		// get private key
 		EVP_PKEY* key = *privateKey;
 	    if (key == nullptr) {
+			if (isLogging_) {
+				Log(Error, "privateDecrypt error - key empty");
+			}
 	        return BadUnexpectedError;
 	    }
 		if (key->pkey.rsa == nullptr) {
+			if (isLogging_) {
+				Log(Error, "privateDecrypt error - private rsa key empty");
+			}
 			return BadUnexpectedError;
 		}
 
@@ -167,6 +206,9 @@ namespace OpcUaStackCore
 
 		// check encrypted text
 		if ((encryptedTextLen == 0) || (encryptedTextLen%keySize != 0)) {
+			if (isLogging_) {
+				Log(Error, "privateDecrypt error - encrypted text length");
+			}
 			return BadInvalidArgument;
 		}
 
@@ -191,6 +233,9 @@ namespace OpcUaStackCore
 	        }
 	    	default:
 	        {
+				if (isLogging_) {
+					Log(Error, "privateDecrypt error - invalid padding");
+				}
 	            return BadNotSupported;
 	        }
 	    }
@@ -208,6 +253,9 @@ namespace OpcUaStackCore
 					padding															// padding mode
 				);
 				if(decryptedBytes == -1) {
+					if (isLogging_) {
+						Log(Error, "privateDecrypt error - RSA_private_decrypt");
+					}
 					EVP_PKEY_free(key);
 					return BadUnexpectedError;
 				}
@@ -238,21 +286,33 @@ namespace OpcUaStackCore
 	{
 		// check public key
 		if (privateKey->keyType() != KeyType_RSA) {
+			if (isLogging_) {
+				Log(Error, "sign error - invalid private key type");
+			}
 			return BadInvalidArgument;
 		}
 
 		// get private key
 		EVP_PKEY* key = *privateKey;
 	    if (key == nullptr) {
+			if (isLogging_) {
+				Log(Error, "sign error - private key empty");
+			}
 	        return BadUnexpectedError;
 	    }
 		if (key->pkey.rsa == nullptr) {
+			if (isLogging_) {
+				Log(Error, "sign error - private rsa key empty");
+			}
 			return BadUnexpectedError;
 		}
 
 		// check sign text length
 		uint32_t size =  RSA_size(key->pkey.rsa);
 		if (size > *signTextLen) {
+			if (isLogging_) {
+				Log(Error, "sign error - sign text length");
+			}
 			return BadInvalidArgument;
 		}
 
@@ -265,6 +325,9 @@ namespace OpcUaStackCore
 			key->pkey.rsa
 		);
 		if (result != 1) {
+			if (isLogging_) {
+				Log(Error, "sign error - RSA_sign");
+			}
 			return BadUnexpectedError;
 		}
 
@@ -283,16 +346,25 @@ namespace OpcUaStackCore
 	{
 		// check public key
 		if (publicKey->keyType() != KeyType_RSA) {
+			if (isLogging_) {
+				Log(Error, "sign error - public key type error");
+			}
 			return BadInvalidArgument;
 		}
 
 		// get key information
 		EVP_PKEY* key = *publicKey;
 		if (key == nullptr) {
+			if (isLogging_) {
+				Log(Error, "sign error - public key is empty");
+			}
 			return BadUnexpectedError;
 		}
 
 		if (key->pkey.rsa == nullptr) {
+			if (isLogging_) {
+				Log(Error, "sign error - public rsa key type error");
+			}
 			return BadUnexpectedError;
 		}
 
@@ -310,6 +382,9 @@ namespace OpcUaStackCore
 			key->pkey.rsa
 		);
 		if (result != 1) {
+			if (isLogging_) {
+				Log(Error, "sign error - RSA_verify");
+			}
 		    return BadSignatureInvalid;
 		}
 
