@@ -69,7 +69,7 @@ namespace OpcUaStackCore
 		    int32_t     digest,				// [in]  ...
 			int16_t     padding,          	// [in]  padding scheme used for filling empty bytes after signing
 		    char*       signTextBuf,	 	// [out] verify text
-		    uint32_t*   signTextLen   	 	// [out] length of verify text
+		    uint32_t    signTextLen   	 	// [out] length of verify text
 		);
 
 	};

@@ -280,10 +280,41 @@ namespace OpcUaStackCore
 	    int32_t     digest,
 		int16_t     padding,
 	    char*       signTextBuf,
-	    uint32_t*   signTextLen
+	    uint32_t    signTextLen
 	)
 	{
-		// FIXME: todo
+		// check public key
+		if (publicKey->keyType() != KeyType_RSA) {
+			return BadInvalidArgument;
+		}
+
+		// get key information
+		EVP_PKEY* key = *publicKey;
+		if (key == nullptr) {
+			return BadUnexpectedError;
+		}
+
+		if (key->pkey.rsa == nullptr) {
+			return BadUnexpectedError;
+		}
+
+		// check sign text length
+		uint32_t size =  RSA_size(key->pkey.rsa);
+		if (signTextLen % size != 0) {
+			return BadInvalidArgument;
+		}
+
+		int32_t result = RSA_verify(
+			digest,
+			(const unsigned char*)plainTextBuf,
+			plainTextLen, (unsigned char *)signTextBuf,
+			signTextLen,
+			key->pkey.rsa
+		);
+		if (result != 1) {
+		    return BadSignatureInvalid;
+		}
+
 		return Success;
 	}
 
