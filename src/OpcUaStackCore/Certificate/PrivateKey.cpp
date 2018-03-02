@@ -61,6 +61,12 @@ namespace OpcUaStackCore
 		EVP_PKEY_free (privateKey_);
 	}
 
+	uint32_t
+	PrivateKey::keySize(void) const
+	{
+	    return EVP_PKEY_bits(privateKey_);
+	}
+
 	KeyType
 	PrivateKey::keyType(void) const
 	{

@@ -237,6 +237,11 @@ namespace OpcUaStackCore
 	    int32_t*    signTextLen
 	)
 	{
+		// check public key
+		if (privateKey->keyType() != KeyType_RSA) {
+			return BadInvalidArgument;
+		}
+
 		// get private key
 		EVP_PKEY* key = *privateKey;
 	    if (key == nullptr) {
