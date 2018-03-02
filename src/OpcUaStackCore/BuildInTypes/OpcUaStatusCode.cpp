@@ -308,5 +308,7 @@ namespace OpcUaStackCore
 		insert(BadWouldBlock,									"BadWouldBlock",								"Non blocking behaviour is required and the operation would block");
 		insert(BadSyntaxError,									"BadSyntaxError",								"A value had an invalid syntax");
 		insert(BadMaxConnectionsReached,						"BadMaxConnectionsReached",						"The operation could not be finished because all available connections are in use");
+
+		insert(BadSignatureInvalid,								"BadSignatureInvalid",							"signature is missing or invalid");
 	}
 };
