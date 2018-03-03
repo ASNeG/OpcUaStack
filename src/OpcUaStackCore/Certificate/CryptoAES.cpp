@@ -131,37 +131,28 @@ namespace OpcUaStackCore
 	    	return BadUnexpectedError;
 	    }
 
+	    // init iv
+	    if (iv.memLen() > IV_MAX_LENGTH) {
+			if (isLogging_) {
+				Log(Error, "encryptCBC error: iv length invalid");
+			}
+			return BadInvalidArgument;
+	    }
+	    unsigned char ivTmp[IV_MAX_LENGTH];
+	    memcpy(ivTmp, iv.memBuf(), iv.memLen());
+
+	    // encrypt data
+	    AES_cbc_encrypt(
+	        (const unsigned char*)plainTextBuf,
+			(unsigned char *)encryptedTextBuf,
+			(size_t)encryptedTextLen,
+	    	&key,
+	    	ivTmp,
+	    	AES_ENCRYPT
+	    );
 
 		return Success;
 	}
-
-#if 0
-
-
-	    /* copy the IV because the AES_cbc_encrypt function overwrites it. */
-	    pInitalVector = (OpcUa_Byte*)OpcUa_P_Memory_Alloc(a_key->Key.Length);
-	    OpcUa_ReturnErrorIfAllocFailed(pInitalVector);
-	    OpcUa_P_Memory_MemCpy(pInitalVector, a_key->Key.Length, a_pInitalVector, a_key->Key.Length);
-
-	    /* encrypt data */
-	    AES_cbc_encrypt(    a_pPlainText,
-	                        a_pCipherText,
-	                        *a_pCipherTextLen,
-	                        &key,
-	                        pInitalVector,
-	                        AES_ENCRYPT);
-
-	    OpcUa_ReturnErrorIfNull(a_pCipherText, OpcUa_Bad);
-
-	    OpcUa_P_Memory_Free(pInitalVector);
-	    pInitalVector = OpcUa_Null;
-
-	OpcUa_ReturnStatusCode;
-	OpcUa_BeginErrorHandling;
-
-	    OpcUa_P_Memory_Free(pInitalVector);
-	    pInitalVector = OpcUa_Null;
-#endif
 
 	OpcUaStatusCode
 	CryptoAES::decryptCBC128(
@@ -227,7 +218,50 @@ namespace OpcUaStackCore
 	    int32_t*   plainTextLen
 	)
 	{
-		// FIXME: todo
+		// check plain text
+		if ((encryptedTextLen % 16) != 0 || encryptedTextLen == 0) {
+			if (isLogging_) {
+				Log(Error, "decryptCBC error: decrypted text length invalid");
+			}
+			return BadInvalidArgument;
+		}
+
+		if (encryptedTextLen != *plainTextLen) {
+			if (isLogging_) {
+				Log(Error, "decryptCBC error: plain/encrypted text length invalid");
+			}
+			return BadInvalidArgument;
+		}
+
+		// create AES key
+		AES_KEY key;
+	    if(AES_set_encrypt_key((const unsigned char*)aesKey.memBuf(), aesKey.memLen()*8, &key) < 0) {
+			if (isLogging_) {
+				Log(Error, "decryptCBC error: AES_set_encrypt_key");
+			}
+	    	return BadUnexpectedError;
+	    }
+
+	    // init iv
+	    if (iv.memLen() > IV_MAX_LENGTH) {
+			if (isLogging_) {
+				Log(Error, "decryptCBC error: iv length invalid");
+			}
+			return BadInvalidArgument;
+	    }
+	    unsigned char ivTmp[IV_MAX_LENGTH];
+	    memcpy(ivTmp, iv.memBuf(), iv.memLen());
+
+	    // decrypt data
+	    AES_cbc_encrypt(
+	        (const unsigned char*)encryptedTextBuf,
+			(unsigned char *)plainTextBuf,
+			(size_t)plainTextLen,
+	    	&key,
+	    	ivTmp,
+	    	AES_DECRYPT
+	    );
+
 		return Success;
 	}
 

@@ -23,6 +23,8 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
+#define IV_MAX_LENGTH 32
+
 namespace OpcUaStackCore
 {
 
