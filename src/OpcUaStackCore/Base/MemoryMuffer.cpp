@@ -65,6 +65,14 @@ namespace OpcUaStackCore
 		clear();
 	}
 
+	bool
+	MemoryBuffer::operator ==(const MemoryBuffer &b) const
+	{
+		if (memLen_ != b.memLen_) return false;
+		if (memLen_ < 1) return true;
+		return (memcmp(memBuf_, b.memBuf_, memLen_) == 0);
+	}
+
 	void
 	MemoryBuffer::clear(void)
 	{

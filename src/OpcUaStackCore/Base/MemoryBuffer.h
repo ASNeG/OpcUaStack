@@ -37,6 +37,8 @@ namespace OpcUaStackCore
 		MemoryBuffer(uint32_t memLen);
 		~MemoryBuffer(void);
 
+		bool operator ==(const MemoryBuffer &b) const;
+
 		void clear(void);
 		bool isNull(void);
 		char* memBuf(void);
