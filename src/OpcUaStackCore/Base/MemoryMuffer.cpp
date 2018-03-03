@@ -75,18 +75,23 @@ namespace OpcUaStackCore
 	}
 
 	std::ostream&
-	MemoryBuffer::operator<<(std::ostream& os)
+	operator<<(std::ostream& os, const MemoryBuffer& memoryBuffer)
 	{
-		if (memLen_ == -1) {
+		MemoryBuffer* mb = const_cast<MemoryBuffer*>(&memoryBuffer);
+		if (mb->memLen() == -1) {
 			os << "null";
 		}
-		else if (memLen_ == 0) {
+		else if (mb->memLen() == 0) {
 			os << "[]";
 		}
 		else {
-			os << memLen_ << "[";
-			for (uint32_t idx=0; idx<memLen_; idx++) {
-				os << memBuf_[idx];
+			os << mb->memLen() << "[";
+			for (uint32_t idx=0; idx<mb->memLen(); idx++) {
+				char c = mb->memBuf()[idx];
+				if(!isprint(c)) {
+					c = '.';
+				}
+				os << c;
 			}
 			os << "]";
 		}
