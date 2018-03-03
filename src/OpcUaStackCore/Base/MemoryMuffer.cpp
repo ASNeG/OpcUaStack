@@ -21,13 +21,86 @@ namespace OpcUaStackCore
 {
 
 	MemoryBuffer::MemoryBuffer(void)
-
+	: memBuf_(nullptr)
+	, memLen_(-1)
 	{
+	}
+
+	MemoryBuffer::MemoryBuffer(const std::string& value)
+	: memBuf_(nullptr)
+	, memLen_(-1)
+	{
+		memLen_ = value.length();
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+	}
+
+	MemoryBuffer::MemoryBuffer(const char* memBuf, uint32_t memLen)
+	: memBuf_(nullptr)
+	, memLen_(-1)
+	{
+		memLen_ = memLen;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
 	}
 
 	MemoryBuffer::~MemoryBuffer(void)
 	{
+		clear();
+	}
 
+	void
+	MemoryBuffer::clear(void)
+	{
+		memLen_ = -1;
+		if (memBuf_ != nullptr) {
+			delete [] memBuf_;
+			memBuf_ = nullptr;
+		}
+	}
+
+	bool
+	MemoryBuffer::isNull(void)
+	{
+		return memLen_ == -1;
+	}
+
+	char*
+	MemoryBuffer::memBuf(void)
+	{
+		return memBuf_;
+	}
+
+	int32_t
+	MemoryBuffer::memLen(void)
+	{
+		return memLen_;
+	}
+
+	void
+	MemoryBuffer::set(const std::string& value)
+	{
+		set(value.c_str(), value.length());
+	}
+
+	void
+	MemoryBuffer::set(const char* value)
+	{
+		set(value, strlen(value));
+	}
+
+	void
+	MemoryBuffer::set(const char* memBuf, uint32_t memLen)
+	{
+		clear();
+
+		memLen_ = memLen;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+		memcpy(memBuf_, memBuf, memLen_);
 	}
 
 }
