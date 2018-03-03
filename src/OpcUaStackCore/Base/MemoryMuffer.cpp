@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		if (memLen_ > 0) {
 			memBuf_ = new char[memLen_];
 		}
+		memcpy(memBuf_, value.c_str(), memLen_);
 	}
 
 	MemoryBuffer::MemoryBuffer(const char* memBuf, uint32_t memLen)
@@ -45,6 +46,18 @@ namespace OpcUaStackCore
 		if (memLen_ > 0) {
 			memBuf_ = new char[memLen_];
 		}
+		memcpy(memBuf_, memBuf, memLen_);
+	}
+
+	MemoryBuffer::MemoryBuffer(uint32_t memLen)
+	: memBuf_(nullptr)
+	, memLen_(-1)
+	{
+		memLen_ = memLen;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+		memset(memBuf_, 0x00, memLen_);
 	}
 
 	MemoryBuffer::~MemoryBuffer(void)

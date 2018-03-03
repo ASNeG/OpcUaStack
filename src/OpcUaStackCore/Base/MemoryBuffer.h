@@ -34,6 +34,7 @@ namespace OpcUaStackCore
 		MemoryBuffer(void);
 		MemoryBuffer(const std::string& value);
 		MemoryBuffer(const char* memBuf, uint32_t memLen);
+		MemoryBuffer(uint32_t memLen);
 		~MemoryBuffer(void);
 
 		void clear(void);
