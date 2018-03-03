@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 		~MemoryBuffer(void);
 
 		bool operator ==(const MemoryBuffer &b) const;
+		std::ostream& operator<<(std::ostream& os);
 
 		void clear(void);
 		bool isNull(void);
