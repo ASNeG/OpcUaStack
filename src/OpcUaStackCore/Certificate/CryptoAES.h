@@ -19,11 +19,14 @@
 #define __OpcUaStackCore_CryptoAES_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
 {
+
+	typedef MemoryBuffer AESKey;
 
 	class DLLEXPORT CryptoAES
 	: public OpenSSLError
@@ -35,20 +38,52 @@ namespace OpcUaStackCore
 		void isLogging(bool isLogging);
 		bool isLogging(void);
 
-		OpcUaStatusCode encrypt(
+		OpcUaStatusCode encryptCBC128(
 		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
 		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
-		    char* 	   key,		 			// [in]  key used to encrypt the plain text
+		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
 		    char*      encryptedTextBuf, 	// [out] encrypted text
 		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
 		);
 
-		OpcUaStatusCode decrypt(
-			char*       encryptedTextBuf, 	// [in]  encrypted text to decrypt
-			uint32_t    encryptedTextLen, 	// [in]  length of the encryped text to decrypt
-			char*       key,		 	    // [in]  key used to decrypt the decrypted text
-		    char*       plainTextBuf,	 	// [out] plain text
-		    int32_t*    plainTextLen   	 	// [out] length of plain text
+		OpcUaStatusCode encryptCBC256(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
+		    char*      encryptedTextBuf, 	// [out] encrypted text
+		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+		);
+
+		OpcUaStatusCode encryptCBC(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
+		    char*      encryptedTextBuf, 	// [out] encrypted text
+		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+		);
+
+		OpcUaStatusCode decryptCBC128(
+			char*      encryptedTextBuf, 	// [in]  encrypted text to decrypt
+			uint32_t   encryptedTextLen, 	// [in]  length of the encryped text to decrypt
+			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
+		    char*      plainTextBuf,	 	// [out] plain text
+		    int32_t*   plainTextLen   	 	// [out] length of plain text
+		);
+
+		OpcUaStatusCode decryptCBC256(
+			char*      encryptedTextBuf, 	// [in]  encrypted text to decrypt
+			uint32_t   encryptedTextLen, 	// [in]  length of the encryped text to decrypt
+			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
+		    char*      plainTextBuf,	 	// [out] plain text
+		    int32_t*   plainTextLen   	 	// [out] length of plain text
+		);
+
+		OpcUaStatusCode decryptCBC(
+			char*      encryptedTextBuf, 	// [in]  encrypted text to decrypt
+			uint32_t   encryptedTextLen, 	// [in]  length of the encryped text to decrypt
+			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
+		    char*      plainTextBuf,	 	// [out] plain text
+		    int32_t*   plainTextLen   	 	// [out] length of plain text
 		);
 
 	  private:

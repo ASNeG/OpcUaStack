@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <string.h>
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
 
 namespace OpcUaStackCore

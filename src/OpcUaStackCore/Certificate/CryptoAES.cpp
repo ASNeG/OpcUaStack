@@ -43,12 +43,62 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	CryptoAES::encrypt(
-	    char*      plainTextBuf,	 	// [in]  plain text to encrypt
-	    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
-	    char* 	   key,		 			// [in]  key used to encrypt the plain text
-	    char*      encryptedTextBuf, 	// [out] encrypted text
-	    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+	CryptoAES::encryptCBC128(
+	    char*      plainTextBuf,
+	    uint32_t   plainTextLen,
+	    AESKey&	   aesKey,
+	    char*      encryptedTextBuf,
+	    int32_t*   encryptedTextLen
+	)
+	{
+		if (aesKey.memLen() != 16) {
+			if (isLogging_) {
+				Log(Error, "encryptCBC128 error: key length invalid");
+			}
+			return BadInvalidArgument;
+		}
+
+		return encryptCBC(
+			plainTextBuf,
+			plainTextLen,
+			aesKey,
+			encryptedTextBuf,
+			encryptedTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoAES::encryptCBC256(
+	    char*      plainTextBuf,
+	    uint32_t   plainTextLen,
+	    AESKey&	   aesKey,
+	    char*      encryptedTextBuf,
+	    int32_t*   encryptedTextLen
+	)
+	{
+		if (aesKey.memLen() != 32) {
+			if (isLogging_) {
+				Log(Error, "encryptCBC256 error: key length invalid");
+			}
+			return BadInvalidArgument;
+		}
+
+		return encryptCBC(
+			plainTextBuf,
+			plainTextLen,
+			aesKey,
+			encryptedTextBuf,
+			encryptedTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoAES::encryptCBC(
+	    char*      plainTextBuf,
+	    uint32_t   plainTextLen,
+		AESKey&	   aesKey,
+	    char*      encryptedTextBuf,
+	    int32_t*   encryptedTextLen
 	)
 	{
 		// FIXME: todo
@@ -56,12 +106,62 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	CryptoAES::decrypt(
-		char*       encryptedTextBuf, 	// [in]  encrypted text to decrypt
-		uint32_t    encryptedTextLen, 	// [in]  length of the encryped text to decrypt
-		char*       key,		 	    // [in]  key used to decrypt the decrypted text
-	    char*       plainTextBuf,	 	// [out] plain text
-	    int32_t*    plainTextLen   	 	// [out] length of plain text
+	CryptoAES::decryptCBC128(
+		char*      encryptedTextBuf,
+		uint32_t   encryptedTextLen,
+		AESKey&	   aesKey,
+	    char*      plainTextBuf,
+	    int32_t*   plainTextLen
+	)
+	{
+		if (aesKey.memLen() != 16) {
+			if (isLogging_) {
+				Log(Error, "decryptCBC128 error: key length invalid");
+			}
+			return BadInvalidArgument;
+		}
+
+		return decryptCBC(
+			encryptedTextBuf,
+			encryptedTextLen,
+			aesKey,
+			plainTextBuf,
+			plainTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoAES::decryptCBC256(
+		char*      encryptedTextBuf,
+		uint32_t   encryptedTextLen,
+		AESKey&	   aesKey,
+	    char*      plainTextBuf,
+	    int32_t*   plainTextLen
+	)
+	{
+		if (aesKey.memLen() != 32) {
+			if (isLogging_) {
+				Log(Error, "decryptCBC256 error: key length invalid");
+			}
+			return BadInvalidArgument;
+		}
+
+		return decryptCBC(
+			encryptedTextBuf,
+			encryptedTextLen,
+			aesKey,
+			plainTextBuf,
+			plainTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoAES::decryptCBC(
+		char*      encryptedTextBuf,
+		uint32_t   encryptedTextLen,
+		AESKey&	   aesKey,
+	    char*      plainTextBuf,
+	    int32_t*   plainTextLen
 	)
 	{
 		// FIXME: todo
