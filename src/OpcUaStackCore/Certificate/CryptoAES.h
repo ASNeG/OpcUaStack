@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 {
 
 	typedef MemoryBuffer AESKey;
+	typedef MemoryBuffer IV;
 
 	class DLLEXPORT CryptoAES
 	: public OpenSSLError
@@ -42,6 +43,7 @@ namespace OpcUaStackCore
 		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
 		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
 		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
+			IV&		   iv,					// [in]  initial vector
 		    char*      encryptedTextBuf, 	// [out] encrypted text
 		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
 		);
@@ -50,6 +52,7 @@ namespace OpcUaStackCore
 		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
 		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
 		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
+			IV&		   iv,					// [in]  initial vector
 		    char*      encryptedTextBuf, 	// [out] encrypted text
 		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
 		);
@@ -58,6 +61,7 @@ namespace OpcUaStackCore
 		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
 		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
 		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
+			IV&		   iv,					// [in]  initial vector
 		    char*      encryptedTextBuf, 	// [out] encrypted text
 		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
 		);
@@ -66,6 +70,7 @@ namespace OpcUaStackCore
 			char*      encryptedTextBuf, 	// [in]  encrypted text to decrypt
 			uint32_t   encryptedTextLen, 	// [in]  length of the encryped text to decrypt
 			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
+			IV&		   iv,					// [in]  initial vector
 		    char*      plainTextBuf,	 	// [out] plain text
 		    int32_t*   plainTextLen   	 	// [out] length of plain text
 		);
@@ -74,6 +79,7 @@ namespace OpcUaStackCore
 			char*      encryptedTextBuf, 	// [in]  encrypted text to decrypt
 			uint32_t   encryptedTextLen, 	// [in]  length of the encryped text to decrypt
 			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
+			IV&		   iv,					// [in]  initial vector
 		    char*      plainTextBuf,	 	// [out] plain text
 		    int32_t*   plainTextLen   	 	// [out] length of plain text
 		);
@@ -82,6 +88,7 @@ namespace OpcUaStackCore
 			char*      encryptedTextBuf, 	// [in]  encrypted text to decrypt
 			uint32_t   encryptedTextLen, 	// [in]  length of the encryped text to decrypt
 			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
+			IV&		   iv,					// [in]  initial vector
 		    char*      plainTextBuf,	 	// [out] plain text
 		    int32_t*   plainTextLen   	 	// [out] length of plain text
 		);
