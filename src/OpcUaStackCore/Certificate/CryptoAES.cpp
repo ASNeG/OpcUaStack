@@ -145,7 +145,7 @@ namespace OpcUaStackCore
 	    AES_cbc_encrypt(
 	        (const unsigned char*)plainTextBuf,
 			(unsigned char *)encryptedTextBuf,
-			(size_t)encryptedTextLen,
+			(size_t)*encryptedTextLen,
 	    	&key,
 	    	ivTmp,
 	    	AES_ENCRYPT
@@ -235,7 +235,7 @@ namespace OpcUaStackCore
 
 		// create AES key
 		AES_KEY key;
-	    if(AES_set_encrypt_key((const unsigned char*)aesKey.memBuf(), aesKey.memLen()*8, &key) < 0) {
+	    if(AES_set_decrypt_key((const unsigned char*)aesKey.memBuf(), aesKey.memLen()*8, &key) < 0) {
 			if (isLogging_) {
 				Log(Error, "decryptCBC error: AES_set_encrypt_key");
 			}
@@ -256,7 +256,7 @@ namespace OpcUaStackCore
 	    AES_cbc_encrypt(
 	        (const unsigned char*)encryptedTextBuf,
 			(unsigned char *)plainTextBuf,
-			(size_t)plainTextLen,
+			(size_t)*plainTextLen,
 	    	&key,
 	    	ivTmp,
 	    	AES_DECRYPT
