@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_CryptoRSA_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
 namespace OpcUaStackCore
@@ -30,6 +31,54 @@ namespace OpcUaStackCore
 	  public:
 		CryptoSHA1(void);
 		virtual ~CryptoSHA1(void);
+
+		void isLogging(bool isLogging);
+		bool isLogging(void);
+
+		OpcUaStatusCode sha1(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    char*      digestTextBuf, 		// [out] digest text
+		    uint32_t   digestTextLen  		// [out] length of the digest text - must be 160 Bits
+		);
+
+		OpcUaStatusCode sha160(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    char*      digestTextBuf, 		// [out] digest text
+		    uint32_t   digestTextLen  		// [out] length of the digest text - must be 160 Bits
+		);
+
+		OpcUaStatusCode sha224(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    char*      digestTextBuf, 		// [out] digest text
+		    uint32_t   digestTextLen  		// [out] length of the digest text - must be 224 Bits
+		);
+
+		OpcUaStatusCode sha256(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    char*      digestTextBuf, 		// [out] digest text
+		    uint32_t   digestTextLen  		// [out] length of the digest text - must be 256 Bits
+		);
+
+		OpcUaStatusCode sha384(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    char*      digestTextBuf, 		// [out] digest text
+		    uint32_t   digestTextLen  		// [out] length of the digest text - must be 384 Bits
+		);
+
+		OpcUaStatusCode sha512(
+		    char*      plainTextBuf,	 	// [in]  plain text to encrypt
+		    uint32_t   plainTextLen,   	 	// [in]  length of plain text to encrypt
+		    char*      digestTextBuf, 		// [out] digest text
+		    uint32_t   digestTextLen  		// [out] length of the digest text - must be 512 Bits
+		);
+
+	  private:
+		bool isLogging_;
 	};
 }
 
