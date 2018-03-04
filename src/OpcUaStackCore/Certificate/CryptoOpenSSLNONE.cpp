@@ -24,6 +24,18 @@ namespace OpcUaStackCore
 	:CryptoBase()
 	{
 		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#None");
+
+		symmetricKeyLen(0);
+		minimumAsymmetricKeyLen(0);
+		maximumAsymmetricKeyLen(0);
+		derivedEncryptionKeyLen(0);
+		derivedSignatureKeyLen(0);
+		signatureDataLen(0);
+		asymmetricSignatureAlgorithmId(0);
+		asymmetricEncryptionAlgorithmId(0);
+		symmetricSignatureAlgorithmId(0);
+		symmetricEncryptionAlgorithmId(0);
+
 	}
 
 	CryptoOpenSSLNONE::~CryptoOpenSSLNONE(void)
