@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 	CryptoOpenSSLBASIC128RSA15::CryptoOpenSSLBASIC128RSA15(void)
 	:CryptoBase()
 	{
+		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
 	}
 
 	CryptoOpenSSLBASIC128RSA15::~CryptoOpenSSLBASIC128RSA15(void)

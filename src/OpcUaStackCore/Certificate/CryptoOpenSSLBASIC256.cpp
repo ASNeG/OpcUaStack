@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 	CryptoOpenSSLBASIC256::CryptoOpenSSLBASIC256(void)
 	:CryptoBase()
 	{
+		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#Basic256");
 	}
 
 	CryptoOpenSSLBASIC256::~CryptoOpenSSLBASIC256(void)

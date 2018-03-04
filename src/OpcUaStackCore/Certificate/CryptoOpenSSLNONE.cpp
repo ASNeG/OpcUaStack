@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 	CryptoOpenSSLNONE::CryptoOpenSSLNONE(void)
 	:CryptoBase()
 	{
+		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#None");
 	}
 
 	CryptoOpenSSLNONE::~CryptoOpenSSLNONE(void)

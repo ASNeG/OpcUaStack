@@ -35,8 +35,40 @@ namespace OpcUaStackCore
 		void securityPolicy(const std::string& securityPolicy);
 		std::string& securityPolicy(void);
 
+		void symmetricKeyLen(int32_t symmetricKeyLen);
+		int32_t symmetricKeyLen(void);
+		void minimumAsymmetricKeyLen(uint32_t minimumAsymmetricKeyLen);
+		uint32_t minimumAsymmetricKeyLen(void);
+		void maximumAsymmetricKeyLen(uint32_t maximumAsymmetricKeyLen);
+		uint32_t maximumAsymmetricKeyLen(void);
+		void derivedEncryptionKeyLen(uint32_t derivedEncryptionKeyLen);
+		uint32_t derivedEncryptionKeyLen(void);
+		void derivedSignatureKeyLen(uint32_t derivedSignatureKeyLen);
+		uint32_t derivedSignatureKeyLen(void);
+		void signatureDataLen(uint32_t signatureDataLen);
+		uint32_t signatureDataLen(void);
+		void asymmetricSignatureAlgorithmId(uint32_t asymmetricSignatureAlgorithmId);
+		uint32_t asymmetricSignatureAlgorithmId(void);
+		void asymmetricEncryptionAlgorithmId(uint32_t asymmetricEncryptionAlgorithmId);
+		uint32_t asymmetricEncryptionAlgorithmId(void);
+		void symmetricSignatureAlgorithmId(uint32_t symmetricSignatureAlgorithmId);
+		uint32_t symmetricSignatureAlgorithmId(void);
+		void symmetricEncryptionAlgorithmId(uint32_t symmetricEncryptionAlgorithmId);
+		uint32_t symmetricEncryptionAlgorithmId(void);
+
 	  private:
 		std::string securityPolicy_;
+
+		int32_t symmetricKeyLen_;
+		uint32_t minimumAsymmetricKeyLen_;
+		uint32_t maximumAsymmetricKeyLen_;
+		uint32_t derivedEncryptionKeyLen_;
+		uint32_t derivedSignatureKeyLen_;
+		uint32_t signatureDataLen_;
+		uint32_t asymmetricSignatureAlgorithmId_;
+		uint32_t asymmetricEncryptionAlgorithmId_;
+		uint32_t symmetricSignatureAlgorithmId_;
+		uint32_t symmetricEncryptionAlgorithmId_;
 
 	};
 
