@@ -15,24 +15,18 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CryptoOpenSSL_h__
-#define __OpcUaStackCore_CryptoOpenSSL_h__
-
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Certificate/CryptoIf.h"
+#include <OpcUaStackCore/Certificate/CryptoOpenSSLNONE.h>
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CryptoOpenSSL
-	: public CryptoIf
+	CryptoOpenSSLNONE::CryptoOpenSSLNONE(void)
+	:CryptoIf()
 	{
-	  public:
-		CryptoOpenSSL(void);
-		virtual ~CryptoOpenSSL(void);
+	}
 
-	};
+	CryptoOpenSSLNONE::~CryptoOpenSSLNONE(void)
+	{
+	}
 
 }
-
-#endif
