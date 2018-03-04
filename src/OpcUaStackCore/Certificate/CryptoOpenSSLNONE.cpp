@@ -42,4 +42,17 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricDecrypt(
+	    char*       	encryptedTextBuf,
+		uint32_t		encryptedTextLen,
+		PrivateKey&		privateKey,
+		char*       	plainTextBuf,
+		uint32_t*		plainTextLen
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

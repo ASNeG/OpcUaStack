@@ -20,6 +20,8 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
+#include "OpcUaStackCore/Certificate/PrivateKey.h"
 
 namespace OpcUaStackCore
 {
@@ -89,6 +91,14 @@ namespace OpcUaStackCore
 		uint32_t symmetricSignatureAlgorithmId(void);
 		void symmetricEncryptionAlgorithmId(uint32_t symmetricEncryptionAlgorithmId);
 		uint32_t symmetricEncryptionAlgorithmId(void);
+
+		virtual OpcUaStatusCode asymmetricDecrypt(
+		    char*       	encryptedTextBuf,
+			uint32_t		encryptedTextLen,
+			PrivateKey&		privateKey,
+			char*       	plainTextBuf,
+			uint32_t*		plainTextLen
+		) = 0;
 
 	  private:
 		std::string securityPolicy_;

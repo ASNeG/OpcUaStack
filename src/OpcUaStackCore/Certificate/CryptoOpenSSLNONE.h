@@ -31,6 +31,14 @@ namespace OpcUaStackCore
 		CryptoOpenSSLNONE(void);
 		virtual ~CryptoOpenSSLNONE(void);
 
+		virtual OpcUaStatusCode asymmetricDecrypt(
+		    char*       	encryptedTextBuf,
+			uint32_t		encryptedTextLen,
+			PrivateKey&		privateKey,
+			char*       	plainTextBuf,
+			uint32_t*		plainTextLen
+		);
+
 	};
 
 }
