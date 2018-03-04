@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	CryptoOpenSSLBASIC128RSA15::CryptoOpenSSLBASIC128RSA15(void)
-	:CryptoIf()
+	:CryptoBase()
 	{
 	}
 

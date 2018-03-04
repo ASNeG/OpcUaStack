@@ -15,22 +15,30 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CryptoIf_h__
-#define __OpcUaStackCore_CryptoIf_h__
-
-#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/CryptoBase.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CryptoIf
+	CryptoBase::CryptoBase(void)
+	: name_("")
 	{
-	  public:
-		CryptoIf(void) {}
-		virtual ~CryptoIf(void) {}
+	}
 
-	};
+	CryptoBase::~CryptoBase(void)
+	{
+	}
+
+	void
+	CryptoBase::name(const std::string& name)
+	{
+		name_ = name;
+	}
+
+	std::string&
+	CryptoBase::name(void)
+	{
+		return name_;
+	}
 
 }
-
-#endif

@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	CryptoOpenSSLBASIC256SHA256::CryptoOpenSSLBASIC256SHA256(void)
-	:CryptoIf()
+	:CryptoBase()
 	{
 	}
 

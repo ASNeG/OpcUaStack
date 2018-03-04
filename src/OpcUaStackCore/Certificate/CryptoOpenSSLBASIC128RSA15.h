@@ -18,14 +18,14 @@
 #ifndef __OpcUaStackCore_CryptoOpenSSLBASIC128RSA15_h__
 #define __OpcUaStackCore_CryptoOpenSSLBASIC128RSA15_h__
 
+#include <OpcUaStackCore/Certificate/CryptoBase.h>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Certificate/CryptoIf.h"
 
 namespace OpcUaStackCore
 {
 
 	class DLLEXPORT CryptoOpenSSLBASIC128RSA15
-	: public CryptoIf
+	: public CryptoBase
 	{
 	  public:
 		CryptoOpenSSLBASIC128RSA15(void);

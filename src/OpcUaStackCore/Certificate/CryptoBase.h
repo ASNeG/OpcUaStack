@@ -15,21 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CryptoOpenSSLNONE_h__
-#define __OpcUaStackCore_CryptoOpenSSLNONE_h__
+#ifndef __OpcUaStackCore_CryptoBase_h__
+#define __OpcUaStackCore_CryptoBase_h__
 
-#include <OpcUaStackCore/Certificate/CryptoBase.h>
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
 {
 
-	class DLLEXPORT CryptoOpenSSLNONE
-	: public CryptoBase
+	class DLLEXPORT CryptoBase
 	{
 	  public:
-		CryptoOpenSSLNONE(void);
-		virtual ~CryptoOpenSSLNONE(void);
+		boost::shared_ptr<CryptoBase> SPtr;
+
+		CryptoBase(void);
+		virtual ~CryptoBase(void);
+
+		void name(const std::string& name);
+		std::string& name(void);
+
+	  private:
+		std::string name_;
 
 	};
 

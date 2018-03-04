@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	CryptoOpenSSLNONE::CryptoOpenSSLNONE(void)
-	:CryptoIf()
+	:CryptoBase()
 	{
 	}
 
