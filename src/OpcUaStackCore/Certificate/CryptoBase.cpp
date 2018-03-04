@@ -21,7 +21,7 @@ namespace OpcUaStackCore
 {
 
 	CryptoBase::CryptoBase(void)
-	: name_("")
+	: securityPolicy_("")
 	{
 	}
 
@@ -30,15 +30,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	CryptoBase::name(const std::string& name)
+	CryptoBase::securityPolicy(const std::string& securityPolicy)
 	{
-		name_ = name;
+		securityPolicy_ = securityPolicy;
 	}
 
 	std::string&
-	CryptoBase::name(void)
+	CryptoBase::securityPolicy(void)
 	{
-		return name_;
+		return securityPolicy_;
 	}
 
 }

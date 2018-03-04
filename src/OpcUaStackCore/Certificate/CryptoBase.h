@@ -32,11 +32,11 @@ namespace OpcUaStackCore
 		CryptoBase(void);
 		virtual ~CryptoBase(void);
 
-		void name(const std::string& name);
-		std::string& name(void);
+		void securityPolicy(const std::string& securityPolicy);
+		std::string& securityPolicy(void);
 
 	  private:
-		std::string name_;
+		std::string securityPolicy_;
 
 	};
 
