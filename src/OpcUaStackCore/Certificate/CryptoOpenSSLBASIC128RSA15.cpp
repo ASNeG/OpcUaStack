@@ -24,6 +24,17 @@ namespace OpcUaStackCore
 	:CryptoBase()
 	{
 		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
+
+		symmetricKeyLen(16);
+		minimumAsymmetricKeyLen(128);
+		maximumAsymmetricKeyLen(512);
+		derivedEncryptionKeyLen(16);
+		derivedSignatureKeyLen(16);
+		signatureDataLen(20);
+		asymmetricSignatureAlgorithmId(SignatureAlgs::RSA_PKCS1_V15_SHA1_Id);
+		asymmetricEncryptionAlgorithmId(EnryptionAlgs::RSA_PKCS1_V15_Id);
+		symmetricSignatureAlgorithmId(SignatureAlgs::HMAC_SHA1_Id);
+		symmetricEncryptionAlgorithmId(EnryptionAlgs::AES_128_CBC_Id);
 	}
 
 	CryptoOpenSSLBASIC128RSA15::~CryptoOpenSSLBASIC128RSA15(void)

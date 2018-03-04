@@ -24,6 +24,17 @@ namespace OpcUaStackCore
 	:CryptoBase()
 	{
 		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256");
+
+		symmetricKeyLen(32);
+		minimumAsymmetricKeyLen(256);
+		maximumAsymmetricKeyLen(512);
+		derivedEncryptionKeyLen(32);
+		derivedSignatureKeyLen(32);
+		signatureDataLen(32);
+		asymmetricSignatureAlgorithmId(SignatureAlgs::RSA_PKCS1_OAEP_SHA256_Id);
+		asymmetricEncryptionAlgorithmId(EnryptionAlgs::RSA_OAEP_Id);
+		symmetricSignatureAlgorithmId(SignatureAlgs::HMAC_SHA256_Id);
+		symmetricEncryptionAlgorithmId(EnryptionAlgs::AES_256_CBC_Id);
 	}
 
 	CryptoOpenSSLBASIC256SHA256::~CryptoOpenSSLBASIC256SHA256(void)

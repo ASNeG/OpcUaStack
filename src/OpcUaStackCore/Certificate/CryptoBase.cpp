@@ -20,6 +20,53 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// EncryptionAlgs
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+    uint32_t EnryptionAlgs::AES_128_CBC_Id = 1;
+    uint32_t EnryptionAlgs::AES_256_CBC_Id = 2;
+    uint32_t EnryptionAlgs::RSA_PKCS1_V15_Id = 3;
+    uint32_t EnryptionAlgs::RSA_OAEP_Id = 4;
+    uint32_t EnryptionAlgs::DES3_Id = 5;
+
+    std::string EnryptionAlgs::AES_128_CBC_Name = "AES-128-CBC";
+    std::string EnryptionAlgs::AES_256_CBC_Name = "AES-256-CBC";
+    std::string EnryptionAlgs::RSA_PKCS1_V15_Name = "RSA-PKCS-#1-V1.5";
+    std::string EnryptionAlgs::RSA_OAEP_Name = "RSA-OAEP";
+    std::string EnryptionAlgs::DES3_Name = "3DES";
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SignatureAlgs
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	uint32_t SignatureAlgs::RSA_PKCS1_V15_SHA1_Id = 6;
+	uint32_t SignatureAlgs::RSA_PKCS1_V15_SHA256_Id = 7;
+	uint32_t SignatureAlgs::HMAC_SHA1_Id = 8;
+	uint32_t SignatureAlgs::HMAC_SHA256_Id = 9;
+	uint32_t SignatureAlgs::RSA_PKCS1_OAEP_SHA1_Id = 10;
+	uint32_t SignatureAlgs::RSA_PKCS1_OAEP_SHA256_Id = 11;
+
+	std::string SignatureAlgs::RSA_PKCS1_V15_SHA1_Name = "RSA-PKCS-#1-V1.5-SHA1";
+	std::string SignatureAlgs::RSA_PKCS1_V15_SHA256_Name = "RSA-PKCS-#1-V1.5-SHA256";
+	std::string SignatureAlgs::HMAC_SHA1_Name = "HMAC-SHA1";
+	std::string SignatureAlgs::HMAC_SHA256_Name = "HMAC-SHA256";
+	std::string SignatureAlgs::RSA_PKCS1_OAEP_SHA1_Name = "RSA-PKCS-#1-OAEP-SHA1";
+	std::string SignatureAlgs::RSA_PKCS1_OAEP_SHA256_Name = "RSA-PKCS-#1-OAEP-SHA256";
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// CryptoBase
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	CryptoBase::CryptoBase(void)
 	: securityPolicy_("")
 	, symmetricKeyLen_(-1)

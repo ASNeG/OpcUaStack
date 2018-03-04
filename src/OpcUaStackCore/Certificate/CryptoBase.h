@@ -24,6 +24,40 @@
 namespace OpcUaStackCore
 {
 
+	class EnryptionAlgs
+	{
+	  public:
+		static uint32_t AES_128_CBC_Id;
+		static uint32_t AES_256_CBC_Id;
+		static uint32_t RSA_PKCS1_V15_Id;
+		static uint32_t RSA_OAEP_Id;
+		static uint32_t DES3_Id;
+
+		static std::string AES_128_CBC_Name;
+		static std::string AES_256_CBC_Name;
+		static std::string RSA_PKCS1_V15_Name;
+		static std::string RSA_OAEP_Name;
+		static std::string DES3_Name;
+	};
+
+	class SignatureAlgs
+	{
+	  public:
+		static uint32_t RSA_PKCS1_V15_SHA1_Id;
+		static uint32_t RSA_PKCS1_V15_SHA256_Id;
+		static uint32_t HMAC_SHA1_Id;
+		static uint32_t HMAC_SHA256_Id;
+		static uint32_t RSA_PKCS1_OAEP_SHA1_Id;
+		static uint32_t RSA_PKCS1_OAEP_SHA256_Id;
+
+		static std::string RSA_PKCS1_V15_SHA1_Name;
+		static std::string RSA_PKCS1_V15_SHA256_Name;
+		static std::string HMAC_SHA1_Name;
+		static std::string HMAC_SHA256_Name;
+		static std::string RSA_PKCS1_OAEP_SHA1_Name;
+		static std::string RSA_PKCS1_OAEP_SHA256_Name;
+	};
+
 	class DLLEXPORT CryptoBase
 	{
 	  public:
