@@ -16,6 +16,11 @@
  */
 
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
+#include "OpcUaStackCore/Certificate/CryptoOpenSSLNONE.h"
+#include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256SHA256.h"
+#include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256.h"
+#include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC128RSA15.h"
+
 
 namespace OpcUaStackCore
 {
@@ -23,6 +28,22 @@ namespace OpcUaStackCore
 	CryptoManager::CryptoManager(void)
 	: cryptoBaseMap_()
 	{
+		// register open ssl security policy NONE
+		CryptoOpenSSLNONE::SPtr cryptoOpenSSLNone(constructSPtr<CryptoOpenSSLNONE>());
+		insert(cryptoOpenSSLNone->securityPolicy(), cryptoOpenSSLNone);
+
+		// register open ssl security policy BASIC256SHA256
+		CryptoOpenSSLBASIC256SHA256::SPtr cryptoOpenSSLBASIC256SHA256(constructSPtr<CryptoOpenSSLBASIC256SHA256>());
+		insert(cryptoOpenSSLBASIC256SHA256->securityPolicy(), cryptoOpenSSLBASIC256SHA256);
+
+		// register open ssl security policy BASIC256
+		CryptoOpenSSLBASIC256::SPtr cryptoOpenSSLBASIC256(constructSPtr<CryptoOpenSSLBASIC256>());
+		insert(cryptoOpenSSLBASIC256->securityPolicy(), cryptoOpenSSLBASIC256);
+
+		// register open ssl security policy BASIC128RSA15
+		CryptoOpenSSLBASIC128RSA15::SPtr cryptoOpenSSLBASIC128RSA15(constructSPtr<CryptoOpenSSLBASIC128RSA15>());
+		insert(cryptoOpenSSLBASIC128RSA15->securityPolicy(), cryptoOpenSSLBASIC128RSA15);
+
 	}
 
 	CryptoManager::~CryptoManager(void)
