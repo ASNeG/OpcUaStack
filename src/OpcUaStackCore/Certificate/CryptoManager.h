@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_CryptoManager_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/CryptoBase.h"
 
 namespace OpcUaStackCore
 {
@@ -29,6 +30,12 @@ namespace OpcUaStackCore
 		CryptoManager(void);
 		~CryptoManager(void);
 
+		bool insert(const std::string& name, CryptoBase::SPtr& cryptoBase);
+		bool remove(const std::string& name);
+		CryptoBase::SPtr get(const std::string& name);
+
+	  private:
+		CryptoBase::Map cryptoBaseMap_;
 	};
 
 #if 0

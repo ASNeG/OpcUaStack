@@ -19,6 +19,8 @@
 #define __OpcUaStackCore_CryptoBase_h__
 
 #include <boost/shared_ptr.hpp>
+#include <map>
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
@@ -63,7 +65,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT CryptoBase
 	{
 	  public:
-		boost::shared_ptr<CryptoBase> SPtr;
+		typedef boost::shared_ptr<CryptoBase> SPtr;
+		typedef std::map<std::string, CryptoBase::SPtr> Map;
 
 		CryptoBase(void);
 		virtual ~CryptoBase(void);

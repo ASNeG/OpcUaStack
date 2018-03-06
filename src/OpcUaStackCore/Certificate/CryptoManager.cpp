@@ -21,11 +21,36 @@ namespace OpcUaStackCore
 {
 
 	CryptoManager::CryptoManager(void)
+	: cryptoBaseMap_()
 	{
 	}
 
 	CryptoManager::~CryptoManager(void)
 	{
+	}
+
+	bool
+	CryptoManager::insert(const std::string& name, CryptoBase::SPtr& cryptoBase)
+	{
+		return cryptoBaseMap_.insert(std::make_pair(name, cryptoBase)).second;
+	}
+
+	bool
+	CryptoManager::remove(const std::string& name)
+	{
+		return cryptoBaseMap_.erase(name) == 1;
+	}
+
+	CryptoBase::SPtr
+	CryptoManager::get(const std::string& name)
+	{
+		CryptoBase::Map::iterator it;
+		it = cryptoBaseMap_.find(name);
+		if (it == cryptoBaseMap_.end()) {
+			CryptoBase::SPtr cryptoBase;
+			return cryptoBase;
+		}
+		return it->second;
 	}
 
 }
