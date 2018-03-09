@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaDataValue.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/ServiceSet/EventFilter.h"
+#include "OpcUaStackCore/ServiceSet/HistoryEventFieldList.h"
 
 namespace OpcUaStackCore
 {
@@ -34,12 +35,13 @@ namespace OpcUaStackCore
 		OpcUaNodeId nodeId_;						// IN - node id to be read
 		boost::posix_time::ptime startTime_;		// IN - Start time of variables
 		boost::posix_time::ptime stopTime_;			// IN - stop time of variables
-		EventFilter filter_;					// IN - event filter
+		TimestampsToReturn timestampsToReturn_;		// IN - what timestamps are to be returned
+		ExtensibleParameter::SPtr filter_;			// IN - event filter
 		OpcUaBoolean releaseContinuationPoints_;	// IN - info about whether the continous
 													//      point schould be deleted
 		std::string continousPoint_;				// IN - continous point or empty string
 		uint32_t numValuesPerNode_;					// IN - maximum number of data values in result array
-		OpcUaDataValueArray::SPtr dataValueArray_;	// OUT - result data array
+		HistoryEventFieldListArray::SPtr eventFieldArray_;// OUT - result event array
 		OpcUaStatusCode statusCode_;				// OUT - status code of the read operation
 	};
 

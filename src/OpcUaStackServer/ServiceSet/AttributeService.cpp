@@ -25,6 +25,7 @@
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/ServiceSet/HistoryEvent.h"
 #include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
@@ -583,8 +584,104 @@ namespace OpcUaStackServer
 		readDetails = readRequest->historyReadDetails()->parameter<ReadEventDetails>();
 		uint32_t numValuesPerNode = readDetails->numValuesPerNode();
 
-		// FIXME: todo
-		trx->statusCode(BadServiceUnsupported);
+		// read values
+		readResponse->results()->resize(readRequest->nodesToRead()->size());
+		for (uint32_t idx = 0; idx < readRequest->nodesToRead()->size(); idx++) {
+			HistoryReadResult::SPtr readResult = constructSPtr<HistoryReadResult>();
+			readResponse->results()->set(idx, readResult);
+
+			// determine node information
+			HistoryReadValueId::SPtr readValueId;
+			if (!readRequest->nodesToRead()->get(idx, readValueId)) {
+				readResult->statusCode(BadNodeIdInvalid);
+				Log(Debug, "history read event error, because node request parameter invalid")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx);
+				continue;
+			}
+
+			// autorization
+			statusCode = forwardAuthorizationHistoricalRead(serviceTransaction->userContext(), readValueId);
+			if (statusCode != Success) {
+				readResult->statusCode(statusCode);
+				continue;
+			}
+
+			// find node class instance for the node
+			BaseNodeClass::SPtr baseNodeClass = informationModel_->find(readValueId->nodeId());
+			if (baseNodeClass.get() == nullptr) {
+				readResult->statusCode(BadNodeIdUnknown);
+				Log(Debug, "history read event error, because node not exist in information model")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId());
+				continue;
+			}
+
+			// check if forward callback exists
+			ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
+			if (forwardNodeSync.get() == nullptr) {
+				readResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history read event error, because service not supported")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId());
+				continue;
+			}
+			if (!forwardNodeSync->readHEService().isCallback()) {
+				readResult->statusCode(BadServiceUnsupported);
+				Log(Debug, "history read event error, because service not supported")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId());
+				continue;
+			}
+
+			// get continous point
+			std::string continousPoint = "";
+			if (readValueId->continuationPoint().exist()) {
+				continousPoint = readValueId->continuationPoint().toString();
+			}
+
+			// call forward calbacks
+			ApplicationHReadEventContext applicationReadContext;
+			applicationReadContext.nodeId_ = *readValueId->nodeId();
+			applicationReadContext.startTime_ = readDetails->startTime().dateTime();
+			applicationReadContext.stopTime_ = readDetails->endTime().dateTime();
+			applicationReadContext.timestampsToReturn_ = readRequest->timestampsToReturn();
+			applicationReadContext.filter_ = readDetails->filter();
+			applicationReadContext.statusCode_ = Success;
+			applicationReadContext.applicationContext_ = forwardNodeSync->readHEService().applicationContext();
+			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
+			applicationReadContext.continousPoint_ = continousPoint;
+			applicationReadContext.numValuesPerNode_ = numValuesPerNode;
+
+			forwardNodeSync->readHEService().callback()(&applicationReadContext);
+
+			// check response
+			readResult->statusCode(applicationReadContext.statusCode_);
+
+			if (!applicationReadContext.continousPoint_.empty()) {
+				readResult->continuationPoint().value(applicationReadContext.continousPoint_);
+			}
+
+			if (applicationReadContext.statusCode_ != Success) {
+				Log(Debug, "history read event error, because service process failed")
+					.parameter("Trx", serviceTransaction->transactionId())
+					.parameter("Idx", idx)
+					.parameter("Node", *readValueId->nodeId())
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationReadContext.statusCode_));
+				continue;
+			}
+
+			// process response
+			HistoryEvent::SPtr historyEvent;
+			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryEvent_Encoding_DefaultBinary);
+			historyEvent = readResult->historyData()->parameter<HistoryEvent>();
+			historyEvent->events(applicationReadContext.eventFieldArray_);
+		}
+
+		trx->statusCode(Success);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
