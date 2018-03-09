@@ -16,6 +16,7 @@
  */
 
 #include <OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256.h>
+#include <OpcUaStackCore/Certificate/CryptoRSA.h>
 
 namespace OpcUaStackCore
 {
@@ -50,8 +51,15 @@ namespace OpcUaStackCore
 		uint32_t*		plainTextLen
 	)
 	{
-		// FIXME: todo
-		return Success;
+		CryptoRSA cryptoRSA;
+		return cryptoRSA.privateDecrypt(
+			encryptedTextBuf,
+			encryptedTextLen,
+			&privateKey,
+			RSA_PKCS1_OAEP_PADDING,
+			plainTextBuf,
+			plainTextLen
+		);
 	}
 
 	OpcUaStatusCode
@@ -63,8 +71,15 @@ namespace OpcUaStackCore
 		uint32_t*		encryptedTextLen
 	)
 	{
-		// FIXME: todo
-		return Success;
+		CryptoRSA cryptoRSA;
+		return cryptoRSA.publicEncrypt(
+			plainTextBuf,
+			plainTextLen,
+			&publicKey,
+			RSA_PKCS1_OAEP_PADDING,
+			encryptedTextBuf,
+			encryptedTextLen
+		);
 	}
 
 }
