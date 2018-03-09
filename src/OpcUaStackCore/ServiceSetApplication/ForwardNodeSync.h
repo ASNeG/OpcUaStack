@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 
 		ForwardCallback& readService(void);
 		ForwardCallback& readHService(void);
+		ForwardCallback& readHEService(void);
 		ForwardCallback& writeService(void);
 		ForwardCallback& writeHService(void);
 		ForwardCallback& methodService(void);
@@ -50,6 +51,7 @@ namespace OpcUaStackCore
 		// attribute service
 		ForwardCallback readService_;
 		ForwardCallback readHService_;
+		ForwardCallback readHEService_;
 		ForwardCallback writeService_;
 		ForwardCallback writeHService_;
 		ForwardCallback monitoredItemStartService_;

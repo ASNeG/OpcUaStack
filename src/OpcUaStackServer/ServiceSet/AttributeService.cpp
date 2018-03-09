@@ -575,6 +575,12 @@ namespace OpcUaStackServer
 		HistoryReadResponse::SPtr readResponse
 	)
 	{
+		OpcUaStatusCode statusCode;
+
+		//ReadEventDetails::SPtr readDetails;
+		//readDetails = readRequest->historyReadDetails()->parameter<ReadEventDetails>();
+		//uint32_t numValuesPerNode = readDetails->numValuesPerNode();
+
 		// FIXME: todo
 		trx->statusCode(BadServiceUnsupported);
 		trx->componentSession()->send(serviceTransaction);
