@@ -20,10 +20,12 @@
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
 #include "OpcUaStackCore/Application/ApplicationReadContext.h"
 #include "OpcUaStackCore/Application/ApplicationHReadContext.h"
+#include "OpcUaStackCore/Application/ApplicationHReadEventContext.h"
 #include "OpcUaStackCore/Application/ApplicationWriteContext.h"
 #include "OpcUaStackCore/Application/ApplicationHWriteContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 #include "OpcUaStackServer/ServiceSet/AttributeService.h"
 #include "OpcUaStackServer/AddressSpaceModel/AttributeAccess.h"
 
@@ -577,9 +579,9 @@ namespace OpcUaStackServer
 	{
 		OpcUaStatusCode statusCode;
 
-		//ReadEventDetails::SPtr readDetails;
-		//readDetails = readRequest->historyReadDetails()->parameter<ReadEventDetails>();
-		//uint32_t numValuesPerNode = readDetails->numValuesPerNode();
+		ReadEventDetails::SPtr readDetails;
+		readDetails = readRequest->historyReadDetails()->parameter<ReadEventDetails>();
+		uint32_t numValuesPerNode = readDetails->numValuesPerNode();
 
 		// FIXME: todo
 		trx->statusCode(BadServiceUnsupported);
