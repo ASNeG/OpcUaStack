@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 	    PublicKey* publicKey,
 	    int16_t    padding,
 	    char*      encryptedTextBuf,
-	    int32_t*   encryptedTextLen
+	    uint32_t*  encryptedTextLen
 	)
 	{
 		*encryptedTextLen = 0;
@@ -173,7 +173,7 @@ namespace OpcUaStackCore
 		PrivateKey* privateKey,
 		int16_t     padding,
 	    char*       plainTextBuf,
-	    int32_t*    plainTextLen
+	    uint32_t*   plainTextLen
 	)
 	{
 		*plainTextLen = 0;

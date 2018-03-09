@@ -43,7 +43,7 @@ namespace OpcUaStackCore
 		    PublicKey* publicKey,		 	// [in]  public key used to encrypt the plain text
 		    int16_t    padding,          	// [in]  padding scheme used for filling empty bytes after encryption
 		    char*      encryptedTextBuf, 	// [out] encrypted text
-		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+		    uint32_t*  encryptedTextLen  	// [out] length of the encryped text
 		);
 
 		OpcUaStatusCode privateDecrypt(
@@ -52,7 +52,7 @@ namespace OpcUaStackCore
 			PrivateKey* privateKey,		 	// [in]  private key used to decrypt the decrypted text
 			int16_t     padding,          	// [in]  padding scheme used for filling empty bytes after encryption
 		    char*       plainTextBuf,	 	// [out] plain text
-		    int32_t*    plainTextLen   	 	// [out] length of plain text
+		    uint32_t*   plainTextLen   	 	// [out] length of plain text
 		);
 
 		OpcUaStatusCode privateSign(

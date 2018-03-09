@@ -51,8 +51,7 @@ namespace OpcUaStackCore
 		uint32_t*		plainTextLen
 	)
 	{
-		// FIXME: todo
-		return Success;
+		return BadNotSupported;
 	}
 
 	OpcUaStatusCode
@@ -64,8 +63,7 @@ namespace OpcUaStackCore
 		uint32_t*		encryptedTextLen
 	)
 	{
-		// FIXME: todo
-		return Success;
+		return BadNotSupported;
 	}
 
 }
