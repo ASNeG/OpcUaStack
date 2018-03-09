@@ -54,4 +54,17 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC128RSA15::asymmetricEncrypt(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		PublicKey&		publicKey,
+		char*       	encryptedTextBuf,
+		uint32_t*		encryptedTextLen
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

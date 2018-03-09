@@ -39,6 +39,14 @@ namespace OpcUaStackCore
 			uint32_t*		plainTextLen
 		);
 
+		virtual OpcUaStatusCode asymmetricEncrypt(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	encryptedTextBuf,
+			uint32_t*		encryptedTextLen
+		);
+
 	};
 
 }

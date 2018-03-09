@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
+#include "OpcUaStackCore/Certificate/PublicKey.h"
 
 namespace OpcUaStackCore
 {
@@ -101,6 +102,13 @@ namespace OpcUaStackCore
 			PrivateKey&		privateKey,
 			char*       	plainTextBuf,
 			uint32_t*		plainTextLen
+		) = 0;
+		virtual OpcUaStatusCode asymmetricEncrypt(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	encryptedTextBuf,
+			uint32_t*		encryptedTextLen
 		) = 0;
 
 	  private:
