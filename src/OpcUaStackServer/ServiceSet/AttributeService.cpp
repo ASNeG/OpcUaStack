@@ -427,18 +427,30 @@ namespace OpcUaStackServer
 		// check type of history read details
 		OpcUaNodeId parameterTypeId;
 		parameterTypeId.set((OpcUaUInt32)OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
-		if (parameterTypeId != readRequest->historyReadDetails()->parameterTypeId()) {
-			trx->statusCode(BadServiceUnsupported);
-			trx->componentSession()->send(serviceTransaction);
+		if (parameterTypeId == readRequest->historyReadDetails()->parameterTypeId()) {
+			receiveHistoryReadRawRequest(
+				serviceTransaction,
+				trx,
+				readRequest,
+				readResponse
+			);
 			return;
 		}
 
-		receiveHistoryReadRawRequest(
-			serviceTransaction,
-			trx,
-			readRequest,
-			readResponse
-		);
+		// check type of history event
+		parameterTypeId.set((OpcUaUInt32)OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
+		if (parameterTypeId == readRequest->historyReadDetails()->parameterTypeId()) {
+			receiveHistoryReadEventRequest(
+				serviceTransaction,
+				trx,
+				readRequest,
+				readResponse
+			);
+			return;
+		}
+
+		trx->statusCode(BadServiceUnsupported);
+		trx->componentSession()->send(serviceTransaction);
 	}
 
 	void
@@ -552,6 +564,19 @@ namespace OpcUaStackServer
 		}
 
 		trx->statusCode(Success);
+		trx->componentSession()->send(serviceTransaction);
+	}
+
+	void
+	AttributeService::receiveHistoryReadEventRequest(
+		ServiceTransaction::SPtr& serviceTransaction,
+		ServiceTransactionHistoryRead::SPtr& trx,
+		HistoryReadRequest::SPtr readRequest,
+		HistoryReadResponse::SPtr readResponse
+	)
+	{
+		// FIXME: todo
+		trx->statusCode(BadServiceUnsupported);
 		trx->componentSession()->send(serviceTransaction);
 	}
 
