@@ -53,6 +53,12 @@ namespace OpcUaStackServer
 		OpcUaStatusCode forwardWrite(BaseNodeClass::SPtr baseNodeClass, WriteRequest::SPtr writeRequest, WriteValue::SPtr writeValue);
 		OpcUaStatusCode forwardAuthorizationWrite(UserContext::SPtr& userContext, WriteValue::SPtr& writeValue);
 		void receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveHistoryReadRawRequest(
+			ServiceTransaction::SPtr& serviceTransaction,
+			ServiceTransactionHistoryRead::SPtr& trx,
+			HistoryReadRequest::SPtr readRequest,
+			HistoryReadResponse::SPtr readResponse
+		);
 		OpcUaStatusCode forwardAuthorizationHistoricalRead(UserContext::SPtr& userContext, HistoryReadValueId::SPtr& readValueId);
 		void receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction);
 		OpcUaStatusCode forwardAuthorizationHistoricalWrite(UserContext::SPtr& userContext, UpdateStructureDataDetails::SPtr& updateStructureDataDetails);

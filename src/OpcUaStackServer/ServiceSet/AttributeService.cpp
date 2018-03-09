@@ -432,6 +432,25 @@ namespace OpcUaStackServer
 			trx->componentSession()->send(serviceTransaction);
 			return;
 		}
+
+		receiveHistoryReadRawRequest(
+			serviceTransaction,
+			trx,
+			readRequest,
+			readResponse
+		);
+	}
+
+	void
+	AttributeService::receiveHistoryReadRawRequest(
+		ServiceTransaction::SPtr& serviceTransaction,
+		ServiceTransactionHistoryRead::SPtr& trx,
+		HistoryReadRequest::SPtr readRequest,
+		HistoryReadResponse::SPtr readResponse
+	)
+	{
+		OpcUaStatusCode statusCode;
+
 		ReadRawModifiedDetails::SPtr readDetails;
 		readDetails = readRequest->historyReadDetails()->parameter<ReadRawModifiedDetails>();
 		uint32_t numValuesPerNode = readDetails->numValuesPerNode();
