@@ -508,7 +508,7 @@ namespace OpcUaStackServer
 			ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
 			if (forwardNodeSync.get() == nullptr) {
 				readResult->statusCode(BadServiceUnsupported);
-				Log(Debug, "history read value error, because service not supported")
+				Log(Debug, "history read value error, because service not supported (1)")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("Node", *readValueId->nodeId());
@@ -516,7 +516,7 @@ namespace OpcUaStackServer
 			}
 			if (!forwardNodeSync->readHService().isCallback()) {
 				readResult->statusCode(BadServiceUnsupported);
-				Log(Debug, "history read value error, because service not supported")
+				Log(Debug, "history read value error, because service not supported (2)")
 					.parameter("Trx", serviceTransaction->transactionId())
 					.parameter("Idx", idx)
 					.parameter("Node", *readValueId->nodeId());

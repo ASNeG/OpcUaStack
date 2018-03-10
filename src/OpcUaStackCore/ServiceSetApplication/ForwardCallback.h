@@ -38,8 +38,9 @@ namespace OpcUaStackCore
 		void setCallback(Callback& callback);
 		template<typename T>
 		  void setCallback(T handler) {
-			Callback callback;
-			callback.reset(handler);
+			  Callback callback;
+			  callback.reset(handler);
+			  setCallback(callback);
 		  }
 		void unsetCallback(void);
 		bool isCallback(void);
