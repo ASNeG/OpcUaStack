@@ -42,8 +42,10 @@
 #include "OpcUaStackCore/ServiceSet/DataTypeAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ViewAttributes.h"
 #include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 #include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackCore/ServiceSet/HistoryData.h"
+#include "OpcUaStackCore/ServiceSet/HistoryEvent.h"
 
 #include "OpcUaStackCore/StandardDataTypes/BuildInfo.h"
 #include "OpcUaStackCore/StandardDataTypes/ServerStatusDataType.h"
@@ -132,8 +134,10 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<ViewAttributes>(OpcUaId_ViewAttributes);
 
 		ep.registerFactoryElement<ReadRawModifiedDetails>(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		ep.registerFactoryElement<ReadEventDetails>(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
+		ep.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 	}
 
 	void
@@ -188,8 +192,10 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_ViewAttributes);
 
 		ep.deregisterFactoryElement(OpcUaId_ReadRawModifiedDetails_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_ReadEventDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 	}
 
 	void
