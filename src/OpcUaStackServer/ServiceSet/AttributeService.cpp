@@ -561,16 +561,6 @@ namespace OpcUaStackServer
 			}
 
 			// process response
-			if (!readResult->historyData()->exist()) {
-				readResult->statusCode(BadInternalError);
-				Log(Debug, "history read value error, because service process result empty")
-					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationReadContext.statusCode_));
-				continue;
-			}
-
 			HistoryData::SPtr historyData;
 			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryData_Encoding_DefaultBinary);
 			historyData = readResult->historyData()->parameter<HistoryData>();
@@ -687,16 +677,6 @@ namespace OpcUaStackServer
 			}
 
 			// process response
-			if (!readResult->historyData()->exist()) {
-				readResult->statusCode(BadInternalError);
-				Log(Debug, "history read event error, because service process result empty")
-					.parameter("Trx", serviceTransaction->transactionId())
-					.parameter("Idx", idx)
-					.parameter("Node", *readValueId->nodeId())
-					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(applicationReadContext.statusCode_));
-				continue;
-			}
-
 			HistoryEvent::SPtr historyEvent;
 			readResult->historyData()->parameterTypeId().set((OpcUaUInt32)OpcUaId_HistoryEvent_Encoding_DefaultBinary);
 			historyEvent = readResult->historyData()->parameter<HistoryEvent>();
