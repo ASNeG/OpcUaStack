@@ -36,6 +36,11 @@ namespace OpcUaStackCore
 
 		void updateFrom(ForwardCallback& forwardInfo);
 		void setCallback(Callback& callback);
+		template<typename T>
+		  void setCallback(T handler) {
+			Callback callback;
+			callback.reset(handler);
+		  }
 		void unsetCallback(void);
 		bool isCallback(void);
 		bool usedCallback(void);
