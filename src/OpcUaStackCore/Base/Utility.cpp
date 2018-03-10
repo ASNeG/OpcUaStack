@@ -98,6 +98,17 @@ namespace OpcUaStackCore
 		while (ios.get(c));
 	}
 
+	void dumpHex(std::istream& is, std::ostream& os)
+	{
+		std::stringstream ss;
+
+		char c;
+		while (is.read(&c, 1)) {
+			ss << c;
+		}
+		dumpHex(ss.str().c_str(), ss.str().size(), os);
+	}
+
 	void dumpHex(std::streambuf& sb, std::ostream& os)
 	{
 		std::iostream ios(&sb);
