@@ -136,7 +136,7 @@ namespace OpcUaStackCore
 			  if (!activate_) return *this;
 			  std::stringstream ss;
 			  bool first = true;
-			  typename std::vector<T>::iterator it;
+			  typename std::set<T>::iterator it;
 			  ss << "[";
 			  for (it=parameterValue.begin(); it!=parameterValue.end(); it++) {
 				  if (!first) ss << ",";
