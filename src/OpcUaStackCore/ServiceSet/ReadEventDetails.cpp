@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/ServiceSet/ReadEventDetails.h"
 
 namespace OpcUaStackCore
@@ -34,7 +35,7 @@ namespace OpcUaStackCore
 	, numValuesPerNode_()
 	, startTime_()
 	, endTime_()
-	, filterSPtr_(constructSPtr<ExtensibleParameter>())
+	, filterSPtr_(constructSPtr<EventFilter>())
 	{
 	}
 
@@ -91,12 +92,12 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	ReadEventDetails::filter(const ExtensibleParameter::SPtr filter)
+	ReadEventDetails::filter(const EventFilter::SPtr& filter)
 	{
 		filterSPtr_ = filter;
 	}
 	
-	ExtensibleParameter::SPtr 
+	EventFilter::SPtr&
 	ReadEventDetails::filter(void)
 	{
 		return filterSPtr_;

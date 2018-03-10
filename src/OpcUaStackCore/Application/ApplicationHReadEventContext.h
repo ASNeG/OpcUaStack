@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		boost::posix_time::ptime startTime_;		// IN - Start time of variables
 		boost::posix_time::ptime stopTime_;			// IN - stop time of variables
 		TimestampsToReturn timestampsToReturn_;		// IN - what timestamps are to be returned
-		ExtensibleParameter::SPtr filter_;			// IN - event filter
+		EventFilter::SPtr filter_;					// IN - event filter
 		OpcUaBoolean releaseContinuationPoints_;	// IN - info about whether the continous
 													//      point schould be deleted
 		std::string continousPoint_;				// IN - continous point or empty string

@@ -138,6 +138,7 @@ namespace OpcUaStackCore
 		ep.registerFactoryElement<UpdateStructureDataDetails>(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		ep.registerFactoryElement<HistoryData>(OpcUaId_HistoryData_Encoding_DefaultBinary);
 		ep.registerFactoryElement<HistoryEvent>(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
+		ep.registerFactoryElement<EventFilter>(OpcUaId_EventFilter_Encoding_DefaultBinary);
 	}
 
 	void
@@ -196,6 +197,7 @@ namespace OpcUaStackCore
 		ep.deregisterFactoryElement(OpcUaId_UpdateStructureDataDetails_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_HistoryData_Encoding_DefaultBinary);
 		ep.deregisterFactoryElement(OpcUaId_HistoryEvent_Encoding_DefaultBinary);
+		ep.deregisterFactoryElement(OpcUaId_EventFilter_Encoding_DefaultBinary);
 	}
 
 	void
