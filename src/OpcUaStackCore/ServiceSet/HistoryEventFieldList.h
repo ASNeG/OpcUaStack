@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 		HistoryEventFieldList(void);
 		virtual ~HistoryEventFieldList(void);
 
-		void eventFields(const EventFieldArray::SPtr eventFieldList);
+		void eventFields(const EventFieldArray::SPtr eventFieldsSPtr);
 		EventFieldArray::SPtr eventFields(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
