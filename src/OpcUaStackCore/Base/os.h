@@ -18,7 +18,6 @@
 #ifndef __OpcUaStackCore_os_h__
 #define __OpcUaStackCore_os_h__
 
-
 #ifdef WIN32
 	
 	#define _WIN32_WINNT	0x0501

@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/version.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/filesystem.hpp>
@@ -40,7 +41,7 @@ namespace OpcUaStackCore
 	{
 		try 
 		{
-#ifdef BOOST_VERSION_1_58
+#if BOOST_VERSION >= 105800
 			boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
 #else
 			boost::property_tree::xml_writer_settings<char> settings('\t', 1);
@@ -60,7 +61,7 @@ namespace OpcUaStackCore
 	{
 		try
 		{
-#ifdef BOOST_VERSION_1_58
+#if BOOST_VERSION >= 105800
 			boost::property_tree::xml_writer_settings<std::string> settings('\t', 1);
 #else
 			boost::property_tree::xml_writer_settings<char> settings('\t', 1);
