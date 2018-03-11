@@ -18,6 +18,7 @@
 #include "OpcUaStackServer/ServiceSet/Session.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
 #include "OpcUaStackCore/Base/Log.h"
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/SecureChannel/RequestHeader.h"
 #include "OpcUaStackCore/ServiceSet/CreateSessionRequest.h"
@@ -286,6 +287,41 @@ namespace OpcUaStackServer
 			return BadIdentityTokenRejected;;
 		}
 
+		// decrypt password
+		char* encryptedTextBuf;
+		int32_t encryptedTextLen;
+		token->password((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		if (encryptedTextLen <= 0) {
+			Log(Debug, "password format invalid");
+			return BadIdentityTokenRejected;;
+		}
+
+		char* plainTextBuf;
+		uint32_t plainTextLen;
+		MemoryBuffer plainText(encryptedTextLen);
+		plainTextBuf = plainText.memBuf();
+		plainTextLen = plainText.memLen();
+
+		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+
+		OpcUaStatusCode statusCode = cryptoBase->asymmetricDecrypt(
+			encryptedTextBuf,
+			encryptedTextLen,
+			*privateKey.get(),
+			plainTextBuf,
+			&plainTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "decrypt password error");
+			return BadIdentityTokenRejected;;
+		}
+
+		// check decrypted password and server nonce
+		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
+			Log(Debug, "decrypt password server nonce error");
+				return BadIdentityTokenRejected;;
+		}
+		token->password((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
 
 		// create application context
 		ApplicationAuthenticationContext context;
