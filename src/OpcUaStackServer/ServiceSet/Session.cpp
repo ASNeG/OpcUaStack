@@ -64,6 +64,8 @@ namespace OpcUaStackServer
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
 	, applicationCertificate_()
+	, endpointDescriptionArray_()
+	, endpointDescription_()
 	, userContext_()
 	{
 		Log(Info, "session construct")
@@ -220,7 +222,23 @@ namespace OpcUaStackServer
 			return BadIdentityTokenInvalid;
 		}
 
-		// ..
+		// find related identity token
+#if 0
+		bool found = true;
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
+			UserTokenPolicy::SPtr userTokenPolicy;
+			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) continue;
+
+		}
+		if (!found) {
+			return BadIdentityTokenInvalid;
+		}
+#endif
+
+		Log(Debug, "authentication user name")
+		    .parameter("PolicyId", token->policyId())
+			.parameter("UserName", token->userName())
+			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -612,6 +630,8 @@ namespace OpcUaStackServer
 	{
 		// FIXME: authenticationToken in secureChannelTransaction must be 0
 
+		OpcUaStatusCode serviceResult = Success;
+
 		if (sessionState_ != SessionState_Close) {
 			Log(Error, "receive create session request in invalid state")
 				.parameter("SessionState", sessionState_);
@@ -622,13 +642,21 @@ namespace OpcUaStackServer
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.opcUaBinaryDecode(ios);
 
-		// FIXME: analyse request data
+		// find related endpoint description
+		bool found = false;
+		for (uint32_t idx=0; idx<endpointDescriptionArray_->size(); idx++) {
+			if (!endpointDescriptionArray_->get(idx, endpointDescription_)) continue;
+			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) found = true;
+		}
+		if (!found) {
+			serviceResult = BadServerUriInvalid;
+		}
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(createSessionRequest.requestHeader()->requestHandle());
-		createSessionResponse.responseHeader()->serviceResult(Success);
+		createSessionResponse.responseHeader()->serviceResult(serviceResult);
 
 		createSessionResponse.sessionId().namespaceIndex(1);
 		createSessionResponse.sessionId().nodeId(sessionId_);

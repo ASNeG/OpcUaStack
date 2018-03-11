@@ -140,6 +140,7 @@ namespace OpcUaStackServer
 		SessionIf* sessionIf_;
 		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		EndpointDescription::SPtr endpointDescription_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
