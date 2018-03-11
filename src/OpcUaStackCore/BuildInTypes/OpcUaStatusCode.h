@@ -245,6 +245,7 @@ namespace OpcUaStackCore
 		BadSyntaxError =						0x80B60000,
 		BadMaxConnectionsReached =				0x80B70000,
 
+		BadSignatureInvalid =					0x85000000,
 		BadStatusCodeUnknown =					0xFFFFFFFF,
 	} OpcUaStatusCode;
 

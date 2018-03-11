@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		std::string userName(void) const;
 		void password(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void password(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		uint32_t passwordLen(void);
 		void encryptionAlgorithm(const std::string& encryptionAlgorithm);
 		std::string encryptionAlgorithm(void) const;
 

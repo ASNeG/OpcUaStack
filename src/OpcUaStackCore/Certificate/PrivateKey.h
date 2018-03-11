@@ -18,11 +18,13 @@
 #ifndef __OpcUaStackCore_PrivateKey_h__
 #define __OpcUaStackCore_PrivateKey_h__
 
+#include <boost/shared_ptr.hpp>
+
 #include <openssl/x509.h>
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
-#include "OpcUaStackCore/Certificate/KeyType.h"
+#include "OpcUaStackCore/Certificate/CertificateEnums.h"
 
 namespace OpcUaStackCore
 {
@@ -33,16 +35,24 @@ namespace OpcUaStackCore
 	: public OpenSSLError
 	{
 	  public:
+    	typedef boost::shared_ptr<PrivateKey> SPtr;
+
 		PrivateKey(void);
 		PrivateKey(EVP_PKEY *pKey);
 		PrivateKey(const PrivateKey& copy);
 		~PrivateKey(void);
 
+		uint32_t keySize(void) const;
+		KeyType keyType(void) const;
+
 		PrivateKey& operator=(const PrivateKey& copy);
-		operator const EVP_PKEY*() const;
+		operator EVP_PKEY*(void);
 		bool toDER(char* buf, uint32_t& bufLen) const;
-		bool fromDER (char* buf, uint32_t bufLen, KeyType keyType);
-		bool fromPEM (char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
+		bool fromDER(char* buf, uint32_t bufLen, KeyType keyType);
+		bool fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
+
+		bool toPEMFile(const std::string& fileName, const char* password);
+		bool fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback = nullptr, void *data = nullptr);
 
 	  private:
 		EVP_PKEY *privateKey_;

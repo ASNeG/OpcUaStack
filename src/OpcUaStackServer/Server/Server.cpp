@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -16,6 +16,7 @@
  */
 
 #include <boost/asio/ip/host_name.hpp>
+#include <OpcUaStackCore/Certificate/ApplicationCertificateConfig.h>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/Base/ConfigXml.h"
 #include "OpcUaStackServer/Server/Server.h"
@@ -37,6 +38,7 @@ namespace OpcUaStackServer
 	, serviceManager_()
 	, applicationManager_()
 	, serverStatusDataType_()
+	, applicationCertificate_()
 	{
 	}
 
@@ -334,8 +336,11 @@ namespace OpcUaStackServer
 	bool
 	Server::initSession(void)
 	{
+		bool rc;
+
+		// decode endpoint configuration
 		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
-		bool rc = EndpointDescriptionConfig::endpointDescriptions(
+		rc = EndpointDescriptionConfig::endpointDescriptions(
 			endpointDescriptionArray, 
 			"OpcUaServer.Endpoints", 
 			&config(),
@@ -346,10 +351,40 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		EndpointDescription::SPtr endpointDescription;
+		endpointDescriptionArray->get(0, endpointDescription);
+
+		// decode certificate configuration
+		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
+		applicationCertificate_->uri(endpointDescription->endpointUrl());
+		rc = ApplicationCertificateConfig::parse(
+			applicationCertificate_,
+			"OpcUaServer.ApplicationCertificate",
+			&config(),
+			config().configFileName()
+		);
+		if (!rc) {
+			Log(Error, "parse application certificate error");
+			return false;
+		}
+		if (!applicationCertificate_->init()) {
+			Log(Error, "init application certificate error");
+			return false;
+		}
+
+		// create crypto manager
+		CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
+
+		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
 		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
+		discoveryService->applicationCertificate(applicationCertificate_);
+
+		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
 		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
+		sessionManager_.applicationCertificate(applicationCertificate_);
+		sessionManager_.cryptoManager(cryptoManager);
 
 		return true;
 	}
@@ -357,6 +392,7 @@ namespace OpcUaStackServer
 	bool
 	Server::shutdownSession(void)
 	{
+		applicationCertificate_->cleanup();
 		return true;
 	}
 

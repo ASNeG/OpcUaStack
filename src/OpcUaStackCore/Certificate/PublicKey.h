@@ -22,7 +22,7 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
-#include "OpcUaStackCore/Certificate/KeyType.h"
+#include "OpcUaStackCore/Certificate/CertificateEnums.h"
 
 namespace OpcUaStackCore
 {
@@ -34,10 +34,10 @@ namespace OpcUaStackCore
 		PublicKey(void);
 		PublicKey(EVP_PKEY *pKey);
 		PublicKey(const PublicKey& copy);
-		~PublicKey(void);
+		virtual ~PublicKey(void);
 
 		PublicKey& operator=(const PublicKey& copy);
-		operator EVP_PKEY*(void) const;
+		operator EVP_PKEY*(void);
 		uint32_t keySize(void) const;
 		KeyType keyType(void) const;
 

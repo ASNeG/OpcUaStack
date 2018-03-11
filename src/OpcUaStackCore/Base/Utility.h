@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,7 @@ namespace OpcUaStackCore
 	DLLEXPORT uint32_t count(std::iostream& ios);
 	DLLEXPORT void clear(std::iostream& ios);
 
+	DLLEXPORT void dumpHex(std::istream& is, std::ostream& os = std::cout);
 	DLLEXPORT void dumpHex(std::streambuf& sb, std::ostream& os = std::cout);
 	DLLEXPORT void dumpHex(std::iostream& ios, std::ostream& os = std::cout);
 	DLLEXPORT void dumpHex(const char* buf, const uint32_t bufLen, std::ostream& os = std::cout);

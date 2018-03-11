@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,12 +20,16 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Component/Component.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionRequest.h"
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
@@ -55,7 +59,10 @@ namespace OpcUaStackServer
 
 		typedef boost::shared_ptr<Session> SPtr;
 
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManager);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		void sessionIf(SessionIf* sessionIf);
@@ -94,6 +101,12 @@ namespace OpcUaStackServer
 		// - Component -------------------------------------------------------
 
 	  private:
+		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
+		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+
 		void activateSessionRequestError(
 			RequestHeader::SPtr& requestHeader,
 			SecureChannelTransaction::SPtr secureChannelTransaction,
@@ -129,8 +142,15 @@ namespace OpcUaStackServer
 		SessionIf* sessionIf_;
 		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		EndpointDescription::SPtr endpointDescription_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
+
+		UserContext::SPtr userContext_;
+		char serverNonce_[32];
 	};
 
 }

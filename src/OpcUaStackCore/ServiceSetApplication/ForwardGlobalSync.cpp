@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -25,6 +25,8 @@ namespace OpcUaStackCore
 	, findServersService_()
 	, eventItemStartService_()
 	, eventItemStopService_()
+	, authenticationService_()
+	, autorizationService_()
 	{
 	}
 
@@ -56,6 +58,18 @@ namespace OpcUaStackCore
 		return eventItemStopService_;
 	}
 
+	ForwardCallback&
+	ForwardGlobalSync::authenticationService(void)
+	{
+		return authenticationService_;
+	}
+
+	ForwardCallback&
+	ForwardGlobalSync::autorizationService(void)
+	{
+		return autorizationService_;
+	}
+
 	void
 	ForwardGlobalSync::updateFrom(ForwardGlobalSync& forwardGlobalSync)
 	{
@@ -63,6 +77,9 @@ namespace OpcUaStackCore
 		findServersService_.updateFrom(forwardGlobalSync.findServersService());
 		eventItemStartService_.updateFrom(forwardGlobalSync.eventItemStartService());
 		eventItemStopService_.updateFrom(forwardGlobalSync.eventItemStopService());
+		authenticationService_.updateFrom(forwardGlobalSync.authenticationService());
+		autorizationService_.updateFrom(forwardGlobalSync.autorizationService());
+
 	}
 
 }

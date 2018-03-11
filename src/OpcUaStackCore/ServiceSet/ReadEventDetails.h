@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackCore/ServiceSet/EventFilter.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameter.h"
 #include "OpcUaStackCore/ServiceSet/ExtensibleParameterBase.h"
 
@@ -46,8 +47,8 @@ namespace OpcUaStackCore
 		void endTime(const UtcTime& endTime);
 		void endTime(const boost::posix_time::ptime& endTime);
 		UtcTime& endTime(void);
-		void filter(const ExtensibleParameter::SPtr filter);
-		ExtensibleParameter::SPtr filter(void);
+		void filter(const EventFilter::SPtr& filter);
+		EventFilter::SPtr& filter(void);
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
@@ -60,7 +61,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 numValuesPerNode_;
 		UtcTime startTime_;
 		UtcTime endTime_;
-		ExtensibleParameter::SPtr filterSPtr_;
+		EventFilter::SPtr filterSPtr_;
 	};
 
 }

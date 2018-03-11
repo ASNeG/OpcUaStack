@@ -23,6 +23,8 @@
 #include "OpcUaStackCore/Base/Config.h"
 #include "OpcUaStackCore/Base/Url.h"
 #include "OpcUaStackCore/Base/ConditionProcess.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelServer.h"
 #include "OpcUaStackServer/ServiceSet/EndpointDescriptionConfig.h"
@@ -49,10 +51,13 @@ namespace OpcUaStackServer
 		virtual ~SessionManager(void);
 
 		void discoveryService(DiscoveryService::SPtr& discoveryService);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(IOThread* ioThread);
 		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 		void config(Config* config);
+		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
 		bool startup(void);
 		bool shutdown(void);
@@ -157,10 +162,13 @@ namespace OpcUaStackServer
 		IOThread* ioThread_;
 		Config* config_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 
 		ConditionProcess secureChannelServerShutdown_;
 		SecureChannelServerConfig::SPtr secureChannelServerConfig_;
 		SecureChannelServer::SPtr secureChannelServer_;
+		ForwardGlobalSync::SPtr forwardGlobalSync_;
 
 		DiscoveryService::SPtr discoveryService_;
 		TransactionManager::SPtr transactionManagerSPtr_;

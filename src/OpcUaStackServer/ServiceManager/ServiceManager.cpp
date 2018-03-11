@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,6 +31,7 @@ namespace OpcUaStackServer
 	, viewService_(constructSPtr<ViewService>())
 	, applicationService_(constructSPtr<ApplicationService>())
 	, discoveryService_(constructSPtr<DiscoveryService>())
+	, forwardGlobalSync_(constructSPtr<ForwardGlobalSync>())
 	{
 		attributeService_->componentName("AttributeService");
 		methodService_->componentName("MethodService");
@@ -52,16 +53,15 @@ namespace OpcUaStackServer
 	void
 	ServiceManager::initForwardGlobalSync(void)
 	{
-		ForwardGlobalSync::SPtr forwardGlobalSync = constructSPtr<ForwardGlobalSync>();
-		attributeService_->forwardGlobalSync(forwardGlobalSync);
-		methodService_->forwardGlobalSync(forwardGlobalSync);
-		monitoredItemService_->forwardGlobalSync(forwardGlobalSync);
-		nodeManagementService_->forwardGlobalSync(forwardGlobalSync);
-		queryService_->forwardGlobalSync(forwardGlobalSync);
-		subscriptionService_->forwardGlobalSync(forwardGlobalSync);
-		viewService_->forwardGlobalSync(forwardGlobalSync);
-		applicationService_->forwardGlobalSync(forwardGlobalSync);
-		discoveryService_->forwardGlobalSync(forwardGlobalSync);
+		attributeService_->forwardGlobalSync(forwardGlobalSync_);
+		methodService_->forwardGlobalSync(forwardGlobalSync_);
+		monitoredItemService_->forwardGlobalSync(forwardGlobalSync_);
+		nodeManagementService_->forwardGlobalSync(forwardGlobalSync_);
+		queryService_->forwardGlobalSync(forwardGlobalSync_);
+		subscriptionService_->forwardGlobalSync(forwardGlobalSync_);
+		viewService_->forwardGlobalSync(forwardGlobalSync_);
+		applicationService_->forwardGlobalSync(forwardGlobalSync_);
+		discoveryService_->forwardGlobalSync(forwardGlobalSync_);
 	}
 
 	bool
@@ -251,6 +251,7 @@ namespace OpcUaStackServer
 	
 		sessionManager.discoveryService(discoveryService_);
 		sessionManager.transactionManager(transactionManager_);
+		sessionManager.forwardGlobalSync(forwardGlobalSync_);
 		return true;
 	}
 

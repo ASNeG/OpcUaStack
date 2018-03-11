@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,6 +22,8 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/ServiceSet/ServiceTransactionIf.h"
 #include "OpcUaStackCore/ServiceSet/AttributeServiceTransaction.h"
+#include "OpcUaStackCore/ServiceSet/ReadRawModifiedDetails.h"
+#include "OpcUaStackCore/ServiceSet/UpdateStructureDataDetails.h"
 #include "OpcUaStackServer/ServiceSet/ServiceSetBase.h"
 
 using namespace OpcUaStackCore;
@@ -46,10 +48,26 @@ namespace OpcUaStackServer
 	  private:
 		void receiveReadRequest(ServiceTransaction::SPtr serviceTransaction);
 		void forwardRead(BaseNodeClass::SPtr baseNodeClass, ReadRequest::SPtr readRequest, ReadValueId::SPtr readValueId);
+		OpcUaStatusCode forwardAuthorizationRead(UserContext::SPtr& userContext, ReadValueId::SPtr& readValueId);
 		void receiveWriteRequest(ServiceTransaction::SPtr serviceTransaction);
 		OpcUaStatusCode forwardWrite(BaseNodeClass::SPtr baseNodeClass, WriteRequest::SPtr writeRequest, WriteValue::SPtr writeValue);
+		OpcUaStatusCode forwardAuthorizationWrite(UserContext::SPtr& userContext, WriteValue::SPtr& writeValue);
 		void receiveHistoryReadRequest(ServiceTransaction::SPtr serviceTransaction);
+		void receiveHistoryReadRawRequest(
+			ServiceTransaction::SPtr& serviceTransaction,
+			ServiceTransactionHistoryRead::SPtr& trx,
+			HistoryReadRequest::SPtr readRequest,
+			HistoryReadResponse::SPtr readResponse
+		);
+		void receiveHistoryReadEventRequest(
+			ServiceTransaction::SPtr& serviceTransaction,
+			ServiceTransactionHistoryRead::SPtr& trx,
+			HistoryReadRequest::SPtr readRequest,
+			HistoryReadResponse::SPtr readResponse
+		);
+		OpcUaStatusCode forwardAuthorizationHistoricalRead(UserContext::SPtr& userContext, HistoryReadValueId::SPtr& readValueId);
 		void receiveHistoryUpdateRequest(ServiceTransaction::SPtr serviceTransaction);
+		OpcUaStatusCode forwardAuthorizationHistoricalWrite(UserContext::SPtr& userContext, UpdateStructureDataDetails::SPtr& updateStructureDataDetails);
 	};
 
 }

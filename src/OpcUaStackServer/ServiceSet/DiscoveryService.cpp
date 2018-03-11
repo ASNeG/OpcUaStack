@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 
 	DiscoveryService::DiscoveryService(void)
 	: discoveryIf_(nullptr)
+	, applicationCertificate_(nullptr)
 	{
 	}
 
@@ -46,9 +47,39 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DiscoveryService::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
+	DiscoveryService::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
 	{
 		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	void
+	DiscoveryService::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+
+		if (!applicationCertificate_->enable()) {
+			return;
+		}
+
+		Certificate::SPtr& certificate = applicationCertificate->certificate();
+		uint32_t certLen;
+		if (!certificate->toDERBufLen(&certLen)) {
+			return;
+		}
+		char* certBuf = new char[certLen];
+		if (!certificate->toDERBuf(certBuf, &certLen)) {
+			delete [] certBuf;
+			return;
+		}
+
+		for (uint32_t idx = 0; idx < endpointDescriptionArray_->size(); idx++) {
+			EndpointDescription::SPtr endpointDescription;
+			endpointDescriptionArray_->get(idx, endpointDescription);
+
+			endpointDescription->serverCertificate((const unsigned char*)certBuf, certLen);
+		}
+
+		delete [] certBuf;
 	}
 
 	void

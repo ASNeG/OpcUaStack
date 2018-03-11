@@ -61,6 +61,9 @@ namespace OpcUaStackServer
 		OpcUaStatusCode receive(EventFieldListArray::SPtr eventFieldListArray);
 
 	  private:
+		OpcUaStatusCode forwardAutorizationCreateMonitoredItem(UserContext::SPtr& userContext, ReadValueId& readValueId);
+		OpcUaStatusCode forwardAutorizationCreateEventItem(UserContext::SPtr& userContext, ReadValueId& readValueId);
+
 		void createMonitoredItem(
 			uint32_t idx,
 			ServiceTransactionCreateMonitoredItems::SPtr& trx,

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,6 +23,7 @@ namespace OpcUaStackCore
 	ForwardNodeSync::ForwardNodeSync(void)
 	: readService_()
 	, readHService_()
+	, readHEService_()
 	, writeService_()
 	, writeHService_()
 	, methodService_()
@@ -45,6 +46,12 @@ namespace OpcUaStackCore
 	ForwardNodeSync::readHService(void)
 	{
 		return readHService_;
+	}
+
+	ForwardCallback&
+	ForwardNodeSync::readHEService(void)
+	{
+		return readHEService_;
 	}
 
 	ForwardCallback&
@@ -82,6 +89,7 @@ namespace OpcUaStackCore
 	{
 		readService_.updateFrom(forwardCallbackSync.readService());
 		readHService_.updateFrom(forwardCallbackSync.readHService());
+		readHEService_.updateFrom(forwardCallbackSync.readHEService());
 		writeService_.updateFrom(forwardCallbackSync.writeService());
 		writeHService_.updateFrom(forwardCallbackSync.writeHService());
 		methodService_.updateFrom(forwardCallbackSync.methodService());

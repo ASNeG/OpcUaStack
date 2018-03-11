@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,6 +24,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include <list>
 #include <vector>
+#include <set>
 
 namespace OpcUaStackCore
 {
@@ -35,6 +36,7 @@ namespace OpcUaStackCore
 		typedef boost::optional<OpcUaNodeId&> Opt;
 		typedef boost::shared_ptr<OpcUaNodeId> SPtr;
 		typedef std::vector<OpcUaNodeId::SPtr> Vec;
+		typedef std::set<OpcUaNodeId> Set;
 
 	    OpcUaNodeId(void);
 	    OpcUaNodeId(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex = 0);

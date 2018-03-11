@@ -33,4 +33,5 @@ target_link_libraries(
     ${CMAKE_DL_LIBS}
     ${pthread}
     ${Boost_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
 )

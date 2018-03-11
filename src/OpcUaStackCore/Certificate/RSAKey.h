@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		RSAKey(EVP_PKEY *pKey);
 		RSAKey(uint32_t bits);
 		RSAKey(const RSAKey &copy);
-		~RSAKey(void);
+		virtual ~RSAKey(void);
 
 		RSAKey& operator=(const RSAKey &copy);
 

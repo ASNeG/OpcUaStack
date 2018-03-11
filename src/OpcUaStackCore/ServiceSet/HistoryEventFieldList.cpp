@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,7 +30,7 @@ namespace OpcUaStackCore
 
 	HistoryEventFieldList::HistoryEventFieldList(void)
 	: Object()
-	, eventFieldArraySPtr_(constructSPtr<OpcUaVariantArray>())
+	, eventFieldsSPtr_(constructSPtr<EventFieldArray>())
 	{
 	}
 
@@ -39,26 +39,26 @@ namespace OpcUaStackCore
 	}
 
 	void 
-	HistoryEventFieldList::eventFields(const OpcUaVariantArray::SPtr eventFields)
+	HistoryEventFieldList::eventFields(const EventFieldArray::SPtr eventFields)
 	{
-		eventFieldArraySPtr_ = eventFields;
+		eventFieldsSPtr_ = eventFields;
 	}
-	
-	OpcUaVariantArray::SPtr 
+
+	EventFieldArray::SPtr
 	HistoryEventFieldList::eventFields(void) const
 	{
-		return eventFieldArraySPtr_;
+		return eventFieldsSPtr_;
 	}
 
 	void 
 	HistoryEventFieldList::opcUaBinaryEncode(std::ostream& os) const
 	{
-		eventFieldArraySPtr_->opcUaBinaryEncode(os);
+		eventFieldsSPtr_->opcUaBinaryEncode(os);
 	}
 	
 	void 
 	HistoryEventFieldList::opcUaBinaryDecode(std::istream& is)
 	{
-		eventFieldArraySPtr_->opcUaBinaryDecode(is);
+		eventFieldsSPtr_->opcUaBinaryDecode(is);
 	}
 }

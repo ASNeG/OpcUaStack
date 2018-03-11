@@ -31,10 +31,13 @@ namespace OpcUaStackServer
 	, secureChannelServer_()
 	, config_(nullptr)
 	, endpointDescriptionArray_()
+	, applicationCertificate_()
+	, cryptoManager_()
 	, secureChannelServerShutdown_()
 	, discoveryService_()
 	, transactionManagerSPtr_()
 	, channelSessionHandleMap_()
+	, forwardGlobalSync_()
 	{
 	}
 
@@ -47,6 +50,18 @@ namespace OpcUaStackServer
 	{
 		discoveryService_ = discoveryService;
 		discoveryService_->discoveryIf(this);
+	}
+
+	void
+	SessionManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	void
+	SessionManager::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	void
@@ -71,6 +86,12 @@ namespace OpcUaStackServer
 	SessionManager::config(Config* config)
 	{
 		config_ = config;
+	}
+
+	void
+	SessionManager::forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync)
+	{
+		forwardGlobalSync_ = forwardGlobalSync;
 	}
 
 	bool
@@ -237,8 +258,11 @@ namespace OpcUaStackServer
 		Session::SPtr session = constructSPtr<Session>();
 		session->ioThread(ioThread_);
 		session->sessionIf(this);
+		session->applicationCertificate(applicationCertificate_);
+		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray_);
 		session->transactionManager(transactionManagerSPtr_);
+		session->forwardGlobalSync(forwardGlobalSync_);
 
 		Object::SPtr handle = channelSessionHandleMap_.createSession(session, secureChannel);
 		secureChannel->secureChannelTransaction_->handle_ = handle;

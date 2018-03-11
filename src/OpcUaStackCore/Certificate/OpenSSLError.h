@@ -22,6 +22,7 @@
 #include <string>
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Log.h"
 
 namespace OpcUaStackCore
 {
@@ -30,12 +31,15 @@ namespace OpcUaStackCore
 	{
 	  public:
 		OpenSSLError(void);
-		~OpenSSLError(void);
+		OpenSSLError(const std::list<std::string>& errorList);
+		virtual ~OpenSSLError(void);
 
 		bool isError(void);
 		void addOpenSSLError(void);
 		void addError(const std::string& message);
+		void addError(const std::list<std::string>& errorList);
 		std::list<std::string> errorList(void);
+		void log(LogLevel logLevel, const std::string& message);
 
 	  private:
 		std::list<std::string> errorList_;

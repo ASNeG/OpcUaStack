@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -24,6 +24,7 @@ namespace OpcUaStackCore
 	
 	bool ExtensibleParameter::init_ = false;
 	ExtensibleParameterMap ExtensibleParameter::extensibleParameterMap_;
+	OpcUaNodeId::Set ExtensibleParameter::errorTypeSet_;
 
 	bool 
 	ExtensibleParameter::deregisterFactoryElement(OpcUaUInt32 nodeId, OpcUaUInt16 namespaceIndex) {
@@ -85,6 +86,18 @@ namespace OpcUaStackCore
 			epSPtr = it->second;
 		}
 		return epSPtr;
+	}
+
+	OpcUaNodeId::Set&
+	ExtensibleParameter::getErrorTypeSet(void)
+	{
+		return errorTypeSet_;
+	}
+
+	void
+	ExtensibleParameter::clearErrorTypeSet(void)
+	{
+		errorTypeSet_.clear();
 	}
 
 	ExtensibleParameter::ExtensibleParameter(void)
@@ -165,6 +178,7 @@ namespace OpcUaStackCore
 		ExtensibleParameterMap::iterator it;
 		it = extensibleParameterMap_.find(parameterTypeId_);
 		if (it == extensibleParameterMap_.end()) {
+			errorTypeSet_.insert(parameterTypeId_);
 			return;
 		}
 

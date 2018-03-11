@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 
 namespace OpcUaStackCore
@@ -25,12 +26,20 @@ namespace OpcUaStackCore
 	, publicKey_(nullptr)
 	{
 		publicKey_ = X509_PUBKEY_new();
+		if (publicKey_ == nullptr) {
+			addError("create public key error in constructor");
+		}
 	}
 
 	PublicKey::PublicKey(EVP_PKEY *pKey)
 	: OpenSSLError()
 	, publicKey_(nullptr)
 	{
+		publicKey_ = X509_PUBKEY_new();
+		if (publicKey_ == nullptr) {
+			addError("create public key error in key constructor");
+		}
+
 		int result = X509_PUBKEY_set(&publicKey_, pKey);
 		if (!result) {
 			addOpenSSLError();
@@ -41,7 +50,15 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, publicKey_(nullptr)
 	{
+		if (const_cast<PublicKey*>(&copy)->isError()) {
+			addError("create public key error in copy constructor - source key error");
+			return;
+		}
+
 		publicKey_ = X509_PUBKEY_new();
+		if (publicKey_ == nullptr) {
+			addError("create public key error in copy constructor - allocate memory error");
+		}
 
 		EVP_PKEY *pKey = X509_PUBKEY_get(copy.publicKey_);
 		if (pKey==NULL) {
@@ -65,6 +82,11 @@ namespace OpcUaStackCore
 	PublicKey&
 	PublicKey::operator=(const PublicKey& copy)
 	{
+		if (const_cast<PublicKey*>(&copy)->isError()) {
+			addError("public key error in assign operator - source key error");
+			return *this;
+		}
+
 		EVP_PKEY *pKey = X509_PUBKEY_get(copy.publicKey_);
 		if (pKey==NULL) {
 		   addOpenSSLError();
@@ -81,14 +103,14 @@ namespace OpcUaStackCore
 		return *this;
 	}
 
-	PublicKey::operator EVP_PKEY*(void) const
+	PublicKey::operator EVP_PKEY*(void)
 	{
-	    EVP_PKEY* pKey = nullptr;
-	    pKey = X509_PUBKEY_get(publicKey_);
-	    if (!pKey) {
+	    EVP_PKEY* key = nullptr;
+	    key = X509_PUBKEY_get(publicKey_);
+	    if (!key) {
 	    	const_cast<PublicKey*>(this)->addOpenSSLError();
 	    }
-	    return pKey;
+	    return key;
 	}
 
 	uint32_t
