@@ -43,6 +43,8 @@ namespace OpcUaStackCore
 		static std::string RSA_PKCS1_V15_Name;
 		static std::string RSA_OAEP_Name;
 		static std::string DES3_Name;
+
+		static uint32_t uriToEncryptionAlg(const std::string& uri);
 	};
 
 	class SignatureAlgs
@@ -61,6 +63,8 @@ namespace OpcUaStackCore
 		static std::string HMAC_SHA256_Name;
 		static std::string RSA_PKCS1_OAEP_SHA1_Name;
 		static std::string RSA_PKCS1_OAEP_SHA256_Name;
+
+		static uint32_t uriToSignatureAlg(const std::string& uri);
 	};
 
 	class DLLEXPORT CryptoBase

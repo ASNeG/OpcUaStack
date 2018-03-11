@@ -39,6 +39,18 @@ namespace OpcUaStackCore
     std::string EnryptionAlgs::RSA_OAEP_Name = "RSA-OAEP";
     std::string EnryptionAlgs::DES3_Name = "3DES";
 
+    uint32_t
+	EnryptionAlgs::uriToEncryptionAlg(const std::string& uri)
+    {
+    	if (uri == "http://www.w3.org/2000/09/xmldsig#rsa-sha1") {
+    		return RSA_OAEP_Id;
+    	}
+    	else if (uri == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256") {
+    		return  RSA_PKCS1_V15_Id; // FIXME: ????
+    	}
+    	return 0;
+    }
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -59,6 +71,18 @@ namespace OpcUaStackCore
 	std::string SignatureAlgs::HMAC_SHA256_Name = "HMAC-SHA256";
 	std::string SignatureAlgs::RSA_PKCS1_OAEP_SHA1_Name = "RSA-PKCS-#1-OAEP-SHA1";
 	std::string SignatureAlgs::RSA_PKCS1_OAEP_SHA256_Name = "RSA-PKCS-#1-OAEP-SHA256";
+
+	uint32_t
+	SignatureAlgs::uriToSignatureAlg(const std::string& uri)
+	{
+		if (uri == "http://www.w3.org/2001/04/xmlenc#rsa-oaep") {
+			return RSA_PKCS1_OAEP_SHA1_Id;	// FIXME: ????
+		}
+		else if (uri == "http://www.w3.org/2001/04/xmlenc#rsa-1_5") {
+			return RSA_PKCS1_V15_SHA256_Id; // FIXME: ????
+		}
+		return 0;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
