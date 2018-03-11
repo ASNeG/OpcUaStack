@@ -32,6 +32,7 @@ namespace OpcUaStackServer
 	, config_(nullptr)
 	, endpointDescriptionArray_()
 	, applicationCertificate_()
+	, cryptoManager_()
 	, secureChannelServerShutdown_()
 	, discoveryService_()
 	, transactionManagerSPtr_()
@@ -55,6 +56,12 @@ namespace OpcUaStackServer
 	SessionManager::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
 	{
 		applicationCertificate_ = applicationCertificate;
+	}
+
+	void
+	SessionManager::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
 	}
 
 	void
@@ -251,6 +258,7 @@ namespace OpcUaStackServer
 		Session::SPtr session = constructSPtr<Session>();
 		session->sessionIf(this);
 		session->applicationCertificate(applicationCertificate_);
+		session->cryptoManager(cryptoManager_);
 		session->endpointDescriptionArray(endpointDescriptionArray_);
 		session->transactionManager(transactionManagerSPtr_);
 		session->forwardGlobalSync(forwardGlobalSync_);

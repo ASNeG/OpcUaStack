@@ -18,6 +18,8 @@
 #ifndef __OpcUaStackCore_CryptoManager_h__
 #define __OpcUaStackCore_CryptoManager_h__
 
+#include <boost/shared_ptr.hpp>
+
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 
@@ -27,6 +29,8 @@ namespace OpcUaStackCore
 	class DLLEXPORT CryptoManager
 	{
 	  public:
+		typedef boost::shared_ptr<CryptoManager> SPtr;
+
 		CryptoManager(void);
 		~CryptoManager(void);
 

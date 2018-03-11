@@ -92,6 +92,12 @@ namespace OpcUaStackServer
 		applicationCertificate_ = applicationCertificate;
 	}
 
+	void
+	Session::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
+	}
+
 	void 
 	Session::transactionManager(TransactionManager::SPtr transactionManagerSPtr)
 	{
@@ -255,7 +261,7 @@ namespace OpcUaStackServer
 			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
 
-		// FIXME: decrypt
+		// find ...
 
 		// create application context
 		ApplicationAuthenticationContext context;

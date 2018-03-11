@@ -372,6 +372,9 @@ namespace OpcUaStackServer
 			return false;
 		}
 
+		// create crypto manager
+		CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
+
 		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
 		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
@@ -381,6 +384,7 @@ namespace OpcUaStackServer
 		sessionManager_.ioThread(ioThread_.get());
 		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
 		sessionManager_.applicationCertificate(applicationCertificate_);
+		sessionManager_.cryptoManager(cryptoManager);
 
 		return true;
 	}

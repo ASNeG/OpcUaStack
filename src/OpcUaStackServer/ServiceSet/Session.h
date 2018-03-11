@@ -29,6 +29,7 @@
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
@@ -59,6 +60,7 @@ namespace OpcUaStackServer
 		typedef boost::shared_ptr<Session> SPtr;
 
 		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManager);
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
@@ -142,6 +144,7 @@ namespace OpcUaStackServer
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		EndpointDescription::SPtr endpointDescription_;
 		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
