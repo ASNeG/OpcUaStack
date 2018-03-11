@@ -250,6 +250,7 @@ namespace OpcUaStackServer
 		// create new session
 		Session::SPtr session = constructSPtr<Session>();
 		session->sessionIf(this);
+		session->applicationCertificate(applicationCertificate_);
 		session->endpointDescriptionArray(endpointDescriptionArray_);
 		session->transactionManager(transactionManagerSPtr_);
 		session->forwardGlobalSync(forwardGlobalSync_);

@@ -28,6 +28,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelRequest.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
 #include "OpcUaStackCore/ServiceSetApplication/ForwardGlobalSync.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
 #include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
@@ -57,6 +58,7 @@ namespace OpcUaStackServer
 
 		typedef boost::shared_ptr<Session> SPtr;
 
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 		void transactionManager(TransactionManager::SPtr transactionManager);
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
@@ -138,6 +140,7 @@ namespace OpcUaStackServer
 		SessionIf* sessionIf_;
 		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;

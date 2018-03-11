@@ -63,6 +63,7 @@ namespace OpcUaStackServer
 	, sessionState_(SessionState_Close)
 	, sessionId_(getUniqueSessionId())
 	, authenticationToken_(getUniqueAuthenticationToken())
+	, applicationCertificate_()
 	, userContext_()
 	{
 		Log(Info, "session construct")
@@ -81,6 +82,12 @@ namespace OpcUaStackServer
 		Log(Info, "session destruct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
+	}
+
+	void
+	Session::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
 	}
 
 	void 
