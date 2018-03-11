@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackCore/BuildInTypes/OpcUaArray.h"
+#include "OpcUaStackCore/ServiceSet/EventField.h"
 
 namespace OpcUaStackCore
 {
@@ -36,14 +36,14 @@ namespace OpcUaStackCore
 		HistoryEventFieldList(void);
 		virtual ~HistoryEventFieldList(void);
 
-		void eventFields(const OpcUaVariantArray::SPtr eventFields);
-		OpcUaVariantArray::SPtr eventFields(void) const;
+		void eventFields(const EventFieldArray::SPtr eventFieldList);
+		EventFieldArray::SPtr eventFields(void) const;
 
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 
 	  private:
-		OpcUaVariantArray::SPtr eventFieldArraySPtr_;
+		EventFieldArray::SPtr eventFieldsSPtr_;
 	};
 
 	class HistoryEventFieldListArray
