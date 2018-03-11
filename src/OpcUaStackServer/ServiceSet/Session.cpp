@@ -221,24 +221,41 @@ namespace OpcUaStackServer
 		if (token->userName().size() == 0 || token->passwordLen() == 0) {
 			return BadIdentityTokenInvalid;
 		}
+		if (endpointDescription_.get() == nullptr) {
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+			return BadIdentityTokenInvalid;
+		}
 
 		// find related identity token
-#if 0
 		bool found = true;
+		UserTokenPolicy::SPtr userTokenPolicy;
 		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
-			UserTokenPolicy::SPtr userTokenPolicy;
-			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) continue;
+			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+				continue;
+			}
 
+			if (userTokenPolicy->tokenType() != UserIdentityTokenType_Username) {
+				continue;
+			}
+
+			if (userTokenPolicy->policyId() == token->policyId()) {
+				found = true;
+				break;
+			}
 		}
 		if (!found) {
 			return BadIdentityTokenInvalid;
 		}
-#endif
 
 		Log(Debug, "authentication user name")
 		    .parameter("PolicyId", token->policyId())
 			.parameter("UserName", token->userName())
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
+
+		// FIXME: decrypt
 
 		// create application context
 		ApplicationAuthenticationContext context;
@@ -283,6 +300,8 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		OpcUaStatusCode serviceResult = Success;
+
 		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
 
@@ -296,13 +315,24 @@ namespace OpcUaStackServer
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.opcUaBinaryDecode(ios);
 
-		// FIXME: analyse request data
+		// find related endpoint description
+		bool found = false;
+		for (uint32_t idx=0; idx<endpointDescriptionArray_->size(); idx++) {
+			if (!endpointDescriptionArray_->get(idx, endpointDescription_)) continue;
+			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			serviceResult = BadServerUriInvalid;
+		}
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
-		createSessionResponse.responseHeader()->serviceResult(Success);
+		createSessionResponse.responseHeader()->serviceResult(serviceResult);
 
 		createSessionResponse.sessionId().namespaceIndex(1);
 		createSessionResponse.sessionId().nodeId(sessionId_);
@@ -646,11 +676,15 @@ namespace OpcUaStackServer
 		bool found = false;
 		for (uint32_t idx=0; idx<endpointDescriptionArray_->size(); idx++) {
 			if (!endpointDescriptionArray_->get(idx, endpointDescription_)) continue;
-			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) found = true;
+			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) {
+				found = true;
+				break;
+			}
 		}
 		if (!found) {
 			serviceResult = BadServerUriInvalid;
 		}
+		std::cout << "..." << serviceResult << std::endl;
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
