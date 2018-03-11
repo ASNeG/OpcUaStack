@@ -221,16 +221,25 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
+		Log(Debug, "Session::authenticationUserName");
+
 		UserNameIdentityToken::SPtr token = parameter->parameter<UserNameIdentityToken>();
 
 		// check parameter and password
-		if (token->userName().size() == 0 || token->passwordLen() == 0) {
+		if (token->userName().size() == 0) {
+			Log(Debug, "user name invalid");
+			return BadIdentityTokenInvalid;
+		}
+		if (token->passwordLen() == 0) {
+			Log(Debug, "password name invalid");
 			return BadIdentityTokenInvalid;
 		}
 		if (endpointDescription_.get() == nullptr) {
+			Log(Debug, "endpoint description not exist");
 			return BadIdentityTokenInvalid;
 		}
 		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+			Log(Debug, "user identity token not exist");
 			return BadIdentityTokenInvalid;
 		}
 
@@ -252,6 +261,8 @@ namespace OpcUaStackServer
 			}
 		}
 		if (!found) {
+			Log(Debug, "user identity token for policy not found in endpoint")
+				.parameter("PolicyId", token->policyId());
 			return BadIdentityTokenInvalid;
 		}
 
@@ -261,7 +272,20 @@ namespace OpcUaStackServer
 			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
 
-		// find ...
+		// get cryption base and check cryption alg
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			return BadIdentityTokenRejected;
+		}
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(token->encryptionAlgorithm());
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", token->encryptionAlgorithm());
+			return BadIdentityTokenRejected;;
+		}
+
 
 		// create application context
 		ApplicationAuthenticationContext context;

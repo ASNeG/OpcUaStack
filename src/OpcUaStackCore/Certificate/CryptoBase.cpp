@@ -42,12 +42,12 @@ namespace OpcUaStackCore
     uint32_t
 	EnryptionAlgs::uriToEncryptionAlg(const std::string& uri)
     {
-    	if (uri == "http://www.w3.org/2000/09/xmldsig#rsa-sha1") {
-    		return RSA_OAEP_Id;
-    	}
-    	else if (uri == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256") {
-    		return  RSA_PKCS1_V15_Id; // FIXME: ????
-    	}
+		if (uri == "http://www.w3.org/2001/04/xmlenc#rsa-oaep") {
+			return RSA_OAEP_Id;
+		}
+		else if (uri == "http://www.w3.org/2001/04/xmlenc#rsa-1_5") {
+			return RSA_PKCS1_V15_Id;
+		}
     	return 0;
     }
 
@@ -75,12 +75,12 @@ namespace OpcUaStackCore
 	uint32_t
 	SignatureAlgs::uriToSignatureAlg(const std::string& uri)
 	{
-		if (uri == "http://www.w3.org/2001/04/xmlenc#rsa-oaep") {
-			return RSA_PKCS1_OAEP_SHA1_Id;	// FIXME: ????
-		}
-		else if (uri == "http://www.w3.org/2001/04/xmlenc#rsa-1_5") {
-			return RSA_PKCS1_V15_SHA256_Id; // FIXME: ????
-		}
+    	if (uri == "http://www.w3.org/2000/09/xmldsig#rsa-sha1") {
+    		return RSA_PKCS1_V15_SHA1_Id;
+    	}
+    	else if (uri == "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256") {
+    		return  RSA_PKCS1_V15_SHA256_Id;
+    	}
 		return 0;
 	}
 
