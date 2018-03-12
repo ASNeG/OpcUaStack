@@ -25,6 +25,7 @@
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
+#include "OpcUaStackCore/Certificate/CryptoAES.h"
 
 namespace OpcUaStackCore
 {
@@ -107,12 +108,31 @@ namespace OpcUaStackCore
 			char*       	plainTextBuf,
 			uint32_t*		plainTextLen
 		) = 0;
+
 		virtual OpcUaStatusCode asymmetricEncrypt(
 		    char*       	plainTextBuf,
 			uint32_t		plainTextLen,
 			PublicKey&		publicKey,
 			char*       	encryptedTextBuf,
 			uint32_t*		encryptedTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode symmetricDecrypt(
+			char*       	encryptedTextBuf,
+			uint32_t		encryptedTextLen,
+			AESKey&	   		aesKey,
+			IV&		   		iv,
+			char*      		plainTextBuf,
+			int32_t*   		plainTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode symmetricEncrypt(
+			char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			AESKey&	   		aesKey,
+			IV&		   		iv,
+			char*      		encryptedTextBuf,
+			int32_t*   		encryptedTextLen
 		) = 0;
 
 	  private:

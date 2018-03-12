@@ -17,6 +17,7 @@
 
 #include <OpcUaStackCore/Certificate/CryptoOpenSSLBASIC128RSA15.h>
 #include <OpcUaStackCore/Certificate/CryptoRSA.h>
+#include <OpcUaStackCore/Certificate/CryptoAES.h>
 
 namespace OpcUaStackCore
 {
@@ -81,5 +82,48 @@ namespace OpcUaStackCore
 			encryptedTextLen
 		);
 	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC128RSA15::symmetricDecrypt(
+		char*       	encryptedTextBuf,
+		uint32_t		encryptedTextLen,
+		AESKey&	   		aesKey,
+		IV&		   		iv,
+		char*      		plainTextBuf,
+		int32_t*   		plainTextLen
+	)
+	{
+		CryptoAES cryptoAES;
+		return cryptoAES.decryptCBC128(
+			encryptedTextBuf,
+			encryptedTextLen,
+			aesKey,
+			iv,
+			plainTextBuf,
+			plainTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC128RSA15::symmetricEncrypt(
+		char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		AESKey&	   		aesKey,
+		IV&		   		iv,
+		char*      		encryptedTextBuf,
+		int32_t*   		encryptedTextLen
+	)
+	{
+		CryptoAES cryptoAES;
+		return cryptoAES.encryptCBC128(
+			plainTextBuf,
+			plainTextLen,
+			aesKey,
+			iv,
+			encryptedTextBuf,
+			encryptedTextLen
+		);
+	}
+
 
 }
