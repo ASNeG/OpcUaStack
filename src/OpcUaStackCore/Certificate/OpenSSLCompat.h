@@ -18,6 +18,8 @@
 #ifndef __OpcUaStackCore_OpenSSLCompat_h__
 #define __OpcUaStackCore_OpenSSLCompat_h__
 
+#include <openssl/opensslv.h>
+
 namespace OpcUaStackCore
 {
 
