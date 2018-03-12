@@ -87,7 +87,7 @@ message(STATUS "  product version: ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_P
 
 message(STATUS "Dependency info")
 message(STATUS "  boost version: ${BOOST_VERSION_MAJOR}.${BOOST_VERSION_MINOR}")
-message(STATUS "  openssl version: ${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH}")
+message(STATUS "  openssl version: ${OPENSSL_VERSION_MAJOR}.${OPENSSL_VERSION_MINOR}.${OPENSSL_VERSION_PATCH} (${OPENSSL_VERSION_NUMBER})")
 
 message(STATUS "System info")
 message(STATUS "  host system name: ${CMAKE_HOST_SYSTEM_NAME}")
@@ -170,6 +170,7 @@ find_package(
 
 message(STATUS "OpenSSL library")
 message(STATUS "  found: ${OPENSSL_FOUND}")
+message(STATUS "  version number: ${OPENSSL_VERSION_NUMBER}")
 message(STATUS "  version major: ${OPENSSL_VERSION_MAJOR}")
 message(STATUS "  version minor: ${OPENSSL_VERSION_MINOR}")
 message(STATUS "  version patch: ${OPENSSL_VERSION_PATCH}")
