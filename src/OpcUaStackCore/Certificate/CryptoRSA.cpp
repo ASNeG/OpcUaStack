@@ -386,7 +386,7 @@ namespace OpcUaStackCore
 			(const unsigned char*)plainTextBuf,
 			plainTextLen, (unsigned char *)signTextBuf,
 			signTextLen,
-			key->pkey.rsa
+			EVP_PKEY_get0_RSA(key)
 		);
 		if (result != 1) {
 			addOpenSSLError();
