@@ -17,6 +17,7 @@
 
 #include <openssl/pem.h>
 
+#include "OpcUaStackCore/Certificate/OpenSSLCompat.h"
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 
 namespace OpcUaStackCore

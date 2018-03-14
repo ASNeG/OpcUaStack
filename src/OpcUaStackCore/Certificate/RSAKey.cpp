@@ -18,6 +18,7 @@
 #include <string.h>
 #include <openssl/pem.h>
 
+#include "OpcUaStackCore/Certificate/OpenSSLCompat.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 
 namespace OpcUaStackCore

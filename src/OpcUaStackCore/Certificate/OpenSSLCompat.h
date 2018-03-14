@@ -18,16 +18,16 @@
 #ifndef __OpcUaStackCore_OpenSSLCompat_h__
 #define __OpcUaStackCore_OpenSSLCompat_h__
 
+#include <openssl/x509.h>
 #include <openssl/opensslv.h>
+#include <cstring>
 
 namespace OpcUaStackCore
 {
 
 	#if OPENSSL_VERSION_NUMBER < 0x10100000L
 
-	#include <string.h>
-	#include <openssl/engine.h>
-
+#if 0
 	static void *OPENSSL_zalloc(size_t num)
 	{
 	   void *ret = OPENSSL_malloc(num);
@@ -411,50 +411,11 @@ namespace OpcUaStackCore
 	{
 	   return (BN_num_bits(r->n));
 	}
-
-	RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey)
-	{
-	   if (pkey->type != EVP_PKEY_RSA) {
-		   return NULL;
-	   }
-	   return pkey->pkey.rsa;
-	}
-
-	int EVP_PKEY_id(const EVP_PKEY *pkey)
-	{
-		return pkey->type;
-	}
-
-	int EVP_PKEY_up_ref(EVP_PKEY *pkey)
-	{
-		CRYPTO_add (&pkey->references, 1, CRYPTO_LOCK_EVP_PKEY);
-		return 1;
-	}
-
-#if 0
-	HMAC_CTX *HMAC_CTX_new(void)
-	{
-	   HMAC_CTX *ctx = (HMAC_CTX*)OPENSSL_malloc(sizeof(*ctx));
-	   if (ctx != NULL) {
-		   if (!HMAC_CTX_reset(ctx)) {
-			   HMAC_CTX_free(ctx);
-			   return NULL;
-		   }
-	   }
-	   return ctx;
-	}
-
-	void HMAC_CTX_free(HMAC_CTX *ctx)
-	{
-	   if (ctx != NULL) {
-		   hmac_ctx_cleanup(ctx);
-		   EVP_MD_CTX_free(ctx->i_ctx);
-		   EVP_MD_CTX_free(ctx->o_ctx);
-		   EVP_MD_CTX_free(ctx->md_ctx);
-		   OPENSSL_free(ctx);
-	   }
-	}
 #endif
+
+	RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey);
+	int EVP_PKEY_up_ref(EVP_PKEY *pkey);
+
 	#endif
 
 }
