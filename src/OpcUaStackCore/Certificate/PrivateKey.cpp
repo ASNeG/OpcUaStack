@@ -33,7 +33,7 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, privateKey_(nullptr)
 	{
-	    CRYPTO_add(&pKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+	    EVP_PKEY_up_ref(pKey);
 	    privateKey_ = pKey;
 	}
 
@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		}
 
 	    if (copy.privateKey_) {
-	        CRYPTO_add(&copy.privateKey_->references, 1, CRYPTO_LOCK_EVP_PKEY);
+	    	EVP_PKEY_up_ref(copy.privateKey_);
 	        privateKey_ = copy.privateKey_;
 	    }
 	    else
@@ -71,7 +71,8 @@ namespace OpcUaStackCore
 	PrivateKey::keyType(void) const
 	{
 		KeyType keyType = KeyType_Unknown;
-        switch(privateKey_->type)
+
+        switch(EVP_PKEY_id(privateKey_))
         {
             case EVP_PKEY_RSA: keyType = KeyType_RSA; break;
             case EVP_PKEY_DSA: keyType = KeyType_DSA; break;
@@ -90,7 +91,7 @@ namespace OpcUaStackCore
 
 	    EVP_PKEY_free (privateKey_);
 	    if (copy.privateKey_) {
-	        CRYPTO_add(&copy.privateKey_->references, 1, CRYPTO_LOCK_EVP_PKEY);
+	    	EVP_PKEY_up_ref(copy.privateKey_);
 	        privateKey_ = copy.privateKey_;
 	    }
 	    else {

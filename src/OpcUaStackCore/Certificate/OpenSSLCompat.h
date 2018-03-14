@@ -420,6 +420,17 @@ namespace OpcUaStackCore
 	   return pkey->pkey.rsa;
 	}
 
+	int EVP_PKEY_id(const EVP_PKEY *pkey)
+	{
+		return pkey->type;
+	}
+
+	int EVP_PKEY_up_ref(EVP_PKEY *pkey)
+	{
+		CRYPTO_add (&pkey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+		return 1;
+	}
+
 #if 0
 	HMAC_CTX *HMAC_CTX_new(void)
 	{

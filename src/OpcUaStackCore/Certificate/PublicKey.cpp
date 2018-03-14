@@ -138,7 +138,7 @@ namespace OpcUaStackCore
 	    	const_cast<PublicKey*>(this)->addOpenSSLError();
 	    }
 	    else {
-	        switch(pKey->type)
+	        switch(EVP_PKEY_id(pKey))
 	        {
 	            case EVP_PKEY_RSA: keyType = KeyType_RSA; break;
 	            case EVP_PKEY_DSA: keyType = KeyType_DSA; break;
