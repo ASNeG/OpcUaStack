@@ -229,6 +229,7 @@ namespace OpcUaStackCore
 		}
 
 		BIO_free(bio);
+		return true;
 	}
 
 }
