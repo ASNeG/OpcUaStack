@@ -30,7 +30,7 @@
 namespace OpcUaStackCore
 {
 
-	class EnryptionAlgs
+	class DLLEXPORT EnryptionAlgs
 	{
 	  public:
 		static uint32_t AES_128_CBC_Id;
@@ -48,7 +48,7 @@ namespace OpcUaStackCore
 		static uint32_t uriToEncryptionAlg(const std::string& uri);
 	};
 
-	class SignatureAlgs
+	class DLLEXPORT SignatureAlgs
 	{
 	  public:
 		static uint32_t RSA_PKCS1_V15_SHA1_Id;
