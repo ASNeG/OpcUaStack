@@ -19,6 +19,9 @@
 
 namespace OpcUaStackCore
 {
+
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+
 	RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey)
 	{
 		if (pkey->type != EVP_PKEY_RSA) {
@@ -32,4 +35,7 @@ namespace OpcUaStackCore
 		CRYPTO_add (&pkey->references, 1, CRYPTO_LOCK_EVP_PKEY);
 		return 1;
 	}
+
+#endif
+
 }
