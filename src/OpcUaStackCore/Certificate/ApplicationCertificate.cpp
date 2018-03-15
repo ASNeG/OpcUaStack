@@ -450,7 +450,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-#if defined (__linux_)
+#if defined (__linux__)
 		// set permissions
 		if (chmod(directory.c_str(), S_IRUSR|S_IWUSR|S_IXUSR) != 0) {
 			Log(Error, "change permission directory error")
