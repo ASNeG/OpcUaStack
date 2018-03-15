@@ -17,6 +17,7 @@
 
 #include <openssl/rsa.h>
 #include "OpcUaStackCore/Certificate/CryptoRSA.h"
+#include "OpcUaStackCore/Certificate/OpenSSLCompat.h"
 
 namespace OpcUaStackCore
 {
@@ -80,7 +81,7 @@ namespace OpcUaStackCore
 			return BadUnexpectedError;
 		}
 
-		if (key->pkey.rsa == nullptr) {
+		if (EVP_PKEY_get0_RSA(key) == nullptr) {
 			if (isLogging_) {
 				Log(Error, "publicEntrypt error - invalid rsa key type");
 			}
@@ -142,7 +143,7 @@ namespace OpcUaStackCore
 	    		    bytesToEncrypt,      	   										// number bytes to encrypt
 	    			(const unsigned char*)(plainTextBuf + plainTextPosition),       // buffer to encrypt
 	    			(unsigned char*)(encryptedTextBuf + encryptedTextPosition),  	// where to encrypt
-	    			key->pkey.rsa,                              					// public key
+					EVP_PKEY_get0_RSA(key),                              					// public key
 	    			padding															// padding mode
 			    );
 	    		if(encryptedBytes < 0) {
@@ -194,7 +195,7 @@ namespace OpcUaStackCore
 			}
 	        return BadUnexpectedError;
 	    }
-		if (key->pkey.rsa == nullptr) {
+		if (EVP_PKEY_get0_RSA(key) == nullptr) {
 			if (isLogging_) {
 				Log(Error, "privateDecrypt error - private rsa key empty");
 			}
@@ -202,7 +203,7 @@ namespace OpcUaStackCore
 		}
 
 		// get key information
-		uint32_t keySize = RSA_size(key->pkey.rsa);
+		uint32_t keySize = RSA_size(EVP_PKEY_get0_RSA(key));
 
 		// check encrypted text
 		if ((encryptedTextLen == 0) || (encryptedTextLen%keySize != 0)) {
@@ -249,7 +250,7 @@ namespace OpcUaStackCore
 					keySize,                            							// how much to decrypt
 					(unsigned char*)encryptedTextBuf + encryptedTextPosition,   	// what to decrypt
 					(unsigned char*)plainTextBuf + (*plainTextLen),  				// where to decrypt
-					key->pkey.rsa,                  								// private key
+					EVP_PKEY_get0_RSA(key),                  								// private key
 					padding															// padding mode
 				);
 				if(decryptedBytes == -1) {
@@ -299,7 +300,7 @@ namespace OpcUaStackCore
 			}
 	        return BadUnexpectedError;
 	    }
-		if (key->pkey.rsa == nullptr) {
+		if (EVP_PKEY_get0_RSA(key) == nullptr) {
 			if (isLogging_) {
 				Log(Error, "sign error - private rsa key empty");
 			}
@@ -307,7 +308,7 @@ namespace OpcUaStackCore
 		}
 
 		// check sign text length
-		uint32_t size =  RSA_size(key->pkey.rsa);
+		uint32_t size =  RSA_size(EVP_PKEY_get0_RSA(key));
 		if (size != *signTextLen) {
 			if (isLogging_) {
 				Log(Error, "sign error - sign text length");
@@ -323,7 +324,7 @@ namespace OpcUaStackCore
 			plainTextLen,
 			(unsigned char*)signTextBuf,
 			signTextLen,
-			key->pkey.rsa
+			EVP_PKEY_get0_RSA(key)
 		);
 		if (result != 1) {
 			addOpenSSLError();
@@ -364,7 +365,7 @@ namespace OpcUaStackCore
 			return BadUnexpectedError;
 		}
 
-		if (key->pkey.rsa == nullptr) {
+		if (EVP_PKEY_get0_RSA(key) == nullptr) {
 			if (isLogging_) {
 				Log(Error, "sign error - public rsa key type error");
 			}
@@ -372,7 +373,7 @@ namespace OpcUaStackCore
 		}
 
 		// check sign text length
-		uint32_t size =  RSA_size(key->pkey.rsa);
+		uint32_t size =  RSA_size(EVP_PKEY_get0_RSA(key));
 		if (signTextLen % size != 0) {
 			if (isLogging_) {
 				Log(Error, "sign error - sign text length error");
@@ -385,7 +386,7 @@ namespace OpcUaStackCore
 			(const unsigned char*)plainTextBuf,
 			plainTextLen, (unsigned char *)signTextBuf,
 			signTextLen,
-			key->pkey.rsa
+			EVP_PKEY_get0_RSA(key)
 		);
 		if (result != 1) {
 			addOpenSSLError();

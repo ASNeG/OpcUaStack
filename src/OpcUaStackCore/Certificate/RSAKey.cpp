@@ -18,6 +18,7 @@
 #include <string.h>
 #include <openssl/pem.h>
 
+#include "OpcUaStackCore/Certificate/OpenSSLCompat.h"
 #include "OpcUaStackCore/Certificate/RSAKey.h"
 
 namespace OpcUaStackCore
@@ -35,7 +36,7 @@ namespace OpcUaStackCore
 	, pKey_(nullptr)
 	{
 	    if (pKey_) {
-	        CRYPTO_add (&pKey->references, 1, CRYPTO_LOCK_EVP_PKEY);
+	        EVP_PKEY_up_ref(pKey);
 	        pKey_ = pKey;
 	    }
 	}
@@ -62,7 +63,7 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, pKey_(nullptr)
 	{
-		CRYPTO_add (&copy.pKey_->references, 1, CRYPTO_LOCK_EVP_PKEY );
+	    EVP_PKEY_up_ref(copy.pKey_);
         pKey_ = copy.pKey_;
 
 	}
@@ -79,7 +80,7 @@ namespace OpcUaStackCore
 	    	EVP_PKEY_free (pKey_);
 	    }
 
-	    CRYPTO_add (&copy.pKey_->references, 1, CRYPTO_LOCK_EVP_PKEY);
+	    EVP_PKEY_up_ref(copy.pKey_);
 	    pKey_ = copy.pKey_;
 	    return *this;
 	}
@@ -214,7 +215,7 @@ namespace OpcUaStackCore
     bool
 	RSAKey::isValid(void)
     {
-    	return ( pKey_ != 0 && pKey_->pkey.rsa != 0 && EVP_PKEY_missing_parameters(pKey_) == 0);
+    	return ( pKey_ != 0 && EVP_PKEY_get0_RSA(pKey_) != 0 && EVP_PKEY_missing_parameters(pKey_) == 0);
     }
 
     bool

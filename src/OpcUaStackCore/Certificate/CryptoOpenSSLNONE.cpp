@@ -66,4 +66,30 @@ namespace OpcUaStackCore
 		return BadNotSupported;
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::symmetricDecrypt(
+		char*       	encryptedTextBuf,
+		uint32_t		encryptedTextLen,
+		AESKey&	   		aesKey,
+		IV&		   		iv,
+		char*      		plainTextBuf,
+		int32_t*   		plainTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::symmetricEncrypt(
+		char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		AESKey&	   		aesKey,
+		IV&		   		iv,
+		char*      		encryptedTextBuf,
+		int32_t*   		encryptedTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
 }

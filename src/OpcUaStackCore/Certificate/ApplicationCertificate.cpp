@@ -450,6 +450,7 @@ namespace OpcUaStackCore
 			return false;
 		}
 
+#if defined (__linux_)
 		// set permissions
 		if (chmod(directory.c_str(), S_IRUSR|S_IWUSR|S_IXUSR) != 0) {
 			Log(Error, "change permission directory error")
@@ -457,6 +458,7 @@ namespace OpcUaStackCore
 				.parameter("ErrorCode", strerror(errno));
 			return false;
 		}
+#endif
 
 		return true;
 	}

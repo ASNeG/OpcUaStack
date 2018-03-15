@@ -17,6 +17,7 @@
 
 #include <OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256.h>
 #include <OpcUaStackCore/Certificate/CryptoRSA.h>
+#include <OpcUaStackCore/Certificate/CryptoAES.h>
 
 namespace OpcUaStackCore
 {
@@ -77,6 +78,48 @@ namespace OpcUaStackCore
 			plainTextLen,
 			&publicKey,
 			RSA_PKCS1_OAEP_PADDING,
+			encryptedTextBuf,
+			encryptedTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::symmetricDecrypt(
+		char*       	encryptedTextBuf,
+		uint32_t		encryptedTextLen,
+		AESKey&	   		aesKey,
+		IV&		   		iv,
+		char*      		plainTextBuf,
+		int32_t*   		plainTextLen
+	)
+	{
+		CryptoAES cryptoAES;
+		return cryptoAES.decryptCBC256(
+			encryptedTextBuf,
+			encryptedTextLen,
+			aesKey,
+			iv,
+			plainTextBuf,
+			plainTextLen
+		);
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::symmetricEncrypt(
+		char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		AESKey&	   		aesKey,
+		IV&		   		iv,
+		char*      		encryptedTextBuf,
+		int32_t*   		encryptedTextLen
+	)
+	{
+		CryptoAES cryptoAES;
+		return cryptoAES.encryptCBC256(
+			plainTextBuf,
+			plainTextLen,
+			aesKey,
+			iv,
 			encryptedTextBuf,
 			encryptedTextLen
 		);

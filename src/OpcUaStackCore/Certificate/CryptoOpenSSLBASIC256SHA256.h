@@ -47,6 +47,24 @@ namespace OpcUaStackCore
 			uint32_t*		encryptedTextLen
 		);
 
+		virtual OpcUaStatusCode symmetricDecrypt(
+			char*       	encryptedTextBuf,
+			uint32_t		encryptedTextLen,
+			AESKey&	   		aesKey,
+			IV&		   		iv,
+			char*      		plainTextBuf,
+			int32_t*   		plainTextLen
+		);
+
+		virtual OpcUaStatusCode symmetricEncrypt(
+			char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			AESKey&	   		aesKey,
+			IV&		   		iv,
+			char*      		encryptedTextBuf,
+			int32_t*   		encryptedTextLen
+		);
+
 	};
 
 }
