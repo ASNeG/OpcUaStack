@@ -18,8 +18,12 @@
 #ifndef __OpcUaStackServer_ServerInfo_h__
 #define __OpcUaStackServer_ServerInfo_h__
 
+#include <boost/shared_ptr.hpp>
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
@@ -27,8 +31,17 @@ namespace OpcUaStackServer
 	class DLLEXPORT ServerInfo
 	{
 	  public:
+		typedef boost::shared_ptr<ServerInfo> SPtr;
+
 		ServerInfo(void);
 	    ~ServerInfo(void);
+
+	    bool parse(Config* cfg, const std::string& prefix);
+
+	    void serverUri(const std::string& serverUri);
+	    std::string& serverUri(void);
+	    void serverName(const std::string& serverName);
+	    std::string& serverName(void);
 
 	  private:
 	    std::string serverUri_;

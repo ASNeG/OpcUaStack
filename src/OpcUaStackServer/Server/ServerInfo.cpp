@@ -33,4 +33,50 @@ namespace OpcUaStackServer
 	{
 	}
 
+	bool
+	ServerInfo::parse(Config* cfg, const std::string& prefix)
+	{
+		// get server uri
+		if (!cfg->getConfigParameter(prefix + ".ServerUri", serverUri_)) {
+			Log(Error, "parameter not found in configuration file")
+				.parameter("Parameter", prefix + ".ServerUri")
+				.parameter("ConfigFileName", cfg->configFileName());
+			return false;
+		}
+
+		// get server name
+		if (!cfg->getConfigParameter(prefix + ".ServerName", serverName_)) {
+			Log(Error, "parameter not found in configuration file")
+				.parameter("Parameter", prefix + ".ServerName")
+				.parameter("ConfigFileName", cfg->configFileName());
+			return false;
+		}
+
+		return true;
+	}
+
+    void
+	ServerInfo::serverUri(const std::string& serverUri)
+    {
+    	serverUri_ = serverUri;
+    }
+
+    std::string&
+	ServerInfo::serverUri(void)
+    {
+    	return serverUri_;
+    }
+
+    void
+	ServerInfo::serverName(const std::string& serverName)
+    {
+    	serverName_ = serverName;
+    }
+
+    std::string&
+	ServerInfo::serverName(void)
+    {
+    	return serverName_;
+    }
+
 }
