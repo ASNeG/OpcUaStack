@@ -56,6 +56,7 @@ namespace OpcUaServer
 		// set global config alias variables
 		Config* config = Config::instance();
 		config->alias("@CONF_DIR@", Environment::confDir());
+		config->alias("@HOSTNAME@", Environment::hostname());
 		return true;
 	}
 

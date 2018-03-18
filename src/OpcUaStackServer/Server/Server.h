@@ -27,6 +27,7 @@
 #include "OpcUaStackServer/ServiceManager/ServiceManager.h"
 #include "OpcUaStackServer/Application/ApplicationManager.h"
 #include "OpcUaStackServer/Server/ServerStatusDataType.h"
+#include "OpcUaStackServer/Server/ServerInfo.h"
 
 namespace OpcUaStackServer
 {
@@ -65,6 +66,7 @@ namespace OpcUaStackServer
 		SessionManager sessionManager_;
 		ServiceManager serviceManager_;
 		ApplicationManager applicationManager_;
+		ServerInfo serverInfo_;
 
 		ServerStatusDataType serverStatusDataType_;
 	};

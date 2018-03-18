@@ -91,6 +91,8 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->endpointUrl(stringValue);
 
+			std::cout << "EndpointUrl=" << endpointDescription->endpointUrl() << std::endl;
+
 			if (config->getConfigParameter("ApplicationUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)

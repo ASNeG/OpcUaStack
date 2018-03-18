@@ -37,6 +37,7 @@ namespace OpcUaStackServer
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()
+	, serverInfo_()
 	, serverStatusDataType_()
 	, applicationCertificate_()
 	{
@@ -354,9 +355,16 @@ namespace OpcUaStackServer
 		EndpointDescription::SPtr endpointDescription;
 		endpointDescriptionArray->get(0, endpointDescription);
 
+		// decode server info
+		rc = serverInfo_.parse(&config(), "OpcUaServer.ServerInfo");
+		if (!rc) {
+			Log(Error, "server info error");
+			return false;
+		}
+
 		// decode certificate configuration
 		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
-		applicationCertificate_->uri(endpointDescription->endpointUrl());
+		applicationCertificate_->uri(serverInfo_.serverUri());
 		rc = ApplicationCertificateConfig::parse(
 			applicationCertificate_,
 			"OpcUaServer.ApplicationCertificate",
