@@ -18,6 +18,7 @@
 #ifndef __OpcuaStackCore_Host_h__
 #define __OpcUaStackCore_Host_h__
 
+#include <boost/asio.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include <string>
 #include <stdint.h>
