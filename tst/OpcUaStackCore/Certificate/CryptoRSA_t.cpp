@@ -25,9 +25,9 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 		char plainTextBuf1[20];
 		uint32_t plainTextLen1 = 20;
 		char encryptedTextBuf1[20000];
-		int32_t encryptedTextLen1 = 20000;
+		uint32_t encryptedTextLen1 = 20000;
 		char plainTextBuf2[20];
-		int32_t plainTextLen2 = 20;
+		uint32_t plainTextLen2 = 20;
 
 		memcpy(plainTextBuf1, "01234567890123456789", 20);
 
