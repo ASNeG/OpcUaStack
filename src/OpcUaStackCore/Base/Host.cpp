@@ -26,16 +26,100 @@ namespace OpcUaStackCore
 
 	Host::Host(void)
 	: hostname_("")
+	, ipAddressVec_()
 	{
 	}
 
 	Host::Host(const std::string& hostname)
 	: hostname_(hostname)
+	, ipAddressVec_()
 	{
+		hostnameToAddress();
 	}
 
 	Host::~Host(void)
 	{
+	}
+
+	void
+	Host::hostname(const std::string& hostname)
+	{
+		hostname_ = hostname;
+		hostnameToAddress();
+	}
+
+	std::string&
+	Host::hostname(void)
+	{
+		return hostname_;
+	}
+
+	bool
+	Host::isGood(void)
+	{
+		return !isBad();
+	}
+
+	bool
+	Host::isBad(void)
+	{
+		return ipAddressVec_.size() == 0;
+	}
+
+	void
+	Host::getIpAddressVec(IpAddressVec& ipAddressVec)
+	{
+		ipAddressVec = ipAddressVec_;
+	}
+
+	void
+	Host::getIpv4AddressVec(IpAddressVec& ipAddressVec)
+	{
+		IpAddressVec::iterator it;
+		for (it = ipAddressVec_.begin(); it != ipAddressVec_.end(); it++) {
+			if (it->is_v4()) {
+				ipAddressVec.push_back(*it);
+			}
+		}
+	}
+
+	void
+	Host::getIpv6AddressVec(IpAddressVec& ipAddressVec)
+	{
+		IpAddressVec::iterator it;
+		for (it = ipAddressVec_.begin(); it != ipAddressVec_.end(); it++) {
+			if (it->is_v6()) {
+				ipAddressVec.push_back(*it);
+			}
+		}
+	}
+
+	void
+	Host::hostnameToAddress(void)
+	{
+		ipAddressVec_.clear();
+
+		boost::asio::io_service io_service;
+
+		try  {
+			// setup resolver query
+			boost::asio::ip::tcp::resolver resolver(io_service);
+			boost::asio::ip::tcp::resolver::query query(hostname_, "");
+
+			// prepare response iterator
+			boost::asio::ip::tcp::resolver::iterator destination = resolver.resolve(query);
+			boost::asio::ip::tcp::resolver::iterator end;
+
+			// iterate through multiple response
+			while (destination != end) {
+				ipAddressVec_.push_back(destination->endpoint().address());
+				destination++;
+			}
+		}
+		catch (boost::system::system_error& error) {
+			ipAddressVec_.clear();
+		}
+
 	}
 
 }

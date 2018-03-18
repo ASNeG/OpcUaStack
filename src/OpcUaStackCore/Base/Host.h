@@ -28,12 +28,26 @@ namespace OpcUaStackCore
 	class DLLEXPORT Host
 	{
 	  public:
+		typedef std::vector<boost::asio::ip::address> IpAddressVec;
+
 		Host(void);
 		Host(const std::string& hostname);
 		~Host(void);
 
+		void hostname(const std::string& hostname);
+		std::string& hostname(void);
+		bool isGood(void);
+		bool isBad(void);
+
+		void getIpAddressVec(IpAddressVec& ipAddressVec);
+		void getIpv4AddressVec(IpAddressVec& ipAddressVec);
+		void getIpv6AddressVec(IpAddressVec& ipAddressVec);
+
 	  private:
+		void hostnameToAddress(void);
+
 		std::string hostname_;
+		IpAddressVec ipAddressVec_;
 	};
 
 }
