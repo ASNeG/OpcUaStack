@@ -32,7 +32,8 @@ namespace OpcUaStackCore
 
 		static std::string hostName(void);
 		static void getAllIPv4sFromHost(std::vector<std::string>& ipVec);
-
+		static void getIpsFromHostname(const std::string& hostname, std::vector<std::string>& ipVec);
+		static void getHostnameFromIp(const std::string& ip, std::string& hostname);
 	};
 
 }
