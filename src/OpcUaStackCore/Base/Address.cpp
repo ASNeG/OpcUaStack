@@ -15,12 +15,19 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#ifdef WIN32
+#include <Ws2tcpip.h>
+#else
+
 #include <ifaddrs.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
-#include <arpa/inet.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
+
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -48,6 +55,10 @@ namespace OpcUaStackCore
 	void
 	Address::getAllIPv4sFromHost(std::vector<std::string>& ipVec)
 	{
+#ifdef WIN32
+
+#else
+
 		struct ifaddrs *ifaddr, *ifa;
 		int n;
 
@@ -66,6 +77,8 @@ namespace OpcUaStackCore
         }
 
         freeifaddrs(ifaddr);
+
+#endif
 	}
 
 	void
