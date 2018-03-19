@@ -37,7 +37,7 @@ namespace OpcUaStackServer
 		NodeNoLongerExist,
 	} SampleResult;
 
-	class MonitorItem
+	class DLLEXPORT MonitorItem
 	: public Object
 	{
 	  public:
