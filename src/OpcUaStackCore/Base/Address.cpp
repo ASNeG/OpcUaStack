@@ -17,7 +17,6 @@
 
 #ifdef WIN32
 #include <Ws2tcpip.h>
-#include "stdafx.h"
 #include "Winsock2.h"
 #else
 
