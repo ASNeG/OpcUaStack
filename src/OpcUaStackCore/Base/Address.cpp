@@ -17,6 +17,8 @@
 
 #ifdef WIN32
 #include <Ws2tcpip.h>
+#include "stdafx.h"
+#include "Winsock2.h"
 #else
 
 #include <ifaddrs.h>
@@ -56,7 +58,40 @@ namespace OpcUaStackCore
 	Address::getAllIPv4sFromHost(std::vector<std::string>& ipVec)
 	{
 #ifdef WIN32
+		WSADATA WSAData;
 
+		// Initialize winsock dll
+		if(::WSAStartup(MAKEWORD(1, 0), &WSAData)) {
+			Log(Error, "WSAStartup error");
+		    return;
+		}
+
+		char szHostName[128] = "";
+
+		//get the standard host name of the machine
+		if(::gethostname(szHostName, sizeof(szHostName))) {
+			Log(Error, "gethostname error");
+			return;
+		}
+
+		struct sockaddr_in SocketAddress;
+		struct hostent     *pHost        = 0;
+
+		// Get local IP addresses
+		pHost = ::gethostbyname(szHostName);
+		if(!pHost) {
+			Log(Error, "gethostbyname error");
+		    return;
+		}
+
+
+		for(int nCount = 0; ((pHost->h_addr_list[nCount]) && (nCount < 10)); ++nCount) {
+			memcpy(&SocketAddress.sin_addr, pHost->h_addr_list[nCount], pHost->h_length);
+			ipVec.push_back(std::string(inet_ntoa(SocketAddress.sin_addr)));
+		}
+
+		// Cleanup
+		WSACleanup();
 #else
 
 		struct ifaddrs *ifaddr, *ifa;
