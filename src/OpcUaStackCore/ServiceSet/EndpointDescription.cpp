@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// EndpointDescription
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	EndpointDescription::EndpointDescription(void)
 	: endpointUrl_()
 	, applicationDescription_(constructSPtr<ApplicationDescription>())
@@ -32,6 +39,17 @@ namespace OpcUaStackCore
 	{
 	}
 
+	EndpointDescription::EndpointDescription(const EndpointDescription& endpointDescription)
+	: endpointUrl_(endpointDescription.endpointUrl_)
+	, applicationDescription_(endpointDescription.applicationDescription_)
+	, serverCertificate_(endpointDescription.serverCertificate_)
+	, messageSecurityMode_(endpointDescription.messageSecurityMode_)
+	, securityPolicyUri_(endpointDescription.securityPolicyUri_)
+	, userIdentityTokens_(endpointDescription.userIdentityTokens_)
+	, transportProfileUri_(endpointDescription.transportProfileUri_)
+	, securityLevel_(endpointDescription.securityLevel_)
+	{
+	}
 
 	EndpointDescription::~EndpointDescription(void)
 	{
@@ -223,6 +241,22 @@ namespace OpcUaStackCore
 		//os << ", UserIdentityTokens=[" << *userIdentityTokens_ << "]";
 		os << ", TransportProfileUri="; transportProfileUri_.out(os);
 		os << ", SecurityLevel=" << (uint32_t)securityLevel_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// EndpointDescriptionSet
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	EndpointDescriptionSet::EndpointDescriptionSet(void)
+	{
+	}
+
+	EndpointDescriptionSet::~EndpointDescriptionSet(void)
+	{
 	}
 
 }

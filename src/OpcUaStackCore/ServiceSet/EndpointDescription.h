@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_EndpointDescription_h__
 
 #include <stdint.h>
+#include <map>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
@@ -35,8 +36,10 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<EndpointDescription> SPtr;
+		typedef std::multimap<std::string, EndpointDescription::SPtr> Multimap;
 
 		EndpointDescription(void);
+		EndpointDescription(const EndpointDescription& endpointDescription);
 		virtual ~EndpointDescription(void);
 
 		void endpointUrl(const std::string& endpointUrl);
@@ -73,12 +76,25 @@ namespace OpcUaStackCore
 		OpcUaByte securityLevel_;
 	};
 
+
 	class EndpointDescriptionArray
 	: public OpcUaArray<EndpointDescription::SPtr, SPtrTypeCoder<EndpointDescription> >
 	, public Object
 	{
 	  public:
 		typedef boost::shared_ptr<EndpointDescriptionArray> SPtr;
+	};
+
+
+	class EndpointDescriptionSet
+	{
+	  public:
+		typedef boost::shared_ptr<EndpointDescriptionSet> SPtr;
+
+		EndpointDescriptionSet(void);
+		~EndpointDescriptionSet(void);
+
+	  private:
 	};
 
 }
