@@ -94,7 +94,11 @@ namespace OpcUaStackCore
 		EndpointDescriptionSet(void);
 		~EndpointDescriptionSet(void);
 
+		void addEndpoint(const std::string& endpointUrl, EndpointDescription::SPtr& endpointDescription);
+		void getEndpoint(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+
 	  private:
+		EndpointDescription::Multimap endpointDescriptionMap_;
 	};
 
 }

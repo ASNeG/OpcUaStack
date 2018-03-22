@@ -252,11 +252,38 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	EndpointDescriptionSet::EndpointDescriptionSet(void)
+	: endpointDescriptionMap_()
 	{
 	}
 
 	EndpointDescriptionSet::~EndpointDescriptionSet(void)
 	{
+	}
+
+	void
+	EndpointDescriptionSet::addEndpoint(const std::string& endpointUrl, EndpointDescription::SPtr& endpointDescription)
+	{
+		endpointDescriptionMap_.insert(std::make_pair(endpointUrl, endpointDescription));
+	}
+
+	void
+	EndpointDescriptionSet::getEndpoint(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		EndpointDescription::Multimap::iterator it;
+		std::pair<EndpointDescription::Multimap::iterator, EndpointDescription::Multimap::iterator> ret;
+
+		ret = endpointDescriptionMap_.equal_range(endpointUrl);
+
+		uint32_t numberResults = 0;
+		for (it = ret.first; it != ret.second; it++) {
+			numberResults++;
+		}
+
+		endpointDescriptionArray->resize(numberResults);
+
+		for (it = ret.first; it != ret.second; it++) {
+			endpointDescriptionArray->push_back(it->second);
+		}
 	}
 
 }
