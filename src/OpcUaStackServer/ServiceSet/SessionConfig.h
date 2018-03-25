@@ -20,7 +20,6 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackServer/ServiceSet/SessionOld.h"
 
 namespace OpcUaStackServer
 {
@@ -28,7 +27,6 @@ namespace OpcUaStackServer
 	class DLLEXPORT SessionConfig
 	{
 	  public:
-		static bool initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config = nullptr);
 	};
 
 }

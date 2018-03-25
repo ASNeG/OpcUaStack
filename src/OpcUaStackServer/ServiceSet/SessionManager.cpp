@@ -27,10 +27,9 @@ namespace OpcUaStackServer
 
 	SessionManager::SessionManager(void)
 	: ioThread_(nullptr)
-	, secureChannelServerConfig_()
-	, secureChannelServer_()
+	, secureChannelServerMap_()
 	, config_(nullptr)
-	, endpointDescriptionArray_()
+	, endpointDescriptionSet_()
 	, applicationCertificate_()
 	, cryptoManager_()
 	, secureChannelServerShutdown_()
@@ -77,9 +76,9 @@ namespace OpcUaStackServer
 	}
 
 	void
-	SessionManager::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	SessionManager::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{
-		endpointDescriptionArray_ = endpointDescriptionArray;
+		endpointDescriptionSet_ = endpointDescriptionSet;
 	}
 
 	void
@@ -97,29 +96,36 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::startup(void)
 	{
-		// get endpoint configuration
-		EndpointDescription::SPtr endpointDescription;
-		if (!endpointDescriptionArray_->get(endpointDescription)) {
-			Log(Error, "read server configuration error - endpoint description array");
-			return false;
-		}
-		secureChannelServerConfig_ = constructSPtr<SecureChannelServerConfig>();
-		if (!getSecureChannelServerConfig(secureChannelServerConfig_, endpointDescription)) {
-			Log(Error, "read server configuration error - get endpoint description");
-			return false;
-		}
+		// get all endpoint urls from endpoint description set
+		std::vector<std::string> endpointUrls;
+		endpointDescriptionSet_->getEndpointUrls(endpointUrls);
 
-		// create secure channel server
-		secureChannelServer_ = constructSPtr<SecureChannelServer>(ioThread_);
+		// create secure channel server for each endpoint url
+		std::vector<std::string>::iterator it;
+		for (it = endpointUrls.begin(); it != endpointUrls.end(); it++) {
 
-		// init secure channel server
-		secureChannelServer_->secureChannelServerIf(this);
+			// get endpoint description array
+			std::string endpointUrl = *it;
+			EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
+			endpointDescriptionSet_->getEndpoints(endpointUrl, endpointDescriptionArray);
 
-		// open acceptor socket
-		if (!secureChannelServer_->accept(secureChannelServerConfig_)) {
-			Log(Error, "open secure channel endpoint error")
-				.parameter("Url", secureChannelServerConfig_->endpointUrl());
-			return false;
+			// create secure channel server configuration
+			SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
+			secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
+			secureChannelServerConfig->endpointUrl(endpointUrl);
+
+			// create new secure channel
+			SecureChannelServer::SPtr secureChannelServer = constructSPtr<SecureChannelServer>(ioThread_);
+			secureChannelServer->secureChannelServerIf(this);
+
+			// open server socket
+			if (!secureChannelServer->accept(secureChannelServerConfig)) {
+				Log(Error, "open secure channel endpoint error")
+					.parameter("EndpointUrl", endpointUrl);
+				return false;
+			}
+
+			secureChannelServerMap_.insert(std::make_pair(endpointUrl, secureChannelServer));
 		}
 
 		return true;
@@ -129,16 +135,17 @@ namespace OpcUaStackServer
 	SessionManager::shutdown(void)
 	{
 		// close acceptor socket
-		if (secureChannelServer_.get() != nullptr) {
+		SecureChannelServer::Map::iterator it;
+		for (it = secureChannelServerMap_.begin(); it != secureChannelServerMap_.end(); it++) {
+			SecureChannelServer::SPtr secureChannelServer = it->second;
+
 			secureChannelServerShutdown_.start();
-			secureChannelServer_->disconnect();
+			secureChannelServer->disconnect();
 			secureChannelServerShutdown_.waitForReady();
 		}
 
 		// delete secure channel server
-		if (secureChannelServer_.get() != nullptr) {
-			secureChannelServer_.reset();
-		}
+		secureChannelServerMap_.clear();
 
 		return true;
 	}
@@ -159,8 +166,18 @@ namespace OpcUaStackServer
 			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
 			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 
+		// find secure channel server
+		SecureChannelServer::Map::iterator it;
+		it = secureChannelServerMap_.find(secureChannel->endpointUrl_);
+		if (it == secureChannelServerMap_.end()) {
+			Log(Info, "secure channel server not found in handle connect")
+				.parameter("EndpointUrl", secureChannel->endpointUrl_);
+			return;
+		}
+		SecureChannelServer::SPtr secureChannelServer = it->second;
+
 		// create new secure channel handle
-		Object::SPtr handle = channelSessionHandleMap_.createSecureChannel(secureChannel);
+		Object::SPtr handle = channelSessionHandleMap_.createSecureChannel(secureChannelServer, secureChannel);
 		secureChannel->handle(handle);
 	}
 
@@ -254,12 +271,18 @@ namespace OpcUaStackServer
 		RequestHeader::SPtr requestHeader
 	)
 	{
+		SecureChannelServerConfig::SPtr secureChannelServerConfig;
+		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+		EndpointDescriptionArray::SPtr endpointDescriptionArray = secureChannelServerConfig->endpointDescriptionArray();
+		EndpointDescription::SPtr endpointDescription = secureChannelServerConfig->endpointDescription();
+
 		// create new session
 		Session::SPtr session = constructSPtr<Session>();
 		session->sessionIf(this);
 		session->applicationCertificate(applicationCertificate_);
 		session->cryptoManager(cryptoManager_);
-		session->endpointDescriptionArray(endpointDescriptionArray_);
+		session->endpointDescriptionArray(endpointDescriptionArray);
+		session->endpointDescription(endpointDescription);
 		session->transactionManager(transactionManagerSPtr_);
 		session->forwardGlobalSync(forwardGlobalSync_);
 
@@ -566,30 +589,52 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	void
-	SessionManager::handleEndpointOpen(void)
+	SessionManager::handleEndpointOpen(const std::string& endpointUrl)
 	{
 		Log(Info, "open opc ua endpoint")
-			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl())
+			.parameter("EndpointUrl", endpointUrl)
 			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
 			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
 	}
 
 	void
-	SessionManager::handleEndpointClose(void)
+	SessionManager::handleEndpointClose(const std::string& endpointUrl)
 	{
 		Log(Info, "close opc ua endpoint")
-			.parameter("EndpointUrl", secureChannelServerConfig_->endpointUrl())
+			.parameter("EndpointUrl", endpointUrl)
 			.parameter("ChannelCount", channelSessionHandleMap_.secureChannelSize())
 			.parameter("SessionCount", channelSessionHandleMap_.sessionSize());
+
+		// find secure channel server
+		SecureChannelServer::SPtr secureChannelServer;
+		SecureChannelServer::Map::iterator it0;
+		it0 = secureChannelServerMap_.find(endpointUrl);
+		if (it0 == secureChannelServerMap_.end()) {
+			Log(Info, "close opc ua endpoint error, because secure channel server not found")
+				.parameter("EndpointUrl", endpointUrl);
+		}
+		else {
+			secureChannelServer = it0->second;
+		}
 
 		//
 		// close all channels
 		//
 		std::vector<SecureChannel*> secureChannelList;
-		std::vector<SecureChannel*>::iterator it;
+		std::vector<SecureChannel*>::iterator it1;
 		channelSessionHandleMap_.getSecureChannelList(secureChannelList);
-		for (it = secureChannelList.begin(); it != secureChannelList.end(); it++) {
-			secureChannelServer_->disconnect(*it);
+		if (secureChannelServer.get() != nullptr) {
+			for (it1 = secureChannelList.begin(); it1 != secureChannelList.end(); it1++) {
+				SecureChannel* secureChannel = *it1;
+
+				SecureChannelServerConfig::SPtr cfg = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+
+				if (cfg->endpointUrl() != endpointUrl) {
+					continue;
+				}
+
+				secureChannelServer->disconnect(secureChannel);
+			}
 		}
 
 		if (secureChannelList.size() == 0) {
@@ -619,7 +664,8 @@ namespace OpcUaStackServer
 		}
 
 		// send response
-		secureChannelServer_->sendResponse(
+		SecureChannelServer::SPtr secureChannelServer = channelSessionHandle->secureChannelServer();
+		secureChannelServer->sendResponse(
 			channelSessionHandle->secureChannel(),
 			secureChannelTransaction
 		);
@@ -655,7 +701,7 @@ namespace OpcUaStackServer
 		}
 
 		// send response
-		secureChannelServer_->sendResponse(
+		channelSessionHandle->secureChannelServer()->sendResponse(
 			channelSessionHandle->secureChannel(),
 			secureChannelTransaction
 		);
@@ -672,31 +718,6 @@ namespace OpcUaStackServer
 	SessionManager::discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
 	{
 		// FIXME: todo
-	}
-
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	//
-	// private functions
-	//
-	// ------------------------------------------------------------------------
-	// ------------------------------------------------------------------------
-	bool
-	SessionManager::getSecureChannelServerConfig(
-		SecureChannelServerConfig::SPtr& secureChannelServerConfig,
-		EndpointDescription::SPtr& endpointDescription
-	)
-	{
-		// set endpoint url
-		secureChannelServerConfig->endpointUrl(endpointDescription->endpointUrl());
-
-		// set security mode
-		secureChannelServerConfig->securityMode(endpointDescription->messageSecurityMode());
-
-		// set security policy
-		secureChannelServerConfig->securityPolicy(endpointDescription->securityPolicy());
-
-		return true;
 	}
 
 }

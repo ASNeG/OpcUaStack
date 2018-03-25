@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2017 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,6 +23,7 @@ namespace OpcUaStackServer
 	ChannelSessionHandle::ChannelSessionHandle(void)
 	: secureChannelState_(SCS_Invalid)
 	, secureChannel_(nullptr)
+	, secureChannelServer_()
 	, sessionState_(SS_Invalid)
 	, session_()
 	{
@@ -60,6 +61,18 @@ namespace OpcUaStackServer
 	ChannelSessionHandle::secureChannel(void)
 	{
 		return secureChannel_;
+	}
+
+	void
+	ChannelSessionHandle::secureChannelServer(SecureChannelServer::SPtr& secureChannelServer)
+	{
+		secureChannelServer_ = secureChannelServer;
+	}
+
+	SecureChannelServer::SPtr&
+	ChannelSessionHandle::secureChannelServer(void)
+	{
+		return secureChannelServer_;
 	}
 
 	ChannelSessionHandle::SessionState

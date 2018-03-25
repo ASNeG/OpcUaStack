@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 	, ioThread_(ioThread)
 	, resolver_(ioThread->ioService()->io_service())
 	, tcpAcceptor_(nullptr)
+	, endpointUrl_("")
 	{
 	}
 
@@ -53,7 +54,7 @@ namespace OpcUaStackCore
 		// check interface
 		if (secureChannelServerIf_ == nullptr) {
 			Log(Error, "secure channel server interface invalid; please register interface")
-				.parameter("EndpointUrl", secureChannelServerConfig->endpointUrl());
+				.parameter("EndpointUrl", endpointUrl_);
 			return false;
 		}
 
@@ -73,7 +74,7 @@ namespace OpcUaStackCore
 			tcpAcceptor_->cancel();
 		}
 		else {
-			secureChannelServerIf_->handleEndpointClose();
+			secureChannelServerIf_->handleEndpointClose(endpointUrl_);
 		}
 	}
 
@@ -99,12 +100,14 @@ namespace OpcUaStackCore
 		SecureChannelServerConfig::SPtr config;
 		config = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
 
+		endpointUrl_ = config->endpointUrl();
+
 		secureChannel->receivedBufferSize_ = config->receivedBufferSize();
 		secureChannel->sendBufferSize_ = config->sendBufferSize();
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
-		secureChannel->securityMode_ = config->securityMode();
-		secureChannel->securityPolicy_ = config->securityPolicy();
+		//secureChannel->securityMode_ = config->securityMode();
+		//secureChannel->securityPolicy_ = config->securityPolicy();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 		secureChannel->debug_ = config->debug();
 		secureChannel->debugHeader_ = config->debugHeader();
@@ -146,7 +149,7 @@ namespace OpcUaStackCore
 				delete tcpAcceptor_;
 				tcpAcceptor_ = nullptr;
 			}
-			secureChannelServerIf_->handleEndpointClose();
+			secureChannelServerIf_->handleEndpointClose(secureChannel->endpointUrl_);
 
 			return;
 		}
@@ -161,7 +164,7 @@ namespace OpcUaStackCore
 			tcpAcceptor_ = new TCPAcceptor(ioThread_->ioService()->io_service(), secureChannel->local_);
 			tcpAcceptor_->listen();
 
-			secureChannelServerIf_->handleEndpointOpen();
+			secureChannelServerIf_->handleEndpointOpen(secureChannel->endpointUrl_);
 		}
 
 		secureChannel->state_ = SecureChannel::S_Accepting;
@@ -197,7 +200,7 @@ namespace OpcUaStackCore
 				delete tcpAcceptor_;
 				tcpAcceptor_ = nullptr;
 			}
-			secureChannelServerIf_->handleEndpointClose();
+			secureChannelServerIf_->handleEndpointClose(secureChannel->endpointUrl_);
 
 			return;
 		}
@@ -283,8 +286,21 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelServer::handleRecvOpenSecureChannelRequest(SecureChannel* secureChannel, OpcUaUInt32 channelId, OpenSecureChannelRequest& openSecureChannelRequest)
+	SecureChannelServer::handleRecvOpenSecureChannelRequest(
+		SecureChannel* secureChannel,
+		OpcUaUInt32 channelId,
+		OpenSecureChannelRequest& openSecureChannelRequest
+	)
 	{
+		// check security parameter
+		// FIXME: todo - we must find the right endpoint
+		SecureChannelServerConfig::SPtr secureChannelServerConfig;
+		secureChannelServerConfig = boost::static_pointer_cast<SecureChannelServerConfig>(secureChannel->config_);
+
+		EndpointDescription::SPtr endpointDescription;
+		secureChannelServerConfig->endpointDescriptionArray()->get(0, endpointDescription);
+		secureChannelServerConfig->endpointDescription(endpointDescription);
+
 		// check parameter
 		bool success = true;
 		if (openSecureChannelRequest.requestType() == RT_ISSUE) {

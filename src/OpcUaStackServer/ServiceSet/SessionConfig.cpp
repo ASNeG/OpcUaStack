@@ -25,6 +25,7 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 
+#if 0
 	bool 
 	SessionConfig::initial(SessionOld::SPtr sessionSPtr, const std::string& configPrefix, Config* config)
 	{
@@ -60,4 +61,5 @@ namespace OpcUaStackServer
 
 		return true;
 	}
+#endif
 }

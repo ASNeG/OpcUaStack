@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,14 +30,40 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	SecureChannelServerConfig::SecureChannelServerConfig(void)
 	: SecureChannelConfig()
+	, endpointDescriptionArray_()
+	, endpointDescription_()
 	, endpointUrl_("")
-	, securityMode_(SM_None)
-	, securityPolicy_(SP_None)
+//	, securityMode_(SM_None)
+//	, securityPolicy_(SP_None)
 	{
 	}
 
 	SecureChannelServerConfig::~SecureChannelServerConfig(void)
 	{
+	}
+
+	void
+	SecureChannelServerConfig::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	EndpointDescriptionArray::SPtr&
+	SecureChannelServerConfig::endpointDescriptionArray(void)
+	{
+		return endpointDescriptionArray_;
+	}
+
+	void
+	SecureChannelServerConfig::endpointDescription(EndpointDescription::SPtr& endpointDescription)
+	{
+		endpointDescription_ = endpointDescription;
+	}
+
+	EndpointDescription::SPtr&
+	SecureChannelServerConfig::endpointDescription(void)
+	{
+		return endpointDescription_;
 	}
 
 	void
@@ -52,6 +78,7 @@ namespace OpcUaStackCore
 		return endpointUrl_;
 	}
 
+#if 0
 	void
 	SecureChannelServerConfig::securityMode(SecurityMode securityMode)
 	{
@@ -75,6 +102,7 @@ namespace OpcUaStackCore
 	{
 		return securityPolicy_;
 	}
+#endif
 
 
 }

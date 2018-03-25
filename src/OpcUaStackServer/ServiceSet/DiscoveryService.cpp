@@ -33,6 +33,7 @@ namespace OpcUaStackServer
 	DiscoveryService::DiscoveryService(void)
 	: discoveryIf_(nullptr)
 	, applicationCertificate_(nullptr)
+	, endpointDescriptionArray_()
 	{
 	}
 
@@ -47,9 +48,10 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DiscoveryService::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	DiscoveryService::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{
-		endpointDescriptionArray_ = endpointDescriptionArray;
+		endpointDescriptionArray_ = constructSPtr<EndpointDescriptionArray>();
+		endpointDescriptionSet->getEndpoints(endpointDescriptionArray_);
 	}
 
 	void
@@ -75,6 +77,10 @@ namespace OpcUaStackServer
 		for (uint32_t idx = 0; idx < endpointDescriptionArray_->size(); idx++) {
 			EndpointDescription::SPtr endpointDescription;
 			endpointDescriptionArray_->get(idx, endpointDescription);
+
+			if (!endpointDescription->needSecurity()) {
+				continue;
+			}
 
 			endpointDescription->serverCertificate((const unsigned char*)certBuf, certLen);
 		}

@@ -55,7 +55,7 @@ namespace OpcUaStackServer
 		void cryptoManager(CryptoManager::SPtr& cryptoManager);
 		void transactionManager(TransactionManager::SPtr transactionManagerSPtr);
 		void ioThread(IOThread* ioThread);
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet);
 		void config(Config* config);
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
@@ -67,8 +67,8 @@ namespace OpcUaStackServer
 		virtual void handleDisconnect(SecureChannel* secureChannel);
 		virtual void handleMessageRequest(SecureChannel* secureChannel);
 
-		virtual void handleEndpointOpen(void);
-		virtual void handleEndpointClose(void);
+		virtual void handleEndpointOpen(const std::string& endpointUrl);
+		virtual void handleEndpointClose(const std::string& endpointUrl);
 		//- SecureChannelServerIf ---------------------------------------------
 
 		//- SessionIf ---------------------------------------------------------
@@ -153,21 +153,14 @@ namespace OpcUaStackServer
 			RequestHeader::SPtr requestHeader
 		);
 
-
-		bool getSecureChannelServerConfig(
-			SecureChannelServerConfig::SPtr& secureChannelServerConfig,
-			EndpointDescription::SPtr& endpointDescription
-		);
-
 		IOThread* ioThread_;
 		Config* config_;
-		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		EndpointDescriptionSet::SPtr endpointDescriptionSet_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
 
 		ConditionProcess secureChannelServerShutdown_;
-		SecureChannelServerConfig::SPtr secureChannelServerConfig_;
-		SecureChannelServer::SPtr secureChannelServer_;
+		SecureChannelServer::Map secureChannelServerMap_;
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 
 		DiscoveryService::SPtr discoveryService_;

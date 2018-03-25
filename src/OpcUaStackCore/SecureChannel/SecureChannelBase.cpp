@@ -469,7 +469,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelRequest no implemented")
+		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelRequest not implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
 			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}

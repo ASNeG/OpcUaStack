@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,8 +31,17 @@ namespace OpcUaStackServer
 	class DLLEXPORT EndpointDescriptionConfig
 	{
 	  public:
-		static bool endpointDescriptions(EndpointDescriptionArray::SPtr endpointDescriptionArray, const std::string& configPrefix, Config* childConfig, const std::string& configurationFileName);
-		static bool userTokenPolicy(EndpointDescription::SPtr endpointDescription, const std::string& configPrefix, Config* config, const std::string& configurationFileName);
+		static bool endpointDescriptions(
+			EndpointDescriptionSet::SPtr endpointDescriptionSet,
+			const std::string& configPrefix, Config* childConfig,
+			const std::string& configurationFileName
+		);
+		static bool userTokenPolicy(
+			EndpointDescription::SPtr endpointDescription,
+			const std::string& configPrefix,
+			Config* config,
+			const std::string& configurationFileName
+		);
 	};
 
 }

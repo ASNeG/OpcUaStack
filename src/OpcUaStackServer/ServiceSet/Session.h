@@ -93,8 +93,8 @@ namespace OpcUaStackServer
 
 		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
-
+		void endpointDescription(EndpointDescription::SPtr& endpointDescription);
+		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
 		// - Component -------------------------------------------------------
 		void receive(Message::SPtr message);

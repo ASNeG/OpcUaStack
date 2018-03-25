@@ -61,6 +61,8 @@ namespace OpcUaStackCore
 		void securityLevel(const OpcUaByte securityLevel);
 		OpcUaByte securityLevel(void) const;
 
+		bool needSecurity(void);
+
 		void opcUaBinaryEncode(std::ostream& os) const;
 		void opcUaBinaryDecode(std::istream& is);
 		void out(std::ostream& os);
@@ -95,7 +97,9 @@ namespace OpcUaStackCore
 		~EndpointDescriptionSet(void);
 
 		void addEndpoint(const std::string& endpointUrl, EndpointDescription::SPtr& endpointDescription);
-		void getEndpoint(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void getEndpoints(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void getEndpoints(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void getEndpointUrls(std::vector<std::string>& endpointUrls);
 
 	  private:
 		EndpointDescription::Multimap endpointDescriptionMap_;

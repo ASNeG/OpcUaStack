@@ -340,9 +340,9 @@ namespace OpcUaStackServer
 		bool rc;
 
 		// decode endpoint configuration
-		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
+		EndpointDescriptionSet::SPtr endpointDescriptionSet = constructSPtr<EndpointDescriptionSet>();
 		rc = EndpointDescriptionConfig::endpointDescriptions(
-			endpointDescriptionArray, 
+			endpointDescriptionSet,
 			"OpcUaServer.Endpoints", 
 			&config(),
 			config().configFileName()
@@ -351,9 +351,6 @@ namespace OpcUaStackServer
 			Log(Error, "endpoint description array error");
 			return false;
 		}
-
-		EndpointDescription::SPtr endpointDescription;
-		endpointDescriptionArray->get(0, endpointDescription);
 
 		// decode server info
 		rc = serverInfo_.parse(&config(), "OpcUaServer.ServerInfo");
@@ -385,12 +382,12 @@ namespace OpcUaStackServer
 
 		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
-		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
+		discoveryService->endpointDescriptionSet(endpointDescriptionSet);
 		discoveryService->applicationCertificate(applicationCertificate_);
 
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
-		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
+		sessionManager_.endpointDescriptionSet(endpointDescriptionSet);
 		sessionManager_.applicationCertificate(applicationCertificate_);
 		sessionManager_.cryptoManager(cryptoManager);
 

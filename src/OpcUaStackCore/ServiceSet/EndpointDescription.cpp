@@ -202,6 +202,13 @@ namespace OpcUaStackCore
 		return securityLevel_;
 	}
 
+	bool
+	EndpointDescription::needSecurity(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	void 
 	EndpointDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -267,22 +274,44 @@ namespace OpcUaStackCore
 	}
 
 	void
-	EndpointDescriptionSet::getEndpoint(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	EndpointDescriptionSet::getEndpoints(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray)
 	{
 		EndpointDescription::Multimap::iterator it;
 		std::pair<EndpointDescription::Multimap::iterator, EndpointDescription::Multimap::iterator> ret;
 
 		ret = endpointDescriptionMap_.equal_range(endpointUrl);
 
-		uint32_t numberResults = 0;
-		for (it = ret.first; it != ret.second; it++) {
-			numberResults++;
-		}
+		uint32_t count = endpointDescriptionMap_.count(endpointUrl);
+		if (count == 0) return;
 
-		endpointDescriptionArray->resize(numberResults);
-
+		endpointDescriptionArray->resize(count);
 		for (it = ret.first; it != ret.second; it++) {
 			endpointDescriptionArray->push_back(it->second);
+		}
+	}
+
+	void
+	EndpointDescriptionSet::getEndpoints(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		EndpointDescription::Multimap::iterator it;
+
+		endpointDescriptionArray->resize(endpointDescriptionMap_.size());
+
+		for (it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+			endpointDescriptionArray->push_back(it->second);
+		}
+	}
+
+	void
+	EndpointDescriptionSet::getEndpointUrls(std::vector<std::string>& endpointUrls)
+	{
+		EndpointDescription::Multimap::iterator it;
+		std::set<std::string> endpointSet;
+
+		for (it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+			if (endpointSet.insert(it->first).second) {
+				endpointUrls.push_back(it->first);
+			}
 		}
 	}
 

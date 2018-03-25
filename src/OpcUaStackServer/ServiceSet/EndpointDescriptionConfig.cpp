@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,7 +23,11 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 	bool 
-	EndpointDescriptionConfig::endpointDescriptions(EndpointDescriptionArray::SPtr endpointDescriptionArray, const std::string& configPrefix, Config* childConfig, const std::string& configurationFileName)
+	EndpointDescriptionConfig::endpointDescriptions(
+		EndpointDescriptionSet::SPtr endpointDescriptionSet,
+		const std::string& configPrefix, Config* childConfig,
+		const std::string& configurationFileName
+	)
 	{
 		bool rc;
 		std::string stringValue;
@@ -73,14 +77,10 @@ namespace OpcUaStackServer
 		// --------------------------------------------------------------------------
 		// --------------------------------------------------------------------------
 
-		uint32_t idx = 0;
-		endpointDescriptionArray->resize(endpointDescriptionVec.size());
 		for (it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
 			EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
-			endpointDescriptionArray->set(idx, endpointDescription);
-			idx++;
 
 			if (config->getConfigParameter("EndpointUrl", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
@@ -90,8 +90,6 @@ namespace OpcUaStackServer
 				return false;
 			}
 			endpointDescription->endpointUrl(stringValue);
-
-			std::cout << "EndpointUrl=" << endpointDescription->endpointUrl() << std::endl;
 
 			if (config->getConfigParameter("ApplicationUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
@@ -186,13 +184,23 @@ namespace OpcUaStackServer
 			
 			rc = userTokenPolicy(endpointDescription, configPrefix + std::string(".EndpointDescription"), config, configurationFileName);
 			if (!rc) return false;
+
+			endpointDescriptionSet->addEndpoint(
+				endpointDescription->endpointUrl(),
+				endpointDescription
+			);
 		}
 
 		return true;
 	}
 
 	bool 
-	EndpointDescriptionConfig::userTokenPolicy(EndpointDescription::SPtr endpointDescription, const std::string& configPrefix, Config* config, const std::string& configurationFileName)
+	EndpointDescriptionConfig::userTokenPolicy(
+		EndpointDescription::SPtr endpointDescription,
+		const std::string& configPrefix,
+		Config* config,
+		const std::string& configurationFileName
+	)
 	{
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------

@@ -136,9 +136,15 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Session::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
+	Session::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
 	{
 		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	void
+	Session::endpointDescription(EndpointDescription::SPtr& endpointDescription)
+	{
+		endpointDescription_ = endpointDescription;
 	}
 
 	// ------------------------------------------------------------------------
@@ -380,19 +386,6 @@ namespace OpcUaStackServer
 		std::iostream ios(&secureChannelTransaction->is_);
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.opcUaBinaryDecode(ios);
-
-		// find related endpoint description
-		bool found = false;
-		for (uint32_t idx=0; idx<endpointDescriptionArray_->size(); idx++) {
-			if (!endpointDescriptionArray_->get(idx, endpointDescription_)) continue;
-			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) {
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			serviceResult = BadServerUriInvalid;
-		}
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 

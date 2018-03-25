@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		~DiscoveryService(void);
 
 		void discoveryIf(DiscoveryIf* discoveryIf);
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet);
 		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 
 		void getEndpointRequest(
