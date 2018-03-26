@@ -88,10 +88,6 @@ namespace OpcUaStackServer
 		);
 		//- DiscoveryIf -------------------------------------------------------
 
-		//- DiscoveryManagerIf ------------------------------------------------
-		void discoveryMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		//- DiscoveryManagerIf ------------------------------------------------
-
 	  private:
 		void createSessionRequest(
 			SecureChannel* secureChannel,
