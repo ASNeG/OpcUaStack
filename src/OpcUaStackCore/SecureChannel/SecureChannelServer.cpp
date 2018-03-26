@@ -141,6 +141,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
+			std::string endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -149,7 +150,7 @@ namespace OpcUaStackCore
 				delete tcpAcceptor_;
 				tcpAcceptor_ = nullptr;
 			}
-			secureChannelServerIf_->handleEndpointClose(secureChannel->endpointUrl_);
+			secureChannelServerIf_->handleEndpointClose(endpointUrl);
 
 			return;
 		}
@@ -192,6 +193,7 @@ namespace OpcUaStackCore
 				.parameter("Message", error.message());
 
 			// we do not need the secure channel anymore.
+			std::string endpointUrl = secureChannel->endpointUrl_;
 			delete secureChannel;
 
 			// handle acceptor socket error
@@ -200,7 +202,7 @@ namespace OpcUaStackCore
 				delete tcpAcceptor_;
 				tcpAcceptor_ = nullptr;
 			}
-			secureChannelServerIf_->handleEndpointClose(secureChannel->endpointUrl_);
+			secureChannelServerIf_->handleEndpointClose(endpointUrl);
 
 			return;
 		}
