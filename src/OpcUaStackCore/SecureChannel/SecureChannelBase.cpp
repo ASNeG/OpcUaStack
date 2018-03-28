@@ -434,6 +434,7 @@ namespace OpcUaStackCore
 		OpcUaUInt32 channelId;
 		OpcUaNumber::opcUaBinaryDecode(is, channelId);
 
+		// encode secure header
 		SecurityHeader securityHeader;
 		securityHeader.opcUaBinaryDecode(is);
 

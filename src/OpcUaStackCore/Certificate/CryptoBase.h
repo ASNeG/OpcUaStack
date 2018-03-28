@@ -135,6 +135,14 @@ namespace OpcUaStackCore
 			int32_t*   		encryptedTextLen
 		) = 0;
 
+		virtual OpcUaStatusCode asymmetricSign(
+		    char*       	dataTextBuf,
+			uint32_t		dataTextLen,
+			PrivateKey&		privateKey,
+			char*       	signatureTextBuf,
+			uint32_t*		signatureTextLen
+		) = 0;
+
 	  private:
 		std::string securityPolicy_;
 

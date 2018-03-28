@@ -92,4 +92,16 @@ namespace OpcUaStackCore
 		return BadNotSupported;
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricSign(
+	    char*       	dataTextBuf,
+		uint32_t		dataTextLen,
+		PrivateKey&		privateKey,
+		char*       	signatureTextBuf,
+		uint32_t*		signatureTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
 }
