@@ -18,6 +18,7 @@
 #include <OpcUaStackCore/Certificate/CryptoOpenSSLBASIC128RSA15.h>
 #include <OpcUaStackCore/Certificate/CryptoRSA.h>
 #include <OpcUaStackCore/Certificate/CryptoAES.h>
+#include <OpcUaStackCore/Certificate/CryptoSHA1.h>
 
 namespace OpcUaStackCore
 {
@@ -127,15 +128,38 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	CryptoOpenSSLBASIC128RSA15::asymmetricSign(
-	    char*       	dataTextBuf,
-		uint32_t		dataTextLen,
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
 		PrivateKey&		privateKey,
-		char*       	signatureTextBuf,
-		uint32_t*		signatureTextLen
+		char*       	signTextBuf,
+		uint32_t*		signTextLen
 	)
 	{
-		return BadNotSupported;
-	}
+		OpcUaStatusCode statusCode;
 
+		// create digest
+		MemoryBuffer digest(20);
+		CryptoSHA1 cryptoSHA1;
+		statusCode = cryptoSHA1.sha1(
+		    plainTextBuf,
+		    plainTextLen,
+		    digest.memBuf(),
+		    digest.memLen()
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// sign digest
+		CryptoRSA cryptoRSA;
+		return cryptoRSA.privateSign(
+			digest.memBuf(),
+			digest.memLen(),
+			&privateKey,
+			NID_sha1,
+			signTextBuf,
+			signTextLen
+		);
+	}
 
 }

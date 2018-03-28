@@ -136,11 +136,11 @@ namespace OpcUaStackCore
 		) = 0;
 
 		virtual OpcUaStatusCode asymmetricSign(
-		    char*       	dataTextBuf,
-			uint32_t		dataTextLen,
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
 			PrivateKey&		privateKey,
-			char*       	signatureTextBuf,
-			uint32_t*		signatureTextLen
+			char*       	signTextBuf,
+			uint32_t*		signTextLen
 		) = 0;
 
 	  private:
