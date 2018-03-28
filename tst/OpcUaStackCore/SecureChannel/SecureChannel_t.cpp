@@ -80,14 +80,14 @@ class SecureChannelServerTest
 	}
 
 	Condition handleEndpointOpen_;
-	void handleEndpointOpen(void)
+	void handleEndpointOpen(const std::string& endpointUrl)
 	{
 		std::cout << "handleEndpointOpen server" << std::endl;
 		handleEndpointOpen_.conditionValueDec();
 	}
 
 	Condition handleEndpointClose_;
-	void handleEndpointClose(void)
+	void handleEndpointClose(const std::string& endpointUrl)
 	{
 		std::cout << "handleEndpointClose server" << std::endl;
 		handleEndpointClose_.conditionValueDec();
