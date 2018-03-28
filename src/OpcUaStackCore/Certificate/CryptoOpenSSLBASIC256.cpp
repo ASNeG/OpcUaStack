@@ -137,4 +137,16 @@ namespace OpcUaStackCore
 		return BadNotSupported;
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::asymmetricVerify(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		PublicKey&		publicKey,
+		char*       	signTextBuf,
+		uint32_t*		signTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
 }

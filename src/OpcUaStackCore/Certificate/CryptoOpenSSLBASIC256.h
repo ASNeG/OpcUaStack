@@ -73,6 +73,14 @@ namespace OpcUaStackCore
 			uint32_t*		signatureTextLen
 		);
 
+		virtual OpcUaStatusCode asymmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	signTextBuf,
+			uint32_t*		signTextLen
+		);
+
 	};
 
 }
