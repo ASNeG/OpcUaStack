@@ -171,7 +171,31 @@ namespace OpcUaStackCore
 		uint32_t*		signTextLen
 	)
 	{
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+
+		// create digest
+		MemoryBuffer digest(20);
+		CryptoSHA1 cryptoSHA1;
+		statusCode = cryptoSHA1.sha1(
+		    plainTextBuf,
+		    plainTextLen,
+		    digest.memBuf(),
+		    digest.memLen()
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// sign digest
+		CryptoRSA cryptoRSA;
+		return cryptoRSA.publicVerify(
+			digest.memBuf(),
+			digest.memLen(),
+			&publicKey,
+			NID_sha1,
+			signTextBuf,
+			*signTextLen
+		);
 	}
 
 }
