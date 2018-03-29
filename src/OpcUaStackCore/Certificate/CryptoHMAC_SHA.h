@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_CryptoHMAC_SHA_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 
@@ -34,6 +35,54 @@ namespace OpcUaStackCore
 
 		void isLogging(bool isLogging);
 		bool isLogging(void);
+
+		OpcUaStatusCode generate_HMAC_SHA1(
+			char*       	plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    	plainTextLen,  	 	// [in]  length of plain text to sign
+			MemoryBuffer& 	key,		 		// [in]  key
+		    char*       	signTextBuf,	 	// [out] sign text
+		    uint32_t*   	signTextLen   	 	// [out] length of sign text
+		);
+
+		OpcUaStatusCode generate_HMAC_SHA1_160(
+			char*       	plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    	plainTextLen,  	 	// [in]  length of plain text to sign
+			MemoryBuffer& 	key,		 		// [in]  key
+		    char*       	signTextBuf,	 	// [out] sign text
+		    uint32_t*   	signTextLen   	 	// [out] length of sign text
+		);
+
+		OpcUaStatusCode generate_HMAC_SHA2_224(
+			char*       	plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    	plainTextLen,  	 	// [in]  length of plain text to sign
+			MemoryBuffer& 	key,		 		// [in]  key
+		    char*       	signTextBuf,	 	// [out] sign text
+		    uint32_t*   	signTextLen   	 	// [out] length of sign text
+		);
+
+		OpcUaStatusCode generate_HMAC_SHA2_256(
+			char*       	plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    	plainTextLen,  	 	// [in]  length of plain text to sign
+			MemoryBuffer& 	key,		 		// [in]  key
+		    char*       	signTextBuf,	 	// [out] sign text
+		    uint32_t*   	signTextLen   	 	// [out] length of sign text
+		);
+
+		OpcUaStatusCode generate_HMAC_SHA2_384(
+			char*       	plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    	plainTextLen,  	 	// [in]  length of plain text to sign
+			MemoryBuffer& 	key,		 		// [in]  key
+		    char*       	signTextBuf,	 	// [out] sign text
+		    uint32_t*   	signTextLen   	 	// [out] length of sign text
+		);
+
+		OpcUaStatusCode generate_HMAC_SHA2_512(
+			char*       	plainTextBuf,	 	// [in]  plain text to sign
+			uint32_t    	plainTextLen,  	 	// [in]  length of plain text to sign
+			MemoryBuffer& 	key,		 		// [in]  key
+		    char*       	signTextBuf,	 	// [out] sign text
+		    uint32_t*   	signTextLen   	 	// [out] length of sign text
+		);
 
 	  private:
 		bool isLogging_;
