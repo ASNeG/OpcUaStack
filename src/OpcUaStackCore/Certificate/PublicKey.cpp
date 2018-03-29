@@ -114,6 +114,12 @@ namespace OpcUaStackCore
 	}
 
 	uint32_t
+	PublicKey::keySizeInBytes(void) const
+	{
+		return keySize() / 8;
+	}
+
+	uint32_t
 	PublicKey::keySize(void) const
 	{
 	    int32_t result = -1;

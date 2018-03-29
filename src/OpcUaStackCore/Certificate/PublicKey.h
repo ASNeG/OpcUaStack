@@ -38,6 +38,7 @@ namespace OpcUaStackCore
 
 		PublicKey& operator=(const PublicKey& copy);
 		operator EVP_PKEY*(void);
+		uint32_t keySizeInBytes(void) const;
 		uint32_t keySize(void) const;
 		KeyType keyType(void) const;
 
