@@ -153,6 +153,22 @@ namespace OpcUaStackCore
 			uint32_t		signTextLen
 		) = 0;
 
+		virtual OpcUaStatusCode symmetricSign(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PrivateKey&		privateKey,
+			char*       	signTextBuf,
+			uint32_t*		signTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode symmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	signTextBuf,
+			uint32_t		signTextLen
+		) = 0;
+
 	  private:
 		std::string securityPolicy_;
 		bool isLogging_;

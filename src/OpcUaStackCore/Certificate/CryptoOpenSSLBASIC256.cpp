@@ -153,4 +153,28 @@ namespace OpcUaStackCore
 		return BadNotSupported;
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::symmetricSign(
+	    char*       	dataTextBuf,
+		uint32_t		dataTextLen,
+		PrivateKey&		privateKey,
+		char*       	signatureTextBuf,
+		uint32_t*		signatureTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::symmetricVerify(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		PublicKey&		publicKey,
+		char*       	signTextBuf,
+		uint32_t		signTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
 }

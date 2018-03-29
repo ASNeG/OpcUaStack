@@ -81,6 +81,22 @@ namespace OpcUaStackCore
 			uint32_t		signTextLen
 		);
 
+		virtual OpcUaStatusCode symmetricSign(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PrivateKey&		privateKey,
+			char*       	signatureTextBuf,
+			uint32_t*		signatureTextLen
+		);
+
+		virtual OpcUaStatusCode symmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	signTextBuf,
+			uint32_t		signTextLen
+		);
+
 	};
 
 }

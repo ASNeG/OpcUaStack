@@ -206,4 +206,28 @@ namespace OpcUaStackCore
 		);
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC128RSA15::symmetricSign(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		PrivateKey&		privateKey,
+		char*       	signTextBuf,
+		uint32_t*		signTextLen
+	)
+	{
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC128RSA15::symmetricVerify(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		PublicKey&		publicKey,
+		char*       	signTextBuf,
+		uint32_t		signTextLen
+	)
+	{
+		return Success;
+	}
+
 }
