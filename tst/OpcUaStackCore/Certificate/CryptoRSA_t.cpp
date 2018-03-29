@@ -21,11 +21,12 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 
 		OpcUaStatusCode statusCode;
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(true);
 
 		char plainTextBuf1[20];
 		uint32_t plainTextLen1 = 20;
-		char encryptedTextBuf1[20000];
-		uint32_t encryptedTextLen1 = 20000;
+		char encryptedTextBuf1[256];
+		uint32_t encryptedTextLen1 = 256;
 		char plainTextBuf2[20];
 		uint32_t plainTextLen2 = 20;
 
