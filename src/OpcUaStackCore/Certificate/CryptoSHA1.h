@@ -16,7 +16,7 @@
  */
 
 #ifndef __OpcUaStackCore_CryptoSHA1_h__
-#define __OpcUaStackCore_CryptoRSA_h__
+#define __OpcUaStackCore_CryptoSHA1_h__
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
