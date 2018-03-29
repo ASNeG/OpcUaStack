@@ -53,6 +53,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
 		return cryptoRSA.privateDecrypt(
 			encryptedTextBuf,
 			encryptedTextLen,
@@ -73,6 +74,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
 		return cryptoRSA.publicEncrypt(
 			plainTextBuf,
 			plainTextLen,
@@ -94,6 +96,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoAES cryptoAES;
+		cryptoAES.isLogging(isLogging());
 		return cryptoAES.decryptCBC256(
 			encryptedTextBuf,
 			encryptedTextLen,
@@ -115,6 +118,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoAES cryptoAES;
+		cryptoAES.isLogging(isLogging());
 		return cryptoAES.encryptCBC256(
 			plainTextBuf,
 			plainTextLen,

@@ -30,6 +30,7 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_assymmetic_encrypt_decrypt)
 
 	CryptoManager cryptoManager;
 	CryptoBase::SPtr cryptoBase = cryptoManager.get("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
+	cryptoBase->isLogging(true);
 	BOOST_REQUIRE(cryptoBase.get() != nullptr);
 
 	MemoryBuffer plainText1(100);
@@ -75,6 +76,7 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetic_encrypt_decrypt)
 
 	CryptoManager cryptoManager;
 	CryptoBase::SPtr cryptoBase = cryptoManager.get("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
+	cryptoBase->isLogging(true);
 	BOOST_REQUIRE(cryptoBase.get() != nullptr);
 
 	MemoryBuffer plainText1(100);

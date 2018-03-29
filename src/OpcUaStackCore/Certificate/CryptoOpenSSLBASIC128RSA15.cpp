@@ -54,6 +54,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
 		return cryptoRSA.privateDecrypt(
 			encryptedTextBuf,
 			encryptedTextLen,
@@ -74,6 +75,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
 		return cryptoRSA.publicEncrypt(
 			plainTextBuf,
 			plainTextLen,
@@ -95,6 +97,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoAES cryptoAES;
+		cryptoAES.isLogging(isLogging());
 		return cryptoAES.decryptCBC128(
 			encryptedTextBuf,
 			encryptedTextLen,
@@ -116,6 +119,7 @@ namespace OpcUaStackCore
 	)
 	{
 		CryptoAES cryptoAES;
+		cryptoAES.isLogging(isLogging());
 		return cryptoAES.encryptCBC128(
 			plainTextBuf,
 			plainTextLen,
@@ -140,6 +144,7 @@ namespace OpcUaStackCore
 		// create digest
 		MemoryBuffer digest(20);
 		CryptoSHA1 cryptoSHA1;
+		cryptoSHA1.isLogging(isLogging());
 		statusCode = cryptoSHA1.sha1(
 		    plainTextBuf,
 		    plainTextLen,
@@ -152,6 +157,7 @@ namespace OpcUaStackCore
 
 		// sign digest
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
 		return cryptoRSA.privateSign(
 			digest.memBuf(),
 			digest.memLen(),
@@ -176,6 +182,7 @@ namespace OpcUaStackCore
 		// create digest
 		MemoryBuffer digest(20);
 		CryptoSHA1 cryptoSHA1;
+		cryptoSHA1.isLogging(isLogging());
 		statusCode = cryptoSHA1.sha1(
 		    plainTextBuf,
 		    plainTextLen,
@@ -188,6 +195,7 @@ namespace OpcUaStackCore
 
 		// sign digest
 		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
 		return cryptoRSA.publicVerify(
 			digest.memBuf(),
 			digest.memLen(),
