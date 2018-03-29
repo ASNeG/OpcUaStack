@@ -79,13 +79,12 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetic_encrypt_decrypt)
 	cryptoBase->isLogging(true);
 	BOOST_REQUIRE(cryptoBase.get() != nullptr);
 
-	MemoryBuffer plainText1(100);
-	MemoryBuffer encryptText(100);
-	uint32_t encryptTextLen = 100;
+	MemoryBuffer plainText1(256);
+	MemoryBuffer encryptText(256);
+	uint32_t encryptTextLen = 256;
 
-	for (uint32_t idx=0; idx<100; idx++) plainText1.memBuf()[idx] = idx;
+	for (uint32_t idx=0; idx<256; idx++) plainText1.memBuf()[idx] = idx;
 
-#if 0
 	statusCode = cryptoBase->symmetricEncrypt(
 		plainText1.memBuf(),
 		plainText1.memLen(),
@@ -96,7 +95,21 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetic_encrypt_decrypt)
 	);
 	BOOST_REQUIRE(statusCode == Success);
 	BOOST_REQUIRE(encryptTextLen == 256);
-#endif
+
+	MemoryBuffer plainText2(256);
+	uint32_t plainTextLen = 256;
+
+	statusCode = cryptoBase->symmetricDecrypt(
+		encryptText.memBuf(),
+		encryptText.memLen(),
+		aesKey,
+		iv,
+		plainText2.memBuf(),
+		&plainTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(plainTextLen == 256);
+	BOOST_REQUIRE(memcmp(plainText1.memBuf(), plainText2.memBuf(), 256) == 0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
