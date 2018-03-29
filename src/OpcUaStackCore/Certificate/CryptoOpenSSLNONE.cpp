@@ -120,7 +120,7 @@ namespace OpcUaStackCore
 	CryptoOpenSSLNONE::symmetricSign(
 	    char*       	dataTextBuf,
 		uint32_t		dataTextLen,
-		PrivateKey&		privateKey,
+		MemoryBuffer&	key,
 		char*       	signatureTextBuf,
 		uint32_t*		signatureTextLen
 	)
@@ -132,7 +132,7 @@ namespace OpcUaStackCore
 	CryptoOpenSSLNONE::symmetricVerify(
 	    char*       	plainTextBuf,
 		uint32_t		plainTextLen,
-		PublicKey&		publicKey,
+		MemoryBuffer&	key,
 		char*       	signTextBuf,
 		uint32_t		signTextLen
 	)

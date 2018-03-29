@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_assymmetic_encrypt_decrypt)
 	BOOST_REQUIRE(memcmp(plainText1.memBuf(), plainText2.memBuf(), 100) == 0);
 }
 
-BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetic_encrypt_decrypt)
+BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetric_encrypt_decrypt)
 {
 	OpcUaStatusCode statusCode;
 
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetic_encrypt_decrypt)
 	BOOST_REQUIRE(memcmp(plainText1.memBuf(), plainText2.memBuf(), 256) == 0);
 }
 
-BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetic_sign_verify)
+BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_asymmetric_sign_verify)
 {
 	OpcUaStatusCode statusCode;
 

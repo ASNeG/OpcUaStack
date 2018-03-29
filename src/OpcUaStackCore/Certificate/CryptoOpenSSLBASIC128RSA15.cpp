@@ -15,10 +15,11 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackCore/Certificate/CryptoOpenSSLBASIC128RSA15.h>
-#include <OpcUaStackCore/Certificate/CryptoRSA.h>
-#include <OpcUaStackCore/Certificate/CryptoAES.h>
-#include <OpcUaStackCore/Certificate/CryptoSHA1.h>
+#include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC128RSA15.h"
+#include "OpcUaStackCore/Certificate/CryptoRSA.h"
+#include "OpcUaStackCore/Certificate/CryptoAES.h"
+#include "OpcUaStackCore/Certificate/CryptoSHA1.h"
+#include "OpcUaStackCore/Certificate/CryptoHMAC_SHA.h"
 
 namespace OpcUaStackCore
 {
@@ -210,23 +211,59 @@ namespace OpcUaStackCore
 	CryptoOpenSSLBASIC128RSA15::symmetricSign(
 	    char*       	plainTextBuf,
 		uint32_t		plainTextLen,
-		PrivateKey&		privateKey,
+		MemoryBuffer&	key,
 		char*       	signTextBuf,
 		uint32_t*		signTextLen
 	)
 	{
-		return Success;
+		CryptoHMAC_SHA cryptoHMAC_SHA;
+		cryptoHMAC_SHA.isLogging(isLogging());
+
+		return cryptoHMAC_SHA.generate_HMAC_SHA1(
+			plainTextBuf,
+			plainTextLen,
+			key,
+			signTextBuf,
+			signTextLen
+		);
 	}
 
 	OpcUaStatusCode
 	CryptoOpenSSLBASIC128RSA15::symmetricVerify(
 	    char*       	plainTextBuf,
 		uint32_t		plainTextLen,
-		PublicKey&		publicKey,
+		MemoryBuffer&	key,
 		char*       	signTextBuf,
 		uint32_t		signTextLen
 	)
 	{
+		OpcUaStatusCode statusCode;
+
+		MemoryBuffer sigText(signTextLen);
+		uint32_t signTextLen2 = sigText.memLen();
+
+		CryptoHMAC_SHA cryptoHMAC_SHA;
+		cryptoHMAC_SHA.isLogging(isLogging());
+
+		statusCode =  cryptoHMAC_SHA.generate_HMAC_SHA1(
+			plainTextBuf,
+			plainTextLen,
+			key,
+			sigText.memBuf(),
+			&signTextLen2
+		);
+
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		if (signTextLen2 != signTextLen) {
+			return BadSignatureInvalid;
+		}
+		if (memcmp(signTextBuf, sigText.memBuf(), signTextLen) != 0) {
+			return BadSignatureInvalid;
+		}
+
 		return Success;
 	}
 

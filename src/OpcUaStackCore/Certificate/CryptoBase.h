@@ -156,7 +156,7 @@ namespace OpcUaStackCore
 		virtual OpcUaStatusCode symmetricSign(
 		    char*       	plainTextBuf,
 			uint32_t		plainTextLen,
-			PrivateKey&		privateKey,
+			MemoryBuffer&	key,
 			char*       	signTextBuf,
 			uint32_t*		signTextLen
 		) = 0;
@@ -164,7 +164,7 @@ namespace OpcUaStackCore
 		virtual OpcUaStatusCode symmetricVerify(
 		    char*       	plainTextBuf,
 			uint32_t		plainTextLen,
-			PublicKey&		publicKey,
+			MemoryBuffer&	key,
 			char*       	signTextBuf,
 			uint32_t		signTextLen
 		) = 0;
