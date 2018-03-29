@@ -90,7 +90,7 @@ namespace OpcUaStackCore
 		AESKey&	   		aesKey,
 		IV&		   		iv,
 		char*      		plainTextBuf,
-		int32_t*   		plainTextLen
+		uint32_t*   	plainTextLen
 	)
 	{
 		CryptoAES cryptoAES;
@@ -111,7 +111,7 @@ namespace OpcUaStackCore
 		AESKey&	   		aesKey,
 		IV&		   		iv,
 		char*      		encryptedTextBuf,
-		int32_t*   		encryptedTextLen
+		uint32_t*   	encryptedTextLen
 	)
 	{
 		CryptoAES cryptoAES;

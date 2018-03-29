@@ -90,7 +90,7 @@ namespace OpcUaStackCore
 		AESKey&	   		aesKey,
 		IV&		   		iv,
 		char*      		plainTextBuf,
-		int32_t*   		plainTextLen
+		uint32_t*  		plainTextLen
 	)
 	{
 		CryptoAES cryptoAES;
@@ -111,7 +111,7 @@ namespace OpcUaStackCore
 		AESKey&	   		aesKey,
 		IV&		   		iv,
 		char*      		encryptedTextBuf,
-		int32_t*   		encryptedTextLen
+		uint32_t*   	encryptedTextLen
 	)
 	{
 		CryptoAES cryptoAES;
@@ -127,8 +127,8 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	CryptoOpenSSLBASIC256SHA256::asymmetricSign(
-	    char*       	dataTextBuf,
-		uint32_t		dataTextLen,
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
 		PrivateKey&		privateKey,
 		char*       	signatureTextBuf,
 		uint32_t*		signatureTextLen

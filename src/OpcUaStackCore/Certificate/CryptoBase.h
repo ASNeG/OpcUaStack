@@ -123,7 +123,7 @@ namespace OpcUaStackCore
 			AESKey&	   		aesKey,
 			IV&		   		iv,
 			char*      		plainTextBuf,
-			int32_t*   		plainTextLen
+			uint32_t*   	plainTextLen
 		) = 0;
 
 		virtual OpcUaStatusCode symmetricEncrypt(
@@ -132,7 +132,7 @@ namespace OpcUaStackCore
 			AESKey&	   		aesKey,
 			IV&		   		iv,
 			char*      		encryptedTextBuf,
-			int32_t*   		encryptedTextLen
+			uint32_t*   	encryptedTextLen
 		) = 0;
 
 		virtual OpcUaStatusCode asymmetricSign(
