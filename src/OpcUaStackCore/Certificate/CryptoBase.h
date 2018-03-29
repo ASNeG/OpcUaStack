@@ -79,6 +79,8 @@ namespace OpcUaStackCore
 
 		void securityPolicy(const std::string& securityPolicy);
 		std::string& securityPolicy(void);
+		void isLogging(bool isLogging);
+		bool isLogging(void);
 
 		void symmetricKeyLen(int32_t symmetricKeyLen);
 		int32_t symmetricKeyLen(void);
@@ -153,6 +155,7 @@ namespace OpcUaStackCore
 
 	  private:
 		std::string securityPolicy_;
+		bool isLogging_;
 
 		int32_t symmetricKeyLen_;
 		uint32_t minimumAsymmetricKeyLen_;

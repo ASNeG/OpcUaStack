@@ -93,6 +93,7 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	CryptoBase::CryptoBase(void)
 	: securityPolicy_("")
+	, isLogging_(false)
 	, symmetricKeyLen_(-1)
 	, minimumAsymmetricKeyLen_(0)
 	, maximumAsymmetricKeyLen_(0)
@@ -120,6 +121,18 @@ namespace OpcUaStackCore
 	CryptoBase::securityPolicy(void)
 	{
 		return securityPolicy_;
+	}
+
+	void
+	CryptoBase::isLogging(bool isLogging)
+	{
+		isLogging_ = isLogging;
+	}
+
+	bool
+	CryptoBase::isLogging(void)
+	{
+		return isLogging_;
 	}
 
 	void
