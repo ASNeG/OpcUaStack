@@ -78,7 +78,7 @@ namespace OpcUaStackCore
 			uint32_t		plainTextLen,
 			PublicKey&		publicKey,
 			char*       	signTextBuf,
-			uint32_t*		signTextLen
+			uint32_t		signTextLen
 		);
 
 	};

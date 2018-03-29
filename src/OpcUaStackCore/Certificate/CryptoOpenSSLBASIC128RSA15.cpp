@@ -174,7 +174,7 @@ namespace OpcUaStackCore
 		uint32_t		plainTextLen,
 		PublicKey&		publicKey,
 		char*       	signTextBuf,
-		uint32_t*		signTextLen
+		uint32_t		signTextLen
 	)
 	{
 		OpcUaStatusCode statusCode;
@@ -202,7 +202,7 @@ namespace OpcUaStackCore
 			&publicKey,
 			NID_sha1,
 			signTextBuf,
-			*signTextLen
+			signTextLen
 		);
 	}
 
