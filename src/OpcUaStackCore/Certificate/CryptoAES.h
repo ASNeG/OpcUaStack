@@ -47,7 +47,7 @@ namespace OpcUaStackCore
 		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
 			IV&		   iv,					// [in]  initial vector
 		    char*      encryptedTextBuf, 	// [out] encrypted text
-		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+		    uint32_t*  encryptedTextLen  	// [out] length of the encryped text
 		);
 
 		OpcUaStatusCode encryptCBC256(
@@ -56,7 +56,7 @@ namespace OpcUaStackCore
 		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
 			IV&		   iv,					// [in]  initial vector
 		    char*      encryptedTextBuf, 	// [out] encrypted text
-		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+		    uint32_t*  encryptedTextLen  	// [out] length of the encryped text
 		);
 
 		OpcUaStatusCode encryptCBC(
@@ -65,7 +65,7 @@ namespace OpcUaStackCore
 		    AESKey&	   aesKey,			    // [in]  key used to encrypt the plain text
 			IV&		   iv,					// [in]  initial vector
 		    char*      encryptedTextBuf, 	// [out] encrypted text
-		    int32_t*   encryptedTextLen  	// [out] length of the encryped text
+		    uint32_t*  encryptedTextLen  	// [out] length of the encryped text
 		);
 
 		OpcUaStatusCode decryptCBC128(
@@ -74,7 +74,7 @@ namespace OpcUaStackCore
 			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
 			IV&		   iv,					// [in]  initial vector
 		    char*      plainTextBuf,	 	// [out] plain text
-		    int32_t*   plainTextLen   	 	// [out] length of plain text
+		    uint32_t*  plainTextLen   	 	// [out] length of plain text
 		);
 
 		OpcUaStatusCode decryptCBC256(
@@ -83,7 +83,7 @@ namespace OpcUaStackCore
 			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
 			IV&		   iv,					// [in]  initial vector
 		    char*      plainTextBuf,	 	// [out] plain text
-		    int32_t*   plainTextLen   	 	// [out] length of plain text
+		    uint32_t*  plainTextLen   	 	// [out] length of plain text
 		);
 
 		OpcUaStatusCode decryptCBC(
@@ -92,7 +92,7 @@ namespace OpcUaStackCore
 			AESKey&	   aesKey,			    // [in]  key used to decrypt the decrypted text
 			IV&		   iv,					// [in]  initial vector
 		    char*      plainTextBuf,	 	// [out] plain text
-		    int32_t*   plainTextLen   	 	// [out] length of plain text
+		    uint32_t*  plainTextLen   	 	// [out] length of plain text
 		);
 
 	  private:
