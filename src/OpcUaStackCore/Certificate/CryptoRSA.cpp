@@ -54,6 +54,20 @@ namespace OpcUaStackCore
 	    uint32_t*  encryptedTextLen
 	)
 	{
+		// check length of encrypted text buffer
+		uint32_t expetedEncryptedTextLen = (plainTextLen / publicKey->keySizeInBytes()) * publicKey->keySizeInBytes();
+		if (plainTextLen % publicKey->keySizeInBytes() != 0) {
+			expetedEncryptedTextLen += publicKey->keySizeInBytes();
+		}
+		if (expetedEncryptedTextLen != *encryptedTextLen) {
+			if (isLogging_) {
+				Log(Error, "publicEntrypt error - encryptedTextBufLen error")
+					.parameter("EncryptedTextBufLen", *encryptedTextLen)
+					.parameter("ExpetedEncryptedTextLen", expetedEncryptedTextLen);
+			}
+			return BadInvalidArgument;
+		}
+
 		*encryptedTextLen = 0;
 
 		// check plain text
