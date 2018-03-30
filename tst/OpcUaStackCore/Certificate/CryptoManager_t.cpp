@@ -421,5 +421,52 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC256_asymmetric_encrypt_decrypt)
 	BOOST_REQUIRE(memcmp(plainText1.memBuf(), plainText2.memBuf(), 100) == 0);
 }
 
+BOOST_AUTO_TEST_CASE(CryptoManager_BASIC256_symmetric_encrypt_decrypt)
+{
+	OpcUaStatusCode statusCode;
+
+	AESKey aesKey(32);
+	memcpy(aesKey.memBuf(), "01234567890123456789012345678901", 32);
+
+	IV iv(32);
+	memcpy(iv.memBuf(), "01234567890123456789012345678901", 32);
+
+	CryptoManager cryptoManager;
+	CryptoBase::SPtr cryptoBase = cryptoManager.get("http://opcfoundation.org/UA/SecurityPolicy#Basic256");
+	BOOST_REQUIRE(cryptoBase.get() != nullptr);
+	cryptoBase->isLogging(true);
+
+	MemoryBuffer plainText1(256);
+	MemoryBuffer encryptText(256);
+	uint32_t encryptTextLen = 256;
+
+	for (uint32_t idx=0; idx<256; idx++) plainText1.memBuf()[idx] = idx;
+
+	statusCode = cryptoBase->symmetricEncrypt(
+		plainText1.memBuf(),
+		plainText1.memLen(),
+		aesKey,
+		iv,
+		encryptText.memBuf(),
+		&encryptTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(encryptTextLen == 256);
+
+	MemoryBuffer plainText2(256);
+	uint32_t plainTextLen = 256;
+
+	statusCode = cryptoBase->symmetricDecrypt(
+		encryptText.memBuf(),
+		encryptText.memLen(),
+		aesKey,
+		iv,
+		plainText2.memBuf(),
+		&plainTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(plainTextLen == 256);
+	BOOST_REQUIRE(memcmp(plainText1.memBuf(), plainText2.memBuf(), 256) == 0);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
