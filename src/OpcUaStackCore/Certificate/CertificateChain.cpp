@@ -75,25 +75,33 @@ namespace OpcUaStackCore
 		int32_t certLen = 0;
 		byteString.value(&certBuf, &certLen);
 		if (certLen <= 0) {
-			return true;
-		}
-
-		std::cout << certBuf << std::endl;
-
-		Certificate::SPtr certificate = constructSPtr<Certificate>();
-		if (!certificate->fromDERBuf(certBuf, (uint32_t)certLen)) {
-			certificate->log(Error, "decode certificate chain error - Certificate::fromDERBuf");
 			return false;
 		}
-		certificateVec_.push_back(certificate);
 
-		std::cout << certBuf << std::endl;
+		char* mem = certBuf;
+		while (certLen > 0) {
+			Certificate::SPtr certificate = constructSPtr<Certificate>();
+			if (!certificate->fromDERBuf(certBuf, (uint32_t)certLen)) {
+				certificate->log(Error, "decode certificate chain error - Certificate::fromDERBuf");
+				return false;
+			}
+			certificateVec_.push_back(certificate);
+
+			uint32_t len = certificate->getDERBufSize();
+			if (len == 0) {
+				Log(Error, "decode certificate chain error - DER buflen error");
+				return false;
+			}
+
+			mem += len;
+			certLen -= len;
+		}
 
 		return true;
 	}
 
 	bool
-	CertificateChain::toByteSring(OpcUaByteString& byteString)
+	CertificateChain::toByteString(OpcUaByteString& byteString)
 	{
 		Certificate::Vec::iterator it;
 

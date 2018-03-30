@@ -42,7 +42,7 @@ namespace OpcUaStackCore
 
 		uint32_t size(void);
 		bool fromByteString(OpcUaByteString& byteString);
-		bool toByteSring(OpcUaByteString& byteString);
+		bool toByteString(OpcUaByteString& byteString);
 
 	  private:
 		Certificate::Vec certificateVec_;
