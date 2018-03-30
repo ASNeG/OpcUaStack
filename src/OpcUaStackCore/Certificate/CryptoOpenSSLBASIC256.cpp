@@ -19,6 +19,7 @@
 #include "OpcUaStackCore/Certificate/CryptoRSA.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
 #include "OpcUaStackCore/Certificate/CryptoSHA1.h"
+#include "OpcUaStackCore/Certificate/CryptoHMAC_SHA.h"
 
 namespace OpcUaStackCore
 {
@@ -208,14 +209,23 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	CryptoOpenSSLBASIC256::symmetricSign(
-	    char*       	dataTextBuf,
-		uint32_t		dataTextLen,
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
 		MemoryBuffer&	key,
-		char*       	signatureTextBuf,
-		uint32_t*		signatureTextLen
+		char*       	signTextBuf,
+		uint32_t*		signTextLen
 	)
 	{
-		return BadNotSupported;
+		CryptoHMAC_SHA cryptoHMAC_SHA;
+		cryptoHMAC_SHA.isLogging(isLogging());
+
+		return cryptoHMAC_SHA.generate_HMAC_SHA1(
+			plainTextBuf,
+			plainTextLen,
+			key,
+			signTextBuf,
+			signTextLen
+		);
 	}
 
 	OpcUaStatusCode
@@ -227,7 +237,34 @@ namespace OpcUaStackCore
 		uint32_t		signTextLen
 	)
 	{
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+
+		MemoryBuffer sigText(signTextLen);
+		uint32_t signTextLen2 = sigText.memLen();
+
+		CryptoHMAC_SHA cryptoHMAC_SHA;
+		cryptoHMAC_SHA.isLogging(isLogging());
+
+		statusCode =  cryptoHMAC_SHA.generate_HMAC_SHA1(
+			plainTextBuf,
+			plainTextLen,
+			key,
+			sigText.memBuf(),
+			&signTextLen2
+		);
+
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		if (signTextLen2 != signTextLen) {
+			return BadSignatureInvalid;
+		}
+		if (memcmp(signTextBuf, sigText.memBuf(), signTextLen) != 0) {
+			return BadSignatureInvalid;
+		}
+
+		return Success;
 	}
 
 }
