@@ -21,6 +21,8 @@
 #include <boost/shared_ptr.hpp>
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaStackCore
 {
@@ -33,7 +35,17 @@ namespace OpcUaStackCore
 		CertificateChain(void);
 		~CertificateChain(void);
 
+		void clear(void);
+		Certificate::Vec& certificateVec(void);
+		void addCertificate(Certificate::SPtr& certificate);
+		Certificate::SPtr getCertificate(uint32_t idx = 0);
+
+		uint32_t size(void);
+		bool fromByteString(OpcUaByteString& byteString);
+		bool toByteSring(OpcUaByteString& byteString);
+
 	  private:
+		Certificate::Vec certificateVec_;
 	};
 
 }

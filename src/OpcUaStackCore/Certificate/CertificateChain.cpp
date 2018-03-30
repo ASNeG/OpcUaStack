@@ -15,17 +15,115 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/CertificateChain.h"
 
 namespace OpcUaStackCore
 {
 
 	CertificateChain::CertificateChain(void)
+	: certificateVec_()
 	{
 	}
 
 	CertificateChain::~CertificateChain(void)
 	{
+		certificateVec_.clear();
+	}
+
+	void
+	CertificateChain::clear(void)
+	{
+		certificateVec_.clear();
+	}
+
+	Certificate::Vec&
+	CertificateChain::certificateVec(void)
+	{
+		return certificateVec_;
+	}
+
+	void
+	CertificateChain::addCertificate(Certificate::SPtr& certificate)
+	{
+		certificateVec_.push_back(certificate);
+	}
+
+	Certificate::SPtr
+	CertificateChain::getCertificate(uint32_t idx)
+	{
+		if (idx >= certificateVec_.size()) {
+			Certificate::SPtr certificate;
+			return certificate;
+		}
+		return certificateVec_[idx];
+	}
+
+	uint32_t
+	CertificateChain::size(void)
+	{
+		return certificateVec_.size();
+	}
+
+	bool
+	CertificateChain::fromByteString(OpcUaByteString& byteString)
+	{
+		certificateVec_.clear();
+
+		// get pointer to certificate chain
+		char* certBuf = nullptr;
+		int32_t certLen = 0;
+		byteString.value(&certBuf, &certLen);
+		if (certLen <= 0) {
+			return true;
+		}
+
+		std::cout << certBuf << std::endl;
+
+		Certificate::SPtr certificate = constructSPtr<Certificate>();
+		if (!certificate->fromDERBuf(certBuf, (uint32_t)certLen)) {
+			certificate->log(Error, "decode certificate chain error - Certificate::fromDERBuf");
+			return false;
+		}
+		certificateVec_.push_back(certificate);
+
+		std::cout << certBuf << std::endl;
+
+		return true;
+	}
+
+	bool
+	CertificateChain::toByteSring(OpcUaByteString& byteString)
+	{
+		Certificate::Vec::iterator it;
+
+		if (certificateVec_.empty()) {
+			return true;
+		}
+
+		// calculate buffer size
+		uint32_t usedBufferSize = 0;
+		for (it = certificateVec_.begin(); it != certificateVec_.end(); it++) {
+			usedBufferSize += (*it)->getDERBufSize();
+		}
+
+		if (usedBufferSize == 0) {
+			return true;
+		}
+
+		// create buffer
+		MemoryBuffer buffer(usedBufferSize);
+		char* mem = buffer.memBuf();
+		for (it = certificateVec_.begin(); it != certificateVec_.end(); it++) {
+			Certificate::SPtr certificate = *it;
+			uint32_t length = certificate->getDERBufSize();
+			certificate->toDERBuf(mem, &length);
+
+			mem += length;
+		}
+
+		byteString.value(buffer.memBuf(), buffer.memLen());
+		return true;
 	}
 
 }
