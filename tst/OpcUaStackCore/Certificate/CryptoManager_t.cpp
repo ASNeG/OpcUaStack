@@ -377,5 +377,49 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC256SHA256_symmetric_sign_verify)
 //
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(CryptoManager_BASIC256_asymmetric_encrypt_decrypt)
+{
+	OpcUaStatusCode statusCode;
+
+	RSAKey key(2048);
+	PublicKey publicKey = key.publicKey();
+	PrivateKey privateKey = key.privateKey();
+
+	CryptoManager cryptoManager;
+	CryptoBase::SPtr cryptoBase = cryptoManager.get("http://opcfoundation.org/UA/SecurityPolicy#Basic256");
+	BOOST_REQUIRE(cryptoBase.get() != nullptr);
+	cryptoBase->isLogging(true);
+
+	MemoryBuffer plainText1(100);
+	MemoryBuffer encryptText(256);
+	uint32_t encryptTextLen = 256;
+
+	for (uint32_t idx=0; idx<100; idx++) plainText1.memBuf()[idx] = idx;
+
+	statusCode = cryptoBase->asymmetricEncrypt(
+		plainText1.memBuf(),
+		plainText1.memLen(),
+		publicKey,
+		encryptText.memBuf(),
+		&encryptTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(encryptTextLen == 256);
+
+	MemoryBuffer plainText2(100);
+	uint32_t plainTextLen = 100;
+
+	statusCode = cryptoBase->asymmetricDecrypt(
+		encryptText.memBuf(),
+		encryptText.memLen(),
+		privateKey,
+		plainText2.memBuf(),
+		&plainTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(plainTextLen == 100);
+	BOOST_REQUIRE(memcmp(plainText1.memBuf(), plainText2.memBuf(), 100) == 0);
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
