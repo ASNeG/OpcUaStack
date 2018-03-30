@@ -22,10 +22,11 @@
 
 #include <vector>
 #include <string>
+#include <list>
 
 #include <openssl/x509.h>
 
-#include <OpcUaStackCore/Certificate/CertificateInfo.h>
+#include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
@@ -42,6 +43,8 @@ namespace OpcUaStackCore
 	{
 	  public:
 		typedef boost::shared_ptr<Certificate> SPtr;
+		typedef std::list<Certificate::SPtr> List;
+		typedef std::vector<Certificate::SPtr> Vec;
 
 		Certificate(void);
 		Certificate(
@@ -73,6 +76,8 @@ namespace OpcUaStackCore
 		bool toDERBufLen(uint32_t* bufLen);
 		bool toDERBuf(char* buf, uint32_t* bufLen);
 		bool fromDERBuf(char* buf, uint32_t bufLen);
+
+		uint32_t getDERBufSize(void);
 
 		bool isSelfSigned(void) const;
 

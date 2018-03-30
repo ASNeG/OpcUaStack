@@ -585,6 +585,21 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	uint32_t
+	Certificate::getDERBufSize(void)
+	{
+		if (cert_ == nullptr) {
+			return 0;
+		}
+
+		int32_t length = i2d_X509(cert_, 0);
+		if (length < 0) {
+			return 0;
+		}
+
+		return (uint32_t)length;
+	}
+
 	bool
 	Certificate::isSelfSigned(void) const
 	{
