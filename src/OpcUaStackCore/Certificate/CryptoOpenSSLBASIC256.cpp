@@ -15,9 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256.h>
-#include <OpcUaStackCore/Certificate/CryptoRSA.h>
-#include <OpcUaStackCore/Certificate/CryptoAES.h>
+#include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256.h"
+#include "OpcUaStackCore/Certificate/CryptoRSA.h"
+#include "OpcUaStackCore/Certificate/CryptoAES.h"
+#include "OpcUaStackCore/Certificate/CryptoSHA1.h"
 
 namespace OpcUaStackCore
 {
@@ -131,14 +132,40 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	CryptoOpenSSLBASIC256::asymmetricSign(
-	    char*       	dataTextBuf,
-		uint32_t		dataTextLen,
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
 		PrivateKey&		privateKey,
-		char*       	signatureTextBuf,
-		uint32_t*		signatureTextLen
+		char*       	signTextBuf,
+		uint32_t*		signTextLen
 	)
 	{
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+
+		// create digest
+		MemoryBuffer digest(20);
+		CryptoSHA1 cryptoSHA1;
+		cryptoSHA1.isLogging(isLogging());
+		statusCode = cryptoSHA1.sha1(
+		    plainTextBuf,
+		    plainTextLen,
+		    digest.memBuf(),
+		    digest.memLen()
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// sign digest
+		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
+		return cryptoRSA.privateSign(
+			digest.memBuf(),
+			digest.memLen(),
+			&privateKey,
+			NID_sha1,
+			signTextBuf,
+			signTextLen
+		);
 	}
 
 	OpcUaStatusCode
@@ -150,7 +177,33 @@ namespace OpcUaStackCore
 		uint32_t		signTextLen
 	)
 	{
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+
+		// create digest
+		MemoryBuffer digest(20);
+		CryptoSHA1 cryptoSHA1;
+		cryptoSHA1.isLogging(isLogging());
+		statusCode = cryptoSHA1.sha1(
+		    plainTextBuf,
+		    plainTextLen,
+		    digest.memBuf(),
+		    digest.memLen()
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// sign digest
+		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(isLogging());
+		return cryptoRSA.publicVerify(
+			digest.memBuf(),
+			digest.memLen(),
+			&publicKey,
+			NID_sha1,
+			signTextBuf,
+			signTextLen
+		);
 	}
 
 	OpcUaStatusCode
