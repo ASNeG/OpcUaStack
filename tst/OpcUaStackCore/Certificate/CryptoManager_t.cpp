@@ -152,4 +152,60 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_asymmetric_sign_verify)
 
 }
 
+BOOST_AUTO_TEST_CASE(CryptoManager_BASIC128RSA15_symmetric_sign_verify)
+{
+	OpcUaStatusCode statusCode;
+
+	MemoryBuffer key(20);
+	for (uint32_t idx=0; idx<20; idx++) {
+		key.memBuf()[idx] = idx;
+	}
+
+	CryptoManager cryptoManager;
+	CryptoBase::SPtr cryptoBase = cryptoManager.get("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
+	cryptoBase->isLogging(true);
+	BOOST_REQUIRE(cryptoBase.get() != nullptr);
+
+	MemoryBuffer plainText1(100);
+	MemoryBuffer signText(20);
+	uint32_t signTextLen = 20;
+
+	for (uint32_t idx=0; idx<100; idx++) plainText1.memBuf()[idx] = idx;
+
+	statusCode = cryptoBase->symmetricSign(
+		plainText1.memBuf(),
+		plainText1.memLen(),
+		key,
+		signText.memBuf(),
+		&signTextLen
+	);
+	BOOST_REQUIRE(statusCode == Success);
+	BOOST_REQUIRE(signTextLen == 20);
+
+	statusCode = cryptoBase->symmetricVerify(
+		plainText1.memBuf(),
+		plainText1.memLen(),
+		key,
+		signText.memBuf(),
+		signText.memLen()
+	);
+	BOOST_REQUIRE(statusCode == Success);
+}
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+//
+// BASIC256SHA256
+//
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+//
+// BASIC256
+//
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+
 BOOST_AUTO_TEST_SUITE_END()
