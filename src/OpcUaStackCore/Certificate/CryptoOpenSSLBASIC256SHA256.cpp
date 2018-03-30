@@ -237,7 +237,34 @@ namespace OpcUaStackCore
 		uint32_t		signTextLen
 	)
 	{
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+
+		MemoryBuffer sigText(signTextLen);
+		uint32_t signTextLen2 = sigText.memLen();
+
+		CryptoHMAC_SHA cryptoHMAC_SHA;
+		cryptoHMAC_SHA.isLogging(isLogging());
+
+		statusCode =  cryptoHMAC_SHA.generate_HMAC_SHA2_256(
+			plainTextBuf,
+			plainTextLen,
+			key,
+			sigText.memBuf(),
+			&signTextLen2
+		);
+
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		if (signTextLen2 != signTextLen) {
+			return BadSignatureInvalid;
+		}
+		if (memcmp(signTextBuf, sigText.memBuf(), signTextLen) != 0) {
+			return BadSignatureInvalid;
+		}
+
+		return Success;
 	}
 
 }
