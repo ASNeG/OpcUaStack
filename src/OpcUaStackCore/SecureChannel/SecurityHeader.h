@@ -21,6 +21,7 @@
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Certificate/CertificateChain.h"
 
 namespace OpcUaStackCore
 {
@@ -40,14 +41,16 @@ namespace OpcUaStackCore
 		void senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void receiverCertificateThumbprint(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const;
+		CertificateChain& certificateChain(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		bool opcUaBinaryEncode(std::ostream& os) const;
+		bool opcUaBinaryDecode(std::istream& is);
 
 	  private:
 		OpcUaByteString securityPolicyUri_;
 		OpcUaByteString senderCertificate_;
 		OpcUaByteString receiverCertificateThumbprint_;
+		CertificateChain certificateChain_;
 	};
 
 }

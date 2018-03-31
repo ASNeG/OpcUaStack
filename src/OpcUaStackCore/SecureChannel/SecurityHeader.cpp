@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	: securityPolicyUri_()
 	, senderCertificate_()
 	, receiverCertificateThumbprint_()
+	, certificateChain_()
 	{
 	}
 		
@@ -68,20 +69,37 @@ namespace OpcUaStackCore
 		receiverCertificateThumbprint_.value(buf, bufLen);
 	}
 
-	void 
+	CertificateChain&
+	SecurityHeader::certificateChain(void)
+	{
+		return certificateChain_;
+	}
+
+	bool
 	SecurityHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
 		securityPolicyUri_.opcUaBinaryEncode(os);
 		senderCertificate_.opcUaBinaryEncode(os);
 		receiverCertificateThumbprint_.opcUaBinaryEncode(os);
+		return true;
 	}
 
-	void 
+	bool
 	SecurityHeader::opcUaBinaryDecode(std::istream& is)
 	{
+		// decode
 		securityPolicyUri_.opcUaBinaryDecode(is);
 		senderCertificate_.opcUaBinaryDecode(is);
 		receiverCertificateThumbprint_.opcUaBinaryDecode(is);
+
+		// create certificate chain
+		if (senderCertificate_.exist()) {
+			if (!certificateChain_.fromByteString(senderCertificate_)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }	
