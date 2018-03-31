@@ -144,26 +144,6 @@ namespace OpcUaStackServer
 				endpointDescription->applicationDescription()->discoveryUrls()->push_back(url);
 			}
 
-			if (config->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
-				Log(Error, "mandatory parameter not found in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "SecurityPolicyUri");
-				return false;
-			}
-			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
-				endpointDescription->messageSecurityMode(SM_None);
-				endpointDescription->securityPolicyUri(stringValue);
-			}
-			else {
-				Log(Error, "invalid parameter in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "SecurityPolicyUri")
-					.parameter("ParameterValue", stringValue);
-				return false;
-			}
-
 			if (config->getConfigParameter("TransportProfileUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -184,6 +164,26 @@ namespace OpcUaStackServer
 			
 			rc = userTokenPolicy(endpointDescription, configPrefix + std::string(".EndpointDescription"), config, configurationFileName);
 			if (!rc) return false;
+
+			if (config->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+				Log(Error, "mandatory parameter not found in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
+					.parameter("ParameterName", "SecurityPolicyUri");
+				return false;
+			}
+			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
+				endpointDescription->messageSecurityMode(SM_None);
+				endpointDescription->securityPolicyUri(stringValue);
+			}
+			else {
+				Log(Error, "invalid parameter in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
+					.parameter("ParameterName", "SecurityPolicyUri")
+					.parameter("ParameterValue", stringValue);
+				return false;
+			}
 
 			endpointDescriptionSet->addEndpoint(
 				endpointDescription->endpointUrl(),
