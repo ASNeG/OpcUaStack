@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include <map>
+#include <vector>
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
@@ -37,6 +38,7 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<EndpointDescription> SPtr;
 		typedef std::multimap<std::string, EndpointDescription::SPtr> Multimap;
+		typedef std::vector<EndpointDescription::SPtr> Vec;
 
 		EndpointDescription(void);
 		EndpointDescription(const EndpointDescription& endpointDescription);

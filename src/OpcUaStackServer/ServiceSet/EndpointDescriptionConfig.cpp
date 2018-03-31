@@ -53,30 +53,6 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// -------------------------------------------------------------------------
-		// -------------------------------------------------------------------------
-		//
-		// EndpointDescription
-		//
-		// --------------------------------------------------------------------------
-		//
-		// EndpointUrl - mandatory
-		// ApplicationUri - mandatory
-		// ProductUri - mandatory
-		// ApplicationName - mandatory
-		// GatewayServerUri - optional
-		// DiscoveryProfileUri - optional
-		// DiscoveryUrl - optional - list
-		// SecurityPolicyUri - mandatory 
-		//		[
-		//			http://opcfoundation.org/UA/SecurityPolicy#None
-		//		]
-		// TransportProfileUri - mandatory
-		// SecurityLevel - mandatory
-		//
-		// --------------------------------------------------------------------------
-		// --------------------------------------------------------------------------
-
 		for (it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
@@ -162,34 +138,67 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->securityLevel(uint32Value);
 			
-			rc = userTokenPolicy(endpointDescription, configPrefix + std::string(".EndpointDescription"), config, configurationFileName);
+			// parse user token policy
+			rc = userTokenPolicy(
+				endpointDescription,
+				configPrefix + std::string(".EndpointDescription"),
+				config,
+				configurationFileName
+			);
 			if (!rc) return false;
 
-			if (config->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
-				Log(Error, "mandatory parameter not found in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "SecurityPolicyUri");
-				return false;
-			}
-			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
-				endpointDescription->messageSecurityMode(SM_None);
-				endpointDescription->securityPolicyUri(stringValue);
-			}
-			else {
-				Log(Error, "invalid parameter in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "SecurityPolicyUri")
-					.parameter("ParameterValue", stringValue);
-				return false;
-			}
+			// parse security setting
+			EndpointDescription::Vec endpointDescriptionVec;
+			rc = securitySetting(
+				endpointDescription,
+				configPrefix + std::string(".EndpointDescription"),
+				config,
+				configurationFileName,
+				endpointDescriptionVec
+			);
+			if (!rc) return false;
 
 			endpointDescriptionSet->addEndpoint(
 				endpointDescription->endpointUrl(),
 				endpointDescription
 			);
 		}
+
+		return true;
+	}
+
+	bool
+	EndpointDescriptionConfig::securitySetting(
+		EndpointDescription::SPtr endpointDescription,
+		const std::string& configPrefix,
+		Config* config,
+		const std::string& configurationFileName,
+		EndpointDescription::Vec& endpointDescriptionVec
+	)
+	{
+		std::string stringValue;
+
+		if (config->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
+				.parameter("ParameterName", "SecurityPolicyUri");
+			return false;
+		}
+		if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
+			endpointDescription->messageSecurityMode(SM_None);
+			endpointDescription->securityPolicyUri(stringValue);
+		}
+		else {
+			Log(Error, "invalid parameter in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
+				.parameter("ParameterName", "SecurityPolicyUri")
+				.parameter("ParameterValue", stringValue);
+			return false;
+		}
+
+		endpointDescriptionVec.push_back(endpointDescription);
 
 		return true;
 	}

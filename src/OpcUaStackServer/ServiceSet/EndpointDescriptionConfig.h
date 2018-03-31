@@ -36,6 +36,13 @@ namespace OpcUaStackServer
 			const std::string& configPrefix, Config* childConfig,
 			const std::string& configurationFileName
 		);
+		static bool securitySetting(
+			EndpointDescription::SPtr endpointDescription,
+			const std::string& configPrefix,
+			Config* config,
+			const std::string& configurationFileName,
+			EndpointDescription::Vec& endpointDescriptionVec
+		);
 		static bool userTokenPolicy(
 			EndpointDescription::SPtr endpointDescription,
 			const std::string& configPrefix,
