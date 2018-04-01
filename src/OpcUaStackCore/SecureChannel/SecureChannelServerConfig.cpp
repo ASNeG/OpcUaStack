@@ -33,8 +33,6 @@ namespace OpcUaStackCore
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, endpointUrl_("")
-//	, securityMode_(SM_None)
-//	, securityPolicy_(SP_None)
 	{
 	}
 
@@ -77,32 +75,5 @@ namespace OpcUaStackCore
 	{
 		return endpointUrl_;
 	}
-
-#if 0
-	void
-	SecureChannelServerConfig::securityMode(SecurityMode securityMode)
-	{
-		securityMode_ = securityMode;
-	}
-
-	SecurityMode
-	SecureChannelServerConfig::securityMode(void)
-	{
-		return securityMode_;
-	}
-
-	void
-	SecureChannelServerConfig::securityPolicy(SecurityPolicy securityPolicy)
-	{
-		securityPolicy_ = securityPolicy;
-	}
-
-	SecurityPolicy
-	SecureChannelServerConfig::securityPolicy(void)
-	{
-		return securityPolicy_;
-	}
-#endif
-
 
 }

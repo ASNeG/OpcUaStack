@@ -21,6 +21,8 @@
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
 #include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -42,20 +44,10 @@ namespace OpcUaStackCore
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
 
-#if 0
-		void securityMode(SecurityMode securityMode);
-		SecurityMode securityMode(void);
-		void securityPolicy(SecurityPolicy securityPolicy);
-		SecurityPolicy securityPolicy(void);
-#endif
-
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		EndpointDescription::SPtr endpointDescription_;
 		std::string endpointUrl_;
-
-		//SecurityMode securityMode_;
-		//SecurityPolicy securityPolicy_;
 	};
 
 }

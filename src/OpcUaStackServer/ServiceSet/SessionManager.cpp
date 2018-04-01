@@ -117,6 +117,8 @@ namespace OpcUaStackServer
 			// create new secure channel
 			SecureChannelServer::SPtr secureChannelServer = constructSPtr<SecureChannelServer>(ioThread_);
 			secureChannelServer->secureChannelServerIf(this);
+			secureChannelServer->applicationCertificate(applicationCertificate_);
+			secureChannelServer->cryptoManager(cryptoManager_);
 
 			// open server socket
 			if (!secureChannelServer->accept(secureChannelServerConfig)) {

@@ -106,8 +106,6 @@ namespace OpcUaStackCore
 		secureChannel->sendBufferSize_ = config->sendBufferSize();
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
-		//secureChannel->securityMode_ = config->securityMode();
-		//secureChannel->securityPolicy_ = config->securityPolicy();
 		secureChannel->endpointUrl_ = config->endpointUrl();
 		secureChannel->debug_ = config->debug();
 		secureChannel->debugHeader_ = config->debugHeader();
