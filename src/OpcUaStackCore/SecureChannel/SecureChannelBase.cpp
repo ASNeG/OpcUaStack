@@ -34,6 +34,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	SecureChannelBase::SecureChannelBase(SecureChannelType secureChannelType)
 	: secureChannelType_(secureChannelType)
+	, cryptoManager_()
+	, applicationCertificate_()
 	{
 	}
 
@@ -1449,10 +1451,22 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// encrypt descrypt
+	// security functions
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
+	}
+
+	void
+	SecureChannelBase::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
 	bool
 	SecureChannelBase::secureReceiveOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
 	{
@@ -1468,7 +1482,10 @@ namespace OpcUaStackCore
 		// FIXME: todo
 		std::cout << "BufferSize=" << bufferSize << std::endl;
 
-		// calculate encryption size and calculate signature size
+		// decrypt open secure message
+		if (securityHeader.isEncryptionEnabled()) {
+			// FIXM: todo
+		}
 
 		return true;
 	}

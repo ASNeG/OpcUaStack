@@ -30,6 +30,8 @@
 #include "OpcUaStackCore/SecureChannel/OpenSecureChannelResponse.h"
 #include "OpcUaStackCore/SecureChannel/CloseSecureChannelRequest.h"
 #include "OpcUaStackCore/SecureChannel/CloseSecureChannelResponse.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 
 namespace OpcUaStackCore
 {
@@ -113,6 +115,9 @@ namespace OpcUaStackCore
 
 		void asyncRead(SecureChannel* secureChannel);
 
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+
 	  private:
 		bool secureReceiveOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
 
@@ -151,6 +156,8 @@ namespace OpcUaStackCore
 		void consumeAll(boost::asio::streambuf& streambuf);
 
 		SecureChannelType secureChannelType_;
+		CryptoManager::SPtr cryptoManager_;
+		ApplicationCertificate::SPtr applicationCertificate_;
 	};
 
 }
