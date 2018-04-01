@@ -45,6 +45,12 @@ namespace OpcUaStackCore
 		securityPolicyUri_.value(buf, bufLen);
 	}
 
+	OpcUaByteString&
+	SecurityHeader::securityPolicyUri(void)
+	{
+		return securityPolicyUri_;
+	}
+
 	void 
 	SecurityHeader::senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen)
 	{
@@ -57,6 +63,12 @@ namespace OpcUaStackCore
 		senderCertificate_.value(buf, bufLen);
 	}
 
+	OpcUaByteString&
+	SecurityHeader::senderCertificate(void)
+	{
+		return senderCertificate_;
+	}
+
 	void 
 	SecurityHeader::receiverCertificateThumbprint(OpcUaByte *buf, OpcUaInt32 bufLen)
 	{
@@ -67,6 +79,12 @@ namespace OpcUaStackCore
 	SecurityHeader::receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const
 	{
 		receiverCertificateThumbprint_.value(buf, bufLen);
+	}
+
+	OpcUaByteString&
+	SecurityHeader::receiverCertificateThumbprint(void)
+	{
+		return receiverCertificateThumbprint_;
 	}
 
 	CertificateChain&

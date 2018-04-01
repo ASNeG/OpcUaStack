@@ -37,10 +37,13 @@ namespace OpcUaStackCore
 
 		void securityPolicyUri(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void securityPolicyUri(OpcUaByte *buf, OpcUaInt32 bufLen);
+		OpcUaByteString& securityPolicyUri(void);
 		void senderCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		void senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen);
+		OpcUaByteString& senderCertificate(void);
 		void receiverCertificateThumbprint(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const;
+		OpcUaByteString& receiverCertificateThumbprint(void);
 		CertificateChain& certificateChain(void);
 
 		bool isEncryptionEnabled(void);
