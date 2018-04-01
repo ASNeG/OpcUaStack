@@ -436,7 +436,14 @@ namespace OpcUaStackCore
 
 		// encode secure header
 		SecurityHeader securityHeader;
-		securityHeader.opcUaBinaryDecode(is);
+		if (!securityHeader.opcUaBinaryDecode(is)) {
+			Log(Debug, "opc ua secure channel security header error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);

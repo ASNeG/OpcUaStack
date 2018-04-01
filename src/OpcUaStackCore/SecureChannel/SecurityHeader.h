@@ -43,6 +43,9 @@ namespace OpcUaStackCore
 		void receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const;
 		CertificateChain& certificateChain(void);
 
+		bool isEncryptionEnabled(void);
+		bool isSignatureEnabled(void);
+
 		bool opcUaBinaryEncode(std::ostream& os) const;
 		bool opcUaBinaryDecode(std::istream& is);
 

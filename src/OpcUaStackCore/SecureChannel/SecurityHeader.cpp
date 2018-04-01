@@ -76,6 +76,18 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	SecurityHeader::isEncryptionEnabled(void)
+	{
+		return senderCertificate_.exist();
+	}
+
+	bool
+	SecurityHeader::isSignatureEnabled(void)
+	{
+		return receiverCertificateThumbprint_.exist();
+	}
+
+	bool
 	SecurityHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
 		securityPolicyUri_.opcUaBinaryEncode(os);
