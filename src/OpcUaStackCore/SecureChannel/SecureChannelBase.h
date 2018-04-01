@@ -114,6 +114,8 @@ namespace OpcUaStackCore
 		void asyncRead(SecureChannel* secureChannel);
 
 	  private:
+		bool secureReceiveOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
+
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel);

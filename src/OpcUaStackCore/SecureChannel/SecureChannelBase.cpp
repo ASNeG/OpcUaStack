@@ -445,6 +445,16 @@ namespace OpcUaStackCore
 			return;
 		}
 
+		// decrypt
+		if (!secureReceiveOpenSecureChannel(securityHeader, secureChannel)) {
+			Log(Debug, "opc ua secure channel decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
 
@@ -1434,6 +1444,33 @@ namespace OpcUaStackCore
 		boost::asio::const_buffer buffer(streambuf.data());
 		std::size_t bufferSize = boost::asio::buffer_size(buffer);
 		streambuf.consume(bufferSize);
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// encrypt descrypt
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	SecureChannelBase::secureReceiveOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	{
+		// check if encryption or signature is enabled
+		if (!securityHeader.isEncryptionEnabled() && !securityHeader.isSignatureEnabled()) {
+			return true;
+		}
+
+		// get number of received bytes
+		boost::asio::const_buffer buffer(secureChannel->recvBuffer_.data());
+		std::size_t bufferSize = boost::asio::buffer_size(buffer);
+
+		// FIXME: todo
+		std::cout << "BufferSize=" << bufferSize << std::endl;
+
+		// calculate encryption size and calculate signature size
+
+		return true;
 	}
 
 }
