@@ -26,8 +26,9 @@
 
 #include <openssl/x509.h>
 
-#include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
+#include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
 #include "OpcUaStackCore/Certificate/CertificateEnums.h"
 #include "OpcUaStackCore/Certificate/CertificateExtension.h"
@@ -70,6 +71,7 @@ namespace OpcUaStackCore
 		bool getInfo(CertificateInfo& info);
 		bool getExtension(CertificateExtension& certificateExtension);
 
+		OpcUaByteString thumbPrint(void);
 		bool thumbPrint(char* buf, uint32_t* bufLen);
 		bool toDERFile(const std::string& fileName);
 		bool fromDERFile(const std::string& fileName);

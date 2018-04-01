@@ -20,6 +20,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/local_time_adjustor.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaStackCore
@@ -449,6 +450,19 @@ namespace OpcUaStackCore
 		}
 
 		return true;
+	}
+
+	OpcUaByteString
+	Certificate::thumbPrint(void)
+	{
+		MemoryBuffer mem(20);
+		uint32_t memLen = 20;
+
+		if (!thumbPrint(mem.memBuf(), &memLen)) {
+			return OpcUaByteString();
+		}
+
+		return OpcUaByteString(mem.memBuf(), mem.memLen());
 	}
 
 	bool
