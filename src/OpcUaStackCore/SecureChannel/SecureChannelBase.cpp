@@ -448,7 +448,7 @@ namespace OpcUaStackCore
 		}
 
 		// decrypt
-		if (!secureReceiveOpenSecureChannel(securityHeader, secureChannel)) {
+		if (secureReceivedOpenSecureChannel(securityHeader, secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel decrypt received message error")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
@@ -1467,27 +1467,54 @@ namespace OpcUaStackCore
 		applicationCertificate_ = applicationCertificate;
 	}
 
-	bool
-	SecureChannelBase::secureReceiveOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	OpcUaStatusCode
+	SecureChannelBase::secureReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
 	{
+		OpcUaStatusCode statusCode;
+
 		// check if encryption or signature is enabled
 		if (!securityHeader.isEncryptionEnabled() && !securityHeader.isSignatureEnabled()) {
-			return true;
+			return Success;
 		}
 
-		// get number of received bytes
-		boost::asio::const_buffer buffer(secureChannel->recvBuffer_.data());
-		std::size_t bufferSize = boost::asio::buffer_size(buffer);
-
-		// FIXME: todo
-		std::cout << "BufferSize=" << bufferSize << std::endl;
-
-		// decrypt open secure message
+		// decrypt received open secure channel request
 		if (securityHeader.isEncryptionEnabled()) {
-			// FIXM: todo
+			statusCode = decryptReceivedOpenSecureChannel(securityHeader, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
 		}
 
-		return true;
+		// FIXME:
+		// handle signature
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::decryptReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	{
+		// check ..
+		std::cout << "..." << securityHeader.receiverCertificateThumbprint() << std::endl;
+		std::cout << "..." << applicationCertificate_->certificate()->thumbPrint() << std::endl;
+
+		// find crypto base
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader.securityPolicyUri().toString());
+		if (cryptoBase.get() == nullptr) {
+			Log(Error, "crypto base not available for security policy uri")
+				.parameter("SecurityPolicyUri", securityHeader.securityPolicyUri().toString());
+			return BadSecurityPolicyRejected;
+		}
+
+		// copy received buffer
+		MemoryBuffer mem;
+		mem.set(boost::asio::buffer_cast<const char*>(secureChannel->recvBuffer_.data()), secureChannel->recvBuffer_.size());
+
+
+
+		std::cout << "BufferSize=" << mem.memLen() << std::endl;
+
+		return Success;
 	}
 
 }

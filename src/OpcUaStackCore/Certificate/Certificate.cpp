@@ -462,7 +462,7 @@ namespace OpcUaStackCore
 			return OpcUaByteString();
 		}
 
-		return OpcUaByteString(mem.memBuf(), mem.memLen());
+		return OpcUaByteString((const OpcUaByte*)mem.memBuf(), mem.memLen());
 	}
 
 	bool
