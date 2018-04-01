@@ -286,19 +286,19 @@ namespace OpcUaStackCore
          }
 
          // set extensions
-          X509V3_CTX ctx;
-          X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
-          if (!error) {
-              CertificateExtension certificateExtension(useCACert);
-              certificateExtension.subjectAltName(info.subjectAltName());
-              if (!certificateExtension.encodeX509(cert_, ctx)) {
-              	error = true;
-              	addError(certificateExtension.errorList());
-              }
-          }
+         X509V3_CTX ctx;
+         X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
+         if (!error) {
+             CertificateExtension certificateExtension(useCACert);
+             certificateExtension.subjectAltName(info.subjectAltName());
+             if (!certificateExtension.encodeX509(cert_, ctx)) {
+                 error = true;
+              	 addError(certificateExtension.errorList());
+             }
+         }
 
-          // sign the certificate
-  	    if (!error) {
+         // sign the certificate
+  	     if (!error) {
   	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)issuerPrivateKey;
   	        if (signatureAlgorithm == SignatureAlgorithm_Sha1) {
   	            result = X509_sign(cert_, key, EVP_sha1());
@@ -619,10 +619,24 @@ namespace OpcUaStackCore
 	    EVP_PKEY_free(issuerPublicKey);
 
 	    if (result <= 0) {
-	    	std::cout << "A3" << std::endl;
 	        return false;
 	    }
 	    return true;
+	}
+
+	PublicKey
+	Certificate::publicKey(void)
+	{
+		EVP_PKEY* key = X509_get_pubkey(cert_);
+		if (key == nullptr) {
+			addOpenSSLError();
+			PublicKey publicKey;
+			return publicKey;
+		}
+
+		PublicKey publicKey(key);
+		EVP_PKEY_free(key);
+		return publicKey;
 	}
 
 }

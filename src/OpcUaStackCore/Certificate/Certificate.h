@@ -78,6 +78,7 @@ namespace OpcUaStackCore
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 
 		uint32_t getDERBufSize(void);
+		PublicKey publicKey(void);
 
 		bool isSelfSigned(void) const;
 
