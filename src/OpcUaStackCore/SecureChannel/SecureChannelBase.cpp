@@ -36,7 +36,6 @@ namespace OpcUaStackCore
 	: secureChannelType_(secureChannelType)
 	, cryptoManager_()
 	, applicationCertificate_()
-	, cryptoBase_()
 	{
 	}
 
@@ -1482,12 +1481,13 @@ namespace OpcUaStackCore
 		}
 
 		// find crypto base
-		cryptoBase_ = cryptoManager_->get(securityHeader.securityPolicyUri().toString());
-		if (cryptoBase_.get() == nullptr) {
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader.securityPolicyUri().toString());
+		if (cryptoBase.get() == nullptr) {
 			Log(Error, "crypto base not available for security policy uri")
 				.parameter("SecurityPolicyUri", securityHeader.securityPolicyUri().toString());
 			return BadSecurityPolicyRejected;
 		}
+		secureChannel->cryptoBase(cryptoBase);
 
 		// decrypt received open secure channel request
 		if (securityHeader.isEncryptionEnabled()) {
@@ -1537,7 +1537,7 @@ namespace OpcUaStackCore
 		MemoryBuffer plainText(receivedDataLen);
 		ios.read(encryptedText.memBuf(), receivedDataLen);
 
-		statusCode = cryptoBase_->asymmetricDecrypt(
+		statusCode = secureChannel->cryptoBase()->asymmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
 			*applicationCertificate_->privateKey().get(),

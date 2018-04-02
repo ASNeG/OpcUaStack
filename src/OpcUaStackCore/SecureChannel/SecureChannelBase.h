@@ -159,7 +159,6 @@ namespace OpcUaStackCore
 
 		SecureChannelType secureChannelType_;
 
-		CryptoBase::SPtr cryptoBase_;
 		CryptoManager::SPtr cryptoManager_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 	};

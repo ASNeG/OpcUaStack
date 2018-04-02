@@ -21,6 +21,7 @@
 
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
@@ -51,6 +52,14 @@ namespace OpcUaStackCore
 		SecureChannel(IOThread* ioThread);
 		virtual ~SecureChannel(void);
 
+		// --------------------------------------------------------------------
+		//
+		// security
+		//
+		// --------------------------------------------------------------------
+		void cryptoBase(CryptoBase::SPtr& cryptoBase);
+		CryptoBase::SPtr cryptoBase(void);
+
 		void handle(Object::SPtr& handle);
 		void handleReset(void);
 		Object::SPtr handle(void);
@@ -72,6 +81,15 @@ namespace OpcUaStackCore
 		void debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse);
 		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
 		void debugSendMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// security
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		CryptoBase::SPtr cryptoBase_;
 
 
 		IOThread* ioThread_;

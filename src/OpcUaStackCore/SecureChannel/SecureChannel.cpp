@@ -27,7 +27,10 @@ namespace OpcUaStackCore
 	OpcUaUInt32 SecureChannel::gChannelId_ = 0;
 
 	SecureChannel::SecureChannel(IOThread* ioThread)
-	: actSegmentFlag_('F')
+	// security
+	: cryptoBase_()
+
+	, actSegmentFlag_('F')
 	, ioThread_(ioThread)
 	, TCPConnection(ioThread->ioService()->io_service())
 	, state_(S_Init)
@@ -77,6 +80,23 @@ namespace OpcUaStackCore
 
 	SecureChannel::~SecureChannel(void)
 	{
+	}
+
+	// ------------------------------------------------------------------------
+	//
+	// security
+	//
+	// ------------------------------------------------------------------------
+	void
+	SecureChannel::cryptoBase(CryptoBase::SPtr& cryptoBase)
+	{
+		cryptoBase_ = cryptoBase;
+	}
+
+	CryptoBase::SPtr
+	SecureChannel::cryptoBase(void)
+	{
+		return cryptoBase_;
 	}
 
 	void
