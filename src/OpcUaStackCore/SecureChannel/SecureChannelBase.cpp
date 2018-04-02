@@ -36,6 +36,7 @@ namespace OpcUaStackCore
 	: secureChannelType_(secureChannelType)
 	, cryptoManager_()
 	, applicationCertificate_()
+	, cryptoBase_()
 	{
 	}
 
@@ -1468,13 +1469,24 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelBase::secureReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	SecureChannelBase::secureReceivedOpenSecureChannel(
+		SecurityHeader& securityHeader,
+		SecureChannel* secureChannel
+	)
 	{
 		OpcUaStatusCode statusCode;
 
 		// check if encryption or signature is enabled
 		if (!securityHeader.isEncryptionEnabled() && !securityHeader.isSignatureEnabled()) {
 			return Success;
+		}
+
+		// find crypto base
+		cryptoBase_ = cryptoManager_->get(securityHeader.securityPolicyUri().toString());
+		if (cryptoBase_.get() == nullptr) {
+			Log(Error, "crypto base not available for security policy uri")
+				.parameter("SecurityPolicyUri", securityHeader.securityPolicyUri().toString());
+			return BadSecurityPolicyRejected;
 		}
 
 		// decrypt received open secure channel request
@@ -1485,35 +1497,67 @@ namespace OpcUaStackCore
 			}
 		}
 
-		// FIXME:
-		// handle signature
+		// verify signature
+		if (securityHeader.isSignatureEnabled()) {
+			statusCode = verifyReceivedOpenSecureChannel(securityHeader, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
 
 		return Success;
 	}
 
 	OpcUaStatusCode
-	SecureChannelBase::decryptReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	SecureChannelBase::decryptReceivedOpenSecureChannel(
+		SecurityHeader& securityHeader,
+		SecureChannel* secureChannel
+	)
 	{
-		// check ..
-		std::cout << "..." << securityHeader.receiverCertificateThumbprint() << std::endl;
-		std::cout << "..." << applicationCertificate_->certificate()->thumbPrint() << std::endl;
+		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
+		OpcUaStatusCode statusCode;
 
-		// find crypto base
-		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader.securityPolicyUri().toString());
-		if (cryptoBase.get() == nullptr) {
-			Log(Error, "crypto base not available for security policy uri")
-				.parameter("SecurityPolicyUri", securityHeader.securityPolicyUri().toString());
-			return BadSecurityPolicyRejected;
+		// check receiver certificate
+		if (securityHeader.receiverCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
+			Log(Error, "receiver certificate invalid")
+				.parameter("ReceiverCertificateThumbprint", securityHeader.receiverCertificateThumbprint());
+			return BadCertificateInvalid;
 		}
 
-		// copy received buffer
-		MemoryBuffer mem;
-		mem.set(boost::asio::buffer_cast<const char*>(secureChannel->recvBuffer_.data()), secureChannel->recvBuffer_.size());
+		// the number of received bytes must be a multiple of the key length
+		if (receivedDataLen % (applicationCertificate_->privateKey()->keySize()/8) != 0) {
+			Log(Error, "number of received bytes invalid")
+				.parameter("ReceivedDataLen", receivedDataLen);
+			return BadSecurityChecksFailed;
+		}
 
+		// decrypt received buffer
+		std::iostream ios(&secureChannel->recvBuffer_);
+		MemoryBuffer encryptedText(receivedDataLen);
+		MemoryBuffer plainText(receivedDataLen);
+		ios.read(encryptedText.memBuf(), receivedDataLen);
 
+		statusCode = cryptoBase_->asymmetricDecrypt(
+			encryptedText.memBuf(),
+			encryptedText.memLen(),
+			*applicationCertificate_->privateKey().get(),
+			plainText.memBuf(),
+			&receivedDataLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "decrypt open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
 
-		std::cout << "BufferSize=" << mem.memLen() << std::endl;
+		ios.write(plainText.memBuf(), receivedDataLen);
+		return Success;
+	}
 
+	OpcUaStatusCode
+	SecureChannelBase::verifyReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	{
+		// FIXME: todo
 		return Success;
 	}
 

@@ -121,6 +121,7 @@ namespace OpcUaStackCore
 	  private:
 		OpcUaStatusCode secureReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
 		OpcUaStatusCode decryptReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
+		OpcUaStatusCode verifyReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
 
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
@@ -157,6 +158,8 @@ namespace OpcUaStackCore
 		void consumeAll(boost::asio::streambuf& streambuf);
 
 		SecureChannelType secureChannelType_;
+
+		CryptoBase::SPtr cryptoBase_;
 		CryptoManager::SPtr cryptoManager_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 	};

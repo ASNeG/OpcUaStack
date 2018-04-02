@@ -125,7 +125,7 @@ namespace OpcUaStackCore
 	    	default:
 	        {
 				if (isLogging_) {
-					Log(Error, "publicEntrypt error - pinvalid padding type");
+					Log(Error, "publicEntrypt error - invalid padding type");
 				}
 	            return BadNotSupported;
 	        }
@@ -157,7 +157,7 @@ namespace OpcUaStackCore
 	    		    bytesToEncrypt,      	   										// number bytes to encrypt
 	    			(const unsigned char*)(plainTextBuf + plainTextPosition),       // buffer to encrypt
 	    			(unsigned char*)(encryptedTextBuf + encryptedTextPosition),  	// where to encrypt
-					EVP_PKEY_get0_RSA(key),                              					// public key
+					EVP_PKEY_get0_RSA(key),                              			// public key
 	    			padding															// padding mode
 			    );
 	    		if(encryptedBytes < 0) {
