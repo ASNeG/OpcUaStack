@@ -478,13 +478,19 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		uint32_t derBufLen;
-		if (!toDERBufLen(&derBufLen)) {
+		// creater DER buffer
+		uint32_t derLen;
+		if (!toDERBufLen(&derLen)) {
 			return false;
 		}
-		char* data = new char[derBufLen];
-		SHA1((const unsigned char*)data, *bufLen, (unsigned char* )buf);
-		delete [] data;
+		char* derBuf = new char[derLen];
+		if (!toDERBuf(derBuf, &derLen)) {
+			return false;
+		}
+
+		// create thumb print
+		SHA1((const unsigned char*)derBuf, derLen, (unsigned char* )buf);
+		delete [] derBuf;
 
 		return true;
 	}
