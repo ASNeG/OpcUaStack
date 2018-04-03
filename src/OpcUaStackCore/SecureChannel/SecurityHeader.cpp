@@ -81,6 +81,12 @@ namespace OpcUaStackCore
 		receiverCertificateThumbprint_.value(buf, bufLen);
 	}
 
+	void
+	SecurityHeader::receiverCertificateThumbprint(OpcUaByteString& receiverCertificateThumbprint)
+	{
+		receiverCertificateThumbprint_ = receiverCertificateThumbprint;
+	}
+
 	OpcUaByteString&
 	SecurityHeader::receiverCertificateThumbprint(void)
 	{

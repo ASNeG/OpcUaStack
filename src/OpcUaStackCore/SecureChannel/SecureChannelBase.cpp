@@ -688,16 +688,21 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader securityHeader;
-		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
-		switch (secureChannel->securityPolicy_)
-		{
-			case SP_None: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None"; break;
-			case SP_Basic128Rsa15: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"; break;
-			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256"; break;
-			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
+		SecurityHeader& securityHeader = secureChannel->securityHeader_;
+		if (securityHeader.isSignatureEnabled()) {
+			// FIXME: use sender certificate chain
+			applicationCertificate_->certificate()->toDERBuf(securityHeader.senderCertificate());
 		}
-		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
+		else {
+			securityHeader.senderCertificate().reset();
+		}
+		if (securityHeader.isEncryptionEnabled()) {
+			OpcUaByteString thumbPrint = secureChannel->partnerCertificate_->thumbPrint();
+			securityHeader.receiverCertificateThumbprint(thumbPrint);
+		}
+		else {
+			securityHeader.receiverCertificateThumbprint().reset();
+		}
 		securityHeader.opcUaBinaryEncode(ios1);
 
 		// encode sequence number
@@ -715,6 +720,7 @@ namespace OpcUaStackCore
 		openSecureChannelResponse->opcUaBinaryEncode(ios1);
 
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
+		secureChannel->messageHeader_.segmentFlag('F');
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
@@ -1504,6 +1510,7 @@ namespace OpcUaStackCore
 
 		// verify signature
 		if (securityHeader->isSignatureEnabled()) {
+			secureChannel->partnerCertificate_ = securityHeader->certificateChain().getCertificate();
 			statusCode = verifyReceivedOpenSecureChannel(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;

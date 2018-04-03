@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 	SecureChannel::SecureChannel(IOThread* ioThread)
 	// security
 	: cryptoBase_()
+	, partnerCertificate_()
 
 	// actual header
 	, messageHeader_()

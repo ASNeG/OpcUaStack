@@ -43,6 +43,7 @@ namespace OpcUaStackCore
 		OpcUaByteString& senderCertificate(void);
 		void receiverCertificateThumbprint(OpcUaByte *buf, OpcUaInt32 bufLen);
 		void receiverCertificateThumbprint(OpcUaByte **buf, OpcUaInt32* bufLen) const;
+		void receiverCertificateThumbprint(OpcUaByteString& receiverCertificateThumbprint);
 		OpcUaByteString& receiverCertificateThumbprint(void);
 		CertificateChain& certificateChain(void);
 
