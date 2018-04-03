@@ -53,9 +53,13 @@ namespace OpcUaStackCore
 		void set(const std::string& value);
 		void set(const char* value);
 		void set(const char* memBuf, uint32_t memLen);
+		void set(MemoryBuffer& memoryBuffer);
 		void set(boost::asio::streambuf& sb);
 		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2);
 		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2, boost::asio::streambuf& sb3);
+
+		void swap(char* inMemBuf, int32_t inBufLen, char** outMemBuf = nullptr, int32_t*outMemLen = nullptr);
+		void swap(MemoryBuffer& memoryBuffer);
 
 	  private:
 		char *memBuf_;

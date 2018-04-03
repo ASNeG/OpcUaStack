@@ -184,6 +184,19 @@ namespace OpcUaStackCore
 		return memLen_;
 	}
 
+	bool
+	MemoryBuffer::get(boost::asio::streambuf& sb)
+	{
+		if (memLen_ <= 0) {
+			return false;
+		}
+
+		std::iostream ios(&sb);
+		ios.write(memBuf_, memLen_);
+
+		return true;
+	}
+
 	void
 	MemoryBuffer::set(const std::string& value)
 	{
@@ -206,6 +219,12 @@ namespace OpcUaStackCore
 			memBuf_ = new char[memLen_];
 		}
 		memcpy(memBuf_, memBuf, memLen_);
+	}
+
+	void
+	MemoryBuffer::set(MemoryBuffer& memoryBuffer)
+	{
+		set(memoryBuffer.memBuf(), memoryBuffer.memLen());
 	}
 
 	void
@@ -267,6 +286,32 @@ namespace OpcUaStackCore
 		ios1.read(memBuf_, size1);
 		ios2.read(memBuf_ + size1, size2);
 		ios2.read(memBuf_ + size1 + size2, size3);
+	}
+
+	void
+	MemoryBuffer::swap(char* memBuf, int32_t memLen, char** outMemBuf, int32_t* outMemLen)
+	{
+		if (outMemBuf != nullptr) *outMemBuf = memBuf_;
+		if (outMemLen != nullptr) *outMemLen = memLen_;
+
+		if (outMemBuf == nullptr && memBuf_ != nullptr) {
+			clear();
+		}
+
+		memBuf_ = memBuf;
+		memLen_ = memLen;
+	}
+
+	void
+	MemoryBuffer::swap(MemoryBuffer& memoryBuffer)
+	{
+		char* memBuf = memBuf_;
+		uint32_t memLen = memLen_;
+
+		memBuf_ = memoryBuffer.memBuf();
+		memLen_ = memoryBuffer.memLen();
+
+		memoryBuffer.swap(memBuf, memLen);
 	}
 
 }

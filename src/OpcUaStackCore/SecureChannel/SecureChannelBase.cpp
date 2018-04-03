@@ -448,8 +448,8 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		// decrypt
-		if (secureReceivedOpenSecureChannel(secureChannel) != Success) {
+		// handle security
+		if (secureReceivedOpenSecureChannelRequest(secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel decrypt received message error")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
@@ -727,6 +727,16 @@ namespace OpcUaStackCore
 		// debug output
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendOpenSecureChannelResponse(*openSecureChannelResponse);
+
+		// handle security
+		MemoryBuffer plainText(sb2, sb1);
+		MemoryBuffer encryptText;
+		if (secureSendOpenSecureChannelResponse(secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel encrypt send message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+			return;
+		}
 
 		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
@@ -1478,7 +1488,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelBase::secureReceivedOpenSecureChannel(
+	SecureChannelBase::secureReceivedOpenSecureChannelRequest(
 		SecureChannel* secureChannel
 	)
 	{
@@ -1608,6 +1618,23 @@ namespace OpcUaStackCore
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 			return BadSecurityChecksFailed;
 		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::secureSendOpenSecureChannelResponse(SecureChannel* secureChannel)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			return Success;
+		}
+
+		// FIXME: todo
 
 		return Success;
 	}
