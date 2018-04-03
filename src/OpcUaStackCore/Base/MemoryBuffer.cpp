@@ -294,10 +294,6 @@ namespace OpcUaStackCore
 		if (outMemBuf != nullptr) *outMemBuf = memBuf_;
 		if (outMemLen != nullptr) *outMemLen = memLen_;
 
-		if (outMemBuf == nullptr && memBuf_ != nullptr) {
-			clear();
-		}
-
 		memBuf_ = memBuf;
 		memLen_ = memLen;
 	}
