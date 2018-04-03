@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -26,6 +26,7 @@ namespace OpcUaStackCore
 	, messageSize_(0)
 	, segmentFlag_('F')
 	, messageTypeString_()
+	, channelId_(0)
 	{
 	}
 	MessageHeader::~MessageHeader(void)
@@ -74,8 +75,20 @@ namespace OpcUaStackCore
 		return segmentFlag_;
 	}
 
+	void
+	MessageHeader::channelId(uint32_t channelId)
+	{
+		channelId_ = channelId;
+	}
+
+	uint32_t
+	MessageHeader::channelId(void)
+	{
+		return channelId_;
+	}
+
 	void 
-	MessageHeader::opcUaBinaryEncode(std::ostream& os) const
+	MessageHeader::opcUaBinaryEncode(std::ostream& os, bool full) const
 	{
 		switch (messageType_) 
 		{
@@ -116,10 +129,20 @@ namespace OpcUaStackCore
 		}
 		os.write(&segmentFlag_, 1);
 		OpcUaNumber::opcUaBinaryEncode(os, messageSize_);
+
+		if (full) {
+			OpcUaNumber::opcUaBinaryEncode(os, channelId_);
+		}
+	}
+
+	void
+	MessageHeader::opcUaBinaryEncodeChannelId(std::ostream& os) const
+	{
+		OpcUaNumber::opcUaBinaryEncode(os, channelId_);
 	}
 		
 	void 
-	MessageHeader::opcUaBinaryDecode(std::istream& is)
+	MessageHeader::opcUaBinaryDecode(std::istream& is, bool full)
 	{
 		is.read(messageTypeString_, 3);
 
@@ -148,5 +171,15 @@ namespace OpcUaStackCore
 		is.read(&segmentFlag_, 1);
 
 		OpcUaNumber::opcUaBinaryDecode(is, messageSize_);
+
+		if (full) {
+			OpcUaNumber::opcUaBinaryDecode(is, channelId_);
+		}
+	}
+
+	void
+	MessageHeader::opcUaBinaryDecodeChannelId(std::istream& is)
+	{
+		OpcUaNumber::opcUaBinaryDecode(is, channelId_);
 	}
 }
