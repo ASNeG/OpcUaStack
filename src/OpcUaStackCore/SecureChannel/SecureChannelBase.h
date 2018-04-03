@@ -119,9 +119,9 @@ namespace OpcUaStackCore
 		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 
 	  private:
-		OpcUaStatusCode secureReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
-		OpcUaStatusCode decryptReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
-		OpcUaStatusCode verifyReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel);
+		OpcUaStatusCode secureReceivedOpenSecureChannel(SecureChannel* secureChannel);
+		OpcUaStatusCode decryptReceivedOpenSecureChannel(SecureChannel* secureChannel);
+		OpcUaStatusCode verifyReceivedOpenSecureChannel(SecureChannel* secureChannel);
 
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);

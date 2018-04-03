@@ -409,6 +409,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		bool resultCode;
+
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
@@ -432,13 +434,12 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
-		// get channel id
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		// decode second part of message header
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		// encode secure header
-		SecurityHeader securityHeader;
-		if (!securityHeader.opcUaBinaryDecode(is)) {
+		// decide secure header
+		resultCode = secureChannel->securityHeader_.opcUaBinaryDecode(is);
+		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
@@ -448,7 +449,7 @@ namespace OpcUaStackCore
 		}
 
 		// decrypt
-		if (secureReceivedOpenSecureChannel(securityHeader, secureChannel) != Success) {
+		if (secureReceivedOpenSecureChannel(secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel decrypt received message error")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
@@ -472,11 +473,14 @@ namespace OpcUaStackCore
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
-		secureChannel->debugRecvOpenSecureChannelRequest(openSecureChannelRequest, channelId);
+		secureChannel->debugRecvOpenSecureChannelRequest(
+			openSecureChannelRequest,
+			secureChannel->messageHeader_.channelId()
+		);
 
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
-			channelId,
+			secureChannel->messageHeader_.channelId(),
 			openSecureChannelRequest
 		);
 		asyncRead(secureChannel);
@@ -1469,37 +1473,38 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	SecureChannelBase::secureReceivedOpenSecureChannel(
-		SecurityHeader& securityHeader,
 		SecureChannel* secureChannel
 	)
 	{
 		OpcUaStatusCode statusCode;
 
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
 		// check if encryption or signature is enabled
-		if (!securityHeader.isEncryptionEnabled() && !securityHeader.isSignatureEnabled()) {
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
 			return Success;
 		}
 
 		// find crypto base
-		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader.securityPolicyUri().toString());
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader->securityPolicyUri().toString());
 		if (cryptoBase.get() == nullptr) {
 			Log(Error, "crypto base not available for security policy uri")
-				.parameter("SecurityPolicyUri", securityHeader.securityPolicyUri().toString());
+				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
 			return BadSecurityPolicyRejected;
 		}
 		secureChannel->cryptoBase(cryptoBase);
 
 		// decrypt received open secure channel request
-		if (securityHeader.isEncryptionEnabled()) {
-			statusCode = decryptReceivedOpenSecureChannel(securityHeader, secureChannel);
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = decryptReceivedOpenSecureChannel(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
 			}
 		}
 
 		// verify signature
-		if (securityHeader.isSignatureEnabled()) {
-			statusCode = verifyReceivedOpenSecureChannel(securityHeader, secureChannel);
+		if (securityHeader->isSignatureEnabled()) {
+			statusCode = verifyReceivedOpenSecureChannel(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -1510,17 +1515,18 @@ namespace OpcUaStackCore
 
 	OpcUaStatusCode
 	SecureChannelBase::decryptReceivedOpenSecureChannel(
-		SecurityHeader& securityHeader,
 		SecureChannel* secureChannel
 	)
 	{
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
 
 		// check receiver certificate
-		if (securityHeader.receiverCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
+		if (securityHeader->receiverCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
 			Log(Error, "receiver certificate invalid")
-				.parameter("ReceiverCertificateThumbprint", securityHeader.receiverCertificateThumbprint());
+				.parameter("ReceiverCertificateThumbprint", securityHeader->receiverCertificateThumbprint());
 			return BadCertificateInvalid;
 		}
 
@@ -1555,8 +1561,13 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelBase::verifyReceivedOpenSecureChannel(SecurityHeader& securityHeader, SecureChannel* secureChannel)
+	SecureChannelBase::verifyReceivedOpenSecureChannel(
+		SecureChannel* secureChannel
+	)
 	{
+		MessageHeader* messagHeader = &secureChannel->messageHeader_;
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
 		// FIXME: todo
 		return Success;
 	}

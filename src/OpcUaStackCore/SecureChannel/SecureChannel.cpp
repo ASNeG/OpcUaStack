@@ -30,6 +30,10 @@ namespace OpcUaStackCore
 	// security
 	: cryptoBase_()
 
+	// actual header
+	, messageHeader_()
+	, securityHeader_()
+
 	, actSegmentFlag_('F')
 	, ioThread_(ioThread)
 	, TCPConnection(ioThread->ioService()->io_service())
@@ -48,7 +52,6 @@ namespace OpcUaStackCore
 	, asyncSend_(false)
 	, asyncSendStop_(false)
 	, typeId_()
-	, messageHeader_()
 
 	, channelId_(0)
 	, tokenId_(0)

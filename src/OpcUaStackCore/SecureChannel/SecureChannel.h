@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
+#include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
@@ -91,6 +92,15 @@ namespace OpcUaStackCore
 		// --------------------------------------------------------------------
 		CryptoBase::SPtr cryptoBase_;
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// actual header
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		MessageHeader messageHeader_;
+		SecurityHeader securityHeader_;
 
 		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
@@ -115,7 +125,7 @@ namespace OpcUaStackCore
 		OpcUaInt32 revisedLifetime_;
 
 		OpcUaNodeId typeId_;
-		MessageHeader messageHeader_;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction_;
 		SecureChannelTransaction::List secureChannelTransactionList_;
 		OpenSecureChannelResponse::List openSecureChannelResponseList_;
