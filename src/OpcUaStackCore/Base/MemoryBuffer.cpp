@@ -61,6 +61,64 @@ namespace OpcUaStackCore
 		memset(memBuf_, 0x00, memLen_);
 	}
 
+	MemoryBuffer::MemoryBuffer(boost::asio::streambuf& sb)
+	: memBuf_(nullptr)
+	, memLen_(-1)
+	{
+		uint32_t size = sb.size();
+
+		memLen_ = size;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+
+		std::iostream ios(&sb);
+		ios.read(memBuf_, size);
+	}
+
+	MemoryBuffer::MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2)
+	: memBuf_(nullptr)
+	, memLen_(-1)
+	{
+		uint32_t size1 = sb1.size();
+		uint32_t size2 = sb2.size();
+		uint32_t size = size1 + size2;
+
+		memLen_ = size;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+
+		std::iostream ios1(&sb1);
+		std::iostream ios2(&sb2);
+
+		ios1.read(memBuf_, size1);
+		ios2.read(memBuf_ + size1, size2);
+	}
+
+	MemoryBuffer::MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2, boost::asio::streambuf& sb3)
+	: memBuf_(nullptr)
+	, memLen_(-1)
+	{
+		uint32_t size1 = sb1.size();
+		uint32_t size2 = sb2.size();
+		uint32_t size3 = sb3.size();
+		uint32_t size = size1 + size2 + size3;
+
+		memLen_ = size;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+
+		std::iostream ios1(&sb1);
+		std::iostream ios2(&sb2);
+		std::iostream ios3(&sb3);
+
+		ios1.read(memBuf_, size1);
+		ios2.read(memBuf_ + size1, size2);
+		ios2.read(memBuf_ + size1 + size2, size3);
+	}
+
 	MemoryBuffer::~MemoryBuffer(void)
 	{
 		clear();

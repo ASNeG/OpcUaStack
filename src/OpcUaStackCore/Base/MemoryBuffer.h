@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_MemoryBuffer_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/asio/streambuf.hpp>
 
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
@@ -35,6 +36,9 @@ namespace OpcUaStackCore
 		MemoryBuffer(const std::string& value);
 		MemoryBuffer(const char* memBuf, uint32_t memLen);
 		MemoryBuffer(uint32_t memLen);
+		MemoryBuffer(boost::asio::streambuf& sb);
+		MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2);
+		MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2, boost::asio::streambuf& sb3);
 		~MemoryBuffer(void);
 
 		bool operator ==(const MemoryBuffer &b) const;
