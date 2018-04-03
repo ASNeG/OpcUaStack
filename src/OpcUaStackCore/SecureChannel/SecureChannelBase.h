@@ -123,7 +123,11 @@ namespace OpcUaStackCore
 		OpcUaStatusCode decryptReceivedOpenSecureChannel(SecureChannel* secureChannel);
 		OpcUaStatusCode verifyReceivedOpenSecureChannel(SecureChannel* secureChannel);
 
-		OpcUaStatusCode secureSendOpenSecureChannelResponse(SecureChannel* secureChannel);
+		OpcUaStatusCode secureSendOpenSecureChannelResponse(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
 
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);

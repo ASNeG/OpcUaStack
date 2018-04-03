@@ -730,18 +730,19 @@ namespace OpcUaStackCore
 
 		// handle security
 		MemoryBuffer plainText(sb2, sb1);
-		MemoryBuffer encryptText;
-		if (secureSendOpenSecureChannelResponse(secureChannel) != Success) {
+		MemoryBuffer encryptedText;
+		if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel encrypt send message error")
 				.parameter("Local", secureChannel->local_.address().to_string())
 				.parameter("Partner", secureChannel->partner_.address().to_string());
 			return;
 		}
 
+		boost::asio::streambuf sb;
+		encryptedText.get(sb);
 		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
-			sb2,
-			sb1,
+			sb,
 			boost::bind(
 				&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
 				this,
@@ -1623,7 +1624,11 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelBase::secureSendOpenSecureChannelResponse(SecureChannel* secureChannel)
+	SecureChannelBase::secureSendOpenSecureChannelResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
 	{
 		OpcUaStatusCode statusCode;
 
@@ -1631,10 +1636,12 @@ namespace OpcUaStackCore
 
 		// check if encryption or signature is enabled
 		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			encryptedText.swap(plainText);
 			return Success;
 		}
 
 		// FIXME: todo
+		encryptedText.swap(plainText);
 
 		return Success;
 	}
