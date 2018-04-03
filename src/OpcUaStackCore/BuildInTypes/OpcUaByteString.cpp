@@ -103,6 +103,18 @@ namespace OpcUaStackCore
 	{
 		return length_;
 	}
+
+	bool
+	OpcUaByteString::resize(uint32_t size)
+	{
+		reset();
+		if (size <= 0) return true;
+		value_ = (OpcUaByte*)malloc(size);
+		memset(value_, 0x00, size);
+		length_ = size;
+
+		return true;
+	}
 		
 	void 
 	OpcUaByteString::reset(void) 
