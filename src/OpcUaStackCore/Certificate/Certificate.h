@@ -77,6 +77,7 @@ namespace OpcUaStackCore
 		bool fromDERFile(const std::string& fileName);
 		bool toDERBufLen(uint32_t* bufLen);
 		bool toDERBuf(char* buf, uint32_t* bufLen);
+		bool toDERBuf(OpcUaByteString& derBuf);
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 
 		uint32_t getDERBufSize(void);

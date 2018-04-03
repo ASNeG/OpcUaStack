@@ -566,6 +566,28 @@ namespace OpcUaStackCore
 	}
 
 	bool
+	Certificate::toDERBuf(OpcUaByteString& derBuf)
+	{
+		uint32_t derBufLen;
+		if (!toDERBufLen(&derBufLen)) {
+			return false;
+		}
+		if (!derBuf.resize(derBufLen)) {
+			return false;
+		}
+
+		char *buf;
+		int32_t len;
+		derBuf.value(&buf, &len);
+		if (len <= 0) {
+			return false;
+		}
+
+		uint32_t length = len;
+		return toDERBuf(buf, &length);
+	}
+
+	bool
 	Certificate::toDERBuf(char* buf, uint32_t* bufLen)
 	{
 		if (cert_ == nullptr) {
