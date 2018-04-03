@@ -48,10 +48,14 @@ namespace OpcUaStackCore
 		bool isNull(void);
 		char* memBuf(void);
 		int32_t memLen(void);
+		bool get(boost::asio::streambuf& sb);
 
 		void set(const std::string& value);
 		void set(const char* value);
 		void set(const char* memBuf, uint32_t memLen);
+		void set(boost::asio::streambuf& sb);
+		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2);
+		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2, boost::asio::streambuf& sb3);
 
 	  private:
 		char *memBuf_;
