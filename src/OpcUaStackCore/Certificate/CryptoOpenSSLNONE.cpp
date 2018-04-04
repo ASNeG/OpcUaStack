@@ -49,7 +49,9 @@ namespace OpcUaStackCore
 		uint32_t* cryptTextBlockSize
 	)
 	{
-		return BadNotSupported;
+		*plainTextBlockSize = 1;
+		*cryptTextBlockSize = 1;
+		return Success;
 	}
 
 	OpcUaStatusCode
@@ -58,7 +60,8 @@ namespace OpcUaStackCore
 		uint32_t* signTextBlockSize
 	)
 	{
-		return BadNotSupported;
+		*signTextBlockSize = 0;
+		return Success;
 	}
 
 	OpcUaStatusCode
@@ -67,7 +70,9 @@ namespace OpcUaStackCore
 		uint32_t* cryptTextBlockSize
 	)
 	{
-		return BadNotSupported;
+		*plainTextBlockSize = 1;
+		*cryptTextBlockSize = 1;
+		return Success;
 	}
 
 	OpcUaStatusCode
@@ -75,7 +80,8 @@ namespace OpcUaStackCore
 		uint32_t* signTextBlockSize
 	)
 	{
-		return BadNotSupported;
+		*signTextBlockSize = 0;
+		return Success;
 	}
 
 	OpcUaStatusCode

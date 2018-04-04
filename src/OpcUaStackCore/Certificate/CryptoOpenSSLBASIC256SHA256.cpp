@@ -52,8 +52,20 @@ namespace OpcUaStackCore
 		uint32_t* cryptTextBlockSize
 	)
 	{
-		// FIXME: todo
-		return BadNotSupported;
+		*plainTextBlockSize = 0;
+		*cryptTextBlockSize = 0;
+
+		OpcUaStatusCode statusCode;
+		uint32_t asymmetricKeyLen;
+		statusCode = this->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		*plainTextBlockSize = asymmetricKeyLen/8 - 42;
+		*cryptTextBlockSize = asymmetricKeyLen/8;
+
+		return Success;
 	}
 
 	OpcUaStatusCode
@@ -62,8 +74,15 @@ namespace OpcUaStackCore
 		uint32_t* signTextBlockSize
 	)
 	{
-		// FIXME: todo
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+		uint32_t asymmetricKeyLen;
+		statusCode = this->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		*signTextBlockSize = asymmetricKeyLen/8;
+		return Success;
 	}
 
 	OpcUaStatusCode
@@ -72,8 +91,9 @@ namespace OpcUaStackCore
 		uint32_t* cryptTextBlockSize
 	)
 	{
-		// FIXME: todo
-		return BadNotSupported;
+		*plainTextBlockSize = 16;
+		*cryptTextBlockSize = 16;
+		return Success;
 	}
 
 	OpcUaStatusCode
@@ -81,8 +101,8 @@ namespace OpcUaStackCore
 		uint32_t* signTextBlockSize
 	)
 	{
-		// FIXME: todo
-		return BadNotSupported;
+		*signTextBlockSize = 32;
+		return Success;
 	}
 
 	OpcUaStatusCode
