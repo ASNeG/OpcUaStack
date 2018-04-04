@@ -45,6 +45,7 @@ namespace OpcUaStackCore
 		friend std::ostream& operator<<(std::ostream& os, const MemoryBuffer& memoryBuffer);
 
 		void clear(void);
+		void resize(uint32_t newMemLen);
 		bool isNull(void);
 		char* memBuf(void);
 		int32_t memLen(void);

@@ -166,6 +166,34 @@ namespace OpcUaStackCore
 		}
 	}
 
+	void
+	MemoryBuffer::resize(uint32_t newMemLen)
+	{
+		// save current buffer
+		char* memBuf = memBuf_;
+		int32_t memLen = memLen_;
+		memBuf_ = nullptr;
+		memLen_ = -1;
+
+		// allocate new memory
+		memLen_ = memLen;
+		if (memLen_ > 0) {
+			memBuf_ = new char[memLen_];
+		}
+		memset(memBuf_, 0x00, memLen_);
+
+		// copy old memory to new memory
+		if (memBuf == nullptr) {
+			return;
+		}
+
+		if (memLen > memLen_) memLen = memLen_;
+		memcpy(memBuf_, memBuf, memLen);
+
+		// delete old memory
+		delete [] memBuf;
+	}
+
 	bool
 	MemoryBuffer::isNull(void)
 	{
