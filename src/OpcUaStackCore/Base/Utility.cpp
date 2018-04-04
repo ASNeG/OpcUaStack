@@ -195,6 +195,8 @@ namespace OpcUaStackCore
 			os << std::endl;
 			address += 16;
 		}
+
+		os << std::dec;
 	}
 
 	void hexStringToByteSequence(const std::string& hexStringSpace, uint8_t* byteSequence)
