@@ -105,6 +105,26 @@ namespace OpcUaStackCore
 		void symmetricEncryptionAlgorithmId(uint32_t symmetricEncryptionAlgorithmId);
 		uint32_t symmetricEncryptionAlgorithmId(void);
 
+		virtual OpcUaStatusCode getAsymmetricEncryptionBlockSize(
+			PublicKey& publicKey,
+			uint32_t* plainTextBlockSize,
+			uint32_t* cryptTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode getAsymmetricSignatureBlockSize(
+			PublicKey& publicKey,
+			uint32_t* signTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode getSymmetricEncryptionBlockSize(
+			uint32_t* plainTextBlockSize,
+			uint32_t* cryptTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode getSymmetricSignatureBlockSize(
+			uint32_t* signTextBlockSize
+		) = 0;
+
 		virtual OpcUaStatusCode asymmetricKeyLen(
 			PublicKey& publicKey,
 			uint32_t* asymmetricKeyLen

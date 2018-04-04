@@ -1640,9 +1640,38 @@ namespace OpcUaStackCore
 			return Success;
 		}
 
+		if (securityHeader->isSignatureEnabled()) {
+			statusCode = signSendOpenSecureChannelResponse(plainText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+
+
 		// FIXME: todo
 		encryptedText.swap(plainText);
 
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::signSendOpenSecureChannelResponse(
+		MemoryBuffer& plainText,
+		SecureChannel* secureChannel
+	)
+	{
+		// calculate some length fields
+		uint32_t plainTextLen = plainText.memLen();
+		uint32_t signTextLen = applicationCertificate_->privateKey()->keySizeInBytes();
+
+		uint32_t signedTextLen = plainTextLen + signTextLen;
+
+		dumpHex(plainText);
+		std::cout << "PlainTextLen=" << plainTextLen << std::endl;
+		std::cout << "SignTextLen=" << signTextLen << std::endl;
+
+		// FIXME: todo
 		return Success;
 	}
 

@@ -128,6 +128,10 @@ namespace OpcUaStackCore
 			MemoryBuffer& encryptedText,
 			SecureChannel* secureChannel
 		);
+		OpcUaStatusCode signSendOpenSecureChannelResponse(
+			MemoryBuffer& plainText,
+			SecureChannel* secureChannel
+		);
 
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);

@@ -46,6 +46,46 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::getAsymmetricEncryptionBlockSize(
+		PublicKey& publicKey,
+		uint32_t* plainTextBlockSize,
+		uint32_t* cryptTextBlockSize
+	)
+	{
+		// FIXME: todo
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::getAsymmetricSignatureBlockSize(
+		PublicKey& publicKey,
+		uint32_t* signTextBlockSize
+	)
+	{
+		// FIXME: todo
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::getSymmetricEncryptionBlockSize(
+		uint32_t* plainTextBlockSize,
+		uint32_t* cryptTextBlockSize
+	)
+	{
+		// FIXME: todo
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::getSymmetricSignatureBlockSize(
+		uint32_t* signTextBlockSize
+	)
+	{
+		// FIXME: todo
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
 	CryptoOpenSSLBASIC256::asymmetricKeyLen(
 		PublicKey& publicKey,
 		uint32_t* asymmetricKeyLen
