@@ -43,6 +43,15 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricKeyLen(
+		PublicKey& publicKey,
+		uint32_t* asymmetricKeyLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
 	CryptoOpenSSLNONE::asymmetricDecrypt(
 	    char*       	encryptedTextBuf,
 		uint32_t		encryptedTextLen,

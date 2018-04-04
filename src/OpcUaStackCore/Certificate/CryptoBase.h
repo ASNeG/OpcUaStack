@@ -84,6 +84,8 @@ namespace OpcUaStackCore
 
 		void symmetricKeyLen(int32_t symmetricKeyLen);
 		int32_t symmetricKeyLen(void);
+		void asymmetricKeyLen(int32_t asymmetricKeyLen);
+		int32_t asymmetricKeyLen(void);
 		void minimumAsymmetricKeyLen(uint32_t minimumAsymmetricKeyLen);
 		uint32_t minimumAsymmetricKeyLen(void);
 		void maximumAsymmetricKeyLen(uint32_t maximumAsymmetricKeyLen);
@@ -102,6 +104,11 @@ namespace OpcUaStackCore
 		uint32_t symmetricSignatureAlgorithmId(void);
 		void symmetricEncryptionAlgorithmId(uint32_t symmetricEncryptionAlgorithmId);
 		uint32_t symmetricEncryptionAlgorithmId(void);
+
+		virtual OpcUaStatusCode asymmetricKeyLen(
+			PublicKey& publicKey,
+			uint32_t* asymmetricKeyLen
+		) = 0;
 
 		virtual OpcUaStatusCode asymmetricDecrypt(
 		    char*       	encryptedTextBuf,
@@ -174,6 +181,7 @@ namespace OpcUaStackCore
 		bool isLogging_;
 
 		int32_t symmetricKeyLen_;
+		int32_t asymmetricKeyLen_;
 		uint32_t minimumAsymmetricKeyLen_;
 		uint32_t maximumAsymmetricKeyLen_;
 		uint32_t derivedEncryptionKeyLen_;
