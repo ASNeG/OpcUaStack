@@ -1668,6 +1668,7 @@ namespace OpcUaStackCore
 		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
 		asymmetricKeyLen /= 8;
 
+#if 0
 		// get block length
 		uint32_t plainTextBlockSize = 0;
 		uint32_t cryptTextBlockSize = 0;
@@ -1698,6 +1699,7 @@ namespace OpcUaStackCore
 		std::cout << "messageHeaderLen=" << messageHeaderLen << std::endl;
 		std::cout << "securityHeaderLen=" << securityHeaderLen << std::endl;
 		std::cout << "plainTextLen=" << plainTextLen << std::endl;
+#endif
 
 		// FIXME: todo
 		return Success;
