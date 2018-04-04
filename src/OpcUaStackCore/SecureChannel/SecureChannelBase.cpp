@@ -1661,15 +1661,43 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// calculate some length fields
-		uint32_t plainTextLen = plainText.memLen();
-		uint32_t signTextLen = applicationCertificate_->privateKey()->keySizeInBytes();
+		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
 
-		uint32_t signedTextLen = plainTextLen + signTextLen;
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get block length
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		secureChannel->cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate length of message header, security header and plain text
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen =
+			12 +														// security header length fields
+			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
+			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
+			20;															// thumbPrint
+		uint32_t plainTextLen =
+			plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen +
+			cryptTextBlockSize <= 256 ? 1 : 2 +
+			asymmetricKeyLen;
+
+		// calculate number of padding bytes
+
+
 
 		dumpHex(plainText);
-		std::cout << "PlainTextLen=" << plainTextLen << std::endl;
-		std::cout << "SignTextLen=" << signTextLen << std::endl;
+		std::cout << "plainTextBlockSize=" << plainTextBlockSize << std::endl;
+		std::cout << "cryptTextBlockSize=" << cryptTextBlockSize << std::endl;
+		std::cout << "asymmetricKeyLen=" << asymmetricKeyLen << std::endl;
+		std::cout << "messageHeaderLen=" << messageHeaderLen << std::endl;
+		std::cout << "securityHeaderLen=" << securityHeaderLen << std::endl;
+		std::cout << "plainTextLen=" << plainTextLen << std::endl;
 
 		// FIXME: todo
 		return Success;

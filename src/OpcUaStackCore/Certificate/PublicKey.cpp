@@ -90,15 +90,15 @@ namespace OpcUaStackCore
 		EVP_PKEY *pKey = X509_PUBKEY_get(copy.publicKey_);
 		if (pKey==NULL) {
 		   addOpenSSLError();
+		   return *this;
 		}
-		else {
-		   int result = X509_PUBKEY_set(&publicKey_, pKey);
-		   if (!result) {
-			   addOpenSSLError();
-		   }
 
-		   EVP_PKEY_free ( pKey );
-	    }
+		int result = X509_PUBKEY_set(&publicKey_, pKey);
+		if (!result) {
+		    addOpenSSLError();
+		}
+
+		EVP_PKEY_free(pKey);
 
 		return *this;
 	}

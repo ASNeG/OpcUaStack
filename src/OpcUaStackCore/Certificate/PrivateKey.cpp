@@ -59,7 +59,7 @@ namespace OpcUaStackCore
 
 	PrivateKey::~PrivateKey(void)
 	{
-		EVP_PKEY_free (privateKey_);
+		EVP_PKEY_free(privateKey_);
 	}
 
 	uint32_t
@@ -96,7 +96,7 @@ namespace OpcUaStackCore
 			return *this;
 		}
 
-	    EVP_PKEY_free (privateKey_);
+	    EVP_PKEY_free(privateKey_);
 	    if (copy.privateKey_) {
 	    	EVP_PKEY_up_ref(copy.privateKey_);
 	        privateKey_ = copy.privateKey_;
@@ -109,6 +109,7 @@ namespace OpcUaStackCore
 
 	PrivateKey::operator EVP_PKEY*(void)
 	{
+		EVP_PKEY_up_ref(privateKey_);
 		return privateKey_;
 	}
 
@@ -149,7 +150,7 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	PrivateKey::fromPEM (char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback, void *data)
+	PrivateKey::fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback, void *data)
 	{
 	    BIO* bio = BIO_new_mem_buf((void*)buf, bufLen);
 

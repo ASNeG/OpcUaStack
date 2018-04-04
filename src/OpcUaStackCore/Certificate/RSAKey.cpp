@@ -47,15 +47,17 @@ namespace OpcUaStackCore
 	{
 	    pKey_ = EVP_PKEY_new();
 
-	    RSA *rsaKeyPair = RSA_generate_key(bits, 0x10001, 0, 0);
+	    // generate esa key pair
+	    RSA* rsaKeyPair = RSA_generate_key(bits, 0x10001, 0, 0);
 	    if (!rsaKeyPair) {
 	    	addOpenSSLError();
+	    	return;
 	    }
-	    else {
-	        int iRet = EVP_PKEY_assign_RSA(pKey_, rsaKeyPair );
-	        if (!iRet) {
-	        	addOpenSSLError();
-	        }
+
+	    // assign rsa key pair to key
+	    int iRet = EVP_PKEY_assign_RSA(pKey_, rsaKeyPair );
+	    if (!iRet) {
+	        addOpenSSLError();
 	    }
 	}
 

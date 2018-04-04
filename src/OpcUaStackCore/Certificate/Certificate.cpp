@@ -160,7 +160,7 @@ namespace OpcUaStackCore
 	        }
 	    }
 
-	    if (error) {
+	    if (error && cert_ != nullptr) {
 	       X509_free(cert_);
 	       cert_ = nullptr;
 	    }
@@ -313,7 +313,7 @@ namespace OpcUaStackCore
   	        }
   	    }
 
-  	    if (error) {
+  	    if (error && cert_ != nullptr) {
   	       X509_free(cert_);
   	       cert_ = nullptr;
   	    }
@@ -322,7 +322,7 @@ namespace OpcUaStackCore
 
 	Certificate::~Certificate(void)
 	{
-		if (cert_) {
+		if (cert_ != nullptr) {
 		    X509_free(cert_);
 		    cert_ = nullptr;
 		}
@@ -669,6 +669,7 @@ namespace OpcUaStackCore
 	PublicKey
 	Certificate::publicKey(void)
 	{
+		// get key with reference count incremented
 		EVP_PKEY* key = X509_get_pubkey(cert_);
 		if (key == nullptr) {
 			addOpenSSLError();
