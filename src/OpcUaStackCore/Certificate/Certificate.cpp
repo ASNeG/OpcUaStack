@@ -669,6 +669,11 @@ namespace OpcUaStackCore
 	PublicKey
 	Certificate::publicKey(void)
 	{
+		if (cert_ == nullptr) {
+			PublicKey publicKey;
+			return publicKey;
+		}
+
 		// get key with reference count incremented
 		EVP_PKEY* key = X509_get_pubkey(cert_);
 		if (key == nullptr) {

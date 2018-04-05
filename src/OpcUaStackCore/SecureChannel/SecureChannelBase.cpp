@@ -1661,7 +1661,9 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		std::cout << "AA" << std::endl;
 		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
+		std::cout << "BB" << std::endl;
 
 #if 0
 		// get asymmetric key length
