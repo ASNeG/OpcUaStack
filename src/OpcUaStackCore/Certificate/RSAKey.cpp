@@ -103,11 +103,11 @@ namespace OpcUaStackCore
     	int32_t result = X509_PUBKEY_set(&pubKey, pKey_);
     	if (!result) {
     		const_cast<RSAKey*>(this)->addOpenSSLError();
-    		X509_PUBKEY_free (pubKey);
+    		X509_PUBKEY_free(pubKey);
     		return publicKey;
     	}
 
-        EVP_PKEY *pKey = nullptr;
+        EVP_PKEY* pKey = nullptr;
         pKey = X509_PUBKEY_get(pubKey);
         if (!pKey) {
         	const_cast<RSAKey*>(this)->addOpenSSLError();

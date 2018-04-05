@@ -1663,12 +1663,12 @@ namespace OpcUaStackCore
 	{
 		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
 
+#if 0
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
 		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
 		asymmetricKeyLen /= 8;
 
-#if 0
 		// get block length
 		uint32_t plainTextBlockSize = 0;
 		uint32_t cryptTextBlockSize = 0;
