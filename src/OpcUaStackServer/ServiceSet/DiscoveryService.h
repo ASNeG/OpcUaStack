@@ -71,9 +71,6 @@ namespace OpcUaStackServer
 		ApplicationCertificate::SPtr applicationCertificate_;
 		DiscoveryIf* discoveryIf_;
 
-		//bool receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		//bool receiveFindServersRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		//bool receiveRegisterServerRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
 		//void receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
