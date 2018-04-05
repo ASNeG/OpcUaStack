@@ -548,4 +548,41 @@ BOOST_AUTO_TEST_CASE(CryptoManager_BASIC256_symmetric_sign_verify)
 	BOOST_REQUIRE(statusCode == Success);
 }
 
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+//
+// length function tests
+//
+// ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+BOOST_AUTO_TEST_CASE(CryptoManager_asymmetricKeyLen)
+{
+	OpcUaStatusCode statusCode;
+
+	RSAKey key(2048);
+
+	CryptoManager cryptoManager;
+	CryptoBase::SPtr cryptoBase = cryptoManager.get("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
+	BOOST_REQUIRE(cryptoBase.get() != nullptr);
+	cryptoBase->isLogging(true);
+
+	uint32_t asymmetricKeyLen = 0;
+	PublicKey publicKey1 = key.publicKey();
+	cryptoBase->asymmetricKeyLen(publicKey1, &asymmetricKeyLen);
+	PublicKey publicKey2 = key.publicKey();
+	cryptoBase->asymmetricKeyLen(publicKey2, &asymmetricKeyLen);
+	PublicKey publicKey3 = key.publicKey();
+	cryptoBase->asymmetricKeyLen(publicKey3, &asymmetricKeyLen);
+
+	uint32_t plainTextBlockSize = 0;
+	uint32_t cryptTextBlockSize = 0;
+	PublicKey publicKey4 = key.publicKey();
+	cryptoBase->getAsymmetricEncryptionBlockSize(publicKey4, &plainTextBlockSize, &cryptTextBlockSize);
+	PublicKey publicKey5 = key.publicKey();
+	cryptoBase->getAsymmetricEncryptionBlockSize(publicKey5, &plainTextBlockSize, &cryptTextBlockSize);
+	PublicKey publicKey6 = key.publicKey();
+	cryptoBase->getAsymmetricEncryptionBlockSize(publicKey6, &plainTextBlockSize, &cryptTextBlockSize);
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()
