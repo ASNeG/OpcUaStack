@@ -36,7 +36,7 @@ namespace OpcUaStackCore
 	Certificate::Certificate(
 		CertificateInfo& info,
 		Identity& subject,
-	    RSAKey&rsaKey,
+	    RSAKey& rsaKey,
 	    bool useCACert,
 	    SignatureAlgorithm signatureAlgorithm
 	)
