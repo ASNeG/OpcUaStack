@@ -207,4 +207,39 @@ BOOST_AUTO_TEST_CASE(Certificate__readFile)
 	std::cout << ce.subjectKeyIdentifier() << std::endl;
 }
 
+BOOST_AUTO_TEST_CASE(Certificate__certificate_to_OpcUaByteString)
+{
+	RSAKey key(2048);
+	CertificateInfo info;
+	Identity identity;
+
+	info.uri("urn:localhost:ASNeG:MyServiceApplication");
+	info.ipAddresses().push_back("127.0.0.1");
+	info.dnsNames().push_back("ASNeG.de");
+	info.eMail("info@ASNeG.de");
+	info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*5));
+	info.serialNumber(123);
+	info.validFrom(boost::posix_time::microsec_clock::local_time());
+
+	identity.organization("ASNeG");
+	identity.organizationUnit("OPC UA Service Department");
+	identity.commonName("MyServiceApplication");
+	identity.locality("Neukirchen");
+	identity.state("Hessen");
+	identity.country("DE");
+	identity.domainComponent("asneg.de");
+
+	Certificate certificate(info, identity, key);
+	BOOST_REQUIRE(certificate.isError() == false);
+	BOOST_REQUIRE(certificate.isSelfSigned() == true);
+
+	OpcUaByteString derBuf1;
+	BOOST_REQUIRE(certificate.toDERBuf(derBuf1) == true);
+
+	OpcUaByteString derBuf2;
+	BOOST_REQUIRE(certificate.toDERBuf(derBuf2) == true);
+
+	BOOST_REQUIRE(derBuf1 == derBuf2);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
