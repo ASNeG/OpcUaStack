@@ -29,13 +29,17 @@ namespace OpcUaStackCore
 	, pKey_(nullptr)
 	{
 		pKey_ = EVP_PKEY_new();
+		if (pKey_ == nullptr) {
+			addError("create rsa key error in constructor");
+			return;
+		}
 	}
 
 	RSAKey::RSAKey(EVP_PKEY *pKey)
 	: OpenSSLError()
 	, pKey_(nullptr)
 	{
-	    if (pKey_) {
+	    if (pKey_ != nullptr) {
 	        EVP_PKEY_up_ref(pKey);
 	        pKey_ = pKey;
 	    }
@@ -46,10 +50,14 @@ namespace OpcUaStackCore
 	, pKey_(nullptr)
 	{
 	    pKey_ = EVP_PKEY_new();
+		if (pKey_ == nullptr) {
+			addError("create rsa key error in constructor");
+			return;
+		}
 
 	    // generate esa key pair
 	    RSA* rsaKeyPair = RSA_generate_key(bits, 0x10001, 0, 0);
-	    if (!rsaKeyPair) {
+	    if (rsaKeyPair == nullptr) {
 	    	addOpenSSLError();
 	    	return;
 	    }
@@ -65,25 +73,33 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, pKey_(nullptr)
 	{
-	    EVP_PKEY_up_ref(copy.pKey_);
-        pKey_ = copy.pKey_;
+		if (copy.pKey_ != nullptr) {
+			EVP_PKEY_up_ref(copy.pKey_);
+			pKey_ = copy.pKey_;
+		}
 
 	}
 
 	RSAKey::~RSAKey(void)
 	{
-		EVP_PKEY_free(pKey_);
+		if (pKey_ != nullptr) {
+			EVP_PKEY_free(pKey_);
+			pKey_ = nullptr;
+		}
 	}
 
 	RSAKey&
 	RSAKey::operator=(const RSAKey &copy)
 	{
-	    if (pKey_) {
+	    if (pKey_ != nullptr) {
 	    	EVP_PKEY_free (pKey_);
+	    	pKey_ = nullptr;
 	    }
 
-	    EVP_PKEY_up_ref(copy.pKey_);
-	    pKey_ = copy.pKey_;
+	    if (copy.pKey_ != nullptr) {
+	    	EVP_PKEY_up_ref(copy.pKey_);
+	    	pKey_ = copy.pKey_;
+	    }
 	    return *this;
 	}
 
@@ -109,7 +125,7 @@ namespace OpcUaStackCore
 
         EVP_PKEY* pKey = nullptr;
         pKey = X509_PUBKEY_get(pubKey);
-        if (!pKey) {
+        if (pKey == nullptr) {
         	const_cast<RSAKey*>(this)->addOpenSSLError();
         	X509_PUBKEY_free (pubKey);
         	return publicKey;
@@ -125,6 +141,12 @@ namespace OpcUaStackCore
     bool
 	RSAKey::toDER(char* buf, uint32_t& bufLen) const
     {
+    	if (pKey_ == nullptr) {
+    		const_cast<RSAKey*>(this)->addError("key is empty");
+    		return false;
+    		return false;
+    	}
+
         int32_t length = i2d_PrivateKey(pKey_, 0);
         if (length < 0) {
         	const_cast<RSAKey*>(this)->addOpenSSLError();
@@ -144,6 +166,12 @@ namespace OpcUaStackCore
     bool
 	RSAKey::toPEM(char* buf, uint32_t& bufLen, const char* password) const
     {
+    	if (pKey_ == nullptr) {
+    		const_cast<RSAKey*>(this)->addError("key is empty");
+    		return false;
+    		return false;
+    	}
+
     	BIO *bio = BIO_new(BIO_s_mem());
 
     	int result;
@@ -178,6 +206,11 @@ namespace OpcUaStackCore
     bool
 	RSAKey::fromPEM(char* buf, uint32_t bufLen, const char* password, PasswordCallback* passwordCallback, void *data)
     {
+    	if (pKey_ == nullptr) {
+    		addError("key is empty");
+    		return false;
+    	}
+
     	BIO* bio = BIO_new_mem_buf((void*)buf, bufLen);
     	if (!bio) {
     		addOpenSSLError();
@@ -217,7 +250,11 @@ namespace OpcUaStackCore
     bool
 	RSAKey::isValid(void)
     {
-    	return ( pKey_ != 0 && EVP_PKEY_get0_RSA(pKey_) != 0 && EVP_PKEY_missing_parameters(pKey_) == 0);
+    	if (pKey_ == nullptr) {
+    		return false;
+    	}
+
+    	return (EVP_PKEY_get0_RSA(pKey_) != 0 && EVP_PKEY_missing_parameters(pKey_) == 0);
     }
 
     bool
@@ -235,6 +272,7 @@ namespace OpcUaStackCore
         {
             int result = EVP_PKEY_cmp(pPublicKey, pPrivateKey);
             EVP_PKEY_free(pPublicKey);
+            EVP_PKEY_free(pPrivateKey);
             return (result == 1);
         }
         return false;

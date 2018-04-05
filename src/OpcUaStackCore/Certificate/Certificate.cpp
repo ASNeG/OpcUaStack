@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
+			addError("create certificate error in constructor");
 			return;
 		}
 
@@ -158,6 +159,8 @@ namespace OpcUaStackCore
 	        	error = true;
 	        	addOpenSSLError();
 	        }
+
+	        EVP_PKEY_free(key);
 	    }
 
 	    if (error && cert_ != nullptr) {
@@ -182,6 +185,7 @@ namespace OpcUaStackCore
 
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
+			addError("create certificate error in constructor");
 			return;
 		}
 
@@ -311,6 +315,7 @@ namespace OpcUaStackCore
   	        	error = true;
   	        	addOpenSSLError();
   	        }
+  	        EVP_PKEY_free(key);
   	    }
 
   	    if (error && cert_ != nullptr) {
