@@ -33,9 +33,8 @@ namespace OpcUaStackCore
 	, memLen_(-1)
 	{
 		memLen_ = value.length();
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 		memcpy(memBuf_, value.c_str(), memLen_);
 	}
 
@@ -44,9 +43,8 @@ namespace OpcUaStackCore
 	, memLen_(-1)
 	{
 		memLen_ = memLen;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 		memcpy(memBuf_, memBuf, memLen_);
 	}
 
@@ -55,9 +53,8 @@ namespace OpcUaStackCore
 	, memLen_(-1)
 	{
 		memLen_ = memLen;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 		memset(memBuf_, 0x00, memLen_);
 	}
 
@@ -65,15 +62,11 @@ namespace OpcUaStackCore
 	: memBuf_(nullptr)
 	, memLen_(-1)
 	{
-		uint32_t size = sb.size();
-
-		memLen_ = size;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
-
+		memLen_ = sb.size();
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 		std::iostream ios(&sb);
-		ios.read(memBuf_, size);
+		ios.read(memBuf_, memLen_);
 	}
 
 	MemoryBuffer::MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2)
@@ -85,9 +78,8 @@ namespace OpcUaStackCore
 		uint32_t size = size1 + size2;
 
 		memLen_ = size;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 
 		std::iostream ios1(&sb1);
 		std::iostream ios2(&sb2);
@@ -106,9 +98,8 @@ namespace OpcUaStackCore
 		uint32_t size = size1 + size2 + size3;
 
 		memLen_ = size;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 
 		std::iostream ios1(&sb1);
 		std::iostream ios2(&sb2);
@@ -176,10 +167,9 @@ namespace OpcUaStackCore
 		memLen_ = -1;
 
 		// allocate new memory
-		memLen_ = memLen;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		memLen_ = newMemLen;
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 		memset(memBuf_, 0x00, memLen_);
 
 		// copy old memory to new memory
@@ -243,9 +233,8 @@ namespace OpcUaStackCore
 		clear();
 
 		memLen_ = memLen;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 		memcpy(memBuf_, memBuf, memLen_);
 	}
 
@@ -263,9 +252,8 @@ namespace OpcUaStackCore
 		uint32_t size = sb.size();
 
 		memLen_ = size;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 
 		std::iostream ios(&sb);
 		ios.read(memBuf_, size);
@@ -281,9 +269,8 @@ namespace OpcUaStackCore
 		uint32_t size = size1 + size2;
 
 		memLen_ = size;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 
 		std::iostream ios1(&sb1);
 		std::iostream ios2(&sb2);
@@ -303,9 +290,8 @@ namespace OpcUaStackCore
 		uint32_t size = size1 + size2 + size3;
 
 		memLen_ = size;
-		if (memLen_ > 0) {
-			memBuf_ = new char[memLen_];
-		}
+		if (memLen_ <= 0) return;
+		memBuf_ = new char[memLen_];
 
 		std::iostream ios1(&sb1);
 		std::iostream ios2(&sb2);
