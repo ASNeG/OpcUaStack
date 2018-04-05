@@ -39,6 +39,39 @@ BOOST_AUTO_TEST_CASE(Certificate__createSelfSignedCertificate)
 	BOOST_REQUIRE(certificate.isSelfSigned() == true);
 }
 
+BOOST_AUTO_TEST_CASE(Certificate__get_public_key_from_certificate)
+{
+	RSAKey key(2048);
+	CertificateInfo info;
+	Identity identity;
+
+	info.uri("urn:localhost:ASNeG:MyServiceApplication");
+	info.ipAddresses().push_back("127.0.0.1");
+	info.dnsNames().push_back("ASNeG.de");
+	info.eMail("info@ASNeG.de");
+	info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*5));
+	info.serialNumber(123);
+	info.validFrom(boost::posix_time::microsec_clock::local_time());
+
+	identity.organization("ASNeG");
+	identity.organizationUnit("OPC UA Service Department");
+	identity.commonName("MyServiceApplication");
+	identity.locality("Neukirchen");
+	identity.state("Hessen");
+	identity.country("DE");
+	identity.domainComponent("asneg.de");
+
+	Certificate certificate(info, identity, key);
+	BOOST_REQUIRE(certificate.isError() == false);
+	BOOST_REQUIRE(certificate.isSelfSigned() == true);
+
+	PublicKey p1 = certificate.publicKey();
+	PublicKey p2 = certificate.publicKey();
+	PublicKey p3 = certificate.publicKey();
+	PublicKey p4 = certificate.publicKey();
+	PublicKey p5 = certificate.publicKey();
+}
+
 BOOST_AUTO_TEST_CASE(Certificate__multiple_certificates)
 {
 	RSAKey key(2048);
