@@ -94,6 +94,10 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		assert(requestHeader.get() != nullptr);
+		assert(secureChannelTransaction.get() != nullptr);
+		assert(endpointDescriptionArray_.get() != nullptr);
+
 		Log(Debug, "receive get endpoint request request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary;
 

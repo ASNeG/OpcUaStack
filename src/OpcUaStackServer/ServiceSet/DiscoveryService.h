@@ -60,8 +60,6 @@ namespace OpcUaStackServer
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 
-		//bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-
 		//- Component -----------------------------------------------------------------
 		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
@@ -70,8 +68,6 @@ namespace OpcUaStackServer
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 		DiscoveryIf* discoveryIf_;
-
-		//void receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }
