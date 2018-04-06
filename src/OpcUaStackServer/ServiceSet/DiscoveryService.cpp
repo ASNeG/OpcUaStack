@@ -50,6 +50,10 @@ namespace OpcUaStackServer
 	void 
 	DiscoveryService::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{
+		Log(Debug, "endpointDescriptionSet");
+
+		assert(endpointDescriptionSet.get() != nullptr);
+
 		endpointDescriptionArray_ = constructSPtr<EndpointDescriptionArray>();
 		endpointDescriptionSet->getEndpoints(endpointDescriptionArray_);
 	}
@@ -57,6 +61,10 @@ namespace OpcUaStackServer
 	void
 	DiscoveryService::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
 	{
+		Log(Debug, "applicationCertificate");
+
+		assert(applicationCertificate.get() != nullptr);
+
 		applicationCertificate_ = applicationCertificate;
 
 		if (!applicationCertificate_->enable()) {
@@ -98,7 +106,9 @@ namespace OpcUaStackServer
 		assert(secureChannelTransaction.get() != nullptr);
 		assert(endpointDescriptionArray_.get() != nullptr);
 
-		Log(Debug, "receive get endpoint request request");
+		Log(Debug, "receive get endpoint request request")
+		    .parameter("AvailableNumberEndpoints", endpointDescriptionArray_->size());
+
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary;
 
 		std::iostream is(&secureChannelTransaction->is_);

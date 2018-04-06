@@ -490,6 +490,7 @@ namespace OpcUaStackCore
 		}
 		char* derBuf = new char[derLen];
 		if (!toDERBuf(derBuf, &derLen)) {
+			delete [] derBuf;
 			return false;
 		}
 
@@ -555,6 +556,7 @@ namespace OpcUaStackCore
 	bool
 	Certificate::toDERBufLen(uint32_t* bufLen)
 	{
+		*bufLen = 0;
 		if (cert_ == nullptr) {
 			addError("certificate is empty");
 			return false;
@@ -575,9 +577,11 @@ namespace OpcUaStackCore
 	{
 		uint32_t derBufLen;
 		if (!toDERBufLen(&derBufLen)) {
+			log(Error, "toDERBufLen error");
 			return false;
 		}
 		if (!derBuf.resize(derBufLen)) {
+			Log(Error, "DER buffer resize error");
 			return false;
 		}
 
@@ -585,11 +589,16 @@ namespace OpcUaStackCore
 		int32_t len;
 		derBuf.value(&buf, &len);
 		if (len <= 0) {
+			Log(Error, "DER buffer rempty");
 			return false;
 		}
 
 		uint32_t length = len;
-		return toDERBuf(buf, &length);
+		if (!toDERBuf(buf, &length)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
+		return true;
 	}
 
 	bool
