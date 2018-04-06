@@ -119,9 +119,15 @@ namespace OpcUaStackCore
 		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 
 	  private:
-		OpcUaStatusCode secureReceivedOpenSecureChannelRequest(SecureChannel* secureChannel);
-		OpcUaStatusCode decryptReceivedOpenSecureChannel(SecureChannel* secureChannel);
-		OpcUaStatusCode verifyReceivedOpenSecureChannel(SecureChannel* secureChannel);
+		OpcUaStatusCode secureReceivedOpenSecureChannelRequest(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode decryptReceivedOpenSecureChannel(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode verifyReceivedOpenSecureChannel(
+			SecureChannel* secureChannel
+		);
 
 		OpcUaStatusCode secureSendOpenSecureChannelResponse(
 			MemoryBuffer& plainText,
@@ -130,6 +136,11 @@ namespace OpcUaStackCore
 		);
 		OpcUaStatusCode signSendOpenSecureChannelResponse(
 			MemoryBuffer& plainText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode encryptSendOpenSecureChannelResponse(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
 			SecureChannel* secureChannel
 		);
 
@@ -166,6 +177,17 @@ namespace OpcUaStackCore
 
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
 		void consumeAll(boost::asio::streambuf& streambuf);
+
+		void logMessageInfo(
+			const std::string& message,
+			int32_t messageSize,
+			int32_t messageHeaderSize,
+			int32_t securityHeaderSize,
+			int32_t sequenceHeaderSize,
+			int32_t bodySize,
+			int32_t paddingSize,
+			int32_t signatureSize
+		);
 
 		SecureChannelType secureChannelType_;
 

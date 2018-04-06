@@ -1475,6 +1475,37 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// logging functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::logMessageInfo(
+		const std::string& message,
+		int32_t messageSize,
+		int32_t messageHeaderSize,
+		int32_t securityHeaderSize,
+		int32_t sequenceHeaderSize,
+		int32_t bodySize,
+		int32_t paddingSize,
+		int32_t signatureSize
+	)
+	{
+		std::stringstream ss;
+		ss << message
+		   << ", MS(" << messageSize << ")"
+		   << ", MH(" << messageHeaderSize << ")"
+		   << ", SH(" << securityHeaderSize << ")"
+		   << ", SQ(" << sequenceHeaderSize << ")"
+		   << ", B(" << bodySize << ")"
+		   << ", P(" << paddingSize << ")"
+		   << ", S(" << signatureSize << ")";
+		Log(Debug, ss.str());
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// security functions
 	//
 	// ------------------------------------------------------------------------
@@ -1650,7 +1681,13 @@ namespace OpcUaStackCore
 			}
 		}
 
-
+		// encrypt send open secure channel response
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = encryptSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
 
 		// FIXME: todo
 		encryptedText.swap(plainText);
@@ -1719,7 +1756,56 @@ namespace OpcUaStackCore
 			&keyLen
 		);
 
+		// logging
+		logMessageInfo(
+		    "plain open secure channel response",
+			plainText.memLen(),
+			8,
+			securityHeaderLen,
+			8,
+			plainTextLen - 8 - securityHeaderLen,
+			paddingSize,
+			asymmetricKeyLen
+		);
+
 		return statusCode;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::encryptSendOpenSecureChannelResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
+
+		// get block length
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		secureChannel->cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate length of message header, security header and plain text
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen =
+			12 +														// security header length fields
+			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
+			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
+			20;
+
+		// calculate length of encrypted message
+		uint32_t plainTextToEncrypt = plainText.memLen() - messageHeaderLen - securityHeaderLen;
+		uint32_t encryptedTextLen = plainTextToEncrypt / plainTextBlockSize * cryptTextBlockSize;
+		uint32_t entryptedMessageLen = encryptedTextLen + messageHeaderLen + securityHeaderLen;
+
+		std::cout << "messageHeaderLen=" << messageHeaderLen << std::endl;
+		std::cout << "securityHeaderLen=" << securityHeaderLen << std::endl;
+		std::cout << "PlainTextLen=" << plainText.memLen() << std::endl;
+		std::cout << "plainTextToEncrypt=" << plainTextToEncrypt << std::endl;
+		std::cout << "encryptedTextLen=" << encryptedTextLen << std::endl;
+		std::cout << "entryptedMessageLen=" << entryptedMessageLen << std::endl;
+
+		return Success;
 	}
 
 }
