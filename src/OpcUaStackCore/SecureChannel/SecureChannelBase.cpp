@@ -483,6 +483,7 @@ namespace OpcUaStackCore
 			secureChannel->messageHeader_.channelId(),
 			openSecureChannelRequest
 		);
+
 		asyncRead(secureChannel);
 	}
 
@@ -673,6 +674,9 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel)
 	{
+		assert(applicationCertificate_.get() != nullptr);
+		assert(applicationCertificate_->certificate().get() != nullptr);
+
 		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
 		if (secureChannel->asyncSend_) return;
 
@@ -689,19 +693,17 @@ namespace OpcUaStackCore
 
 		// encode security header
 		SecurityHeader& securityHeader = secureChannel->securityHeader_;
+		securityHeader.senderCertificate().reset();
 		if (securityHeader.isSignatureEnabled()) {
 			// FIXME: use sender certificate chain
 			applicationCertificate_->certificate()->toDERBuf(securityHeader.senderCertificate());
 		}
-		else {
-			securityHeader.senderCertificate().reset();
-		}
+		securityHeader.receiverCertificateThumbprint().reset();
 		if (securityHeader.isEncryptionEnabled()) {
+			assert(secureChannel->partnerCertificate_.get() != nullptr);
+
 			OpcUaByteString thumbPrint = secureChannel->partnerCertificate_->thumbPrint();
 			securityHeader.receiverCertificateThumbprint(thumbPrint);
-		}
-		else {
-			securityHeader.receiverCertificateThumbprint().reset();
 		}
 		securityHeader.opcUaBinaryEncode(ios1);
 
@@ -731,6 +733,7 @@ namespace OpcUaStackCore
 		// handle security
 		MemoryBuffer plainText(sb2, sb1);
 		MemoryBuffer encryptedText;
+
 		if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
 			Log(Debug, "opc ua secure channel encrypt send message error")
 				.parameter("Local", secureChannel->local_.address().to_string())
@@ -1661,11 +1664,11 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		std::cout << "AA" << std::endl;
-		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
-		std::cout << "BB" << std::endl;
+		OpcUaStatusCode statusCode;
 
-#if 0
+		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
+		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
 		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
@@ -1683,28 +1686,40 @@ namespace OpcUaStackCore
 			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
 			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
 			20;															// thumbPrint
-		uint32_t plainTextLen =
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t plainTextToEncryptLen =
 			plainText.memLen() -
 			messageHeaderLen -
 			securityHeaderLen +
+			sequenceHeaderLen +
 			cryptTextBlockSize <= 256 ? 1 : 2 +
 			asymmetricKeyLen;
 
 		// calculate number of padding bytes
+		uint32_t paddingSize = 0;
+		if (plainTextToEncryptLen % plainTextBlockSize != 0) {
+			paddingSize = plainTextBlockSize - (plainTextToEncryptLen % plainTextBlockSize);
+		}
+		plainTextToEncryptLen += paddingSize;
 
+		// added padding bytes and extra padding byte
+		uint32_t plainTextLen = plainText.memLen();
+		plainText.resize(plainTextLen + paddingSize + asymmetricKeyLen);
+		char c = paddingSize & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+		// FIXME - extra padding size
 
+		// create signature
+		uint32_t keyLen = asymmetricKeyLen;
+		statusCode = secureChannel->cryptoBase()->asymmetricSign(
+			plainText.memBuf(),
+			plainText.memLen() - asymmetricKeyLen,
+			*privateKey.get(),
+			plainText.memBuf() + plainText.memLen() - asymmetricKeyLen,
+			&keyLen
+		);
 
-		dumpHex(plainText);
-		std::cout << "plainTextBlockSize=" << plainTextBlockSize << std::endl;
-		std::cout << "cryptTextBlockSize=" << cryptTextBlockSize << std::endl;
-		std::cout << "asymmetricKeyLen=" << asymmetricKeyLen << std::endl;
-		std::cout << "messageHeaderLen=" << messageHeaderLen << std::endl;
-		std::cout << "securityHeaderLen=" << securityHeaderLen << std::endl;
-		std::cout << "plainTextLen=" << plainTextLen << std::endl;
-#endif
-
-		// FIXME: todo
-		return Success;
+		return statusCode;
 	}
 
 }
