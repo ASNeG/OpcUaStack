@@ -35,6 +35,7 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaByteString> SPtr;
 
 	    OpcUaByteString(void);
+	    OpcUaByteString(const OpcUaByteString& byteString);
 	    OpcUaByteString(const std::string& value);
 	    OpcUaByteString(const OpcUaByte* value, OpcUaInt32 length);
 		~OpcUaByteString(void);
@@ -48,12 +49,14 @@ namespace OpcUaStackCore
 		bool resize(uint32_t size);
 		void reset(void);
 		bool exist(void) const;
+		bool isNull(void) const;
 
 		bool fromHexString(const std::string& hexString);
 		std::string toHexString(void) const;
 		std::string toString(void) const;
 		void fromString(const std::string& string);
 		OpcUaByteString& operator=(const std::string& string); 
+		OpcUaByteString& operator=(const OpcUaByteString& value);
 		operator std::string const (void); 
 
 		void copyTo(OpcUaByteString& opcUaByteString);
