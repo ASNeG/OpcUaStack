@@ -1794,6 +1794,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
 
 		// get asymmetric key length
@@ -1838,14 +1840,11 @@ namespace OpcUaStackCore
 		encryptedText.resize(encryptedTextLen);
 		memcpy(encryptedText.memBuf(), plainText.memBuf(), messageHeaderLen + securityHeaderLen);
 
-		dumpHex(encryptedText);
-
-		// logging
 		logMessageInfo(
 		    "encrypt open secure channel response",
 			plainTextBlockSize,
 		    cryptTextBlockSize,
-			plainText.memLen(),
+			encryptedText.memLen(),
 			messageHeaderLen,
 			securityHeaderLen,
 			sequenceHeaderLen,
@@ -1853,6 +1852,25 @@ namespace OpcUaStackCore
 			-1,
 			asymmetricKeyLen
 		);
+
+		std::cout << plainText.memLen() - messageHeaderLen - securityHeaderLen << std::endl;
+		std::cout << encryptedText.memLen()  - messageHeaderLen - securityHeaderLen << std::endl;
+
+		uint32_t toEncryptedTextLen = encryptedText.memLen()  - messageHeaderLen - securityHeaderLen;
+		secureChannel->cryptoBase()->isLogging(true);
+		PublicKey pKey = secureChannel->partnerCertificate_->publicKey();
+		statusCode = secureChannel->cryptoBase()->asymmetricEncrypt(
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			plainText.memLen() - messageHeaderLen - securityHeaderLen,
+			pKey,
+			encryptedText.memBuf()  + messageHeaderLen + securityHeaderLen,
+			&toEncryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "decrypt open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
 
 		return Success;
 	}
