@@ -1489,7 +1489,6 @@ namespace OpcUaStackCore
 		int32_t securityHeaderSize,
 		int32_t sequenceHeaderSize,
 		int32_t bodySize,
-		int32_t paddingByte,
 		int32_t paddingSize,
 		int32_t signatureSize
 	)
@@ -1501,7 +1500,7 @@ namespace OpcUaStackCore
 		   << ", MH(" << messageHeaderSize << ")"
 		   << ", SH(" << securityHeaderSize << ")"
 		   << ", SQ(" << sequenceHeaderSize << ")"
-		   << ", B(" << bodySize << "," << paddingByte << ")"
+		   << ", B(" << bodySize << ")"
 		   << ", P(" << paddingSize << ")"
 		   << ", S(" << signatureSize << ")";
 		Log(Debug, ss.str());
@@ -1744,13 +1743,14 @@ namespace OpcUaStackCore
 		if (dataToEncryptLen % plainTextBlockSize != 0) {
 			paddingSize = plainTextBlockSize - (dataToEncryptLen % plainTextBlockSize);
 		}
+		paddingSize += paddingByteLen;
 		dataToEncryptLen += paddingSize;
 
 		// added padding bytes and extra padding byte
 		uint32_t plainTextLen = plainText.memLen();
-		plainText.resize(plainTextLen + paddingSize + paddingByteLen + asymmetricKeyLen);
-		char c = paddingSize & 0x000000FF;
-		memset(plainText.memBuf() + plainTextLen - paddingByteLen, c, paddingSize+paddingByteLen);
+		plainText.resize(plainTextLen + paddingSize + asymmetricKeyLen);
+		char c = (paddingSize-1) & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
 		// FIXME - extra padding size
 
 		// set new packet length
@@ -1758,7 +1758,7 @@ namespace OpcUaStackCore
 			messageHeaderLen +
 			securityHeaderLen +
 			(dataToEncryptLen / plainTextBlockSize * cryptTextBlockSize);
-
+		std::cout << "newPacketLen=" << newPacketLen << std::endl;
 		// FIXME: todo
 
 		// create signature
@@ -1771,6 +1771,8 @@ namespace OpcUaStackCore
 			&keyLen
 		);
 
+		dumpHex(plainText);
+
 		// logging
 		logMessageInfo(
 		    "plain open secure channel response",
@@ -1781,7 +1783,6 @@ namespace OpcUaStackCore
 			securityHeaderLen,
 			sequenceHeaderLen,
 			bodyLen,
-			paddingByteLen,
 			paddingSize,
 			asymmetricKeyLen
 		);

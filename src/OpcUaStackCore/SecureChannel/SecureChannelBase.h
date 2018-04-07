@@ -187,7 +187,6 @@ namespace OpcUaStackCore
 			int32_t securityHeaderSize,
 			int32_t sequenceHeaderSize,
 			int32_t bodySize,
-			int32_t paddingByte,
 			int32_t paddingSize,
 			int32_t signatureSize
 		);
