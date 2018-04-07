@@ -1758,8 +1758,7 @@ namespace OpcUaStackCore
 			messageHeaderLen +
 			securityHeaderLen +
 			(dataToEncryptLen / plainTextBlockSize * cryptTextBlockSize);
-		std::cout << "newPacketLen=" << newPacketLen << std::endl;
-		// FIXME: todo
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(plainText.memBuf()+4, newPacketLen);
 
 		// create signature
 		uint32_t keyLen = asymmetricKeyLen;
@@ -1770,8 +1769,6 @@ namespace OpcUaStackCore
 			plainText.memBuf() + plainText.memLen() - asymmetricKeyLen,
 			&keyLen
 		);
-
-		dumpHex(plainText);
 
 		// logging
 		logMessageInfo(
