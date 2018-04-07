@@ -1796,6 +1796,11 @@ namespace OpcUaStackCore
 	{
 		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
 
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
 		// get block length
 		uint32_t plainTextBlockSize = 0;
 		uint32_t cryptTextBlockSize = 0;
@@ -1808,18 +1813,46 @@ namespace OpcUaStackCore
 			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
 			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
 			20;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen =
+			plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen -
+			asymmetricKeyLen;
 
 		// calculate length of encrypted message
-		uint32_t plainTextToEncrypt = plainText.memLen() - messageHeaderLen - securityHeaderLen;
-		uint32_t encryptedTextLen = plainTextToEncrypt / plainTextBlockSize * cryptTextBlockSize;
-		uint32_t entryptedMessageLen = encryptedTextLen + messageHeaderLen + securityHeaderLen;
+		uint32_t dataToEnryptLen = sequenceHeaderLen + bodyLen + asymmetricKeyLen;
+		uint32_t encryptedBodyLen =
+			(dataToEnryptLen / plainTextBlockSize * cryptTextBlockSize) -
+			sequenceHeaderLen -
+			asymmetricKeyLen;
+		uint32_t encryptedTextLen =
+			messageHeaderLen +
+			securityHeaderLen +
+			sequenceHeaderLen +
+			encryptedBodyLen +
+			asymmetricKeyLen;
 
-		std::cout << "messageHeaderLen=" << messageHeaderLen << std::endl;
-		std::cout << "securityHeaderLen=" << securityHeaderLen << std::endl;
-		std::cout << "PlainTextLen=" << plainText.memLen() << std::endl;
-		std::cout << "plainTextToEncrypt=" << plainTextToEncrypt << std::endl;
-		std::cout << "encryptedTextLen=" << encryptedTextLen << std::endl;
-		std::cout << "entryptedMessageLen=" << entryptedMessageLen << std::endl;
+		// encrypt message
+		encryptedText.resize(encryptedTextLen);
+		memcpy(encryptedText.memBuf(), plainText.memBuf(), messageHeaderLen + securityHeaderLen);
+
+		dumpHex(encryptedText);
+
+		// logging
+		logMessageInfo(
+		    "encrypt open secure channel response",
+			plainTextBlockSize,
+		    cryptTextBlockSize,
+			plainText.memLen(),
+			messageHeaderLen,
+			securityHeaderLen,
+			sequenceHeaderLen,
+			encryptedBodyLen,
+			-1,
+			asymmetricKeyLen
+		);
 
 		return Success;
 	}
