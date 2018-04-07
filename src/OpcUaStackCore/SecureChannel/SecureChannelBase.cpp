@@ -1482,22 +1482,26 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::logMessageInfo(
 		const std::string& message,
+		uint32_t plainTextBlockSize,
+	    uint32_t cryptTextBlockSize,
 		int32_t messageSize,
 		int32_t messageHeaderSize,
 		int32_t securityHeaderSize,
 		int32_t sequenceHeaderSize,
 		int32_t bodySize,
+		int32_t paddingByte,
 		int32_t paddingSize,
 		int32_t signatureSize
 	)
 	{
 		std::stringstream ss;
 		ss << message
+           << ", BS(" << plainTextBlockSize << "," << cryptTextBlockSize << ")"
 		   << ", MS(" << messageSize << ")"
 		   << ", MH(" << messageHeaderSize << ")"
 		   << ", SH(" << securityHeaderSize << ")"
 		   << ", SQ(" << sequenceHeaderSize << ")"
-		   << ", B(" << bodySize << ")"
+		   << ", B(" << bodySize << "," << paddingByte << ")"
 		   << ", P(" << paddingSize << ")"
 		   << ", S(" << signatureSize << ")";
 		Log(Debug, ss.str());
@@ -1716,7 +1720,7 @@ namespace OpcUaStackCore
 		uint32_t cryptTextBlockSize = 0;
 		secureChannel->cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
 
-		// calculate length of message header, security header and plain text
+		// calculate length of message
 		uint32_t messageHeaderLen = 8;
 		uint32_t securityHeaderLen =
 			12 +														// security header length fields
@@ -1724,27 +1728,38 @@ namespace OpcUaStackCore
 			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
 			20;															// thumbPrint
 		uint32_t sequenceHeaderLen = 8;
-		uint32_t plainTextToEncryptLen =
-			plainText.memLen() -
+		uint32_t bodyLen = plainText.memLen() -
 			messageHeaderLen -
-			securityHeaderLen +
+			securityHeaderLen -
+			sequenceHeaderLen;
+		uint32_t paddingByteLen = (asymmetricKeyLen > 256 ? 2 : 1);
+		uint32_t dataToEncryptLen =
 			sequenceHeaderLen +
-			cryptTextBlockSize <= 256 ? 1 : 2 +
+			bodyLen +
+			paddingByteLen +
 			asymmetricKeyLen;
 
 		// calculate number of padding bytes
 		uint32_t paddingSize = 0;
-		if (plainTextToEncryptLen % plainTextBlockSize != 0) {
-			paddingSize = plainTextBlockSize - (plainTextToEncryptLen % plainTextBlockSize);
+		if (dataToEncryptLen % plainTextBlockSize != 0) {
+			paddingSize = plainTextBlockSize - (dataToEncryptLen % plainTextBlockSize);
 		}
-		plainTextToEncryptLen += paddingSize;
+		dataToEncryptLen += paddingSize;
 
 		// added padding bytes and extra padding byte
 		uint32_t plainTextLen = plainText.memLen();
-		plainText.resize(plainTextLen + paddingSize + asymmetricKeyLen);
+		plainText.resize(plainTextLen + paddingSize + paddingByteLen + asymmetricKeyLen);
 		char c = paddingSize & 0x000000FF;
-		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+		memset(plainText.memBuf() + plainTextLen - paddingByteLen, c, paddingSize+paddingByteLen);
 		// FIXME - extra padding size
+
+		// set new packet length
+		uint32_t newPacketLen =
+			messageHeaderLen +
+			securityHeaderLen +
+			(dataToEncryptLen / plainTextBlockSize * cryptTextBlockSize);
+
+		// FIXME: todo
 
 		// create signature
 		uint32_t keyLen = asymmetricKeyLen;
@@ -1759,11 +1774,14 @@ namespace OpcUaStackCore
 		// logging
 		logMessageInfo(
 		    "plain open secure channel response",
+			plainTextBlockSize,
+		    cryptTextBlockSize,
 			plainText.memLen(),
-			8,
+			messageHeaderLen,
 			securityHeaderLen,
-			8,
-			plainTextLen - 8 - securityHeaderLen,
+			sequenceHeaderLen,
+			bodyLen,
+			paddingByteLen,
 			paddingSize,
 			asymmetricKeyLen
 		);
