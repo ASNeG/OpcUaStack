@@ -64,6 +64,57 @@ BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(CryptoRSA__encrypt_decrypt1)
+{
+	for (uint32_t i=0; i<10; i++) {
+		RSAKey key(2048);
+		BOOST_REQUIRE(key.isError() == false);
+
+		OpcUaStatusCode statusCode;
+		CryptoRSA cryptoRSA;
+		cryptoRSA.isLogging(true);
+
+		char plainTextBuf1[490];
+		uint32_t plainTextLen1 = 490;
+		char encryptedTextBuf1[512];
+		uint32_t encryptedTextLen1 = 512;
+		char plainTextBuf2[490];
+		uint32_t plainTextLen2 = 490;
+
+		memset(plainTextBuf1, 0x01, 490);
+
+		// encrypt
+		PublicKey publicKey = key.publicKey();
+		BOOST_REQUIRE(key.isError() == false);
+		BOOST_REQUIRE(publicKey.isError() == false);
+
+		statusCode = cryptoRSA.publicEncrypt(
+			plainTextBuf1,
+			plainTextLen1,
+			&publicKey,
+			RSA_PKCS1_PADDING,
+			encryptedTextBuf1,
+			&encryptedTextLen1
+		);
+		BOOST_REQUIRE(statusCode == Success);
+
+		// decrypt
+		PrivateKey privateKey = key.privateKey();
+		statusCode = cryptoRSA.privateDecrypt(
+			encryptedTextBuf1,
+			encryptedTextLen1,
+			&privateKey,
+			RSA_PKCS1_PADDING,
+			plainTextBuf2,
+			&plainTextLen2
+		);
+		BOOST_REQUIRE(statusCode == Success);
+
+		BOOST_REQUIRE(plainTextLen1 == plainTextLen2);
+		BOOST_REQUIRE(memcmp(plainTextBuf1, plainTextBuf2, plainTextLen1) == 0);
+	}
+}
+
 BOOST_AUTO_TEST_CASE(CryptoRSA__sign_verify)
 {
 	for (uint32_t idx = 0; idx<10; idx++) {
