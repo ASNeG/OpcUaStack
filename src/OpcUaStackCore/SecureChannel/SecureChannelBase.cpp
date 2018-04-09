@@ -1691,9 +1691,9 @@ namespace OpcUaStackCore
 				return statusCode;
 			}
 		}
-
-		// FIXME: todo
-		encryptedText.swap(plainText);
+		else {
+			encryptedText.swap(plainText);
+		}
 
 		return Success;
 	}
@@ -1796,7 +1796,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
+		PublicKey publicKey = secureChannel->partnerCertificate_->publicKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
@@ -1853,16 +1853,13 @@ namespace OpcUaStackCore
 			asymmetricKeyLen
 		);
 
-		std::cout << plainText.memLen() - messageHeaderLen - securityHeaderLen << std::endl;
-		std::cout << encryptedText.memLen()  - messageHeaderLen - securityHeaderLen << std::endl;
-
 		uint32_t toEncryptedTextLen = encryptedText.memLen()  - messageHeaderLen - securityHeaderLen;
 		secureChannel->cryptoBase()->isLogging(true);
-		PublicKey pKey = secureChannel->partnerCertificate_->publicKey();
+
 		statusCode = secureChannel->cryptoBase()->asymmetricEncrypt(
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			plainText.memLen() - messageHeaderLen - securityHeaderLen,
-			pKey,
+			publicKey,
 			encryptedText.memBuf()  + messageHeaderLen + securityHeaderLen,
 			&toEncryptedTextLen
 		);
