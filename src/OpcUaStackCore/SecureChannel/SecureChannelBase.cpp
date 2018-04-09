@@ -1722,7 +1722,7 @@ namespace OpcUaStackCore
 		// calculate length of message
 		uint32_t messageHeaderLen = 8;
 		uint32_t securityHeaderLen =
-			12 +														// security header length fields
+			16 +														// security header length fields
 			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
 			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
 			20;															// thumbPrint
@@ -1811,7 +1811,7 @@ namespace OpcUaStackCore
 		// calculate length of message header, security header and plain text
 		uint32_t messageHeaderLen = 8;
 		uint32_t securityHeaderLen =
-			12 +														// security header length fields
+			16 +														// security header length fields
 			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
 			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
 			20;
