@@ -43,10 +43,14 @@ namespace OpcUaStackCore
 		CryptoBase::SPtr& cryptoBase(void);
 		void partnerCertificate(Certificate::SPtr& partnerCertificate);
 		Certificate::SPtr& partnerCertificate(void);
+		MemoryBuffer& clientNonce(void);
+		MemoryBuffer& serverNonce(void);
 
 	  private:
 		CryptoBase::SPtr cryptoBase_;
 		Certificate::SPtr partnerCertificate_;
+		MemoryBuffer clientNonce_;
+		MemoryBuffer serverNonce_;
 	};
 
 
@@ -76,8 +80,7 @@ namespace OpcUaStackCore
 		// security
 		//
 		// --------------------------------------------------------------------
-		void cryptoBase(CryptoBase::SPtr& cryptoBase);
-		CryptoBase::SPtr cryptoBase(void);
+		SecureChannelSecuritySettings& securitySettings(void);
 
 		void handle(Object::SPtr& handle);
 		void handleReset(void);
@@ -108,8 +111,7 @@ namespace OpcUaStackCore
 		//
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------
-		CryptoBase::SPtr cryptoBase_;
-		Certificate::SPtr partnerCertificate_;
+		SecureChannelSecuritySettings securitySettings_;
 
 		// --------------------------------------------------------------------
 		// --------------------------------------------------------------------

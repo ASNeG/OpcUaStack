@@ -33,6 +33,8 @@ namespace OpcUaStackCore
 	SecureChannelSecuritySettings::SecureChannelSecuritySettings(void)
 	: cryptoBase_()
 	, partnerCertificate_()
+	, clientNonce_()
+	, serverNonce_()
 	{
 	}
 
@@ -64,6 +66,18 @@ namespace OpcUaStackCore
 		return partnerCertificate_;
 	}
 
+	MemoryBuffer&
+	SecureChannelSecuritySettings::clientNonce(void)
+	{
+		return clientNonce_;
+	}
+
+	MemoryBuffer&
+	SecureChannelSecuritySettings::serverNonce(void)
+	{
+		return serverNonce_;
+	}
+
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -76,8 +90,7 @@ namespace OpcUaStackCore
 
 	SecureChannel::SecureChannel(IOThread* ioThread)
 	// security
-	: cryptoBase_()
-	, partnerCertificate_()
+	: securitySettings_()
 
 	// actual header
 	, messageHeader_()
@@ -139,16 +152,10 @@ namespace OpcUaStackCore
 	// security
 	//
 	// ------------------------------------------------------------------------
-	void
-	SecureChannel::cryptoBase(CryptoBase::SPtr& cryptoBase)
+	SecureChannelSecuritySettings&
+	SecureChannel::securitySettings(void)
 	{
-		cryptoBase_ = cryptoBase;
-	}
-
-	CryptoBase::SPtr
-	SecureChannel::cryptoBase(void)
-	{
-		return cryptoBase_;
+		return securitySettings_;
 	}
 
 	void
