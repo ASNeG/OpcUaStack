@@ -23,7 +23,55 @@
 
 namespace OpcUaStackCore
 {
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannelSecuritySettings
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	SecureChannelSecuritySettings::SecureChannelSecuritySettings(void)
+	: cryptoBase_()
+	, partnerCertificate_()
+	{
+	}
 
+	SecureChannelSecuritySettings::~SecureChannelSecuritySettings(void)
+	{
+	}
+
+	void
+	SecureChannelSecuritySettings::cryptoBase(CryptoBase::SPtr& cryptoBase)
+	{
+		cryptoBase_ = cryptoBase;
+	}
+
+	CryptoBase::SPtr&
+	SecureChannelSecuritySettings::cryptoBase(void)
+	{
+		return cryptoBase_;
+	}
+
+	void
+	SecureChannelSecuritySettings::partnerCertificate(Certificate::SPtr& partnerCertificate)
+	{
+		partnerCertificate_ = partnerCertificate;
+	}
+
+	Certificate::SPtr&
+	SecureChannelSecuritySettings::partnerCertificate(void)
+	{
+		return partnerCertificate_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// SecureChannel
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	OpcUaUInt32 SecureChannel::gChannelId_ = 0;
 
 	SecureChannel::SecureChannel(IOThread* ioThread)

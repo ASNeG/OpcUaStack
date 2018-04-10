@@ -33,6 +33,24 @@
 namespace OpcUaStackCore
 {
 
+	class DLLEXPORT SecureChannelSecuritySettings
+	{
+	  public:
+		SecureChannelSecuritySettings(void);
+		~SecureChannelSecuritySettings(void);
+
+		void cryptoBase(CryptoBase::SPtr& cryptoBase);
+		CryptoBase::SPtr& cryptoBase(void);
+		void partnerCertificate(Certificate::SPtr& partnerCertificate);
+		Certificate::SPtr& partnerCertificate(void);
+
+	  private:
+		CryptoBase::SPtr cryptoBase_;
+		Certificate::SPtr partnerCertificate_;
+	};
+
+
+
 	class DLLEXPORT SecureChannel
 	: public TCPConnection
 	{
