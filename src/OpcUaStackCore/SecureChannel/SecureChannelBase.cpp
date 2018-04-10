@@ -411,6 +411,8 @@ namespace OpcUaStackCore
 	{
 		bool resultCode;
 
+		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
@@ -478,6 +480,17 @@ namespace OpcUaStackCore
 			secureChannel->messageHeader_.channelId()
 		);
 
+		// handle server nonce
+		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+			char* buf;
+			int32_t len;
+			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
+			if (len > 0) {
+				secureSettings.clientNonce().set(buf, len);
+			}
+		}
+
+		// process open secure channel request
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
 			secureChannel->messageHeader_.channelId(),
@@ -677,12 +690,27 @@ namespace OpcUaStackCore
 		assert(applicationCertificate_.get() != nullptr);
 		assert(applicationCertificate_->certificate().get() != nullptr);
 
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
 		if (secureChannel->asyncSend_) return;
 
 		OpenSecureChannelResponse::SPtr openSecureChannelResponse;
 		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
 		secureChannel->openSecureChannelResponseList_.pop_front();
+
+		// create server nonce
+		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+			secureChannel->securitySettings().serverNonce().resize(keyLen);
+
+			char* memBuf = secureChannel->securitySettings().serverNonce().memBuf();
+			for (uint32_t idx=0; idx<keyLen; idx++) {
+				memBuf[idx] = rand();
+			}
+
+			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
+		}
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
@@ -700,9 +728,9 @@ namespace OpcUaStackCore
 		}
 		securityHeader.receiverCertificateThumbprint().reset();
 		if (securityHeader.isEncryptionEnabled()) {
-			assert(secureChannel->partnerCertificate_.get() != nullptr);
+			assert(securitySettings.partnerCertificate().get() != nullptr);
 
-			OpcUaByteString thumbPrint = secureChannel->partnerCertificate_->thumbPrint();
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
 			securityHeader.receiverCertificateThumbprint(thumbPrint);
 		}
 		securityHeader.opcUaBinaryEncode(ios1);
@@ -970,6 +998,17 @@ namespace OpcUaStackCore
 		// get security token
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
 
+		// handle security
+		if (secureReceivedMessageRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
 
@@ -1192,16 +1231,6 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->channelId_);
 
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
-
-		// handle security
-		if (secureReceivedMessageRequest(secureChannel) != Success) {
-			Log(Debug, "opc ua decrypt received message error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
-
-			closeChannel(secureChannel, true);
-			return;
-		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
@@ -1542,6 +1571,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
@@ -1556,7 +1586,7 @@ namespace OpcUaStackCore
 				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
 			return BadSecurityPolicyRejected;
 		}
-		secureChannel->cryptoBase(cryptoBase);
+		securitySettings.cryptoBase(cryptoBase);
 
 		// decrypt received open secure channel request
 		if (securityHeader->isEncryptionEnabled()) {
@@ -1568,7 +1598,8 @@ namespace OpcUaStackCore
 
 		// verify signature
 		if (securityHeader->isSignatureEnabled()) {
-			secureChannel->partnerCertificate_ = securityHeader->certificateChain().getCertificate();
+			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
+			securitySettings.partnerCertificate(partnerCertificate);
 			statusCode = verifyReceivedOpenSecureChannel(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -1583,6 +1614,7 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
@@ -1608,7 +1640,7 @@ namespace OpcUaStackCore
 		MemoryBuffer plainText(receivedDataLen);
 		ios.read(encryptedText.memBuf(), receivedDataLen);
 
-		statusCode = secureChannel->cryptoBase()->asymmetricDecrypt(
+		statusCode = securitySettings.cryptoBase()->asymmetricDecrypt(
 			encryptedText.memBuf(),
 			encryptedText.memLen(),
 			*applicationCertificate_->privateKey().get(),
@@ -1632,6 +1664,7 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		MessageHeader* messageHeader = &secureChannel->messageHeader_;
 		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
@@ -1654,7 +1687,7 @@ namespace OpcUaStackCore
 		memcpy(plainText.memBuf()+streambuf.size(), body, secureChannel->recvBuffer_.size());
 
 		// verify signature
-		statusCode = secureChannel->cryptoBase()->asymmetricVerify(
+		statusCode = securitySettings.cryptoBase()->asymmetricVerify(
 			plainText.memBuf(),
 			plainText.memLen() - signTextLen,
 			publicKey,
@@ -1716,18 +1749,19 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
 		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
-		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
 		asymmetricKeyLen /= 8;
 
 		// get block length
 		uint32_t plainTextBlockSize = 0;
 		uint32_t cryptTextBlockSize = 0;
-		secureChannel->cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+		securitySettings.cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
 
 		// calculate length of message
 		uint32_t messageHeaderLen = 8;
@@ -1772,7 +1806,7 @@ namespace OpcUaStackCore
 
 		// create signature
 		uint32_t keyLen = asymmetricKeyLen;
-		statusCode = secureChannel->cryptoBase()->asymmetricSign(
+		statusCode = securitySettings.cryptoBase()->asymmetricSign(
 			plainText.memBuf(),
 			plainText.memLen() - asymmetricKeyLen,
 			*privateKey.get(),
@@ -1806,17 +1840,18 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 
-		PublicKey publicKey = secureChannel->partnerCertificate_->publicKey();
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		PublicKey publicKey = securitySettings.partnerCertificate()->publicKey();
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
-		secureChannel->cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
 		asymmetricKeyLen /= 8;
 
 		// get block length
 		uint32_t plainTextBlockSize = 0;
 		uint32_t cryptTextBlockSize = 0;
-		secureChannel->cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+		securitySettings.cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
 
 		// calculate length of message header, security header and plain text
 		uint32_t messageHeaderLen = 8;
@@ -1864,9 +1899,9 @@ namespace OpcUaStackCore
 		);
 
 		uint32_t toEncryptedTextLen = encryptedText.memLen()  - messageHeaderLen - securityHeaderLen;
-		secureChannel->cryptoBase()->isLogging(true);
+		securitySettings.cryptoBase()->isLogging(true);
 
-		statusCode = secureChannel->cryptoBase()->asymmetricEncrypt(
+		statusCode = securitySettings.cryptoBase()->asymmetricEncrypt(
 			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
 			plainText.memLen() - messageHeaderLen - securityHeaderLen,
 			publicKey,
@@ -1887,23 +1922,17 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		std::cout << "SecureChannelBase::secureReceivedMessageRequest" << std::endl;
+
 		OpcUaStatusCode statusCode;
 
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		// check if encryption or signature is enabled
 		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
 			return Success;
 		}
-
-		// find crypto base
-		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader->securityPolicyUri().toString());
-		if (cryptoBase.get() == nullptr) {
-			Log(Error, "crypto base not available for security policy uri")
-				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
-			return BadSecurityPolicyRejected;
-		}
-		secureChannel->cryptoBase(cryptoBase);
 
 		// decrypt received message request
 		if (securityHeader->isEncryptionEnabled()) {
@@ -1915,7 +1944,8 @@ namespace OpcUaStackCore
 
 		// verify signature
 		if (securityHeader->isSignatureEnabled()) {
-			secureChannel->partnerCertificate_ = securityHeader->certificateChain().getCertificate();
+			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
+			securitySettings.partnerCertificate(partnerCertificate);
 			statusCode = verifyReceivedMessage(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
@@ -1930,9 +1960,42 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		std::cout << "SecureChannelBase::decryptReceivedMessage" << std::endl;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
+		OpcUaStatusCode statusCode;
+
 		// FIXME: todo
 		return Success;
 	}
+
+#if 0
+
+
+	// decrypt received buffer
+	std::iostream ios(&secureChannel->recvBuffer_);
+	MemoryBuffer encryptedText(receivedDataLen);
+	MemoryBuffer plainText(receivedDataLen);
+	ios.read(encryptedText.memBuf(), receivedDataLen);
+
+	statusCode = secureChannel->cryptoBase()->asymmetricDecrypt(
+		encryptedText.memBuf(),
+		encryptedText.memLen(),
+		*applicationCertificate_->privateKey().get(),
+		plainText.memBuf(),
+		&receivedDataLen
+	);
+	if (statusCode != Success) {
+		Log(Error, "decrypt open secure channel request error")
+			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+		return BadSecurityChecksFailed;
+	}
+
+	ios.write(plainText.memBuf(), receivedDataLen);
+	return Success;
+#endif
 
 	OpcUaStatusCode
 	SecureChannelBase::verifyReceivedMessage(
