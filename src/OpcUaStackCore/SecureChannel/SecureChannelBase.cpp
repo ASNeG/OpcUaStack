@@ -1193,6 +1193,16 @@ namespace OpcUaStackCore
 
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->tokenId_);
 
+		// handle security
+		if (secureReceivedMessageRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(ios, secureChannel->recvSequenceNumber_);
 
@@ -1869,6 +1879,67 @@ namespace OpcUaStackCore
 			return BadSecurityChecksFailed;
 		}
 
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::secureReceivedMessageRequest(
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			return Success;
+		}
+
+		// find crypto base
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader->securityPolicyUri().toString());
+		if (cryptoBase.get() == nullptr) {
+			Log(Error, "crypto base not available for security policy uri")
+				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
+			return BadSecurityPolicyRejected;
+		}
+		secureChannel->cryptoBase(cryptoBase);
+
+		// decrypt received message request
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = decryptReceivedMessage(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// verify signature
+		if (securityHeader->isSignatureEnabled()) {
+			secureChannel->partnerCertificate_ = securityHeader->certificateChain().getCertificate();
+			statusCode = verifyReceivedMessage(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::decryptReceivedMessage(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::verifyReceivedMessage(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
 		return Success;
 	}
 

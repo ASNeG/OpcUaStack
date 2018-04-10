@@ -144,6 +144,16 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel
 		);
 
+		OpcUaStatusCode secureReceivedMessageRequest(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode decryptReceivedMessage(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode verifyReceivedMessage(
+			SecureChannel* secureChannel
+		);
+
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel);
