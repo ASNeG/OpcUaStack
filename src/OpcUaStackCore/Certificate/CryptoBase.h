@@ -196,6 +196,12 @@ namespace OpcUaStackCore
 			uint32_t		signTextLen
 		) = 0;
 
+		virtual OpcUaStatusCode deriveKey(
+			MemoryBuffer& secret,			// remote nonce
+			MemoryBuffer& seed,				// local nonce
+			MemoryBuffer& key				// len = sig key + enc key + iv
+		) = 0;
+
 	  private:
 		std::string securityPolicy_;
 		bool isLogging_;

@@ -190,4 +190,15 @@ namespace OpcUaStackCore
 	{
 		return BadNotSupported;
 	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::deriveKey(
+		MemoryBuffer& secret,			// remote nonce
+		MemoryBuffer& seed,				// local nonce
+		MemoryBuffer& key				// len = sig key + enc key + iv
+	)
+	{
+		return BadNotSupported;
+	}
+
 }

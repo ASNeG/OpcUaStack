@@ -340,4 +340,14 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	CryptoOpenSSLBASIC256::deriveKey(
+		MemoryBuffer& secret,			// remote nonce
+		MemoryBuffer& seed,				// local nonce
+		MemoryBuffer& key				// len = sig key + enc key + iv
+	)
+	{
+		return BadNotSupported;
+	}
+
 }

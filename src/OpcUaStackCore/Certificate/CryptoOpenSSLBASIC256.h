@@ -122,6 +122,12 @@ namespace OpcUaStackCore
 			uint32_t		signTextLen
 		);
 
+		virtual OpcUaStatusCode deriveKey(
+			MemoryBuffer& secret,			// remote nonce
+			MemoryBuffer& seed,				// local nonce
+			MemoryBuffer& key				// len = sig key + enc key + iv
+		);
+
 	};
 
 }
