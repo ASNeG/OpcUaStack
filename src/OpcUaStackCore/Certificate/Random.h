@@ -62,7 +62,7 @@ namespace OpcUaStackCore
 
 		OpcUaStatusCode hashGeneratePSH256(
 			ContextPSH256& ctx,
-			MemoryBuffer& buffer
+			MemoryBuffer& hash
 		);
 
 		OpcUaStatusCode keyDerivePSHA256(

@@ -116,6 +116,8 @@ namespace OpcUaStackCore
 	    // A(0) = seed
 	    // A(i) = HMAC_SHA256(secret, A(i-1))
 	    // Calculate A(1) = HMAC_SHA256(secret, seed)
+		// Calculate A(2) = HMAC_SHA256(secret, A(1))
+		// ...
 		HMAC(
 		    EVP_sha256(),
 			(const unsigned char*)secret.memBuf(),
@@ -132,10 +134,32 @@ namespace OpcUaStackCore
 	OpcUaStatusCode
 	Random::hashGeneratePSH256(
 		ContextPSH256& ctx,
-		MemoryBuffer& buffer
+		MemoryBuffer& hash
 	)
 	{
-		// FIXME: todo
+
+	    /* Calculate P_SHA256(n) = HMAC_SHA256(secret, A(n)+seed) */
+	    HMAC(
+	        EVP_sha256(),
+			(const unsigned char*)ctx.secret(),
+			ctx.secretLen(),
+	        (const unsigned char*)ctx.a(),
+			ctx.aLen() + ctx.seedLen(),
+			(unsigned char*)hash.memBuf(),
+			(unsigned int*)nullptr
+		);
+
+	    /* Calculate A(n) = HMAC_SHA256(secret, A(n-1)) */
+	    HMAC(
+	        EVP_sha256(),
+			(const unsigned char*)ctx.secret(),
+			ctx.secretLen(),
+	        (const unsigned char*)ctx.a(),
+			ctx.aLen() + ctx.seedLen(),
+			(unsigned char*)ctx.a(),
+			(unsigned int*)nullptr
+		);
+
 		return Success;
 	}
 
