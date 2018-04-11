@@ -134,7 +134,7 @@ namespace OpcUaStackCore
 	OpcUaStatusCode
 	Random::hashGeneratePSH256(
 		ContextPSH256& ctx,
-		MemoryBuffer& hash
+		char* hash
 	)
 	{
 
@@ -145,7 +145,7 @@ namespace OpcUaStackCore
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
 			ctx.aLen() + ctx.seedLen(),
-			(unsigned char*)hash.memBuf(),
+			(unsigned char*)hash,
 			(unsigned int*)nullptr
 		);
 
@@ -179,14 +179,17 @@ namespace OpcUaStackCore
 		}
 
 		uint32_t iterations = key.memLen()/32 + ((key.memLen()%32)?1:0);
-		MemoryBuffer buffer(iterations*32);
+		if (key.memLen() != iterations*32) {
+			key.resize(iterations*32);
+		}
 
 		ContextPSH256 ctx;
 		statusCode = getPSH256Context(secret, seed, ctx);
 		if (statusCode != Success) return statusCode;
 
 		for (uint32_t idx = 0; idx < iterations; idx++) {
-			// FIXME: todo
+			statusCode = hashGeneratePSH256(ctx, key.memBuf() + (idx*32));
+			if (statusCode != Success) return statusCode;
 		}
 
 		return Success;
