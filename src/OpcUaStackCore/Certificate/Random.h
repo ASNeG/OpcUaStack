@@ -26,6 +26,27 @@
 namespace OpcUaStackCore
 {
 
+	class ContextPSH256
+	{
+	  public:
+		ContextPSH256(void);
+		~ContextPSH256(void);
+
+		void set(MemoryBuffer& secret, MemoryBuffer& seed);
+		uint32_t aLen(void);
+		uint32_t seedLen(void);
+		uint32_t secretLen(void);
+		char* a(void);
+		char* seed(void);
+		char* secret(void);
+
+	  private:
+		uint32_t secretLen_;
+		uint32_t seedLen_;
+		MemoryBuffer context_;	// a - seed - secret
+	};
+
+
 	class DLLEXPORT Random
 	: public OpenSSLError
 	{
@@ -36,7 +57,12 @@ namespace OpcUaStackCore
 		OpcUaStatusCode getPSH256Context(
 			MemoryBuffer& secret,
 			MemoryBuffer& seed,
-			MemoryBuffer& ctx
+			ContextPSH256& ctx
+		);
+
+		OpcUaStatusCode hashGeneratePSH256(
+			ContextPSH256& ctx,
+			MemoryBuffer& buffer
 		);
 
 		OpcUaStatusCode keyDerivePSHA256(

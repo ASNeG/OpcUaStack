@@ -22,6 +22,78 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ContextPSH256
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ContextPSH256::ContextPSH256(void)
+	: context_()
+	, secretLen_(0)
+	, seedLen_(0)
+	{
+	}
+
+	ContextPSH256::~ContextPSH256(void)
+	{
+	}
+
+	void
+	ContextPSH256::set(MemoryBuffer& secret, MemoryBuffer& seed)
+	{
+		seedLen_ = seed.memLen();
+		secretLen_ = secret.memLen();
+
+		context_.resize(32 + seedLen_ + secretLen_);
+		memcpy(context_.memBuf() + 32, seed.memBuf(), seedLen_);
+		memcpy(context_.memBuf() + 32 + seedLen_, secret.memBuf(), secretLen_);
+	}
+
+	uint32_t
+	ContextPSH256::aLen(void)
+	{
+		return 32;
+	}
+
+	uint32_t
+	ContextPSH256::seedLen(void)
+	{
+		return seedLen_;
+	}
+
+	uint32_t
+	ContextPSH256::secretLen(void)
+	{
+		return secretLen_;
+	}
+
+	char*
+	ContextPSH256::a(void)
+	{
+		return context_.memBuf();
+	}
+
+	char*
+	ContextPSH256::seed(void)
+	{
+		return context_.memBuf() + 32;
+	}
+
+	char*
+	ContextPSH256::secret(void)
+	{
+		return context_.memBuf() + 32 + seedLen_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// Random
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	Random::Random(void)
 	: OpenSSLError()
 	{
@@ -31,16 +103,15 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaStatusCode getPSH256Context(
+	OpcUaStatusCode
+	Random::getPSH256Context(
 		MemoryBuffer& secret,
 		MemoryBuffer& seed,
-		MemoryBuffer& ctx
+		ContextPSH256& ctx
 	)
 	{
 		// create context
-		ctx.resize(32 + seed.memLen() + secret.memLen());
-		memcpy(ctx.memBuf() + 32, seed.memBuf(), seed.memLen());
-		memcpy(ctx.memBuf() + 32 + seed.memLen(), secret.memBuf(), secret.memLen());
+		ctx.set(secret, seed);
 
 	    // A(0) = seed
 	    // A(i) = HMAC_SHA256(secret, A(i-1))
@@ -51,10 +122,20 @@ namespace OpcUaStackCore
 			secret.memLen(),
 			(const unsigned char*)seed.memBuf(),
 			seed.memLen(),
-			(unsigned char*)ctx.memBuf(),
+			(unsigned char*)ctx.a(),
 			(unsigned int*)nullptr
 		);
 
+		return Success;
+	}
+
+	OpcUaStatusCode
+	Random::hashGeneratePSH256(
+		ContextPSH256& ctx,
+		MemoryBuffer& buffer
+	)
+	{
+		// FIXME: todo
 		return Success;
 	}
 
@@ -65,10 +146,23 @@ namespace OpcUaStackCore
 		MemoryBuffer& key				// output len = sig key + enc key + iv
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		// check parameter
 		if (key.memLen() == 0 || key.memLen() > 512) {
 			addError("key parameter error in keyDerivePSHA256");
 			return BadInvalidArgument;
+		}
+
+		uint32_t iterations = key.memLen()/32 + ((key.memLen()%32)?1:0);
+		MemoryBuffer buffer(iterations*32);
+
+		ContextPSH256 ctx;
+		statusCode = getPSH256Context(secret, seed, ctx);
+		if (statusCode != Success) return statusCode;
+
+		for (uint32_t idx = 0; idx < iterations; idx++) {
+			// FIXME: todo
 		}
 
 		return Success;
