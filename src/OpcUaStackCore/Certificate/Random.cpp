@@ -178,19 +178,20 @@ namespace OpcUaStackCore
 			return BadInvalidArgument;
 		}
 
+		MemoryBuffer memoryBuffer;
 		uint32_t iterations = key.memLen()/32 + ((key.memLen()%32)?1:0);
-		if (key.memLen() != iterations*32) {
-			key.resize(iterations*32);
-		}
+		memoryBuffer.resize(iterations*32);
 
 		ContextPSH256 ctx;
 		statusCode = getPSH256Context(secret, seed, ctx);
 		if (statusCode != Success) return statusCode;
 
 		for (uint32_t idx = 0; idx < iterations; idx++) {
-			statusCode = hashGeneratePSH256(ctx, key.memBuf() + (idx*32));
+			statusCode = hashGeneratePSH256(ctx, memoryBuffer.memBuf() + (idx*32));
 			if (statusCode != Success) return statusCode;
 		}
+
+		memcpy(key.memBuf(), memoryBuffer.memBuf(), key.memLen());
 
 		return Success;
 	}
