@@ -203,12 +203,18 @@ namespace OpcUaStackCore
 			MemoryBuffer& key				// len = sig key + enc key + iv
 		) = 0;
 
-		OpcUaStatusCode deriveChannelKeysets(
+		OpcUaStatusCode deriveChannelKeyset(
 		    MemoryBuffer& clientNonce,
 			MemoryBuffer& serverNonce,
 		    int32_t keySize,
 		    SecurityKeySet& clientSecurityKeySet,
 		    SecurityKeySet& serverSecurityKeySet
+		);
+
+		OpcUaStatusCode deriveChannelKeyset(
+		    MemoryBuffer& remoteNonce,
+			MemoryBuffer& localNonce,
+		    SecurityKeySet& securityKeySet
 		);
 
 	  private:

@@ -257,7 +257,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	CryptoBase::deriveChannelKeysets(
+	CryptoBase::deriveChannelKeyset(
 	    MemoryBuffer& clientNonce,
 		MemoryBuffer& serverNonce,
 	    int32_t keySize,
@@ -265,7 +265,83 @@ namespace OpcUaStackCore
 	    SecurityKeySet& serverSecurityKeySet
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		assert(clientNonce.memLen() > 0);
+		assert(serverNonce.memLen() > 0);
+
+		if(keySize < 1) {
+			return BadInvalidArgument;
+		}
+
+		if (keySize > this->symmetricKeyLen()) {
+			return BadInvalidArgument;
+		}
+
+		// generate client key set
+		statusCode = deriveChannelKeyset(
+			serverNonce,
+			clientNonce,
+			clientSecurityKeySet
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// generate server key set
+		statusCode = deriveChannelKeyset(
+			clientNonce,
+			serverNonce,
+			serverSecurityKeySet
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoBase::deriveChannelKeyset(
+	    MemoryBuffer& remoteNonce,
+		MemoryBuffer& localNonce,
+	    SecurityKeySet& securityKeySet
+	)
+	{
+		OpcUaStatusCode statusCode;
+		uint32_t keySize = 0;
+
+		// set key length
+		securityKeySet.signKey().resize(derivedSignatureKeyLen());
+		securityKeySet.encryptKey().resize(derivedEncryptionKeyLen());
+		securityKeySet.iv().resize(symmetricKeyLen());
+		keySize = derivedSignatureKeyLen() + derivedEncryptionKeyLen() + symmetricKeyLen();
+
+		// create master key
+		MemoryBuffer masterKey(keySize);
+		statusCode = deriveKey(
+			remoteNonce,
+			localNonce,
+			masterKey
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// create security key set
+		securityKeySet.signKey().set(
+			masterKey.memBuf(),
+			securityKeySet.signKey().memLen()
+		);
+		securityKeySet.encryptKey().set(
+			masterKey.memBuf() + securityKeySet.signKey().memLen(),
+			securityKeySet.encryptKey().memLen()
+		);
+		securityKeySet.iv().set(
+			masterKey.memBuf() + securityKeySet.signKey().memLen() + securityKeySet.encryptKey().memLen(),
+			securityKeySet.iv().memLen()
+		);
+
 		return Success;
 	}
 
