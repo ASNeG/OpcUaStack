@@ -20,6 +20,7 @@
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
 #include "OpcUaStackCore/Certificate/CryptoSHA1.h"
 #include "OpcUaStackCore/Certificate/CryptoHMAC_SHA.h"
+#include "OpcUaStackCore/Certificate/Random.h"
 
 namespace OpcUaStackCore
 {
@@ -347,7 +348,8 @@ namespace OpcUaStackCore
 		MemoryBuffer& key				// len = sig key + enc key + iv
 	)
 	{
-		return BadNotSupported;
+		Random random;
+		return random.keyDerivePSHA256(secret, seed,	key);
 	}
 
 }
