@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
+#include "OpcUaStackCore/Certificate/SecurityKeySet.h"
 
 namespace OpcUaStackCore
 {
@@ -201,6 +202,14 @@ namespace OpcUaStackCore
 			MemoryBuffer& seed,				// local nonce
 			MemoryBuffer& key				// len = sig key + enc key + iv
 		) = 0;
+
+		OpcUaStatusCode deriveChannelKeysets(
+		    MemoryBuffer& clientNonce,
+			MemoryBuffer& serverNonce,
+		    int32_t keySize,
+		    SecurityKeySet& clientSecurityKeySet,
+		    SecurityKeySet& serverSecurityKeySet
+		);
 
 	  private:
 		std::string securityPolicy_;

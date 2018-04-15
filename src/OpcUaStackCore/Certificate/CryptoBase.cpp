@@ -95,6 +95,7 @@ namespace OpcUaStackCore
 	: securityPolicy_("")
 	, isLogging_(false)
 	, symmetricKeyLen_(-1)
+	, asymmetricKeyLen_(-1)
 	, minimumAsymmetricKeyLen_(0)
 	, maximumAsymmetricKeyLen_(0)
 	, derivedEncryptionKeyLen_(0)
@@ -253,6 +254,19 @@ namespace OpcUaStackCore
 	CryptoBase::symmetricEncryptionAlgorithmId(void)
 	{
 		return symmetricEncryptionAlgorithmId_;
+	}
+
+	OpcUaStatusCode
+	CryptoBase::deriveChannelKeysets(
+	    MemoryBuffer& clientNonce,
+		MemoryBuffer& serverNonce,
+	    int32_t keySize,
+	    SecurityKeySet& clientSecurityKeySet,
+	    SecurityKeySet& serverSecurityKeySet
+	)
+	{
+		// FIXME: todo
+		return Success;
 	}
 
 }
