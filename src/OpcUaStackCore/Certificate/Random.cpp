@@ -199,12 +199,40 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	Random::getPSHA1Context(
+		MemoryBuffer& secret,
+		MemoryBuffer& seed,
+		ContextPSHA1& ctx
+	)
+	{
+		// create context
+		ctx.set(secret, seed);
+
+	    // A(0) = seed
+	    // A(i) = HMAC_SHA1(secret, A(i-1))
+	    // Calculate A(1) = HMAC_SHA1(secret, seed)
+		// Calculate A(2) = HMAC_SHA1(secret, A(1))
+		// Calculate A(3) = HMAC_SHA1(secret, A(2))
+		// ...
+		HMAC(
+		    EVP_sha1(),
+			(const unsigned char*)secret.memBuf(),
+			secret.memLen(),
+			(const unsigned char*)seed.memBuf(),
+			seed.memLen(),
+			(unsigned char*)ctx.a(),
+			(unsigned int*)nullptr
+		);
+
+		return Success;
+	}
+
+	OpcUaStatusCode
 	Random::hashGeneratePSHA256(
 		ContextPSHA256& ctx,
 		char* hash
 	)
 	{
-
 	    /* Calculate P_SHA256(n) = HMAC_SHA256(secret, A(n)+seed) */
 	    HMAC(
 	        EVP_sha256(),
@@ -219,6 +247,37 @@ namespace OpcUaStackCore
 	    /* Calculate A(n) = HMAC_SHA256(secret, A(n-1)) */
 	    HMAC(
 	        EVP_sha256(),
+			(const unsigned char*)ctx.secret(),
+			ctx.secretLen(),
+	        (const unsigned char*)ctx.a(),
+			ctx.aLen() + ctx.seedLen(),
+			(unsigned char*)ctx.a(),
+			(unsigned int*)nullptr
+		);
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	Random::hashGeneratePSHA1(
+		ContextPSHA1& ctx,
+		char* hash
+	)
+	{
+	    /* Calculate P_SHA1(n) = HMAC_SHA1(secret, A(n)+seed) */
+	    HMAC(
+	        EVP_sha1(),
+			(const unsigned char*)ctx.secret(),
+			ctx.secretLen(),
+	        (const unsigned char*)ctx.a(),
+			ctx.aLen(),
+			(unsigned char*)hash,
+			(unsigned int*)nullptr
+		);
+
+	    /* Calculate A(n) = HMAC_SHA1(secret, A(n-1)) */
+	    HMAC(
+	        EVP_sha1(),
 			(const unsigned char*)ctx.secret(),
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
@@ -255,6 +314,39 @@ namespace OpcUaStackCore
 
 		for (uint32_t idx = 0; idx < iterations; idx++) {
 			statusCode = hashGeneratePSHA256(ctx, memoryBuffer.memBuf() + (idx*32));
+			if (statusCode != Success) return statusCode;
+		}
+
+		memcpy(key.memBuf(), memoryBuffer.memBuf(), key.memLen());
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	Random::keyDerivePSHA1(
+		MemoryBuffer& secret,			// remote nonce
+	    MemoryBuffer& seed,				// local nonce
+		MemoryBuffer& key				// output len = sig key + enc key + iv
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		// check parameter
+		if (key.memLen() == 0 || key.memLen() > 512) {
+			addError("key parameter error in keyDerivePSHA256");
+			return BadInvalidArgument;
+		}
+
+		MemoryBuffer memoryBuffer;
+		uint32_t iterations = key.memLen()/20 + ((key.memLen()%20)?1:0);
+		memoryBuffer.resize(iterations*20);
+
+		ContextPSHA1 ctx;
+		statusCode = getPSHA1Context(secret, seed, ctx);
+		if (statusCode != Success) return statusCode;
+
+		for (uint32_t idx = 0; idx < iterations; idx++) {
+			statusCode = hashGeneratePSHA1(ctx, memoryBuffer.memBuf() + (idx*20));
 			if (statusCode != Success) return statusCode;
 		}
 

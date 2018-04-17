@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA256_BASIC128RSA15)
 	memset(secret.memBuf(), 0x01, 16);
 	memset(seed.memBuf(), 0x02, 16);
 
-	BOOST_REQUIRE(random.keyDerivePSHA256(secret, seed, key) == Success);
+	BOOST_REQUIRE(random.keyDerivePSHA1(secret, seed, key) == Success);
 	BOOST_REQUIRE(key.memLen() == 48);
 
 	dumpHex(secret);

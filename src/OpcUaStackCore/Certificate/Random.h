@@ -80,12 +80,29 @@ namespace OpcUaStackCore
 			ContextPSHA256& ctx
 		);
 
+		OpcUaStatusCode getPSHA1Context(
+			MemoryBuffer& secret,
+			MemoryBuffer& seed,
+			ContextPSHA1& ctx
+		);
+
 		OpcUaStatusCode hashGeneratePSHA256(
 			ContextPSHA256& ctx,
 			char* hash
 		);
 
+		OpcUaStatusCode hashGeneratePSHA1(
+			ContextPSHA1& ctx,
+			char* hash
+		);
+
 		OpcUaStatusCode keyDerivePSHA256(
+			MemoryBuffer& secret,			// remote nonce
+		    MemoryBuffer& seed,				// local nonce
+			MemoryBuffer& key				// output len = sig key + enc key + iv
+		);
+
+		OpcUaStatusCode keyDerivePSHA1(
 			MemoryBuffer& secret,			// remote nonce
 		    MemoryBuffer& seed,				// local nonce
 			MemoryBuffer& key				// output len = sig key + enc key + iv
