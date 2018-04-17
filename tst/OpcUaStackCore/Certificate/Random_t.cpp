@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(Random__init)
 	Random random;
 }
 
-BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA256_BASIC128RSA15)
+BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA1_BASIC128RSA15)
 {
 	Random random;
 
@@ -35,10 +35,14 @@ BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA256_BASIC128RSA15)
 	BOOST_REQUIRE(random.keyDerivePSHA1(secret, seed, key) == Success);
 	BOOST_REQUIRE(key.memLen() == 48);
 
-	dumpHex(secret);
-	dumpHex(seed);
-	dumpHex(key);
-
+	MemoryBuffer keyCheck(48);
+	hexStringToByteSequence(
+		"30 65 05 90 6a d6 6c e8 51 0e 76 ce da 07 ec fc"
+		"d9 08 02 c9 61 64 6b 1a a3 69 4d e3 f0 96 08 1e"
+		"18 45 9a a7 3e f7 ae dc b8 ef aa 42 30 c9 72 01",
+		(uint8_t*)keyCheck.memBuf()
+	);
+	BOOST_REQUIRE(key == keyCheck);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
