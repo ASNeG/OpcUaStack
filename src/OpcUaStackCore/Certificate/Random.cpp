@@ -25,23 +25,23 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
-	// ContextPSH256
+	// ContextPSHA256
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	ContextPSH256::ContextPSH256(void)
+	ContextPSHA256::ContextPSHA256(void)
 	: context_()
 	, secretLen_(0)
 	, seedLen_(0)
 	{
 	}
 
-	ContextPSH256::~ContextPSH256(void)
+	ContextPSHA256::~ContextPSHA256(void)
 	{
 	}
 
 	void
-	ContextPSH256::set(MemoryBuffer& secret, MemoryBuffer& seed)
+	ContextPSHA256::set(MemoryBuffer& secret, MemoryBuffer& seed)
 	{
 		seedLen_ = seed.memLen();
 		secretLen_ = secret.memLen();
@@ -52,39 +52,105 @@ namespace OpcUaStackCore
 	}
 
 	uint32_t
-	ContextPSH256::aLen(void)
+	ContextPSHA256::aLen(void)
 	{
 		return 32;
 	}
 
 	uint32_t
-	ContextPSH256::seedLen(void)
+	ContextPSHA256::seedLen(void)
 	{
 		return seedLen_;
 	}
 
 	uint32_t
-	ContextPSH256::secretLen(void)
+	ContextPSHA256::secretLen(void)
 	{
 		return secretLen_;
 	}
 
 	char*
-	ContextPSH256::a(void)
+	ContextPSHA256::a(void)
 	{
 		return context_.memBuf();
 	}
 
 	char*
-	ContextPSH256::seed(void)
+	ContextPSHA256::seed(void)
 	{
 		return context_.memBuf() + 32;
 	}
 
 	char*
-	ContextPSH256::secret(void)
+	ContextPSHA256::secret(void)
 	{
 		return context_.memBuf() + 32 + seedLen_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ContextPSHA1
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ContextPSHA1::ContextPSHA1(void)
+	: context_()
+	, secretLen_(0)
+	, seedLen_(0)
+	{
+	}
+
+	ContextPSHA1::~ContextPSHA1(void)
+	{
+	}
+
+	void
+	ContextPSHA1::set(MemoryBuffer& secret, MemoryBuffer& seed)
+	{
+		seedLen_ = seed.memLen();
+		secretLen_ = secret.memLen();
+
+		context_.resize(20 + seedLen_ + secretLen_);
+		memcpy(context_.memBuf() + 20, seed.memBuf(), seedLen_);
+		memcpy(context_.memBuf() + 20 + seedLen_, secret.memBuf(), secretLen_);
+	}
+
+	uint32_t
+	ContextPSHA1::aLen(void)
+	{
+		return 20;
+	}
+
+	uint32_t
+	ContextPSHA1::seedLen(void)
+	{
+		return seedLen_;
+	}
+
+	uint32_t
+	ContextPSHA1::secretLen(void)
+	{
+		return secretLen_;
+	}
+
+	char*
+	ContextPSHA1::a(void)
+	{
+		return context_.memBuf();
+	}
+
+	char*
+	ContextPSHA1::seed(void)
+	{
+		return context_.memBuf() + 20;
+	}
+
+	char*
+	ContextPSHA1::secret(void)
+	{
+		return context_.memBuf() + 20 + seedLen_;
 	}
 
 	// ------------------------------------------------------------------------
@@ -104,10 +170,10 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	Random::getPSH256Context(
+	Random::getPSHA256Context(
 		MemoryBuffer& secret,
 		MemoryBuffer& seed,
-		ContextPSH256& ctx
+		ContextPSHA256& ctx
 	)
 	{
 		// create context
@@ -117,6 +183,7 @@ namespace OpcUaStackCore
 	    // A(i) = HMAC_SHA256(secret, A(i-1))
 	    // Calculate A(1) = HMAC_SHA256(secret, seed)
 		// Calculate A(2) = HMAC_SHA256(secret, A(1))
+		// Calculate A(3) = HMAC_SHA256(secret, A(2))
 		// ...
 		HMAC(
 		    EVP_sha256(),
@@ -132,8 +199,8 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	Random::hashGeneratePSH256(
-		ContextPSH256& ctx,
+	Random::hashGeneratePSHA256(
+		ContextPSHA256& ctx,
 		char* hash
 	)
 	{
@@ -144,7 +211,7 @@ namespace OpcUaStackCore
 			(const unsigned char*)ctx.secret(),
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
-			ctx.aLen() + ctx.seedLen(),
+			ctx.aLen(),
 			(unsigned char*)hash,
 			(unsigned int*)nullptr
 		);
@@ -182,12 +249,12 @@ namespace OpcUaStackCore
 		uint32_t iterations = key.memLen()/32 + ((key.memLen()%32)?1:0);
 		memoryBuffer.resize(iterations*32);
 
-		ContextPSH256 ctx;
-		statusCode = getPSH256Context(secret, seed, ctx);
+		ContextPSHA256 ctx;
+		statusCode = getPSHA256Context(secret, seed, ctx);
 		if (statusCode != Success) return statusCode;
 
 		for (uint32_t idx = 0; idx < iterations; idx++) {
-			statusCode = hashGeneratePSH256(ctx, memoryBuffer.memBuf() + (idx*32));
+			statusCode = hashGeneratePSHA256(ctx, memoryBuffer.memBuf() + (idx*32));
 			if (statusCode != Success) return statusCode;
 		}
 

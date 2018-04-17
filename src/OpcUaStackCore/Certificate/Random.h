@@ -26,11 +26,31 @@
 namespace OpcUaStackCore
 {
 
-	class ContextPSH256
+	class ContextPSHA256
 	{
 	  public:
-		ContextPSH256(void);
-		~ContextPSH256(void);
+		ContextPSHA256(void);
+		~ContextPSHA256(void);
+
+		void set(MemoryBuffer& secret, MemoryBuffer& seed);
+		uint32_t aLen(void);
+		uint32_t seedLen(void);
+		uint32_t secretLen(void);
+		char* a(void);
+		char* seed(void);
+		char* secret(void);
+
+	  private:
+		uint32_t secretLen_;
+		uint32_t seedLen_;
+		MemoryBuffer context_;	// a - seed - secret
+	};
+
+	class ContextPSHA1
+	{
+	  public:
+		ContextPSHA1(void);
+		~ContextPSHA1(void);
 
 		void set(MemoryBuffer& secret, MemoryBuffer& seed);
 		uint32_t aLen(void);
@@ -54,14 +74,14 @@ namespace OpcUaStackCore
 		Random(void);
 		virtual ~Random(void);
 
-		OpcUaStatusCode getPSH256Context(
+		OpcUaStatusCode getPSHA256Context(
 			MemoryBuffer& secret,
 			MemoryBuffer& seed,
-			ContextPSH256& ctx
+			ContextPSHA256& ctx
 		);
 
-		OpcUaStatusCode hashGeneratePSH256(
-			ContextPSH256& ctx,
+		OpcUaStatusCode hashGeneratePSHA256(
+			ContextPSHA256& ctx,
 			char* hash
 		);
 
