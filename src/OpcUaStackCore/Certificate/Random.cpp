@@ -17,7 +17,23 @@
 
 #include <openssl/rand.h>
 #include <openssl/hmac.h>
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Certificate/Random.h"
+
+
+//
+// P_SHA1(secret, seed) = HMAC_SHA1(secret, A(1) + seed) +
+//						  HMAC_SHA1(secret, A(2) + seed) +
+//                        HMAC_SHA1(secret, A(3) + seed) +
+//                        ...
+//
+// A(0) = seed
+// A(1) = HMAC_SHA1(secret, A(0))
+// A(2) = HMAC_SHA1(secret, A(1))
+// A(3) = HMAC_SHA1(secret, A(2))
+// ...
+//
+
 
 namespace OpcUaStackCore
 {
@@ -179,12 +195,6 @@ namespace OpcUaStackCore
 		// create context
 		ctx.set(secret, seed);
 
-	    // A(0) = seed
-	    // A(i) = HMAC_SHA256(secret, A(i-1))
-	    // Calculate A(1) = HMAC_SHA256(secret, seed)
-		// Calculate A(2) = HMAC_SHA256(secret, A(1))
-		// Calculate A(3) = HMAC_SHA256(secret, A(2))
-		// ...
 		HMAC(
 		    EVP_sha256(),
 			(const unsigned char*)secret.memBuf(),
@@ -208,12 +218,6 @@ namespace OpcUaStackCore
 		// create context
 		ctx.set(secret, seed);
 
-	    // A(0) = seed
-	    // A(i) = HMAC_SHA1(secret, A(i-1))
-	    // Calculate A(1) = HMAC_SHA1(secret, seed)
-		// Calculate A(2) = HMAC_SHA1(secret, A(1))
-		// Calculate A(3) = HMAC_SHA1(secret, A(2))
-		// ...
 		HMAC(
 		    EVP_sha1(),
 			(const unsigned char*)secret.memBuf(),
@@ -233,13 +237,13 @@ namespace OpcUaStackCore
 		char* hash
 	)
 	{
-	    /* Calculate P_SHA256(n) = HMAC_SHA256(secret, A(n)+seed) */
+	    /* Calculate P_SHA256(n) = HMAC_SHA256(secret, A(n) + seed) */
 	    HMAC(
 	        EVP_sha256(),
 			(const unsigned char*)ctx.secret(),
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
-			ctx.aLen(),
+			ctx.aLen() + ctx.seedLen(),
 			(unsigned char*)hash,
 			(unsigned int*)nullptr
 		);
@@ -250,7 +254,7 @@ namespace OpcUaStackCore
 			(const unsigned char*)ctx.secret(),
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
-			ctx.aLen() + ctx.seedLen(),
+			ctx.aLen(),
 			(unsigned char*)ctx.a(),
 			(unsigned int*)nullptr
 		);
@@ -264,13 +268,13 @@ namespace OpcUaStackCore
 		char* hash
 	)
 	{
-	    /* Calculate P_SHA1(n) = HMAC_SHA1(secret, A(n)+seed) */
+	    /* Calculate P_SHA1(n) = HMAC_SHA1(secret, A(n-1) + seed) */
 	    HMAC(
 	        EVP_sha1(),
 			(const unsigned char*)ctx.secret(),
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
-			ctx.aLen(),
+			ctx.aLen() + ctx.seedLen(),
 			(unsigned char*)hash,
 			(unsigned int*)nullptr
 		);
@@ -281,7 +285,7 @@ namespace OpcUaStackCore
 			(const unsigned char*)ctx.secret(),
 			ctx.secretLen(),
 	        (const unsigned char*)ctx.a(),
-			ctx.aLen() + ctx.seedLen(),
+			ctx.aLen(),
 			(unsigned char*)ctx.a(),
 			(unsigned int*)nullptr
 		);
@@ -347,9 +351,11 @@ namespace OpcUaStackCore
 
 		for (uint32_t idx = 0; idx < iterations; idx++) {
 			statusCode = hashGeneratePSHA1(ctx, memoryBuffer.memBuf() + (idx*20));
+			dumpHex(memoryBuffer);
 			if (statusCode != Success) return statusCode;
 		}
 
+		std::cout << "..." << std::endl;
 		memcpy(key.memBuf(), memoryBuffer.memBuf(), key.memLen());
 
 		return Success;
