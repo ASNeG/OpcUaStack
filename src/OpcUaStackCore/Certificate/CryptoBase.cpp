@@ -94,6 +94,7 @@ namespace OpcUaStackCore
 	CryptoBase::CryptoBase(void)
 	: securityPolicy_("")
 	, isLogging_(false)
+	, nonceLen_(0)
 	, symmetricKeyLen_(-1)
 	, asymmetricKeyLen_(-1)
 	, minimumAsymmetricKeyLen_(0)
@@ -134,6 +135,18 @@ namespace OpcUaStackCore
 	CryptoBase::isLogging(void)
 	{
 		return isLogging_;
+	}
+
+	void
+	CryptoBase::nonceLen(uint32_t nonceLen)
+	{
+		nonceLen_ = nonceLen;
+	}
+
+	uint32_t
+	CryptoBase::nonceLen(void)
+	{
+		return nonceLen_;
 	}
 
 	void
