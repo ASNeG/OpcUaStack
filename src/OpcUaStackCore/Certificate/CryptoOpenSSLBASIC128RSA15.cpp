@@ -30,6 +30,7 @@ namespace OpcUaStackCore
 	{
 		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15");
 
+		nonceLen(16);
 		symmetricKeyLen(16);
 		minimumAsymmetricKeyLen(128);
 		maximumAsymmetricKeyLen(512);
@@ -349,7 +350,7 @@ namespace OpcUaStackCore
 	)
 	{
 		Random random;
-		return random.keyDerivePSHA256(secret, seed,	key);
+		return random.keyDerivePSHA256(secret, seed, key);
 	}
 
 }

@@ -29,6 +29,7 @@ namespace OpcUaStackCore
 	{
 		securityPolicy("http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256");
 
+		nonceLen(32);
 		symmetricKeyLen(32);
 		minimumAsymmetricKeyLen(256);
 		maximumAsymmetricKeyLen(512);
