@@ -351,11 +351,9 @@ namespace OpcUaStackCore
 
 		for (uint32_t idx = 0; idx < iterations; idx++) {
 			statusCode = hashGeneratePSHA1(ctx, memoryBuffer.memBuf() + (idx*20));
-			dumpHex(memoryBuffer);
 			if (statusCode != Success) return statusCode;
 		}
 
-		std::cout << "..." << std::endl;
 		memcpy(key.memBuf(), memoryBuffer.memBuf(), key.memLen());
 
 		return Success;
