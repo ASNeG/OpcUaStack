@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA1_BASIC128RSA15)
 	BOOST_REQUIRE(key == keyCheck);
 }
 
-BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA256_BASIC256)
+BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA1_BASIC256)
 {
 	Random random;
 
@@ -72,6 +72,37 @@ BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA256_BASIC256)
 		(uint8_t*)keyCheck.memBuf()
 	);
 	BOOST_REQUIRE(key == keyCheck);
+}
+
+BOOST_AUTO_TEST_CASE(Random__keyDerivePSHA256_BASIC256SHA256)
+{
+	Random random;
+
+	MemoryBuffer secret(32);	// remote nonce (32 Byte)
+    MemoryBuffer seed(32);		// local nonce (32 Byte)
+	MemoryBuffer key(80);		// len = sig key + enc key + iv
+								// sig key:	32 (derivedSignatureKeyLen)
+								// enc key:	32 (derivedEncryptionKeyLen)
+								// iv:		16 (symmetricKeyLen)
+
+	memset(secret.memBuf(), 0x01, 32);
+	memset(seed.memBuf(), 0x02, 32);
+
+	BOOST_REQUIRE(random.keyDerivePSHA256(secret, seed, key) == Success);
+	BOOST_REQUIRE(key.memLen() == 80);
+
+	dumpHex(key);
+	MemoryBuffer keyCheck(80);
+	hexStringToByteSequence(
+		"15 27 f3 40 fe db 6d 9f  32 51 77 40 48 f7 58 79"
+		"3e a0 11 54 5c 74 74 da  22 bf 42 a8 d8 7d 57 94"
+		"eb 6f 38 0b a1 d0 1a 0f  c6 a2 ef dd 05 78 9a c1"
+		"b4 3c 3e 26 ee 12 8a 1d  05 0e fa 79 40 f0 08 7d"
+		"36 4b 79 45 99 99 96 23  a6 98 00 96 0a 7f a8 5c",
+		(uint8_t*)keyCheck.memBuf()
+	);
+	BOOST_REQUIRE(key == keyCheck);
+
 }
 
 
