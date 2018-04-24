@@ -46,11 +46,19 @@ namespace OpcUaStackCore
 		MemoryBuffer& clientNonce(void);
 		MemoryBuffer& serverNonce(void);
 
+		MemoryBuffer& signKey(void);
+		MemoryBuffer& encryptKey(void);
+		MemoryBuffer& iv(void);
+
 	  private:
 		CryptoBase::SPtr cryptoBase_;
 		Certificate::SPtr partnerCertificate_;
 		MemoryBuffer clientNonce_;
 		MemoryBuffer serverNonce_;
+
+		MemoryBuffer signKey_;
+		MemoryBuffer encryptKey_;
+		MemoryBuffer iv_;
 	};
 
 
