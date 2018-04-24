@@ -1852,6 +1852,9 @@ namespace OpcUaStackCore
 			securitySettings.securityKeySetClient(),
 			securitySettings.securityKeySetServer()
 		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
