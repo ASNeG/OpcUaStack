@@ -439,7 +439,7 @@ namespace OpcUaStackCore
 		// decode second part of message header
 		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		// decide secure header
+		// decode secure header
 		resultCode = secureChannel->securityHeader_.opcUaBinaryDecode(is);
 		if (!resultCode) {
 			Log(Debug, "opc ua secure channel security header error")
@@ -1841,7 +1841,17 @@ namespace OpcUaStackCore
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
 		PublicKey publicKey = securitySettings.partnerCertificate()->publicKey();
+
+		// create symmetric key set
+		statusCode = cryptoBase->deriveChannelKeyset(
+			securitySettings.clientNonce(),
+			securitySettings.serverNonce(),
+			0,
+			securitySettings.securityKeySetClient(),
+			securitySettings.securityKeySetServer()
+		);
 
 		// get asymmetric key length
 		uint32_t asymmetricKeyLen = 0;
