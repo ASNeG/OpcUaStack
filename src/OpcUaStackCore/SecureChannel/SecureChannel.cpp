@@ -35,9 +35,8 @@ namespace OpcUaStackCore
 	, partnerCertificate_()
 	, clientNonce_()
 	, serverNonce_()
-	, signKey_()
-	, encryptKey_()
-	, iv_()
+	, securityKeySetClient_()
+	, securityKeySetServer_()
 	{
 	}
 
@@ -81,24 +80,17 @@ namespace OpcUaStackCore
 		return serverNonce_;
 	}
 
-	MemoryBuffer&
-	SecureChannelSecuritySettings::signKey(void)
+	SecurityKeySet&
+	SecureChannelSecuritySettings::securityKeySetClient(void)
 	{
-		return signKey_;
+		return securityKeySetClient_;
 	}
 
-	MemoryBuffer&
-	SecureChannelSecuritySettings::encryptKey(void)
+	SecurityKeySet&
+	SecureChannelSecuritySettings::securityKeySetServer(void)
 	{
-		return encryptKey_;
+		return securityKeySetServer_;
 	}
-
-	MemoryBuffer&
-	SecureChannelSecuritySettings::iv(void)
-	{
-		return iv_;
-	}
-
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

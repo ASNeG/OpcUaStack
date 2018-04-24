@@ -22,6 +22,7 @@
 #include "OpcUaStackCore/TCPChannel/TCPConnection.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/Certificate/CryptoBase.h"
+#include "OpcUaStackCore/Certificate/SecurityKeySet.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
@@ -46,9 +47,8 @@ namespace OpcUaStackCore
 		MemoryBuffer& clientNonce(void);
 		MemoryBuffer& serverNonce(void);
 
-		MemoryBuffer& signKey(void);
-		MemoryBuffer& encryptKey(void);
-		MemoryBuffer& iv(void);
+		SecurityKeySet& securityKeySetClient(void);
+		SecurityKeySet& securityKeySetServer(void);
 
 	  private:
 		CryptoBase::SPtr cryptoBase_;
@@ -56,9 +56,8 @@ namespace OpcUaStackCore
 		MemoryBuffer clientNonce_;
 		MemoryBuffer serverNonce_;
 
-		MemoryBuffer signKey_;
-		MemoryBuffer encryptKey_;
-		MemoryBuffer iv_;
+		SecurityKeySet securityKeySetClient_;
+		SecurityKeySet securityKeySetServer_;
 	};
 
 
