@@ -62,6 +62,8 @@ namespace OpcUaStackCore
 		void swap(char* inMemBuf, int32_t inBufLen, char** outMemBuf = nullptr, int32_t*outMemLen = nullptr);
 		void swap(MemoryBuffer& memoryBuffer);
 
+		void toHexString(std::string& hexString);
+
 	  private:
 		char *memBuf_;
 		int32_t memLen_;

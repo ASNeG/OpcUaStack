@@ -18,6 +18,7 @@
 #include <string.h>
 #include <iostream>
 #include "OpcUaStackCore/Base/MemoryBuffer.h"
+#include "OpcUaStackCore/Base/Utility.h"
 
 namespace OpcUaStackCore
 {
@@ -322,6 +323,17 @@ namespace OpcUaStackCore
 		memLen_ = memoryBuffer.memLen();
 
 		memoryBuffer.swap(memBuf, memLen);
+	}
+
+	void
+	MemoryBuffer::toHexString(std::string& hexString)
+	{
+		hexString = "";
+		if (memLen_ <= 0) {
+			return;
+		}
+
+		byteSequenceToHexString((uint8_t*)memBuf_, memLen_, hexString);
 	}
 
 }
