@@ -348,6 +348,7 @@ namespace OpcUaStackCore
 		MemoryBuffer& key				// len = sig key + enc key + iv
 	)
 	{
+		// FIXME: todo
 		return BadNotSupported;
 	}
 

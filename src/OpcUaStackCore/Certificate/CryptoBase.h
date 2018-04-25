@@ -208,7 +208,6 @@ namespace OpcUaStackCore
 		OpcUaStatusCode deriveChannelKeyset(
 		    MemoryBuffer& clientNonce,
 			MemoryBuffer& serverNonce,
-		    int32_t keySize,
 		    SecurityKeySet& clientSecurityKeySet,
 		    SecurityKeySet& serverSecurityKeySet
 		);

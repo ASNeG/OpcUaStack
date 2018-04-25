@@ -349,8 +349,16 @@ namespace OpcUaStackCore
 		MemoryBuffer& key				// len = sig key + enc key + iv
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		Random random;
-		return random.keyDerivePSHA256(secret, seed, key);
+		statusCode = random.keyDerivePSHA1(secret, seed, key);
+
+		if (statusCode != Success) {
+			random.log(Error, "keyDerivePSHA256 error");
+		}
+
+		return statusCode;
 	}
 
 }

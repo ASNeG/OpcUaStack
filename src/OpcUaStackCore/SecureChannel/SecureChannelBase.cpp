@@ -1848,7 +1848,6 @@ namespace OpcUaStackCore
 		statusCode = cryptoBase->deriveChannelKeyset(
 			securitySettings.clientNonce(),
 			securitySettings.serverNonce(),
-			0,
 			securitySettings.securityKeySetClient(),
 			securitySettings.securityKeySetServer()
 		);

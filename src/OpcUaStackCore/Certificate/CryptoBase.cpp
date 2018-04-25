@@ -273,7 +273,6 @@ namespace OpcUaStackCore
 	CryptoBase::deriveChannelKeyset(
 	    MemoryBuffer& clientNonce,
 		MemoryBuffer& serverNonce,
-	    int32_t keySize,
 	    SecurityKeySet& clientSecurityKeySet,
 	    SecurityKeySet& serverSecurityKeySet
 	)
@@ -283,14 +282,6 @@ namespace OpcUaStackCore
 		assert(clientNonce.memLen() > 0);
 		assert(serverNonce.memLen() > 0);
 
-		if(keySize < 1) {
-			return BadInvalidArgument;
-		}
-
-		if (keySize > this->symmetricKeyLen()) {
-			return BadInvalidArgument;
-		}
-
 		// generate client key set
 		statusCode = deriveChannelKeyset(
 			serverNonce,
@@ -298,6 +289,8 @@ namespace OpcUaStackCore
 			clientSecurityKeySet
 		);
 		if (statusCode != Success) {
+			Log(Error, "generate client security key set error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 			return statusCode;
 		}
 
@@ -308,6 +301,8 @@ namespace OpcUaStackCore
 			serverSecurityKeySet
 		);
 		if (statusCode != Success) {
+			Log(Error, "generate client security key set error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 			return statusCode;
 		}
 
@@ -323,6 +318,15 @@ namespace OpcUaStackCore
 	{
 		OpcUaStatusCode statusCode;
 		uint32_t keySize = 0;
+
+		if (isLogging_) {
+			Log(Debug, "generate security key set")
+				.parameter("RemoteNonceLen", remoteNonce.memLen())
+				.parameter("LocalNonceLen", localNonce.memLen())
+				.parameter("SignKeyLen", derivedSignatureKeyLen())
+				.parameter("EnryptKeyLen", derivedEncryptionKeyLen())
+				.parameter("IVLen", symmetricKeyLen());
+		}
 
 		// set key length
 		securityKeySet.signKey().resize(derivedSignatureKeyLen());
