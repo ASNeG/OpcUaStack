@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC128RSA15.h"
 #include "OpcUaStackCore/Certificate/CryptoRSA.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
@@ -309,13 +310,13 @@ namespace OpcUaStackCore
 		uint32_t		plainTextLen,
 		MemoryBuffer&	key,
 		char*       	signTextBuf,
-		uint32_t		signTextLen
+		uint32_t		signTextLen2
 	)
 	{
 		OpcUaStatusCode statusCode;
 
-		MemoryBuffer sigText(signTextLen);
-		uint32_t signTextLen2 = sigText.memLen();
+		MemoryBuffer sigText(signTextLen2);
+		uint32_t signTextLen = sigText.memLen();
 
 		CryptoHMAC_SHA cryptoHMAC_SHA;
 		cryptoHMAC_SHA.isLogging(isLogging());
@@ -325,7 +326,7 @@ namespace OpcUaStackCore
 			plainTextLen,
 			key,
 			sigText.memBuf(),
-			&signTextLen2
+			&signTextLen
 		);
 
 		if (statusCode != Success) {
@@ -333,9 +334,25 @@ namespace OpcUaStackCore
 		}
 
 		if (signTextLen2 != signTextLen) {
+			if (isLogging()) {
+				Log(Error, "check signature length error")
+					.parameter("SignLen1", signTextLen)
+					.parameter("SignLen2", signTextLen2);
+			}
 			return BadSignatureInvalid;
 		}
 		if (memcmp(signTextBuf, sigText.memBuf(), signTextLen) != 0) {
+			if (isLogging()) {
+				std::string hexString1;
+				std::string hexString2;
+
+				byteSequenceToHexString((uint8_t*)signTextBuf, signTextLen2, hexString1);
+				sigText.toHexString(hexString2);
+
+				Log(Error, "check signature text not equal")
+					.parameter("Sign1", hexString1)
+					.parameter("Sign2", hexString2);
+			}
 			return BadSignatureInvalid;
 		}
 
