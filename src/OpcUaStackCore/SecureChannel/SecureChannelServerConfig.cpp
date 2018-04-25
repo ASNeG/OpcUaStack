@@ -33,6 +33,8 @@ namespace OpcUaStackCore
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, endpointUrl_("")
+
+	, secureChannelLog_(false)
 	{
 	}
 
@@ -74,6 +76,18 @@ namespace OpcUaStackCore
 	SecureChannelServerConfig::endpointUrl(void)
 	{
 		return endpointUrl_;
+	}
+
+	void
+	SecureChannelServerConfig::secureChannelLog(bool secureChannelLog)
+	{
+		secureChannelLog_ = secureChannelLog;
+	}
+
+	bool
+	SecureChannelServerConfig::secureChannelLog(void)
+	{
+		return secureChannelLog_;
 	}
 
 }

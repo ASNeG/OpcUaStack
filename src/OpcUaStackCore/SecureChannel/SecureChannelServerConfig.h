@@ -44,10 +44,15 @@ namespace OpcUaStackCore
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
 
+		void secureChannelLog(bool secureChannelLog);
+		bool secureChannelLog(void);
+
 	  private:
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		EndpointDescription::SPtr endpointDescription_;
 		std::string endpointUrl_;
+
+		bool secureChannelLog_;
 	};
 
 }

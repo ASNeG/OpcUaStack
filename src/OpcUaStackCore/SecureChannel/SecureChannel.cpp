@@ -153,6 +153,8 @@ namespace OpcUaStackCore
 	, securityPolicy_(SP_None)
 
 	, handle_()
+
+	, isLogging_(false)
 	{
 	}
 

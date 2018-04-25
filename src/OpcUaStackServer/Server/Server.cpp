@@ -390,6 +390,7 @@ namespace OpcUaStackServer
 		sessionManager_.endpointDescriptionSet(endpointDescriptionSet);
 		sessionManager_.applicationCertificate(applicationCertificate_);
 		sessionManager_.cryptoManager(cryptoManager);
+		sessionManager_.config(&config());
 
 		return true;
 	}

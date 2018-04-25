@@ -96,6 +96,10 @@ namespace OpcUaStackServer
 	bool
 	SessionManager::startup(void)
 	{
+		// read SecureChannelLog parameter from configuration file
+		bool secureChannelLog = false;
+		config_->getConfigParameter("OpcUaServer.Logging.SecureChannelLog", secureChannelLog, "0");
+
 		// get all endpoint urls from endpoint description set
 		std::vector<std::string> endpointUrls;
 		endpointDescriptionSet_->getEndpointUrls(endpointUrls);
@@ -113,6 +117,7 @@ namespace OpcUaStackServer
 			SecureChannelServerConfig::SPtr secureChannelServerConfig = constructSPtr<SecureChannelServerConfig>();
 			secureChannelServerConfig->endpointDescriptionArray(endpointDescriptionArray);
 			secureChannelServerConfig->endpointUrl(endpointUrl);
+			secureChannelServerConfig->secureChannelLog(secureChannelLog);
 
 			// create new secure channel
 			SecureChannelServer::SPtr secureChannelServer = constructSPtr<SecureChannelServer>(ioThread_);

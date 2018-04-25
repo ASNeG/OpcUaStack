@@ -179,6 +179,8 @@ namespace OpcUaStackCore
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
 
+		bool isLogging_;
+
 	  private:
 		void debugRead(const std::string& message);
 		void debugWrite(const std::string& message);

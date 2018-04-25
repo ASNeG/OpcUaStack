@@ -102,6 +102,7 @@ namespace OpcUaStackCore
 
 		endpointUrl_ = config->endpointUrl();
 
+		secureChannel->isLogging_ = config->secureChannelLog();
 		secureChannel->receivedBufferSize_ = config->receivedBufferSize();
 		secureChannel->sendBufferSize_ = config->sendBufferSize();
 		secureChannel->maxMessageSize_ = config->maxMessageSize();

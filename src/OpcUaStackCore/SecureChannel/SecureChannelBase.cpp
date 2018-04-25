@@ -1586,6 +1586,7 @@ namespace OpcUaStackCore
 				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
 			return BadSecurityPolicyRejected;
 		}
+		cryptoBase->isLogging(secureChannel->isLogging_);
 		securitySettings.cryptoBase(cryptoBase);
 
 		// decrypt received open secure channel request
