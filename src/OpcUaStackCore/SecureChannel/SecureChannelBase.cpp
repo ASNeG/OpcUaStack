@@ -1816,18 +1816,20 @@ namespace OpcUaStackCore
 		);
 
 		// logging
-		logMessageInfo(
-		    "plain open secure channel response",
-			plainTextBlockSize,
-		    cryptTextBlockSize,
-			plainText.memLen(),
-			messageHeaderLen,
-			securityHeaderLen,
-			sequenceHeaderLen,
-			bodyLen,
-			paddingSize,
-			asymmetricKeyLen
-		);
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"plain open secure channel response",
+				plainTextBlockSize,
+				cryptTextBlockSize,
+				plainText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				paddingSize,
+				asymmetricKeyLen
+			);
+		}
 
 		return statusCode;
 	}
@@ -1898,18 +1900,20 @@ namespace OpcUaStackCore
 		encryptedText.resize(encryptedTextLen);
 		memcpy(encryptedText.memBuf(), plainText.memBuf(), messageHeaderLen + securityHeaderLen);
 
-		logMessageInfo(
-		    "encrypt open secure channel response",
-			plainTextBlockSize,
-		    cryptTextBlockSize,
-			encryptedText.memLen(),
-			messageHeaderLen,
-			securityHeaderLen,
-			sequenceHeaderLen,
-			encryptedBodyLen,
-			-1,
-			asymmetricKeyLen
-		);
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"encrypt open secure channel response",
+				plainTextBlockSize,
+				cryptTextBlockSize,
+				encryptedText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				encryptedBodyLen,
+				-1,
+				asymmetricKeyLen
+			);
+		}
 
 		uint32_t toEncryptedTextLen = encryptedText.memLen()  - messageHeaderLen - securityHeaderLen;
 		securitySettings.cryptoBase()->isLogging(true);
@@ -1973,48 +1977,41 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		std::cout << "SecureChannelBase::decryptReceivedMessage" << std::endl;
-
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
 		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
 
 		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
 		OpcUaStatusCode statusCode;
 
-		// FIXME: todo
+		// decrypt received buffer
+		std::iostream ios(&secureChannel->recvBuffer_);
+		MemoryBuffer encryptedText(receivedDataLen);
+		MemoryBuffer plainText(receivedDataLen);
+		ios.read(encryptedText.memBuf(), receivedDataLen);
+
+		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
+			encryptedText.memBuf(),
+			encryptedText.memLen(),
+			securitySettings.securityKeySetClient().encryptKey(),
+			securitySettings.securityKeySetClient().iv(),
+			plainText.memBuf(),
+			&receivedDataLen
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		ios.write(plainText.memBuf(), receivedDataLen);
 		return Success;
 	}
-
-#if 0
-
-
-	// decrypt received buffer
-	std::iostream ios(&secureChannel->recvBuffer_);
-	MemoryBuffer encryptedText(receivedDataLen);
-	MemoryBuffer plainText(receivedDataLen);
-	ios.read(encryptedText.memBuf(), receivedDataLen);
-
-	statusCode = secureChannel->cryptoBase()->asymmetricDecrypt(
-		encryptedText.memBuf(),
-		encryptedText.memLen(),
-		*applicationCertificate_->privateKey().get(),
-		plainText.memBuf(),
-		&receivedDataLen
-	);
-	if (statusCode != Success) {
-		Log(Error, "decrypt open secure channel request error")
-			.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
-		return BadSecurityChecksFailed;
-	}
-
-	ios.write(plainText.memBuf(), receivedDataLen);
-	return Success;
-#endif
 
 	OpcUaStatusCode
 	SecureChannelBase::verifyReceivedMessage(
 		SecureChannel* secureChannel
 	)
 	{
+		std::cout << "SecureChannelBase::verifyReceivedMessage" << std::endl;
+
 		// FIXME: todo
 		return Success;
 	}
