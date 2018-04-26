@@ -108,7 +108,7 @@ namespace OpcUaStackCore
 
 		ios1.read(memBuf_, size1);
 		ios2.read(memBuf_ + size1, size2);
-		ios2.read(memBuf_ + size1 + size2, size3);
+		ios3.read(memBuf_ + size1 + size2, size3);
 	}
 
 	MemoryBuffer::~MemoryBuffer(void)
