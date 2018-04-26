@@ -2050,4 +2050,64 @@ namespace OpcUaStackCore
 		return Success;
 	}
 
+	OpcUaStatusCode
+	SecureChannelBase::secureSendMessageResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			encryptedText.swap(plainText);
+			return Success;
+		}
+
+		if (securityHeader->isSignatureEnabled()) {
+			statusCode = signSendMessageResponse(plainText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// encrypt send open secure channel response
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = encryptSendMessageResponse(plainText, encryptedText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+		else {
+			encryptedText.swap(plainText);
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::signSendMessageResponse(
+		MemoryBuffer& plainText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::encryptSendMessageResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+
 }
