@@ -1342,8 +1342,23 @@ namespace OpcUaStackCore
 			ios.write(bufferPtr,bodySize);
 			secureChannelTransaction->os_.consume(bodySize);
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, sb);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string());
+				return;
+			}
+
+			boost::asio::streambuf sbn;
+			encryptedText.get(sbn);
+
+			// send response
 			secureChannel->async_write(
-				sb2, sb1, sb,
+				sbn,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
@@ -1372,6 +1387,7 @@ namespace OpcUaStackCore
 			boost::asio::streambuf sb;
 			encryptedText.get(sb);
 
+			// send response
 			secureChannel->async_write(
 				sb,
 				boost::bind(
@@ -2128,9 +2144,75 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		std::cout << "SecureChannelBase::signSendMessageResponse" << std::endl;
+		OpcUaStatusCode statusCode;
 
-		// FIXME: todo
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
+		// get symmetric key length / signature length
+		uint32_t symmetricKeyLen = 0;
+		uint32_t signatureDataLen = 0;
+		symmetricKeyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
+
+		// calculate length of message
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen = 4;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen = plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen;
+		uint32_t paddingByteLen = 1;
+		uint32_t dataToEncryptLen =
+			sequenceHeaderLen +
+			bodyLen +
+			paddingByteLen +
+			signatureDataLen;
+
+		// calculate number of padding bytes
+		uint32_t paddingSize = 0;
+		if (dataToEncryptLen % symmetricKeyLen != 0) {
+			paddingSize = symmetricKeyLen - (dataToEncryptLen % symmetricKeyLen);
+		}
+		paddingSize += paddingByteLen;
+		dataToEncryptLen += paddingSize;
+
+		// added padding bytes and extra padding byte
+		uint32_t plainTextLen = plainText.memLen();
+		plainText.resize(plainTextLen + paddingSize + signatureDataLen);
+		char c = (paddingSize-1) & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+
+		// set new packet length
+		uint32_t newPacketLen = plainText.memLen();
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(plainText.memBuf()+4, newPacketLen);
+
+		// create signature
+		uint32_t keyLen = signatureDataLen;
+		statusCode = securitySettings.cryptoBase()->symmetricSign(
+			plainText.memBuf(),
+			plainText.memLen() - signatureDataLen,
+			securitySettings.securityKeySetServer().signKey(),
+			plainText.memBuf() + plainText.memLen() - signatureDataLen,
+			&keyLen
+		);
+
+		// logging
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"plain message response",
+				symmetricKeyLen,
+				symmetricKeyLen,
+				plainText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				paddingSize,
+				symmetricKeyLen
+			);
+		}
+
 		return Success;
 	}
 
