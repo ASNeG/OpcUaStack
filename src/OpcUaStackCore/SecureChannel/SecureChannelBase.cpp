@@ -1358,8 +1358,22 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransactionList_.pop_front();
 			secureChannel->sendFirstSegment_ = true;
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, secureChannelTransaction->os_);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string());
+				return;
+			}
+
+			boost::asio::streambuf sb;
+			encryptedText.get(sb);
+
 			secureChannel->async_write(
-				sb2, sb1, secureChannelTransaction->os_,
+				sb,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
@@ -1369,6 +1383,32 @@ namespace OpcUaStackCore
 			);
 		}
 	}
+
+#if 0
+	// handle security
+	MemoryBuffer plainText(sb2, sb1);
+	MemoryBuffer encryptedText;
+
+	if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
+		Log(Debug, "opc ua secure channel encrypt send message error")
+			.parameter("Local", secureChannel->local_.address().to_string())
+			.parameter("Partner", secureChannel->partner_.address().to_string());
+		return;
+	}
+
+	boost::asio::streambuf sb;
+	encryptedText.get(sb);
+
+	secureChannel->async_write(
+		sb,
+		boost::bind(
+			&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
+			this,
+			boost::asio::placeholders::error,
+			secureChannel
+		)
+	);
+#endif
 
 	void
 	SecureChannelBase::handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
@@ -1939,8 +1979,6 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		std::cout << "SecureChannelBase::secureReceivedMessageRequest" << std::endl;
-
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
@@ -2010,8 +2048,6 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		std::cout << "SecureChannelBase::verifyReceivedMessage" << std::endl;
-
 		OpcUaStatusCode statusCode;
 
 		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
@@ -2031,8 +2067,6 @@ namespace OpcUaStackCore
 		memcpy(plainText.memBuf(), header, streambuf.size());
 		const char* body = boost::asio::buffer_cast<const char*>(secureChannel->recvBuffer_.data());
 		memcpy(plainText.memBuf()+streambuf.size(), body, secureChannel->recvBuffer_.size());
-
-		dumpHex(plainText);
 
 		statusCode = securitySettings.cryptoBase()->symmetricVerify(
 			plainText.memBuf(),
@@ -2094,6 +2128,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		std::cout << "SecureChannelBase::signSendMessageResponse" << std::endl;
+
 		// FIXME: todo
 		return Success;
 	}
