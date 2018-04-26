@@ -1400,32 +1400,6 @@ namespace OpcUaStackCore
 		}
 	}
 
-#if 0
-	// handle security
-	MemoryBuffer plainText(sb2, sb1);
-	MemoryBuffer encryptedText;
-
-	if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
-		Log(Debug, "opc ua secure channel encrypt send message error")
-			.parameter("Local", secureChannel->local_.address().to_string())
-			.parameter("Partner", secureChannel->partner_.address().to_string());
-		return;
-	}
-
-	boost::asio::streambuf sb;
-	encryptedText.get(sb);
-
-	secureChannel->async_write(
-		sb,
-		boost::bind(
-			&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
-			this,
-			boost::asio::placeholders::error,
-			secureChannel
-		)
-	);
-#endif
-
 	void
 	SecureChannelBase::handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
 	{
@@ -2155,7 +2129,7 @@ namespace OpcUaStackCore
 		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
 
 		// calculate length of message
-		uint32_t messageHeaderLen = 8;
+		uint32_t messageHeaderLen = 12;
 		uint32_t securityHeaderLen = 4;
 		uint32_t sequenceHeaderLen = 8;
 		uint32_t bodyLen = plainText.memLen() -
@@ -2235,7 +2209,7 @@ namespace OpcUaStackCore
 		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
 
 		// calculate length of message header, security header and plain text
-		uint32_t messageHeaderLen = 8;
+		uint32_t messageHeaderLen = 12;
 		uint32_t securityHeaderLen = 4;
 		uint32_t sequenceHeaderLen = 8;
 		uint32_t bodyLen =
