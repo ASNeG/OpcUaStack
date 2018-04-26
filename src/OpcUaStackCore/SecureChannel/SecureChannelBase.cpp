@@ -993,7 +993,7 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
 		// get security token
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
@@ -2022,7 +2022,7 @@ namespace OpcUaStackCore
 		boost::asio::streambuf streambuf;
 		std::iostream os(&streambuf);
 		messageHeader->opcUaBinaryEncode(os, true);
-		securityHeader->opcUaBinaryEncode(os);
+		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->secureChannelTransaction_->securityTokenId_);
 
 		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
 		MemoryBuffer plainText(plainTextLen);
@@ -2037,7 +2037,7 @@ namespace OpcUaStackCore
 		statusCode = securitySettings.cryptoBase()->symmetricVerify(
 			plainText.memBuf(),
 			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
-			securitySettings.securityKeySetServer().signKey(),
+			securitySettings.securityKeySetClient().signKey(),
 			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
 			securitySettings.cryptoBase()->signatureDataLen()
 		);
