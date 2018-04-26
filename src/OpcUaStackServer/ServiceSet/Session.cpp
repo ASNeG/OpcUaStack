@@ -394,7 +394,11 @@ namespace OpcUaStackServer
 		createSessionResponse.receivedSessionTimeout(120000);
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
-		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
+
+		if (applicationCertificate_.get() != nullptr) {
+			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
+			applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+		}
 
 		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		createSessionResponse.opcUaBinaryEncode(iosres);
