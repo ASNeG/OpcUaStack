@@ -1032,6 +1032,7 @@ namespace OpcUaStackCore
 		}
 
 		// message is completed
+		secureChannel->secureChannelTransaction_->cryptoBase_ = secureChannel->securitySettings_.cryptoBase();
 		handleRecvMessageRequest(secureChannel);
 		secureChannel->secureChannelTransaction_.reset();
 		asyncRead(secureChannel);
@@ -1861,6 +1862,12 @@ namespace OpcUaStackCore
 			);
 		}
 
+		if (statusCode != Success) {
+			Log(Error, "sign open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
 		return statusCode;
 	}
 
@@ -2187,6 +2194,12 @@ namespace OpcUaStackCore
 			);
 		}
 
+		if (statusCode != Success) {
+			Log(Error, "sign message request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
 		return Success;
 	}
 
@@ -2255,7 +2268,6 @@ namespace OpcUaStackCore
 		}
 
 		plainText.swap(encryptedText);
-		dumpHex(encryptedText);
 		return Success;
 	}
 
