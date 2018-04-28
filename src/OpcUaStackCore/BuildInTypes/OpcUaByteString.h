@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 		void value(const char* value, OpcUaInt32 length);
 		void value(const std::string& value);
 		OpcUaInt32 size(void) const;
+		char* memBuf(void);
 		bool resize(uint32_t size);
 		void reset(void);
 		bool exist(void) const;

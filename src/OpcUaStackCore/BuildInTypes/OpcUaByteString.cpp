@@ -114,6 +114,12 @@ namespace OpcUaStackCore
 		return length_;
 	}
 
+	char*
+	OpcUaByteString::memBuf(void)
+	{
+		return value_;
+	}
+
 	bool
 	OpcUaByteString::resize(uint32_t size)
 	{
