@@ -117,7 +117,7 @@ namespace OpcUaStackCore
 	char*
 	OpcUaByteString::memBuf(void)
 	{
-		return value_;
+		return (char*)value_;
 	}
 
 	bool
