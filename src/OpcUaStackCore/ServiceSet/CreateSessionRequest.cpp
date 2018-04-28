@@ -103,6 +103,12 @@ namespace OpcUaStackCore
 		clientNonce_.value(buf, bufLen);
 	}
 
+	OpcUaByteString&
+	CreateSessionRequest::clientNonce(void)
+	{
+		return clientNonce_;
+	}
+
 	void 
 	CreateSessionRequest::clientNonce(OpcUaByte **buf, OpcUaInt32* bufLen) const
 	{
