@@ -115,6 +115,9 @@ namespace OpcUaStackCore
 	)
 	{
 		if (publicKey.keyType() != KeyType_RSA) {
+			if (isLogging()) {
+				Log(Error, "public key is not from type RSA");
+			}
 			return BadInvalidArgument;
 		}
 		*asymmetricKeyLen = publicKey.keySize();
@@ -371,7 +374,7 @@ namespace OpcUaStackCore
 		Random random;
 		statusCode = random.keyDerivePSHA1(secret, seed, key);
 
-		if (statusCode != Success) {
+		if (statusCode != Success && isLogging()) {
 			random.log(Error, "keyDerivePSHA256 error");
 		}
 
