@@ -27,6 +27,7 @@
 #include <openssl/x509.h>
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaByteString.h"
 #include "OpcUaStackCore/Certificate/CertificateInfo.h"
 #include "OpcUaStackCore/Certificate/OpenSSLError.h"
@@ -78,6 +79,7 @@ namespace OpcUaStackCore
 		bool toDERBufLen(uint32_t* bufLen);
 		bool toDERBuf(char* buf, uint32_t* bufLen);
 		bool toDERBuf(OpcUaByteString& derBuf);
+		bool toDERBuf(MemoryBuffer& derBuf);
 		bool fromDERBuf(char* buf, uint32_t bufLen);
 
 		uint32_t getDERBufSize(void);

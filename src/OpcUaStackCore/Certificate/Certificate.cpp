@@ -589,12 +589,29 @@ namespace OpcUaStackCore
 		int32_t len;
 		derBuf.value(&buf, &len);
 		if (len <= 0) {
-			Log(Error, "DER buffer rempty");
+			Log(Error, "DER buffer empty");
 			return false;
 		}
 
 		uint32_t length = len;
 		if (!toDERBuf(buf, &length)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	Certificate::toDERBuf(MemoryBuffer& derBuf)
+	{
+		uint32_t derBufLen;
+		if (!toDERBufLen(&derBufLen)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
+		derBuf.resize(derBufLen);
+
+		if (!toDERBuf(derBuf.memBuf(), &derBufLen)) {
 			log(Error, "toDERBufLen error");
 			return false;
 		}
