@@ -68,6 +68,7 @@ namespace OpcUaStackServer
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, userContext_()
+	, clientCertificate_()
 	{
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
@@ -393,6 +394,13 @@ namespace OpcUaStackServer
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		createSessionResponse.responseHeader()->serviceResult(serviceResult);
 
+		if (createSessionRequest.clientCertificate().exist()) {
+			clientCertificate_.fromDERBuf(
+				createSessionRequest.clientCertificate().memBuf(),
+				createSessionRequest.clientCertificate().size()
+			);
+		}
+
 		createSessionResponse.sessionId().namespaceIndex(1);
 		createSessionResponse.sessionId().nodeId(sessionId_);
 		createSessionResponse.authenticationToken().namespaceIndex(1);
@@ -401,11 +409,13 @@ namespace OpcUaStackServer
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
 
-		// added server certificate and server signature
 		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
+
+			// added server certificate
 			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 			applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
 
+			// added server signature
 			MemoryBuffer plainText;
 			plainText.resize(
 				createSessionRequest.clientCertificate().size() +
@@ -496,6 +506,11 @@ namespace OpcUaStackServer
 				.parameter("SessionState", sessionState_);
 			activateSessionRequestError(requestHeader, secureChannelTransaction, BadIdentityTokenInvalid);
 			return;
+		}
+
+		// check client signature
+		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
+			//activateSessionRequest.clientSignature()
 		}
 
 		// check username and password

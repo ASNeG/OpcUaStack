@@ -134,6 +134,7 @@ namespace OpcUaStackServer
 		EndpointDescription::SPtr endpointDescription_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
+		Certificate clientCertificate_;
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;
