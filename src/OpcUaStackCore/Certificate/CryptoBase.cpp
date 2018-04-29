@@ -27,11 +27,11 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-    uint32_t EnryptionAlgs::AES_128_CBC_Id = 1;
-    uint32_t EnryptionAlgs::AES_256_CBC_Id = 2;
-    uint32_t EnryptionAlgs::RSA_PKCS1_V15_Id = 3;
-    uint32_t EnryptionAlgs::RSA_OAEP_Id = 4;
-    uint32_t EnryptionAlgs::DES3_Id = 5;
+    const uint32_t EnryptionAlgs::AES_128_CBC_Id = 1;
+    const uint32_t EnryptionAlgs::AES_256_CBC_Id = 2;
+    const uint32_t EnryptionAlgs::RSA_PKCS1_V15_Id = 3;
+    const uint32_t EnryptionAlgs::RSA_OAEP_Id = 4;
+    const uint32_t EnryptionAlgs::DES3_Id = 5;
 
     std::string EnryptionAlgs::AES_128_CBC_Name = "AES-128-CBC";
     std::string EnryptionAlgs::AES_256_CBC_Name = "AES-256-CBC";
@@ -51,6 +51,21 @@ namespace OpcUaStackCore
     	return 0;
     }
 
+    std::string
+	EnryptionAlgs::encryptAlgToUri(uint32_t encryptAlg)
+    {
+    	switch (encryptAlg)
+    	{
+    		case RSA_OAEP_Id:
+    			return "http://www.w3.org/2001/04/xmlenc#rsa-oaep";
+    		case RSA_PKCS1_V15_Id:
+    			return "http://www.w3.org/2001/04/xmlenc#rsa-1_5";
+    		default:
+    			return "";
+    	}
+    	return "";
+    }
+
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
@@ -58,12 +73,12 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
-	uint32_t SignatureAlgs::RSA_PKCS1_V15_SHA1_Id = 6;
-	uint32_t SignatureAlgs::RSA_PKCS1_V15_SHA256_Id = 7;
-	uint32_t SignatureAlgs::HMAC_SHA1_Id = 8;
-	uint32_t SignatureAlgs::HMAC_SHA256_Id = 9;
-	uint32_t SignatureAlgs::RSA_PKCS1_OAEP_SHA1_Id = 10;
-	uint32_t SignatureAlgs::RSA_PKCS1_OAEP_SHA256_Id = 11;
+	const uint32_t SignatureAlgs::RSA_PKCS1_V15_SHA1_Id = 6;
+	const uint32_t SignatureAlgs::RSA_PKCS1_V15_SHA256_Id = 7;
+	const uint32_t SignatureAlgs::HMAC_SHA1_Id = 8;
+	const uint32_t SignatureAlgs::HMAC_SHA256_Id = 9;
+	const uint32_t SignatureAlgs::RSA_PKCS1_OAEP_SHA1_Id = 10;
+	const uint32_t SignatureAlgs::RSA_PKCS1_OAEP_SHA256_Id = 11;
 
 	std::string SignatureAlgs::RSA_PKCS1_V15_SHA1_Name = "RSA-PKCS-#1-V1.5-SHA1";
 	std::string SignatureAlgs::RSA_PKCS1_V15_SHA256_Name = "RSA-PKCS-#1-V1.5-SHA256";
@@ -82,6 +97,21 @@ namespace OpcUaStackCore
     		return  RSA_PKCS1_V15_SHA256_Id;
     	}
 		return 0;
+	}
+
+	std::string
+	SignatureAlgs::signatureAlgToUri(uint32_t signatureAlg)
+	{
+		switch (signatureAlg)
+		{
+			case RSA_PKCS1_V15_SHA1_Id:
+				return "http://www.w3.org/2000/09/xmldsig#rsa-sha1";
+			case RSA_PKCS1_V15_SHA256_Id:
+				return "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+			default:
+				return "";
+		}
+		return "";
 	}
 
 	// ------------------------------------------------------------------------
