@@ -649,7 +649,24 @@ namespace OpcUaStackCore
 			addError("certificate is not empty");
 			return false;
 		}
-        cert_= d2i_X509 (0, (const unsigned char**)&buf, bufLen);
+        cert_= d2i_X509(0, (const unsigned char**)&buf, bufLen);
+        if (cert_ == nullptr) {
+        	addOpenSSLError();
+        	return false;
+        }
+
+		return true;
+	}
+
+	bool
+	Certificate::fromDERBuf(MemoryBuffer& derBuf)
+	{
+		if (cert_ != nullptr) {
+			addError("certificate is not empty");
+			return false;
+		}
+		char* mem = derBuf.memBuf();
+        cert_= d2i_X509(0, (const unsigned char**)&mem, derBuf.memLen());
         if (cert_ == nullptr) {
         	addOpenSSLError();
         	return false;
