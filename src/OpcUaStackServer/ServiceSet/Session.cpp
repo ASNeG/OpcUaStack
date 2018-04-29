@@ -488,7 +488,7 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		createServerNonce();
+		OpcUaStatusCode statusCode;
 
 		Log(Debug, "receive activate session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
@@ -509,16 +509,47 @@ namespace OpcUaStackServer
 		}
 
 		// check client signature
-		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
-			//activateSessionRequest.clientSignature()
+		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
+			uint32_t derBufLen = applicationCertificate_->certificate()->getDERBufSize();
+
+			MemoryBuffer plainText(derBufLen + 32);
+
+			applicationCertificate_->certificate()->toDERBuf(
+				plainText.memBuf(),
+				&derBufLen
+			);
+			memcpy(
+				plainText.memBuf() + derBufLen,
+				serverNonce_,
+				32
+			);
+
+			char* signTextBuf;
+			int32_t  signTextLen;
+			activateSessionRequest.clientSignature()->signature((unsigned char **)&signTextBuf, &signTextLen);
+
+			PublicKey publicKey = clientCertificate_.publicKey();
+			statusCode = secureChannelTransaction->cryptoBase_->asymmetricVerify(
+				plainText.memBuf(),
+				plainText.memLen(),
+				publicKey,
+				signTextBuf,
+				signTextLen
+			);
+
+			if (statusCode != Success) {
+				Log(Error, "client signature error");
+				activateSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				return;
+			}
 		}
 
 		// check username and password
-		OpcUaStatusCode statusCode;
 		statusCode = authentication(activateSessionRequest);
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		createServerNonce();
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
