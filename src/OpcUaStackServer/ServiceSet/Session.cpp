@@ -73,11 +73,6 @@ namespace OpcUaStackServer
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
 		componentName("Session");
-
-		// create new server nonce
-		for (uint32_t idx=0; idx<32; idx++) {
-			serverNonce_[idx] = (rand() / 256);
-		}
 	}
 
 	Session::~Session(void)
@@ -85,6 +80,14 @@ namespace OpcUaStackServer
 		Log(Info, "session destruct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
+	}
+
+	void
+	Session::createServerNonce(void)
+	{
+		for (uint32_t idx=0; idx<32; idx++) {
+			serverNonce_[idx] = (rand() / 256);
+		}
 	}
 
 	void
@@ -366,6 +369,9 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		createServerNonce();
+
+		OpcUaStatusCode statusCode;
 		OpcUaStatusCode serviceResult = Success;
 
 		Log(Debug, "receive create session request");
@@ -395,9 +401,57 @@ namespace OpcUaStackServer
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
 
-		if (applicationCertificate_.get() != nullptr) {
+		// added server certificate and server signature
+		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
 			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 			applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+
+			MemoryBuffer plainText;
+			plainText.resize(
+				createSessionRequest.clientCertificate().size() +
+				createSessionRequest.clientNonce().size()
+			);
+			memcpy(
+				plainText.memBuf(),
+				createSessionRequest.clientCertificate().memBuf(),
+				createSessionRequest.clientCertificate().size()
+			);
+			memcpy(
+				plainText.memBuf() + createSessionRequest.clientCertificate().size(),
+				createSessionRequest.clientNonce().memBuf(),
+				createSessionRequest.clientNonce().size()
+			);
+
+			// get asymmetric key length
+			uint32_t asymmetricKeyLen = 0;
+			PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
+			secureChannelTransaction->cryptoBase_->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+			asymmetricKeyLen /= 8;
+
+			MemoryBuffer signText;
+			signText.resize(asymmetricKeyLen);
+
+			// create signature
+			PrivateKey privateKey = *applicationCertificate_->privateKey();
+			uint32_t keyLen = asymmetricKeyLen;
+			statusCode = secureChannelTransaction->cryptoBase_->asymmetricSign(
+				plainText.memBuf(),
+				plainText.memLen(),
+				privateKey,
+				signText.memBuf(),
+				&keyLen
+			);
+
+			// FIXME: handle error
+
+			// FIXME: todo
+			createSessionResponse.signatureData()->signature(
+				(OpcUaByte*)signText.memBuf(),
+				signText.memLen()
+			);
+			createSessionResponse.signatureData()->algorithm(
+				SignatureAlgs::signatureAlgToUri(secureChannelTransaction->cryptoBase_->asymmetricSignatureAlgorithmId())
+			);
 		}
 
 		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
@@ -424,6 +478,8 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		createServerNonce();
+
 		Log(Debug, "receive activate session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
 
@@ -451,6 +507,7 @@ namespace OpcUaStackServer
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
+		activateSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		activateSessionResponse.opcUaBinaryEncode(iosres);

@@ -96,6 +96,8 @@ namespace OpcUaStackServer
 		// - Component -------------------------------------------------------
 
 	  private:
+		void createServerNonce(void);
+
 		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
 		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
