@@ -30,7 +30,8 @@ namespace OpcUaStackCore
 	{
 	}
 
-	OpcUaStatusCode createSignature(
+	OpcUaStatusCode
+	SignatureData::createSignature(
 		MemoryBuffer& certificate,
 		MemoryBuffer& nonce,
 		PrivateKey& privateKey,
@@ -71,6 +72,17 @@ namespace OpcUaStackCore
 			privateKey,
 			signText.memBuf(),
 			&keyLen
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		signature(
+			(OpcUaByte*)signText.memBuf(),
+			signText.memLen()
+		);
+		algorithm(
+			SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId())
 		);
 
 		return statusCode;

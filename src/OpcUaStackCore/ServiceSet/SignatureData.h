@@ -38,7 +38,7 @@ namespace OpcUaStackCore
 		SignatureData(void);
 		virtual ~SignatureData(void);
 
-		bool createSignature(
+		OpcUaStatusCode createSignature(
 			MemoryBuffer& certificate,
 			MemoryBuffer& nonce,
 			PrivateKey& privateKey,

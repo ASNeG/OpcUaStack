@@ -415,6 +415,24 @@ namespace OpcUaStackServer
 			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 			applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
 
+			// create server signature
+			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
+			MemoryBuffer clientNonce(createSessionRequest.clientNonce());
+			PrivateKey privateKey = *applicationCertificate_->privateKey();
+			statusCode = createSessionResponse.signatureData()->createSignature(
+				clientCertificate,
+				clientNonce,
+				privateKey,
+				*secureChannelTransaction->cryptoBase_
+			);
+			if (statusCode != Success) {
+				Log(Error, "create server signature in create session request error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				createSessionResponse.responseHeader()->serviceResult(BadSecurityChecksFailed);
+			}
+
+#if 0
+
 			// added server signature
 			MemoryBuffer plainText;
 			plainText.resize(
@@ -462,6 +480,7 @@ namespace OpcUaStackServer
 			createSessionResponse.signatureData()->algorithm(
 				SignatureAlgs::signatureAlgToUri(secureChannelTransaction->cryptoBase_->asymmetricSignatureAlgorithmId())
 			);
+#endif
 		}
 
 		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
