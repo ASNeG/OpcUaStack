@@ -135,6 +135,11 @@ namespace OpcUaStackCore
 			uint32_t* asymmetricKeyLen
 		) = 0;
 
+		virtual OpcUaStatusCode asymmetricKeyLen(
+			PrivateKey& privateKey,
+			uint32_t* asymmetricKeyLen
+		) = 0;
+
 		virtual OpcUaStatusCode asymmetricDecrypt(
 		    char*       	encryptedTextBuf,
 			uint32_t		encryptedTextLen,

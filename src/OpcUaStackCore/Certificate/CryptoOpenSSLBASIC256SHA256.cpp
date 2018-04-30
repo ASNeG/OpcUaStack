@@ -120,6 +120,19 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	CryptoOpenSSLBASIC256SHA256::asymmetricKeyLen(
+		PrivateKey& privateKey,
+		uint32_t* asymmetricKeyLen
+	)
+	{
+		if (privateKey.keyType() != KeyType_RSA) {
+			return BadInvalidArgument;
+		}
+		*asymmetricKeyLen = privateKey.keySize();
+		return Success;
+	}
+
+	OpcUaStatusCode
 	CryptoOpenSSLBASIC256SHA256::asymmetricDecrypt(
 	    char*       	encryptedTextBuf,
 		uint32_t		encryptedTextLen,

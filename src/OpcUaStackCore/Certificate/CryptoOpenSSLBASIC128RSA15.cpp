@@ -125,6 +125,22 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	CryptoOpenSSLBASIC128RSA15::asymmetricKeyLen(
+		PrivateKey& privateKey,
+		uint32_t* asymmetricKeyLen
+	)
+	{
+		if (privateKey.keyType() != KeyType_RSA) {
+			if (isLogging()) {
+				Log(Error, "public key is not from type RSA");
+			}
+			return BadInvalidArgument;
+		}
+		*asymmetricKeyLen = privateKey.keySize();
+		return Success;
+	}
+
+	OpcUaStatusCode
 	CryptoOpenSSLBASIC128RSA15::asymmetricDecrypt(
 	    char*       	encryptedTextBuf,
 		uint32_t		encryptedTextLen,
