@@ -478,6 +478,8 @@ namespace OpcUaStackServer
 
 		// check client signature
 		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
+
+#if 0
 			uint32_t derBufLen = applicationCertificate_->certificate()->getDERBufSize();
 
 			MemoryBuffer plainText(derBufLen + 32);
@@ -503,6 +505,28 @@ namespace OpcUaStackServer
 				publicKey,
 				signTextBuf,
 				signTextLen
+			);
+
+#endif
+
+			// create certificate
+			uint32_t derCertSize = applicationCertificate_->certificate()->getDERBufSize();
+			MemoryBuffer certificate(derCertSize);
+			applicationCertificate_->certificate()->toDERBuf(
+				certificate.memBuf(),
+				&derCertSize
+			);
+
+			// create server nonce
+			MemoryBuffer serverNonce(serverNonce_, 32);
+
+			// verify signature
+			PublicKey publicKey = clientCertificate_.publicKey();
+			statusCode = activateSessionRequest.clientSignature()->verifySignature(
+				certificate,
+				serverNonce,
+				publicKey,
+				*secureChannelTransaction->cryptoBase_
 			);
 
 			if (statusCode != Success) {
