@@ -430,57 +430,6 @@ namespace OpcUaStackServer
 					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 				createSessionResponse.responseHeader()->serviceResult(BadSecurityChecksFailed);
 			}
-
-#if 0
-
-			// added server signature
-			MemoryBuffer plainText;
-			plainText.resize(
-				createSessionRequest.clientCertificate().size() +
-				createSessionRequest.clientNonce().size()
-			);
-			memcpy(
-				plainText.memBuf(),
-				createSessionRequest.clientCertificate().memBuf(),
-				createSessionRequest.clientCertificate().size()
-			);
-			memcpy(
-				plainText.memBuf() + createSessionRequest.clientCertificate().size(),
-				createSessionRequest.clientNonce().memBuf(),
-				createSessionRequest.clientNonce().size()
-			);
-
-			// get asymmetric key length
-			uint32_t asymmetricKeyLen = 0;
-			PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
-			secureChannelTransaction->cryptoBase_->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
-			asymmetricKeyLen /= 8;
-
-			MemoryBuffer signText;
-			signText.resize(asymmetricKeyLen);
-
-			// create signature
-			PrivateKey privateKey = *applicationCertificate_->privateKey();
-			uint32_t keyLen = asymmetricKeyLen;
-			statusCode = secureChannelTransaction->cryptoBase_->asymmetricSign(
-				plainText.memBuf(),
-				plainText.memLen(),
-				privateKey,
-				signText.memBuf(),
-				&keyLen
-			);
-
-			// FIXME: handle error
-
-			// FIXME: todo
-			createSessionResponse.signatureData()->signature(
-				(OpcUaByte*)signText.memBuf(),
-				signText.memLen()
-			);
-			createSessionResponse.signatureData()->algorithm(
-				SignatureAlgs::signatureAlgToUri(secureChannelTransaction->cryptoBase_->asymmetricSignatureAlgorithmId())
-			);
-#endif
 		}
 
 		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
