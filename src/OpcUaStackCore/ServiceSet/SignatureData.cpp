@@ -88,6 +88,62 @@ namespace OpcUaStackCore
 		return statusCode;
 	}
 
+	OpcUaStatusCode
+	SignatureData::verifySignature(
+		MemoryBuffer& certificate,
+		MemoryBuffer& nonce,
+		PublicKey& publicKey,
+		CryptoBase& cryptoBase
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		// check signature alg
+		if (algorithm() != SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId())) {
+			return BadSecurityChecksFailed;
+		}
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		statusCode = cryptoBase.asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+		asymmetricKeyLen /= 8;
+
+		// create plain text
+		MemoryBuffer plainText(certificate.memLen() + nonce.memLen());
+		memcpy(
+			plainText.memBuf(),
+			certificate.memBuf(),
+			certificate.memLen()
+		);
+		memcpy(
+			plainText.memBuf() + certificate.memLen(),
+			nonce.memBuf(),
+			nonce.memLen()
+		);
+
+		// create sign text
+		MemoryBuffer signText(signature());
+
+		// check signature length
+		if (asymmetricKeyLen != signText.memLen()) {
+			return BadSecurityChecksFailed;
+		}
+
+		// verify signature
+		statusCode = cryptoBase.asymmetricVerify(
+			plainText.memBuf(),
+			plainText.memLen(),
+			publicKey,
+			signText.memBuf(),
+			signText.memLen()
+		);
+
+		return statusCode;
+	}
+
 	void 
 	SignatureData::signature(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{
@@ -98,6 +154,12 @@ namespace OpcUaStackCore
 	SignatureData::signature(OpcUaByte** buf, OpcUaInt32* bufLen) const
 	{
 		signature_.value(buf, bufLen);
+	}
+
+	OpcUaByteString
+	SignatureData::signature(void)
+	{
+		return signature_;
 	}
 
 	void 

@@ -45,8 +45,16 @@ namespace OpcUaStackCore
 			CryptoBase& cryptoBase
 		);
 
+		OpcUaStatusCode verifySignature(
+			MemoryBuffer& certificate,
+			MemoryBuffer& nonce,
+			PublicKey& publicKey,
+			CryptoBase& cryptoBase
+		);
+
 		void signature(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void signature(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		OpcUaByteString signature(void);
 		void algorithm(const std::string& algorithm);
 		std::string algorithm(void) const;
 
