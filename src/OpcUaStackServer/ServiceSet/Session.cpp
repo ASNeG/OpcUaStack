@@ -478,37 +478,6 @@ namespace OpcUaStackServer
 
 		// check client signature
 		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
-
-#if 0
-			uint32_t derBufLen = applicationCertificate_->certificate()->getDERBufSize();
-
-			MemoryBuffer plainText(derBufLen + 32);
-
-			applicationCertificate_->certificate()->toDERBuf(
-				plainText.memBuf(),
-				&derBufLen
-			);
-			memcpy(
-				plainText.memBuf() + derBufLen,
-				serverNonce_,
-				32
-			);
-
-			char* signTextBuf;
-			int32_t  signTextLen;
-			activateSessionRequest.clientSignature()->signature((unsigned char **)&signTextBuf, &signTextLen);
-
-			PublicKey publicKey = clientCertificate_.publicKey();
-			statusCode = secureChannelTransaction->cryptoBase_->asymmetricVerify(
-				plainText.memBuf(),
-				plainText.memLen(),
-				publicKey,
-				signTextBuf,
-				signTextLen
-			);
-
-#endif
-
 			// create certificate
 			uint32_t derCertSize = applicationCertificate_->certificate()->getDERBufSize();
 			MemoryBuffer certificate(derCertSize);
