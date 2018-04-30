@@ -30,6 +30,52 @@ namespace OpcUaStackCore
 	{
 	}
 
+	OpcUaStatusCode createSignature(
+		MemoryBuffer& certificate,
+		MemoryBuffer& nonce,
+		PrivateKey& privateKey,
+		CryptoBase& cryptoBase
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		// create plain text
+		MemoryBuffer plainText(certificate.memLen() + nonce.memLen());
+		memcpy(
+			plainText.memBuf(),
+			certificate.memBuf(),
+			certificate.memLen()
+		);
+		memcpy(
+			plainText.memBuf() + certificate.memLen(),
+			nonce.memBuf(),
+			nonce.memLen()
+		);
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		statusCode = cryptoBase.asymmetricKeyLen(privateKey, &asymmetricKeyLen);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+		asymmetricKeyLen /= 8;
+
+		MemoryBuffer signText;
+		signText.resize(asymmetricKeyLen);
+
+		// create signature
+		uint32_t keyLen = asymmetricKeyLen;
+		statusCode = cryptoBase.asymmetricSign(
+			plainText.memBuf(),
+			plainText.memLen(),
+			privateKey,
+			signText.memBuf(),
+			&keyLen
+		);
+
+		return statusCode;
+	}
+
 	void 
 	SignatureData::signature(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{
