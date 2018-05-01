@@ -391,7 +391,7 @@ namespace OpcUaStackCore
 		statusCode = random.keyDerivePSHA1(secret, seed, key);
 
 		if (statusCode != Success && isLogging()) {
-			random.log(Error, "keyDerivePSHA256 error");
+			random.log(Error, "keyDerivePSHA1 error");
 		}
 
 		return statusCode;
