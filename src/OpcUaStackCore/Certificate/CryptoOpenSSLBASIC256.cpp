@@ -38,8 +38,8 @@ namespace OpcUaStackCore
 		derivedEncryptionKeyLen(32);
 		derivedSignatureKeyLen(24);
 		signatureDataLen(20);
-		asymmetricSignatureAlgorithmId(SignatureAlgs::RSA_PKCS1_OAEP_SHA1_Id);
-		asymmetricEncryptionAlgorithmId(EnryptionAlgs::RSA_OAEP_Id);
+		asymmetricSignatureAlgorithmId(SignatureAlgs::RSA_PKCS1_V15_SHA1_Id);
+		asymmetricEncryptionAlgorithmId(EnryptionAlgs::RSA_PKCS1_V15_Id);
 		symmetricSignatureAlgorithmId(SignatureAlgs::HMAC_SHA1_Id);
 		symmetricEncryptionAlgorithmId(EnryptionAlgs::AES_256_CBC_Id);
 	}
