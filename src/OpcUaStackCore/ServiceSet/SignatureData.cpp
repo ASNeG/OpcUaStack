@@ -100,6 +100,11 @@ namespace OpcUaStackCore
 
 		// check signature alg
 		if (algorithm() != SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId())) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "verify signature error - signature algorithm invalid")
+					.parameter("Algorithm", algorithm())
+					.parameter("ExpectedAlgorithm", SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId()));
+			}
 			return BadSecurityChecksFailed;
 		}
 
@@ -129,6 +134,11 @@ namespace OpcUaStackCore
 
 		// check signature length
 		if (asymmetricKeyLen != signText.memLen()) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "verify signature error - asymmetric key len invalid")
+					.parameter("AsymmetricKeyLen", signText.memLen())
+					.parameter("ExpectedAsymmetricKeyLen", asymmetricKeyLen);
+			}
 			return BadSecurityChecksFailed;
 		}
 
@@ -140,6 +150,14 @@ namespace OpcUaStackCore
 			signText.memBuf(),
 			signText.memLen()
 		);
+
+		if (statusCode != Success && cryptoBase.isLogging()) {
+			Log(Error, "verify signature error")
+				.parameter("PlainTextLen", plainText.memLen())
+				.parameter("SignTextLen", signText.memLen())
+				.parameter("CertificateLen", certificate.memLen())
+				.parameter("NonceLen", nonce.memLen());
+		}
 
 		return statusCode;
 	}
