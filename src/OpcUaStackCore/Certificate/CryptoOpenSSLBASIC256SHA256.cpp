@@ -15,11 +15,13 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Certificate/CryptoOpenSSLBASIC256SHA256.h"
 #include "OpcUaStackCore/Certificate/CryptoRSA.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
 #include "OpcUaStackCore/Certificate/CryptoSHA1.h"
 #include "OpcUaStackCore/Certificate/CryptoHMAC_SHA.h"
+#include "OpcUaStackCore/Certificate/Random.h"
 
 namespace OpcUaStackCore
 {
@@ -113,6 +115,9 @@ namespace OpcUaStackCore
 	)
 	{
 		if (publicKey.keyType() != KeyType_RSA) {
+			if (isLogging()) {
+				Log(Error, "public key is not from type RSA");
+			}
 			return BadInvalidArgument;
 		}
 		*asymmetricKeyLen = publicKey.keySize();
@@ -126,6 +131,9 @@ namespace OpcUaStackCore
 	)
 	{
 		if (privateKey.keyType() != KeyType_RSA) {
+			if (isLogging()) {
+				Log(Error, "public key is not from type RSA");
+			}
 			return BadInvalidArgument;
 		}
 		*asymmetricKeyLen = privateKey.keySize();
@@ -345,9 +353,26 @@ namespace OpcUaStackCore
 		}
 
 		if (signTextLen2 != signTextLen) {
+			if (isLogging()) {
+				Log(Error, "check signature length error")
+					.parameter("SignLen1", signTextLen)
+					.parameter("SignLen2", signTextLen2);
+			}
 			return BadSignatureInvalid;
 		}
+
 		if (memcmp(signTextBuf, sigText.memBuf(), signTextLen) != 0) {
+			if (isLogging()) {
+				std::string hexString1;
+				std::string hexString2;
+
+				byteSequenceToHexString((uint8_t*)signTextBuf, signTextLen2, hexString1);
+				sigText.toHexString(hexString2);
+
+				Log(Error, "check signature text not equal")
+					.parameter("Sign1", hexString1)
+					.parameter("Sign2", hexString2);
+			}
 			return BadSignatureInvalid;
 		}
 
@@ -361,8 +386,16 @@ namespace OpcUaStackCore
 		MemoryBuffer& key				// len = sig key + enc key + iv
 	)
 	{
-		// FIXME: todo
-		return BadNotSupported;
+		OpcUaStatusCode statusCode;
+
+		Random random;
+		statusCode = random.keyDerivePSHA256(secret, seed, key);
+
+		if (statusCode != Success && isLogging()) {
+			random.log(Error, "keyDerivePSHA256 error");
+		}
+
+		return statusCode;
 	}
 
 }
