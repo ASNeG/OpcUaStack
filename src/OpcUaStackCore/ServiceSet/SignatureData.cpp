@@ -57,6 +57,9 @@ namespace OpcUaStackCore
 		uint32_t asymmetricKeyLen = 0;
 		statusCode = cryptoBase.asymmetricKeyLen(privateKey, &asymmetricKeyLen);
 		if (statusCode != Success) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "create signature error - get asymmetric key len");
+			}
 			return statusCode;
 		}
 		asymmetricKeyLen /= 8;
@@ -74,6 +77,16 @@ namespace OpcUaStackCore
 			&keyLen
 		);
 		if (statusCode != Success) {
+
+			if (cryptoBase.isLogging()) {
+				Log(Error, "create signature error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+					.parameter("PlainTextLen", plainText.memLen())
+					.parameter("SignTextLen", signText.memLen())
+					.parameter("CertificateLen", certificate.memLen())
+					.parameter("NonceLen", nonce.memLen());
+			}
+
 			return statusCode;
 		}
 
@@ -112,6 +125,10 @@ namespace OpcUaStackCore
 		uint32_t asymmetricKeyLen = 0;
 		statusCode = cryptoBase.asymmetricKeyLen(publicKey, &asymmetricKeyLen);
 		if (statusCode != Success) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "verify signature error - get asymmetric key len")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			}
 			return statusCode;
 		}
 		asymmetricKeyLen /= 8;
@@ -153,6 +170,7 @@ namespace OpcUaStackCore
 
 		if (statusCode != Success && cryptoBase.isLogging()) {
 			Log(Error, "verify signature error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
 				.parameter("PlainTextLen", plainText.memLen())
 				.parameter("SignTextLen", signText.memLen())
 				.parameter("CertificateLen", certificate.memLen())
