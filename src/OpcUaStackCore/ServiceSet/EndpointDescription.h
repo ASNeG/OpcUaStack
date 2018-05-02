@@ -90,7 +90,7 @@ namespace OpcUaStackCore
 	};
 
 
-	class EndpointDescriptionSet
+	class DLLEXPORT EndpointDescriptionSet
 	{
 	  public:
 		typedef boost::shared_ptr<EndpointDescriptionSet> SPtr;

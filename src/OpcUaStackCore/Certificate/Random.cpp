@@ -15,11 +15,10 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include <openssl/rand.h>
-#include <openssl/hmac.h>
 #include "OpcUaStackCore/Base/Utility.h"
 #include "OpcUaStackCore/Certificate/Random.h"
-
+#include <openssl/rand.h>
+#include <openssl/hmac.h>
 
 //
 // P_SHA1(secret, seed) = HMAC_SHA1(secret, A(1) + seed) +
