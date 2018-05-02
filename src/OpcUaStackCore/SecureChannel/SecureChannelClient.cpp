@@ -105,8 +105,6 @@ namespace OpcUaStackCore
 		secureChannel->securityMode_ = config->securityMode();
 		secureChannel->securityPolicy_ = config->securityPolicy();
 		secureChannel->endpointUrl_ = config->endpointUrl();
-		secureChannel->debug_ = config->debug();
-		secureChannel->debugHeader_ = config->debugHeader();
 
 		// get ip address from hostname
 		Url url(config->endpointUrl());

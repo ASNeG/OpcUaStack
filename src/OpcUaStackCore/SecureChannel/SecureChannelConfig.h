@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -43,18 +43,12 @@ namespace OpcUaStackCore
 		OpcUaUInt32 maxMessageSize(void);
 		void maxChunkCount(OpcUaUInt32 maxChunkCount);
 		OpcUaUInt32 maxChunkCount(void);
-		void debug(bool debug);
-		bool debug(void);
-		void debugHeader(bool debugHeader);
-		bool debugHeader(void);
 
 	  private:
 		OpcUaUInt32 receivedBufferSize_;
 		OpcUaUInt32 sendBufferSize_;
 		OpcUaUInt32 maxMessageSize_;
 		OpcUaUInt32 maxChunkCount_;
-		bool debug_;
-		bool debugHeader_;
 	};
 
 }

@@ -46,6 +46,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncRead(SecureChannel* secureChannel)
 	{
+		// read message header
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,

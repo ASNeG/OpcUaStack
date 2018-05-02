@@ -121,8 +121,6 @@ namespace OpcUaStackCore
 	, timeout_(false)
 	, partner_()
 	, local_()
-	, debug_(false)
-	, debugHeader_(false)
 	, asyncRecv_(false)
 	, asyncSend_(false)
 	, asyncSendStop_(false)
@@ -205,7 +203,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvHeader(MessageHeader& messageHeader)
 	{
-		if (!debugHeader_) return;
+		if (!isLogging_) return;
 
 		std::string messageType = "Unknown";
 		switch(messageHeader.messageType())
@@ -231,7 +229,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvHello(HelloMessage& hello)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send Hello")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -247,7 +245,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvAcknowledge(AcknowledgeMessage& acknowledge)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv Acknowledge")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -262,7 +260,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest, OpcUaUInt32 channelId)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv OpenSecureChannelRequest")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -276,7 +274,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv OpenSecureChannelResponse")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -291,7 +289,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvCloseSecureChannelRequest(void)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv OpenSecureChannelRequest")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -303,14 +301,14 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvMessageRequest(void)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		debugRead("MessageRequest");
 	}
 
 	void
 	SecureChannel::debugRecvMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv MessageRequest")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -324,7 +322,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugRecvMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel recv MessageResponse")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -349,7 +347,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendHeader(MessageHeader& messageHeader)
 	{
-		if (!debugHeader_) return;
+		if (!isLogging_) return;
 
 		std::string messageType = "Unknown";
 		switch(messageHeader.messageType())
@@ -375,7 +373,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendHello(HelloMessage& hello)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send Hello")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -391,7 +389,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendAcknowledge(AcknowledgeMessage& acknowledge)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send Acknowledge")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -406,7 +404,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendOpenSecureChannelRequest(OpenSecureChannelRequest& openSecureChannelRequest)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send OpenSecureChannelRequest")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -421,7 +419,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendOpenSecureChannelResponse(OpenSecureChannelResponse& openSecureChannelResponse)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send OpenSecureChannelResponse")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -436,7 +434,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send MessageRequest")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())
@@ -450,7 +448,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannel::debugSendMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction)
 	{
-		if (!debug_) return;
+		if (!isLogging_) return;
 		Log(Debug, "opc ua secure channel send MessageResponse")
 			.parameter("Local-Address", local_.address().to_string())
 			.parameter("Local-Port", local_.port())

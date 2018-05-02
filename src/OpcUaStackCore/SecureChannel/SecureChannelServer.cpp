@@ -108,8 +108,6 @@ namespace OpcUaStackCore
 		secureChannel->maxMessageSize_ = config->maxMessageSize();
 		secureChannel->maxChunkCount_ = config->maxChunkCount();
 		secureChannel->endpointUrl_ = config->endpointUrl();
-		secureChannel->debug_ = config->debug();
-		secureChannel->debugHeader_ = config->debugHeader();
 
 		// get ip address from endpoint hostname
 		Url url(config->endpointUrl());

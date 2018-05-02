@@ -1,8 +1,5 @@
-
-
-
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -31,8 +28,6 @@ namespace OpcUaStackCore
 	, sendBufferSize_(MessageDefaults::sendBufferSizeDefault_)
 	, maxMessageSize_(MessageDefaults::maxMessageSizeDefault_)
 	, maxChunkCount_(MessageDefaults::maxChunkCountDefault_)
-	, debug_(false)
-	, debugHeader_(false)
 	{
 	}
 
@@ -86,30 +81,6 @@ namespace OpcUaStackCore
 	SecureChannelConfig::maxChunkCount(void)
 	{
 		return maxChunkCount_;
-	}
-
-	void
-	SecureChannelConfig::debug(bool debug)
-	{
-		debug_ = debug;
-	}
-
-	bool
-	SecureChannelConfig::debug(void)
-	{
-		return debug_;
-	}
-
-	void
-	SecureChannelConfig::debugHeader(bool debugHeader)
-	{
-		debugHeader_ = debugHeader;
-	}
-
-	bool
-	SecureChannelConfig::debugHeader(void)
-	{
-		return debugHeader_;
 	}
 
 }

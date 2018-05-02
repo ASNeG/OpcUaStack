@@ -139,8 +139,6 @@ namespace OpcUaStackCore
 		Object::SPtr config_;
 		bool closeFlag_;
 		bool timeout_;
-		bool debug_;
-		bool debugHeader_;
 		boost::asio::streambuf recvBuffer_;
 		boost::asio::streambuf sendBuffer_;
 		boost::asio::ip::tcp::endpoint local_;
