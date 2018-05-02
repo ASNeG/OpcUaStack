@@ -1403,7 +1403,10 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
+	SecureChannelBase::handleWriteMessageResponseComplete(
+		const boost::system::error_code& error,
+		SecureChannel* secureChannel
+	)
 	{
 		secureChannel->asyncSend_ = false;
 
@@ -1434,10 +1437,15 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteComplete(SecureChannel* secureChannel)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "handle write complete");
+		}
+
 		if (secureChannel->actSegmentFlag_ == 'F') {
 			asyncWriteOpenSecureChannelResponse(secureChannel);
 			if (secureChannel->asyncSend_) return;
 		}
+
 		asyncWriteMessageResponse(secureChannel);
 	}
 
