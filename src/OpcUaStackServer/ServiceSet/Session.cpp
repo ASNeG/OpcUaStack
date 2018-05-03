@@ -30,6 +30,7 @@
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
 
 using namespace OpcUaStackCore;
 
@@ -349,11 +350,121 @@ namespace OpcUaStackServer
 		Log(Error, "authentication error, because x509 authentication not implemented");
 		return BadIdentityTokenInvalid;
 	}
+
 	OpcUaStatusCode
 	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
-		Log(Error, "authentication error, because issued authentication not implemented");
-		return BadIdentityTokenInvalid;
+		Log(Debug, "Session::authenticationIssued");
+
+		IssuedIdentityToken::SPtr token = parameter->parameter<IssuedIdentityToken>();
+
+		// check parameter and password
+		if (token->tokenData().size() == 0) {
+			Log(Debug, "token data invalid");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_.get() == nullptr) {
+			Log(Debug, "endpoint description not exist");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+			Log(Debug, "user identity token not exist");
+			return BadIdentityTokenInvalid;
+		}
+
+		// find related identity token
+		bool found = true;
+		UserTokenPolicy::SPtr userTokenPolicy;
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+				continue;
+			}
+
+			if (userTokenPolicy->tokenType() != UserIdentityTokenType_Username) {
+				continue;
+			}
+
+			if (userTokenPolicy->policyId() == token->policyId()) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			Log(Debug, "issuer identity token for policy not found in endpoint")
+				.parameter("PolicyId", token->policyId());
+			return BadIdentityTokenInvalid;
+		}
+
+		Log(Debug, "authentication issued")
+		    .parameter("PolicyId", token->policyId())
+			.parameter("TokenData", token->tokenData())
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
+			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
+
+		// get cryption base and check cryption alg
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			return BadIdentityTokenRejected;
+		}
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(token->encryptionAlgorithm());
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", token->encryptionAlgorithm());
+			return BadIdentityTokenRejected;;
+		}
+
+		// decrypt token data
+		char* encryptedTextBuf;
+		int32_t encryptedTextLen;
+		token->tokenData((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		if (encryptedTextLen <= 0) {
+			Log(Debug, "token data format invalid");
+			return BadIdentityTokenRejected;;
+		}
+
+		char* plainTextBuf;
+		uint32_t plainTextLen;
+		MemoryBuffer plainText(encryptedTextLen);
+		plainTextBuf = plainText.memBuf();
+		plainTextLen = plainText.memLen();
+
+		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+
+		OpcUaStatusCode statusCode = cryptoBase->asymmetricDecrypt(
+			encryptedTextBuf,
+			encryptedTextLen,
+			*privateKey.get(),
+			plainTextBuf,
+			&plainTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "decrypt token data error");
+			return BadIdentityTokenRejected;;
+		}
+
+		// check decrypted password and server nonce
+		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
+			Log(Debug, "decrypt token data server nonce error");
+				return BadIdentityTokenRejected;;
+		}
+		token->tokenData((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+
+		// create application context
+		ApplicationAuthenticationContext context;
+		context.authenticationType_ = OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary;
+		context.parameter_ = parameter;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
+		return context.statusCode_;
 	}
 
 
