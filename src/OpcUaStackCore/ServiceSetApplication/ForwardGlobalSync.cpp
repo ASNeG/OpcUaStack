@@ -27,6 +27,7 @@ namespace OpcUaStackCore
 	, eventItemStopService_()
 	, authenticationService_()
 	, autorizationService_()
+	, closeSessionService_()
 	{
 	}
 
@@ -70,6 +71,12 @@ namespace OpcUaStackCore
 		return autorizationService_;
 	}
 
+	ForwardCallback&
+	ForwardGlobalSync::closeSessionService(void)
+	{
+		return closeSessionService_;
+	}
+
 	void
 	ForwardGlobalSync::updateFrom(ForwardGlobalSync& forwardGlobalSync)
 	{
@@ -79,6 +86,7 @@ namespace OpcUaStackCore
 		eventItemStopService_.updateFrom(forwardGlobalSync.eventItemStopService());
 		authenticationService_.updateFrom(forwardGlobalSync.authenticationService());
 		autorizationService_.updateFrom(forwardGlobalSync.autorizationService());
+		closeSessionService_.updateFrom(forwardGlobalSync.closeSessionService());
 
 	}
 
