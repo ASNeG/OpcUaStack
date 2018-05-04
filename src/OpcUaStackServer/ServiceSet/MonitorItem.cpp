@@ -78,6 +78,18 @@ namespace OpcUaStackServer
 		return monitoredItemCreateRequest_;
 	}
 
+	void
+	MonitorItem::userContext(UserContext::SPtr& userContext)
+	{
+		userContext_ = userContext;
+	}
+
+	UserContext::SPtr&
+	MonitorItem::userContext(void)
+	{
+		return userContext_;
+	}
+
 	uint32_t 
 	MonitorItem::size(void)
 	{
