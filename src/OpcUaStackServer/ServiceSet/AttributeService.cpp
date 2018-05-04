@@ -145,7 +145,12 @@ namespace OpcUaStackServer
 			boost::shared_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
 			// forward read request
-			forwardRead(baseNodeClass, readRequest, readValueId);
+			forwardRead(
+				serviceTransaction->userContext(),
+				baseNodeClass,
+				readRequest,
+				readValueId
+			);
 
 			// determine the attribute to be read
 			Attribute* attribute = baseNodeClass->attribute((AttributeId)readValueId->attributeId());
@@ -215,7 +220,12 @@ namespace OpcUaStackServer
 	}
 
 	void
-	AttributeService::forwardRead(BaseNodeClass::SPtr baseNodeClass, ReadRequest::SPtr readRequest, ReadValueId::SPtr readValueId)
+	AttributeService::forwardRead(
+		UserContext::SPtr& userContext,
+		BaseNodeClass::SPtr baseNodeClass,
+		ReadRequest::SPtr readRequest,
+		ReadValueId::SPtr readValueId
+	)
 	{
 		if ((AttributeId)readValueId->attributeId() != AttributeId_Value) return;
 
@@ -228,6 +238,7 @@ namespace OpcUaStackServer
 		applicationReadContext.attributeId_ = readValueId->attributeId();
 		applicationReadContext.statusCode_ = Success;
 		applicationReadContext.applicationContext_ = forwardNodeSync->readService().applicationContext();
+		applicationReadContext.userContext_ = userContext;
 
 		forwardNodeSync->readService().callback()(&applicationReadContext);
 
@@ -313,7 +324,12 @@ namespace OpcUaStackServer
 
 			boost::unique_lock<boost::shared_mutex> lock(baseNodeClass->mutex());
 
-			OpcUaStatusCode statusCode = forwardWrite(baseNodeClass, writeRequest, writeValue);
+			OpcUaStatusCode statusCode = forwardWrite(
+				serviceTransaction->userContext(),
+				baseNodeClass,
+				writeRequest,
+				writeValue
+			);
 			if (statusCode != Success) {
 				writeResponse->results()->set(idx, statusCode);
 				Log(Debug, "write value error, because invalid status code from library")
@@ -368,7 +384,12 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
-	AttributeService::forwardWrite(BaseNodeClass::SPtr baseNodeClass, WriteRequest::SPtr writeRequest, WriteValue::SPtr writeValue)
+	AttributeService::forwardWrite(
+		UserContext::SPtr& userContext,
+		BaseNodeClass::SPtr baseNodeClass,
+		WriteRequest::SPtr writeRequest,
+		WriteValue::SPtr writeValue
+	)
 	{
 		if ((AttributeId)writeValue->attributeId() != AttributeId_Value) return Success;
 
@@ -382,6 +403,7 @@ namespace OpcUaStackServer
 		writeValue->dataValue().copyTo(applicationWriteContext.dataValue_);
 		applicationWriteContext.statusCode_ = Success;
 		applicationWriteContext.applicationContext_ = forwardNodeSync->writeService().applicationContext();
+		applicationWriteContext.userContext_ = userContext;
 
 		forwardNodeSync->writeService().callback()(&applicationWriteContext);
 
@@ -540,6 +562,7 @@ namespace OpcUaStackServer
 			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
 			applicationReadContext.continousPoint_ = continousPoint;
 			applicationReadContext.numValuesPerNode_ = numValuesPerNode;
+			applicationReadContext.userContext_ = serviceTransaction->userContext();
 
 			forwardNodeSync->readHService().callback()(&applicationReadContext);
 
@@ -656,6 +679,7 @@ namespace OpcUaStackServer
 			applicationReadContext.releaseContinuationPoints_ = readRequest->releaseContinuationPoints();
 			applicationReadContext.continousPoint_ = continousPoint;
 			applicationReadContext.numValuesPerNode_ = numValuesPerNode;
+			applicationReadContext.userContext_ = serviceTransaction->userContext();
 
 			forwardNodeSync->readHEService().callback()(&applicationReadContext);
 
@@ -820,6 +844,7 @@ namespace OpcUaStackServer
 			applicationWriteContext.dataValueArray_ = dataDetails->updateValue();
 			applicationWriteContext.statusCode_ = Success;
 			applicationWriteContext.applicationContext_ = forwardNodeSync->writeHService().applicationContext();
+			applicationWriteContext.userContext_ = serviceTransaction->userContext();
 
 			forwardNodeSync->writeHService().callback()(&applicationWriteContext);
 			writeResult->statusCode(applicationWriteContext.statusCode_);
