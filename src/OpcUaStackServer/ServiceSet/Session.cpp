@@ -393,7 +393,7 @@ namespace OpcUaStackServer
 
 		// get signature data
 		SignatureData::SPtr userTokenSignature = activateSessionRequest.userTokenSignature();
-		if (userTokenSignature.get() != nullptr) {
+		if (userTokenSignature.get() == nullptr) {
 			Log(Debug, "missing user token signature")
 				.parameter("PolicyId", token->policyId());
 			return BadIdentityTokenInvalid;
