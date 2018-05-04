@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackServer_EventItem_h__
 #define __OpcUaStackServer_EventItem_h__
 
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/EventType/EventHandler.h"
@@ -57,6 +58,8 @@ namespace OpcUaStackServer
 			EventFieldListArray::SPtr eventFieldListArray
 		);
 
+		void userContext(UserContext::SPtr& userContext);
+		UserContext::SPtr& userContext(void);
 		uint32_t size(void);
 		uint32_t eventItemId(void);
 		void erase(void);
@@ -90,6 +93,7 @@ namespace OpcUaStackServer
 		boost::mutex eventFieldListListMutex_;
 
 		EventBase::SPtr eventBase_;
+		UserContext::SPtr userContext_;
 	};
 
 }
