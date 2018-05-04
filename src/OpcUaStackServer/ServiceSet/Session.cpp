@@ -31,6 +31,7 @@
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
 #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
 
 using namespace OpcUaStackCore;
 
@@ -347,8 +348,109 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
-		Log(Error, "authentication error, because x509 authentication not implemented");
-		return BadIdentityTokenInvalid;
+		Log(Debug, "Session::authenticationX509");
+
+		OpcUaStatusCode statusCode;
+
+		X509IdentityToken::SPtr token = parameter->parameter<X509IdentityToken>();
+
+		// check parameter and password
+		if (token->certificateData().size() == 0) {
+			Log(Debug, "token data invalid");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_.get() == nullptr) {
+			Log(Debug, "endpoint description not exist");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+			Log(Debug, "user identity token not exist");
+			return BadIdentityTokenInvalid;
+		}
+
+		// find related identity token
+		bool found = true;
+		UserTokenPolicy::SPtr userTokenPolicy;
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+				continue;
+			}
+
+			if (userTokenPolicy->tokenType() != UserIdentityTokenType_Username) {
+				continue;
+			}
+
+			if (userTokenPolicy->policyId() == token->policyId()) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			Log(Debug, "x509 identity token for policy not found in endpoint")
+				.parameter("PolicyId", token->policyId());
+			return BadIdentityTokenInvalid;
+		}
+
+		// get signature data
+		SignatureData::SPtr userTokenSignature = activateSessionRequest.userTokenSignature();
+		if (userTokenSignature.get() != nullptr) {
+			Log(Debug, "missing user token signature")
+				.parameter("PolicyId", token->policyId());
+			return BadIdentityTokenInvalid;
+		}
+
+		Log(Debug, "authentication x509")
+		    .parameter("PolicyId", token->policyId())
+			.parameter("CertificateData", token->certificateData())
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+
+		// get cryption base and check cryption alg
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			return BadIdentityTokenRejected;
+		}
+
+		uint32_t signatureAlg = SignatureAlgs::uriToSignatureAlg(userTokenSignature->algorithm());
+		if (signatureAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("SignatureAlgorithm", userTokenSignature->algorithm());
+			return BadIdentityTokenRejected;;
+		}
+
+		// get public key
+		MemoryBuffer certificateText(token->certificateData());
+		Certificate certificate;
+		if (!certificate.fromDERBuf(certificateText)) {
+			Log(Debug, "certificate invalid");
+			return BadIdentityTokenRejected;;
+		}
+		PublicKey publicKey = certificate.publicKey();
+
+		// FIXME: certificate must be trusted ...
+
+		// validate signature
+		statusCode = userTokenSignature->verifySignature(
+			certificateText,
+			publicKey,
+			*cryptoBase
+		);
+
+		// create application context
+		ApplicationAuthenticationContext context;
+		context.authenticationType_ = OpcUaId_X509IdentityToken_Encoding_DefaultBinary;
+		context.parameter_ = parameter;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
+		return context.statusCode_;
 	}
 
 	OpcUaStatusCode
