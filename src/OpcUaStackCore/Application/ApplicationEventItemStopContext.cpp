@@ -1,5 +1,5 @@
 /*
-   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,26 +15,20 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ApplicationEventItemStopContext_h__
-#define __OpcUaStackCore_ApplicationEventItemStopContext_h__
-
-#include "OpcUaStackCore/Base/BaseClass.h"
-#include "OpcUaStackCore/Base/UserContext.h"
+#include "OpcUaStackCore/Application/ApplicationEventItemStopContext.h"
 
 namespace OpcUaStackCore
 {
 
-	class ApplicationEventItemStopContext
+	ApplicationEventItemStopContext::ApplicationEventItemStopContext(void)
+	: applicationContext_()
+	, eventItemId_()
+	, userContext_()
 	{
-	  public:
-		ApplicationEventItemStopContext(void);
-		~ApplicationEventItemStopContext(void);
+	}
 
-		BaseClass::SPtr applicationContext_;	// IN - application context from register call
-		uint32_t eventItemId_;					// IN - event item identifier
-		UserContext::SPtr userContext_;			// IN - user context
-	};
+	ApplicationEventItemStopContext::~ApplicationEventItemStopContext(void)
+	{
+	}
 
 }
-
-#endif
