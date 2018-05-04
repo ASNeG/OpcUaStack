@@ -99,6 +99,7 @@ namespace OpcUaStackServer
 		void createServerNonce(void);
 
 		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
+		OpcUaStatusCode authenticationCloseSession(void);
 		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);

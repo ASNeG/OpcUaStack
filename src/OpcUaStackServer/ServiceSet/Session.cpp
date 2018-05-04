@@ -29,6 +29,7 @@
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
+#include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
 #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
 #include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
@@ -205,6 +206,23 @@ namespace OpcUaStackServer
 		}
 
 		return Success;
+	}
+
+	OpcUaStatusCode
+	Session::authenticationCloseSession(void)
+	{
+		ApplicationCloseSessionContext context;
+		context.sessionId_ = sessionId_;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->closeSessionService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
+		return context.statusCode_;
 	}
 
 	OpcUaStatusCode
@@ -800,6 +818,9 @@ namespace OpcUaStackServer
 
 		closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		closeSessionResponse.opcUaBinaryEncode(iosres);
+
+		// close session
+		authenticationCloseSession();
 
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
