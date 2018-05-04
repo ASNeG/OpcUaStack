@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,24 +15,20 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SecureChannelServerConfig_h__
-#define __OpcUaStackServer_SecureChannelServerConfig_h__
+#include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
 
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/Base/Config.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelServerOld.h"
-
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SecureChannelServerConfig
+	ApplicationRegisterServerContext::ApplicationRegisterServerContext(void)
+	: applicationContext_()
+	, server_()
+	, statusCode_(Success)
 	{
-	  public:
-		static bool initial(SecureChannelServerOld::SPtr secureChannelServerSPtr, const std::string& configPrefix, Config* config = nullptr);
-	};
+	}
+
+	ApplicationRegisterServerContext::~ApplicationRegisterServerContext(void)
+	{
+	}
 
 }
-
-#endif

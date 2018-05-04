@@ -47,7 +47,11 @@ namespace OpcUaStackServer
 		    MonitorItem::SPtr monitorItem = it1->second;
 
 		    if (monitorItem->baseNodeClass() != nullptr) {
-		        forwardStopMonitoredItem(monitorItem->baseNodeClass(), it1->first);
+		        forwardStopMonitoredItem(
+		        	monitorItem->userContext(),
+					monitorItem->baseNodeClass(),
+					it1->first
+				);
 		    }
 
 			ioThread_->slotTimer()->stop(monitorItem->slotTimerElement());
@@ -69,6 +73,7 @@ namespace OpcUaStackServer
 					ApplicationEventItemStopContext context;
 					context.applicationContext_ = forwardGlobalSync_->eventItemStopService().applicationContext();
 					context.eventItemId_ = it2->second->eventItemId();
+					context.userContext_ = it2->second->userContext();
 
 					forwardGlobalSync_->eventItemStopService().callback()(&context);
 				}
@@ -205,6 +210,7 @@ namespace OpcUaStackServer
 
 		// create new monitor item
 		MonitorItem::SPtr monitorItem = constructSPtr<MonitorItem>();
+		monitorItem->userContext(serviceTransaction->userContext());
 		statusCode = monitorItem->receive(baseNodeClass, monitoredItemCreateRequest);
 
 		if (statusCode != Success) {
@@ -220,7 +226,11 @@ namespace OpcUaStackServer
 		monitorItemMap_.insert(std::make_pair(monitorItem->monitorItemId(), monitorItem));
 
 		// forward start monitored item
-		forwardStartMonitoredItem(baseNodeClass, monitorItem->monitorItemId());
+		forwardStartMonitoredItem(
+			monitorItem->userContext(),
+			baseNodeClass,
+			monitorItem->monitorItemId()
+		);
 
 		// start sample timer
 		SlotTimerElement::SPtr slotTimerElement = monitorItem->slotTimerElement();
@@ -278,6 +288,7 @@ namespace OpcUaStackServer
 
 		// create new event item
 		EventItem::SPtr eventItem = constructSPtr<EventItem>();
+		eventItem->userContext(serviceTransaction->userContext());
 		eventItem->informationModel(informationModel_);
 		eventItem->browseName(browseName);
 		statusCode = eventItem->receive(
@@ -303,6 +314,7 @@ namespace OpcUaStackServer
 				ApplicationEventItemStartContext context;
 				context.applicationContext_ = forwardGlobalSync_->eventItemStartService().applicationContext();
 				context.eventItemId_ = eventItem->eventItemId();
+				context.userContext_ = eventItem->userContext();
 
 				forwardGlobalSync_->eventItemStartService().callback()(&context);
 			}
@@ -357,7 +369,11 @@ namespace OpcUaStackServer
 				// forward stop monitored item
 				BaseNodeClass::SPtr baseNodeClass = it1->second->baseNodeClass();
 				if (baseNodeClass.get() != nullptr) {
-					forwardStopMonitoredItem(baseNodeClass, monitorItemId);
+					forwardStopMonitoredItem(
+						it1->second->userContext(),
+						baseNodeClass,
+						monitorItemId
+					);
 				}
 
 				Log(Trace, "monitor item remove")
@@ -378,6 +394,7 @@ namespace OpcUaStackServer
 						ApplicationEventItemStopContext context;
 						context.applicationContext_ = forwardGlobalSync_->eventItemStopService().applicationContext();
 						context.eventItemId_ = it2->second->eventItemId();
+						context.userContext_ = it2->second->userContext();
 
 						forwardGlobalSync_->eventItemStopService().callback()(&context);
 					}
@@ -490,7 +507,11 @@ namespace OpcUaStackServer
 	}
 
 	void
-	MonitorManager::forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
+	MonitorManager::forwardStartMonitoredItem(
+		UserContext::SPtr& userContext,
+		BaseNodeClass::SPtr baseNodeClass,
+		uint32_t monitoredItemId
+	)
 	{
 		ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
 		if (forwardNodeSync.get() == nullptr) return;
@@ -526,12 +547,17 @@ namespace OpcUaStackServer
 		context.applicationContext_ = forwardNodeSync->monitoredItemStartService().applicationContext();
 		context.firstMonitoredItem_ = true;
 		context.nodeReference_ = nodeReference;
+		context.userContext_ = userContext;
 
 		forwardNodeSync->monitoredItemStartService().callback()(&context);
 	}
 
 	void
-	MonitorManager::forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId)
+	MonitorManager::forwardStopMonitoredItem(
+		UserContext::SPtr& userContext,
+		BaseNodeClass::SPtr baseNodeClass,
+		uint32_t monitoredItemId
+	)
 	{
 		ForwardNodeSync::SPtr forwardNodeSync = baseNodeClass->forwardNodeSync();
 		if (forwardNodeSync.get() == nullptr) return;
@@ -572,6 +598,7 @@ namespace OpcUaStackServer
 		context.applicationContext_ = forwardNodeSync->monitoredItemStopService().applicationContext();
 		context.lastMonitoredItem_ = true;
 		context.nodeReference_ = nodeReference;
+		context.userContext_ = userContext;
 
 		forwardNodeSync->monitoredItemStopService().callback()(&context);
 	}

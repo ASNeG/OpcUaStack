@@ -34,6 +34,8 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	SecureChannelBase::SecureChannelBase(SecureChannelType secureChannelType)
 	: secureChannelType_(secureChannelType)
+	, cryptoManager_()
+	, applicationCertificate_()
 	{
 	}
 
@@ -44,6 +46,7 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncRead(SecureChannel* secureChannel)
 	{
+		// read message header
 		secureChannel->asyncRecv_ = true;
 		secureChannel->async_read_exactly(
 			secureChannel->recvBuffer_,
@@ -407,6 +410,10 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		bool resultCode;
+
+		SecureChannelSecuritySettings& secureSettings = secureChannel->securitySettings();
+
 		// error accurred
 		if (error) {
 			Log(Error, "opc ua secure channel read OpenSecureChannelRequest message error; close channel")
@@ -430,12 +437,29 @@ namespace OpcUaStackCore
 
 		std::iostream is(&secureChannel->recvBuffer_);
 
-		// get channel id
-		OpcUaUInt32 channelId;
-		OpcUaNumber::opcUaBinaryDecode(is, channelId);
+		// decode second part of message header
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
-		SecurityHeader securityHeader;
-		securityHeader.opcUaBinaryDecode(is);
+		// decode secure header
+		resultCode = secureChannel->securityHeader_.opcUaBinaryDecode(is);
+		if (!resultCode) {
+			Log(Debug, "opc ua secure channel security header error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
+		// handle security
+		if (secureReceivedOpenSecureChannelRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
@@ -452,13 +476,28 @@ namespace OpcUaStackCore
 		consumeAll(secureChannel->recvBuffer_);
 
 		// debug output
-		secureChannel->debugRecvOpenSecureChannelRequest(openSecureChannelRequest, channelId);
+		secureChannel->debugRecvOpenSecureChannelRequest(
+			openSecureChannelRequest,
+			secureChannel->messageHeader_.channelId()
+		);
 
+		// handle server nonce
+		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+			char* buf;
+			int32_t len;
+			openSecureChannelRequest.clientNonce((OpcUaByte**)&buf, &len);
+			if (len > 0) {
+				secureSettings.clientNonce().set(buf, len);
+			}
+		}
+
+		// process open secure channel request
 		handleRecvOpenSecureChannelRequest(
 			secureChannel,
-			channelId,
+			secureChannel->messageHeader_.channelId(),
 			openSecureChannelRequest
 		);
+
 		asyncRead(secureChannel);
 	}
 
@@ -469,7 +508,7 @@ namespace OpcUaStackCore
 		OpenSecureChannelRequest& openSecureChannelRequest
 	)
 	{
-		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelRequest no implemented")
+		Log(Error, "opc ua secure channel error, because handleReadOpenSecureChannelRequest not implemented")
 			.parameter("Local", secureChannel->local_.address().to_string())
 			.parameter("Partner", secureChannel->partner_.address().to_string());
 	}
@@ -649,12 +688,30 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel)
 	{
+		assert(applicationCertificate_.get() != nullptr);
+		assert(applicationCertificate_->certificate().get() != nullptr);
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
 		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
 		if (secureChannel->asyncSend_) return;
 
 		OpenSecureChannelResponse::SPtr openSecureChannelResponse;
 		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
 		secureChannel->openSecureChannelResponseList_.pop_front();
+
+		// create server nonce
+		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
+			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+			secureChannel->securitySettings().serverNonce().resize(keyLen);
+
+			char* memBuf = secureChannel->securitySettings().serverNonce().memBuf();
+			for (uint32_t idx=0; idx<keyLen; idx++) {
+				memBuf[idx] = rand();
+			}
+
+			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
+		}
 
 		boost::asio::streambuf sb1;
 		std::iostream ios1(&sb1);
@@ -664,16 +721,19 @@ namespace OpcUaStackCore
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
 		// encode security header
-		SecurityHeader securityHeader;
-		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
-		switch (secureChannel->securityPolicy_)
-		{
-			case SP_None: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None"; break;
-			case SP_Basic128Rsa15: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15"; break;
-			case SP_Basic256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256"; break;
-			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
+		SecurityHeader& securityHeader = secureChannel->securityHeader_;
+		securityHeader.senderCertificate().reset();
+		if (securityHeader.isSignatureEnabled()) {
+			// FIXME: use sender certificate chain
+			applicationCertificate_->certificate()->toDERBuf(securityHeader.senderCertificate());
 		}
-		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
+		securityHeader.receiverCertificateThumbprint().reset();
+		if (securityHeader.isEncryptionEnabled()) {
+			assert(securitySettings.partnerCertificate().get() != nullptr);
+
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
+			securityHeader.receiverCertificateThumbprint(thumbPrint);
+		}
 		securityHeader.opcUaBinaryEncode(ios1);
 
 		// encode sequence number
@@ -691,6 +751,7 @@ namespace OpcUaStackCore
 		openSecureChannelResponse->opcUaBinaryEncode(ios1);
 
 		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
+		secureChannel->messageHeader_.segmentFlag('F');
 		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
 		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
 
@@ -698,10 +759,22 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendOpenSecureChannelResponse(*openSecureChannelResponse);
 
+		// handle security
+		MemoryBuffer plainText(sb2, sb1);
+		MemoryBuffer encryptedText;
+
+		if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel encrypt send message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+			return;
+		}
+
+		boost::asio::streambuf sb;
+		encryptedText.get(sb);
 		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
-			sb2,
-			sb1,
+			sb,
 			boost::bind(
 				&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
 				this,
@@ -868,6 +941,10 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::asyncReadMessageRequest(SecureChannel* secureChannel)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "asyncReadMessageRequest");
+		}
+
 		secureChannel->recvFirstSegment_ = false;
 		if (secureChannel->secureChannelTransaction_.get() == nullptr) {
 			secureChannel->recvFirstSegment_ = true;
@@ -889,8 +966,16 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::asyncReadMessageRequestComplete(const boost::system::error_code& error, std::size_t bytes_transfered, SecureChannel* secureChannel)
+	SecureChannelBase::asyncReadMessageRequestComplete(
+		const boost::system::error_code& error,
+		std::size_t bytes_transfered,
+		SecureChannel* secureChannel)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "asyncReadMessageRequestComplete")
+				.parameter("BytesTransfered", bytes_transfered);
+		}
+
 		secureChannel->asyncRecv_ = false;
 
 		// error occurred
@@ -921,10 +1006,21 @@ namespace OpcUaStackCore
 		std::iostream is(&secureChannel->recvBuffer_);
 
 		// get channel id
-		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->channelId_);
+		secureChannel->messageHeader_.opcUaBinaryDecodeChannelId(is);
 
 		// get security token
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->secureChannelTransaction_->securityTokenId_);
+
+		// handle security
+		if (secureReceivedMessageRequest(secureChannel) != Success) {
+			Log(Debug, "opc ua decrypt received message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+
+			closeChannel(secureChannel, true);
+			return;
+		}
+
 
 		// encode sequence number
 		OpcUaNumber::opcUaBinaryDecode(is, secureChannel->recvSequenceNumber_);
@@ -949,6 +1045,7 @@ namespace OpcUaStackCore
 		}
 
 		// message is completed
+		secureChannel->secureChannelTransaction_->cryptoBase_ = secureChannel->securitySettings_.cryptoBase();
 		handleRecvMessageRequest(secureChannel);
 		secureChannel->secureChannelTransaction_.reset();
 		asyncRead(secureChannel);
@@ -1259,8 +1356,23 @@ namespace OpcUaStackCore
 			ios.write(bufferPtr,bodySize);
 			secureChannelTransaction->os_.consume(bodySize);
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, sb);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string());
+				return;
+			}
+
+			boost::asio::streambuf sbn;
+			encryptedText.get(sbn);
+
+			// send response
 			secureChannel->async_write(
-				sb2, sb1, sb,
+				sbn,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
@@ -1275,8 +1387,23 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransactionList_.pop_front();
 			secureChannel->sendFirstSegment_ = true;
 
+			// handle security
+			MemoryBuffer plainText(sb2, sb1, secureChannelTransaction->os_);
+			MemoryBuffer encryptedText;
+
+			if (secureSendMessageResponse(plainText, encryptedText, secureChannel) != Success) {
+				Log(Debug, "opc ua secure channel encrypt send message error")
+					.parameter("Local", secureChannel->local_.address().to_string())
+					.parameter("Partner", secureChannel->partner_.address().to_string());
+				return;
+			}
+
+			boost::asio::streambuf sb;
+			encryptedText.get(sb);
+
+			// send response
 			secureChannel->async_write(
-				sb2, sb1, secureChannelTransaction->os_,
+				sb,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
@@ -1288,7 +1415,10 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelBase::handleWriteMessageResponseComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
+	SecureChannelBase::handleWriteMessageResponseComplete(
+		const boost::system::error_code& error,
+		SecureChannel* secureChannel
+	)
 	{
 		secureChannel->asyncSend_ = false;
 
@@ -1319,10 +1449,15 @@ namespace OpcUaStackCore
 	void
 	SecureChannelBase::handleWriteComplete(SecureChannel* secureChannel)
 	{
+		if (secureChannel->isLogging_) {
+			Log(Debug, "handle write complete");
+		}
+
 		if (secureChannel->actSegmentFlag_ == 'F') {
 			asyncWriteOpenSecureChannelResponse(secureChannel);
 			if (secureChannel->asyncSend_) return;
 		}
+
 		asyncWriteMessageResponse(secureChannel);
 	}
 
@@ -1427,5 +1562,735 @@ namespace OpcUaStackCore
 		std::size_t bufferSize = boost::asio::buffer_size(buffer);
 		streambuf.consume(bufferSize);
 	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// logging functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::logMessageInfo(
+		const std::string& message,
+		uint32_t plainTextBlockSize,
+	    uint32_t cryptTextBlockSize,
+		int32_t messageSize,
+		int32_t messageHeaderSize,
+		int32_t securityHeaderSize,
+		int32_t sequenceHeaderSize,
+		int32_t bodySize,
+		int32_t paddingSize,
+		int32_t signatureSize
+	)
+	{
+		std::stringstream ss;
+		ss << message
+           << ", BS(" << plainTextBlockSize << "," << cryptTextBlockSize << ")"
+		   << ", MS(" << messageSize << ")"
+		   << ", MH(" << messageHeaderSize << ")"
+		   << ", SH(" << securityHeaderSize << ")"
+		   << ", SQ(" << sequenceHeaderSize << ")"
+		   << ", B(" << bodySize << ")"
+		   << ", P(" << paddingSize << ")"
+		   << ", S(" << signatureSize << ")";
+		Log(Debug, ss.str());
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// security functions
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	void
+	SecureChannelBase::cryptoManager(CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
+	}
+
+	void
+	SecureChannelBase::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::secureReceivedOpenSecureChannelRequest(
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			return Success;
+		}
+
+		// find crypto base
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader->securityPolicyUri().toString());
+		if (cryptoBase.get() == nullptr) {
+			Log(Error, "crypto base not available for security policy uri")
+				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
+			return BadSecurityPolicyRejected;
+		}
+		cryptoBase->isLogging(secureChannel->isLogging_);
+		securitySettings.cryptoBase(cryptoBase);
+
+		// decrypt received open secure channel request
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = decryptReceivedOpenSecureChannel(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// verify signature
+		if (securityHeader->isSignatureEnabled()) {
+			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
+			securitySettings.partnerCertificate(partnerCertificate);
+			statusCode = verifyReceivedOpenSecureChannel(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::decryptReceivedOpenSecureChannel(
+		SecureChannel* secureChannel
+	)
+	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
+		OpcUaStatusCode statusCode;
+
+		// check receiver certificate
+		if (securityHeader->receiverCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
+			Log(Error, "receiver certificate invalid")
+				.parameter("ReceiverCertificateThumbprint", securityHeader->receiverCertificateThumbprint());
+			return BadCertificateInvalid;
+		}
+
+		// the number of received bytes must be a multiple of the key length
+		if (receivedDataLen % (applicationCertificate_->privateKey()->keySize()/8) != 0) {
+			Log(Error, "number of received bytes invalid")
+				.parameter("ReceivedDataLen", receivedDataLen);
+			return BadSecurityChecksFailed;
+		}
+
+		// decrypt received buffer
+		std::iostream ios(&secureChannel->recvBuffer_);
+		MemoryBuffer encryptedText(receivedDataLen);
+		MemoryBuffer plainText(receivedDataLen);
+		ios.read(encryptedText.memBuf(), receivedDataLen);
+
+		statusCode = securitySettings.cryptoBase()->asymmetricDecrypt(
+			encryptedText.memBuf(),
+			encryptedText.memLen(),
+			*applicationCertificate_->privateKey().get(),
+			plainText.memBuf(),
+			&receivedDataLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "decrypt open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		ios.write(plainText.memBuf(), receivedDataLen);
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::verifyReceivedOpenSecureChannel(
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		MessageHeader* messageHeader = &secureChannel->messageHeader_;
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// get public key client certificate
+		PublicKey publicKey = securityHeader->certificateChain().getCertificate()->publicKey();
+		uint32_t signTextLen = publicKey.keySizeInBytes();
+
+		// create plain text buffer (with signature at end of buffer)
+		boost::asio::streambuf streambuf;
+		std::iostream os(&streambuf);
+		messageHeader->opcUaBinaryEncode(os, true);
+		securityHeader->opcUaBinaryEncode(os);
+
+		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
+		MemoryBuffer plainText(plainTextLen);
+
+		const char* header = boost::asio::buffer_cast<const char*>(streambuf.data());
+		memcpy(plainText.memBuf(), header, streambuf.size());
+		const char* body = boost::asio::buffer_cast<const char*>(secureChannel->recvBuffer_.data());
+		memcpy(plainText.memBuf()+streambuf.size(), body, secureChannel->recvBuffer_.size());
+
+		// verify signature
+		statusCode = securitySettings.cryptoBase()->asymmetricVerify(
+			plainText.memBuf(),
+			plainText.memLen() - signTextLen,
+			publicKey,
+			plainText.memBuf() + plainText.memLen() - signTextLen,
+			signTextLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "verify open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::secureSendOpenSecureChannelResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			encryptedText.swap(plainText);
+			return Success;
+		}
+
+		if (securityHeader->isSignatureEnabled()) {
+			statusCode = signSendOpenSecureChannelResponse(plainText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// encrypt send open secure channel response
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = encryptSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+		else {
+			encryptedText.swap(plainText);
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::signSendOpenSecureChannelResponse(
+		MemoryBuffer& plainText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		PublicKey publicKey = applicationCertificate_->certificate()->publicKey();
+		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get block length
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		securitySettings.cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate length of message
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen =
+			16 +														// security header length fields
+			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
+			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
+			20;															// thumbPrint
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen = plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen;
+		uint32_t paddingByteLen = (asymmetricKeyLen > 256 ? 2 : 1);
+		uint32_t dataToEncryptLen =
+			sequenceHeaderLen +
+			bodyLen +
+			paddingByteLen +
+			asymmetricKeyLen;
+
+		// calculate number of padding bytes
+		uint32_t paddingSize = 0;
+		if (dataToEncryptLen % plainTextBlockSize != 0) {
+			paddingSize = plainTextBlockSize - (dataToEncryptLen % plainTextBlockSize);
+		}
+		paddingSize += paddingByteLen;
+		dataToEncryptLen += paddingSize;
+
+		// added padding bytes and extra padding byte
+		uint32_t plainTextLen = plainText.memLen();
+		plainText.resize(plainTextLen + paddingSize + asymmetricKeyLen);
+		char c = (paddingSize-1) & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+		// FIXME - extra padding size
+
+		// set new packet length
+		uint32_t newPacketLen =
+			messageHeaderLen +
+			securityHeaderLen +
+			(dataToEncryptLen / plainTextBlockSize * cryptTextBlockSize);
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(plainText.memBuf()+4, newPacketLen);
+
+		// create signature
+		uint32_t keyLen = asymmetricKeyLen;
+		statusCode = securitySettings.cryptoBase()->asymmetricSign(
+			plainText.memBuf(),
+			plainText.memLen() - asymmetricKeyLen,
+			*privateKey.get(),
+			plainText.memBuf() + plainText.memLen() - asymmetricKeyLen,
+			&keyLen
+		);
+
+		// logging
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"plain open secure channel response",
+				plainTextBlockSize,
+				cryptTextBlockSize,
+				plainText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				paddingSize,
+				asymmetricKeyLen
+			);
+		}
+
+		if (statusCode != Success) {
+			Log(Error, "sign open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		return statusCode;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::encryptSendOpenSecureChannelResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
+		PublicKey publicKey = securitySettings.partnerCertificate()->publicKey();
+
+		// create symmetric key set
+		statusCode = cryptoBase->deriveChannelKeyset(
+			securitySettings.clientNonce(),
+			securitySettings.serverNonce(),
+			securitySettings.securityKeySetClient(),
+			securitySettings.securityKeySetServer()
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get block length
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		securitySettings.cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate length of message header, security header and plain text
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen =
+			16 +														// security header length fields
+			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
+			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
+			20;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen =
+			plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen -
+			asymmetricKeyLen;
+
+		// calculate length of encrypted message
+		uint32_t dataToEnryptLen = sequenceHeaderLen + bodyLen + asymmetricKeyLen;
+		uint32_t encryptedBodyLen =
+			(dataToEnryptLen / plainTextBlockSize * cryptTextBlockSize) -
+			sequenceHeaderLen -
+			asymmetricKeyLen;
+		uint32_t encryptedTextLen =
+			messageHeaderLen +
+			securityHeaderLen +
+			sequenceHeaderLen +
+			encryptedBodyLen +
+			asymmetricKeyLen;
+
+		// encrypt message
+		encryptedText.resize(encryptedTextLen);
+		memcpy(encryptedText.memBuf(), plainText.memBuf(), messageHeaderLen + securityHeaderLen);
+
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"encrypt open secure channel response",
+				plainTextBlockSize,
+				cryptTextBlockSize,
+				encryptedText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				encryptedBodyLen,
+				-1,
+				asymmetricKeyLen
+			);
+		}
+
+		uint32_t toEncryptedTextLen = encryptedText.memLen()  - messageHeaderLen - securityHeaderLen;
+		securitySettings.cryptoBase()->isLogging(true);
+
+		statusCode = securitySettings.cryptoBase()->asymmetricEncrypt(
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			plainText.memLen() - messageHeaderLen - securityHeaderLen,
+			publicKey,
+			encryptedText.memBuf()  + messageHeaderLen + securityHeaderLen,
+			&toEncryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "decrypt open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::secureReceivedMessageRequest(
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			return Success;
+		}
+
+		// decrypt received message request
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = decryptReceivedMessage(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// verify signature
+		if (securityHeader->isSignatureEnabled()) {
+			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
+			securitySettings.partnerCertificate(partnerCertificate);
+			statusCode = verifyReceivedMessage(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::decryptReceivedMessage(
+		SecureChannel* secureChannel
+	)
+	{
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
+		OpcUaStatusCode statusCode;
+
+		// decrypt received buffer
+		std::iostream ios(&secureChannel->recvBuffer_);
+		MemoryBuffer encryptedText(receivedDataLen);
+		MemoryBuffer plainText(receivedDataLen);
+		ios.read(encryptedText.memBuf(), receivedDataLen);
+
+		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
+			encryptedText.memBuf(),
+			encryptedText.memLen(),
+			securitySettings.securityKeySetClient().encryptKey(),
+			securitySettings.securityKeySetClient().iv(),
+			plainText.memBuf(),
+			&receivedDataLen
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		ios.write(plainText.memBuf(), receivedDataLen);
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::verifyReceivedMessage(
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		MessageHeader* messageHeader = &secureChannel->messageHeader_;
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// create plain text buffer (with signature at end of buffer)
+		boost::asio::streambuf streambuf;
+		std::iostream os(&streambuf);
+		messageHeader->opcUaBinaryEncode(os, true);
+		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->secureChannelTransaction_->securityTokenId_);
+
+		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
+		MemoryBuffer plainText(plainTextLen);
+
+		const char* header = boost::asio::buffer_cast<const char*>(streambuf.data());
+		memcpy(plainText.memBuf(), header, streambuf.size());
+		const char* body = boost::asio::buffer_cast<const char*>(secureChannel->recvBuffer_.data());
+		memcpy(plainText.memBuf()+streambuf.size(), body, secureChannel->recvBuffer_.size());
+
+		statusCode = securitySettings.cryptoBase()->symmetricVerify(
+			plainText.memBuf(),
+			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
+			securitySettings.securityKeySetClient().signKey(),
+			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
+			securitySettings.cryptoBase()->signatureDataLen()
+		);
+		if (statusCode != Success) {
+			Log(Error, "verify message request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::secureSendMessageResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			encryptedText.swap(plainText);
+			return Success;
+		}
+
+		if (securityHeader->isSignatureEnabled()) {
+			statusCode = signSendMessageResponse(plainText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// encrypt send open secure channel response
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = encryptSendMessageResponse(plainText, encryptedText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+		else {
+			encryptedText.swap(plainText);
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::signSendMessageResponse(
+		MemoryBuffer& plainText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
+		// get symmetric key length / signature length
+		uint32_t symmetricKeyLen = 0;
+		uint32_t signatureDataLen = 0;
+		symmetricKeyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
+
+		// calculate length of message
+		uint32_t messageHeaderLen = 12;
+		uint32_t securityHeaderLen = 4;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen = plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen;
+		uint32_t paddingByteLen = 1;
+		uint32_t dataToEncryptLen =
+			sequenceHeaderLen +
+			bodyLen +
+			paddingByteLen +
+			signatureDataLen;
+
+		// calculate number of padding bytes
+		uint32_t paddingSize = 0;
+		if (dataToEncryptLen % symmetricKeyLen != 0) {
+			paddingSize = symmetricKeyLen - (dataToEncryptLen % symmetricKeyLen);
+		}
+		paddingSize += paddingByteLen;
+		dataToEncryptLen += paddingSize;
+
+		// added padding bytes and extra padding byte
+		uint32_t plainTextLen = plainText.memLen();
+		plainText.resize(plainTextLen + paddingSize + signatureDataLen);
+		char c = (paddingSize-1) & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+
+		// set new packet length
+		uint32_t newPacketLen = plainText.memLen();
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(plainText.memBuf()+4, newPacketLen);
+
+		// create signature
+		uint32_t keyLen = signatureDataLen;
+		statusCode = securitySettings.cryptoBase()->symmetricSign(
+			plainText.memBuf(),
+			plainText.memLen() - signatureDataLen,
+			securitySettings.securityKeySetServer().signKey(),
+			plainText.memBuf() + plainText.memLen() - signatureDataLen,
+			&keyLen
+		);
+
+		// logging
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"plain message response",
+				symmetricKeyLen,
+				symmetricKeyLen,
+				plainText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				paddingSize,
+				symmetricKeyLen
+			);
+		}
+
+		if (statusCode != Success) {
+			Log(Error, "sign message request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelBase::encryptSendMessageResponse(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
+
+		// get symmetric key length / signature length
+		uint32_t symmetricKeyLen = 0;
+		uint32_t signatureDataLen = 0;
+		symmetricKeyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
+
+		// calculate length of message header, security header and plain text
+		uint32_t messageHeaderLen = 12;
+		uint32_t securityHeaderLen = 4;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen =
+			plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen -
+			signatureDataLen;
+
+		// calculate length of encrypted message
+		uint32_t dataToEnryptLen = sequenceHeaderLen + bodyLen + signatureDataLen;
+
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"encrypt message response",
+				symmetricKeyLen,
+				symmetricKeyLen,
+				encryptedText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				-1,
+				signatureDataLen
+			);
+		}
+
+		// encrypt message
+		uint32_t encryptedTextLen = plainText.memLen() - messageHeaderLen - securityHeaderLen;
+		statusCode = securitySettings.cryptoBase()->symmetricEncrypt(
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			plainText.memLen() - messageHeaderLen - securityHeaderLen,
+			securitySettings.securityKeySetServer().encryptKey(),
+			securitySettings.securityKeySetServer().iv(),
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			&encryptedTextLen
+		);
+
+		if (statusCode != Success) {
+			Log(Error, "encrypt message response error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		plainText.swap(encryptedText);
+		return Success;
+	}
+
 
 }

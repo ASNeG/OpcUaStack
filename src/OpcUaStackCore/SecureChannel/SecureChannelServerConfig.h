@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,9 @@
 #define __OpUaStackCore_SecureChannelServerConfig_h__
 
 #include "OpcUaStackCore/SecureChannel/SecureChannelConfig.h"
+#include "OpcUaStackCore/ServiceSet/EndpointDescription.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackCore
@@ -34,17 +37,22 @@ namespace OpcUaStackCore
 		SecureChannelServerConfig(void);
 		~SecureChannelServerConfig(void);
 
+		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		EndpointDescriptionArray::SPtr& endpointDescriptionArray(void);
+		void endpointDescription(EndpointDescription::SPtr& endpointDescription);
+		EndpointDescription::SPtr& endpointDescription(void);
 		void endpointUrl(const std::string& endpointUrl);
 		std::string& endpointUrl(void);
-		void securityMode(SecurityMode securityMode);
-		SecurityMode securityMode(void);
-		void securityPolicy(SecurityPolicy securityPolicy);
-		SecurityPolicy securityPolicy(void);
+
+		void secureChannelLog(bool secureChannelLog);
+		bool secureChannelLog(void);
 
 	  private:
+		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
+		EndpointDescription::SPtr endpointDescription_;
 		std::string endpointUrl_;
-		SecurityMode securityMode_;
-		SecurityPolicy securityPolicy_;
+
+		bool secureChannelLog_;
 	};
 
 }

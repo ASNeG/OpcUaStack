@@ -28,8 +28,12 @@ namespace OpcUaStackCore
 	class ApplicationAuthenticationContext
 	{
 	  public:
+		ApplicationAuthenticationContext(void);
+		~ApplicationAuthenticationContext(void);
+
 		uint32_t authenticationType_;			// IN - authentication type
 		ExtensibleParameter::SPtr parameter_;	// IN - authentication parameter
+		uint32_t sessionId_;					// IN - session id
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
 		UserContext::SPtr userContext_;		    // OUT - user context
 	};

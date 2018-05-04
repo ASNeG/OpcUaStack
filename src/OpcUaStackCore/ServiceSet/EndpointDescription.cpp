@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,13 @@
 namespace OpcUaStackCore
 {
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// EndpointDescription
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	EndpointDescription::EndpointDescription(void)
 	: endpointUrl_()
 	, applicationDescription_(constructSPtr<ApplicationDescription>())
@@ -32,6 +39,17 @@ namespace OpcUaStackCore
 	{
 	}
 
+	EndpointDescription::EndpointDescription(const EndpointDescription& endpointDescription)
+	: endpointUrl_(endpointDescription.endpointUrl_)
+	, applicationDescription_(endpointDescription.applicationDescription_)
+	, serverCertificate_(endpointDescription.serverCertificate_)
+	, messageSecurityMode_(endpointDescription.messageSecurityMode_)
+	, securityPolicyUri_(endpointDescription.securityPolicyUri_)
+	, userIdentityTokens_(endpointDescription.userIdentityTokens_)
+	, transportProfileUri_(endpointDescription.transportProfileUri_)
+	, securityLevel_(endpointDescription.securityLevel_)
+	{
+	}
 
 	EndpointDescription::~EndpointDescription(void)
 	{
@@ -184,6 +202,13 @@ namespace OpcUaStackCore
 		return securityLevel_;
 	}
 
+	bool
+	EndpointDescription::needSecurity(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
 	void 
 	EndpointDescription::opcUaBinaryEncode(std::ostream& os) const
 	{
@@ -223,6 +248,71 @@ namespace OpcUaStackCore
 		//os << ", UserIdentityTokens=[" << *userIdentityTokens_ << "]";
 		os << ", TransportProfileUri="; transportProfileUri_.out(os);
 		os << ", SecurityLevel=" << (uint32_t)securityLevel_;
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// EndpointDescriptionSet
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	EndpointDescriptionSet::EndpointDescriptionSet(void)
+	: endpointDescriptionMap_()
+	{
+	}
+
+	EndpointDescriptionSet::~EndpointDescriptionSet(void)
+	{
+	}
+
+	void
+	EndpointDescriptionSet::addEndpoint(const std::string& endpointUrl, EndpointDescription::SPtr& endpointDescription)
+	{
+		endpointDescriptionMap_.insert(std::make_pair(endpointUrl, endpointDescription));
+	}
+
+	void
+	EndpointDescriptionSet::getEndpoints(const std::string& endpointUrl, EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		EndpointDescription::Multimap::iterator it;
+		std::pair<EndpointDescription::Multimap::iterator, EndpointDescription::Multimap::iterator> ret;
+
+		ret = endpointDescriptionMap_.equal_range(endpointUrl);
+
+		uint32_t count = endpointDescriptionMap_.count(endpointUrl);
+		if (count == 0) return;
+
+		endpointDescriptionArray->resize(count);
+		for (it = ret.first; it != ret.second; it++) {
+			endpointDescriptionArray->push_back(it->second);
+		}
+	}
+
+	void
+	EndpointDescriptionSet::getEndpoints(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		EndpointDescription::Multimap::iterator it;
+
+		endpointDescriptionArray->resize(endpointDescriptionMap_.size());
+
+		for (it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+			endpointDescriptionArray->push_back(it->second);
+		}
+	}
+
+	void
+	EndpointDescriptionSet::getEndpointUrls(std::vector<std::string>& endpointUrls)
+	{
+		EndpointDescription::Multimap::iterator it;
+		std::set<std::string> endpointSet;
+
+		for (it = endpointDescriptionMap_.begin(); it != endpointDescriptionMap_.end(); it++) {
+			if (endpointSet.insert(it->first).second) {
+				endpointUrls.push_back(it->first);
+			}
+		}
 	}
 
 }

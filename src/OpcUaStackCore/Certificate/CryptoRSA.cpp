@@ -54,15 +54,12 @@ namespace OpcUaStackCore
 	    uint32_t*  encryptedTextLen
 	)
 	{
-		*encryptedTextLen = 0;
-
-		// check plain text
-		if (plainTextBuf == nullptr || plainTextLen == 0) {
-			if (isLogging_) {
-				Log(Error, "publicEntrypt error - plainTextBuf is empty");
-			}
-			return BadInvalidArgument;
-		}
+		assert(plainTextBuf != nullptr);
+		assert(plainTextLen > 0);
+		assert(publicKey != nullptr);
+		assert(encryptedTextBuf != nullptr);
+		assert(encryptedTextLen != nullptr);
+		assert(*encryptedTextLen > 0);
 
 		// check public key
 		if (publicKey->keyType() != KeyType_RSA) {
@@ -72,6 +69,38 @@ namespace OpcUaStackCore
 			return BadInvalidArgument;
 		}
 
+	    // calculate encrypted block size
+		uint32_t keyBlockSize = publicKey->keySizeInBytes();
+		uint32_t encryptedBlockSize  = 0;
+	    switch(padding)
+	    {
+	    	case RSA_PKCS1_PADDING:
+	        {
+	        	encryptedBlockSize = keyBlockSize - 11;
+	            break;
+	        }
+	    	case RSA_PKCS1_OAEP_PADDING:
+	        {
+	        	encryptedBlockSize = keyBlockSize - 42;
+	            break;
+	        }
+	    	case RSA_NO_PADDING:
+	        {
+	        	encryptedBlockSize = keyBlockSize;
+	            break;
+	        }
+	    	default:
+	        {
+				if (isLogging_) {
+					Log(Error, "publicEntrypt error - invalid padding type");
+				}
+	            return BadNotSupported;
+	        }
+	    }
+
+	    // ceck length of encryption buffer
+	    // FIXME: todo
+
 		// get key information
 		EVP_PKEY* key = *publicKey;
 		if (key == nullptr) {
@@ -80,87 +109,53 @@ namespace OpcUaStackCore
 			}
 			return BadUnexpectedError;
 		}
-
 		if (EVP_PKEY_get0_RSA(key) == nullptr) {
 			if (isLogging_) {
 				Log(Error, "publicEntrypt error - invalid rsa key type");
 			}
 			return BadUnexpectedError;
 		}
-		uint32_t keySize = publicKey->keySize();
-
-	    // check padding type
-		uint32_t encryptedDataSize  = 0;
-	    switch(padding)
-	    {
-	    	case RSA_PKCS1_PADDING:
-	        {
-	        	encryptedDataSize = keySize - 11;
-	            break;
-	        }
-	    	case RSA_PKCS1_OAEP_PADDING:
-	        {
-	        	encryptedDataSize = keySize - 42;
-	            break;
-	        }
-	    	case RSA_NO_PADDING:
-	        {
-	        	encryptedDataSize = keySize;
-	            break;
-	        }
-	    	default:
-	        {
-				if (isLogging_) {
-					Log(Error, "publicEntrypt error - pinvalid padding type");
-				}
-	            return BadNotSupported;
-	        }
-	    }
 
 	    // check bytes to encrypt in one step
 	    uint32_t bytesToEncrypt = 0;
-	    if(plainTextLen < encryptedDataSize) {
+	    if(plainTextLen < encryptedBlockSize) {
 	    	bytesToEncrypt = plainTextLen;
 	    }
 	    else {
-	    	bytesToEncrypt = encryptedDataSize;
+	    	bytesToEncrypt = encryptedBlockSize;
 	    }
 
 	    // encrypt
+	    *encryptedTextLen = 0;
 	    uint32_t plainTextPosition = 0;
 	    uint32_t encryptedTextPosition = 0;
 	    while(plainTextPosition < plainTextLen) {
-	    	int32_t encryptedBytes;
 
 	    	// the last part could be smaller
-	    	if((plainTextLen >= encryptedDataSize) && ((plainTextLen - plainTextPosition) < encryptedDataSize)) {
+	    	if((plainTextLen >= encryptedBlockSize) && ((plainTextLen - plainTextPosition) < encryptedBlockSize)) {
 	            bytesToEncrypt = plainTextLen - plainTextPosition;
 	        }
 
-	    	if((encryptedTextBuf != nullptr) && (plainTextBuf != nullptr)) {
-	    		// encrypt buffer
-	    		encryptedBytes = RSA_public_encrypt(
-	    		    bytesToEncrypt,      	   										// number bytes to encrypt
-	    			(const unsigned char*)(plainTextBuf + plainTextPosition),       // buffer to encrypt
-	    			(unsigned char*)(encryptedTextBuf + encryptedTextPosition),  	// where to encrypt
-					EVP_PKEY_get0_RSA(key),                              					// public key
-	    			padding															// padding mode
-			    );
-	    		if(encryptedBytes < 0) {
-	    			addOpenSSLError();
+	    	// encrypt buffer
+	    	int32_t encryptedBytes = 0;
+	    	encryptedBytes = RSA_public_encrypt(
+	    		bytesToEncrypt,      	   										// number bytes to encrypt
+	    		(const unsigned char*)(plainTextBuf + plainTextPosition),       // buffer to encrypt
+	    		(unsigned char*)(encryptedTextBuf + encryptedTextPosition),  	// where to encrypt
+				EVP_PKEY_get0_RSA(key),                              			// public key
+	    		padding															// padding mode
+			);
+	    	if(encryptedBytes < 0) {
+	    		addOpenSSLError();
 
-	    			if (isLogging_) {
-	    				log(Error, "publicEntrypt error - RSA_public_encrypt");
-	    			}
-	    			return BadUnexpectedError;
+	    		if (isLogging_) {
+	    			log(Error, "publicEntrypt error - RSA_public_encrypt");
 	    		}
-	    	}
-	    	else {
-	    		encryptedBytes = keySize;
+	    		return BadUnexpectedError;
 	    	}
 
 	    	*encryptedTextLen = *encryptedTextLen + encryptedBytes;
-	    	encryptedTextPosition += keySize;
+	    	encryptedTextPosition += encryptedBytes;
 	    	plainTextPosition  += bytesToEncrypt;
 	    }
 

@@ -33,6 +33,7 @@ namespace OpcUaStackServer
 	DiscoveryService::DiscoveryService(void)
 	: discoveryIf_(nullptr)
 	, applicationCertificate_(nullptr)
+	, endpointDescriptionArray_()
 	{
 	}
 
@@ -47,14 +48,23 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	DiscoveryService::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	DiscoveryService::endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet)
 	{
-		endpointDescriptionArray_ = endpointDescriptionArray;
+		Log(Debug, "endpointDescriptionSet");
+
+		assert(endpointDescriptionSet.get() != nullptr);
+
+		endpointDescriptionArray_ = constructSPtr<EndpointDescriptionArray>();
+		endpointDescriptionSet->getEndpoints(endpointDescriptionArray_);
 	}
 
 	void
 	DiscoveryService::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
 	{
+		Log(Debug, "applicationCertificate");
+
+		assert(applicationCertificate.get() != nullptr);
+
 		applicationCertificate_ = applicationCertificate;
 
 		if (!applicationCertificate_->enable()) {
@@ -76,6 +86,10 @@ namespace OpcUaStackServer
 			EndpointDescription::SPtr endpointDescription;
 			endpointDescriptionArray_->get(idx, endpointDescription);
 
+			if (!endpointDescription->needSecurity()) {
+				continue;
+			}
+
 			endpointDescription->serverCertificate((const unsigned char*)certBuf, certLen);
 		}
 
@@ -88,7 +102,13 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
-		Log(Debug, "receive get endpoint request request");
+		assert(requestHeader.get() != nullptr);
+		assert(secureChannelTransaction.get() != nullptr);
+		assert(endpointDescriptionArray_.get() != nullptr);
+
+		Log(Debug, "receive get endpoint request request")
+		    .parameter("AvailableNumberEndpoints", endpointDescriptionArray_->size());
+
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_GetEndpointsResponse_Encoding_DefaultBinary;
 
 		std::iostream is(&secureChannelTransaction->is_);
@@ -233,119 +253,7 @@ namespace OpcUaStackServer
 		}
 #endif
 	}
-
 #if 0
-	bool 
-	DiscoveryService::receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		std::iostream is(&secureChannelTransaction->is_);
-		RequestHeader requestHeader;
-		GetEndpointsRequest getEndpointsRequest;
-
-		requestHeader.opcUaBinaryDecode(is);
-		getEndpointsRequest.opcUaBinaryDecode(is);
-
-		// FIXME: analyse request data
-
-		std::iostream os(&secureChannelTransaction->os_);
-
-		ResponseHeader responseHeader;
-		GetEndpointsResponse getEndpointsResponse;
-
-		responseHeader.requestHandle(requestHeader.requestHandle());
-		responseHeader.serviceResult(Success);
-		getEndpointsResponse.endpoints(endpointDescriptionArray_);
-
-		responseHeader.opcUaBinaryEncode(os);
-		getEndpointsResponse.opcUaBinaryEncode(os);
-	
-		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
-		return true;
-	}
-
-	bool 
-	DiscoveryService::receiveFindServersRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		std::iostream is(&secureChannelTransaction->is_);
-		RequestHeader requestHeader;
-		FindServersRequest findServersRequest;
-
-		requestHeader.opcUaBinaryDecode(is);
-		findServersRequest.opcUaBinaryDecode(is);
-
-		// FIXME: analyse request data
-
-		std::iostream os(&secureChannelTransaction->os_);
-
-		ResponseHeader responseHeader;
-		FindServersResponse findServersResponse;
-
-		responseHeader.requestHandle(requestHeader.requestHandle());
-
-		// check forward callback functions
-		ApplicationFindServerContext ctx;
-		ctx.statusCode_ = BadNotSupported;
-		if (forwardGlobalSync()->findServersService().isCallback()) {
-
-			// forward find server request
-			ctx.applicationContext_ = forwardGlobalSync()->findServersService().applicationContext();
-			findServersRequest.endpointUrl().copyTo(ctx.endpointUrl_);
-			ctx.localeIdArraySPtr_ = findServersRequest.localeIds();
-			ctx.serverUriArraySPtr_ = findServersRequest.serverUris();
-			forwardGlobalSync()->findServersService().callback()(&ctx);
-
-		}
-
-		responseHeader.serviceResult(ctx.statusCode_);
-		if (ctx.statusCode_ == Success) {
-			findServersResponse.servers(ctx.servers_);
-		}
-
-		responseHeader.opcUaBinaryEncode(os);
-		findServersResponse.opcUaBinaryEncode(os);
-
-		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
-		return true;
-	}
-
-	bool
-	DiscoveryService::receiveRegisterServerRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		std::iostream is(&secureChannelTransaction->is_);
-		RequestHeader requestHeader;
-		RegisterServerRequest registerServerRequest;
-
-		requestHeader.opcUaBinaryDecode(is);
-		registerServerRequest.opcUaBinaryDecode(is);
-
-		// FIXME: analyse request data
-
-		std::iostream os(&secureChannelTransaction->os_);
-
-		ResponseHeader responseHeader;
-		RegisterServerResponse registerServerResponse;
-
-		responseHeader.requestHandle(requestHeader.requestHandle());
-
-		// check forward callback functions
-		ApplicationRegisterServerContext ctx;
-		ctx.statusCode_ = BadNotSupported;
-		if (forwardGlobalSync()->registerServerService().isCallback()) {
-
-			// forward register server request
-			ctx.applicationContext_ = forwardGlobalSync()->registerServerService().applicationContext();
-			registerServerRequest.server().copyTo(ctx.server_);
-			forwardGlobalSync()->registerServerService().callback()(&ctx);
-		}
-		responseHeader.serviceResult(ctx.statusCode_);
-
-		responseHeader.opcUaBinaryEncode(os);
-		registerServerResponse.opcUaBinaryEncode(os);
-
-		if (discoveryManagerIf_ != nullptr) discoveryManagerIf_->discoveryMessage(secureChannelTransaction);
-		return true;
-	}
-
 	void
 	DiscoveryService::receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction)
 	{

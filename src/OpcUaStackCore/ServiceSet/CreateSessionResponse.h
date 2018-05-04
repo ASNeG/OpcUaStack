@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,10 +51,12 @@ namespace OpcUaStackCore
 		void serverNonce(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void serverCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		void serverCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
+		OpcUaByteString& serverCertificate(void);
 		void serverEndpoints(const EndpointDescriptionArray::SPtr serverEndpoints);
 		EndpointDescriptionArray::SPtr serverEndpoints(void) const;
 		void serverSoftwareCertificate(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		void serverSoftwareCertificate(const OpcUaByte* buf, OpcUaInt32 bufLen);
+		OpcUaByteString& serverSoftwareCertificate(void);
 		void signatureData(const SignatureData::SPtr signatureData);
 		SignatureData::SPtr signatureData(void) const;
 		void maxRequestMessageSize(const OpcUaUInt32 maxRequestMessageSize);

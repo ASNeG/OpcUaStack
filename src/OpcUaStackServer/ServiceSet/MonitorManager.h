@@ -76,8 +76,16 @@ namespace OpcUaStackServer
 			CreateMonitoredItemsRequest::SPtr& createMonitorItemRequest,
 			CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
 		);
-		void forwardStartMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
-		void forwardStopMonitoredItem(BaseNodeClass::SPtr baseNodeClass, uint32_t monitoredItemId);
+		void forwardStartMonitoredItem(
+			UserContext::SPtr& userContext,
+			BaseNodeClass::SPtr baseNodeClass,
+			uint32_t monitoredItemId
+		);
+		void forwardStopMonitoredItem(
+			UserContext::SPtr& userContext,
+			BaseNodeClass::SPtr baseNodeClass,
+			uint32_t monitoredItemId
+		);
 		void sampleTimeout(MonitorItem::SPtr monitorItem);
 
 		IOThread* ioThread_;

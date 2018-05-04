@@ -38,6 +38,7 @@ namespace OpcUaStackServer
 	, eventFieldListList_()
 	, clientHandle_(0)
 	, eventBase_()
+	, userContext_()
 	{
 	}
 
@@ -317,6 +318,17 @@ namespace OpcUaStackServer
 		return Success;
 	}
 
+	void
+	EventItem::userContext(UserContext::SPtr& userContext)
+	{
+		userContext_ = userContext;
+	}
+
+	UserContext::SPtr&
+	EventItem::userContext(void)
+	{
+		return userContext_;
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------

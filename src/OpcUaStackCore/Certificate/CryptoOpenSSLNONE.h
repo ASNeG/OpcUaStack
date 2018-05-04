@@ -31,6 +31,36 @@ namespace OpcUaStackCore
 		CryptoOpenSSLNONE(void);
 		virtual ~CryptoOpenSSLNONE(void);
 
+		virtual OpcUaStatusCode getAsymmetricEncryptionBlockSize(
+			PublicKey& publicKey,
+			uint32_t* plainTextBlockSize,
+			uint32_t* cryptTextBlockSize
+		);
+
+		virtual OpcUaStatusCode getAsymmetricSignatureBlockSize(
+			PublicKey& publicKey,
+			uint32_t* signTextBlockSize
+		);
+
+		virtual OpcUaStatusCode getSymmetricEncryptionBlockSize(
+			uint32_t* plainTextBlockSize,
+			uint32_t* cryptTextBlockSize
+		);
+
+		virtual OpcUaStatusCode getSymmetricSignatureBlockSize(
+			uint32_t* signTextBlockSize
+		);
+
+		virtual OpcUaStatusCode asymmetricKeyLen(
+			PublicKey& publicKey,
+			uint32_t* asymmetricKeyLen
+		);
+
+		virtual OpcUaStatusCode asymmetricKeyLen(
+			PrivateKey& privateKey,
+			uint32_t* asymmetricKeyLen
+		);
+
 		virtual OpcUaStatusCode asymmetricDecrypt(
 		    char*       	encryptedTextBuf,
 			uint32_t		encryptedTextLen,
@@ -53,7 +83,7 @@ namespace OpcUaStackCore
 			AESKey&	   		aesKey,
 			IV&		   		iv,
 			char*      		plainTextBuf,
-			int32_t*   		plainTextLen
+			uint32_t*   	plainTextLen
 		);
 
 		virtual OpcUaStatusCode symmetricEncrypt(
@@ -62,7 +92,45 @@ namespace OpcUaStackCore
 			AESKey&	   		aesKey,
 			IV&		   		iv,
 			char*      		encryptedTextBuf,
-			int32_t*   		encryptedTextLen
+			uint32_t*   	encryptedTextLen
+		);
+
+		virtual OpcUaStatusCode asymmetricSign(
+		    char*       	dataTextBuf,
+			uint32_t		dataTextLen,
+			PrivateKey&		privateKey,
+			char*       	signatureTextBuf,
+			uint32_t*		signatureTextLen
+		);
+
+		virtual OpcUaStatusCode asymmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	signTextBuf,
+			uint32_t		signTextLen
+		);
+
+		virtual OpcUaStatusCode symmetricSign(
+		    char*       	dataTextBuf,
+			uint32_t		dataTextLen,
+			MemoryBuffer&	key,
+			char*       	signatureTextBuf,
+			uint32_t*		signatureTextLen
+		);
+
+		virtual OpcUaStatusCode symmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			MemoryBuffer&	key,
+			char*       	signTextBuf,
+			uint32_t		signTextLen
+		);
+
+		virtual OpcUaStatusCode deriveKey(
+			MemoryBuffer& secret,			// remote nonce
+			MemoryBuffer& seed,				// local nonce
+			MemoryBuffer& key				// len = sig key + enc key + iv
 		);
 
 	};

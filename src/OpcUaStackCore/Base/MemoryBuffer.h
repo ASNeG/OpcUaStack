@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_MemoryBuffer_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/asio/streambuf.hpp>
 
 #include <string>
 #include "OpcUaStackCore/Base/os.h"
@@ -35,19 +36,33 @@ namespace OpcUaStackCore
 		MemoryBuffer(const std::string& value);
 		MemoryBuffer(const char* memBuf, uint32_t memLen);
 		MemoryBuffer(uint32_t memLen);
+		MemoryBuffer(boost::asio::streambuf& sb);
+		MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2);
+		MemoryBuffer(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2, boost::asio::streambuf& sb3);
 		~MemoryBuffer(void);
 
 		bool operator ==(const MemoryBuffer &b) const;
 		friend std::ostream& operator<<(std::ostream& os, const MemoryBuffer& memoryBuffer);
 
 		void clear(void);
+		void resize(uint32_t newMemLen);
 		bool isNull(void);
 		char* memBuf(void);
 		int32_t memLen(void);
+		bool get(boost::asio::streambuf& sb);
 
 		void set(const std::string& value);
 		void set(const char* value);
 		void set(const char* memBuf, uint32_t memLen);
+		void set(MemoryBuffer& memoryBuffer);
+		void set(boost::asio::streambuf& sb);
+		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2);
+		void set(boost::asio::streambuf& sb1, boost::asio::streambuf& sb2, boost::asio::streambuf& sb3);
+
+		void swap(char* inMemBuf, int32_t inBufLen, char** outMemBuf = nullptr, int32_t*outMemLen = nullptr);
+		void swap(MemoryBuffer& memoryBuffer);
+
+		void toHexString(std::string& hexString);
 
 	  private:
 		char *memBuf_;

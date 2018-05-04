@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_ApplicationMonitoredItemStopContext_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
 #include "OpcUaStackCore/ServiceSetApplication/NodeReference.h"
 
@@ -28,10 +29,14 @@ namespace OpcUaStackCore
 	class ApplicationMonitoredItemStopContext
 	{
 	  public:
+		ApplicationMonitoredItemStopContext(void);
+		~ApplicationMonitoredItemStopContext(void);
+
 		BaseClass::SPtr applicationContext_;	// IN - application context from register call
 		OpcUaNodeId nodeId_;					// IN - node id to be monitored
 		bool lastMonitoredItem_;				// IN - the last monitored item has been closed
 		NodeReference::SPtr nodeReference_;		// IN - reference to base node class
+		UserContext::SPtr userContext_;			// IN - user context
 	};
 
 }

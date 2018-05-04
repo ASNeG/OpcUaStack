@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,27 +15,28 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SessionManagerIf_h__
-#define __OpcUaStackServer_SessionManagerIf_h__
+#include "OpcUaStackCore/Application/ApplicationHReadContext.h"
 
-#include "boost/asio.hpp"
-#include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelTransactionOld.h"
-
-using namespace OpcUaStackCore;
-
-namespace OpcUaStackServer
+namespace OpcUaStackCore
 {
 
-	class DLLEXPORT SessionManagerIf
-	{ 
-	  public:
-		virtual ~SessionManagerIf(void) {}
-		virtual void sessionMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction) = 0;
-		virtual void sessionDelete(uint32_t authenticationToken) = 0;
-	};
+	ApplicationHReadContext::ApplicationHReadContext(void)
+	: applicationContext_()
+	, nodeId_()
+	, startTime_()
+	, stopTime_()
+	, timestampsToReturn_(TimestampsToReturn_Both)
+	, releaseContinuationPoints_(true)
+	, continousPoint_()
+	, numValuesPerNode_(0)
+	, userContext_()
+	, dataValueArray_()
+	, statusCode_(Success)
+	{
+	}
 
-};
+	ApplicationHReadContext::~ApplicationHReadContext(void)
+	{
+	}
 
-#endif
+}

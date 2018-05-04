@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -33,16 +33,36 @@ namespace OpcUaStackCore
 	OpcUaByteString::OpcUaByteString(void)
 	: Object()
 	, length_(-1)
-	, value_(NULL)
+	, value_(nullptr)
 	{
+	}
+
+	OpcUaByteString::OpcUaByteString(const OpcUaByteString& byteString)
+	: Object()
+	, length_(-1)
+	, value_(nullptr)
+	{
+		char* memBuf;
+		int32_t memLen;
+
+		byteString.value(&memBuf, &memLen);
+		value(memBuf, memLen);
 	}
 
 	OpcUaByteString::OpcUaByteString(const std::string& value)
 	: Object()
 	, length_(-1)
-	, value_(NULL)
+	, value_(nullptr)
 	{
 		this->value(value);
+	}
+
+	OpcUaByteString::OpcUaByteString(const OpcUaByte* value, OpcUaInt32 length)
+	: Object()
+	, length_(-1)
+	, value_(nullptr)
+	{
+		this->value(value, length);
 	}
 		
 	OpcUaByteString::~OpcUaByteString(void)
@@ -66,13 +86,11 @@ namespace OpcUaStackCore
 	void 
 	OpcUaByteString::value(const OpcUaByte* value, OpcUaInt32 length)
 	{
-		if (value == nullptr) {
-			reset();
+		reset();
+		if (value == nullptr || length < 0) {
 			return;
 		}
 
-		reset();
-		if (length < 0) return;
 		value_ = (OpcUaByte*)malloc(length);
 		memcpy(value_, value, length);
 		length_ = length;
@@ -95,13 +113,31 @@ namespace OpcUaStackCore
 	{
 		return length_;
 	}
+
+	char*
+	OpcUaByteString::memBuf(void)
+	{
+		return (char*)value_;
+	}
+
+	bool
+	OpcUaByteString::resize(uint32_t size)
+	{
+		reset();
+		if (size <= 0) return true;
+		value_ = (OpcUaByte*)malloc(size);
+		memset(value_, 0x00, size);
+		length_ = size;
+
+		return true;
+	}
 		
 	void 
 	OpcUaByteString::reset(void) 
 	{
-		if (value_ != NULL) {
+		if (value_ != nullptr) {
 			free((char*)value_);
-			value_ = NULL;
+			value_ = nullptr;
 			length_ = -1;
 		}
 	}
@@ -112,10 +148,27 @@ namespace OpcUaStackCore
 		return length_ != -1;
 	}
 
+	bool
+	OpcUaByteString::isNull(void) const
+	{
+		return length_ == -1;
+	}
+
 	OpcUaByteString& 
 	OpcUaByteString::operator=(const std::string& string)
 	{
 		value(string);
+		return *this;
+	}
+
+	OpcUaByteString&
+	OpcUaByteString::operator=(const OpcUaByteString& byteString)
+	{
+		char* memBuf;
+		int32_t memLen;
+
+		byteString.value(&memBuf, &memLen);
+		value(memBuf, memLen);
 		return *this;
 	}
 		
@@ -198,9 +251,7 @@ namespace OpcUaStackCore
 	OpcUaByteString::opcUaBinaryEncode(std::ostream& os) const
 	{
 		OpcUaNumber::opcUaBinaryEncode(os, length_);
-		if (length_ < 1) {
-			return;
-		}
+		if (length_ < 1) return;
 		os.write((char*)value_, length_);
 	}
 		
@@ -209,9 +260,7 @@ namespace OpcUaStackCore
 	{
 		reset();
 		OpcUaNumber::opcUaBinaryDecode(is, length_);
-		if (length_ < 1) {
-			return;
-		}
+		if (length_ < 1) return;
 		
 		value_ = (OpcUaByte*)malloc(length_);
 		is.read((char*)value_, length_);

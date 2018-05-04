@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,9 +51,13 @@ namespace OpcUaStackCore
 		OpcUaInt32 messageSize(void) const;
 		void segmentFlag(char segmentFlag);
 		char segmentFlag(void);
+		void channelId(uint32_t channelId);
+		uint32_t channelId(void);
 
-		void opcUaBinaryEncode(std::ostream& os) const;
-		void opcUaBinaryDecode(std::istream& is);
+		void opcUaBinaryEncode(std::ostream& os, bool full = false) const;
+		void opcUaBinaryEncodeChannelId(std::ostream& os) const;
+		void opcUaBinaryDecode(std::istream& is, bool full = false);
+		void opcUaBinaryDecodeChannelId(std::istream& is);
 
 	  private:
 		char messageTypeString_[3];
@@ -61,6 +65,7 @@ namespace OpcUaStackCore
 		char segmentFlag_;
 		MessageType messageType_;
 		OpcUaUInt32 messageSize_;
+		OpcUaUInt32 channelId_;
 	};
 
 }

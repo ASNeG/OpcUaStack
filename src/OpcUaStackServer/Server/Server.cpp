@@ -37,6 +37,7 @@ namespace OpcUaStackServer
 	, sessionManager_()
 	, serviceManager_()
 	, applicationManager_()
+	, serverInfo_()
 	, serverStatusDataType_()
 	, applicationCertificate_()
 	{
@@ -339,9 +340,9 @@ namespace OpcUaStackServer
 		bool rc;
 
 		// decode endpoint configuration
-		EndpointDescriptionArray::SPtr endpointDescriptionArray = constructSPtr<EndpointDescriptionArray>();
+		EndpointDescriptionSet::SPtr endpointDescriptionSet = constructSPtr<EndpointDescriptionSet>();
 		rc = EndpointDescriptionConfig::endpointDescriptions(
-			endpointDescriptionArray, 
+			endpointDescriptionSet,
 			"OpcUaServer.Endpoints", 
 			&config(),
 			config().configFileName()
@@ -351,12 +352,16 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		EndpointDescription::SPtr endpointDescription;
-		endpointDescriptionArray->get(0, endpointDescription);
+		// decode server info
+		rc = serverInfo_.parse(&config(), "OpcUaServer.ServerInfo");
+		if (!rc) {
+			Log(Error, "server info error");
+			return false;
+		}
 
 		// decode certificate configuration
 		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
-		applicationCertificate_->uri(endpointDescription->endpointUrl());
+		applicationCertificate_->uri(serverInfo_.serverUri());
 		rc = ApplicationCertificateConfig::parse(
 			applicationCertificate_,
 			"OpcUaServer.ApplicationCertificate",
@@ -377,14 +382,15 @@ namespace OpcUaStackServer
 
 		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
-		discoveryService->endpointDescriptionArray(endpointDescriptionArray);
+		discoveryService->endpointDescriptionSet(endpointDescriptionSet);
 		discoveryService->applicationCertificate(applicationCertificate_);
 
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
-		sessionManager_.endpointDescriptionArray(endpointDescriptionArray);
+		sessionManager_.endpointDescriptionSet(endpointDescriptionSet);
 		sessionManager_.applicationCertificate(applicationCertificate_);
 		sessionManager_.cryptoManager(cryptoManager);
+		sessionManager_.config(&config());
 
 		return true;
 	}

@@ -50,7 +50,7 @@ namespace OpcUaStackCore
 	    AESKey&	   aesKey,
 		IV&		   iv,
 	    char*      encryptedTextBuf,
-	    int32_t*   encryptedTextLen
+	    uint32_t*  encryptedTextLen
 	)
 	{
 		if (aesKey.memLen() != 16) {
@@ -77,7 +77,7 @@ namespace OpcUaStackCore
 	    AESKey&	   aesKey,
 		IV&		   iv,
 	    char*      encryptedTextBuf,
-	    int32_t*   encryptedTextLen
+	    uint32_t*  encryptedTextLen
 	)
 	{
 		if (aesKey.memLen() != 32) {
@@ -104,7 +104,7 @@ namespace OpcUaStackCore
 		AESKey&	   aesKey,
 		IV&		   iv,
 	    char*      encryptedTextBuf,
-	    int32_t*   encryptedTextLen
+	    uint32_t*  encryptedTextLen
 	)
 	{
 		// check plain text
@@ -161,7 +161,7 @@ namespace OpcUaStackCore
 		AESKey&	   aesKey,
 		IV&		   iv,
 	    char*      plainTextBuf,
-	    int32_t*   plainTextLen
+	    uint32_t*  plainTextLen
 	)
 	{
 		if (aesKey.memLen() != 16) {
@@ -188,7 +188,7 @@ namespace OpcUaStackCore
 		AESKey&	   aesKey,
 		IV&		   iv,
 	    char*      plainTextBuf,
-	    int32_t*   plainTextLen
+	    uint32_t*  plainTextLen
 	)
 	{
 		if (aesKey.memLen() != 32) {
@@ -215,7 +215,7 @@ namespace OpcUaStackCore
 		AESKey&	   aesKey,
 		IV&		   iv,
 	    char*      plainTextBuf,
-	    int32_t*   plainTextLen
+	    uint32_t*  plainTextLen
 	)
 	{
 		// check plain text

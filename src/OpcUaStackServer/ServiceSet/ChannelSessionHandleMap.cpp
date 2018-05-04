@@ -31,11 +31,14 @@ namespace OpcUaStackServer
 	}
 
 	ChannelSessionHandle::SPtr
-	ChannelSessionHandleMap::createSecureChannel(SecureChannel* secureChannel)
+	ChannelSessionHandleMap::createSecureChannel(
+		SecureChannelServer::SPtr& secureChannelServer,
+		SecureChannel* secureChannel)
 	{
 		// create new channel session handle
 		ChannelSessionHandle::SPtr channelSessionHandle = constructSPtr<ChannelSessionHandle>();
 		channelSessionHandle->secureChannel(secureChannel);
+		channelSessionHandle->secureChannelServer(secureChannelServer);
 
 		// added new channel session handle to channel map
 		channelIdMap_.insert(std::make_pair(secureChannel->channelId_, channelSessionHandle));

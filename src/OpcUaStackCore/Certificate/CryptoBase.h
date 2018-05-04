@@ -26,6 +26,7 @@
 #include "OpcUaStackCore/Certificate/PrivateKey.h"
 #include "OpcUaStackCore/Certificate/PublicKey.h"
 #include "OpcUaStackCore/Certificate/CryptoAES.h"
+#include "OpcUaStackCore/Certificate/SecurityKeySet.h"
 
 namespace OpcUaStackCore
 {
@@ -33,11 +34,11 @@ namespace OpcUaStackCore
 	class DLLEXPORT EnryptionAlgs
 	{
 	  public:
-		static uint32_t AES_128_CBC_Id;
-		static uint32_t AES_256_CBC_Id;
-		static uint32_t RSA_PKCS1_V15_Id;
-		static uint32_t RSA_OAEP_Id;
-		static uint32_t DES3_Id;
+		static const uint32_t AES_128_CBC_Id;
+		static const uint32_t AES_256_CBC_Id;
+		static const uint32_t RSA_PKCS1_V15_Id;
+		static const uint32_t RSA_OAEP_Id;
+		static const uint32_t DES3_Id;
 
 		static std::string AES_128_CBC_Name;
 		static std::string AES_256_CBC_Name;
@@ -46,17 +47,18 @@ namespace OpcUaStackCore
 		static std::string DES3_Name;
 
 		static uint32_t uriToEncryptionAlg(const std::string& uri);
+		static std::string encryptAlgToUri(uint32_t encryptAlg);
 	};
 
 	class DLLEXPORT SignatureAlgs
 	{
 	  public:
-		static uint32_t RSA_PKCS1_V15_SHA1_Id;
-		static uint32_t RSA_PKCS1_V15_SHA256_Id;
-		static uint32_t HMAC_SHA1_Id;
-		static uint32_t HMAC_SHA256_Id;
-		static uint32_t RSA_PKCS1_OAEP_SHA1_Id;
-		static uint32_t RSA_PKCS1_OAEP_SHA256_Id;
+		static const uint32_t RSA_PKCS1_V15_SHA1_Id;
+		static const uint32_t RSA_PKCS1_V15_SHA256_Id;
+		static const uint32_t HMAC_SHA1_Id;
+		static const uint32_t HMAC_SHA256_Id;
+		static const uint32_t RSA_PKCS1_OAEP_SHA1_Id;
+		static const uint32_t RSA_PKCS1_OAEP_SHA256_Id;
 
 		static std::string RSA_PKCS1_V15_SHA1_Name;
 		static std::string RSA_PKCS1_V15_SHA256_Name;
@@ -66,6 +68,7 @@ namespace OpcUaStackCore
 		static std::string RSA_PKCS1_OAEP_SHA256_Name;
 
 		static uint32_t uriToSignatureAlg(const std::string& uri);
+		static std::string signatureAlgToUri(uint32_t signatureAlg);
 	};
 
 	class DLLEXPORT CryptoBase
@@ -79,9 +82,15 @@ namespace OpcUaStackCore
 
 		void securityPolicy(const std::string& securityPolicy);
 		std::string& securityPolicy(void);
+		void isLogging(bool isLogging);
+		bool isLogging(void);
 
+		void nonceLen(uint32_t nonceLen);
+		uint32_t nonceLen(void);
 		void symmetricKeyLen(int32_t symmetricKeyLen);
 		int32_t symmetricKeyLen(void);
+		void asymmetricKeyLen(int32_t asymmetricKeyLen);
+		int32_t asymmetricKeyLen(void);
 		void minimumAsymmetricKeyLen(uint32_t minimumAsymmetricKeyLen);
 		uint32_t minimumAsymmetricKeyLen(void);
 		void maximumAsymmetricKeyLen(uint32_t maximumAsymmetricKeyLen);
@@ -100,6 +109,36 @@ namespace OpcUaStackCore
 		uint32_t symmetricSignatureAlgorithmId(void);
 		void symmetricEncryptionAlgorithmId(uint32_t symmetricEncryptionAlgorithmId);
 		uint32_t symmetricEncryptionAlgorithmId(void);
+
+		virtual OpcUaStatusCode getAsymmetricEncryptionBlockSize(
+			PublicKey& publicKey,
+			uint32_t* plainTextBlockSize,
+			uint32_t* cryptTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode getAsymmetricSignatureBlockSize(
+			PublicKey& publicKey,
+			uint32_t* signTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode getSymmetricEncryptionBlockSize(
+			uint32_t* plainTextBlockSize,
+			uint32_t* cryptTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode getSymmetricSignatureBlockSize(
+			uint32_t* signTextBlockSize
+		) = 0;
+
+		virtual OpcUaStatusCode asymmetricKeyLen(
+			PublicKey& publicKey,
+			uint32_t* asymmetricKeyLen
+		) = 0;
+
+		virtual OpcUaStatusCode asymmetricKeyLen(
+			PrivateKey& privateKey,
+			uint32_t* asymmetricKeyLen
+		) = 0;
 
 		virtual OpcUaStatusCode asymmetricDecrypt(
 		    char*       	encryptedTextBuf,
@@ -123,7 +162,7 @@ namespace OpcUaStackCore
 			AESKey&	   		aesKey,
 			IV&		   		iv,
 			char*      		plainTextBuf,
-			int32_t*   		plainTextLen
+			uint32_t*   	plainTextLen
 		) = 0;
 
 		virtual OpcUaStatusCode symmetricEncrypt(
@@ -132,13 +171,67 @@ namespace OpcUaStackCore
 			AESKey&	   		aesKey,
 			IV&		   		iv,
 			char*      		encryptedTextBuf,
-			int32_t*   		encryptedTextLen
+			uint32_t*   	encryptedTextLen
 		) = 0;
+
+		virtual OpcUaStatusCode asymmetricSign(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PrivateKey&		privateKey,
+			char*       	signTextBuf,
+			uint32_t*		signTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode asymmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			PublicKey&		publicKey,
+			char*       	signTextBuf,
+			uint32_t		signTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode symmetricSign(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			MemoryBuffer&	key,
+			char*       	signTextBuf,
+			uint32_t*		signTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode symmetricVerify(
+		    char*       	plainTextBuf,
+			uint32_t		plainTextLen,
+			MemoryBuffer&	key,
+			char*       	signTextBuf,
+			uint32_t		signTextLen
+		) = 0;
+
+		virtual OpcUaStatusCode deriveKey(
+			MemoryBuffer& secret,			// remote nonce
+			MemoryBuffer& seed,				// local nonce
+			MemoryBuffer& key				// len = sig key + enc key + iv
+		) = 0;
+
+		OpcUaStatusCode deriveChannelKeyset(
+		    MemoryBuffer& clientNonce,
+			MemoryBuffer& serverNonce,
+		    SecurityKeySet& clientSecurityKeySet,
+		    SecurityKeySet& serverSecurityKeySet
+		);
+
+		OpcUaStatusCode deriveChannelKeyset(
+		    MemoryBuffer& remoteNonce,
+			MemoryBuffer& localNonce,
+		    SecurityKeySet& securityKeySet
+		);
 
 	  private:
 		std::string securityPolicy_;
+		bool isLogging_;
 
+		uint32_t nonceLen_;
 		int32_t symmetricKeyLen_;
+		int32_t asymmetricKeyLen_;
 		uint32_t minimumAsymmetricKeyLen_;
 		uint32_t maximumAsymmetricKeyLen_;
 		uint32_t derivedEncryptionKeyLen_;

@@ -19,6 +19,7 @@
 #define __OpcUaStackPubSub_DataSetColection_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/Config.h"
 
 namespace OpcUaStackPubSub
 {

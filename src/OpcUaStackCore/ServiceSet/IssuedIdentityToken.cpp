@@ -60,6 +60,12 @@ namespace OpcUaStackCore
 	{
 		tokenData_.value(buf, bufLen);
 	}
+
+	OpcUaByteString&
+	IssuedIdentityToken::tokenData(void)
+	{
+		return tokenData_;
+	}
 		
 	void 
 	IssuedIdentityToken::encryptionAlgorithm(const std::string& encryptionAlgorithm)

@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <cassert>
 #include "OpcUaStackCore/Certificate/OpenSSLCompat.h"
 
 namespace OpcUaStackCore
@@ -24,6 +25,7 @@ namespace OpcUaStackCore
 
 	RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey)
 	{
+		assert(pkey != nullptr);
 		if (pkey->type != EVP_PKEY_RSA) {
 			return NULL;
 		}
@@ -32,6 +34,7 @@ namespace OpcUaStackCore
 
 	int EVP_PKEY_up_ref(EVP_PKEY *pkey)
 	{
+		assert(pkey != nullptr);
 		CRYPTO_add (&pkey->references, 1, CRYPTO_LOCK_EVP_PKEY);
 		return 1;
 	}

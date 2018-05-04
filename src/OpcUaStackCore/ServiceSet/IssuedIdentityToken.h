@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 		std::string policyId(void) const;
 		void tokenData(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void tokenData(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		OpcUaByteString& tokenData(void);
 		void encryptionAlgorithm(const std::string& encryptionAlgorithm);
 		std::string encryptionAlgorithm(void) const;
 

@@ -31,7 +31,6 @@
 #include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
 #include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/ServiceSet/SessionIf.h"
-#include "OpcUaStackServer/ServiceSet/SessionManagerIf.h"
 #include "OpcUaStackServer/ServiceSet/TransactionManager.h"
 
 
@@ -64,7 +63,6 @@ namespace OpcUaStackServer
 		void transactionManager(TransactionManager::SPtr transactionManager);
 		void forwardGlobalSync(ForwardGlobalSync::SPtr& forwardGlobalSync);
 
-		void sessionManagerIf(SessionManagerIf* sessionManagerIf);
 		void sessionIf(SessionIf* sessionIf);
 		OpcUaUInt32 sessionId(void);
 		OpcUaUInt32 authenticationToken(void);
@@ -90,18 +88,18 @@ namespace OpcUaStackServer
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 
-
-		bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray);
-
+		void endpointDescription(EndpointDescription::SPtr& endpointDescription);
+		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
 
 		// - Component -------------------------------------------------------
 		void receive(Message::SPtr message);
 		// - Component -------------------------------------------------------
 
 	  private:
+		void createServerNonce(void);
+
 		OpcUaStatusCode authentication(ActivateSessionRequest& activateSessionRequest);
+		OpcUaStatusCode authenticationCloseSession(void);
 		OpcUaStatusCode authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
@@ -129,22 +127,15 @@ namespace OpcUaStackServer
 		static OpcUaUInt32 getUniqueSessionId(void);
 		static OpcUaUInt32 getUniqueAuthenticationToken(void);
 
-		bool receiveCreateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		bool receiveActivateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-
-		bool receiveCloseSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		bool receiveCancelRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		bool receiveMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-
 		OpcUaUInt32 sessionId_;
 		OpcUaUInt32 authenticationToken_;
 		SessionState sessionState_;
 		SessionIf* sessionIf_;
-		SessionManagerIf* sessionManagerIf_;
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		EndpointDescription::SPtr endpointDescription_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 		CryptoManager::SPtr cryptoManager_;
+		Certificate clientCertificate_;
 
 		ForwardGlobalSync::SPtr forwardGlobalSync_;
 		TransactionManager::SPtr transactionManagerSPtr_;

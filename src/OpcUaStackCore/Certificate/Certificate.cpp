@@ -20,6 +20,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/local_time_adjustor.hpp>
 #include <boost/date_time/c_local_time_adjustor.hpp>
+#include "OpcUaStackCore/Base/MemoryBuffer.h"
 #include "OpcUaStackCore/Certificate/Certificate.h"
 
 namespace OpcUaStackCore
@@ -35,7 +36,7 @@ namespace OpcUaStackCore
 	Certificate::Certificate(
 		CertificateInfo& info,
 		Identity& subject,
-	    RSAKey&rsaKey,
+	    RSAKey& rsaKey,
 	    bool useCACert,
 	    SignatureAlgorithm signatureAlgorithm
 	)
@@ -45,6 +46,7 @@ namespace OpcUaStackCore
 
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
+			addError("create certificate error in constructor");
 			return;
 		}
 
@@ -157,9 +159,11 @@ namespace OpcUaStackCore
 	        	error = true;
 	        	addOpenSSLError();
 	        }
+
+	        EVP_PKEY_free(key);
 	    }
 
-	    if (error) {
+	    if (error && cert_ != nullptr) {
 	       X509_free(cert_);
 	       cert_ = nullptr;
 	    }
@@ -181,6 +185,7 @@ namespace OpcUaStackCore
 
 		cert_ = X509_new();
 		if (cert_ == nullptr) {
+			addError("create certificate error in constructor");
 			return;
 		}
 
@@ -286,19 +291,19 @@ namespace OpcUaStackCore
          }
 
          // set extensions
-          X509V3_CTX ctx;
-          X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
-          if (!error) {
-              CertificateExtension certificateExtension(useCACert);
-              certificateExtension.subjectAltName(info.subjectAltName());
-              if (!certificateExtension.encodeX509(cert_, ctx)) {
-              	error = true;
-              	addError(certificateExtension.errorList());
-              }
-          }
+         X509V3_CTX ctx;
+         X509V3_set_ctx(&ctx, cert_, cert_, NULL, NULL, 0);
+         if (!error) {
+             CertificateExtension certificateExtension(useCACert);
+             certificateExtension.subjectAltName(info.subjectAltName());
+             if (!certificateExtension.encodeX509(cert_, ctx)) {
+                 error = true;
+              	 addError(certificateExtension.errorList());
+             }
+         }
 
-          // sign the certificate
-  	    if (!error) {
+         // sign the certificate
+  	     if (!error) {
   	        EVP_PKEY* key = (EVP_PKEY*)(const EVP_PKEY*)issuerPrivateKey;
   	        if (signatureAlgorithm == SignatureAlgorithm_Sha1) {
   	            result = X509_sign(cert_, key, EVP_sha1());
@@ -310,9 +315,10 @@ namespace OpcUaStackCore
   	        	error = true;
   	        	addOpenSSLError();
   	        }
+  	        EVP_PKEY_free(key);
   	    }
 
-  	    if (error) {
+  	    if (error && cert_ != nullptr) {
   	       X509_free(cert_);
   	       cert_ = nullptr;
   	    }
@@ -321,7 +327,7 @@ namespace OpcUaStackCore
 
 	Certificate::~Certificate(void)
 	{
-		if (cert_) {
+		if (cert_ != nullptr) {
 		    X509_free(cert_);
 		    cert_ = nullptr;
 		}
@@ -451,6 +457,19 @@ namespace OpcUaStackCore
 		return true;
 	}
 
+	OpcUaByteString
+	Certificate::thumbPrint(void)
+	{
+		MemoryBuffer mem(20);
+		uint32_t memLen = 20;
+
+		if (!thumbPrint(mem.memBuf(), &memLen)) {
+			return OpcUaByteString();
+		}
+
+		return OpcUaByteString((const OpcUaByte*)mem.memBuf(), mem.memLen());
+	}
+
 	bool
 	Certificate::thumbPrint(char* buf, uint32_t* bufLen)
 	{
@@ -464,13 +483,20 @@ namespace OpcUaStackCore
 			return false;
 		}
 
-		uint32_t derBufLen;
-		if (!toDERBufLen(&derBufLen)) {
+		// creater DER buffer
+		uint32_t derLen;
+		if (!toDERBufLen(&derLen)) {
 			return false;
 		}
-		char* data = new char[derBufLen];
-		SHA1((const unsigned char*)data, *bufLen, (unsigned char* )buf);
-		delete [] data;
+		char* derBuf = new char[derLen];
+		if (!toDERBuf(derBuf, &derLen)) {
+			delete [] derBuf;
+			return false;
+		}
+
+		// create thumb print
+		SHA1((const unsigned char*)derBuf, derLen, (unsigned char* )buf);
+		delete [] derBuf;
 
 		return true;
 	}
@@ -530,6 +556,7 @@ namespace OpcUaStackCore
 	bool
 	Certificate::toDERBufLen(uint32_t* bufLen)
 	{
+		*bufLen = 0;
 		if (cert_ == nullptr) {
 			addError("certificate is empty");
 			return false;
@@ -542,6 +569,52 @@ namespace OpcUaStackCore
 	    }
 
 	    *bufLen = length;
+		return true;
+	}
+
+	bool
+	Certificate::toDERBuf(OpcUaByteString& derBuf)
+	{
+		uint32_t derBufLen;
+		if (!toDERBufLen(&derBufLen)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
+		if (!derBuf.resize(derBufLen)) {
+			Log(Error, "DER buffer resize error");
+			return false;
+		}
+
+		char *buf;
+		int32_t len;
+		derBuf.value(&buf, &len);
+		if (len <= 0) {
+			Log(Error, "DER buffer empty");
+			return false;
+		}
+
+		uint32_t length = len;
+		if (!toDERBuf(buf, &length)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
+		return true;
+	}
+
+	bool
+	Certificate::toDERBuf(MemoryBuffer& derBuf)
+	{
+		uint32_t derBufLen;
+		if (!toDERBufLen(&derBufLen)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
+		derBuf.resize(derBufLen);
+
+		if (!toDERBuf(derBuf.memBuf(), &derBufLen)) {
+			log(Error, "toDERBufLen error");
+			return false;
+		}
 		return true;
 	}
 
@@ -576,13 +649,45 @@ namespace OpcUaStackCore
 			addError("certificate is not empty");
 			return false;
 		}
-        cert_= d2i_X509 (0, (const unsigned char**)&buf, bufLen);
+        cert_= d2i_X509(0, (const unsigned char**)&buf, bufLen);
         if (cert_ == nullptr) {
         	addOpenSSLError();
         	return false;
         }
 
 		return true;
+	}
+
+	bool
+	Certificate::fromDERBuf(MemoryBuffer& derBuf)
+	{
+		if (cert_ != nullptr) {
+			addError("certificate is not empty");
+			return false;
+		}
+		char* mem = derBuf.memBuf();
+        cert_= d2i_X509(0, (const unsigned char**)&mem, derBuf.memLen());
+        if (cert_ == nullptr) {
+        	addOpenSSLError();
+        	return false;
+        }
+
+		return true;
+	}
+
+	uint32_t
+	Certificate::getDERBufSize(void)
+	{
+		if (cert_ == nullptr) {
+			return 0;
+		}
+
+		int32_t length = i2d_X509(cert_, 0);
+		if (length < 0) {
+			return 0;
+		}
+
+		return (uint32_t)length;
 	}
 
 	bool
@@ -604,10 +709,30 @@ namespace OpcUaStackCore
 	    EVP_PKEY_free(issuerPublicKey);
 
 	    if (result <= 0) {
-	    	std::cout << "A3" << std::endl;
 	        return false;
 	    }
 	    return true;
+	}
+
+	PublicKey
+	Certificate::publicKey(void)
+	{
+		if (cert_ == nullptr) {
+			PublicKey publicKey;
+			return publicKey;
+		}
+
+		// get key with reference count incremented
+		EVP_PKEY* key = X509_get_pubkey(cert_);
+		if (key == nullptr) {
+			addOpenSSLError();
+			PublicKey publicKey;
+			return publicKey;
+		}
+
+		PublicKey publicKey(key);
+		EVP_PKEY_free(key);
+		return publicKey;
 	}
 
 }

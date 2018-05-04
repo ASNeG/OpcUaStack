@@ -21,7 +21,10 @@
 
 #include <OpcUaStackCore/Network/TCPConnection.h>
 #include "OpcUaStackCore/Utility/IOThread.h"
+#include "OpcUaStackCore/Certificate/CryptoBase.h"
+#include "OpcUaStackCore/Certificate/SecurityKeySet.h"
 #include "OpcUaStackCore/SecureChannel/MessageHeader.h"
+#include "OpcUaStackCore/SecureChannel/SecurityHeader.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannelTransaction.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"
@@ -30,6 +33,34 @@
 
 namespace OpcUaStackCore
 {
+
+	class DLLEXPORT SecureChannelSecuritySettings
+	{
+	  public:
+		SecureChannelSecuritySettings(void);
+		~SecureChannelSecuritySettings(void);
+
+		void cryptoBase(CryptoBase::SPtr& cryptoBase);
+		CryptoBase::SPtr& cryptoBase(void);
+		void partnerCertificate(Certificate::SPtr& partnerCertificate);
+		Certificate::SPtr& partnerCertificate(void);
+		MemoryBuffer& clientNonce(void);
+		MemoryBuffer& serverNonce(void);
+
+		SecurityKeySet& securityKeySetClient(void);
+		SecurityKeySet& securityKeySetServer(void);
+
+	  private:
+		CryptoBase::SPtr cryptoBase_;
+		Certificate::SPtr partnerCertificate_;
+		MemoryBuffer clientNonce_;
+		MemoryBuffer serverNonce_;
+
+		SecurityKeySet securityKeySetClient_;
+		SecurityKeySet securityKeySetServer_;
+	};
+
+
 
 	class DLLEXPORT SecureChannel
 	: public TCPConnection
@@ -50,6 +81,13 @@ namespace OpcUaStackCore
 
 		SecureChannel(IOThread* ioThread);
 		virtual ~SecureChannel(void);
+
+		// --------------------------------------------------------------------
+		//
+		// security
+		//
+		// --------------------------------------------------------------------
+		SecureChannelSecuritySettings& securitySettings(void);
 
 		void handle(Object::SPtr& handle);
 		void handleReset(void);
@@ -73,6 +111,24 @@ namespace OpcUaStackCore
 		void debugSendMessageRequest(SecureChannelTransaction::SPtr& secureChannelTransaction);
 		void debugSendMessageResponse(SecureChannelTransaction::SPtr& secureChannelTransaction);
 
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// security
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		SecureChannelSecuritySettings securitySettings_;
+
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		//
+		// actual header
+		//
+		// --------------------------------------------------------------------
+		// --------------------------------------------------------------------
+		MessageHeader messageHeader_;
+		SecurityHeader securityHeader_;
 
 		IOThread* ioThread_;
 		OpcUaStackCore::SlotTimerElement::SPtr slotTimerElement_;
@@ -83,8 +139,6 @@ namespace OpcUaStackCore
 		Object::SPtr config_;
 		bool closeFlag_;
 		bool timeout_;
-		bool debug_;
-		bool debugHeader_;
 		boost::asio::streambuf recvBuffer_;
 		boost::asio::streambuf sendBuffer_;
 		boost::asio::ip::tcp::endpoint local_;
@@ -97,7 +151,7 @@ namespace OpcUaStackCore
 		OpcUaInt32 revisedLifetime_;
 
 		OpcUaNodeId typeId_;
-		MessageHeader messageHeader_;
+
 		SecureChannelTransaction::SPtr secureChannelTransaction_;
 		SecureChannelTransaction::List secureChannelTransactionList_;
 		OpenSecureChannelResponse::List openSecureChannelResponseList_;
@@ -122,6 +176,8 @@ namespace OpcUaStackCore
 
 		Object::SPtr handle_;
 		static OpcUaUInt32 gChannelId_;
+
+		bool isLogging_;
 
 	  private:
 		void debugRead(const std::string& message);

@@ -28,7 +28,7 @@ namespace OpcUaStackCore
 	, diagnosticInfoSPtr_(constructSPtr<OpcUaDiagnosticInfo>())
 	, stringTableSPtr_(constructSPtr<OpcUaStringArray>())
 	{
-		time_.dateTime(boost::posix_time::microsec_clock::local_time());
+		time_.dateTime(boost::posix_time::microsec_clock::universal_time());
 		requestHandle_ = 0;
 		serviceResult_ = Success;
 	}

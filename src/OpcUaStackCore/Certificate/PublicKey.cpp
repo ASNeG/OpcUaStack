@@ -28,6 +28,7 @@ namespace OpcUaStackCore
 		publicKey_ = X509_PUBKEY_new();
 		if (publicKey_ == nullptr) {
 			addError("create public key error in constructor");
+			return;
 		}
 	}
 
@@ -35,9 +36,12 @@ namespace OpcUaStackCore
 	: OpenSSLError()
 	, publicKey_(nullptr)
 	{
+		assert(pKey != nullptr);
+
 		publicKey_ = X509_PUBKEY_new();
 		if (publicKey_ == nullptr) {
 			addError("create public key error in key constructor");
+			return;
 		}
 
 		int result = X509_PUBKEY_set(&publicKey_, pKey);
@@ -58,6 +62,7 @@ namespace OpcUaStackCore
 		publicKey_ = X509_PUBKEY_new();
 		if (publicKey_ == nullptr) {
 			addError("create public key error in copy constructor - allocate memory error");
+			return;
 		}
 
 		EVP_PKEY *pKey = X509_PUBKEY_get(copy.publicKey_);
@@ -76,7 +81,10 @@ namespace OpcUaStackCore
 
 	PublicKey::~PublicKey(void)
 	{
-		X509_PUBKEY_free(publicKey_);
+		if (publicKey_ != nullptr) {
+			X509_PUBKEY_free(publicKey_);
+			publicKey_ = nullptr;
+		}
 	}
 
 	PublicKey&
@@ -88,17 +96,17 @@ namespace OpcUaStackCore
 		}
 
 		EVP_PKEY *pKey = X509_PUBKEY_get(copy.publicKey_);
-		if (pKey==NULL) {
+		if (pKey == nullptr) {
 		   addOpenSSLError();
+		   return *this;
 		}
-		else {
-		   int result = X509_PUBKEY_set(&publicKey_, pKey);
-		   if (!result) {
-			   addOpenSSLError();
-		   }
 
-		   EVP_PKEY_free ( pKey );
-	    }
+		int result = X509_PUBKEY_set(&publicKey_, pKey);
+		if (!result) {
+		    addOpenSSLError();
+		}
+
+		EVP_PKEY_free(pKey);
 
 		return *this;
 	}
@@ -106,25 +114,35 @@ namespace OpcUaStackCore
 	PublicKey::operator EVP_PKEY*(void)
 	{
 	    EVP_PKEY* key = nullptr;
+
 	    key = X509_PUBKEY_get(publicKey_);
 	    if (!key) {
 	    	const_cast<PublicKey*>(this)->addOpenSSLError();
 	    }
+
 	    return key;
+	}
+
+	uint32_t
+	PublicKey::keySizeInBytes(void) const
+	{
+		return keySize() / 8;
 	}
 
 	uint32_t
 	PublicKey::keySize(void) const
 	{
 	    int32_t result = -1;
+
 	    EVP_PKEY* pKey = X509_PUBKEY_get(publicKey_);
 	    if (!pKey) {
 	    	const_cast<PublicKey*>(this)->addOpenSSLError();
+	    	return result;
 	    }
-	    else {
-	        result = EVP_PKEY_bits(pKey);
-	        EVP_PKEY_free( pKey );
-	    }
+
+	    result = EVP_PKEY_bits(pKey);
+
+	    EVP_PKEY_free(pKey);
 
 	    return result;
 	}
@@ -133,19 +151,22 @@ namespace OpcUaStackCore
 	PublicKey::keyType(void) const
 	{
 	    KeyType keyType = KeyType_Unknown;
+
 	    EVP_PKEY* pKey = X509_PUBKEY_get(publicKey_);
 	    if (!pKey) {
 	    	const_cast<PublicKey*>(this)->addOpenSSLError();
+	    	return keyType;
 	    }
-	    else {
-	        switch(EVP_PKEY_id(pKey))
-	        {
-	            case EVP_PKEY_RSA: keyType = KeyType_RSA; break;
-	            case EVP_PKEY_DSA: keyType = KeyType_DSA; break;
-	            default: break;
-	        }
-	        EVP_PKEY_free(pKey);
+
+	    switch(EVP_PKEY_id(pKey))
+	    {
+	        case EVP_PKEY_RSA: keyType = KeyType_RSA; break;
+	        case EVP_PKEY_DSA: keyType = KeyType_DSA; break;
+	        default: break;
 	    }
+
+	    EVP_PKEY_free(pKey);
+
 	    return keyType;
 	}
 
@@ -153,7 +174,7 @@ namespace OpcUaStackCore
 	PublicKey::fromDER(const char* buf, uint32_t bufLen)
 	{
 	    publicKey_ = d2i_X509_PUBKEY(0, (const unsigned char**)&buf, bufLen);
-	    if (!publicKey_) {
+	    if (publicKey_  == nullptr) {
 	        addOpenSSLError();
 	    	return false;
 	    }

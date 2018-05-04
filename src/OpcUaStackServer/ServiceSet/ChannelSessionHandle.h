@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -55,6 +55,8 @@ namespace OpcUaStackServer
 		bool secureChannelIsValid(void);
 		void secureChannel(SecureChannel* secureChannel);
 		SecureChannel* secureChannel(void);
+		void secureChannelServer(SecureChannelServer::SPtr& secureChannelServer);
+		SecureChannelServer::SPtr& secureChannelServer(void);
 
 		SessionState sessionState(void);
 		bool sessionIsValid(void);
@@ -65,6 +67,7 @@ namespace OpcUaStackServer
 	  private:
 		SecureChannelState secureChannelState_;
 		SecureChannel* secureChannel_;
+		SecureChannelServer::SPtr secureChannelServer_;
 
 		SessionState sessionState_;
 		Session::SPtr session_;

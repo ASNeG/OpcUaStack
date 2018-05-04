@@ -38,6 +38,30 @@ namespace OpcUaStackCore
 	}
 
 	std::string
+	Environment::hostname(void)
+	{
+		return boost::asio::ip::host_name();
+	}
+
+	std::vector<boost::asio::ip::address>
+	Environment::ips(void)
+	{
+		std::vector<boost::asio::ip::address> ipVec;
+
+		boost::asio::io_service io_service;
+		boost::asio::ip::tcp::resolver resolver(io_service);
+		boost::asio::ip::tcp::resolver::query query(boost::asio::ip::host_name(), "");
+		boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
+		boost::asio::ip::tcp::resolver::iterator end;
+		while (iter != end)
+		{
+			boost::asio::ip::tcp::endpoint ep = *iter++;
+			ipVec.push_back(ep.address());
+		}
+		return ipVec;
+	}
+
+	std::string
 	Environment::getApplicationPathAbsolute(void)
 	{
  		std::string application = "";

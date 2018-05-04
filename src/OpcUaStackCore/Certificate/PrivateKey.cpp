@@ -28,14 +28,20 @@ namespace OpcUaStackCore
 	, privateKey_(nullptr)
 	{
 		privateKey_ = EVP_PKEY_new();
+		if (privateKey_ == nullptr) {
+			addError("create private key error in copy constructor - empty");
+			return;
+		}
 	}
 
 	PrivateKey::PrivateKey(EVP_PKEY *pKey)
 	: OpenSSLError()
 	, privateKey_(nullptr)
 	{
-	    EVP_PKEY_up_ref(pKey);
+		assert(pKey != nullptr);
+
 	    privateKey_ = pKey;
+	    EVP_PKEY_up_ref(privateKey_);
 	}
 
 	PrivateKey::PrivateKey(const PrivateKey& copy)
@@ -43,13 +49,13 @@ namespace OpcUaStackCore
 	, privateKey_(nullptr)
 	{
 		if (const_cast<PrivateKey*>(&copy)->isError()) {
-			addError("create ptivate key error in copy constructor - source key error");
+			addError("create private key error in copy constructor - source key error");
 			return;
 		}
 
-	    if (copy.privateKey_) {
-	    	EVP_PKEY_up_ref(copy.privateKey_);
+	    if (copy.privateKey_ != nullptr) {
 	        privateKey_ = copy.privateKey_;
+	        EVP_PKEY_up_ref(privateKey_);
 	    }
 	    else
 	    {
@@ -59,12 +65,25 @@ namespace OpcUaStackCore
 
 	PrivateKey::~PrivateKey(void)
 	{
-		EVP_PKEY_free (privateKey_);
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_free(privateKey_);
+			privateKey_ = nullptr;
+		}
+	}
+
+	uint32_t
+	PrivateKey::keySizeInBytes(void) const
+	{
+		return keySize() / 8;
 	}
 
 	uint32_t
 	PrivateKey::keySize(void) const
 	{
+		if (privateKey_ == nullptr) {
+			return 0;
+		}
+
 	    return EVP_PKEY_bits(privateKey_);
 	}
 
@@ -73,12 +92,17 @@ namespace OpcUaStackCore
 	{
 		KeyType keyType = KeyType_Unknown;
 
+		if (privateKey_ == nullptr) {
+			return keyType;
+		}
+
         switch(EVP_PKEY_id(privateKey_))
         {
             case EVP_PKEY_RSA: keyType = KeyType_RSA; break;
             case EVP_PKEY_DSA: keyType = KeyType_DSA; break;
             default: break;
         }
+
         return keyType;
 	}
 
@@ -90,26 +114,34 @@ namespace OpcUaStackCore
 			return *this;
 		}
 
-	    EVP_PKEY_free (privateKey_);
-	    if (copy.privateKey_) {
-	    	EVP_PKEY_up_ref(copy.privateKey_);
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_free(privateKey_);
+			privateKey_ = nullptr;
+		}
+
+	    if (copy.privateKey_ != nullptr) {
 	        privateKey_ = copy.privateKey_;
+	        EVP_PKEY_up_ref(privateKey_);
 	    }
 	    else {
 	        privateKey_ = EVP_PKEY_new();
 	    }
+
 	    return *this;
 	}
 
 	PrivateKey::operator EVP_PKEY*(void)
 	{
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_up_ref(privateKey_);
+		}
 		return privateKey_;
 	}
 
 	bool
 	PrivateKey::toDER(char* buf, uint32_t& bufLen) const
 	{
-		if (!privateKey_) {
+		if (privateKey_ == nullptr) {
 			const_cast<PrivateKey*>(this)->addError("private key is empty");
 			return false;
 		}
@@ -133,8 +165,13 @@ namespace OpcUaStackCore
 	bool
 	PrivateKey::fromDER (char* buf, uint32_t bufLen, KeyType keyType)
 	{
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_free(privateKey_);
+			privateKey_ = nullptr;
+		}
+
 	    privateKey_ = d2i_PrivateKey(keyType, 0, (const unsigned char**)&buf, bufLen);
-	    if (!privateKey_) {
+	    if (privateKey_ == nullptr) {
 	    	const_cast<PrivateKey*>(this)->addOpenSSLError();
 	    	return false;
 	    }
@@ -143,8 +180,13 @@ namespace OpcUaStackCore
 	}
 
 	bool
-	PrivateKey::fromPEM (char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback, void *data)
+	PrivateKey::fromPEM(char* buf, uint32_t bufLen, const char *password, PasswordCallback* passwordCallback, void *data)
 	{
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_free(privateKey_);
+			privateKey_ = nullptr;
+		}
+
 	    BIO* bio = BIO_new_mem_buf((void*)buf, bufLen);
 
 		if (passwordCallback) {
@@ -154,7 +196,7 @@ namespace OpcUaStackCore
 		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, 0, (void*)password);
 		}
 
-		if (!privateKey_) {
+		if (privateKey_ == nullptr) {
 			addOpenSSLError();
 			BIO_free(bio);
 			return false;
@@ -167,7 +209,7 @@ namespace OpcUaStackCore
 	bool
 	PrivateKey::toPEMFile(const std::string& fileName, const char* password)
 	{
-		if (!privateKey_) {
+		if (privateKey_ == nullptr) {
 			addError("private key is empty");
 			return false;
 		}
@@ -179,7 +221,7 @@ namespace OpcUaStackCore
 	    }
 
 	    RSA* rsa = EVP_PKEY_get1_RSA(privateKey_);
-	    if (!rsa) {
+	    if (rsa == nullptr) {
 	    	addOpenSSLError();
 	    	BIO_free(bio);
 	    	return false;
@@ -215,6 +257,11 @@ namespace OpcUaStackCore
 	bool
 	PrivateKey::fromPEMFile(const std::string& fileName, const char* password, PasswordCallback* passwordCallback, void *data)
 	{
+		if (privateKey_ != nullptr) {
+			EVP_PKEY_free(privateKey_);
+			privateKey_ = nullptr;
+		}
+
 	    BIO* bio = BIO_new_file(fileName.c_str(), "r");
 
 		if (passwordCallback != nullptr) {
@@ -224,7 +271,7 @@ namespace OpcUaStackCore
 		    privateKey_ = PEM_read_bio_PrivateKey(bio, 0, 0, (void*)password);
 		}
 
-		if (!privateKey_) {
+		if (privateKey_ == nullptr) {
 			addOpenSSLError();
 			BIO_free(bio);
 			return false;

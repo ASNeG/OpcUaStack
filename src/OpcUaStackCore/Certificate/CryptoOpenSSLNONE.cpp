@@ -43,6 +43,66 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	CryptoOpenSSLNONE::getAsymmetricEncryptionBlockSize(
+		PublicKey& publicKey,
+		uint32_t* plainTextBlockSize,
+		uint32_t* cryptTextBlockSize
+	)
+	{
+		*plainTextBlockSize = 1;
+		*cryptTextBlockSize = 1;
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::getAsymmetricSignatureBlockSize(
+		PublicKey& publicKey,
+		uint32_t* signTextBlockSize
+	)
+	{
+		*signTextBlockSize = 0;
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::getSymmetricEncryptionBlockSize(
+		uint32_t* plainTextBlockSize,
+		uint32_t* cryptTextBlockSize
+	)
+	{
+		*plainTextBlockSize = 1;
+		*cryptTextBlockSize = 1;
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::getSymmetricSignatureBlockSize(
+		uint32_t* signTextBlockSize
+	)
+	{
+		*signTextBlockSize = 0;
+		return Success;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricKeyLen(
+		PublicKey& publicKey,
+		uint32_t* asymmetricKeyLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricKeyLen(
+		PrivateKey& privateKey,
+		uint32_t* asymmetricKeyLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
 	CryptoOpenSSLNONE::asymmetricDecrypt(
 	    char*       	encryptedTextBuf,
 		uint32_t		encryptedTextLen,
@@ -73,7 +133,7 @@ namespace OpcUaStackCore
 		AESKey&	   		aesKey,
 		IV&		   		iv,
 		char*      		plainTextBuf,
-		int32_t*   		plainTextLen
+		uint32_t*   	plainTextLen
 	)
 	{
 		return BadNotSupported;
@@ -86,7 +146,65 @@ namespace OpcUaStackCore
 		AESKey&	   		aesKey,
 		IV&		   		iv,
 		char*      		encryptedTextBuf,
-		int32_t*   		encryptedTextLen
+		uint32_t*   	encryptedTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricSign(
+	    char*       	dataTextBuf,
+		uint32_t		dataTextLen,
+		PrivateKey&		privateKey,
+		char*       	signatureTextBuf,
+		uint32_t*		signatureTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::asymmetricVerify(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		PublicKey&		publicKey,
+		char*       	signTextBuf,
+		uint32_t		signTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::symmetricSign(
+	    char*       	dataTextBuf,
+		uint32_t		dataTextLen,
+		MemoryBuffer&	key,
+		char*       	signatureTextBuf,
+		uint32_t*		signatureTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::symmetricVerify(
+	    char*       	plainTextBuf,
+		uint32_t		plainTextLen,
+		MemoryBuffer&	key,
+		char*       	signTextBuf,
+		uint32_t		signTextLen
+	)
+	{
+		return BadNotSupported;
+	}
+
+	OpcUaStatusCode
+	CryptoOpenSSLNONE::deriveKey(
+		MemoryBuffer& secret,			// remote nonce
+		MemoryBuffer& seed,				// local nonce
+		MemoryBuffer& key				// len = sig key + enc key + iv
 	)
 	{
 		return BadNotSupported;

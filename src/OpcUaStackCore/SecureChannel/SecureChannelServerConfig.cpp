@@ -1,6 +1,6 @@
 
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -30,14 +30,40 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	SecureChannelServerConfig::SecureChannelServerConfig(void)
 	: SecureChannelConfig()
+	, endpointDescriptionArray_()
+	, endpointDescription_()
 	, endpointUrl_("")
-	, securityMode_(SM_None)
-	, securityPolicy_(SP_None)
+
+	, secureChannelLog_(false)
 	{
 	}
 
 	SecureChannelServerConfig::~SecureChannelServerConfig(void)
 	{
+	}
+
+	void
+	SecureChannelServerConfig::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
+	{
+		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	EndpointDescriptionArray::SPtr&
+	SecureChannelServerConfig::endpointDescriptionArray(void)
+	{
+		return endpointDescriptionArray_;
+	}
+
+	void
+	SecureChannelServerConfig::endpointDescription(EndpointDescription::SPtr& endpointDescription)
+	{
+		endpointDescription_ = endpointDescription;
+	}
+
+	EndpointDescription::SPtr&
+	SecureChannelServerConfig::endpointDescription(void)
+	{
+		return endpointDescription_;
 	}
 
 	void
@@ -53,28 +79,15 @@ namespace OpcUaStackCore
 	}
 
 	void
-	SecureChannelServerConfig::securityMode(SecurityMode securityMode)
+	SecureChannelServerConfig::secureChannelLog(bool secureChannelLog)
 	{
-		securityMode_ = securityMode;
+		secureChannelLog_ = secureChannelLog;
 	}
 
-	SecurityMode
-	SecureChannelServerConfig::securityMode(void)
+	bool
+	SecureChannelServerConfig::secureChannelLog(void)
 	{
-		return securityMode_;
+		return secureChannelLog_;
 	}
-
-	void
-	SecureChannelServerConfig::securityPolicy(SecurityPolicy securityPolicy)
-	{
-		securityPolicy_ = securityPolicy;
-	}
-
-	SecurityPolicy
-	SecureChannelServerConfig::securityPolicy(void)
-	{
-		return securityPolicy_;
-	}
-
 
 }

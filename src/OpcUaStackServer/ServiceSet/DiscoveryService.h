@@ -44,7 +44,7 @@ namespace OpcUaStackServer
 		~DiscoveryService(void);
 
 		void discoveryIf(DiscoveryIf* discoveryIf);
-		void endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray);
+		void endpointDescriptionSet(EndpointDescriptionSet::SPtr& endpointDescriptionSet);
 		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
 
 		void getEndpointRequest(
@@ -60,8 +60,6 @@ namespace OpcUaStackServer
 			SecureChannelTransaction::SPtr secureChannelTransaction
 		);
 
-		//bool message(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-
 		//- Component -----------------------------------------------------------------
 		void receive(Message::SPtr message);
 		//- Component -----------------------------------------------------------------
@@ -70,11 +68,6 @@ namespace OpcUaStackServer
 		EndpointDescriptionArray::SPtr endpointDescriptionArray_;
 		ApplicationCertificate::SPtr applicationCertificate_;
 		DiscoveryIf* discoveryIf_;
-
-		//bool receiveGetEndpointsRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		//bool receiveFindServersRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		//bool receiveRegisterServerRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction);
-		//void receiveRegisterServerRequest(ServiceTransaction::SPtr serviceTransaction);
 	};
 
 }

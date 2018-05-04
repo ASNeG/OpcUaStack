@@ -1,5 +1,5 @@
 /*
-   Copyright 2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2017-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackCore_ApplicationEventItemStartContext_h__
 
 #include "OpcUaStackCore/Base/BaseClass.h"
+#include "OpcUaStackCore/Base/UserContext.h"
 
 
 namespace OpcUaStackCore
@@ -27,8 +28,12 @@ namespace OpcUaStackCore
 	class ApplicationEventItemStartContext
 	{
 	  public:
+		ApplicationEventItemStartContext(void);
+		~ApplicationEventItemStartContext(void);
+
 		BaseClass::SPtr applicationContext_;	// IN - application context from register call
 		uint32_t eventItemId_;					// IN - event item identifier
+		UserContext::SPtr userContext_;			// IN - user context
 	};
 
 }

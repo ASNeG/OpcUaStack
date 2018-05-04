@@ -25,6 +25,7 @@ namespace OpcUaStackCore
 	: securityPolicyUri_()
 	, senderCertificate_()
 	, receiverCertificateThumbprint_()
+	, certificateChain_()
 	{
 	}
 		
@@ -44,6 +45,12 @@ namespace OpcUaStackCore
 		securityPolicyUri_.value(buf, bufLen);
 	}
 
+	OpcUaByteString&
+	SecurityHeader::securityPolicyUri(void)
+	{
+		return securityPolicyUri_;
+	}
+
 	void 
 	SecurityHeader::senderCertificate(OpcUaByte *buf, OpcUaInt32 bufLen)
 	{
@@ -54,6 +61,12 @@ namespace OpcUaStackCore
 	SecurityHeader::senderCertificate(OpcUaByte **buf, OpcUaInt32* bufLen) const
 	{
 		senderCertificate_.value(buf, bufLen);
+	}
+
+	OpcUaByteString&
+	SecurityHeader::senderCertificate(void)
+	{
+		return senderCertificate_;
 	}
 
 	void 
@@ -68,20 +81,61 @@ namespace OpcUaStackCore
 		receiverCertificateThumbprint_.value(buf, bufLen);
 	}
 
-	void 
+	void
+	SecurityHeader::receiverCertificateThumbprint(OpcUaByteString& receiverCertificateThumbprint)
+	{
+		receiverCertificateThumbprint_ = receiverCertificateThumbprint;
+	}
+
+	OpcUaByteString&
+	SecurityHeader::receiverCertificateThumbprint(void)
+	{
+		return receiverCertificateThumbprint_;
+	}
+
+	CertificateChain&
+	SecurityHeader::certificateChain(void)
+	{
+		return certificateChain_;
+	}
+
+	bool
+	SecurityHeader::isEncryptionEnabled(void)
+	{
+		return senderCertificate_.exist();
+	}
+
+	bool
+	SecurityHeader::isSignatureEnabled(void)
+	{
+		return receiverCertificateThumbprint_.exist();
+	}
+
+	bool
 	SecurityHeader::opcUaBinaryEncode(std::ostream& os) const
 	{
 		securityPolicyUri_.opcUaBinaryEncode(os);
 		senderCertificate_.opcUaBinaryEncode(os);
 		receiverCertificateThumbprint_.opcUaBinaryEncode(os);
+		return true;
 	}
 
-	void 
+	bool
 	SecurityHeader::opcUaBinaryDecode(std::istream& is)
 	{
+		// decode
 		securityPolicyUri_.opcUaBinaryDecode(is);
 		senderCertificate_.opcUaBinaryDecode(is);
 		receiverCertificateThumbprint_.opcUaBinaryDecode(is);
+
+		// create certificate chain
+		if (senderCertificate_.exist()) {
+			if (!certificateChain_.fromByteString(senderCertificate_)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }	

@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -19,6 +19,7 @@
 #define __OpcUaStackServer_MonitorItem_h__
 
 #include <boost/thread/mutex.hpp>
+#include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/Utility/SlotTimer.h"
 #include "OpcUaStackCore/ServiceSet/MonitoredItemServiceTransaction.h"
 #include "OpcUaStackServer/AddressSpaceModel/BaseNodeClass.h"
@@ -37,7 +38,7 @@ namespace OpcUaStackServer
 		NodeNoLongerExist,
 	} SampleResult;
 
-	class MonitorItem
+	class DLLEXPORT MonitorItem
 	: public Object
 	{
 	  public:
@@ -58,6 +59,8 @@ namespace OpcUaStackServer
 
 		SlotTimerElement::SPtr slotTimerElement(void);
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest(void);
+		void userContext(UserContext::SPtr& userContext);
+		UserContext::SPtr& userContext(void);
 
 		SampleResult sample(void);
 
@@ -74,6 +77,7 @@ namespace OpcUaStackServer
 		MonitoredItemCreateRequest::SPtr monitoredItemCreateRequest_;
 		MonitorItemList monitorItemList_;
 
+		UserContext::SPtr userContext_;
 		BaseNodeClass::WPtr baseNodeClass_;
 		Attribute* attribute_;
 		OpcUaDataValue dataValue_;

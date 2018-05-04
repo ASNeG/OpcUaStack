@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -35,7 +35,9 @@ namespace OpcUaStackCore
 		typedef boost::shared_ptr<OpcUaByteString> SPtr;
 
 	    OpcUaByteString(void);
+	    OpcUaByteString(const OpcUaByteString& byteString);
 	    OpcUaByteString(const std::string& value);
+	    OpcUaByteString(const OpcUaByte* value, OpcUaInt32 length);
 		~OpcUaByteString(void);
 
 		void value(OpcUaByte** value, OpcUaInt32* lenth) const;
@@ -44,14 +46,18 @@ namespace OpcUaStackCore
 		void value(const char* value, OpcUaInt32 length);
 		void value(const std::string& value);
 		OpcUaInt32 size(void) const;
+		char* memBuf(void);
+		bool resize(uint32_t size);
 		void reset(void);
 		bool exist(void) const;
+		bool isNull(void) const;
 
 		bool fromHexString(const std::string& hexString);
 		std::string toHexString(void) const;
 		std::string toString(void) const;
 		void fromString(const std::string& string);
 		OpcUaByteString& operator=(const std::string& string); 
+		OpcUaByteString& operator=(const OpcUaByteString& value);
 		operator std::string const (void); 
 
 		void copyTo(OpcUaByteString& opcUaByteString);

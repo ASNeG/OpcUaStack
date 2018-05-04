@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		ForwardCallback& eventItemStopService(void);
 		ForwardCallback& authenticationService(void);
 		ForwardCallback& autorizationService(void);
+		ForwardCallback& closeSessionService(void);
 
 		void updateFrom(ForwardGlobalSync& forwardGlobalSync);
 
@@ -57,6 +58,7 @@ namespace OpcUaStackCore
 		// authentication and authorization
 		ForwardCallback authenticationService_;
 		ForwardCallback autorizationService_;
+		ForwardCallback closeSessionService_;
 	};
 
 }

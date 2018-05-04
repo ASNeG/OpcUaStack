@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,24 +15,37 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackServer_SecureChannelManagerIf_h__
-#define __OpcUaStackServer_SecureChannelManagerIf_h__
+#ifndef __OpcUaStackServer_ServerInfo_h__
+#define __OpcUaStackServer_ServerInfo_h__
 
+#include <boost/shared_ptr.hpp>
+#include <string>
 #include "OpcUaStackCore/Base/os.h"
-#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackServer/SecureChannel/SecureChannelTransactionOld.h"
+#include "OpcUaStackCore/Base/Config.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackServer
 {
 
-	class DLLEXPORT SecureChannelManagerIf
+	class DLLEXPORT ServerInfo
 	{
 	  public:
-		virtual void connect(OpcUaUInt32 channelId) = 0;
-		virtual void disconnect(OpcUaUInt32 channelId) = 0;
-		virtual bool secureChannelMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction) = 0;
+		typedef boost::shared_ptr<ServerInfo> SPtr;
+
+		ServerInfo(void);
+	    ~ServerInfo(void);
+
+	    bool parse(Config* cfg, const std::string& prefix);
+
+	    void serverUri(const std::string& serverUri);
+	    std::string& serverUri(void);
+	    void serverName(const std::string& serverName);
+	    std::string& serverName(void);
+
+	  private:
+	    std::string serverUri_;
+	    std::string serverName_;
 	};
 
 }

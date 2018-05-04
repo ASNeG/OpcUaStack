@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,6 +34,7 @@ namespace OpcUaStackServer
 	, attribute_(nullptr)
 	, dataValue_()
 	, slotTimerElement_(constructSPtr<SlotTimerElement>())
+	, userContext_()
 	{
 	}
 
@@ -76,6 +77,18 @@ namespace OpcUaStackServer
 	MonitorItem::monitoredItemCreateRequest(void)
 	{
 		return monitoredItemCreateRequest_;
+	}
+
+	void
+	MonitorItem::userContext(UserContext::SPtr& userContext)
+	{
+		userContext_ = userContext;
+	}
+
+	UserContext::SPtr&
+	MonitorItem::userContext(void)
+	{
+		return userContext_;
 	}
 
 	uint32_t 

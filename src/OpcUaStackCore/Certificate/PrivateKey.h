@@ -42,6 +42,7 @@ namespace OpcUaStackCore
 		PrivateKey(const PrivateKey& copy);
 		~PrivateKey(void);
 
+		uint32_t keySizeInBytes(void) const;
 		uint32_t keySize(void) const;
 		KeyType keyType(void) const;
 

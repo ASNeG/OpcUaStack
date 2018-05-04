@@ -3,8 +3,8 @@ REM
 REM OpcUaStack build and install script
 REM
 
-rmdir ./build_local
-rmdir ./build_tst
+REM rmdir ./build_local
+REM rmdir ./build_tst
 
 set BOOST_VERSION_MAJOR=1
 set BOOST_VERSION_MINOR=58

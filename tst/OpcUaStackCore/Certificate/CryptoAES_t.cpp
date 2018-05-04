@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(CryptoAES__encrypt_decrypt)
 
 	MemoryBuffer encryptedText(32);
 
-	int32_t encryptedTextLen = encryptedText.memLen();
+	uint32_t encryptedTextLen = encryptedText.memLen();
 	statusCode = crytoAES.encryptCBC128(
 		plainText.memBuf(), plainText.memLen(),
 		aesKey,
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE(CryptoAES__encrypt_decrypt)
 
 	MemoryBuffer decryptedText(32);
 
-	int32_t decryptedTextLen = decryptedText.memLen();
+	uint32_t decryptedTextLen = decryptedText.memLen();
 	statusCode = crytoAES.decryptCBC128(
 		encryptedText.memBuf(), encryptedText.memLen(),
 		aesKey,

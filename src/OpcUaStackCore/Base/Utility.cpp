@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -153,6 +153,11 @@ namespace OpcUaStackCore
 		}
 	}
 
+	void dumpHex(MemoryBuffer& memoryBuffer, std::ostream& os)
+	{
+		return dumpHex(memoryBuffer.memBuf(), memoryBuffer.memLen(), os);
+	}
+
 	void dumpHex(const char* bufDat, const uint32_t bufLen, std::ostream& os)
 	{
 		unsigned int long address = 0;
@@ -190,6 +195,8 @@ namespace OpcUaStackCore
 			os << std::endl;
 			address += 16;
 		}
+
+		os << std::dec;
 	}
 
 	void hexStringToByteSequence(const std::string& hexStringSpace, uint8_t* byteSequence)

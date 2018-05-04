@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -23,7 +23,11 @@ using namespace OpcUaStackCore;
 namespace OpcUaStackServer
 {
 	bool 
-	EndpointDescriptionConfig::endpointDescriptions(EndpointDescriptionArray::SPtr endpointDescriptionArray, const std::string& configPrefix, Config* childConfig, const std::string& configurationFileName)
+	EndpointDescriptionConfig::endpointDescriptions(
+		EndpointDescriptionSet::SPtr endpointDescriptionSet,
+		const std::string& configPrefix, Config* childConfig,
+		const std::string& configurationFileName
+	)
 	{
 		bool rc;
 		std::string stringValue;
@@ -49,38 +53,10 @@ namespace OpcUaStackServer
 			return false;
 		}
 
-		// -------------------------------------------------------------------------
-		// -------------------------------------------------------------------------
-		//
-		// EndpointDescription
-		//
-		// --------------------------------------------------------------------------
-		//
-		// EndpointUrl - mandatory
-		// ApplicationUri - mandatory
-		// ProductUri - mandatory
-		// ApplicationName - mandatory
-		// GatewayServerUri - optional
-		// DiscoveryProfileUri - optional
-		// DiscoveryUrl - optional - list
-		// SecurityPolicyUri - mandatory 
-		//		[
-		//			http://opcfoundation.org/UA/SecurityPolicy#None
-		//		]
-		// TransportProfileUri - mandatory
-		// SecurityLevel - mandatory
-		//
-		// --------------------------------------------------------------------------
-		// --------------------------------------------------------------------------
-
-		uint32_t idx = 0;
-		endpointDescriptionArray->resize(endpointDescriptionVec.size());
 		for (it = endpointDescriptionVec.begin(); it != endpointDescriptionVec.end(); it++) {
 		    Config* config = &*it; 
 
 			EndpointDescription::SPtr endpointDescription = constructSPtr<EndpointDescription>();
-			endpointDescriptionArray->set(idx, endpointDescription);
-			idx++;
 
 			if (config->getConfigParameter("EndpointUrl", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
@@ -144,26 +120,6 @@ namespace OpcUaStackServer
 				endpointDescription->applicationDescription()->discoveryUrls()->push_back(url);
 			}
 
-			if (config->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
-				Log(Error, "mandatory parameter not found in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "SecurityPolicyUri");
-				return false;
-			}
-			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
-				endpointDescription->messageSecurityMode(SM_None);
-				endpointDescription->securityPolicyUri(stringValue);
-			}
-			else {
-				Log(Error, "invalid parameter in configuration")
-					.parameter("ConfigurationFileName", configurationFileName)
-					.parameter("ParameterPath", configPrefix + std::string(".EndpointDescription"))
-					.parameter("ParameterName", "SecurityPolicyUri")
-					.parameter("ParameterValue", stringValue);
-				return false;
-			}
-
 			if (config->getConfigParameter("TransportProfileUri", stringValue) == false) {
 				Log(Error, "mandatory parameter not found in configuration")
 					.parameter("ConfigurationFileName", configurationFileName)
@@ -182,15 +138,168 @@ namespace OpcUaStackServer
 			}
 			endpointDescription->securityLevel(uint32Value);
 			
-			rc = userTokenPolicy(endpointDescription, configPrefix + std::string(".EndpointDescription"), config, configurationFileName);
+			// parse user token policy
+			rc = userTokenPolicy(
+				endpointDescription,
+				configPrefix + std::string(".EndpointDescription"),
+				config,
+				configurationFileName
+			);
 			if (!rc) return false;
+
+			// parse security setting
+			EndpointDescription::Vec endpointDescriptionVec0;
+			rc = securitySetting(
+				endpointDescription,
+				configPrefix + std::string(".EndpointDescription"),
+				config,
+				configurationFileName,
+				endpointDescriptionVec0
+			);
+			if (!rc) return false;
+
+			EndpointDescription::Vec::iterator it;
+			for (it = endpointDescriptionVec0.begin(); it != endpointDescriptionVec0.end(); it++) {
+				EndpointDescription::SPtr endpointDescriptionTmp = *it;
+				endpointDescriptionSet->addEndpoint(
+					endpointDescriptionTmp->endpointUrl(),
+					endpointDescriptionTmp
+				);
+			}
+		}
+
+		return true;
+	}
+
+	bool
+	EndpointDescriptionConfig::securitySetting(
+		EndpointDescription::SPtr endpointDescription,
+		const std::string& configPrefix,
+		Config* config,
+		const std::string& configurationFileName,
+		EndpointDescription::Vec& endpointDescriptionVec
+	)
+	{
+		if (config->exist("SecurityPolicyUri")) {
+			//
+			// use Security Policy element for security
+			//
+
+			std::string stringValue;
+
+			if (config->getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+				Log(Error, "mandatory parameter not found in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix)
+					.parameter("ParameterName", "SecurityPolicyUri");
+				return false;
+			}
+			if (stringValue == "http://opcfoundation.org/UA/SecurityPolicy#None") {
+				endpointDescription->messageSecurityMode(SM_None);
+				endpointDescription->securityPolicyUri(stringValue);
+			}
+			else {
+				Log(Error, "invalid parameter in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix)
+					.parameter("ParameterName", "SecurityPolicyUri")
+					.parameter("ParameterValue", stringValue);
+				return false;
+			}
+
+			endpointDescriptionVec.push_back(endpointDescription);
+
+			return true;
+		}
+
+		//
+		// use SecuritySetting element for security
+		//
+		std::vector<Config> configVec;
+		config->getChilds("SecuritySetting", configVec);
+		if (configVec.size() == 0) {
+			Log(Error, "mandatory parameter not found in configuration")
+				.parameter("ConfigurationFileName", configurationFileName)
+				.parameter("ParameterPath", configPrefix)
+				.parameter("ParameterName", "SecuritySetting");
+			return false;
+		}
+
+		std::vector<Config>::iterator it;
+		for (it = configVec.begin(); it != configVec.end(); it++) {
+			EndpointDescription::SPtr endpointDescriptionTmp = constructSPtr<EndpointDescription>(*endpointDescription.get());
+			std::string stringValue;
+
+			// get security policy mode
+			if ((*it).getConfigParameter("SecurityPolicyUri", stringValue) == false) {
+				Log(Error, "mandatory parameter not found in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".SecuritySetting"))
+					.parameter("ParameterName", "SecurityPolicyUri");
+				return false;
+			}
+			endpointDescriptionTmp->securityPolicyUri(stringValue);
+			if (stringValue != "http://opcfoundation.org/UA/SecurityPolicy#None" &&
+				stringValue != "http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15" &&
+				stringValue != "http://opcfoundation.org/UA/SecurityPolicy#Basic256" &&
+				stringValue != "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"
+			) {
+				Log(Error, "invalid parameter in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".SecuritySetting"))
+					.parameter("ParameterName", "SecurityPolicyUri")
+					.parameter("ParameterValue", stringValue);
+				return false;
+			}
+
+			// get message security mode
+			if ((*it).getConfigParameter("MessageSecurityMode", stringValue) == false) {
+				Log(Error, "mandatory parameter not found in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".SecuritySetting"))
+					.parameter("ParameterName", "MessageSecurityMode");
+				return false;
+			}
+			if (stringValue == "None") {
+				endpointDescriptionTmp->messageSecurityMode(SM_None);
+
+				if (endpointDescriptionTmp->securityPolicyUri() != "http://opcfoundation.org/UA/SecurityPolicy#None") {
+					Log(Error, "invalid parameter in configuration")
+						.parameter("ConfigurationFileName", configurationFileName)
+						.parameter("ParameterPath", configPrefix + std::string(".SecuritySetting"))
+						.parameter("ParameterName", "MessageSecurityMode")
+						.parameter("ParameterValue", stringValue);
+					return false;
+				}
+			}
+			else if (stringValue == "Sign") {
+				endpointDescriptionTmp->messageSecurityMode(SM_Sign);
+			}
+			else if (stringValue == "SignAndEncrypt") {
+				endpointDescriptionTmp->messageSecurityMode(SM_SignAndEncrypt);
+			}
+			else {
+				Log(Error, "invalid parameter in configuration")
+					.parameter("ConfigurationFileName", configurationFileName)
+					.parameter("ParameterPath", configPrefix + std::string(".SecuritySetting"))
+					.parameter("ParameterName", "MessageSecurityMode")
+					.parameter("ParameterValue", stringValue);
+				return false;
+			}
+
+			endpointDescriptionVec.push_back(endpointDescriptionTmp);
 		}
 
 		return true;
 	}
 
 	bool 
-	EndpointDescriptionConfig::userTokenPolicy(EndpointDescription::SPtr endpointDescription, const std::string& configPrefix, Config* config, const std::string& configurationFileName)
+	EndpointDescriptionConfig::userTokenPolicy(
+		EndpointDescription::SPtr endpointDescription,
+		const std::string& configPrefix,
+		Config* config,
+		const std::string& configurationFileName
+	)
 	{
 		// -------------------------------------------------------------------------
 		// -------------------------------------------------------------------------

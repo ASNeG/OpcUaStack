@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -34,8 +34,8 @@ namespace OpcUaStackCore
 		virtual void handleDisconnect(SecureChannel* secureChannel) = 0;
 		virtual void handleMessageRequest(SecureChannel* secureChannel) = 0;
 
-		virtual void handleEndpointOpen(void) = 0;
-		virtual void handleEndpointClose(void) = 0;
+		virtual void handleEndpointOpen(const std::string& endpointUrl) = 0;
+		virtual void handleEndpointClose(const std::string& endpointUrl) = 0;
 	};
 
 }

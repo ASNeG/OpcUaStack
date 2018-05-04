@@ -39,6 +39,74 @@ BOOST_AUTO_TEST_CASE(Certificate__createSelfSignedCertificate)
 	BOOST_REQUIRE(certificate.isSelfSigned() == true);
 }
 
+BOOST_AUTO_TEST_CASE(Certificate__get_public_key_from_certificate)
+{
+	RSAKey key(2048);
+	CertificateInfo info;
+	Identity identity;
+
+	info.uri("urn:localhost:ASNeG:MyServiceApplication");
+	info.ipAddresses().push_back("127.0.0.1");
+	info.dnsNames().push_back("ASNeG.de");
+	info.eMail("info@ASNeG.de");
+	info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*5));
+	info.serialNumber(123);
+	info.validFrom(boost::posix_time::microsec_clock::local_time());
+
+	identity.organization("ASNeG");
+	identity.organizationUnit("OPC UA Service Department");
+	identity.commonName("MyServiceApplication");
+	identity.locality("Neukirchen");
+	identity.state("Hessen");
+	identity.country("DE");
+	identity.domainComponent("asneg.de");
+
+	Certificate certificate(info, identity, key);
+	BOOST_REQUIRE(certificate.isError() == false);
+	BOOST_REQUIRE(certificate.isSelfSigned() == true);
+
+	PublicKey p1 = certificate.publicKey();
+	PublicKey p2 = certificate.publicKey();
+	PublicKey p3 = certificate.publicKey();
+	PublicKey p4 = certificate.publicKey();
+	PublicKey p5 = certificate.publicKey();
+}
+
+BOOST_AUTO_TEST_CASE(Certificate__multiple_certificates)
+{
+	RSAKey key(2048);
+	CertificateInfo info;
+	Identity identity;
+
+	info.uri("urn:localhost:ASNeG:MyServiceApplication");
+	info.ipAddresses().push_back("127.0.0.1");
+	info.dnsNames().push_back("ASNeG.de");
+	info.eMail("info@ASNeG.de");
+	info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*5));
+	info.serialNumber(123);
+	info.validFrom(boost::posix_time::microsec_clock::local_time());
+
+	identity.organization("ASNeG");
+	identity.organizationUnit("OPC UA Service Department");
+	identity.commonName("MyServiceApplication");
+	identity.locality("Neukirchen");
+	identity.state("Hessen");
+	identity.country("DE");
+	identity.domainComponent("asneg.de");
+
+	Certificate::SPtr certificate1 = constructSPtr<Certificate>(info, identity, key);
+	BOOST_REQUIRE(certificate1->isError() == false);
+	BOOST_REQUIRE(certificate1->isSelfSigned() == true);
+
+	Certificate::SPtr certificate2 = constructSPtr<Certificate>(info, identity, key);
+	BOOST_REQUIRE(certificate2->isError() == false);
+	BOOST_REQUIRE(certificate2->isSelfSigned() == true);
+
+	Certificate::SPtr certificate3 = constructSPtr<Certificate>(info, identity, key);
+	BOOST_REQUIRE(certificate3->isError() == false);
+	BOOST_REQUIRE(certificate3->isSelfSigned() == true);
+}
+
 BOOST_AUTO_TEST_CASE(Certificate__writeFile)
 {
 	RSAKey key(2048);
@@ -137,6 +205,41 @@ BOOST_AUTO_TEST_CASE(Certificate__readFile)
 	CertificateExtension ce(certificate2.isSelfSigned());
 	BOOST_REQUIRE(certificate2.getExtension(ce) == true);
 	std::cout << ce.subjectKeyIdentifier() << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(Certificate__certificate_to_OpcUaByteString)
+{
+	RSAKey key(2048);
+	CertificateInfo info;
+	Identity identity;
+
+	info.uri("urn:localhost:ASNeG:MyServiceApplication");
+	info.ipAddresses().push_back("127.0.0.1");
+	info.dnsNames().push_back("ASNeG.de");
+	info.eMail("info@ASNeG.de");
+	info.validTime(boost::posix_time::microsec_clock::local_time() + boost::posix_time::seconds(3600*24*365*5));
+	info.serialNumber(123);
+	info.validFrom(boost::posix_time::microsec_clock::local_time());
+
+	identity.organization("ASNeG");
+	identity.organizationUnit("OPC UA Service Department");
+	identity.commonName("MyServiceApplication");
+	identity.locality("Neukirchen");
+	identity.state("Hessen");
+	identity.country("DE");
+	identity.domainComponent("asneg.de");
+
+	Certificate certificate(info, identity, key);
+	BOOST_REQUIRE(certificate.isError() == false);
+	BOOST_REQUIRE(certificate.isSelfSigned() == true);
+
+	OpcUaByteString derBuf1;
+	BOOST_REQUIRE(certificate.toDERBuf(derBuf1) == true);
+
+	OpcUaByteString derBuf2;
+	BOOST_REQUIRE(certificate.toDERBuf(derBuf2) == true);
+
+	BOOST_REQUIRE(derBuf1 == derBuf2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

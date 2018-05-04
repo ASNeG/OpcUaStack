@@ -29,7 +29,10 @@
 #include "OpcUaStackCore/ServiceSet/CancelResponse.h"
 #include "OpcUaStackCore/ServiceSet/ActivateSessionResponse.h"
 #include "OpcUaStackCore/Application/ApplicationAuthenticationContext.h"
+#include "OpcUaStackCore/Application/ApplicationCloseSessionContext.h"
 #include "OpcUaStackCore/ServiceSet/UserNameIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/IssuedIdentityToken.h"
+#include "OpcUaStackCore/ServiceSet/X509IdentityToken.h"
 
 using namespace OpcUaStackCore;
 
@@ -68,19 +71,12 @@ namespace OpcUaStackServer
 	, endpointDescriptionArray_()
 	, endpointDescription_()
 	, userContext_()
+	, clientCertificate_()
 	{
 		Log(Info, "session construct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
-
-		std::stringstream sessionName;
-		sessionName << "Session_" << sessionId_;
-		componentName(sessionName.str());
-
-		// create new server nonce
-		for (uint32_t idx=0; idx<32; idx++) {
-			serverNonce_[idx] = (rand() / 256);
-		}
+		componentName("Session");
 	}
 
 	Session::~Session(void)
@@ -88,6 +84,14 @@ namespace OpcUaStackServer
 		Log(Info, "session destruct")
 			.parameter("SessionId", sessionId_)
 			.parameter("AuthenticationToken", authenticationToken_);
+	}
+
+	void
+	Session::createServerNonce(void)
+	{
+		for (uint32_t idx=0; idx<32; idx++) {
+			serverNonce_[idx] = (rand() / 256);
+		}
 	}
 
 	void
@@ -114,12 +118,6 @@ namespace OpcUaStackServer
 		forwardGlobalSync_ = forwardGlobalSync;
 	}
 
-	void 
-	Session::sessionManagerIf(SessionManagerIf* sessionManagerIf)
-	{
-		sessionManagerIf_ = sessionManagerIf;
-	}
-
 	void
 	Session::sessionIf(SessionIf* sessionIf)
 	{
@@ -139,9 +137,15 @@ namespace OpcUaStackServer
 	}
 
 	void 
-	Session::endpointDescriptionArray(EndpointDescriptionArray::SPtr endpointDescriptionArray)
+	Session::endpointDescriptionArray(EndpointDescriptionArray::SPtr& endpointDescriptionArray)
 	{
 		endpointDescriptionArray_ = endpointDescriptionArray;
+	}
+
+	void
+	Session::endpointDescription(EndpointDescription::SPtr& endpointDescription)
+	{
+		endpointDescription_ = endpointDescription;
 	}
 
 	// ------------------------------------------------------------------------
@@ -205,11 +209,29 @@ namespace OpcUaStackServer
 	}
 
 	OpcUaStatusCode
+	Session::authenticationCloseSession(void)
+	{
+		ApplicationCloseSessionContext context;
+		context.sessionId_ = sessionId_;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->closeSessionService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
+		return context.statusCode_;
+	}
+
+	OpcUaStatusCode
 	Session::authenticationAnonymous(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
@@ -330,6 +352,7 @@ namespace OpcUaStackServer
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
@@ -345,14 +368,227 @@ namespace OpcUaStackServer
 	OpcUaStatusCode
 	Session::authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
-		Log(Error, "authentication error, because x509 authentication not implemented");
-		return BadIdentityTokenInvalid;
+		Log(Debug, "Session::authenticationX509");
+
+		OpcUaStatusCode statusCode;
+
+		X509IdentityToken::SPtr token = parameter->parameter<X509IdentityToken>();
+
+		// check parameter and password
+		if (token->certificateData().size() == 0) {
+			Log(Debug, "token data invalid");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_.get() == nullptr) {
+			Log(Debug, "endpoint description not exist");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+			Log(Debug, "user identity token not exist");
+			return BadIdentityTokenInvalid;
+		}
+
+		// find related identity token
+		bool found = true;
+		UserTokenPolicy::SPtr userTokenPolicy;
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+				continue;
+			}
+
+			if (userTokenPolicy->tokenType() != UserIdentityTokenType_Username) {
+				continue;
+			}
+
+			if (userTokenPolicy->policyId() == token->policyId()) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			Log(Debug, "x509 identity token for policy not found in endpoint")
+				.parameter("PolicyId", token->policyId());
+			return BadIdentityTokenInvalid;
+		}
+
+		// get signature data
+		SignatureData::SPtr userTokenSignature = activateSessionRequest.userTokenSignature();
+		if (userTokenSignature.get() == nullptr) {
+			Log(Debug, "missing user token signature")
+				.parameter("PolicyId", token->policyId());
+			return BadIdentityTokenInvalid;
+		}
+
+		Log(Debug, "authentication x509")
+		    .parameter("PolicyId", token->policyId())
+			.parameter("CertificateData", token->certificateData())
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+
+		// get cryption base and check cryption alg
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			return BadIdentityTokenRejected;
+		}
+
+		uint32_t signatureAlg = SignatureAlgs::uriToSignatureAlg(userTokenSignature->algorithm());
+		if (signatureAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("SignatureAlgorithm", userTokenSignature->algorithm());
+			return BadIdentityTokenRejected;;
+		}
+
+		// get public key
+		MemoryBuffer certificateText(token->certificateData());
+		Certificate certificate;
+		if (!certificate.fromDERBuf(certificateText)) {
+			Log(Debug, "certificate invalid");
+			return BadIdentityTokenRejected;;
+		}
+		PublicKey publicKey = certificate.publicKey();
+
+		// FIXME: certificate must be trusted ...
+
+		// validate signature
+		statusCode = userTokenSignature->verifySignature(
+			certificateText,
+			publicKey,
+			*cryptoBase
+		);
+
+		// create application context
+		ApplicationAuthenticationContext context;
+		context.authenticationType_ = OpcUaId_X509IdentityToken_Encoding_DefaultBinary;
+		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
+		return context.statusCode_;
 	}
+
 	OpcUaStatusCode
 	Session::authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter)
 	{
-		Log(Error, "authentication error, because issued authentication not implemented");
-		return BadIdentityTokenInvalid;
+		Log(Debug, "Session::authenticationIssued");
+
+		IssuedIdentityToken::SPtr token = parameter->parameter<IssuedIdentityToken>();
+
+		// check parameter and password
+		if (token->tokenData().size() == 0) {
+			Log(Debug, "token data invalid");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_.get() == nullptr) {
+			Log(Debug, "endpoint description not exist");
+			return BadIdentityTokenInvalid;
+		}
+		if (endpointDescription_->userIdentityTokens().get() == nullptr) {
+			Log(Debug, "user identity token not exist");
+			return BadIdentityTokenInvalid;
+		}
+
+		// find related identity token
+		bool found = true;
+		UserTokenPolicy::SPtr userTokenPolicy;
+		for (uint32_t idx=0; idx<endpointDescription_->userIdentityTokens()->size(); idx++) {
+			if (!endpointDescription_->userIdentityTokens()->get(idx, userTokenPolicy)) {
+				continue;
+			}
+
+			if (userTokenPolicy->tokenType() != UserIdentityTokenType_Username) {
+				continue;
+			}
+
+			if (userTokenPolicy->policyId() == token->policyId()) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			Log(Debug, "issuer identity token for policy not found in endpoint")
+				.parameter("PolicyId", token->policyId());
+			return BadIdentityTokenInvalid;
+		}
+
+		Log(Debug, "authentication issued")
+		    .parameter("PolicyId", token->policyId())
+			.parameter("TokenData", token->tokenData())
+			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
+			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
+
+		// get cryption base and check cryption alg
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
+		if (cryptoBase.get() == nullptr) {
+			Log(Debug, "crypto manager not found")
+				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
+			return BadIdentityTokenRejected;
+		}
+		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(token->encryptionAlgorithm());
+		if (encryptionAlg == 0) {
+			Log(Debug, "encryption alg invalid")
+				.parameter("EncryptionAlgorithm", token->encryptionAlgorithm());
+			return BadIdentityTokenRejected;;
+		}
+
+		// decrypt token data
+		char* encryptedTextBuf;
+		int32_t encryptedTextLen;
+		token->tokenData((OpcUaByte**)&encryptedTextBuf, &encryptedTextLen);
+		if (encryptedTextLen <= 0) {
+			Log(Debug, "token data format invalid");
+			return BadIdentityTokenRejected;;
+		}
+
+		char* plainTextBuf;
+		uint32_t plainTextLen;
+		MemoryBuffer plainText(encryptedTextLen);
+		plainTextBuf = plainText.memBuf();
+		plainTextLen = plainText.memLen();
+
+		PrivateKey::SPtr privateKey = applicationCertificate_->privateKey();
+
+		OpcUaStatusCode statusCode = cryptoBase->asymmetricDecrypt(
+			encryptedTextBuf,
+			encryptedTextLen,
+			*privateKey.get(),
+			plainTextBuf,
+			&plainTextLen
+		);
+		if (statusCode != Success) {
+			Log(Debug, "decrypt token data error");
+			return BadIdentityTokenRejected;;
+		}
+
+		// check decrypted password and server nonce
+		if (memcmp(serverNonce_, &plainTextBuf[plainTextLen-32] , 32) != 0) {
+			Log(Debug, "decrypt token data server nonce error");
+				return BadIdentityTokenRejected;;
+		}
+		token->tokenData((const OpcUaByte*)&plainTextBuf[4], plainTextLen-36);
+
+		// create application context
+		ApplicationAuthenticationContext context;
+		context.authenticationType_ = OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary;
+		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
+		context.statusCode_ = Success;
+		context.userContext_.reset();
+
+		forwardGlobalSync_->authenticationService().callback()(&context);
+
+		if (context.statusCode_ == Success) {
+			userContext_ = context.userContext_;
+		}
+
+		return context.statusCode_;
 	}
 
 
@@ -369,12 +605,13 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		createServerNonce();
+
+		OpcUaStatusCode statusCode;
 		OpcUaStatusCode serviceResult = Success;
 
 		Log(Debug, "receive create session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_CreateSessionResponse_Encoding_DefaultBinary;
-
-		logComponent();
 
 		if (sessionState_ != SessionState_Close) {
 			Log(Error, "receive create session request in invalid state")
@@ -386,24 +623,18 @@ namespace OpcUaStackServer
 		CreateSessionRequest createSessionRequest;
 		createSessionRequest.opcUaBinaryDecode(ios);
 
-		// find related endpoint description
-		bool found = false;
-		for (uint32_t idx=0; idx<endpointDescriptionArray_->size(); idx++) {
-			if (!endpointDescriptionArray_->get(idx, endpointDescription_)) continue;
-			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) {
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			serviceResult = BadServerUriInvalid;
-		}
-
 		std::iostream iosres(&secureChannelTransaction->os_);
 
 		CreateSessionResponse createSessionResponse;
 		createSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		createSessionResponse.responseHeader()->serviceResult(serviceResult);
+
+		if (createSessionRequest.clientCertificate().exist()) {
+			clientCertificate_.fromDERBuf(
+				createSessionRequest.clientCertificate().memBuf(),
+				createSessionRequest.clientCertificate().size()
+			);
+		}
 
 		createSessionResponse.sessionId().namespaceIndex(1);
 		createSessionResponse.sessionId().nodeId(sessionId_);
@@ -412,7 +643,29 @@ namespace OpcUaStackServer
 		createSessionResponse.receivedSessionTimeout(120000);
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
-		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
+
+		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
+
+			// added server certificate
+			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
+			applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+
+			// create server signature
+			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
+			MemoryBuffer clientNonce(createSessionRequest.clientNonce());
+			PrivateKey privateKey = *applicationCertificate_->privateKey();
+			statusCode = createSessionResponse.signatureData()->createSignature(
+				clientCertificate,
+				clientNonce,
+				privateKey,
+				*secureChannelTransaction->cryptoBase_
+			);
+			if (statusCode != Success) {
+				Log(Error, "create server signature in create session request error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+				createSessionResponse.responseHeader()->serviceResult(BadSecurityChecksFailed);
+			}
+		}
 
 		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		createSessionResponse.opcUaBinaryEncode(iosres);
@@ -438,6 +691,8 @@ namespace OpcUaStackServer
 		SecureChannelTransaction::SPtr secureChannelTransaction
 	)
 	{
+		OpcUaStatusCode statusCode;
+
 		Log(Debug, "receive activate session request");
 		secureChannelTransaction->responseTypeNodeId_ = OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary;
 
@@ -456,15 +711,45 @@ namespace OpcUaStackServer
 			return;
 		}
 
+		// check client signature
+		if (secureChannelTransaction->cryptoBase_.get() != nullptr) {
+			// create certificate
+			uint32_t derCertSize = applicationCertificate_->certificate()->getDERBufSize();
+			MemoryBuffer certificate(derCertSize);
+			applicationCertificate_->certificate()->toDERBuf(
+				certificate.memBuf(),
+				&derCertSize
+			);
+
+			// create server nonce
+			MemoryBuffer serverNonce(serverNonce_, 32);
+
+			// verify signature
+			PublicKey publicKey = clientCertificate_.publicKey();
+			statusCode = activateSessionRequest.clientSignature()->verifySignature(
+				certificate,
+				serverNonce,
+				publicKey,
+				*secureChannelTransaction->cryptoBase_
+			);
+
+			if (statusCode != Success) {
+				Log(Error, "client signature error");
+				activateSessionRequestError(requestHeader, secureChannelTransaction, BadSecurityChecksFailed);
+				return;
+			}
+		}
+
 		// check username and password
-		OpcUaStatusCode statusCode;
 		statusCode = authentication(activateSessionRequest);
 
 		std::iostream iosres(&secureChannelTransaction->os_);
 
+		createServerNonce();
 		ActivateSessionResponse activateSessionResponse;
 		activateSessionResponse.responseHeader()->requestHandle(requestHeader->requestHandle());
 		activateSessionResponse.responseHeader()->serviceResult(statusCode);
+		activateSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 
 		activateSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		activateSessionResponse.opcUaBinaryEncode(iosres);
@@ -533,6 +818,9 @@ namespace OpcUaStackServer
 
 		closeSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
 		closeSessionResponse.opcUaBinaryEncode(iosres);
+
+		// close session
+		authenticationCloseSession();
 
 		if (sessionIf_ != nullptr) {
 			ResponseHeader::SPtr responseHeader = closeSessionResponse.responseHeader();
@@ -685,205 +973,5 @@ namespace OpcUaStackServer
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 		}
 	}
-
-	bool 
-	Session::message(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		switch (secureChannelTransaction->requestTypeNodeId_.nodeId<OpcUaStackCore::OpcUaUInt32>())
-		{
-			case OpcUaId_CreateSessionRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive create session request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_CreateSessionResponse_Encoding_DefaultBinary);
-				return receiveCreateSessionRequest(secureChannelTransaction);
-				break;
-			}
-			case OpcUaId_ActivateSessionRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive activate session request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_ActivateSessionResponse_Encoding_DefaultBinary);
-				return receiveActivateSessionRequest(secureChannelTransaction);
-				break;
-			}
-			case OpcUaId_CloseSessionRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive close session request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_CloseSessionResponse_Encoding_DefaultBinary);
-				return receiveCloseSessionRequest(secureChannelTransaction);
-				break;
-			}
-			case OpcUaId_CancelRequest_Encoding_DefaultBinary:
-			{
-				Log(Debug, "receive cancel request");
-				secureChannelTransaction->responseTypeNodeId_.nodeId(OpcUaId_CancelResponse_Encoding_DefaultBinary);
-				return receiveCancelRequest(secureChannelTransaction);
-				break;
-			}
-			default:
-			{
-				return receiveMessage(secureChannelTransaction);
-			}
-		}
-	}
-
-	bool 
-	Session::receiveCreateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		// FIXME: authenticationToken in secureChannelTransaction must be 0
-
-		OpcUaStatusCode serviceResult = Success;
-
-		if (sessionState_ != SessionState_Close) {
-			Log(Error, "receive create session request in invalid state")
-				.parameter("SessionState", sessionState_);
-			return false;
-		}
-
-		std::iostream ios(&secureChannelTransaction->is_);
-		CreateSessionRequest createSessionRequest;
-		createSessionRequest.opcUaBinaryDecode(ios);
-
-		// find related endpoint description
-		bool found = false;
-		for (uint32_t idx=0; idx<endpointDescriptionArray_->size(); idx++) {
-			if (!endpointDescriptionArray_->get(idx, endpointDescription_)) continue;
-			if (createSessionRequest.endpointUrl() == endpointDescription_->endpointUrl()) {
-				found = true;
-				break;
-			}
-		}
-		if (!found) {
-			serviceResult = BadServerUriInvalid;
-		}
-		std::cout << "..." << serviceResult << std::endl;
-
-		std::iostream iosres(&secureChannelTransaction->os_);
-
-		CreateSessionResponse createSessionResponse;
-		createSessionResponse.responseHeader()->requestHandle(createSessionRequest.requestHeader()->requestHandle());
-		createSessionResponse.responseHeader()->serviceResult(serviceResult);
-
-		createSessionResponse.sessionId().namespaceIndex(1);
-		createSessionResponse.sessionId().nodeId(sessionId_);
-		createSessionResponse.authenticationToken().namespaceIndex(1);
-		createSessionResponse.authenticationToken().nodeId(sessionId_);
-		createSessionResponse.receivedSessionTimeout(120000);
-		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
-		createSessionResponse.maxRequestMessageSize(0);
-
-		createSessionResponse.responseHeader()->opcUaBinaryEncode(iosres);
-		createSessionResponse.opcUaBinaryEncode(iosres);
-
-		sessionState_ = SessionState_CreateSessionResponse;
-
-		secureChannelTransaction->authenticationToken_ = authenticationToken_;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
-		return true;
-	}
-		
-	bool 
-	Session::receiveActivateSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		// FIXME: if authenticationToken in the secureChannelTransaction contains 0 then 
-		//        the session has a new sechure channel
-
-
-		std::iostream ios(&secureChannelTransaction->is_);
-		ActivateSessionRequest activateSessionRequest;
-		activateSessionRequest.opcUaBinaryDecode(ios);
-
-		if (sessionState_ != SessionState_CreateSessionResponse) {
-			Log(Error, "receive activate session request in invalid state")
-				.parameter("SessionState", sessionState_);
-			//activateSessionRequestError(activateSessionRequest, secureChannelTransaction, BadIdentityTokenInvalid);
-			return true;
-		}
-
-		// FIXME: analyse request data
-
-		std::iostream iosres(&secureChannelTransaction->os_);
-
-		ActivateSessionResponse activateSessionResponse;
-		activateSessionResponse.responseHeader()->requestHandle(activateSessionRequest.requestHeader()->requestHandle());
-		activateSessionResponse.responseHeader()->serviceResult(Success);
-
-		activateSessionResponse.opcUaBinaryEncode(iosres);
-
-		sessionState_ = SessionState_Ready;
-
-		secureChannelTransaction->authenticationToken_ = authenticationToken_;
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
-		return true;
-	}
-
-	bool 
-	Session::receiveCloseSessionRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		std::iostream ios(&secureChannelTransaction->is_);
-		CloseSessionRequest closeSessionRequest;
-		closeSessionRequest.opcUaBinaryDecode(ios);
-
-		std::iostream iosres(&secureChannelTransaction->os_);
-
-		CloseSessionResponse closeSessionResponse;
-		closeSessionResponse.responseHeader()->requestHandle(closeSessionRequest.requestHeader()->requestHandle());
-		closeSessionResponse.responseHeader()->serviceResult(Success);
-
-		if (sessionManagerIf_ != nullptr) sessionManagerIf_->sessionMessage(secureChannelTransaction);
-		return true;
-	}
-
-	bool 
-	Session::receiveCancelRequest(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		std::cout << "not implemented..." << std::endl;
-		return false;
-	}
-
-	bool 
-	Session::receiveMessage(SecureChannelTransactionOld::SPtr secureChannelTransaction)
-	{
-		if (sessionState_ != SessionState_Ready) {
-			Log(Error, "receive message request in invalid state")
-				.parameter("SessionState", sessionState_)
-				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);
-			return false;
-		}
-
-		if (transactionManagerSPtr_.get() == nullptr) {
-			Log(Error, "transaction manager empty");
-			return false;
-		}
-
-		ServiceTransaction::SPtr serviceTransactionSPtr = transactionManagerSPtr_->getTransaction(secureChannelTransaction->requestTypeNodeId_);
-		if (serviceTransactionSPtr.get() == nullptr) {
-			Log(Error, "receive invalid message type")
-				.parameter("TypeId", secureChannelTransaction->requestTypeNodeId_);
-			return false;
-		}
-		serviceTransactionSPtr->componentSession(this);
-		serviceTransactionSPtr->sessionId(sessionId_);
-		serviceTransactionSPtr->channelId(secureChannelTransaction->channelId_);
-
-		std::iostream ios(&secureChannelTransaction->is_);
-		RequestHeader::SPtr requestHeader = serviceTransactionSPtr->requestHeader();
-		//OpcUaStackCore::dumpHex(sb);
-		requestHeader->opcUaBinaryDecode(ios);
-		//OpcUaStackCore::dumpHex(sb);
-		serviceTransactionSPtr->opcUaBinaryDecodeRequest(ios);
-		//OpcUaStackCore::dumpHex(sb); 
-		serviceTransactionSPtr->requestId_ = secureChannelTransaction->requestId_;
-		serviceTransactionSPtr->statusCode(Success);
-
-		Log(Debug, "receive request in session")
-			.parameter("TrxId", serviceTransactionSPtr->transactionId())
-			.parameter("TypeId", serviceTransactionSPtr->requestName())
-			.parameter("RequestId", serviceTransactionSPtr->requestId_);
-
-		serviceTransactionSPtr->componentService()->send(serviceTransactionSPtr);
-		return true;
-	}
-
-
 
 }
