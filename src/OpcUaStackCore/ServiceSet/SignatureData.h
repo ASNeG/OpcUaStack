@@ -45,6 +45,12 @@ namespace OpcUaStackCore
 			CryptoBase& cryptoBase
 		);
 
+		OpcUaStatusCode createSignature(
+			MemoryBuffer& certificate,
+			PrivateKey& privateKey,
+			CryptoBase& cryptoBase
+		);
+
 		OpcUaStatusCode verifySignature(
 			MemoryBuffer& certificate,
 			MemoryBuffer& nonce,

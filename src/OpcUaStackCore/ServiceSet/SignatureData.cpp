@@ -102,6 +102,62 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
+	SignatureData::createSignature(
+		MemoryBuffer& certificate,
+		PrivateKey& privateKey,
+		CryptoBase& cryptoBase
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		statusCode = cryptoBase.asymmetricKeyLen(privateKey, &asymmetricKeyLen);
+		if (statusCode != Success) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "create signature error - get asymmetric key len");
+			}
+			return statusCode;
+		}
+		asymmetricKeyLen /= 8;
+
+		MemoryBuffer signText;
+		signText.resize(asymmetricKeyLen);
+
+		// create signature
+		uint32_t keyLen = asymmetricKeyLen;
+		statusCode = cryptoBase.asymmetricSign(
+			certificate.memBuf(),
+			certificate.memLen(),
+			privateKey,
+			signText.memBuf(),
+			&keyLen
+		);
+		if (statusCode != Success) {
+
+			if (cryptoBase.isLogging()) {
+				Log(Error, "create signature error")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+					.parameter("CertificateTextLen", certificate.memLen())
+					.parameter("SignTextLen", signText.memLen())
+					.parameter("CertificateLen", certificate.memLen());
+			}
+
+			return statusCode;
+		}
+
+		signature(
+			(OpcUaByte*)signText.memBuf(),
+			signText.memLen()
+		);
+		algorithm(
+			SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId())
+		);
+
+		return statusCode;
+	}
+
+	OpcUaStatusCode
 	SignatureData::verifySignature(
 		MemoryBuffer& certificate,
 		MemoryBuffer& nonce,
@@ -236,7 +292,7 @@ namespace OpcUaStackCore
 		if (statusCode != Success && cryptoBase.isLogging()) {
 			Log(Error, "verify signature error")
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
-				.parameter("PlainTextLen", certificate.memLen())
+				.parameter("CertificateTextLen", certificate.memLen())
 				.parameter("SignTextLen", signText.memLen());
 		}
 
