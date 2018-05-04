@@ -15,8 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_CloseSessionContext_h__
-#define __OpcUaStackCore_CloseSessionContext_h__
+#ifndef __OpcUaStackCore_ApplicationCloseSessionContext_h__
+#define __OpcUaStackCore_ApplicationCloseSessionContext_h__
 
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
@@ -24,7 +24,7 @@
 namespace OpcUaStackCore
 {
 
-	class CloseSessionContext
+	class ApplicationCloseSessionContext
 	{
 	  public:
 		uint32_t sessionId_;					// IN - session id
