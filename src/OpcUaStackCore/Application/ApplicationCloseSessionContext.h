@@ -27,10 +27,12 @@ namespace OpcUaStackCore
 	class ApplicationCloseSessionContext
 	{
 	  public:
+		ApplicationCloseSessionContext(void);
+		~ApplicationCloseSessionContext(void);
+
 		uint32_t sessionId_;					// IN - session id
 		UserContext::SPtr userContext_;		    // IN - user context
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
-
 	};
 
 }

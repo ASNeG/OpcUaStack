@@ -39,6 +39,9 @@ namespace OpcUaStackCore
 	class ApplicationAutorizationContext
 	{
 	  public:
+		ApplicationAutorizationContext(void);
+		~ApplicationAutorizationContext(void);
+
 		UserContext::SPtr userContext_;			// IN - user context
 		ServiceOperation serviceOperation_;		// IN - service operation
 		OpcUaNodeId nodeId_;					// IN - node id

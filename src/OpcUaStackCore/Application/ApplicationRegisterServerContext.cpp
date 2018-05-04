@@ -1,5 +1,5 @@
 /*
-   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -15,26 +15,20 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackCore_ApplicationRegisterServerContext_h__
-#define __OpcUaStackCore_ApplicationRegisterServerContext_h__
-
-#include "OpcUaStackCore/Base/BaseClass.h"
-#include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
+#include "OpcUaStackCore/Application/ApplicationRegisterServerContext.h"
 
 namespace OpcUaStackCore
 {
 
-	class ApplicationRegisterServerContext
+	ApplicationRegisterServerContext::ApplicationRegisterServerContext(void)
+	: applicationContext_()
+	, server_()
+	, statusCode_(Success)
 	{
-	  public:
-		ApplicationRegisterServerContext(void);
-		~ApplicationRegisterServerContext(void);
+	}
 
-		BaseClass::SPtr applicationContext_;	// IN - application context from register call
-		RegisteredServer server_;				// IN - information about the server to be registered
-		OpcUaStatusCode statusCode_;			// OUT - result state of the register operation
-	};
+	ApplicationRegisterServerContext::~ApplicationRegisterServerContext(void)
+	{
+	}
 
 }
-
-#endif

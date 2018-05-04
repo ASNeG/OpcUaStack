@@ -1,5 +1,5 @@
 /*
-   Copyright 2016 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2016-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -27,6 +27,9 @@ namespace OpcUaStackCore
 	class ApplicationFindServerContext
 	{
 	  public:
+		ApplicationFindServerContext(void);
+		~ApplicationFindServerContext(void);
+
 		BaseClass::SPtr applicationContext_;	// IN - application context from register call
 
 		OpcUaString endpointUrl_;				// IN - the network address that the client used
