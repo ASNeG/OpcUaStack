@@ -213,6 +213,7 @@ namespace OpcUaStackServer
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_AnonymousIdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
@@ -333,6 +334,7 @@ namespace OpcUaStackServer
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
@@ -441,6 +443,7 @@ namespace OpcUaStackServer
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_X509IdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
@@ -557,6 +560,7 @@ namespace OpcUaStackServer
 		ApplicationAuthenticationContext context;
 		context.authenticationType_ = OpcUaId_IssuedIdentityToken_Encoding_DefaultBinary;
 		context.parameter_ = parameter;
+		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
