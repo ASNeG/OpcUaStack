@@ -157,6 +157,8 @@ namespace OpcUaStackServer
 			applicationMethodContext.outputArguments_ = constructSPtr<OpcUaVariantArray>();
 			applicationMethodContext.statusCode_ = Success;
 			applicationMethodContext.applicationContext_ = forwardMethodSync->methodService().applicationContext();
+			applicationMethodContext.userContext_ = serviceTransaction->userContext();
+
 			forwardMethodSync->methodService().callback()(&applicationMethodContext);
 
 			// check response
