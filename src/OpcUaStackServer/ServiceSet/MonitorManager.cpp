@@ -73,6 +73,7 @@ namespace OpcUaStackServer
 					ApplicationEventItemStopContext context;
 					context.applicationContext_ = forwardGlobalSync_->eventItemStopService().applicationContext();
 					context.eventItemId_ = it2->second->eventItemId();
+					context.userContext_ = it2->second->userContext();
 
 					forwardGlobalSync_->eventItemStopService().callback()(&context);
 				}
@@ -287,6 +288,7 @@ namespace OpcUaStackServer
 
 		// create new event item
 		EventItem::SPtr eventItem = constructSPtr<EventItem>();
+		eventItem->userContext(serviceTransaction->userContext());
 		eventItem->informationModel(informationModel_);
 		eventItem->browseName(browseName);
 		statusCode = eventItem->receive(
@@ -312,6 +314,7 @@ namespace OpcUaStackServer
 				ApplicationEventItemStartContext context;
 				context.applicationContext_ = forwardGlobalSync_->eventItemStartService().applicationContext();
 				context.eventItemId_ = eventItem->eventItemId();
+				context.userContext_ = eventItem->userContext();
 
 				forwardGlobalSync_->eventItemStartService().callback()(&context);
 			}
@@ -391,6 +394,7 @@ namespace OpcUaStackServer
 						ApplicationEventItemStopContext context;
 						context.applicationContext_ = forwardGlobalSync_->eventItemStopService().applicationContext();
 						context.eventItemId_ = it2->second->eventItemId();
+						context.userContext_ = it2->second->userContext();
 
 						forwardGlobalSync_->eventItemStopService().callback()(&context);
 					}
