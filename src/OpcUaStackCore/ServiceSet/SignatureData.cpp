@@ -180,6 +180,69 @@ namespace OpcUaStackCore
 		return statusCode;
 	}
 
+	OpcUaStatusCode
+	SignatureData::verifySignature(
+		MemoryBuffer& certificate,
+		PublicKey& publicKey,
+		CryptoBase& cryptoBase
+	)
+	{
+		OpcUaStatusCode statusCode;
+
+		// check signature alg
+		if (algorithm() != SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId())) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "verify signature error - signature algorithm invalid")
+					.parameter("Algorithm", algorithm())
+					.parameter("ExpectedAlgorithm", SignatureAlgs::signatureAlgToUri(cryptoBase.asymmetricSignatureAlgorithmId()));
+			}
+			return BadSecurityChecksFailed;
+		}
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		statusCode = cryptoBase.asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		if (statusCode != Success) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "verify signature error - get asymmetric key len")
+					.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			}
+			return statusCode;
+		}
+		asymmetricKeyLen /= 8;
+
+		// create sign text
+		MemoryBuffer signText(signature());
+
+		// check signature length
+		if (asymmetricKeyLen != signText.memLen()) {
+			if (cryptoBase.isLogging()) {
+				Log(Error, "verify signature error - asymmetric key len invalid")
+					.parameter("AsymmetricKeyLen", signText.memLen())
+					.parameter("ExpectedAsymmetricKeyLen", asymmetricKeyLen);
+			}
+			return BadSecurityChecksFailed;
+		}
+
+		// verify signature
+		statusCode = cryptoBase.asymmetricVerify(
+			certificate.memBuf(),
+			certificate.memLen(),
+			publicKey,
+			signText.memBuf(),
+			signText.memLen()
+		);
+
+		if (statusCode != Success && cryptoBase.isLogging()) {
+			Log(Error, "verify signature error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode))
+				.parameter("PlainTextLen", certificate.memLen())
+				.parameter("SignTextLen", signText.memLen());
+		}
+
+		return statusCode;
+	}
+
 	void 
 	SignatureData::signature(const OpcUaByte* buf, OpcUaInt32 bufLen)
 	{

@@ -52,6 +52,12 @@ namespace OpcUaStackCore
 			CryptoBase& cryptoBase
 		);
 
+		OpcUaStatusCode verifySignature(
+			MemoryBuffer& certificate,
+			PublicKey& publicKey,
+			CryptoBase& cryptoBase
+		);
+
 		void signature(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void signature(OpcUaByte** buf, OpcUaInt32* bufLen) const;
 		OpcUaByteString signature(void);
