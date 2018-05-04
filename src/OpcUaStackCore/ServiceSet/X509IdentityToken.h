@@ -40,6 +40,7 @@ namespace OpcUaStackCore
 		std::string policyId(void) const;
 		void certificateData(const OpcUaByte* buf, OpcUaInt32 bufLen);
 		void certificateData(OpcUaByte** buf, OpcUaInt32* bufLen) const;
+		OpcUaByteString& certificateData(void);
 
 		//- ExtensibleParameterBase -------------------------------------------
 		virtual ExtensibleParameterBase::SPtr factory(void);

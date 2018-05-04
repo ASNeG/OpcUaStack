@@ -61,6 +61,12 @@ namespace OpcUaStackCore
 		certificateData_.value(buf, bufLen);
 	}
 	
+	OpcUaByteString&
+	X509IdentityToken::certificateData(void)
+	{
+		return certificateData_;
+	}
+
 	ExtensibleParameterBase::SPtr
 	X509IdentityToken::factory(void)
 	{
