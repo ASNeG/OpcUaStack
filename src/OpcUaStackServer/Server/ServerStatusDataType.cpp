@@ -1,5 +1,5 @@
 /*
-   Copyright 2015 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -51,15 +51,15 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant(extensionObject);
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus, AttributeId_Value, dataValue);
 		}
 
 		// set BuildInfo
 		{
 			OpcUaExtensionObject::SPtr extensionObject = constructSPtr<OpcUaExtensionObject>();
-			OpcUaDateTime now(boost::posix_time::microsec_clock::local_time());
+			OpcUaDateTime now(boost::posix_time::microsec_clock::universal_time());
 
 			OpcUaNodeId typeId;
 			typeId.set(OpcUaId_BuildInfo_Encoding_DefaultBinary);
@@ -69,8 +69,8 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant(extensionObject);
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_BuildInfo, AttributeId_Value, dataValue);
 		}
 
@@ -79,8 +79,8 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant(currentTime());
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_CurrentTime, AttributeId_Value, dataValue);
 		}
 
@@ -89,8 +89,8 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant(secondsTillShutdown());
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_SecondsTillShutdown, AttributeId_Value, dataValue);
 		}
 
@@ -102,8 +102,8 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant(value);
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_ShutdownReason, AttributeId_Value, dataValue);
 		}
 
@@ -112,8 +112,8 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant(startTime());
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_StartTime, AttributeId_Value, dataValue);
 		}
 
@@ -122,8 +122,8 @@ namespace OpcUaStackServer
 			OpcUaDataValue dataValue;
 			dataValue.variant()->variant((OpcUaInt32)0);
 			dataValue.statusCode(Success);
-			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
-			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::local_time());
+			dataValue.sourceTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
+			dataValue.serverTimestamp().dateTime(boost::posix_time::microsec_clock::universal_time());
 			bool rc = informationModel->setValue(OpcUaId_Server_ServerStatus_State, AttributeId_Value, dataValue);
 		}
 
@@ -151,7 +151,7 @@ namespace OpcUaStackServer
 		buildInfo().productName() = "ASNeG OpcUaServer";
 		buildInfo().softwareVersion() = "";											// FIXME
 		buildInfo().buildNumber() = "";												// FIXME
-		buildInfo().buildDate() = boost::posix_time::microsec_clock::local_time();	// FIXME
+		buildInfo().buildDate() = boost::posix_time::microsec_clock::universal_time();	// FIXME
 
 		return true;
 	}
