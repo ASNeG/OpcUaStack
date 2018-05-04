@@ -189,7 +189,7 @@ namespace OpcUaStackServer
 
 		ApplicationAutorizationContext context;
 		context.userContext_ = userContext;
-		context.serviceOperation_ = ServiceOperation::Read;
+		context.serviceOperation_ = ServiceOperation::Method;
 		context.nodeId_ = objectNodeId;
 		context.nodeId1_ = funcNodeId;
 
