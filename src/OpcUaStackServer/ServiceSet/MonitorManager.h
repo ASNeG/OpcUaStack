@@ -77,10 +77,12 @@ namespace OpcUaStackServer
 			CreateMonitoredItemsResponse::SPtr& createMonitorItemResponse
 		);
 		void forwardStartMonitoredItem(
+			UserContext::SPtr& userContext,
 			BaseNodeClass::SPtr baseNodeClass,
 			uint32_t monitoredItemId
 		);
 		void forwardStopMonitoredItem(
+			UserContext::SPtr& userContext,
 			BaseNodeClass::SPtr baseNodeClass,
 			uint32_t monitoredItemId
 		);
