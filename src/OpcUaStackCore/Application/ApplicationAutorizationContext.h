@@ -32,7 +32,8 @@ namespace OpcUaStackCore
 		HRead,
 		HWrite,
 		MonitoredItem,
-		EventItem
+		EventItem,
+		Method
 	} ServiceOperation;
 
 	class ApplicationAutorizationContext
@@ -41,6 +42,7 @@ namespace OpcUaStackCore
 		UserContext::SPtr userContext_;			// IN - user context
 		ServiceOperation serviceOperation_;		// IN - service operation
 		OpcUaNodeId nodeId_;					// IN - node id
+		OpcUaNodeId nodeId1_;					// IN - second node id (method object node id)
 		uint32_t attributeId_;					// IN - attribute id
 		OpcUaStatusCode statusCode_;			// OUT - result state of the write operation
 	};

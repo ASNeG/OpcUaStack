@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -17,6 +17,7 @@
 
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaIdentifier.h"
+#include "OpcUaStackCore/Application/ApplicationAutorizationContext.h"
 #include "OpcUaStackCore/Application/ApplicationMethodContext.h"
 #include "OpcUaStackCore/ServiceSet/MethodServiceTransaction.h"
 #include "OpcUaStackServer/ServiceSet/MethodService.h"
@@ -50,6 +51,8 @@ namespace OpcUaStackServer
 	void 
 	MethodService::receiveCallRequest(ServiceTransaction::SPtr serviceTransaction)
 	{
+		OpcUaStatusCode statusCode;
+
 		BaseNodeClass::SPtr baseNodeClass;
 		ServiceTransactionCall::SPtr trx = boost::static_pointer_cast<ServiceTransactionCall>(serviceTransaction);
 
@@ -135,6 +138,17 @@ namespace OpcUaStackServer
 				continue;
 			}
 
+			// autorization
+			statusCode = forwardAuthorizationMethod(
+				serviceTransaction->userContext(),
+				*callMethod->objectId(),
+				*callMethod->methodId()
+			);
+			if (statusCode != Success) {
+				callMethodResult->statusCode(statusCode);
+				continue;
+			}
+
 			// call forward calbacks
 			ApplicationMethodContext applicationMethodContext;
 			applicationMethodContext.objectNodeId_ = *callMethod->objectId();
@@ -161,6 +175,27 @@ namespace OpcUaStackServer
 		}
 
 		serviceTransaction->componentSession()->send(serviceTransaction);
+	}
+
+	OpcUaStatusCode
+	MethodService::forwardAuthorizationMethod(
+		UserContext::SPtr& userContext,
+		OpcUaNodeId& objectNodeId,
+		OpcUaNodeId& funcNodeId
+	)
+	{
+		if (forwardGlobalSync().get() == nullptr) return Success;
+		if (!forwardGlobalSync()->autorizationService().isCallback()) return Success;
+
+		ApplicationAutorizationContext context;
+		context.userContext_ = userContext;
+		context.serviceOperation_ = ServiceOperation::Read;
+		context.nodeId_ = objectNodeId;
+		context.nodeId1_ = funcNodeId;
+
+		forwardGlobalSync()->autorizationService().callback()(&context);
+
+		return context.statusCode_;
 	}
 
 }
