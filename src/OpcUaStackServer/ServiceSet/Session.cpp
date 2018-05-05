@@ -216,7 +216,9 @@ namespace OpcUaStackServer
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
-		forwardGlobalSync_->closeSessionService().callback()(&context);
+		if (forwardGlobalSync_->closeSessionService().isCallback()) {
+			forwardGlobalSync_->closeSessionService().callback()(&context);
+		}
 
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
@@ -297,6 +299,24 @@ namespace OpcUaStackServer
 			.parameter("UserName", token->userName())
 			.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri())
 			.parameter("EncyptionAlgorithmus", token->encryptionAlgorithm());
+
+		if (token->encryptionAlgorithm() == "") {
+			// create application context
+			ApplicationAuthenticationContext context;
+			context.authenticationType_ = OpcUaId_UserNameIdentityToken_Encoding_DefaultBinary;
+			context.parameter_ = parameter;
+			context.sessionId_ = sessionId_;
+			context.statusCode_ = Success;
+			context.userContext_.reset();
+
+			forwardGlobalSync_->authenticationService().callback()(&context);
+
+			if (context.statusCode_ == Success) {
+				userContext_ = context.userContext_;
+			}
+
+			return context.statusCode_;
+		}
 
 		// get cryption base and check cryption alg
 		CryptoBase::SPtr cryptoBase = cryptoManager_->get(userTokenPolicy->securityPolicyUri());
