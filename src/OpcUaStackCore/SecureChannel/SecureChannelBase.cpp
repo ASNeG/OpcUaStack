@@ -1368,12 +1368,11 @@ namespace OpcUaStackCore
 				return;
 			}
 
-			boost::asio::streambuf sbn;
-			encryptedText.get(sbn);
+			encryptedText.get(secureChannel->sendBuffer_);
 
 			// send response
 			secureChannel->async_write(
-				sbn,
+					secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
@@ -1399,13 +1398,11 @@ namespace OpcUaStackCore
 				return;
 			}
 
-			//boost::asio::streambuf sb;
 			encryptedText.get(secureChannel->sendBuffer_);
 
 			// send response
 			secureChannel->async_write(
 				secureChannel->sendBuffer_,
-				//sb2, sb1, secureChannelTransaction->os_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
