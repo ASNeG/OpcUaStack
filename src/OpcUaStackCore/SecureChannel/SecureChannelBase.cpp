@@ -1388,7 +1388,6 @@ namespace OpcUaStackCore
 			secureChannel->secureChannelTransactionList_.pop_front();
 			secureChannel->sendFirstSegment_ = true;
 
-#if 0
 			// handle security
 			MemoryBuffer plainText(sb2, sb1, secureChannelTransaction->os_);
 			MemoryBuffer encryptedText;
@@ -1400,14 +1399,13 @@ namespace OpcUaStackCore
 				return;
 			}
 
-			boost::asio::streambuf sb;
-			encryptedText.get(sb);
-#endif
+			//boost::asio::streambuf sb;
+			encryptedText.get(secureChannel->sendBuffer_);
 
 			// send response
 			secureChannel->async_write(
-				//sb,
-				sb2, sb1, secureChannelTransaction->os_,
+				secureChannel->sendBuffer_,
+				//sb2, sb1, secureChannelTransaction->os_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
