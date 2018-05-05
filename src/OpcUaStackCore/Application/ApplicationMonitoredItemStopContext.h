@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationMonitoredItemStopContext_h__
 #define __OpcUaStackCore_ApplicationMonitoredItemStopContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
@@ -26,7 +27,7 @@
 namespace OpcUaStackCore
 {
 
-	class ApplicationMonitoredItemStopContext
+	class DLLEXPORT ApplicationMonitoredItemStopContext
 	{
 	  public:
 		ApplicationMonitoredItemStopContext(void);

@@ -18,13 +18,14 @@
 #ifndef __OpcUaStackCore_ApplicationCloseSessionContext_h__
 #define __OpcUaStackCore_ApplicationCloseSessionContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 
 namespace OpcUaStackCore
 {
 
-	class ApplicationCloseSessionContext
+	class DLLEXPORT ApplicationCloseSessionContext
 	{
 	  public:
 		ApplicationCloseSessionContext(void);

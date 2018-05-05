@@ -19,7 +19,7 @@
 #ifndef __OpUaStackCore_SecureChannelBase_h__
 #define __OpUaStackCore_SecureChannelBase_h__
 
-#include "OpcUaStackCore/Base/Object.h"
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 #include "OpcUaStackCore/SecureChannel/HelloMessage.h"
 #include "OpcUaStackCore/SecureChannel/AcknowledgeMessage.h"

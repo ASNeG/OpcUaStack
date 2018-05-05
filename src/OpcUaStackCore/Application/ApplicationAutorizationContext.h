@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationAutorizationContext_h__
 #define __OpcUaStackCore_ApplicationAutorizationContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaStatusCode.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
@@ -36,7 +37,7 @@ namespace OpcUaStackCore
 		Method
 	} ServiceOperation;
 
-	class ApplicationAutorizationContext
+	class DLLEXPORT ApplicationAutorizationContext
 	{
 	  public:
 		ApplicationAutorizationContext(void);

@@ -18,13 +18,14 @@
 #ifndef __OpcUaStackCore_ApplicationRegisterServerContext_h__
 #define __OpcUaStackCore_ApplicationRegisterServerContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/ServiceSet/RegisteredServer.h"
 
 namespace OpcUaStackCore
 {
 
-	class ApplicationRegisterServerContext
+	class DLLEXPORT ApplicationRegisterServerContext
 	{
 	  public:
 		ApplicationRegisterServerContext(void);
