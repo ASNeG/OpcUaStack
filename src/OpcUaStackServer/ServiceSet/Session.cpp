@@ -216,7 +216,9 @@ namespace OpcUaStackServer
 		context.statusCode_ = Success;
 		context.userContext_.reset();
 
-		forwardGlobalSync_->closeSessionService().callback()(&context);
+		if (forwardGlobalSync_->closeSessionService().isCallback()) {
+			forwardGlobalSync_->closeSessionService().callback()(&context);
+		}
 
 		if (context.statusCode_ == Success) {
 			userContext_ = context.userContext_;
