@@ -18,13 +18,14 @@
 #ifndef __OpcUaStackCore_ApplicationEventItemStopContext_h__
 #define __OpcUaStackCore_ApplicationEventItemStopContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 
 namespace OpcUaStackCore
 {
 
-	class ApplicationEventItemStopContext
+	class DLLEXPORT ApplicationEventItemStopContext
 	{
 	  public:
 		ApplicationEventItemStopContext(void);

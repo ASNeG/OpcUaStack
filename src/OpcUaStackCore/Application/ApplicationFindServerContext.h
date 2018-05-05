@@ -18,13 +18,14 @@
 #ifndef __OpcUaStackCore_ApplicationFindServerContext_h__
 #define __OpcUaStackCore_ApplicationFindServerContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/ServiceSet/ApplicationDescription.h"
 
 namespace OpcUaStackCore
 {
 
-	class ApplicationFindServerContext
+	class DLLEXPORT ApplicationFindServerContext
 	{
 	  public:
 		ApplicationFindServerContext(void);

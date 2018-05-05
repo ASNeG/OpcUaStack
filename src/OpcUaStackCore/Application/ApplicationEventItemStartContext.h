@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationEventItemStartContext_h__
 #define __OpcUaStackCore_ApplicationEventItemStartContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 
@@ -25,7 +26,7 @@
 namespace OpcUaStackCore
 {
 
-	class ApplicationEventItemStartContext
+	class DLLEXPORT ApplicationEventItemStartContext
 	{
 	  public:
 		ApplicationEventItemStartContext(void);

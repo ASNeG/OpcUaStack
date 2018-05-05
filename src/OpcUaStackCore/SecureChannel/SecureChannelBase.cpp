@@ -41,6 +41,7 @@ namespace OpcUaStackCore
 
 	SecureChannelBase::~SecureChannelBase(void)
 	{
+		Log(Debug, "Destructor");
 	}
 
 	void
@@ -770,11 +771,10 @@ namespace OpcUaStackCore
 			return;
 		}
 
-		boost::asio::streambuf sb;
-		encryptedText.get(sb);
+		encryptedText.get(secureChannel->sendBuffer_);
 		secureChannel->asyncSend_ = true;
 		secureChannel->async_write(
-			sb,
+			secureChannel->sendBuffer_,
 			boost::bind(
 				&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
 				this,
@@ -1367,12 +1367,11 @@ namespace OpcUaStackCore
 				return;
 			}
 
-			boost::asio::streambuf sbn;
-			encryptedText.get(sbn);
+			encryptedText.get(secureChannel->sendBuffer_);
 
 			// send response
 			secureChannel->async_write(
-				sbn,
+					secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,
@@ -1398,12 +1397,11 @@ namespace OpcUaStackCore
 				return;
 			}
 
-			boost::asio::streambuf sb;
-			encryptedText.get(sb);
+			encryptedText.get(secureChannel->sendBuffer_);
 
 			// send response
 			secureChannel->async_write(
-				sb,
+				secureChannel->sendBuffer_,
 				boost::bind(
 					&SecureChannelBase::handleWriteMessageResponseComplete,
 					this,

@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationHWriteContext_h__
 #define __OpcUaStackCore_ApplicationHWriteContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
@@ -27,7 +28,7 @@
 namespace OpcUaStackCore
 {
 
-	class ApplicationHWriteContext
+	class DLLEXPORT ApplicationHWriteContext
 	{
 	  public:
 		ApplicationHWriteContext(void);

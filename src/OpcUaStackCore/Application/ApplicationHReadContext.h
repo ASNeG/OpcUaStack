@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackCore_ApplicationHReadContext_h__
 #define __OpcUaStackCore_ApplicationHReadContext_h__
 
+#include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/BaseClass.h"
 #include "OpcUaStackCore/Base/UserContext.h"
 #include "OpcUaStackCore/BuildInTypes/OpcUaNodeId.h"
@@ -28,7 +29,7 @@
 namespace OpcUaStackCore
 {
 
-	class ApplicationHReadContext
+	class DLLEXPORT ApplicationHReadContext
 	{
 	  public:
 		ApplicationHReadContext(void);
