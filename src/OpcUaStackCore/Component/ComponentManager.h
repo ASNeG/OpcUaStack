@@ -26,6 +26,18 @@
 
 namespace OpcUaStackCore
 {
+
+	class DLLEXPORT ComponentElement
+	{
+	  public:
+		typedef boost::shared_ptr<ComponentElement> SPtr;
+		typedef boost::weak_ptr<ComponentElement> WPtr;
+
+		ComponentElement(void);
+		~ComponentElement(void);
+	};
+
+
 	class DLLEXPORT ComponentManager
 	{
 	  public:
