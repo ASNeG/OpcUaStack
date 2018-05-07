@@ -214,16 +214,13 @@ namespace OpcUaStackServer
 		ApplicationCloseSessionContext context;
 		context.sessionId_ = sessionId_;
 		context.statusCode_ = Success;
-		context.userContext_.reset();
+		context.userContext_ = userContext_;
 
 		if (forwardGlobalSync_->closeSessionService().isCallback()) {
 			forwardGlobalSync_->closeSessionService().callback()(&context);
 		}
 
-		if (context.statusCode_ == Success) {
-			userContext_ = context.userContext_;
-		}
-
+		userContext_.reset();
 		return context.statusCode_;
 	}
 
@@ -847,7 +844,7 @@ namespace OpcUaStackServer
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 
 			// FIXME: BUG - After deleting the session, the monitored item will send a notification. -> CORE
-			//sessionIf_->deleteSession(authenticationToken_);
+			sessionIf_->deleteSession(authenticationToken_);
 		}
 	}
 
