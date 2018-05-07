@@ -28,11 +28,24 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ComponentElement::ComponentElement(void)
+	: component_(nullptr)
 	{
 	}
 
 	ComponentElement::~ComponentElement(void)
 	{
+	}
+
+	void
+	ComponentElement::component(Component* component)
+	{
+		component_ = component;
+	}
+
+	Component*
+	ComponentElement::component(void)
+	{
+		return component_;
 	}
 
 
@@ -43,12 +56,80 @@ namespace OpcUaStackCore
 	//
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
+
+	boost::mutex ComponentManager::mutex_;
+	ComponentElement::Map ComponentManager::componentElementMap_;
+
 	ComponentManager::ComponentManager(void)
 	{
 	}
 
 	ComponentManager::~ComponentManager(void)
 	{
+	}
+
+	ComponentElement::WPtr
+	ComponentManager::registerComponent(const std::string& componentName, Component* component)
+	{
+		ComponentElement::WPtr componentElement;
+
+		// FIXME: todo
+
+		return componentElement;
+	}
+
+	bool
+	ComponentManager::deregisterComponent(const std::string& componentName)
+	{
+		// FIXME: todo
+
+		return true;
+	}
+
+	ComponentElement::WPtr
+	ComponentManager::getComponent(const std::string& componentName)
+	{
+		ComponentElement::WPtr componentElement;
+
+		// FIXME: todo
+
+		return componentElement;
+	}
+
+	bool
+	ComponentManager::existComponent(const std::string& componentName)
+	{
+		// FIXME: todo
+
+		return true;
+	}
+
+	bool
+	ComponentManager::send(ComponentElement::WPtr& componentElement, Message::SPtr message)
+	{
+		// FIXME:
+		return true;
+	}
+
+	bool
+	ComponentManager::sendAsync(ComponentElement::WPtr& componentElement, Message::SPtr message)
+	{
+		// FIXME:
+		return true;
+	}
+
+	bool
+	ComponentManager::send(const std::string& componentName, Message::SPtr message)
+	{
+		// FIXME:
+		return true;
+	}
+
+	bool
+	ComponentManager::sendAsync(const std::string& componentName, Message::SPtr message)
+	{
+		// FIXME:
+		return true;
 	}
 
 }

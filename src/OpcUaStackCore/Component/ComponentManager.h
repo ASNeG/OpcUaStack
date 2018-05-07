@@ -22,7 +22,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/IOService.h"
 #include "OpcUaStackCore/Utility/IOThread.h"
-#include "OpcUaStackCore/Component/Message.h"
+#include "OpcUaStackCore/Component/Component.h"
 
 namespace OpcUaStackCore
 {
@@ -32,9 +32,16 @@ namespace OpcUaStackCore
 	  public:
 		typedef boost::shared_ptr<ComponentElement> SPtr;
 		typedef boost::weak_ptr<ComponentElement> WPtr;
+		typedef std::map<std::string, ComponentElement::SPtr> Map;
 
 		ComponentElement(void);
 		~ComponentElement(void);
+
+		void component(Component* component);
+		Component* component(void);
+
+	  private:
+		Component* component_;
 	};
 
 
@@ -47,7 +54,19 @@ namespace OpcUaStackCore
 		ComponentManager(void);
 		virtual ~ComponentManager(void);
 		
+		static ComponentElement::WPtr registerComponent(const std::string& componentName, Component* component);
+		static bool deregisterComponent(const std::string& componentName);
+		static ComponentElement::WPtr getComponent(const std::string& componentName);
+		static bool existComponent(const std::string& componentName);
+
+		static bool send(ComponentElement::WPtr& componentElement, Message::SPtr message);
+		static bool sendAsync(ComponentElement::WPtr& componentElement, Message::SPtr message);
+		static bool send(const std::string& componentName, Message::SPtr message);
+		static bool sendAsync(const std::string& componentName, Message::SPtr message);
+
 	  private:
+		static boost::mutex mutex_;
+		static ComponentElement::Map componentElementMap_;
 	};
 
 }
