@@ -844,7 +844,7 @@ namespace OpcUaStackServer
 			sessionIf_->responseMessage(responseHeader, secureChannelTransaction);
 
 			// FIXME: BUG - After deleting the session, the monitored item will send a notification. -> CORE
-			sessionIf_->deleteSession(authenticationToken_);
+			//sessionIf_->deleteSession(authenticationToken_);
 		}
 	}
 
