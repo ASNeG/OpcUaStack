@@ -28,6 +28,8 @@
     <Log4cxxLogger>
     </Log4cxxLogger>
     
+    <SecureChannelLog>0</SecureChannelLog>
+    
   </Logging>
   
   <DiscoveryServer>
@@ -37,53 +39,95 @@
    
   <Endpoints>
     <EndpointDescription>
-	  <EndpointUrl>opc.tcp://0.0.0.0:ProjectPort</EndpointUrl>
-	  <ApplicationUri>urn:ASNeG::ProjectName</ApplicationUri>
+	  <EndpointUrl>opc.tcp://127.0.0.1:ProjectPort</EndpointUrl>
+	  <ApplicationUri>urn:127.0.0.1:ASNeG:ProjectName</ApplicationUri>
 	  <ProductUri>urn:ASNeG:ProjectName</ProductUri>
 	  <ApplicationName>ProjectName</ApplicationName>
-	  <DiscoveryUrl>opc.tcp://0.0.0.0:ProjectPort</DiscoveryUrl>	
-	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	  <DiscoveryUrl>opc.tcp://127.0.0.1:ProjectPort</DiscoveryUrl>	
+	  <GatewayServerUri></GatewayServerUri>
+	  <!-- <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri> -->
+	  
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
+	    <MessageSecurityMode>None</MessageSecurityMode>
+	  </SecuritySetting>
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic128Rsa15</SecurityPolicyUri>
+	    <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+	  </SecuritySetting>
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	    <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+	  </SecuritySetting>
+	  <SecuritySetting>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256</SecurityPolicyUri>
+	    <MessageSecurityMode>SignAndEncrypt</MessageSecurityMode>
+	  </SecuritySetting>
+	  
 	  <UserTokenPolicy>
-	    <PolicyId>OpcUaStack</PolicyId>
+	    <PolicyId>OpcUaStack1</PolicyId>
 	    <TokenType>Anonymous</TokenType>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack2</PolicyId>
+	    <TokenType>Username</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack3</PolicyId>
+	    <TokenType>IssuedToken</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
+	  </UserTokenPolicy>
+	  <UserTokenPolicy>
+	    <PolicyId>OpcUaStack3</PolicyId>
+	    <TokenType>Certificate</TokenType>
+	    <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#Basic256</SecurityPolicyUri>
 	  </UserTokenPolicy>
 	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
 	  <SecurityLevel>0</SecurityLevel>
 	</EndpointDescription>
-
-	<!--
-    <EndpointDescription>
-	  <EndpointUrl>opc.tcp://0.0.0.0:4888/0.0.0.0</EndpointUrl>
-	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
-	  <ProductUri>urn:company:OpcUaServer</ProductUri>
-	  <ApplicationName>OpcUaServer</ApplicationName>
-	  <DiscoveryUrl>opc.tcp://localhost:4841/0.0.0.0</DiscoveryUrl>	
-	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
-	  <UserTokenPolicy>
-	    <PolicyId>OpcUaStack</PolicyId>
-		<TokenType>Anonymous</TokenType>
-	  </UserTokenPolicy>
-	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
-	  <SecurityLevel>1</SecurityLevel>
-	</EndpointDescription>
-	
-    <EndpointDescription>
-	  <EndpointUrl>opc.tcp://0.0.0.0:4888/0.0.0.0</EndpointUrl>
-	  <ApplicationUri>urn:localhost:OpcUaServer::TestAppl</ApplicationUri>
-	  <ProductUri>urn:company:OpcUaServer</ProductUri>
-	  <ApplicationName>OpcUaServer</ApplicationName>
-	  <DiscoveryUrl>opc.tcp://localhost:4841/0.0.0.0</DiscoveryUrl>	
-	  <SecurityPolicyUri>http://opcfoundation.org/UA/SecurityPolicy#None</SecurityPolicyUri>
-	  <UserTokenPolicy>
-	    <PolicyId>OpcUaStack</PolicyId>
-		<TokenType>Anonymous</TokenType>
-	  </UserTokenPolicy>
-	  <TransportProfileUri>http://opcfoundation.org/UA-Profile/Transport/uatcp-uasc-uabinary</TransportProfileUri>
-	  <SecurityLevel>2</SecurityLevel>
-	</EndpointDescription>
-	-->
   </Endpoints>
-
+   
+  <ServerInfo>
+    <ServerUri>urn:@HOSTNAME@:ASNeG:ProjectName</ServerUri>
+    <ServerName>ProjectName@@HOSTNAME@</ServerName>
+  </ServerInfo>
+  
+  <ApplicationCertificate>
+  
+      <Folder>
+          <CertificateTrustListLocation>@CONF_DIR@/pki/trusted/certs/</CertificateTrustListLocation>
+          <CertificateRevocationListLocation>@CONF_DIR@/pki/trusted/crl/</CertificateRevocationListLocation>
+          <IssuersCertificatesLocation>@CONF_DIR@/pki/issuers/certs/</IssuersCertificatesLocation>
+          <IssuersRevocationListLocation>@CONF_DIR@/pki/issuers/crl/</IssuersRevocationListLocation>
+          <CertificateRejectListLocation>@CONF_DIR@/pki/reject/certs/</CertificateRejectListLocation>
+      </Folder>
+  
+      <Files>
+          <ApplicationCertificateFile>@CONF_DIR@/pki/own/certs/ProjectName.der</ApplicationCertificateFile>
+          <PrivateKeyFile>@CONF_DIR@/pki/own/private/ProjectName.pem</PrivateKeyFile>
+      </Files>
+      
+      <CertificateSettings>
+        <GenerateCertificate>true</GenerateCertificate>
+          
+        <CommonName>ProjectName</CommonName>		
+        <DomainComponent>127.0.0.1</DomainComponent>	
+        <Organization>ASNeG</Organization>
+        <OrganizationUnit>OPC UA Service Department</OrganizationUnit>
+        <Locality>Neukirchen</Locality>
+        <State>Hessen</State>
+        <Country>DE</Country>
+        <YearsValidFor>5</YearsValidFor>
+        <KeyLength>2048</KeyLength>
+        <CertificateType>RsaSha256</CertificateType>
+        <IPAddress>127.0.0.1</IPAddress>
+        <DNSName>ASNeG.de</DNSName>
+        <EMail>info@ASNeG.de</EMail>
+      </CertificateSettings>
+      
+  </ApplicationCertificate>
+   
   <Applications>
     <Application>
       <Name>ProjectName</Name>  
