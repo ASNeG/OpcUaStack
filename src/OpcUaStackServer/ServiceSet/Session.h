@@ -104,6 +104,7 @@ namespace OpcUaStackServer
 		OpcUaStatusCode authenticationUserName(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationX509(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
 		OpcUaStatusCode authenticationIssued(ActivateSessionRequest& activateSessionRequest, ExtensibleParameter::SPtr& parameter);
+		OpcUaStatusCode checkUserTokenPolicy(const std::string& policyId, UserIdentityTokenType tokenType, UserTokenPolicy::SPtr& userTokenPolicy);
 
 		void activateSessionRequestError(
 			RequestHeader::SPtr& requestHeader,
