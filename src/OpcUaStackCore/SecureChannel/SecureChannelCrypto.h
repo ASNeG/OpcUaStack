@@ -20,6 +20,9 @@
 #define __OpcUaStackCore_SecureChannelCrypto_h__
 
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/SecureChannel/SecureChannel.h"
 
 namespace OpcUaStackCore
 {
@@ -28,7 +31,30 @@ namespace OpcUaStackCore
 	{
 	  public:
 		SecureChannelCrypto(void);
-		~SecureChannelCrypto(void);
+		virtual ~SecureChannelCrypto(void);
+
+		void cryptoManager(CryptoManager::SPtr& cryptoManager);
+		CryptoManager::SPtr& cryptoManager(void);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
+
+		//
+		// open secure channel request
+		//
+		OpcUaStatusCode secureReceivedOpenSecureChannelRequest(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode decryptReceivedOpenSecureChannel(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode verifyReceivedOpenSecureChannel(
+			SecureChannel* secureChannel
+		);
+
+	  private:
+		CryptoManager::SPtr cryptoManager_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+
 	};
 
 }
