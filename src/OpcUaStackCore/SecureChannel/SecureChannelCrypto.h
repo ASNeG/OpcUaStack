@@ -39,7 +39,7 @@ namespace OpcUaStackCore
 		ApplicationCertificate::SPtr& applicationCertificate(void);
 
 		//
-		// open secure channel request
+		// receive open secure channel request
 		//
 		OpcUaStatusCode secureReceivedOpenSecureChannelRequest(
 			SecureChannel* secureChannel
@@ -49,6 +49,70 @@ namespace OpcUaStackCore
 		);
 		OpcUaStatusCode verifyReceivedOpenSecureChannel(
 			SecureChannel* secureChannel
+		);
+
+		//
+		// send open secure channel response
+		//
+		OpcUaStatusCode secureSendOpenSecureChannelResponse(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode signSendOpenSecureChannelResponse(
+			MemoryBuffer& plainText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode encryptSendOpenSecureChannelResponse(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+
+		//
+		// receive message request
+		//
+		OpcUaStatusCode secureReceivedMessageRequest(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode decryptReceivedMessage(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode verifyReceivedMessage(
+			SecureChannel* secureChannel
+		);
+
+		//
+		// send message response
+		//
+		OpcUaStatusCode secureSendMessageResponse(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode signSendMessageResponse(
+			MemoryBuffer& plainText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode encryptSendMessageResponse(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+
+
+
+		void logMessageInfo(
+			const std::string& message,
+			uint32_t plainTextBlockSize,
+		    uint32_t cryptTextBlockSize,
+			int32_t messageSize,
+			int32_t messageHeaderSize,
+			int32_t securityHeaderSize,
+			int32_t sequenceHeaderSize,
+			int32_t bodySize,
+			int32_t paddingSize,
+			int32_t signatureSize
 		);
 
 	  private:

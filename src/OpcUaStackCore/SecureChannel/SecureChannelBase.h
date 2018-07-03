@@ -116,55 +116,6 @@ namespace OpcUaStackCore
 
 	  private:
 
-		//
-		// open secure channel response
-		//
-		OpcUaStatusCode secureSendOpenSecureChannelResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode signSendOpenSecureChannelResponse(
-			MemoryBuffer& plainText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode encryptSendOpenSecureChannelResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-
-		//
-		// message request
-		//
-		OpcUaStatusCode secureReceivedMessageRequest(
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode decryptReceivedMessage(
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode verifyReceivedMessage(
-			SecureChannel* secureChannel
-		);
-
-		//
-		// message response
-		//
-		OpcUaStatusCode secureSendMessageResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode signSendMessageResponse(
-			MemoryBuffer& plainText,
-			SecureChannel* secureChannel
-		);
-		OpcUaStatusCode encryptSendMessageResponse(
-			MemoryBuffer& plainText,
-			MemoryBuffer& encryptedText,
-			SecureChannel* secureChannel
-		);
-
 		void asyncReadHello(SecureChannel* secureChannel);
 		void asyncReadAcknowledge(SecureChannel* secureChannel);
 		void asyncReadOpenSecureChannelRequest(SecureChannel* secureChannel);
@@ -199,18 +150,6 @@ namespace OpcUaStackCore
 		void closeChannel(SecureChannel* secureChannel, bool close = false);
 		void consumeAll(boost::asio::streambuf& streambuf);
 
-		void logMessageInfo(
-			const std::string& message,
-			uint32_t plainTextBlockSize,
-		    uint32_t cryptTextBlockSize,
-			int32_t messageSize,
-			int32_t messageHeaderSize,
-			int32_t securityHeaderSize,
-			int32_t sequenceHeaderSize,
-			int32_t bodySize,
-			int32_t paddingSize,
-			int32_t signatureSize
-		);
 
 		SecureChannelType secureChannelType_;
 	};
