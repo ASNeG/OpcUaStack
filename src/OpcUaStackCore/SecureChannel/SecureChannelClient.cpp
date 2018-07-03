@@ -60,6 +60,9 @@ namespace OpcUaStackCore
 	SecureChannel*
 	SecureChannelClient::connect(SecureChannelClientConfig::SPtr secureChannelClientConfig)
 	{
+		// FIXME: only test code
+		// secureChannelClientConfig->secureChannelLog(true);
+
 		if (secureChannelClientIf_ == nullptr) {
 			Log(Error, "secure channel client interface invalid")
 				.parameter("EndpointUrl", secureChannelClientConfig->endpointUrl());
@@ -130,6 +133,8 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
+		Log(Info, "resolver complete");
+
 		if (error) {
 			Log(Error, "address resolver error")
 				.parameter("EndpointUrl", secureChannel->endpointUrl_)
