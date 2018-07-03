@@ -52,6 +52,37 @@ namespace OpcUaStackCore
 		);
 
 		//
+		// send open secure channel request
+		//
+		OpcUaStatusCode secureSendOpenSecureChannelRequest(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode signSendOpenSecureChannelRequest(
+			MemoryBuffer& plainText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode encryptSendOpenSecureChannelRequest(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+
+		//
+		// receive open secure channel response
+		//
+		OpcUaStatusCode secureReceivedOpenSecureChannelResponse(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode decryptReceivedOpenSecureResponse(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode verifyReceivedOpenSecureResponse(
+			SecureChannel* secureChannel
+		);
+
+		//
 		// send open secure channel response
 		//
 		OpcUaStatusCode secureSendOpenSecureChannelResponse(
@@ -79,6 +110,37 @@ namespace OpcUaStackCore
 			SecureChannel* secureChannel
 		);
 		OpcUaStatusCode verifyReceivedMessage(
+			SecureChannel* secureChannel
+		);
+
+		//
+		// send message request
+		//
+		OpcUaStatusCode secureSendMessageRequest(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode signSendMessageRequest(
+			MemoryBuffer& plainText,
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode encryptSendMessageRequest(
+			MemoryBuffer& plainText,
+			MemoryBuffer& encryptedText,
+			SecureChannel* secureChannel
+		);
+
+		//
+		// receive message response
+		//
+		OpcUaStatusCode secureReceivedMessageResponse(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode decryptReceivedResponse(
+			SecureChannel* secureChannel
+		);
+		OpcUaStatusCode verifyReceivedResponse(
 			SecureChannel* secureChannel
 		);
 

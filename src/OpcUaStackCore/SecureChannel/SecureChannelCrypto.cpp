@@ -205,6 +205,79 @@ namespace OpcUaStackCore
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// send open secure channel request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	SecureChannelCrypto::secureSendOpenSecureChannelRequest(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::signSendOpenSecureChannelRequest(
+		MemoryBuffer& plainText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::encryptSendOpenSecureChannelRequest(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// receive open secure channel response
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	SecureChannelCrypto::secureReceivedOpenSecureChannelResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::decryptReceivedOpenSecureResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::verifyReceivedOpenSecureResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// send open secure channel response
 	//
 	// ------------------------------------------------------------------------
@@ -559,6 +632,79 @@ namespace OpcUaStackCore
 			return BadSecurityChecksFailed;
 		}
 
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// send message request
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	SecureChannelCrypto::secureSendMessageRequest(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::signSendMessageRequest(
+		MemoryBuffer& plainText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::encryptSendMessageRequest(
+		MemoryBuffer& plainText,
+		MemoryBuffer& encryptedText,
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// receive message response
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	OpcUaStatusCode
+	SecureChannelCrypto::secureReceivedMessageResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::decryptReceivedResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	SecureChannelCrypto::verifyReceivedResponse(
+		SecureChannel* secureChannel
+	)
+	{
+		// FIXME: todo
 		return Success;
 	}
 
