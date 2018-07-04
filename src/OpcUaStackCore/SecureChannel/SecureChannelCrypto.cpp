@@ -216,7 +216,35 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			encryptedText.swap(plainText);
+			return Success;
+		}
+
+		// sign send open secure channel request
+		if (securityHeader->isSignatureEnabled()) {
+			statusCode = signSendOpenSecureChannelRequest(plainText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// encrypt send open secure channel request
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = encryptSendOpenSecureChannelRequest(plainText, encryptedText, secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+		else {
+			encryptedText.swap(plainText);
+		}
+
 		return Success;
 	}
 
