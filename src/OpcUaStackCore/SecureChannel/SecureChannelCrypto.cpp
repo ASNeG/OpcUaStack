@@ -1004,7 +1004,81 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+
+		// get symmetric key length / signature length
+		uint32_t symmetricKeyLen = 0;
+		uint32_t signatureDataLen = 0;
+		symmetricKeyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
+
+		// calculate length of message
+		uint32_t messageHeaderLen = 12;
+		uint32_t securityHeaderLen = 4;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen = plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen;
+		uint32_t paddingByteLen = 1;
+		uint32_t dataToEncryptLen =
+			sequenceHeaderLen +
+			bodyLen +
+			paddingByteLen +
+			signatureDataLen;
+
+		// calculate number of padding bytes
+		uint32_t paddingSize = 0;
+		if (dataToEncryptLen % symmetricKeyLen != 0) {
+			paddingSize = symmetricKeyLen - (dataToEncryptLen % symmetricKeyLen);
+		}
+		paddingSize += paddingByteLen;
+		dataToEncryptLen += paddingSize;
+
+		// added padding bytes and extra padding byte
+		uint32_t plainTextLen = plainText.memLen();
+		plainText.resize(plainTextLen + paddingSize + signatureDataLen);
+		char c = (paddingSize-1) & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+
+		// set new packet length
+		uint32_t newPacketLen = plainText.memLen();
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(plainText.memBuf()+4, newPacketLen);
+
+		// create signature
+		uint32_t keyLen = signatureDataLen;
+		statusCode = securitySettings.cryptoBase()->symmetricSign(
+			plainText.memBuf(),
+			plainText.memLen() - signatureDataLen,
+			securitySettings.securityKeySetServer().signKey(),
+			plainText.memBuf() + plainText.memLen() - signatureDataLen,
+			&keyLen
+		);
+
+		// logging
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"plain message request",
+				symmetricKeyLen,
+				symmetricKeyLen,
+				plainText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				paddingSize,
+				symmetricKeyLen
+			);
+		}
+
+		if (statusCode != Success) {
+			Log(Error, "sign message request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
 		return Success;
 	}
 
