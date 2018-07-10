@@ -504,7 +504,46 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
+		OpcUaStatusCode statusCode;
+
+		// check receiver certificate
+		if (securityHeader->receiverCertificateThumbprint() != applicationCertificate_->certificate()->thumbPrint()) {
+			Log(Error, "receiver certificate invalid")
+				.parameter("ReceiverCertificateThumbprint", securityHeader->receiverCertificateThumbprint());
+			return BadCertificateInvalid;
+		}
+
+		// the number of received bytes must be a multiple of the key length
+		if (receivedDataLen % (applicationCertificate_->privateKey()->keySize()/8) != 0) {
+			Log(Error, "number of received bytes invalid")
+				.parameter("ReceivedDataLen", receivedDataLen);
+			return BadSecurityChecksFailed;
+		}
+
+		// decrypt received buffer
+		std::iostream ios(&secureChannel->recvBuffer_);
+		MemoryBuffer encryptedText(receivedDataLen);
+		MemoryBuffer plainText(receivedDataLen);
+		ios.read(encryptedText.memBuf(), receivedDataLen);
+
+		statusCode = securitySettings.cryptoBase()->asymmetricDecrypt(
+			encryptedText.memBuf(),
+			encryptedText.memLen(),
+			*applicationCertificate_->privateKey().get(),
+			plainText.memBuf(),
+			&receivedDataLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "decrypt open secure channel response error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		ios.write(plainText.memBuf(), receivedDataLen);
 		return Success;
 	}
 
