@@ -44,10 +44,10 @@ namespace OpcUaStackCore
 		OpcUaStatusCode secureReceivedOpenSecureChannelRequest(
 			SecureChannel* secureChannel
 		);
-		OpcUaStatusCode decryptReceivedOpenSecureChannel(
+		OpcUaStatusCode decryptReceivedOpenSecureChannelRequest(
 			SecureChannel* secureChannel
 		);
-		OpcUaStatusCode verifyReceivedOpenSecureChannel(
+		OpcUaStatusCode verifyReceivedOpenSecureChannelRequest(
 			SecureChannel* secureChannel
 		);
 

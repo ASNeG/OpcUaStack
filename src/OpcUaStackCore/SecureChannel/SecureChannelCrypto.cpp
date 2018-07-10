@@ -89,7 +89,7 @@ namespace OpcUaStackCore
 
 		// decrypt received open secure channel request
 		if (securityHeader->isEncryptionEnabled()) {
-			statusCode = decryptReceivedOpenSecureChannel(secureChannel);
+			statusCode = decryptReceivedOpenSecureChannelRequest(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -99,7 +99,7 @@ namespace OpcUaStackCore
 		if (securityHeader->isSignatureEnabled()) {
 			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
 			securitySettings.partnerCertificate(partnerCertificate);
-			statusCode = verifyReceivedOpenSecureChannel(secureChannel);
+			statusCode = verifyReceivedOpenSecureChannelRequest(secureChannel);
 			if (statusCode != Success) {
 				return statusCode;
 			}
@@ -109,7 +109,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelCrypto::decryptReceivedOpenSecureChannel(
+	SecureChannelCrypto::decryptReceivedOpenSecureChannelRequest(
 		SecureChannel* secureChannel
 	)
 	{
@@ -157,7 +157,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelCrypto::verifyReceivedOpenSecureChannel(
+	SecureChannelCrypto::verifyReceivedOpenSecureChannelRequest(
 		SecureChannel* secureChannel
 	)
 	{
