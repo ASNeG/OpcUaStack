@@ -353,7 +353,96 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
+		PublicKey publicKey = securitySettings.partnerCertificate()->publicKey();
+
+		// create symmetric key set
+		statusCode = cryptoBase->deriveChannelKeyset(
+			securitySettings.clientNonce(),
+			securitySettings.serverNonce(),
+			securitySettings.securityKeySetClient(),
+			securitySettings.securityKeySetServer()
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get block length
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		securitySettings.cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate length of message header, security header and plain text
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen =
+			16 +														// security header length fields
+			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
+			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
+			20;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen =
+			plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen -
+			asymmetricKeyLen;
+
+		// calculate length of encrypted message
+		uint32_t dataToEnryptLen = sequenceHeaderLen + bodyLen + asymmetricKeyLen;
+		uint32_t encryptedBodyLen =
+			(dataToEnryptLen / plainTextBlockSize * cryptTextBlockSize) -
+			sequenceHeaderLen -
+			asymmetricKeyLen;
+		uint32_t encryptedTextLen =
+			messageHeaderLen +
+			securityHeaderLen +
+			sequenceHeaderLen +
+			encryptedBodyLen +
+			asymmetricKeyLen;
+
+		// encrypt message
+		encryptedText.resize(encryptedTextLen);
+		memcpy(encryptedText.memBuf(), plainText.memBuf(), messageHeaderLen + securityHeaderLen);
+
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"encrypt open secure channel request",
+				plainTextBlockSize,
+				cryptTextBlockSize,
+				encryptedText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				encryptedBodyLen,
+				-1,
+				asymmetricKeyLen
+			);
+		}
+
+		uint32_t toEncryptedTextLen = encryptedText.memLen()  - messageHeaderLen - securityHeaderLen;
+		securitySettings.cryptoBase()->isLogging(true);
+
+		statusCode = securitySettings.cryptoBase()->asymmetricEncrypt(
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			plainText.memLen() - messageHeaderLen - securityHeaderLen,
+			publicKey,
+			encryptedText.memBuf()  + messageHeaderLen + securityHeaderLen,
+			&toEncryptedTextLen
+		);
+		if (statusCode != Success) {
+			Log(Error, "encrypt open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
 		return Success;
 	}
 
