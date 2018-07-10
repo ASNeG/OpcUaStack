@@ -137,10 +137,10 @@ namespace OpcUaStackCore
 		OpcUaStatusCode secureReceivedMessageResponse(
 			SecureChannel* secureChannel
 		);
-		OpcUaStatusCode decryptReceivedResponse(
+		OpcUaStatusCode decryptReceivedMessageResponse(
 			SecureChannel* secureChannel
 		);
-		OpcUaStatusCode verifyReceivedResponse(
+		OpcUaStatusCode verifyReceivedMessageResponse(
 			SecureChannel* secureChannel
 		);
 

@@ -1162,12 +1162,39 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			return Success;
+		}
+
+		// decrypt received message request
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = decryptReceivedMessageResponse(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// verify signature
+		if (securityHeader->isSignatureEnabled()) {
+			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
+			securitySettings.partnerCertificate(partnerCertificate);
+			statusCode = verifyReceivedMessageResponse(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
 		return Success;
 	}
 
 	OpcUaStatusCode
-	SecureChannelCrypto::decryptReceivedResponse(
+	SecureChannelCrypto::decryptReceivedMessageResponse(
 		SecureChannel* secureChannel
 	)
 	{
@@ -1176,7 +1203,7 @@ namespace OpcUaStackCore
 	}
 
 	OpcUaStatusCode
-	SecureChannelCrypto::verifyReceivedResponse(
+	SecureChannelCrypto::verifyReceivedMessageResponse(
 		SecureChannel* secureChannel
 	)
 	{
