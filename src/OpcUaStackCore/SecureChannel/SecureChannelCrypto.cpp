@@ -1089,7 +1089,64 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		CryptoBase::SPtr cryptoBase = securitySettings.cryptoBase();
+
+		// get symmetric key length / signature length
+		uint32_t symmetricKeyLen = 0;
+		uint32_t signatureDataLen = 0;
+		symmetricKeyLen = securitySettings.cryptoBase()->symmetricKeyLen();
+		signatureDataLen = securitySettings.cryptoBase()->signatureDataLen();
+
+		// calculate length of message header, security header and plain text
+		uint32_t messageHeaderLen = 12;
+		uint32_t securityHeaderLen = 4;
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen =
+			plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen -
+			signatureDataLen;
+
+		// calculate length of encrypted message
+		uint32_t dataToEnryptLen = sequenceHeaderLen + bodyLen + signatureDataLen;
+
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"encrypt message request",
+				symmetricKeyLen,
+				symmetricKeyLen,
+				encryptedText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				-1,
+				signatureDataLen
+			);
+		}
+
+		// encrypt message
+		uint32_t encryptedTextLen = plainText.memLen() - messageHeaderLen - securityHeaderLen;
+		statusCode = securitySettings.cryptoBase()->symmetricEncrypt(
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			plainText.memLen() - messageHeaderLen - securityHeaderLen,
+			securitySettings.securityKeySetServer().encryptKey(),
+			securitySettings.securityKeySetServer().iv(),
+			plainText.memBuf() + messageHeaderLen + securityHeaderLen,
+			&encryptedTextLen
+		);
+
+		if (statusCode != Success) {
+			Log(Error, "encrypt message request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		plainText.swap(encryptedText);
 		return Success;
 	}
 
