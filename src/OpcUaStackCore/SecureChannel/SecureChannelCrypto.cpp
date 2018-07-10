@@ -1198,7 +1198,31 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		uint32_t receivedDataLen = secureChannel->recvBuffer_.size();
+		OpcUaStatusCode statusCode;
+
+		// decrypt received buffer
+		std::iostream ios(&secureChannel->recvBuffer_);
+		MemoryBuffer encryptedText(receivedDataLen);
+		MemoryBuffer plainText(receivedDataLen);
+		ios.read(encryptedText.memBuf(), receivedDataLen);
+
+		statusCode = securitySettings.cryptoBase()->symmetricDecrypt(
+			encryptedText.memBuf(),
+			encryptedText.memLen(),
+			securitySettings.securityKeySetClient().encryptKey(),
+			securitySettings.securityKeySetClient().iv(),
+			plainText.memBuf(),
+			&receivedDataLen
+		);
+		if (statusCode != Success) {
+			return statusCode;
+		}
+
+		ios.write(plainText.memBuf(), receivedDataLen);
 		return Success;
 	}
 
