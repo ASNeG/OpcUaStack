@@ -458,7 +458,44 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// check if encryption or signature is enabled
+		if (!securityHeader->isEncryptionEnabled() && !securityHeader->isSignatureEnabled()) {
+			return Success;
+		}
+
+		// find crypto base
+		CryptoBase::SPtr cryptoBase = cryptoManager_->get(securityHeader->securityPolicyUri().toString());
+		if (cryptoBase.get() == nullptr) {
+			Log(Error, "crypto base not available for security policy uri")
+				.parameter("SecurityPolicyUri", securityHeader->securityPolicyUri().toString());
+			return BadSecurityPolicyRejected;
+		}
+		cryptoBase->isLogging(secureChannel->isLogging_);
+		securitySettings.cryptoBase(cryptoBase);
+
+		// decrypt received open secure channel request
+		if (securityHeader->isEncryptionEnabled()) {
+			statusCode = decryptReceivedOpenSecureResponse(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
+		// verify signature
+		if (securityHeader->isSignatureEnabled()) {
+			Certificate::SPtr partnerCertificate = securityHeader->certificateChain().getCertificate();
+			securitySettings.partnerCertificate(partnerCertificate);
+			statusCode = verifyReceivedOpenSecureResponse(secureChannel);
+			if (statusCode != Success) {
+				return statusCode;
+			}
+		}
+
 		return Success;
 	}
 
