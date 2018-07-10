@@ -1231,7 +1231,39 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		MessageHeader* messageHeader = &secureChannel->messageHeader_;
+		SecurityHeader* securityHeader = &secureChannel->securityHeader_;
+
+		// create plain text buffer (with signature at end of buffer)
+		boost::asio::streambuf streambuf;
+		std::iostream os(&streambuf);
+		messageHeader->opcUaBinaryEncode(os, true);
+		OpcUaNumber::opcUaBinaryEncode(os, secureChannel->secureChannelTransaction_->securityTokenId_);
+
+		uint32_t plainTextLen = streambuf.size() + secureChannel->recvBuffer_.size();
+		MemoryBuffer plainText(plainTextLen);
+
+		const char* header = boost::asio::buffer_cast<const char*>(streambuf.data());
+		memcpy(plainText.memBuf(), header, streambuf.size());
+		const char* body = boost::asio::buffer_cast<const char*>(secureChannel->recvBuffer_.data());
+		memcpy(plainText.memBuf()+streambuf.size(), body, secureChannel->recvBuffer_.size());
+
+		statusCode = securitySettings.cryptoBase()->symmetricVerify(
+			plainText.memBuf(),
+			plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
+			securitySettings.securityKeySetClient().signKey(),
+			plainText.memBuf() + plainText.memLen() - securitySettings.cryptoBase()->signatureDataLen(),
+			securitySettings.cryptoBase()->signatureDataLen()
+		);
+		if (statusCode != Success) {
+			Log(Error, "verify message response error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
 		return Success;
 	}
 
