@@ -254,8 +254,96 @@ namespace OpcUaStackCore
 		SecureChannel* secureChannel
 	)
 	{
-		// FIXME: todo
-		return Success;
+		OpcUaStatusCode statusCode;
+
+		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
+		PublicKey publicKey = applicationCertificate()->certificate()->publicKey();
+		PrivateKey::SPtr privateKey = applicationCertificate()->privateKey();
+
+		// get asymmetric key length
+		uint32_t asymmetricKeyLen = 0;
+		securitySettings.cryptoBase()->asymmetricKeyLen(publicKey, &asymmetricKeyLen);
+		asymmetricKeyLen /= 8;
+
+		// get block length
+		uint32_t plainTextBlockSize = 0;
+		uint32_t cryptTextBlockSize = 0;
+		securitySettings.cryptoBase()->getAsymmetricEncryptionBlockSize(publicKey, &plainTextBlockSize, &cryptTextBlockSize);
+
+		// calculate length of message
+		uint32_t messageHeaderLen = 8;
+		uint32_t securityHeaderLen =
+			16 +														// security header length fields
+			secureChannel->securityHeader_.securityPolicyUri().size() +	// security policy
+			secureChannel->securityHeader_.senderCertificate().size() +	// sender certificate
+			20;															// thumbPrint
+		uint32_t sequenceHeaderLen = 8;
+		uint32_t bodyLen = plainText.memLen() -
+			messageHeaderLen -
+			securityHeaderLen -
+			sequenceHeaderLen;
+		uint32_t paddingByteLen = (asymmetricKeyLen > 256 ? 2 : 1);
+		uint32_t dataToEncryptLen =
+			sequenceHeaderLen +
+			bodyLen +
+			paddingByteLen +
+			asymmetricKeyLen;
+
+		// calculate number of padding bytes
+		uint32_t paddingSize = 0;
+		if (dataToEncryptLen % plainTextBlockSize != 0) {
+			paddingSize = plainTextBlockSize - (dataToEncryptLen % plainTextBlockSize);
+		}
+		paddingSize += paddingByteLen;
+		dataToEncryptLen += paddingSize;
+
+		// added padding bytes and extra padding byte
+		uint32_t plainTextLen = plainText.memLen();
+		plainText.resize(plainTextLen + paddingSize + asymmetricKeyLen);
+		char c = (paddingSize-1) & 0x000000FF;
+		memset(plainText.memBuf() + plainTextLen, c, paddingSize);
+		// FIXME - extra padding size
+
+		// set new packet length
+		uint32_t newPacketLen =
+			messageHeaderLen +
+			securityHeaderLen +
+			(dataToEncryptLen / plainTextBlockSize * cryptTextBlockSize);
+		ByteOrder<OpcUaUInt32>::opcUaBinaryEncodeNumber(plainText.memBuf()+4, newPacketLen);
+
+		// create signature
+		uint32_t keyLen = asymmetricKeyLen;
+		statusCode = securitySettings.cryptoBase()->asymmetricSign(
+			plainText.memBuf(),
+			plainText.memLen() - asymmetricKeyLen,
+			*privateKey.get(),
+			plainText.memBuf() + plainText.memLen() - asymmetricKeyLen,
+			&keyLen
+		);
+
+		// logging
+		if (secureChannel->isLogging_) {
+			logMessageInfo(
+				"plain open secure channel request",
+				plainTextBlockSize,
+				cryptTextBlockSize,
+				plainText.memLen(),
+				messageHeaderLen,
+				securityHeaderLen,
+				sequenceHeaderLen,
+				bodyLen,
+				paddingSize,
+				asymmetricKeyLen
+			);
+		}
+
+		if (statusCode != Success) {
+			Log(Error, "sign open secure channel request error")
+				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
+			return BadSecurityChecksFailed;
+		}
+
+		return statusCode;
 	}
 
 	OpcUaStatusCode
@@ -438,7 +526,7 @@ namespace OpcUaStackCore
 		}
 
 		if (statusCode != Success) {
-			Log(Error, "sign open secure channel request error")
+			Log(Error, "sign open secure channel response error")
 				.parameter("StatusCode", OpcUaStatusCodeMap::shortString(statusCode));
 			return BadSecurityChecksFailed;
 		}
