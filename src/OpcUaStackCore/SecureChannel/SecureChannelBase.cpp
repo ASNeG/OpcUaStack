@@ -543,6 +543,7 @@ namespace OpcUaStackCore
 
 		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
 
+		// encode security header
 		SecurityHeader securityHeader;
 		std::string securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#None";
 		switch (secureChannel->securityPolicy_)
@@ -553,6 +554,16 @@ namespace OpcUaStackCore
 			case SP_Basic256Sha256: securityPolicyUri = "http://opcfoundation.org/UA/SecurityPolicy#Basic256Sha256"; break;
 		}
 		securityHeader.securityPolicyUri((OpcUaByte*)securityPolicyUri.c_str(), securityPolicyUri.size());
+		if (securityHeader.isSignatureEnabled()) {
+			// FIXME: use sender certificate chain
+			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
+		}
+		if (securityHeader.isEncryptionEnabled()) {
+			assert(securitySettings.partnerCertificate().get() != nullptr);
+
+			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
+			securityHeader.receiverCertificateThumbprint(thumbPrint);
+		}
 		securityHeader.opcUaBinaryEncode(ios1);
 
 		// encode sequence number
@@ -579,9 +590,21 @@ namespace OpcUaStackCore
 		secureChannel->debugSendHeader(secureChannel->messageHeader_);
 		secureChannel->debugSendOpenSecureChannelRequest(openSecureChannelRequest);
 
+		// handle security
+		MemoryBuffer plainText(sb2, sb1);
+		MemoryBuffer encryptedText;
+
+		if (secureSendOpenSecureChannelRequest(plainText, encryptedText, secureChannel) != Success) {
+			Log(Debug, "opc ua secure channel encrypt send message error")
+				.parameter("Local", secureChannel->local_.address().to_string())
+				.parameter("Partner", secureChannel->partner_.address().to_string());
+			return;
+		}
+
+		encryptedText.get(secureChannel->sendBuffer_);
+
 		secureChannel->async_write(
-			sb2,
-			sb1,
+			secureChannel->sendBuffer_,
 			boost::bind(
 				&SecureChannelBase::handleWriteOpenSecureChannelRequestComplete,
 				this,
@@ -590,107 +613,6 @@ namespace OpcUaStackCore
 			)
 		);
 	}
-
-#if 0
-	void
-	SecureChannelBase::asyncWriteOpenSecureChannelResponse(SecureChannel* secureChannel)
-	{
-		assert(applicationCertificate().get() != nullptr);
-		assert(applicationCertificate()->certificate().get() != nullptr);
-
-		SecureChannelSecuritySettings& securitySettings = secureChannel->securitySettings();
-
-		if (secureChannel->openSecureChannelResponseList_.size() == 0) return;
-		if (secureChannel->asyncSend_) return;
-
-		OpenSecureChannelResponse::SPtr openSecureChannelResponse;
-		openSecureChannelResponse = secureChannel->openSecureChannelResponseList_.front();
-		secureChannel->openSecureChannelResponseList_.pop_front();
-
-		// create server nonce
-		if (secureChannel->securityHeader_.isEncryptionEnabled()) {
-			uint32_t keyLen = securitySettings.cryptoBase()->symmetricKeyLen();
-			secureChannel->securitySettings().serverNonce().resize(keyLen);
-
-			char* memBuf = secureChannel->securitySettings().serverNonce().memBuf();
-			for (uint32_t idx=0; idx<keyLen; idx++) {
-				memBuf[idx] = rand();
-			}
-
-			openSecureChannelResponse->serverNonce((OpcUaByte*)memBuf, keyLen);
-		}
-
-		boost::asio::streambuf sb1;
-		std::iostream ios1(&sb1);
-		boost::asio::streambuf sb2;
-		std::iostream ios2(&sb2);
-
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->channelId_);
-
-		// encode security header
-		SecurityHeader& securityHeader = secureChannel->securityHeader_;
-		securityHeader.senderCertificate().reset();
-		if (securityHeader.isSignatureEnabled()) {
-			// FIXME: use sender certificate chain
-			applicationCertificate()->certificate()->toDERBuf(securityHeader.senderCertificate());
-		}
-		securityHeader.receiverCertificateThumbprint().reset();
-		if (securityHeader.isEncryptionEnabled()) {
-			assert(securitySettings.partnerCertificate().get() != nullptr);
-
-			OpcUaByteString thumbPrint = securitySettings.partnerCertificate()->thumbPrint();
-			securityHeader.receiverCertificateThumbprint(thumbPrint);
-		}
-		securityHeader.opcUaBinaryEncode(ios1);
-
-		// encode sequence number
-		secureChannel->sendSequenceNumber_++;
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->sendSequenceNumber_);
-
-		// encode request id
-		OpcUaNumber::opcUaBinaryEncode(ios1, secureChannel->recvRequestId_);
-
-		// encode response type id
-		OpcUaNodeId typeIdResponse;
-		typeIdResponse.nodeId(OpcUaId_OpenSecureChannelResponse_Encoding_DefaultBinary);
-		typeIdResponse.opcUaBinaryEncode(ios1);
-
-		openSecureChannelResponse->opcUaBinaryEncode(ios1);
-
-		secureChannel->messageHeader_.messageType(MessageType_OpenSecureChannel);
-		secureChannel->messageHeader_.segmentFlag('F');
-		secureChannel->messageHeader_.messageSize(OpcUaStackCore::count(sb1)+8);
-		secureChannel->messageHeader_.opcUaBinaryEncode(ios2);
-
-		// debug output
-		secureChannel->debugSendHeader(secureChannel->messageHeader_);
-		secureChannel->debugSendOpenSecureChannelResponse(*openSecureChannelResponse);
-
-		// handle security
-		MemoryBuffer plainText(sb2, sb1);
-		MemoryBuffer encryptedText;
-
-		if (secureSendOpenSecureChannelResponse(plainText, encryptedText, secureChannel) != Success) {
-			Log(Debug, "opc ua secure channel encrypt send message error")
-				.parameter("Local", secureChannel->local_.address().to_string())
-				.parameter("Partner", secureChannel->partner_.address().to_string());
-			return;
-		}
-
-		encryptedText.get(secureChannel->sendBuffer_);
-		secureChannel->asyncSend_ = true;
-		secureChannel->async_write(
-			secureChannel->sendBuffer_,
-			boost::bind(
-				&SecureChannelBase::handleWriteOpenSecureChannelResponseComplete,
-				this,
-				boost::asio::placeholders::error,
-				secureChannel
-			)
-		);
-	}
-
-#endif
 
 	void
 	SecureChannelBase::handleWriteOpenSecureChannelRequestComplete(const boost::system::error_code& error, SecureChannel* secureChannel)
