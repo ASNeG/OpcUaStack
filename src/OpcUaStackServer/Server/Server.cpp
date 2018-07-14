@@ -40,6 +40,7 @@ namespace OpcUaStackServer
 	, serverInfo_()
 	, serverStatusDataType_()
 	, applicationCertificate_()
+	, cryptoManager_()
 	{
 	}
 
@@ -311,7 +312,49 @@ namespace OpcUaStackServer
 	bool
 	Server::initCrypto(void)
 	{
-		// FIXME: todo
+		bool rc;
+
+		// decode endpoint configuration
+		endpointDescriptionSet_ = constructSPtr<EndpointDescriptionSet>();
+		rc = EndpointDescriptionConfig::endpointDescriptions(
+			endpointDescriptionSet_,
+			"OpcUaServer.Endpoints",
+			&config(),
+			config().configFileName()
+		);
+		if (!rc) {
+			Log(Error, "endpoint description array error");
+			return false;
+		}
+
+		// decode server info
+		rc = serverInfo_.parse(&config(), "OpcUaServer.ServerInfo");
+		if (!rc) {
+			Log(Error, "server info error");
+			return false;
+		}
+
+		// decode certificate configuration
+		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
+		applicationCertificate_->uri(serverInfo_.serverUri());
+		rc = ApplicationCertificateConfig::parse(
+			applicationCertificate_,
+			"OpcUaServer.ApplicationCertificate",
+			&config(),
+			config().configFileName()
+		);
+		if (!rc) {
+			Log(Error, "parse application certificate error");
+			return false;
+		}
+		if (!applicationCertificate_->init()) {
+			Log(Error, "init application certificate error");
+			return false;
+		}
+
+		// create crypto manager
+		cryptoManager_ = constructSPtr<CryptoManager>();
+
 		return true;
 	}
 
@@ -357,59 +400,16 @@ namespace OpcUaStackServer
 	bool
 	Server::initSession(void)
 	{
-		bool rc;
-
-		// decode endpoint configuration
-		EndpointDescriptionSet::SPtr endpointDescriptionSet = constructSPtr<EndpointDescriptionSet>();
-		rc = EndpointDescriptionConfig::endpointDescriptions(
-			endpointDescriptionSet,
-			"OpcUaServer.Endpoints", 
-			&config(),
-			config().configFileName()
-		);
-		if (!rc) {
-			Log(Error, "endpoint description array error");
-			return false;
-		}
-
-		// decode server info
-		rc = serverInfo_.parse(&config(), "OpcUaServer.ServerInfo");
-		if (!rc) {
-			Log(Error, "server info error");
-			return false;
-		}
-
-		// decode certificate configuration
-		applicationCertificate_ = constructSPtr<ApplicationCertificate>();
-		applicationCertificate_->uri(serverInfo_.serverUri());
-		rc = ApplicationCertificateConfig::parse(
-			applicationCertificate_,
-			"OpcUaServer.ApplicationCertificate",
-			&config(),
-			config().configFileName()
-		);
-		if (!rc) {
-			Log(Error, "parse application certificate error");
-			return false;
-		}
-		if (!applicationCertificate_->init()) {
-			Log(Error, "init application certificate error");
-			return false;
-		}
-
-		// create crypto manager
-		CryptoManager::SPtr cryptoManager = constructSPtr<CryptoManager>();
-
 		// create discovery service
 		DiscoveryService::SPtr discoveryService = serviceManager_.discoveryService();
-		discoveryService->endpointDescriptionSet(endpointDescriptionSet);
+		discoveryService->endpointDescriptionSet(endpointDescriptionSet_);
 		discoveryService->applicationCertificate(applicationCertificate_);
 
 		// initialize session manager
 		sessionManager_.ioThread(ioThread_.get());
-		sessionManager_.endpointDescriptionSet(endpointDescriptionSet);
+		sessionManager_.endpointDescriptionSet(endpointDescriptionSet_);
 		sessionManager_.applicationCertificate(applicationCertificate_);
-		sessionManager_.cryptoManager(cryptoManager);
+		sessionManager_.cryptoManager(cryptoManager_);
 		sessionManager_.config(&config());
 
 		return true;
