@@ -54,10 +54,12 @@ namespace OpcUaStackServer
 		bool writeInformationModel(const std::string& nodeSetFileName, std::vector<std::string>& namespaceUris);
 		bool initInformationModel(void);
 		bool shutdownInformationModel(void);
+		bool initCrypto(void);
 		bool initService(void);
 		bool shutdownService(void);
 		bool initSession(void);
 		bool shutdownSession(void);
+		bool initApplication(void);
 
 		ApplicationCertificate::SPtr applicationCertificate_;
 

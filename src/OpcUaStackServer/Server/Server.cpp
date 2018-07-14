@@ -67,6 +67,9 @@ namespace OpcUaStackServer
 		Log(Info, "init opc ua core stack");
 		rc = rc && Core::init();
 
+		Log(Info, "init crypto");
+		rc = rc && initCrypto();
+
 		Log(Info, "init opc ua server stack information model (structure)");
 		rc = rc && readInformationModel();
 
@@ -78,6 +81,9 @@ namespace OpcUaStackServer
 
 		Log(Info, "init opc ua server stack session");
 		rc = rc && initSession();
+
+		Log(Info, "init application");
+		rc = rc && initApplication();
 
 #if 0
 		std::vector<std::string> namespaceUris;
@@ -298,6 +304,20 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	//
+	// crypto
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	Server::initCrypto(void)
+	{
+		// FIXME: todo
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
 	// service
 	//
 	// ------------------------------------------------------------------------
@@ -399,6 +419,20 @@ namespace OpcUaStackServer
 	Server::shutdownSession(void)
 	{
 		applicationCertificate_->cleanup();
+		return true;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// init application
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	bool
+	Server::initApplication(void)
+	{
+		// FIXME: todo
 		return true;
 	}
 
