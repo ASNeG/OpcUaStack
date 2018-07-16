@@ -31,62 +31,24 @@ namespace OpcUaStackServer
 	class DLLEXPORT ApplicationIf
 	{
 	  public:
-		ApplicationIf(void)
-	    : applicationServiceIf_(nullptr)
-	  	, config_(nullptr)
-	    , applicationInfo_(nullptr)
-	    {
-	    }
-		virtual ~ApplicationIf(void) {}
+		ApplicationIf(void);
+		virtual ~ApplicationIf(void);
 
 		virtual bool startup(void) = 0;
 		virtual bool shutdown(void) = 0;
-		virtual void receive(ServiceTransaction::SPtr serviceTransaction) {};
+		virtual void receive(ServiceTransaction::SPtr serviceTransaction);
 
-		void service(ApplicationServiceIf* applicationServiceIf) {
-			applicationServiceIf_ = applicationServiceIf;
-		}
-
-		ApplicationServiceIf& service(void) {
-			return *applicationServiceIf_;
-		}
-
-		void config(Config* config) {
-			config_ = config;
-		}
-
-		Config* config(void) {
-			return config_;
-		}
-
-		void applicationInfo(ApplicationInfo* applicationInfo) {
-			applicationInfo_ = applicationInfo;
-		}
-
-		ApplicationInfo* applicationInfo(void) {
-			return applicationInfo_;
-		}
-
-		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate) {
-			applicationCertificate_ = applicationCertificate;
-		}
-
-		ApplicationCertificate::SPtr& applicationCertificate(void) {
-			return applicationCertificate_;
-		}
-
-		void cryptoManager(CryptoManager::SPtr cryptoManager) {
-			cryptoManager_ = cryptoManager;
-		}
-
-		CryptoManager::SPtr& cryptoManager(void) {
-			return cryptoManager_;
-		}
-
-		virtual std::string version(void)
-		{
-			return "0.0.0";
-		}
+		void service(ApplicationServiceIf* applicationServiceIf);
+		ApplicationServiceIf& service(void);
+		void config(Config* config);
+		Config* config(void);
+		void applicationInfo(ApplicationInfo* applicationInfo);
+		ApplicationInfo* applicationInfo(void);
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
+		void cryptoManager(CryptoManager::SPtr cryptoManager);
+		CryptoManager::SPtr& cryptoManager(void);
+		virtual std::string version(void);
 
 	  private:
 		ApplicationServiceIf* applicationServiceIf_;
