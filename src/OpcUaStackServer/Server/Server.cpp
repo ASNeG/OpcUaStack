@@ -432,7 +432,8 @@ namespace OpcUaStackServer
 	bool
 	Server::initApplication(void)
 	{
-		// FIXME: todo
+		applicationManager_.applicationCertificate(applicationCertificate_);
+		applicationManager_.cryptoManager(cryptoManager_);
 		return true;
 	}
 
