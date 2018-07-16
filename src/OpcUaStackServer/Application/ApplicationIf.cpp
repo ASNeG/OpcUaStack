@@ -19,6 +19,93 @@
 
 namespace OpcUaStackServer
 {
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ApplicationData
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	ApplicationData::ApplicationData(void)
+	: applicationServiceIf_(nullptr)
+	, config_(nullptr)
+	, applicationInfo_(nullptr)
+	, applicationCertificate_()
+	, cryptoManager_()
+	{
+	}
+
+	ApplicationData::~ApplicationData(void)
+	{
+	}
+
+	void
+	ApplicationData::applicationServiceIf(ApplicationServiceIf* applicationServiceIf)
+	{
+		applicationServiceIf_ = applicationServiceIf;
+	}
+
+	ApplicationServiceIf*
+	ApplicationData::applicationServiceIf(void)
+	{
+		return applicationServiceIf_;
+	}
+
+	void
+	ApplicationData::config(Config* config)
+	{
+		config_ = config;
+	}
+
+	Config*
+	ApplicationData::config(void)
+	{
+		return config_;
+	}
+
+	void
+	ApplicationData::applicationInfo(ApplicationInfo* applicationInfo)
+	{
+		applicationInfo_ = applicationInfo;
+	}
+
+	ApplicationInfo*
+	ApplicationData::applicationInfo(void)
+	{
+		return applicationInfo_;
+	}
+
+	void
+	ApplicationData::applicationCertificate(const ApplicationCertificate::SPtr& applicationCertificate)
+	{
+		applicationCertificate_ = applicationCertificate;
+	}
+
+	ApplicationCertificate::SPtr&
+	ApplicationData::applicationCertificate(void)
+	{
+		return applicationCertificate_;
+	}
+
+	void
+	ApplicationData::cryptoManager(const CryptoManager::SPtr& cryptoManager)
+	{
+		cryptoManager_ = cryptoManager;
+	}
+
+	CryptoManager::SPtr&
+	ApplicationData::cryptoManager(void)
+	{
+		return cryptoManager_;
+	}
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// ApplicationIf
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	ApplicationIf::ApplicationIf(void)
 	: applicationServiceIf_(nullptr)
 	, config_(nullptr)

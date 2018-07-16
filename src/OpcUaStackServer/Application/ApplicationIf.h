@@ -28,6 +28,32 @@
 namespace OpcUaStackServer
 {
 
+	class DLLEXPORT ApplicationData
+	{
+	  public:
+		ApplicationData(void);
+		~ApplicationData(void);
+
+		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
+		ApplicationServiceIf* applicationServiceIf(void);
+		void config(Config* config);
+		Config* config(void);
+		void applicationInfo(ApplicationInfo* applicationInfo);
+		ApplicationInfo* applicationInfo(void);
+		void applicationCertificate(const ApplicationCertificate::SPtr& applicationCertificate);
+		ApplicationCertificate::SPtr& applicationCertificate(void);
+		void cryptoManager(const CryptoManager::SPtr& cryptoManager);
+		CryptoManager::SPtr& cryptoManager(void);
+
+	  private:
+		ApplicationServiceIf* applicationServiceIf_;
+		Config* config_;
+		ApplicationInfo* applicationInfo_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
+	};
+
+
 	class DLLEXPORT ApplicationIf
 	{
 	  public:
