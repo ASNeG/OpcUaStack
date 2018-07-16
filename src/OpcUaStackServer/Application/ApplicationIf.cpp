@@ -45,10 +45,10 @@ namespace OpcUaStackServer
 		applicationServiceIf_ = applicationServiceIf;
 	}
 
-	ApplicationServiceIf*
+	ApplicationServiceIf&
 	ApplicationData::applicationServiceIf(void)
 	{
-		return applicationServiceIf_;
+		return *applicationServiceIf_;
 	}
 
 	void
@@ -107,11 +107,7 @@ namespace OpcUaStackServer
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
 	ApplicationIf::ApplicationIf(void)
-	: applicationServiceIf_(nullptr)
-	, config_(nullptr)
-	, applicationInfo_(nullptr)
-	, applicationCertificate_()
-	, cryptoManager_()
+	: applicationData_(constructSPtr<ApplicationData>())
 	{
 	}
 
@@ -124,70 +120,82 @@ namespace OpcUaStackServer
 	{
 	}
 
+	std::string
+	ApplicationIf::version(void)
+	{
+		return "0.0.0";
+	}
+
 	void
 	ApplicationIf::service(ApplicationServiceIf* applicationServiceIf)
 	{
-		applicationServiceIf_ = applicationServiceIf;
+		applicationData_->applicationServiceIf(applicationServiceIf);
 	}
 
 	ApplicationServiceIf&
 	ApplicationIf::service(void)
 	{
-		return *applicationServiceIf_;
+		return applicationData_->applicationServiceIf();
 	}
 
 	void
 	ApplicationIf::config(Config* config)
 	{
-		config_ = config;
+		applicationData_->config(config);
 	}
 
 	Config*
 	ApplicationIf::config(void)
 	{
-		return config_;
+		return applicationData_->config();
 	}
 
 	void
 	ApplicationIf::applicationInfo(ApplicationInfo* applicationInfo)
 	{
-		applicationInfo_ = applicationInfo;
+		applicationData_->applicationInfo(applicationInfo);
 	}
 
 	ApplicationInfo*
 	ApplicationIf::applicationInfo(void)
 	{
-		return applicationInfo_;
+		return applicationData_->applicationInfo();
 	}
 
 	void
 	ApplicationIf::applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate)
 	{
-		applicationCertificate_ = applicationCertificate;
+		applicationData_->applicationCertificate(applicationCertificate);
 	}
 
 	ApplicationCertificate::SPtr&
 	ApplicationIf::applicationCertificate(void)
 	{
-		return applicationCertificate_;
+		return applicationData_->applicationCertificate();
 	}
 
 	void
 	ApplicationIf::cryptoManager(CryptoManager::SPtr cryptoManager)
 	{
-		cryptoManager_ = cryptoManager;
+		applicationData_->cryptoManager(cryptoManager);
 	}
 
 	CryptoManager::SPtr&
 	ApplicationIf::cryptoManager(void)
 	{
-		return cryptoManager_;
+		return applicationData_->cryptoManager();
 	}
 
-	std::string
-	ApplicationIf::version(void)
+	void
+	ApplicationIf::applicationData(ApplicationData::SPtr& applicationData)
 	{
-		return "0.0.0";
+		applicationData_ = applicationData;
+	}
+
+	ApplicationData::SPtr&
+	ApplicationIf::applicationData(void)
+	{
+		return applicationData_;
 	}
 
 }

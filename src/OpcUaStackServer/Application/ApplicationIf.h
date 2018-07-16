@@ -31,11 +31,13 @@ namespace OpcUaStackServer
 	class DLLEXPORT ApplicationData
 	{
 	  public:
+		typedef boost::shared_ptr<ApplicationData> SPtr;
+
 		ApplicationData(void);
 		~ApplicationData(void);
 
 		void applicationServiceIf(ApplicationServiceIf* applicationServiceIf);
-		ApplicationServiceIf* applicationServiceIf(void);
+		ApplicationServiceIf& applicationServiceIf(void);
 		void config(Config* config);
 		Config* config(void);
 		void applicationInfo(ApplicationInfo* applicationInfo);
@@ -63,6 +65,7 @@ namespace OpcUaStackServer
 		virtual bool startup(void) = 0;
 		virtual bool shutdown(void) = 0;
 		virtual void receive(ServiceTransaction::SPtr serviceTransaction);
+		virtual std::string version(void);
 
 		void service(ApplicationServiceIf* applicationServiceIf);
 		ApplicationServiceIf& service(void);
@@ -74,14 +77,11 @@ namespace OpcUaStackServer
 		ApplicationCertificate::SPtr& applicationCertificate(void);
 		void cryptoManager(CryptoManager::SPtr cryptoManager);
 		CryptoManager::SPtr& cryptoManager(void);
-		virtual std::string version(void);
+		void applicationData(ApplicationData::SPtr& applicationData);
+		ApplicationData::SPtr& applicationData(void);
 
 	  private:
-		ApplicationServiceIf* applicationServiceIf_;
-		Config* config_;
-		ApplicationInfo* applicationInfo_;
-		ApplicationCertificate::SPtr applicationCertificate_;
-		CryptoManager::SPtr cryptoManager_;
+		ApplicationData::SPtr applicationData_;
 
 	};
 
