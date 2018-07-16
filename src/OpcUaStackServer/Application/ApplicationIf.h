@@ -1,5 +1,5 @@
 /*
-   Copyright 2015-2017 Kai Huebl (kai@huebl-sgh.de)
+   Copyright 2015-2018 Kai Huebl (kai@huebl-sgh.de)
 
    Lizenziert gemäß Apache Licence Version 2.0 (die „Lizenz“); Nutzung dieser
    Datei nur in Übereinstimmung mit der Lizenz erlaubt.
@@ -20,6 +20,8 @@
 
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/Config.h"
+#include "OpcUaStackCore/Certificate/ApplicationCertificate.h"
+#include "OpcUaStackCore/Certificate/CryptoManager.h"
 #include "OpcUaStackServer/Application/ApplicationServiceIf.h"
 #include "OpcUaStackServer/Application/ApplicationInfo.h"
 
@@ -65,6 +67,22 @@ namespace OpcUaStackServer
 			return applicationInfo_;
 		}
 
+		void applicationCertificate(ApplicationCertificate::SPtr& applicationCertificate) {
+			applicationCertificate_ = applicationCertificate;
+		}
+
+		ApplicationCertificate::SPtr& applicationCertificate(void) {
+			return applicationCertificate_;
+		}
+
+		void cryptoManager(CryptoManager::SPtr cryptoManager) {
+			cryptoManager_ = cryptoManager;
+		}
+
+		CryptoManager::SPtr& cryptoManager(void) {
+			return cryptoManager_;
+		}
+
 		virtual std::string version(void)
 		{
 			return "0.0.0";
@@ -74,6 +92,9 @@ namespace OpcUaStackServer
 		ApplicationServiceIf* applicationServiceIf_;
 		Config* config_;
 		ApplicationInfo* applicationInfo_;
+		ApplicationCertificate::SPtr applicationCertificate_;
+		CryptoManager::SPtr cryptoManager_;
+
 	};
 
 }

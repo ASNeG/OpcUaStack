@@ -62,6 +62,8 @@ namespace OpcUaStackServer
 		application->reloadIf(reloadIf);
 		application->applicationName(applicationName);
 		application->serviceComponent(serviceComponent_);
+		application->applicationIf()->applicationCertificate(applicationCertificate_);
+		application->applicationIf()->cryptoManager(cryptoManager_);
 		applicationMap_.insert(
 			std::make_pair(applicationName, application)
 		);
