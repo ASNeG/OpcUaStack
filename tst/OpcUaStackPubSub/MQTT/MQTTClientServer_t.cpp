@@ -24,6 +24,16 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_construct)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(MQTTClientServer_init)
+{
+	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
+
+	if (mqttClient->mqttIfEnabled()) {
+		mqttClient->init();
+		mqttClient->cleanup();
+	}
+}
+
 BOOST_AUTO_TEST_CASE(MQTTClientServer_construct_connect)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();

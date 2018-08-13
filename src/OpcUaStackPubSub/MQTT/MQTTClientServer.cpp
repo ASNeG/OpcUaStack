@@ -29,6 +29,8 @@ namespace OpcUaStackPubSub
 
 	MQTTClientServer::MQTTClientServer(void)
 	: MQTTClientServerBase()
+	, mosq_(nullptr)
+	, clientId_("OpcUaPubSub")
 	{
 		if (mqttInstances_ == 0) {
 			mosquitto_lib_init();
@@ -57,12 +59,20 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::init(void)
 	{
+		mosq_ = mosquitto_new(clientId_.c_str(), true, this);
+		if (mosq_ == nullptr) {
+			Log(Error, "mosquitto_new error");
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	MQTTClientServer::cleanup(void)
 	{
+		if (mosq_ != nullptr) {
+			mosquitto_destroy(mosq_);
+		}
 		return true;
 	}
 

@@ -49,6 +49,9 @@ namespace OpcUaStackPubSub
 
 	  private:
 		static uint32_t mqttInstances_;
+		struct mosquitto *mosq_;
+
+		std::string clientId_;
 	};
 
 #endif
