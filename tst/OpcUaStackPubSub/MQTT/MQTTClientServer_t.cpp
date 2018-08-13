@@ -34,15 +34,17 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_init)
 	}
 }
 
-BOOST_AUTO_TEST_CASE(MQTTClientServer_construct_connect)
+BOOST_AUTO_TEST_CASE(MQTTClientServer_startup)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
 	if (mqttClient->mqttIfEnabled()) {
-
-		// FIXME: unittest ...
-
+		mqttClient->init();
+		mqttClient->startup();
+		mqttClient->shutdown();
+		mqttClient->cleanup();
 	}
 }
+
 
 BOOST_AUTO_TEST_SUITE_END()

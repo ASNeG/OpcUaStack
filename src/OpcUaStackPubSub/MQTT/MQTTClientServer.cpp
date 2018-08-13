@@ -102,12 +102,17 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::startup(void)
 	{
+		int rc = mosquitto_loop_start(mosq_);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			return false;
+		}
 		return true;
 	}
 
 	bool
 	MQTTClientServer::shutdown(void)
 	{
+		mosquitto_loop_stop(mosq_, true);
 		return true;
 	}
 
