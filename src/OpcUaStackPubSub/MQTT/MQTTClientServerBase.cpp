@@ -19,4 +19,43 @@
 
 namespace OpcUaStackPubSub
 {
+
+	MQTTClientServerBase::MQTTClientServerBase(void)
+	{
+	}
+
+	MQTTClientServerBase::~MQTTClientServerBase(void)
+	{
+	}
+
+	bool
+	MQTTClientServerBase::startup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::init(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::cleanup(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::shutdown(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::mqttClientIfEnabled(void)
+	{
+		return false;
+	}
+
 }

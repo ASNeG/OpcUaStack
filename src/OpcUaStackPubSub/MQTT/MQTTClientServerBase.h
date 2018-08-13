@@ -18,8 +18,26 @@
 #ifndef __OpcUaStackPubSub_MQTTClientServerBase_h__
 #define __OpcUaStackPubSub_MQTTClientServerBase_h__
 
+#include "OpcUaStackCore/Base/os.h"
+
 namespace OpcUaStackPubSub
 {
+
+	class DLLEXPORT MQTTClientServerBase
+	{
+	  public:
+		MQTTClientServerBase(void);
+		virtual ~MQTTClientServerBase(void);
+
+		//
+		// virtual functions
+		//
+		virtual bool init(void);
+		virtual bool cleanup(void);
+		virtual bool startup(void);
+		virtual bool shutdown(void);
+		virtual bool mqttClientIfEnabled(void);
+	};
 
 }
 
