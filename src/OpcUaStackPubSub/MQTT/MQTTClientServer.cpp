@@ -25,6 +25,26 @@ namespace OpcUaStackPubSub
 
 #ifdef USE_MOSQUITTO_CLIENT
 
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    //
+    // callback
+    //
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+	void on_log(struct mosquitto* mosq, void* obj, int level, const char* message)
+	{
+		printf("%s", message);
+	}
+
+
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// MQTTClientServer
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 	uint32_t MQTTClientServer::mqttInstances_ = 0;
 
 	MQTTClientServer::MQTTClientServer(void)
@@ -64,6 +84,9 @@ namespace OpcUaStackPubSub
 			Log(Error, "mosquitto_new error");
 			return false;
 		}
+
+		mosquitto_log_callback_set(mosq_, on_log);
+
 		return true;
 	}
 
