@@ -53,7 +53,7 @@ namespace OpcUaStackPubSub
 	}
 
 	bool
-	MQTTClientServerBase::mqttClientIfEnabled(void)
+	MQTTClientServerBase::mqttIfEnabled(void)
 	{
 		return false;
 	}

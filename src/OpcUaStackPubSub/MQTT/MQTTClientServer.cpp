@@ -15,17 +15,88 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackPubSub/MQTT/MQTTClientServer.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
+#ifdef USE_MOSQUITTO_CLIENT
+
+	uint32_t MQTTClientServer::mqttInstances_ = 0;
+
 	MQTTClientServer::MQTTClientServer(void)
+	: MQTTClientServerBase()
 	{
+		if (mqttInstances_ == 0) {
+			mosquitto_lib_init();
+
+			int major, minor, revision;
+			mosquitto_lib_version(&major, &minor, &revision);
+			std::stringstream vers;
+
+			vers << major << "." << minor << "." << revision;
+			Log(Debug, "mosquitto lib init")
+			    .parameter("Version", vers.str());
+		}
+		mqttInstances_++;
 	}
 
 	MQTTClientServer::~MQTTClientServer(void)
 	{
+		mqttInstances_--;
+		if (mqttInstances_ == 0) {
+			Log(Debug, "mosquitto lib cleanup");
+
+			mosquitto_lib_cleanup();
+		}
 	}
+
+	bool
+	MQTTClientServer::init(void)
+	{
+		return true;
+	}
+
+	bool
+	MQTTClientServer::cleanup(void)
+	{
+		return true;
+	}
+
+	bool
+	MQTTClientServer::startup(void)
+	{
+		return true;
+	}
+
+	bool
+	MQTTClientServer::shutdown(void)
+	{
+		return true;
+	}
+
+	bool
+	MQTTClientServer::mqttIfEnabled(void)
+	{
+		return true;
+	}
+
+	MQTTClientServerBase::SPtr constructMQTT(void)
+	{
+		return constructSPtr<MQTTClientServer>();
+	}
+
+#else
+
+	MQTTClientServerBase::SPtr constructMQTT(void)
+	{
+		return constructSPtr<MQTTClientServerBase>();
+	}
+
+#endif
+
 
 }

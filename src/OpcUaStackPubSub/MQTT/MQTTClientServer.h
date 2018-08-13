@@ -18,17 +18,42 @@
 #ifndef __OpcUaStackPubSub_MQTTClientServer_h__
 #define __OpcUaStackPubSub_MQTTClientServer_h__
 
+#ifdef USE_MOSQUITTO_CLIENT
+#include "mosquitto.h"
+#endif
+
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Base/ObjectPool.h"
+#include "OpcUaStackPubSub/MQTT/MQTTClientServerBase.h"
 
 namespace OpcUaStackPubSub
 {
 
+#ifdef USE_MOSQUITTO_CLIENT
+
 	class DLLEXPORT MQTTClientServer
+	: public MQTTClientServerBase
 	{
 	  public:
+		typedef boost::shared_ptr<MQTTClientServer> SPtr;
+
 		MQTTClientServer(void);
 		virtual ~MQTTClientServer(void);
+
+		virtual bool init(void);
+		virtual bool cleanup(void);
+		virtual bool startup(void);
+		virtual bool shutdown(void);
+		virtual bool mqttIfEnabled(void);
+
+	  private:
+		static uint32_t mqttInstances_;
 	};
+
+#endif
+
+	MQTTClientServerBase::SPtr constructMQTT(void);
 
 }
 

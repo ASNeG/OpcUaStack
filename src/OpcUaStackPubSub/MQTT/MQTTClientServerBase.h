@@ -18,6 +18,7 @@
 #ifndef __OpcUaStackPubSub_MQTTClientServerBase_h__
 #define __OpcUaStackPubSub_MQTTClientServerBase_h__
 
+#include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
@@ -26,6 +27,8 @@ namespace OpcUaStackPubSub
 	class DLLEXPORT MQTTClientServerBase
 	{
 	  public:
+		typedef boost::shared_ptr<MQTTClientServerBase> SPtr;
+
 		MQTTClientServerBase(void);
 		virtual ~MQTTClientServerBase(void);
 
@@ -36,7 +39,7 @@ namespace OpcUaStackPubSub
 		virtual bool cleanup(void);
 		virtual bool startup(void);
 		virtual bool shutdown(void);
-		virtual bool mqttClientIfEnabled(void);
+		virtual bool mqttIfEnabled(void);
 	};
 
 }
