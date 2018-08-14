@@ -40,6 +40,10 @@ namespace OpcUaStackPubSub
 		virtual bool startup(void);
 		virtual bool shutdown(void);
 		virtual bool mqttIfEnabled(void);
+
+		virtual bool connect(void);
+		virtual bool connect(const std::string& hostname, uint32_t port);
+		virtual bool disconnect(void);
 	};
 
 }

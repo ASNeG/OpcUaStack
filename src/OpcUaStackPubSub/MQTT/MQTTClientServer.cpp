@@ -79,12 +79,14 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::init(void)
 	{
+		// create new mosquitto client
 		mosq_ = mosquitto_new(clientId_.c_str(), true, this);
 		if (mosq_ == nullptr) {
 			Log(Error, "mosquitto_new error");
 			return false;
 		}
 
+		// activate logging
 		mosquitto_log_callback_set(mosq_, on_log);
 
 		return true;
@@ -93,6 +95,7 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::cleanup(void)
 	{
+		// destroy mosquitto client
 		if (mosq_ != nullptr) {
 			mosquitto_destroy(mosq_);
 		}
@@ -102,6 +105,7 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::startup(void)
 	{
+		// start mosquitto thread
 		int rc = mosquitto_loop_start(mosq_);
 		if (rc != MOSQ_ERR_SUCCESS) {
 			return false;
@@ -112,6 +116,7 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::shutdown(void)
 	{
+		// stop mosquitto thread
 		mosquitto_loop_stop(mosq_, true);
 		return true;
 	}
@@ -119,6 +124,50 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::mqttIfEnabled(void)
 	{
+		return true;
+	}
+
+	bool
+	MQTTClientServer::connect(void)
+	{
+		return connect("test.mosquitto.org", 1883);
+	}
+
+	bool
+	MQTTClientServer::connect(const std::string& hostname, uint32_t port)
+	{
+		// check mosquitto client
+		if (mosq_== nullptr) {
+			Log(Error, "connect error - parameter invalid");
+			return false;
+		}
+
+		// connect to mosquitto server
+		int rc = mosquitto_connect_async(mosq_, hostname.c_str(), port, 60);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			Log(Error, "mosquitto_connect_async error");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	MQTTClientServer::disconnect(void)
+	{
+		// check mosquitto client
+		if (mosq_== nullptr) {
+			Log(Error, "disconnect error - parameter invalid");
+			return false;
+		}
+
+		// disconnect mosquitto client
+		int rc = mosquitto_disconnect(mosq_);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			Log(Error, "mosquitto_disconnect error");
+			return false;
+		}
+
 		return true;
 	}
 

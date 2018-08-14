@@ -58,4 +58,22 @@ namespace OpcUaStackPubSub
 		return false;
 	}
 
+	bool
+	MQTTClientServerBase::connect(void)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::connect(const std::string& hostname, uint32_t port)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::disconnect(void)
+	{
+		return false;
+	}
+
 }
