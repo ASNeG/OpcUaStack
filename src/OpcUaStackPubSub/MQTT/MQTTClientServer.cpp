@@ -15,6 +15,7 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackPubSub/MQTT/MQTTClientServer.h"
 
@@ -32,11 +33,82 @@ namespace OpcUaStackPubSub
     //
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
-	void on_log(struct mosquitto* mosq, void* obj, int level, const char* message)
+	void onLogCallback(struct mosquitto* mosq, void* obj, int level, const char* message)
 	{
-		printf("%s", message);
+		LogLevel logLevel;
+
+		switch(level)
+		{
+			case MOSQ_LOG_INFO:
+			case MOSQ_LOG_NOTICE:
+				logLevel = Info;
+				break;
+			case MOSQ_LOG_WARNING:
+				logLevel = Warning;
+				break;
+			case MOSQ_LOG_ERR:
+				logLevel = Error;
+				break;
+			case MOSQ_LOG_DEBUG:
+				logLevel = Debug;
+				break;
+			default:
+				logLevel = Error;
+
+		}
+		std::stringstream msg;
+		msg << "MOSQ message: " << message;
+		Log(logLevel, msg.str());
 	}
 
+	void onConnectCallback(struct mosquitto* mosq, void* obj, int rc)
+	{
+		std::cout << "on connect" << std::endl;
+		MQTTClientServer* cs = (MQTTClientServer*)obj;
+		cs->onConnect(rc);
+	}
+
+	void onDisconnectCallback(struct mosquitto* mosq, void* obj, int rc)
+	{
+		std::cout << "on disconnect" << std::endl;
+		MQTTClientServer* cs = (MQTTClientServer*)obj;
+		cs->onDisconnect(rc);
+	}
+
+	void onPublishCallback(struct mosquitto* mosq, void* obj, int mid)
+	{
+		std::cout << "on publish" << std::endl;
+		MQTTClientServer* cs = (MQTTClientServer*)obj;
+		cs->onPublish(mid);
+	}
+
+	void onSubscribeCallback(struct mosquitto* mosq, void* obj, int mid, int qos_count, const int* granded_qos)
+	{
+		std::cout << "on subscribe" << std::endl;
+		MQTTClientServer* cs = (MQTTClientServer*)obj;
+		cs->onSubscribe(mid, qos_count, granded_qos);
+	}
+
+	void onUnsubscribeCallback(struct mosquitto* mosq, void* obj, int mid)
+	{
+		std::cout << "on unsubscribe" << std::endl;
+		MQTTClientServer* cs = (MQTTClientServer*)obj;
+		cs->onUnsubscribe(mid);
+	}
+
+	void onMessageCallback(struct mosquitto* mosq, void* obj, const struct mosquitto_message* message)
+	{
+		std::cout << "on message" << std::endl;
+		MQTTClientServer* cs = (MQTTClientServer*)obj;
+		cs->onMessage(
+			message->mid,
+			message->topic,
+			message->payload,
+			message->payloadlen,
+			message->qos,
+			message->retain
+		);
+	}
 
 	// ------------------------------------------------------------------------
 	// ------------------------------------------------------------------------
@@ -86,8 +158,20 @@ namespace OpcUaStackPubSub
 			return false;
 		}
 
-		// activate logging
-		mosquitto_log_callback_set(mosq_, on_log);
+		// activate log callback
+		mosquitto_log_callback_set(mosq_, onLogCallback);
+
+		// activate connect and disconnect callback
+		mosquitto_connect_callback_set(mosq_, onConnectCallback);
+		mosquitto_disconnect_callback_set(mosq_, onDisconnectCallback);
+
+		// activate publish and subscribe callback
+		mosquitto_publish_callback_set(mosq_, onPublishCallback);
+		mosquitto_subscribe_callback_set(mosq_, onSubscribeCallback);
+		mosquitto_unsubscribe_callback_set(mosq_, onUnsubscribeCallback);
+
+		// activate message callback
+		mosquitto_message_callback_set(mosq_, onMessageCallback);
 
 		return true;
 	}
@@ -169,6 +253,42 @@ namespace OpcUaStackPubSub
 		}
 
 		return true;
+	}
+
+	void
+	MQTTClientServer::onConnect(int rc)
+	{
+		std::cout << "on connect" << std::endl;
+	}
+
+	void
+	MQTTClientServer::onDisconnect(int rc)
+	{
+		std::cout << "on disconnect" << std::endl;
+	}
+
+	void
+	MQTTClientServer::onPublish(int mid)
+	{
+		std::cout << "on publish" << std::endl;
+	}
+
+	void
+	MQTTClientServer::onSubscribe(int mid, int qos_count, const int* granded_qos)
+	{
+		std::cout << "on subscribe" << std::endl;
+	}
+
+	void
+	MQTTClientServer::onUnsubscribe(int mid)
+	{
+		std::cout << "on unsubscribe" << std::endl;
+	}
+
+	void
+	MQTTClientServer::onMessage(int mid, char *topic, void *payload, int payloadlen, int qos, bool retain)
+	{
+		std::cout << "in message" << std::endl;
 	}
 
 	MQTTClientServerBase::SPtr constructMQTT(void)

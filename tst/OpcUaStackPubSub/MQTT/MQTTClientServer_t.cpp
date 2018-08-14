@@ -54,6 +54,7 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_connect)
 		BOOST_REQUIRE(mqttClient->init() == true);
 		BOOST_REQUIRE(mqttClient->startup() == true);
 		BOOST_REQUIRE(mqttClient->connect() == true);
+		sleep(10);
 		BOOST_REQUIRE(mqttClient->disconnect() == true	);
 		BOOST_REQUIRE(mqttClient->shutdown() == true);
 		BOOST_REQUIRE(mqttClient->cleanup() == true);

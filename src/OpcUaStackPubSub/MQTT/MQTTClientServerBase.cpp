@@ -76,4 +76,34 @@ namespace OpcUaStackPubSub
 		return false;
 	}
 
+	void
+	MQTTClientServerBase::onConnect(int rc)
+	{
+	}
+
+	void
+	MQTTClientServerBase::onDisconnect(int rc)
+	{
+	}
+
+	void
+	MQTTClientServerBase::onPublish(int mid)
+	{
+	}
+
+	void
+	MQTTClientServerBase::onSubscribe(int mid, int qos_count, const int* granded_qos)
+	{
+	}
+
+	void
+	MQTTClientServerBase::onUnsubscribe(int mid)
+	{
+	}
+
+	void
+	MQTTClientServerBase::onMessage(int mid, char *topic, void *payload, int payloadlen, int qos, bool retain)
+	{
+	}
+
 }

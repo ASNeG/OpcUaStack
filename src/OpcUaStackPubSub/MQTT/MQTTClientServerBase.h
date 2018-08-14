@@ -44,6 +44,13 @@ namespace OpcUaStackPubSub
 		virtual bool connect(void);
 		virtual bool connect(const std::string& hostname, uint32_t port);
 		virtual bool disconnect(void);
+
+		virtual void onConnect(int rc);
+		virtual void onDisconnect(int rc);
+		virtual void onPublish(int mid);
+		virtual void onSubscribe(int mid, int qos_count, const int* granded_qos);
+		virtual void onUnsubscribe(int mid);
+		virtual void onMessage(int mid, char *topic, void *payload, int payloadlen, int qos, bool retain);
 	};
 
 }
