@@ -95,6 +95,18 @@ namespace OpcUaStackPubSub
 		return false;
 	}
 
+	bool
+	MQTTClientServerBase::registerSubscribe(const std::string& topic, MQTTSubscribeIf* mqttSubscribeIf)
+	{
+		return false;
+	}
+
+	bool
+	MQTTClientServerBase::deregisterSubscribe(const std::string& topic)
+	{
+		return false;
+	}
+
 	void
 	MQTTClientServerBase::onConnect(int rc)
 	{

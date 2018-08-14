@@ -9,10 +9,12 @@ using namespace OpcUaStackPubSub;
 
 class MQTTClientServerHandler
 : public MQTTClientServerIf
+, public MQTTSubscribeIf
 {
   public:
 	MQTTClientServerHandler(void)
     : MQTTClientServerIf()
+    , MQTTSubscribeIf()
     {}
 
 	virtual ~MQTTClientServerHandler(void)
@@ -33,9 +35,15 @@ class MQTTClientServerHandler
     	onPublishCondition_.conditionValueInc();
     }
 
+    virtual void onMessage(const std::string& topic, boost::asio::streambuf& is)
+    {
+    	onMessageCondition_.conditionValueInc();
+    }
+
     Condition onConnectCondition_;
     Condition onDisconnectCondition_;
     Condition onPublishCondition_;
+    Condition onMessageCondition_;
 };
 
 
@@ -135,5 +143,39 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_publish)
 	}
 }
 
+BOOST_AUTO_TEST_CASE(MQTTClientServer_subscribe)
+{
+	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
+
+	if (mqttClient->mqttIfEnabled()) {
+		MQTTClientServerHandler csHandler;
+
+		mqttClient->mqttClientServerIf(&csHandler);
+		BOOST_REQUIRE(mqttClient->init() == true);
+		BOOST_REQUIRE(mqttClient->startup() == true);
+
+		csHandler.onConnectCondition_.condition(0, 1);
+		BOOST_REQUIRE(mqttClient->connect() == true);
+		BOOST_REQUIRE(csHandler.onConnectCondition_.waitForCondition(1000) == true);
+
+		BOOST_REQUIRE(mqttClient->registerSubscribe("Topic1", &csHandler) == true);
+
+		boost::asio::streambuf buf;
+		std::ostream os(&buf);
+		os << "Dies ist ein String";
+		csHandler.onMessageCondition_.condition(0, 1);
+		csHandler.onPublishCondition_.condition(0, 1);
+		BOOST_REQUIRE(mqttClient->publish("Topic1", buf));
+		BOOST_REQUIRE(csHandler.onPublishCondition_.waitForCondition(1000) == true);
+		BOOST_REQUIRE(csHandler.onMessageCondition_.waitForCondition(10000000) == true);
+
+		csHandler.onDisconnectCondition_.condition(0, 1);
+		BOOST_REQUIRE(mqttClient->disconnect() == true);
+		BOOST_REQUIRE(csHandler.onDisconnectCondition_.waitForCondition(1000) == true);
+
+		BOOST_REQUIRE(mqttClient->shutdown() == true);
+		BOOST_REQUIRE(mqttClient->cleanup() == true);
+	}
+}
 
 BOOST_AUTO_TEST_SUITE_END()

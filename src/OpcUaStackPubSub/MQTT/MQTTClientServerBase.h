@@ -36,6 +36,17 @@ namespace OpcUaStackPubSub
     	virtual void onPublish(void) {}
 	};
 
+
+    class DLLEXPORT MQTTSubscribeIf
+    {
+      public:
+    	MQTTSubscribeIf(void) {}
+    	virtual ~MQTTSubscribeIf(void) {}
+
+    	virtual void onMessage(const std::string& topic, boost::asio::streambuf& is) {}
+    };
+
+
 	class DLLEXPORT MQTTClientServerBase
 	{
 	  public:
@@ -61,6 +72,8 @@ namespace OpcUaStackPubSub
 		virtual bool disconnect(void);
 
 		virtual bool publish(const std::string& topic, boost::asio::streambuf& os);
+		virtual bool registerSubscribe(const std::string& topic, MQTTSubscribeIf* mqttSubscribeIf);
+		virtual bool deregisterSubscribe(const std::string& topic);
 
 		virtual void onConnect(int rc);
 		virtual void onDisconnect(int rc);

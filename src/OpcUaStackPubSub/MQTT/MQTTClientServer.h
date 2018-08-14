@@ -22,7 +22,9 @@
 #include "mosquitto.h"
 #endif
 
+#include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/Base/ObjectPool.h"
 #include "OpcUaStackPubSub/MQTT/MQTTClientServerBase.h"
@@ -31,6 +33,26 @@ namespace OpcUaStackPubSub
 {
 
 #ifdef USE_MOSQUITTO_CLIENT
+
+	class MQTTSubscription
+	{
+	  public:
+		typedef boost::shared_ptr<MQTTSubscription> SPtr;
+		typedef std::map<std::string, MQTTSubscription::SPtr> Map;
+
+		MQTTSubscription(void);
+		~MQTTSubscription(void);
+
+		void topic(const std::string& topic);
+		std::string& topic(void);
+		void mqttSubscriptionIf(MQTTSubscribeIf* mqttSubscribeIf);
+		MQTTSubscribeIf* mqttSubscriptionIf(void);
+
+	  private:
+		std::string topic_;
+		MQTTSubscribeIf* mqttSubscribeIf_;
+	};
+
 
 	class DLLEXPORT MQTTClientServer
 	: public MQTTClientServerBase
@@ -52,6 +74,8 @@ namespace OpcUaStackPubSub
 		virtual bool disconnect(void);
 
 		virtual bool publish(const std::string& topic, boost::asio::streambuf& os);
+		virtual bool registerSubscribe(const std::string& topic, MQTTSubscribeIf* mqttSubscribeIf);
+		virtual bool deregisterSubscribe(const std::string& topic);
 
 		virtual void onConnect(int rc);
 		virtual void onDisconnect(int rc);
@@ -65,6 +89,9 @@ namespace OpcUaStackPubSub
 		struct mosquitto *mosq_;
 
 		std::string clientId_;
+
+		boost::mutex mqttSubscriptionMutex_;
+		MQTTSubscription::Map mqttSubscriptionMap_;
 	};
 
 #endif

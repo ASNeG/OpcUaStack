@@ -26,6 +26,48 @@ namespace OpcUaStackPubSub
 
 #ifdef USE_MOSQUITTO_CLIENT
 
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	//
+	// MQTTSubscription
+	//
+	// ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
+	MQTTSubscription::MQTTSubscription(void)
+	: topic_("")
+	, mqttSubscribeIf_(nullptr)
+	{
+	}
+
+	MQTTSubscription::~MQTTSubscription(void)
+	{
+	}
+
+	void
+	MQTTSubscription::topic(const std::string& topic)
+	{
+		topic_ = topic;
+	}
+
+	std::string&
+	MQTTSubscription::topic(void)
+	{
+		return topic_;
+	}
+
+	void
+	MQTTSubscription::mqttSubscriptionIf(MQTTSubscribeIf* mqttSubscribeIf)
+	{
+		mqttSubscribeIf_ = mqttSubscribeIf;
+	}
+
+	MQTTSubscribeIf*
+	MQTTSubscription::mqttSubscriptionIf(void)
+	{
+		return mqttSubscribeIf_;
+	}
+
+
     // ------------------------------------------------------------------------
     // ------------------------------------------------------------------------
     //
@@ -117,6 +159,8 @@ namespace OpcUaStackPubSub
 	: MQTTClientServerBase()
 	, mosq_(nullptr)
 	, clientId_("OpcUaPubSub")
+	, mqttSubscriptionMutex_()
+	, mqttSubscriptionMap_()
 	{
 		if (mqttInstances_ == 0) {
 			mosquitto_lib_init();
@@ -287,6 +331,53 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
+	bool
+	MQTTClientServer::registerSubscribe(const std::string& topic, MQTTSubscribeIf* mqttSubscribeIf)
+	{
+		boost::mutex::scoped_lock g(mqttSubscriptionMutex_);
+
+		MQTTSubscription::Map::iterator it;
+		it = mqttSubscriptionMap_.find(topic);
+		if (it != mqttSubscriptionMap_.end()) {
+			return  false;
+		}
+
+		MQTTSubscription::SPtr mqttSubscription = constructSPtr<MQTTSubscription>();
+		mqttSubscription->topic(topic);
+		mqttSubscription->mqttSubscriptionIf(mqttSubscribeIf);
+		mqttSubscriptionMap_.insert(std::make_pair(topic, mqttSubscription));
+
+		// register topic
+		int rc = mosquitto_subscribe(
+			mosq_,
+			0,
+			topic.c_str(),
+			1
+		);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			Log(Error, "subscribe error");
+			return false;
+		}
+
+		return true;
+	}
+
+	bool
+	MQTTClientServer::deregisterSubscribe(const std::string& topic)
+	{
+		boost::mutex::scoped_lock g(mqttSubscriptionMutex_);
+
+		MQTTSubscription::Map::iterator it;
+		it = mqttSubscriptionMap_.find(topic);
+		if (it == mqttSubscriptionMap_.end()) {
+			return  false;
+		}
+
+		mqttSubscriptionMap_.erase(it);
+
+		return true;
+	}
+
 	void
 	MQTTClientServer::onConnect(int rc)
 	{
@@ -329,7 +420,29 @@ namespace OpcUaStackPubSub
 	void
 	MQTTClientServer::onMessage(int mid, char *topic, void *payload, int payloadlen, int qos, bool retain)
 	{
-		std::cout << "in message" << std::endl;
+		std::cout << "on message" << std::endl;
+
+		MQTTSubscription::SPtr mqttSubscription;
+		{
+			boost::mutex::scoped_lock g(mqttSubscriptionMutex_);
+
+			MQTTSubscription::Map::iterator it;
+			it = mqttSubscriptionMap_.find(topic);
+			if (it == mqttSubscriptionMap_.end()) {
+				// ignore message
+				return;
+			}
+			mqttSubscription = it->second;
+		}
+
+		boost::asio::streambuf sb;
+		std::iostream ios(&sb);
+		ios.write((char*)payload, payloadlen);
+
+		mqttSubscription->mqttSubscriptionIf()->onMessage(
+			topic,
+			sb
+		);
 	}
 
 	MQTTClientServerBase::SPtr constructMQTT(void)
