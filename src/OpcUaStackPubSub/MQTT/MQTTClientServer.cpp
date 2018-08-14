@@ -189,11 +189,6 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::startup(void)
 	{
-		// start mosquitto thread
-		int rc = mosquitto_loop_start(mosq_);
-		if (rc != MOSQ_ERR_SUCCESS) {
-			return false;
-		}
 		return true;
 	}
 
@@ -214,7 +209,8 @@ namespace OpcUaStackPubSub
 	bool
 	MQTTClientServer::connect(void)
 	{
-		return connect("test.mosquitto.org", 1883);
+		//return connect("test.mosquitto.org", 1883);
+		return connect("127.0.0.1", 1883);
 	}
 
 	bool
@@ -232,6 +228,14 @@ namespace OpcUaStackPubSub
 			Log(Error, "mosquitto_connect_async error");
 			return false;
 		}
+
+		// start mosquitto thread
+		rc = mosquitto_loop_start(mosq_);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			Log(Error, "mosquitto_loop_start error");
+			return false;
+		}
+		return true;
 
 		return true;
 	}
@@ -278,8 +282,8 @@ namespace OpcUaStackPubSub
 			topic.c_str(),
 			dataLen,
 			dataBuf,
-			1,
-			true
+			0,
+			false
 		);
 		if (rc != MOSQ_ERR_SUCCESS) {
 			Log(Error, "publish error");
