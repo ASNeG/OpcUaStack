@@ -19,6 +19,7 @@
 #define __OpcUaStackPubSub_MQTTClientServerBase_h__
 
 #include <boost/shared_ptr.hpp>
+#include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/Base/os.h"
 
 namespace OpcUaStackPubSub
@@ -44,6 +45,8 @@ namespace OpcUaStackPubSub
 		virtual bool connect(void);
 		virtual bool connect(const std::string& hostname, uint32_t port);
 		virtual bool disconnect(void);
+
+		virtual bool publish(const std::string& topic, boost::asio::streambuf& os);
 
 		virtual void onConnect(int rc);
 		virtual void onDisconnect(int rc);

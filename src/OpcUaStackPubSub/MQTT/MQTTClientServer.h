@@ -51,6 +51,8 @@ namespace OpcUaStackPubSub
 		virtual bool connect(const std::string& hostname, uint32_t port);
 		virtual bool disconnect(void);
 
+		virtual bool publish(const std::string& topic, boost::asio::streambuf& os);
+
 		virtual void onConnect(int rc);
 		virtual void onDisconnect(int rc);
 		virtual void onPublish(int mid);

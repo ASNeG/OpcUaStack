@@ -54,7 +54,28 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_connect)
 		BOOST_REQUIRE(mqttClient->init() == true);
 		BOOST_REQUIRE(mqttClient->startup() == true);
 		BOOST_REQUIRE(mqttClient->connect() == true);
-		sleep(10);
+		BOOST_REQUIRE(mqttClient->disconnect() == true	);
+		BOOST_REQUIRE(mqttClient->shutdown() == true);
+		BOOST_REQUIRE(mqttClient->cleanup() == true);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(MQTTClientServer_publish)
+{
+	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
+
+	if (mqttClient->mqttIfEnabled()) {
+		BOOST_REQUIRE(mqttClient->init() == true);
+		BOOST_REQUIRE(mqttClient->startup() == true);
+		BOOST_REQUIRE(mqttClient->connect() == true);
+
+		boost::asio::streambuf buf;
+		std::ostream os(&buf);
+		os << "Dies ist ein String";
+
+		BOOST_REQUIRE(mqttClient->publish("Topic1", buf));
+
+		sleep(100);
 		BOOST_REQUIRE(mqttClient->disconnect() == true	);
 		BOOST_REQUIRE(mqttClient->shutdown() == true);
 		BOOST_REQUIRE(mqttClient->cleanup() == true);

@@ -255,6 +255,40 @@ namespace OpcUaStackPubSub
 		return true;
 	}
 
+	bool
+	MQTTClientServer::publish(const std::string& topic, boost::asio::streambuf& os)
+	{
+		// check mosquitto client
+		if (mosq_== nullptr) {
+			Log(Error, "publish error - parameter error");
+			return false;
+		}
+
+		// send message to broker
+		const char* dataBuf = boost::asio::buffer_cast<const char*>(os.data());
+		int dataLen = 0;
+		boost::asio::streambuf::const_buffers_type data = os.data();
+		boost::asio::streambuf::const_buffers_type::const_iterator it;
+		for (it=data.begin(); it!=data.end(); it++) {
+			dataLen += boost::asio::buffer_size(*it);
+		}
+		int rc = mosquitto_publish(
+			mosq_,
+			0,
+			topic.c_str(),
+			dataLen,
+			dataBuf,
+			1,
+			true
+		);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			Log(Error, "publish error");
+			return false;
+		}
+
+		return true;
+	}
+
 	void
 	MQTTClientServer::onConnect(int rc)
 	{

@@ -76,6 +76,12 @@ namespace OpcUaStackPubSub
 		return false;
 	}
 
+	bool
+	MQTTClientServerBase::publish(const std::string& topic, boost::asio::streambuf& os)
+	{
+		return false;
+	}
+
 	void
 	MQTTClientServerBase::onConnect(int rc)
 	{
