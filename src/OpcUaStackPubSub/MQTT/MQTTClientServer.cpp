@@ -373,6 +373,17 @@ namespace OpcUaStackPubSub
 			return  false;
 		}
 
+		// deregister topic
+		int rc = mosquitto_unsubscribe(
+			mosq_,
+			0,
+			topic.c_str()
+		);
+		if (rc != MOSQ_ERR_SUCCESS) {
+			Log(Error, "unsubscribe error");
+			return false;
+		}
+
 		mqttSubscriptionMap_.erase(it);
 
 		return true;
@@ -408,12 +419,18 @@ namespace OpcUaStackPubSub
 	void
 	MQTTClientServer::onSubscribe(int mid, int qos_count, const int* granded_qos)
 	{
+		if (mqttClientServerIf_ != nullptr) {
+			mqttClientServerIf_->onSubscribe();
+		}
 		std::cout << "on subscribe" << std::endl;
 	}
 
 	void
 	MQTTClientServer::onUnsubscribe(int mid)
 	{
+		if (mqttClientServerIf_ != nullptr) {
+			mqttClientServerIf_->onUnsubscribe();
+		}
 		std::cout << "on unsubscribe" << std::endl;
 	}
 

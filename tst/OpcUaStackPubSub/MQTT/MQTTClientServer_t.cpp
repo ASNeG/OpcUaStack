@@ -35,6 +35,16 @@ class MQTTClientServerHandler
     	onPublishCondition_.conditionValueInc();
     }
 
+	virtual void onSubscribe(void)
+	{
+		onSubscribeCondition_.conditionValueInc();
+	}
+
+	virtual void onUnsubscribe(void)
+	{
+		onUnsubscribeCondition_.conditionValueInc();
+	}
+
     virtual void onMessage(const std::string& topic, boost::asio::streambuf& is)
     {
     	onMessageCondition_.conditionValueInc();
@@ -43,6 +53,8 @@ class MQTTClientServerHandler
     Condition onConnectCondition_;
     Condition onDisconnectCondition_;
     Condition onPublishCondition_;
+    Condition onSubscribeCondition_;
+    Condition onUnsubscribeCondition_;
     Condition onMessageCondition_;
 };
 
@@ -167,7 +179,11 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_subscribe)
 		csHandler.onPublishCondition_.condition(0, 1);
 		BOOST_REQUIRE(mqttClient->publish("Topic1", buf));
 		BOOST_REQUIRE(csHandler.onPublishCondition_.waitForCondition(1000) == true);
-		BOOST_REQUIRE(csHandler.onMessageCondition_.waitForCondition(10000000) == true);
+		BOOST_REQUIRE(csHandler.onMessageCondition_.waitForCondition(1000) == true);
+
+		csHandler.onUnsubscribeCondition_.condition(0, 1);
+		BOOST_REQUIRE(mqttClient->deregisterSubscribe("Topic1") == true);
+		BOOST_REQUIRE(csHandler.onUnsubscribeCondition_.waitForCondition(1000) == true);
 
 		csHandler.onDisconnectCondition_.condition(0, 1);
 		BOOST_REQUIRE(mqttClient->disconnect() == true);

@@ -34,6 +34,8 @@ namespace OpcUaStackPubSub
     	virtual void onConnect(void) {}
     	virtual void onDisconnect(void) {}
     	virtual void onPublish(void) {}
+    	virtual void onSubscribe(void) {}
+    	virtual void onUnsubscribe(void) {}
 	};
 
 
