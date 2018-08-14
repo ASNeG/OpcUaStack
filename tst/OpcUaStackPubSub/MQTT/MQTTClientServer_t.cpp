@@ -1,9 +1,43 @@
 #include "unittest.h"
 
 #include <iostream>
+#include "OpcUaStackCore/Base/Condition.h"
 #include "OpcUaStackPubSub/MQTT/MQTTClientServer.h"
 
+using namespace OpcUaStackCore;
 using namespace OpcUaStackPubSub;
+
+class MQTTClientServerHandler
+: public MQTTClientServerIf
+{
+  public:
+	MQTTClientServerHandler(void)
+    : MQTTClientServerIf()
+    {}
+
+	virtual ~MQTTClientServerHandler(void)
+	{}
+
+	virtual void onConnect(void)
+	{
+		onConnectCondition_.conditionValueInc();
+	}
+
+    virtual void onDisconnect(void)
+    {
+    	onDisconnectCondition_.conditionValueInc();
+    }
+
+    virtual void onPublish(void)
+    {
+    	onPublishCondition_.conditionValueInc();
+    }
+
+    Condition onConnectCondition_;
+    Condition onDisconnectCondition_;
+    Condition onPublishCondition_;
+};
+
 
 BOOST_AUTO_TEST_SUITE(MQTTClientServer_)
 
@@ -12,7 +46,6 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_)
 	std::cout << "MQTTClientServer_t" << std::endl;
 }
 
-#if 0
 BOOST_AUTO_TEST_CASE(MQTTClientServer_construct)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
@@ -52,33 +85,51 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_connect)
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
 	if (mqttClient->mqttIfEnabled()) {
+		MQTTClientServerHandler csHandler;
+
+		mqttClient->mqttClientServerIf(&csHandler);
 		BOOST_REQUIRE(mqttClient->init() == true);
 		BOOST_REQUIRE(mqttClient->startup() == true);
+
+		csHandler.onConnectCondition_.condition(0, 1);
 		BOOST_REQUIRE(mqttClient->connect() == true);
-		BOOST_REQUIRE(mqttClient->disconnect() == true	);
+		BOOST_REQUIRE(csHandler.onConnectCondition_.waitForCondition(1000) == true);
+
+		csHandler.onDisconnectCondition_.condition(0, 1);
+		BOOST_REQUIRE(mqttClient->disconnect() == true);
+		BOOST_REQUIRE(csHandler.onDisconnectCondition_.waitForCondition(1000) == true);
+
 		BOOST_REQUIRE(mqttClient->shutdown() == true);
 		BOOST_REQUIRE(mqttClient->cleanup() == true);
 	}
 }
-#endif
+
 BOOST_AUTO_TEST_CASE(MQTTClientServer_publish)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
 	if (mqttClient->mqttIfEnabled()) {
+		MQTTClientServerHandler csHandler;
+
+		mqttClient->mqttClientServerIf(&csHandler);
 		BOOST_REQUIRE(mqttClient->init() == true);
 		BOOST_REQUIRE(mqttClient->startup() == true);
+
+		csHandler.onConnectCondition_.condition(0, 1);
 		BOOST_REQUIRE(mqttClient->connect() == true);
-		sleep(1);
+		BOOST_REQUIRE(csHandler.onConnectCondition_.waitForCondition(1000) == true);
 
 		boost::asio::streambuf buf;
 		std::ostream os(&buf);
 		os << "Dies ist ein String";
+		csHandler.onPublishCondition_.condition(0, 1);
 		BOOST_REQUIRE(mqttClient->publish("Topic1", buf));
-		sleep(1);
+		BOOST_REQUIRE(csHandler.onPublishCondition_.waitForCondition(1000) == true);
 
-		BOOST_REQUIRE(mqttClient->disconnect() == true	);
-		sleep(1);
+		csHandler.onDisconnectCondition_.condition(0, 1);
+		BOOST_REQUIRE(mqttClient->disconnect() == true);
+		BOOST_REQUIRE(csHandler.onDisconnectCondition_.waitForCondition(1000) == true);
+
 		BOOST_REQUIRE(mqttClient->shutdown() == true);
 		BOOST_REQUIRE(mqttClient->cleanup() == true);
 	}

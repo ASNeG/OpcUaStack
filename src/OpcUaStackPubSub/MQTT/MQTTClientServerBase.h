@@ -25,6 +25,17 @@
 namespace OpcUaStackPubSub
 {
 
+    class DLLEXPORT MQTTClientServerIf
+	{
+	  public:
+    	MQTTClientServerIf(void) {}
+    	virtual ~MQTTClientServerIf(void) {}
+
+    	virtual void onConnect(void) {}
+    	virtual void onDisconnect(void) {}
+    	virtual void onPublish(void) {}
+	};
+
 	class DLLEXPORT MQTTClientServerBase
 	{
 	  public:
@@ -32,6 +43,9 @@ namespace OpcUaStackPubSub
 
 		MQTTClientServerBase(void);
 		virtual ~MQTTClientServerBase(void);
+
+		void mqttClientServerIf(MQTTClientServerIf* mqttClientServerIf);
+		MQTTClientServerIf* mqttClientServerIf(void);
 
 		//
 		// virtual functions
@@ -54,6 +68,9 @@ namespace OpcUaStackPubSub
 		virtual void onSubscribe(int mid, int qos_count, const int* granded_qos);
 		virtual void onUnsubscribe(int mid);
 		virtual void onMessage(int mid, char *topic, void *payload, int payloadlen, int qos, bool retain);
+
+	  protected:
+		MQTTClientServerIf* mqttClientServerIf_;
 	};
 
 }

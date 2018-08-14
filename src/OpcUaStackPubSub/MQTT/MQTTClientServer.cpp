@@ -63,42 +63,36 @@ namespace OpcUaStackPubSub
 
 	void onConnectCallback(struct mosquitto* mosq, void* obj, int rc)
 	{
-		std::cout << "on connect" << std::endl;
 		MQTTClientServer* cs = (MQTTClientServer*)obj;
 		cs->onConnect(rc);
 	}
 
 	void onDisconnectCallback(struct mosquitto* mosq, void* obj, int rc)
 	{
-		std::cout << "on disconnect" << std::endl;
 		MQTTClientServer* cs = (MQTTClientServer*)obj;
 		cs->onDisconnect(rc);
 	}
 
 	void onPublishCallback(struct mosquitto* mosq, void* obj, int mid)
 	{
-		std::cout << "on publish" << std::endl;
 		MQTTClientServer* cs = (MQTTClientServer*)obj;
 		cs->onPublish(mid);
 	}
 
 	void onSubscribeCallback(struct mosquitto* mosq, void* obj, int mid, int qos_count, const int* granded_qos)
 	{
-		std::cout << "on subscribe" << std::endl;
 		MQTTClientServer* cs = (MQTTClientServer*)obj;
 		cs->onSubscribe(mid, qos_count, granded_qos);
 	}
 
 	void onUnsubscribeCallback(struct mosquitto* mosq, void* obj, int mid)
 	{
-		std::cout << "on unsubscribe" << std::endl;
 		MQTTClientServer* cs = (MQTTClientServer*)obj;
 		cs->onUnsubscribe(mid);
 	}
 
 	void onMessageCallback(struct mosquitto* mosq, void* obj, const struct mosquitto_message* message)
 	{
-		std::cout << "on message" << std::endl;
 		MQTTClientServer* cs = (MQTTClientServer*)obj;
 		cs->onMessage(
 			message->mid,
@@ -296,18 +290,27 @@ namespace OpcUaStackPubSub
 	void
 	MQTTClientServer::onConnect(int rc)
 	{
+		if (mqttClientServerIf_ != nullptr) {
+			mqttClientServerIf_->onConnect();
+		}
 		std::cout << "on connect" << std::endl;
 	}
 
 	void
 	MQTTClientServer::onDisconnect(int rc)
 	{
+		if (mqttClientServerIf_ != nullptr) {
+			mqttClientServerIf_->onDisconnect();
+		}
 		std::cout << "on disconnect" << std::endl;
 	}
 
 	void
 	MQTTClientServer::onPublish(int mid)
 	{
+		if (mqttClientServerIf_ != nullptr) {
+			mqttClientServerIf_->onPublish();
+		}
 		std::cout << "on publish" << std::endl;
 	}
 

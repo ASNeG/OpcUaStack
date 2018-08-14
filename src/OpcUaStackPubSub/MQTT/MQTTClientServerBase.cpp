@@ -21,11 +21,24 @@ namespace OpcUaStackPubSub
 {
 
 	MQTTClientServerBase::MQTTClientServerBase(void)
+	: mqttClientServerIf_(nullptr)
 	{
 	}
 
 	MQTTClientServerBase::~MQTTClientServerBase(void)
 	{
+	}
+
+	void
+	MQTTClientServerBase::mqttClientServerIf(MQTTClientServerIf* mqttClientServerIf)
+	{
+		mqttClientServerIf_ = mqttClientServerIf;
+	}
+
+	MQTTClientServerIf*
+	MQTTClientServerBase::mqttClientServerIf(void)
+	{
+		return mqttClientServerIf_;
 	}
 
 	bool
