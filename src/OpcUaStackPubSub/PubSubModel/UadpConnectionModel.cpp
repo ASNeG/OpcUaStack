@@ -15,50 +15,18 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/PubSubModel/PublishSubscribeModel.h"
+#include "OpcUaStackPubSub/PubSubModel/UadpConnectionModel.h"
 
 namespace OpcUaStackPubSub
 {
 
-	PublishSubscribeModel::PublishSubscribeModel(void)
+	UadpConnectionModel::UadpConnectionModel(void)
+	: PubSubConnectionModel()
 	{
 	}
 
-	PublishSubscribeModel::~PublishSubscribeModel(void)
+	UadpConnectionModel::~UadpConnectionModel(void)
 	{
-	}
-
-	OpcUaStatusCode
-	PublishSubscribeModel::removeConnection(
-		OpcUaNodeId& connectionId
-	)
-	{
-		// FIXME: todo
-		return Success;
-	}
-
-	OpcUaStatusCode
-	PublishSubscribeModel::addUadpConnection(
-		OpcUaString& connectionName,
-		OpcUaString& address,
-		OpcUaVariant& publisherId,
-		OpcUaNodeId& connectionId
-	)
-	{
-		// FIXME: todo
-		return Success;
-	}
-
-	OpcUaStatusCode
-	PublishSubscribeModel::addBrokerConnection(
-		OpcUaString& connectionName,
-		OpcUaString& address,
-		OpcUaVariant& publisherId,
-		OpcUaNodeId& connectionId
-	)
-	{
-		// FIXME: todo
-		return Success;
 	}
 
 }

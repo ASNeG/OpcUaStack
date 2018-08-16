@@ -19,8 +19,10 @@
 #define __OpcUaStackPubSub_PublishSubscribeModel_h__
 
 #include <boost/shared_ptr.hpp>
-#include <boost/asio/streambuf.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
@@ -32,6 +34,26 @@ namespace OpcUaStackPubSub
 
 		PublishSubscribeModel(void);
 		virtual ~PublishSubscribeModel(void);
+
+		OpcUaStatusCode removeConnection(
+			OpcUaNodeId& connectionId
+		);
+
+		OpcUaStatusCode addUadpConnection(
+			OpcUaString& connectionName,
+			OpcUaString& address,
+			OpcUaVariant& publisherId,
+			OpcUaNodeId& connectionId
+		);
+
+		OpcUaStatusCode addBrokerConnection(
+			OpcUaString& connectionName,
+			OpcUaString& address,
+			OpcUaVariant& publisherId,
+			OpcUaNodeId& connectionId
+		);
+
+	  private:
 	};
 
 }

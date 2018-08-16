@@ -15,50 +15,33 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/PubSubModel/PublishSubscribeModel.h"
+#ifndef __OpcUaStackUadp_UadpConnectionModel_h__
+#define __OpcUaStackUadp_UadpConnectionModel_h__
+
+#include <boost/shared_ptr.hpp>
+#include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+
+using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	PublishSubscribeModel::PublishSubscribeModel(void)
+	class DLLEXPORT UadpConnectionModel
+	: public PubSubConnectionModel
 	{
-	}
+	  public:
+		typedef boost::shared_ptr<UadpConnectionModel> SPtr;
 
-	PublishSubscribeModel::~PublishSubscribeModel(void)
-	{
-	}
+		UadpConnectionModel(void);
+		virtual ~UadpConnectionModel(void);
 
-	OpcUaStatusCode
-	PublishSubscribeModel::removeConnection(
-		OpcUaNodeId& connectionId
-	)
-	{
-		// FIXME: todo
-		return Success;
-	}
+	  private:
 
-	OpcUaStatusCode
-	PublishSubscribeModel::addUadpConnection(
-		OpcUaString& connectionName,
-		OpcUaString& address,
-		OpcUaVariant& publisherId,
-		OpcUaNodeId& connectionId
-	)
-	{
-		// FIXME: todo
-		return Success;
-	}
-
-	OpcUaStatusCode
-	PublishSubscribeModel::addBrokerConnection(
-		OpcUaString& connectionName,
-		OpcUaString& address,
-		OpcUaVariant& publisherId,
-		OpcUaNodeId& connectionId
-	)
-	{
-		// FIXME: todo
-		return Success;
-	}
+	};
 
 }
+
+#endif
+
