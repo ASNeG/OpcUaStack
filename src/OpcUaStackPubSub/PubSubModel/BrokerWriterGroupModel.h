@@ -15,51 +15,35 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackBroker_PubSubGroupModel_h__
-#define __OpcUaStackBroker_PubSubGroupModel_h__
+#ifndef __OpcUaStackBroker_BrokerWriterGroupModel_h__
+#define __OpcUaStackBroker_BrokerWriterGroupModel_h__
 
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubWriterGroupModel.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT PubSubGroupModel
+	class DLLEXPORT BrokerWriterGroupModel
+	: public PubSubWriterGroupModel
 	{
 	  public:
-		typedef boost::shared_ptr<PubSubGroupModel> SPtr;
-		typedef std::map<OpcUaNodeId, PubSubGroupModel::SPtr> Map;
+		typedef boost::shared_ptr<BrokerWriterGroupModel> SPtr;
+		typedef std::map<OpcUaNodeId, BrokerWriterGroupModel::SPtr> Map;
 
-		typedef enum {
-			UadpReaderGroupType,
-			UadpWriterGroupType,
-			BrokerReaderGroupType,
-			BrokerWriterGroupType
-		} Type;
+		BrokerWriterGroupModel(void);
+		virtual ~BrokerWriterGroupModel(void);
 
-		PubSubGroupModel(Type type);
-		virtual ~PubSubGroupModel(void);
-
-		Type type(void);
-		void groupName(OpcUaString& groupName);
-		OpcUaString& groupName(void);
-		void securityMode(OpcUaUInt32 securityMode);
-		OpcUaUInt32 securityMode(void);
-		void securityGroupId(OpcUaString& securityGroupId);
-		OpcUaString& securityGroupId(void);
+		void queueName(OpcUaString queueName);
+		OpcUaString queueName(void);
 
 	  private:
-		PubSubGroupModel(void);
-
-		Type type_;
-		OpcUaString groupName_;
-		OpcUaUInt32 securityMode_;
-		OpcUaString securityGroupId_;
-
+		OpcUaString queueName_;
 	};
 
 }
