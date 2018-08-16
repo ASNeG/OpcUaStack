@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -55,6 +56,9 @@ namespace OpcUaStackPubSub
 			OpcUaStatusCode& groupId
 		);
 
+	  protected:
+		PubSubGroupModel::Map pubSubGroupModelMap_;
+
 	  private:
 		PubSubConnectionModel(void);
 
@@ -63,7 +67,6 @@ namespace OpcUaStackPubSub
 		OpcUaString address_;
 		OpcUaVariant publisherId_;
 		OpcUaNodeId connectionId_;
-
 	};
 
 }

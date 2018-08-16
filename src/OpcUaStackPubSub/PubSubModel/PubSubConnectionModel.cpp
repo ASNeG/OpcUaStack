@@ -16,6 +16,7 @@
  */
 
 #include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
 namespace OpcUaStackPubSub
 {
@@ -26,6 +27,7 @@ namespace OpcUaStackPubSub
 	, address_("")
 	, publisherId_()
 	, connectionId_()
+	, pubSubGroupModelMap_()
 	{
 	}
 
@@ -92,7 +94,15 @@ namespace OpcUaStackPubSub
 		OpcUaStatusCode& groupId
 	)
 	{
-		// FIXME: todo
+		// find group
+		PubSubGroupModel::Map::iterator it;
+		it = pubSubGroupModelMap_.find(groupId);
+		if (it == pubSubGroupModelMap_.end()) {
+			return BadNoEntryExists;
+		}
+
+		// remove group
+		pubSubGroupModelMap_.erase(it);
 		return Success;
 	}
 

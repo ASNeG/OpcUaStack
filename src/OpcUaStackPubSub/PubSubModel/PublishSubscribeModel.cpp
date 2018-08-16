@@ -52,13 +52,14 @@ namespace OpcUaStackPubSub
 		OpcUaNodeId& connectionId
 	)
 	{
+		// find connection
 		PubSubConnectionModel::Map::iterator it;
-
 		it = pubSubConnectionModelMap_.find(connectionId);
 		if (it == pubSubConnectionModelMap_.end()) {
 			return BadNoEntryExists;
 		}
 
+		// remove connection
 		pubSubConnectionModelMap_.erase(it);
 		return Success;
 	}
