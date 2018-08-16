@@ -81,4 +81,13 @@ namespace OpcUaStackPubSub
 		return encodingMimeType_;
 	}
 
+	OpcUaStatusCode
+	PubSubWriterGroupModel::removeDataSetWriter(
+		OpcUaNodeId& dataSetWriterId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

@@ -48,6 +48,10 @@ namespace OpcUaStackPubSub
 		void encodingMimeType(OpcUaString& encodingMimeType);
 		OpcUaString& encodingMimeType(void);
 
+		OpcUaStatusCode removeDataSetWriter(
+			OpcUaNodeId& dataSetWriterId
+		);
+
 	  private:
 		PubSubWriterGroupModel(void);
 

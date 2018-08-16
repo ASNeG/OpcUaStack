@@ -53,7 +53,7 @@ namespace OpcUaStackPubSub
 		OpcUaNodeId& connectionId(void);
 
 		OpcUaStatusCode removeGroup(
-			OpcUaStatusCode& groupId
+			OpcUaNodeId& groupId
 		);
 
 	  protected:

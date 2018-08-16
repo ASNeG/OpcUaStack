@@ -15,27 +15,17 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#include "OpcUaStackPubSub/PubSubModel/PubSubReaderGroupModel.h"
+#include "OpcUaStackPubSub/PubSubModel/SubscribedDataSetModel.h"
 
 namespace OpcUaStackPubSub
 {
 
-	PubSubReaderGroupModel::PubSubReaderGroupModel(PubSubGroupModel::Type type)
-	: PubSubGroupModel(type)
+	SubscribedDataSetModel::SubscribedDataSetModel(void)
 	{
 	}
 
-	PubSubReaderGroupModel::~PubSubReaderGroupModel(void)
+	SubscribedDataSetModel::~SubscribedDataSetModel(void)
 	{
-	}
-
-	OpcUaStatusCode
-	PubSubReaderGroupModel::removeDataSetReader(
-		OpcUaNodeId& dataSetReaderId
-	)
-	{
-		// FIXME: todo
-		return Success;
 	}
 
 }

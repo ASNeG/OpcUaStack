@@ -91,7 +91,7 @@ namespace OpcUaStackPubSub
 
 	OpcUaStatusCode
 	PubSubConnectionModel::removeGroup(
-		OpcUaStatusCode& groupId
+		OpcUaNodeId& groupId
 	)
 	{
 		// find group

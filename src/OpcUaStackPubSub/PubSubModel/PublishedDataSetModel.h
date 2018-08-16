@@ -15,36 +15,29 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackBroker_PubSubReaderGroupModel_h__
-#define __OpcUaStackBroker_PubSubReaderGroupModel_h__
+#ifndef __OpcUaStackBroker_PublishedDataSetModel_h__
+#define __OpcUaStackBroker_PublishedDataSetModel_h__
 
 #include <boost/shared_ptr.hpp>
 #include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT PubSubReaderGroupModel
-	: public PubSubGroupModel
+	class DLLEXPORT PublishedDataSetModel
 	{
 	  public:
-		typedef boost::shared_ptr<PubSubReaderGroupModel> SPtr;
-		typedef std::map<OpcUaNodeId, PubSubReaderGroupModel::SPtr> Map;
+		typedef boost::shared_ptr<PublishedDataSetModel> SPtr;
+		typedef std::map<OpcUaNodeId, PublishedDataSetModel::SPtr> Map;
 
-		PubSubReaderGroupModel(PubSubGroupModel::Type type);
-		virtual ~PubSubReaderGroupModel(void);
-
-		OpcUaStatusCode removeDataSetReader(
-			OpcUaNodeId& dataSetReaderId
-		);
+		PublishedDataSetModel(void);
+		virtual ~PublishedDataSetModel(void);
 
 	  private:
-		PubSubReaderGroupModel(void);
 	};
 
 }
