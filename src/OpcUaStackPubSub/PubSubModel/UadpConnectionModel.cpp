@@ -21,7 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	UadpConnectionModel::UadpConnectionModel(void)
-	: PubSubConnectionModel()
+	: PubSubConnectionModel(PubSubConnectionModel::UadpConnectionType)
 	{
 	}
 

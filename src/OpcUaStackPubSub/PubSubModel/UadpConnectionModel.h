@@ -33,6 +33,7 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<UadpConnectionModel> SPtr;
+		typedef std::map<OpcUaNodeId, UadpConnectionModel::SPtr> Map;
 
 		UadpConnectionModel(void);
 		virtual ~UadpConnectionModel(void);

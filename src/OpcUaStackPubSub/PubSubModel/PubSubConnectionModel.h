@@ -31,10 +31,17 @@ namespace OpcUaStackPubSub
 	{
 	  public:
 		typedef boost::shared_ptr<PubSubConnectionModel> SPtr;
+		typedef std::map<OpcUaNodeId, PubSubConnectionModel::SPtr> Map;
 
-		PubSubConnectionModel(void);
+		typedef enum {
+			UadpConnectionType,
+			BrokerConnectionType
+		} Type;
+
+		PubSubConnectionModel(Type type);
 		virtual ~PubSubConnectionModel(void);
 
+		Type type(void);
 		void connectionName(OpcUaString& connectionName);
 		OpcUaString& connectionName(void);
 		void address(OpcUaString& address);
@@ -49,6 +56,7 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		Type type_;
 		OpcUaString connectionName_;
 		OpcUaString address_;
 		OpcUaVariant publisherId_;

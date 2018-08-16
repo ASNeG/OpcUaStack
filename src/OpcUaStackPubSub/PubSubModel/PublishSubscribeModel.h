@@ -21,6 +21,7 @@
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
 
 using namespace OpcUaStackCore;
 
@@ -39,6 +40,10 @@ namespace OpcUaStackPubSub
 			OpcUaNodeId& connectionId
 		);
 
+		PubSubConnectionModel::SPtr getConnection(
+			OpcUaNodeId& connectionId
+		);
+
 		OpcUaStatusCode addUadpConnection(
 			OpcUaString& connectionName,
 			OpcUaString& address,
@@ -54,6 +59,7 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		PubSubConnectionModel::Map pubSubConnectionModelMap_;
 	};
 
 }

@@ -21,7 +21,7 @@ namespace OpcUaStackPubSub
 {
 
 	BrokerConnectionModel::BrokerConnectionModel(void)
-	: PubSubConnectionModel()
+	: PubSubConnectionModel(PubSubConnectionModel::BrokerConnectionType)
 	{
 	}
 

@@ -20,8 +20,9 @@
 namespace OpcUaStackPubSub
 {
 
-	PubSubConnectionModel::PubSubConnectionModel(void)
-	: connectionName_("")
+	PubSubConnectionModel::PubSubConnectionModel(Type type)
+	: type_(type)
+	, connectionName_("")
 	, address_("")
 	, publisherId_()
 	, connectionId_()
@@ -30,6 +31,12 @@ namespace OpcUaStackPubSub
 
 	PubSubConnectionModel::~PubSubConnectionModel(void)
 	{
+	}
+
+	PubSubConnectionModel::Type
+	PubSubConnectionModel::type(void)
+	{
+		return type_;
 	}
 
 	void
