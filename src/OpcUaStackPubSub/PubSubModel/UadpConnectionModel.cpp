@@ -16,6 +16,8 @@
  */
 
 #include "OpcUaStackPubSub/PubSubModel/UadpConnectionModel.h"
+#include "OpcUaStackPubSub/PubSubModel/UadpReaderGroupModel.h"
+#include "OpcUaStackPubSub/PubSubModel/UadpWriterGroupModel.h"
 
 namespace OpcUaStackPubSub
 {
@@ -33,7 +35,7 @@ namespace OpcUaStackPubSub
 	UadpConnectionModel::addWriterGroup(
 		OpcUaString& groupName,
 		Duration publishingInterval,
-		Duration publishingOffset_,
+		Duration publishingOffset,
 		Duration keepAliveTime,
 		OpcUaByte priority,
 		OpcUaUInt32 securityMode,
@@ -43,7 +45,34 @@ namespace OpcUaStackPubSub
 		OpcUaNodeId& groupId
 	)
 	{
-		// FIXME: todo
+		// create group id from group name
+		groupId.set(groupName, 0);
+
+		// check if uadp group already exists
+		PubSubGroupModel::Map::iterator it;
+		it = pubSubGroupModelMap_.find(groupId);
+		if (it != pubSubGroupModelMap_.end()) {
+			return BadNodeIdExists;
+		}
+
+		// create new uadp group
+		UadpWriterGroupModel::SPtr uadpWriterGroupModel = constructSPtr<UadpWriterGroupModel>();
+		uadpWriterGroupModel->groupName(groupName);
+		uadpWriterGroupModel->securityMode(securityMode);
+		uadpWriterGroupModel->securityGroupId(securityGroupId);
+		uadpWriterGroupModel->publishingInterval(publishingInterval);
+		uadpWriterGroupModel->keepAliveTime(keepAliveTime);
+		uadpWriterGroupModel->priority(priority);
+		//uadpWriterGroupModel->encodingMimeType(""); // FIXME: todo
+		uadpWriterGroupModel->maxNetworkMessageSize(maxNetworkMessageSize);
+		uadpWriterGroupModel->publishingOffset(publishingOffset);
+		uadpWriterGroupModel->samplingOffset(0);
+
+		// added new uadp group to map
+		pubSubGroupModelMap_.insert(
+			std::make_pair(groupId, uadpWriterGroupModel)
+		);
+
 		return Success;
 	}
 
@@ -55,7 +84,27 @@ namespace OpcUaStackPubSub
 		OpcUaNodeId& groupId
 	)
 	{
-		// FIXME: todo
+		// create group id from group name
+		groupId.set(groupName, 0);
+
+		// check if uadp group already exists
+		PubSubGroupModel::Map::iterator it;
+		it = pubSubGroupModelMap_.find(groupId);
+		if (it != pubSubGroupModelMap_.end()) {
+			return BadNodeIdExists;
+		}
+
+		// create new uadp group
+		UadpReaderGroupModel::SPtr uadpReaderGroupModel = constructSPtr<UadpReaderGroupModel>();
+		uadpReaderGroupModel->groupName(groupName);
+		uadpReaderGroupModel->securityMode(securityMode);
+		uadpReaderGroupModel->securityGroupId(securityGroupId);
+
+		// added new uadp group to map
+		pubSubGroupModelMap_.insert(
+			std::make_pair(groupId, uadpReaderGroupModel)
+		);
+
 		return Success;
 	}
 

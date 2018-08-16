@@ -41,7 +41,7 @@ namespace OpcUaStackPubSub
 		OpcUaStatusCode addWriterGroup(
 			OpcUaString& groupName,
 			Duration publishingInterval,
-			Duration publishingOffset_,
+			Duration publishingOffset,
 			Duration keepAliveTime,
 			OpcUaByte priority,
 			OpcUaUInt32 securityMode,
