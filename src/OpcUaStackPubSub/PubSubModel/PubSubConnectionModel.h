@@ -56,6 +56,8 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		PubSubConnectionModel(void);
+
 		Type type_;
 		OpcUaString connectionName_;
 		OpcUaString address_;

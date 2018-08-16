@@ -29,4 +29,34 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	OpcUaStatusCode
+	BrokerConnectionModel::addWriterGroup(
+		OpcUaString& groupName,
+		Duration publishingInterval,
+		Duration keepAliveTime,
+		OpcUaByte priority,
+		OpcUaString& encodingMimeType,
+		OpcUaUInt32 securityMode,
+		OpcUaString& securityGroupId,
+		OpcUaString& queueName,
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME:todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	BrokerConnectionModel::addReaderGroup(
+		OpcUaString& groupName,
+		OpcUaUInt32 securityMode,
+		OpcUaString& securityGroupId,
+		OpcUaString& queueName,
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

@@ -29,4 +29,34 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	OpcUaStatusCode
+	UadpConnectionModel::addWriterGroup(
+		OpcUaString& groupName,
+		Duration publishingInterval,
+		Duration publishingOffset_,
+		Duration keepAliveTime,
+		OpcUaByte priority,
+		OpcUaUInt32 securityMode,
+		OpcUaString& securityGroupId,
+		OpcUaUInt16 maxNetworkMessageSize,
+		OpcUaUInt32 networkMessageContentMask,
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
+	OpcUaStatusCode
+	UadpConnectionModel::addReaderGroup(
+		OpcUaString& groupName,
+		OpcUaUInt32 securityMode,
+		OpcUaString& securityGroupId,
+		OpcUaNodeId& groupId
+	)
+	{
+		// FIXME: todo
+		return Success;
+	}
+
 }

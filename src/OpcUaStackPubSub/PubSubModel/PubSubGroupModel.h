@@ -34,10 +34,31 @@ namespace OpcUaStackPubSub
 		typedef boost::shared_ptr<PubSubGroupModel> SPtr;
 		typedef std::map<OpcUaNodeId, PubSubGroupModel::SPtr> Map;
 
-		PubSubGroupModel(void);
+		typedef enum {
+			UadpReaderGroupType,
+			UadpWriterGroupType,
+			BrokerReaderGroupType,
+			BrokerWriteGroupType
+		} Type;
+
+		PubSubGroupModel(Type type);
 		virtual ~PubSubGroupModel(void);
 
+		Type type(void);
+		void groupName(OpcUaString& groupName);
+		OpcUaString& groupName(void);
+		void securityMode(OpcUaUInt32 securityMode);
+		OpcUaUInt32 securityMode(void);
+		void securityGroupId(OpcUaString& securityGroupId);
+		OpcUaString& securityGroupId(void);
+
 	  private:
+		PubSubGroupModel(void);
+
+		Type type_;
+		OpcUaString groupName_;
+		OpcUaUInt32 securityMode_;
+		OpcUaString securityGroupId_;
 
 	};
 

@@ -20,12 +20,58 @@
 namespace OpcUaStackPubSub
 {
 
-	PubSubGroupModel::PubSubGroupModel(void)
+	PubSubGroupModel::PubSubGroupModel(Type type)
+	: type_(type)
+	, groupName_("")
+	, securityMode_(0)
+	, securityGroupId_("")
 	{
 	}
 
 	PubSubGroupModel::~PubSubGroupModel(void)
 	{
+	}
+
+	PubSubGroupModel::Type
+	PubSubGroupModel::type(void)
+	{
+		return type_;
+	}
+
+	void
+	PubSubGroupModel::groupName(OpcUaString& groupName)
+	{
+		groupName_ = groupName;
+	}
+
+	OpcUaString&
+	PubSubGroupModel::groupName(void)
+	{
+		return groupName_;
+	}
+
+	void
+	PubSubGroupModel::securityMode(OpcUaUInt32 securityMode)
+	{
+		securityMode_ = securityMode;
+	}
+
+	OpcUaUInt32
+	PubSubGroupModel::securityMode(void)
+	{
+		return securityMode_;
+	}
+
+	void
+	PubSubGroupModel::securityGroupId(OpcUaString& securityGroupId)
+	{
+		securityGroupId_ = securityGroupId;
+	}
+
+	OpcUaString&
+	PubSubGroupModel::securityGroupId(void)
+	{
+		return securityGroupId_;
 	}
 
 }

@@ -15,51 +15,32 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
-#ifndef __OpcUaStackUadp_UadpConnectionModel_h__
-#define __OpcUaStackUadp_UadpConnectionModel_h__
+#ifndef __OpcUaStackBroker_PubSubReaderGroupModel_h__
+#define __OpcUaStackBroker_PubSubReaderGroupModel_h__
 
 #include <boost/shared_ptr.hpp>
+#include <map>
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
-#include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+#include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
 using namespace OpcUaStackCore;
 
 namespace OpcUaStackPubSub
 {
 
-	class DLLEXPORT UadpConnectionModel
-	: public PubSubConnectionModel
+	class DLLEXPORT PubSubReaderGroupModel
+	: public PubSubGroupModel
 	{
 	  public:
-		typedef boost::shared_ptr<UadpConnectionModel> SPtr;
-		typedef std::map<OpcUaNodeId, UadpConnectionModel::SPtr> Map;
+		typedef boost::shared_ptr<PubSubReaderGroupModel> SPtr;
+		typedef std::map<OpcUaNodeId, PubSubReaderGroupModel::SPtr> Map;
 
-		UadpConnectionModel(void);
-		virtual ~UadpConnectionModel(void);
-
-		OpcUaStatusCode addWriterGroup(
-			OpcUaString& groupName,
-			Duration publishingInterval,
-			Duration publishingOffset_,
-			Duration keepAliveTime,
-			OpcUaByte priority,
-			OpcUaUInt32 securityMode,
-			OpcUaString& securityGroupId,
-			OpcUaUInt16 maxNetworkMessageSize,
-			OpcUaUInt32 networkMessageContentMask,
-			OpcUaNodeId& groupId
-		);
-
-		OpcUaStatusCode addReaderGroup(
-			OpcUaString& groupName,
-			OpcUaUInt32 securityMode,
-			OpcUaString& securityGroupId,
-			OpcUaNodeId& groupId
-		);
+		PubSubReaderGroupModel(PubSubGroupModel::Type type);
+		virtual ~PubSubReaderGroupModel(void);
 
 	  private:
-
+		PubSubReaderGroupModel(void);
 	};
 
 }
