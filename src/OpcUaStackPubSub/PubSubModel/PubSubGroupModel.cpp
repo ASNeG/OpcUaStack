@@ -39,7 +39,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubGroupModel::groupName(OpcUaString& groupName)
+	PubSubGroupModel::groupName(const OpcUaString& groupName)
 	{
 		groupName_ = groupName;
 	}
@@ -51,7 +51,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubGroupModel::securityMode(OpcUaUInt32 securityMode)
+	PubSubGroupModel::securityMode(const OpcUaUInt32 securityMode)
 	{
 		securityMode_ = securityMode;
 	}
@@ -63,7 +63,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubGroupModel::securityGroupId(OpcUaString& securityGroupId)
+	PubSubGroupModel::securityGroupId(const OpcUaString& securityGroupId)
 	{
 		securityGroupId_ = securityGroupId;
 	}

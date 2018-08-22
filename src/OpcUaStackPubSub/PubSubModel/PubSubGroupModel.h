@@ -45,11 +45,11 @@ namespace OpcUaStackPubSub
 		virtual ~PubSubGroupModel(void);
 
 		Type type(void);
-		void groupName(OpcUaString& groupName);
+		void groupName(const OpcUaString& groupName);
 		OpcUaString& groupName(void);
-		void securityMode(OpcUaUInt32 securityMode);
+		void securityMode(const OpcUaUInt32 securityMode);
 		OpcUaUInt32 securityMode(void);
-		void securityGroupId(OpcUaString& securityGroupId);
+		void securityGroupId(const OpcUaString& securityGroupId);
 		OpcUaString& securityGroupId(void);
 
 	  private:

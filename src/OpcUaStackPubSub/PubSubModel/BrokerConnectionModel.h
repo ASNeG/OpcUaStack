@@ -40,23 +40,23 @@ namespace OpcUaStackPubSub
 		virtual ~BrokerConnectionModel(void);
 
 		OpcUaStatusCode addWriterGroup(
-			OpcUaString& groupName,
-			Duration publishingInterval,
-			Duration keepAliveTime,
-			OpcUaByte priority,
-			OpcUaString& encodingMimeType,
-			OpcUaUInt32 securityMode,
-			OpcUaString& securityGroupId,
-			OpcUaString& queueName,
-			OpcUaNodeId& groupId
+			const OpcUaString& groupName,			// in
+			const Duration publishingInterval,		// in
+			const Duration keepAliveTime,			// in
+			const OpcUaByte priority,				// in
+			const OpcUaString& encodingMimeType,	// in
+			const OpcUaUInt32 securityMode,			// in
+			const OpcUaString& securityGroupId,		// in
+			const OpcUaString& queueName,			// in
+			OpcUaNodeId& groupId					// out
 		);
 
 		OpcUaStatusCode addReaderGroup(
-			OpcUaString& groupName,
-			OpcUaUInt32 securityMode,
-			OpcUaString& securityGroupId,
-			OpcUaString& queueName,
-			OpcUaNodeId& groupId
+			const OpcUaString& groupName,			// in
+			const OpcUaUInt32 securityMode,			// in
+			const OpcUaString& securityGroupId,		// in
+			const OpcUaString& queueName,			// in
+			OpcUaNodeId& groupId					// out
 		);
 
 	  private:

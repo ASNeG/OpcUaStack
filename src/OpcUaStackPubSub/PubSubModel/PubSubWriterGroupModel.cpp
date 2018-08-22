@@ -34,7 +34,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubWriterGroupModel::publishingInterval(Duration publishingInterval)
+	PubSubWriterGroupModel::publishingInterval(const Duration publishingInterval)
 	{
 		publishingInterval_ = publishingInterval;
 	}
@@ -46,7 +46,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubWriterGroupModel::keepAliveTime(Duration keepAliveTime)
+	PubSubWriterGroupModel::keepAliveTime(const Duration keepAliveTime)
 	{
 		keepAliveTime_ = keepAliveTime;
 	}
@@ -58,7 +58,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubWriterGroupModel::priority(OpcUaByte priority)
+	PubSubWriterGroupModel::priority(const OpcUaByte priority)
 	{
 		priority_ = priority;
 	}
@@ -70,7 +70,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubWriterGroupModel::encodingMimeType(OpcUaString& encodingMimeType)
+	PubSubWriterGroupModel::encodingMimeType(const OpcUaString& encodingMimeType)
 	{
 		encodingMimeType_ = encodingMimeType;
 	}

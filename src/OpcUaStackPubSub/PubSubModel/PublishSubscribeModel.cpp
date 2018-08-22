@@ -33,7 +33,7 @@ namespace OpcUaStackPubSub
 
 	PubSubConnectionModel::SPtr
 	PublishSubscribeModel::getConnection(
-		OpcUaNodeId& connectionId
+		const OpcUaNodeId& connectionId
 	)
 	{
 		PubSubConnectionModel::Map::iterator it;

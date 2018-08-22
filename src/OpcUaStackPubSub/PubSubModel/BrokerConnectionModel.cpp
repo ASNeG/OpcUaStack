@@ -33,14 +33,14 @@ namespace OpcUaStackPubSub
 
 	OpcUaStatusCode
 	BrokerConnectionModel::addWriterGroup(
-		OpcUaString& groupName,
-		Duration publishingInterval,
-		Duration keepAliveTime,
-		OpcUaByte priority,
-		OpcUaString& encodingMimeType,
-		OpcUaUInt32 securityMode,
-		OpcUaString& securityGroupId,
-		OpcUaString& queueName,
+		const OpcUaString& groupName,
+		const Duration publishingInterval,
+		const Duration keepAliveTime,
+		const OpcUaByte priority,
+		const OpcUaString& encodingMimeType,
+		const OpcUaUInt32 securityMode,
+		const OpcUaString& securityGroupId,
+		const OpcUaString& queueName,
 		OpcUaNodeId& groupId
 	)
 	{
@@ -75,10 +75,10 @@ namespace OpcUaStackPubSub
 
 	OpcUaStatusCode
 	BrokerConnectionModel::addReaderGroup(
-		OpcUaString& groupName,
-		OpcUaUInt32 securityMode,
-		OpcUaString& securityGroupId,
-		OpcUaString& queueName,
+		const OpcUaString& groupName,
+		const OpcUaUInt32 securityMode,
+		const OpcUaString& securityGroupId,
+		const OpcUaString& queueName,
 		OpcUaNodeId& groupId
 	)
 	{

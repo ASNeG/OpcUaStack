@@ -35,6 +35,22 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	PubSubGroupModel::SPtr
+	PubSubConnectionModel::getGroup(
+		const OpcUaNodeId& groupId
+	)
+	{
+		// find group
+		PubSubGroupModel::Map::iterator it;
+		it = pubSubGroupModelMap_.find(groupId);
+		if (it == pubSubGroupModelMap_.end()) {
+			PubSubGroupModel::SPtr temp;
+			return temp;
+		}
+
+		return it->second;
+	}
+
 	PubSubConnectionModel::Type
 	PubSubConnectionModel::type(void)
 	{

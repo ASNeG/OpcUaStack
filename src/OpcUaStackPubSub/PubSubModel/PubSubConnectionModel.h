@@ -42,6 +42,10 @@ namespace OpcUaStackPubSub
 		PubSubConnectionModel(Type type);
 		virtual ~PubSubConnectionModel(void);
 
+		PubSubGroupModel::SPtr getGroup(
+			const OpcUaNodeId& groupId
+		);
+
 		Type type(void);
 		void connectionName(const OpcUaString& connectionName);
 		OpcUaString& connectionName(void);

@@ -41,7 +41,7 @@ namespace OpcUaStackPubSub
 		);
 
 		PubSubConnectionModel::SPtr getConnection(
-			OpcUaNodeId& connectionId
+			const OpcUaNodeId& connectionId
 		);
 
 		OpcUaStatusCode addUadpConnection(

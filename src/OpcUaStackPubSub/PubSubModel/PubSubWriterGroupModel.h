@@ -39,13 +39,13 @@ namespace OpcUaStackPubSub
 		PubSubWriterGroupModel(PubSubGroupModel::Type type);
 		virtual ~PubSubWriterGroupModel(void);
 
-		void publishingInterval(Duration publishingInterval);
+		void publishingInterval(const Duration publishingInterval);
 		Duration publishingInterval(void);
-		void keepAliveTime(Duration keepAliveTime);
+		void keepAliveTime(const Duration keepAliveTime);
 		Duration keepAliveTime(void);
-		void priority(OpcUaByte priority);
+		void priority(const OpcUaByte priority);
 		OpcUaByte priority(void);
-		void encodingMimeType(OpcUaString& encodingMimeType);
+		void encodingMimeType(const OpcUaString& encodingMimeType);
 		OpcUaString& encodingMimeType(void);
 
 		OpcUaStatusCode removeDataSetWriter(
