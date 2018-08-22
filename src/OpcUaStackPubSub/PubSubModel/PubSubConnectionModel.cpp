@@ -42,7 +42,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubConnectionModel::connectionName(OpcUaString& connectionName)
+	PubSubConnectionModel::connectionName(const OpcUaString& connectionName)
 	{
 		connectionName_= connectionName;
 	}
@@ -54,7 +54,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubConnectionModel::address(OpcUaString& address)
+	PubSubConnectionModel::address(const OpcUaString& address)
 	{
 		address_ = address;
 	}
@@ -66,7 +66,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubConnectionModel::publisherId(OpcUaVariant& publisherId)
+	PubSubConnectionModel::publisherId(const OpcUaVariant& publisherId)
 	{
 		publisherId_ = publisherId;
 	}
@@ -78,7 +78,7 @@ namespace OpcUaStackPubSub
 	}
 
 	void
-	PubSubConnectionModel::connectionId(OpcUaNodeId& connectionId)
+	PubSubConnectionModel::connectionId(const OpcUaNodeId& connectionId)
 	{
 		connectionId_ =connectionId;
 	}

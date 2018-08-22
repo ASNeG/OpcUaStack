@@ -43,13 +43,13 @@ namespace OpcUaStackPubSub
 		virtual ~PubSubConnectionModel(void);
 
 		Type type(void);
-		void connectionName(OpcUaString& connectionName);
+		void connectionName(const OpcUaString& connectionName);
 		OpcUaString& connectionName(void);
-		void address(OpcUaString& address);
+		void address(const OpcUaString& address);
 		OpcUaString& address(void);
-		void publisherId(OpcUaVariant& publisherId);
+		void publisherId(const OpcUaVariant& publisherId);
 		OpcUaVariant& publisherId(void);
-		void connectionId(OpcUaNodeId& connectionId);
+		void connectionId(const OpcUaNodeId& connectionId);
 		OpcUaNodeId& connectionId(void);
 
 		OpcUaStatusCode removeGroup(

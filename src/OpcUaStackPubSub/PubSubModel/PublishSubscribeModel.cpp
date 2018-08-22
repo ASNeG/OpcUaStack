@@ -66,9 +66,9 @@ namespace OpcUaStackPubSub
 
 	OpcUaStatusCode
 	PublishSubscribeModel::addUadpConnection(
-		OpcUaString& connectionName,
-		OpcUaString& address,
-		OpcUaVariant& publisherId,
+		const OpcUaString& connectionName,
+		const OpcUaString& address,
+		const OpcUaVariant& publisherId,
 		OpcUaNodeId& connectionId
 	)
 	{
@@ -99,9 +99,9 @@ namespace OpcUaStackPubSub
 
 	OpcUaStatusCode
 	PublishSubscribeModel::addBrokerConnection(
-		OpcUaString& connectionName,
-		OpcUaString& address,
-		OpcUaVariant& publisherId,
+		const OpcUaString& connectionName,
+		const OpcUaString& address,
+		const OpcUaVariant& publisherId,
 		OpcUaNodeId& connectionId
 	)
 	{
@@ -119,7 +119,7 @@ namespace OpcUaStackPubSub
 		BrokerConnectionModel::SPtr brokerConnectionModel = constructSPtr<BrokerConnectionModel>();
 		brokerConnectionModel->connectionName(connectionName);
 		brokerConnectionModel->address(address);
-		brokerConnectionModel->publisherId();
+		brokerConnectionModel->publisherId(publisherId);
 
 		// added new broker connection to map
 		pubSubConnectionModelMap_.insert(

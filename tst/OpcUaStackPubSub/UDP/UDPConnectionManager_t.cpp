@@ -1,5 +1,6 @@
 #include "unittest.h"
 
+#if 0
 #include <iostream>
 #include <boost/asio.hpp>
 
@@ -95,3 +96,4 @@ BOOST_AUTO_TEST_CASE(UDPConnectionManager_HandleUDPMessage)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+#endif

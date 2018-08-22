@@ -124,6 +124,12 @@ namespace OpcUaStackCore
 		namespaceIndex_ = namespaceIndex;
 	}
 
+	void
+	OpcUaNodeIdBase::set(const OpcUaString& nodeId, OpcUaUInt16 namespaceIndex)
+	{
+		set(nodeId.value(), namespaceIndex);
+	}
+
 	void 
 	OpcUaNodeIdBase::set(OpcUaByte* buf, OpcUaInt32 bufLen, OpcUaUInt16 namespaceIndex)
 	{

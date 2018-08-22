@@ -45,17 +45,17 @@ namespace OpcUaStackPubSub
 		);
 
 		OpcUaStatusCode addUadpConnection(
-			OpcUaString& connectionName,
-			OpcUaString& address,
-			OpcUaVariant& publisherId,
-			OpcUaNodeId& connectionId
+			const OpcUaString& connectionName,	// in
+			const OpcUaString& address,			// in
+			const OpcUaVariant& publisherId,	// in
+			OpcUaNodeId& connectionId			// out
 		);
 
 		OpcUaStatusCode addBrokerConnection(
-			OpcUaString& connectionName,
-			OpcUaString& address,
-			OpcUaVariant& publisherId,
-			OpcUaNodeId& connectionId
+			const OpcUaString& connectionName,	// in
+			const OpcUaString& address,			// in
+			const OpcUaVariant& publisherId,	// in
+			OpcUaNodeId& connectionId			// out
 		);
 
 	  private:

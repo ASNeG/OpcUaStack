@@ -82,7 +82,10 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_init)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
-	if (mqttClient->mqttIfEnabled()) {
+	if (!mqttClient->mqttIfEnabled()) {
+		std::cout << "MQTTCLIENT DISABLED" << std::endl;
+	}
+	else {
 		BOOST_REQUIRE(mqttClient->init() == true);
 		BOOST_REQUIRE(mqttClient->cleanup() == true);
 	}
@@ -92,7 +95,10 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_startup)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
-	if (mqttClient->mqttIfEnabled()) {
+	if (!mqttClient->mqttIfEnabled()) {
+		std::cout << "MQTTCLIENT DISABLED" << std::endl;
+	}
+	else {
 		BOOST_REQUIRE(mqttClient->init() == true);
 		BOOST_REQUIRE(mqttClient->startup() == true);
 		BOOST_REQUIRE(mqttClient->shutdown() == true);
@@ -104,7 +110,10 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_connect)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
-	if (mqttClient->mqttIfEnabled()) {
+	if (!mqttClient->mqttIfEnabled()) {
+		std::cout << "MQTTCLIENT DISABLED" << std::endl;
+	}
+	else {
 		MQTTClientServerHandler csHandler;
 
 		mqttClient->mqttClientServerIf(&csHandler);
@@ -128,7 +137,10 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_publish)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
-	if (mqttClient->mqttIfEnabled()) {
+	if (!mqttClient->mqttIfEnabled()) {
+		std::cout << "MQTTCLIENT DISABLED" << std::endl;
+	}
+	else {
 		MQTTClientServerHandler csHandler;
 
 		mqttClient->mqttClientServerIf(&csHandler);
@@ -159,7 +171,10 @@ BOOST_AUTO_TEST_CASE(MQTTClientServer_subscribe)
 {
 	MQTTClientServerBase::SPtr mqttClient = constructMQTT();
 
-	if (mqttClient->mqttIfEnabled()) {
+	if (!mqttClient->mqttIfEnabled()) {
+		std::cout << "MQTTCLIENT DISABLED" << std::endl;
+	}
+	else {
 		MQTTClientServerHandler csHandler;
 
 		mqttClient->mqttClientServerIf(&csHandler);
