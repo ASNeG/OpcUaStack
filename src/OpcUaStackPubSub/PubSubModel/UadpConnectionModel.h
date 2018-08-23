@@ -38,6 +38,9 @@ namespace OpcUaStackPubSub
 		UadpConnectionModel(void);
 		virtual ~UadpConnectionModel(void);
 
+		virtual void startup(void);
+		virtual void shutdown(void);
+
 		OpcUaStatusCode addWriterGroup(
 			OpcUaString& groupName,
 			Duration publishingInterval,

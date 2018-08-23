@@ -23,6 +23,7 @@
 #include "OpcUaStackCore/Base/os.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
+#include "OpcUaStackPubSub/MQTT/MQTTClientServer.h"
 
 using namespace OpcUaStackCore;
 
@@ -38,6 +39,9 @@ namespace OpcUaStackPubSub
 
 		BrokerConnectionModel(void);
 		virtual ~BrokerConnectionModel(void);
+
+		virtual void startup(void);
+		virtual void shutdown(void);
 
 		OpcUaStatusCode addWriterGroup(
 			const OpcUaString& groupName,			// in
@@ -60,6 +64,7 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		MQTTClientServerBase::SPtr mqttClientServerBase_;
 	};
 
 }

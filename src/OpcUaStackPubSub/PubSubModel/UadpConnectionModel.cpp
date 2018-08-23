@@ -31,6 +31,18 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	void
+	UadpConnectionModel::startup(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	UadpConnectionModel::shutdown(void)
+	{
+		// FIXME: todo
+	}
+
 	OpcUaStatusCode
 	UadpConnectionModel::addWriterGroup(
 		OpcUaString& groupName,

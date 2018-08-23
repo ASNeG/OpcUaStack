@@ -39,6 +39,9 @@ namespace OpcUaStackPubSub
 		BrokerWriterGroupModel(void);
 		virtual ~BrokerWriterGroupModel(void);
 
+		virtual void startup(void);
+		virtual void shutdown(void);
+
 		void queueName(OpcUaString queueName);
 		OpcUaString queueName(void);
 

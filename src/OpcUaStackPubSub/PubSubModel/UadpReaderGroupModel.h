@@ -39,6 +39,9 @@ namespace OpcUaStackPubSub
 		UadpReaderGroupModel(void);
 		virtual ~UadpReaderGroupModel(void);
 
+		virtual void startup(void);
+		virtual void shutdown(void);
+
 	  private:
 	};
 

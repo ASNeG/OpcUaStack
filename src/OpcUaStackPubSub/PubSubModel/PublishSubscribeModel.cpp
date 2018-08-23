@@ -24,11 +24,30 @@ namespace OpcUaStackPubSub
 
 	PublishSubscribeModel::PublishSubscribeModel(void)
 	: pubSubConnectionModelMap_()
+	, ioThread_()
 	{
 	}
 
 	PublishSubscribeModel::~PublishSubscribeModel(void)
 	{
+		// remove all connections
+		PubSubConnectionModel::Map::iterator it;
+		for (it = pubSubConnectionModelMap_.begin(); it != pubSubConnectionModelMap_.end(); it++) {
+			it->second->shutdown();
+		}
+		pubSubConnectionModelMap_.clear();
+	}
+
+	void
+	PublishSubscribeModel::ioThread(IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	IOThread::SPtr&
+	PublishSubscribeModel::ioThread(void)
+	{
+		return ioThread_;
 	}
 
 	PubSubConnectionModel::SPtr
@@ -60,6 +79,7 @@ namespace OpcUaStackPubSub
 		}
 
 		// remove connection
+		it->second->shutdown();
 		pubSubConnectionModelMap_.erase(it);
 		return Success;
 	}
@@ -84,6 +104,7 @@ namespace OpcUaStackPubSub
 
 		// create new uadp connection
 		UadpConnectionModel::SPtr uadpConnectionModel = constructSPtr<UadpConnectionModel>();
+		uadpConnectionModel->ioThread(ioThread_);
 		uadpConnectionModel->connectionName(connectionName);
 		uadpConnectionModel->address(address);
 		uadpConnectionModel->publisherId();
@@ -93,6 +114,9 @@ namespace OpcUaStackPubSub
 		pubSubConnectionModelMap_.insert(
 			std::make_pair(connectionId, uadpConnectionModel)
 		);
+
+		// startup connection model
+		uadpConnectionModel->startup();
 
 		return Success;
 	}
@@ -117,6 +141,7 @@ namespace OpcUaStackPubSub
 
 		// create new broker connection
 		BrokerConnectionModel::SPtr brokerConnectionModel = constructSPtr<BrokerConnectionModel>();
+		brokerConnectionModel->ioThread(ioThread_);
 		brokerConnectionModel->connectionName(connectionName);
 		brokerConnectionModel->address(address);
 		brokerConnectionModel->publisherId(publisherId);
@@ -125,6 +150,9 @@ namespace OpcUaStackPubSub
 		pubSubConnectionModelMap_.insert(
 			std::make_pair(connectionId, brokerConnectionModel)
 		);
+
+		// startup connection model
+		brokerConnectionModel->startup();
 
 		return Success;
 	}

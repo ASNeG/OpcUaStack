@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubConnectionModel.h"
 
@@ -35,6 +36,9 @@ namespace OpcUaStackPubSub
 
 		PublishSubscribeModel(void);
 		virtual ~PublishSubscribeModel(void);
+
+		void ioThread(IOThread::SPtr& ioThread);
+		IOThread::SPtr& ioThread(void);
 
 		OpcUaStatusCode removeConnection(
 			OpcUaNodeId& connectionId
@@ -59,6 +63,7 @@ namespace OpcUaStackPubSub
 		);
 
 	  private:
+		IOThread::SPtr ioThread_;
 		PubSubConnectionModel::Map pubSubConnectionModelMap_;
 	};
 

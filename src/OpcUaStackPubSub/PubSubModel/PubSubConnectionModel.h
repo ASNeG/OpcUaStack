@@ -20,6 +20,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include "OpcUaStackCore/Base/os.h"
+#include "OpcUaStackCore/Utility/IOThread.h"
 #include "OpcUaStackCore/BuildInTypes/BuildInTypes.h"
 #include "OpcUaStackPubSub/PubSubModel/PubSubGroupModel.h"
 
@@ -41,6 +42,12 @@ namespace OpcUaStackPubSub
 
 		PubSubConnectionModel(Type type);
 		virtual ~PubSubConnectionModel(void);
+
+		virtual void startup(void) = 0;
+		virtual void shutdown(void) = 0;
+
+		void ioThread(IOThread::SPtr& ioThread);
+		IOThread::SPtr ioThread(void);
 
 		PubSubGroupModel::SPtr getGroup(
 			const OpcUaNodeId& groupId
@@ -66,6 +73,7 @@ namespace OpcUaStackPubSub
 	  private:
 		PubSubConnectionModel(void);
 
+		IOThread::SPtr ioThread_;
 		Type type_;
 		OpcUaString connectionName_;
 		OpcUaString address_;

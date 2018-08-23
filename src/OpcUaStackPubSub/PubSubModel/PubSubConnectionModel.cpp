@@ -22,7 +22,8 @@ namespace OpcUaStackPubSub
 {
 
 	PubSubConnectionModel::PubSubConnectionModel(Type type)
-	: type_(type)
+	: ioThread_()
+	, type_(type)
 	, connectionName_("")
 	, address_("")
 	, publisherId_()
@@ -33,6 +34,18 @@ namespace OpcUaStackPubSub
 
 	PubSubConnectionModel::~PubSubConnectionModel(void)
 	{
+	}
+
+	void
+	PubSubConnectionModel::ioThread(IOThread::SPtr& ioThread)
+	{
+		ioThread_ = ioThread;
+	}
+
+	IOThread::SPtr
+	PubSubConnectionModel::ioThread(void)
+	{
+		return ioThread_;
 	}
 
 	PubSubGroupModel::SPtr

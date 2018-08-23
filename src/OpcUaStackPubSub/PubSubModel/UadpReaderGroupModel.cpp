@@ -29,4 +29,16 @@ namespace OpcUaStackPubSub
 	{
 	}
 
+	void
+	UadpReaderGroupModel::startup(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	UadpReaderGroupModel::shutdown(void)
+	{
+		// FIXME: todo
+	}
+
 }

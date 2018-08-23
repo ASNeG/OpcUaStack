@@ -31,6 +31,18 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	BrokerWriterGroupModel::startup(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	BrokerWriterGroupModel::shutdown(void)
+	{
+		// FIXME: todo
+	}
+
+	void
 	BrokerWriterGroupModel::queueName(OpcUaString queueName)
 	{
 		queueName_ = queueName;

@@ -39,6 +39,9 @@ namespace OpcUaStackPubSub
 		UadpWriterGroupModel(void);
 		virtual ~UadpWriterGroupModel(void);
 
+		virtual void startup(void);
+		virtual void shutdown(void);
+
 		void maxNetworkMessageSize(OpcUaInt16 maxNetworkMessageSize);
 		OpcUaInt16 maxNetworkMessageSize(void);
 		void publishingOffset(Duration publishingOffset);

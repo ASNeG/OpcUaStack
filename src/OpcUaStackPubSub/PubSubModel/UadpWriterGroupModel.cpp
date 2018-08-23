@@ -33,6 +33,18 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	UadpWriterGroupModel::startup(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	UadpWriterGroupModel::shutdown(void)
+	{
+		// FIXME: todo
+	}
+
+	void
 	UadpWriterGroupModel::maxNetworkMessageSize(OpcUaInt16 maxNetworkMessageSize)
 	{
 		maxNetworkMessageSize_ = maxNetworkMessageSize;

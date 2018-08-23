@@ -24,11 +24,30 @@ namespace OpcUaStackPubSub
 
 	BrokerConnectionModel::BrokerConnectionModel(void)
 	: PubSubConnectionModel(PubSubConnectionModel::BrokerConnectionType)
+	, mqttClientServerBase_()
 	{
 	}
 
 	BrokerConnectionModel::~BrokerConnectionModel(void)
 	{
+	}
+
+	void
+	BrokerConnectionModel::startup(void)
+	{
+		mqttClientServerBase_ = constructMQTT();
+		mqttClientServerBase_->init();
+		mqttClientServerBase_->startup();
+		// FIXME: todo
+	}
+
+	void
+	BrokerConnectionModel::shutdown(void)
+	{
+		// FIXME: todo
+		mqttClientServerBase_->shutdown();
+		mqttClientServerBase_->cleanup();
+		mqttClientServerBase_.reset();
 	}
 
 	OpcUaStatusCode

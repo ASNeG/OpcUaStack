@@ -17,8 +17,13 @@ BOOST_AUTO_TEST_CASE(BrokerGroupModel_)
 
 BOOST_AUTO_TEST_CASE(BrokerGroupModel_CreateBrokerConnection)
 {
+	IOThread::SPtr ioThread = constructSPtr<IOThread>();
+	ioThread->startup();
+
 	PublishSubscribeModel publishSubscribeModel;
 	PubSubGroupModel::SPtr pubSubGroup;
+
+	publishSubscribeModel.ioThread(ioThread);
 
 	//
 	// create broker connection
@@ -80,6 +85,8 @@ BOOST_AUTO_TEST_CASE(BrokerGroupModel_CreateBrokerConnection)
     BOOST_REQUIRE(pubSubGroup.get() != nullptr);
     BrokerWriterGroupModel::SPtr brokerWriterGroup = boost::static_pointer_cast<BrokerWriterGroupModel>(pubSubGroup);
 
+
+    ioThread->shutdown();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

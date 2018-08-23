@@ -44,6 +44,9 @@ namespace OpcUaStackPubSub
 		PubSubGroupModel(Type type);
 		virtual ~PubSubGroupModel(void);
 
+		virtual void startup(void) = 0;
+		virtual void shutdown(void) = 0;
+
 		Type type(void);
 		void groupName(const OpcUaString& groupName);
 		OpcUaString& groupName(void);

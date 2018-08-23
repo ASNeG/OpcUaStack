@@ -15,6 +15,8 @@
    Autor: Kai Huebl (kai@huebl-sgh.de)
  */
 
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 #include <iostream>
 #include "OpcUaStackCore/Base/Log.h"
 #include "OpcUaStackPubSub/MQTT/MQTTClientServer.h"
@@ -249,6 +251,33 @@ namespace OpcUaStackPubSub
 	{
 		//return connect("test.mosquitto.org", 1883);
 		return connect("127.0.0.1", 1883);
+	}
+
+	bool
+	MQTTClientServer::connect(const std::string& address)
+	{
+		std::string hostname;
+		uint32_t port;
+
+		std::vector<std::string> strVec;
+		boost::split(strVec, address, boost::is_any_of(":"));
+		if (strVec.size() != 2) {
+			Log(Error, "connect error - invalid address")
+				.parameter("Address", address);
+			return false;
+		}
+		hostname = strVec[0];
+
+		try {
+			port = boost::lexical_cast<uint32_t>(strVec[1]);
+		}
+		catch (boost::bad_lexical_cast const&) {
+			Log(Error, "connect error - invalid address")
+				.parameter("Address", address);
+			return false;
+		}
+
+		return connect(hostname, port);
 	}
 
 	bool

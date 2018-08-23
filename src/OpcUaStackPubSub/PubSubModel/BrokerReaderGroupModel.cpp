@@ -31,6 +31,18 @@ namespace OpcUaStackPubSub
 	}
 
 	void
+	BrokerReaderGroupModel::startup(void)
+	{
+		// FIXME: todo
+	}
+
+	void
+	BrokerReaderGroupModel::shutdown(void)
+	{
+		// FIXME: todo
+	}
+
+	void
 	BrokerReaderGroupModel::queueName(OpcUaString queueName)
 	{
 		queueName_ = queueName;
