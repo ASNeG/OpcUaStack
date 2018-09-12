@@ -649,11 +649,13 @@ namespace OpcUaStackServer
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
 
+		applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+
 		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
 
 			// added server certificate
 			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
-			applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
+
 
 			// create server signature
 			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());

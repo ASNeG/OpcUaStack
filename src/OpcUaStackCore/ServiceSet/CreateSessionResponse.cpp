@@ -31,7 +31,7 @@ namespace OpcUaStackCore
 	, serverEndpoints_(constructSPtr<EndpointDescriptionArray>())
 	, serverSoftwareCertificate_()
 	, signatureData_(constructSPtr<SignatureData>())
-	, maxRequestMessageSize_()
+	, maxRequestMessageSize_(65536)
 	{
 	}
 
