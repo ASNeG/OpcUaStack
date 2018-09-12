@@ -316,6 +316,7 @@ namespace OpcUaStackServer
 				.parameter("SecurityPolicyUri", userTokenPolicy->securityPolicyUri());
 			return BadIdentityTokenRejected;
 		}
+
 		uint32_t encryptionAlg = EnryptionAlgs::uriToEncryptionAlg(token->encryptionAlgorithm());
 		if (encryptionAlg == 0) {
 			Log(Debug, "encryption alg invalid")
@@ -649,13 +650,11 @@ namespace OpcUaStackServer
 		createSessionResponse.serverEndpoints(endpointDescriptionArray_);
 		createSessionResponse.maxRequestMessageSize(0);
 
+		// added server certificate
+		createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
 		applicationCertificate_->certificate()->toDERBuf(createSessionResponse.serverCertificate());
 
 		if (applicationCertificate_.get() != nullptr && secureChannelTransaction->cryptoBase_.get() != nullptr) {
-
-			// added server certificate
-			createSessionResponse.serverNonce((const OpcUaByte*)serverNonce_, 32);
-
 
 			// create server signature
 			MemoryBuffer clientCertificate(createSessionRequest.clientCertificate());
