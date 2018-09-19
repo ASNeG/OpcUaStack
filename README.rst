@@ -19,11 +19,17 @@ All parts of the stack are cross-platform and support Linux and Windows operatio
 Features
 ------------------------------
 
-* Client\\Server implementation
-* Facilities to create and run user applications
-* Loads settings and OPC UA information model in XML format
-* Callback-based API
-* Supports Linux and Windows
+* SDK for Client\\Server applicaion
+* Application Server to run OPC UA application as dynamic libraries
+* Settings and OPC UA information model in XML format
+* Support DEB package type to distribute user applications on Linux
+
+In the development stage:
+
+* Code generator to create C++ classes representing OPC UA types, objects and events from XML
+* Multi-thread model (currently all application modules run in only one thread)
+* Support RPM package type to distribute user applications on Linux
+* Support MSI package type to distribute user applications on Windows
 
 
 OPC UA Specification Coverage
