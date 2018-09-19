@@ -37,8 +37,8 @@ OPC UA Specification Coverage
 
 .. |done| unicode:: U+2713 .. DONE
 
-Client Library:
-``````````````````````````````
+**Client Library:**
+
 
 +------------------------+----------------------------+---------+---------+---------+-------------+
 |      Service Set       | Function                   | OPC UA Interface  | Value Based Interface |
@@ -55,8 +55,23 @@ Client Library:
 +                        +----------------------------+---------+---------+---------+-------------+
 |                        | Close Secure Channel       | |done|  | |done|  | |done|  | |done|      |
 +------------------------+----------------------------+---------+---------+---------+-------------+
+| Session                | Create Session             | |done|  | |done|  | |done|  | |done|      |
++                        +----------------------------+---------+---------+---------+-------------+
+|                        | Activate Session           | |done|  | |done|  | |done|  | |done|      |
++                        +----------------------------+---------+---------+---------+-------------+
+|                        | Close Session              | |done|  | |done|  | |done|  | |done|      |
++                        +----------------------------+---------+---------+---------+-------------+
+|                        | Cancel Session             | |done|  | |done|  |         |             |
++------------------------+----------------------------+---------+---------+---------+-------------+
+
+Columns:
+
+* *OPC UA Interface* contains the OPC UA interface with full functionality. To use the interface OPC UA skills are necessary
+* *Value Based Interface* contains a value based interface with limited functionality. To use the interface OPC UA skills are not necessary
 
 
+
+**Server Library:**
 
 
 
